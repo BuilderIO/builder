@@ -1,8 +1,8 @@
-import { serializeFn } from '../blocks/util.js'
-import type { RegisteredComponent } from '../context/types.js'
-import type { ComponentInfo } from '../types/components.js'
-import type { Input } from '../types/input.js'
-import { fastClone } from './fast-clone.js'
+import { serializeFn } from '../blocks/util'
+import type { RegisteredComponent } from '../context/types'
+import type { ComponentInfo } from '../types/components'
+import type { Input } from '../types/input'
+import { fastClone } from './fast-clone'
 
 /**
  * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.

@@ -6,8 +6,8 @@ type Props = {
   block: BuilderBlock
   repeatContext: BuilderContextInterface
 }
-import BuilderContext from '../../context/builder.context.js'
-import type { BuilderContextInterface } from '../../context/types.js'
+import BuilderContext from '../../context/builder.context'
+import type { BuilderContextInterface } from '../../context/types'
 import type { BuilderBlock } from '../../types/builder-block'
 import RenderBlock from './render-block'
 

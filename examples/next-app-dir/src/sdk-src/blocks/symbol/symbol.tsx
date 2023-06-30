@@ -20,10 +20,10 @@ export interface SymbolProps {
 }
 
 import RenderContent from '../../components/render-content/render-content'
-import BuilderContext from '../../context/builder.context.js'
-import { getContent } from '../../functions/get-content/index.js'
-import type { BuilderContent } from '../../types/builder-content.js'
-import type { BuilderBlock } from '../../types/builder-block.js'
+import BuilderContext from '../../context/builder.context'
+import { getContent } from '../../functions/get-content/index'
+import type { BuilderContent } from '../../types/builder-content'
+import type { BuilderBlock } from '../../types/builder-block'
 import { TARGET } from '../../constants/target'
 import { logger } from '../../helpers/logger'
 

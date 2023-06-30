@@ -1,6 +1,6 @@
-import { isBrowser } from '../functions/is-browser.js'
-import type { CanTrack } from '../types/can-track.js'
-import type { Nullable } from './nullable.js'
+import { isBrowser } from '../functions/is-browser'
+import type { CanTrack } from '../types/can-track'
+import type { Nullable } from './nullable'
 
 const getLocalStorage = () =>
   isBrowser() && typeof localStorage !== 'undefined' ? localStorage : undefined

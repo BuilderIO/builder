@@ -12,7 +12,7 @@ export interface FormSelectProps {
   defaultValue?: string
 }
 
-import { isEditing } from '../../functions/is-editing.js'
+import { isEditing } from '../../functions/is-editing'
 
 function SelectComponent(props: FormSelectProps) {
   return (

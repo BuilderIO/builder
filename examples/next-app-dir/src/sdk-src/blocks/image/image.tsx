@@ -20,8 +20,8 @@ export interface ImageProps {
   src?: string
 }
 
-import type { BuilderBlock } from '../../types/builder-block.js'
-import { getSrcSet } from './image.helpers.js'
+import type { BuilderBlock } from '../../types/builder-block'
+import { getSrcSet } from './image.helpers'
 
 function Image(props: ImageProps) {
   function srcSetToUse() {

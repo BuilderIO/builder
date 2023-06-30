@@ -8,9 +8,9 @@ export type RenderBlockProps = {
   path?: string
   styleProp?: Record<string, any>
 }
-import BuilderContext from '../context/builder.context.js'
-import { isEditing } from '../functions/is-editing.js'
-import type { BuilderBlock } from '../types/builder-block.js'
+import BuilderContext from '../context/builder.context'
+import { isEditing } from '../functions/is-editing'
+import type { BuilderBlock } from '../types/builder-block'
 import BlockStyles from './render-block/block-styles'
 import RenderBlock from './render-block/render-block'
 

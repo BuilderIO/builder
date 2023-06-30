@@ -1,7 +1,7 @@
-import { TARGET } from '../constants/target.js'
-import { convertStyleMapToCSSArray } from '../helpers/css.js'
-import type { BuilderBlock } from '../types/builder-block.js'
-import { transformBlockProperties } from './transform-block-properties.js'
+import { TARGET } from '../constants/target'
+import { convertStyleMapToCSSArray } from '../helpers/css'
+import type { BuilderBlock } from '../types/builder-block'
+import { transformBlockProperties } from './transform-block-properties'
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   // currently we are only spreading the `href` property

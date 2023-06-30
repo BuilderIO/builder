@@ -1,4 +1,4 @@
-import { onChange } from './on-change.js'
+import { onChange } from './on-change'
 
 test('onChange can observe a shallow change', () => {
   let changeHappend = false

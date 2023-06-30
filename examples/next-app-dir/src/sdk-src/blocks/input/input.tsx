@@ -11,7 +11,7 @@ export interface FormInputProps {
   required?: boolean
 }
 
-import { isEditing } from '../../functions/is-editing.js'
+import { isEditing } from '../../functions/is-editing'
 
 function FormInputComponent(props: FormInputProps) {
   return (

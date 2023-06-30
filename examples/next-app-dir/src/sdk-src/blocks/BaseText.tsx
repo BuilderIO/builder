@@ -6,7 +6,7 @@ export interface BaseTextProps {
   text: string
 }
 
-import BuilderContext from '../context/builder.context.js'
+import BuilderContext from '../context/builder.context'
 
 function BaseText(props: BaseTextProps) {
   const builderContext = useContext(BuilderContext)

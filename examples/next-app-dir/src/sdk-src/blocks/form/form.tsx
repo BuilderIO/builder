@@ -58,7 +58,7 @@ export interface FormProps {
 export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error'
 import RenderBlock from '../../components/render-block/render-block'
 import BuilderBlocks from '../../components/render-blocks'
-import { isEditing } from '../../functions/is-editing.js'
+import { isEditing } from '../../functions/is-editing'
 
 function FormComponent(props: FormProps) {
   const formRef = useRef(null)

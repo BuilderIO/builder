@@ -1,9 +1,9 @@
-import { flatten } from '../../helpers/flatten.js'
+import { flatten } from '../../helpers/flatten'
 import {
   getBuilderSearchParamsFromWindow,
   normalizeSearchParams,
-} from '../get-builder-search-params/index.js'
-import type { GetContentOptions } from './types.js'
+} from '../get-builder-search-params/index'
+import type { GetContentOptions } from './types'
 import { DEFAULT_API_VERSION } from '../../types/api-version'
 
 export const generateContentUrl = (options: GetContentOptions): URL => {

@@ -6,24 +6,24 @@ export type RenderBlockProps = {
   block: BuilderBlock
   context: BuilderContextInterface
 }
-import type { BuilderContextInterface } from '../../context/types.js'
-import { getBlockActions } from '../../functions/get-block-actions.js'
-import { getBlockComponentOptions } from '../../functions/get-block-component-options.js'
-import { getBlockProperties } from '../../functions/get-block-properties.js'
-import { getProcessedBlock } from '../../functions/get-processed-block.js'
-import type { BuilderBlock } from '../../types/builder-block.js'
+import type { BuilderContextInterface } from '../../context/types'
+import { getBlockActions } from '../../functions/get-block-actions'
+import { getBlockComponentOptions } from '../../functions/get-block-component-options'
+import { getBlockProperties } from '../../functions/get-block-properties'
+import { getProcessedBlock } from '../../functions/get-processed-block'
+import type { BuilderBlock } from '../../types/builder-block'
 import BlockStyles from './block-styles'
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
-} from './render-block.helpers.js'
+} from './render-block.helpers'
 import type { RenderComponentProps } from './render-component'
 import RenderRepeatedBlock from './render-repeated-block'
-import { TARGET } from '../../constants/target.js'
-import { extractTextStyles } from '../../functions/extract-text-styles.js'
+import { TARGET } from '../../constants/target'
+import { extractTextStyles } from '../../functions/extract-text-styles'
 import RenderComponent from './render-component'
-import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js'
+import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles'
 
 function RenderBlock(props: RenderBlockProps) {
   const [component, setComponent] = useState(() =>

@@ -14,10 +14,10 @@ export interface RenderComponentProps {
   context: BuilderContextInterface
 }
 
-import type { BuilderBlock } from '../../types/builder-block.js'
+import type { BuilderBlock } from '../../types/builder-block'
 import BlockStyles from './block-styles'
 import RenderBlock from './render-block'
-import type { BuilderContextInterface } from '../../context/types.js'
+import type { BuilderContextInterface } from '../../context/types'
 
 function RenderComponent(props: RenderComponentProps) {
   return (

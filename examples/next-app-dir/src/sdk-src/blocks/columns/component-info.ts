@@ -1,5 +1,5 @@
 import type { ComponentInfo } from '../../types/components'
-import { serializeFn } from '../util.js'
+import { serializeFn } from '../util'
 
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc

@@ -2,7 +2,7 @@ import { getContent } from '../../sdk-src/functions/get-content'
 
 // if you use VSCode and see a TS error for the line below, you can safely ignore it.
 import BuilderPage from './BuilderPage'
-import { API_KEY } from '../../builderConfig.js'
+import { API_KEY } from '../../builderConfig'
 
 async function getBuilderContent(urlPath: string) {
   const page = await getContent({

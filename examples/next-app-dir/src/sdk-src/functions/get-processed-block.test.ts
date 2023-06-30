@@ -1,5 +1,5 @@
-import type { BuilderBlock } from '../types/builder-block.js'
-import { getProcessedBlock } from './get-processed-block.js'
+import type { BuilderBlock } from '../types/builder-block'
+import { getProcessedBlock } from './get-processed-block'
 
 test('Can process bindings', () => {
   const block: BuilderBlock = {

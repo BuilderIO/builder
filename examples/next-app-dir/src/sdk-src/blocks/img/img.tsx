@@ -19,7 +19,7 @@ export interface ImgProps {
     | 'bottom right'
 }
 
-import { isEditing } from '../../functions/is-editing.js'
+import { isEditing } from '../../functions/is-editing'
 
 function ImgComponent(props: ImgProps) {
   return (

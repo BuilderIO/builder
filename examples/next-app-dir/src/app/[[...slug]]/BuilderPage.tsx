@@ -1,7 +1,7 @@
 'use client'
 
 import { RenderContent } from '../../sdk-src'
-import { API_KEY } from '../../builderConfig.js'
+import { API_KEY } from '../../builderConfig'
 
 interface BuilderPageProps {
   builderContent: any

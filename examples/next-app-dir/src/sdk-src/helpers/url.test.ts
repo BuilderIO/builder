@@ -1,4 +1,4 @@
-import { getTopLevelDomain } from './url.js'
+import { getTopLevelDomain } from './url'
 
 describe('getTopLevelDomain', () => {
   test('handles root domain', () => {

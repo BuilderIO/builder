@@ -1,7 +1,7 @@
-import type { BuilderContextInterface } from '../context/types.js'
-import type { BuilderBlock } from '../types/builder-block.js'
-import { getEventHandlerName } from './event-handler-name.js'
-import { createEventHandler } from './get-block-actions-handler.js'
+import type { BuilderContextInterface } from '../context/types'
+import type { BuilderBlock } from '../types/builder-block'
+import { getEventHandlerName } from './event-handler-name'
+import { createEventHandler } from './get-block-actions-handler'
 
 type Actions = { [index: string]: (event: Event) => any }
 

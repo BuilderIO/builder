@@ -1,49 +1,46 @@
 'use client'
 import * as React from 'react'
 import { useState, useContext, useRef, useEffect } from 'react'
-import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js'
+import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components'
 import type {
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
-} from '../../context/types.js'
-import { evaluate } from '../../functions/evaluate.js'
-import { getContent } from '../../functions/get-content/index.js'
-import { fetch } from '../../functions/get-fetch.js'
-import { isBrowser } from '../../functions/is-browser.js'
-import { isEditing } from '../../functions/is-editing.js'
-import { isPreviewing } from '../../functions/is-previewing.js'
+} from '../../context/types'
+import { evaluate } from '../../functions/evaluate'
+import { getContent } from '../../functions/get-content/index'
+import { fetch } from '../../functions/get-fetch'
+import { isBrowser } from '../../functions/is-browser'
+import { isEditing } from '../../functions/is-editing'
+import { isPreviewing } from '../../functions/is-previewing'
 import {
   components,
   createRegisterComponentMessage,
-} from '../../functions/register-component.js'
-import { _track } from '../../functions/track/index.js'
-import type {
-  Breakpoints,
-  BuilderContent,
-} from '../../types/builder-content.js'
-import type { Nullable } from '../../types/typescript.js'
+} from '../../functions/register-component'
+import { _track } from '../../functions/track/index'
+import type { Breakpoints, BuilderContent } from '../../types/builder-content'
+import type { Nullable } from '../../types/typescript'
 import RenderBlocks from '../render-blocks'
 import RenderContentStyles from './components/render-styles'
-import builderContext from '../../context/builder.context.js'
+import builderContext from '../../context/builder.context'
 import {
   registerInsertMenu,
   setupBrowserForEditing,
-} from '../../scripts/init-editing.js'
-import { checkIsDefined } from '../../helpers/nullable.js'
-import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js'
+} from '../../scripts/init-editing'
+import { checkIsDefined } from '../../helpers/nullable'
+import { getInteractionPropertiesForEvent } from '../../functions/track/interaction'
 import type {
   RenderContentProps,
   BuilderComponentStateChange,
-} from './render-content.types.js'
+} from './render-content.types'
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from './render-content.helpers.js'
-import { TARGET } from '../../constants/target.js'
-import { logger } from '../../helpers/logger.js'
-import { getRenderContentScriptString } from '../render-content-variants/helpers.js'
-import { wrapComponentRef } from './wrap-component-ref.js'
+} from './render-content.helpers'
+import { TARGET } from '../../constants/target'
+import { logger } from '../../helpers/logger'
+import { getRenderContentScriptString } from '../render-content-variants/helpers'
+import { wrapComponentRef } from './wrap-component-ref'
 
 function RenderContent(props: RenderContentProps) {
   const elementRef = useRef<HTMLDivElement>(null)

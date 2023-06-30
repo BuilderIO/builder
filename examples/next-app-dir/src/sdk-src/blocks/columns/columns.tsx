@@ -21,8 +21,8 @@ import type { BuilderBlock } from '../../types/builder-block'
 import { getSizesForBreakpoints } from '../../constants/device-sizes'
 import type { SizeName } from '../../constants/device-sizes'
 import RenderInlinedStyles from '../../components/render-inlined-styles'
-import { TARGET } from '../../constants/target.js'
-import BuilderContext from '../../context/builder.context.js'
+import { TARGET } from '../../constants/target'
+import BuilderContext from '../../context/builder.context'
 import type { Dictionary } from '../../types/typescript'
 
 function Columns(props: ColumnProps) {
