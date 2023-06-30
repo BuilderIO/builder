@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "type": "module",
   "files": [
     "package",
