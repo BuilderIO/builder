@@ -1,6 +1,6 @@
-import { TARGET } from '../constants/target.js';
+import { TARGET } from '../constants/target.js'
 
-type Target = import('../types/targets').Target;
+type Target = import('../types/targets').Target
 
 // TODO: babel compile to include certain code only if the target matches
 export function ifTarget<A, B>({
@@ -8,13 +8,13 @@ export function ifTarget<A, B>({
   doThing,
   elseThing,
 }: {
-  targets: Target[];
-  doThing: () => A;
-  elseThing?: () => B;
+  targets: Target[]
+  doThing: () => A
+  elseThing?: () => B
 }) {
   if (TARGET && targets.includes(TARGET)) {
-    return doThing();
+    return doThing()
   } else {
-    return elseThing?.();
+    return elseThing?.()
   }
 }

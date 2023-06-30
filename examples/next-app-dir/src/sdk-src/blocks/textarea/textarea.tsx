@@ -1,12 +1,12 @@
-'use client';
-import * as React from "react";
+'use client'
+import * as React from 'react'
 
 export interface TextareaProps {
-  attributes?: any;
-  name?: string;
-  value?: string;
-  defaultValue?: string;
-  placeholder?: string;
+  attributes?: any
+  name?: string
+  value?: string
+  defaultValue?: string
+  placeholder?: string
 }
 
 function Textarea(props: TextareaProps) {
@@ -18,7 +18,7 @@ function Textarea(props: TextareaProps) {
       value={props.value}
       defaultValue={props.defaultValue}
     />
-  );
+  )
 }
 
-export default Textarea;
+export default Textarea

@@ -4,7 +4,7 @@ const TEXT_STYLE_KEYS = [
   'direction',
   'hyphens',
   'overflowWrap',
-];
+]
 
 /**
  * Check if the key represent a CSS style property that applies to text
@@ -20,20 +20,20 @@ const isTextStyle = (key: string) => {
     key.startsWith('line') ||
     key.startsWith('word') ||
     key.startsWith('writing')
-  );
-};
+  )
+}
 
 /**
  * Extract styles that apply to text from a style object.
  */
 export const extractTextStyles = (styles: Partial<CSSStyleDeclaration>) => {
-  const textStyles: Partial<CSSStyleDeclaration> = {};
+  const textStyles: Partial<CSSStyleDeclaration> = {}
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.entries(styles).forEach(([key, value]: [any, any]) => {
     if (isTextStyle(key)) {
-      textStyles[key] = value;
+      textStyles[key] = value
     }
-  });
+  })
 
-  return textStyles;
-};
+  return textStyles
+}

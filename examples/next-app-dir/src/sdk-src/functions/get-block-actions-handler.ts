@@ -1,15 +1,15 @@
-import type { BuilderContextInterface } from '../context/types.js';
-import type { BuilderBlock } from '../types/builder-block.js';
-import { evaluate } from './evaluate.js';
+import type { BuilderContextInterface } from '../context/types.js'
+import type { BuilderBlock } from '../types/builder-block.js'
+import { evaluate } from './evaluate.js'
 
 type Options = {
-  block: BuilderBlock;
+  block: BuilderBlock
 } & Pick<
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
->;
+>
 
-type EventHandler = (event: Event) => any;
+type EventHandler = (event: Event) => any
 
 export const createEventHandler =
   (value: string, options: Options): EventHandler =>
@@ -22,4 +22,4 @@ export const createEventHandler =
       rootSetState: options.rootSetState,
       event,
       isExpression: false,
-    });
+    })

@@ -1,1 +1,1 @@
-export { default } from './render-content';
+export { default } from './render-content'

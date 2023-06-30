@@ -1,18 +1,18 @@
-'use client';
-import * as React from "react";
-import { useState } from "react";
+'use client'
+import * as React from 'react'
+import { useState } from 'react'
 
-type VariantsProviderProps = RenderContentProps;
+type VariantsProviderProps = RenderContentProps
 import {
   checkShouldRunVariants,
   getVariants,
   getVariantsScriptString,
-} from "./helpers";
-import RenderContent from "../render-content/render-content";
-import type { RenderContentProps } from "../render-content/render-content.types";
-import { getDefaultCanTrack } from "../../helpers/canTrack";
-import RenderInlinedStyles from "../render-inlined-styles";
-import { handleABTestingSync } from "../../helpers/ab-tests";
+} from './helpers'
+import RenderContent from '../render-content/render-content'
+import type { RenderContentProps } from '../render-content/render-content.types'
+import { getDefaultCanTrack } from '../../helpers/canTrack'
+import RenderInlinedStyles from '../render-inlined-styles'
+import { handleABTestingSync } from '../../helpers/ab-tests'
 
 function RenderContentVariants(props: VariantsProviderProps) {
   const [variantScriptStr, setVariantScriptStr] = useState(() =>
@@ -21,22 +21,22 @@ function RenderContentVariants(props: VariantsProviderProps) {
         id: value.id!,
         testRatio: value.testRatio,
       })),
-      props.content?.id || ""
+      props.content?.id || ''
     )
-  );
+  )
 
   const [shouldRenderVariants, setShouldRenderVariants] = useState(() =>
     checkShouldRunVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     })
-  );
+  )
 
   const [hideVariantsStyleString, setHideVariantsStyleString] = useState(() =>
     getVariants(props.content)
       .map((value) => `.variant-${value.id} { display: none; } `)
-      .join("")
-  );
+      .join('')
+  )
 
   const [contentToRender, setContentToRender] = useState(() =>
     checkShouldRunVariants({
@@ -48,7 +48,7 @@ function RenderContentVariants(props: VariantsProviderProps) {
           item: props.content,
           canTrack: getDefaultCanTrack(props.canTrack),
         })
-  );
+  )
 
   return (
     <>
@@ -90,7 +90,7 @@ function RenderContentVariants(props: VariantsProviderProps) {
         isSsrAbTest={shouldRenderVariants}
       />
     </>
-  );
+  )
 }
 
-export default RenderContentVariants;
+export default RenderContentVariants

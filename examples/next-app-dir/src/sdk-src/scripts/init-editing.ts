@@ -1,7 +1,7 @@
-import { SDK_VERSION } from '../constants/sdk-version.js';
-import { TARGET } from '../constants/target.js';
-import { isBrowser } from '../functions/is-browser.js';
-import { register } from '../functions/register.js';
+import { SDK_VERSION } from '../constants/sdk-version.js'
+import { TARGET } from '../constants/target.js'
+import { isBrowser } from '../functions/is-browser.js'
+import { register } from '../functions/register.js'
 
 export const registerInsertMenu = () => {
   register('insertMenu', {
@@ -21,21 +21,21 @@ export const registerInsertMenu = () => {
             { name: 'Custom Code' },
           ]),
     ],
-  });
-};
+  })
+}
 
-let isSetupForEditing = false;
+let isSetupForEditing = false
 export const setupBrowserForEditing = (
   options: {
-    enrich?: boolean;
-    includeRefs?: boolean;
-    locale?: string;
+    enrich?: boolean
+    includeRefs?: boolean
+    locale?: string
   } = {}
 ) => {
   if (isSetupForEditing) {
-    return;
+    return
   }
-  isSetupForEditing = true;
+  isSetupForEditing = true
   if (isBrowser()) {
     window.parent?.postMessage(
       {
@@ -54,7 +54,7 @@ export const setupBrowserForEditing = (
         },
       },
       '*'
-    );
+    )
 
     window.parent?.postMessage(
       {
@@ -64,27 +64,27 @@ export const setupBrowserForEditing = (
         },
       },
       '*'
-    );
+    )
 
     window.addEventListener('message', ({ data }) => {
       if (!data?.type) {
-        return;
+        return
       }
 
       switch (data.type) {
         case 'builder.evaluate': {
-          const text = data.data.text;
-          const args = data.data.arguments || [];
-          const id = data.data.id;
+          const text = data.data.text
+          const args = data.data.arguments || []
+          const id = data.data.id
           // tslint:disable-next-line:no-function-constructor-with-string-args
-          const fn = new Function(text);
-          let result: any;
-          let error: Error | null = null;
+          const fn = new Function(text)
+          let result: any
+          let error: Error | null = null
           try {
             // eslint-disable-next-line prefer-spread
-            result = fn.apply(null, args);
+            result = fn.apply(null, args)
           } catch (err) {
-            error = err as Error;
+            error = err as Error
           }
 
           if (error) {
@@ -94,10 +94,10 @@ export const setupBrowserForEditing = (
                 data: { id, error: error.message },
               },
               '*'
-            );
+            )
           } else {
             if (result && typeof result.then === 'function') {
-              (result as Promise<any>)
+              ;(result as Promise<any>)
                 .then((finalResult) => {
                   window.parent?.postMessage(
                     {
@@ -105,9 +105,9 @@ export const setupBrowserForEditing = (
                       data: { id, result: finalResult },
                     },
                     '*'
-                  );
+                  )
                 })
-                .catch(console.error);
+                .catch(console.error)
             } else {
               window.parent?.postMessage(
                 {
@@ -115,12 +115,12 @@ export const setupBrowserForEditing = (
                   data: { result, id },
                 },
                 '*'
-              );
+              )
             }
           }
-          break;
+          break
         }
       }
-    });
+    })
   }
-};
+}

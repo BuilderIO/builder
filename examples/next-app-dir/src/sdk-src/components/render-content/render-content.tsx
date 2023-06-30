@@ -1,55 +1,55 @@
-'use client';
-import * as React from "react";
-import { useState, useContext, useRef, useEffect } from "react";
-import { getDefaultRegisteredComponents } from "../../constants/builder-registered-components.js";
+'use client'
+import * as React from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
+import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js'
 import type {
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
-} from "../../context/types.js";
-import { evaluate } from "../../functions/evaluate.js";
-import { getContent } from "../../functions/get-content/index.js";
-import { fetch } from "../../functions/get-fetch.js";
-import { isBrowser } from "../../functions/is-browser.js";
-import { isEditing } from "../../functions/is-editing.js";
-import { isPreviewing } from "../../functions/is-previewing.js";
+} from '../../context/types.js'
+import { evaluate } from '../../functions/evaluate.js'
+import { getContent } from '../../functions/get-content/index.js'
+import { fetch } from '../../functions/get-fetch.js'
+import { isBrowser } from '../../functions/is-browser.js'
+import { isEditing } from '../../functions/is-editing.js'
+import { isPreviewing } from '../../functions/is-previewing.js'
 import {
   components,
   createRegisterComponentMessage,
-} from "../../functions/register-component.js";
-import { _track } from "../../functions/track/index.js";
+} from '../../functions/register-component.js'
+import { _track } from '../../functions/track/index.js'
 import type {
   Breakpoints,
   BuilderContent,
-} from "../../types/builder-content.js";
-import type { Nullable } from "../../types/typescript.js";
-import RenderBlocks from "../render-blocks";
-import RenderContentStyles from "./components/render-styles";
-import builderContext from "../../context/builder.context.js";
+} from '../../types/builder-content.js'
+import type { Nullable } from '../../types/typescript.js'
+import RenderBlocks from '../render-blocks'
+import RenderContentStyles from './components/render-styles'
+import builderContext from '../../context/builder.context.js'
 import {
   registerInsertMenu,
   setupBrowserForEditing,
-} from "../../scripts/init-editing.js";
-import { checkIsDefined } from "../../helpers/nullable.js";
-import { getInteractionPropertiesForEvent } from "../../functions/track/interaction.js";
+} from '../../scripts/init-editing.js'
+import { checkIsDefined } from '../../helpers/nullable.js'
+import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js'
 import type {
   RenderContentProps,
   BuilderComponentStateChange,
-} from "./render-content.types.js";
+} from './render-content.types.js'
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from "./render-content.helpers.js";
-import { TARGET } from "../../constants/target.js";
-import { logger } from "../../helpers/logger.js";
-import { getRenderContentScriptString } from "../render-content-variants/helpers.js";
-import { wrapComponentRef } from "./wrap-component-ref.js";
+} from './render-content.helpers.js'
+import { TARGET } from '../../constants/target.js'
+import { logger } from '../../helpers/logger.js'
+import { getRenderContentScriptString } from '../render-content-variants/helpers.js'
+import { wrapComponentRef } from './wrap-component-ref.js'
 
 function RenderContent(props: RenderContentProps) {
-  const elementRef = useRef<HTMLDivElement>(null);
-  const [forceReRenderCount, setForceReRenderCount] = useState(() => 0);
+  const elementRef = useRef<HTMLDivElement>(null)
+  const [forceReRenderCount, setForceReRenderCount] = useState(() => 0)
 
-  const [overrideContent, setOverrideContent] = useState(() => null);
+  const [overrideContent, setOverrideContent] = useState(() => null)
 
   function mergeNewContent(newContent: BuilderContent) {
     setBuilderContextSignal((PREVIOUS_VALUE) => ({
@@ -69,7 +69,7 @@ function RenderContent(props: RenderContentProps) {
             builderContextSignal.content?.meta?.breakpoints,
         },
       },
-    }));
+    }))
   }
 
   function setBreakpoints(breakpoints: Breakpoints) {
@@ -82,56 +82,56 @@ function RenderContent(props: RenderContentProps) {
           breakpoints,
         },
       },
-    }));
+    }))
   }
 
-  const [update, setUpdate] = useState(() => 0);
+  const [update, setUpdate] = useState(() => 0)
 
   const [canTrackToUse, setCanTrackToUse] = useState(() =>
     checkIsDefined(props.canTrack) ? props.canTrack : true
-  );
+  )
 
   function contentSetState(newRootState: BuilderRenderState) {
     setBuilderContextSignal((PREVIOUS_VALUE) => ({
       ...PREVIOUS_VALUE,
       rootState: newRootState,
-    }));
+    }))
   }
 
   function processMessage(event: MessageEvent) {
-    const { data } = event;
+    const { data } = event
     if (data) {
       switch (data.type) {
-        case "builder.configureSdk": {
-          const messageContent = data.data;
-          const { breakpoints, contentId } = messageContent;
+        case 'builder.configureSdk': {
+          const messageContent = data.data
+          const { breakpoints, contentId } = messageContent
           if (!contentId || contentId !== builderContextSignal.content?.id) {
-            return;
+            return
           }
           if (breakpoints) {
-            setBreakpoints(breakpoints);
+            setBreakpoints(breakpoints)
           }
-          setForceReRenderCount(forceReRenderCount + 1); // This is a hack to force Qwik to re-render.
-          break;
+          setForceReRenderCount(forceReRenderCount + 1) // This is a hack to force Qwik to re-render.
+          break
         }
-        case "builder.contentUpdate": {
-          const messageContent = data.data;
+        case 'builder.contentUpdate': {
+          const messageContent = data.data
           const key =
             messageContent.key ||
             messageContent.alias ||
             messageContent.entry ||
-            messageContent.modelName;
-          const contentData = messageContent.data;
+            messageContent.modelName
+          const contentData = messageContent.data
           if (key === props.model) {
-            mergeNewContent(contentData);
-            setForceReRenderCount(forceReRenderCount + 1); // This is a hack to force Qwik to re-render.
+            mergeNewContent(contentData)
+            setForceReRenderCount(forceReRenderCount + 1) // This is a hack to force Qwik to re-render.
           }
 
-          break;
+          break
         }
-        case "builder.patchUpdates": {
+        case 'builder.patchUpdates': {
           // TODO
-          break;
+          break
         }
       }
     }
@@ -139,7 +139,7 @@ function RenderContent(props: RenderContentProps) {
 
   function evaluateJsCode() {
     // run any dynamic JS code attached to content
-    const jsCode = builderContextSignal.content?.data?.jsCode;
+    const jsCode = builderContextSignal.content?.data?.jsCode
     if (jsCode) {
       evaluate({
         code: jsCode,
@@ -147,30 +147,30 @@ function RenderContent(props: RenderContentProps) {
         localState: undefined,
         rootState: builderContextSignal.rootState,
         rootSetState: contentSetState,
-      });
+      })
     }
   }
 
-  const [httpReqsData, setHttpReqsData] = useState(() => ({}));
+  const [httpReqsData, setHttpReqsData] = useState(() => ({}))
 
-  const [clicked, setClicked] = useState(() => false);
+  const [clicked, setClicked] = useState(() => false)
 
   function onClick(event: any) {
     if (builderContextSignal.content) {
-      const variationId = builderContextSignal.content?.testVariationId;
-      const contentId = builderContextSignal.content?.id;
+      const variationId = builderContextSignal.content?.testVariationId
+      const contentId = builderContextSignal.content?.id
       _track({
-        type: "click",
+        type: 'click',
         canTrack: canTrackToUse,
         contentId,
         apiKey: props.apiKey,
         variationId: variationId !== contentId ? variationId : undefined,
         ...getInteractionPropertiesForEvent(event),
         unique: !clicked,
-      });
+      })
     }
     if (!clicked) {
-      setClicked(true);
+      setClicked(true)
     }
   }
 
@@ -183,7 +183,7 @@ function RenderContent(props: RenderContentProps) {
         rootState: builderContextSignal.rootState,
         rootSetState: contentSetState,
       })
-    );
+    )
   }
 
   function handleRequest({ url, key }: { key: string; url: string }) {
@@ -193,34 +193,34 @@ function RenderContent(props: RenderContentProps) {
         const newState = {
           ...builderContextSignal.rootState,
           [key]: json,
-        };
-        contentSetState(newState);
+        }
+        contentSetState(newState)
       })
       .catch((err) => {
-        console.error("error fetching dynamic data", url, err);
-      });
+        console.error('error fetching dynamic data', url, err)
+      })
   }
 
   function runHttpRequests() {
     const requests: {
-      [key: string]: string;
-    } = builderContextSignal.content?.data?.httpRequests ?? {};
+      [key: string]: string
+    } = builderContextSignal.content?.data?.httpRequests ?? {}
     Object.entries(requests).forEach(([key, url]) => {
       if (url && (!httpReqsData[key] || isEditing())) {
-        const evaluatedUrl = evalExpression(url);
+        const evaluatedUrl = evalExpression(url)
         handleRequest({
           url: evaluatedUrl,
           key,
-        });
+        })
       }
-    });
+    })
   }
 
   function emitStateUpdate() {
     if (isEditing()) {
       window.dispatchEvent(
         new CustomEvent<BuilderComponentStateChange>(
-          "builder:component:stateChange",
+          'builder:component:stateChange',
           {
             detail: {
               state: builderContextSignal.rootState,
@@ -230,7 +230,7 @@ function RenderContent(props: RenderContentProps) {
             },
           }
         )
-      );
+      )
     }
   }
 
@@ -240,7 +240,7 @@ function RenderContent(props: RenderContentProps) {
       contentId: props.content?.id!,
       parentContentId: props.parentContentId!,
     })
-  );
+  )
 
   const [builderContextSignal, setBuilderContextSignal] = useState(() => ({
     content: getContentInitialValue({
@@ -271,25 +271,25 @@ function RenderContent(props: RenderContentProps) {
         ...acc,
         [curr.name]: {
           component:
-            TARGET === "vue3" ? wrapComponentRef(component) : component,
+            TARGET === 'vue3' ? wrapComponentRef(component) : component,
           ...curr,
         },
       }),
       {} as RegisteredComponents
     ),
     inheritedStyles: {},
-  }));
+  }))
 
   useEffect(() => {
     if (!props.apiKey) {
       logger.error(
-        "No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop."
-      );
+        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      )
     }
     if (isBrowser()) {
       if (isEditing()) {
-        setForceReRenderCount(forceReRenderCount + 1);
-        registerInsertMenu();
+        setForceReRenderCount(forceReRenderCount + 1)
+        registerInsertMenu()
         setupBrowserForEditing({
           ...(props.locale
             ? {
@@ -306,40 +306,40 @@ function RenderContent(props: RenderContentProps) {
                 enrich: props.enrich,
               }
             : {}),
-        });
+        })
         Object.values<RegisteredComponent>(
           builderContextSignal.registeredComponents
         ).forEach((registeredComponent) => {
-          const message = createRegisterComponentMessage(registeredComponent);
-          window.parent?.postMessage(message, "*");
-        });
-        window.addEventListener("message", processMessage);
+          const message = createRegisterComponentMessage(registeredComponent)
+          window.parent?.postMessage(message, '*')
+        })
+        window.addEventListener('message', processMessage)
         window.addEventListener(
-          "builder:component:stateChangeListenerActivated",
+          'builder:component:stateChangeListenerActivated',
           emitStateUpdate
-        );
+        )
       }
       if (builderContextSignal.content) {
-        const variationId = builderContextSignal.content?.testVariationId;
-        const contentId = builderContextSignal.content?.id;
+        const variationId = builderContextSignal.content?.testVariationId
+        const contentId = builderContextSignal.content?.id
         _track({
-          type: "impression",
+          type: 'impression',
           canTrack: canTrackToUse,
           contentId,
           apiKey: props.apiKey,
           variationId: variationId !== contentId ? variationId : undefined,
-        });
+        })
       }
 
       // override normal content in preview mode
       if (isPreviewing()) {
-        const searchParams = new URL(location.href).searchParams;
-        const searchParamPreviewModel = searchParams.get("builder.preview");
+        const searchParams = new URL(location.href).searchParams
+        const searchParamPreviewModel = searchParams.get('builder.preview')
         const searchParamPreviewId = searchParams.get(
           `builder.preview.${searchParamPreviewModel}`
-        );
+        )
         const previewApiKey =
-          searchParams.get("apiKey") || searchParams.get("builder.space");
+          searchParams.get('apiKey') || searchParams.get('builder.space')
 
         /**
          * Make sure that:
@@ -359,46 +359,46 @@ function RenderContent(props: RenderContentProps) {
             apiVersion: props.apiVersion,
           }).then((content) => {
             if (content) {
-              mergeNewContent(content);
+              mergeNewContent(content)
             }
-          });
+          })
         }
       }
-      evaluateJsCode();
-      runHttpRequests();
-      emitStateUpdate();
+      evaluateJsCode()
+      runHttpRequests()
+      emitStateUpdate()
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (props.content) {
-      mergeNewContent(props.content);
+      mergeNewContent(props.content)
     }
-  }, [props.content]);
+  }, [props.content])
   useEffect(() => {
-    evaluateJsCode();
+    evaluateJsCode()
   }, [
     builderContextSignal.content?.data?.jsCode,
     builderContextSignal.rootState,
-  ]);
+  ])
   useEffect(() => {
-    runHttpRequests();
-  }, [builderContextSignal.content?.data?.httpRequests]);
+    runHttpRequests()
+  }, [builderContextSignal.content?.data?.httpRequests])
   useEffect(() => {
-    emitStateUpdate();
-  }, [builderContextSignal.rootState]);
+    emitStateUpdate()
+  }, [builderContextSignal.rootState])
 
   useEffect(() => {
     return () => {
       if (isBrowser()) {
-        window.removeEventListener("message", processMessage);
+        window.removeEventListener('message', processMessage)
         window.removeEventListener(
-          "builder:component:stateChangeListenerActivated",
+          'builder:component:stateChangeListenerActivated',
           emitStateUpdate
-        );
+        )
       }
-    };
-  }, []);
+    }
+  }, [])
 
   return (
     <builderContext.Provider value={builderContextSignal}>
@@ -409,18 +409,18 @@ function RenderContent(props: RenderContentProps) {
             onClick={(event) => onClick(event)}
             builder-content-id={builderContextSignal.content?.id}
             builder-model={props.model}
-            {...(TARGET === "reactNative"
+            {...(TARGET === 'reactNative'
               ? {
                   dataSet: {
                     // currently, we can't set the actual ID here. // we don't need it right now, we just need to identify content divs for testing.
-                    "builder-content-id": "",
+                    'builder-content-id': '',
                   },
                 }
               : {})}
             {...(props.hideContent
               ? {
                   hidden: true,
-                  "aria-hidden": true,
+                  'aria-hidden': true,
                 }
               : {})}
             className={props.classNameProp}
@@ -431,7 +431,7 @@ function RenderContent(props: RenderContentProps) {
               </>
             ) : null}
 
-            {TARGET !== "reactNative" ? (
+            {TARGET !== 'reactNative' ? (
               <>
                 <RenderContentStyles
                   contentId={builderContextSignal.content?.id}
@@ -449,7 +449,7 @@ function RenderContent(props: RenderContentProps) {
         </>
       ) : null}
     </builderContext.Provider>
-  );
+  )
 }
 
-export default RenderContent;
+export default RenderContent

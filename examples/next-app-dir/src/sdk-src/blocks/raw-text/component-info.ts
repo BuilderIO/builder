@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components';
+import type { ComponentInfo } from '../../types/components'
 
 export const componentInfo: ComponentInfo = {
   name: 'Builder:RawText',
@@ -12,4 +12,4 @@ export const componentInfo: ComponentInfo = {
       required: true,
     },
   ],
-};
+}

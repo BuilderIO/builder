@@ -1,4 +1,4 @@
-import { checkIsDefined } from './nullable';
+import { checkIsDefined } from './nullable'
 
 export const getDefaultCanTrack = (canTrack?: boolean) =>
-  checkIsDefined(canTrack) ? canTrack : true;
+  checkIsDefined(canTrack) ? canTrack : true

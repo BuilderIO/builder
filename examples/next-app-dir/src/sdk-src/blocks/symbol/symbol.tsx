@@ -1,49 +1,49 @@
-'use client';
-import * as React from "react";
-import { useState, useContext, useEffect } from "react";
+'use client'
+import * as React from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 export interface SymbolInfo {
-  model?: string;
-  entry?: string;
-  data?: any;
-  content?: BuilderContent;
-  inline?: boolean;
-  dynamic?: boolean;
+  model?: string
+  entry?: string
+  data?: any
+  content?: BuilderContent
+  inline?: boolean
+  dynamic?: boolean
 }
 export interface SymbolProps {
-  symbol?: SymbolInfo;
-  dataOnly?: boolean;
-  dynamic?: boolean;
-  builderBlock?: BuilderBlock;
-  attributes?: any;
-  inheritState?: boolean;
+  symbol?: SymbolInfo
+  dataOnly?: boolean
+  dynamic?: boolean
+  builderBlock?: BuilderBlock
+  attributes?: any
+  inheritState?: boolean
 }
 
-import RenderContent from "../../components/render-content/render-content";
-import BuilderContext from "../../context/builder.context.js";
-import { getContent } from "../../functions/get-content/index.js";
-import type { BuilderContent } from "../../types/builder-content.js";
-import type { BuilderBlock } from "../../types/builder-block.js";
-import { TARGET } from "../../constants/target";
-import { logger } from "../../helpers/logger";
+import RenderContent from '../../components/render-content/render-content'
+import BuilderContext from '../../context/builder.context.js'
+import { getContent } from '../../functions/get-content/index.js'
+import type { BuilderContent } from '../../types/builder-content.js'
+import type { BuilderBlock } from '../../types/builder-block.js'
+import { TARGET } from '../../constants/target'
+import { logger } from '../../helpers/logger'
 
 function Symbol(props: SymbolProps) {
   const [className, setClassName] = useState(() =>
     [
-      ...(TARGET === "vue2" || TARGET === "vue3"
+      ...(TARGET === 'vue2' || TARGET === 'vue3'
         ? Object.keys(props.attributes.class)
         : [props.attributes.class]),
-      "builder-symbol",
-      props.symbol?.inline ? "builder-inline-symbol" : undefined,
+      'builder-symbol',
+      props.symbol?.inline ? 'builder-inline-symbol' : undefined,
       props.symbol?.dynamic || props.dynamic
-        ? "builder-dynamic-symbol"
+        ? 'builder-dynamic-symbol'
         : undefined,
     ]
       .filter(Boolean)
-      .join(" ")
-  );
+      .join(' ')
+  )
 
-  const [contentToUse, setContentToUse] = useState(() => props.symbol?.content);
+  const [contentToUse, setContentToUse] = useState(() => props.symbol?.content)
 
   function fetchContent() {
     /**
@@ -71,24 +71,24 @@ function Symbol(props: SymbolProps) {
       })
         .then((response) => {
           if (response) {
-            setContentToUse(response);
+            setContentToUse(response)
           }
         })
         .catch((err) => {
-          logger.error("Could not fetch symbol content: ", err);
-        });
+          logger.error('Could not fetch symbol content: ', err)
+        })
     }
   }
 
-  const builderContext = useContext(BuilderContext);
+  const builderContext = useContext(BuilderContext)
 
   useEffect(() => {
-    fetchContent();
-  }, []);
+    fetchContent()
+  }, [])
 
   useEffect(() => {
-    fetchContent();
-  }, [props.symbol]);
+    fetchContent()
+  }, [props.symbol])
 
   return (
     <div {...props.attributes} className={className}>
@@ -106,7 +106,7 @@ function Symbol(props: SymbolProps) {
         content={contentToUse}
       />
     </div>
-  );
+  )
 }
 
-export default Symbol;
+export default Symbol

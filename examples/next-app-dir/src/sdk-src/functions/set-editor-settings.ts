@@ -1,16 +1,16 @@
-import { isBrowser } from './is-browser.js';
+import { isBrowser } from './is-browser.js'
 
-const settings: Settings = {};
+const settings: Settings = {}
 
-export type Settings = { customInsertMenu?: boolean };
+export type Settings = { customInsertMenu?: boolean }
 
 export function setEditorSettings(newSettings: Settings) {
   if (isBrowser()) {
-    Object.assign(settings, newSettings);
+    Object.assign(settings, newSettings)
     const message = {
       type: 'builder.settingsChange',
       data: settings,
-    };
-    parent.postMessage(message, '*');
+    }
+    parent.postMessage(message, '*')
   }
 }

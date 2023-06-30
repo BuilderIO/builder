@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components';
+import type { ComponentInfo } from '../../types/components'
 
 export const componentInfo: ComponentInfo = {
   name: 'Text',
@@ -21,4 +21,4 @@ export const componentInfo: ComponentInfo = {
     height: 'auto',
     textAlign: 'center',
   },
-};
+}

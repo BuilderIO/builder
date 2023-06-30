@@ -1,8 +1,8 @@
-'use client';
-import * as React from "react";
+'use client'
+import * as React from 'react'
 
 export interface TextProps {
-  text: string;
+  text: string
 }
 
 function Text(props: TextProps) {
@@ -11,10 +11,10 @@ function Text(props: TextProps) {
       className="builder-text"
       dangerouslySetInnerHTML={{ __html: props.text }}
       style={{
-        outline: "none",
+        outline: 'none',
       }}
     />
-  );
+  )
 }
 
-export default Text;
+export default Text

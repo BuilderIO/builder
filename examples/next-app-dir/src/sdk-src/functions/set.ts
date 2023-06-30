@@ -6,11 +6,11 @@
  */
 export const set = (obj: any, _path: string | string[], value: any) => {
   if (Object(obj) !== obj) {
-    return obj;
+    return obj
   }
   const path: string[] = Array.isArray(_path)
     ? _path
-    : (_path.toString().match(/[^.[\]]+/g) as string[]);
+    : (_path.toString().match(/[^.[\]]+/g) as string[])
 
   path
     .slice(0, -1)
@@ -21,6 +21,6 @@ export const set = (obj: any, _path: string | string[], value: any) => {
           : (a[c] =
               Math.abs(Number(path[i + 1])) >> 0 === +path[i + 1] ? [] : {}),
       obj
-    )[path[path.length - 1]] = value;
-  return obj;
-};
+    )[path[path.length - 1]] = value
+  return obj
+}

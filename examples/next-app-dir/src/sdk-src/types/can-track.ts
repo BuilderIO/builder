@@ -1,3 +1,3 @@
 export type CanTrack = {
-  canTrack: boolean;
-};
+  canTrack: boolean
+}

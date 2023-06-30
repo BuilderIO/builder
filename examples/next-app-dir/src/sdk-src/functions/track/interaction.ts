@@ -1,5 +1,5 @@
 function round(num: number) {
-  return Math.round(num * 1000) / 1000;
+  return Math.round(num * 1000) / 1000
 }
 const findParentElement = (
   target: HTMLElement,
@@ -7,60 +7,59 @@ const findParentElement = (
   checkElement = true
 ): HTMLElement | null => {
   if (!(target instanceof HTMLElement)) {
-    return null;
+    return null
   }
-  let parent: HTMLElement | null = checkElement ? target : target.parentElement;
+  let parent: HTMLElement | null = checkElement ? target : target.parentElement
   do {
     if (!parent) {
-      return null;
+      return null
     }
 
-    const matches = callback(parent);
+    const matches = callback(parent)
     if (matches) {
-      return parent;
+      return parent
     }
-  } while ((parent = parent.parentElement));
+  } while ((parent = parent.parentElement))
 
-  return null;
-};
+  return null
+}
 
 const findBuilderParent = (target: HTMLElement) =>
   findParentElement(target, (el) => {
-    const id = el.getAttribute('builder-id') || el.id;
-    return Boolean(id?.indexOf('builder-') === 0);
-  });
+    const id = el.getAttribute('builder-id') || el.id
+    return Boolean(id?.indexOf('builder-') === 0)
+  })
 
 type Offset = {
-  x: number;
-  y: number;
-};
+  x: number
+  y: number
+}
 
 const computeOffset = ({
   event,
   target,
 }: {
-  event: MouseEvent;
-  target: HTMLElement;
+  event: MouseEvent
+  target: HTMLElement
 }): Offset => {
-  const targetRect = target.getBoundingClientRect();
-  const xOffset = event.clientX - targetRect.left;
-  const yOffset = event.clientY - targetRect.top;
+  const targetRect = target.getBoundingClientRect()
+  const xOffset = event.clientX - targetRect.left
+  const yOffset = event.clientY - targetRect.top
 
-  const xRatio = round(xOffset / targetRect.width);
-  const yRatio = round(yOffset / targetRect.height);
+  const xRatio = round(xOffset / targetRect.width)
+  const yRatio = round(yOffset / targetRect.height)
 
   return {
     x: xRatio,
     y: yRatio,
-  };
-};
+  }
+}
 
 export const getInteractionPropertiesForEvent = (event: MouseEvent) => {
-  const target = event.target as HTMLElement | null;
-  const targetBuilderElement = target && findBuilderParent(target);
+  const target = event.target as HTMLElement | null
+  const targetBuilderElement = target && findBuilderParent(target)
   const builderId =
-    targetBuilderElement?.getAttribute('builder-id') ||
-    targetBuilderElement?.id;
+    targetBuilderElement?.getAttribute('builder-id') || targetBuilderElement?.id
 
   return {
     targetBuilderElement: builderId || undefined,
@@ -76,5 +75,5 @@ export const getInteractionPropertiesForEvent = (event: MouseEvent) => {
               .indexOf(targetBuilderElement)
           : undefined,
     },
-  };
-};
+  }
+}

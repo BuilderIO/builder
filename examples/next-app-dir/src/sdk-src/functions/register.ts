@@ -1,31 +1,31 @@
-import type { BuilderBlock } from '../types/builder-block.js';
-import type { DeepPartial } from '../types/deep-partial.js';
-import { isBrowser } from './is-browser.js';
+import type { BuilderBlock } from '../types/builder-block.js'
+import type { DeepPartial } from '../types/deep-partial.js'
+import { isBrowser } from './is-browser.js'
 
 export interface InsertMenuItem {
-  name: string;
-  icon?: string;
-  item: DeepPartial<BuilderBlock>;
+  name: string
+  icon?: string
+  item: DeepPartial<BuilderBlock>
 }
 
 export interface InsertMenuConfig {
-  name: string;
-  priority?: number;
-  persist?: boolean;
-  advanced?: boolean;
-  items: InsertMenuItem[];
+  name: string
+  priority?: number
+  persist?: boolean
+  advanced?: boolean
+  items: InsertMenuItem[]
 }
 
-const registry: { [key: string]: any[] } = {};
+const registry: { [key: string]: any[] } = {}
 
-export function register(type: 'insertMenu', info: InsertMenuConfig): void;
-export function register(type: string, info: any): void;
+export function register(type: 'insertMenu', info: InsertMenuConfig): void
+export function register(type: string, info: any): void
 export function register(type: string, info: any) {
-  let typeList = registry[type];
+  let typeList = registry[type]
   if (!typeList) {
-    typeList = registry[type] = [];
+    typeList = registry[type] = []
   }
-  typeList.push(info);
+  typeList.push(info)
   if (isBrowser()) {
     const message = {
       type: 'builder.register',
@@ -33,14 +33,14 @@ export function register(type: string, info: any) {
         type,
         info,
       },
-    };
+    }
     try {
-      parent.postMessage(message, '*');
+      parent.postMessage(message, '*')
       if (parent !== window) {
-        window.postMessage(message, '*');
+        window.postMessage(message, '*')
       }
     } catch (err) {
-      console.debug('Could not postmessage', err);
+      console.debug('Could not postmessage', err)
     }
   }
 }

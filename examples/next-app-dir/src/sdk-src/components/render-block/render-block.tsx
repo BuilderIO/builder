@@ -1,29 +1,29 @@
-'use client';
-import * as React from "react";
-import { useState } from "react";
+'use client'
+import * as React from 'react'
+import { useState } from 'react'
 
 export type RenderBlockProps = {
-  block: BuilderBlock;
-  context: BuilderContextInterface;
-};
-import type { BuilderContextInterface } from "../../context/types.js";
-import { getBlockActions } from "../../functions/get-block-actions.js";
-import { getBlockComponentOptions } from "../../functions/get-block-component-options.js";
-import { getBlockProperties } from "../../functions/get-block-properties.js";
-import { getProcessedBlock } from "../../functions/get-processed-block.js";
-import type { BuilderBlock } from "../../types/builder-block.js";
-import BlockStyles from "./block-styles";
+  block: BuilderBlock
+  context: BuilderContextInterface
+}
+import type { BuilderContextInterface } from '../../context/types.js'
+import { getBlockActions } from '../../functions/get-block-actions.js'
+import { getBlockComponentOptions } from '../../functions/get-block-component-options.js'
+import { getBlockProperties } from '../../functions/get-block-properties.js'
+import { getProcessedBlock } from '../../functions/get-processed-block.js'
+import type { BuilderBlock } from '../../types/builder-block.js'
+import BlockStyles from './block-styles'
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
-} from "./render-block.helpers.js";
-import type { RenderComponentProps } from "./render-component";
-import RenderRepeatedBlock from "./render-repeated-block";
-import { TARGET } from "../../constants/target.js";
-import { extractTextStyles } from "../../functions/extract-text-styles.js";
-import RenderComponent from "./render-component";
-import { getReactNativeBlockStyles } from "../../functions/get-react-native-block-styles.js";
+} from './render-block.helpers.js'
+import type { RenderComponentProps } from './render-component'
+import RenderRepeatedBlock from './render-repeated-block'
+import { TARGET } from '../../constants/target.js'
+import { extractTextStyles } from '../../functions/extract-text-styles.js'
+import RenderComponent from './render-component'
+import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js'
 
 function RenderBlock(props: RenderBlockProps) {
   const [component, setComponent] = useState(() =>
@@ -31,13 +31,13 @@ function RenderBlock(props: RenderBlockProps) {
       block: props.block,
       context: props.context,
     })
-  );
+  )
 
   function repeatItem() {
     return getRepeatItemData({
       block: props.block,
       context: props.context,
-    });
+    })
   }
 
   function useBlock() {
@@ -50,19 +50,19 @@ function RenderBlock(props: RenderBlockProps) {
           rootSetState: props.context.rootSetState,
           context: props.context.context,
           shouldEvaluateBindings: true,
-        });
+        })
   }
 
-  const [Tag, setTag] = useState(() => props.block.tagName || "div");
+  const [Tag, setTag] = useState(() => props.block.tagName || 'div')
 
   function canShowBlock() {
-    if ("hide" in useBlock()) {
-      return !useBlock().hide;
+    if ('hide' in useBlock()) {
+      return !useBlock().hide
     }
-    if ("show" in useBlock()) {
-      return useBlock().show;
+    if ('show' in useBlock()) {
+      return useBlock().show
     }
-    return true;
+    return true
   }
 
   function actions() {
@@ -72,14 +72,14 @@ function RenderBlock(props: RenderBlockProps) {
       rootSetState: props.context.rootSetState,
       localState: props.context.localState,
       context: props.context.context,
-    });
+    })
   }
 
   function attributes() {
-    const blockProperties = getBlockProperties(useBlock());
+    const blockProperties = getBlockProperties(useBlock())
     return {
       ...blockProperties,
-      ...(TARGET === "reactNative"
+      ...(TARGET === 'reactNative'
         ? {
             style: getReactNativeBlockStyles({
               block: useBlock(),
@@ -88,7 +88,7 @@ function RenderBlock(props: RenderBlockProps) {
             }),
           }
         : {}),
-    };
+    }
   }
 
   function childrenWithoutParentComponent() {
@@ -99,8 +99,8 @@ function RenderBlock(props: RenderBlockProps) {
      * blocks, and the children will be repeated within those blocks.
      */
     const shouldRenderChildrenOutsideRef =
-      !component?.component && !repeatItem();
-    return shouldRenderChildrenOutsideRef ? useBlock().children ?? [] : [];
+      !component?.component && !repeatItem()
+    return shouldRenderChildrenOutsideRef ? useBlock().children ?? [] : []
   }
 
   function renderComponentProps() {
@@ -123,10 +123,10 @@ function RenderBlock(props: RenderBlockProps) {
             }),
       },
       context: childrenContext,
-    };
+    }
   }
 
-  const [childrenContext, setChildrenContext] = useState(() => props.context);
+  const [childrenContext, setChildrenContext] = useState(() => props.context)
 
   return (
     <>
@@ -157,7 +157,7 @@ function RenderBlock(props: RenderBlockProps) {
 
                     {childrenWithoutParentComponent()?.map((child) => (
                       <RenderBlock
-                        key={"render-block-" + child.id}
+                        key={'render-block-' + child.id}
                         block={child}
                         context={childrenContext}
                       />
@@ -165,7 +165,7 @@ function RenderBlock(props: RenderBlockProps) {
 
                     {childrenWithoutParentComponent()?.map((child) => (
                       <BlockStyles
-                        key={"block-style-" + child.id}
+                        key={'block-style-' + child.id}
                         block={child}
                         context={childrenContext}
                       />
@@ -182,7 +182,7 @@ function RenderBlock(props: RenderBlockProps) {
         </>
       ) : null}
     </>
-  );
+  )
 }
 
-export default RenderBlock;
+export default RenderBlock

@@ -1,8 +1,8 @@
-'use client';
-import * as React from "react";
+'use client'
+import * as React from 'react'
 
 function BuilderEditing(props: any) {
-  return <div />;
+  return <div />
 }
 
-export default BuilderEditing;
+export default BuilderEditing

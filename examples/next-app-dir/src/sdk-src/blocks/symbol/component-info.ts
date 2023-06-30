@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components';
+import type { ComponentInfo } from '../../types/components'
 
 export const componentInfo: ComponentInfo = {
   name: 'Symbol',
@@ -40,4 +40,4 @@ export const componentInfo: ComponentInfo = {
       type: 'boolean',
     },
   ],
-};
+}

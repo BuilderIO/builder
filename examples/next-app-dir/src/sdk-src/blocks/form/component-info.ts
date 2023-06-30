@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components';
+import type { ComponentInfo } from '../../types/components'
 
 export const componentInfo: ComponentInfo = {
   name: 'Form:Form',
@@ -279,4 +279,4 @@ export const componentInfo: ComponentInfo = {
       },
     },
   ],
-};
+}

@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext } from 'react'
 
 export default createContext<any>({
   content: null,
@@ -10,4 +10,4 @@ export default createContext<any>({
   apiVersion: undefined,
   registeredComponents: {},
   inheritedStyles: {},
-});
+})

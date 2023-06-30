@@ -1,10 +1,10 @@
-import { flatten } from '../../helpers/flatten.js';
+import { flatten } from '../../helpers/flatten.js'
 import {
   getBuilderSearchParamsFromWindow,
   normalizeSearchParams,
-} from '../get-builder-search-params/index.js';
-import type { GetContentOptions } from './types.js';
-import { DEFAULT_API_VERSION } from '../../types/api-version';
+} from '../get-builder-search-params/index.js'
+import type { GetContentOptions } from './types.js'
+import { DEFAULT_API_VERSION } from '../../types/api-version'
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
   const {
@@ -18,43 +18,43 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     enrich,
     locale,
     apiVersion = DEFAULT_API_VERSION,
-  } = options;
+  } = options
 
   if (!apiKey) {
-    throw new Error('Missing API key');
+    throw new Error('Missing API key')
   }
 
   if (!['v2', 'v3'].includes(apiVersion)) {
     throw new Error(
       `Invalid apiVersion: expected 'v2' or 'v3', received '${apiVersion}'`
-    );
+    )
   }
 
   const url = new URL(
     `https://cdn.builder.io/api/${apiVersion}/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
       locale ? `&locale=${locale}` : ''
     }${enrich ? `&enrich=${enrich}` : ''}`
-  );
+  )
 
   const queryOptions = {
     ...getBuilderSearchParamsFromWindow(),
     ...normalizeSearchParams(options.options || {}),
-  };
+  }
 
-  const flattened = flatten(queryOptions);
+  const flattened = flatten(queryOptions)
   for (const key in flattened) {
-    url.searchParams.set(key, String(flattened[key]));
+    url.searchParams.set(key, String(flattened[key]))
   }
 
   if (userAttributes) {
-    url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
+    url.searchParams.set('userAttributes', JSON.stringify(userAttributes))
   }
   if (query) {
-    const flattened = flatten({ query });
+    const flattened = flatten({ query })
     for (const key in flattened) {
-      url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
+      url.searchParams.set(key, JSON.stringify((flattened as any)[key]))
     }
   }
 
-  return url;
-};
+  return url
+}

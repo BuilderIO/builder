@@ -1,17 +1,17 @@
-type Global = typeof global | typeof window | typeof self | typeof globalThis;
+type Global = typeof global | typeof window | typeof self | typeof globalThis
 
 export function getGlobalThis(): Global {
   if (typeof globalThis !== 'undefined') {
-    return globalThis;
+    return globalThis
   }
   if (typeof window !== 'undefined') {
-    return window;
+    return window
   }
   if (typeof global !== 'undefined') {
-    return global;
+    return global
   }
   if (typeof self !== 'undefined') {
-    return self;
+    return self
   }
-  return globalThis;
+  return globalThis
 }

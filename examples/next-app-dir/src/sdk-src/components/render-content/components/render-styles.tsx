@@ -1,17 +1,17 @@
-'use client';
-import * as React from "react";
-import { useState } from "react";
+'use client'
+import * as React from 'react'
+import { useState } from 'react'
 
 interface Props {
-  cssCode?: string;
-  customFonts?: CustomFont[];
-  contentId?: string;
+  cssCode?: string
+  customFonts?: CustomFont[]
+  contentId?: string
 }
 
-import RenderInlinedStyles from "../../render-inlined-styles";
-import type { CustomFont } from "./render-styles.helpers";
-import { getCss } from "./render-styles.helpers";
-import { getFontCss } from "./render-styles.helpers";
+import RenderInlinedStyles from '../../render-inlined-styles'
+import type { CustomFont } from './render-styles.helpers'
+import { getCss } from './render-styles.helpers'
+import { getFontCss } from './render-styles.helpers'
 
 function RenderContentStyles(props: Props) {
   const [injectedStyles, setInjectedStyles] = useState(() =>
@@ -37,9 +37,9 @@ ${getFontCss({
   font-family: inherit;
 }
 `.trim()
-  );
+  )
 
-  return <RenderInlinedStyles styles={injectedStyles} />;
+  return <RenderInlinedStyles styles={injectedStyles} />
 }
 
-export default RenderContentStyles;
+export default RenderContentStyles

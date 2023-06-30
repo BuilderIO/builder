@@ -1,8 +1,8 @@
-import type { BuilderContextInterface } from '../../context/types';
-import { evaluate } from '../../functions/evaluate';
-import { getProcessedBlock } from '../../functions/get-processed-block';
-import type { BuilderBlock } from '../../types/builder-block';
-import type { RepeatData } from './types';
+import type { BuilderContextInterface } from '../../context/types'
+import { evaluate } from '../../functions/evaluate'
+import { getProcessedBlock } from '../../functions/get-processed-block'
+import type { BuilderBlock } from '../../types/builder-block'
+import type { RepeatData } from './types'
 
 /**
  * https://developer.mozilla.org/en-US/docs/Glossary/Empty_element
@@ -23,21 +23,21 @@ const EMPTY_HTML_ELEMENTS = [
   'source',
   'track',
   'wbr',
-];
+]
 
 export const isEmptyHtmlElement = (tagName: unknown) => {
   return (
     typeof tagName === 'string' &&
     EMPTY_HTML_ELEMENTS.includes(tagName.toLowerCase())
-  );
-};
+  )
+}
 
 export const getComponent = ({
   block,
   context,
 }: {
-  block: BuilderBlock;
-  context: BuilderContextInterface;
+  block: BuilderBlock
+  context: BuilderContextInterface
 }) => {
   const componentName = getProcessedBlock({
     block,
@@ -46,40 +46,40 @@ export const getComponent = ({
     rootSetState: context.rootSetState,
     context: context.context,
     shouldEvaluateBindings: false,
-  }).component?.name;
+  }).component?.name
 
   if (!componentName) {
-    return null;
+    return null
   }
 
-  const ref = context.registeredComponents[componentName];
+  const ref = context.registeredComponents[componentName]
 
   if (!ref) {
     // TODO: Public doc page with more info about this message
     console.warn(`
       Could not find a registered component named "${componentName}". 
-      If you registered it, is the file that registered it imported by the file that needs to render it?`);
-    return undefined;
+      If you registered it, is the file that registered it imported by the file that needs to render it?`)
+    return undefined
   } else {
-    return ref;
+    return ref
   }
-};
+}
 
 export const getRepeatItemData = ({
   block,
   context,
 }: {
-  block: BuilderBlock;
-  context: BuilderContextInterface;
+  block: BuilderBlock
+  context: BuilderContextInterface
 }): RepeatData[] | undefined => {
   /**
    * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,
    * which will not work if there is a repeat.
    */
-  const { repeat, ...blockWithoutRepeat } = block;
+  const { repeat, ...blockWithoutRepeat } = block
 
   if (!repeat?.collection) {
-    return undefined;
+    return undefined
   }
 
   const itemsArray = evaluate({
@@ -88,15 +88,15 @@ export const getRepeatItemData = ({
     rootState: context.rootState,
     rootSetState: context.rootSetState,
     context: context.context,
-  });
+  })
 
   if (!Array.isArray(itemsArray)) {
-    return undefined;
+    return undefined
   }
 
-  const collectionName = repeat.collection.split('.').pop();
+  const collectionName = repeat.collection.split('.').pop()
   const itemNameToUse =
-    repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
+    repeat.itemName || (collectionName ? collectionName + 'Item' : 'item')
 
   const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
     context: {
@@ -110,7 +110,7 @@ export const getRepeatItemData = ({
       },
     },
     block: blockWithoutRepeat,
-  }));
+  }))
 
-  return repeatArray;
-};
+  return repeatArray
+}

@@ -1,38 +1,38 @@
-import type { CanTrack } from '../types/can-track.js';
-import { getCookie, setCookie } from './cookie.js';
-import { checkIsDefined } from './nullable.js';
-import { uuid } from './uuid.js';
+import type { CanTrack } from '../types/can-track.js'
+import { getCookie, setCookie } from './cookie.js'
+import { checkIsDefined } from './nullable.js'
+import { uuid } from './uuid.js'
 
-const SESSION_LOCAL_STORAGE_KEY = 'builderSessionId';
+const SESSION_LOCAL_STORAGE_KEY = 'builderSessionId'
 
 export const getSessionId = async ({
   canTrack,
 }: CanTrack): Promise<string | undefined> => {
   if (!canTrack) {
-    return undefined;
+    return undefined
   }
 
   const sessionId = await getCookie({
     name: SESSION_LOCAL_STORAGE_KEY,
     canTrack,
-  });
+  })
 
   if (checkIsDefined(sessionId)) {
-    return sessionId;
+    return sessionId
   } else {
-    const newSessionId = createSessionId();
-    setSessionId({ id: newSessionId, canTrack });
+    const newSessionId = createSessionId()
+    setSessionId({ id: newSessionId, canTrack })
 
-    return newSessionId;
+    return newSessionId
   }
-};
+}
 
-export const createSessionId = () => uuid();
+export const createSessionId = () => uuid()
 
 export const setSessionId = ({
   id,
   canTrack,
 }: {
-  id: string;
+  id: string
 } & CanTrack) =>
-  setCookie({ name: SESSION_LOCAL_STORAGE_KEY, value: id, canTrack });
+  setCookie({ name: SESSION_LOCAL_STORAGE_KEY, value: id, canTrack })

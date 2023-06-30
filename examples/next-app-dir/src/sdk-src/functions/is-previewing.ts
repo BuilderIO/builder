@@ -1,14 +1,14 @@
-import { isBrowser } from './is-browser.js';
-import { isEditing } from './is-editing.js';
+import { isBrowser } from './is-browser.js'
+import { isEditing } from './is-editing.js'
 
 export function isPreviewing() {
   if (!isBrowser()) {
-    return false;
+    return false
   }
 
   if (isEditing()) {
-    return false;
+    return false
   }
 
-  return Boolean(location.search.indexOf('builder.preview=') !== -1);
+  return Boolean(location.search.indexOf('builder.preview=') !== -1)
 }

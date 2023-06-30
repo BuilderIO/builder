@@ -1,69 +1,69 @@
-'use client';
-import * as React from "react";
+'use client'
+import * as React from 'react'
 
 export interface ImageProps {
-  className?: string;
-  image: string;
-  sizes?: string;
-  lazy?: boolean;
-  height?: number;
-  width?: number;
-  altText?: string;
-  backgroundSize?: "cover" | "contain";
-  backgroundPosition?: string;
-  srcset?: string;
-  aspectRatio?: number;
-  children?: JSX.Element;
-  fitContent?: boolean;
-  builderBlock?: BuilderBlock;
-  noWebp?: boolean;
-  src?: string;
+  className?: string
+  image: string
+  sizes?: string
+  lazy?: boolean
+  height?: number
+  width?: number
+  altText?: string
+  backgroundSize?: 'cover' | 'contain'
+  backgroundPosition?: string
+  srcset?: string
+  aspectRatio?: number
+  children?: JSX.Element
+  fitContent?: boolean
+  builderBlock?: BuilderBlock
+  noWebp?: boolean
+  src?: string
 }
 
-import type { BuilderBlock } from "../../types/builder-block.js";
-import { getSrcSet } from "./image.helpers.js";
+import type { BuilderBlock } from '../../types/builder-block.js'
+import { getSrcSet } from './image.helpers.js'
 
 function Image(props: ImageProps) {
   function srcSetToUse() {
-    const imageToUse = props.image || props.src;
-    const url = imageToUse;
+    const imageToUse = props.image || props.src
+    const url = imageToUse
     if (
       !url ||
       // We can auto add srcset for cdn.builder.io and shopify
       // images, otherwise you can supply this prop manually
       !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
     ) {
-      return props.srcset;
+      return props.srcset
     }
-    if (props.srcset && props.image?.includes("builder.io/api/v1/image")) {
-      if (!props.srcset.includes(props.image.split("?")[0])) {
-        console.debug("Removed given srcset");
-        return getSrcSet(url);
+    if (props.srcset && props.image?.includes('builder.io/api/v1/image')) {
+      if (!props.srcset.includes(props.image.split('?')[0])) {
+        console.debug('Removed given srcset')
+        return getSrcSet(url)
       }
     } else if (props.image && !props.srcset) {
-      return getSrcSet(url);
+      return getSrcSet(url)
     }
-    return getSrcSet(url);
+    return getSrcSet(url)
   }
 
   function webpSrcSet() {
     if (srcSetToUse?.()?.match(/builder\.io/) && !props.noWebp) {
-      return srcSetToUse().replace(/\?/g, "?format=webp&");
+      return srcSetToUse().replace(/\?/g, '?format=webp&')
     } else {
-      return "";
+      return ''
     }
   }
 
   function aspectRatioCss() {
     const aspectRatioStyles = {
-      position: "absolute",
-      height: "100%",
-      width: "100%",
-      left: "0px",
-      top: "0px",
-    } as const;
-    const out = props.aspectRatio ? aspectRatioStyles : undefined;
-    return out;
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      left: '0px',
+      top: '0px',
+    } as const
+    const out = props.aspectRatio ? aspectRatioStyles : undefined
+    return out
   }
 
   return (
@@ -79,16 +79,16 @@ function Image(props: ImageProps) {
           <img
             loading="lazy"
             alt={props.altText}
-            role={props.altText ? "presentation" : undefined}
+            role={props.altText ? 'presentation' : undefined}
             style={{
-              objectPosition: props.backgroundPosition || "center",
-              objectFit: props.backgroundSize || "cover",
+              objectPosition: props.backgroundPosition || 'center',
+              objectFit: props.backgroundSize || 'cover',
               ...aspectRatioCss(),
             }}
             className={
-              "builder-image" +
-              (props.className ? " " + props.className : "") +
-              " img-3c135cd4"
+              'builder-image' +
+              (props.className ? ' ' + props.className : '') +
+              ' img-3c135cd4'
             }
             src={props.image}
             srcSet={srcSetToUse()}
@@ -102,7 +102,7 @@ function Image(props: ImageProps) {
             <div
               className="builder-image-sizer div-3c135cd4"
               style={{
-                paddingTop: props.aspectRatio! * 100 + "%",
+                paddingTop: props.aspectRatio! * 100 + '%',
               }}
             />
           </>
@@ -137,7 +137,7 @@ function Image(props: ImageProps) {
   height: 100%;
 }`}</style>
     </>
-  );
+  )
 }
 
-export default Image;
+export default Image

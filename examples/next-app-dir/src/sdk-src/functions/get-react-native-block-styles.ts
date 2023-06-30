@@ -1,19 +1,19 @@
-import type { BuilderContextInterface } from '../context/types.js';
-import type { BuilderBlock } from '../types/builder-block.js';
-import { sanitizeReactNativeBlockStyles } from './sanitize-react-native-block-styles.js';
+import type { BuilderContextInterface } from '../context/types.js'
+import type { BuilderBlock } from '../types/builder-block.js'
+import { sanitizeReactNativeBlockStyles } from './sanitize-react-native-block-styles.js'
 
 export function getReactNativeBlockStyles({
   block,
   context,
   blockStyles,
 }: {
-  block: BuilderBlock;
-  context: BuilderContextInterface;
-  blockStyles: any;
+  block: BuilderBlock
+  context: BuilderContextInterface
+  blockStyles: any
 }): CSSStyleDeclaration | Record<string, string | undefined> {
-  const responsiveStyles = block.responsiveStyles;
+  const responsiveStyles = block.responsiveStyles
   if (!responsiveStyles) {
-    return {};
+    return {}
   }
 
   const styles = {
@@ -23,11 +23,11 @@ export function getReactNativeBlockStyles({
     ...(responsiveStyles.medium || {}),
     ...(responsiveStyles.small || {}),
     ...blockStyles,
-  } as Record<string, string | number>;
+  } as Record<string, string | number>
 
   const newStyles = sanitizeReactNativeBlockStyles(
     styles
-  ) as any as CSSStyleDeclaration;
+  ) as any as CSSStyleDeclaration
 
-  return newStyles;
+  return newStyles
 }

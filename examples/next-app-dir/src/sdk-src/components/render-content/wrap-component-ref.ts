@@ -3,4 +3,4 @@
  *
  * See overrides/* for examples.
  */
-export const wrapComponentRef = (component: any) => component;
+export const wrapComponentRef = (component: any) => component

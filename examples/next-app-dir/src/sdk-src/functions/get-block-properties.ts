@@ -1,7 +1,7 @@
-import { TARGET } from '../constants/target.js';
-import { convertStyleMapToCSSArray } from '../helpers/css.js';
-import type { BuilderBlock } from '../types/builder-block.js';
-import { transformBlockProperties } from './transform-block-properties.js';
+import { TARGET } from '../constants/target.js'
+import { convertStyleMapToCSSArray } from '../helpers/css.js'
+import type { BuilderBlock } from '../types/builder-block.js'
+import { transformBlockProperties } from './transform-block-properties.js'
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   // currently we are only spreading the `href` property
@@ -33,8 +33,8 @@ const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   //   ...remainingBlockProperties
   // } = block;
 
-  return { href: (block as any).href };
-};
+  return { href: (block as any).href }
+}
 
 export function getBlockProperties(block: BuilderBlock) {
   const properties = {
@@ -45,9 +45,9 @@ export function getBlockProperties(block: BuilderBlock) {
     class: [block.id, 'builder-block', block.class, block.properties?.class]
       .filter(Boolean)
       .join(' '),
-  };
+  }
 
-  return transformBlockProperties(properties);
+  return transformBlockProperties(properties)
 }
 /**
  * Svelte does not support style attribute as an object so we need to flatten it.
@@ -58,7 +58,7 @@ function getStyleAttribute(
   style: Partial<CSSStyleDeclaration> | undefined
 ): string | Partial<CSSStyleDeclaration> | undefined {
   if (!style) {
-    return undefined;
+    return undefined
   }
 
   switch (TARGET) {
@@ -66,10 +66,10 @@ function getStyleAttribute(
     case 'vue2':
     case 'vue3':
     case 'solid':
-      return convertStyleMapToCSSArray(style).join(' ');
+      return convertStyleMapToCSSArray(style).join(' ')
     case 'qwik':
     case 'reactNative':
     case 'react':
-      return style;
+      return style
   }
 }

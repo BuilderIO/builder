@@ -1,24 +1,24 @@
-'use client';
-import * as React from "react";
+'use client'
+import * as React from 'react'
 
 export interface FormInputProps {
-  type?: string;
-  attributes?: any;
-  name?: string;
-  value?: string;
-  placeholder?: string;
-  defaultValue?: string;
-  required?: boolean;
+  type?: string
+  attributes?: any
+  name?: string
+  value?: string
+  placeholder?: string
+  defaultValue?: string
+  required?: boolean
 }
 
-import { isEditing } from "../../functions/is-editing.js";
+import { isEditing } from '../../functions/is-editing.js'
 
 function FormInputComponent(props: FormInputProps) {
   return (
     <input
       {...props.attributes}
       key={
-        isEditing() && props.defaultValue ? props.defaultValue : "default-key"
+        isEditing() && props.defaultValue ? props.defaultValue : 'default-key'
       }
       placeholder={props.placeholder}
       type={props.type}
@@ -27,7 +27,7 @@ function FormInputComponent(props: FormInputProps) {
       defaultValue={props.defaultValue}
       required={props.required}
     />
-  );
+  )
 }
 
-export default FormInputComponent;
+export default FormInputComponent

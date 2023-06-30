@@ -1,4 +1,4 @@
-import type { BuilderBlock } from '../types/builder-block.js';
+import type { BuilderBlock } from '../types/builder-block.js'
 
 export function getBlockComponentOptions(block: BuilderBlock) {
   return {
@@ -8,5 +8,5 @@ export function getBlockComponentOptions(block: BuilderBlock) {
      * Our built-in components frequently make use of the block, so we provide all of it under `builderBlock`
      */
     builderBlock: block,
-  };
+  }
 }
