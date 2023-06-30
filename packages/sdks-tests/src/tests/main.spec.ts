@@ -45,7 +45,7 @@ test.describe(targetContext.name, () => {
         const navigate = page.goto('/');
         const trackingRequestPromise = page.waitForRequest(
           request =>
-            request.url().includes('builder.io/api/v1/track') && request.method() === 'POST'
+            request.url().includes('cdn.builder.io/api/v1/track') && request.method() === 'POST'
         );
 
         await navigate;
@@ -89,7 +89,7 @@ test.describe(targetContext.name, () => {
         await page.goto('/', { waitUntil: 'networkidle' });
         const trackingRequestPromise = page.waitForRequest(
           request =>
-            request.url().includes('builder.io/api/v1/track') &&
+            request.url().includes('cdn.builder.io/api/v1/track') &&
             request.method() === 'POST' &&
             request.postDataJSON().events[0].type === 'click'
         );
