@@ -29,14 +29,16 @@ export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '')
   const content = await getBuilderContent(urlPath)
 
-  if (!content.page) {
-    return (
-      <>
-        <h1>404</h1>
-        <p>Make sure you have your content published at builder.io.</p>
-      </>
-    )
-  }
+  console.log('rerendering page')
+  // console.log('content', content, isPreviewing())
+  // if (!content.page && !isPreviewing()) {
+  //   return (
+  //     <>
+  //       <h1>404</h1>
+  //       <p>Make sure you have your content published at builder.io.</p>
+  //     </>
+  //   )
+  // }
   return <BuilderPage builderContent={content.page} />
 }
 
