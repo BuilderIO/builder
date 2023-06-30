@@ -1,3 +1,7 @@
+### 0.4.3
+
+- Fix: SSR A/B test environment check (`isHydrationTarget`) now accurately checks current environment.
+
 ### 0.4.2
 
 - Feature: Added support for mutating Builder's `state` in custom element events and custom user code.

@@ -1,3 +1,8 @@
+### 0.4.3
+
+- Fix: SSR A/B test environment check (`isHydrationTarget`) now accurately checks current environment.
+- Fix: Stop using `defineAsyncComponent` to import SDK components (except those absolutely necessary to avoid circular dependencies, `RenderComponent` and `RenderRepeatedBlock`). This fixes an issue with A/B test inline styles not updating properly.
+
 ### 0.4.2
 
 - No external changes.
