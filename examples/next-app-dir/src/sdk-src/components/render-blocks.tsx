@@ -15,12 +15,16 @@ import BlockStyles from './render-block/block-styles'
 import RenderBlock from './render-block/render-block'
 
 function RenderBlocks(props: RenderBlockProps) {
+  const builderContext = useContext(BuilderContext)
+
+  const blocks = props.blocks || builderContext.content?.data?.blocks
+
   function className() {
-    return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '')
+    return 'builder-blocks' + (!blocks?.length ? ' no-blocks' : '')
   }
 
   function onClick() {
-    if (isEditing() && !props.blocks?.length) {
+    if (isEditing() && !blocks?.length) {
       window.parent?.postMessage(
         {
           type: 'builder.clickEmptyBlocks',
@@ -35,7 +39,7 @@ function RenderBlocks(props: RenderBlockProps) {
   }
 
   function onMouseEnter() {
-    if (isEditing() && !props.blocks?.length) {
+    if (isEditing() && !blocks?.length) {
       window.parent?.postMessage(
         {
           type: 'builder.hoverEmptyBlocks',
@@ -49,8 +53,6 @@ function RenderBlocks(props: RenderBlockProps) {
     }
   }
 
-  const builderContext = useContext(BuilderContext)
-
   return (
     <>
       <div
@@ -62,9 +64,9 @@ function RenderBlocks(props: RenderBlockProps) {
         onMouseEnter={(event) => onMouseEnter()}
         onKeyPress={(event) => onClick()}
       >
-        {props.blocks ? (
+        {blocks ? (
           <>
-            {props.blocks?.map((block) => (
+            {blocks?.map((block) => (
               <RenderBlock
                 key={'render-block-' + block.id}
                 block={block}
@@ -74,9 +76,9 @@ function RenderBlocks(props: RenderBlockProps) {
           </>
         ) : null}
 
-        {props.blocks ? (
+        {blocks ? (
           <>
-            {props.blocks?.map((block) => (
+            {blocks?.map((block) => (
               <BlockStyles
                 key={'block-style-' + block.id}
                 block={block}

@@ -1,6 +1,7 @@
 import { createContext } from 'react'
+import { BuilderContextInterface } from './types'
 
-export default createContext<any>({
+export default createContext<BuilderContextInterface>({
   content: null,
   context: {},
   localState: undefined,

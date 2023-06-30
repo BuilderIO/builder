@@ -4,3 +4,18 @@
 - RenderContentVariants:
   - RSCify: remove all unnecessary `useState()` calls
 
+- RenderContent:
+  - `forceReRenderCount` is unused in React, and can be removed
+  - Extract a `EnableEditor` client component:
+    - contains all hooks
+    - creates context
+    - provides context value
+    - renders wrapper `<div>` with `onClick`
+
+
+- RenderBlocks:
+  - read `blocks` from context as default, and override for Columns usecase.
+    `const blocks = props.blocks || builderContext.content?.data?.blocks`
+
+- RenderContentStyles:
+  - read data from context, remove need for props.

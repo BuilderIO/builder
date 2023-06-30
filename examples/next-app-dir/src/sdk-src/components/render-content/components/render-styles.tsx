@@ -1,6 +1,6 @@
 'use client'
 import * as React from 'react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
 interface Props {
   cssCode?: string
@@ -12,16 +12,22 @@ import RenderInlinedStyles from '../../render-inlined-styles'
 import type { CustomFont } from './render-styles.helpers'
 import { getCss } from './render-styles.helpers'
 import { getFontCss } from './render-styles.helpers'
+import builderContext from '@/sdk-src/context/builder.context'
 
-function RenderContentStyles(props: Props) {
+function RenderContentStyles() {
+  const context = useContext(builderContext)
+  const contentId = context.content?.id
+  const cssCode = context.content?.data?.cssCode
+  const customFonts = context.content?.data?.customFonts
+
   const [injectedStyles, setInjectedStyles] = useState(() =>
     `
 ${getCss({
-  cssCode: props.cssCode,
-  contentId: props.contentId,
+  cssCode: cssCode,
+  contentId: contentId,
 })}
 ${getFontCss({
-  customFonts: props.customFonts,
+  customFonts: customFonts,
 })}
 
 .builder-text > p:first-of-type, .builder-text > .builder-paragraph:first-of-type {
