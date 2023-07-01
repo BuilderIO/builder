@@ -593,7 +593,18 @@ export class BuilderBlock extends React.Component<
                         <InnerComponent
                           builderState={this.privateState}
                           builderBlock={block}
-                          {...innerComponentProperties}
+                          {...(Builder.isEditing
+                            ? innerComponentProperties
+                            : innerComponentProperties?.text &&
+                              innerComponentProperties?.text?.['@type'] ===
+                                '@builder.io/core:LocalizedValue'
+                            ? {
+                                ...innerComponentProperties,
+                                text: innerComponentProperties?.text['Default'],
+                              }
+                            : {
+                                ...innerComponentProperties,
+                              })}
                         />
                       )}
                       {(block as any).text || options.text
