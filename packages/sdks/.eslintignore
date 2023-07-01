@@ -1,4 +1,4 @@
-node_modules
+**/node_modules/*
 output/
 jest.config.js
 .eslintrc.js

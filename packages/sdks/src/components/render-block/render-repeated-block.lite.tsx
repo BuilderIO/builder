@@ -1,13 +1,22 @@
-import { setContext } from '@builder.io/mitosis';
+import { useState, setContext } from '@builder.io/mitosis';
 import BuilderContext from '../../context/builder.context.lite';
 import type { BuilderContextInterface } from '../../context/types.js';
 import type { BuilderBlock } from '../../types/builder-block';
 import RenderBlock from './render-block.lite';
+import { useMetadata } from '@builder.io/mitosis';
 
 type Props = {
   block: BuilderBlock;
   repeatContext: BuilderContextInterface;
 };
+
+useMetadata({
+  options: {
+    vue3: {
+      asyncComponentImports: true,
+    },
+  },
+});
 
 /**
  * We can't make this a generic `ProvideContext` function because Vue 2 won't support root slots, e.g.
@@ -19,17 +28,9 @@ type Props = {
  * ```
  */
 export default function RenderRepeatedBlock(props: Props) {
-  setContext(BuilderContext, {
-    content: props.repeatContext.content,
-    localState: props.repeatContext.localState,
-    rootState: props.repeatContext.rootState,
-    rootSetState: props.repeatContext.rootSetState,
-    context: props.repeatContext.context,
-    apiKey: props.repeatContext.apiKey,
-    registeredComponents: props.repeatContext.registeredComponents,
-    inheritedStyles: props.repeatContext.inheritedStyles,
-    apiVersion: props.repeatContext.apiVersion,
-  });
+  const [store] = useState(props.repeatContext, { reactive: true });
 
-  return <RenderBlock block={props.block} context={props.repeatContext} />;
+  setContext(BuilderContext, store);
+
+  return <RenderBlock block={props.block} context={store} />;
 }

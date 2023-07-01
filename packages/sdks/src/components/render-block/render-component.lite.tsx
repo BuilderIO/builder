@@ -1,6 +1,7 @@
 import type { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
 import RenderBlock from './render-block.lite';
+import type { Signal } from '@builder.io/mitosis';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../context/types.js';
 
@@ -15,13 +16,18 @@ export interface RenderComponentProps {
   componentRef: any;
   componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
-  context: BuilderContextInterface;
+  context: Signal<BuilderContextInterface>;
 }
 
 useMetadata({
   qwik: {
     component: {
       isLight: true,
+    },
+  },
+  options: {
+    vue3: {
+      asyncComponentImports: true,
     },
   },
 });
@@ -48,7 +54,7 @@ export default function RenderComponent(props: RenderComponentProps) {
             <BlockStyles
               key={'block-style-' + child.id}
               block={child}
-              context={props.context}
+              context={props.context.value}
             />
           )}
         </For>

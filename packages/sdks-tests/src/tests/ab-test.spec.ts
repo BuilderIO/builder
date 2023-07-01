@@ -20,7 +20,7 @@ const createContextWithCookies = async ({
   context: BrowserContext;
 }) => {
   if (isRNSDK) {
-    context.addInitScript(
+    await context.addInitScript(
       items => {
         items.map(({ name, value }) => {
           window.localStorage.setItem(name, value);
