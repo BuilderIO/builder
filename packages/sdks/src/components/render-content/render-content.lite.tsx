@@ -19,7 +19,6 @@ import type {
   Breakpoints,
   BuilderContent,
 } from '../../types/builder-content.js';
-import type { Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
 import builderContext from '../../context/builder.context.lite';
@@ -69,7 +68,6 @@ export default function RenderContent(props: RenderContentProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
-    overrideContent: null as Nullable<BuilderContent>,
     mergeNewContent(newContent: BuilderContent) {
       builderContextSignal.value.content = {
         ...builderContextSignal.value.content,
@@ -96,7 +94,6 @@ export default function RenderContent(props: RenderContentProps) {
         },
       };
     },
-    update: 0,
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
@@ -154,11 +151,11 @@ export default function RenderContent(props: RenderContentProps) {
           context: props.context || {},
           localState: undefined,
           rootState: builderContextSignal.value.rootState,
-          rootSetState: state.contentSetState,
+          rootSetState: builderContextSignal.value.rootSetState,
         });
       }
     },
-    httpReqsData: {} as { [key: string]: any },
+    httpReqsData: {} as { [key: string]: boolean },
 
     clicked: false,
 
@@ -189,7 +186,7 @@ export default function RenderContent(props: RenderContentProps) {
           context: props.context || {},
           localState: undefined,
           rootState: builderContextSignal.value.rootState,
-          rootSetState: state.contentSetState,
+          rootSetState: builderContextSignal.value.rootSetState,
         })
       );
     },
@@ -201,7 +198,8 @@ export default function RenderContent(props: RenderContentProps) {
             ...builderContextSignal.value.rootState,
             [key]: json,
           };
-          state.contentSetState(newState);
+          builderContextSignal.value.rootSetState(newState);
+          state.httpReqsData[key] = true
         })
         .catch((err) => {
           console.error('error fetching dynamic data', url, err);

@@ -18,7 +18,7 @@ export type BlockStylesProps = {
 
 export default function BlockStyles(props: BlockStylesProps) {
   const state = useStore({
-    get useBlock(): BuilderBlock {
+    get processedBlock(): BuilderBlock {
       return getProcessedBlock({
         block: props.block,
         localState: props.context.localState,
@@ -31,17 +31,17 @@ export default function BlockStyles(props: BlockStylesProps) {
 
     get canShowBlock() {
       // only render styles for blocks that are visible
-      if (checkIsDefined(state.useBlock.hide)) {
-        return !state.useBlock.hide;
+      if (checkIsDefined(state.processedBlock.hide)) {
+        return !state.processedBlock.hide;
       }
-      if (checkIsDefined(state.useBlock.show)) {
-        return state.useBlock.show;
+      if (checkIsDefined(state.processedBlock.show)) {
+        return state.processedBlock.show;
       }
       return true;
     },
 
     get css(): string {
-      const styles = state.useBlock.responsiveStyles;
+      const styles = state.processedBlock.responsiveStyles;
 
       const content = props.context.content;
       const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(
@@ -52,7 +52,7 @@ export default function BlockStyles(props: BlockStylesProps) {
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
 
-      const className = state.useBlock.id;
+      const className = state.processedBlock.id;
 
       if (!className) {
         return '';

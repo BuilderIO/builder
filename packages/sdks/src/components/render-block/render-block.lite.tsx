@@ -48,7 +48,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         context: props.context.value,
       });
     },
-    get useBlock(): BuilderBlock {
+    get processedBlock(): BuilderBlock {
       return state.repeatItem
         ? props.block
         : getProcessedBlock({
@@ -62,17 +62,17 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
     Tag: props.block.tagName || 'div',
     get canShowBlock() {
-      if ('hide' in state.useBlock) {
-        return !state.useBlock.hide;
+      if ('hide' in state.processedBlock) {
+        return !state.processedBlock.hide;
       }
-      if ('show' in state.useBlock) {
-        return state.useBlock.show;
+      if ('show' in state.processedBlock) {
+        return state.processedBlock.show;
       }
       return true;
     },
     get actions() {
       return getBlockActions({
-        block: state.useBlock,
+        block: state.processedBlock,
         rootState: props.context.value.rootState,
         rootSetState: props.context.value.rootSetState,
         localState: props.context.value.localState,
@@ -80,13 +80,13 @@ export default function RenderBlock(props: RenderBlockProps) {
       });
     },
     get attributes() {
-      const blockProperties = getBlockProperties(state.useBlock);
+      const blockProperties = getBlockProperties(state.processedBlock);
       return {
         ...blockProperties,
         ...(TARGET === 'reactNative'
           ? {
               style: getReactNativeBlockStyles({
-                block: state.useBlock,
+                block: state.processedBlock,
                 context: props.context.value,
                 blockStyles: blockProperties.style,
               }),
@@ -106,16 +106,16 @@ export default function RenderBlock(props: RenderBlockProps) {
         !state.component?.component && !state.repeatItem;
 
       return shouldRenderChildrenOutsideRef
-        ? state.useBlock.children ?? []
+        ? state.processedBlock.children ?? []
         : [];
     },
 
     get renderComponentProps(): RenderComponentProps {
       return {
-        blockChildren: state.useBlock.children ?? [],
+        blockChildren: state.processedBlock.children ?? [],
         componentRef: state.component?.component,
         componentOptions: {
-          ...getBlockComponentOptions(state.useBlock),
+          ...getBlockComponentOptions(state.processedBlock),
           /**
            * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
            * they are provided to the component itself directly.
@@ -142,7 +142,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         registeredComponents: props.context.value.registeredComponents,
         inheritedStyles: extractTextStyles(
           getReactNativeBlockStyles({
-            block: state.useBlock,
+            block: state.processedBlock,
             context: props.context.value,
             blockStyles: state.attributes.style,
           })
