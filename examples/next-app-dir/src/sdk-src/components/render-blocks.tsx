@@ -1,99 +1,53 @@
-'use client'
 import * as React from 'react'
-import { useContext } from 'react'
-
 export type RenderBlockProps = {
-  blocks?: BuilderBlock[]
+  context: BuilderContextInterface
+  blocks: BuilderBlock[] | undefined
   parent?: string
   path?: string
   styleProp?: Record<string, any>
+  components: Dictionary<RegisteredComponent>
 }
-import BuilderContext from '../context/builder.context'
-import { isEditing } from '../functions/is-editing'
 import type { BuilderBlock } from '../types/builder-block'
 import BlockStyles from './render-block/block-styles'
 import RenderBlock from './render-block/render-block'
+import { BuilderContextInterface, RegisteredComponent } from '../context/types'
+import { Dictionary } from '../types/typescript'
+import RenderBlocksWrapper from './render-blocks/render-blocks-wrapper'
 
 function RenderBlocks(props: RenderBlockProps) {
-  const builderContext = useContext(BuilderContext)
-
-  const blocks = props.blocks || builderContext.content?.data?.blocks
-
-  function className() {
-    return 'builder-blocks' + (!blocks?.length ? ' no-blocks' : '')
-  }
-
-  function onClick() {
-    if (isEditing() && !blocks?.length) {
-      window.parent?.postMessage(
-        {
-          type: 'builder.clickEmptyBlocks',
-          data: {
-            parentElementId: props.parent,
-            dataPath: props.path,
-          },
-        },
-        '*'
-      )
-    }
-  }
-
-  function onMouseEnter() {
-    if (isEditing() && !blocks?.length) {
-      window.parent?.postMessage(
-        {
-          type: 'builder.hoverEmptyBlocks',
-          data: {
-            parentElementId: props.parent,
-            dataPath: props.path,
-          },
-        },
-        '*'
-      )
-    }
-  }
-
   return (
     <>
-      <div
-        className={className() + ' div-6dd9939e'}
-        builder-path={props.path}
-        builder-parent-id={props.parent}
-        style={props.styleProp}
-        onClick={(event) => onClick()}
-        onMouseEnter={(event) => onMouseEnter()}
-        onKeyPress={(event) => onClick()}
+      <RenderBlocksWrapper
+        blocks={props.blocks}
+        parent={props.parent}
+        path={props.path}
+        styleProp={props.styleProp}
       >
-        {blocks ? (
+        {props.blocks ? (
           <>
-            {blocks?.map((block) => (
+            {props.blocks?.map((block) => (
               <RenderBlock
                 key={'render-block-' + block.id}
                 block={block}
-                context={builderContext}
+                components={props.components}
+                context={props.context}
               />
             ))}
           </>
         ) : null}
 
-        {blocks ? (
+        {props.blocks ? (
           <>
-            {blocks?.map((block) => (
+            {props.blocks?.map((block) => (
               <BlockStyles
                 key={'block-style-' + block.id}
                 block={block}
-                context={builderContext}
+                context={props.context}
               />
             ))}
           </>
         ) : null}
-      </div>
-
-      <style>{`.div-6dd9939e {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}`}</style>
+      </RenderBlocksWrapper>
     </>
   )
 }

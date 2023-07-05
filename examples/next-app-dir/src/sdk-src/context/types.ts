@@ -7,7 +7,7 @@ export type RegisteredComponent = ComponentInfo & {
   component: any
 }
 
-export type RegisteredComponents = Dictionary<RegisteredComponent>
+export type RegisteredComponentInfos = Dictionary<ComponentInfo>
 
 export type BuilderRenderState = Record<string, unknown>
 
@@ -35,7 +35,7 @@ export interface BuilderContextInterface {
   localState: BuilderRenderState | undefined
   apiKey: string | null
   apiVersion: ApiVersion | undefined
-  registeredComponents: RegisteredComponents
+  registeredComponents: RegisteredComponentInfos
   // Used to recursively store all CSS coming from a parent that would apply to a Text block
   inheritedStyles: Record<string, unknown>
 }

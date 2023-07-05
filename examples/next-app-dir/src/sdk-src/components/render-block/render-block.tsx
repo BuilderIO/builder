@@ -1,12 +1,14 @@
-'use client'
 import * as React from 'react'
-import { useState } from 'react'
 
 export type RenderBlockProps = {
   block: BuilderBlock
   context: BuilderContextInterface
+  components: Dictionary<RegisteredComponent>
 }
-import type { BuilderContextInterface } from '../../context/types'
+import type {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '../../context/types'
 import { getBlockActions } from '../../functions/get-block-actions'
 import { getBlockComponentOptions } from '../../functions/get-block-component-options'
 import { getBlockProperties } from '../../functions/get-block-properties'
@@ -18,20 +20,20 @@ import {
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './render-block.helpers'
-import type { RenderComponentProps } from './render-component'
 import RenderRepeatedBlock from './render-repeated-block'
 import { TARGET } from '../../constants/target'
-import { extractTextStyles } from '../../functions/extract-text-styles'
 import RenderComponent from './render-component'
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles'
+import { Dictionary } from '@/sdk-src/types/typescript'
 
 function RenderBlock(props: RenderBlockProps) {
-  const [component, setComponent] = useState(() =>
-    getComponent({
-      block: props.block,
-      context: props.context,
-    })
-  )
+  const component = getComponent({
+    block: props.block,
+    context: props.context,
+    components: props.components,
+  })
+
+  console.log('RenderBlock', component?.component.toString())
 
   function repeatItem() {
     return getRepeatItemData({
@@ -40,7 +42,7 @@ function RenderBlock(props: RenderBlockProps) {
     })
   }
 
-  function useBlock() {
+  function getUseBlock() {
     return repeatItem()
       ? props.block
       : getProcessedBlock({
@@ -53,21 +55,21 @@ function RenderBlock(props: RenderBlockProps) {
         })
   }
 
-  const [Tag, setTag] = useState(() => props.block.tagName || 'div')
+  const Tag = props.block.tagName || 'div'
 
   function canShowBlock() {
-    if ('hide' in useBlock()) {
-      return !useBlock().hide
+    if ('hide' in getUseBlock()) {
+      return !getUseBlock().hide
     }
-    if ('show' in useBlock()) {
-      return useBlock().show
+    if ('show' in getUseBlock()) {
+      return getUseBlock().show
     }
     return true
   }
 
   function actions() {
     return getBlockActions({
-      block: useBlock(),
+      block: getUseBlock(),
       rootState: props.context.rootState,
       rootSetState: props.context.rootSetState,
       localState: props.context.localState,
@@ -76,13 +78,13 @@ function RenderBlock(props: RenderBlockProps) {
   }
 
   function attributes() {
-    const blockProperties = getBlockProperties(useBlock())
+    const blockProperties = getBlockProperties(getUseBlock())
     return {
       ...blockProperties,
       ...(TARGET === 'reactNative'
         ? {
             style: getReactNativeBlockStyles({
-              block: useBlock(),
+              block: getUseBlock(),
               context: props.context,
               blockStyles: blockProperties.style,
             }),
@@ -100,15 +102,15 @@ function RenderBlock(props: RenderBlockProps) {
      */
     const shouldRenderChildrenOutsideRef =
       !component?.component && !repeatItem()
-    return shouldRenderChildrenOutsideRef ? useBlock().children ?? [] : []
+    return shouldRenderChildrenOutsideRef ? getUseBlock().children ?? [] : []
   }
 
   function renderComponentProps() {
     return {
-      blockChildren: useBlock().children ?? [],
+      blockChildren: getUseBlock().children ?? [],
       componentRef: component?.component,
       componentOptions: {
-        ...getBlockComponentOptions(useBlock()),
+        ...getBlockComponentOptions(getUseBlock()),
         /**
          * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
          * they are provided to the component itself directly.
@@ -123,10 +125,11 @@ function RenderBlock(props: RenderBlockProps) {
             }),
       },
       context: childrenContext,
+      components: props.components,
     }
   }
 
-  const [childrenContext, setChildrenContext] = useState(() => props.context)
+  const childrenContext = props.context
 
   return (
     <>
@@ -146,6 +149,7 @@ function RenderBlock(props: RenderBlockProps) {
                       key={index}
                       repeatContext={data.context}
                       block={data.block}
+                      components={props.components}
                     />
                   ))}
                 </>
@@ -160,6 +164,7 @@ function RenderBlock(props: RenderBlockProps) {
                         key={'render-block-' + child.id}
                         block={child}
                         context={childrenContext}
+                        components={props.components}
                       />
                     ))}
 

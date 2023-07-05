@@ -2,6 +2,7 @@ import { RenderContent } from '../../sdk-src'
 import { API_KEY } from '../../builderConfig'
 import { componentInfo } from '@/components/MyTextBox/component-info'
 import MyTextBox from '@/components/MyTextBox/MyTextBox'
+import CatFacts from '@/components/MyTextBox/CatFacts'
 
 interface BuilderPageProps {
   builderContent: any
@@ -17,6 +18,10 @@ export default function BuilderPage({ builderContent }: BuilderPageProps) {
         {
           ...componentInfo,
           component: MyTextBox,
+        },
+        {
+          name: 'CatFacts',
+          component: CatFacts,
         },
       ]}
     />

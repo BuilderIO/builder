@@ -1,19 +1,11 @@
 'use client'
-import {
-  BuilderContextInterface,
-  BuilderRenderState,
-  RegisteredComponent,
-  RegisteredComponents,
-} from '@/sdk-src/context/types'
+import { BuilderRenderState } from '@/sdk-src/context/types'
 import { evaluate } from '@/sdk-src/functions/evaluate'
 import { getContent } from '@/sdk-src/functions/get-content'
 import { isBrowser } from '@/sdk-src/functions/is-browser'
 import { isEditing } from '@/sdk-src/functions/is-editing'
 import { isPreviewing } from '@/sdk-src/functions/is-previewing'
-import {
-  components,
-  createRegisterComponentMessage,
-} from '@/sdk-src/functions/register-component'
+import { createRegisterComponentMessage } from '@/sdk-src/functions/register-component'
 import { _track } from '@/sdk-src/functions/track'
 import {
   registerInsertMenu,
@@ -31,13 +23,18 @@ import {
   getContextStateInitialValue,
 } from './render-content.helpers'
 import BuilderContext from '@/sdk-src/context/builder.context'
-import { getDefaultRegisteredComponents } from '@/sdk-src/constants/builder-registered-components'
 import { getInteractionPropertiesForEvent } from '@/sdk-src/functions/track/interaction'
 import { TARGET } from '@/sdk-src/constants/target'
 import { checkIsDefined } from '@/sdk-src/helpers/nullable'
+import { ComponentInfo } from '@/sdk-src/types/components'
+import { Dictionary } from '@/sdk-src/types/typescript'
+
+type BuilderEditorProps = Omit<RenderContentProps, 'customComponents'> & {
+  customComponents: Dictionary<ComponentInfo>
+}
 
 export default function BuilderEditor(
-  props: PropsWithChildren<RenderContentProps>
+  props: PropsWithChildren<BuilderEditorProps>
 ) {
   const elementRef = useRef<HTMLDivElement>(null)
   const canTrackToUse = checkIsDefined(props.canTrack) ? props.canTrack : true
@@ -66,22 +63,7 @@ export default function BuilderEditor(
     context: props.context || {},
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
-    registeredComponents: [
-      ...getDefaultRegisteredComponents(),
-      // While this `components` object is deprecated, we must maintain support for it.
-      // Since users are able to override our default components, we need to make sure that we do not break such
-      // existing usage.
-      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-      // which is the new standard way of providing custom components, and must therefore take precedence.
-      ...components,
-      ...(props.customComponents || []),
-    ].reduce(
-      (acc, { component, ...curr }) => ({
-        ...acc,
-        [curr.name]: { component, ...curr },
-      }),
-      {} as RegisteredComponents
-    ),
+    registeredComponents: props.customComponents,
     inheritedStyles: {},
   }))
 
@@ -262,12 +244,12 @@ export default function BuilderEditor(
               }
             : {}),
         })
-        Object.values<RegisteredComponent>(
-          builderContextSignal.registeredComponents
-        ).forEach((registeredComponent) => {
-          const message = createRegisterComponentMessage(registeredComponent)
-          window.parent?.postMessage(message, '*')
-        })
+        Object.values(builderContextSignal.registeredComponents).forEach(
+          (registeredComponent) => {
+            const message = createRegisterComponentMessage(registeredComponent)
+            window.parent?.postMessage(message, '*')
+          }
+        )
         window.addEventListener('message', processMessage)
         window.addEventListener(
           'builder:component:stateChangeListenerActivated',

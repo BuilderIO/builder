@@ -1,23 +1,29 @@
-'use client'
 import * as React from 'react'
-import { useState, useContext } from 'react'
 
 type Props = {
   block: BuilderBlock
   repeatContext: BuilderContextInterface
+  components: Dictionary<RegisteredComponent>
 }
-import BuilderContext from '../../context/builder.context'
-import type { BuilderContextInterface } from '../../context/types'
+import type {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '../../context/types'
 import type { BuilderBlock } from '../../types/builder-block'
 import RenderBlock from './render-block'
+import { Dictionary } from '@/sdk-src/types/typescript'
 
 function RenderRepeatedBlock(props: Props) {
-  const [store, setStore] = useState(() => props.repeatContext)
-
   return (
-    <BuilderContext.Provider value={store}>
-      <RenderBlock block={props.block} context={store} />
-    </BuilderContext.Provider>
+    // TO-DO: how do we create a new context for each repeated block?
+    // do we just rely on the prop instead?
+    // <BuilderContext.Provider value={props.repeatContext}>
+    <RenderBlock
+      block={props.block}
+      context={props.repeatContext}
+      components={props.components}
+    />
+    // </BuilderContext.Provider>
   )
 }
 

@@ -18,7 +18,7 @@ import type { BuilderBlock } from '../../types/builder-block'
 import RenderInlinedStyles from '../render-inlined-styles'
 
 function BlockStyles(props: BlockStylesProps) {
-  function useBlock() {
+  function blockToUse() {
     return getProcessedBlock({
       block: props.block,
       localState: props.context.localState,
@@ -31,17 +31,17 @@ function BlockStyles(props: BlockStylesProps) {
 
   function canShowBlock() {
     // only render styles for blocks that are visible
-    if (checkIsDefined(useBlock().hide)) {
-      return !useBlock().hide
+    if (checkIsDefined(blockToUse().hide)) {
+      return !blockToUse().hide
     }
-    if (checkIsDefined(useBlock().show)) {
-      return useBlock().show
+    if (checkIsDefined(blockToUse().show)) {
+      return blockToUse().show
     }
     return true
   }
 
   function css() {
-    const styles = useBlock().responsiveStyles
+    const styles = blockToUse().responsiveStyles
     const content = props.context.content
     const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(
       content?.meta?.breakpoints || {}
@@ -49,7 +49,7 @@ function BlockStyles(props: BlockStylesProps) {
     const largeStyles = styles?.large
     const mediumStyles = styles?.medium
     const smallStyles = styles?.small
-    const className = useBlock().id
+    const className = blockToUse().id
     if (!className) {
       return ''
     }

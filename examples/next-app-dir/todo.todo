@@ -1,5 +1,6 @@
 - remove all `.js` extensions from `import` statements: https://github.com/vercel/next.js/discussions/32237
 - fix `isPreviewing()` to receive URL as parameter, so that we can check preview mode on the server side.
+- `useBlock` -> `getUseBlock` (hook warning) in multiple components
 
 - RenderContentVariants:
   - RSCify: remove all unnecessary `useState()` calls
@@ -12,10 +13,11 @@
     - provides context value
     - renders wrapper `<div>` with `onClick`
 
-
 - RenderBlocks:
-  - read `blocks` from context as default, and override for Columns usecase.
-    `const blocks = props.blocks || builderContext.content?.data?.blocks`
 
 - RenderContentStyles:
   - read data from context, remove need for props.
+- BlockStyles:
+  - read data from context, remove need for props.
+
+- RenderBlock:

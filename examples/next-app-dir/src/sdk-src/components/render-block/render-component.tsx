@@ -1,4 +1,3 @@
-'use client'
 import * as React from 'react'
 
 type ComponentOptions = {
@@ -12,12 +11,17 @@ export interface RenderComponentProps {
   componentOptions: ComponentOptions
   blockChildren: BuilderBlock[]
   context: BuilderContextInterface
+  components: Dictionary<RegisteredComponent>
 }
 
 import type { BuilderBlock } from '../../types/builder-block'
 import BlockStyles from './block-styles'
 import RenderBlock from './render-block'
-import type { BuilderContextInterface } from '../../context/types'
+import type {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '../../context/types'
+import { Dictionary } from '@/sdk-src/types/typescript'
 
 function RenderComponent(props: RenderComponentProps) {
   return (
@@ -30,6 +34,7 @@ function RenderComponent(props: RenderComponentProps) {
                 key={'render-block-' + child.id}
                 block={child}
                 context={props.context}
+                components={props.components}
               />
             ))}
 
