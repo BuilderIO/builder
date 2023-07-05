@@ -1,23 +1,18 @@
+General:
 - remove all `.js` extensions from `import` statements: https://github.com/vercel/next.js/discussions/32237
 - fix `isPreviewing()` to receive URL as parameter, so that we can check preview mode on the server side.
 - `useBlock` -> `getUseBlock` (hook warning) in multiple components
+- RSCify: remove all unnecessary `useState()` calls (when `setX` is not used)
+- drill context all the way down as a prop, stop setting it early on.
 
-- RenderContentVariants:
-  - RSCify: remove all unnecessary `useState()` calls
+BuilderContext:
+  - TO-DO: we still need to set it...but that's impossible for RSCs.
 
-- RenderContent:
+RenderContent:
   - `forceReRenderCount` is unused in React, and can be removed
   - Extract a `EnableEditor` client component:
     - contains all hooks
-    - creates context
-    - provides context value
     - renders wrapper `<div>` with `onClick`
 
-- RenderBlocks:
-
-- RenderContentStyles:
-  - read data from context, remove need for props.
-- BlockStyles:
-  - read data from context, remove need for props.
-
-- RenderBlock:
+RenderBock:
+  - Extract `RenderBlockWrapper` that renders a `<div>` with `onClick` and `onMouseOver` handlers.
