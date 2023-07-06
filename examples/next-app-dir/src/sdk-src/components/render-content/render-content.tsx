@@ -9,7 +9,10 @@ import EnableBuilderEditor from './builder-editor'
 import { ComponentInfo } from '@/sdk-src/types/components'
 import { getDefaultRegisteredComponents } from '@/sdk-src/constants/builder-registered-components'
 import { components } from '@/sdk-src/functions/register-component'
-import { RegisteredComponent } from '@/sdk-src/context/types'
+import {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '@/sdk-src/context/types'
 import { Dictionary } from '@/sdk-src/types/typescript'
 import {
   getContentInitialValue,
@@ -55,7 +58,7 @@ function RenderContent(props: RenderContentProps) {
     {}
   )
 
-  const builderContextSignal = {
+  const builderContextSignal: BuilderContextInterface = {
     content: getContentInitialValue({
       content: props.content,
       data: props.data,
@@ -67,11 +70,11 @@ function RenderContent(props: RenderContentProps) {
       locale: props.locale,
     }),
     // TO-DO: handle this.
-    rootSetState: null,
+    rootSetState: undefined,
     context: props.context || {},
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
-    registeredComponents: customComponentsInfo,
+    registeredComponentsInfo: customComponentsInfo,
     inheritedStyles: {},
   }
 
@@ -85,7 +88,7 @@ function RenderContent(props: RenderContentProps) {
 
       {TARGET !== 'reactNative' ? (
         <>
-          <RenderContentStyles />
+          <RenderContentStyles context={builderContextSignal} />
         </>
       ) : null}
 

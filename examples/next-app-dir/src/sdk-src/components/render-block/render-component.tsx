@@ -5,6 +5,8 @@ type ComponentOptions = {
   attributes?: {
     [index: string]: any
   }
+  builderBlock: BuilderBlock
+  builderContext: BuilderContextInterface
 }
 export interface RenderComponentProps {
   componentRef: any

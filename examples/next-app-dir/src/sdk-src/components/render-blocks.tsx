@@ -15,8 +15,15 @@ import { Dictionary } from '../types/typescript'
 import RenderBlocksWrapper from './render-blocks/render-blocks-wrapper'
 
 function RenderBlocks(props: RenderBlockProps) {
+  // const context = React.useContext<BuilderContextInterface>(builderContext)
+
+  // console.log('RENDERBLOCKS', context)
   return (
     <>
+      RENDERBLOCKS:{' '}
+      {JSON.stringify(
+        props.context?.content?.data?.blocks?.[0].component?.options
+      )}
       <RenderBlocksWrapper
         blocks={props.blocks}
         parent={props.parent}

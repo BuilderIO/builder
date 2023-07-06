@@ -46,7 +46,7 @@ export const setupBrowserForEditing = (
           // TODO: compile these in
           // type: process.env.SDK_TYPE,
           // version: process.env.SDK_VERSION,
-          supportsPatchUpdates: false,
+          supportsPatchUpdates: true,
           // Supports builder-model="..." attribute which is needed to
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
@@ -66,16 +66,16 @@ export const setupBrowserForEditing = (
       '*'
     )
 
-    window.addEventListener('message', ({ data }) => {
-      if (!data?.type) {
+    window.addEventListener('message', ({ message }) => {
+      if (!message?.type) {
         return
       }
 
-      switch (data.type) {
+      switch (message.type) {
         case 'builder.evaluate': {
-          const text = data.data.text
-          const args = data.data.arguments || []
-          const id = data.data.id
+          const text = message.data.text
+          const args = message.data.arguments || []
+          const id = message.data.id
           // tslint:disable-next-line:no-function-constructor-with-string-args
           const fn = new Function(text)
           let result: any

@@ -8,7 +8,6 @@ async function CatFacts(props: TextProps) {
   const catFacts = await fetch('https://cat-fact.herokuapp.com/facts').then(
     (x) => x.json()
   )
-  console.log('logging in catfacts')
   return (
     <div>
       Here are some cat facts:

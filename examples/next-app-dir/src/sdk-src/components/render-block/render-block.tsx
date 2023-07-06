@@ -33,8 +33,6 @@ function RenderBlock(props: RenderBlockProps) {
     components: props.components,
   })
 
-  console.log('RenderBlock', component?.component.toString())
-
   function repeatItem() {
     return getRepeatItemData({
       block: props.block,
@@ -111,6 +109,10 @@ function RenderBlock(props: RenderBlockProps) {
       componentRef: component?.component,
       componentOptions: {
         ...getBlockComponentOptions(getUseBlock()),
+        builderContext: props.context,
+        ...(component?.name === 'Symbol'
+          ? { builderComponents: props.components }
+          : {}),
         /**
          * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
          * they are provided to the component itself directly.

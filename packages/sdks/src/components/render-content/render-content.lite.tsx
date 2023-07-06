@@ -16,7 +16,6 @@ import {
 } from '../../functions/register-component.js';
 import { _track } from '../../functions/track/index.js';
 import type {
-  Breakpoints,
   BuilderContent,
 } from '../../types/builder-content.js';
 import RenderBlocks from '../render-blocks.lite';
@@ -85,15 +84,6 @@ export default function RenderContent(props: RenderContentProps) {
         },
       };
     },
-    setBreakpoints(breakpoints: Breakpoints) {
-      builderContextSignal.value.content = {
-        ...builderContextSignal.value.content,
-        meta: {
-          ...builderContextSignal.value.content?.meta,
-          breakpoints,
-        },
-      };
-    },
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
@@ -113,7 +103,7 @@ export default function RenderContent(props: RenderContentProps) {
               return;
             }
             if (breakpoints) {
-              state.setBreakpoints(breakpoints);
+              state.mergeNewContent({meta: {breakpoints}})
             }
             state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;

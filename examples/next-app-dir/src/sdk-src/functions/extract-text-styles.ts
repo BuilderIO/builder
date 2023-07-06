@@ -28,7 +28,6 @@ const isTextStyle = (key: string) => {
  */
 export const extractTextStyles = (styles: Partial<CSSStyleDeclaration>) => {
   const textStyles: Partial<CSSStyleDeclaration> = {}
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.entries(styles).forEach(([key, value]: [any, any]) => {
     if (isTextStyle(key)) {
       textStyles[key] = value

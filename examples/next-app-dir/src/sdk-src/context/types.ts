@@ -2,6 +2,7 @@ import type { BuilderContent } from '../types/builder-content'
 import type { ComponentInfo } from '../types/components'
 import type { Dictionary, Nullable } from '../types/typescript'
 import type { ApiVersion } from '../types/api-version'
+import { ServerContextJSONValue } from 'react'
 
 export type RegisteredComponent = ComponentInfo & {
   component: any
@@ -26,7 +27,7 @@ export interface BuilderContextInterface {
    * Some frameworks have a `setState` function which needs to be invoked to notify
    * the framework of state change. (other frameworks don't in which case it is `undefined')
    */
-  rootSetState: ((rootState: BuilderRenderState) => void) | undefined
+  rootSetState: undefined
   /**
    * The local state of the current component. This is different from `rootState` in that
    * it can be a child state created by a repeater containing local state.
@@ -35,7 +36,7 @@ export interface BuilderContextInterface {
   localState: BuilderRenderState | undefined
   apiKey: string | null
   apiVersion: ApiVersion | undefined
-  registeredComponents: RegisteredComponentInfos
+  registeredComponentsInfo: RegisteredComponentInfos
   // Used to recursively store all CSS coming from a parent that would apply to a Text block
   inheritedStyles: Record<string, unknown>
 }

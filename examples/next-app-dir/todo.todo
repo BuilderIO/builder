@@ -10,12 +10,22 @@ BuilderContext:
     - option #1: add a `isRSC` boolean prop to custom components, then
       - For Client Components, wrap them in a `BuilderContextProvider` that sets the context, 
       - For RSCS, pass `builderContext` as a prop and make it the user's problem.
+  - Reactivity: how do we work around the fact that we need the context to be reactive?
 
 RenderContent:
   - `forceReRenderCount` is unused in React, and can be removed
+  - replace `setBreakpoints` with `mergeNewContent`
   - Extract a `EnableEditor` client component:
     - contains all hooks
     - renders wrapper `<div>` with `onClick`
 
 RenderBock:
   - Extract `RenderBlockWrapper` that renders a `<div>` with `onClick` and `onMouseOver` handlers.
+
+Symbol:
+  - RSCify Symbol
+    - make sure that changing the `props.symbol` still works, editing, etc.
+
+NEXT UP:
+  - need to find a way to hold reactive context across all custom components (client and RSC) @done
+  - need to react to visual editor changes

@@ -14,6 +14,7 @@ export interface ColumnProps {
   space?: number
   stackColumnsAt?: StackColumnsAt
   reverseColumnsWhenStacked?: boolean
+  context: BuilderContextInterface
 }
 
 import RenderBlocks from '../../components/render-blocks'
@@ -22,8 +23,8 @@ import { getSizesForBreakpoints } from '../../constants/device-sizes'
 import type { SizeName } from '../../constants/device-sizes'
 import RenderInlinedStyles from '../../components/render-inlined-styles'
 import { TARGET } from '../../constants/target'
-import BuilderContext from '../../context/builder.context'
 import type { Dictionary } from '../../types/typescript'
+import { BuilderContextInterface } from '@/sdk-src/context/types'
 
 function Columns(props: ColumnProps) {
   const [gutterSize, setGutterSize] = useState(() =>
@@ -121,7 +122,7 @@ function Columns(props: ColumnProps) {
 
   function getWidthForBreakpointSize(size: SizeName) {
     const breakpointSizes = getSizesForBreakpoints(
-      builderContext.content?.meta?.breakpoints || {}
+      props.context.content?.meta?.breakpoints || {}
     )
     return breakpointSizes[size].max
   }
@@ -154,8 +155,6 @@ function Columns(props: ColumnProps) {
       `
   }
 
-  const builderContext = useContext(BuilderContext)
-
   return (
     <>
       <div
@@ -184,6 +183,7 @@ function Columns(props: ColumnProps) {
               styleProp={{
                 flexGrow: '1',
               }}
+              context={props.context}
             />
           </div>
         ))}
