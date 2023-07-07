@@ -110,7 +110,7 @@ function RenderBlock(props: RenderBlockProps) {
       componentOptions: {
         ...getBlockComponentOptions(getUseBlock()),
         builderContext: props.context,
-        ...(component?.name === 'Symbol'
+        ...(component?.name === 'Symbol' || component?.name === 'Columns'
           ? { builderComponents: props.components }
           : {}),
         /**

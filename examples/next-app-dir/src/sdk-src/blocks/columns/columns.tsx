@@ -1,6 +1,4 @@
-'use client'
 import * as React from 'react'
-import { useState, useContext } from 'react'
 
 type Column = {
   blocks: BuilderBlock[]
@@ -10,11 +8,10 @@ type CSSVal = string | number
 type StackColumnsAt = 'tablet' | 'mobile' | 'never'
 export interface ColumnProps {
   columns?: Column[]
-  builderBlock: BuilderBlock
   space?: number
   stackColumnsAt?: StackColumnsAt
   reverseColumnsWhenStacked?: boolean
-  context: BuilderContextInterface
+  builderComponents: Dictionary<RegisteredComponent>
 }
 
 import RenderBlocks from '../../components/render-blocks'
@@ -24,16 +21,18 @@ import type { SizeName } from '../../constants/device-sizes'
 import RenderInlinedStyles from '../../components/render-inlined-styles'
 import { TARGET } from '../../constants/target'
 import type { Dictionary } from '../../types/typescript'
-import { BuilderContextInterface } from '@/sdk-src/context/types'
+import {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '@/sdk-src/context/types'
+import { PropsWithBuilder } from '@/sdk-src/types/builder-props'
 
-function Columns(props: ColumnProps) {
-  const [gutterSize, setGutterSize] = useState(() =>
-    typeof props.space === 'number' ? props.space || 0 : 20
-  )
+function Columns(props: PropsWithBuilder<ColumnProps>) {
+  const gutterSize = typeof props.space === 'number' ? props.space || 0 : 20
 
-  const [cols, setCols] = useState(() => props.columns || [])
+  const cols = props.columns || []
 
-  const [stackAt, setStackAt] = useState(() => props.stackColumnsAt || 'tablet')
+  const stackAt = props.stackColumnsAt || 'tablet'
 
   function getWidth(index: number) {
     return cols[index]?.width || 100 / cols.length
@@ -64,13 +63,12 @@ function Columns(props: ColumnProps) {
     return stackAt === 'never' ? desktopStyle : stackedStyle
   }
 
-  const [flexDir, setFlexDir] = useState(() =>
+  const flexDir =
     props.stackColumnsAt === 'never'
       ? 'row'
       : props.reverseColumnsWhenStacked
       ? 'column-reverse'
       : 'column'
-  )
 
   function columnsCssVars() {
     if (TARGET === 'reactNative') {
@@ -122,7 +120,7 @@ function Columns(props: ColumnProps) {
 
   function getWidthForBreakpointSize(size: SizeName) {
     const breakpointSizes = getSizesForBreakpoints(
-      props.context.content?.meta?.breakpoints || {}
+      props.builderContext.content?.meta?.breakpoints || {}
     )
     return breakpointSizes[size].max
   }
@@ -183,7 +181,8 @@ function Columns(props: ColumnProps) {
               styleProp={{
                 flexGrow: '1',
               }}
-              context={props.context}
+              context={props.builderContext}
+              components={props.builderComponents}
             />
           </div>
         ))}

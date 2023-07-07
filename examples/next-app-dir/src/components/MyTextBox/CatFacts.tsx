@@ -10,20 +10,26 @@ async function CatFacts(props: TextProps) {
   )
   return (
     <div>
-      Here are some cat facts:
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {catFacts.map((fact) => (
-          <span
-            className="builder-text"
-            style={{
-              outline: 'none',
-            }}
+      {props.text}. Here are some cat facts from an RSC:
+      <ul style={{ display: 'flex', flexDirection: 'column' }}>
+        {catFacts.slice(3).map((fact) => (
+          <li
             key={fact._id}
+            style={{
+              padding: '10px',
+            }}
           >
-            {fact.text}
-          </span>
+            <span
+              className="builder-text"
+              style={{
+                outline: 'none',
+              }}
+            >
+              {fact.text}
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   )
 }

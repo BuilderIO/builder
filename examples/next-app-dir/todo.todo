@@ -26,6 +26,8 @@ Symbol:
   - RSCify Symbol
     - make sure that changing the `props.symbol` still works, editing, etc.
 
-NEXT UP:
-  - need to find a way to hold reactive context across all custom components (client and RSC) @done
-  - need to react to visual editor changes
+
+Cookies:
+  - make sure `path`/`domain` value is set correctly so this works everywhere it needs to.
+  - improve cookie setting/reading logic to be more condensed and failproof.
+  - force reload when all else fails.

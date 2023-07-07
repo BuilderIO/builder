@@ -66,16 +66,16 @@ export const setupBrowserForEditing = (
       '*'
     )
 
-    window.addEventListener('message', ({ message }) => {
-      if (!message?.type) {
+    window.addEventListener('message', ({ data }) => {
+      if (!data?.type) {
         return
       }
 
-      switch (message.type) {
+      switch (data.type) {
         case 'builder.evaluate': {
-          const text = message.data.text
-          const args = message.data.arguments || []
-          const id = message.data.id
+          const text = data.data.text
+          const args = data.data.arguments || []
+          const id = data.data.id
           // tslint:disable-next-line:no-function-constructor-with-string-args
           const fn = new Function(text)
           let result: any

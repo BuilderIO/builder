@@ -37,7 +37,8 @@ type ContentResponse =
 const fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options)
 
-  const res = await fetch(url.href)
+  console.log('url: ', url.href)
+  const res = await fetch(url.href, { cache: 'no-store' })
   const content = await (res.json() as Promise<ContentResponse>)
   return content
 }

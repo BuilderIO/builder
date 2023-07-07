@@ -40,7 +40,6 @@ export default function BuilderEditor(
 
   const [clicked, setClicked] = useState(() => false)
 
-  const setBuilderContextSignal = () => {}
   const builderContextSignal = {
     content: getContentInitialValue({
       content: props.content,
@@ -131,8 +130,11 @@ export default function BuilderEditor(
 
   function mergeNewContent(newContent: BuilderContent) {
     const newContentStr = encodeURIComponent(JSON.stringify(newContent))
-    const newUrl = `${pathname}?${searchParams.toString()}&builder.patch=${newContentStr}`
-    // console.log('updating:', newContentStr)
+    const newParams = new URLSearchParams(searchParams.toString())
+    newParams.set('builder.patch', newContentStr)
+
+    const newUrl = `${pathname}?${newParams.toString()}`
+
     router.replace(newUrl)
   }
 
@@ -167,12 +169,66 @@ export default function BuilderEditor(
         // }
         case 'builder.patchUpdates': {
           const patches = message.data.data
-          const newContentStr = encodeURIComponent(JSON.stringify(patches))
-          const newUrl = `${pathname}?${searchParams.toString()}&builder.patch=${newContentStr}`
-          // console.log('updating:', newContentStr)
-          router.replace(newUrl)
 
-          // TODO
+          for (const contentId of Object.keys(patches)) {
+            const patchesForBlock = patches[contentId]
+
+            // TO-DO: fix scenario where we end up with -Infinity
+            const getLastIndex = () =>
+              Math.max(
+                ...document.cookie
+                  .split(';')
+                  .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                  .map((x) => {
+                    const parsedIndex = parseInt(
+                      x.split('=')[0].split(contentIdKeyPrefix)[1]
+                    )
+                    return isNaN(parsedIndex) ? 0 : parsedIndex
+                  })
+              ) || 0
+
+            const contentIdKeyPrefix = `builder.patch.${contentId}.`
+
+            // get last index of patch for this block
+            const lastIndex = getLastIndex()
+
+            const cookie = {
+              name: `${contentIdKeyPrefix}${lastIndex + 1}`,
+              value: encodeURIComponent(JSON.stringify(patchesForBlock)),
+            }
+
+            // remove hard reset cookie just in case it was set in a prior update.
+            document.cookie = `builder.hardReset=no;max-age=0`
+
+            document.cookie = `${cookie.name}=${cookie.value};max-age=30`
+
+            const newCookieValue = document.cookie
+              .split(';')
+              .find((x) => x.trim().startsWith(cookie.name))
+              ?.split('=')[1]
+
+            if (newCookieValue !== cookie.value) {
+              console.warn('Cookie did not save correctly.')
+              console.log('Clearing all Builder patch cookies...')
+
+              document.cookie
+                .split(';')
+                .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                .forEach((x) => {
+                  document.cookie = `${x.split('=')[0]}=;max-age=0`
+                })
+
+              console.log(
+                'setting hard reset with lastUpdated: ',
+                message.data.lastUpdated
+              )
+              document.cookie = `builder.hardReset=${message.data.lastUpdated};max-age=30`
+            } else {
+              console.log('cookie saved correctly')
+            }
+          }
+
+          router.refresh()
           break
         }
       }
@@ -298,9 +354,6 @@ export default function BuilderEditor(
   }
   return (
     <>
-      {JSON.stringify(
-        builderContextSignal?.content?.data?.blocks?.[0].component?.options
-      )}
       <div
         ref={elementRef}
         onClick={(event) => onClick(event)}
