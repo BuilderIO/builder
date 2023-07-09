@@ -1,28 +1,28 @@
 import * as React from 'react';
+import type { ImageStyle, StyleProp } from 'react-native';
 import { Image as ReactImage, View } from 'react-native';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
-/**
- * @typedef {{
- *   image: string;
- *   backgroundSize?: 'cover' | 'contain';
- *   backgroundPosition?: string;
- *   aspectRatio?: number;
- *   width?: number;
- *   height?: number;
- *   children?: any;
- * }} ImageProps
- */
+type ImageProps = {
+  image: string;
+  backgroundSize?: 'cover' | 'contain';
+  backgroundPosition?: string;
+  aspectRatio?: number;
+  width?: number;
+  height?: number;
+  children?: any;
+  builderBlock: any
+  fitContent?: boolean
+}
 
-// TODO: support children by wrapping in a View
 /**
  * @param {ImageProps} props
  */
-export default function Image(props) {
+export default function Image(props: ImageProps) {
   const shouldRenderUnwrappedChildren =
     props.fitContent && props.builderBlock?.children?.length;
 
-  const imageStyle = props.aspectRatio
+  const imageStyle: StyleProp<ImageStyle> = props.aspectRatio
     ? {
         position: 'absolute',
         top: 0,
@@ -59,7 +59,7 @@ export default function Image(props) {
       {!props.fitContent && props.children && (
         // When `fitContent: false`, we wrap image children ssuch that they stretch across the entire image
         <View
-          css={{
+          style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'stretch',

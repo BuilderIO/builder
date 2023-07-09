@@ -29,6 +29,11 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     // https://github.com/expo/web-examples/issues/73
     // For now, we do not import it elsewhere to avoid crashing Expo servers on web when importing the SDK.
     // { component: Video, ...videoComponentInfo },
+
+    // TO-DO: These components are not yet supported on React Native.
+    // { component: Embed, ...x}
+    // { component: CustomCode, ...x}
+
     { component: Symbol, ...symbolComponentInfo },
     { component: Button, ...buttonComponentInfo },
     { component: Section, ...sectionComponentInfo },

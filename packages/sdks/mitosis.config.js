@@ -363,6 +363,7 @@ module.exports = {
       plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN],
     },
     reactNative: {
+      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
         REACT_NEXT_V13_PLUGIN,
@@ -420,6 +421,21 @@ module.exports = {
                     },
                   },
                 };
+              }
+
+              /**
+               *
+               */
+              if (json.name === 'Button') {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  if (item.bindings.css?.code.includes('unset')) {
+                    delete item.bindings.css;
+                  }
+                });
               }
             },
           },
