@@ -56,12 +56,12 @@ export default function Symbol(props: SymbolProps) {
         !state.contentToUse &&
         props.symbol?.model &&
         // This is a hack, we should not need to check for this, but it is needed for Svelte.
-        builderContext?.apiKey
+        builderContext.value?.apiKey
       ) {
         getContent({
           model: props.symbol.model,
-          apiKey: builderContext.apiKey,
-          apiVersion: builderContext.apiVersion,
+          apiKey: builderContext.value.apiKey,
+          apiVersion: builderContext.value.apiVersion,
           query: {
             id: props.symbol.entry,
           },
@@ -93,13 +93,15 @@ export default function Symbol(props: SymbolProps) {
       dataSet={{ class: state.className }}
     >
       <RenderContent
-        apiVersion={builderContext.apiVersion}
-        apiKey={builderContext.apiKey!}
-        context={builderContext.context}
-        customComponents={Object.values(builderContext.registeredComponents)}
+        apiVersion={builderContext.value.apiVersion}
+        apiKey={builderContext.value.apiKey!}
+        context={builderContext.value.context}
+        customComponents={Object.values(
+          builderContext.value.registeredComponents
+        )}
         data={{
           ...props.symbol?.data,
-          ...builderContext.localState,
+          ...builderContext.value.localState,
           ...state.contentToUse?.data?.state,
         }}
         model={props.symbol?.model}
