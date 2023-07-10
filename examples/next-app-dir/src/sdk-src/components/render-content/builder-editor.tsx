@@ -138,8 +138,53 @@ export default function BuilderEditor(
     router.replace(newUrl)
   }
 
+  const [lastUpdated, setLastUpdated] = useState(0)
+
+  const [shouldSendResetCookie, setShouldSendResetCookie] = useState(false)
+
+  useEffect(() => {
+    if (!props.content) return
+
+    const lastUpdatedAutosave = props.content.meta?.lastUpdatedAutosave
+
+    const hardResetCookie = document.cookie
+      .split(';')
+      .find((x) => x.trim().startsWith('builder.hardReset'))
+    const hardResetCookieValue = hardResetCookie?.split('=')[1]
+
+    if (!hardResetCookieValue) return
+
+    if (
+      lastUpdatedAutosave &&
+      parseInt(hardResetCookieValue) <= lastUpdatedAutosave
+    ) {
+      console.log('got fresh content. Not refreshing')
+      document.cookie = `builder.hardReset=;max-age=0`
+
+      window.parent?.postMessage(
+        {
+          type: 'builder.freshContentFetched',
+          data: {
+            contentId: props.content.id,
+            lastUpdated: lastUpdatedAutosave,
+          },
+        },
+        '*'
+      )
+    } else {
+      console.log(
+        'hard reset cookie is newer than lastUpdatedAutosave, refreshing'
+      )
+      document.cookie = `builder.hardReset=${hardResetCookieValue};max-age=100`
+      router.refresh()
+    }
+  }, [props.content])
+
   function processMessage(event: MessageEvent) {
     const { data: message } = event
+    if (message.type !== 'builder.evaluate') {
+      console.log('received message', { shouldSendResetCookie, message })
+    }
     if (message) {
       switch (message.type) {
         case 'builder.configureSdk': {
@@ -153,20 +198,32 @@ export default function BuilderEditor(
           }
           break
         }
-        // case 'builder.contentUpdate': {
-        //   const messageContent = data.data
-        //   const key =
-        //     messageContent.key ||
-        //     messageContent.alias ||
-        //     messageContent.entry ||
-        //     messageContent.modelName
-        //   const contentData = messageContent.data
-        //   if (key === props.model) {
-        //     mergeNewContent(contentData)
-        //   }
+        case 'builder.hardReset': {
+          const lastUpdatedAutosave = parseInt(message.data.lastUpdatedAutosave)
 
-        //   break
-        // }
+          console.log(
+            'received hard reset with lastUpdated: ',
+            lastUpdatedAutosave
+          )
+
+          const lastUpdatedToUse =
+            !isNaN(lastUpdatedAutosave) && lastUpdatedAutosave > lastUpdated
+              ? lastUpdatedAutosave
+              : lastUpdated
+          setLastUpdated(lastUpdatedToUse)
+
+          console.log('builder.hardReset', { shouldSendResetCookie })
+          if (shouldSendResetCookie) {
+            console.log('refreshing with hard reset cookie')
+            document.cookie = `builder.hardReset=${lastUpdatedToUse};max-age=100`
+            setShouldSendResetCookie(false)
+            router.refresh()
+          } else {
+            console.log('not refreshing.')
+          }
+          break
+        }
+
         case 'builder.patchUpdates': {
           const patches = message.data.data
 
@@ -211,6 +268,11 @@ export default function BuilderEditor(
               console.warn('Cookie did not save correctly.')
               console.log('Clearing all Builder patch cookies...')
 
+              window.parent?.postMessage(
+                { type: 'builder.patchUpdatesFailed', data: message.data },
+                '*'
+              )
+
               document.cookie
                 .split(';')
                 .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
@@ -218,17 +280,35 @@ export default function BuilderEditor(
                   document.cookie = `${x.split('=')[0]}=;max-age=0`
                 })
 
-              console.log(
-                'setting hard reset with lastUpdated: ',
-                message.data.lastUpdated
-              )
-              document.cookie = `builder.hardReset=${message.data.lastUpdated};max-age=30`
+              setShouldSendResetCookie(true)
+              // TO-DO: we want to add a counter here that forces a refetch.
+              // we will also read this counter
+              // const newParams = new URLSearchParams(searchParams.toString())
+              // const oldCounter = parseInt(newParams.get('builder.edit-counter') || '0')
+              // newParams.set('builder.edit-counter', (oldCounter + 1).toString())
+              // const newUrl = `${pathname}?${newParams.toString()}`
+              // router.replace(newUrl)
+
+              // const lastUpdatedAutosave = parseInt(
+              //   message.data.lastUpdatedAutosave
+              // )
+
+              // let lastUpdatedToUse = lastUpdated
+              // if (lastUpdatedAutosave > lastUpdated) {
+              //   setLastUpdated(lastUpdatedAutosave)
+              //   lastUpdatedToUse = lastUpdatedAutosave
+              // }
+
+              // console.log(
+              //   'setting hard reset with lastUpdated: ',
+              //   lastUpdatedAutosave
+              // )
             } else {
               console.log('cookie saved correctly')
+              router.refresh()
             }
           }
 
-          router.refresh()
           break
         }
       }
@@ -282,7 +362,7 @@ export default function BuilderEditor(
             window.parent?.postMessage(message, '*')
           }
         )
-        window.addEventListener('message', processMessage)
+
         window.addEventListener(
           'builder:component:stateChangeListenerActivated',
           emitStateUpdate
@@ -323,9 +403,16 @@ export default function BuilderEditor(
   }, [builderContextSignal.rootState])
 
   useEffect(() => {
+    console.log('creating listener')
+    window.addEventListener('message', processMessage)
+    return () => {
+      window.removeEventListener('message', processMessage)
+    }
+  }, [shouldSendResetCookie])
+
+  useEffect(() => {
     return () => {
       if (isBrowser()) {
-        window.removeEventListener('message', processMessage)
         window.removeEventListener(
           'builder:component:stateChangeListenerActivated',
           emitStateUpdate

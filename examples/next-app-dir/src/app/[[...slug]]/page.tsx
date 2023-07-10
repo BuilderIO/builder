@@ -12,32 +12,29 @@ import { Dictionary } from '@/sdk-src/types/typescript'
 import { cookies } from 'next/headers'
 import { BuilderContent } from '@/sdk-src/types/builder-content'
 
-const deleteCookie = async (name: string) => {
-  'use server'
-  const cookieStore = cookies()
-  cookieStore.delete(name)
-}
-
 const processCookies = (content: BuilderContent) => {
   const cookieStore = cookies()
   const builderPatches = cookieStore
     .getAll()
-    .filter((x) => x.name.startsWith('builder.patch.'))
+    .filter((x) => x.name.startsWith('builder.patch.' + content.id))
     .map((x) => {
+      const newLocal = x.name.split('builder.patch.' + content.id)[1]
+
+      const [blockId, index] = newLocal.split('.')
       return {
-        blockId: x.name.split('builder.patch.')[1],
+        blockId,
+        index: parseInt(index),
         value: x.value,
       }
     })
+    .sort((a, b) => a.index - b.index)
 
   if (!builderPatches.length) return content
 
   // console.log('found cookies, doing things')
   let newContent = content
   for (const patchCookie of builderPatches) {
-    const { blockId, value } = patchCookie
-
-    // console.log({ value })
+    const { value } = patchCookie
     try {
       const blockPatches = JSON.parse(value) as Patch[]
       for (const patch of blockPatches) {
@@ -46,48 +43,24 @@ const processCookies = (content: BuilderContent) => {
     } catch (e) {
       console.log('error parsing patch cookie', { value })
       console.log('ignoring cookie')
-      // deleteCookie(`builder.patch.${blockId}`)
     }
   }
 
   return newContent
 }
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
-
 async function getBuilderContent(
   props: MyPageProps
 ): Promise<BuilderContent | null> {
   const urlPath = '/' + (props.params?.slug?.join('/') || '')
 
+  // props.searchParams['builder.edit-counter']
   const content = await getContent({
     model: 'page',
     apiKey: API_KEY,
     userAttributes: { urlPath },
     options: getBuilderSearchParams(props.searchParams),
   })
-
-  const cookieStore = cookies()
-  const lastUpdated = cookieStore.get('builder.hardReset')?.value
-
-  if (lastUpdated && content?.lastUpdated) {
-    const lastUpdatedNumber = parseInt(lastUpdated)
-    if (!isNaN(lastUpdatedNumber) && lastUpdatedNumber > content.lastUpdated) {
-      console.log('preview data is stale. Refetching...')
-      console.log({
-        lastUpdatedNumber,
-        contentLastUpdated: content.lastUpdated,
-      })
-      await delay(1000)
-      return await getBuilderContent(props)
-    }
-    console.log('preview data is fresh', {
-      lastUpdatedNumber,
-      contentLastUpdated: content.lastUpdated,
-    })
-  } else {
-    console.log('no last updated cookie.')
-  }
 
   return content ? processCookies(content) : content
 }

@@ -22,6 +22,8 @@ export interface BuilderContentVariation {
   id?: string
   meta?: {
     breakpoints?: Nullable<Breakpoints>
+    lastUpdatedAutosave?: number
+    isFresh?: boolean
     [key: string]: any
   }
 }
