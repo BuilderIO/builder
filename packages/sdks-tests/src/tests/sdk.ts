@@ -29,6 +29,7 @@ export type PackageName =
   | 'e2e-qwik'
   | 'e2e-qwik-city'
   | 'e2e-nextjs-react'
+  | 'e2e-nextjs-app-dir-client-react'
   | 'e2e-nextjs-app-dir-react'
   | 'e2e-react'
   | 'e2e-vue2'

@@ -23,7 +23,12 @@ const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
 
     'e2e-qwik-city',
   ],
-  react: ['e2e-nextjs-react', 'e2e-react', 'e2e-nextjs-app-dir-react'],
+  react: [
+    'e2e-nextjs-react',
+    'e2e-react',
+    'e2e-nextjs-app-dir-react',
+    'e2e-nextjs-app-dir-client-react',
+  ],
   vue: ['e2e-vue2', 'e2e-vue3', 'e2e-vue-nuxt3', 'e2e-vue-nuxt2'],
   svelte: ['e2e-svelte', 'e2e-sveltekit'],
   rsc: [],
