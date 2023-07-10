@@ -73,9 +73,12 @@ test.describe('A/B tests', () => {
       }
 
       // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-      if (packageName === 'e2e-old-nextjs') {
-        test.skip();
-      }
+      if (packageName === 'e2e-old-nextjs') test.skip();
+
+      /**
+       * RSCs cannot support SSR A/B testing.
+       */
+      if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
 
       // React Native is slow for this particular test. Increasing timeout helps.
       if (packageName === 'e2e-react-native') {
@@ -112,9 +115,12 @@ test.describe('A/B tests', () => {
       }
 
       // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-      if (packageName === 'e2e-old-nextjs') {
-        test.skip();
-      }
+      if (packageName === 'e2e-old-nextjs') test.skip();
+
+      /**
+       * RSCs cannot support SSR A/B testing.
+       */
+      if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
 
       // React Native is slow for this particular test. Increasing timeout helps.
       if (packageName === 'e2e-react-native') {
