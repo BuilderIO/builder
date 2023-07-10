@@ -13,7 +13,7 @@ const processCookies = (content: BuilderContent) => {
   const cookieStore = cookies();
   const builderPatches = cookieStore
     .getAll()
-    .filter((x) => x.name.startsWith('builder.patch.' + content.id) + '.')
+    .filter((x) => x.name.startsWith('builder.patch.' + content.id +'.'))
     .map((x) => {
       // split into: `builder.patch.${contentId}.${blockId}.${index}`
       const [, , , blockId, index] = x.name.split('.');
