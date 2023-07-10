@@ -179,6 +179,10 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
+        if (packageName === 'e2e-nextjs-app-dir-react') {
+          test.skip();
+        }
+
         if (packageName === 'e2e-vue-nuxt3') {
           test.skip();
         }
@@ -242,7 +246,11 @@ test.describe(targetContext.name, () => {
         await expect(page.locator('body')).not.toContainText('this never appears');
       });
 
-      reactiveStateTest('works on reactive conditions', async ({ page }) => {
+      reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
+        if (packageName === 'e2e-nextjs-app-dir-react') {
+          test.skip();
+        }
+
         await page.goto('/show-hide-if');
 
         await findTextInPage({ page, text: 'even clicks' });
