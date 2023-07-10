@@ -24,24 +24,13 @@ import type {
 } from '../../context/types'
 import { Dictionary } from '@/sdk-src/types/typescript'
 import { getBlockProperties } from '@/sdk-src/functions/get-block-properties'
-import { getReactNativeBlockStyles } from '@/sdk-src/functions/get-react-native-block-styles'
-import { TARGET } from '@/sdk-src/constants/target'
 
 function RenderComponent(props: RenderComponentProps) {
   function attributes() {
-    const blockProperties = getBlockProperties(props.builderBlock)
-    return {
-      ...blockProperties,
-      ...(TARGET === 'reactNative'
-        ? {
-            style: getReactNativeBlockStyles({
-              block: props.builderBlock,
-              context: props.context,
-              blockStyles: blockProperties.style,
-            }),
-          }
-        : {}),
-    }
+    return getBlockProperties({
+      block: props.builderBlock,
+      context: props.context,
+    })
   }
 
   const attrs = props.includeBlockProps ? { attributes: attributes() } : {}

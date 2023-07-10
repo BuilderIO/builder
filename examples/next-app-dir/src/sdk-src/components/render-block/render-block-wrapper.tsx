@@ -27,19 +27,7 @@ function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
   }
 
   function attributes() {
-    const blockProperties = getBlockProperties(props.block)
-    return {
-      ...blockProperties,
-      ...(TARGET === 'reactNative'
-        ? {
-            style: getReactNativeBlockStyles({
-              block: props.block,
-              context: props.context,
-              blockStyles: blockProperties.style,
-            }),
-          }
-        : {}),
-    }
+    return getBlockProperties({ block: props.block, context: props.context })
   }
 
   return (

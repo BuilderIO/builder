@@ -9,9 +9,7 @@ import type {
   BuilderContextInterface,
   RegisteredComponent,
 } from '../../context/types'
-import { getBlockActions } from '../../functions/get-block-actions'
 import { getBlockComponentOptions } from '../../functions/get-block-component-options'
-import { getBlockProperties } from '../../functions/get-block-properties'
 import { getProcessedBlock } from '../../functions/get-processed-block'
 import type { BuilderBlock } from '../../types/builder-block'
 import BlockStyles from './block-styles'
@@ -21,9 +19,7 @@ import {
   isEmptyHtmlElement,
 } from './render-block.helpers'
 import RenderRepeatedBlock from './render-repeated-block'
-import { TARGET } from '../../constants/target'
 import RenderComponent from './render-component'
-import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles'
 import { Dictionary } from '@/sdk-src/types/typescript'
 import RenderBlockWrapper from './render-block-wrapper'
 
