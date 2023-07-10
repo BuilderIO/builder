@@ -29,6 +29,8 @@ async function Symbol(props: PropsWithBuilder<SymbolProps>) {
   const className = [
     ...(TARGET === 'vue2' || TARGET === 'vue3'
       ? Object.keys(props.attributes.class)
+      : TARGET === 'react'
+      ? [props.attributes.className]
       : [props.attributes.class]),
     'builder-symbol',
     props.symbol?.inline ? 'builder-inline-symbol' : undefined,
