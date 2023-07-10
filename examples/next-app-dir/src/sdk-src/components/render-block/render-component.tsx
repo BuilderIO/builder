@@ -2,9 +2,6 @@ import * as React from 'react'
 
 type ComponentOptions = {
   [index: string]: any
-  attributes?: {
-    [index: string]: any
-  }
   builderBlock: BuilderBlock
   builderContext: BuilderContextInterface
 }
@@ -14,6 +11,8 @@ export interface RenderComponentProps {
   blockChildren: BuilderBlock[]
   context: BuilderContextInterface
   components: Dictionary<RegisteredComponent>
+  builderBlock: BuilderBlock
+  includeBlockProps: boolean
 }
 
 import type { BuilderBlock } from '../../types/builder-block'
@@ -24,13 +23,34 @@ import type {
   RegisteredComponent,
 } from '../../context/types'
 import { Dictionary } from '@/sdk-src/types/typescript'
+import { getBlockProperties } from '@/sdk-src/functions/get-block-properties'
+import { getReactNativeBlockStyles } from '@/sdk-src/functions/get-react-native-block-styles'
+import { TARGET } from '@/sdk-src/constants/target'
 
 function RenderComponent(props: RenderComponentProps) {
+  function attributes() {
+    const blockProperties = getBlockProperties(props.builderBlock)
+    return {
+      ...blockProperties,
+      ...(TARGET === 'reactNative'
+        ? {
+            style: getReactNativeBlockStyles({
+              block: props.builderBlock,
+              context: props.context,
+              blockStyles: blockProperties.style,
+            }),
+          }
+        : {}),
+    }
+  }
+
+  const attrs = props.includeBlockProps ? { attributes: attributes() } : {}
+
   return (
     <>
       {props.componentRef ? (
         <>
-          <props.componentRef {...props.componentOptions}>
+          <props.componentRef {...props.componentOptions} {...attrs}>
             {props.blockChildren?.map((child) => (
               <RenderBlock
                 key={'render-block-' + child.id}

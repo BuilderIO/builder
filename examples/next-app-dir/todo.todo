@@ -19,8 +19,11 @@ RenderContent:
     - contains all hooks
     - renders wrapper `<div>` with `onClick`
 
-RenderBock:
-  - Extract `RenderBlockWrapper` that renders a `<div>` with `onClick` and `onMouseOver` handlers.
+RenderBlockWrapper:
+  - Extract `RenderBlockWrapper` that renders the wrapper `tag` with event handlers.
+
+RenderBlocks:
+  - Extract `RenderBlocksWrapper` that renders a `<div>` with `onClick` and `onMouseOver` handlers.
 
 Symbol:
   - RSCify Symbol
@@ -31,3 +34,7 @@ Cookies:
   - make sure `path`/`domain` value is set correctly so this works everywhere it needs to.
   - improve cookie setting/reading logic to be more condensed and failproof.
   - force reload when all else fails.
+
+
+REMAINING:
+- SSR A/B Testing breaks

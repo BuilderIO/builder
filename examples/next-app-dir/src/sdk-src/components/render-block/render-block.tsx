@@ -25,6 +25,7 @@ import { TARGET } from '../../constants/target'
 import RenderComponent from './render-component'
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles'
 import { Dictionary } from '@/sdk-src/types/typescript'
+import RenderBlockWrapper from './render-block-wrapper'
 
 function RenderBlock(props: RenderBlockProps) {
   const component = getComponent({
@@ -65,32 +66,6 @@ function RenderBlock(props: RenderBlockProps) {
     return true
   }
 
-  function actions() {
-    return getBlockActions({
-      block: getUseBlock(),
-      rootState: props.context.rootState,
-      rootSetState: props.context.rootSetState,
-      localState: props.context.localState,
-      context: props.context.context,
-    })
-  }
-
-  function attributes() {
-    const blockProperties = getBlockProperties(getUseBlock())
-    return {
-      ...blockProperties,
-      ...(TARGET === 'reactNative'
-        ? {
-            style: getReactNativeBlockStyles({
-              block: getUseBlock(),
-              context: props.context,
-              blockStyles: blockProperties.style,
-            }),
-          }
-        : {}),
-    }
-  }
-
   function childrenWithoutParentComponent() {
     /**
      * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
@@ -113,21 +88,15 @@ function RenderBlock(props: RenderBlockProps) {
         ...(component?.name === 'Symbol' || component?.name === 'Columns'
           ? { builderComponents: props.components }
           : {}),
-        /**
-         * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
-         * they are provided to the component itself directly.
-         */
-        ...(!component?.noWrap
-          ? {}
-          : {
-              attributes: {
-                ...attributes(),
-                ...actions(),
-              },
-            }),
       },
       context: childrenContext,
       components: props.components,
+      builderBlock: getUseBlock(),
+      /**
+       * If `noWrap` is set to `true`, then the block's props/attributes are provided to the
+       * component itself directly. Otherwise, they are provided to the wrapper element.
+       */
+      includeBlockProps: component?.noWrap === true,
     }
   }
 
@@ -141,7 +110,11 @@ function RenderBlock(props: RenderBlockProps) {
             <>
               {isEmptyHtmlElement(Tag) ? (
                 <>
-                  <Tag {...attributes()} {...actions()} />
+                  <RenderBlockWrapper
+                    Wrapper={Tag}
+                    block={getUseBlock()}
+                    context={props.context}
+                  />
                 </>
               ) : null}
               {!isEmptyHtmlElement(Tag) && repeatItem() ? (
@@ -158,7 +131,11 @@ function RenderBlock(props: RenderBlockProps) {
               ) : null}
               {!isEmptyHtmlElement(Tag) && !repeatItem() ? (
                 <>
-                  <Tag {...attributes()} {...actions()}>
+                  <RenderBlockWrapper
+                    Wrapper={Tag}
+                    block={getUseBlock()}
+                    context={props.context}
+                  >
                     <RenderComponent {...renderComponentProps()} />
 
                     {childrenWithoutParentComponent()?.map((child) => (
@@ -177,7 +154,7 @@ function RenderBlock(props: RenderBlockProps) {
                         context={childrenContext}
                       />
                     ))}
-                  </Tag>
+                  </RenderBlockWrapper>
                 </>
               ) : null}
             </>

@@ -8,7 +8,6 @@ import {
 import CatFacts from '@/components/MyTextBox/CatFacts'
 import MyTextBox from '@/components/MyTextBox/MyTextBox'
 import { componentInfo } from '@/components/MyTextBox/component-info'
-import { Dictionary } from '@/sdk-src/types/typescript'
 import { cookies } from 'next/headers'
 import { BuilderContent } from '@/sdk-src/types/builder-content'
 
@@ -16,11 +15,11 @@ const processCookies = (content: BuilderContent) => {
   const cookieStore = cookies()
   const builderPatches = cookieStore
     .getAll()
-    .filter((x) => x.name.startsWith('builder.patch.' + content.id))
+    .filter((x) => x.name.startsWith('builder.patch.' + content.id) + '.')
     .map((x) => {
-      const newLocal = x.name.split('builder.patch.' + content.id)[1]
+      // split into: `builder.patch.${contentId}.${blockId}.${index}`
+      const [, , , blockId, index] = x.name.split('.')
 
-      const [blockId, index] = newLocal.split('.')
       return {
         blockId,
         index: parseInt(index),
@@ -31,7 +30,6 @@ const processCookies = (content: BuilderContent) => {
 
   if (!builderPatches.length) return content
 
-  // console.log('found cookies, doing things')
   let newContent = content
   for (const patchCookie of builderPatches) {
     const { value } = patchCookie

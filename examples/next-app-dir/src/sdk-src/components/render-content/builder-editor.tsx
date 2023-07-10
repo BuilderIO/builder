@@ -1,9 +1,7 @@
 'use client'
 import { evaluate } from '@/sdk-src/functions/evaluate'
-import { getContent } from '@/sdk-src/functions/get-content'
 import { isBrowser } from '@/sdk-src/functions/is-browser'
 import { isEditing } from '@/sdk-src/functions/is-editing'
-import { isPreviewing } from '@/sdk-src/functions/is-previewing'
 import { createRegisterComponentMessage } from '@/sdk-src/functions/register-component'
 import { _track } from '@/sdk-src/functions/track'
 import {
@@ -158,7 +156,7 @@ export default function BuilderEditor(
       lastUpdatedAutosave &&
       parseInt(hardResetCookieValue) <= lastUpdatedAutosave
     ) {
-      console.log('got fresh content. Not refreshing')
+      console.log('got fresh content! 🎉')
       document.cookie = `builder.hardReset=;max-age=0`
 
       window.parent?.postMessage(
@@ -182,9 +180,6 @@ export default function BuilderEditor(
 
   function processMessage(event: MessageEvent) {
     const { data: message } = event
-    if (message.type !== 'builder.evaluate') {
-      console.log('received message', { shouldSendResetCookie, message })
-    }
     if (message) {
       switch (message.type) {
         case 'builder.configureSdk': {
