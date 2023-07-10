@@ -401,7 +401,6 @@ export default function BuilderEditor(
   }, [builderContextSignal.rootState]);
 
   useEffect(() => {
-    console.log('creating listener');
     window.addEventListener('message', processMessage);
     return () => {
       window.removeEventListener('message', processMessage);

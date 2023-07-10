@@ -88,7 +88,8 @@ export default async function Page(props: MyPageProps) {
   }
 
   return (
-    <RenderContent
+    <div>
+      <RenderContent
       {...content}
       // apiKey={API_KEY}
       // model="page"
@@ -111,6 +112,7 @@ export default async function Page(props: MyPageProps) {
         },
       ]}
     />
+    </div>
   );
 }
 export const revalidate = 4;
