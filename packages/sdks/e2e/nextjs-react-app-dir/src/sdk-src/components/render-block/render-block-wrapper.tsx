@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import { TARGET } from '@/sdk-src/constants/target'
-import { BuilderContextInterface } from '@/sdk-src/context/types'
-import { getBlockActions } from '@/sdk-src/functions/get-block-actions'
-import { getBlockProperties } from '@/sdk-src/functions/get-block-properties'
-import { getReactNativeBlockStyles } from '@/sdk-src/functions/get-react-native-block-styles'
-import { BuilderBlock } from '@/sdk-src/types/builder-block'
-import { PropsWithChildren } from 'react'
+import { TARGET } from '@/sdk-src/constants/target';
+import { BuilderContextInterface } from '@/sdk-src/context/types';
+import { getBlockActions } from '@/sdk-src/functions/get-block-actions';
+import { getBlockProperties } from '@/sdk-src/functions/get-block-properties';
+import { getReactNativeBlockStyles } from '@/sdk-src/functions/get-react-native-block-styles';
+import { BuilderBlock } from '@/sdk-src/types/builder-block';
+import { PropsWithChildren } from 'react';
 
 export type RenderBlockProps = {
-  Wrapper: string
-  block: BuilderBlock
-  context: BuilderContextInterface
-  wrapperProps?: any
-}
+  Wrapper: string;
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+  wrapperProps?: any;
+};
 
 function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
   function actions() {
@@ -23,18 +23,18 @@ function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
       rootSetState: props.context.rootSetState,
       localState: props.context.localState,
       context: props.context.context,
-    })
+    });
   }
 
   function attributes() {
-    return getBlockProperties({ block: props.block, context: props.context })
+    return getBlockProperties({ block: props.block, context: props.context });
   }
 
   return (
     <props.Wrapper {...props.wrapperProps} {...attributes()} {...actions()}>
       {props.children}
     </props.Wrapper>
-  )
+  );
 }
 
-export default RenderBlockWrapper
+export default RenderBlockWrapper;

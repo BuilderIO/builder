@@ -1,13 +1,13 @@
-import * as React from 'react'
+import * as React from 'react';
 
 export interface TextProps {
-  text: string
+  text: string;
 }
 
 async function CatFacts(props: TextProps) {
   const catFacts = await fetch('https://cat-fact.herokuapp.com/facts').then(
     (x) => x.json()
-  )
+  );
   return (
     <div>
       {props.text}. Here are some cat facts from an RSC:
@@ -31,7 +31,7 @@ async function CatFacts(props: TextProps) {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
-export default CatFacts
+export default CatFacts;

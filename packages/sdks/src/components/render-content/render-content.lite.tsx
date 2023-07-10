@@ -15,9 +15,7 @@ import {
   createRegisterComponentMessage,
 } from '../../functions/register-component.js';
 import { _track } from '../../functions/track/index.js';
-import type {
-  BuilderContent,
-} from '../../types/builder-content.js';
+import type { BuilderContent } from '../../types/builder-content.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
 import builderContext from '../../context/builder.context.lite';
@@ -103,7 +101,7 @@ export default function RenderContent(props: RenderContentProps) {
               return;
             }
             if (breakpoints) {
-              state.mergeNewContent({meta: {breakpoints}})
+              state.mergeNewContent({ meta: { breakpoints } });
             }
             state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;
@@ -189,7 +187,7 @@ export default function RenderContent(props: RenderContentProps) {
             [key]: json,
           };
           builderContextSignal.value.rootSetState(newState);
-          state.httpReqsData[key] = true
+          state.httpReqsData[key] = true;
         })
         .catch((err) => {
           console.error('error fetching dynamic data', url, err);

@@ -1,39 +1,39 @@
-import * as React from 'react'
+import * as React from 'react';
 
 type ComponentOptions = {
-  [index: string]: any
-  builderBlock: BuilderBlock
-  builderContext: BuilderContextInterface
-}
+  [index: string]: any;
+  builderBlock: BuilderBlock;
+  builderContext: BuilderContextInterface;
+};
 export interface RenderComponentProps {
-  componentRef: any
-  componentOptions: ComponentOptions
-  blockChildren: BuilderBlock[]
-  context: BuilderContextInterface
-  components: Dictionary<RegisteredComponent>
-  builderBlock: BuilderBlock
-  includeBlockProps: boolean
+  componentRef: any;
+  componentOptions: ComponentOptions;
+  blockChildren: BuilderBlock[];
+  context: BuilderContextInterface;
+  components: Dictionary<RegisteredComponent>;
+  builderBlock: BuilderBlock;
+  includeBlockProps: boolean;
 }
 
-import type { BuilderBlock } from '../../types/builder-block'
-import BlockStyles from './block-styles'
-import RenderBlock from './render-block'
+import type { BuilderBlock } from '../../types/builder-block';
+import BlockStyles from './block-styles';
+import RenderBlock from './render-block';
 import type {
   BuilderContextInterface,
   RegisteredComponent,
-} from '../../context/types'
-import { Dictionary } from '@/sdk-src/types/typescript'
-import { getBlockProperties } from '@/sdk-src/functions/get-block-properties'
+} from '../../context/types';
+import { Dictionary } from '@/sdk-src/types/typescript';
+import { getBlockProperties } from '@/sdk-src/functions/get-block-properties';
 
 function RenderComponent(props: RenderComponentProps) {
   function attributes() {
     return getBlockProperties({
       block: props.builderBlock,
       context: props.context,
-    })
+    });
   }
 
-  const attrs = props.includeBlockProps ? { attributes: attributes() } : {}
+  const attrs = props.includeBlockProps ? { attributes: attributes() } : {};
 
   return (
     <>
@@ -60,7 +60,7 @@ function RenderComponent(props: RenderComponentProps) {
         </>
       ) : null}
     </>
-  )
+  );
 }
 
-export default RenderComponent
+export default RenderComponent;

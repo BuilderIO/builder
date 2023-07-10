@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components'
+import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Form:Select',
@@ -58,4 +58,4 @@ export const componentInfo: ComponentInfo = {
   ],
   static: true,
   noWrap: true,
-}
+};

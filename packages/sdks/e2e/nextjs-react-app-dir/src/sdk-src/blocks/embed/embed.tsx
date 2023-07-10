@@ -1,38 +1,38 @@
-'use client'
-import * as React from 'react'
-import { useState, useRef, useEffect } from 'react'
+'use client';
+import * as React from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export interface EmbedProps {
-  content: string
+  content: string;
 }
 
-import { isJsScript } from './helpers'
+import { isJsScript } from './helpers';
 
 function Embed(props: EmbedProps) {
-  const elem = useRef<HTMLDivElement>(null)
-  const [scriptsInserted, setScriptsInserted] = useState(() => [])
+  const elem = useRef<HTMLDivElement>(null);
+  const [scriptsInserted, setScriptsInserted] = useState(() => []);
 
-  const [scriptsRun, setScriptsRun] = useState(() => [])
+  const [scriptsRun, setScriptsRun] = useState(() => []);
 
-  const [ranInitFn, setRanInitFn] = useState(() => false)
+  const [ranInitFn, setRanInitFn] = useState(() => false);
 
   function findAndRunScripts() {
-    if (!elem.current || !elem.current.getElementsByTagName) return
-    const scripts = elem.current.getElementsByTagName('script')
+    if (!elem.current || !elem.current.getElementsByTagName) return;
+    const scripts = elem.current.getElementsByTagName('script');
     for (let i = 0; i < scripts.length; i++) {
-      const script = scripts[i]
+      const script = scripts[i];
       if (script.src && !scriptsInserted.includes(script.src)) {
-        scriptsInserted.push(script.src)
-        const newScript = document.createElement('script')
-        newScript.async = true
-        newScript.src = script.src
-        document.head.appendChild(newScript)
+        scriptsInserted.push(script.src);
+        const newScript = document.createElement('script');
+        newScript.async = true;
+        newScript.src = script.src;
+        document.head.appendChild(newScript);
       } else if (isJsScript(script) && !scriptsRun.includes(script.innerText)) {
         try {
-          scriptsRun.push(script.innerText)
-          new Function(script.innerText)()
+          scriptsRun.push(script.innerText);
+          new Function(script.innerText)();
         } catch (error) {
-          console.warn('`Embed`: Error running script:', error)
+          console.warn('`Embed`: Error running script:', error);
         }
       }
     }
@@ -40,10 +40,10 @@ function Embed(props: EmbedProps) {
 
   useEffect(() => {
     if (elem.current && !ranInitFn) {
-      setRanInitFn(true)
-      findAndRunScripts()
+      setRanInitFn(true);
+      findAndRunScripts();
     }
-  }, [elem.current, ranInitFn])
+  }, [elem.current, ranInitFn]);
 
   return (
     <div
@@ -51,7 +51,7 @@ function Embed(props: EmbedProps) {
       ref={elem}
       dangerouslySetInnerHTML={{ __html: props.content }}
     />
-  )
+  );
 }
 
-export default Embed
+export default Embed;

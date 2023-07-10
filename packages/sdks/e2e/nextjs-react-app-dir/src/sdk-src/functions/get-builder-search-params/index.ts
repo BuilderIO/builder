@@ -1,18 +1,18 @@
-import { isBrowser } from '../is-browser'
+import { isBrowser } from '../is-browser';
 
-const BUILDER_SEARCHPARAMS_PREFIX = 'builder.'
-const BUILDER_OPTIONS_PREFIX = 'options.'
-type QueryObject = Record<string, string | string[]>
+const BUILDER_SEARCHPARAMS_PREFIX = 'builder.';
+const BUILDER_OPTIONS_PREFIX = 'options.';
+type QueryObject = Record<string, string | string[]>;
 
 export const convertSearchParamsToQueryObject = (
   searchParams: URLSearchParams
 ): QueryObject => {
-  const options: Record<string, string> = {}
+  const options: Record<string, string> = {};
   searchParams.forEach((value, key) => {
-    options[key] = value
-  })
-  return options
-}
+    options[key] = value;
+  });
+  return options;
+};
 
 /**
  * Receives a `URLSearchParams` object or a regular query object, and returns the subset of query params that are
@@ -24,33 +24,33 @@ export const getBuilderSearchParams = (
   _options: QueryObject | URLSearchParams | undefined
 ) => {
   if (!_options) {
-    return {}
+    return {};
   }
-  const options = normalizeSearchParams(_options)
+  const options = normalizeSearchParams(_options);
 
-  const newOptions: QueryObject = {}
+  const newOptions: QueryObject = {};
   Object.keys(options).forEach((key) => {
     if (key.startsWith(BUILDER_SEARCHPARAMS_PREFIX)) {
       const trimmedKey = key
         .replace(BUILDER_SEARCHPARAMS_PREFIX, '')
-        .replace(BUILDER_OPTIONS_PREFIX, '')
-      newOptions[trimmedKey] = options[key]
+        .replace(BUILDER_OPTIONS_PREFIX, '');
+      newOptions[trimmedKey] = options[key];
     }
-  })
-  return newOptions
-}
+  });
+  return newOptions;
+};
 
 export const getBuilderSearchParamsFromWindow = () => {
   if (!isBrowser()) {
-    return {}
+    return {};
   }
-  const searchParams = new URLSearchParams(window.location.search)
-  return getBuilderSearchParams(searchParams)
-}
+  const searchParams = new URLSearchParams(window.location.search);
+  return getBuilderSearchParams(searchParams);
+};
 
 export const normalizeSearchParams = (
   searchParams: QueryObject | URLSearchParams
 ): QueryObject =>
   searchParams instanceof URLSearchParams
     ? convertSearchParamsToQueryObject(searchParams)
-    : searchParams
+    : searchParams;

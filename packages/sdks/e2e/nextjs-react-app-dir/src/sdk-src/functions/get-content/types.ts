@@ -1,31 +1,31 @@
 export interface GetContentOptions {
   /** The model to get content for */
-  model: string
+  model: string;
 
   /** Your public API key */
-  apiKey: string
+  apiKey: string;
 
   /** Number of items to fetch. Default is 1 */
-  limit?: number
+  limit?: number;
 
   /** User attributes to target on, such as { urlPath: '/foo', device: 'mobile', ...etc } */
-  userAttributes?: (Record<string, string> & { urlPath?: string }) | null
+  userAttributes?: (Record<string, string> & { urlPath?: string }) | null;
 
   /** Custom query */
-  query?: Record<string, any>
+  query?: Record<string, any>;
 
   /**
    * Any other API options.
    * Accepts both a key/value object or a `URLSearchParams` instance
    * */
-  options?: Record<string, any> | URLSearchParams
+  options?: Record<string, any> | URLSearchParams;
 
   /**
    * If set to `true`, it will lazy load symbols/references.
    * If set to `false`, it will render the entire content tree eagerly.
    * @deprecated use `enrich` instead
    */
-  noTraverse?: boolean
+  noTraverse?: boolean;
 
   /**
    * If set to `false`, it will not use cookies to target content. Therefore, A/B Testing will be disabled and
@@ -33,28 +33,28 @@ export interface GetContentOptions {
    *
    * Defaults to `true`.
    */
-  canTrack?: boolean
+  canTrack?: boolean;
 
   /**
    * Include references in the response. Defaults to `true`.
    * @deprecated use `enrich` instead
    */
-  includeRefs?: boolean
+  includeRefs?: boolean;
 
   /**
    * Include multilevel references in the response.
    */
-  enrich?: boolean
+  enrich?: boolean;
 
   /**
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
    */
-  locale?: string
+  locale?: string;
 
   /**
    * If provided, sets the Builder API version used to fetch content.
    *
    * Defaults to `v3`.
    */
-  apiVersion?: 'v2' | 'v3'
+  apiVersion?: 'v2' | 'v3';
 }

@@ -1,56 +1,56 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface ImageProps {
-  className?: string
-  image: string
-  sizes?: string
-  lazy?: boolean
-  height?: number
-  width?: number
-  altText?: string
-  backgroundSize?: 'cover' | 'contain'
-  backgroundPosition?: string
-  srcset?: string
-  aspectRatio?: number
-  children?: JSX.Element
-  fitContent?: boolean
-  builderBlock?: BuilderBlock
-  noWebp?: boolean
-  src?: string
+  className?: string;
+  image: string;
+  sizes?: string;
+  lazy?: boolean;
+  height?: number;
+  width?: number;
+  altText?: string;
+  backgroundSize?: 'cover' | 'contain';
+  backgroundPosition?: string;
+  srcset?: string;
+  aspectRatio?: number;
+  children?: JSX.Element;
+  fitContent?: boolean;
+  builderBlock?: BuilderBlock;
+  noWebp?: boolean;
+  src?: string;
 }
 
-import type { BuilderBlock } from '../../types/builder-block'
-import { getSrcSet } from './image.helpers'
+import type { BuilderBlock } from '../../types/builder-block';
+import { getSrcSet } from './image.helpers';
 
 function Image(props: ImageProps) {
   function srcSetToUse() {
-    const imageToUse = props.image || props.src
-    const url = imageToUse
+    const imageToUse = props.image || props.src;
+    const url = imageToUse;
     if (
       !url ||
       // We can auto add srcset for cdn.builder.io and shopify
       // images, otherwise you can supply this prop manually
       !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
     ) {
-      return props.srcset
+      return props.srcset;
     }
     if (props.srcset && props.image?.includes('builder.io/api/v1/image')) {
       if (!props.srcset.includes(props.image.split('?')[0])) {
-        console.debug('Removed given srcset')
-        return getSrcSet(url)
+        console.debug('Removed given srcset');
+        return getSrcSet(url);
       }
     } else if (props.image && !props.srcset) {
-      return getSrcSet(url)
+      return getSrcSet(url);
     }
-    return getSrcSet(url)
+    return getSrcSet(url);
   }
 
   function webpSrcSet() {
     if (srcSetToUse?.()?.match(/builder\.io/) && !props.noWebp) {
-      return srcSetToUse().replace(/\?/g, '?format=webp&')
+      return srcSetToUse().replace(/\?/g, '?format=webp&');
     } else {
-      return ''
+      return '';
     }
   }
 
@@ -61,9 +61,9 @@ function Image(props: ImageProps) {
       width: '100%',
       left: '0px',
       top: '0px',
-    } as const
-    const out = props.aspectRatio ? aspectRatioStyles : undefined
-    return out
+    } as const;
+    const out = props.aspectRatio ? aspectRatioStyles : undefined;
+    return out;
   }
 
   return (
@@ -137,7 +137,7 @@ function Image(props: ImageProps) {
   height: 100%;
 }`}</style>
     </>
-  )
+  );
 }
 
-export default Image
+export default Image;

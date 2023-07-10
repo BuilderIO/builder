@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components'
+import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Form:Input',
@@ -75,4 +75,4 @@ export const componentInfo: ComponentInfo = {
     borderStyle: 'solid',
     borderColor: '#ccc',
   },
-}
+};

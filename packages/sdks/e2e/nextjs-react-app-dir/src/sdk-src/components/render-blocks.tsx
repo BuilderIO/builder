@@ -1,18 +1,18 @@
-import * as React from 'react'
+import * as React from 'react';
 export type RenderBlockProps = {
-  context: BuilderContextInterface
-  blocks: BuilderBlock[] | undefined
-  parent?: string
-  path?: string
-  styleProp?: Record<string, any>
-  components: Dictionary<RegisteredComponent>
-}
-import type { BuilderBlock } from '../types/builder-block'
-import BlockStyles from './render-block/block-styles'
-import RenderBlock from './render-block/render-block'
-import { BuilderContextInterface, RegisteredComponent } from '../context/types'
-import { Dictionary } from '../types/typescript'
-import RenderBlocksWrapper from './render-blocks/render-blocks-wrapper'
+  context: BuilderContextInterface;
+  blocks: BuilderBlock[] | undefined;
+  parent?: string;
+  path?: string;
+  styleProp?: Record<string, any>;
+  components: Dictionary<RegisteredComponent>;
+};
+import type { BuilderBlock } from '../types/builder-block';
+import BlockStyles from './render-block/block-styles';
+import RenderBlock from './render-block/render-block';
+import { BuilderContextInterface, RegisteredComponent } from '../context/types';
+import { Dictionary } from '../types/typescript';
+import RenderBlocksWrapper from './render-blocks/render-blocks-wrapper';
 
 function RenderBlocks(props: RenderBlockProps) {
   return (
@@ -49,7 +49,7 @@ function RenderBlocks(props: RenderBlockProps) {
         ) : null}
       </RenderBlocksWrapper>
     </>
-  )
+  );
 }
 
-export default RenderBlocks
+export default RenderBlocks;

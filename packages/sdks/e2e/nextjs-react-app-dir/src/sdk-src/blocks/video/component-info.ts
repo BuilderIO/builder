@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components'
+import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Video',
@@ -106,4 +106,4 @@ export const componentInfo: ComponentInfo = {
       advanced: true,
     },
   ],
-}
+};

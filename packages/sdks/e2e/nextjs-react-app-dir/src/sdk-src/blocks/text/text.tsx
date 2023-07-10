@@ -1,8 +1,8 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface TextProps {
-  text: string
+  text: string;
 }
 
 function Text(props: TextProps) {
@@ -14,7 +14,7 @@ function Text(props: TextProps) {
         outline: 'none',
       }}
     />
-  )
+  );
 }
 
-export default Text
+export default Text;

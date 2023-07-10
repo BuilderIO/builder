@@ -1,12 +1,12 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface ImgProps {
-  attributes?: any
-  imgSrc?: string // TODO(misko): I think this is unused
-  image?: string
-  altText?: string
-  backgroundSize?: 'cover' | 'contain'
+  attributes?: any;
+  imgSrc?: string; // TODO(misko): I think this is unused
+  image?: string;
+  altText?: string;
+  backgroundSize?: 'cover' | 'contain';
   backgroundPosition?:
     | 'center'
     | 'top'
@@ -16,10 +16,10 @@ export interface ImgProps {
     | 'top left'
     | 'top right'
     | 'bottom left'
-    | 'bottom right'
+    | 'bottom right';
 }
 
-import { isEditing } from '../../functions/is-editing'
+import { isEditing } from '../../functions/is-editing';
 
 function ImgComponent(props: ImgProps) {
   return (
@@ -33,7 +33,7 @@ function ImgComponent(props: ImgProps) {
       src={props.imgSrc || props.image}
       {...props.attributes}
     />
-  )
+  );
 }
 
-export default ImgComponent
+export default ImgComponent;

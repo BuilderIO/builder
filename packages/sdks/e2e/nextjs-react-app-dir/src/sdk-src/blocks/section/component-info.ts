@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components'
+import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Core:Section',
@@ -47,4 +47,4 @@ export const componentInfo: ComponentInfo = {
       },
     },
   ],
-}
+};

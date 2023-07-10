@@ -1,8 +1,8 @@
-'use client'
-import * as React from 'react'
-import { PropsWithBuilder } from '../types/builder-props'
+'use client';
+import * as React from 'react';
+import { PropsWithBuilder } from '../types/builder-props';
 export interface BaseTextProps {
-  text: string
+  text: string;
 }
 
 function BaseText(props: PropsWithBuilder<BaseTextProps>) {
@@ -10,7 +10,7 @@ function BaseText(props: PropsWithBuilder<BaseTextProps>) {
     <span style={props.builderContext.inheritedStyles as any}>
       {props.text}
     </span>
-  )
+  );
 }
 
-export default BaseText
+export default BaseText;

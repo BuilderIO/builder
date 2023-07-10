@@ -1,29 +1,29 @@
-import * as React from 'react'
+import * as React from 'react';
 
 export interface SymbolInfo {
-  model?: string
-  entry?: string
-  data?: any
-  content?: BuilderContent
-  inline?: boolean
-  dynamic?: boolean
+  model?: string;
+  entry?: string;
+  data?: any;
+  content?: BuilderContent;
+  inline?: boolean;
+  dynamic?: boolean;
 }
 export interface SymbolProps {
-  symbol?: SymbolInfo
-  dataOnly?: boolean
-  dynamic?: boolean
-  attributes?: any
-  inheritState?: boolean
-  builderComponents: Dictionary<RegisteredComponent>
+  symbol?: SymbolInfo;
+  dataOnly?: boolean;
+  dynamic?: boolean;
+  attributes?: any;
+  inheritState?: boolean;
+  builderComponents: Dictionary<RegisteredComponent>;
 }
 
-import RenderContent from '../../components/render-content/render-content'
-import { getContent } from '../../functions/get-content/index'
-import type { BuilderContent } from '../../types/builder-content'
-import { TARGET } from '../../constants/target'
-import { PropsWithBuilder } from '@/sdk-src/types/builder-props'
-import { Dictionary } from '@/sdk-src/types/typescript'
-import { RegisteredComponent } from '@/sdk-src/context/types'
+import RenderContent from '../../components/render-content/render-content';
+import { getContent } from '../../functions/get-content/index';
+import type { BuilderContent } from '../../types/builder-content';
+import { TARGET } from '../../constants/target';
+import { PropsWithBuilder } from '@/sdk-src/types/builder-props';
+import { Dictionary } from '@/sdk-src/types/typescript';
+import { RegisteredComponent } from '@/sdk-src/context/types';
 
 async function Symbol(props: PropsWithBuilder<SymbolProps>) {
   const className = [
@@ -37,7 +37,7 @@ async function Symbol(props: PropsWithBuilder<SymbolProps>) {
       : undefined,
   ]
     .filter(Boolean)
-    .join(' ')
+    .join(' ');
 
   const contentToUse = !props.symbol
     ? undefined
@@ -49,7 +49,7 @@ async function Symbol(props: PropsWithBuilder<SymbolProps>) {
         query: {
           id: props.symbol.entry,
         },
-      }))
+      }));
 
   return (
     <div {...props.attributes} className={className}>
@@ -67,7 +67,7 @@ async function Symbol(props: PropsWithBuilder<SymbolProps>) {
         content={contentToUse}
       />
     </div>
-  )
+  );
 }
 
-export default Symbol
+export default Symbol;

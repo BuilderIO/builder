@@ -1,31 +1,31 @@
-import * as React from 'react'
-import { _track } from '../../functions/track/index'
-import RenderBlocks from '../render-blocks'
-import RenderContentStyles from './components/render-styles'
-import type { RenderContentProps } from './render-content.types'
-import { TARGET } from '../../constants/target'
-import { getRenderContentScriptString } from '../render-content-variants/helpers'
-import EnableBuilderEditor from './builder-editor'
-import { ComponentInfo } from '@/sdk-src/types/components'
-import { getDefaultRegisteredComponents } from '@/sdk-src/constants/builder-registered-components'
-import { components } from '@/sdk-src/functions/register-component'
+import * as React from 'react';
+import { _track } from '../../functions/track/index';
+import RenderBlocks from '../render-blocks';
+import RenderContentStyles from './components/render-styles';
+import type { RenderContentProps } from './render-content.types';
+import { TARGET } from '../../constants/target';
+import { getRenderContentScriptString } from '../render-content-variants/helpers';
+import EnableBuilderEditor from './builder-editor';
+import { ComponentInfo } from '@/sdk-src/types/components';
+import { getDefaultRegisteredComponents } from '@/sdk-src/constants/builder-registered-components';
+import { components } from '@/sdk-src/functions/register-component';
 import {
   BuilderContextInterface,
   RegisteredComponent,
-} from '@/sdk-src/context/types'
-import { Dictionary } from '@/sdk-src/types/typescript'
+} from '@/sdk-src/context/types';
+import { Dictionary } from '@/sdk-src/types/typescript';
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from './render-content.helpers'
+} from './render-content.helpers';
 
 function RenderContent(props: RenderContentProps) {
   const scriptStr = getRenderContentScriptString({
     contentId: props.content?.id!,
     parentContentId: props.parentContentId!,
-  })
+  });
 
-  const { customComponents, ...rest } = props
+  const { customComponents, ...rest } = props;
 
   const customComps = [
     ...getDefaultRegisteredComponents(),
@@ -42,7 +42,7 @@ function RenderContent(props: RenderContentProps) {
       [info.name]: info,
     }),
     {}
-  )
+  );
 
   /**
    * Strip components because they are not serializable when sent as a prop from RSC -> Client component.
@@ -56,7 +56,7 @@ function RenderContent(props: RenderContentProps) {
       [info.name]: info,
     }),
     {}
-  )
+  );
 
   const builderContextSignal: BuilderContextInterface = {
     content: getContentInitialValue({
@@ -76,7 +76,7 @@ function RenderContent(props: RenderContentProps) {
     apiVersion: props.apiVersion,
     registeredComponentsInfo: customComponentsInfo,
     inheritedStyles: {},
-  }
+  };
 
   return (
     <EnableBuilderEditor {...rest} customComponents={customComponentsInfo}>
@@ -98,7 +98,7 @@ function RenderContent(props: RenderContentProps) {
         context={builderContextSignal}
       />
     </EnableBuilderEditor>
-  )
+  );
 }
 
-export default RenderContent
+export default RenderContent;

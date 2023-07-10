@@ -1,17 +1,17 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 export type RenderBlockProps = {
-  blocks?: BuilderBlock[]
-  parent?: string
-  path?: string
-  styleProp?: Record<string, any>
-}
-import { isEditing } from '../../functions/is-editing'
-import type { BuilderBlock } from '../../types/builder-block'
+  blocks?: BuilderBlock[];
+  parent?: string;
+  path?: string;
+  styleProp?: Record<string, any>;
+};
+import { isEditing } from '../../functions/is-editing';
+import type { BuilderBlock } from '../../types/builder-block';
 
 function RenderBlocksWrapper(props: React.PropsWithChildren<RenderBlockProps>) {
   function className() {
-    return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '')
+    return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
   }
 
   function onClick() {
@@ -25,7 +25,7 @@ function RenderBlocksWrapper(props: React.PropsWithChildren<RenderBlockProps>) {
           },
         },
         '*'
-      )
+      );
     }
   }
 
@@ -40,7 +40,7 @@ function RenderBlocksWrapper(props: React.PropsWithChildren<RenderBlockProps>) {
           },
         },
         '*'
-      )
+      );
     }
   }
 
@@ -64,7 +64,7 @@ function RenderBlocksWrapper(props: React.PropsWithChildren<RenderBlockProps>) {
   align-items: stretch;
 }`}</style>
     </>
-  )
+  );
 }
 
-export default RenderBlocksWrapper
+export default RenderBlocksWrapper;

@@ -1,5 +1,5 @@
-import type { BuilderBlock } from '../types/builder-block'
-import { getProcessedBlock } from './get-processed-block'
+import type { BuilderBlock } from '../types/builder-block';
+import { getProcessedBlock } from './get-processed-block';
 
 test('Can process bindings', () => {
   const block: BuilderBlock = {
@@ -17,7 +17,7 @@ test('Can process bindings', () => {
       `,
       'properties.isEditing': 'builder.isEditing',
     },
-  }
+  };
   const processed = getProcessedBlock({
     block,
     context: {},
@@ -25,11 +25,11 @@ test('Can process bindings', () => {
     rootSetState: undefined,
     localState: undefined,
     shouldEvaluateBindings: true,
-  })
-  expect(processed).not.toEqual(block)
-  expect(processed.properties?.foo).toEqual('baz')
-  expect(processed.properties?.test).toEqual('hello')
-  expect(processed.properties?.block).toEqual('bar')
-  expect(processed.properties?.isEditing).toEqual(false)
-  expect(processed.responsiveStyles?.large?.zIndex).toEqual(2)
-})
+  });
+  expect(processed).not.toEqual(block);
+  expect(processed.properties?.foo).toEqual('baz');
+  expect(processed.properties?.test).toEqual('hello');
+  expect(processed.properties?.block).toEqual('bar');
+  expect(processed.properties?.isEditing).toEqual(false);
+  expect(processed.responsiveStyles?.large?.zIndex).toEqual(2);
+});

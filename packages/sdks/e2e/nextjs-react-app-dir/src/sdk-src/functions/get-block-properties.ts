@@ -1,9 +1,9 @@
-import { TARGET } from '../constants/target'
-import { BuilderContextInterface } from '../context/types'
-import { convertStyleMapToCSSArray } from '../helpers/css'
-import type { BuilderBlock } from '../types/builder-block'
-import { getReactNativeBlockStyles } from './get-react-native-block-styles'
-import { transformBlockProperties } from './transform-block-properties'
+import { TARGET } from '../constants/target';
+import { BuilderContextInterface } from '../context/types';
+import { convertStyleMapToCSSArray } from '../helpers/css';
+import type { BuilderBlock } from '../types/builder-block';
+import { getReactNativeBlockStyles } from './get-react-native-block-styles';
+import { transformBlockProperties } from './transform-block-properties';
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   // currently we are only spreading the `href` property
@@ -35,15 +35,15 @@ const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   //   ...remainingBlockProperties
   // } = block;
 
-  return { href: (block as any).href }
-}
+  return { href: (block as any).href };
+};
 
 export function getBlockProperties({
   block,
   context,
 }: {
-  block: BuilderBlock
-  context: BuilderContextInterface
+  block: BuilderBlock;
+  context: BuilderContextInterface;
 }) {
   const properties = {
     ...extractRelevantRootBlockProperties(block),
@@ -53,17 +53,17 @@ export function getBlockProperties({
     class: [block.id, 'builder-block', block.class, block.properties?.class]
       .filter(Boolean)
       .join(' '),
-  }
+  };
 
   if (TARGET === 'reactNative') {
     return (properties.style = getReactNativeBlockStyles({
       block: block,
       context: context,
       blockStyles: properties.style,
-    }))
+    }));
   }
 
-  return transformBlockProperties(properties)
+  return transformBlockProperties(properties);
 }
 /**
  * Svelte does not support style attribute as an object so we need to flatten it.
@@ -74,7 +74,7 @@ function getStyleAttribute(
   style: Partial<CSSStyleDeclaration> | undefined
 ): string | Partial<CSSStyleDeclaration> | undefined {
   if (!style) {
-    return undefined
+    return undefined;
   }
 
   switch (TARGET) {
@@ -82,10 +82,10 @@ function getStyleAttribute(
     case 'vue2':
     case 'vue3':
     case 'solid':
-      return convertStyleMapToCSSArray(style).join(' ')
+      return convertStyleMapToCSSArray(style).join(' ');
     case 'qwik':
     case 'reactNative':
     case 'react':
-      return style
+      return style;
   }
 }

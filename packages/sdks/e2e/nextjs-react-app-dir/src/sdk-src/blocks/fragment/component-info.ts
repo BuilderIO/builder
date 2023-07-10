@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components'
+import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Fragment',
@@ -7,4 +7,4 @@ export const componentInfo: ComponentInfo = {
 
   canHaveChildren: true,
   noWrap: true,
-}
+};

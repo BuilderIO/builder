@@ -1,18 +1,18 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface FormSelectProps {
   options?: {
-    name?: string
-    value: string
-  }[]
-  attributes?: any
-  name?: string
-  value?: string
-  defaultValue?: string
+    name?: string;
+    value: string;
+  }[];
+  attributes?: any;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
 }
 
-import { isEditing } from '../../functions/is-editing'
+import { isEditing } from '../../functions/is-editing';
 
 function SelectComponent(props: FormSelectProps) {
   return (
@@ -29,7 +29,7 @@ function SelectComponent(props: FormSelectProps) {
         <option value={option.value}>{option.name || option.value}</option>
       ))}
     </select>
-  )
+  );
 }
 
-export default SelectComponent
+export default SelectComponent;

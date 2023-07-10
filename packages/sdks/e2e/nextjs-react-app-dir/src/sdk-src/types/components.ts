@@ -1,63 +1,63 @@
-import type { BuilderElement } from './element'
-import type { Input } from './input'
+import type { BuilderElement } from './element';
+import type { Input } from './input';
 
 export interface ComponentInfo {
   /**
    * Name your component something unique, e.g. 'MyButton'. You can override built-in components
    * by registering a component with the same name, e.g. 'Text', to replace the built-in text component
    */
-  name: string
-  description?: string
+  name: string;
+  description?: string;
   /**
    * Link to a documentation page for this component
    */
-  docsLink?: string
-  image?: string
+  docsLink?: string;
+  image?: string;
   /**
    * Input schema for your component for users to fill in the options
    */
-  inputs?: Input[]
-  class?: any
-  type?: 'angular' | 'webcomponent' | 'react' | 'vue'
-  defaultStyles?: { [key: string]: string }
+  inputs?: Input[];
+  class?: any;
+  type?: 'angular' | 'webcomponent' | 'react' | 'vue';
+  defaultStyles?: { [key: string]: string };
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
    * withChildren(YourComponent) like here
    * github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/HeroWithChildren/HeroWithChildren.builder.js#L5
    */
-  canHaveChildren?: boolean
-  fragment?: boolean
+  canHaveChildren?: boolean;
+  fragment?: boolean;
   /**
    * Do not wrap a component in a dom element. Be sure to use {...props.attributes} with this option
    * like here github.com/BuilderIO/builder/blob/master/packages/react/src/blocks/forms/Input.tsx#L34
    */
-  noWrap?: boolean
+  noWrap?: boolean;
   /**
    * Default children
    */
-  defaultChildren?: BuilderElement[]
-  defaults?: Partial<BuilderElement>
-  hooks?: { [key: string]: string | Function }
+  defaultChildren?: BuilderElement[];
+  defaults?: Partial<BuilderElement>;
+  hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
    */
-  hideFromInsertMenu?: boolean
+  hideFromInsertMenu?: boolean;
   // For webcomponents
-  tag?: string
-  static?: boolean
+  tag?: string;
+  static?: boolean;
   /**
    * Passing a list of model names will restrict using the component to only the models listed here, otherwise it'll be available for all models
    */
-  models?: string[]
+  models?: string[];
 
   /**
    * Specify restrictions direct children must match
    */
   childRequirements?: {
     /** Message to show when this doesn't match, e.g. "Children of 'Columns' must be a 'Column'" */
-    message: string
+    message: string;
     /** Simple way to say children must be a specific component name */
-    component?: string
+    component?: string;
     /**
      * More advanced - specify a MongoDB-style query (using sift.js github.com/crcn/sift.js)
      * of what the children objects should match, e.g.
@@ -68,17 +68,17 @@ export interface ComponentInfo {
      *    'component.name': { $in: ['Button', 'Text'] }
      *  }
      */
-    query?: any
-  }
+    query?: any;
+  };
 
   /**
    * Specify restrictions any parent must match
    */
   requiresParent?: {
     /** Message to show when this doesn't match, e.g. "'Add to cart' buttons must be within a 'Product box'" */
-    message: string
+    message: string;
     /** Simple way to say a parent must be a specific component name, e.g. 'Product box' */
-    component?: string
+    component?: string;
 
     /**
      * More advanced - specify a MongoDB-style query (using sift.js github.com/crcn/sift.js)
@@ -90,21 +90,21 @@ export interface ComponentInfo {
      *    'component.name': { $in: ['Product Box', 'Collection'] }
      *  }
      */
-    query?: any
-  }
+    query?: any;
+  };
 
   /** not yet implemented */
-  friendlyName?: string
+  friendlyName?: string;
 
   /**
    * Use to restrict access to your component based on a the current user permissions
    * By default components will show to all users
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
    */
-  requiredPermissions?: Array<Permission>
+  requiredPermissions?: Array<Permission>;
 
   // TO-DO: is this used?
-  hidden?: boolean
+  hidden?: boolean;
 }
 
 type Permission =
@@ -113,4 +113,4 @@ type Permission =
   | 'editCode'
   | 'editDesigns'
   | 'admin'
-  | 'create'
+  | 'create';

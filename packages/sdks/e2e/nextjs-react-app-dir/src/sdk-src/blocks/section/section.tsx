@@ -1,11 +1,11 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface SectionProps {
-  maxWidth?: number
-  attributes?: any
-  children?: any
-  builderBlock?: any
+  maxWidth?: number;
+  attributes?: any;
+  children?: any;
+  builderBlock?: any;
 }
 
 function SectionComponent(props: SectionProps) {
@@ -27,7 +27,7 @@ function SectionComponent(props: SectionProps) {
     >
       {props.children}
     </section>
-  )
+  );
 }
 
-export default SectionComponent
+export default SectionComponent;

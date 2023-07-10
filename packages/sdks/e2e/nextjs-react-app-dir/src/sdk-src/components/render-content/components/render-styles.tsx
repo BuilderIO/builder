@@ -1,21 +1,21 @@
-import * as React from 'react'
+import * as React from 'react';
 
 interface Props {
-  cssCode?: string
-  customFonts?: CustomFont[]
-  contentId?: string
+  cssCode?: string;
+  customFonts?: CustomFont[];
+  contentId?: string;
 }
 
-import RenderInlinedStyles from '../../render-inlined-styles'
-import type { CustomFont } from './render-styles.helpers'
-import { getCss } from './render-styles.helpers'
-import { getFontCss } from './render-styles.helpers'
-import { BuilderContextInterface } from '@/sdk-src/context/types'
+import RenderInlinedStyles from '../../render-inlined-styles';
+import type { CustomFont } from './render-styles.helpers';
+import { getCss } from './render-styles.helpers';
+import { getFontCss } from './render-styles.helpers';
+import { BuilderContextInterface } from '@/sdk-src/context/types';
 
 function RenderContentStyles(props: { context: BuilderContextInterface }) {
-  const contentId = props.context.content?.id
-  const cssCode = props.context.content?.data?.cssCode
-  const customFonts = props.context.content?.data?.customFonts
+  const contentId = props.context.content?.id;
+  const cssCode = props.context.content?.data?.cssCode;
+  const customFonts = props.context.content?.data?.customFonts;
 
   const injectedStyles = `
   ${getCss({
@@ -38,9 +38,9 @@ function RenderContentStyles(props: { context: BuilderContextInterface }) {
     text-align: inherit;
     font-family: inherit;
   }
-  `.trim()
+  `.trim();
 
-  return <RenderInlinedStyles styles={injectedStyles} />
+  return <RenderInlinedStyles styles={injectedStyles} />;
 }
 
-export default RenderContentStyles
+export default RenderContentStyles;

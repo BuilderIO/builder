@@ -1,16 +1,16 @@
-import * as React from 'react'
+import * as React from 'react';
 
-type VariantsProviderProps = RenderContentProps
+type VariantsProviderProps = RenderContentProps;
 import {
   checkShouldRunVariants,
   getVariants,
   getVariantsScriptString,
-} from './helpers'
-import RenderContent from '../render-content/render-content'
-import type { RenderContentProps } from '../render-content/render-content.types'
-import { getDefaultCanTrack } from '../../helpers/canTrack'
-import RenderInlinedStyles from '../render-inlined-styles'
-import { handleABTestingSync } from '../../helpers/ab-tests'
+} from './helpers';
+import RenderContent from '../render-content/render-content';
+import type { RenderContentProps } from '../render-content/render-content.types';
+import { getDefaultCanTrack } from '../../helpers/canTrack';
+import RenderInlinedStyles from '../render-inlined-styles';
+import { handleABTestingSync } from '../../helpers/ab-tests';
 
 function RenderContentVariants(props: VariantsProviderProps) {
   const variantScriptStr = getVariantsScriptString(
@@ -19,16 +19,16 @@ function RenderContentVariants(props: VariantsProviderProps) {
       testRatio: value.testRatio,
     })),
     props.content?.id || ''
-  )
+  );
 
   const shouldRenderVariants = checkShouldRunVariants({
     canTrack: getDefaultCanTrack(props.canTrack),
     content: props.content,
-  })
+  });
 
   const hideVariantsStyleString = getVariants(props.content)
     .map((value) => `.variant-${value.id} { display: none; } `)
-    .join('')
+    .join('');
 
   const contentToRender = checkShouldRunVariants({
     canTrack: getDefaultCanTrack(props.canTrack),
@@ -38,7 +38,7 @@ function RenderContentVariants(props: VariantsProviderProps) {
     : handleABTestingSync({
         item: props.content,
         canTrack: getDefaultCanTrack(props.canTrack),
-      })
+      });
 
   return (
     <>
@@ -80,7 +80,7 @@ function RenderContentVariants(props: VariantsProviderProps) {
         isSsrAbTest={shouldRenderVariants}
       />
     </>
-  )
+  );
 }
 
-export default RenderContentVariants
+export default RenderContentVariants;

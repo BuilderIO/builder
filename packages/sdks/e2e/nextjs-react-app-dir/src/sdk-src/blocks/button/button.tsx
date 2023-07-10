@@ -1,11 +1,11 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface ButtonProps {
-  attributes?: any
-  text?: string
-  link?: string
-  openLinkInNewTab?: boolean
+  attributes?: any;
+  text?: string;
+  link?: string;
+  openLinkInNewTab?: boolean;
 }
 
 function Button(props: ButtonProps) {
@@ -40,7 +40,7 @@ function Button(props: ButtonProps) {
   all: unset;
 }`}</style>
     </>
-  )
+  );
 }
 
-export default Button
+export default Button;

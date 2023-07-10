@@ -1,40 +1,40 @@
-import * as React from 'react'
+import * as React from 'react';
 
 export type RenderBlockProps = {
-  block: BuilderBlock
-  context: BuilderContextInterface
-  components: Dictionary<RegisteredComponent>
-}
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+  components: Dictionary<RegisteredComponent>;
+};
 import type {
   BuilderContextInterface,
   RegisteredComponent,
-} from '../../context/types'
-import { getBlockComponentOptions } from '../../functions/get-block-component-options'
-import { getProcessedBlock } from '../../functions/get-processed-block'
-import type { BuilderBlock } from '../../types/builder-block'
-import BlockStyles from './block-styles'
+} from '../../context/types';
+import { getBlockComponentOptions } from '../../functions/get-block-component-options';
+import { getProcessedBlock } from '../../functions/get-processed-block';
+import type { BuilderBlock } from '../../types/builder-block';
+import BlockStyles from './block-styles';
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
-} from './render-block.helpers'
-import RenderRepeatedBlock from './render-repeated-block'
-import RenderComponent from './render-component'
-import { Dictionary } from '@/sdk-src/types/typescript'
-import RenderBlockWrapper from './render-block-wrapper'
+} from './render-block.helpers';
+import RenderRepeatedBlock from './render-repeated-block';
+import RenderComponent from './render-component';
+import { Dictionary } from '@/sdk-src/types/typescript';
+import RenderBlockWrapper from './render-block-wrapper';
 
 function RenderBlock(props: RenderBlockProps) {
   const component = getComponent({
     block: props.block,
     context: props.context,
     components: props.components,
-  })
+  });
 
   function repeatItem() {
     return getRepeatItemData({
       block: props.block,
       context: props.context,
-    })
+    });
   }
 
   function getUseBlock() {
@@ -47,19 +47,19 @@ function RenderBlock(props: RenderBlockProps) {
           rootSetState: props.context.rootSetState,
           context: props.context.context,
           shouldEvaluateBindings: true,
-        })
+        });
   }
 
-  const Tag = props.block.tagName || 'div'
+  const Tag = props.block.tagName || 'div';
 
   function canShowBlock() {
     if ('hide' in getUseBlock()) {
-      return !getUseBlock().hide
+      return !getUseBlock().hide;
     }
     if ('show' in getUseBlock()) {
-      return getUseBlock().show
+      return getUseBlock().show;
     }
-    return true
+    return true;
   }
 
   function childrenWithoutParentComponent() {
@@ -70,8 +70,8 @@ function RenderBlock(props: RenderBlockProps) {
      * blocks, and the children will be repeated within those blocks.
      */
     const shouldRenderChildrenOutsideRef =
-      !component?.component && !repeatItem()
-    return shouldRenderChildrenOutsideRef ? getUseBlock().children ?? [] : []
+      !component?.component && !repeatItem();
+    return shouldRenderChildrenOutsideRef ? getUseBlock().children ?? [] : [];
   }
 
   function renderComponentProps() {
@@ -93,10 +93,10 @@ function RenderBlock(props: RenderBlockProps) {
        * component itself directly. Otherwise, they are provided to the wrapper element.
        */
       includeBlockProps: component?.noWrap === true,
-    }
+    };
   }
 
-  const childrenContext = props.context
+  const childrenContext = props.context;
 
   return (
     <>
@@ -162,7 +162,7 @@ function RenderBlock(props: RenderBlockProps) {
         </>
       ) : null}
     </>
-  )
+  );
 }
 
-export default RenderBlock
+export default RenderBlock;

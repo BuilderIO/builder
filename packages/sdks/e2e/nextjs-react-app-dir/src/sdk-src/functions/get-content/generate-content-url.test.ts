@@ -1,9 +1,9 @@
-import { generateContentUrl } from './generate-content-url'
-import type { GetContentOptions } from './types'
+import { generateContentUrl } from './generate-content-url';
+import type { GetContentOptions } from './types';
 
-const testKey = 'YJIGb4i01jvw0SRdL5Bt'
-const testModel = 'page'
-const testId = 'c1b81bab59704599b997574eb0736def'
+const testKey = 'YJIGb4i01jvw0SRdL5Bt';
+const testModel = 'page';
+const testId = 'c1b81bab59704599b997574eb0736def';
 
 const options = {
   cachebust: 'true',
@@ -13,7 +13,7 @@ const options = {
   'overrides.page': '037948e52eaf4743afed464f02c70da4',
   'overrides.page:/': '037948e52eaf4743afed464f02c70da4',
   preview: 'page',
-}
+};
 
 describe('Generate Content URL', () => {
   test('generates the proper value for a simple query', () => {
@@ -21,9 +21,9 @@ describe('Generate Content URL', () => {
       apiKey: testKey,
       model: testModel,
       query: { id: testId },
-    })
-    expect(output).toMatchSnapshot()
-  })
+    });
+    expect(output).toMatchSnapshot();
+  });
 
   test('Handles overrides correctly', () => {
     const output = generateContentUrl({
@@ -31,9 +31,9 @@ describe('Generate Content URL', () => {
       model: testModel,
       query: { id: testId },
       options,
-    })
-    expect(output).toMatchSnapshot()
-  })
+    });
+    expect(output).toMatchSnapshot();
+  });
 
   test('generate content url with apiVersion as default', () => {
     const output = generateContentUrl({
@@ -41,9 +41,9 @@ describe('Generate Content URL', () => {
       model: testModel,
       query: { id: testId },
       options,
-    })
-    expect(output).toMatchSnapshot()
-  })
+    });
+    expect(output).toMatchSnapshot();
+  });
 
   test('generate content url with apiVersion as v2', () => {
     const output = generateContentUrl({
@@ -52,9 +52,9 @@ describe('Generate Content URL', () => {
       query: { id: testId },
       options,
       apiVersion: 'v2',
-    })
-    expect(output).toMatchSnapshot()
-  })
+    });
+    expect(output).toMatchSnapshot();
+  });
 
   test('generate content url with apiVersion as v3', () => {
     const output = generateContentUrl({
@@ -63,9 +63,9 @@ describe('Generate Content URL', () => {
       query: { id: testId },
       options,
       apiVersion: 'v3',
-    })
-    expect(output).toMatchSnapshot()
-  })
+    });
+    expect(output).toMatchSnapshot();
+  });
 
   test('throw error when trying to generate content url with apiVersion as v1', () => {
     expect(() => {
@@ -75,9 +75,9 @@ describe('Generate Content URL', () => {
         query: { id: testId },
         options,
         apiVersion: 'v1' as GetContentOptions['apiVersion'],
-      })
-    }).toThrow(`Invalid apiVersion: expected 'v2' or 'v3', received 'v1'`)
-  })
+      });
+    }).toThrow(`Invalid apiVersion: expected 'v2' or 'v3', received 'v1'`);
+  });
 
   test('throw error when trying to generate content url with an invalid apiVersion value', () => {
     expect(() => {
@@ -87,26 +87,26 @@ describe('Generate Content URL', () => {
         query: { id: testId },
         options,
         apiVersion: 'INVALID_API_VERSION' as GetContentOptions['apiVersion'],
-      })
+      });
     }).toThrow(
       `Invalid apiVersion: expected 'v2' or 'v3', received 'INVALID_API_VERSION'`
-    )
-  })
+    );
+  });
 
   test('generate content url with enrich option true', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
       enrich: true,
-    })
-    expect(output).toMatchSnapshot()
-  })
+    });
+    expect(output).toMatchSnapshot();
+  });
 
   test('generate content url with enrich option not present', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-    })
-    expect(output).toMatchSnapshot()
-  })
-})
+    });
+    expect(output).toMatchSnapshot();
+  });
+});

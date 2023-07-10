@@ -1,4 +1,4 @@
-import { ComponentInfo } from '@/sdk-src'
+import { ComponentInfo } from '@/sdk-src';
 
 export const componentInfo: ComponentInfo = {
   name: 'MyTextBox',
@@ -20,4 +20,4 @@ export const componentInfo: ComponentInfo = {
     height: 'auto',
     textAlign: 'center',
   },
-}
+};

@@ -1,18 +1,18 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface VideoProps {
-  attributes?: any
-  video?: string
-  autoPlay?: boolean
-  controls?: boolean
-  muted?: boolean
-  loop?: boolean
-  playsInline?: boolean
-  aspectRatio?: number
-  width?: number
-  height?: number
-  fit?: 'contain' | 'cover' | 'fill'
+  attributes?: any;
+  video?: string;
+  autoPlay?: boolean;
+  controls?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  playsInline?: boolean;
+  aspectRatio?: number;
+  width?: number;
+  height?: number;
+  fit?: 'contain' | 'cover' | 'fill';
   position?:
     | 'center'
     | 'top'
@@ -22,9 +22,9 @@ export interface VideoProps {
     | 'top left'
     | 'top right'
     | 'bottom left'
-    | 'bottom right'
-  posterImage?: string
-  lazyLoad?: boolean
+    | 'bottom right';
+  posterImage?: string;
+  lazyLoad?: boolean;
 }
 
 function Video(props: VideoProps) {
@@ -55,14 +55,14 @@ function Video(props: VideoProps) {
             playsInline: true,
           }
         : {}),
-    }
+    };
   }
 
   function spreadProps() {
     return {
       ...props.attributes,
       ...videoProps(),
-    }
+    };
   }
 
   return (
@@ -81,7 +81,7 @@ function Video(props: VideoProps) {
       src={props.video || 'no-src'}
       poster={props.posterImage}
     />
-  )
+  );
 }
 
-export default Video
+export default Video;

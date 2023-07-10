@@ -1,5 +1,5 @@
-import type { ComponentInfo } from '../../types/components'
-import { serializeFn } from '../util'
+import type { ComponentInfo } from '../../types/components';
+import { serializeFn } from '../util';
 
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc
@@ -197,30 +197,30 @@ export const componentInfo: ComponentInfo = {
       onChange: serializeFn((options: Map<string, any>) => {
         function clearWidths() {
           columns.forEach((col) => {
-            col.delete('width')
-          })
+            col.delete('width');
+          });
         }
 
-        const columns: Array<Map<string, any>> = options.get('columns')
+        const columns: Array<Map<string, any>> = options.get('columns');
 
         if (Array.isArray(columns)) {
           const containsColumnWithWidth = !!columns.find((col) =>
             col.get('width')
-          )
+          );
 
           if (containsColumnWithWidth) {
             const containsColumnWithoutWidth = !!columns.find(
               (col) => !col.get('width')
-            )
+            );
             if (containsColumnWithoutWidth) {
-              clearWidths()
+              clearWidths();
             } else {
               const sumWidths = columns.reduce((memo, col) => {
-                return memo + col.get('width')
-              }, 0)
-              const widthsDontAddUp = sumWidths !== 100
+                return memo + col.get('width');
+              }, 0);
+              const widthsDontAddUp = sumWidths !== 100;
               if (widthsDontAddUp) {
-                clearWidths()
+                clearWidths();
               }
             }
           }
@@ -251,4 +251,4 @@ export const componentInfo: ComponentInfo = {
       advanced: true,
     },
   ],
-}
+};

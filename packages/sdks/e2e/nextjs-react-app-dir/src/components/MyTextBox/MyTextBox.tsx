@@ -1,8 +1,8 @@
-'use client'
-import * as React from 'react'
+'use client';
+import * as React from 'react';
 
 export interface TextProps {
-  text: string
+  text: string;
 }
 
 function MyTextBox(props: TextProps) {
@@ -17,7 +17,7 @@ function MyTextBox(props: TextProps) {
         }}
       />
     </div>
-  )
+  );
 }
 
-export default MyTextBox
+export default MyTextBox;

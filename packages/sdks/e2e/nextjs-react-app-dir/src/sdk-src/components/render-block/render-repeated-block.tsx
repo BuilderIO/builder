@@ -1,17 +1,17 @@
-import * as React from 'react'
+import * as React from 'react';
 
 type Props = {
-  block: BuilderBlock
-  repeatContext: BuilderContextInterface
-  components: Dictionary<RegisteredComponent>
-}
+  block: BuilderBlock;
+  repeatContext: BuilderContextInterface;
+  components: Dictionary<RegisteredComponent>;
+};
 import type {
   BuilderContextInterface,
   RegisteredComponent,
-} from '../../context/types'
-import type { BuilderBlock } from '../../types/builder-block'
-import RenderBlock from './render-block'
-import { Dictionary } from '@/sdk-src/types/typescript'
+} from '../../context/types';
+import type { BuilderBlock } from '../../types/builder-block';
+import RenderBlock from './render-block';
+import { Dictionary } from '@/sdk-src/types/typescript';
 
 function RenderRepeatedBlock(props: Props) {
   return (
@@ -24,7 +24,7 @@ function RenderRepeatedBlock(props: Props) {
       components={props.components}
     />
     // </BuilderContext.Provider>
-  )
+  );
 }
 
-export default RenderRepeatedBlock
+export default RenderRepeatedBlock;

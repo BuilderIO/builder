@@ -1,66 +1,66 @@
-import * as React from 'react'
+import * as React from 'react';
 
 type Column = {
-  blocks: BuilderBlock[]
-  width?: number
-}
-type CSSVal = string | number
-type StackColumnsAt = 'tablet' | 'mobile' | 'never'
+  blocks: BuilderBlock[];
+  width?: number;
+};
+type CSSVal = string | number;
+type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 export interface ColumnProps {
-  columns?: Column[]
-  space?: number
-  stackColumnsAt?: StackColumnsAt
-  reverseColumnsWhenStacked?: boolean
-  builderComponents: Dictionary<RegisteredComponent>
+  columns?: Column[];
+  space?: number;
+  stackColumnsAt?: StackColumnsAt;
+  reverseColumnsWhenStacked?: boolean;
+  builderComponents: Dictionary<RegisteredComponent>;
 }
 
-import RenderBlocks from '../../components/render-blocks'
-import type { BuilderBlock } from '../../types/builder-block'
-import { getSizesForBreakpoints } from '../../constants/device-sizes'
-import type { SizeName } from '../../constants/device-sizes'
-import RenderInlinedStyles from '../../components/render-inlined-styles'
-import { TARGET } from '../../constants/target'
-import type { Dictionary } from '../../types/typescript'
+import RenderBlocks from '../../components/render-blocks';
+import type { BuilderBlock } from '../../types/builder-block';
+import { getSizesForBreakpoints } from '../../constants/device-sizes';
+import type { SizeName } from '../../constants/device-sizes';
+import RenderInlinedStyles from '../../components/render-inlined-styles';
+import { TARGET } from '../../constants/target';
+import type { Dictionary } from '../../types/typescript';
 import {
   BuilderContextInterface,
   RegisteredComponent,
-} from '@/sdk-src/context/types'
-import { PropsWithBuilder } from '@/sdk-src/types/builder-props'
+} from '@/sdk-src/context/types';
+import { PropsWithBuilder } from '@/sdk-src/types/builder-props';
 
 function Columns(props: PropsWithBuilder<ColumnProps>) {
-  const gutterSize = typeof props.space === 'number' ? props.space || 0 : 20
+  const gutterSize = typeof props.space === 'number' ? props.space || 0 : 20;
 
-  const cols = props.columns || []
+  const cols = props.columns || [];
 
-  const stackAt = props.stackColumnsAt || 'tablet'
+  const stackAt = props.stackColumnsAt || 'tablet';
 
   function getWidth(index: number) {
-    return cols[index]?.width || 100 / cols.length
+    return cols[index]?.width || 100 / cols.length;
   }
 
   function getColumnCssWidth(index: number) {
-    const subtractWidth = (gutterSize * (cols.length - 1)) / cols.length
-    return `calc(${getWidth(index)}% - ${subtractWidth}px)`
+    const subtractWidth = (gutterSize * (cols.length - 1)) / cols.length;
+    return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
   }
 
   function getTabletStyle({
     stackedStyle,
     desktopStyle,
   }: {
-    stackedStyle: CSSVal
-    desktopStyle: CSSVal
+    stackedStyle: CSSVal;
+    desktopStyle: CSSVal;
   }) {
-    return stackAt === 'tablet' ? stackedStyle : desktopStyle
+    return stackAt === 'tablet' ? stackedStyle : desktopStyle;
   }
 
   function getMobileStyle({
     stackedStyle,
     desktopStyle,
   }: {
-    stackedStyle: CSSVal
-    desktopStyle: CSSVal
+    stackedStyle: CSSVal;
+    desktopStyle: CSSVal;
   }) {
-    return stackAt === 'never' ? desktopStyle : stackedStyle
+    return stackAt === 'never' ? desktopStyle : stackedStyle;
   }
 
   const flexDir =
@@ -68,13 +68,13 @@ function Columns(props: PropsWithBuilder<ColumnProps>) {
       ? 'row'
       : props.reverseColumnsWhenStacked
       ? 'column-reverse'
-      : 'column'
+      : 'column';
 
   function columnsCssVars() {
     if (TARGET === 'reactNative') {
       return {
         flexDirection: flexDir,
-      } as Dictionary<string>
+      } as Dictionary<string>;
     }
     return {
       '--flex-dir': flexDir,
@@ -82,20 +82,20 @@ function Columns(props: PropsWithBuilder<ColumnProps>) {
         stackedStyle: flexDir,
         desktopStyle: 'row',
       }),
-    } as Dictionary<string>
+    } as Dictionary<string>;
   }
 
   function columnCssVars(index: number) {
-    const gutter = index === 0 ? 0 : gutterSize
+    const gutter = index === 0 ? 0 : gutterSize;
     if (TARGET === 'reactNative') {
       return {
         marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
-      } as any as Dictionary<string>
+      } as any as Dictionary<string>;
     }
-    const width = getColumnCssWidth(index)
-    const gutterPixels = `${gutter}px`
-    const mobileWidth = '100%'
-    const mobileMarginLeft = 0
+    const width = getColumnCssWidth(index);
+    const gutterPixels = `${gutter}px`;
+    const mobileWidth = '100%';
+    const mobileMarginLeft = 0;
     return {
       width,
       'margin-left': gutterPixels,
@@ -115,14 +115,14 @@ function Columns(props: PropsWithBuilder<ColumnProps>) {
         stackedStyle: mobileMarginLeft,
         desktopStyle: gutterPixels,
       }),
-    } as any as Dictionary<string>
+    } as any as Dictionary<string>;
   }
 
   function getWidthForBreakpointSize(size: SizeName) {
     const breakpointSizes = getSizesForBreakpoints(
       props.builderContext.content?.meta?.breakpoints || {}
-    )
-    return breakpointSizes[size].max
+    );
+    return breakpointSizes[size].max;
   }
 
   function columnsStyles() {
@@ -150,7 +150,7 @@ function Columns(props: PropsWithBuilder<ColumnProps>) {
             margin-left: var(--column-margin-left-mobile) !important;
           }
         },
-      `
+      `;
   }
 
   return (
@@ -197,7 +197,7 @@ function Columns(props: PropsWithBuilder<ColumnProps>) {
   align-items: stretch;
 }`}</style>
     </>
-  )
+  );
 }
 
-export default Columns
+export default Columns;

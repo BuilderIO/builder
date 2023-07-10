@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components'
+import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Core:Button',
@@ -39,4 +39,4 @@ export const componentInfo: ComponentInfo = {
   ],
   static: true,
   noWrap: true,
-}
+};
