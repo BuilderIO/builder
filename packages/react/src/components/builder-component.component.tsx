@@ -1389,15 +1389,16 @@ export class BuilderComponent extends React.Component<
               error.stack
             );
           } else {
-            if (process?.env?.DEBUG) {
-              console.debug(
-                'Builder custom code error:',
-                error.message,
-                'in',
-                data.jsCode,
-                error.stack
-              );
-            }
+            // TODO(SK): test with replacing the below with typeof process !== undefined
+            // if (global?.process?.env?.DEBUG) {
+            console.debug(
+              'Builder custom code error:',
+              error.message,
+              'in',
+              data.jsCode,
+              error.stack
+            );
+            // }
             // Add to req.options.errors to return to client
           }
         }

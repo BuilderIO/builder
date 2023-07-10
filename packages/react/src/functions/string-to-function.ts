@@ -143,15 +143,16 @@ export function stringToFunction(
           error.stack || error
         );
       } else {
-        if (process?.env?.DEBUG) {
-          console.debug(
-            'Builder custom code error:',
-            error.message || error,
-            'in',
-            str,
-            error.stack || error
-          );
-        }
+        // TODO(SK): test with replacing the below with typeof process !== undefined
+        // if (process?.env?.DEBUG) {
+        console.debug(
+          'Builder custom code error:',
+          error.message || error,
+          'in',
+          str,
+          error.stack || error
+        );
+        // }
       }
       if (errors) {
         errors.push(error);
