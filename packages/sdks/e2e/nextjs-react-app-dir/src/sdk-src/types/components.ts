@@ -37,6 +37,7 @@ export interface ComponentInfo {
    */
   defaultChildren?: BuilderElement[];
   defaults?: Partial<BuilderElement>;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
