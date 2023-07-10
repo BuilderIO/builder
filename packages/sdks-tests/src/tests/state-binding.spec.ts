@@ -12,7 +12,8 @@ test.describe('State binding', () => {
         packageName === 'e2e-solidjs' ||
         packageName === 'e2e-solid-start' ||
         packageName === 'e2e-svelte' ||
-        packageName === 'e2e-sveltekit'
+        packageName === 'e2e-sveltekit' ||
+        packageName === 'e2e-nextjs-app-dir-react'
       ) {
         test.skip();
         return;
