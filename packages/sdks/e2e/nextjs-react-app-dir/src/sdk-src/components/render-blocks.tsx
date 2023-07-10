@@ -10,7 +10,10 @@ export type RenderBlockProps = {
 import type { BuilderBlock } from '../types/builder-block';
 import BlockStyles from './render-block/block-styles';
 import RenderBlock from './render-block/render-block';
-import type { BuilderContextInterface, RegisteredComponent } from '../context/types';
+import type {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '../context/types';
 import type { Dictionary } from '../types/typescript';
 import RenderBlocksWrapper from './render-blocks/render-blocks-wrapper';
 

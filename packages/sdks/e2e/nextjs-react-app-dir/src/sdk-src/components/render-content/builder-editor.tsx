@@ -8,7 +8,7 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '@/sdk-src/scripts/init-editing';
-import type { PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import type {
   BuilderComponentStateChange,
