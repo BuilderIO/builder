@@ -1,6 +1,5 @@
-import type { BuilderBlock } from '../types/builder-block.js';
 
-export function transformBlockProperties(properties: BuilderBlock) {
+export function transformBlockProperties(properties: any) {
   properties.className = properties.class;
   delete properties.class;
   return properties;

@@ -1,5 +1,5 @@
 import { TARGET } from '../constants/target';
-import { BuilderContextInterface } from '../context/types';
+import type { BuilderContextInterface } from '../context/types';
 import { convertStyleMapToCSSArray } from '../helpers/css';
 import type { BuilderBlock } from '../types/builder-block';
 import { getReactNativeBlockStyles } from './get-react-native-block-styles';
@@ -57,8 +57,8 @@ export function getBlockProperties({
 
   if (TARGET === 'reactNative') {
     return (properties.style = getReactNativeBlockStyles({
-      block: block,
-      context: context,
+      block,
+      context,
       blockStyles: properties.style,
     }));
   }

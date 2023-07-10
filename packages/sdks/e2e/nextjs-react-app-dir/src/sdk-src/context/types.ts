@@ -2,7 +2,6 @@ import type { BuilderContent } from '../types/builder-content';
 import type { ComponentInfo } from '../types/components';
 import type { Dictionary, Nullable } from '../types/typescript';
 import type { ApiVersion } from '../types/api-version';
-import { ServerContextJSONValue } from 'react';
 
 export type RegisteredComponent = ComponentInfo & {
   component: any;

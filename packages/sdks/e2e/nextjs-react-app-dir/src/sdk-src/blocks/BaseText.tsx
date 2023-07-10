@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { PropsWithBuilder } from '../types/builder-props';
+import type { PropsWithBuilder } from '../types/builder-props';
 export interface BaseTextProps {
   text: string;
 }

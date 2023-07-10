@@ -1,19 +1,18 @@
 import * as React from 'react';
-import { _track } from '../../functions/track/index';
 import RenderBlocks from '../render-blocks';
 import RenderContentStyles from './components/render-styles';
 import type { RenderContentProps } from './render-content.types';
 import { TARGET } from '../../constants/target';
 import { getRenderContentScriptString } from '../render-content-variants/helpers';
 import EnableBuilderEditor from './builder-editor';
-import { ComponentInfo } from '@/sdk-src/types/components';
+import type { ComponentInfo } from '@/sdk-src/types/components';
 import { getDefaultRegisteredComponents } from '@/sdk-src/constants/builder-registered-components';
 import { components } from '@/sdk-src/functions/register-component';
-import {
+import type {
   BuilderContextInterface,
   RegisteredComponent,
 } from '@/sdk-src/context/types';
-import { Dictionary } from '@/sdk-src/types/typescript';
+import type { Dictionary } from '@/sdk-src/types/typescript';
 import {
   getContentInitialValue,
   getContextStateInitialValue,

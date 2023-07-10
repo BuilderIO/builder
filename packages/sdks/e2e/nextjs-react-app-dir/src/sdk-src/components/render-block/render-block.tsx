@@ -20,7 +20,7 @@ import {
 } from './render-block.helpers';
 import RenderRepeatedBlock from './render-repeated-block';
 import RenderComponent from './render-component';
-import { Dictionary } from '@/sdk-src/types/typescript';
+import type { Dictionary } from '@/sdk-src/types/typescript';
 import RenderBlockWrapper from './render-block-wrapper';
 
 function RenderBlock(props: RenderBlockProps) {

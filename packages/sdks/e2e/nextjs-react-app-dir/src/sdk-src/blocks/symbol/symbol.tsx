@@ -21,9 +21,9 @@ import RenderContent from '../../components/render-content/render-content';
 import { getContent } from '../../functions/get-content/index';
 import type { BuilderContent } from '../../types/builder-content';
 import { TARGET } from '../../constants/target';
-import { PropsWithBuilder } from '@/sdk-src/types/builder-props';
-import { Dictionary } from '@/sdk-src/types/typescript';
-import { RegisteredComponent } from '@/sdk-src/context/types';
+import type { PropsWithBuilder } from '@/sdk-src/types/builder-props';
+import type { Dictionary } from '@/sdk-src/types/typescript';
+import type { RegisteredComponent } from '@/sdk-src/context/types';
 
 async function Symbol(props: PropsWithBuilder<SymbolProps>) {
   const className = [

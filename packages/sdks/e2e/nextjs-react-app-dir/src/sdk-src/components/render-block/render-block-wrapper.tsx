@@ -1,12 +1,10 @@
 'use client';
 
-import { TARGET } from '@/sdk-src/constants/target';
-import { BuilderContextInterface } from '@/sdk-src/context/types';
+import type { BuilderContextInterface } from '@/sdk-src/context/types';
 import { getBlockActions } from '@/sdk-src/functions/get-block-actions';
 import { getBlockProperties } from '@/sdk-src/functions/get-block-properties';
-import { getReactNativeBlockStyles } from '@/sdk-src/functions/get-react-native-block-styles';
-import { BuilderBlock } from '@/sdk-src/types/builder-block';
-import { PropsWithChildren } from 'react';
+import type { BuilderBlock } from '@/sdk-src/types/builder-block';
+import type { PropsWithChildren } from 'react';
 
 export type RenderBlockProps = {
   Wrapper: string;

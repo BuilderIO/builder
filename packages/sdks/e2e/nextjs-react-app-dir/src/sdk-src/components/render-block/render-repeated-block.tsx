@@ -11,7 +11,7 @@ import type {
 } from '../../context/types';
 import type { BuilderBlock } from '../../types/builder-block';
 import RenderBlock from './render-block';
-import { Dictionary } from '@/sdk-src/types/typescript';
+import type { Dictionary } from '@/sdk-src/types/typescript';
 
 function RenderRepeatedBlock(props: Props) {
   return (

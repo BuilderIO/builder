@@ -10,7 +10,7 @@ import RenderInlinedStyles from '../../render-inlined-styles';
 import type { CustomFont } from './render-styles.helpers';
 import { getCss } from './render-styles.helpers';
 import { getFontCss } from './render-styles.helpers';
-import { BuilderContextInterface } from '@/sdk-src/context/types';
+import type { BuilderContextInterface } from '@/sdk-src/context/types';
 
 function RenderContentStyles(props: { context: BuilderContextInterface }) {
   const contentId = props.context.content?.id;
@@ -19,11 +19,11 @@ function RenderContentStyles(props: { context: BuilderContextInterface }) {
 
   const injectedStyles = `
   ${getCss({
-    cssCode: cssCode,
-    contentId: contentId,
+    cssCode,
+    contentId,
   })}
   ${getFontCss({
-    customFonts: customFonts,
+    customFonts,
   })}
   
   .builder-text > p:first-of-type, .builder-text > .builder-paragraph:first-of-type {

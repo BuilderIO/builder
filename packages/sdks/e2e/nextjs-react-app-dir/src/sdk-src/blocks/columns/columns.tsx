@@ -21,11 +21,11 @@ import type { SizeName } from '../../constants/device-sizes';
 import RenderInlinedStyles from '../../components/render-inlined-styles';
 import { TARGET } from '../../constants/target';
 import type { Dictionary } from '../../types/typescript';
-import {
-  BuilderContextInterface,
-  RegisteredComponent,
-} from '@/sdk-src/context/types';
-import { PropsWithBuilder } from '@/sdk-src/types/builder-props';
+import type {
+  RegisteredComponent} from '@/sdk-src/context/types';
+
+
+import type { PropsWithBuilder } from '@/sdk-src/types/builder-props';
 
 function Columns(props: PropsWithBuilder<ColumnProps>) {
   const gutterSize = typeof props.space === 'number' ? props.space || 0 : 20;

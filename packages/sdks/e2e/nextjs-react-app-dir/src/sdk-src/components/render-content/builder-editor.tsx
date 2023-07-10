@@ -8,12 +8,13 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '@/sdk-src/scripts/init-editing';
-import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
-import {
+import type { PropsWithChildren} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import type {
   BuilderComponentStateChange,
   RenderContentProps,
 } from './render-content.types';
-import { BuilderContent } from '@/sdk-src/types/builder-content';
+import type { BuilderContent } from '@/sdk-src/types/builder-content';
 import { logger } from '@/sdk-src/helpers/logger';
 import {
   getContentInitialValue,
@@ -22,8 +23,8 @@ import {
 import { getInteractionPropertiesForEvent } from '@/sdk-src/functions/track/interaction';
 import { TARGET } from '@/sdk-src/constants/target';
 import { checkIsDefined } from '@/sdk-src/helpers/nullable';
-import { ComponentInfo } from '@/sdk-src/types/components';
-import { Dictionary } from '@/sdk-src/types/typescript';
+import type { ComponentInfo } from '@/sdk-src/types/components';
+import type { Dictionary } from '@/sdk-src/types/typescript';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type BuilderEditorProps = Omit<RenderContentProps, 'customComponents'> & {

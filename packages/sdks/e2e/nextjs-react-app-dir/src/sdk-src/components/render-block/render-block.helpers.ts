@@ -1,4 +1,4 @@
-import { Dictionary } from '@/sdk-src/types/typescript';
+import type { Dictionary } from '@/sdk-src/types/typescript';
 import type {
   BuilderContextInterface,
   RegisteredComponent,

@@ -22,7 +22,7 @@ import type {
   BuilderContextInterface,
   RegisteredComponent,
 } from '../../context/types';
-import { Dictionary } from '@/sdk-src/types/typescript';
+import type { Dictionary } from '@/sdk-src/types/typescript';
 import { getBlockProperties } from '@/sdk-src/functions/get-block-properties';
 
 function RenderComponent(props: RenderComponentProps) {
