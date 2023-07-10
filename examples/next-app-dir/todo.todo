@@ -38,3 +38,4 @@ Cookies:
 
 REMAINING:
 - SSR A/B Testing breaks
+- choose what to do about `noWrap: false`  elements. They cannot receive event handlers as arguments.
