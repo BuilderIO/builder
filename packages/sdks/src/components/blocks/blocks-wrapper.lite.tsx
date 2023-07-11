@@ -3,16 +3,17 @@ import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 
 export type BlocksWrapperProps = {
-  blocks: BuilderBlock[] | undefined
-  parent: string | undefined
-  path: string | undefined
-  styleProp: Record<string, any> | undefined
-}
+  blocks: BuilderBlock[] | undefined;
+  parent: string | undefined;
+  path: string | undefined;
+  styleProp: Record<string, any> | undefined;
+};
 
-
-export default function BlocksWrapper(props: BlocksWrapperProps & {
-  children: any
-}) {
+export default function BlocksWrapper(
+  props: BlocksWrapperProps & {
+    children: any;
+  }
+) {
   const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');

@@ -141,7 +141,10 @@ export default function Content(props: RenderContentProps) {
             customFonts={builderContextSignal.value.content?.data?.customFonts}
           />
         </Show>
-        <Blocks          blocks={builderContextSignal.value.content?.data?.blocks}        />
+        <Blocks
+          blocks={builderContextSignal.value.content?.data?.blocks}
+          context={builderContextSignal}
+        />
       </BuilderEditing>
     </Show>
   );

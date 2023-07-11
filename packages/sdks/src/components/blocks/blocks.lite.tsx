@@ -6,8 +6,8 @@ import type { BlocksWrapperProps } from './blocks-wrapper.lite.jsx';
 import BlocksWrapper from './blocks-wrapper.lite.jsx';
 import type { BuilderContextInterface } from '../../context/types.js';
 
-export type BlocksProps = BlocksWrapperProps & {
-  context: Signal<BuilderContextInterface>
+export type BlocksProps = Partial<BlocksWrapperProps> & {
+  context: Signal<BuilderContextInterface>;
 };
 
 export default function Blocks(props: BlocksProps) {
