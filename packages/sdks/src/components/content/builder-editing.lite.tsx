@@ -47,7 +47,7 @@ useMetadata({
 type BuilderEditorProps = Omit<RenderContentProps, 'customComponents'> & {
   customComponents: Dictionary<ComponentInfo>;
   builderContextSignal: Signal<BuilderContextInterface>;
-  children: any;
+  children?: any;
 };
 
 export default function BuilderEditing(props: BuilderEditorProps) {

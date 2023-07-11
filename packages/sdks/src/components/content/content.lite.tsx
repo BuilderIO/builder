@@ -56,12 +56,13 @@ export default function Content(props: RenderContentProps) {
       {}
     ),
     get customComponentsInfo() {
-      return Object.values(state.customComps).reduce<Dictionary<ComponentInfo>>(
+      // TO-DO: fix once we remove `useStore<any>` hack in Qwik generator.
+      return Object.values(state.customComps as Dictionary<RegisteredComponent>).reduce<Dictionary<ComponentInfo>>(
         (acc, { component: _, ...info }) => ({
           ...acc,
           [info.name]: info,
         }),
-        {}
+        {} 
       );
     },
   });

@@ -9,10 +9,12 @@ export type BlocksWrapperProps = {
   styleProp: Record<string, any> | undefined;
 };
 
+type PropsWithChildren = BlocksWrapperProps & {
+  children?: any;
+};
+
 export default function BlocksWrapper(
-  props: BlocksWrapperProps & {
-    children: any;
-  }
+  props: PropsWithChildren
 ) {
   const state = useStore({
     get className() {
