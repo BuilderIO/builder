@@ -38,7 +38,7 @@ useMetadata({
   },
 });
 
-export default function Component(props: ComponentProps) {
+export default function ComponentRef(props: ComponentProps) {
   return (
     <Show when={props.componentRef}>
       <props.componentRef {...props.componentOptions}>

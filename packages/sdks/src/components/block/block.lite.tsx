@@ -13,7 +13,7 @@ import {
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './block.helpers.js';
-import type { ComponentProps } from './components/component.lite';
+import type { ComponentProps } from './components/component-ref.lite';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -26,7 +26,7 @@ import {
 import RepeatedBlock from './components/repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import Component from './components/component.lite';
+import ComponentRef from './components/component-ref.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 import type { Dictionary } from '../../types/typescript.js';
 
@@ -172,7 +172,7 @@ export default function Block(props: BlockProps) {
     <Show when={state.canShowBlock}>
       <Show
         when={!state.component?.noWrap}
-        else={<Component {...state.renderComponentProps} />}
+        else={<ComponentRef {...state.renderComponentProps} />}
       >
         {/*
          * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -195,7 +195,7 @@ export default function Block(props: BlockProps) {
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
           <state.Tag {...state.attributes} {...state.actions}>
-            <Component {...state.renderComponentProps} />
+            <ComponentRef {...state.renderComponentProps} />
             {/**
              * We need to run two separate loops for content + styles to workaround the fact that Vue 2
              * does not support multiple root elements.
