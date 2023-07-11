@@ -27,6 +27,7 @@ import { useTarget } from '@builder.io/mitosis';
 import EnableEditor from './components/enable-editor.lite.jsx';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
+import type { BuilderContent } from '../../types/builder-content.js';
 
 useMetadata({
   qwik: {
@@ -41,6 +42,23 @@ export default function Content(props: ContentProps) {
       contentId: props.content?.id!,
       parentContentId: props.parentContentId!,
     }),
+    mergeNewContent(newContent: BuilderContent) {
+      builderContextSignal.value.content = {
+        ...builderContextSignal.value.content,
+        ...newContent,
+        data: {
+          ...builderContextSignal.value.content?.data,
+          ...newContent?.data,
+        },
+        meta: {
+          ...builderContextSignal.value.content?.meta,
+          ...newContent?.meta,
+          breakpoints:
+            newContent?.meta?.breakpoints ||
+            builderContextSignal.value.content?.meta?.breakpoints,
+        },
+      };
+    },
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
     },
@@ -61,7 +79,7 @@ export default function Content(props: ContentProps) {
       }),
       {}
     ),
-    get customComponentsInfo() {
+    get customComponentsInfo(): Dictionary<ComponentInfo> {
       // TO-DO: fix once we remove `useStore<any>` hack in Qwik generator.
       return Object.values(
         state.customComps as Dictionary<RegisteredComponent>
@@ -73,12 +91,9 @@ export default function Content(props: ContentProps) {
         {}
       );
     },
-    get tempContextSignalSetter() {
-      return useTarget({ react: setBuilderContextSignal, default: undefined });
-    },
   });
 
-  const [builderContextSignal, setBuilderContextSignal] = useState(
+  const [builderContextSignal] = useState(
     {
       content: getContentInitialValue({
         content: props.content,
@@ -125,10 +140,12 @@ export default function Content(props: ContentProps) {
 
   onUpdate(() => {
     if (!builderContextSignal.value.content) {
-      builderContextSignal.value.content = getContentInitialValue({
-        content: props.content,
-        data: props.data,
-      });
+      builderContextSignal.value.content = {
+        ...getContentInitialValue({
+          content: props.content,
+          data: props.data,
+        }),
+      };
     }
   }, [props.content, props.data, props.locale]);
 
@@ -151,7 +168,7 @@ export default function Content(props: ContentProps) {
         parentContentId={props.parentContentId}
         isSsrAbTest={props.isSsrAbTest}
         builderContextSignal={builderContextSignal}
-        setBuilderContextSignal={state.tempContextSignalSetter}
+        mergeNewContent={state.mergeNewContent}
       >
         <Show when={props.isSsrAbTest}>
           <script innerHTML={state.scriptStr}></script>

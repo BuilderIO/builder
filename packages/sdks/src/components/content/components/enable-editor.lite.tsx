@@ -47,7 +47,7 @@ useMetadata({
 type BuilderEditorProps = Omit<ContentProps, 'customComponents'> & {
   customComponents: Dictionary<ComponentInfo>;
   builderContextSignal: Signal<BuilderContextInterface>;
-  setBuilderContextSignal: any;
+  mergeNewContent: (newContent: BuilderContent) => void;
   children?: any;
 };
 
@@ -55,23 +55,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
-    mergeNewContent(newContent: BuilderContent) {
-      props.builderContextSignal.value.content = {
-        ...props.builderContextSignal.value.content,
-        ...newContent,
-        data: {
-          ...props.builderContextSignal.value.content?.data,
-          ...newContent?.data,
-        },
-        meta: {
-          ...props.builderContextSignal.value.content?.meta,
-          ...newContent?.meta,
-          breakpoints:
-            newContent?.meta?.breakpoints ||
-            props.builderContextSignal.value.content?.meta?.breakpoints,
-        },
-      };
-    },
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
 
     processMessage(event: MessageEvent): void {
@@ -88,7 +71,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
               return;
             }
             if (breakpoints) {
-              state.mergeNewContent({ meta: { breakpoints } });
+              props.mergeNewContent({ meta: { breakpoints } });
             }
             state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;
@@ -104,7 +87,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
             const contentData = messageContent.data;
 
             if (key === props.model) {
-              state.mergeNewContent(contentData);
+              props.mergeNewContent(contentData);
               state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
             break;
@@ -284,7 +267,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
             apiVersion: props.apiVersion,
           }).then((content) => {
             if (content) {
-              state.mergeNewContent(content);
+              props.mergeNewContent(content);
             }
           });
         }
@@ -298,7 +281,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onUpdate(() => {
     if (props.content) {
-      state.mergeNewContent(props.content);
+      props.mergeNewContent(props.content);
     }
   }, [props.content]);
 
