@@ -93,6 +93,7 @@ function RenderBlock(props: RenderBlockProps) {
        * component itself directly. Otherwise, they are provided to the wrapper element.
        */
       includeBlockProps: component?.noWrap === true,
+      isRSC: component?.isRSC,
     };
   }
 

@@ -11,6 +11,7 @@ export type RenderBlockProps = {
   block: BuilderBlock;
   context: BuilderContextInterface;
   wrapperProps?: any;
+  shouldNestAttributes?: boolean;
 };
 
 function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
@@ -28,8 +29,10 @@ function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
     return getBlockProperties({ block: props.block, context: props.context });
   }
 
+  const attr = props.shouldNestAttributes ? { attributes: {...attributes(), ...actions()} } : {};
+
   return (
-    <props.Wrapper {...props.wrapperProps} {...attributes()} {...actions()}>
+    <props.Wrapper {...props.wrapperProps} {...attr}>
       {props.children}
     </props.Wrapper>
   );
