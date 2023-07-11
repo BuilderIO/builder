@@ -1,4 +1,4 @@
-import RenderContent from '../../components/content/content.lite';
+import Content from '../../components/content/content.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
@@ -92,7 +92,7 @@ export default function Symbol(props: SymbolProps) {
       className={state.className}
       dataSet={{ class: state.className }}
     >
-      <RenderContent
+      <Content
         apiVersion={builderContext.value.apiVersion}
         apiKey={builderContext.value.apiKey!}
         context={builderContext.value.context}
