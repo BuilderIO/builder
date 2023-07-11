@@ -33,7 +33,6 @@ export type RenderBlockProps = {
 
 useMetadata({
   elementTag: 'state.Tag',
-  context: {},
 });
 
 export default function RenderBlock(props: RenderBlockProps) {

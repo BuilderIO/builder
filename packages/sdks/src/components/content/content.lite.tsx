@@ -5,15 +5,15 @@ import type {
   RegisteredComponents,
 } from '../../context/types.js';
 import { components } from '../../functions/register-component.js';
-import RenderBlocks from '../render-blocks.lite';
-import RenderContentStyles from './components/render-styles.lite';
+import Blocks from '../blocks/blocks.lite.jsx';
+import RenderContentStyles from './components/render-styles.lite.jsx';
 import { Show, useStore, useMetadata, useState } from '@builder.io/mitosis';
 
-import type { RenderContentProps } from './render-content.types.js';
+import type { RenderContentProps } from './content.types.js';
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from './render-content.helpers.js';
+} from './content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
@@ -28,7 +28,7 @@ useMetadata({
   },
 });
 
-export default function RenderContent(props: RenderContentProps) {
+export default function Content(props: RenderContentProps) {
   const state = useStore({
     scriptStr: getRenderContentScriptString({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
@@ -141,7 +141,7 @@ export default function RenderContent(props: RenderContentProps) {
             customFonts={builderContextSignal.value.content?.data?.customFonts}
           />
         </Show>
-        <RenderBlocks          blocks={builderContextSignal.value.content?.data?.blocks}        />
+        <Blocks          blocks={builderContextSignal.value.content?.data?.blocks}        />
       </BuilderEditing>
     </Show>
   );

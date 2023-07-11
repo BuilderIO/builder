@@ -4,8 +4,8 @@ import {
   getVariants,
   getVariantsScriptString,
 } from './helpers';
-import RenderContent from '../render-content/render-content.lite';
-import type { RenderContentProps } from '../render-content/render-content.types';
+import RenderContent from '../content/content.lite';
+import type { RenderContentProps } from '../content/content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';

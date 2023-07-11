@@ -1,20 +1,18 @@
-import BuilderContext from '../context/builder.context.lite';
-import { isEditing } from '../functions/is-editing.js';
-import type { BuilderBlock } from '../types/builder-block.js';
-import BlockStyles from './render-block/block-styles.lite';
-import RenderBlock from './render-block/render-block.lite';
-import { For, Show, useStore, useContext } from '@builder.io/mitosis';
+import { useStore } from '@builder.io/mitosis';
+import { isEditing } from '../../functions/is-editing.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
 
-export type RenderBlockProps = {
-  blocks?: BuilderBlock[];
-  parent?: string;
-  path?: string;
-  styleProp?: Record<string, any>;
-};
+export type BlocksWrapperProps = {
+  blocks: BuilderBlock[] | undefined
+  parent: string | undefined
+  path: string | undefined
+  styleProp: Record<string, any> | undefined
+}
 
-export default function RenderBlocks(props: RenderBlockProps) {
-  const builderContext = useContext(BuilderContext);
 
+export default function BlocksWrapper(props: BlocksWrapperProps & {
+  children: any
+}) {
   const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
@@ -70,32 +68,7 @@ export default function RenderBlocks(props: RenderBlockProps) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onKeyPress={(event) => state.onClick()}
     >
-      {/**
-       * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-       * does not support multiple root elements.
-       */}
-      <Show when={props.blocks}>
-        <For each={props.blocks}>
-          {(block) => (
-            <RenderBlock
-              key={'render-block-' + block.id}
-              block={block}
-              context={builderContext}
-            />
-          )}
-        </For>
-      </Show>
-      <Show when={props.blocks}>
-        <For each={props.blocks}>
-          {(block) => (
-            <BlockStyles
-              key={'block-style-' + block.id}
-              block={block}
-              context={builderContext.value}
-            />
-          )}
-        </For>
-      </Show>
+      {props.children}
     </div>
   );
 }

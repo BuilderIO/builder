@@ -32,7 +32,7 @@ import { getInteractionPropertiesForEvent } from '../../functions/track/interact
 import type {
   RenderContentProps,
   BuilderComponentStateChange,
-} from './render-content.types.js';
+} from './content.types.js';
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
 import type { Dictionary } from '../../types/typescript.js';

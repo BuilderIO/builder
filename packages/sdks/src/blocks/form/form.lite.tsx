@@ -3,7 +3,7 @@
 
 /* eslint-disable */
 import RenderBlock from '../../components/render-block/render-block.lite';
-import BuilderBlocks from '../../components/render-blocks.lite';
+import BuilderBlocks from '../../components/render-blocks/blocks.lite';
 import { isEditing } from '../../functions/is-editing.js';
 import { For, Show, useRef, useStore } from '@builder.io/mitosis';
 
