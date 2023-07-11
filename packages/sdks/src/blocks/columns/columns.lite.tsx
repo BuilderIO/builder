@@ -195,6 +195,7 @@ export default function Columns(props: ColumnProps) {
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
+              context={builderContext}
             />
           </div>
         )}
