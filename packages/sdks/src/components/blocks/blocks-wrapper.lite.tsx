@@ -13,9 +13,7 @@ type PropsWithChildren = BlocksWrapperProps & {
   children?: any;
 };
 
-export default function BlocksWrapper(
-  props: PropsWithChildren
-) {
+export default function BlocksWrapper(props: PropsWithChildren) {
   const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
