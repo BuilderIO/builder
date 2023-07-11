@@ -13,7 +13,7 @@ const processCookies = (content: BuilderContent) => {
   const cookieStore = cookies();
   const builderPatches = cookieStore
     .getAll()
-    .filter((x) => x.name.startsWith('builder.patch.' + content.id +'.'))
+    .filter((x) => x.name.startsWith('builder.patch.' + content.id + '.'))
     .map((x) => {
       // split into: `builder.patch.${contentId}.${blockId}.${index}`
       const [, , , blockId, index] = x.name.split('.');
@@ -90,28 +90,28 @@ export default async function Page(props: MyPageProps) {
   return (
     <div>
       <RenderContent
-      {...content}
-      // apiKey={API_KEY}
-      // model="page"
-      // content={content}
-      customComponents={[
-        {
-          ...componentInfo,
-          component: MyTextBox,
-        },
-        {
-          name: 'CatFacts',
-          component: CatFacts,
-          inputs: [
-            {
-              name: 'text',
-              type: 'text',
-              defaultValue: 'default text',
-            },
-          ],
-        },
-      ]}
-    />
+        {...content}
+        // apiKey={API_KEY}
+        // model="page"
+        // content={content}
+        customComponents={[
+          {
+            ...componentInfo,
+            component: MyTextBox,
+          },
+          {
+            name: 'CatFacts',
+            component: CatFacts,
+            inputs: [
+              {
+                name: 'text',
+                type: 'text',
+                defaultValue: 'default text',
+              },
+            ],
+          },
+        ]}
+      />
     </div>
   );
 }

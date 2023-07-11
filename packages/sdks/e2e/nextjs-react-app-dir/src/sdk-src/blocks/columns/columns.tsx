@@ -96,7 +96,7 @@ function Columns(props: PropsWithBuilder<ColumnProps>) {
     const mobileMarginLeft = 0;
     return {
       width,
-      [TARGET === 'react' ? 'marginLeft': 'margin-left']: gutterPixels,
+      [TARGET === 'react' ? 'marginLeft' : 'margin-left']: gutterPixels,
       '--column-width-mobile': getMobileStyle({
         stackedStyle: mobileWidth,
         desktopStyle: width,

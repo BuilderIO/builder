@@ -86,11 +86,14 @@ function getStyleAttribute(
       return convertStyleMapToCSSArray(style).join(' ');
     case 'qwik':
     case 'reactNative':
-      return style
+      return style;
     case 'react':
-      return Object.keys( style).reduce((acc, key) => ({
-        ...acc,
-        [kebabCaseToCamelCase(key)]: style[key]
-      }), {})
+      return Object.keys(style).reduce(
+        (acc, key) => ({
+          ...acc,
+          [kebabCaseToCamelCase(key)]: style[key],
+        }),
+        {}
+      );
   }
 }

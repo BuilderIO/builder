@@ -37,18 +37,20 @@ function RenderComponent(props: RenderComponentProps) {
 
   const attrs = props.includeBlockProps ? { attributes: attributes() } : {};
 
-  const Wrapper = props.isRSC ?   props.componentRef : RenderBlockWrapper
+  const Wrapper = props.isRSC ? props.componentRef : RenderBlockWrapper;
 
-  const wrapperProps = props.isRSC ?  {
-    ...props.componentOptions, ...attrs
-  }: { 
-    Wrapper: props.componentRef,
-    block: props.builderBlock,
-    context: props.context,
-    wrapperProps: props.componentOptions,
-    shouldNestAttributes: true,
-   }
-
+  const wrapperProps = props.isRSC
+    ? {
+        ...props.componentOptions,
+        ...attrs,
+      }
+    : {
+        Wrapper: props.componentRef,
+        block: props.builderBlock,
+        context: props.context,
+        wrapperProps: props.componentOptions,
+        shouldNestAttributes: true,
+      };
 
   return (
     <>

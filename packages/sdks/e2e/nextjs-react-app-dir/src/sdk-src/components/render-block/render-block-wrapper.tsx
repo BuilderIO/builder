@@ -29,7 +29,9 @@ function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
     return getBlockProperties({ block: props.block, context: props.context });
   }
 
-  const attr = props.shouldNestAttributes ? { attributes: {...attributes(), ...actions()} } : {};
+  const attr = props.shouldNestAttributes
+    ? { attributes: { ...attributes(), ...actions() } }
+    : {};
 
   return (
     <props.Wrapper {...props.wrapperProps} {...attr}>
