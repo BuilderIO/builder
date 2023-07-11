@@ -11,7 +11,7 @@ import { isPreviewing } from '../../../functions/is-previewing.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
 import { _track } from '../../../functions/track/index.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
-import builderContext from '../../../context/builder.context.lite.js';
+import builderContext from '../../../context/builder.context.lite';
 import type { Signal } from '@builder.io/mitosis';
 import {
   Show,
