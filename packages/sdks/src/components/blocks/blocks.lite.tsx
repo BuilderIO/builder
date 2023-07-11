@@ -4,10 +4,15 @@ import type { Signal } from '@builder.io/mitosis';
 import { For, Show } from '@builder.io/mitosis';
 import type { BlocksWrapperProps } from './blocks-wrapper.lite.jsx';
 import BlocksWrapper from './blocks-wrapper.lite.jsx';
-import type { BuilderContextInterface } from '../../context/types.js';
+import type {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '../../context/types.js';
+import type { Dictionary } from '../../types/typescript';
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {
   context: Signal<BuilderContextInterface>;
+  components: Dictionary<RegisteredComponent>;
 };
 
 export default function Blocks(props: BlocksProps) {
@@ -29,6 +34,7 @@ export default function Blocks(props: BlocksProps) {
               key={'render-block-' + block.id}
               block={block}
               context={props.context}
+              components={props.components}
             />
           )}
         </For>

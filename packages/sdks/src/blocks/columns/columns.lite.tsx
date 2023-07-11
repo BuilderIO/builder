@@ -7,6 +7,10 @@ import InlinedStyles from '../../components/inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
 import BuilderContext from '../../context/builder.context.lite';
 import type { Dictionary } from '../../types/typescript';
+import type {
+  BuilderComponentsProp,
+  PropsWithBuilderData,
+} from '../../types/builder-props';
 
 type Column = {
   blocks: BuilderBlock[];
@@ -17,7 +21,7 @@ type CSSVal = string | number;
 
 type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
-export interface ColumnProps {
+export interface ColumnProps extends BuilderComponentsProp {
   columns?: Column[];
   builderBlock: BuilderBlock;
   space?: number;
@@ -25,7 +29,7 @@ export interface ColumnProps {
   reverseColumnsWhenStacked?: boolean;
 }
 
-export default function Columns(props: ColumnProps) {
+export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
@@ -196,6 +200,7 @@ export default function Columns(props: ColumnProps) {
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
               context={builderContext}
+              components={props.builderComponents}
             />
           </div>
         )}

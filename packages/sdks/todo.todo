@@ -37,5 +37,6 @@ Cookies:
 
 
 REMAINING:
-- SSR A/B Testing breaks
-- choose what to do about `noWrap: false`  elements. They cannot receive event handlers as arguments.
+- SSR A/B Testing breaks - disabled for now
+- dig into cleaner UI to show loading indicators in editor.
+- look into Steve's approach of storing data in a local endpoint

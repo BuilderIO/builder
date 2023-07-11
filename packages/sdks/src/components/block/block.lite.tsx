@@ -1,4 +1,7 @@
-import type { BuilderContextInterface } from '../../context/types.js';
+import type {
+  BuilderContextInterface,
+  RegisteredComponent,
+} from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
@@ -25,10 +28,12 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import Component from './components/component.lite.jsx';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
+import type { Dictionary } from '../../types/typescript.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
+  components: Dictionary<RegisteredComponent>;
 };
 
 useMetadata({
@@ -122,8 +127,14 @@ export default function Block(props: RenderBlockProps) {
           ...(!state.component?.noWrap
             ? {}
             : { attributes: { ...state.attributes, ...state.actions } }),
+          builderContext: props.context,
+          ...(state.component?.name === 'Symbol' ||
+          state.component?.name === 'Columns'
+            ? { builderComponents: props.components }
+            : {}),
         },
         context: childrenContext,
+        components: props.components,
       };
     },
   });
@@ -172,6 +183,7 @@ export default function Block(props: RenderBlockProps) {
                 key={index}
                 repeatContext={data.context}
                 block={data.block}
+                components={props.components}
               />
             )}
           </For>
@@ -189,6 +201,7 @@ export default function Block(props: RenderBlockProps) {
                   key={'render-block-' + child.id}
                   block={child}
                   context={childrenContext}
+                  components={props.components}
                 />
               )}
             </For>

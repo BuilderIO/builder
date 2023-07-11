@@ -3,9 +3,12 @@ import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block.js';
 import { TARGET } from '../../constants/target';
 import { logger } from '../../helpers/logger';
+import type {
+  BuilderComponentsProp,
+  PropsWithBuilderData,
+} from '../../types/builder-props';
 
 export interface SymbolInfo {
   model?: string;
@@ -16,16 +19,15 @@ export interface SymbolInfo {
   dynamic?: boolean;
 }
 
-export interface SymbolProps {
+export interface SymbolProps extends BuilderComponentsProp {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
   dynamic?: boolean;
-  builderBlock?: BuilderBlock;
   attributes?: any;
   inheritState?: boolean;
 }
 
-export default function Symbol(props: SymbolProps) {
+export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
@@ -96,9 +98,7 @@ export default function Symbol(props: SymbolProps) {
         apiVersion={builderContext.value.apiVersion}
         apiKey={builderContext.value.apiKey!}
         context={builderContext.value.context}
-        customComponents={Object.values(
-          builderContext.value.registeredComponents
-        )}
+        customComponents={Object.values(props.builderComponents)}
         data={{
           ...props.symbol?.data,
           ...builderContext.value.localState,

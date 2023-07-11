@@ -147,6 +147,7 @@ export default function Content(props: ContentProps) {
         <Blocks
           blocks={builderContextSignal.value.content?.data?.blocks}
           context={builderContextSignal}
+          components={state.customComps}
         />
       </EnableEditor>
     </Show>
