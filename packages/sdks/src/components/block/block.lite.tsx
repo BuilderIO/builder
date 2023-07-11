@@ -30,7 +30,7 @@ import Component from './components/component.lite.jsx';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 import type { Dictionary } from '../../types/typescript.js';
 
-export type RenderBlockProps = {
+export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
   components: Dictionary<RegisteredComponent>;
@@ -40,7 +40,7 @@ useMetadata({
   elementTag: 'state.Tag',
 });
 
-export default function Block(props: RenderBlockProps) {
+export default function Block(props: BlockProps) {
   const state = useStore({
     component: getComponent({
       block: props.block,
