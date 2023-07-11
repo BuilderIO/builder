@@ -30,13 +30,13 @@ function RenderBlockWrapper(props: PropsWithChildren<RenderBlockWrapperProps>) {
   }
 
   function getWrapperProps() {
-    const wProps =  { ...attributes(), ...actions() }
+    const wProps = { ...attributes(), ...actions() };
 
     if (props.shouldNestAttributes) {
-      return { attributes: wProps }
+      return { attributes: wProps };
     }
 
-    return wProps
+    return wProps;
   }
 
   return (

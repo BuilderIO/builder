@@ -88,12 +88,12 @@ function getStyleAttribute(
     case 'react':
     case 'rsc':
       return style;
-      // return Object.keys(style).reduce(
-      //   (acc, key) => ({
-      //     ...acc,
-      //     [kebabCaseToCamelCase(key)]: style[key],
-      //   }),
-      //   {}
-      // );
+    // return Object.keys(style).reduce(
+    //   (acc, key) => ({
+    //     ...acc,
+    //     [kebabCaseToCamelCase(key)]: style[key],
+    //   }),
+    //   {}
+    // );
   }
 }

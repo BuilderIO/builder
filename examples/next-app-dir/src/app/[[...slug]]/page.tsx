@@ -2,7 +2,7 @@ import { API_KEY } from '../../builderConfig'
 import CatFacts from '@/components/MyTextBox/CatFacts'
 import MyTextBox from '@/components/MyTextBox/MyTextBox'
 import { componentInfo } from '@/components/MyTextBox/component-info'
-import {RenderContent, getContent} from '@builder.io/sdk-react/next'
+import { RenderContent, getContent } from '@builder.io/sdk-react/next'
 
 interface MyPageProps {
   params: {

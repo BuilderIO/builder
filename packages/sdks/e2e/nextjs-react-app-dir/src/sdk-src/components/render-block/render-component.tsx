@@ -47,7 +47,7 @@ function RenderComponent(props: RenderComponentProps) {
     wrapperProps: props.componentOptions,
     shouldNestAttributes: true,
   };
-  
+
   const wrapperProps = props.isRSC
     ? {
         ...props.componentOptions,
