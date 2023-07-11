@@ -18,4 +18,4 @@ e2e/rsc/
 
 **/.solid
 
-./e2e/nextjs-react-app-dir/src/sdk-src/
+e2e/nextjs-react-app-dir/src/sdk-src/
