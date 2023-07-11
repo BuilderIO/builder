@@ -49,6 +49,8 @@ function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
   return ret;
 }
 
+const instancesMap = new Map<string, Builder>();
+
 const wrapComponent = (info: any) => {
   return (props: any) => {
     // TODO: convention for all of this, like builderTagProps={{ style: {} foo: 'bar' }}
@@ -90,7 +92,7 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-let fetch: (typeof globalThis)['fetch'];
+let fetch: typeof globalThis['fetch'];
 if (globalThis.fetch) fetch = globalThis.fetch;
 fetch ??= require('node-fetch');
 
@@ -394,7 +396,7 @@ export class BuilderComponent extends React.Component<
       // TODO: should change if this prop changes
       context: {
         ...props.context,
-        apiKey: builder.apiKey || this.props.apiKey,
+        apiKey: this.props.apiKey || builder.apiKey,
       },
       state: Object.assign(this.rootState, {
         ...(this.inlinedContent && this.inlinedContent.data && this.inlinedContent.data.state),
@@ -416,7 +418,9 @@ export class BuilderComponent extends React.Component<
     if (Builder.isBrowser) {
       const key = this.props.apiKey;
       if (key && key !== this.builder.apiKey) {
-        this.builder.apiKey = key;
+        // hmm this could cause issues with global symbols
+        const instance = new Builder(key, undefined, undefined, true);
+        instancesMap.set(key, instance);
       }
 
       if (this.inlinedContent) {
@@ -428,7 +432,8 @@ export class BuilderComponent extends React.Component<
   }
 
   get builder() {
-    return this.props.builder || builder;
+    const instance = this.props.apiKey && instancesMap.get(this.props.apiKey);
+    return instance || this.props.builder || builder;
   }
 
   getHtmlData() {
