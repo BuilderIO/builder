@@ -73,6 +73,9 @@ export default function Content(props: ContentProps) {
         {}
       );
     },
+    get tempContextSignalSetter() {
+      return useTarget({ react: setBuilderContextSignal, default: undefined });
+    },
   });
 
   const [builderContextSignal, setBuilderContextSignal] = useState(
@@ -148,7 +151,7 @@ export default function Content(props: ContentProps) {
         parentContentId={props.parentContentId}
         isSsrAbTest={props.isSsrAbTest}
         builderContextSignal={builderContextSignal}
-        setBuilderContextSignal={setBuilderContextSignal}
+        setBuilderContextSignal={state.tempContextSignalSetter}
       >
         <Show when={props.isSsrAbTest}>
           <script innerHTML={state.scriptStr}></script>
