@@ -2,7 +2,6 @@ import { TARGET } from '../constants/target';
 import type { BuilderContextInterface } from '../context/types';
 import { convertStyleMapToCSSArray } from '../helpers/css';
 import type { BuilderBlock } from '../types/builder-block';
-import { kebabCaseToCamelCase } from './camel-to-kebab-case';
 import { getReactNativeBlockStyles } from './get-react-native-block-styles';
 import { transformBlockProperties } from './transform-block-properties';
 
@@ -86,14 +85,15 @@ function getStyleAttribute(
       return convertStyleMapToCSSArray(style).join(' ');
     case 'qwik':
     case 'reactNative':
-      return style;
     case 'react':
-      return Object.keys(style).reduce(
-        (acc, key) => ({
-          ...acc,
-          [kebabCaseToCamelCase(key)]: style[key],
-        }),
-        {}
-      );
+    case 'rsc':
+      return style;
+      // return Object.keys(style).reduce(
+      //   (acc, key) => ({
+      //     ...acc,
+      //     [kebabCaseToCamelCase(key)]: style[key],
+      //   }),
+      //   {}
+      // );
   }
 }

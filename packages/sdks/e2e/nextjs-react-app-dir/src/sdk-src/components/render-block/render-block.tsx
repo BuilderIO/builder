@@ -19,6 +19,7 @@ import {
   isEmptyHtmlElement,
 } from './render-block.helpers';
 import RenderRepeatedBlock from './render-repeated-block';
+import type { RenderComponentProps } from './render-component';
 import RenderComponent from './render-component';
 import type { Dictionary } from '@/sdk-src/types/typescript';
 import RenderBlockWrapper from './render-block-wrapper';
@@ -74,7 +75,7 @@ function RenderBlock(props: RenderBlockProps) {
     return shouldRenderChildrenOutsideRef ? getUseBlock().children ?? [] : [];
   }
 
-  function renderComponentProps() {
+  function renderComponentProps(): RenderComponentProps {
     return {
       blockChildren: getUseBlock().children ?? [],
       componentRef: component?.component,

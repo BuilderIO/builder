@@ -25,6 +25,7 @@ import type {
 } from '../../context/types';
 import type { Dictionary } from '@/sdk-src/types/typescript';
 import { getBlockProperties } from '@/sdk-src/functions/get-block-properties';
+import type { RenderBlockWrapperProps } from './render-block-wrapper';
 import RenderBlockWrapper from './render-block-wrapper';
 
 function RenderComponent(props: RenderComponentProps) {
@@ -39,18 +40,20 @@ function RenderComponent(props: RenderComponentProps) {
 
   const Wrapper = props.isRSC ? props.componentRef : RenderBlockWrapper;
 
+  const renderBlockWrapperProps: RenderBlockWrapperProps = {
+    Wrapper: props.componentRef,
+    block: props.builderBlock,
+    context: props.context,
+    wrapperProps: props.componentOptions,
+    shouldNestAttributes: true,
+  };
+  
   const wrapperProps = props.isRSC
     ? {
         ...props.componentOptions,
         ...attrs,
       }
-    : {
-        Wrapper: props.componentRef,
-        block: props.builderBlock,
-        context: props.context,
-        wrapperProps: props.componentOptions,
-        shouldNestAttributes: true,
-      };
+    : renderBlockWrapperProps;
 
   return (
     <>

@@ -6,7 +6,7 @@ import { getBlockProperties } from '@/sdk-src/functions/get-block-properties';
 import type { BuilderBlock } from '@/sdk-src/types/builder-block';
 import type { PropsWithChildren } from 'react';
 
-export type RenderBlockProps = {
+export type RenderBlockWrapperProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: BuilderContextInterface;
@@ -14,7 +14,7 @@ export type RenderBlockProps = {
   shouldNestAttributes?: boolean;
 };
 
-function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
+function RenderBlockWrapper(props: PropsWithChildren<RenderBlockWrapperProps>) {
   function actions() {
     return getBlockActions({
       block: props.block,
@@ -29,12 +29,18 @@ function RenderBlockWrapper(props: PropsWithChildren<RenderBlockProps>) {
     return getBlockProperties({ block: props.block, context: props.context });
   }
 
-  const attr = props.shouldNestAttributes
-    ? { attributes: { ...attributes(), ...actions() } }
-    : {};
+  function getWrapperProps() {
+    const wProps =  { ...attributes(), ...actions() }
+
+    if (props.shouldNestAttributes) {
+      return { attributes: wProps }
+    }
+
+    return wProps
+  }
 
   return (
-    <props.Wrapper {...props.wrapperProps} {...attr}>
+    <props.Wrapper {...props.wrapperProps} {...getWrapperProps()}>
       {props.children}
     </props.Wrapper>
   );

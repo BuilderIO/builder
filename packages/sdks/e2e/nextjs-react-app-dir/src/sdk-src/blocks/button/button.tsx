@@ -25,11 +25,11 @@ function Button(props: ButtonProps) {
       ) : (
         <>
           <button
-            className={
-              /** * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`. */
-              props.attributes.class + ' button-2b50f164'
-            }
             {...props.attributes}
+            className={
+              /** We have to explicitly provide `class` so that Mitosis knows to merge it with `css`. */
+              props.attributes.className + ' button-2b50f164'
+            }
           >
             {props.text}
           </button>
