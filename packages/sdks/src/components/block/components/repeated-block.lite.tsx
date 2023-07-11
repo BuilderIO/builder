@@ -1,8 +1,8 @@
 import { useState, setContext } from '@builder.io/mitosis';
-import BuilderContext from '../../context/builder.context.lite';
-import type { BuilderContextInterface } from '../../context/types.js';
-import type { BuilderBlock } from '../../types/builder-block';
-import Block from './block.lite';
+import BuilderContext from '../../../context/builder.context.lite';
+import type { BuilderContextInterface } from '../../../context/types.js';
+import type { BuilderBlock } from '../../../types/builder-block';
+import Block from '../block.lite';
 import { useMetadata } from '@builder.io/mitosis';
 
 type Props = {

@@ -1,4 +1,4 @@
-import BlockStyles from '../block/block-styles.lite';
+import BlockStyles from '../block/components/block-styles.lite';
 import Block from '../block/block.lite';
 import type { Signal } from '@builder.io/mitosis';
 import { For, Show } from '@builder.io/mitosis';

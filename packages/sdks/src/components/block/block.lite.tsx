@@ -4,13 +4,13 @@ import { getBlockComponentOptions } from '../../functions/get-block-component-op
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import BlockStyles from './block-styles.lite.jsx';
+import BlockStyles from './components/block-styles.lite.jsx';
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './block.helpers.js';
-import type { ComponentProps } from './component.lite.jsx';
+import type { ComponentProps } from './components/component.lite.jsx';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -20,10 +20,10 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import RepeatedBlock from './repeated-block.lite.jsx';
+import RepeatedBlock from './components/repeated-block.lite.jsx';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import Component from './component.lite.jsx';
+import Component from './components/component.lite.jsx';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
 export type RenderBlockProps = {
