@@ -26,7 +26,6 @@ export type PackageName =
   | 'e2e-react-native'
   | 'e2e-solidjs'
   | 'e2e-solid-start'
-  | 'e2e-qwik'
   | 'e2e-qwik-city'
   | 'e2e-nextjs-react'
   | 'e2e-nextjs-app-dir-client-react'
