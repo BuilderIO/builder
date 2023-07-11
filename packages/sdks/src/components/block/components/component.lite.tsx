@@ -1,6 +1,6 @@
 import type { BuilderBlock } from '../../../types/builder-block.js';
-import BlockStyles from './block-styles.lite.jsx';
-import Block from '../block.lite.jsx';
+import BlockStyles from './block-styles.lite';
+import Block from '../block.lite';
 import type { Signal } from '@builder.io/mitosis';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type {

@@ -7,13 +7,13 @@ import { getBlockComponentOptions } from '../../functions/get-block-component-op
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import BlockStyles from './components/block-styles.lite.jsx';
+import BlockStyles from './components/block-styles.lite';
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './block.helpers.js';
-import type { ComponentProps } from './components/component.lite.jsx';
+import type { ComponentProps } from './components/component.lite';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -23,10 +23,10 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import RepeatedBlock from './components/repeated-block.lite.jsx';
+import RepeatedBlock from './components/repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import Component from './components/component.lite.jsx';
+import Component from './components/component.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 import type { Dictionary } from '../../types/typescript.js';
 
@@ -38,6 +38,11 @@ export type BlockProps = {
 
 useMetadata({
   elementTag: 'state.Tag',
+  options: {
+    vue3: {
+      asyncComponentImports: true,
+    },
+  },
 });
 
 export default function Block(props: BlockProps) {
