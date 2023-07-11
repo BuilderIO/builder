@@ -68,7 +68,6 @@ function RenderContent(props: RenderContentProps) {
       data: props.data,
       locale: props.locale,
     }),
-    // TO-DO: handle this.
     rootSetState: undefined,
     context: props.context || {},
     apiKey: props.apiKey,

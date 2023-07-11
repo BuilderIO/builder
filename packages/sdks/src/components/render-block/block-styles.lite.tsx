@@ -18,16 +18,14 @@ export type BlockStylesProps = {
 
 export default function BlockStyles(props: BlockStylesProps) {
   const state = useStore({
-    get processedBlock(): BuilderBlock {
-      return getProcessedBlock({
-        block: props.block,
-        localState: props.context.localState,
-        rootState: props.context.rootState,
-        rootSetState: props.context.rootSetState,
-        context: props.context.context,
-        shouldEvaluateBindings: true,
-      });
-    },
+    processedBlock: getProcessedBlock({
+      block: props.block,
+      localState: props.context.localState,
+      rootState: props.context.rootState,
+      rootSetState: props.context.rootSetState,
+      context: props.context.context,
+      shouldEvaluateBindings: true,
+    }),
 
     get canShowBlock() {
       // only render styles for blocks that are visible
