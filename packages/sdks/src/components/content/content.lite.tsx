@@ -75,7 +75,7 @@ export default function Content(props: ContentProps) {
     },
   });
 
-  const [builderContextSignal] = useState(
+  const [builderContextSignal, setBuilderContextSignal] = useState(
     {
       content: getContentInitialValue({
         content: props.content,
@@ -148,6 +148,7 @@ export default function Content(props: ContentProps) {
         parentContentId={props.parentContentId}
         isSsrAbTest={props.isSsrAbTest}
         builderContextSignal={builderContextSignal}
+        setBuilderContextSignal={setBuilderContextSignal}
       >
         <Show when={props.isSsrAbTest}>
           <script innerHTML={state.scriptStr}></script>
