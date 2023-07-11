@@ -4,13 +4,13 @@ import { getBlockComponentOptions } from '../../functions/get-block-component-op
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import BlockStyles from './block-styles.lite';
+import BlockStyles from './block-styles.lite.jsx';
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
-} from './render-block.helpers.js';
-import type { RenderComponentProps } from './render-component.lite';
+} from './block.helpers.js';
+import type { ComponentProps } from './component.lite.jsx';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -20,10 +20,10 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import RenderRepeatedBlock from './render-repeated-block.lite';
+import RepeatedBlock from './repeated-block.lite.jsx';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import RenderComponent from './render-component.lite';
+import Component from './component.lite.jsx';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
 export type RenderBlockProps = {
@@ -35,7 +35,7 @@ useMetadata({
   elementTag: 'state.Tag',
 });
 
-export default function RenderBlock(props: RenderBlockProps) {
+export default function Block(props: RenderBlockProps) {
   const state = useStore({
     component: getComponent({
       block: props.block,
@@ -109,7 +109,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         : [];
     },
 
-    get renderComponentProps(): RenderComponentProps {
+    get renderComponentProps(): ComponentProps {
       return {
         blockChildren: state.processedBlock.children ?? [],
         componentRef: state.component?.component,
@@ -156,7 +156,7 @@ export default function RenderBlock(props: RenderBlockProps) {
     <Show when={state.canShowBlock}>
       <Show
         when={!state.component?.noWrap}
-        else={<RenderComponent {...state.renderComponentProps} />}
+        else={<Component {...state.renderComponentProps} />}
       >
         {/*
          * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -168,7 +168,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         <Show when={!isEmptyHtmlElement(state.Tag) && state.repeatItem}>
           <For each={state.repeatItem}>
             {(data, index) => (
-              <RenderRepeatedBlock
+              <RepeatedBlock
                 key={index}
                 repeatContext={data.context}
                 block={data.block}
@@ -178,14 +178,14 @@ export default function RenderBlock(props: RenderBlockProps) {
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
           <state.Tag {...state.attributes} {...state.actions}>
-            <RenderComponent {...state.renderComponentProps} />
+            <Component {...state.renderComponentProps} />
             {/**
              * We need to run two separate loops for content + styles to workaround the fact that Vue 2
              * does not support multiple root elements.
              */}
             <For each={state.childrenWithoutParentComponent}>
               {(child) => (
-                <RenderBlock
+                <Block
                   key={'render-block-' + child.id}
                   block={child}
                   context={childrenContext}

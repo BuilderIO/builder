@@ -7,7 +7,7 @@ import type { BuilderContent } from '../../types/builder-content';
 import type { Nullable } from '../../types/typescript';
 import type { ApiVersion } from '../../types/api-version';
 
-export interface RenderContentProps {
+export interface ContentProps {
   content?: Nullable<BuilderContent>;
   model?: string;
   data?: { [key: string]: any };

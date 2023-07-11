@@ -4,13 +4,13 @@ import {
   getVariants,
   getVariantsScriptString,
 } from './helpers';
-import RenderContent from '../content/content.lite';
-import type { RenderContentProps } from '../content/content.types';
+import Content from '../content/content.lite';
+import type { ContentProps } from '../content/content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
-import RenderInlinedStyles from '../render-inlined-styles.lite';
+import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 
-type VariantsProviderProps = RenderContentProps;
+type VariantsProviderProps = ContentProps;
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
   const state = useStore({
@@ -54,7 +54,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
   return (
     <>
       <Show when={state.shouldRenderVariants}>
-        <RenderInlinedStyles
+        <InlinedStyles
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
         />
@@ -66,7 +66,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
         <For each={getVariants(props.content)}>
           {(variant) => (
-            <RenderContent
+            <Content
               key={variant.id}
               content={variant}
               apiKey={props.apiKey}
@@ -80,7 +80,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           )}
         </For>
       </Show>
-      <RenderContent
+      <Content
         model={props.model}
         content={state.contentToRender}
         apiKey={props.apiKey}

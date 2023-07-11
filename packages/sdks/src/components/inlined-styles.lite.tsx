@@ -3,6 +3,6 @@ interface Props {
   id?: string;
 }
 
-export default function RenderInlinedStyles(props: Props) {
+export default function InlinedStyles(props: Props) {
   return <style innerHTML={props.styles} id={props.id} />;
 }

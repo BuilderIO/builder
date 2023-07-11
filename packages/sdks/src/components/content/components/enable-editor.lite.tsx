@@ -1,17 +1,17 @@
 import type {
   BuilderContextInterface,
   RegisteredComponent,
-} from '../../context/types.js';
-import { evaluate } from '../../functions/evaluate.js';
-import { getContent } from '../../functions/get-content/index.js';
-import { fetch } from '../../functions/get-fetch.js';
-import { isBrowser } from '../../functions/is-browser.js';
-import { isEditing } from '../../functions/is-editing.js';
-import { isPreviewing } from '../../functions/is-previewing.js';
-import { createRegisterComponentMessage } from '../../functions/register-component.js';
-import { _track } from '../../functions/track/index.js';
-import type { BuilderContent } from '../../types/builder-content.js';
-import builderContext from '../../context/builder.context.lite';
+} from '../../../context/types.js';
+import { evaluate } from '../../../functions/evaluate.js';
+import { getContent } from '../../../functions/get-content/index.js';
+import { fetch } from '../../../functions/get-fetch.js';
+import { isBrowser } from '../../../functions/is-browser.js';
+import { isEditing } from '../../../functions/is-editing.js';
+import { isPreviewing } from '../../../functions/is-previewing.js';
+import { createRegisterComponentMessage } from '../../../functions/register-component.js';
+import { _track } from '../../../functions/track/index.js';
+import type { BuilderContent } from '../../../types/builder-content.js';
+import builderContext from '../../../context/builder.context.lite.js';
 import type { Signal } from '@builder.io/mitosis';
 import {
   Show,
@@ -26,17 +26,17 @@ import {
 import {
   registerInsertMenu,
   setupBrowserForEditing,
-} from '../../scripts/init-editing.js';
-import { checkIsDefined } from '../../helpers/nullable.js';
-import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
+} from '../../../scripts/init-editing.js';
+import { checkIsDefined } from '../../../helpers/nullable.js';
+import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import type {
-  RenderContentProps,
+  ContentProps,
   BuilderComponentStateChange,
-} from './content.types.js';
-import { TARGET } from '../../constants/target.js';
-import { logger } from '../../helpers/logger.js';
-import type { Dictionary } from '../../types/typescript.js';
-import type { ComponentInfo } from '../../types/components.js';
+} from '../content.types.js';
+import { TARGET } from '../../../constants/target.js';
+import { logger } from '../../../helpers/logger.js';
+import type { Dictionary } from '../../../types/typescript.js';
+import type { ComponentInfo } from '../../../types/components.js';
 
 useMetadata({
   qwik: {
@@ -44,13 +44,13 @@ useMetadata({
   },
 });
 
-type BuilderEditorProps = Omit<RenderContentProps, 'customComponents'> & {
+type BuilderEditorProps = Omit<ContentProps, 'customComponents'> & {
   customComponents: Dictionary<ComponentInfo>;
   builderContextSignal: Signal<BuilderContextInterface>;
   children?: any;
 };
 
-export default function BuilderEditing(props: BuilderEditorProps) {
+export default function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,

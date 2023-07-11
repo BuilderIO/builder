@@ -1,8 +1,8 @@
-import RenderInlinedStyles from '../../render-inlined-styles.lite';
+import InlinedStyles from '../../inlined-styles.lite';
 import { useStore } from '@builder.io/mitosis';
-import type { CustomFont } from './render-styles.helpers';
-import { getCss } from './render-styles.helpers';
-import { getFontCss } from './render-styles.helpers';
+import type { CustomFont } from './content-styles.helpers';
+import { getCss } from './content-styles.helpers';
+import { getFontCss } from './content-styles.helpers';
 
 interface Props {
   cssCode?: string;
@@ -10,7 +10,7 @@ interface Props {
   contentId?: string;
 }
 
-export default function RenderContentStyles(props: Props) {
+export default function ContentStyles(props: Props) {
   const state = useStore({
     injectedStyles: `
 ${getCss({ cssCode: props.cssCode, contentId: props.contentId })}
@@ -31,5 +31,5 @@ ${getFontCss({ customFonts: props.customFonts })}
 `.trim(),
   });
 
-  return <RenderInlinedStyles styles={state.injectedStyles} />;
+  return <InlinedStyles styles={state.injectedStyles} />;
 }

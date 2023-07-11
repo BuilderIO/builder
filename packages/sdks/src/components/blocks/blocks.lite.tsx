@@ -1,5 +1,5 @@
-import BlockStyles from '../render-block/block-styles.lite';
-import RenderBlock from '../render-block/render-block.lite';
+import BlockStyles from '../block/block-styles.lite';
+import Block from '../block/block.lite';
 import type { Signal } from '@builder.io/mitosis';
 import { For, Show } from '@builder.io/mitosis';
 import type { BlocksWrapperProps } from './blocks-wrapper.lite.jsx';
@@ -25,7 +25,7 @@ export default function Blocks(props: BlocksProps) {
       <Show when={props.blocks}>
         <For each={props.blocks}>
           {(block) => (
-            <RenderBlock
+            <Block
               key={'render-block-' + block.id}
               block={block}
               context={props.context}

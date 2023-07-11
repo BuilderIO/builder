@@ -7,4 +7,4 @@ export { default as Section } from '../blocks/section/section.lite';
 export { default as Symbol } from '../blocks/symbol/symbol.lite';
 export { default as Text } from '../blocks/text/text.lite';
 export { default as Video } from '../blocks/video/video.lite';
-export { default as RenderContent } from '../components/render-content-variants/render-content-variants.lite';
+export { default as RenderContent } from '../components/content-variants/content-variants.lite';
