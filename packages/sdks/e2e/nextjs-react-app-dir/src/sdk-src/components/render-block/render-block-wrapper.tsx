@@ -15,32 +15,26 @@ export type RenderBlockWrapperProps = {
 };
 
 function RenderBlockWrapper(props: PropsWithChildren<RenderBlockWrapperProps>) {
-  function actions() {
-    return getBlockActions({
+  function getBlockProps() {
+    const blockProps = { 
+      ...getBlockProperties({ block: props.block, context: props.context }), 
+      ...getBlockActions({
       block: props.block,
       rootState: props.context.rootState,
       rootSetState: props.context.rootSetState,
       localState: props.context.localState,
       context: props.context.context,
-    });
-  }
-
-  function attributes() {
-    return getBlockProperties({ block: props.block, context: props.context });
-  }
-
-  function getWrapperProps() {
-    const wProps = { ...attributes(), ...actions() };
+    }) };
 
     if (props.shouldNestAttributes) {
-      return { attributes: wProps };
+      return { attributes: blockProps };
     }
 
-    return wProps;
+    return blockProps;
   }
 
   return (
-    <props.Wrapper {...props.wrapperProps} {...getWrapperProps()}>
+    <props.Wrapper {...props.wrapperProps} {...getBlockProps()}>
       {props.children}
     </props.Wrapper>
   );
