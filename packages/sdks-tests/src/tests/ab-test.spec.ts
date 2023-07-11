@@ -80,11 +80,6 @@ test.describe('A/B tests', () => {
        */
       if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
 
-      // React Native is slow for this particular test. Increasing timeout helps.
-      if (packageName === 'e2e-react-native') {
-        test.slow();
-      }
-
       const context = await createContextWithCookies({
         baseURL,
         browser,
@@ -121,11 +116,6 @@ test.describe('A/B tests', () => {
        * RSCs cannot support SSR A/B testing.
        */
       if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
-
-      // React Native is slow for this particular test. Increasing timeout helps.
-      if (packageName === 'e2e-react-native') {
-        test.slow();
-      }
 
       const context = await createContextWithCookies({
         baseURL,
