@@ -7,7 +7,13 @@ import type {
 import { components } from '../../functions/register-component.js';
 import Blocks from '../blocks/blocks.lite.jsx';
 import ContentStyles from './components/content-styles.lite.jsx';
-import { Show, useStore, useMetadata, useState } from '@builder.io/mitosis';
+import {
+  Show,
+  useStore,
+  useMetadata,
+  useState,
+  onUpdate,
+} from '@builder.io/mitosis';
 
 import type { ContentProps } from './content.types.js';
 import {
@@ -113,6 +119,15 @@ export default function Content(props: ContentProps) {
     },
     { reactive: true }
   );
+
+  onUpdate(() => {
+    if (!builderContextSignal.value.content) {
+      builderContextSignal.value.content = getContentInitialValue({
+        content: props.content,
+        data: props.data,
+      });
+    }
+  }, [props.content, props.data, props.locale]);
 
   return (
     <Show when={builderContextSignal.value.content}>
