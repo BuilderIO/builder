@@ -5,11 +5,7 @@
       :styles="hideVariantsStyleString"
     ></render-inlined-styles>
 
-    <component
-      :id="`variants-script-${content?.id}`"
-      v-html="variantScriptStr"
-      :is="'script'"
-    ></component>
+    <render-inlined-script :id="`variants-script-${content?.id}`" :script="variantScriptStr" />
 
     <template :key="variant.id" v-for="(variant, index) in getVariants(content)">
       <render-content
@@ -46,6 +42,7 @@ import RenderContent from '../render-content/render-content.vue';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import RenderInlinedStyles from '../render-inlined-styles.vue';
+import renderInlinedScript from '../render-inlined-script.vue';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 
 type VariantsProviderProps = RenderContentProps;
@@ -55,6 +52,7 @@ export default defineComponent({
   components: {
     RenderInlinedStyles: RenderInlinedStyles,
     RenderContent: RenderContent,
+    renderInlinedScript,
   },
   props: ['content', 'canTrack', 'apiKey', 'apiVersion', 'customComponents', 'model'],
 

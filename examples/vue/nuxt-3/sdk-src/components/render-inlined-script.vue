@@ -3,10 +3,10 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   render() {
-    return h('style', { id: this.id, innerHTML: this.styles });
+    return h('script', { id: this.id, innerHTML: this.scriptStr });
   },
   name: 'render-inlined-styles',
 
-  props: ['styles', 'id'],
+  props: ['scriptStr', 'id'],
 });
 </script>
