@@ -1,5 +1,5 @@
 <template>
-  <template v-if="builderContextSignal.content">
+  <div v-if="builderContextSignal.content">
     <div
       ref="elementRef"
       @click="onClick($event)"
@@ -24,95 +24,82 @@
           : {}),
       }"
     >
-      <template v-if="isSsrAbTest">
-        <component v-html="scriptStr" :is="'script'"></component>
-      </template>
+      <div v-if="isSsrAbTest">
+        <render-inlined-script :scriptStr="scriptStr" :is="'script'" />
+      </div>
 
-      <template v-if="TARGET !== 'reactNative'">
+      <div v-if="TARGET !== 'reactNative'">
         <render-content-styles
           :contentId="builderContextSignal.content?.id"
           :cssCode="builderContextSignal.content?.data?.cssCode"
           :customFonts="builderContextSignal.content?.data?.customFonts"
         ></render-content-styles>
-      </template>
+      </div>
 
       <render-blocks
         :blocks="builderContextSignal.content?.data?.blocks"
         :key="forceReRenderCount"
       ></render-blocks>
     </div>
-  </template>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
-import { getDefaultRegisteredComponents } from "../../constants/builder-registered-components.js";
+import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import type {
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
-} from "../../context/types.js";
-import { evaluate } from "../../functions/evaluate.js";
-import { getContent } from "../../functions/get-content/index.js";
-import { fetch } from "../../functions/get-fetch.js";
-import { isBrowser } from "../../functions/is-browser.js";
-import { isEditing } from "../../functions/is-editing.js";
-import { isPreviewing } from "../../functions/is-previewing.js";
-import {
-  components,
-  createRegisterComponentMessage,
-} from "../../functions/register-component.js";
-import { _track } from "../../functions/track/index.js";
-import type {
-  Breakpoints,
-  BuilderContent,
-} from "../../types/builder-content.js";
-import type { Nullable } from "../../types/typescript.js";
-import RenderBlocks from "../render-blocks.vue";
-import RenderContentStyles from "./components/render-styles.vue";
-import builderContext from "../../context/builder.context.js";
-import {
-  registerInsertMenu,
-  setupBrowserForEditing,
-} from "../../scripts/init-editing.js";
-import { checkIsDefined } from "../../helpers/nullable.js";
-import { getInteractionPropertiesForEvent } from "../../functions/track/interaction.js";
-import type {
-  RenderContentProps,
-  BuilderComponentStateChange,
-} from "./render-content.types.js";
-import {
-  getContentInitialValue,
-  getContextStateInitialValue,
-} from "./render-content.helpers.js";
-import { TARGET } from "../../constants/target.js";
-import { logger } from "../../helpers/logger.js";
-import { getRenderContentScriptString } from "../render-content-variants/helpers.js";
-import { wrapComponentRef } from "./wrap-component-ref.js";
+} from '../../context/types.js';
+import { evaluate } from '../../functions/evaluate.js';
+import { getContent } from '../../functions/get-content/index.js';
+import { fetch } from '../../functions/get-fetch.js';
+import { isBrowser } from '../../functions/is-browser.js';
+import { isEditing } from '../../functions/is-editing.js';
+import { isPreviewing } from '../../functions/is-previewing.js';
+import { components, createRegisterComponentMessage } from '../../functions/register-component.js';
+import { _track } from '../../functions/track/index.js';
+import type { Breakpoints, BuilderContent } from '../../types/builder-content.js';
+import type { Nullable } from '../../types/typescript.js';
+import RenderBlocks from '../render-blocks.vue';
+import RenderContentStyles from './components/render-styles.vue';
+import builderContext from '../../context/builder.context.js';
+import { registerInsertMenu, setupBrowserForEditing } from '../../scripts/init-editing.js';
+import { checkIsDefined } from '../../helpers/nullable.js';
+import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
+import type { RenderContentProps, BuilderComponentStateChange } from './render-content.types.js';
+import { getContentInitialValue, getContextStateInitialValue } from './render-content.helpers.js';
+import { TARGET } from '../../constants/target.js';
+import { logger } from '../../helpers/logger.js';
+import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
+import { wrapComponentRef } from './wrap-component-ref.js';
+import RenderInlinedScript from '../render-inlined-script.vue';
 
 export default defineComponent({
-  name: "render-content",
+  name: 'render-content',
   components: {
     RenderContentStyles: RenderContentStyles,
     RenderBlocks: RenderBlocks,
+    RenderInlinedScript,
   },
   props: [
-    "canTrack",
-    "model",
-    "context",
-    "apiKey",
-    "content",
-    "parentContentId",
-    "data",
-    "locale",
-    "apiVersion",
-    "customComponents",
-    "hideContent",
-    "classNameProp",
-    "isSsrAbTest",
-    "includeRefs",
-    "enrich",
+    'canTrack',
+    'model',
+    'context',
+    'apiKey',
+    'content',
+    'parentContentId',
+    'data',
+    'locale',
+    'apiVersion',
+    'customComponents',
+    'hideContent',
+    'classNameProp',
+    'isSsrAbTest',
+    'includeRefs',
+    'enrich',
   ],
 
   data() {
@@ -156,8 +143,7 @@ export default defineComponent({
           (acc, { component, ...curr }) => ({
             ...acc,
             [curr.name]: {
-              component:
-                TARGET === "vue3" ? wrapComponentRef(component) : component,
+              component: TARGET === 'vue3' ? wrapComponentRef(component) : component,
               ...curr,
             },
           }),
@@ -180,7 +166,7 @@ export default defineComponent({
   mounted() {
     if (!this.apiKey) {
       logger.error(
-        "No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop."
+        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
     if (isBrowser()) {
@@ -204,15 +190,15 @@ export default defineComponent({
               }
             : {}),
         });
-        Object.values<RegisteredComponent>(
-          this.builderContextSignal.registeredComponents
-        ).forEach((registeredComponent) => {
-          const message = createRegisterComponentMessage(registeredComponent);
-          window.parent?.postMessage(message, "*");
-        });
-        window.addEventListener("message", this.processMessage);
+        Object.values<RegisteredComponent>(this.builderContextSignal.registeredComponents).forEach(
+          registeredComponent => {
+            const message = createRegisterComponentMessage(registeredComponent);
+            window.parent?.postMessage(message, '*');
+          }
+        );
+        window.addEventListener('message', this.processMessage);
         window.addEventListener(
-          "builder:component:stateChangeListenerActivated",
+          'builder:component:stateChangeListenerActivated',
           this.emitStateUpdate
         );
       }
@@ -220,7 +206,7 @@ export default defineComponent({
         const variationId = this.builderContextSignal.content?.testVariationId;
         const contentId = this.builderContextSignal.content?.id;
         _track({
-          type: "impression",
+          type: 'impression',
           canTrack: this.canTrackToUse,
           contentId,
           apiKey: this.apiKey,
@@ -231,12 +217,9 @@ export default defineComponent({
       // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
-        const searchParamPreviewModel = searchParams.get("builder.preview");
-        const searchParamPreviewId = searchParams.get(
-          `builder.preview.${searchParamPreviewModel}`
-        );
-        const previewApiKey =
-          searchParams.get("apiKey") || searchParams.get("builder.space");
+        const searchParamPreviewModel = searchParams.get('builder.preview');
+        const searchParamPreviewId = searchParams.get(`builder.preview.${searchParamPreviewModel}`);
+        const previewApiKey = searchParams.get('apiKey') || searchParams.get('builder.space');
 
         /**
          * Make sure that:
@@ -256,7 +239,7 @@ export default defineComponent({
             model: this.model,
             apiKey: this.apiKey,
             apiVersion: this.apiVersion,
-          }).then((content) => {
+          }).then(content => {
             if (content) {
               this.mergeNewContent(content);
             }
@@ -299,9 +282,9 @@ export default defineComponent({
   },
   unmounted() {
     if (isBrowser()) {
-      window.removeEventListener("message", this.processMessage);
+      window.removeEventListener('message', this.processMessage);
       window.removeEventListener(
-        "builder:component:stateChangeListenerActivated",
+        'builder:component:stateChangeListenerActivated',
         this.emitStateUpdate
       );
     }
@@ -344,8 +327,7 @@ export default defineComponent({
           ...this.builderContextSignal.content?.meta,
           ...newContent?.meta,
           breakpoints:
-            newContent?.meta?.breakpoints ||
-            this.builderContextSignal.content?.meta?.breakpoints,
+            newContent?.meta?.breakpoints || this.builderContextSignal.content?.meta?.breakpoints,
         },
       };
     },
@@ -365,13 +347,10 @@ export default defineComponent({
       const { data } = event;
       if (data) {
         switch (data.type) {
-          case "builder.configureSdk": {
+          case 'builder.configureSdk': {
             const messageContent = data.data;
             const { breakpoints, contentId } = messageContent;
-            if (
-              !contentId ||
-              contentId !== this.builderContextSignal.content?.id
-            ) {
+            if (!contentId || contentId !== this.builderContextSignal.content?.id) {
               return;
             }
             if (breakpoints) {
@@ -380,7 +359,7 @@ export default defineComponent({
             this.forceReRenderCount = this.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;
           }
-          case "builder.contentUpdate": {
+          case 'builder.contentUpdate': {
             const messageContent = data.data;
             const key =
               messageContent.key ||
@@ -395,7 +374,7 @@ export default defineComponent({
 
             break;
           }
-          case "builder.patchUpdates": {
+          case 'builder.patchUpdates': {
             // TODO
             break;
           }
@@ -420,7 +399,7 @@ export default defineComponent({
         const variationId = this.builderContextSignal.content?.testVariationId;
         const contentId = this.builderContextSignal.content?.id;
         _track({
-          type: "click",
+          type: 'click',
           canTrack: this.canTrackToUse,
           contentId,
           apiKey: this.apiKey,
@@ -446,16 +425,16 @@ export default defineComponent({
     },
     handleRequest({ url, key }: { key: string; url: string }) {
       fetch(url)
-        .then((response) => response.json())
-        .then((json) => {
+        .then(response => response.json())
+        .then(json => {
           const newState = {
             ...this.builderContextSignal.rootState,
             [key]: json,
           };
           this.contentSetState(newState);
         })
-        .catch((err) => {
-          console.error("error fetching dynamic data", url, err);
+        .catch(err => {
+          console.error('error fetching dynamic data', url, err);
         });
     },
     runHttpRequests() {
@@ -475,23 +454,20 @@ export default defineComponent({
     emitStateUpdate() {
       if (isEditing()) {
         window.dispatchEvent(
-          new CustomEvent<BuilderComponentStateChange>(
-            "builder:component:stateChange",
-            {
-              detail: {
-                state: this.builderContextSignal.rootState,
-                ref: {
-                  name: this.model,
-                },
+          new CustomEvent<BuilderComponentStateChange>('builder:component:stateChange', {
+            detail: {
+              state: this.builderContextSignal.rootState,
+              ref: {
+                name: this.model,
               },
-            }
-          )
+            },
+          })
         );
       }
     },
     _classStringToObject(str: string) {
       const obj: Record<string, boolean> = {};
-      if (typeof str !== "string") {
+      if (typeof str !== 'string') {
         return obj;
       }
       const classNames = str.trim().split(/\s+/);
