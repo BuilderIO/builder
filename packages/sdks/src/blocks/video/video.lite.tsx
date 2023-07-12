@@ -48,7 +48,7 @@ export default function Video(props: VideoProps) {
   return (
     <video
       {...state.spreadProps}
-      preload={props.preload}
+      preload={props.preload || 'metadata'}
       style={{
         width: '100%',
         height: '100%',
