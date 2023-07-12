@@ -122,7 +122,7 @@ class VideoComponent extends React.Component<{
           muted={this.props.muted}
           controls={this.props.controls}
           loop={this.props.loop}
-          preload={this.props.preload}
+          preload={this.props.preload || 'metadata'}
           className="builder-video"
           css={{
             width: '100%',
@@ -239,7 +239,7 @@ export const Video = Builder.registerComponent(withChildren(VideoComponent), {
     {
       name: 'preload',
       type: 'text',
-      defaultValue: 'auto',
+      defaultValue: 'metadata',
       enum: ['auto', 'metadata', 'none'],
     },
     {
