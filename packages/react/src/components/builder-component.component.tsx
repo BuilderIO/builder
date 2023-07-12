@@ -417,8 +417,8 @@ export class BuilderComponent extends React.Component<
 
     if (Builder.isBrowser) {
       const key = this.props.apiKey;
-      if (key && key !== this.builder.apiKey) {
-        // hmm this could cause issues with global symbols
+      if (key && key !== this.builder.apiKey && !instancesMap.has(key)) {
+        // We create a builder instance for each api key to support loading of symbols from other spaces
         const instance = new Builder(key, undefined, undefined, true);
         instancesMap.set(key, instance);
       }
