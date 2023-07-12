@@ -14,6 +14,7 @@ export interface SymbolInfo {
   content?: BuilderContent;
   inline?: boolean;
   dynamic?: boolean;
+  ownerId?: string;
 }
 
 export interface SymbolProps {
@@ -60,7 +61,7 @@ export default function Symbol(props: SymbolProps) {
       ) {
         getContent({
           model: props.symbol.model,
-          apiKey: builderContext.value.apiKey,
+          apiKey: props.symbol.ownerId || builderContext.value.apiKey,
           apiVersion: builderContext.value.apiVersion,
           query: {
             id: props.symbol.entry,
@@ -94,7 +95,7 @@ export default function Symbol(props: SymbolProps) {
     >
       <RenderContent
         apiVersion={builderContext.value.apiVersion}
-        apiKey={builderContext.value.apiKey!}
+        apiKey={props.symbol?.ownerId || builderContext.value.apiKey!}
         context={builderContext.value.context}
         customComponents={Object.values(
           builderContext.value.registeredComponents
