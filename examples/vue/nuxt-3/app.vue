@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue/vue3';
+import { RenderContent, getContent, isPreviewing } from './sdk-src';
 
 import HelloWorldComponent from './components/HelloWorld.vue';
 
