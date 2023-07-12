@@ -11,10 +11,7 @@
       :is="'script'"
     ></component>
 
-    <template
-      :key="variant.id"
-      v-for="(variant, index) in getVariants(content)"
-    >
+    <template :key="variant.id" v-for="(variant, index) in getVariants(content)">
       <render-content
         :content="variant"
         :apiKey="apiKey"
@@ -42,52 +39,41 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
-import {
-  checkShouldRunVariants,
-  getVariants,
-  getVariantsScriptString,
-} from "./helpers";
-import RenderContent from "../render-content/render-content.vue";
-import type { RenderContentProps } from "../render-content/render-content.types";
-import { getDefaultCanTrack } from "../../helpers/canTrack";
-import RenderInlinedStyles from "../render-inlined-styles.vue";
-import { handleABTestingSync } from "../../helpers/ab-tests";
+import { checkShouldRunVariants, getVariants, getVariantsScriptString } from './helpers';
+import RenderContent from '../render-content/render-content.vue';
+import type { RenderContentProps } from '../render-content/render-content.types';
+import { getDefaultCanTrack } from '../../helpers/canTrack';
+import RenderInlinedStyles from '../render-inlined-styles.vue';
+import { handleABTestingSync } from '../../helpers/ab-tests';
 
 type VariantsProviderProps = RenderContentProps;
 
 export default defineComponent({
-  name: "render-content-variants",
+  name: 'render-content-variants',
   components: {
     RenderInlinedStyles: RenderInlinedStyles,
     RenderContent: RenderContent,
   },
-  props: [
-    "content",
-    "canTrack",
-    "apiKey",
-    "apiVersion",
-    "customComponents",
-    "model",
-  ],
+  props: ['content', 'canTrack', 'apiKey', 'apiVersion', 'customComponents', 'model'],
 
   data() {
     return {
       variantScriptStr: getVariantsScriptString(
-        getVariants(this.content).map((value) => ({
+        getVariants(this.content).map(value => ({
           id: value.id!,
           testRatio: value.testRatio,
         })),
-        this.content?.id || ""
+        this.content?.id || ''
       ),
       shouldRenderVariants: checkShouldRunVariants({
         canTrack: getDefaultCanTrack(this.canTrack),
         content: this.content,
       }),
       hideVariantsStyleString: getVariants(this.content)
-        .map((value) => `.variant-${value.id} { display: none; } `)
-        .join(""),
+        .map(value => `.variant-${value.id} { display: none; } `)
+        .join(''),
       contentToRender: checkShouldRunVariants({
         canTrack: getDefaultCanTrack(this.canTrack),
         content: this.content,
