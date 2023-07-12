@@ -60,7 +60,7 @@ export const componentInfo: ComponentInfo = {
     {
       name: 'preload',
       type: 'text',
-      defaultValue: 'auto',
+      defaultValue: 'metadata',
       enum: ['auto', 'metadata', 'none'],
     },
     {
