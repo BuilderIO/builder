@@ -538,7 +538,7 @@ module.exports = {
                   }
                 });
                 return json;
-              } else if (json.name === 'Component') {
+              } else if (json.name === 'ComponentRef') {
                 return json;
               }
 
