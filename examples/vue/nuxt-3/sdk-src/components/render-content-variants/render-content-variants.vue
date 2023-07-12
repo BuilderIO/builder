@@ -5,7 +5,7 @@
       :styles="hideVariantsStyleString"
     ></render-inlined-styles>
 
-    <render-inlined-script :id="`variants-script-${content?.id}`" :script="variantScriptStr" />
+    <render-inlined-script :id="`variants-script-${content?.id}`" :scriptStr="variantScriptStr" />
 
     <template :key="variant.id" v-for="(variant, index) in getVariants(content)">
       <render-content
