@@ -1,4 +1,4 @@
-import type { Browser, BrowserContext } from '@playwright/test';
+import type { Browser, BrowserContext, ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { findTextInPage, isRNSDK, test } from './helpers.js';
 
@@ -56,6 +56,11 @@ const createContextWithCookies = async ({
 // Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
 test.describe.configure({ retries: 0 });
 
+const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
+  const text = consoleMessage.text();
+  return text.includes('[Vue warn]: Hydration children mismatch');
+};
+
 test.describe('A/B tests', () => {
   const TRIES = 10;
 
@@ -94,10 +99,18 @@ test.describe('A/B tests', () => {
         page = await context.newPage();
       }
 
+      const msgs = [] as ConsoleMessage[];
+      page.on('console', msg => {
+        if (filterHydrationmismatchMessages(msg)) {
+          msgs.push(msg);
+        }
+      });
+
       await page.goto('/ab-test');
 
       await findTextInPage({ page, text: 'hello world default' });
       await expect(page.locator(SELECTOR, { hasText: 'hello world variation 1' })).toBeHidden();
+      await expect(msgs).toEqual([]);
     });
 
     test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
@@ -133,10 +146,18 @@ test.describe('A/B tests', () => {
         page = await context.newPage();
       }
 
+      const msgs = [] as ConsoleMessage[];
+      page.on('console', msg => {
+        if (filterHydrationmismatchMessages(msg)) {
+          msgs.push(msg);
+        }
+      });
+
       await page.goto('/ab-test');
 
       await findTextInPage({ page, text: 'hello world variation 1' });
       await expect(page.locator(SELECTOR, { hasText: 'hello world default' })).toBeHidden();
+      await expect(msgs).toEqual([]);
     });
   }
 });
