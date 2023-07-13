@@ -5,7 +5,12 @@
       :styles="hideVariantsStyleString"
     ></render-inlined-styles>
 
-    <render-inlined-script :id="`variants-script-${content?.id}`" :scriptStr="variantScriptStr" />
+    <render-inlined-script
+      :scriptStr="`
+      document.getElementById('variants-styles-${content?.id}').previousSibling?.remove();
+      document.getElementById('variants-styles-${content?.id}').remove();
+    `"
+    />
 
     <template :key="variant.id" v-for="(variant, index) in getVariants(content)">
       <render-content
@@ -50,8 +55,8 @@ type VariantsProviderProps = RenderContentProps;
 export default defineComponent({
   name: 'render-content-variants',
   components: {
-    RenderInlinedStyles: RenderInlinedStyles,
-    RenderContent: RenderContent,
+    RenderInlinedStyles,
+    RenderContent,
     renderInlinedScript,
   },
   props: ['content', 'canTrack', 'apiKey', 'apiVersion', 'customComponents', 'model'],

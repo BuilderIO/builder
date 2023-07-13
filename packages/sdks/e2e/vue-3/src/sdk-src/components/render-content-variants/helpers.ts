@@ -14,6 +14,7 @@ export const checkShouldRunVariants = ({
   canTrack: Nullable<boolean>;
   content: Nullable<BuilderContent>;
 }) => {
+  return true;
   const hasVariants = getVariants(content).length > 0;
 
   if (!hasVariants) {
@@ -103,6 +104,9 @@ function bldrAbTest(contentId: string, variants: VariantData[], isHydrationTarge
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
    */
   if (isHydrationTarget) {
+    // remove comment node.
+    styleEl.previousSibling?.remove();
+
     styleEl.remove();
     const thisScriptEl = document.getElementById(`variants-script-${contentId}`);
     thisScriptEl?.remove();

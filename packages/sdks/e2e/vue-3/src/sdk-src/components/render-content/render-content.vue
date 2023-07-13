@@ -25,7 +25,7 @@
       }"
     >
       <div v-if="isSsrAbTest">
-        <render-inlined-script :scriptStr="scriptStr" :is="'script'" />
+        <!-- <render-inlined-script :scriptStr="scriptStr" :is="'script'" /> -->
       </div>
 
       <div v-if="TARGET !== 'reactNative'">
