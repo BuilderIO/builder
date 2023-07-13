@@ -1,4 +1,4 @@
-import { For, useStore, Show, useState } from '@builder.io/mitosis';
+import { For, useStore, Show } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getVariants,
@@ -14,18 +14,13 @@ import InlinedScript from '../inlined-script.lite';
 type VariantsProviderProps = RenderContentProps;
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
-  const [shouldRenderVariants] = useState(
-    checkShouldRunVariants({
+  const state = useStore({
+    shouldRenderVariants: checkShouldRunVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
-    })
-  );
-
-  const [variants] = useState(getVariants(props.content));
-
-  const state = useStore({
+    }),
     variantScriptStr: getVariantsScriptString(
-      variants.map((value) => ({
+      getVariants(props.content).map((value) => ({
         id: value.id!,
         testRatio: value.testRatio,
       })),
@@ -41,21 +36,14 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
      *  Server: ".variant-1d326d78efb04ce38467dd8f5160fab6 { display: none; } "
      *  Client: ".variant-d50b5d04edf640f195a7c42ebdb159b2 { display: none; } "
      */
-    hideVariantsStyleString: variants
+    hideVariantsStyleString: getVariants(props.content)
       .map((value) => `.variant-${value.id} { display: none; } `)
       .join(''),
-
-    contentToRender: shouldRenderVariants
-      ? props.content
-      : handleABTestingSync({
-          item: props.content,
-          canTrack: getDefaultCanTrack(props.canTrack),
-        }),
   });
 
   return (
     <>
-      <Show when={shouldRenderVariants}>
+      <Show when={state.shouldRenderVariants}>
         <InlinedStyles
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
@@ -77,21 +65,28 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
               customComponents={props.customComponents}
               hideContent
               parentContentId={props.content?.id}
-              isSsrAbTest={shouldRenderVariants}
+              isSsrAbTest={state.shouldRenderVariants}
             />
           )}
         </For>
       </Show>
       <RenderContent
         model={props.model}
-        content={state.contentToRender}
+        content={
+          state.shouldRenderVariants
+            ? props.content
+            : handleABTestingSync({
+                item: props.content,
+                canTrack: getDefaultCanTrack(props.canTrack),
+              })
+        }
         apiKey={props.apiKey}
         apiVersion={props.apiVersion}
         canTrack={props.canTrack}
         customComponents={props.customComponents}
         classNameProp={`variant-${props.content?.id}`}
         parentContentId={props.content?.id}
-        isSsrAbTest={shouldRenderVariants}
+        isSsrAbTest={state.shouldRenderVariants}
       />
     </>
   );
