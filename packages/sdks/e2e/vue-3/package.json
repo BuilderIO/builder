@@ -10,6 +10,7 @@
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
+    "vite-plugin-ssr": "^0.4.133",
     "vue": "^3.2.37"
   },
   "devDependencies": {
