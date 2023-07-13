@@ -75,6 +75,32 @@ export default defineComponent({
 
   data() {
     return {
+      myScript2: (() => {
+        function x2() {
+          console.log('running 2nd script');
+          const thisScript = document.getElementById('ooga-booga-2');
+          // console.log(thisScript?.previousSibling);
+          // remove `<!--]-->` comment that closes if statement
+          // console.log(thisScript?.parentElement?.innerHTML);
+          console.log(thisScript?.parentElement?.parentElement?.innerHTML);
+          // thisScript?.previousSibling?.remove();
+        }
+
+        return x2.toString();
+      })(),
+      myScript: () => {
+        function x() {
+          const divEl = document.getElementById('div-ooga');
+          const thisScript = document.getElementById('ooga-booga');
+          // divEl?.remove();
+          // thisScript?.remove();
+          if (divEl?.previousSibling?.textContent) {
+            divEl.previousSibling.textContent = '';
+          }
+        }
+
+        return x.toString();
+      },
       variantScriptStr: getVariantsScriptString(
         getVariants(this.content).map((value) => ({
           id: value.id!,

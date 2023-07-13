@@ -14,6 +14,7 @@ export const checkShouldRunVariants = ({
   canTrack: Nullable<boolean>;
   content: Nullable<BuilderContent>;
 }) => {
+  return true;
   const hasVariants = getVariants(content).length > 0;
 
   if (!hasVariants) {
@@ -207,10 +208,7 @@ function bldrCntntScrpt(
 }
 
 const getIsHydrationTarget = (target: Target) =>
-  target === 'react' ||
-  target === 'reactNative' ||
-  target === 'vue3' ||
-  target === 'vue2';
+  target === 'react' || target === 'reactNative';
 
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 

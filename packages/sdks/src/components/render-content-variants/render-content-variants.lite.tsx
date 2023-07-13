@@ -1,4 +1,4 @@
-import { For, useStore, Show } from '@builder.io/mitosis';
+import { For, useStore, Show, useState } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getVariants,
@@ -14,19 +14,23 @@ import InlinedScript from '../inlined-script.lite';
 type VariantsProviderProps = RenderContentProps;
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
+  const [shouldRenderVariants] = useState(
+    checkShouldRunVariants({
+      canTrack: getDefaultCanTrack(props.canTrack),
+      content: props.content,
+    })
+  );
+
+  const [variants] = useState(getVariants(props.content));
+
   const state = useStore({
     variantScriptStr: getVariantsScriptString(
-      getVariants(props.content).map((value) => ({
+      variants.map((value) => ({
         id: value.id!,
         testRatio: value.testRatio,
       })),
       props.content?.id || ''
     ),
-
-    shouldRenderVariants: checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    }),
 
     /**
      * TO-DO: maybe replace this with a style="display: none" on the divs to avoid React hydration issues?
@@ -37,14 +41,11 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
      *  Server: ".variant-1d326d78efb04ce38467dd8f5160fab6 { display: none; } "
      *  Client: ".variant-d50b5d04edf640f195a7c42ebdb159b2 { display: none; } "
      */
-    hideVariantsStyleString: getVariants(props.content)
+    hideVariantsStyleString: variants
       .map((value) => `.variant-${value.id} { display: none; } `)
       .join(''),
 
-    contentToRender: checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    })
+    contentToRender: shouldRenderVariants
       ? props.content
       : handleABTestingSync({
           item: props.content,
@@ -54,7 +55,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={state.shouldRenderVariants}>
+      <Show when={shouldRenderVariants}>
         <InlinedStyles
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
@@ -76,7 +77,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
               customComponents={props.customComponents}
               hideContent
               parentContentId={props.content?.id}
-              isSsrAbTest={state.shouldRenderVariants}
+              isSsrAbTest={shouldRenderVariants}
             />
           )}
         </For>
@@ -90,7 +91,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         customComponents={props.customComponents}
         classNameProp={`variant-${props.content?.id}`}
         parentContentId={props.content?.id}
-        isSsrAbTest={state.shouldRenderVariants}
+        isSsrAbTest={shouldRenderVariants}
       />
     </>
   );
