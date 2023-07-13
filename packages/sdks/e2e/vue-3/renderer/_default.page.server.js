@@ -1,8 +1,9 @@
+import 'cross-fetch/dist/node-polyfill.js';
+
 import { renderToString } from '@vue/server-renderer';
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr/server';
 import { createApp } from './app';
 
-import 'cross-fetch/polyfill';
 export { render };
 export { passToClient };
 
