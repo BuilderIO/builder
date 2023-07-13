@@ -1,4 +1,4 @@
-import RenderInlinedStyles from '../../render-inlined-styles.lite';
+import InlinedStyles from '../../inlined-styles.lite';
 import { useStore } from '@builder.io/mitosis';
 import type { CustomFont } from './render-styles.helpers';
 import { getCss } from './render-styles.helpers';
@@ -31,5 +31,5 @@ ${getFontCss({ customFonts: props.customFonts })}
 `.trim(),
   });
 
-  return <RenderInlinedStyles styles={state.injectedStyles} />;
+  return <InlinedStyles styles={state.injectedStyles} />;
 }

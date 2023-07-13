@@ -7,8 +7,9 @@ import {
 import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
-import RenderInlinedStyles from '../render-inlined-styles.lite';
+import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
+import InlinedScript from '../inlined-script.lite';
 
 type VariantsProviderProps = RenderContentProps;
 
@@ -54,15 +55,15 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
   return (
     <>
       <Show when={state.shouldRenderVariants}>
-        <RenderInlinedStyles
+        <InlinedStyles
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
         />
         {/* Sets cookie for all `RenderContent` to read */}
-        <script
+        <InlinedScript
           id={`variants-script-${props.content?.id}`}
-          innerHTML={state.variantScriptStr}
-        ></script>
+          scriptStr={state.variantScriptStr}
+        />
 
         <For each={getVariants(props.content)}>
           {(variant) => (

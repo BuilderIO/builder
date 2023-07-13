@@ -53,6 +53,7 @@ import { logger } from '../../helpers/logger.js';
 import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
 import { useTarget } from '@builder.io/mitosis';
+import InlinedScript from '../inlined-script.lite.jsx';
 
 useMetadata({
   qwik: {
@@ -437,7 +438,7 @@ export default function RenderContent(props: RenderContentProps) {
         {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
       >
         <Show when={props.isSsrAbTest}>
-          <script innerHTML={state.scriptStr}></script>
+          <InlinedScript scriptStr={state.scriptStr} />
         </Show>
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
