@@ -1,10 +1,10 @@
-import { createSSRApp, h } from 'vue'
-import PageLayout from './PageLayout.vue'
+import { createSSRApp, h } from 'vue';
+import PageLayout from './PageLayout.vue';
 
-export { createApp }
+export { createApp };
 
 function createApp(pageContext) {
-  const { Page, pageProps } = pageContext
+  const { Page, pageProps } = pageContext;
   const PageWithLayout = {
     render() {
       return h(
@@ -12,12 +12,12 @@ function createApp(pageContext) {
         {},
         {
           default() {
-            return h(Page, pageProps || {})
-          }
+            return h(Page, pageProps || {});
+          },
         }
-      )
-    }
-  }
-  const app = createSSRApp(PageWithLayout)
-  return app
+      );
+    },
+  };
+  const app = createSSRApp(PageWithLayout);
+  return app;
 }

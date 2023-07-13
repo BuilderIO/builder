@@ -1,8 +1,8 @@
-export { render }
+export { render };
 
-import { createApp } from './app'
+import { createApp } from './app';
 
 async function render(pageContext) {
-  const app = createApp(pageContext)
-  app.mount('#app')
+  const app = createApp(pageContext);
+  app.mount('#app');
 }

@@ -6,7 +6,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["ES2017", "DOM"],
+    "lib": ["ES2017", "DOM"]
   },
 
   "references": [
