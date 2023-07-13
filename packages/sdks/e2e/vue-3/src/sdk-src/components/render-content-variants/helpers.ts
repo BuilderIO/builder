@@ -14,7 +14,6 @@ export const checkShouldRunVariants = ({
   canTrack: Nullable<boolean>;
   content: Nullable<BuilderContent>;
 }) => {
-  return true;
   const hasVariants = getVariants(content).length > 0;
 
   if (!hasVariants) {
@@ -41,7 +40,11 @@ type VariantData = {
  * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
  * Make sure to write multi-line comments only.
  */
-function bldrAbTest(contentId: string, variants: VariantData[], isHydrationTarget: boolean) {
+function bldrAbTest(
+  contentId: string,
+  variants: VariantData[],
+  isHydrationTarget: boolean
+) {
   function getAndSetVariantId(): string {
     function setCookie(name: string, value: string, days?: number) {
       let expires = '';
@@ -51,7 +54,12 @@ function bldrAbTest(contentId: string, variants: VariantData[], isHydrationTarge
         expires = '; expires=' + date.toUTCString();
       }
       document.cookie =
-        name + '=' + (value || '') + expires + '; path=/' + '; Secure; SameSite=None';
+        name +
+        '=' +
+        (value || '') +
+        expires +
+        '; path=/' +
+        '; Secure; SameSite=None';
     }
     function getCookie(name: string) {
       const nameEQ = name + '=';
@@ -59,13 +67,14 @@ function bldrAbTest(contentId: string, variants: VariantData[], isHydrationTarge
       for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        if (c.indexOf(nameEQ) === 0)
+          return c.substring(nameEQ.length, c.length);
       }
       return null;
     }
     const cookieName = `builder.tests.${contentId}`;
     const variantInCookie = getCookie(cookieName);
-    const availableIDs = variants.map(vr => vr.id).concat(contentId);
+    const availableIDs = variants.map((vr) => vr.id).concat(contentId);
     /**
      * cookie already exists
      */
@@ -98,7 +107,9 @@ function bldrAbTest(contentId: string, variants: VariantData[], isHydrationTarge
 
   const winningVariantId = getAndSetVariantId();
 
-  const styleEl = document.getElementById(`variants-styles-${contentId}`) as HTMLStyleElement;
+  const styleEl = document.getElementById(
+    `variants-styles-${contentId}`
+  ) as HTMLStyleElement;
 
   /**
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
@@ -108,14 +119,16 @@ function bldrAbTest(contentId: string, variants: VariantData[], isHydrationTarge
     styleEl.previousSibling?.remove();
 
     styleEl.remove();
-    const thisScriptEl = document.getElementById(`variants-script-${contentId}`);
+    const thisScriptEl = document.getElementById(
+      `variants-script-${contentId}`
+    );
     thisScriptEl?.remove();
   } else {
     /* update styles to hide all variants except the winning variant */
     const newStyleStr = variants
       .concat({ id: contentId })
-      .filter(variant => variant.id !== winningVariantId)
-      .map(value => {
+      .filter((variant) => variant.id !== winningVariantId)
+      .map((value) => {
         return `.variant-${value.id} {  display: none; }
         `;
       })
@@ -153,7 +166,9 @@ function bldrCntntScrpt(
   const variantId = getCookie(cookieName);
 
   /** get parent div by searching on `builder-content-id` attr */
-  const parentDiv = document.querySelector(`[builder-content-id="${variantContentId}"]`);
+  const parentDiv = document.querySelector(
+    `[builder-content-id="${variantContentId}"]`
+  );
 
   const variantIsDefaultContent = variantContentId === defaultContentId;
 
@@ -192,7 +207,10 @@ function bldrCntntScrpt(
 }
 
 const getIsHydrationTarget = (target: Target) =>
-  target === 'react' || target === 'reactNative' || target === 'vue3' || target === 'vue2';
+  target === 'react' ||
+  target === 'reactNative' ||
+  target === 'vue3' ||
+  target === 'vue2';
 
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
@@ -205,14 +223,19 @@ const isHydrationTarget = getIsHydrationTarget(TARGET);
 const AB_TEST_FN_NAME = 'bldrAbTest';
 const CONTENT_FN_NAME = 'bldrCntntScrpt';
 
-export const getVariantsScriptString = (variants: VariantData[], contentId: string) => {
+export const getVariantsScriptString = (
+  variants: VariantData[],
+  contentId: string
+) => {
   const fnStr = bldrAbTest.toString().replace(/\s+/g, ' ');
   const fnStr2 = bldrCntntScrpt.toString().replace(/\s+/g, ' ');
 
   return `
   const ${AB_TEST_FN_NAME} = ${fnStr}
   const ${CONTENT_FN_NAME} = ${fnStr2}
-  ${AB_TEST_FN_NAME}("${contentId}", ${JSON.stringify(variants)}, ${isHydrationTarget})
+  ${AB_TEST_FN_NAME}("${contentId}", ${JSON.stringify(
+    variants
+  )}, ${isHydrationTarget})
   `;
 };
 

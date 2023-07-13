@@ -6,13 +6,14 @@
     ></render-inlined-styles>
 
     <render-inlined-script
-      :scriptStr="`
-      document.getElementById('variants-styles-${content?.id}').previousSibling?.remove();
-      document.getElementById('variants-styles-${content?.id}').remove();
-    `"
+      :id="`variants-script-${content?.id}`"
+      :scriptStr="variantScriptStr"
     />
 
-    <template :key="variant.id" v-for="(variant, index) in getVariants(content)">
+    <template
+      :key="variant.id"
+      v-for="(variant, index) in getVariants(content)"
+    >
       <render-content
         :content="variant"
         :apiKey="apiKey"
@@ -42,7 +43,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { checkShouldRunVariants, getVariants, getVariantsScriptString } from './helpers';
+import {
+  checkShouldRunVariants,
+  getVariants,
+  getVariantsScriptString,
+} from './helpers';
 import RenderContent from '../render-content/render-content.vue';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
@@ -59,12 +64,19 @@ export default defineComponent({
     RenderContent,
     renderInlinedScript,
   },
-  props: ['content', 'canTrack', 'apiKey', 'apiVersion', 'customComponents', 'model'],
+  props: [
+    'content',
+    'canTrack',
+    'apiKey',
+    'apiVersion',
+    'customComponents',
+    'model',
+  ],
 
   data() {
     return {
       variantScriptStr: getVariantsScriptString(
-        getVariants(this.content).map(value => ({
+        getVariants(this.content).map((value) => ({
           id: value.id!,
           testRatio: value.testRatio,
         })),
@@ -75,7 +87,7 @@ export default defineComponent({
         content: this.content,
       }),
       hideVariantsStyleString: getVariants(this.content)
-        .map(value => `.variant-${value.id} { display: none; } `)
+        .map((value) => `.variant-${value.id} { display: none; } `)
         .join(''),
       contentToRender: checkShouldRunVariants({
         canTrack: getDefaultCanTrack(this.canTrack),
