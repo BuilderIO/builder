@@ -1,14 +1,8 @@
 import InlinedStyles from '../../inlined-styles.lite';
 import { useStore } from '@builder.io/mitosis';
-<<<<<<< HEAD:packages/sdks/src/components/content/components/content-styles.lite.tsx
 import type { CustomFont } from './content-styles.helpers';
 import { getCss } from './content-styles.helpers';
 import { getFontCss } from './content-styles.helpers';
-=======
-import type { CustomFont } from './styles.helpers';
-import { getCss } from './styles.helpers';
-import { getFontCss } from './styles.helpers';
->>>>>>> prep/sdk-rename:packages/sdks/src/components/content/components/styles.lite.tsx
 
 interface Props {
   cssCode?: string;
