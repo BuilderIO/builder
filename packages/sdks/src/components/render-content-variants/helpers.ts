@@ -15,9 +15,11 @@ export const checkShouldRunVariants = ({
   content: Nullable<BuilderContent>;
 }) => {
   /**
-   * For Vue 2 and Vue 3, we need to always render the variants. This is to avoid hydration mismatch errors.
+   * For Vue 2 and Vue 3, we need to (initially) render the variants. This is to avoid hydration mismatch errors.
    * Unlike React, Vue's hydration checks are shallow and do not check the attributes/contents of each element, so we
    * are able to modify the `hidden` HTML attributes and `display` CSS properties without causing a hydration mismatch error.
+   *
+   * NOTE: after the app is hydrated, we strip the variants from the DOM (on mount) to reduce the amount of HTML in the DOM.
    */
   if (TARGET === 'vue2' || TARGET === 'vue3') return true;
 
