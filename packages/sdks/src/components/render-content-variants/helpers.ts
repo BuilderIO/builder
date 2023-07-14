@@ -224,8 +224,8 @@ export const getScriptString = () => {
   const fnStr2 = bldrCntntScrpt.toString().replace(/\s+/g, ' ');
 
   return `
-  const ${AB_TEST_FN_NAME} = ${fnStr}
-  const ${CONTENT_FN_NAME} = ${fnStr2}
+  window.${AB_TEST_FN_NAME} = ${fnStr}
+  window.${CONTENT_FN_NAME} = ${fnStr2}
   `;
 };
 
@@ -234,7 +234,7 @@ export const getVariantsScriptString = (
   contentId: string
 ) => {
   return `
-  ${AB_TEST_FN_NAME}("${contentId}",${JSON.stringify(
+  window.${AB_TEST_FN_NAME}("${contentId}",${JSON.stringify(
     variants
   )}, ${isHydrationTarget})`;
 };
@@ -247,5 +247,5 @@ export const getRenderContentScriptString = ({
   parentContentId: string;
 }) => {
   return `
-  ${CONTENT_FN_NAME}("${contentId}", "${parentContentId}", ${isHydrationTarget})`;
+  window.${CONTENT_FN_NAME}("${contentId}", "${parentContentId}", ${isHydrationTarget})`;
 };
