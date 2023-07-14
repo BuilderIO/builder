@@ -1,4 +1,4 @@
-import { For, useStore, Show } from '@builder.io/mitosis';
+import { For, useStore, Show, onMount, useTarget } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getVariants,
@@ -10,10 +10,19 @@ import { getDefaultCanTrack } from '../../helpers/canTrack';
 import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 import InlinedScript from '../inlined-script.lite';
+import { TARGET } from '../../constants/target';
 
 type VariantsProviderProps = RenderContentProps;
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
+  onMount(() => {
+    /**
+     * We unmount the non-winning variants post-hydration in Vue.
+     */
+    if (TARGET === 'vue2' || TARGET === 'vue3') {
+      state.shouldRenderVariants = false;
+    }
+  });
   const state = useStore({
     shouldRenderVariants: checkShouldRunVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
@@ -71,6 +80,15 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <RenderContent
+        {...useTarget({
+          vue2: {
+            key: state.shouldRenderVariants.toString(),
+          },
+          vue3: {
+            key: state.shouldRenderVariants.toString(),
+          },
+          default: {},
+        })}
         model={props.model}
         content={
           state.shouldRenderVariants
