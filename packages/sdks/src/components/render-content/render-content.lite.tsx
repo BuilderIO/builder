@@ -269,8 +269,7 @@ export default function Content(props: ContentProps) {
         includeRefs={props.includeRefs}
         enrich={props.enrich}
         classNameProp={props.classNameProp}
-        hideContent={props.hideContent}
-        parentContentId={props.parentContentId}
+        showContent={props.showContent}
         isSsrAbTest={props.isSsrAbTest}
         builderContextSignal={builderContextSignal}
       >
