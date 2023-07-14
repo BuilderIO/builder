@@ -58,7 +58,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={!props.isNestedRender}>
+      <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
         <InlinedScript scriptStr={getScriptString()} />
       </Show>
       <Show when={state.shouldRenderVariants}>
