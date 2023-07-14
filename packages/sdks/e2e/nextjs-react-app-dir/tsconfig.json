@@ -1,4 +1,0 @@
-{
-  "extends": "./tsconfig.nextjs.json",
-  "exclude": ["typings.d.ts"]
-}
