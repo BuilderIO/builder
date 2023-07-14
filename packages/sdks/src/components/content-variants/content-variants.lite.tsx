@@ -20,7 +20,7 @@ type VariantsProviderProps = ContentVariantsProps & {
   __isNestedRender?: boolean;
 };
 
-export default function RenderContentVariants(props: VariantsProviderProps) {
+export default function ContentVariants(props: VariantsProviderProps) {
   onMount(() => {
     /**
      * We unmount the non-winning variants post-hydration in Vue.

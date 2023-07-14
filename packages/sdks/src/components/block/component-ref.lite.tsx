@@ -1,6 +1,10 @@
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
+<<<<<<< HEAD:packages/sdks/src/components/block/components/component-ref.lite.tsx
 import Block from '../block.lite';
+=======
+import Block from './block.lite';
+>>>>>>> prep/sdk-rename:packages/sdks/src/components/block/component-ref.lite.tsx
 import type { Signal } from '@builder.io/mitosis';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type {
@@ -49,7 +53,11 @@ export default function ComponentRef(props: ComponentProps) {
         <For each={props.blockChildren}>
           {(child) => (
             <Block
+<<<<<<< HEAD:packages/sdks/src/components/block/components/component-ref.lite.tsx
+              key={'render-block-' + child.id}
+=======
               key={'block-' + child.id}
+>>>>>>> prep/sdk-rename:packages/sdks/src/components/block/component-ref.lite.tsx
               block={child}
               context={props.context}
               components={props.components}

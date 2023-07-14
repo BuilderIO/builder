@@ -119,7 +119,7 @@ export default function Block(props: BlockProps) {
         : [];
     },
 
-    get renderComponentProps(): ComponentProps {
+    get componentRefProps(): ComponentProps {
       return {
         blockChildren: state.processedBlock.children ?? [],
         componentRef: state.component?.component,
@@ -172,7 +172,7 @@ export default function Block(props: BlockProps) {
     <Show when={state.canShowBlock}>
       <Show
         when={!state.component?.noWrap}
-        else={<ComponentRef {...state.renderComponentProps} />}
+        else={<ComponentRef {...state.componentRefProps} />}
       >
         {/*
          * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -195,7 +195,7 @@ export default function Block(props: BlockProps) {
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
           <state.Tag {...state.attributes} {...state.actions}>
-            <ComponentRef {...state.renderComponentProps} />
+            <ComponentRef {...state.componentRefProps} />
             {/**
              * We need to run two separate loops for content + styles to workaround the fact that Vue 2
              * does not support multiple root elements.
@@ -203,7 +203,7 @@ export default function Block(props: BlockProps) {
             <For each={state.childrenWithoutParentComponent}>
               {(child) => (
                 <Block
-                  key={'render-block-' + child.id}
+                  key={'block-' + child.id}
                   block={child}
                   context={childrenContext}
                   components={props.components}

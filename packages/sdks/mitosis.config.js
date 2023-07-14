@@ -375,7 +375,7 @@ module.exports = {
               }
 
               /**
-               * We need the ScrollView for the `Blocks` and `Component` components to be able to scroll
+               * We need the ScrollView for the `Blocks` and `ComponentRef` components to be able to scroll
                * through the whole page.
                */
               traverse(json).forEach(function (item) {
