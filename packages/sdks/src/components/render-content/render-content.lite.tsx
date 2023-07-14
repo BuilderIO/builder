@@ -435,7 +435,7 @@ export default function RenderContent(props: RenderContentProps) {
               },
             }
           : {})}
-        {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
+        {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
       >
         <Show when={props.isSsrAbTest}>
           <InlinedScript scriptStr={state.scriptStr} />

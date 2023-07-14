@@ -58,7 +58,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
     get passedOnProps(): Omit<
       RenderContentProps,
-      'content' | 'classNameProp' | 'hideContent'
+      'content' | 'classNameProp' | 'showContent'
     > {
       return {
         model: props.model,
@@ -98,7 +98,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
             <RenderContent
               key={variant.id}
               content={variant}
-              hideContent
+              showContent={false}
               classNameProp={undefined}
               {...state.passedOnProps}
             />
@@ -125,7 +125,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
               })
         }
         classNameProp={`variant-${props.content?.id}`}
-        hideContent={false}
+        showContent
       />
     </>
   );

@@ -7,7 +7,7 @@ interface InternalRenderProps {
    * TO-DO: improve qwik generator to not remap this name for non-HTML tags, then name it `className`
    */
   classNameProp: string | undefined;
-  hideContent: boolean;
+  showContent: boolean;
   parentContentId: string | undefined;
   isSsrAbTest: boolean;
 }
