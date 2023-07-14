@@ -6,7 +6,7 @@ import type { ApiVersion } from '../../types/api-version';
 import type { BuilderContent } from '../../types/builder-content';
 import type { Nullable } from '../../types/typescript';
 
-export interface RenderContentVariantsProps {
+export interface ContentVariantsProps {
   content?: Nullable<BuilderContent>;
   model?: string;
   data?: { [key: string]: any };

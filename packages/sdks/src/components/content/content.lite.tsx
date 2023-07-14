@@ -34,6 +34,7 @@ import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { logger } from '../../helpers/logger.js';
+import InlinedScript from '../inlined-script.lite';
 
 useMetadata({
   qwik: {
@@ -90,8 +91,9 @@ export default function Content(props: ContentProps) {
 
     scriptStr: getRenderContentScriptString({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      variationId: props.content?.testVariationId!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
-      parentContentId: props.parentContentId!,
     }),
     mergeNewContent(newContent: BuilderContent) {
       builderContextSignal.value.content = {
@@ -273,7 +275,7 @@ export default function Content(props: ContentProps) {
         builderContextSignal={builderContextSignal}
       >
         <Show when={props.isSsrAbTest}>
-          <script innerHTML={state.scriptStr}></script>
+          <InlinedScript scriptStr={state.scriptStr} />
         </Show>
         <Show when={TARGET !== 'reactNative'}>
           <ContentStyles

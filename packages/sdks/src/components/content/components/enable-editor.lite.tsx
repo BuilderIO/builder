@@ -235,7 +235,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
               },
             }
           : {})}
-        {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
+        {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
       >
         {props.children}
       </div>

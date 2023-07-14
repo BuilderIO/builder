@@ -6,14 +6,13 @@ import {
   getVariantsScriptString,
 } from './helpers';
 import Content from '../content/content.lite';
-import type { ContentProps } from '../content/content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 import InlinedScript from '../inlined-script.lite';
 import { TARGET } from '../../constants/target';
 
-type VariantsProviderProps = ContentProps & {
+type VariantsProviderProps = ContentVariantsProps & {
   /**
    * For internal use only. Do not provide this prop.
    */
