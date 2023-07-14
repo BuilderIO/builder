@@ -1,3 +1,5 @@
+import type { Prettify } from './typescript';
+
 type OptionalFieldsOnly<T> = {
   [K in keyof T as T[K] extends Required<T>[K] ? never : K]: T[K];
 };
@@ -20,7 +22,6 @@ type AndUndefined<T> = {
  * type Foo = { a: string, b?: number }
  * type Bar = EnforcePartials<Foo> // { a: string, b: number | undefined }
  */
-export type EnforcePartials<From> = AndUndefined<
-  Enforced<OptionalFieldsOnly<From>>
-> &
-  RequiredFieldsOnly<From>;
+export type EnforcePartials<From> = Prettify<
+  AndUndefined<Enforced<OptionalFieldsOnly<From>>> & RequiredFieldsOnly<From>
+>;
