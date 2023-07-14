@@ -1,17 +1,6 @@
 import type { Browser, BrowserContext, ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { findTextInPage, isRNSDK, test } from './helpers.js';
-
-const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
-const VARIANT_ID = '661775df8c2c41d6afc0aa1b5fd1dd61';
-
-const TEXTS = {
-  DEFAULT_CONTENT: 'This is the default variation!',
-  VARIANT_1: 'This is variation 1',
-  VARIANT_2: 'text only in variation 2',
-};
-
-const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
 const SELECTOR = isRNSDK ? 'div[data-builder-content-id]' : 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
@@ -73,6 +62,17 @@ const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
 
 test.describe('A/B tests', () => {
   test.describe('entire page', () => {
+    const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
+    const VARIANT_ID = '661775df8c2c41d6afc0aa1b5fd1dd61';
+
+    const TEXTS = {
+      DEFAULT_CONTENT: 'This is the default variation!',
+      VARIANT_1: 'This is variation 1',
+      VARIANT_2: 'text only in variation 2',
+    };
+
+    const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
+
     const TRIES = 10;
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
@@ -123,9 +123,7 @@ test.describe('A/B tests', () => {
         context: _context,
         page: _page,
       }) => {
-        if (!baseURL) {
-          throw new Error('Missing baseURL');
-        }
+        if (!baseURL) throw new Error('Missing baseURL');
 
         // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
         if (packageName === 'e2e-old-nextjs') test.skip();
@@ -159,6 +157,17 @@ test.describe('A/B tests', () => {
     }
   });
   test.describe('nested symbol', () => {
+    const CONTENT_ID = 'd5580c8ba90443638ed240723abf67f0';
+    const VARIANT_1_ID = 'f7c6d013fa844a75aefe0f629723fb3b';
+
+    const TEXTS = {
+      DEFAULT_CONTENT: 'symbol default variation',
+      VARIANT_1: 'symbol variation 1',
+      VARIANT_2: 'symbol: variation 2',
+    };
+
+    const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
+
     const TRIES = 10;
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
@@ -170,9 +179,7 @@ test.describe('A/B tests', () => {
         browser,
         context: _context,
       }) => {
-        if (!baseURL) {
-          throw new Error('Missing baseURL');
-        }
+        if (!baseURL) throw new Error('Missing baseURL');
 
         // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
         if (packageName === 'e2e-old-nextjs') test.skip();
@@ -211,9 +218,7 @@ test.describe('A/B tests', () => {
         context: _context,
         page: _page,
       }) => {
-        if (!baseURL) {
-          throw new Error('Missing baseURL');
-        }
+        if (!baseURL) throw new Error('Missing baseURL');
 
         // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
         if (packageName === 'e2e-old-nextjs') test.skip();
@@ -221,7 +226,7 @@ test.describe('A/B tests', () => {
         const context = await createContextWithCookies({
           baseURL,
           browser,
-          cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
+          cookies: [{ name: COOKIE_NAME, value: VARIANT_1_ID }],
           context: _context,
         });
 
