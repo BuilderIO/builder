@@ -67,7 +67,10 @@ const initializeAbTest = async (
     packageName,
     browser,
     context: _context,
-  }: Parameters<Parameters<typeof test>[1]>[0],
+  }: Pick<
+    Parameters<Parameters<typeof test>[1]>[0],
+    'page' | 'baseURL' | 'packageName' | 'browser' | 'context'
+  >,
   { cookieName, cookieValue }: { cookieName: string; cookieValue: string }
 ) => {
   if (!baseURL) throw new Error('Missing baseURL');
@@ -108,17 +111,32 @@ test.describe('A/B tests', () => {
       VARIANT_2: 'text only in variation 2',
     };
 
-    const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
+    const COOKIE_NAME = `builder.tests.${CONTENT_ID}` as const;
 
     const TRIES = 10;
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
     for (let i = 1; i <= TRIES; i++) {
-      test(`#${i}/${TRIES}: Render default w/ SSR`, async args => {
-        const { page, msgs } = await initializeAbTest(args, {
-          cookieName: COOKIE_NAME,
-          cookieValue: CONTENT_ID,
-        });
+      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
+        page: _page,
+        baseURL,
+        packageName,
+        browser,
+        context: _context,
+      }) => {
+        const { page, msgs } = await initializeAbTest(
+          {
+            page: _page,
+            baseURL,
+            packageName,
+            browser,
+            context: _context,
+          },
+          {
+            cookieName: COOKIE_NAME,
+            cookieValue: CONTENT_ID,
+          }
+        );
 
         await page.goto('/ab-test');
 
@@ -128,11 +146,26 @@ test.describe('A/B tests', () => {
         await expect(msgs).toEqual([]);
       });
 
-      test(`#${i}/${TRIES}: Render variant w/ SSR`, async args => {
-        const { page, msgs } = await initializeAbTest(args, {
-          cookieName: COOKIE_NAME,
-          cookieValue: VARIANT_ID,
-        });
+      test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
+        page: _page,
+        baseURL,
+        packageName,
+        browser,
+        context: _context,
+      }) => {
+        const { page, msgs } = await initializeAbTest(
+          {
+            page: _page,
+            baseURL,
+            packageName,
+            browser,
+            context: _context,
+          },
+          {
+            cookieName: COOKIE_NAME,
+            cookieValue: VARIANT_ID,
+          }
+        );
 
         await page.goto('/ab-test');
 
@@ -153,36 +186,74 @@ test.describe('A/B tests', () => {
       VARIANT_2: 'symbol: variation 2',
     };
 
-    const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
+    const COOKIE_NAME = `builder.tests.${CONTENT_ID}` as const;
 
     const TRIES = 10;
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
     for (let i = 1; i <= TRIES; i++) {
-      test(`#${i}/${TRIES}: Render default w/ SSR`, async args => {
-        const { page, msgs } = await initializeAbTest(args, {
-          cookieName: COOKIE_NAME,
-          cookieValue: CONTENT_ID,
-        });
+      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
+        page: _page,
+        baseURL,
+        packageName,
+        browser,
+        context: _context,
+      }) => {
+        const { page, msgs } = await initializeAbTest(
+          {
+            page: _page,
+            baseURL,
+            packageName,
+            browser,
+            context: _context,
+          },
+          {
+            cookieName: COOKIE_NAME,
+            cookieValue: CONTENT_ID,
+          }
+        );
         await page.goto('/symbol-ab-test');
 
         await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
-        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
-        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+        await expect(
+          page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_1 })
+        ).toBeHidden();
+        await expect(
+          page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_2 })
+        ).toBeHidden();
         await expect(msgs).toEqual([]);
       });
 
-      test(`#${i}/${TRIES}: Render variant w/ SSR`, async args => {
-        const { page, msgs } = await initializeAbTest(args, {
-          cookieName: COOKIE_NAME,
-          cookieValue: VARIANT_1_ID,
-        });
+      test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
+        page: _page,
+        baseURL,
+        packageName,
+        browser,
+        context: _context,
+      }) => {
+        const { page, msgs } = await initializeAbTest(
+          {
+            page: _page,
+            baseURL,
+            packageName,
+            browser,
+            context: _context,
+          },
+          {
+            cookieName: COOKIE_NAME,
+            cookieValue: VARIANT_1_ID,
+          }
+        );
 
         await page.goto('/symbol-ab-test');
 
         await findTextInPage({ page, text: TEXTS.VARIANT_1 });
-        await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
-        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+        await expect(
+          page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.DEFAULT_CONTENT })
+        ).toBeHidden();
+        await expect(
+          page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_2 })
+        ).toBeHidden();
         await expect(msgs).toEqual([]);
       });
     }
