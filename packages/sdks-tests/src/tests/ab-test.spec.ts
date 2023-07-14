@@ -72,104 +72,178 @@ const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
 };
 
 test.describe('A/B tests', () => {
-  const TRIES = 10;
+  test.describe('entire page', () => {
+    const TRIES = 10;
 
-  // Manually run tests 10 times to ensure we don't have any flakiness.
-  for (let i = 1; i <= TRIES; i++) {
-    test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
-      page: _page,
-      baseURL,
-      packageName,
-      browser,
-      context: _context,
-    }) => {
-      if (!baseURL) {
-        throw new Error('Missing baseURL');
-      }
-
-      // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-      if (packageName === 'e2e-old-nextjs') {
-        test.skip();
-      }
-
-      // React Native is slow for this particular test. Increasing timeout helps.
-      if (packageName === 'e2e-react-native') {
-        test.slow();
-      }
-
-      const context = await createContextWithCookies({
+    // Manually run tests 10 times to ensure we don't have any flakiness.
+    for (let i = 1; i <= TRIES; i++) {
+      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
+        page: _page,
         baseURL,
+        packageName,
         browser,
-        cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
         context: _context,
-      });
+      }) => {
+        if (!baseURL) throw new Error('Missing baseURL');
 
-      let page = _page;
-      if (!isRNSDK) {
-        page = await context.newPage();
-      }
+        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
+        if (packageName === 'e2e-old-nextjs') test.skip();
 
-      const msgs = [] as ConsoleMessage[];
-      page.on('console', msg => {
-        if (filterHydrationmismatchMessages(msg)) {
-          msgs.push(msg);
+        const context = await createContextWithCookies({
+          baseURL,
+          browser,
+          cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
+          context: _context,
+        });
+
+        let page = _page;
+        if (!isRNSDK) {
+          page = await context.newPage();
         }
+
+        const msgs = [] as ConsoleMessage[];
+        page.on('console', msg => {
+          if (filterHydrationmismatchMessages(msg)) {
+            msgs.push(msg);
+          }
+        });
+
+        await page.goto('/ab-test');
+
+        await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+        await expect(msgs).toEqual([]);
       });
 
-      await page.goto('/ab-test');
-
-      await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
-      await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
-      await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
-      await expect(msgs).toEqual([]);
-    });
-
-    test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
-      browser,
-      baseURL,
-      packageName,
-      context: _context,
-      page: _page,
-    }) => {
-      if (!baseURL) {
-        throw new Error('Missing baseURL');
-      }
-
-      // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-      if (packageName === 'e2e-old-nextjs') {
-        test.skip();
-      }
-
-      // React Native is slow for this particular test. Increasing timeout helps.
-      if (packageName === 'e2e-react-native') {
-        test.slow();
-      }
-
-      const context = await createContextWithCookies({
+      test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
+        browser,
         baseURL,
-        browser,
-        cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
+        packageName,
         context: _context,
-      });
-
-      let page = _page;
-      if (!isRNSDK) {
-        page = await context.newPage();
-      }
-
-      const msgs = [] as ConsoleMessage[];
-      page.on('console', msg => {
-        if (filterHydrationmismatchMessages(msg)) {
-          msgs.push(msg);
+        page: _page,
+      }) => {
+        if (!baseURL) {
+          throw new Error('Missing baseURL');
         }
+
+        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
+        if (packageName === 'e2e-old-nextjs') test.skip();
+
+        const context = await createContextWithCookies({
+          baseURL,
+          browser,
+          cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
+          context: _context,
+        });
+
+        let page = _page;
+        if (!isRNSDK) {
+          page = await context.newPage();
+        }
+
+        const msgs = [] as ConsoleMessage[];
+        page.on('console', msg => {
+          if (filterHydrationmismatchMessages(msg)) {
+            msgs.push(msg);
+          }
+        });
+
+        await page.goto('/ab-test');
+
+        await findTextInPage({ page, text: TEXTS.VARIANT_1 });
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+        await expect(msgs).toEqual([]);
+      });
+    }
+  });
+  test.describe('nested symbol', () => {
+    const TRIES = 10;
+
+    // Manually run tests 10 times to ensure we don't have any flakiness.
+    for (let i = 1; i <= TRIES; i++) {
+      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
+        page: _page,
+        baseURL,
+        packageName,
+        browser,
+        context: _context,
+      }) => {
+        if (!baseURL) {
+          throw new Error('Missing baseURL');
+        }
+
+        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
+        if (packageName === 'e2e-old-nextjs') test.skip();
+
+        const context = await createContextWithCookies({
+          baseURL,
+          browser,
+          cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
+          context: _context,
+        });
+
+        let page = _page;
+        if (!isRNSDK) {
+          page = await context.newPage();
+        }
+
+        const msgs = [] as ConsoleMessage[];
+        page.on('console', msg => {
+          if (filterHydrationmismatchMessages(msg)) {
+            msgs.push(msg);
+          }
+        });
+
+        await page.goto('/ab-test');
+
+        await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+        await expect(msgs).toEqual([]);
       });
 
-      await page.goto('/ab-test');
+      test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
+        browser,
+        baseURL,
+        packageName,
+        context: _context,
+        page: _page,
+      }) => {
+        if (!baseURL) {
+          throw new Error('Missing baseURL');
+        }
 
-      await findTextInPage({ page, text: TEXTS.VARIANT_1 });
-      await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
-      await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
-      await expect(msgs).toEqual([]);
-    });
-  }
+        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
+        if (packageName === 'e2e-old-nextjs') test.skip();
+
+        const context = await createContextWithCookies({
+          baseURL,
+          browser,
+          cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
+          context: _context,
+        });
+
+        let page = _page;
+        if (!isRNSDK) {
+          page = await context.newPage();
+        }
+
+        const msgs = [] as ConsoleMessage[];
+        page.on('console', msg => {
+          if (filterHydrationmismatchMessages(msg)) {
+            msgs.push(msg);
+          }
+        });
+
+        await page.goto('/ab-test');
+
+        await findTextInPage({ page, text: TEXTS.VARIANT_1 });
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+        await expect(msgs).toEqual([]);
+      });
+    }
+  });
 });
