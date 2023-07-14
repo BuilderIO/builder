@@ -1,4 +1,4 @@
-import { For, useStore, Show } from '@builder.io/mitosis';
+import { For, useStore, Show, onMount, useTarget } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getVariants,
@@ -7,13 +7,27 @@ import {
 import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
-import RenderInlinedStyles from '../render-inlined-styles.lite';
+import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
+import InlinedScript from '../inlined-script.lite';
+import { TARGET } from '../../constants/target';
 
 type VariantsProviderProps = RenderContentProps;
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
+  onMount(() => {
+    /**
+     * We unmount the non-winning variants post-hydration in Vue.
+     */
+    if (TARGET === 'vue2' || TARGET === 'vue3') {
+      state.shouldRenderVariants = false;
+    }
+  });
   const state = useStore({
+    shouldRenderVariants: checkShouldRunVariants({
+      canTrack: getDefaultCanTrack(props.canTrack),
+      content: props.content,
+    }),
     variantScriptStr: getVariantsScriptString(
       getVariants(props.content).map((value) => ({
         id: value.id!,
@@ -21,11 +35,6 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       })),
       props.content?.id || ''
     ),
-
-    shouldRenderVariants: checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    }),
 
     /**
      * TO-DO: maybe replace this with a style="display: none" on the divs to avoid React hydration issues?
@@ -39,30 +48,20 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
     hideVariantsStyleString: getVariants(props.content)
       .map((value) => `.variant-${value.id} { display: none; } `)
       .join(''),
-
-    contentToRender: checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    })
-      ? props.content
-      : handleABTestingSync({
-          item: props.content,
-          canTrack: getDefaultCanTrack(props.canTrack),
-        }),
   });
 
   return (
     <>
       <Show when={state.shouldRenderVariants}>
-        <RenderInlinedStyles
+        <InlinedStyles
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
         />
         {/* Sets cookie for all `RenderContent` to read */}
-        <script
+        <InlinedScript
           id={`variants-script-${props.content?.id}`}
-          innerHTML={state.variantScriptStr}
-        ></script>
+          scriptStr={state.variantScriptStr}
+        />
 
         <For each={getVariants(props.content)}>
           {(variant) => (
@@ -81,8 +80,24 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <RenderContent
+        {...useTarget({
+          vue2: {
+            key: state.shouldRenderVariants.toString(),
+          },
+          vue3: {
+            key: state.shouldRenderVariants.toString(),
+          },
+          default: {},
+        })}
         model={props.model}
-        content={state.contentToRender}
+        content={
+          state.shouldRenderVariants
+            ? props.content
+            : handleABTestingSync({
+                item: props.content,
+                canTrack: getDefaultCanTrack(props.canTrack),
+              })
+        }
         apiKey={props.apiKey}
         apiVersion={props.apiVersion}
         canTrack={props.canTrack}

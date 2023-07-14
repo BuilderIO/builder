@@ -5,58 +5,63 @@
 ```bash
 # install
 yarn
-
-# start dev server
-yarn run start
 ```
 
 You might need [jq](https://stedolan.github.io/jq/) for symlinking mitosis or the SDKs themselves to examples. You can install that with `brew install jq`.
 
-## Test changes
+## Build an SDK
 
-The best way to test changes is to symlink the generated SDKs to one of our examples. The recommended workflow is to
+- You need to run these scripts to build everything: https://github.com/BuilderIO/builder/blob/62dc353fbe6873984133b774d7862beeb68b3d6b/.github/workflows/ci.yml#L140-L151
 
-- symlink both Vue & RN SDKs to their respective examples
-- run the examples on separate ports (e.g. 3000 and 3001)
-- Launch Builder and open the SDK org (ID: `f1a790f8c3204b3b8c5c1795aeac4660`)
-- toggle back and forth between `localhost:3000` and `localhost:3001` to quickly test both outputs at once (or open 2 separate tabs, each pointing to a different server)
+```
+      - name: Build Core
+        run: yarn workspace @builder.io/sdk ci:build
 
-### Vue
+      - name: Build SDK
+        run: yarn workspace @builder.io/react build
 
-```bash
-# navigate to the Vue Storefront example in a separate terminal
-cd ../../examples/vue/vue-storefront-2
+      - name: Build Mitosis
+        run: yarn build:mitosis
 
-# add sym-link
-yarn run setup-sdk-symlink
-
-# install
-yarn
-
-# run nuxt
-yarn run start
+      - name: Build SDK
+        run: yarn workspace @builder.io/sdk-${{ matrix.sdk }} build
 ```
 
-### React-Native
+- replace `${{ matrix.sdk }}` with whichever SDK you want to test: qwik, vue, react, etc. Let’s say you picked `svelte`
 
-```bash
-# navigate to the react-native example in a separate terminal
-cd ../../examples/react-native
+## Test an SDK
 
-# add sym-link
-yarn run setup-sdk-symlink
+The best way to test a change is to create a builder content JSON in the editor, download it, and add it as an integration test. But if you need to test some interaction with the Query API that is hard to check using JSON, you will need to symlink the SDK to an example project.
 
-# install
-yarn
+### Integration testing
 
-# run Expo
-yarn run start
+- go to the builder editor and create a content entry that showcases the feature/bug you want to test.
+- download that content's JSON
+- add it to `src/specs/index.ts` as a new test case (see other specs for examples)
+- add a test case for it in `src/tests` (see other tests for examples)
 
-w # type `w` to launch web browser emulator
-i # type `i` to launch iOS simulator
-```
+This new test will run against every SDK & framework combination.
 
-#### iOS Simulator
+If you want to manually test this integration test, you will have to (using `svelte` as an example):
+
+- run `yarn run start` in `builder/packages/sdks` to run Mitosis' `build` command in watch mode
+- run `yarn run build --watch` in `builder/packages/sdks/output/svelte` to build the SDK in watch mode
+- run `yarn run dev` in `builder/packages/sdks-tests` to build the e2e tests in watch mode
+- run `yarn run dev` in `builder/packages/sdks/e2e/sveltekit`
+
+You can then test your changes in the sveltekit e2e example.
+
+### Manual testing
+
+Using `svelte` as an example, once you've built the SDK as per the previous steps:
+
+- go to `output/svelte` and run `npm link`.
+- go to an example in our monorepo that uses it, say `builder/examples/svelte/sveltekit`, and
+  - `npm install`
+  - `npm link @builder.io/sdk-svelte`
+  - `npm run dev` and test your change
+
+#### NOTE: Testing React-Native SDK in iOS Simulator
 
 One big caveat is that the iOS Simulator does not support sym-linked packages. To workaround this, you will have to copy the SDK folder. This means that you will need to manually do so every time you want a new change to be reflected. in the react-native example, there is a handy `yarn run cp-sdk` command to do that for you.
 
@@ -74,7 +79,3 @@ You should now be using your local version of Mitosis.
 ## REMOVING SYM-LINKS
 
 **IMPORTANT:** remember to run `yarn run remove-symlinks` before you commit to your branch. This applies to `project/sdks`, but also any example that you symlink the SDKs to (i.e. vue-storefront or react-native examples)
-
-## Integration tests
-
-See [e2e/README.md](e2e/README.md)

@@ -3,7 +3,7 @@ import { For, Show, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
 import { getSizesForBreakpoints } from '../../constants/device-sizes';
 import type { SizeName } from '../../constants/device-sizes';
-import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
+import InlinedStyles from '../../components/inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
 import BuilderContext from '../../context/builder.context.lite';
 import type { Dictionary } from '../../types/typescript';
@@ -174,7 +174,7 @@ export default function Columns(props: ColumnProps) {
          * "dynamic" media query values based on custom breakpoints.
          * Adding them directly otherwise leads to Mitosis and TS errors.
          */}
-        <RenderInlinedStyles styles={state.columnsStyles} />
+        <InlinedStyles styles={state.columnsStyles} />
       </Show>
 
       <For each={props.columns}>

@@ -10,6 +10,8 @@
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
+    "cross-fetch": "^4.0.0",
+    "vite-plugin-ssr": "^0.4.133",
     "vue": "^3.2.37"
   },
   "devDependencies": {

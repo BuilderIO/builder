@@ -1,9 +1,15 @@
-import type { Browser, BrowserContext } from '@playwright/test';
+import type { Browser, BrowserContext, ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { findTextInPage, isRNSDK, test } from './helpers.js';
 
-const CONTENT_ID = '1d326d78efb04ce38467dd8f5160fab6';
-const VARIANT_ID = 'd50b5d04edf640f195a7c42ebdb159b2';
+const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
+const VARIANT_ID = '661775df8c2c41d6afc0aa1b5fd1dd61';
+
+const TEXTS = {
+  DEFAULT_CONTENT: 'This is the default variation!',
+  VARIANT_1: 'This is variation 1',
+  VARIANT_2: 'text only in variation 2',
+};
 
 const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
 const SELECTOR = isRNSDK ? 'div[data-builder-content-id]' : 'div[builder-content-id]';
@@ -56,6 +62,15 @@ const createContextWithCookies = async ({
 // Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
 test.describe.configure({ retries: 0 });
 
+const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
+  const text = consoleMessage.text().toLowerCase();
+
+  const isVueHydrationMismatch =
+    text.includes('[vue warn]') && text.includes('hydration') && text.includes('mismatch');
+
+  return isVueHydrationMismatch;
+};
+
 test.describe('A/B tests', () => {
   const TRIES = 10;
 
@@ -94,10 +109,19 @@ test.describe('A/B tests', () => {
         page = await context.newPage();
       }
 
+      const msgs = [] as ConsoleMessage[];
+      page.on('console', msg => {
+        if (filterHydrationmismatchMessages(msg)) {
+          msgs.push(msg);
+        }
+      });
+
       await page.goto('/ab-test');
 
-      await findTextInPage({ page, text: 'hello world default' });
-      await expect(page.locator(SELECTOR, { hasText: 'hello world variation 1' })).toBeHidden();
+      await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
+      await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
+      await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+      await expect(msgs).toEqual([]);
     });
 
     test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
@@ -133,10 +157,19 @@ test.describe('A/B tests', () => {
         page = await context.newPage();
       }
 
+      const msgs = [] as ConsoleMessage[];
+      page.on('console', msg => {
+        if (filterHydrationmismatchMessages(msg)) {
+          msgs.push(msg);
+        }
+      });
+
       await page.goto('/ab-test');
 
-      await findTextInPage({ page, text: 'hello world variation 1' });
-      await expect(page.locator(SELECTOR, { hasText: 'hello world default' })).toBeHidden();
+      await findTextInPage({ page, text: TEXTS.VARIANT_1 });
+      await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
+      await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
+      await expect(msgs).toEqual([]);
     });
   }
 });
