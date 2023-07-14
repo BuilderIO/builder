@@ -58,11 +58,8 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
         />
-        {/* Sets cookie for all `RenderContent` to read */}
-        <InlinedScript
-          id={`variants-script-${props.content?.id}`}
-          scriptStr={state.variantScriptStr}
-        />
+        {/* Sets A/B test cookie for all `RenderContent` to read */}
+        <InlinedScript scriptStr={state.variantScriptStr} />
 
         <For each={getVariants(props.content)}>
           {(variant) => (

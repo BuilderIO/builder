@@ -118,18 +118,15 @@ function bldrAbTest(
 
   const winningVariantId = getAndSetVariantId();
 
-  const styleEl = document.getElementById(
-    `variants-styles-${contentId}`
-  ) as HTMLStyleElement;
+  const styleEl = document.currentScript
+    ?.previousElementSibling as HTMLStyleElement;
 
   /**
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
    */
   if (isHydrationTarget) {
     styleEl.remove();
-    const thisScriptEl = document.getElementById(
-      `variants-script-${contentId}`
-    );
+    const thisScriptEl = document.currentScript;
     thisScriptEl?.remove();
   } else {
     /* update styles to hide all variants except the winning variant */
@@ -172,10 +169,7 @@ function bldrCntntScrpt(
   const cookieName = `builder.tests.${defaultContentId}`;
   const variantId = getCookie(cookieName);
 
-  /** get parent div by searching on `builder-content-id` attr */
-  const parentDiv = document.querySelector(
-    `[builder-content-id="${variantContentId}"]`
-  );
+  const parentDiv = document.currentScript?.parentElement;
 
   const variantIsDefaultContent = variantContentId === defaultContentId;
 
