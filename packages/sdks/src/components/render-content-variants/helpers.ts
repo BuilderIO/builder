@@ -16,6 +16,11 @@ export const checkShouldRunVariants = ({
 }) => {
   const hasVariants = getVariants(content).length > 0;
 
+  /**
+   * We cannot SSR in React-Native.
+   */
+  if (TARGET === 'reactNative') return false;
+
   if (!hasVariants) return false;
   if (!canTrack) return false;
 
