@@ -5,7 +5,11 @@ import type { BuilderContent } from '../../types/builder-content';
 import type { Target } from '../../types/targets';
 
 export const getVariants = (content: Nullable<BuilderContent>) =>
-  Object.values(content?.variations || {});
+  Object.values(content?.variations || {}).map((variant) => ({
+    ...variant,
+    testVariationId: variant.id,
+    id: content?.id,
+  }));
 
 export const checkShouldRunVariants = ({
   canTrack,
@@ -14,6 +18,16 @@ export const checkShouldRunVariants = ({
   canTrack: Nullable<boolean>;
   content: Nullable<BuilderContent>;
 }) => {
+  const hasVariants = getVariants(content).length > 0;
+
+  /**
+   * We cannot SSR in React-Native.
+   */
+  if (TARGET === 'reactNative') return false;
+
+  if (!hasVariants) return false;
+  if (!canTrack) return false;
+
   /**
    * For Vue 2 and Vue 3, we need to (initially) render the variants. This is to avoid hydration mismatch errors.
    * Unlike React, Vue's hydration checks are shallow and do not check the attributes/contents of each element, so we
@@ -23,19 +37,7 @@ export const checkShouldRunVariants = ({
    */
   if (TARGET === 'vue2' || TARGET === 'vue3') return true;
 
-  const hasVariants = getVariants(content).length > 0;
-
-  if (!hasVariants) {
-    return false;
-  }
-
-  if (!canTrack) {
-    return false;
-  }
-
-  if (isBrowser()) {
-    return false;
-  }
+  if (isBrowser()) return false;
 
   return true;
 };
@@ -116,18 +118,15 @@ function bldrAbTest(
 
   const winningVariantId = getAndSetVariantId();
 
-  const styleEl = document.getElementById(
-    `variants-styles-${contentId}`
-  ) as HTMLStyleElement;
+  const styleEl = document.currentScript
+    ?.previousElementSibling as HTMLStyleElement;
 
   /**
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
    */
   if (isHydrationTarget) {
     styleEl.remove();
-    const thisScriptEl = document.getElementById(
-      `variants-script-${contentId}`
-    );
+    const thisScriptEl = document.currentScript;
     thisScriptEl?.remove();
   } else {
     /* update styles to hide all variants except the winning variant */
@@ -140,7 +139,6 @@ function bldrAbTest(
       })
       .join('');
 
-    /* TO-DO: check if this actually updates the style */
     styleEl.innerHTML = newStyleStr;
   }
 }
@@ -171,10 +169,7 @@ function bldrCntntScrpt(
   const cookieName = `builder.tests.${defaultContentId}`;
   const variantId = getCookie(cookieName);
 
-  /** get parent div by searching on `builder-content-id` attr */
-  const parentDiv = document.querySelector(
-    `[builder-content-id="${variantContentId}"]`
-  );
+  const parentDiv = document.currentScript?.parentElement;
 
   const variantIsDefaultContent = variantContentId === defaultContentId;
 
@@ -223,32 +218,36 @@ const isHydrationTarget = getIsHydrationTarget(TARGET);
  *
  * So we hardcode the function names here, and then use those names in the script string to make sure the function names are consistent.
  */
-const AB_TEST_FN_NAME = 'bldrAbTest';
-const CONTENT_FN_NAME = 'bldrCntntScrpt';
+const AB_TEST_FN_NAME = 'builderIoAbTest';
+const CONTENT_FN_NAME = 'builderIoRenderContent';
+
+export const getScriptString = () => {
+  const fnStr = bldrAbTest.toString().replace(/\s+/g, ' ');
+  const fnStr2 = bldrCntntScrpt.toString().replace(/\s+/g, ' ');
+
+  return `
+  window.${AB_TEST_FN_NAME} = ${fnStr}
+  window.${CONTENT_FN_NAME} = ${fnStr2}
+  `;
+};
 
 export const getVariantsScriptString = (
   variants: VariantData[],
   contentId: string
 ) => {
-  const fnStr = bldrAbTest.toString().replace(/\s+/g, ' ');
-  const fnStr2 = bldrCntntScrpt.toString().replace(/\s+/g, ' ');
-
   return `
-  const ${AB_TEST_FN_NAME} = ${fnStr}
-  const ${CONTENT_FN_NAME} = ${fnStr2}
-  ${AB_TEST_FN_NAME}("${contentId}", ${JSON.stringify(
+  window.${AB_TEST_FN_NAME}("${contentId}",${JSON.stringify(
     variants
-  )}, ${isHydrationTarget})
-  `;
+  )}, ${isHydrationTarget})`;
 };
 
 export const getRenderContentScriptString = ({
-  parentContentId,
   contentId,
+  variationId,
 }: {
+  variationId: string;
   contentId: string;
-  parentContentId: string;
 }) => {
   return `
-  ${CONTENT_FN_NAME}("${contentId}", "${parentContentId}", ${isHydrationTarget})`;
+  window.${CONTENT_FN_NAME}("${variationId}", "${contentId}", ${isHydrationTarget})`;
 };

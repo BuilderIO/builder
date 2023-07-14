@@ -238,8 +238,9 @@ export default function RenderContent(props: RenderContentProps) {
     },
     scriptStr: getRenderContentScriptString({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      variationId: props.content?.testVariationId!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
-      parentContentId: props.parentContentId!,
     }),
   });
 
@@ -435,7 +436,7 @@ export default function RenderContent(props: RenderContentProps) {
               },
             }
           : {})}
-        {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
+        {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
       >
         <Show when={props.isSsrAbTest}>
           <InlinedScript scriptStr={state.scriptStr} />

@@ -1,33 +1,18 @@
-import type {
-  BuilderRenderContext,
-  RegisteredComponent,
-  BuilderRenderState,
-} from '../../context/types';
-import type { BuilderContent } from '../../types/builder-content';
-import type { Nullable } from '../../types/typescript';
-import type { ApiVersion } from '../../types/api-version';
+import type { BuilderRenderState } from '../../context/types';
+import type { EnforcePartials } from '../../types/enforced-partials';
+import type { RenderContentVariantsProps } from '../render-content-variants/render-content-variants.types';
 
-export interface RenderContentProps {
-  content?: Nullable<BuilderContent>;
-  model?: string;
-  data?: { [key: string]: any };
-  context?: BuilderRenderContext;
-  apiKey: string;
-  apiVersion?: ApiVersion;
-  customComponents?: RegisteredComponent[];
-  canTrack?: boolean;
-  locale?: string;
-  /** @deprecated use `enrich` instead **/
-  includeRefs?: boolean;
-  enrich?: boolean;
+interface InternalRenderProps {
   /**
    * TO-DO: improve qwik generator to not remap this name for non-HTML tags, then name it `className`
    */
-  classNameProp?: string;
-  hideContent?: boolean;
-  parentContentId?: string;
-  isSsrAbTest?: boolean;
+  classNameProp: string | undefined;
+  showContent: boolean;
+  isSsrAbTest: boolean;
 }
+
+export type RenderContentProps = InternalRenderProps &
+  EnforcePartials<RenderContentVariantsProps>;
 
 export interface BuilderComponentStateChange {
   state: BuilderRenderState;
