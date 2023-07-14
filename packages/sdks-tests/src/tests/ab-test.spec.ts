@@ -203,7 +203,7 @@ test.describe('A/B tests', () => {
           }
         });
 
-        await page.goto('/ab-test');
+        await page.goto('/symbol-ab-test');
 
         await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
@@ -242,7 +242,7 @@ test.describe('A/B tests', () => {
           }
         });
 
-        await page.goto('/ab-test');
+        await page.goto('/symbol-ab-test');
 
         await findTextInPage({ page, text: TEXTS.VARIANT_1 });
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
