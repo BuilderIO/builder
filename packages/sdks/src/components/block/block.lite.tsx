@@ -187,7 +187,7 @@ export default function Block(props: BlockProps) {
             <For each={state.childrenWithoutParentComponent}>
               {(child) => (
                 <Block
-                  key={'render-block-' + child.id}
+                  key={'block-' + child.id}
                   block={child}
                   context={childrenContext}
                 />

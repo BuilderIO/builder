@@ -78,7 +78,7 @@ export default function Blocks(props: BlockProps) {
         <For each={props.blocks}>
           {(block) => (
             <Block
-              key={'render-block-' + block.id}
+              key={'block-' + block.id}
               block={block}
               context={builderContext}
             />
