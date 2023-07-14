@@ -1,5 +1,5 @@
 import type { BuilderRenderState } from '../../context/types';
-import type { MarkUndefined } from '../../types/typescript';
+import type { EnforcePartials } from '../../types/enforced-partials';
 import type { RenderContentVariantsProps } from '../render-content-variants/render-content-variants.types';
 
 interface InternalRenderProps {
@@ -13,9 +13,7 @@ interface InternalRenderProps {
 }
 
 export type RenderContentProps = InternalRenderProps &
-  MarkUndefined<Required<RenderContentVariantsProps>> & {
-    apiKey: string;
-  };
+  EnforcePartials<RenderContentVariantsProps>;
 
 export interface BuilderComponentStateChange {
   state: BuilderRenderState;
