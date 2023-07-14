@@ -629,7 +629,8 @@ module.exports = {
                   return;
                 }
                 const spreadBinding = Object.entries(item.bindings).find(
-                  ([_key, value]) => value?.type === 'spread'
+                  ([_key, value]) =>
+                    value?.type === 'spread' && value.code !== '{}'
                 );
 
                 if (spreadBinding) {
