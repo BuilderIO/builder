@@ -175,10 +175,6 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
-        if (packageName === 'e2e-nextjs-app-dir-react') {
-          test.skip();
-        }
-
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
@@ -239,10 +235,6 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
-        if (packageName === 'e2e-nextjs-app-dir-react') {
-          test.skip();
-        }
-
         await page.goto('/show-hide-if');
 
         await findTextInPage({ page, text: 'even clicks' });
