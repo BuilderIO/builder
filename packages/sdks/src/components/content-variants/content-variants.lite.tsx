@@ -5,7 +5,7 @@ import {
   getVariants,
   getVariantsScriptString,
 } from './helpers';
-import Content from '../render-content/render-content.lite';
+import Content from '../content/content.lite';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';

@@ -16,11 +16,11 @@ import {
   onMount,
   onUnMount,
 } from '@builder.io/mitosis';
-import type { ContentProps } from './render-content.types.js';
+import type { ContentProps } from './content.types.js';
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from './render-content.helpers.js';
+} from './content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { getRenderContentScriptString } from '../content-variants/helpers.js';
 import { wrapComponentRef } from './wrap-component-ref.js';

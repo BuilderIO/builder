@@ -1,7 +1,7 @@
 import type { BuilderRenderState } from '../../context/types';
 import type { BuilderContent } from '../../types/builder-content';
 import type { Nullable } from '../../types/typescript';
-import type { ContentProps } from './render-content.types';
+import type { ContentProps } from './content.types';
 
 export const getContextStateInitialValue = ({
   content,
