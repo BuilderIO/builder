@@ -60,6 +60,43 @@ const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
   return isVueHydrationMismatch;
 };
 
+const initializeAbTest = async (
+  {
+    page: _page,
+    baseURL,
+    packageName,
+    browser,
+    context: _context,
+  }: Parameters<Parameters<typeof test>[1]>[0],
+  { cookieName, cookieValue }: { cookieName: string; cookieValue: string }
+) => {
+  if (!baseURL) throw new Error('Missing baseURL');
+
+  // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
+  if (packageName === 'e2e-old-nextjs') test.skip();
+
+  // React Native SDK needs some extra time to sort its feelings out.
+  if (packageName === 'e2e-react-native') test.slow();
+
+  const context = await createContextWithCookies({
+    baseURL,
+    browser,
+    cookies: [{ name: cookieName, value: cookieValue }],
+    context: _context,
+  });
+
+  const page = isRNSDK ? _page : await context.newPage();
+
+  const msgs = [] as ConsoleMessage[];
+  page.on('console', msg => {
+    if (filterHydrationmismatchMessages(msg)) {
+      msgs.push(msg);
+    }
+  });
+
+  return { page, msgs };
+};
+
 test.describe('A/B tests', () => {
   test.describe('entire page', () => {
     const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
@@ -77,35 +114,10 @@ test.describe('A/B tests', () => {
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
     for (let i = 1; i <= TRIES; i++) {
-      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
-        page: _page,
-        baseURL,
-        packageName,
-        browser,
-        context: _context,
-      }) => {
-        if (!baseURL) throw new Error('Missing baseURL');
-
-        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-        if (packageName === 'e2e-old-nextjs') test.skip();
-
-        // React Native SDK needs some extra time to sort its feelings out.
-        if (packageName === 'e2e-react-native') test.slow();
-
-        const context = await createContextWithCookies({
-          baseURL,
-          browser,
-          cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
-          context: _context,
-        });
-
-        const page = isRNSDK ? _page : await context.newPage();
-
-        const msgs = [] as ConsoleMessage[];
-        page.on('console', msg => {
-          if (filterHydrationmismatchMessages(msg)) {
-            msgs.push(msg);
-          }
+      test(`#${i}/${TRIES}: Render default w/ SSR`, async args => {
+        const { page, msgs } = await initializeAbTest(args, {
+          cookieName: COOKIE_NAME,
+          cookieValue: CONTENT_ID,
         });
 
         await page.goto('/ab-test');
@@ -116,35 +128,10 @@ test.describe('A/B tests', () => {
         await expect(msgs).toEqual([]);
       });
 
-      test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
-        browser,
-        baseURL,
-        packageName,
-        context: _context,
-        page: _page,
-      }) => {
-        if (!baseURL) throw new Error('Missing baseURL');
-
-        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-        if (packageName === 'e2e-old-nextjs') test.skip();
-
-        // React Native SDK needs some extra time to sort its feelings out.
-        if (packageName === 'e2e-react-native') test.slow();
-
-        const context = await createContextWithCookies({
-          baseURL,
-          browser,
-          cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
-          context: _context,
-        });
-
-        const page = isRNSDK ? _page : await context.newPage();
-
-        const msgs = [] as ConsoleMessage[];
-        page.on('console', msg => {
-          if (filterHydrationmismatchMessages(msg)) {
-            msgs.push(msg);
-          }
+      test(`#${i}/${TRIES}: Render variant w/ SSR`, async args => {
+        const { page, msgs } = await initializeAbTest(args, {
+          cookieName: COOKIE_NAME,
+          cookieValue: VARIANT_ID,
         });
 
         await page.goto('/ab-test');
@@ -172,37 +159,11 @@ test.describe('A/B tests', () => {
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
     for (let i = 1; i <= TRIES; i++) {
-      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
-        page: _page,
-        baseURL,
-        packageName,
-        browser,
-        context: _context,
-      }) => {
-        if (!baseURL) throw new Error('Missing baseURL');
-
-        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-        if (packageName === 'e2e-old-nextjs') test.skip();
-
-        // React Native SDK needs some extra time to sort its feelings out.
-        if (packageName === 'e2e-react-native') test.slow();
-
-        const context = await createContextWithCookies({
-          baseURL,
-          browser,
-          cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
-          context: _context,
+      test(`#${i}/${TRIES}: Render default w/ SSR`, async args => {
+        const { page, msgs } = await initializeAbTest(args, {
+          cookieName: COOKIE_NAME,
+          cookieValue: CONTENT_ID,
         });
-
-        const page = isRNSDK ? _page : await context.newPage();
-
-        const msgs = [] as ConsoleMessage[];
-        page.on('console', msg => {
-          if (filterHydrationmismatchMessages(msg)) {
-            msgs.push(msg);
-          }
-        });
-
         await page.goto('/symbol-ab-test');
 
         await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
@@ -211,35 +172,10 @@ test.describe('A/B tests', () => {
         await expect(msgs).toEqual([]);
       });
 
-      test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
-        browser,
-        baseURL,
-        packageName,
-        context: _context,
-        page: _page,
-      }) => {
-        if (!baseURL) throw new Error('Missing baseURL');
-
-        // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-        if (packageName === 'e2e-old-nextjs') test.skip();
-
-        // React Native SDK needs some extra time to sort its feelings out.
-        if (packageName === 'e2e-react-native') test.slow();
-
-        const context = await createContextWithCookies({
-          baseURL,
-          browser,
-          cookies: [{ name: COOKIE_NAME, value: VARIANT_1_ID }],
-          context: _context,
-        });
-
-        const page = isRNSDK ? _page : await context.newPage();
-
-        const msgs = [] as ConsoleMessage[];
-        page.on('console', msg => {
-          if (filterHydrationmismatchMessages(msg)) {
-            msgs.push(msg);
-          }
+      test(`#${i}/${TRIES}: Render variant w/ SSR`, async args => {
+        const { page, msgs } = await initializeAbTest(args, {
+          cookieName: COOKIE_NAME,
+          cookieValue: VARIANT_1_ID,
         });
 
         await page.goto('/symbol-ab-test');
