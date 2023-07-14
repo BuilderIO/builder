@@ -1,6 +1,7 @@
-import { For, useStore, Show } from '@builder.io/mitosis';
+import { For, useStore, Show, onMount, useTarget } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
+  getScriptString,
   getVariants,
   getVariantsScriptString,
 } from './helpers';
@@ -9,86 +10,109 @@ import type { ContentProps } from '../content/content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
+import InlinedScript from '../inlined-script.lite';
+import { TARGET } from '../../constants/target';
 
-type VariantsProviderProps = ContentProps;
+type VariantsProviderProps = ContentProps & {
+  /**
+   * For internal use only. Do not provide this prop.
+   */
+  __isNestedRender?: boolean;
+};
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
+  onMount(() => {
+    /**
+     * We unmount the non-winning variants post-hydration in Vue.
+     */
+    if (TARGET === 'vue2' || TARGET === 'vue3') {
+      state.shouldRenderVariants = false;
+    }
+  });
+
   const state = useStore({
+    shouldRenderVariants: checkShouldRunVariants({
+      canTrack: getDefaultCanTrack(props.canTrack),
+      content: props.content,
+    }),
     variantScriptStr: getVariantsScriptString(
       getVariants(props.content).map((value) => ({
-        id: value.id!,
+        id: value.testVariationId!,
         testRatio: value.testRatio,
       })),
       props.content?.id || ''
     ),
 
-    shouldRenderVariants: checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    }),
-
-    /**
-     * TO-DO: maybe replace this with a style="display: none" on the divs to avoid React hydration issues?
-     * Or maybe we can remove the display: none altogether since we're hiding the variants with HTML `hidden` attribute.
-     *
-     * Currently we get:
-     * Warning: Prop `dangerouslySetInnerHTML` did not match.
-     *  Server: ".variant-1d326d78efb04ce38467dd8f5160fab6 { display: none; } "
-     *  Client: ".variant-d50b5d04edf640f195a7c42ebdb159b2 { display: none; } "
-     */
     hideVariantsStyleString: getVariants(props.content)
-      .map((value) => `.variant-${value.id} { display: none; } `)
+      .map((value) => `.variant-${value.testVariationId} { display: none; } `)
       .join(''),
-
-    contentToRender: checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    })
-      ? props.content
-      : handleABTestingSync({
-          item: props.content,
-          canTrack: getDefaultCanTrack(props.canTrack),
-        }),
   });
 
   return (
     <>
+      <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
+        <InlinedScript scriptStr={getScriptString()} />
+      </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
         />
-        {/* Sets cookie for all `RenderContent` to read */}
-        <script
-          id={`variants-script-${props.content?.id}`}
-          innerHTML={state.variantScriptStr}
-        ></script>
+        {/* Sets A/B test cookie for all `RenderContent` to read */}
+        <InlinedScript scriptStr={state.variantScriptStr} />
 
         <For each={getVariants(props.content)}>
           {(variant) => (
             <Content
-              key={variant.id}
+              key={variant.testVariationId}
               content={variant}
+              showContent={false}
+              classNameProp={undefined}
+              model={props.model}
+              data={props.data}
+              context={props.context}
               apiKey={props.apiKey}
               apiVersion={props.apiVersion}
-              canTrack={props.canTrack}
               customComponents={props.customComponents}
-              hideContent
-              parentContentId={props.content?.id}
+              canTrack={props.canTrack}
+              locale={props.locale}
+              includeRefs={props.includeRefs}
+              enrich={props.enrich}
               isSsrAbTest={state.shouldRenderVariants}
             />
           )}
         </For>
       </Show>
       <Content
+        {...useTarget({
+          vue2: {
+            key: state.shouldRenderVariants.toString(),
+          },
+          vue3: {
+            key: state.shouldRenderVariants.toString(),
+          },
+          default: {},
+        })}
+        content={
+          state.shouldRenderVariants
+            ? props.content
+            : handleABTestingSync({
+                item: props.content,
+                canTrack: getDefaultCanTrack(props.canTrack),
+              })
+        }
+        classNameProp={`variant-${props.content?.id}`}
+        showContent
         model={props.model}
-        content={state.contentToRender}
+        data={props.data}
+        context={props.context}
         apiKey={props.apiKey}
         apiVersion={props.apiVersion}
-        canTrack={props.canTrack}
         customComponents={props.customComponents}
-        classNameProp={`variant-${props.content?.id}`}
-        parentContentId={props.content?.id}
+        canTrack={props.canTrack}
+        locale={props.locale}
+        includeRefs={props.includeRefs}
+        enrich={props.enrich}
         isSsrAbTest={state.shouldRenderVariants}
       />
     </>

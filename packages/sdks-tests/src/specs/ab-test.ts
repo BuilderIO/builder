@@ -2,18 +2,16 @@ export const CONTENT = {
   lastUpdatedBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   folders: [],
   data: {
-    inputs: [],
-    themeId: false,
-    title: 'a-b-test-basic',
+    title: 'A/B test route',
     blocks: [
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        id: 'builder-5215ea54178e4bad81513e236f096de1',
+        id: 'builder-f97db18e1c324b38b52526cc02cfc5fc',
         component: {
           name: 'Text',
           options: {
-            text: '<span style="display: block;" class="builder-paragraph">hello world default</span>',
+            text: '<span style="display: block;" class="builder-paragraph">This is the default variation!</span>',
           },
         },
         responsiveStyles: {
@@ -26,158 +24,18 @@ export const CONTENT = {
             marginTop: '20px',
             lineHeight: 'normal',
             height: 'auto',
+            textAlign: 'center',
+            borderStyle: 'solid',
+            borderWidth: '1px',
           },
         },
       },
       {
-        '@type': '@builder.io/sdk:Element',
-        '@version': 2,
-        id: 'builder-d9e162caee974577874cfede1c4f81cb',
-        meta: { previousId: 'builder-fea3981e1a654e69be0e1a0e2a8fc7b5' },
-        component: {
-          name: 'Columns',
-          options: {
-            columns: [
-              {
-                blocks: [
-                  {
-                    '@type': '@builder.io/sdk:Element',
-                    '@version': 2,
-                    id: 'builder-441a2ca2a60e436fbdfa65dda4b219cf',
-                    meta: { previousId: 'builder-ca1f2ca48bc34e669359dd5b4ec3cbc3' },
-                    component: {
-                      name: 'Text',
-                      options: {
-                        text: '<span style="display: block;" class="builder-paragraph">Below is a reactive state value (incrementing number, with default value 0):</span>',
-                      },
-                    },
-                    responsiveStyles: {
-                      large: {
-                        display: 'flex',
-                        flexDirection: 'column',
-                        position: 'relative',
-                        flexShrink: '0',
-                        boxSizing: 'border-box',
-                        marginTop: '20px',
-                        lineHeight: 'normal',
-                        height: 'auto',
-                      },
-                    },
-                  },
-                  {
-                    '@type': '@builder.io/sdk:Element',
-                    '@version': 2,
-                    bindings: {
-                      'component.options.text': 'state.reactiveValue',
-                      'meta.bindingActions.component.options.text':
-                        'var _virtual_index=state.reactiveValue;return _virtual_index',
-                    },
-                    id: 'builder-1fb7bb68674d4796bbf922e5cc6bd018',
-                    meta: {
-                      bindingActions: {
-                        component: {
-                          options: {
-                            text: [
-                              {
-                                '@type': '@builder.io/core:Action',
-                                action: '@builder.io:customCode',
-                                options: {
-                                  code: '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\nstate.reactiveValue',
-                                },
-                              },
-                            ],
-                          },
-                        },
-                      },
-                      previousId: 'builder-aee5e7f645f549caab81d4bac5d34ff0',
-                    },
-                    component: { name: 'Text', options: { text: 'Enter some text...' } },
-                    responsiveStyles: {
-                      large: {
-                        display: 'flex',
-                        flexDirection: 'column',
-                        position: 'relative',
-                        flexShrink: '0',
-                        boxSizing: 'border-box',
-                        marginTop: '20px',
-                        lineHeight: 'normal',
-                        height: 'auto',
-                      },
-                    },
-                  },
-                ],
-              },
-              {
-                blocks: [
-                  {
-                    '@type': '@builder.io/sdk:Element',
-                    '@version': 2,
-                    actions: { click: 'state.reactiveValue+=1' },
-                    id: 'builder-7e7dc0bd939f4086945fd8d276d9fb92',
-                    meta: {
-                      eventActions: {
-                        click: [
-                          {
-                            '@type': '@builder.io/core:Action',
-                            action: '@builder.io:customCode',
-                            options: {
-                              code: '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\n\nstate.reactiveValue += 1\n',
-                            },
-                          },
-                        ],
-                      },
-                      previousId: 'builder-6c1363b4fef6457b8a6d4380896293cf',
-                    },
-                    component: {
-                      name: 'Core:Button',
-                      options: { text: 'Increment Number', openLinkInNewTab: false },
-                    },
-                    responsiveStyles: {
-                      large: {
-                        display: 'flex',
-                        flexDirection: 'column',
-                        position: 'relative',
-                        flexShrink: '0',
-                        boxSizing: 'border-box',
-                        marginTop: '20px',
-                        appearance: 'none',
-                        paddingTop: '15px',
-                        paddingBottom: '15px',
-                        paddingLeft: '25px',
-                        paddingRight: '25px',
-                        backgroundColor: 'black',
-                        color: 'white',
-                        borderRadius: '4px',
-                        textAlign: 'center',
-                        cursor: 'pointer',
-                      },
-                    },
-                  },
-                ],
-              },
-            ],
-            space: 20,
-            stackColumnsAt: 'tablet',
-            reverseColumnsWhenStacked: false,
-          },
-        },
-        responsiveStyles: {
-          large: {
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-            flexShrink: '0',
-            boxSizing: 'border-box',
-            marginTop: '20px',
-          },
-        },
-      },
-      {
-        id: 'builder-pixel-zz83h092uth',
+        id: 'builder-pixel-0cveufoc1pmh',
         '@type': '@builder.io/sdk:Element',
         tagName: 'img',
         properties: {
-          src: 'https://cdn.builder.io/api/v1/pixel?apiKey=f1a790f8c3204b3b8c5c1795aeac4660',
+          src: 'https://cdn.builder.io/api/v1/pixel?apiKey=f1a790f8c3204b3b8c5c1795aeac4660&contentId=691abdd7105c4cf7b9609995fc1fb56c&url=%2Fab-test',
           'aria-hidden': 'true',
           alt: '',
           role: 'presentation',
@@ -196,10 +54,14 @@ export const CONTENT = {
         },
       },
     ],
-    url: '/a-b-test-basic-s',
+    url: '/ab-test',
     state: {
       deviceSize: 'large',
-      location: { pathname: '/a-b-test-basic-s', path: ['a-b-test-basic-s'], query: {} },
+      location: {
+        pathname: '/ab-test',
+        path: ['ab-test'],
+        query: {},
+      },
     },
   },
   modelId: '240a12053d674735ac2a384dcdc561b5',
@@ -207,37 +69,39 @@ export const CONTENT = {
     {
       '@type': '@builder.io/core:Query',
       property: 'urlPath',
-      value: '/a-b-test-basic-s',
+      value: '/ab-test',
       operator: 'is',
     },
   ],
   published: 'published',
-  firstPublished: 1674501897729,
-  testRatio: 0.5,
-  lastUpdated: 1684954393489,
-  createdDate: 1674501839198,
-  createdBy: '4FFFg0MNRJT0z0nW4uUizDHfHJV2',
+  screenshot:
+    'https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F393c39dc0c3440a3a4880e51e11bf8f9',
+  firstPublished: 1663366991657,
+  testRatio: 0.3334,
+  lastUpdated: 1689179467459,
+  createdDate: 1651006982202,
+  createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   meta: {
     kind: 'page',
+    lastPreviewUrl:
+      'https://svelte-vite-example.vercel.app/ab-test?builder.space=f1a790f8c3204b3b8c5c1795aeac4660&builder.cachebust=true&builder.preview=page&builder.noCache=true&__builder_editing__=true&builder.overrides.page=691abdd7105c4cf7b9609995fc1fb56c&builder.overrides.691abdd7105c4cf7b9609995fc1fb56c=691abdd7105c4cf7b9609995fc1fb56c&builder.overrides.page:/ab-test=691abdd7105c4cf7b9609995fc1fb56c&builder.options.locale=Default',
     hasLinks: false,
   },
   variations: {
-    d50b5d04edf640f195a7c42ebdb159b2: {
-      testRatio: 0.5,
-      createdDate: 1674501850607,
+    d7b7153da32c4d219b9b5c63ec129c94: {
+      testRatio: 0.3333,
+      createdDate: 1651013293898,
       data: {
-        themeId: false,
-        title: 'a-b-test-basic',
+        title: 'A/B test route',
         blocks: [
           {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
-            id: 'builder-c4533f51068b4e55b68fc6a15259b42c',
-            meta: { previousId: 'builder-5215ea54178e4bad81513e236f096de1' },
+            id: 'builder-389a594170d846e995ced05decdfbd59',
             component: {
               name: 'Text',
               options: {
-                text: '<span style="display: block;" class="builder-paragraph">hello world variation 1</span>',
+                text: '<span style="display: block;" class="builder-paragraph">text only in variation 2</span>',
               },
             },
             responsiveStyles: {
@@ -250,139 +114,33 @@ export const CONTENT = {
                 marginTop: '20px',
                 lineHeight: 'normal',
                 height: 'auto',
+                textAlign: 'center',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: 'rgba(74, 144, 226, 1)',
               },
             },
           },
+        ],
+      },
+      meta: {},
+      name: 'Variation 22',
+      id: 'd7b7153da32c4d219b9b5c63ec129c94',
+    },
+    '661775df8c2c41d6afc0aa1b5fd1dd61': {
+      testRatio: 0.3333,
+      createdDate: 1651007142663,
+      data: {
+        title: 'A/B test route',
+        blocks: [
           {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
-            id: 'builder-87bb5d8bdd2645b7b084ef146c851cab',
-            meta: { previousId: 'builder-fea3981e1a654e69be0e1a0e2a8fc7b5' },
+            id: 'builder-c4f6b6e549bc489486f2388c59bc4205',
             component: {
-              name: 'Columns',
+              name: 'Text',
               options: {
-                columns: [
-                  {
-                    blocks: [
-                      {
-                        '@type': '@builder.io/sdk:Element',
-                        '@version': 2,
-                        id: 'builder-10c567719dff4743a75bc5db991b52d8',
-                        meta: { previousId: 'builder-ca1f2ca48bc34e669359dd5b4ec3cbc3' },
-                        component: {
-                          name: 'Text',
-                          options: {
-                            text: '<span style="display: block;" class="builder-paragraph">Below is a reactive state value (incrementing number, with default value 0):</span>',
-                          },
-                        },
-                        responsiveStyles: {
-                          large: {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            position: 'relative',
-                            flexShrink: '0',
-                            boxSizing: 'border-box',
-                            marginTop: '20px',
-                            lineHeight: 'normal',
-                            height: 'auto',
-                          },
-                        },
-                      },
-                      {
-                        '@type': '@builder.io/sdk:Element',
-                        '@version': 2,
-                        bindings: {
-                          'component.options.text': 'state.reactiveValue',
-                          'meta.bindingActions.component.options.text':
-                            'var _virtual_index=state.reactiveValue;return _virtual_index',
-                        },
-                        id: 'builder-c879182feb694efc92f09f81bac92844',
-                        meta: {
-                          bindingActions: {
-                            component: {
-                              options: {
-                                text: [
-                                  {
-                                    '@type': '@builder.io/core:Action',
-                                    action: '@builder.io:customCode',
-                                    options: {
-                                      code: '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\nstate.reactiveValue',
-                                    },
-                                  },
-                                ],
-                              },
-                            },
-                          },
-                          previousId: 'builder-aee5e7f645f549caab81d4bac5d34ff0',
-                        },
-                        component: { name: 'Text', options: { text: 'Enter some text...' } },
-                        responsiveStyles: {
-                          large: {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            position: 'relative',
-                            flexShrink: '0',
-                            boxSizing: 'border-box',
-                            marginTop: '20px',
-                            lineHeight: 'normal',
-                            height: 'auto',
-                          },
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    blocks: [
-                      {
-                        '@type': '@builder.io/sdk:Element',
-                        '@version': 2,
-                        actions: { click: 'state.reactiveValue+=1' },
-                        id: 'builder-870bd1a8c40f471ca3674c3227a4981c',
-                        meta: {
-                          eventActions: {
-                            click: [
-                              {
-                                '@type': '@builder.io/core:Action',
-                                action: '@builder.io:customCode',
-                                options: {
-                                  code: '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\n\nstate.reactiveValue += 1\n',
-                                },
-                              },
-                            ],
-                          },
-                          previousId: 'builder-6c1363b4fef6457b8a6d4380896293cf',
-                        },
-                        component: {
-                          name: 'Core:Button',
-                          options: { text: 'Increment Number', openLinkInNewTab: false },
-                        },
-                        responsiveStyles: {
-                          large: {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            position: 'relative',
-                            flexShrink: '0',
-                            boxSizing: 'border-box',
-                            marginTop: '20px',
-                            appearance: 'none',
-                            paddingTop: '15px',
-                            paddingBottom: '15px',
-                            paddingLeft: '25px',
-                            paddingRight: '25px',
-                            backgroundColor: 'black',
-                            color: 'white',
-                            borderRadius: '4px',
-                            textAlign: 'center',
-                            cursor: 'pointer',
-                          },
-                        },
-                      },
-                    ],
-                  },
-                ],
-                space: 20,
-                stackColumnsAt: 'tablet',
-                reverseColumnsWhenStacked: false,
+                text: '<span style="display: block;" class="builder-paragraph">This is variation 1</span>',
               },
             },
             responsiveStyles: {
@@ -393,17 +151,23 @@ export const CONTENT = {
                 flexShrink: '0',
                 boxSizing: 'border-box',
                 marginTop: '20px',
+                lineHeight: 'normal',
+                height: 'auto',
+                textAlign: 'center',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: 'rgba(208, 2, 27, 1)',
               },
             },
           },
         ],
       },
       meta: {},
-      name: 'Variation 0',
-      id: 'd50b5d04edf640f195a7c42ebdb159b2',
+      name: 'Variation 1',
+      id: '661775df8c2c41d6afc0aa1b5fd1dd61',
     },
   },
-  name: 'a-b-test-basic',
-  id: '1d326d78efb04ce38467dd8f5160fab6',
-  rev: 'fvzbnpofys',
+  name: 'A/B test route',
+  id: '691abdd7105c4cf7b9609995fc1fb56c',
+  rev: 'ieaz0k1367l',
 };

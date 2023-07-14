@@ -1,4 +1,4 @@
-import Content from '../../components/content/content.lite';
+import ContentVariants from '../../components/content-variants/content-variants.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
@@ -64,9 +64,11 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
           model: props.symbol.model,
           apiKey: builderContext.value.apiKey,
           apiVersion: builderContext.value.apiVersion,
-          query: {
-            id: props.symbol.entry,
-          },
+          ...(props.symbol?.entry && {
+            query: {
+              id: props.symbol.entry,
+            },
+          }),
         })
           .then((response) => {
             if (response) {
@@ -94,7 +96,8 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
       className={state.className}
       dataSet={{ class: state.className }}
     >
-      <Content
+      <ContentVariants
+        __isNestedRender
         apiVersion={builderContext.value.apiVersion}
         apiKey={builderContext.value.apiKey!}
         context={builderContext.value.context}

@@ -1,3 +1,9 @@
+### 3.0.7
+- add back the process keyword with a check for `typeof process` to fix Hydrogen SSR
+
+### 3.0.6
+- remove process keyword to fix Hydrogen SSR
+
 ### 3.0.5
 - Fix: Pass locale from parent state to Symbols
 

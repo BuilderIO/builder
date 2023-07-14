@@ -168,11 +168,7 @@ test.describe(targetContext.name, () => {
 
   test.describe('Features', () => {
     test.describe('Reactive State', () => {
-      excludeReactNative('shows default value', async ({ page, packageName }) => {
-        if (packageName === 'e2e-vue-nuxt3') {
-          test.skip();
-        }
-
+      excludeReactNative('shows default value', async ({ page }) => {
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
@@ -180,10 +176,6 @@ test.describe(targetContext.name, () => {
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
         if (packageName === 'e2e-nextjs-app-dir-react') {
-          test.skip();
-        }
-
-        if (packageName === 'e2e-vue-nuxt3') {
           test.skip();
         }
 

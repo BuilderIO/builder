@@ -33,6 +33,7 @@ import { BuilderMetaContext } from '../store/builder-meta';
 import { tryEval } from '../functions/try-eval';
 import { toError } from '../to-error';
 import { getBuilderPixel } from '../functions/get-builder-pixel';
+import { isDebug } from '../functions/is-debug';
 
 function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const ret: any = {};
@@ -1389,7 +1390,7 @@ export class BuilderComponent extends React.Component<
               error.stack
             );
           } else {
-            if (process?.env?.DEBUG) {
+            if (isDebug()) {
               console.debug(
                 'Builder custom code error:',
                 error.message,
