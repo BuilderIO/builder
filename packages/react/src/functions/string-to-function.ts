@@ -1,5 +1,6 @@
 import { Builder, builder } from '@builder.io/sdk';
 import { safeDynamicRequire } from './safe-dynamic-require';
+import { isDebug } from './is-debug';
 
 const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {};
 
@@ -143,11 +144,7 @@ export function stringToFunction(
           error.stack || error
         );
       } else {
-        if (
-          typeof process !== 'undefined' &&
-          typeof process.env !== 'undefined' &&
-          process.env.DEBUG
-        ) {
+        if (isDebug()) {
           console.debug(
             'Builder custom code error:',
             error.message || error,
