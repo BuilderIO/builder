@@ -238,8 +238,9 @@ export default function RenderContent(props: RenderContentProps) {
     },
     scriptStr: getRenderContentScriptString({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      variationId: props.content?.testVariationId!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
-      parentContentId: props.parentContentId!,
     }),
   });
 

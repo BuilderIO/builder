@@ -8,7 +8,6 @@ interface InternalRenderProps {
    */
   classNameProp: string | undefined;
   showContent: boolean;
-  parentContentId: string | undefined;
   isSsrAbTest: boolean;
 }
 

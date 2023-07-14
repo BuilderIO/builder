@@ -37,14 +37,14 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
     }),
     variantScriptStr: getVariantsScriptString(
       getVariants(props.content).map((value) => ({
-        id: value.id!,
+        id: value.testVariationId!,
         testRatio: value.testRatio,
       })),
       props.content?.id || ''
     ),
 
     hideVariantsStyleString: getVariants(props.content)
-      .map((value) => `.variant-${value.id} { display: none; } `)
+      .map((value) => `.variant-${value.testVariationId} { display: none; } `)
       .join(''),
   });
 
@@ -67,7 +67,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         <For each={getVariants(props.content)}>
           {(variant) => (
             <RenderContent
-              key={variant.id}
+              key={variant.testVariationId}
               content={variant}
               showContent={false}
               classNameProp={undefined}
@@ -82,7 +82,6 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
               includeRefs={props.includeRefs}
               enrich={props.enrich}
               isSsrAbTest={state.shouldRenderVariants}
-              parentContentId={props.content?.id}
             />
           )}
         </For>
@@ -118,7 +117,6 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         includeRefs={props.includeRefs}
         enrich={props.enrich}
         isSsrAbTest={state.shouldRenderVariants}
-        parentContentId={props.content?.id}
       />
     </>
   );

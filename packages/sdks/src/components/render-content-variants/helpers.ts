@@ -5,7 +5,11 @@ import type { BuilderContent } from '../../types/builder-content';
 import type { Target } from '../../types/targets';
 
 export const getVariants = (content: Nullable<BuilderContent>) =>
-  Object.values(content?.variations || {});
+  Object.values(content?.variations || {}).map((variant) => ({
+    ...variant,
+    testVariationId: variant.id,
+    id: content?.id,
+  }));
 
 export const checkShouldRunVariants = ({
   canTrack,
@@ -244,12 +248,12 @@ export const getVariantsScriptString = (
 };
 
 export const getRenderContentScriptString = ({
-  parentContentId,
   contentId,
+  variationId,
 }: {
+  variationId: string;
   contentId: string;
-  parentContentId: string;
 }) => {
   return `
-  window.${CONTENT_FN_NAME}("${contentId}", "${parentContentId}", ${isHydrationTarget})`;
+  window.${CONTENT_FN_NAME}("${variationId}", "${contentId}", ${isHydrationTarget})`;
 };
