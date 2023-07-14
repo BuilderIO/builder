@@ -1,6 +1,7 @@
 import { For, useStore, Show, onMount, useTarget } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
+  getScriptString,
   getVariants,
   getVariantsScriptString,
 } from './helpers';
@@ -12,7 +13,7 @@ import { handleABTestingSync } from '../../helpers/ab-tests';
 import InlinedScript from '../inlined-script.lite';
 import { TARGET } from '../../constants/target';
 
-type VariantsProviderProps = RenderContentProps;
+type VariantsProviderProps = RenderContentProps & { isNestedRender?: boolean };
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
   onMount(() => {
@@ -52,6 +53,9 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
+      <Show when={!props.isNestedRender}>
+        <InlinedScript scriptStr={getScriptString()} />
+      </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
           id={`variants-styles-${props.content?.id}`}

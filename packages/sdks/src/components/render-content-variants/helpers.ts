@@ -14,6 +14,11 @@ export const checkShouldRunVariants = ({
   canTrack: Nullable<boolean>;
   content: Nullable<BuilderContent>;
 }) => {
+  const hasVariants = getVariants(content).length > 0;
+
+  if (!hasVariants) return false;
+  if (!canTrack) return false;
+
   /**
    * For Vue 2 and Vue 3, we need to (initially) render the variants. This is to avoid hydration mismatch errors.
    * Unlike React, Vue's hydration checks are shallow and do not check the attributes/contents of each element, so we
@@ -23,19 +28,7 @@ export const checkShouldRunVariants = ({
    */
   if (TARGET === 'vue2' || TARGET === 'vue3') return true;
 
-  const hasVariants = getVariants(content).length > 0;
-
-  if (!hasVariants) {
-    return false;
-  }
-
-  if (!canTrack) {
-    return false;
-  }
-
-  if (isBrowser()) {
-    return false;
-  }
+  if (isBrowser()) return false;
 
   return true;
 };
@@ -226,20 +219,24 @@ const isHydrationTarget = getIsHydrationTarget(TARGET);
 const AB_TEST_FN_NAME = 'bldrAbTest';
 const CONTENT_FN_NAME = 'bldrCntntScrpt';
 
-export const getVariantsScriptString = (
-  variants: VariantData[],
-  contentId: string
-) => {
+export const getScriptString = () => {
   const fnStr = bldrAbTest.toString().replace(/\s+/g, ' ');
   const fnStr2 = bldrCntntScrpt.toString().replace(/\s+/g, ' ');
 
   return `
   const ${AB_TEST_FN_NAME} = ${fnStr}
   const ${CONTENT_FN_NAME} = ${fnStr2}
-  ${AB_TEST_FN_NAME}("${contentId}", ${JSON.stringify(
-    variants
-  )}, ${isHydrationTarget})
   `;
+};
+
+export const getVariantsScriptString = (
+  variants: VariantData[],
+  contentId: string
+) => {
+  return `
+  ${AB_TEST_FN_NAME}("${contentId}",${JSON.stringify(
+    variants
+  )}, ${isHydrationTarget})`;
 };
 
 export const getRenderContentScriptString = ({
