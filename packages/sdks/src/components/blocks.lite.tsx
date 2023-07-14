@@ -1,7 +1,7 @@
 import BuilderContext from '../context/builder.context.lite';
 import { isEditing } from '../functions/is-editing.js';
 import type { BuilderBlock } from '../types/builder-block.js';
-import BlockStyles from './block/block-styles.lite';
+import BlockStyles from './block/components/block-styles.lite';
 import Block from './block/block.lite';
 import { For, Show, useStore, useContext } from '@builder.io/mitosis';
 

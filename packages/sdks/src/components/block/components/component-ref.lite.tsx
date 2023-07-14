@@ -1,9 +1,9 @@
-import type { BuilderBlock } from '../../types/builder-block.js';
+import type { BuilderBlock } from '../../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
-import Block from './block.lite';
+import Block from '../block.lite';
 import type { Signal } from '@builder.io/mitosis';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
-import type { BuilderContextInterface } from '../../context/types.js';
+import type { BuilderContextInterface } from '../../../context/types.js';
 
 type ComponentOptions = {
   [index: string]: any;
