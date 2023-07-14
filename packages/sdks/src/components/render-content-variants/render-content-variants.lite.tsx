@@ -15,9 +15,9 @@ import type { RenderContentVariantsProps } from './render-content-variants.types
 
 type VariantsProviderProps = RenderContentVariantsProps & {
   /**
-   * For internal use only
+   * For internal use only. Do not provide this prop.
    */
-  isNestedRender?: boolean;
+  __isNestedRender?: boolean;
 };
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
@@ -58,7 +58,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
+      <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
         <InlinedScript scriptStr={getScriptString()} />
       </Show>
       <Show when={state.shouldRenderVariants}>

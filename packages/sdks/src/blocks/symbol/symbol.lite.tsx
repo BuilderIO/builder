@@ -95,7 +95,7 @@ export default function Symbol(props: SymbolProps) {
       dataSet={{ class: state.className }}
     >
       <RenderContentVariants
-        isNestedRender
+        __isNestedRender
         apiVersion={builderContext.value.apiVersion}
         apiKey={builderContext.value.apiKey!}
         context={builderContext.value.context}
