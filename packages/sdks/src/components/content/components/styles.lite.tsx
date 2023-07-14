@@ -1,8 +1,8 @@
 import InlinedStyles from '../../inlined-styles.lite';
 import { useStore } from '@builder.io/mitosis';
-import type { CustomFont } from './render-styles.helpers';
-import { getCss } from './render-styles.helpers';
-import { getFontCss } from './render-styles.helpers';
+import type { CustomFont } from './styles.helpers';
+import { getCss } from './styles.helpers';
+import { getFontCss } from './styles.helpers';
 
 interface Props {
   cssCode?: string;

@@ -9,7 +9,7 @@ import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { createCssClass } from '../../helpers/css.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import InlinedStyles from '../inlined-styles.lite.jsx';
+import InlinedStyles from '../inlined-styles.lite';
 
 export type BlockStylesProps = {
   block: BuilderBlock;

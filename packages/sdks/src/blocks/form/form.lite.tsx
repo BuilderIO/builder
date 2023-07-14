@@ -2,8 +2,8 @@
 // @ts-nocheck
 
 /* eslint-disable */
-import RenderBlock from '../../components/render-block/render-block.lite';
-import BuilderBlocks from '../../components/render-blocks.lite';
+import Block from '../../components/block/block.lite';
+import BuilderBlocks from '../../components/blocks.lite';
 import { isEditing } from '../../functions/is-editing.js';
 import { For, Show, useRef, useStore } from '@builder.io/mitosis';
 
@@ -272,7 +272,7 @@ export default function FormComponent(props: FormProps) {
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
         <For each={props.builderBlock?.children}>
-          {(block) => <RenderBlock block={block} context={builderContext} />}
+          {(block) => <Block block={block} context={builderContext} />}
         </For>
       </Show>
 

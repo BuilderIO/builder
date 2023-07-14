@@ -1,6 +1,6 @@
 import type { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
-import RenderBlock from './render-block.lite';
+import Block from './block.lite';
 import type { Signal } from '@builder.io/mitosis';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../context/types.js';
@@ -12,7 +12,7 @@ type ComponentOptions = {
   };
 };
 
-export interface RenderComponentProps {
+export interface ComponentProps {
   componentRef: any;
   componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
@@ -32,7 +32,7 @@ useMetadata({
   },
 });
 
-export default function RenderComponent(props: RenderComponentProps) {
+export default function ComponentRef(props: ComponentProps) {
   return (
     <Show when={props.componentRef}>
       <props.componentRef {...props.componentOptions}>
@@ -42,7 +42,7 @@ export default function RenderComponent(props: RenderComponentProps) {
          */}
         <For each={props.blockChildren}>
           {(child) => (
-            <RenderBlock
+            <Block
               key={'render-block-' + child.id}
               block={child}
               context={props.context}
