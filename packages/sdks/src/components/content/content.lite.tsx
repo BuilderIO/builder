@@ -13,8 +13,9 @@ import {
   useMetadata,
   useState,
   onUpdate,
+  onMount,
+  onUnMount,
 } from '@builder.io/mitosis';
-
 import type { ContentProps } from './content.types.js';
 import {
   getContentInitialValue,
@@ -28,6 +29,11 @@ import EnableEditor from './components/enable-editor.lite';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { BuilderContent } from '../../types/builder-content.js';
+import { getContent } from '../../functions/get-content/index.js';
+import { isBrowser } from '../../functions/is-browser.js';
+import { isEditing } from '../../functions/is-editing.js';
+import { isPreviewing } from '../../functions/is-previewing.js';
+import { logger } from '../../helpers/logger.js';
 
 useMetadata({
   qwik: {
@@ -37,6 +43,51 @@ useMetadata({
 
 export default function Content(props: ContentProps) {
   const state = useStore({
+    forceReRenderCount: 0,
+
+    processMessage(event: MessageEvent): void {
+      const { data } = event;
+      if (data) {
+        switch (data.type) {
+          case 'builder.configureSdk': {
+            const messageContent = data.data;
+            const { breakpoints, contentId } = messageContent;
+            if (
+              !contentId ||
+              contentId !== builderContextSignal.value.content?.id
+            ) {
+              return;
+            }
+            if (breakpoints) {
+              state.mergeNewContent({ meta: { breakpoints } });
+            }
+            state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
+            break;
+          }
+          case 'builder.contentUpdate': {
+            const messageContent = data.data;
+            const key =
+              messageContent.key ||
+              messageContent.alias ||
+              messageContent.entry ||
+              messageContent.modelName;
+
+            const contentData = messageContent.data;
+
+            if (key === props.model) {
+              state.mergeNewContent(contentData);
+              state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
+            }
+            break;
+          }
+          case 'builder.patchUpdates': {
+            // TODO
+            break;
+          }
+        }
+      }
+    },
+
     scriptStr: getRenderContentScriptString({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
@@ -139,19 +190,71 @@ export default function Content(props: ContentProps) {
   );
 
   onUpdate(() => {
-    if (!builderContextSignal.value.content) {
-      builderContextSignal.value.content = {
-        ...getContentInitialValue({
-          content: props.content,
-          data: props.data,
-        }),
-      };
+    if (props.content) {
+      state.mergeNewContent(props.content);
     }
-  }, [props.content, props.data, props.locale]);
+  }, [props.content]);
 
+  onMount(() => {
+    if (!props.apiKey) {
+      logger.error(
+        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
+
+    if (isBrowser()) {
+      if (isEditing()) {
+        state.forceReRenderCount = state.forceReRenderCount + 1;
+        window.addEventListener('message', state.processMessage);
+      }
+
+      // override normal content in preview mode
+      if (isPreviewing()) {
+        const searchParams = new URL(location.href).searchParams;
+        const searchParamPreviewModel = searchParams.get('builder.preview');
+        const searchParamPreviewId = searchParams.get(
+          `builder.preview.${searchParamPreviewModel}`
+        );
+        const previewApiKey =
+          searchParams.get('apiKey') || searchParams.get('builder.space');
+
+        /**
+         * Make sure that:
+         * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
+         *  at the same time, e.g. header/page/footer.
+         * - the API key is the same, since we don't want to preview content from other organizations.
+         * - if there is content, that the preview ID is the same as that of the one we receive.
+         *
+         * TO-DO: should we only update the state when there is a change?
+         **/
+        if (
+          searchParamPreviewModel === props.model &&
+          previewApiKey === props.apiKey &&
+          (!props.content || searchParamPreviewId === props.content.id)
+        ) {
+          getContent({
+            model: props.model,
+            apiKey: props.apiKey,
+            apiVersion: props.apiVersion,
+          }).then((content) => {
+            if (content) {
+              state.mergeNewContent(content);
+            }
+          });
+        }
+      }
+    }
+  });
+
+  onUnMount(() => {
+    if (isBrowser()) {
+      window.removeEventListener('message', state.processMessage);
+    }
+  });
   return (
     <Show when={builderContextSignal.value.content}>
       <EnableEditor
+        key={state.forceReRenderCount}
         content={props.content}
         model={props.model}
         data={props.data}
@@ -168,7 +271,6 @@ export default function Content(props: ContentProps) {
         parentContentId={props.parentContentId}
         isSsrAbTest={props.isSsrAbTest}
         builderContextSignal={builderContextSignal}
-        mergeNewContent={state.mergeNewContent}
       >
         <Show when={props.isSsrAbTest}>
           <script innerHTML={state.scriptStr}></script>
