@@ -45,7 +45,23 @@ useMetadata({
 export default function Content(props: ContentProps) {
   const state = useStore({
     forceReRenderCount: 0,
-
+    mergeNewContent(newContent: BuilderContent) {
+      builderContextSignal.value.content = {
+        ...builderContextSignal.value.content,
+        ...newContent,
+        data: {
+          ...builderContextSignal.value.content?.data,
+          ...newContent?.data,
+        },
+        meta: {
+          ...builderContextSignal.value.content?.meta,
+          ...newContent?.meta,
+          breakpoints:
+            newContent?.meta?.breakpoints ||
+            builderContextSignal.value.content?.meta?.breakpoints,
+        },
+      };
+    },
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
@@ -95,23 +111,6 @@ export default function Content(props: ContentProps) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
     }),
-    mergeNewContent(newContent: BuilderContent) {
-      builderContextSignal.value.content = {
-        ...builderContextSignal.value.content,
-        ...newContent,
-        data: {
-          ...builderContextSignal.value.content?.data,
-          ...newContent?.data,
-        },
-        meta: {
-          ...builderContextSignal.value.content?.meta,
-          ...newContent?.meta,
-          breakpoints:
-            newContent?.meta?.breakpoints ||
-            builderContextSignal.value.content?.meta?.breakpoints,
-        },
-      };
-    },
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
     },
