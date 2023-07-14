@@ -138,7 +138,6 @@ function bldrAbTest(
       })
       .join('');
 
-    /* TO-DO: check if this actually updates the style */
     styleEl.innerHTML = newStyleStr;
   }
 }
@@ -221,8 +220,8 @@ const isHydrationTarget = getIsHydrationTarget(TARGET);
  *
  * So we hardcode the function names here, and then use those names in the script string to make sure the function names are consistent.
  */
-const AB_TEST_FN_NAME = 'bldrAbTest';
-const CONTENT_FN_NAME = 'bldrCntntScrpt';
+const AB_TEST_FN_NAME = 'builderIoAbTest';
+const CONTENT_FN_NAME = 'builderIoRenderContent';
 
 export const getScriptString = () => {
   const fnStr = bldrAbTest.toString().replace(/\s+/g, ' ');
