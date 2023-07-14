@@ -62,9 +62,11 @@ export default function Symbol(props: SymbolProps) {
           model: props.symbol.model,
           apiKey: builderContext.value.apiKey,
           apiVersion: builderContext.value.apiVersion,
-          query: {
-            id: props.symbol.entry,
-          },
+          ...(props.symbol?.entry && {
+            query: {
+              id: props.symbol.entry,
+            },
+          }),
         })
           .then((response) => {
             if (response) {
