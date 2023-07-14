@@ -22,7 +22,7 @@ import type {
 import type { Nullable } from '../../types/typescript.js';
 import Blocks from '../blocks.lite';
 import ContentStyles from './components/styles.lite';
-import builderContext from '../../context/builder.context.lite.js';
+import builderContext from '../../context/builder.context.lite';
 import {
   Show,
   onMount,
