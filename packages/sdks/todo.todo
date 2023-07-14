@@ -38,5 +38,14 @@ Cookies:
 
 REMAINING:
 - SSR A/B Testing breaks - disabled for now
+  - read/write cookies in SSR fetch, take care of it there.
 - dig into cleaner UI to show loading indicators in editor.
 - look into Steve's approach of storing data in a local endpoint
+- fix tests:
+  - Vue: ?
+  - Svelte: good
+  - Solid: good
+  - React: ?
+  - RN: ?
+  - Qwik: passing function as a prop, `mergeNewContent`, seems to cause issues.
+
