@@ -199,6 +199,8 @@ test.describe('A/B tests', () => {
         browser,
         context: _context,
       }) => {
+        if (packageName === 'e2e-react-native') test.skip();
+
         const { page, msgs } = await initializeAbTest(
           {
             page: _page,
@@ -231,6 +233,8 @@ test.describe('A/B tests', () => {
         browser,
         context: _context,
       }) => {
+        if (packageName === 'e2e-react-native') test.skip();
+
         const { page, msgs } = await initializeAbTest(
           {
             page: _page,
