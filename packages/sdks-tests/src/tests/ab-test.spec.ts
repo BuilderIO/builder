@@ -89,6 +89,9 @@ test.describe('A/B tests', () => {
         // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
         if (packageName === 'e2e-old-nextjs') test.skip();
 
+        // React Native SDK needs some extra time to sort its feelings out.
+        if (packageName === 'e2e-react-native') test.slow();
+
         const context = await createContextWithCookies({
           baseURL,
           browser,
@@ -96,10 +99,7 @@ test.describe('A/B tests', () => {
           context: _context,
         });
 
-        let page = _page;
-        if (!isRNSDK) {
-          page = await context.newPage();
-        }
+        const page = isRNSDK ? _page : await context.newPage();
 
         const msgs = [] as ConsoleMessage[];
         page.on('console', msg => {
@@ -128,6 +128,9 @@ test.describe('A/B tests', () => {
         // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
         if (packageName === 'e2e-old-nextjs') test.skip();
 
+        // React Native SDK needs some extra time to sort its feelings out.
+        if (packageName === 'e2e-react-native') test.slow();
+
         const context = await createContextWithCookies({
           baseURL,
           browser,
@@ -135,10 +138,7 @@ test.describe('A/B tests', () => {
           context: _context,
         });
 
-        let page = _page;
-        if (!isRNSDK) {
-          page = await context.newPage();
-        }
+        const page = isRNSDK ? _page : await context.newPage();
 
         const msgs = [] as ConsoleMessage[];
         page.on('console', msg => {
@@ -184,6 +184,9 @@ test.describe('A/B tests', () => {
         // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
         if (packageName === 'e2e-old-nextjs') test.skip();
 
+        // React Native SDK needs some extra time to sort its feelings out.
+        if (packageName === 'e2e-react-native') test.slow();
+
         const context = await createContextWithCookies({
           baseURL,
           browser,
@@ -191,10 +194,7 @@ test.describe('A/B tests', () => {
           context: _context,
         });
 
-        let page = _page;
-        if (!isRNSDK) {
-          page = await context.newPage();
-        }
+        const page = isRNSDK ? _page : await context.newPage();
 
         const msgs = [] as ConsoleMessage[];
         page.on('console', msg => {
@@ -223,6 +223,9 @@ test.describe('A/B tests', () => {
         // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
         if (packageName === 'e2e-old-nextjs') test.skip();
 
+        // React Native SDK needs some extra time to sort its feelings out.
+        if (packageName === 'e2e-react-native') test.slow();
+
         const context = await createContextWithCookies({
           baseURL,
           browser,
@@ -230,10 +233,7 @@ test.describe('A/B tests', () => {
           context: _context,
         });
 
-        let page = _page;
-        if (!isRNSDK) {
-          page = await context.newPage();
-        }
+        const page = isRNSDK ? _page : await context.newPage();
 
         const msgs = [] as ConsoleMessage[];
         page.on('console', msg => {
