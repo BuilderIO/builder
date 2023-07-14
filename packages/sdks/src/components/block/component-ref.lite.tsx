@@ -43,7 +43,7 @@ export default function ComponentRef(props: ComponentProps) {
         <For each={props.blockChildren}>
           {(child) => (
             <Block
-              key={'render-block-' + child.id}
+              key={'block-' + child.id}
               block={child}
               context={props.context}
             />

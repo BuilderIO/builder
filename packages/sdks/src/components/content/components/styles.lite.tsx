@@ -10,7 +10,7 @@ interface Props {
   contentId?: string;
 }
 
-export default function RenderContentStyles(props: Props) {
+export default function ContentStyles(props: Props) {
   const state = useStore({
     injectedStyles: `
 ${getCss({ cssCode: props.cssCode, contentId: props.contentId })}

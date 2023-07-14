@@ -21,7 +21,7 @@ import type {
 } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
 import Blocks from '../blocks.lite';
-import RenderContentStyles from './components/styles.lite';
+import ContentStyles from './components/styles.lite';
 import builderContext from '../../context/builder.context.lite.js';
 import {
   Show,
@@ -442,7 +442,7 @@ export default function Content(props: ContentProps) {
           <InlinedScript scriptStr={state.scriptStr} />
         </Show>
         <Show when={TARGET !== 'reactNative'}>
-          <RenderContentStyles
+          <ContentStyles
             contentId={builderContextSignal.value.content?.id}
             cssCode={builderContextSignal.value.content?.data?.cssCode}
             customFonts={builderContextSignal.value.content?.data?.customFonts}

@@ -83,7 +83,7 @@ const vueConfig = {
       json: {
         // This plugin handles binding our actions to the `v-on:` Vue syntax:
         // - in our block components, the actions will come through `props.attributes` and need to be filtered
-        // - in RenderBlock, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
+        // - in Block, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
           // this function is injected into a component, so it can't use anything outside of itself
           /**
@@ -432,7 +432,7 @@ module.exports = {
               }
 
               /**
-               * We need the ScrollView for the `RenderBlocks` and `ComponentRef` components to be able to scroll
+               * We need the ScrollView for the `Blocks` and `ComponentRef` components to be able to scroll
                * through the whole page.
                */
               traverse(json).forEach(function (item) {
@@ -578,7 +578,7 @@ module.exports = {
                 }
               }
               `;
-              // handle case where we have a wrapper element, in which case the actions are assigned in `RenderBlock`.
+              // handle case where we have a wrapper element, in which case the actions are assigned in `Block`.
               if (json.name === 'Block') {
                 json.hooks.preComponent = { code };
 
