@@ -12,8 +12,14 @@ import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 import InlinedScript from '../inlined-script.lite';
 import { TARGET } from '../../constants/target';
+import type { RenderContentVariantsProps } from './render-content-variants.types';
 
-type VariantsProviderProps = RenderContentProps & { isNestedRender?: boolean };
+type VariantsProviderProps = RenderContentVariantsProps & {
+  /**
+   * For internal use only
+   */
+  isNestedRender?: boolean;
+};
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
   onMount(() => {
@@ -49,6 +55,26 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
     hideVariantsStyleString: getVariants(props.content)
       .map((value) => `.variant-${value.id} { display: none; } `)
       .join(''),
+
+    get passedOnProps(): Omit<
+      RenderContentProps,
+      'content' | 'classNameProp' | 'hideContent'
+    > {
+      return {
+        model: props.model,
+        data: props.data,
+        context: props.context,
+        apiKey: props.apiKey,
+        apiVersion: props.apiVersion,
+        customComponents: props.customComponents,
+        canTrack: props.canTrack,
+        locale: props.locale,
+        includeRefs: props.includeRefs,
+        enrich: props.enrich,
+        isSsrAbTest: state.shouldRenderVariants,
+        parentContentId: props.content?.id,
+      };
+    },
   });
 
   return (
@@ -72,13 +98,9 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
             <RenderContent
               key={variant.id}
               content={variant}
-              apiKey={props.apiKey}
-              apiVersion={props.apiVersion}
-              canTrack={props.canTrack}
-              customComponents={props.customComponents}
               hideContent
-              parentContentId={props.content?.id}
-              isSsrAbTest={state.shouldRenderVariants}
+              classNameProp={undefined}
+              {...state.passedOnProps}
             />
           )}
         </For>
@@ -93,7 +115,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           },
           default: {},
         })}
-        model={props.model}
+        {...state.passedOnProps}
         content={
           state.shouldRenderVariants
             ? props.content
@@ -102,13 +124,8 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
                 canTrack: getDefaultCanTrack(props.canTrack),
               })
         }
-        apiKey={props.apiKey}
-        apiVersion={props.apiVersion}
-        canTrack={props.canTrack}
-        customComponents={props.customComponents}
         classNameProp={`variant-${props.content?.id}`}
-        parentContentId={props.content?.id}
-        isSsrAbTest={state.shouldRenderVariants}
+        hideContent={false}
       />
     </>
   );
