@@ -427,12 +427,8 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (
-                json.name !== 'BlocksWrapper' &&
-                json.name !== 'EnableEditor'
-              ) {
+              if (!['BlocksWrapper', 'EnableEditor'].includes(json.name))
                 return;
-              }
 
               /**
                * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
