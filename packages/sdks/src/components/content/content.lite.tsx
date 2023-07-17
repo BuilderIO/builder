@@ -1,12 +1,12 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import type {
+  BuilderContextInterface,
   BuilderRenderState,
-  RegisteredComponent,
   RegisteredComponents,
 } from '../../context/types.js';
 import { components } from '../../functions/register-component.js';
-import Blocks from '../blocks/blocks.lite.jsx';
-import ContentStyles from './components/content-styles.lite.jsx';
+import Blocks from '../blocks/blocks.lite';
+import ContentStyles from './components/styles.lite';
 import {
   Show,
   useStore,
@@ -23,18 +23,16 @@ import {
 } from './content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { getRenderContentScriptString } from '../content-variants/helpers.js';
-import { wrapComponentRef } from './wrap-component-ref.js';
 import { useTarget } from '@builder.io/mitosis';
-import EnableEditor from './components/enable-editor.lite.jsx';
-import type { ComponentInfo } from '../../types/components.js';
-import type { Dictionary } from '../../types/typescript.js';
+import EnableEditor from './components/enable-editor.lite';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { getContent } from '../../functions/get-content/index.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { logger } from '../../helpers/logger.js';
-import InlinedScript from '../inlined-script.lite.jsx';
+import InlinedScript from '../inlined-script.lite';
+import { wrapComponentRef } from './wrap-component-ref.js';
 
 useMetadata({
   qwik: {
@@ -42,10 +40,29 @@ useMetadata({
   },
 });
 
-export default function Content(props: ContentProps) {
+export default function ContentComponent(props: ContentProps) {
   const state = useStore({
     forceReRenderCount: 0,
-
+    mergeNewContent(newContent: BuilderContent) {
+      builderContextSignal.value.content = {
+        ...builderContextSignal.value.content,
+        ...newContent,
+        data: {
+          ...builderContextSignal.value.content?.data,
+          ...newContent?.data,
+        },
+        meta: {
+          ...builderContextSignal.value.content?.meta,
+          ...newContent?.meta,
+          breakpoints:
+            newContent?.meta?.breakpoints ||
+            builderContextSignal.value.content?.meta?.breakpoints,
+        },
+      };
+    },
+    contentSetState: (newRootState: BuilderRenderState) => {
+      builderContextSignal.value.rootState = newRootState;
+    },
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
@@ -95,28 +112,8 @@ export default function Content(props: ContentProps) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
     }),
-    mergeNewContent(newContent: BuilderContent) {
-      builderContextSignal.value.content = {
-        ...builderContextSignal.value.content,
-        ...newContent,
-        data: {
-          ...builderContextSignal.value.content?.data,
-          ...newContent?.data,
-        },
-        meta: {
-          ...builderContextSignal.value.content?.meta,
-          ...newContent?.meta,
-          breakpoints:
-            newContent?.meta?.breakpoints ||
-            builderContextSignal.value.content?.meta?.breakpoints,
-        },
-      };
-    },
-    contentSetState: (newRootState: BuilderRenderState) => {
-      builderContextSignal.value.rootState = newRootState;
-    },
 
-    customComps: [
+    registeredComponents: [
       ...getDefaultRegisteredComponents(),
       // While this `components` object is deprecated, we must maintain support for it.
       // Since users are able to override our default components, we need to make sure that we do not break such
@@ -125,28 +122,22 @@ export default function Content(props: ContentProps) {
       // which is the new standard way of providing custom components, and must therefore take precedence.
       ...components,
       ...(props.customComponents || []),
-    ].reduce<Dictionary<RegisteredComponent>>(
-      (acc, info) => ({
+    ].reduce<RegisteredComponents>(
+      (acc, { component, ...curr }) => ({
         ...acc,
-        [info.name]: info,
+        [curr.name]: {
+          component: useTarget({
+            vue3: wrapComponentRef(component),
+            default: component,
+          }),
+          ...curr,
+        },
       }),
       {}
     ),
-    get customComponentsInfo(): Dictionary<ComponentInfo> {
-      // TO-DO: fix once we remove `useStore<any>` hack in Qwik generator.
-      return Object.values(
-        state.customComps as Dictionary<RegisteredComponent>
-      ).reduce<Dictionary<ComponentInfo>>(
-        (acc, { component: _, ...info }) => ({
-          ...acc,
-          [info.name]: info,
-        }),
-        {}
-      );
-    },
   });
 
-  const [builderContextSignal] = useState(
+  const [builderContextSignal] = useState<BuilderContextInterface>(
     {
       content: getContentInitialValue({
         content: props.content,
@@ -160,31 +151,34 @@ export default function Content(props: ContentProps) {
       }),
       rootSetState: useTarget({
         qwik: undefined,
-        react: undefined,
         default: state.contentSetState,
       }),
       context: props.context || {},
       apiKey: props.apiKey,
       apiVersion: props.apiVersion,
-      registeredComponents: [
-        ...getDefaultRegisteredComponents(),
-        // While this `components` object is deprecated, we must maintain support for it.
-        // Since users are able to override our default components, we need to make sure that we do not break such
-        // existing usage.
-        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-        // which is the new standard way of providing custom components, and must therefore take precedence.
-        ...components,
-        ...(props.customComponents || []),
-      ].reduce(
-        (acc, { component, ...curr }) => ({
+      componentInfos: Object.values(
+        [
+          ...getDefaultRegisteredComponents(),
+          // While this `components` object is deprecated, we must maintain support for it.
+          // Since users are able to override our default components, we need to make sure that we do not break such
+          // existing usage.
+          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+          // which is the new standard way of providing custom components, and must therefore take precedence.
+          ...components,
+          ...(props.customComponents || []),
+        ].reduce<RegisteredComponents>(
+          (acc, info) => ({
+            ...acc,
+            [info.name]: info,
+          }),
+          {}
+        )
+      ).reduce(
+        (acc, { component: _, ...info }) => ({
           ...acc,
-          [curr.name]: {
-            component:
-              TARGET === 'vue3' ? wrapComponentRef(component) : component,
-            ...curr,
-          },
+          [info.name]: info,
         }),
-        {} as RegisteredComponents
+        {}
       ),
       inheritedStyles: {},
     },
@@ -257,20 +251,15 @@ export default function Content(props: ContentProps) {
     <Show when={builderContextSignal.value.content}>
       <EnableEditor
         key={state.forceReRenderCount}
-        content={props.content}
         model={props.model}
-        data={props.data}
         context={props.context}
         apiKey={props.apiKey}
-        apiVersion={props.apiVersion}
-        customComponents={state.customComponentsInfo}
         canTrack={props.canTrack}
         locale={props.locale}
         includeRefs={props.includeRefs}
         enrich={props.enrich}
         classNameProp={props.classNameProp}
         showContent={props.showContent}
-        isSsrAbTest={props.isSsrAbTest}
         builderContextSignal={builderContextSignal}
       >
         <Show when={props.isSsrAbTest}>
@@ -286,7 +275,7 @@ export default function Content(props: ContentProps) {
         <Blocks
           blocks={builderContextSignal.value.content?.data?.blocks}
           context={builderContextSignal}
-          components={state.customComps}
+          registeredComponents={state.registeredComponents}
         />
       </EnableEditor>
     </Show>
