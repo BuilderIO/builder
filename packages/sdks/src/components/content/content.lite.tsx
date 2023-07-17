@@ -5,8 +5,8 @@ import type {
   RegisteredComponents,
 } from '../../context/types.js';
 import { components } from '../../functions/register-component.js';
-import Blocks from '../blocks/blocks.lite.jsx';
-import ContentStyles from './components/content-styles.lite.jsx';
+import Blocks from '../blocks/blocks.lite';
+import ContentStyles from './components/styles.lite';
 import {
   Show,
   useStore,
@@ -25,7 +25,7 @@ import { TARGET } from '../../constants/target.js';
 import { getRenderContentScriptString } from '../content-variants/helpers.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
 import { useTarget } from '@builder.io/mitosis';
-import EnableEditor from './components/enable-editor.lite.jsx';
+import EnableEditor from './components/enable-editor.lite';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { BuilderContent } from '../../types/builder-content.js';
@@ -34,7 +34,7 @@ import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { logger } from '../../helpers/logger.js';
-import InlinedScript from '../inlined-script.lite.jsx';
+import InlinedScript from '../inlined-script.lite';
 
 useMetadata({
   qwik: {
