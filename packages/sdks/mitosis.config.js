@@ -313,7 +313,7 @@ module.exports = {
           },
           code: {
             pre: (code) => {
-              if (code.includes('name: "block"')) {
+              if (code.includes("name: 'block'")) {
                 // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
                 return code
                   .replace(
