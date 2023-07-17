@@ -73,7 +73,7 @@ export const getRepeatItemData = ({
   context: BuilderContextInterface;
 }): RepeatData[] | undefined => {
   /**
-   * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,
+   * we don't use `state.processedBlock` here because the processing done within its logic includes evaluating the block's bindings,
    * which will not work if there is a repeat.
    */
   const { repeat, ...blockWithoutRepeat } = block;
