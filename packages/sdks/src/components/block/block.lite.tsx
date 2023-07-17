@@ -49,7 +49,7 @@ export default function Block(props: BlockProps) {
     component: getComponent({
       block: props.block,
       context: props.context.value,
-      components: props.registeredComponents,
+      registeredComponents: props.registeredComponents,
     }),
     get repeatItem() {
       return getRepeatItemData({

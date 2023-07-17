@@ -38,11 +38,11 @@ export const isEmptyHtmlElement = (tagName: unknown) => {
 export const getComponent = ({
   block,
   context,
-  components,
+  registeredComponents,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
-  components: RegisteredComponents;
+  registeredComponents: RegisteredComponents;
 }) => {
   const componentName = getProcessedBlock({
     block,
@@ -57,7 +57,7 @@ export const getComponent = ({
     return null;
   }
 
-  const ref = components[componentName];
+  const ref = registeredComponents[componentName];
 
   if (!ref) {
     // TODO: Public doc page with more info about this message
