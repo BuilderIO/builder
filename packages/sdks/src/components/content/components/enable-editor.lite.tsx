@@ -41,7 +41,10 @@ useMetadata({
   },
 });
 
-type BuilderEditorProps = Omit<ContentProps, 'customComponents'> & {
+type BuilderEditorProps = Omit<
+  ContentProps,
+  'customComponents' | 'content' | 'data' | 'apiVersion' | 'isSsrAbTest'
+> & {
   customComponents: Dictionary<ComponentInfo>;
   builderContextSignal: Signal<BuilderContextInterface>;
   children?: any;

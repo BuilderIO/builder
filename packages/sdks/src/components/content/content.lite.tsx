@@ -62,6 +62,9 @@ export default function ContentComponent(props: ContentProps) {
         },
       };
     },
+    contentSetState: (newRootState: BuilderRenderState) => {
+      builderContextSignal.value.rootState = newRootState;
+    },
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
@@ -111,9 +114,6 @@ export default function ContentComponent(props: ContentProps) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
     }),
-    contentSetState: (newRootState: BuilderRenderState) => {
-      builderContextSignal.value.rootState = newRootState;
-    },
 
     customComps: [
       ...getDefaultRegisteredComponents(),
@@ -256,12 +256,9 @@ export default function ContentComponent(props: ContentProps) {
     <Show when={builderContextSignal.value.content}>
       <EnableEditor
         key={state.forceReRenderCount}
-        content={props.content}
         model={props.model}
-        data={props.data}
         context={props.context}
         apiKey={props.apiKey}
-        apiVersion={props.apiVersion}
         customComponents={state.customComponentsInfo}
         canTrack={props.canTrack}
         locale={props.locale}
@@ -269,7 +266,6 @@ export default function ContentComponent(props: ContentProps) {
         enrich={props.enrich}
         classNameProp={props.classNameProp}
         showContent={props.showContent}
-        isSsrAbTest={props.isSsrAbTest}
         builderContextSignal={builderContextSignal}
       >
         <Show when={props.isSsrAbTest}>
