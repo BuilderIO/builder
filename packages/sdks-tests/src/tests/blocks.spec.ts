@@ -197,9 +197,7 @@ test.describe('Blocks', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test('symbols refresh on locale change', async ({ page, packageName }) => {
-    if (packageName === 'e2e-qwik-city') test.skip();
-
+  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
     let x = 0;
 
     const urlMatch =
