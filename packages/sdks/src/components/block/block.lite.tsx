@@ -28,7 +28,6 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import ComponentRef from './components/component-ref.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
-import type { Dictionary } from '../../types/typescript.js';
 
 export type BlockProps = {
   block: BuilderBlock;

@@ -7,7 +7,6 @@ import type {
 import type { BuilderBlock } from '../../../types/builder-block';
 import Block from '../block.lite';
 import { useMetadata } from '@builder.io/mitosis';
-import type { Dictionary } from '../../../types/typescript';
 
 type Props = {
   block: BuilderBlock;
