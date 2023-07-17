@@ -405,8 +405,8 @@ module.exports = {
                         code: 'props.context.apiKey',
                         type: 'property',
                       },
-                      registeredComponents: {
-                        code: 'props.context.registeredComponents',
+                      componentInfos: {
+                        code: 'props.context.componentInfos',
                         type: 'property',
                       },
                       inheritedStyles: {
