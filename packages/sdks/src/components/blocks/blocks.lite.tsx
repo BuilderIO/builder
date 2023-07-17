@@ -11,7 +11,7 @@ import type {
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {
   context: Signal<BuilderContextInterface>;
-  components: RegisteredComponents;
+  registeredComponents: RegisteredComponents;
 };
 
 export default function Blocks(props: BlocksProps) {
@@ -33,7 +33,7 @@ export default function Blocks(props: BlocksProps) {
               key={'render-block-' + block.id}
               block={block}
               context={props.context}
-              components={props.components}
+              registeredComponents={props.registeredComponents}
             />
           )}
         </For>

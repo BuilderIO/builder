@@ -21,7 +21,7 @@ export interface ComponentProps {
   componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
   context: Signal<BuilderContextInterface>;
-  components: RegisteredComponents;
+  registeredComponents: RegisteredComponents;
 }
 
 useMetadata({
@@ -51,7 +51,7 @@ export default function ComponentRef(props: ComponentProps) {
               key={'block-' + child.id}
               block={child}
               context={props.context}
-              components={props.components}
+              registeredComponents={props.registeredComponents}
             />
           )}
         </For>

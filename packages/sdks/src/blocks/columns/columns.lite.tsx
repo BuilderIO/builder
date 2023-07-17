@@ -202,7 +202,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
               context={builderContext}
-              components={props.builderComponents}
+              registeredComponents={props.builderComponents}
             />
           </div>
         )}

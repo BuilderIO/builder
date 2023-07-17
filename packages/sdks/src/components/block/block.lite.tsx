@@ -32,7 +32,7 @@ import { getReactNativeBlockStyles } from '../../functions/get-react-native-bloc
 export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  components: RegisteredComponents;
+  registeredComponents: RegisteredComponents;
 };
 
 useMetadata({
@@ -49,7 +49,7 @@ export default function Block(props: BlockProps) {
     component: getComponent({
       block: props.block,
       context: props.context.value,
-      components: props.components,
+      components: props.registeredComponents,
     }),
     get repeatItem() {
       return getRepeatItemData({
@@ -135,11 +135,11 @@ export default function Block(props: BlockProps) {
           builderContext: props.context,
           ...(state.component?.name === 'Symbol' ||
           state.component?.name === 'Columns'
-            ? { builderComponents: props.components }
+            ? { builderComponents: props.registeredComponents }
             : {}),
         },
         context: childrenContext,
-        components: props.components,
+        registeredComponents: props.registeredComponents,
       };
     },
   });
@@ -188,7 +188,7 @@ export default function Block(props: BlockProps) {
                 key={index}
                 repeatContext={data.context}
                 block={data.block}
-                components={props.components}
+                registeredComponents={props.registeredComponents}
               />
             )}
           </For>
@@ -206,7 +206,7 @@ export default function Block(props: BlockProps) {
                   key={'block-' + child.id}
                   block={child}
                   context={childrenContext}
-                  components={props.components}
+                  registeredComponents={props.registeredComponents}
                 />
               )}
             </For>

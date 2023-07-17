@@ -11,7 +11,7 @@ import { useMetadata } from '@builder.io/mitosis';
 type Props = {
   block: BuilderBlock;
   repeatContext: BuilderContextInterface;
-  components: RegisteredComponents;
+  registeredComponents: RegisteredComponents;
 };
 
 useMetadata({
@@ -37,6 +37,10 @@ export default function RepeatedBlock(props: Props) {
   setContext(BuilderContext, store);
 
   return (
-    <Block block={props.block} context={store} components={props.components} />
+    <Block
+      block={props.block}
+      context={store}
+      registeredComponents={props.registeredComponents}
+    />
   );
 }

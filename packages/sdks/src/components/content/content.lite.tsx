@@ -112,7 +112,7 @@ export default function ContentComponent(props: ContentProps) {
       contentId: props.content?.id!,
     }),
 
-    customComps: [
+    registeredComponents: [
       ...getDefaultRegisteredComponents(),
       // While this `components` object is deprecated, we must maintain support for it.
       // Since users are able to override our default components, we need to make sure that we do not break such
@@ -150,7 +150,7 @@ export default function ContentComponent(props: ContentProps) {
       apiKey: props.apiKey,
       apiVersion: props.apiVersion,
       componentInfos: Object.values(
-        state.customComps as RegisteredComponents
+        state.registeredComponents as RegisteredComponents
       ).reduce(
         (acc, { component: _, ...info }) => ({
           ...acc,
@@ -253,7 +253,7 @@ export default function ContentComponent(props: ContentProps) {
         <Blocks
           blocks={builderContextSignal.value.content?.data?.blocks}
           context={builderContextSignal}
-          components={state.customComps}
+          registeredComponents={state.registeredComponents}
         />
       </EnableEditor>
     </Show>
