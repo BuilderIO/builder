@@ -32,6 +32,7 @@ import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { logger } from '../../helpers/logger.js';
 import InlinedScript from '../inlined-script.lite';
+import { wrapComponentRef } from './wrap-component-ref.js';
 
 useMetadata({
   qwik: {
@@ -122,24 +123,18 @@ export default function ContentComponent(props: ContentProps) {
       ...components,
       ...(props.customComponents || []),
     ].reduce<RegisteredComponents>(
-      (acc, info) => ({
+      (acc, { component, ...curr }) => ({
         ...acc,
-        [info.name]: info,
+        [curr.name]: {
+          component: useTarget({
+            vue3: wrapComponentRef(component),
+            default: component,
+          }),
+          ...curr,
+        },
       }),
       {}
     ),
-
-    get componentInfos(): BuilderContextInterface['componentInfos'] {
-      return Object.values(
-        state.registeredComponents as RegisteredComponents
-      ).reduce(
-        (acc, { component: _, ...info }) => ({
-          ...acc,
-          [info.name]: info,
-        }),
-        {}
-      );
-    },
   });
 
   const [builderContextSignal] = useState<BuilderContextInterface>(
@@ -161,7 +156,30 @@ export default function ContentComponent(props: ContentProps) {
       context: props.context || {},
       apiKey: props.apiKey,
       apiVersion: props.apiVersion,
-      componentInfos: state.componentInfos,
+      componentInfos: Object.values(
+        [
+          ...getDefaultRegisteredComponents(),
+          // While this `components` object is deprecated, we must maintain support for it.
+          // Since users are able to override our default components, we need to make sure that we do not break such
+          // existing usage.
+          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+          // which is the new standard way of providing custom components, and must therefore take precedence.
+          ...components,
+          ...(props.customComponents || []),
+        ].reduce<RegisteredComponents>(
+          (acc, info) => ({
+            ...acc,
+            [info.name]: info,
+          }),
+          {}
+        )
+      ).reduce(
+        (acc, { component: _, ...info }) => ({
+          ...acc,
+          [info.name]: info,
+        }),
+        {}
+      ),
       inheritedStyles: {},
     },
     { reactive: true }
