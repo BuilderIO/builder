@@ -3071,6 +3071,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/e2e-nextjs-app-dir-react@workspace:sdks/e2e/nextjs-react-app-dir":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-nextjs-app-dir-react@workspace:sdks/e2e/nextjs-react-app-dir"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@types/react": ^18.0.14
+    "@types/react-dom": ^18.0.5
+    eslint-config-next: ^13
+    next: ^13.4.4
+    react: ^18
+    react-dom: ^18
+    typescript: ^4
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react-pages-dir":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react-pages-dir"
