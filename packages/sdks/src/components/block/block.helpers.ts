@@ -1,4 +1,7 @@
-import type { BuilderContextInterface } from '../../context/types';
+import type {
+  BuilderContextInterface,
+  RegisteredComponents,
+} from '../../context/types';
 import { evaluate } from '../../functions/evaluate';
 import { getProcessedBlock } from '../../functions/get-processed-block';
 import type { BuilderBlock } from '../../types/builder-block';
@@ -35,9 +38,11 @@ export const isEmptyHtmlElement = (tagName: unknown) => {
 export const getComponent = ({
   block,
   context,
+  components,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
+  components: RegisteredComponents;
 }) => {
   const componentName = getProcessedBlock({
     block,
@@ -52,7 +57,7 @@ export const getComponent = ({
     return null;
   }
 
-  const ref = context.registeredComponents[componentName];
+  const ref = components[componentName];
 
   if (!ref) {
     // TODO: Public doc page with more info about this message

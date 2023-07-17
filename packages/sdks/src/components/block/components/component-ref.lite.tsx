@@ -5,10 +5,9 @@ import type { Signal } from '@builder.io/mitosis';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type {
   BuilderContextInterface,
-  RegisteredComponent,
+  RegisteredComponents,
 } from '../../../context/types.js';
 import type { PropsWithBuilderData } from '../../../types/builder-props.js';
-import type { Dictionary } from '../../../types/typescript.js';
 
 type ComponentOptions = PropsWithBuilderData<{
   [index: string]: any;
@@ -22,7 +21,7 @@ export interface ComponentProps {
   componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
   context: Signal<BuilderContextInterface>;
-  components: Dictionary<RegisteredComponent>;
+  components: RegisteredComponents;
 }
 
 useMetadata({

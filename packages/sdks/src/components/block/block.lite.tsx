@@ -1,6 +1,6 @@
 import type {
   BuilderContextInterface,
-  RegisteredComponent,
+  RegisteredComponents,
 } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
@@ -28,12 +28,11 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import ComponentRef from './components/component-ref.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
-import type { Dictionary } from '../../types/typescript.js';
 
 export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  components: Dictionary<RegisteredComponent>;
+  components: RegisteredComponents;
 };
 
 useMetadata({
@@ -50,6 +49,7 @@ export default function Block(props: BlockProps) {
     component: getComponent({
       block: props.block,
       context: props.context.value,
+      components: props.components,
     }),
     get repeatItem() {
       return getRepeatItemData({
@@ -154,7 +154,7 @@ export default function Block(props: BlockProps) {
         rootSetState: props.context.value.rootSetState,
         content: props.context.value.content,
         context: props.context.value.context,
-        registeredComponents: props.context.value.registeredComponents,
+        componentInfos: props.context.value.componentInfos,
         inheritedStyles: extractTextStyles(
           getReactNativeBlockStyles({
             block: state.processedBlock,

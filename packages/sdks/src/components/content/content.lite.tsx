@@ -1,7 +1,7 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import type {
+  BuilderContextInterface,
   BuilderRenderState,
-  RegisteredComponent,
   RegisteredComponents,
 } from '../../context/types.js';
 import { components } from '../../functions/register-component.js';
@@ -23,11 +23,8 @@ import {
 } from './content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { getRenderContentScriptString } from '../content-variants/helpers.js';
-import { wrapComponentRef } from './wrap-component-ref.js';
 import { useTarget } from '@builder.io/mitosis';
 import EnableEditor from './components/enable-editor.lite';
-import type { ComponentInfo } from '../../types/components.js';
-import type { Dictionary } from '../../types/typescript.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { getContent } from '../../functions/get-content/index.js';
 import { isBrowser } from '../../functions/is-browser.js';
@@ -124,28 +121,16 @@ export default function ContentComponent(props: ContentProps) {
       // which is the new standard way of providing custom components, and must therefore take precedence.
       ...components,
       ...(props.customComponents || []),
-    ].reduce<Dictionary<RegisteredComponent>>(
+    ].reduce<RegisteredComponents>(
       (acc, info) => ({
         ...acc,
         [info.name]: info,
       }),
       {}
     ),
-    get customComponentsInfo(): Dictionary<ComponentInfo> {
-      // TO-DO: fix once we remove `useStore<any>` hack in Qwik generator.
-      return Object.values(
-        state.customComps as Dictionary<RegisteredComponent>
-      ).reduce<Dictionary<ComponentInfo>>(
-        (acc, { component: _, ...info }) => ({
-          ...acc,
-          [info.name]: info,
-        }),
-        {}
-      );
-    },
   });
 
-  const [builderContextSignal] = useState(
+  const [builderContextSignal] = useState<BuilderContextInterface>(
     {
       content: getContentInitialValue({
         content: props.content,
@@ -164,25 +149,14 @@ export default function ContentComponent(props: ContentProps) {
       context: props.context || {},
       apiKey: props.apiKey,
       apiVersion: props.apiVersion,
-      registeredComponents: [
-        ...getDefaultRegisteredComponents(),
-        // While this `components` object is deprecated, we must maintain support for it.
-        // Since users are able to override our default components, we need to make sure that we do not break such
-        // existing usage.
-        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-        // which is the new standard way of providing custom components, and must therefore take precedence.
-        ...components,
-        ...(props.customComponents || []),
-      ].reduce(
-        (acc, { component, ...curr }) => ({
+      componentInfos: Object.values(
+        state.customComps as RegisteredComponents
+      ).reduce(
+        (acc, { component: _, ...info }) => ({
           ...acc,
-          [curr.name]: {
-            component:
-              TARGET === 'vue3' ? wrapComponentRef(component) : component,
-            ...curr,
-          },
+          [info.name]: info,
         }),
-        {} as RegisteredComponents
+        {}
       ),
       inheritedStyles: {},
     },
@@ -258,7 +232,6 @@ export default function ContentComponent(props: ContentProps) {
         model={props.model}
         context={props.context}
         apiKey={props.apiKey}
-        customComponents={state.customComponentsInfo}
         canTrack={props.canTrack}
         locale={props.locale}
         includeRefs={props.includeRefs}

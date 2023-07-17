@@ -6,13 +6,12 @@ import type { BlocksWrapperProps } from './blocks-wrapper.lite';
 import BlocksWrapper from './blocks-wrapper.lite';
 import type {
   BuilderContextInterface,
-  RegisteredComponent,
+  RegisteredComponents,
 } from '../../context/types.js';
-import type { Dictionary } from '../../types/typescript';
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {
   context: Signal<BuilderContextInterface>;
-  components: Dictionary<RegisteredComponent>;
+  components: RegisteredComponents;
 };
 
 export default function Blocks(props: BlocksProps) {
