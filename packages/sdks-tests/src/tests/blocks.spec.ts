@@ -225,6 +225,8 @@ test.describe('Blocks', () => {
 
     await page.goto('/symbol-with-locale');
 
+    await page.waitForSelector('text=Default text');
+
     await page.click('text=click');
 
     await page.waitForSelector('text=French text');
