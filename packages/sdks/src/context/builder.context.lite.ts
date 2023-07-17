@@ -10,7 +10,7 @@ export default createContext<BuilderContextInterface>(
     rootState: {},
     apiKey: null,
     apiVersion: undefined,
-    registeredComponents: {},
+    componentInfos: {},
     inheritedStyles: {},
   },
   { reactive: true }

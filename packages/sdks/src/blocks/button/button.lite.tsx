@@ -1,4 +1,4 @@
-import { Show } from '@builder.io/mitosis';
+import { Show, useTarget } from '@builder.io/mitosis';
 
 export interface ButtonProps {
   attributes?: any;
@@ -13,14 +13,19 @@ export default function Button(props: ButtonProps) {
       when={props.link}
       else={
         <button
+          {...props.attributes}
           css={{ all: 'unset' }}
-          class={
+          class={useTarget(
             /**
              * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.
              */
-            props.attributes.class
-          }
-          {...props.attributes}
+            {
+              react: props.attributes.className,
+              reactNative: props.attributes.className,
+              default: props.attributes.class,
+            }
+          )}
+          style={props.attributes.style}
         >
           {props.text}
         </button>

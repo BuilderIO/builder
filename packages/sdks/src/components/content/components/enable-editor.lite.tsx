@@ -1,7 +1,4 @@
-import type {
-  BuilderContextInterface,
-  RegisteredComponent,
-} from '../../../context/types.js';
+import type { BuilderContextInterface } from '../../../context/types.js';
 import { evaluate } from '../../../functions/evaluate.js';
 import { fetch } from '../../../functions/get-fetch.js';
 import { isBrowser } from '../../../functions/is-browser.js';
@@ -32,7 +29,6 @@ import type {
 } from '../content.types.js';
 import { TARGET } from '../../../constants/target.js';
 import { logger } from '../../../helpers/logger.js';
-import type { Dictionary } from '../../../types/typescript.js';
 import type { ComponentInfo } from '../../../types/components.js';
 
 useMetadata({
@@ -41,8 +37,10 @@ useMetadata({
   },
 });
 
-type BuilderEditorProps = Omit<ContentProps, 'customComponents'> & {
-  customComponents: Dictionary<ComponentInfo>;
+type BuilderEditorProps = Omit<
+  ContentProps,
+  'customComponents' | 'content' | 'data' | 'apiVersion' | 'isSsrAbTest'
+> & {
   builderContextSignal: Signal<BuilderContextInterface>;
   children?: any;
 };
@@ -163,8 +161,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
           ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
           ...(props.enrich ? { enrich: props.enrich } : {}),
         });
-        Object.values<RegisteredComponent>(
-          props.builderContextSignal.value.registeredComponents
+        Object.values<ComponentInfo>(
+          props.builderContextSignal.value.componentInfos
         ).forEach((registeredComponent) => {
           const message = createRegisterComponentMessage(registeredComponent);
           window.parent?.postMessage(message, '*');

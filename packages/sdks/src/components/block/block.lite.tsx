@@ -1,6 +1,6 @@
 import type {
   BuilderContextInterface,
-  RegisteredComponent,
+  RegisteredComponents,
 } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
@@ -33,7 +33,7 @@ import type { Dictionary } from '../../types/typescript.js';
 export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  components: Dictionary<RegisteredComponent>;
+  registeredComponents: RegisteredComponents;
 };
 
 useMetadata({
@@ -50,6 +50,7 @@ export default function Block(props: BlockProps) {
     component: getComponent({
       block: props.block,
       context: props.context.value,
+      registeredComponents: props.registeredComponents,
     }),
     get repeatItem() {
       return getRepeatItemData({
@@ -119,7 +120,7 @@ export default function Block(props: BlockProps) {
         : [];
     },
 
-    get renderComponentProps(): ComponentProps {
+    get componentRefProps(): ComponentProps {
       return {
         blockChildren: state.processedBlock.children ?? [],
         componentRef: state.component?.component,
@@ -135,11 +136,11 @@ export default function Block(props: BlockProps) {
           builderContext: props.context,
           ...(state.component?.name === 'Symbol' ||
           state.component?.name === 'Columns'
-            ? { builderComponents: props.components }
+            ? { builderComponents: props.registeredComponents }
             : {}),
         },
         context: childrenContext,
-        components: props.components,
+        registeredComponents: props.registeredComponents,
       };
     },
   });
@@ -154,7 +155,7 @@ export default function Block(props: BlockProps) {
         rootSetState: props.context.value.rootSetState,
         content: props.context.value.content,
         context: props.context.value.context,
-        registeredComponents: props.context.value.registeredComponents,
+        componentInfos: props.context.value.componentInfos,
         inheritedStyles: extractTextStyles(
           getReactNativeBlockStyles({
             block: state.processedBlock,
@@ -172,7 +173,7 @@ export default function Block(props: BlockProps) {
     <Show when={state.canShowBlock}>
       <Show
         when={!state.component?.noWrap}
-        else={<ComponentRef {...state.renderComponentProps} />}
+        else={<ComponentRef {...state.componentRefProps} />}
       >
         {/*
          * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -188,14 +189,14 @@ export default function Block(props: BlockProps) {
                 key={index}
                 repeatContext={data.context}
                 block={data.block}
-                components={props.components}
+                registeredComponents={props.registeredComponents}
               />
             )}
           </For>
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
           <state.Tag {...state.attributes} {...state.actions}>
-            <ComponentRef {...state.renderComponentProps} />
+            <ComponentRef {...state.componentRefProps} />
             {/**
              * We need to run two separate loops for content + styles to workaround the fact that Vue 2
              * does not support multiple root elements.
@@ -203,10 +204,10 @@ export default function Block(props: BlockProps) {
             <For each={state.childrenWithoutParentComponent}>
               {(child) => (
                 <Block
-                  key={'render-block-' + child.id}
+                  key={'block-' + child.id}
                   block={child}
                   context={childrenContext}
-                  components={props.components}
+                  registeredComponents={props.registeredComponents}
                 />
               )}
             </For>

@@ -370,12 +370,68 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (json.name !== 'Blocks' && json.name !== 'Content') {
-                return;
+              /**
+               * We cannot set context in `ComponentRef` because it's a light Qwik component.
+               * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
+               **/
+              if (json.name === 'ComponentRef') {
+                json.imports.push({
+                  imports: {
+                    BuilderContext: 'default',
+                  },
+                  path: '../../../context/builder.context.lite',
+                });
+                json.context.set = {
+                  '../../../context/builder.context.lite:default': {
+                    name: 'BuilderContext',
+                    value: {
+                      content: {
+                        code: 'props.context.content',
+                        type: 'property',
+                      },
+                      rootState: {
+                        code: 'props.context.rootState',
+                        type: 'property',
+                      },
+                      localState: {
+                        code: 'props.context.localState',
+                        type: 'property',
+                      },
+                      context: {
+                        code: 'props.context.context',
+                        type: 'property',
+                      },
+                      apiKey: {
+                        code: 'props.context.apiKey',
+                        type: 'property',
+                      },
+                      componentInfos: {
+                        code: 'props.context.componentInfos',
+                        type: 'property',
+                      },
+                      inheritedStyles: {
+                        code: 'props.context.inheritedStyles',
+                        type: 'property',
+                      },
+                      apiVersion: {
+                        code: 'props.context.apiVersion',
+                        type: 'property',
+                      },
+                    },
+                  },
+                };
               }
+            },
+          },
+        }),
+        () => ({
+          json: {
+            pre: (json) => {
+              if (!['BlocksWrapper', 'EnableEditor'].includes(json.name))
+                return;
 
               /**
-               * We need the ScrollView for the `Blocks` and `Component` components to be able to scroll
+               * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
                * through the whole page.
                */
               traverse(json).forEach(function (item) {

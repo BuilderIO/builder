@@ -2,8 +2,13 @@ import ContentVariants from '../../components/content-variants/content-variants.
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
-import { TARGET } from '../../constants/target';
+import {
+  onMount,
+  onUpdate,
+  useContext,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import { logger } from '../../helpers/logger';
 import type {
   BuilderComponentsProp,
@@ -32,9 +37,12 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
 
   const state = useStore({
     className: [
-      ...(TARGET === 'vue2' || TARGET === 'vue3'
-        ? Object.keys(props.attributes.class)
-        : [props.attributes.class]),
+      ...useTarget({
+        vue2: Object.keys(props.attributes.class),
+        vue3: Object.keys(props.attributes.class),
+        react: [props.attributes.className],
+        default: [props.attributes.class],
+      }),
       'builder-symbol',
       props.symbol?.inline ? 'builder-inline-symbol' : undefined,
       props.symbol?.dynamic || props.dynamic

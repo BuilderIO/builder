@@ -2,7 +2,7 @@ import { useState, setContext } from '@builder.io/mitosis';
 import BuilderContext from '../../../context/builder.context.lite';
 import type {
   BuilderContextInterface,
-  RegisteredComponent,
+  RegisteredComponents,
 } from '../../../context/types.js';
 import type { BuilderBlock } from '../../../types/builder-block';
 import Block from '../block.lite';
@@ -12,7 +12,7 @@ import type { Dictionary } from '../../../types/typescript';
 type Props = {
   block: BuilderBlock;
   repeatContext: BuilderContextInterface;
-  components: Dictionary<RegisteredComponent>;
+  registeredComponents: RegisteredComponents;
 };
 
 useMetadata({
@@ -38,6 +38,10 @@ export default function RepeatedBlock(props: Props) {
   setContext(BuilderContext, store);
 
   return (
-    <Block block={props.block} context={store} components={props.components} />
+    <Block
+      block={props.block}
+      context={store}
+      registeredComponents={props.registeredComponents}
+    />
   );
 }

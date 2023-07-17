@@ -102,9 +102,11 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 
+      const marginLeftKey = TARGET === 'react' ? 'marginLeft' : 'margin-left';
+
       return {
         width,
-        'margin-left': gutterPixels,
+        [marginLeftKey]: gutterPixels,
         '--column-width-mobile': state.getMobileStyle({
           stackedStyle: mobileWidth,
           desktopStyle: width,
@@ -200,7 +202,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
               context={builderContext}
-              components={props.builderComponents}
+              registeredComponents={props.builderComponents}
             />
           </div>
         )}

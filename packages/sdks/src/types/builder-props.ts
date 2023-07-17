@@ -1,9 +1,8 @@
 import type {
   BuilderContextInterface,
-  RegisteredComponent,
+  RegisteredComponents,
 } from '../context/types';
 import type { BuilderBlock } from './builder-block';
-import type { Dictionary } from './typescript';
 
 export type PropsWithBuilderData<T> = T & {
   builderBlock: BuilderBlock;
@@ -11,5 +10,5 @@ export type PropsWithBuilderData<T> = T & {
 };
 
 export type BuilderComponentsProp = {
-  builderComponents: Dictionary<RegisteredComponent>;
+  builderComponents: RegisteredComponents;
 };

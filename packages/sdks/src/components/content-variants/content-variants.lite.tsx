@@ -5,7 +5,7 @@ import {
   getVariants,
   getVariantsScriptString,
 } from './helpers';
-import Content from '../content/content.lite';
+import ContentComponent from '../content/content.lite';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
@@ -20,7 +20,7 @@ type VariantsProviderProps = ContentVariantsProps & {
   __isNestedRender?: boolean;
 };
 
-export default function RenderContentVariants(props: VariantsProviderProps) {
+export default function ContentVariants(props: VariantsProviderProps) {
   onMount(() => {
     /**
      * We unmount the non-winning variants post-hydration in Vue.
@@ -63,7 +63,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
         <For each={getVariants(props.content)}>
           {(variant) => (
-            <Content
+            <ContentComponent
               key={variant.testVariationId}
               content={variant}
               showContent={false}
@@ -83,7 +83,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           )}
         </For>
       </Show>
-      <Content
+      <ContentComponent
         {...useTarget({
           vue2: {
             key: state.shouldRenderVariants.toString(),

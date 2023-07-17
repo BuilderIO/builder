@@ -167,8 +167,6 @@ test.describe('Blocks', () => {
     await testSymbols(page);
   });
   test('symbols without content', async ({ page, packageName }) => {
-    if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
-
     let x = 0;
 
     const urlMatch =
@@ -199,10 +197,7 @@ test.describe('Blocks', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test('symbols refresh on locale change', async ({ page, packageName }) => {
-    if (packageName === 'e2e-qwik-city') test.skip();
-    if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
-
+  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
     let x = 0;
 
     const urlMatch =
@@ -227,6 +222,8 @@ test.describe('Blocks', () => {
     });
 
     await page.goto('/symbol-with-locale');
+
+    await page.waitForSelector('text=Default text');
 
     await page.click('text=click');
 
