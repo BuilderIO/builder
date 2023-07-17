@@ -42,7 +42,7 @@ useMetadata({
   },
 });
 
-export default function Content(props: ContentProps) {
+export default function ContentComponent(props: ContentProps) {
   const state = useStore({
     forceReRenderCount: 0,
     mergeNewContent(newContent: BuilderContent) {
