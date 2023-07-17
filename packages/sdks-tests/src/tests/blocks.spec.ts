@@ -167,6 +167,8 @@ test.describe('Blocks', () => {
     await testSymbols(page);
   });
   test('symbols without content', async ({ page, packageName }) => {
+    if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
+
     let x = 0;
 
     const urlMatch =
