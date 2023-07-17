@@ -4,18 +4,18 @@ General:
 - RSCify: remove all unnecessary `useState()` calls (when `setX` is not used)
 
 RenderContent:
-  - `forceReRenderCount` is unused in React, and can be removed
-  - Extract a `EnableEditor` client component:
-    - contains all hooks
+- `forceReRenderCount` is unused in React, and can be removed
+- Extract a `EnableEditor` client component:
+  - contains all hooks
 
 Symbol:
-  - RSCify Symbol
-    - make sure that changing the `props.symbol` still works, editing, etc.
+- RSCify Symbol
+  - make sure that changing the `props.symbol` still works, editing, etc.
 
 Cookies:
-  - make sure `path`/`domain` value is set correctly so this works everywhere it needs to.
-  - improve cookie setting/reading logic to be more condensed and failproof.
-  - force reload when all else fails.
+- make sure `path`/`domain` value is set correctly so this works everywhere it needs to.
+- improve cookie setting/reading logic to be more condensed and failproof.
+- force reload when all else fails.
 
 REMAINING:
 - SSR A/B Testing breaks - disabled for now: 
