@@ -128,6 +128,18 @@ export default function ContentComponent(props: ContentProps) {
       }),
       {}
     ),
+
+    get componentInfos(): BuilderContextInterface['componentInfos'] {
+      return Object.values(
+        state.registeredComponents as RegisteredComponents
+      ).reduce(
+        (acc, { component: _, ...info }) => ({
+          ...acc,
+          [info.name]: info,
+        }),
+        {}
+      );
+    },
   });
 
   const [builderContextSignal] = useState<BuilderContextInterface>(
@@ -149,15 +161,7 @@ export default function ContentComponent(props: ContentProps) {
       context: props.context || {},
       apiKey: props.apiKey,
       apiVersion: props.apiVersion,
-      componentInfos: Object.values(
-        state.registeredComponents as RegisteredComponents
-      ).reduce(
-        (acc, { component: _, ...info }) => ({
-          ...acc,
-          [info.name]: info,
-        }),
-        {}
-      ),
+      componentInfos: state.componentInfos,
       inheritedStyles: {},
     },
     { reactive: true }
