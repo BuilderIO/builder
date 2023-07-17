@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const SdkEnum = z.enum([
+const SdkEnum = z.enum([
   'oldReact',
   'qwik',
   'react',
@@ -8,7 +8,8 @@ export const SdkEnum = z.enum([
   'rsc',
   'solid',
   'svelte',
-  'vue',
+  'vue2',
+  'vue3',
   /**
    * Run all tests, including old React SDK.
    */
