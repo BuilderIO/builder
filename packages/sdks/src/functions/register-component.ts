@@ -22,10 +22,7 @@ export function registerComponent(component: any, info: ComponentInfo): void {
   return component;
 }
 
-export const createRegisterComponentMessage = ({
-  component: _,
-  ...info
-}: RegisteredComponent) => ({
+export const createRegisterComponentMessage = (info: ComponentInfo) => ({
   type: 'builder.registerComponent',
   data: prepareComponentInfoToSend(info),
 });

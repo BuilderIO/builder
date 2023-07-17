@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-nextjs-app-dir-react",
+  "name": "@builder.io/e2e-nextjs-app-dir-client-react",
   "private": true,
   "type": "module",
   "scripts": {

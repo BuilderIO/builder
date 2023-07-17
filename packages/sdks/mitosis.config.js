@@ -405,8 +405,8 @@ module.exports = {
                         code: 'props.context.apiKey',
                         type: 'property',
                       },
-                      registeredComponents: {
-                        code: 'props.context.registeredComponents',
+                      componentInfos: {
+                        code: 'props.context.componentInfos',
                         type: 'property',
                       },
                       inheritedStyles: {
@@ -427,12 +427,11 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (json.name !== 'Blocks' && json.name !== 'Content') {
+              if (!['BlocksWrapper', 'EnableEditor'].includes(json.name))
                 return;
-              }
 
               /**
-               * We need the ScrollView for the `Blocks` and `ComponentRef` components to be able to scroll
+               * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
                * through the whole page.
                */
               traverse(json).forEach(function (item) {

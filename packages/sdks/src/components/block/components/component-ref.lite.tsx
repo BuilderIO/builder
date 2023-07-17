@@ -3,20 +3,25 @@ import BlockStyles from './block-styles.lite';
 import Block from '../block.lite';
 import type { Signal } from '@builder.io/mitosis';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
-import type { BuilderContextInterface } from '../../../context/types.js';
+import type {
+  BuilderContextInterface,
+  RegisteredComponents,
+} from '../../../context/types.js';
+import type { PropsWithBuilderData } from '../../../types/builder-props.js';
 
-type ComponentOptions = {
+type ComponentOptions = PropsWithBuilderData<{
   [index: string]: any;
   attributes?: {
     [index: string]: any;
   };
-};
+}>;
 
 export interface ComponentProps {
   componentRef: any;
   componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
   context: Signal<BuilderContextInterface>;
+  registeredComponents: RegisteredComponents;
 }
 
 useMetadata({
@@ -46,6 +51,7 @@ export default function ComponentRef(props: ComponentProps) {
               key={'block-' + child.id}
               block={child}
               context={props.context}
+              registeredComponents={props.registeredComponents}
             />
           )}
         </For>

@@ -1,4 +1,7 @@
-import type { BuilderContextInterface } from '../../context/types';
+import type {
+  BuilderContextInterface,
+  RegisteredComponents,
+} from '../../context/types';
 import { evaluate } from '../../functions/evaluate';
 import { getProcessedBlock } from '../../functions/get-processed-block';
 import type { BuilderBlock } from '../../types/builder-block';
@@ -35,9 +38,11 @@ export const isEmptyHtmlElement = (tagName: unknown) => {
 export const getComponent = ({
   block,
   context,
+  registeredComponents,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
+  registeredComponents: RegisteredComponents;
 }) => {
   const componentName = getProcessedBlock({
     block,
@@ -52,7 +57,7 @@ export const getComponent = ({
     return null;
   }
 
-  const ref = context.registeredComponents[componentName];
+  const ref = registeredComponents[componentName];
 
   if (!ref) {
     // TODO: Public doc page with more info about this message
@@ -73,7 +78,7 @@ export const getRepeatItemData = ({
   context: BuilderContextInterface;
 }): RepeatData[] | undefined => {
   /**
-   * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,
+   * we don't use `state.processedBlock` here because the processing done within its logic includes evaluating the block's bindings,
    * which will not work if there is a repeat.
    */
   const { repeat, ...blockWithoutRepeat } = block;

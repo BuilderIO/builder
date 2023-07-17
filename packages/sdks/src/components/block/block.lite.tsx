@@ -1,4 +1,7 @@
-import type { BuilderContextInterface } from '../../context/types.js';
+import type {
+  BuilderContextInterface,
+  RegisteredComponents,
+} from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
@@ -29,11 +32,16 @@ import { getReactNativeBlockStyles } from '../../functions/get-react-native-bloc
 export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
+  registeredComponents: RegisteredComponents;
 };
 
 useMetadata({
   elementTag: 'state.Tag',
-  context: {},
+  options: {
+    vue3: {
+      asyncComponentImports: true,
+    },
+  },
 });
 
 export default function Block(props: BlockProps) {
@@ -41,6 +49,7 @@ export default function Block(props: BlockProps) {
     component: getComponent({
       block: props.block,
       context: props.context.value,
+      registeredComponents: props.registeredComponents,
     }),
     get repeatItem() {
       return getRepeatItemData({
@@ -48,7 +57,7 @@ export default function Block(props: BlockProps) {
         context: props.context.value,
       });
     },
-    get useBlock(): BuilderBlock {
+    get processedBlock(): BuilderBlock {
       return state.repeatItem
         ? props.block
         : getProcessedBlock({
@@ -62,17 +71,17 @@ export default function Block(props: BlockProps) {
     },
     Tag: props.block.tagName || 'div',
     get canShowBlock() {
-      if ('hide' in state.useBlock) {
-        return !state.useBlock.hide;
+      if ('hide' in state.processedBlock) {
+        return !state.processedBlock.hide;
       }
-      if ('show' in state.useBlock) {
-        return state.useBlock.show;
+      if ('show' in state.processedBlock) {
+        return state.processedBlock.show;
       }
       return true;
     },
     get actions() {
       return getBlockActions({
-        block: state.useBlock,
+        block: state.processedBlock,
         rootState: props.context.value.rootState,
         rootSetState: props.context.value.rootSetState,
         localState: props.context.value.localState,
@@ -80,13 +89,13 @@ export default function Block(props: BlockProps) {
       });
     },
     get attributes() {
-      const blockProperties = getBlockProperties(state.useBlock);
+      const blockProperties = getBlockProperties(state.processedBlock);
       return {
         ...blockProperties,
         ...(TARGET === 'reactNative'
           ? {
               style: getReactNativeBlockStyles({
-                block: state.useBlock,
+                block: state.processedBlock,
                 context: props.context.value,
                 blockStyles: blockProperties.style,
               }),
@@ -106,16 +115,16 @@ export default function Block(props: BlockProps) {
         !state.component?.component && !state.repeatItem;
 
       return shouldRenderChildrenOutsideRef
-        ? state.useBlock.children ?? []
+        ? state.processedBlock.children ?? []
         : [];
     },
 
     get componentRefProps(): ComponentProps {
       return {
-        blockChildren: state.useBlock.children ?? [],
+        blockChildren: state.processedBlock.children ?? [],
         componentRef: state.component?.component,
         componentOptions: {
-          ...getBlockComponentOptions(state.useBlock),
+          ...getBlockComponentOptions(state.processedBlock),
           /**
            * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
            * they are provided to the component itself directly.
@@ -123,8 +132,14 @@ export default function Block(props: BlockProps) {
           ...(!state.component?.noWrap
             ? {}
             : { attributes: { ...state.attributes, ...state.actions } }),
+          builderContext: props.context,
+          ...(state.component?.name === 'Symbol' ||
+          state.component?.name === 'Columns'
+            ? { builderComponents: props.registeredComponents }
+            : {}),
         },
         context: childrenContext,
+        registeredComponents: props.registeredComponents,
       };
     },
   });
@@ -139,10 +154,10 @@ export default function Block(props: BlockProps) {
         rootSetState: props.context.value.rootSetState,
         content: props.context.value.content,
         context: props.context.value.context,
-        registeredComponents: props.context.value.registeredComponents,
+        componentInfos: props.context.value.componentInfos,
         inheritedStyles: extractTextStyles(
           getReactNativeBlockStyles({
-            block: state.useBlock,
+            block: state.processedBlock,
             context: props.context.value,
             blockStyles: state.attributes.style,
           })
@@ -173,6 +188,7 @@ export default function Block(props: BlockProps) {
                 key={index}
                 repeatContext={data.context}
                 block={data.block}
+                registeredComponents={props.registeredComponents}
               />
             )}
           </For>
@@ -190,6 +206,7 @@ export default function Block(props: BlockProps) {
                   key={'block-' + child.id}
                   block={child}
                   context={childrenContext}
+                  registeredComponents={props.registeredComponents}
                 />
               )}
             </For>

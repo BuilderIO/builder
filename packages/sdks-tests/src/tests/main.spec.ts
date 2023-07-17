@@ -174,7 +174,7 @@ test.describe(targetContext.name, () => {
         await findTextInPage({ page, text: '0' });
       });
 
-      reactiveStateTest('increments value correctly', async ({ page }) => {
+      reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
@@ -234,7 +234,7 @@ test.describe(targetContext.name, () => {
         await expect(page.locator('body')).not.toContainText('this never appears');
       });
 
-      reactiveStateTest('works on reactive conditions', async ({ page }) => {
+      reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
         await page.goto('/show-hide-if');
 
         await findTextInPage({ page, text: 'even clicks' });

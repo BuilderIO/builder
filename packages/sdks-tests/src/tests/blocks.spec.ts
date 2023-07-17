@@ -166,7 +166,7 @@ test.describe('Blocks', () => {
 
     await testSymbols(page);
   });
-  test('symbols without content', async ({ page }) => {
+  test('symbols without content', async ({ page, packageName }) => {
     let x = 0;
 
     const urlMatch =
@@ -197,12 +197,7 @@ test.describe('Blocks', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test('symbols refresh on locale change', async ({ page, packageName }) => {
-    if (packageName === 'e2e-qwik-city') {
-      test.skip();
-      return;
-    }
-
+  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
     let x = 0;
 
     const urlMatch =
@@ -227,6 +222,8 @@ test.describe('Blocks', () => {
     });
 
     await page.goto('/symbol-with-locale');
+
+    await page.waitForSelector('text=Default text');
 
     await page.click('text=click');
 
@@ -348,7 +345,7 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Test ApiVersion', () => {
-    test('apiVersion in SDKs is not set', async ({ page }) => {
+    test('apiVersion in SDKs is not set', async ({ page, packageName }) => {
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -379,7 +376,7 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    test('apiVersion in SDKs is set to v3', async ({ page }) => {
+    test('apiVersion in SDKs is set to v3', async ({ page, packageName }) => {
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -437,7 +434,7 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page }) => {
+    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page, packageName }) => {
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
