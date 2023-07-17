@@ -261,22 +261,71 @@ module.exports = {
               }
 
               if (json.name === 'Block') {
-                /**
-                 * @type {MitosisNode}
-                 */
-                const divWorkaroundBlock = {
-                  '@type': '@builder.io/mitosis/node',
-                  name: 'div',
-                  meta: {},
-                  scope: {},
-                  children: json.children,
-                  bindings: {},
-                  properties: {
-                    class: 'vue2-root-element-workaround',
-                  },
-                };
-                json.children = [divWorkaroundBlock];
+                // drop the wrapper `Show`, move its condition to the root `<template>`
+                json.children = json.children[0].children;
+
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  const children = item.children.filter(filterEmptyTextNodes);
+
+                  // add back wrapper `Show`'s condition for Vue 2
+                  if (item.name === 'Show' && item.bindings.when) {
+                    item.bindings.when.code += '&& state.canShowBlock';
+                  }
+
+                  /**
+                   * Hack to get around the fact that we can't have a v-for loop inside of a v-else in Vue 2.
+                   */
+                  if (
+                    item.name === 'Show' &&
+                    children.length === 1 &&
+                    children[0].name === 'For'
+                  ) {
+                    const forBlock = children[0];
+
+                    /**
+                     * @type {MitosisNode}
+                     */
+                    const divWorkaroundBlock = {
+                      '@type': '@builder.io/mitosis/node',
+                      name: 'div',
+                      meta: {},
+                      scope: {},
+                      children: [forBlock],
+                      bindings: {},
+                      properties: {
+                        class: 'vue2-root-element-workaround',
+                      },
+                    };
+                    const newItem = {
+                      ...item,
+                      children: [divWorkaroundBlock],
+                    };
+                    this.update(newItem);
+                    this.stop();
+                  }
+                });
               }
+            },
+          },
+          code: {
+            pre: (code) => {
+              if (code.includes('name: "block"')) {
+                // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
+                return code
+                  .replace(
+                    '<component v-else ',
+                    '<component v-else-if="canShowBlock" '
+                  )
+                  .replace(
+                    'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
+                    'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
+                  );
+              }
+              return code;
             },
           },
         }),
