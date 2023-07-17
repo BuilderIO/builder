@@ -20,8 +20,8 @@ import type {
   BuilderContent,
 } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
-import RenderBlocks from '../render-blocks.lite';
-import RenderContentStyles from './components/render-styles.lite';
+import Blocks from '../blocks.lite';
+import ContentStyles from './components/styles.lite';
 import builderContext from '../../context/builder.context.lite';
 import {
   Show,
@@ -41,19 +41,19 @@ import {
 import { checkIsDefined } from '../../helpers/nullable.js';
 import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
 import type {
-  RenderContentProps,
+  ContentProps,
   BuilderComponentStateChange,
-} from './render-content.types.js';
+} from './content.types.js';
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from './render-content.helpers.js';
+} from './content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
-import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
+import { getRenderContentScriptString } from '../content-variants/helpers.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
 import { useTarget } from '@builder.io/mitosis';
-import InlinedScript from '../inlined-script.lite.jsx';
+import InlinedScript from '../inlined-script.lite';
 
 useMetadata({
   qwik: {
@@ -66,7 +66,7 @@ useMetadata({
   },
 });
 
-export default function RenderContent(props: RenderContentProps) {
+export default function ContentComponent(props: ContentProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
@@ -442,13 +442,13 @@ export default function RenderContent(props: RenderContentProps) {
           <InlinedScript scriptStr={state.scriptStr} />
         </Show>
         <Show when={TARGET !== 'reactNative'}>
-          <RenderContentStyles
+          <ContentStyles
             contentId={builderContextSignal.value.content?.id}
             cssCode={builderContextSignal.value.content?.data?.cssCode}
             customFonts={builderContextSignal.value.content?.data?.customFonts}
           />
         </Show>
-        <RenderBlocks
+        <Blocks
           blocks={builderContextSignal.value.content?.data?.blocks}
           key={state.forceReRenderCount}
         />

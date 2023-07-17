@@ -5,22 +5,22 @@ import {
   getVariants,
   getVariantsScriptString,
 } from './helpers';
-import RenderContent from '../render-content/render-content.lite';
+import ContentComponent from '../content/content.lite';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import InlinedStyles from '../inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 import InlinedScript from '../inlined-script.lite';
 import { TARGET } from '../../constants/target';
-import type { RenderContentVariantsProps } from './render-content-variants.types';
+import type { ContentVariantsProps } from './content-variants.types';
 
-type VariantsProviderProps = RenderContentVariantsProps & {
+type VariantsProviderProps = ContentVariantsProps & {
   /**
    * For internal use only. Do not provide this prop.
    */
   __isNestedRender?: boolean;
 };
 
-export default function RenderContentVariants(props: VariantsProviderProps) {
+export default function ContentVariants(props: VariantsProviderProps) {
   onMount(() => {
     /**
      * We unmount the non-winning variants post-hydration in Vue.
@@ -63,7 +63,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
 
         <For each={getVariants(props.content)}>
           {(variant) => (
-            <RenderContent
+            <ContentComponent
               key={variant.testVariationId}
               content={variant}
               showContent={false}
@@ -83,7 +83,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           )}
         </For>
       </Show>
-      <RenderContent
+      <ContentComponent
         {...useTarget({
           vue2: {
             key: state.shouldRenderVariants.toString(),

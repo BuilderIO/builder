@@ -1,4 +1,4 @@
-import RenderBlocks from '../../components/render-blocks.lite';
+import Blocks from '../../components/blocks.lite';
 import { For, Show, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
 import { getSizesForBreakpoints } from '../../constants/device-sizes';
@@ -190,7 +190,7 @@ export default function Columns(props: ColumnProps) {
             }}
             key={index}
           >
-            <RenderBlocks
+            <Blocks
               blocks={column.blocks}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}

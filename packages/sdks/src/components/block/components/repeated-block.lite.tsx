@@ -1,8 +1,8 @@
 import { useState, setContext } from '@builder.io/mitosis';
-import BuilderContext from '../../context/builder.context.lite';
-import type { BuilderContextInterface } from '../../context/types.js';
-import type { BuilderBlock } from '../../types/builder-block';
-import RenderBlock from './render-block.lite';
+import BuilderContext from '../../../context/builder.context.lite';
+import type { BuilderContextInterface } from '../../../context/types.js';
+import type { BuilderBlock } from '../../../types/builder-block';
+import Block from '../block.lite';
 import { useMetadata } from '@builder.io/mitosis';
 
 type Props = {
@@ -27,10 +27,10 @@ useMetadata({
  * </template>
  * ```
  */
-export default function RenderRepeatedBlock(props: Props) {
+export default function RepeatedBlock(props: Props) {
   const [store] = useState(props.repeatContext, { reactive: true });
 
   setContext(BuilderContext, store);
 
-  return <RenderBlock block={props.block} context={store} />;
+  return <Block block={props.block} context={store} />;
 }

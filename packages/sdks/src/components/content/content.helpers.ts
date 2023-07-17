@@ -1,13 +1,13 @@
 import type { BuilderRenderState } from '../../context/types';
 import type { BuilderContent } from '../../types/builder-content';
 import type { Nullable } from '../../types/typescript';
-import type { RenderContentProps } from './render-content.types';
+import type { ContentProps } from './content.types';
 
 export const getContextStateInitialValue = ({
   content,
   data,
   locale,
-}: Pick<RenderContentProps, 'content' | 'data' | 'locale'>) => {
+}: Pick<ContentProps, 'content' | 'data' | 'locale'>) => {
   const defaultValues: BuilderRenderState = {};
 
   // set default values for content state inputs
@@ -34,7 +34,7 @@ export const getContextStateInitialValue = ({
 export const getContentInitialValue = ({
   content,
   data,
-}: Pick<RenderContentProps, 'content' | 'data'>): Nullable<BuilderContent> => {
+}: Pick<ContentProps, 'content' | 'data'>): Nullable<BuilderContent> => {
   return !content
     ? undefined
     : {

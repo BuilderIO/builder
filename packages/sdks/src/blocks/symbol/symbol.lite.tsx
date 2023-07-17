@@ -1,4 +1,4 @@
-import RenderContentVariants from '../../components/render-content-variants/render-content-variants.lite';
+import ContentVariants from '../../components/content-variants/content-variants.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
@@ -94,7 +94,7 @@ export default function Symbol(props: SymbolProps) {
       className={state.className}
       dataSet={{ class: state.className }}
     >
-      <RenderContentVariants
+      <ContentVariants
         __isNestedRender
         apiVersion={builderContext.value.apiVersion}
         apiKey={builderContext.value.apiKey!}

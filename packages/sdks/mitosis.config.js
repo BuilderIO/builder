@@ -83,7 +83,7 @@ const vueConfig = {
       json: {
         // This plugin handles binding our actions to the `v-on:` Vue syntax:
         // - in our block components, the actions will come through `props.attributes` and need to be filtered
-        // - in RenderBlock, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
+        // - in Block, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
           // this function is injected into a component, so it can't use anything outside of itself
           /**
@@ -127,7 +127,7 @@ const vueConfig = {
             );
           }
 
-          if (json.name === 'RenderBlock') {
+          if (json.name === 'Block') {
             const STRIP_VON_CODE = stripVOn.toString();
 
             json.state['stripVOn'] = {
@@ -143,7 +143,7 @@ const vueConfig = {
               return;
             }
 
-            if (json.name === 'RenderBlock') {
+            if (json.name === 'Block') {
               const key = 'state.actions';
               if (item.bindings[key]) {
                 item.bindings[key] = {
@@ -220,7 +220,7 @@ const REACT_NEXT_V13_PLUGIN = () => ({
 const BASE_TEXT_PLUGIN = () => ({
   code: {
     pre: (code) => {
-      if (code.includes('<Text>') && !code.includes('RenderInlinedStyles')) {
+      if (code.includes('<Text>') && !code.includes('InlinedStyles')) {
         return `
 import BaseText from '../BaseText';
 ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
@@ -260,7 +260,7 @@ module.exports = {
                 json.children[0].name = 'div';
               }
 
-              if (json.name === 'RenderBlock') {
+              if (json.name === 'Block') {
                 // drop the wrapper `Show`, move its condition to the root `<template>`
                 json.children = json.children[0].children;
 
@@ -313,7 +313,7 @@ module.exports = {
           },
           code: {
             pre: (code) => {
-              if (code.includes("name: 'render-block'")) {
+              if (code.includes("name: 'block'")) {
                 // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
                 return code
                   .replace(
@@ -371,18 +371,18 @@ module.exports = {
           json: {
             pre: (json) => {
               /**
-               * We cannot set context in `RenderComponent` because it's a light Qwik component.
+               * We cannot set context in `ComponentRef` because it's a light Qwik component.
                * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
                **/
-              if (json.name === 'RenderComponent') {
+              if (json.name === 'ComponentRef') {
                 json.imports.push({
                   imports: {
                     BuilderContext: 'default',
                   },
-                  path: '../../context/builder.context.lite',
+                  path: '../../../context/builder.context.lite',
                 });
                 json.context.set = {
-                  '../../context/builder.context.lite:default': {
+                  '../../../context/builder.context.lite:default': {
                     name: 'BuilderContext',
                     value: {
                       content: {
@@ -427,15 +427,12 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (
-                json.name !== 'RenderBlocks' &&
-                json.name !== 'RenderContent'
-              ) {
+              if (json.name !== 'Blocks' && json.name !== 'Content') {
                 return;
               }
 
               /**
-               * We need the ScrollView for the `RenderBlocks` and `RenderComponent` components to be able to scroll
+               * We need the ScrollView for the `Blocks` and `ComponentRef` components to be able to scroll
                * through the whole page.
                */
               traverse(json).forEach(function (item) {
@@ -462,7 +459,7 @@ module.exports = {
               // We want to keep this component as a light component to avoid the overhead of a full component, which is
               // a ton of HTML comments. Therefore, we convert these properties to getters so we don't have `useStore`
               // calls in the component.
-              if (json.name === 'RenderBlock') {
+              if (json.name === 'Block') {
                 convertPropertyStateValueToGetter({
                   value: json.state['repeatItemData'],
                   key: 'repeatItemData',
@@ -489,7 +486,7 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (json.name === 'RenderInlinedStyles') {
+              if (json.name === 'InlinedStyles') {
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) {
                     return;
@@ -581,8 +578,8 @@ module.exports = {
                 }
               }
               `;
-              // handle case where we have a wrapper element, in which case the actions are assigned in `RenderBlock`.
-              if (json.name === 'RenderBlock') {
+              // handle case where we have a wrapper element, in which case the actions are assigned in `Block`.
+              if (json.name === 'Block') {
                 json.hooks.preComponent = { code };
 
                 traverse(json).forEach(function (item) {
@@ -598,7 +595,7 @@ module.exports = {
                   }
                 });
                 return json;
-              } else if (json.name === 'RenderComponent') {
+              } else if (json.name === 'ComponentRef') {
                 return json;
               }
 

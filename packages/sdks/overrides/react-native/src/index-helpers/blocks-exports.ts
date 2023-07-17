@@ -10,5 +10,5 @@ export { default as Button } from '../blocks/button/button.lite';
 export { default as Section } from '../blocks/section/section.lite';
 export { default as Fragment } from '../blocks/fragment/fragment.lite';
 
-// We do not export render-content-variants, as it's only needed for SSR which isn't supported in React Native.
-export { default as RenderContent } from '../components/render-content/render-content.lite';
+// We do not export content-variants, as it's only needed for SSR which isn't supported in React Native.
+export { default as RenderContent } from '../components/content/content.lite';

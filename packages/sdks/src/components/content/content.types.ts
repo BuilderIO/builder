@@ -1,6 +1,6 @@
 import type { BuilderRenderState } from '../../context/types';
 import type { EnforcePartials } from '../../types/enforced-partials';
-import type { RenderContentVariantsProps } from '../render-content-variants/render-content-variants.types';
+import type { ContentVariantsProps } from '../content-variants/content-variants.types';
 
 interface InternalRenderProps {
   /**
@@ -11,8 +11,8 @@ interface InternalRenderProps {
   isSsrAbTest: boolean;
 }
 
-export type RenderContentProps = InternalRenderProps &
-  EnforcePartials<RenderContentVariantsProps>;
+export type ContentProps = InternalRenderProps &
+  EnforcePartials<ContentVariantsProps>;
 
 export interface BuilderComponentStateChange {
   state: BuilderRenderState;
