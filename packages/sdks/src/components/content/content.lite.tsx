@@ -66,7 +66,7 @@ useMetadata({
   },
 });
 
-export default function Content(props: ContentProps) {
+export default function BuilderContent(props: ContentProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
