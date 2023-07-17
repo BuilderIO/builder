@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-solid",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "",
   "type": "module",
   "main": "./solid-index.jsx",
