@@ -427,12 +427,15 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (json.name !== 'Blocks' && json.name !== 'Content') {
+              if (
+                json.name !== 'BlocksWrapper' &&
+                json.name !== 'EnableEditor'
+              ) {
                 return;
               }
 
               /**
-               * We need the ScrollView for the `Blocks` and `ComponentRef` components to be able to scroll
+               * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
                * through the whole page.
                */
               traverse(json).forEach(function (item) {
