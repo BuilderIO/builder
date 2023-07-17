@@ -159,7 +159,6 @@ export default function ContentComponent(props: ContentProps) {
       }),
       rootSetState: useTarget({
         qwik: undefined,
-        react: undefined,
         default: state.contentSetState,
       }),
       context: props.context || {},
