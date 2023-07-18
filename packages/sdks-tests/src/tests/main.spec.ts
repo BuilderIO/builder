@@ -343,7 +343,6 @@ test.describe(targetContext.name, () => {
             await expectStylesForElement({
               locator: image,
               expected: expectedImageCss,
-              checkVisibility: false,
             });
           }
         });
@@ -372,7 +371,6 @@ test.describe(targetContext.name, () => {
             await expectStylesForElement({
               locator: image,
               expected: expectedImageCss,
-              checkVisibility: false,
             });
           }
         });
@@ -459,7 +457,6 @@ test.describe(targetContext.name, () => {
             await expectStylesForElement({
               locator: image,
               expected: expectedImageCss,
-              checkVisibility: false,
             });
           }
         });

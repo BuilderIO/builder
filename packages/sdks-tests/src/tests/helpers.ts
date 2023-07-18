@@ -115,7 +115,6 @@ export const expectStylesForElement = async ({
 }: {
   locator: Locator;
   expected: ExpectedStyles;
-  checkVisibility?: boolean;
 }) => {
   for (const property of Object.keys(expected)) {
     await expect(locator).toHaveCSS(property, expected[property]);
