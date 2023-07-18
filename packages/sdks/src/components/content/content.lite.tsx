@@ -112,45 +112,43 @@ export default function ContentComponent(props: ContentProps) {
     );
 
   return (
-    <Show when={builderContextSignal.value.content}>
-      <EnableEditor
-        content={props.content}
-        model={props.model}
-        context={props.context}
-        apiKey={props.apiKey}
-        canTrack={props.canTrack}
-        locale={props.locale}
-        includeRefs={props.includeRefs}
-        enrich={props.enrich}
-        classNameProp={props.classNameProp}
-        showContent={props.showContent}
-        builderContextSignal={builderContextSignal}
-        {...useTarget({
-          // eslint-disable-next-line object-shorthand
-          react: { setBuilderContextSignal: setBuilderContextSignal },
-          // eslint-disable-next-line object-shorthand
-          reactNative: { setBuilderContextSignal: setBuilderContextSignal },
-          // eslint-disable-next-line object-shorthand
-          rsc: { setBuilderContextSignal: setBuilderContextSignal },
-          default: {},
-        })}
-      >
-        <Show when={props.isSsrAbTest}>
-          <InlinedScript scriptStr={state.scriptStr} />
-        </Show>
-        <Show when={TARGET !== 'reactNative'}>
-          <ContentStyles
-            contentId={builderContextSignal.value.content?.id}
-            cssCode={builderContextSignal.value.content?.data?.cssCode}
-            customFonts={builderContextSignal.value.content?.data?.customFonts}
-          />
-        </Show>
-        <Blocks
-          blocks={builderContextSignal.value.content?.data?.blocks}
-          context={builderContextSignal}
-          registeredComponents={state.registeredComponents}
+    <EnableEditor
+      content={props.content}
+      model={props.model}
+      context={props.context}
+      apiKey={props.apiKey}
+      canTrack={props.canTrack}
+      locale={props.locale}
+      includeRefs={props.includeRefs}
+      enrich={props.enrich}
+      classNameProp={props.classNameProp}
+      showContent={props.showContent}
+      builderContextSignal={builderContextSignal}
+      {...useTarget({
+        // eslint-disable-next-line object-shorthand
+        react: { setBuilderContextSignal: setBuilderContextSignal },
+        // eslint-disable-next-line object-shorthand
+        reactNative: { setBuilderContextSignal: setBuilderContextSignal },
+        // eslint-disable-next-line object-shorthand
+        rsc: { setBuilderContextSignal: setBuilderContextSignal },
+        default: {},
+      })}
+    >
+      <Show when={props.isSsrAbTest}>
+        <InlinedScript scriptStr={state.scriptStr} />
+      </Show>
+      <Show when={TARGET !== 'reactNative'}>
+        <ContentStyles
+          contentId={builderContextSignal.value.content?.id}
+          cssCode={builderContextSignal.value.content?.data?.cssCode}
+          customFonts={builderContextSignal.value.content?.data?.customFonts}
         />
-      </EnableEditor>
-    </Show>
+      </Show>
+      <Blocks
+        blocks={builderContextSignal.value.content?.data?.blocks}
+        context={builderContextSignal}
+        registeredComponents={state.registeredComponents}
+      />
+    </EnableEditor>
   );
 }

@@ -45,7 +45,7 @@ type BuilderEditorProps = Omit<
   'customComponents' | 'data' | 'apiVersion' | 'isSsrAbTest'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
-  setBuilderContextSignal?: (signal: BuilderContextInterface) => void;
+  setBuilderContextSignal?: (signal: any) => any;
   children?: any;
 };
 
@@ -215,6 +215,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
     }
   }, [props.content]);
 
+  onUnMount(() => {
+    if (isBrowser()) {
+      window.removeEventListener('message', state.processMessage);
+      window.removeEventListener(
+        'builder:component:stateChangeListenerActivated',
+        state.emitStateUpdate
+      );
+    }
+  });
+
   onMount(() => {
     if (!props.apiKey) {
       logger.error(
@@ -226,6 +236,35 @@ export default function EnableEditor(props: BuilderEditorProps) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
         window.addEventListener('message', state.processMessage);
+
+        registerInsertMenu();
+        setupBrowserForEditing({
+          ...(props.locale ? { locale: props.locale } : {}),
+          ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
+          ...(props.enrich ? { enrich: props.enrich } : {}),
+        });
+        Object.values<ComponentInfo>(
+          props.builderContextSignal.value.componentInfos
+        ).forEach((registeredComponent) => {
+          const message = createRegisterComponentMessage(registeredComponent);
+          window.parent?.postMessage(message, '*');
+        });
+        window.addEventListener(
+          'builder:component:stateChangeListenerActivated',
+          state.emitStateUpdate
+        );
+      }
+      if (props.builderContextSignal.value.content) {
+        const variationId =
+          props.builderContextSignal.value.content?.testVariationId;
+        const contentId = props.builderContextSignal.value.content?.id;
+        _track({
+          type: 'impression',
+          canTrack: state.canTrackToUse,
+          contentId,
+          apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
+        });
       }
 
       // override normal content in preview mode
@@ -263,53 +302,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
           });
         }
       }
-    }
-  });
-
-  onUnMount(() => {
-    if (isBrowser()) {
-      window.removeEventListener('message', state.processMessage);
-    }
-  });
-
-  onMount(() => {
-    if (!props.apiKey) {
-      logger.error(
-        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
-      );
-    }
-
-    if (isBrowser()) {
-      if (isEditing()) {
-        registerInsertMenu();
-        setupBrowserForEditing({
-          ...(props.locale ? { locale: props.locale } : {}),
-          ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
-          ...(props.enrich ? { enrich: props.enrich } : {}),
-        });
-        Object.values<ComponentInfo>(
-          props.builderContextSignal.value.componentInfos
-        ).forEach((registeredComponent) => {
-          const message = createRegisterComponentMessage(registeredComponent);
-          window.parent?.postMessage(message, '*');
-        });
-        window.addEventListener(
-          'builder:component:stateChangeListenerActivated',
-          state.emitStateUpdate
-        );
-      }
-      if (props.builderContextSignal.value.content) {
-        const variationId =
-          props.builderContextSignal.value.content?.testVariationId;
-        const contentId = props.builderContextSignal.value.content?.id;
-        _track({
-          type: 'impression',
-          canTrack: state.canTrackToUse,
-          contentId,
-          apiKey: props.apiKey,
-          variationId: variationId !== contentId ? variationId : undefined,
-        });
-      }
 
       state.evaluateJsCode();
       state.runHttpRequests();
@@ -331,15 +323,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onUpdate(() => {
     state.emitStateUpdate();
   }, [props.builderContextSignal.value.rootState]);
-
-  onUnMount(() => {
-    if (isBrowser()) {
-      window.removeEventListener(
-        'builder:component:stateChangeListenerActivated',
-        state.emitStateUpdate
-      );
-    }
-  });
 
   // TODO: `else` message for when there is no content passed, or maybe a console.log
   return (
