@@ -22,3 +22,8 @@ REMAINING:
   - we should read/write cookies in SSR fetch, take care of it there.
 - dig into cleaner UI to show loading indicators in editor.
 - look into Steve's approach of storing data in a local endpoint
+
+
+NEXT UP:
+- RSC PR: check why SolidJS SDK is hanging/failing
+- Nx PR: move build commands to use nx
