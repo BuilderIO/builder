@@ -13,7 +13,6 @@ import {
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './block.helpers.js';
-import type { ComponentProps } from './components/component-ref.lite';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -25,8 +24,9 @@ import {
 } from '@builder.io/mitosis';
 import RepeatedBlock from './components/repeated-block.lite';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import ComponentRef from './components/component-ref.lite';
-import InteractiveElement from './components/interactive-element.lite.jsx';
+import ComponentRef from './components/component-ref/component-ref.lite';
+import InteractiveElement from './components/interactive-element/interactive-element.lite.jsx';
+import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
 
 export type BlockProps = {
   block: BuilderBlock;
