@@ -131,6 +131,8 @@ export default function ContentComponent(props: ContentProps) {
         reactNative: { setBuilderContextSignal: setBuilderContextSignal },
         // eslint-disable-next-line object-shorthand
         rsc: { setBuilderContextSignal: setBuilderContextSignal },
+        // eslint-disable-next-line object-shorthand
+        solid: { setBuilderContextSignal: setBuilderContextSignal },
         default: {},
       })}
     >
