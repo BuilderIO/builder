@@ -379,10 +379,10 @@ module.exports = {
                   imports: {
                     BuilderContext: 'default',
                   },
-                  path: '../../../context/builder.context.lite',
+                  path: '../../../../context/builder.context.lite',
                 });
                 json.context.set = {
-                  '../../../context/builder.context.lite:default': {
+                  '../../../../context/builder.context.lite:default': {
                     name: 'BuilderContext',
                     value: {
                       content: {
