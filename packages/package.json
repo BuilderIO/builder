@@ -13,6 +13,10 @@
     "sdks/output/vue/packages/*",
     "sdks/output/react/packages/*"
   ],
+  "scripts": {
+    "e2e:build:old-react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-old*\" run build",
+    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks run e2e:run"
+  },
   "engines": {
     "yarn": ">= 3.0.0"
   },

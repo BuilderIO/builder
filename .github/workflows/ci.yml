@@ -226,10 +226,10 @@ jobs:
         run: yarn workspace @builder.io/sdks-e2e-tests install-playwright
 
       - name: Build E2E tests
-        run: yarn workspace @builder.io/sdks e2e:build
+        run: yarn workspace @builder.io/sdks-e2e-tests run build
 
       - name: Build E2E apps
-        run: yarn workspace @builder.io/sdks e2e:build:old-react
+        run: yarn workspace all-sdks-mono-repo e2e:build:old-react
 
       - name: Run E2E tests
-        run: yarn workspace @builder.io/sdks e2e:run:old-react
+        run: yarn workspace all-sdks-mono-repo e2e:run:old-react
