@@ -621,9 +621,9 @@ module.exports = {
                   }
               `;
 
-                if (!isMitosisNode(item)) {
-                  return;
-                }
+                if (!isMitosisNode(item)) return;
+                if (item.name.toLowerCase() !== item.name) return;
+
                 const spreadBinding = Object.entries(item.bindings).find(
                   ([_key, value]) =>
                     value?.type === 'spread' && value.code !== '{}'
