@@ -13,6 +13,7 @@ type BlockWrapperProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
+  hasChildren: boolean;
 };
 
 /**
@@ -27,7 +28,7 @@ export default function BlockWrapper(
 ) {
   return (
     <Show
-      when={props.children}
+      when={props.hasChildren}
       else={
         <props.Wrapper
           {...getBlockProps({

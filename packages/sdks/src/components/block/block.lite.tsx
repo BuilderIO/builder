@@ -2,7 +2,6 @@ import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../context/types.js';
-import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
@@ -78,21 +77,6 @@ export default function Block(props: BlockProps) {
       }
       return true;
     },
-    get actions() {
-      return getBlockActions({
-        block: state.processedBlock,
-        rootState: props.context.value.rootState,
-        rootSetState: props.context.value.rootSetState,
-        localState: props.context.value.localState,
-        context: props.context.value.context,
-      });
-    },
-    get attributes() {
-      return getBlockProperties({
-        block: state.processedBlock,
-        context: props.context.value,
-      });
-    },
 
     get childrenWithoutParentComponent() {
       /**
@@ -141,7 +125,12 @@ export default function Block(props: BlockProps) {
         content: props.context.value.content,
         context: props.context.value.context,
         componentInfos: props.context.value.componentInfos,
-        inheritedStyles: extractTextStyles(state.attributes.style || {}),
+        inheritedStyles: extractTextStyles(
+          getBlockProperties({
+            block: state.processedBlock,
+            context: props.context.value,
+          }).style || {}
+        ),
       },
       default: props.context.value,
     }),
@@ -163,6 +152,7 @@ export default function Block(props: BlockProps) {
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
+            hasChildren={false}
           />
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && state.repeatItem}>
@@ -182,6 +172,7 @@ export default function Block(props: BlockProps) {
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
+            hasChildren
           >
             <ComponentRef {...state.componentRefProps} />
             {/**
