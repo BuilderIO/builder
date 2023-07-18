@@ -62,53 +62,54 @@ export default function ContentComponent(props: ContentProps) {
     ),
   });
 
-  const [builderContextSignal] = useState<BuilderContextInterface>(
-    {
-      content: getContentInitialValue({
-        content: props.content,
-        data: props.data,
-      }),
-      localState: undefined,
-      rootState: getContextStateInitialValue({
-        content: props.content,
-        data: props.data,
-        locale: props.locale,
-      }),
-      rootSetState: useTarget({
-        qwik: undefined,
-        default: state.contentSetState,
-      }),
-      context: props.context || {},
-      apiKey: props.apiKey,
-      apiVersion: props.apiVersion,
-      componentInfos: Object.values(
-        [
-          ...getDefaultRegisteredComponents(),
-          // While this `components` object is deprecated, we must maintain support for it.
-          // Since users are able to override our default components, we need to make sure that we do not break such
-          // existing usage.
-          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-          // which is the new standard way of providing custom components, and must therefore take precedence.
-          ...components,
-          ...(props.customComponents || []),
-        ].reduce<RegisteredComponents>(
-          (acc, info) => ({
+  const [builderContextSignal, setBuilderContextSignal] =
+    useState<BuilderContextInterface>(
+      {
+        content: getContentInitialValue({
+          content: props.content,
+          data: props.data,
+        }),
+        localState: undefined,
+        rootState: getContextStateInitialValue({
+          content: props.content,
+          data: props.data,
+          locale: props.locale,
+        }),
+        rootSetState: useTarget({
+          qwik: undefined,
+          default: state.contentSetState,
+        }),
+        context: props.context || {},
+        apiKey: props.apiKey,
+        apiVersion: props.apiVersion,
+        componentInfos: Object.values(
+          [
+            ...getDefaultRegisteredComponents(),
+            // While this `components` object is deprecated, we must maintain support for it.
+            // Since users are able to override our default components, we need to make sure that we do not break such
+            // existing usage.
+            // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+            // which is the new standard way of providing custom components, and must therefore take precedence.
+            ...components,
+            ...(props.customComponents || []),
+          ].reduce<RegisteredComponents>(
+            (acc, info) => ({
+              ...acc,
+              [info.name]: info,
+            }),
+            {}
+          )
+        ).reduce(
+          (acc, { component: _, ...info }) => ({
             ...acc,
             [info.name]: info,
           }),
           {}
-        )
-      ).reduce(
-        (acc, { component: _, ...info }) => ({
-          ...acc,
-          [info.name]: info,
-        }),
-        {}
-      ),
-      inheritedStyles: {},
-    },
-    { reactive: true }
-  );
+        ),
+        inheritedStyles: {},
+      },
+      { reactive: true }
+    );
 
   return (
     <Show when={builderContextSignal.value.content}>
@@ -124,6 +125,13 @@ export default function ContentComponent(props: ContentProps) {
         classNameProp={props.classNameProp}
         showContent={props.showContent}
         builderContextSignal={builderContextSignal}
+        {...useTarget({
+          // eslint-disable-next-line object-shorthand
+          react: { setBuilderContextSignal: setBuilderContextSignal },
+          // eslint-disable-next-line object-shorthand
+          rsc: { setBuilderContextSignal: setBuilderContextSignal },
+          default: {},
+        })}
       >
         <Show when={props.isSsrAbTest}>
           <InlinedScript scriptStr={state.scriptStr} />
