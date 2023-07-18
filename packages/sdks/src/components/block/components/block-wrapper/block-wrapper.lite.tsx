@@ -1,13 +1,19 @@
+import type { Signal } from '@builder.io/mitosis';
 import { useMetadata } from '@builder.io/mitosis';
 import type { PropsWithChildren } from '../../../../types/typescript.js';
-import type { InteractiveElementProps } from '../interactive-element/interactive-element.helpers.js';
 import { getBlockProps } from '../interactive-element/interactive-element.helpers.js';
+import type { BuilderBlock } from '../../../../types/builder-block.js';
+import type { BuilderContextInterface } from '../../../../context/types.js';
 
 useMetadata({
   elementTag: 'props.Wrapper',
 });
 
-type BlockWrapperProps = Omit<InteractiveElementProps, 'wrapperProps'>;
+type BlockWrapperProps = {
+  Wrapper: string;
+  block: BuilderBlock;
+  context: Signal<BuilderContextInterface>;
+};
 
 /**
  * This component renders a block's wrapper HTML element (from the block's `tagName` property).

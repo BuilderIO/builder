@@ -5,7 +5,7 @@ import { getBlockProperties } from '../../../../functions/get-block-properties';
 import type { BuilderBlock } from '../../../../types/builder-block';
 
 export type InteractiveElementProps = {
-  Wrapper: string;
+  Wrapper: any;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
   wrapperProps: object;
