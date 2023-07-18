@@ -3394,12 +3394,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.70":
-  version: 0.0.70
-  resolution: "@builder.io/mitosis-cli@npm:0.0.70"
+"@builder.io/mitosis-cli@npm:^0.0.71":
+  version: 0.0.71
+  resolution: "@builder.io/mitosis-cli@npm:0.0.71"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.0.112
+    "@builder.io/mitosis": 0.0.113
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -3421,13 +3421,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: f9026bcc4e68fe52f6ed7f404be5b1f70586dfe18a39347474960f9c7c85d86e5bf1d8e1b66242c0fd9fa813250aa07f400d912f25a203aa301b133b1ff42994
+  checksum: a9540cfd3a645c7755887271d294a5807fe6c45cf8d243909768eab52c644b32359ffc561c5671e6adae4e04d8f8d782677ea43bce7141a1130c2ddab0213a95
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.112, @builder.io/mitosis@npm:^0.0.112":
-  version: 0.0.112
-  resolution: "@builder.io/mitosis@npm:0.0.112"
+"@builder.io/mitosis@npm:0.0.113, @builder.io/mitosis@npm:^0.0.113":
+  version: 0.0.113
+  resolution: "@builder.io/mitosis@npm:0.0.113"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -3467,7 +3467,7 @@ __metadata:
     ts-morph: ^19.0.0
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 6209bd7ebcf44d8bf441233d1efd1b1b9fa903d231951b3fcaeca33212a2e58a8ddc09bce4174d4f9083c979107830dfeb2b3b32e536e57a26b5972ffbb23c3f
+  checksum: 60df40fb54b05f839119f4751e3f1b0ae984100c85b8f2c91c082b4bdd450cdc08187f194490197e3d26a7da34caf3734bb60b6ac253f4a9113bee0267ce6418
   languageName: node
   linkType: hard
 
@@ -3751,8 +3751,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.112
-    "@builder.io/mitosis-cli": ^0.0.70
+    "@builder.io/mitosis": ^0.0.113
+    "@builder.io/mitosis-cli": ^0.0.71
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
