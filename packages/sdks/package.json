@@ -1,6 +1,12 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
+  "workspaces": [
+    "e2e/*",
+    "output/*",
+    "output/vue/packages/*",
+    "output/react/packages/*"
+  ],
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
