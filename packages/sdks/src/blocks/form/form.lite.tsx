@@ -5,7 +5,8 @@
 import Block from '../../components/block/block.lite';
 import BuilderBlocks from '../../components/blocks/blocks.lite';
 import { isEditing } from '../../functions/is-editing.js';
-import { For, Show, useRef, useStore } from '@builder.io/mitosis';
+import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
+import { filterVueAttrs } from '../helpers';
 
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
@@ -268,7 +269,17 @@ export default function FormComponent(props: FormProps) {
       method={props.method}
       name={props.name}
       onSubmit={(event) => state.onSubmit(event)}
-      {...props.attributes}
+      {...useTarget({
+        vue2: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        vue3: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        default: props.attributes,
+      })}
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
         <For each={props.builderBlock?.children}>

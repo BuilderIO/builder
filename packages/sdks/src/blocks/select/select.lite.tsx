@@ -1,5 +1,6 @@
 import { isEditing } from '../../functions/is-editing.js';
-import { For } from '@builder.io/mitosis';
+import { For, useTarget } from '@builder.io/mitosis';
+import { filterVueAttrs } from '../helpers.js';
 
 export interface FormSelectProps {
   options?: { name?: string; value: string }[];
@@ -12,7 +13,17 @@ export interface FormSelectProps {
 export default function SelectComponent(props: FormSelectProps) {
   return (
     <select
-      {...props.attributes}
+      {...useTarget({
+        vue2: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        vue3: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        default: props.attributes,
+      })}
       value={props.value}
       key={
         isEditing() && props.defaultValue ? props.defaultValue : 'default-key'

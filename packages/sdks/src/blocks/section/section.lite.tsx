@@ -1,3 +1,6 @@
+import { useTarget } from '@builder.io/mitosis';
+import { filterVueAttrs } from '../helpers';
+
 export interface SectionProps {
   maxWidth?: number;
   attributes?: any;
@@ -8,7 +11,17 @@ export interface SectionProps {
 export default function SectionComponent(props: SectionProps) {
   return (
     <section
-      {...props.attributes}
+      {...useTarget({
+        vue2: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        vue3: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        default: props.attributes,
+      })}
       style={{
         width: '100%',
         alignSelf: 'stretch',

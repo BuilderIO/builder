@@ -1,4 +1,6 @@
+import { useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
+import { filterVueAttrs } from '../helpers.js';
 
 export interface FormInputProps {
   type?: string;
@@ -13,7 +15,17 @@ export interface FormInputProps {
 export default function FormInputComponent(props: FormInputProps) {
   return (
     <input
-      {...props.attributes}
+      {...useTarget({
+        vue2: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        vue3: {
+          ...filterVueAttrs(props.attributes, true),
+          ...filterVueAttrs(props.attributes, false),
+        },
+        default: props.attributes,
+      })}
       key={
         isEditing() && props.defaultValue ? props.defaultValue : 'default-key'
       }

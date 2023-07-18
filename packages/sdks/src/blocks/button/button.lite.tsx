@@ -1,4 +1,5 @@
 import { Show, useTarget } from '@builder.io/mitosis';
+import { filterVueAttrs } from '../helpers';
 
 export interface ButtonProps {
   attributes?: any;
@@ -13,7 +14,17 @@ export default function Button(props: ButtonProps) {
       when={props.link}
       else={
         <button
-          {...props.attributes}
+          {...useTarget({
+            vue2: {
+              ...filterVueAttrs(props.attributes, true),
+              ...filterVueAttrs(props.attributes, false),
+            },
+            vue3: {
+              ...filterVueAttrs(props.attributes, true),
+              ...filterVueAttrs(props.attributes, false),
+            },
+            default: props.attributes,
+          })}
           css={{ all: 'unset' }}
           class={useTarget(
             /**
@@ -32,7 +43,17 @@ export default function Button(props: ButtonProps) {
       }
     >
       <a
-        {...props.attributes}
+        {...useTarget({
+          vue2: {
+            ...filterVueAttrs(props.attributes, true),
+            ...filterVueAttrs(props.attributes, false),
+          },
+          vue3: {
+            ...filterVueAttrs(props.attributes, true),
+            ...filterVueAttrs(props.attributes, false),
+          },
+          default: props.attributes,
+        })}
         role="button"
         href={props.link}
         target={props.openLinkInNewTab ? '_blank' : undefined}

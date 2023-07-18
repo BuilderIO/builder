@@ -63,9 +63,7 @@ const getTargetPath = ({ target }) => {
  */
 const convertPropertyStateValueToGetter = (args) => {
   const { value, key } = args;
-  if (!value) {
-    return;
-  }
+  if (!value) return;
   value.code = `get ${key}() {\n return ${value.code} \n}`;
   value.type = 'getter';
 };
@@ -77,7 +75,6 @@ const vueConfig = {
   typescript: true,
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
   cssNamespace: getSeededId,
-  asyncComponentImports: true,
   plugins: [
     () => ({
       json: {
@@ -85,99 +82,38 @@ const vueConfig = {
         // - in our block components, the actions will come through `props.attributes` and need to be filtered
         // - in Block, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
-          // this function is injected into a component, so it can't use anything outside of itself
-          /**
-           *
-           * @param {{[index: string]: any}} attrs
-           * @param {boolean} isEvent
-           * @returns
-           */
-          function filterAttrs(attrs = {}, isEvent) {
-            const eventPrefix = 'v-on:';
-            return Object.keys(attrs)
-              .filter((attr) => {
-                if (!attrs[attr]) {
-                  return false;
-                }
-
-                const isEventVal = attr.startsWith(eventPrefix);
-                return isEvent ? isEventVal : !isEventVal;
-              })
-              .reduce(
-                (acc, attr) => ({
-                  ...acc,
-                  [attr.replace(eventPrefix, '')]: attrs[attr],
-                }),
-                {}
-              );
-          }
-          const FILTER_ATTRIBUTES_CODE = filterAttrs.toString();
-
-          // this function is injected into a component, so it can't use anything outside of itself'
-          /**
-           * @param {{[index:string]: any}} actions
-           */
-          function stripVOn(actions = {}) {
-            return Object.keys(actions).reduce(
-              (acc, attr) => ({
-                ...acc,
-                [attr.replace('v-on:', '')]: actions[attr],
-              }),
-              {}
-            );
-          }
-
-          if (json.name === 'Block') {
-            const STRIP_VON_CODE = stripVOn.toString();
-
-            json.state['stripVOn'] = {
-              code: STRIP_VON_CODE,
-              type: 'function',
-            };
-          }
-
-          let hasFilterCode = false;
-
           traverse(json).forEach(function (item) {
-            if (!isMitosisNode(item)) {
-              return;
+            if (!isMitosisNode(item)) return;
+
+            if (json.name === 'BlockWrapper') {
+              const key = Object.keys(item.bindings).find((x) =>
+                x.startsWith('getBlockActions')
+              );
+              if (key) {
+                const binding = item.bindings[key];
+                if (binding) {
+                  item.bindings[key] = {
+                    ...binding,
+                    type: 'spread',
+                    spreadType: 'event-handlers',
+                  };
+                }
+              }
             }
 
-            if (json.name === 'Block') {
-              const key = 'state.actions';
-              if (item.bindings[key]) {
+            const filterAttrKeys = Object.keys(item.bindings).filter(
+              (x) => x.includes('filterVueAttrs') && x.includes('true')
+            );
+
+            for (const key of filterAttrKeys) {
+              const binding = item.bindings[key];
+              if (binding) {
                 item.bindings[key] = {
-                  code: `stripVOn(${item.bindings[key].code})`,
+                  ...binding,
                   type: 'spread',
                   spreadType: 'event-handlers',
                 };
-              } else {
-                return;
               }
-            }
-
-            const key = 'props.attributes';
-            if (item.bindings[key]) {
-              if (!hasFilterCode) {
-                hasFilterCode = true;
-                json.state['filterAttrs'] = {
-                  code: FILTER_ATTRIBUTES_CODE,
-                  type: 'function',
-                };
-              }
-
-              item.bindings['___SPREAD1'] = {
-                code: `filterAttrs(${key},  false)`,
-                type: 'spread',
-                spreadType: 'normal',
-              };
-              item.bindings['___SPREAD2'] = {
-                code: `filterAttrs(${key},  true)`,
-                type: 'spread',
-                spreadType: 'event-handlers',
-              };
-
-              delete item.bindings[key];
             }
           });
         },
@@ -250,6 +186,7 @@ module.exports = {
   options: {
     vue2: {
       ...vueConfig,
+      asyncComponentImports: true,
       plugins: [
         ...(vueConfig?.plugins || []),
         () => ({
@@ -265,9 +202,7 @@ module.exports = {
                 json.children = json.children[0].children;
 
                 traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
+                  if (!isMitosisNode(item)) return;
 
                   const children = item.children.filter(filterEmptyTextNodes);
 
@@ -341,9 +276,7 @@ module.exports = {
           json: {
             pre: (json) => {
               traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) {
-                  return;
-                }
+                if (!isMitosisNode(item)) return;
 
                 if (item.bindings['dataSet']) {
                   delete item.bindings['dataSet'];
@@ -435,9 +368,7 @@ module.exports = {
                * through the whole page.
                */
               traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) {
-                  return;
-                }
+                if (!isMitosisNode(item)) return;
 
                 if (item.name === 'View') {
                   item.name = 'ScrollView';
@@ -487,9 +418,7 @@ module.exports = {
             pre: (json) => {
               if (json.name === 'InlinedStyles') {
                 traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
+                  if (!isMitosisNode(item)) return;
 
                   if (item.bindings.innerHTML) {
                     item.name = 'style';
@@ -534,9 +463,7 @@ module.exports = {
                 const tagArr = Array.isArray(tag) ? tag : [tag];
 
                 traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
+                  if (!isMitosisNode(item)) return;
 
                   if (tagArr.includes(item.name)) {
                     item.bindings.this = {
@@ -582,9 +509,7 @@ module.exports = {
                 json.hooks.preComponent = { code };
 
                 traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
+                  if (!isMitosisNode(item)) return;
                   if (item.bindings['state.actions']) {
                     item.bindings['use:setAttrs'] = {
                       code: item.bindings['state.actions'].code,

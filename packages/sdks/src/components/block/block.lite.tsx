@@ -25,7 +25,7 @@ import RepeatedBlock from './components/repeated-block.lite';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import ComponentRef from './components/component-ref/component-ref.lite';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
-import BlockWrapper from './components/block-wrapper/block-wrapper.lite';
+import BlockWrapper from './components/block-wrapper.lite';
 
 export type BlockProps = {
   block: BuilderBlock;
