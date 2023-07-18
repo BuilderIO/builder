@@ -1,11 +1,19 @@
-import RenderContent from '../../components/render-content/render-content.lite';
+import ContentVariants from '../../components/content-variants/content-variants.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block.js';
-import { TARGET } from '../../constants/target';
+import {
+  onMount,
+  onUpdate,
+  useContext,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import { logger } from '../../helpers/logger';
+import type {
+  BuilderComponentsProp,
+  PropsWithBuilderData,
+} from '../../types/builder-props';
 
 export interface SymbolInfo {
   model?: string;
@@ -16,23 +24,25 @@ export interface SymbolInfo {
   dynamic?: boolean;
 }
 
-export interface SymbolProps {
+export interface SymbolProps extends BuilderComponentsProp {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
   dynamic?: boolean;
-  builderBlock?: BuilderBlock;
   attributes?: any;
   inheritState?: boolean;
 }
 
-export default function Symbol(props: SymbolProps) {
+export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
     className: [
-      ...(TARGET === 'vue2' || TARGET === 'vue3'
-        ? Object.keys(props.attributes.class)
-        : [props.attributes.class]),
+      ...useTarget({
+        vue2: Object.keys(props.attributes.class),
+        vue3: Object.keys(props.attributes.class),
+        react: [props.attributes.className],
+        default: [props.attributes.class],
+      }),
       'builder-symbol',
       props.symbol?.inline ? 'builder-inline-symbol' : undefined,
       props.symbol?.dynamic || props.dynamic
@@ -56,15 +66,17 @@ export default function Symbol(props: SymbolProps) {
         !state.contentToUse &&
         props.symbol?.model &&
         // This is a hack, we should not need to check for this, but it is needed for Svelte.
-        builderContext?.apiKey
+        builderContext.value?.apiKey
       ) {
         getContent({
           model: props.symbol.model,
-          apiKey: builderContext.apiKey,
-          apiVersion: builderContext.apiVersion,
-          query: {
-            id: props.symbol.entry,
-          },
+          apiKey: builderContext.value.apiKey,
+          apiVersion: builderContext.value.apiVersion,
+          ...(props.symbol?.entry && {
+            query: {
+              id: props.symbol.entry,
+            },
+          }),
         })
           .then((response) => {
             if (response) {
@@ -92,14 +104,15 @@ export default function Symbol(props: SymbolProps) {
       className={state.className}
       dataSet={{ class: state.className }}
     >
-      <RenderContent
-        apiVersion={builderContext.apiVersion}
-        apiKey={builderContext.apiKey!}
-        context={builderContext.context}
-        customComponents={Object.values(builderContext.registeredComponents)}
+      <ContentVariants
+        __isNestedRender
+        apiVersion={builderContext.value.apiVersion}
+        apiKey={builderContext.value.apiKey!}
+        context={builderContext.value.context}
+        customComponents={Object.values(props.builderComponents)}
         data={{
           ...props.symbol?.data,
-          ...builderContext.localState,
+          ...builderContext.value.localState,
           ...state.contentToUse?.data?.state,
         }}
         model={props.symbol?.model}

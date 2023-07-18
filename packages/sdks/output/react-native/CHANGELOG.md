@@ -1,3 +1,28 @@
+### 0.4.5
+
+- Fix: show dynamic symbols correctly in Preview mode.
+- Feature: SSR A/B test Symbols nested inside page content.
+
+### 0.4.4
+
+- Fix: tracking URL from `builder.io/api/v1/track` to `cdn.builder.io/api/v1/track` for improved reliability.
+
+### 0.4.3
+
+- Fix: SSR A/B test environment check (`isHydrationTarget`) now accurately checks current environment.
+
+### 0.4.2
+
+- No external changes.
+
+### 0.4.1
+
+- Fix: bring back `getBuilderSearchParams` export that was accidentally removed.
+
+### 0.4.0
+
+- No changes.
+
 ### 0.3.1
 
 - Feature: Added SDK version to data sent to visual editor for improved debugging.

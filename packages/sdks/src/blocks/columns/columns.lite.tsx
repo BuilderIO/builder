@@ -1,12 +1,16 @@
-import RenderBlocks from '../../components/render-blocks.lite';
+import Blocks from '../../components/blocks/blocks.lite';
 import { For, Show, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
 import { getSizesForBreakpoints } from '../../constants/device-sizes';
 import type { SizeName } from '../../constants/device-sizes';
-import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
+import InlinedStyles from '../../components/inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
 import BuilderContext from '../../context/builder.context.lite';
 import type { Dictionary } from '../../types/typescript';
+import type {
+  BuilderComponentsProp,
+  PropsWithBuilderData,
+} from '../../types/builder-props';
 
 type Column = {
   blocks: BuilderBlock[];
@@ -17,7 +21,7 @@ type CSSVal = string | number;
 
 type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
-export interface ColumnProps {
+export interface ColumnProps extends BuilderComponentsProp {
   columns?: Column[];
   builderBlock: BuilderBlock;
   space?: number;
@@ -25,7 +29,7 @@ export interface ColumnProps {
   reverseColumnsWhenStacked?: boolean;
 }
 
-export default function Columns(props: ColumnProps) {
+export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
@@ -98,9 +102,11 @@ export default function Columns(props: ColumnProps) {
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 
+      const marginLeftKey = TARGET === 'react' ? 'marginLeft' : 'margin-left';
+
       return {
         width,
-        'margin-left': gutterPixels,
+        [marginLeftKey]: gutterPixels,
         '--column-width-mobile': state.getMobileStyle({
           stackedStyle: mobileWidth,
           desktopStyle: width,
@@ -122,7 +128,7 @@ export default function Columns(props: ColumnProps) {
 
     getWidthForBreakpointSize(size: SizeName) {
       const breakpointSizes = getSizesForBreakpoints(
-        builderContext.content?.meta?.breakpoints || {}
+        builderContext.value.content?.meta?.breakpoints || {}
       );
 
       return breakpointSizes[size].max;
@@ -174,7 +180,7 @@ export default function Columns(props: ColumnProps) {
          * "dynamic" media query values based on custom breakpoints.
          * Adding them directly otherwise leads to Mitosis and TS errors.
          */}
-        <RenderInlinedStyles styles={state.columnsStyles} />
+        <InlinedStyles styles={state.columnsStyles} />
       </Show>
 
       <For each={props.columns}>
@@ -190,11 +196,13 @@ export default function Columns(props: ColumnProps) {
             }}
             key={index}
           >
-            <RenderBlocks
+            <Blocks
               blocks={column.blocks}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
+              context={builderContext}
+              registeredComponents={props.builderComponents}
             />
           </div>
         )}

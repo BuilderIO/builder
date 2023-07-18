@@ -7,6 +7,7 @@ import type {
 import type { Nullable, Overwrite } from '../types/typescript.js';
 import { checkIsDefined } from '../helpers/nullable.js';
 import { logger } from './logger.js';
+import { TARGET } from '../constants/target.js';
 
 const BUILDER_STORE_PREFIX = 'builder.tests';
 
@@ -116,6 +117,11 @@ export const handleABTestingSync = ({
   item,
   canTrack,
 }: { item: Nullable<BuilderContent> } & CanTrack): Nullable<BuilderContent> => {
+  /**
+   * We cannot SSR in React-Native.
+   */
+  if (TARGET === 'reactNative') return item;
+
   if (!canTrack) {
     return item;
   }

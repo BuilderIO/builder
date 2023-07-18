@@ -45,7 +45,7 @@ test.describe(targetContext.name, () => {
         const navigate = page.goto('/');
         const trackingRequestPromise = page.waitForRequest(
           request =>
-            request.url().includes('builder.io/api/v1/track') && request.method() === 'POST'
+            request.url().includes('cdn.builder.io/api/v1/track') && request.method() === 'POST'
         );
 
         await navigate;
@@ -89,7 +89,7 @@ test.describe(targetContext.name, () => {
         await page.goto('/', { waitUntil: 'networkidle' });
         const trackingRequestPromise = page.waitForRequest(
           request =>
-            request.url().includes('builder.io/api/v1/track') &&
+            request.url().includes('cdn.builder.io/api/v1/track') &&
             request.method() === 'POST' &&
             request.postDataJSON().events[0].type === 'click'
         );
@@ -168,21 +168,13 @@ test.describe(targetContext.name, () => {
 
   test.describe('Features', () => {
     test.describe('Reactive State', () => {
-      excludeReactNative('shows default value', async ({ page, packageName }) => {
-        if (packageName === 'e2e-vue-nuxt3') {
-          test.skip();
-        }
-
+      excludeReactNative('shows default value', async ({ page }) => {
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
-        if (packageName === 'e2e-vue-nuxt3') {
-          test.skip();
-        }
-
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
@@ -242,7 +234,7 @@ test.describe(targetContext.name, () => {
         await expect(page.locator('body')).not.toContainText('this never appears');
       });
 
-      reactiveStateTest('works on reactive conditions', async ({ page }) => {
+      reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
         await page.goto('/show-hide-if');
 
         await findTextInPage({ page, text: 'even clicks' });

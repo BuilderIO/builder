@@ -14,6 +14,7 @@ import {
   isOldReactSDK,
 } from './helpers.js';
 import { sdk } from './sdk.js';
+import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale';
 
 const testSymbols = async (page: Page) => {
   await findTextInPage({ page, text: 'special test description' });
@@ -165,7 +166,7 @@ test.describe('Blocks', () => {
 
     await testSymbols(page);
   });
-  test('symbols without content', async ({ page }) => {
+  test('symbols without content', async ({ page, packageName }) => {
     let x = 0;
 
     const urlMatch =
@@ -192,6 +193,41 @@ test.describe('Blocks', () => {
     await page.goto('/symbols-without-content');
 
     await testSymbols(page);
+
+    await expect(x).toBeGreaterThanOrEqual(2);
+  });
+
+  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
+    let x = 0;
+
+    const urlMatch =
+      sdk === 'oldReact'
+        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
+        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+
+    await page.route(urlMatch, route => {
+      x++;
+
+      const url = new URL(route.request().url());
+
+      const keyName =
+        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
+
+      return route.fulfill({
+        status: 200,
+        json: {
+          [keyName]: [x === 1 ? DEFAULT_TEXT_SYMBOL : FRENCH_TEXT_SYMBOL],
+        },
+      });
+    });
+
+    await page.goto('/symbol-with-locale');
+
+    await page.waitForSelector('text=Default text');
+
+    await page.click('text=click');
+
+    await page.waitForSelector('text=French text');
 
     await expect(x).toBeGreaterThanOrEqual(2);
   });
@@ -309,7 +345,7 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Test ApiVersion', () => {
-    test('apiVersion in SDKs is not set', async ({ page }) => {
+    test('apiVersion in SDKs is not set', async ({ page, packageName }) => {
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -340,7 +376,7 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    test('apiVersion in SDKs is set to v3', async ({ page }) => {
+    test('apiVersion in SDKs is set to v3', async ({ page, packageName }) => {
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -398,7 +434,7 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page }) => {
+    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page, packageName }) => {
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
