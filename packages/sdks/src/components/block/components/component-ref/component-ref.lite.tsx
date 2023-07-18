@@ -16,7 +16,6 @@ useMetadata({
       asyncComponentImports: true,
     },
   },
-  elementTag: 'state.Wrapper',
 });
 
 export default function ComponentRef(props: ComponentProps) {
