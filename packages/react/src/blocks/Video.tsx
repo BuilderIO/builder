@@ -19,6 +19,7 @@ class VideoComponent extends React.Component<{
   width?: number;
   height?: number;
   fit?: 'contain' | 'cover' | 'fill';
+  preload?: 'auto' | 'metadata' | 'none';
   position?: string;
   posterImage?: string;
   lazyLoad?: boolean;
@@ -121,6 +122,7 @@ class VideoComponent extends React.Component<{
           muted={this.props.muted}
           controls={this.props.controls}
           loop={this.props.loop}
+          preload={this.props.preload || 'metadata'}
           className="builder-video"
           css={{
             width: '100%',
@@ -233,6 +235,12 @@ export const Video = Builder.registerComponent(withChildren(VideoComponent), {
       type: 'text',
       defaultValue: 'cover',
       enum: ['contain', 'cover', 'fill', 'auto'],
+    },
+    {
+      name: 'preload',
+      type: 'text',
+      defaultValue: 'metadata',
+      enum: ['auto', 'metadata', 'none'],
     },
     {
       name: 'fitContent',
