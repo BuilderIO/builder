@@ -1,5 +1,5 @@
 import type { Signal } from '@builder.io/mitosis';
-import { useMetadata } from '@builder.io/mitosis';
+import { Show, useMetadata } from '@builder.io/mitosis';
 import type { PropsWithChildren } from '../../../../types/typescript.js';
 import { getBlockProps } from '../interactive-element/interactive-element.helpers.js';
 import type { BuilderBlock } from '../../../../types/builder-block.js';
@@ -26,13 +26,25 @@ export default function BlockWrapper(
   props: PropsWithChildren<BlockWrapperProps>
 ) {
   return (
-    <props.Wrapper
-      {...getBlockProps({
-        block: props.block,
-        contextValue: props.context.value,
-      })}
+    <Show
+      when={props.children}
+      else={
+        <props.Wrapper
+          {...getBlockProps({
+            block: props.block,
+            contextValue: props.context.value,
+          })}
+        />
+      }
     >
-      {props.children}
-    </props.Wrapper>
+      <props.Wrapper
+        {...getBlockProps({
+          block: props.block,
+          contextValue: props.context.value,
+        })}
+      >
+        {props.children}
+      </props.Wrapper>
+    </Show>
   );
 }
