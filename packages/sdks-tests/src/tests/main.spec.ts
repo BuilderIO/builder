@@ -3,7 +3,6 @@ import { expect } from '@playwright/test';
 import { targetContext } from './context.js';
 import {
   excludeReactNative,
-  expectStyleForElement,
   expectStylesForElement,
   findTextInPage,
   getBuilderSessionIdCookie,
@@ -282,11 +281,7 @@ test.describe(targetContext.name, () => {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: breakpointsParam,
-            cssProperty: 'color',
-            expectedValue: expectedTextColor,
-          });
+          await expect(breakpointsParam).toHaveCSS('color', expectedTextColor);
 
           const column2 = page.locator(`text=Column 2`);
 
@@ -295,11 +290,7 @@ test.describe(targetContext.name, () => {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: column2,
-            cssProperty: 'color',
-            expectedValue: expectedColumnTextColor,
-          });
+          await expect(column2).toHaveCSS('color', expectedColumnTextColor);
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -329,11 +320,7 @@ test.describe(targetContext.name, () => {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-            expectedValue: expectedTextColor,
-          });
+          await expect(breakpointsPara).toHaveCSS('color', expectedTextColor);
 
           const column2 = page.locator(`text=Column 2`);
 
@@ -342,11 +329,7 @@ test.describe(targetContext.name, () => {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: column2,
-            cssProperty: 'color',
-            expectedValue: expectedColumnTextColor,
-          });
+          await expect(column2).toHaveCSS('color', expectedColumnTextColor);
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -370,18 +353,10 @@ test.describe(targetContext.name, () => {
           await page.goto('/custom-breakpoints');
 
           const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-          await expectStyleForElement({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-            expectedValue: 'rgb(65, 117, 5)',
-          });
+          await expect(breakpointsPara).toHaveCSS('color', 'rgb(65, 117, 5)');
 
           const column2 = page.locator(`text=Column 2`);
-          await expectStyleForElement({
-            locator: column2,
-            cssProperty: 'color',
-            expectedValue: 'rgb(126, 211, 33)', // greenish text color
-          });
+          await expect(column2).toHaveCSS('color', 'rgb(126, 211, 33)');
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -422,11 +397,7 @@ test.describe(targetContext.name, () => {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-            expectedValue: expectedTextColor, // black text color
-          });
+          await expect(breakpointsPara).toHaveCSS('color', expectedTextColor);
 
           const column2 = page.locator(`text=Column 2`);
 
@@ -435,11 +406,7 @@ test.describe(targetContext.name, () => {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: column2,
-            cssProperty: 'color',
-            expectedValue: expectedColumnTextColor,
-          });
+          await expect(column2).toHaveCSS('color', expectedColumnTextColor);
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -469,11 +436,7 @@ test.describe(targetContext.name, () => {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-            expectedValue: expectedTextColor,
-          });
+          await expect(breakpointsPara).toHaveCSS('color', expectedTextColor);
 
           const column2 = page.locator(`text=Column 2`);
 
@@ -482,11 +445,7 @@ test.describe(targetContext.name, () => {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
-          await expectStyleForElement({
-            locator: column2,
-            cssProperty: 'color',
-            expectedValue: expectedColumnTextColor,
-          });
+          await expect(column2).toHaveCSS('color', expectedColumnTextColor);
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -511,19 +470,11 @@ test.describe(targetContext.name, () => {
 
           const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
 
-          await expectStyleForElement({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-            expectedValue: 'rgb(65, 117, 5)', // greenish text color
-          });
+          await expect(breakpointsPara).toHaveCSS('color', 'rgb(65, 117, 5)');
 
           const column2 = page.locator(`text=Column 2`);
 
-          await expectStyleForElement({
-            locator: column2,
-            cssProperty: 'color',
-            expectedValue: 'rgb(126, 211, 33)', // greenish text color
-          });
+          await expect(column2).toHaveCSS('color', 'rgb(126, 211, 33)');
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.

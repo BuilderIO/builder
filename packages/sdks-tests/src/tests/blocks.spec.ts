@@ -6,7 +6,6 @@ import {
   test,
   findTextInPage,
   isRNSDK,
-  expectStyleForElement,
   excludeReactNative,
   expectStylesForElement,
   testOnlyOldReact,
@@ -35,19 +34,11 @@ const testSymbols = async (page: Page) => {
   // these are desktop and tablet styles, and will never show up in react native
   if (!isRNSDK) {
     // check desktop styles
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(255, 0, 0)',
-    });
+    await expect(firstSymbolText).toHaveCSS('color', 'rgb(255, 0, 0)');
 
     // resize to tablet
     await page.setViewportSize({ width: 930, height: 1000 });
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(0, 255, 6)',
-    });
+    await expect(firstSymbolText).toHaveCSS('color', 'rgb(0, 255, 6)');
 
     // resize to mobile
     await page.setViewportSize({ width: 400, height: 1000 });
@@ -56,11 +47,7 @@ const testSymbols = async (page: Page) => {
   // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
   if (!isRNSDK) {
     // check mobile styles
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(0, 255, 255)',
-    });
+    await expect(firstSymbolText).toHaveCSS('color', 'rgb(0, 255, 255)');
   }
 };
 
