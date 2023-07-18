@@ -45,7 +45,7 @@ type BuilderEditorProps = Omit<
   'customComponents' | 'data' | 'apiVersion' | 'isSsrAbTest'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
-  setBuilderContextSignal?: (signal: Signal<BuilderContextInterface>) => void;
+  setBuilderContextSignal?: (signal: BuilderContextInterface) => void;
   children?: any;
 };
 
