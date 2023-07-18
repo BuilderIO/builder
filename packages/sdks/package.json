@@ -102,6 +102,9 @@
           "{projectRoot}/output/react/packages/react/src"
         ]
       }
-    }
+    },
+    "implicitDependencies": [
+      "@builder.io/react"
+    ]
   }
 }
