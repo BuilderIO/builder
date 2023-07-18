@@ -24,10 +24,9 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import RepeatedBlock from './components/repeated-block.lite';
-import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import ComponentRef from './components/component-ref.lite';
-import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
+import BlockWrapper from './components/block-wrapper.lite';
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -89,19 +88,10 @@ export default function Block(props: BlockProps) {
       });
     },
     get attributes() {
-      const blockProperties = getBlockProperties(state.processedBlock);
-      return {
-        ...blockProperties,
-        ...(TARGET === 'reactNative'
-          ? {
-              style: getReactNativeBlockStyles({
-                block: state.processedBlock,
-                context: props.context.value,
-                blockStyles: blockProperties.style,
-              }),
-            }
-          : {}),
-      };
+      return getBlockProperties({
+        block: state.processedBlock,
+        context: props.context.value,
+      });
     },
 
     get childrenWithoutParentComponent() {
@@ -125,13 +115,6 @@ export default function Block(props: BlockProps) {
         componentRef: state.component?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
-          /**
-           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
-           * they are provided to the component itself directly.
-           */
-          ...(!state.component?.noWrap
-            ? {}
-            : { attributes: { ...state.attributes, ...state.actions } }),
           builderContext: props.context,
           ...(state.component?.name === 'Symbol' ||
           state.component?.name === 'Columns'
@@ -140,6 +123,9 @@ export default function Block(props: BlockProps) {
         },
         context: childrenContext,
         registeredComponents: props.registeredComponents,
+        builderBlock: state.processedBlock,
+        includeBlockProps: state.component?.noWrap === true,
+        isRSC: state.component?.isRSC,
       };
     },
   });
@@ -155,13 +141,7 @@ export default function Block(props: BlockProps) {
         content: props.context.value.content,
         context: props.context.value.context,
         componentInfos: props.context.value.componentInfos,
-        inheritedStyles: extractTextStyles(
-          getReactNativeBlockStyles({
-            block: state.processedBlock,
-            context: props.context.value,
-            blockStyles: state.attributes.style,
-          })
-        ),
+        inheritedStyles: extractTextStyles(state.attributes.style || {}),
       },
       default: props.context.value,
     }),
@@ -179,7 +159,11 @@ export default function Block(props: BlockProps) {
          * _even_ if that logic ends up not rendering anything.
          */}
         <Show when={isEmptyHtmlElement(state.Tag)}>
-          <state.Tag {...state.attributes} {...state.actions} />
+          <BlockWrapper
+            Wrapper={state.Tag}
+            block={state.processedBlock}
+            context={props.context}
+          />
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && state.repeatItem}>
           <For each={state.repeatItem}>
@@ -194,7 +178,11 @@ export default function Block(props: BlockProps) {
           </For>
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
-          <state.Tag {...state.attributes} {...state.actions}>
+          <BlockWrapper
+            Wrapper={state.Tag}
+            block={state.processedBlock}
+            context={props.context}
+          >
             <ComponentRef {...state.componentRefProps} />
             {/**
              * We need to run two separate loops for content + styles to workaround the fact that Vue 2
@@ -219,7 +207,7 @@ export default function Block(props: BlockProps) {
                 />
               )}
             </For>
-          </state.Tag>
+          </BlockWrapper>
         </Show>
       </Show>
     </Show>

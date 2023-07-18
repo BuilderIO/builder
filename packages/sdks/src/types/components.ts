@@ -32,6 +32,14 @@ export interface ComponentInfo {
    * like here github.com/BuilderIO/builder/blob/master/packages/react/src/blocks/forms/Input.tsx#L34
    */
   noWrap?: boolean;
+
+  /**
+   * TO-DO: make this optional only for RSC SDK.
+   *
+   * Set this to `true` if your component is a React Server Component (RSC).
+   */
+  isRSC?: boolean;
+
   /**
    * Default children
    */
