@@ -7,7 +7,7 @@ import type { Signal } from '@builder.io/mitosis';
 import { useMetadata, useStore } from '@builder.io/mitosis';
 import type { PropsWithChildren } from '../../../types/typescript.js';
 
-export type BlockWrapperProps = {
+export type InteractiveElementProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
@@ -19,8 +19,13 @@ useMetadata({
   elementTag: 'props.Wrapper',
 });
 
-export default function RenderBlockWrapper(
-  props: PropsWithChildren<BlockWrapperProps>
+/**
+ * This component is used to render:
+ *  - a block's wrapper HTML element (from the block's `tagName` property)
+ *  - the block itself (from the list of registered components)
+ */
+export default function InteractiveElement(
+  props: PropsWithChildren<InteractiveElementProps>
 ) {
   const state = useStore({
     get getBlockProps() {

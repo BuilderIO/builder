@@ -9,8 +9,8 @@ import type {
 } from '../../../context/types.js';
 import type { PropsWithBuilderData } from '../../../types/builder-props.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
-import type { BlockWrapperProps } from './block-wrapper.lite.jsx';
-import RenderBlockWrapper from './block-wrapper.lite.jsx';
+import type { InteractiveElementProps } from './interactive-element.lite.jsx';
+import InteractiveElement from './interactive-element.lite.jsx';
 
 type ComponentOptions = PropsWithBuilderData<{
   [index: string]: any;
@@ -46,9 +46,9 @@ useMetadata({
 
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
-    Wrapper: props.isRSC ? props.componentRef : RenderBlockWrapper,
+    Wrapper: props.isRSC ? props.componentRef : InteractiveElement,
     get wrapperProps() {
-      const blockWrapperProps: BlockWrapperProps = {
+      const blockWrapperProps: InteractiveElementProps = {
         Wrapper: props.componentRef,
         block: props.builderBlock,
         context: props.context,

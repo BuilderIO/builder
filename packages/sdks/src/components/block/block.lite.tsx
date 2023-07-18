@@ -26,7 +26,7 @@ import {
 import RepeatedBlock from './components/repeated-block.lite';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import ComponentRef from './components/component-ref.lite';
-import BlockWrapper from './components/block-wrapper.lite';
+import InteractiveElement from './components/interactive-element.lite.jsx';
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -159,7 +159,7 @@ export default function Block(props: BlockProps) {
          * _even_ if that logic ends up not rendering anything.
          */}
         <Show when={isEmptyHtmlElement(state.Tag)}>
-          <BlockWrapper
+          <InteractiveElement
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
@@ -178,7 +178,7 @@ export default function Block(props: BlockProps) {
           </For>
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
-          <BlockWrapper
+          <InteractiveElement
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
@@ -207,7 +207,7 @@ export default function Block(props: BlockProps) {
                 />
               )}
             </For>
-          </BlockWrapper>
+          </InteractiveElement>
         </Show>
       </Show>
     </Show>
