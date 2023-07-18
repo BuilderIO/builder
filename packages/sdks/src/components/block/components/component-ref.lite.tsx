@@ -2,7 +2,7 @@ import type { BuilderBlock } from '../../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
 import Block from '../block.lite';
 import type { Signal } from '@builder.io/mitosis';
-import { For, useMetadata, useStore } from '@builder.io/mitosis';
+import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
@@ -76,30 +76,32 @@ export default function ComponentRef(props: ComponentProps) {
     },
   });
   return (
-    <state.Wrapper {...state.wrapperProps}>
-      {/**
-       * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-       * does not support multiple root elements.
-       */}
-      <For each={props.blockChildren}>
-        {(child) => (
-          <Block
-            key={'block-' + child.id}
-            block={child}
-            context={props.context}
-            registeredComponents={props.registeredComponents}
-          />
-        )}
-      </For>
-      <For each={props.blockChildren}>
-        {(child) => (
-          <BlockStyles
-            key={'block-style-' + child.id}
-            block={child}
-            context={props.context.value}
-          />
-        )}
-      </For>
-    </state.Wrapper>
+    <Show when={props.componentRef}>
+      <state.Wrapper {...state.wrapperProps}>
+        {/**
+         * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+         * does not support multiple root elements.
+         */}
+        <For each={props.blockChildren}>
+          {(child) => (
+            <Block
+              key={'block-' + child.id}
+              block={child}
+              context={props.context}
+              registeredComponents={props.registeredComponents}
+            />
+          )}
+        </For>
+        <For each={props.blockChildren}>
+          {(child) => (
+            <BlockStyles
+              key={'block-style-' + child.id}
+              block={child}
+              context={props.context.value}
+            />
+          )}
+        </For>
+      </state.Wrapper>
+    </Show>
   );
 }
