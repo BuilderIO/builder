@@ -254,7 +254,6 @@ export default function BuilderEditor(
 
             // remove hard reset cookie just in case it was set in a prior update.
             document.cookie = `builder.hardReset=no;max-age=0`;
-
             document.cookie = `${cookie.name}=${cookie.value};max-age=30`;
 
             const newCookieValue = document.cookie
@@ -279,28 +278,6 @@ export default function BuilderEditor(
                 });
 
               setShouldSendResetCookie(true);
-              // TO-DO: we want to add a counter here that forces a refetch.
-              // we will also read this counter
-              // const newParams = new URLSearchParams(searchParams.toString())
-              // const oldCounter = parseInt(newParams.get('builder.edit-counter') || '0')
-              // newParams.set('builder.edit-counter', (oldCounter + 1).toString())
-              // const newUrl = `${pathname}?${newParams.toString()}`
-              // router.replace(newUrl)
-
-              // const lastUpdatedAutosave = parseInt(
-              //   message.data.lastUpdatedAutosave
-              // )
-
-              // let lastUpdatedToUse = lastUpdated
-              // if (lastUpdatedAutosave > lastUpdated) {
-              //   setLastUpdated(lastUpdatedAutosave)
-              //   lastUpdatedToUse = lastUpdatedAutosave
-              // }
-
-              // console.log(
-              //   'setting hard reset with lastUpdated: ',
-              //   lastUpdatedAutosave
-              // )
             } else {
               console.log('cookie saved correctly');
               router.refresh();
