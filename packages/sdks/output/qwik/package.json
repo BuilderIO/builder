@@ -32,5 +32,10 @@
   },
   "peerDependencies": {
     "@builder.io/qwik": ">=1.0.0"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@builder.io/sdks"
+    ]
   }
 }

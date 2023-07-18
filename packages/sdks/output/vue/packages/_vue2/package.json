@@ -1,6 +1,5 @@
 {
   "name": "@builder.io/sdk-vue-2",
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "build": "vite build",
@@ -19,5 +18,10 @@
     "vite": "^3.0.4",
     "vite-plugin-dts": "^1.5.0",
     "vue-tsc": "^0.38.8"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@builder.io/sdks"
+    ]
   }
 }

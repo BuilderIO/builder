@@ -1,11 +1,6 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
-  "workspaces": [
-    "output/**/*",
-    "output/*",
-    "e2e/*"
-  ],
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
@@ -91,6 +86,22 @@
   "config": {
     "commitizen": {
       "path": "git-cz"
+    }
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/output/qwik/src",
+          "{projectRoot}/output/svelte/src",
+          "{projectRoot}/output/react-native/src",
+          "{projectRoot}/output/solid/src",
+          "{projectRoot}/output/vue/packages/_vue2/src",
+          "{projectRoot}/output/vue/packages/_vue3/src",
+          "{projectRoot}/output/react/packages/rsc/src",
+          "{projectRoot}/output/react/packages/react/src"
+        ]
+      }
     }
   }
 }

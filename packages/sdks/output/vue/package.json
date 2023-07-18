@@ -46,5 +46,11 @@
   },
   "devDependencies": {
     "vue": "^2.7"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@builder.io/sdk-vue-2",
+      "@builder.io/sdk-vue-3"
+    ]
   }
 }

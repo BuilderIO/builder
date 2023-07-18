@@ -6,8 +6,21 @@
     "sdks-tests",
     "sdks",
     "react",
-    "react-tests",
-    "core"
+    "react-tests/react-vite",
+    "react-tests/nextjs",
+    "react-tests/react-remix",
+    "core",
+    "sdks/e2e/*",
+    "sdks/output/qwik",
+    "sdks/output/svelte",
+    "sdks/output/solid",
+    "sdks/output/vue",
+    "sdks/output/react",
+    "sdks/output/react-native",
+    "sdks/output/vue/packages/_vue2",
+    "sdks/output/vue/packages/_vue3",
+    "sdks/output/react/packages/rsc",
+    "sdks/output/react/packages/react"
   ],
   "engines": {
     "yarn": ">= 3.0.0"

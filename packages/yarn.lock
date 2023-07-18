@@ -3479,12 +3479,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/react-tests@workspace:react-tests":
-  version: 0.0.0-use.local
-  resolution: "@builder.io/react-tests@workspace:react-tests"
-  languageName: unknown
-  linkType: soft
-
 "@builder.io/react@workspace:*, @builder.io/react@workspace:react":
   version: 0.0.0-use.local
   resolution: "@builder.io/react@workspace:react"
