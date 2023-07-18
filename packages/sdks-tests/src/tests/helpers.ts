@@ -107,43 +107,17 @@ export const getElementStyleValue = async ({
   }, cssProperty);
 };
 
-export const expectStyleForElement = async ({
-  expectedValue,
-  locator,
-  cssProperty,
-  checkVisibility = true,
-}: {
-  locator: Locator;
-  cssProperty: string;
-  expectedValue: string;
-  checkVisibility?: boolean;
-}) => {
-  // we need to wait for the element to be visible, otherwise we might run the style check on a removed DOM node.
-  if (checkVisibility) {
-    await expect(locator).toBeVisible();
-  }
-
-  await expect(await getElementStyleValue({ locator, cssProperty })).toBe(expectedValue);
-};
-
 export type ExpectedStyles = Record<string, string>;
 
 export const expectStylesForElement = async ({
   expected,
   locator,
-  checkVisibility,
 }: {
   locator: Locator;
   expected: ExpectedStyles;
-  checkVisibility?: boolean;
 }) => {
   for (const property of Object.keys(expected)) {
-    await expectStyleForElement({
-      cssProperty: property,
-      locator,
-      expectedValue: expected[property],
-      checkVisibility,
-    });
+    await expect(locator).toHaveCSS(property, expected[property]);
   }
 };
 
