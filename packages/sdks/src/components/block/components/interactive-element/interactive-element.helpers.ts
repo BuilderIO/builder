@@ -8,15 +8,13 @@ export type InteractiveElementProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  wrapperProps?: any;
-  shouldNestAttributes?: boolean;
+  wrapperProps: object;
 };
 
 export const getBlockProps = ({
   block,
   contextValue,
-  shouldNestAttributes,
-}: Pick<InteractiveElementProps, 'block' | 'shouldNestAttributes'> & {
+}: Pick<InteractiveElementProps, 'block'> & {
   contextValue: BuilderContextInterface;
 }) => {
   const blockProps = {
@@ -32,10 +30,6 @@ export const getBlockProps = ({
       context: contextValue.context,
     }),
   };
-
-  if (shouldNestAttributes) {
-    return { attributes: blockProps };
-  }
 
   return blockProps;
 };

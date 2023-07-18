@@ -20,7 +20,7 @@ useMetadata({
 
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
-    Wrapper: props.isRSC ? props.componentRef : InteractiveElement,
+    Wrapper: props.isInteractive ? InteractiveElement : props.componentRef,
   });
   return (
     <Show when={props.componentRef}>
@@ -31,7 +31,7 @@ export default function ComponentRef(props: ComponentProps) {
           context: props.context,
           componentRef: props.componentRef,
           includeBlockProps: props.includeBlockProps,
-          isRSC: props.isRSC,
+          isInteractive: props.isInteractive,
           contextValue: props.context.value,
         })}
       >

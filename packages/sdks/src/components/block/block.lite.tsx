@@ -125,7 +125,7 @@ export default function Block(props: BlockProps) {
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
         includeBlockProps: state.component?.noWrap === true,
-        isRSC: state.component?.isRSC,
+        isInteractive: !state.component?.isRSC,
       };
     },
   });

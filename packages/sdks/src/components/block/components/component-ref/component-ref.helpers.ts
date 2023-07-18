@@ -23,7 +23,7 @@ export interface ComponentProps {
   registeredComponents: RegisteredComponents;
   builderBlock: BuilderBlock;
   includeBlockProps: boolean;
-  isRSC: boolean | undefined;
+  isInteractive: boolean | undefined;
 }
 
 export const getWrapperProps = ({
@@ -32,21 +32,21 @@ export const getWrapperProps = ({
   context,
   componentRef,
   includeBlockProps,
-  isRSC,
+  isInteractive,
   contextValue,
 }: Omit<ComponentProps, 'blockChildren' | 'registeredComponents'> & {
   contextValue: BuilderContextInterface;
 }) => {
-  const blockWrapperProps: InteractiveElementProps = {
+  const interactiveElementProps: InteractiveElementProps = {
     Wrapper: componentRef,
     block: builderBlock,
     context,
     wrapperProps: componentOptions,
-    shouldNestAttributes: true,
   };
 
-  return isRSC
-    ? {
+  return isInteractive
+    ? interactiveElementProps
+    : {
         ...componentOptions,
         /**
          * If `noWrap` is set to `true`, then the block's props/attributes are provided to the
@@ -60,6 +60,5 @@ export const getWrapperProps = ({
               }),
             }
           : {}),
-      }
-    : blockWrapperProps;
+      };
 };

@@ -7,6 +7,8 @@ useMetadata({
   elementTag: 'props.Wrapper',
 });
 
+type BlockWrapperProps = Omit<InteractiveElementProps, 'wrapperProps'>;
+
 /**
  * This component renders a block's wrapper HTML element (from the block's `tagName` property).
  * It reuses the exact same logic as the `InteractiveElement` component, but we need to have 2 separate components for
@@ -15,15 +17,13 @@ useMetadata({
  *  - `<svelte:component>` (for custom components)
  */
 export default function BlockWrapper(
-  props: PropsWithChildren<InteractiveElementProps>
+  props: PropsWithChildren<BlockWrapperProps>
 ) {
   return (
     <props.Wrapper
-      {...props.wrapperProps}
       {...getBlockProps({
         block: props.block,
         contextValue: props.context.value,
-        shouldNestAttributes: props.shouldNestAttributes,
       })}
     >
       {props.children}
