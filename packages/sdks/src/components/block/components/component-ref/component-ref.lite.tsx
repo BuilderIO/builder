@@ -6,11 +6,6 @@ import type { ComponentProps } from './component-ref.helpers.js';
 import { getWrapperProps } from './component-ref.helpers.js';
 
 useMetadata({
-  qwik: {
-    component: {
-      isLight: true,
-    },
-  },
   options: {
     vue3: {
       asyncComponentImports: true,
