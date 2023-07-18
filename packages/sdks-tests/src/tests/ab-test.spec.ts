@@ -79,7 +79,7 @@ const initializeAbTest = async (
   if (packageName === 'e2e-old-nextjs') test.skip();
 
   // TO-DO: fix this
-  if (packageName === 'e2e-nextjs-app-dir-react') test.skip();
+  if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
 
   // React Native SDK needs some extra time to sort its feelings out.
   if (packageName === 'e2e-react-native') test.slow();

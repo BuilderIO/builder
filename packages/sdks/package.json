@@ -35,7 +35,7 @@
     "e2e:build:solid": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-solid*\" run build",
     "e2e:build:qwik": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-qwik*\" run build",
     "e2e:build:react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e?(-*)-react\" run build",
-    "e2e:build:rsc": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-nextjs-app-dir-react\" run build",
+    "e2e:build:rsc": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-nextjs-app-dir-rsc\" run build",
     "e2e:build:vue2": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*2\" run build",
     "e2e:build:vue3": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*3\" run build",
     "e2e:build:vue": "yarn run e2e:build:vue2 && yarn run e2e:build:vue3",

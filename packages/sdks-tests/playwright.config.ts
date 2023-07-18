@@ -23,7 +23,7 @@ const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
   vue2: ['e2e-vue2', 'e2e-vue-nuxt2'],
   vue3: ['e2e-vue3', 'e2e-vue-nuxt3'],
   svelte: ['e2e-svelte', 'e2e-sveltekit'],
-  rsc: ['e2e-nextjs-app-dir-react'],
+  rsc: ['e2e-nextjs-app-dir-rsc'],
   oldReact: ['e2e-old-react', 'e2e-old-nextjs', 'e2e-old-react-remix'],
 };
 

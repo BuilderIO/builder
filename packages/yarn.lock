@@ -3071,9 +3071,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/e2e-nextjs-app-dir-react@workspace:sdks/e2e/nextjs-react-app-dir":
+"@builder.io/e2e-nextjs-app-dir-rsc@workspace:sdks/e2e/nextjs-react-app-dir":
   version: 0.0.0-use.local
-  resolution: "@builder.io/e2e-nextjs-app-dir-react@workspace:sdks/e2e/nextjs-react-app-dir"
+  resolution: "@builder.io/e2e-nextjs-app-dir-rsc@workspace:sdks/e2e/nextjs-react-app-dir"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
