@@ -401,30 +401,7 @@ module.exports = {
                 });
               }
 
-              // TO-DO: remove this:
-              // For now, we exclude the `setState` function as Mitosis does not correctly know how to serialize it.
-              Object.values(json.context.set).forEach((context) => {
-                if (context?.value?.['setState']) {
-                  delete context.value['setState'];
-                }
-              });
-
               return json;
-            },
-          },
-        }),
-        () => ({
-          json: {
-            pre: (json) => {
-              if (json.name === 'InlinedStyles') {
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) return;
-
-                  if (item.bindings.innerHTML) {
-                    item.name = 'style';
-                  }
-                });
-              }
             },
           },
         }),
