@@ -1,5 +1,5 @@
 import { useTarget } from '@builder.io/mitosis';
-import { filterVueAttrs } from '../helpers';
+import { filterAttrs } from '../helpers';
 
 export interface TextareaProps {
   attributes?: any;
@@ -14,12 +14,16 @@ export default function Textarea(props: TextareaProps) {
     <textarea
       {...useTarget({
         vue2: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
         },
         vue3: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
+        },
+        svelte: {
+          ...filterAttrs(props.attributes, 'on:', true),
+          ...filterAttrs(props.attributes, 'on:', false),
         },
         default: props.attributes,
       })}

@@ -14,7 +14,7 @@ import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
 } from '../../types/builder-props';
-import { filterVueAttrs } from '../helpers';
+import { filterAttrs } from '../helpers';
 
 export interface SymbolInfo {
   model?: string;
@@ -103,12 +103,16 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     <div
       {...useTarget({
         vue2: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
         },
         vue3: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
+        },
+        svelte: {
+          ...filterAttrs(props.attributes, 'on:', true),
+          ...filterAttrs(props.attributes, 'on:', false),
         },
         default: props.attributes,
       })}

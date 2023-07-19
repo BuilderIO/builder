@@ -1,6 +1,6 @@
 import { isEditing } from '../../functions/is-editing.js';
 import { For, useTarget } from '@builder.io/mitosis';
-import { filterVueAttrs } from '../helpers.js';
+import { filterAttrs } from '../helpers.js';
 
 export interface FormSelectProps {
   options?: { name?: string; value: string }[];
@@ -15,12 +15,16 @@ export default function SelectComponent(props: FormSelectProps) {
     <select
       {...useTarget({
         vue2: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
         },
         vue3: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
+        },
+        svelte: {
+          ...filterAttrs(props.attributes, 'on:', true),
+          ...filterAttrs(props.attributes, 'on:', false),
         },
         default: props.attributes,
       })}

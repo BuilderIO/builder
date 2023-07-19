@@ -1,6 +1,6 @@
 import { useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
-import { filterVueAttrs } from '../helpers.js';
+import { filterAttrs } from '../helpers.js';
 
 export interface ImgProps {
   attributes?: any;
@@ -32,12 +32,16 @@ export default function ImgComponent(props: ImgProps) {
       src={props.imgSrc || props.image}
       {...useTarget({
         vue2: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
         },
         vue3: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
+        },
+        svelte: {
+          ...filterAttrs(props.attributes, 'on:', true),
+          ...filterAttrs(props.attributes, 'on:', false),
         },
         default: props.attributes,
       })}

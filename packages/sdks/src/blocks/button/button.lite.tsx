@@ -1,5 +1,5 @@
 import { Show, useTarget } from '@builder.io/mitosis';
-import { filterVueAttrs } from '../helpers';
+import { filterAttrs } from '../helpers';
 
 export interface ButtonProps {
   attributes?: any;
@@ -16,12 +16,16 @@ export default function Button(props: ButtonProps) {
         <button
           {...useTarget({
             vue2: {
-              ...filterVueAttrs(props.attributes, true),
-              ...filterVueAttrs(props.attributes, false),
+              ...filterAttrs(props.attributes, 'v-on:', true),
+              ...filterAttrs(props.attributes, 'v-on:', false),
             },
             vue3: {
-              ...filterVueAttrs(props.attributes, true),
-              ...filterVueAttrs(props.attributes, false),
+              ...filterAttrs(props.attributes, 'v-on:', true),
+              ...filterAttrs(props.attributes, 'v-on:', false),
+            },
+            svelte: {
+              ...filterAttrs(props.attributes, 'on:', true),
+              ...filterAttrs(props.attributes, 'on:', false),
             },
             default: props.attributes,
           })}
@@ -45,12 +49,16 @@ export default function Button(props: ButtonProps) {
       <a
         {...useTarget({
           vue2: {
-            ...filterVueAttrs(props.attributes, true),
-            ...filterVueAttrs(props.attributes, false),
+            ...filterAttrs(props.attributes, 'v-on:', true),
+            ...filterAttrs(props.attributes, 'v-on:', false),
           },
           vue3: {
-            ...filterVueAttrs(props.attributes, true),
-            ...filterVueAttrs(props.attributes, false),
+            ...filterAttrs(props.attributes, 'v-on:', true),
+            ...filterAttrs(props.attributes, 'v-on:', false),
+          },
+          svelte: {
+            ...filterAttrs(props.attributes, 'on:', true),
+            ...filterAttrs(props.attributes, 'on:', false),
           },
           default: props.attributes,
         })}

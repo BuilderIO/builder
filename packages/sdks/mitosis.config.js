@@ -439,28 +439,36 @@ module.exports = {
           json: {
             pre: (json) => {
               /**
-               * Workaround to dynamically provide event handlers to components/elements
+               * This function's code is stringified and injected in the `Block` component.
+               * It therefore cannot import anything outside of its scope.
+               *
+               * Workaround to dynamically provide event handlers to components/elements.
                * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
                */
-              const code = `
               const setAttrs = (node, attrs = {}) => {
-                const attrKeys = Object.keys(attrs)
-            
-                const setup = attr => node.addEventListener(attr.substr(3), attrs[attr])
-                const teardown = attr => node.removeEventListener(attr.substr(3), attrs[attr])
-                
-                attrKeys.map(setup)
-            
+                const attrKeys = Object.keys(attrs);
+
+                const setup = (attr) =>
+                  node.addEventListener(attr.substr(3), attrs[attr]);
+                const teardown = (attr) =>
+                  node.removeEventListener(attr.substr(3), attrs[attr]);
+
+                attrKeys.map(setup);
+
                 return {
                   update(attrs = {}) {
-                    const attrKeys = Object.keys(attrs)
-                    attrKeys.map(teardown)
-                    attrKeys.map(setup)
+                    const attrKeys = Object.keys(attrs);
+                    attrKeys.map(teardown);
+                    attrKeys.map(setup);
                   },
-                  destroy() { attrKeys.map(teardown) }
-                }
-              }
-              `;
+                  destroy() {
+                    attrKeys.map(teardown);
+                  },
+                };
+              };
+
+              const code = setAttrs.toString();
+
               // handle case where we have a wrapper element, in which case the actions are assigned in `Block`.
               if (json.name === 'Block') {
                 json.hooks.preComponent = { code };
@@ -483,26 +491,6 @@ module.exports = {
               // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
               // builder blocks.
               traverse(json).forEach(function (item) {
-                /**
-                 * Additional snippet of code that helps split up the attributes into event handlers and the rest.
-                 * we can then apply these filters in 2 bindings: one that uses the `setAttrs` action, and another that
-                 * provides the non-event-handler attribtues as they are, spread into the component
-                 */
-                const filterCode = `
-                  const isEvent = attr => attr.startsWith('on:')
-                  const isNonEvent = attr => !attr.startsWith('on:')
-
-                  const filterAttrs = (attrs = {}, filter) => {
-                    const validAttr = {}
-                    Object.keys(attrs).forEach(attr => {
-                      if (filter(attr)) {
-                        validAttr[attr] = attrs[attr]
-                      }
-                    })
-                    return validAttr
-                  }
-              `;
-
                 if (!isMitosisNode(item)) return;
                 if (item.name.toLowerCase() !== item.name) return;
 
@@ -518,9 +506,6 @@ module.exports = {
                       `Could not find spread binding for ${json.name}`
                     );
                   }
-                  json.hooks.preComponent = {
-                    code: [filterCode, code].join('\n'),
-                  };
                   item.bindings['use:setAttrs'] = {
                     code: `filterAttrs(${value.code}, isEvent)`,
                     type: 'single',

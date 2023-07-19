@@ -6,7 +6,7 @@ import Block from '../../components/block/block.lite';
 import BuilderBlocks from '../../components/blocks/blocks.lite';
 import { isEditing } from '../../functions/is-editing.js';
 import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
-import { filterVueAttrs } from '../helpers';
+import { filterAttrs } from '../helpers';
 
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
@@ -271,12 +271,16 @@ export default function FormComponent(props: FormProps) {
       onSubmit={(event) => state.onSubmit(event)}
       {...useTarget({
         vue2: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
         },
         vue3: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
+        },
+        svelte: {
+          ...filterAttrs(props.attributes, 'on:', true),
+          ...filterAttrs(props.attributes, 'on:', false),
         },
         default: props.attributes,
       })}

@@ -1,6 +1,6 @@
 import { useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
-import { filterVueAttrs } from '../helpers.js';
+import { filterAttrs } from '../helpers.js';
 
 export interface FormInputProps {
   type?: string;
@@ -17,12 +17,16 @@ export default function FormInputComponent(props: FormInputProps) {
     <input
       {...useTarget({
         vue2: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
         },
         vue3: {
-          ...filterVueAttrs(props.attributes, true),
-          ...filterVueAttrs(props.attributes, false),
+          ...filterAttrs(props.attributes, 'v-on:', true),
+          ...filterAttrs(props.attributes, 'v-on:', false),
+        },
+        svelte: {
+          ...filterAttrs(props.attributes, 'on:', true),
+          ...filterAttrs(props.attributes, 'on:', false),
         },
         default: props.attributes,
       })}

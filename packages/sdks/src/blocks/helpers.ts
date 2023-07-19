@@ -1,5 +1,6 @@
-export function filterVueAttrs(
+export function filterAttrs(
   attrs: { [index: string]: any } = {},
+  prefix: string,
   isEvent: boolean
 ) {
   const eventPrefix = 'v-on:';
