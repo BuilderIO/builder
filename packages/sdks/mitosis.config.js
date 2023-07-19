@@ -253,8 +253,8 @@ module.exports = {
                 // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
                 return code
                   .replace(
-                    '<component v-else ',
-                    '<component v-else-if="canShowBlock" '
+                    '<block-wrapper v-else ',
+                    '<block-wrapper v-else-if="canShowBlock" '
                   )
                   .replace(
                     'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
