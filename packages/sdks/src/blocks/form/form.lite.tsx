@@ -10,7 +10,7 @@ import { filterAttrs } from '../helpers';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
-// eslint-disable-next-line unused-imports/no-unused-imports
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import { setAttrs } from '../helpers';
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
