@@ -34,13 +34,6 @@ export interface ComponentInfo {
   noWrap?: boolean;
 
   /**
-   * TO-DO: make this optional only for RSC SDK.
-   *
-   * Set this to `true` if your component is a React Server Component (RSC).
-   */
-  isRSC?: boolean;
-
-  /**
    * Default children
    */
   defaultChildren?: BuilderElement[];
