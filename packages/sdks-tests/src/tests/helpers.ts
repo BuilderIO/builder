@@ -88,7 +88,8 @@ export const testOnlyOldReact = excludeTestFor({
   rsc: true,
   solid: true,
   svelte: true,
-  vue: true,
+  vue2: true,
+  vue3: true,
 });
 
 export const excludeReactNative = excludeTestFor({
