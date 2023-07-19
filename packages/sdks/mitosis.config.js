@@ -439,52 +439,8 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              /**
-               * This function's code is stringified and injected in the `Block` component.
-               * It therefore cannot import anything outside of its scope.
-               *
-               * Workaround to dynamically provide event handlers to components/elements.
-               * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
-               *
-               * @param {HTMLElement} node
-               * @param {Record<string, (event: Event) => void>} attrs
-               */
-              function setAttrs(node, attrs = {}) {
-                const attrKeys = Object.keys(attrs);
-
-                /**
-                 *
-                 * @param {string} attr
-                 */
-                const setup = (attr) =>
-                  node.addEventListener(attr.substr(3), attrs[attr]);
-
-                /**
-                 *
-                 * @param {string} attr
-                 */
-                const teardown = (attr) =>
-                  node.removeEventListener(attr.substr(3), attrs[attr]);
-
-                attrKeys.map(setup);
-
-                return {
-                  update(attrs = {}) {
-                    const attrKeys = Object.keys(attrs);
-                    attrKeys.map(teardown);
-                    attrKeys.map(setup);
-                  },
-                  destroy() {
-                    attrKeys.map(teardown);
-                  },
-                };
-              }
-
-              const code = setAttrs.toString();
               // handle case where we have a wrapper element, in which case the actions are assigned in `Block`.
               if (json.name === 'BlockWrapper') {
-                json.hooks.preComponent = { code };
-
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) return;
 
@@ -505,7 +461,6 @@ module.exports = {
                 return json;
               }
 
-              let hasSetAttrsCode = false;
               // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
               // builder blocks.
               traverse(json).forEach(function (item) {
@@ -525,11 +480,6 @@ module.exports = {
                     };
 
                     delete item.bindings[key];
-
-                    if (!hasSetAttrsCode) {
-                      json.hooks.preComponent = { code };
-                      hasSetAttrsCode = true;
-                    }
                   }
                 }
               });

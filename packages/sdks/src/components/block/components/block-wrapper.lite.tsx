@@ -5,6 +5,11 @@ import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { setAttrs } from '../helpers';
 
 useMetadata({
   elementTag: 'props.Wrapper',

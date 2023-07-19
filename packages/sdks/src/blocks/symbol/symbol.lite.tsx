@@ -15,6 +15,11 @@ import type {
   PropsWithBuilderData,
 } from '../../types/builder-props';
 import { filterAttrs } from '../helpers';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { setAttrs } from '../helpers';
 
 export interface SymbolInfo {
   model?: string;
