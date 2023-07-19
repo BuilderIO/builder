@@ -413,26 +413,6 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              Object.keys(json.context.set).forEach((contextKey) => {
-                const setValue = json.context.set[contextKey];
-                if (setValue.name === 'builderContext') {
-                  Object.keys(setValue.value || {}).forEach((valueKey) => {
-                    const value = setValue.value?.[valueKey];
-                    if (value && value.type === 'property') {
-                      convertPropertyStateValueToGetter({
-                        value,
-                        key: valueKey,
-                      });
-                    }
-                  });
-                }
-              });
-            },
-          },
-        }),
-        () => ({
-          json: {
-            pre: (json) => {
               const tag =
                 json.meta.useMetadata && json.meta.useMetadata.elementTag;
 
