@@ -1,6 +1,11 @@
 import { useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import { filterAttrs } from '../helpers.js';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+import { setAttrs } from '../helpers';
 
 export interface ImgProps {
   attributes?: any;
