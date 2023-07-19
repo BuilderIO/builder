@@ -101,15 +101,16 @@ const vueConfig = {
               }
             }
 
-            const filterAttrKeys = Object.keys(item.bindings).filter(
-              (x) => x.includes('filterAttrs') && x.includes('true')
+            const filterAttrKeys = Object.entries(item.bindings).filter(
+              ([key, value]) =>
+                value?.code.includes('filterAttrs') &&
+                value.code.includes('true')
             );
 
-            for (const key of filterAttrKeys) {
-              const binding = item.bindings[key];
-              if (binding) {
+            for (const [key, value] of filterAttrKeys) {
+              if (value) {
                 item.bindings[key] = {
-                  ...binding,
+                  ...value,
                   type: 'spread',
                   spreadType: 'event-handlers',
                 };
@@ -445,7 +446,7 @@ module.exports = {
                * Workaround to dynamically provide event handlers to components/elements.
                * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
                */
-              const setAttrs = (node, attrs = {}) => {
+              function setAttrs(node, attrs = {}) {
                 const attrKeys = Object.keys(attrs);
 
                 const setup = (attr) =>
@@ -465,7 +466,7 @@ module.exports = {
                     attrKeys.map(teardown);
                   },
                 };
-              };
+              }
 
               const code = setAttrs.toString();
               // handle case where we have a wrapper element, in which case the actions are assigned in `Block`.
@@ -492,25 +493,31 @@ module.exports = {
                 return json;
               }
 
+              let hasSetAttrsCode = false;
               // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
               // builder blocks.
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
-                if (item.name.toLowerCase() !== item.name) return;
 
-                const filterAttrKeys = Object.keys(item.bindings).filter(
-                  (x) => x.includes('filterAttrs') && x.includes('true')
+                const filterAttrKeys = Object.entries(item.bindings).filter(
+                  ([key, value]) =>
+                    value?.code.includes('filterAttrs') &&
+                    value.code.includes('true')
                 );
 
-                for (const key of filterAttrKeys) {
-                  const binding = item.bindings[key];
-                  if (binding) {
+                for (const [key, value] of filterAttrKeys) {
+                  if (value) {
                     item.bindings['use:setAttrs'] = {
-                      ...binding,
+                      ...value,
                       type: 'single',
                     };
 
                     delete item.bindings[key];
+
+                    if (!hasSetAttrsCode) {
+                      json.hooks.preComponent = { code };
+                      hasSetAttrsCode = true;
+                    }
                   }
                 }
               });

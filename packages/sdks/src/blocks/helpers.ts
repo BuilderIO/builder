@@ -3,20 +3,19 @@ export function filterAttrs(
   prefix: string,
   isEvent: boolean
 ) {
-  const eventPrefix = 'v-on:';
   return Object.keys(attrs)
     .filter((attr) => {
       if (!attrs[attr]) {
         return false;
       }
 
-      const isEventVal = attr.startsWith(eventPrefix);
+      const isEventVal = attr.startsWith(prefix);
       return isEvent ? isEventVal : !isEventVal;
     })
     .reduce(
       (acc, attr) => ({
         ...acc,
-        [attr.replace(eventPrefix, '')]: attrs[attr],
+        [attr.replace(prefix, '')]: attrs[attr],
       }),
       {}
     );
