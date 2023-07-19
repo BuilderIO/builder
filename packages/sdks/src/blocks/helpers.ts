@@ -3,22 +3,18 @@ export function filterAttrs(
   prefix: string,
   isEvent: boolean
 ) {
-  return Object.keys(attrs)
-    .filter((attr) => {
-      if (!attrs[attr]) {
-        return false;
-      }
+  const result: typeof attrs = {};
 
-      const isEventVal = attr.startsWith(prefix);
-      return isEvent ? isEventVal : !isEventVal;
-    })
-    .reduce(
-      (acc, attr) => ({
-        ...acc,
-        [attr.replace(prefix, '')]: attrs[attr],
-      }),
-      {}
-    );
+  for (const attr in attrs) {
+    if (!attrs[attr]) continue;
+    if (isEvent && !attr.startsWith(prefix)) continue;
+
+    const eventName = isEvent ? attr.replace(prefix, '') : attr;
+
+    result[eventName] = attrs[attr];
+  }
+
+  return result;
 }
 
 /**
@@ -35,26 +31,25 @@ export function setAttrs(
    *
    * @param {string} attr
    */
-  const setup = (attr: string) =>
-    node.addEventListener(attr.substr(3), attrs[attr]);
+  const setup = (attr: string) => node.addEventListener(attr, attrs[attr]);
 
   /**
    *
    * @param {string} attr
    */
   const teardown = (attr: string) =>
-    node.removeEventListener(attr.substr(3), attrs[attr]);
+    node.removeEventListener(attr, attrs[attr]);
 
-  attrKeys.map(setup);
+  attrKeys.forEach(setup);
 
   return {
     update(attrs = {}) {
       const attrKeys = Object.keys(attrs);
-      attrKeys.map(teardown);
-      attrKeys.map(setup);
+      attrKeys.forEach(teardown);
+      attrKeys.forEach(setup);
     },
     destroy() {
-      attrKeys.map(teardown);
+      attrKeys.forEach(teardown);
     },
   };
 }
