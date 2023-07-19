@@ -411,6 +411,12 @@ module.exports = {
     svelte: {
       typescript: true,
       plugins: [
+        /**
+         * This plugin modifies `svelte:component` to elements to use the `svelte:element` syntax instead.
+         * `svelte:component` is used for rendering dynamic Svelte components, and `svelte:element` is used for
+         * rendering dynamic HTML elements. Mitosis can't know which one to use, and defaults to `svelte:component`,
+         * so we have to override that.
+         */
         () => ({
           json: {
             pre: (json) => {
@@ -439,7 +445,9 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              // handle case where we have a wrapper element, in which case the actions are assigned in `Block`.
+              // This plugin handles binding our actions to the `use:` Svelte syntax:
+
+              // handle case where we have a wrapper element, in which case the actions are assigned in `BlockWrapper`.
               if (json.name === 'BlockWrapper') {
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) return;

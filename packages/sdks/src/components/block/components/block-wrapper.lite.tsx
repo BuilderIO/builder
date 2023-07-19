@@ -9,7 +9,7 @@ import { getBlockProperties } from '../../../functions/get-block-properties.js';
  * This import is used by the Svelte SDK. Do not remove.
  */
 // eslint-disable-next-line unused-imports/no-unused-imports
-import { setAttrs } from '../helpers';
+import { setAttrs } from '../../../blocks/helpers';
 
 useMetadata({
   elementTag: 'props.Wrapper',
@@ -56,7 +56,7 @@ export default function BlockWrapper(
             rootSetState: props.context.value.rootSetState,
             localState: props.context.value.localState,
             context: props.context.value.context,
-            stripVOn: true,
+            stripPrefix: true,
           })}
         />
       }
@@ -76,7 +76,7 @@ export default function BlockWrapper(
           rootSetState: props.context.value.rootSetState,
           localState: props.context.value.localState,
           context: props.context.value.context,
-          stripVOn: true,
+          stripPrefix: true,
         })}
       >
         {props.children}

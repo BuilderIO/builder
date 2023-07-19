@@ -9,7 +9,7 @@ type Actions = { [index: string]: (event: Event) => any };
 export function getBlockActions(
   options: {
     block: BuilderBlock;
-    stripVOn?: boolean;
+    stripPrefix?: boolean;
   } & Pick<
     BuilderContextInterface,
     'localState' | 'context' | 'rootState' | 'rootSetState'
@@ -27,9 +27,16 @@ export function getBlockActions(
 
     let eventHandlerName = getEventHandlerName(key);
 
-    // Vue edge-case
-    if (options.stripVOn && (TARGET === 'vue3' || TARGET === 'vue2')) {
-      eventHandlerName = eventHandlerName.replace('v-on:', '');
+    if (options.stripPrefix) {
+      switch (TARGET) {
+        case 'vue2':
+        case 'vue3':
+          eventHandlerName = eventHandlerName.replace('v-on:', '');
+          break;
+        case 'svelte':
+          eventHandlerName = eventHandlerName.replace('on:', '');
+          break;
+      }
     }
 
     obj[eventHandlerName] = createEventHandler(value, options);
