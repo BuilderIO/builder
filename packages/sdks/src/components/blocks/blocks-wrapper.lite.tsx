@@ -1,6 +1,7 @@
 import { useStore } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type { PropsWithChildren } from '../../types/typescript.js';
 
 export type BlocksWrapperProps = {
   blocks: BuilderBlock[] | undefined;
@@ -9,11 +10,9 @@ export type BlocksWrapperProps = {
   styleProp: Record<string, any> | undefined;
 };
 
-type PropsWithChildren = BlocksWrapperProps & {
-  children?: any;
-};
-
-export default function BlocksWrapper(props: PropsWithChildren) {
+export default function BlocksWrapper(
+  props: PropsWithChildren<BlocksWrapperProps>
+) {
   const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');

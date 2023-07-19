@@ -30,9 +30,14 @@ test.describe(targetContext.name, () => {
         expect(builderSessionCookie).toBeUndefined();
       });
       excludeReactNative('appear by default', async ({ page, context }) => {
-        // by waiting for network requests, we guarantee that impression tracking POST was made,
-        // which guarantees that the cookie was set
-        await page.goto('/', { waitUntil: 'networkidle' });
+        const navigate = page.goto('/');
+        const trackingRequestPromise = page.waitForRequest(
+          req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST'
+        );
+
+        await navigate;
+        // By waiting for the tracking POST request, we guarantee that the cookie is now set.
+        await trackingRequestPromise;
 
         const builderSessionCookie = await getBuilderSessionIdCookie({ context });
 
@@ -174,6 +179,10 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
+        if (packageName === 'e2e-nextjs-app-dir-rsc') {
+          test.skip();
+        }
+
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
@@ -234,6 +243,10 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
+        if (packageName === 'e2e-nextjs-app-dir-rsc') {
+          test.skip();
+        }
+
         await page.goto('/show-hide-if');
 
         await findTextInPage({ page, text: 'even clicks' });

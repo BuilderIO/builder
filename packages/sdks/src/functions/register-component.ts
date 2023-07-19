@@ -1,4 +1,3 @@
-import { serializeFn } from '../blocks/util.js';
 import type { RegisteredComponent } from '../context/types.js';
 import type { ComponentInfo } from '../types/components.js';
 import type { Input } from '../types/input.js';
@@ -24,13 +23,29 @@ export function registerComponent(component: any, info: ComponentInfo): void {
 
 export const createRegisterComponentMessage = (info: ComponentInfo) => ({
   type: 'builder.registerComponent',
-  data: prepareComponentInfoToSend(info),
+  data: info,
 });
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+const serializeFn = (fnValue: Function) => {
+  const fnStr = fnValue.toString().trim();
+
+  // we need to account for a few different fn syntaxes:
+  // 1. `function name(args) => {code}`
+  // 2. `name(args) => {code}`
+  // 3. `(args) => {}`
+  const appendFunction =
+    !fnStr.startsWith('function') && !fnStr.startsWith('(');
+
+  return `return (${
+    appendFunction ? 'function ' : ''
+  }${fnStr}).apply(this, arguments)`;
+};
 
 const serializeValue = (value: object): any =>
   typeof value === 'function' ? serializeFn(value) : fastClone(value);
 
-const prepareComponentInfoToSend = ({
+export const serializeComponentInfo = ({
   inputs,
   ...info
 }: ComponentInfo): ComponentInfo => ({

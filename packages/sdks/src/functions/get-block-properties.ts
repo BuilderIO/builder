@@ -1,6 +1,8 @@
 import { TARGET } from '../constants/target.js';
+import type { BuilderContextInterface } from '../context/types.js';
 import { convertStyleMapToCSSArray } from '../helpers/css.js';
 import type { BuilderBlock } from '../types/builder-block.js';
+import { getReactNativeBlockStyles } from './get-react-native-block-styles.js';
 import { transformBlockProperties } from './transform-block-properties.js';
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
@@ -36,7 +38,13 @@ const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   return { href: (block as any).href };
 };
 
-export function getBlockProperties(block: BuilderBlock) {
+export function getBlockProperties({
+  block,
+  context,
+}: {
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+}) {
   const properties = {
     ...extractRelevantRootBlockProperties(block),
     ...block.properties,
@@ -46,6 +54,14 @@ export function getBlockProperties(block: BuilderBlock) {
       .filter(Boolean)
       .join(' '),
   };
+
+  if (TARGET === 'reactNative') {
+    properties.style = getReactNativeBlockStyles({
+      block,
+      context,
+      blockStyles: properties.style,
+    });
+  }
 
   return transformBlockProperties(properties);
 }

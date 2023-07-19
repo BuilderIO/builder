@@ -3,3 +3,5 @@
 **/test-results/*
 
 **/vite.config.ts.timestamp-*
+
+**/todo.todo
