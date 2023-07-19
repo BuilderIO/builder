@@ -102,7 +102,7 @@ const vueConfig = {
             }
 
             const filterAttrKeys = Object.keys(item.bindings).filter(
-              (x) => x.includes('filterVueAttrs') && x.includes('true')
+              (x) => x.includes('filterAttrs') && x.includes('true')
             );
 
             for (const key of filterAttrKeys) {
@@ -468,23 +468,27 @@ module.exports = {
               };
 
               const code = setAttrs.toString();
-
               // handle case where we have a wrapper element, in which case the actions are assigned in `Block`.
-              if (json.name === 'Block') {
+              if (json.name === 'BlockWrapper') {
                 json.hooks.preComponent = { code };
 
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) return;
-                  if (item.bindings['state.actions']) {
-                    item.bindings['use:setAttrs'] = {
-                      code: item.bindings['state.actions'].code,
-                      type: 'single',
-                    };
-                    delete item.bindings['state.actions'];
+
+                  const key = Object.keys(item.bindings).find((x) =>
+                    x.startsWith('getBlockActions')
+                  );
+                  if (key) {
+                    const binding = item.bindings[key];
+                    if (binding) {
+                      item.bindings['use:setAttrs'] = {
+                        ...binding,
+                        type: 'single',
+                      };
+                      delete item.bindings[key];
+                    }
                   }
                 });
-                return json;
-              } else if (json.name === 'ComponentRef') {
                 return json;
               }
 
@@ -494,26 +498,20 @@ module.exports = {
                 if (!isMitosisNode(item)) return;
                 if (item.name.toLowerCase() !== item.name) return;
 
-                const spreadBinding = Object.entries(item.bindings).find(
-                  ([_key, value]) =>
-                    value?.type === 'spread' && value.code !== '{}'
+                const filterAttrKeys = Object.keys(item.bindings).filter(
+                  (x) => x.includes('filterAttrs') && x.includes('true')
                 );
 
-                if (spreadBinding) {
-                  const [key, value] = spreadBinding;
-                  if (!value) {
-                    throw new Error(
-                      `Could not find spread binding for ${json.name}`
-                    );
+                for (const key of filterAttrKeys) {
+                  const binding = item.bindings[key];
+                  if (binding) {
+                    item.bindings['use:setAttrs'] = {
+                      ...binding,
+                      type: 'single',
+                    };
+
+                    delete item.bindings[key];
                   }
-                  item.bindings['use:setAttrs'] = {
-                    code: `filterAttrs(${value.code}, isEvent)`,
-                    type: 'single',
-                  };
-                  item.bindings[key] = {
-                    ...value,
-                    code: `filterAttrs(${value.code}, isNonEvent)`,
-                  };
                 }
               });
 
