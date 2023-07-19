@@ -4,7 +4,10 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
-import { components } from '../../functions/register-component.js';
+import {
+  components,
+  serializeComponentInfo,
+} from '../../functions/register-component.js';
 import Blocks from '../blocks/blocks.lite';
 import ContentStyles from './components/styles.lite';
 import { Show, useStore, useMetadata, useState } from '@builder.io/mitosis';
@@ -19,6 +22,8 @@ import { useTarget } from '@builder.io/mitosis';
 import EnableEditor from './components/enable-editor.lite';
 import InlinedScript from '../inlined-script.lite';
 import { wrapComponentRef } from './wrap-component-ref.js';
+import type { ComponentInfo } from '../../types/components.js';
+import type { Dictionary } from '../../types/typescript.js';
 
 useMetadata({
   qwik: {
@@ -48,14 +53,14 @@ export default function ContentComponent(props: ContentProps) {
       ...components,
       ...(props.customComponents || []),
     ].reduce<RegisteredComponents>(
-      (acc, { component, ...curr }) => ({
+      (acc, { component, ...info }) => ({
         ...acc,
-        [curr.name]: {
+        [info.name]: {
           component: useTarget({
             vue3: wrapComponentRef(component),
             default: component,
           }),
-          ...curr,
+          ...serializeComponentInfo(info),
         },
       }),
       {}
@@ -82,27 +87,19 @@ export default function ContentComponent(props: ContentProps) {
         context: props.context || {},
         apiKey: props.apiKey,
         apiVersion: props.apiVersion,
-        componentInfos: Object.values(
-          [
-            ...getDefaultRegisteredComponents(),
-            // While this `components` object is deprecated, we must maintain support for it.
-            // Since users are able to override our default components, we need to make sure that we do not break such
-            // existing usage.
-            // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-            // which is the new standard way of providing custom components, and must therefore take precedence.
-            ...components,
-            ...(props.customComponents || []),
-          ].reduce<RegisteredComponents>(
-            (acc, info) => ({
-              ...acc,
-              [info.name]: info,
-            }),
-            {}
-          )
-        ).reduce(
+        componentInfos: [
+          ...getDefaultRegisteredComponents(),
+          // While this `components` object is deprecated, we must maintain support for it.
+          // Since users are able to override our default components, we need to make sure that we do not break such
+          // existing usage.
+          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+          // which is the new standard way of providing custom components, and must therefore take precedence.
+          ...components,
+          ...(props.customComponents || []),
+        ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
             ...acc,
-            [info.name]: info,
+            [info.name]: serializeComponentInfo(info),
           }),
           {}
         ),

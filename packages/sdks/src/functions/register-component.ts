@@ -23,7 +23,7 @@ export function registerComponent(component: any, info: ComponentInfo): void {
 
 export const createRegisterComponentMessage = (info: ComponentInfo) => ({
   type: 'builder.registerComponent',
-  data: prepareComponentInfoToSend(info),
+  data: info,
 });
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -45,7 +45,7 @@ const serializeFn = (fnValue: Function) => {
 const serializeValue = (value: object): any =>
   typeof value === 'function' ? serializeFn(value) : fastClone(value);
 
-const prepareComponentInfoToSend = ({
+export const serializeComponentInfo = ({
   inputs,
   ...info
 }: ComponentInfo): ComponentInfo => ({
