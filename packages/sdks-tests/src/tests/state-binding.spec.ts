@@ -25,4 +25,23 @@ test.describe('State binding', () => {
       await expect(page.locator('text=repeated set')).toContainText('repeated set');
     });
   });
+
+  test.describe('evaluate expressions', () => {
+    test('bindings should evaluate', async ({ page, packageName }) => {
+      await page.goto('/input-disabled-binding/', { waitUntil: 'networkidle' });
+      await expect(page.locator('text=input disabled')).toContainText('input disabled');
+      await expect(page.locator('text=This button should toggle')).toHaveAttribute('disabled', '');
+
+      await page.click('text=Toggle button');
+      await expect(page.locator('text=input enabled')).toContainText('input enabled');
+      await expect(page.locator('text=This button should toggle')).not.toHaveAttribute(
+        'disabled',
+        ''
+      );
+
+      await page.click('text=Toggle button');
+      await expect(page.locator('text=input disabled')).toContainText('input disabled');
+      await expect(page.locator('text=This button should toggle')).toHaveAttribute('disabled', '');
+    });
+  });
 });
