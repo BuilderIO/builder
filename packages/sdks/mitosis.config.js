@@ -445,12 +445,24 @@ module.exports = {
                *
                * Workaround to dynamically provide event handlers to components/elements.
                * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
+               *
+               * @param {HTMLElement} node
+               * @param {Record<string, (event: Event) => void>} attrs
                */
               function setAttrs(node, attrs = {}) {
                 const attrKeys = Object.keys(attrs);
 
+                /**
+                 *
+                 * @param {string} attr
+                 */
                 const setup = (attr) =>
                   node.addEventListener(attr.substr(3), attrs[attr]);
+
+                /**
+                 *
+                 * @param {string} attr
+                 */
                 const teardown = (attr) =>
                   node.removeEventListener(attr.substr(3), attrs[attr]);
 
