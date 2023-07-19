@@ -58,6 +58,12 @@ export const componentInfo: ComponentInfo = {
       enum: ['contain', 'cover', 'fill', 'auto'],
     },
     {
+      name: 'preload',
+      type: 'text',
+      defaultValue: 'metadata',
+      enum: ['auto', 'metadata', 'none'],
+    },
+    {
       name: 'fitContent',
       type: 'boolean',
       helperText:

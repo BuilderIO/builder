@@ -1,7 +1,7 @@
+import { expect } from '@playwright/test';
 import {
   test,
   excludeReactNative,
-  expectStyleForElement,
   isRNSDK,
   expectStylesForElement,
   findTextInPage,
@@ -16,11 +16,10 @@ test.describe('Styles', () => {
     }
 
     await page.goto('/data-binding-styles');
-    await expectStyleForElement({
-      locator: page.locator(`text="This text should be red..."`),
-      cssProperty: 'color',
-      expectedValue: 'rgb(255, 0, 0)',
-    });
+    await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
+      'color',
+      'rgb(255, 0, 0)'
+    );
   });
 
   test.describe('Style Bindings', () => {
@@ -94,11 +93,7 @@ test.describe('Styles', () => {
       ? page.locator('img').nth(1).locator('..').locator('..').locator('..').locator('..')
       : page.locator('picture').nth(1).locator('..').locator('..').locator('..');
 
-    await expectStyleForElement({
-      locator,
-      cssProperty: 'margin-left',
-      expectedValue: '0px',
-    });
+    await expect(locator).toHaveCSS('margin-left', '0px');
   });
 
   const excludeReactNativeAndOldReact = excludeTestFor({
@@ -112,17 +107,9 @@ test.describe('Styles', () => {
     await page.goto('./css-nesting');
 
     const blueText = page.locator('text=blue');
-    await expectStyleForElement({
-      locator: blueText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(0, 0, 255)',
-    });
+    await expect(blueText).toHaveCSS('color', 'rgb(0, 0, 255)');
 
     const redText = page.locator('text=green');
-    await expectStyleForElement({
-      locator: redText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(65, 117, 5)',
-    });
+    await expect(redText).toHaveCSS('color', 'rgb(65, 117, 5)');
   });
 });

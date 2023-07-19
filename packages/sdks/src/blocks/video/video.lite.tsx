@@ -12,6 +12,7 @@ export interface VideoProps {
   width?: number;
   height?: number;
   fit?: 'contain' | 'cover' | 'fill';
+  preload?: 'auto' | 'metadata' | 'none';
   position?:
     | 'center'
     | 'top'
@@ -47,6 +48,7 @@ export default function Video(props: VideoProps) {
   return (
     <video
       {...state.spreadProps}
+      preload={props.preload || 'metadata'}
       style={{
         width: '100%',
         height: '100%',
