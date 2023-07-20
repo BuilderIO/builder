@@ -1,6 +1,6 @@
-import type { BuilderContextInterface } from '../context/types.js';
-import type { BuilderBlock } from '../types/builder-block.js';
-import { sanitizeReactNativeBlockStyles } from './sanitize-react-native-block-styles.js';
+import type { BuilderContextInterface } from '../context/types';
+import type { BuilderBlock } from '../types/builder-block';
+import { sanitizeReactNativeBlockStyles } from './sanitize-react-native-block-styles';
 
 export function getReactNativeBlockStyles({
   block,

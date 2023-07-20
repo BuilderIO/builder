@@ -1,29 +1,29 @@
-import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
+import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components';
 import type {
   BuilderContextInterface,
   BuilderRenderState,
   RegisteredComponents,
-} from '../../context/types.js';
+} from '../../context/types';
 import {
   components,
   serializeComponentInfo,
-} from '../../functions/register-component.js';
+} from '../../functions/register-component';
 import Blocks from '../blocks/blocks.lite';
 import ContentStyles from './components/styles.lite';
 import { Show, useStore, useMetadata, useState } from '@builder.io/mitosis';
-import type { ContentProps } from './content.types.js';
+import type { ContentProps } from './content.types';
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from './content.helpers.js';
-import { TARGET } from '../../constants/target.js';
-import { getRenderContentScriptString } from '../content-variants/helpers.js';
+} from './content.helpers';
+import { TARGET } from '../../constants/target';
+import { getRenderContentScriptString } from '../content-variants/helpers';
 import { useTarget } from '@builder.io/mitosis';
 import EnableEditor from './components/enable-editor.lite';
 import InlinedScript from '../inlined-script.lite';
-import { wrapComponentRef } from './wrap-component-ref.js';
-import type { ComponentInfo } from '../../types/components.js';
-import type { Dictionary } from '../../types/typescript.js';
+import { wrapComponentRef } from './wrap-component-ref';
+import type { ComponentInfo } from '../../types/components';
+import type { Dictionary } from '../../types/typescript';
 
 useMetadata({
   qwik: {

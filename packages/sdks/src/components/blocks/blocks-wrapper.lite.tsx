@@ -1,7 +1,7 @@
 import { useStore } from '@builder.io/mitosis';
-import { isEditing } from '../../functions/is-editing.js';
-import type { BuilderBlock } from '../../types/builder-block.js';
-import type { PropsWithChildren } from '../../types/typescript.js';
+import { isEditing } from '../../functions/is-editing';
+import type { BuilderBlock } from '../../types/builder-block';
+import type { PropsWithChildren } from '../../types/typescript';
 
 export type BlocksWrapperProps = {
   blocks: BuilderBlock[] | undefined;

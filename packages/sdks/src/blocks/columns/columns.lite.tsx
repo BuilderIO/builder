@@ -4,7 +4,7 @@ import type { BuilderBlock } from '../../types/builder-block';
 import { getSizesForBreakpoints } from '../../constants/device-sizes';
 import type { SizeName } from '../../constants/device-sizes';
 import InlinedStyles from '../../components/inlined-styles.lite';
-import { TARGET } from '../../constants/target.js';
+import { TARGET } from '../../constants/target';
 import BuilderContext from '../../context/builder.context.lite';
 import type { Dictionary } from '../../types/typescript';
 import type {

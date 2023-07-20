@@ -1,4 +1,4 @@
-import { isBrowser } from './is-browser.js';
+import { isBrowser } from './is-browser';
 
 const settings: Settings = {};
 

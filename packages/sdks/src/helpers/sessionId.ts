@@ -1,7 +1,7 @@
-import type { CanTrack } from '../types/can-track.js';
-import { getCookie, setCookie } from './cookie.js';
-import { checkIsDefined } from './nullable.js';
-import { uuid } from './uuid.js';
+import type { CanTrack } from '../types/can-track';
+import { getCookie, setCookie } from './cookie';
+import { checkIsDefined } from './nullable';
+import { uuid } from './uuid';
 
 const SESSION_LOCAL_STORAGE_KEY = 'builderSessionId';
 

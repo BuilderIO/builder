@@ -2,13 +2,13 @@ import { Show, useStore } from '@builder.io/mitosis';
 import {
   getMaxWidthQueryForSize,
   getSizesForBreakpoints,
-} from '../../../constants/device-sizes.js';
-import { TARGET } from '../../../constants/target.js';
-import type { BuilderContextInterface } from '../../../context/types.js';
-import { getProcessedBlock } from '../../../functions/get-processed-block.js';
-import { createCssClass } from '../../../helpers/css.js';
-import { checkIsDefined } from '../../../helpers/nullable.js';
-import type { BuilderBlock } from '../../../types/builder-block.js';
+} from '../../../constants/device-sizes';
+import { TARGET } from '../../../constants/target';
+import type { BuilderContextInterface } from '../../../context/types';
+import { getProcessedBlock } from '../../../functions/get-processed-block';
+import { createCssClass } from '../../../helpers/css';
+import { checkIsDefined } from '../../../helpers/nullable';
+import type { BuilderBlock } from '../../../types/builder-block';
 import InlinedStyles from '../../inlined-styles.lite';
 
 export type BlockStylesProps = {

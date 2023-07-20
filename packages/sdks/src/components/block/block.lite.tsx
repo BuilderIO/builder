@@ -1,17 +1,17 @@
 import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from '../../context/types.js';
-import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
-import { getBlockProperties } from '../../functions/get-block-properties.js';
-import { getProcessedBlock } from '../../functions/get-processed-block.js';
-import type { BuilderBlock } from '../../types/builder-block.js';
+} from '../../context/types';
+import { getBlockComponentOptions } from '../../functions/get-block-component-options';
+import { getBlockProperties } from '../../functions/get-block-properties';
+import { getProcessedBlock } from '../../functions/get-processed-block';
+import type { BuilderBlock } from '../../types/builder-block';
 import BlockStyles from './components/block-styles.lite';
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
-} from './block.helpers.js';
+} from './block.helpers';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -22,9 +22,9 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import RepeatedBlock from './components/repeated-block.lite';
-import { extractTextStyles } from '../../functions/extract-text-styles.js';
+import { extractTextStyles } from '../../functions/extract-text-styles';
 import ComponentRef from './components/component-ref/component-ref.lite';
-import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
+import type { ComponentProps } from './components/component-ref/component-ref.helpers';
 import BlockWrapper from './components/block-wrapper.lite';
 
 export type BlockProps = {

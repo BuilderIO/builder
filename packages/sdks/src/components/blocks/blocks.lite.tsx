@@ -7,7 +7,7 @@ import BlocksWrapper from './blocks-wrapper.lite';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from '../../context/types.js';
+} from '../../context/types';
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {
   context: Signal<BuilderContextInterface>;

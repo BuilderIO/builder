@@ -2,8 +2,8 @@ import BlockStyles from '../block-styles.lite';
 import Block from '../../block.lite';
 import { For, Show, useStore } from '@builder.io/mitosis';
 import InteractiveElement from '../interactive-element.lite';
-import type { ComponentProps } from './component-ref.helpers.js';
-import { getWrapperProps } from './component-ref.helpers.js';
+import type { ComponentProps } from './component-ref.helpers';
+import { getWrapperProps } from './component-ref.helpers';
 
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({

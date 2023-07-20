@@ -4,7 +4,7 @@
 /* eslint-disable */
 import Block from '../../components/block/block.lite';
 import BuilderBlocks from '../../components/blocks/blocks.lite';
-import { isEditing } from '../../functions/is-editing.js';
+import { isEditing } from '../../functions/is-editing';
 import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
 import { filterAttrs } from '../helpers';
 /**

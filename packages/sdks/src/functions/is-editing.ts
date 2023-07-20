@@ -1,5 +1,5 @@
-import { TARGET } from '../constants/target.js';
-import { isIframe } from './is-iframe.js';
+import { TARGET } from '../constants/target';
+import { isIframe } from './is-iframe';
 
 export function isEditing(): boolean {
   return (

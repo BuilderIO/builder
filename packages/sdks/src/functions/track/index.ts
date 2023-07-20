@@ -1,12 +1,12 @@
-import { TARGET } from '../../constants/target.js';
-import { logger } from '../../helpers/logger.js';
-import { getSessionId } from '../../helpers/sessionId.js';
-import { getVisitorId } from '../../helpers/visitorId.js';
-import type { CanTrack } from '../../types/can-track.js';
-import type { Dictionary } from '../../types/typescript.js';
-import { isBrowser } from '../is-browser.js';
-import { isEditing } from '../is-editing.js';
-import { getUserAttributes } from './helpers.js';
+import { TARGET } from '../../constants/target';
+import { logger } from '../../helpers/logger';
+import { getSessionId } from '../../helpers/sessionId';
+import { getVisitorId } from '../../helpers/visitorId';
+import type { CanTrack } from '../../types/can-track';
+import type { Dictionary } from '../../types/typescript';
+import { isBrowser } from '../is-browser';
+import { isEditing } from '../is-editing';
+import { getUserAttributes } from './helpers';
 
 interface Event {
   /**

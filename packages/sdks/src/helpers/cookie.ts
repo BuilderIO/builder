@@ -1,8 +1,8 @@
-import { isBrowser } from '../functions/is-browser.js';
-import type { CanTrack } from '../types/can-track.js';
-import { logger } from './logger.js';
-import { checkIsDefined } from './nullable.js';
-import { getTopLevelDomain } from './url.js';
+import { isBrowser } from '../functions/is-browser';
+import type { CanTrack } from '../types/can-track';
+import { logger } from './logger';
+import { checkIsDefined } from './nullable';
+import { getTopLevelDomain } from './url';
 
 type GetCookieArgs = {
   name: string;

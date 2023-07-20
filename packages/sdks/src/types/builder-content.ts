@@ -1,6 +1,6 @@
-import type { BuilderBlock } from './builder-block.js';
-import type { Input } from './input.js';
-import type { Nullable } from './typescript.js';
+import type { BuilderBlock } from './builder-block';
+import type { Input } from './input';
+import type { Nullable } from './typescript';
 
 export interface Breakpoints {
   small: number;

@@ -1,10 +1,10 @@
 import type { Signal } from '@builder.io/mitosis';
 import { Show, useMetadata } from '@builder.io/mitosis';
-import type { PropsWithChildren } from '../../../types/typescript.js';
-import type { BuilderBlock } from '../../../types/builder-block.js';
-import type { BuilderContextInterface } from '../../../context/types.js';
-import { getBlockActions } from '../../../functions/get-block-actions.js';
-import { getBlockProperties } from '../../../functions/get-block-properties.js';
+import type { PropsWithChildren } from '../../../types/typescript';
+import type { BuilderBlock } from '../../../types/builder-block';
+import type { BuilderContextInterface } from '../../../context/types';
+import { getBlockActions } from '../../../functions/get-block-actions';
+import { getBlockProperties } from '../../../functions/get-block-properties';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
