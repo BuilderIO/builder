@@ -24,57 +24,57 @@ import type { BuilderBlock } from "../../types/builder-block";
 import { getSrcSet } from "./image.helpers";
 
 function Image(props: ImageProps) {
-  const _context = { ...props["_context"] };
+  function srcSetToUse() {
+    const imageToUse = props.image || props.src;
+    const url = imageToUse;
 
-  const state = {
-    get srcSetToUse() {
-      const imageToUse = props.image || props.src;
-      const url = imageToUse;
-      if (
-        !url ||
-        // We can auto add srcset for cdn.builder.io and shopify
-        // images, otherwise you can supply this prop manually
-        !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
-      ) {
-        return props.srcset;
-      }
-      if (props.srcset && props.image?.includes("builder.io/api/v1/image")) {
-        if (!props.srcset.includes(props.image.split("?")[0])) {
-          console.debug("Removed given srcset");
-          return getSrcSet(url);
-        }
-      } else if (props.image && !props.srcset) {
+    if (
+      !url || // We can auto add srcset for cdn.builder.io and shopify
+      // images, otherwise you can supply this prop manually
+      !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
+    ) {
+      return props.srcset;
+    }
+
+    if (props.srcset && props.image?.includes("builder.io/api/v1/image")) {
+      if (!props.srcset.includes(props.image.split("?")[0])) {
+        console.debug("Removed given srcset");
         return getSrcSet(url);
       }
+    } else if (props.image && !props.srcset) {
       return getSrcSet(url);
-    },
-    get webpSrcSet() {
-      if (state.srcSetToUse?.match(/builder\.io/) && !props.noWebp) {
-        return state.srcSetToUse.replace(/\?/g, "?format=webp&");
-      } else {
-        return "";
-      }
-    },
-    get aspectRatioCss() {
-      const aspectRatioStyles = {
-        position: "absolute",
-        height: "100%",
-        width: "100%",
-        left: "0px",
-        top: "0px",
-      } as const;
-      const out = props.aspectRatio ? aspectRatioStyles : undefined;
-      return out;
-    },
-  };
+    }
+
+    return getSrcSet(url);
+  }
+
+  function webpSrcSet() {
+    if (srcSetToUse?.()?.match(/builder\.io/) && !props.noWebp) {
+      return srcSetToUse().replace(/\?/g, "?format=webp&");
+    } else {
+      return "";
+    }
+  }
+
+  function aspectRatioCss() {
+    const aspectRatioStyles = {
+      position: "absolute",
+      height: "100%",
+      width: "100%",
+      left: "0px",
+      top: "0px",
+    } as const;
+    const out = props.aspectRatio ? aspectRatioStyles : undefined;
+    return out;
+  }
 
   return (
     <>
       <>
         <picture>
-          {state.webpSrcSet ? (
+          {webpSrcSet() ? (
             <>
-              <source type="image/webp" srcSet={state.webpSrcSet} />
+              <source type="image/webp" srcSet={webpSrcSet()} />
             </>
           ) : null}
 
@@ -85,15 +85,15 @@ function Image(props: ImageProps) {
             style={{
               objectPosition: props.backgroundPosition || "center",
               objectFit: props.backgroundSize || "cover",
-              ...state.aspectRatioCss,
+              ...aspectRatioCss(),
             }}
             className={
               "builder-image" +
               (props.className ? " " + props.className : "") +
-              " img-77e9f242"
+              " img-55ddecf4"
             }
             src={props.image}
-            srcSet={state.srcSetToUse}
+            srcSet={srcSetToUse()}
             sizes={props.sizes}
           />
         </picture>
@@ -102,7 +102,7 @@ function Image(props: ImageProps) {
         !(props.builderBlock?.children?.length && props.fitContent) ? (
           <>
             <div
-              className="builder-image-sizer div-77e9f242"
+              className="builder-image-sizer div-55ddecf4"
               style={{
                 paddingTop: props.aspectRatio! * 100 + "%",
               }}
@@ -116,19 +116,19 @@ function Image(props: ImageProps) {
 
         {!props.fitContent && props.children ? (
           <>
-            <div className="div-77e9f242-2">{props.children}</div>
+            <div className="div-55ddecf4-2">{props.children}</div>
           </>
         ) : null}
       </>
 
-      <style>{`.img-77e9f242 {
+      <style>{`.img-55ddecf4 {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
-}.div-77e9f242 {
+}.div-55ddecf4 {
   width: 100%;
   pointer-events: none;
   font-size: 0;
-}.div-77e9f242-2 {
+}.div-55ddecf4-2 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

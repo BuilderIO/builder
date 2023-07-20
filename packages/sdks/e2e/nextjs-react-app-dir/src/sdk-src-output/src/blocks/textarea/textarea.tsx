@@ -3,7 +3,8 @@ import * as React from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 export interface TextareaProps {
   attributes?: any;
   name?: string;
@@ -16,8 +17,6 @@ import { filterAttrs } from "../helpers";
 import { setAttrs } from "../helpers";
 
 function Textarea(props: TextareaProps) {
-  const _context = { ...props["_context"] };
-
   return (
     <textarea
       {...{}}

@@ -1,5 +1,6 @@
 'use client';
 import * as React from "react";
+import { useContext } from "react";
 
 export interface BaseTextProps {
   text: string;
@@ -8,9 +9,7 @@ export interface BaseTextProps {
 import BuilderContext from "../context/builder.context.js";
 
 function BaseText(props: BaseTextProps) {
-  const _context = { ...props["_context"] };
-
-  const builderContext = _context["BuilderContext"];
+  const builderContext = useContext(BuilderContext);
 
   return (
     <span style={builderContext.inheritedStyles as any}>{props.text}</span>

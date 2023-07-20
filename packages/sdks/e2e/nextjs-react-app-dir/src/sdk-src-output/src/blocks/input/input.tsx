@@ -3,7 +3,8 @@ import * as React from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 export interface FormInputProps {
   type?: string;
   attributes?: any;
@@ -19,8 +20,6 @@ import { filterAttrs } from "../helpers";
 import { setAttrs } from "../helpers";
 
 function FormInputComponent(props: FormInputProps) {
-  const _context = { ...props["_context"] };
-
   return (
     <input
       {...{}}

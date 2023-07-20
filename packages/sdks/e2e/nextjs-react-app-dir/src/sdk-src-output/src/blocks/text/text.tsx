@@ -6,8 +6,6 @@ export interface TextProps {
 }
 
 function Text(props: TextProps) {
-  const _context = { ...props["_context"] };
-
   return (
     <span
       className="builder-text"

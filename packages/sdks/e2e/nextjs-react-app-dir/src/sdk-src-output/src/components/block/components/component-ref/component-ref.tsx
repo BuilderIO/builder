@@ -7,19 +7,17 @@ import type { ComponentProps } from "./component-ref.helpers";
 import { getWrapperProps } from "./component-ref.helpers";
 
 function ComponentRef(props: ComponentProps) {
-  const _context = { ...props["_context"] };
+  function Wrapper() {
+    return props.isInteractive ? InteractiveElement : props.componentRef;
+  }
 
-  const state = {
-    get Wrapper() {
-      return props.isInteractive ? InteractiveElement : props.componentRef;
-    },
-  };
+  const WrapperRef = Wrapper();
 
   return (
     <>
       {props.componentRef ? (
         <>
-          <state.Wrapper
+          <WrapperRef
             {...getWrapperProps({
               componentOptions: props.componentOptions,
               builderBlock: props.builderBlock,
@@ -29,7 +27,6 @@ function ComponentRef(props: ComponentProps) {
               isInteractive: props.isInteractive,
               contextValue: props.context,
             })}
-            _context={_context}
           >
             {props.blockChildren?.map((child) => (
               <Block
@@ -37,7 +34,6 @@ function ComponentRef(props: ComponentProps) {
                 block={child}
                 context={props.context}
                 registeredComponents={props.registeredComponents}
-                _context={_context}
               />
             ))}
 
@@ -46,10 +42,9 @@ function ComponentRef(props: ComponentProps) {
                 key={"block-style-" + child.id}
                 block={child}
                 context={props.context}
-                _context={_context}
               />
             ))}
-          </state.Wrapper>
+          </WrapperRef>
         </>
       ) : null}
     </>

@@ -29,49 +29,43 @@ export interface VideoProps {
 }
 
 function Video(props: VideoProps) {
-  const _context = { ...props["_context"] };
+  function videoProps() {
+    return {
+      ...(props.autoPlay === true
+        ? {
+            autoPlay: true,
+          }
+        : {}),
+      ...(props.muted === true
+        ? {
+            muted: true,
+          }
+        : {}),
+      ...(props.controls === true
+        ? {
+            controls: true,
+          }
+        : {}),
+      ...(props.loop === true
+        ? {
+            loop: true,
+          }
+        : {}),
+      ...(props.playsInline === true
+        ? {
+            playsInline: true,
+          }
+        : {}),
+    };
+  }
 
-  const state = {
-    get videoProps() {
-      return {
-        ...(props.autoPlay === true
-          ? {
-              autoPlay: true,
-            }
-          : {}),
-        ...(props.muted === true
-          ? {
-              muted: true,
-            }
-          : {}),
-        ...(props.controls === true
-          ? {
-              controls: true,
-            }
-          : {}),
-        ...(props.loop === true
-          ? {
-              loop: true,
-            }
-          : {}),
-        ...(props.playsInline === true
-          ? {
-              playsInline: true,
-            }
-          : {}),
-      };
-    },
-    get spreadProps() {
-      return {
-        ...props.attributes,
-        ...state.videoProps,
-      };
-    },
-  };
+  function spreadProps() {
+    return { ...props.attributes, ...videoProps() };
+  }
 
   return (
     <video
-      {...state.spreadProps}
+      {...spreadProps()}
       preload={props.preload || "metadata"}
       style={{
         width: "100%",

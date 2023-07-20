@@ -15,15 +15,12 @@ import type {
 } from "../../context/types";
 
 function Blocks(props: BlocksProps) {
-  const _context = { ...props["_context"] };
-
   return (
     <BlocksWrapper
       blocks={props.blocks}
       parent={props.parent}
       path={props.path}
       styleProp={props.styleProp}
-      _context={_context}
     >
       {props.blocks ? (
         <>
@@ -33,7 +30,6 @@ function Blocks(props: BlocksProps) {
               block={block}
               context={props.context}
               registeredComponents={props.registeredComponents}
-              _context={_context}
             />
           ))}
         </>
@@ -46,7 +42,6 @@ function Blocks(props: BlocksProps) {
               key={"block-style-" + block.id}
               block={block}
               context={props.context}
-              _context={_context}
             />
           ))}
         </>

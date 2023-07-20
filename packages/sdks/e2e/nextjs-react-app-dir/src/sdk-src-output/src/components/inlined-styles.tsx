@@ -7,8 +7,6 @@ interface Props {
 }
 
 function InlinedStyles(props: Props) {
-  const _context = { ...props["_context"] };
-
   return (
     <style dangerouslySetInnerHTML={{ __html: props.styles }} id={props.id} />
   );

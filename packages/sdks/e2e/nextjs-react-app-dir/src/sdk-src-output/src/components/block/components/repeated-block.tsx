@@ -1,5 +1,6 @@
 'use client';
 import * as React from "react";
+import { useState, useContext } from "react";
 
 type Props = {
   block: BuilderBlock;
@@ -15,17 +16,16 @@ import type { BuilderBlock } from "../../../types/builder-block";
 import Block from "../block";
 
 function RepeatedBlock(props: Props) {
-  const _context = { ...props["_context"] };
-
-  const state = { store: props.repeatContext };
+  const [store, setStore] = useState(() => props.repeatContext);
 
   return (
-    <Block
-      block={props.block}
-      context={state.store}
-      registeredComponents={props.registeredComponents}
-      _context={_context}
-    />
+    <BuilderContext.Provider value={store}>
+      <Block
+        block={props.block}
+        context={store}
+        registeredComponents={props.registeredComponents}
+      />
+    </BuilderContext.Provider>
   );
 }
 

@@ -1,5 +1,6 @@
 'use client';
 import * as React from "react";
+import { useState, useEffect } from "react";
 
 type VariantsProviderProps = ContentVariantsProps & {
   /**
@@ -22,44 +23,51 @@ import { TARGET } from "../../constants/target";
 import type { ContentVariantsProps } from "./content-variants.types";
 
 function ContentVariants(props: VariantsProviderProps) {
-  const _context = { ...props["_context"] };
-
-  const state = {
-    shouldRenderVariants: checkShouldRunVariants({
+  const [shouldRenderVariants, setShouldRenderVariants] = useState(() =>
+    checkShouldRunVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
-    }),
-    variantScriptStr: getVariantsScriptString(
+    })
+  );
+
+  function variantScriptStr() {
+    return getVariantsScriptString(
       getVariants(props.content).map((value) => ({
         id: value.testVariationId!,
         testRatio: value.testRatio,
       })),
       props.content?.id || ""
-    ),
-    hideVariantsStyleString: getVariants(props.content)
+    );
+  }
+
+  function hideVariantsStyleString() {
+    return getVariants(props.content)
       .map((value) => `.variant-${value.testVariationId} { display: none; } `)
-      .join(""),
-  };
+      .join("");
+  }
+
+  useEffect(() => {
+    /**
+     * We unmount the non-winning variants post-hydration in Vue.
+     */
+    null;
+  }, []);
 
   return (
     <>
       {!props.__isNestedRender && TARGET !== "reactNative" ? (
         <>
-          <InlinedScript scriptStr={getScriptString()} _context={_context} />
+          <InlinedScript scriptStr={getScriptString()} />
         </>
       ) : null}
 
-      {state.shouldRenderVariants ? (
+      {shouldRenderVariants ? (
         <>
           <InlinedStyles
             id={`variants-styles-${props.content?.id}`}
-            styles={state.hideVariantsStyleString}
-            _context={_context}
+            styles={hideVariantsStyleString()}
           />
-          <InlinedScript
-            scriptStr={state.variantScriptStr}
-            _context={_context}
-          />
+          <InlinedScript scriptStr={variantScriptStr()} />
           {getVariants(props.content)?.map((variant) => (
             <ContentComponent
               key={variant.testVariationId}
@@ -76,8 +84,7 @@ function ContentVariants(props: VariantsProviderProps) {
               locale={props.locale}
               includeRefs={props.includeRefs}
               enrich={props.enrich}
-              isSsrAbTest={state.shouldRenderVariants}
-              _context={_context}
+              isSsrAbTest={shouldRenderVariants}
             />
           ))}
         </>
@@ -86,7 +93,7 @@ function ContentVariants(props: VariantsProviderProps) {
       <ContentComponent
         {...{}}
         content={
-          state.shouldRenderVariants
+          shouldRenderVariants
             ? props.content
             : handleABTestingSync({
                 item: props.content,
@@ -105,8 +112,7 @@ function ContentVariants(props: VariantsProviderProps) {
         locale={props.locale}
         includeRefs={props.includeRefs}
         enrich={props.enrich}
-        isSsrAbTest={state.shouldRenderVariants}
-        _context={_context}
+        isSsrAbTest={shouldRenderVariants}
       />
     </>
   );

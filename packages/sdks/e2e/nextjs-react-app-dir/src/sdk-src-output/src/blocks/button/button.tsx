@@ -3,7 +3,8 @@ import * as React from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 export interface ButtonProps {
   attributes?: any;
   text?: string;
@@ -15,8 +16,6 @@ import { filterAttrs } from "../helpers";
 import { setAttrs } from "../helpers";
 
 function Button(props: ButtonProps) {
-  const _context = { ...props["_context"] };
-
   return (
     <>
       {props.link ? (
@@ -34,17 +33,17 @@ function Button(props: ButtonProps) {
       ) : (
         <>
           <button
+            className="USE_TARGET_BLOCK_3 button-f7e66294"
             {...{}}
             {...props.attributes}
             style={props.attributes.style}
-            className={props.attributes.class + " button-607244a4"}
           >
             {props.text}
           </button>
         </>
       )}
 
-      <style>{`.button-607244a4 {
+      <style>{`.button-f7e66294 {
   all: unset;
 }`}</style>
     </>

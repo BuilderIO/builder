@@ -8,8 +8,6 @@ export interface FragmentProps {
 }
 
 function FragmentComponent(props: FragmentProps) {
-  const _context = { ...props["_context"] };
-
   return <span>{props.children}</span>;
 }
 

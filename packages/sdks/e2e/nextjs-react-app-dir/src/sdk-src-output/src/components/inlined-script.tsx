@@ -7,8 +7,6 @@ interface Props {
 }
 
 function InlinedScript(props: Props) {
-  const _context = { ...props["_context"] };
-
   return (
     <script
       dangerouslySetInnerHTML={{ __html: props.scriptStr }}

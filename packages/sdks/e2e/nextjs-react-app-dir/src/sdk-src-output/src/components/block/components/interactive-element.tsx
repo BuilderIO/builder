@@ -14,8 +14,6 @@ import type { BuilderBlock } from "../../../types/builder-block";
 import type { PropsWithChildren } from "../../../types/typescript";
 
 function InteractiveElement(props: PropsWithChildren<InteractiveElementProps>) {
-  const _context = { ...props["_context"] };
-
   return (
     <props.Wrapper
       {...props.wrapperProps}
@@ -32,7 +30,6 @@ function InteractiveElement(props: PropsWithChildren<InteractiveElementProps>) {
           context: props.context.context,
         }),
       }}
-      _context={_context}
     >
       {props.children}
     </props.Wrapper>

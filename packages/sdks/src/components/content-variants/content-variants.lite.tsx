@@ -25,9 +25,11 @@ export default function ContentVariants(props: VariantsProviderProps) {
     /**
      * We unmount the non-winning variants post-hydration in Vue.
      */
-    if (TARGET === 'vue2' || TARGET === 'vue3') {
-      state.shouldRenderVariants = false;
-    }
+    useTarget({
+      vue2: (state.shouldRenderVariants = false),
+      vue3: (state.shouldRenderVariants = false),
+      default: null,
+    });
   });
 
   const state = useStore({
@@ -35,17 +37,21 @@ export default function ContentVariants(props: VariantsProviderProps) {
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     }),
-    variantScriptStr: getVariantsScriptString(
-      getVariants(props.content).map((value) => ({
-        id: value.testVariationId!,
-        testRatio: value.testRatio,
-      })),
-      props.content?.id || ''
-    ),
+    get variantScriptStr() {
+      return getVariantsScriptString(
+        getVariants(props.content).map((value) => ({
+          id: value.testVariationId!,
+          testRatio: value.testRatio,
+        })),
+        props.content?.id || ''
+      );
+    },
 
-    hideVariantsStyleString: getVariants(props.content)
-      .map((value) => `.variant-${value.testVariationId} { display: none; } `)
-      .join(''),
+    get hideVariantsStyleString() {
+      return getVariants(props.content)
+        .map((value) => `.variant-${value.testVariationId} { display: none; } `)
+        .join('');
+    },
   });
 
   return (

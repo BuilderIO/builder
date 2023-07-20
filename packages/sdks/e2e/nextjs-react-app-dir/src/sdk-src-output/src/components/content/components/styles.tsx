@@ -1,5 +1,6 @@
 'use client';
 import * as React from "react";
+import { useState } from "react";
 
 interface Props {
   cssCode?: string;
@@ -13,10 +14,8 @@ import { getCss } from "./styles.helpers";
 import { getFontCss } from "./styles.helpers";
 
 function ContentStyles(props: Props) {
-  const _context = { ...props["_context"] };
-
-  const state = {
-    injectedStyles: `
+  const [injectedStyles, setInjectedStyles] = useState(() =>
+    `
 ${getCss({
   cssCode: props.cssCode,
   contentId: props.contentId,
@@ -37,10 +36,10 @@ ${getFontCss({
   text-align: inherit;
   font-family: inherit;
 }
-`.trim(),
-  };
+`.trim()
+  );
 
-  return <InlinedStyles styles={state.injectedStyles} _context={_context} />;
+  return <InlinedStyles styles={injectedStyles} />;
 }
 
 export default ContentStyles;

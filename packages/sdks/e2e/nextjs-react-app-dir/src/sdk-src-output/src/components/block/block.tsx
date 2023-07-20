@@ -1,5 +1,6 @@
 'use client';
 import * as React from "react";
+import { useState } from "react";
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -27,139 +28,137 @@ import type { ComponentProps } from "./components/component-ref/component-ref.he
 import BlockWrapper from "./components/block-wrapper";
 
 function Block(props: BlockProps) {
-  const _context = { ...props["_context"] };
-
-  const state = {
-    component: getComponent({
+  const [component, setComponent] = useState(() =>
+    getComponent({
       block: props.block,
       context: props.context,
       registeredComponents: props.registeredComponents,
-    }),
-    get repeatItem() {
-      return getRepeatItemData({
-        block: props.block,
-        context: props.context,
-      });
-    },
-    get processedBlock() {
-      return state.repeatItem
-        ? props.block
-        : getProcessedBlock({
-            block: props.block,
-            localState: props.context.localState,
-            rootState: props.context.rootState,
-            rootSetState: props.context.rootSetState,
-            context: props.context.context,
-            shouldEvaluateBindings: true,
-          });
-    },
-    Tag: props.block.tagName || "div",
-    get canShowBlock() {
-      if ("hide" in state.processedBlock) {
-        return !state.processedBlock.hide;
-      }
-      if ("show" in state.processedBlock) {
-        return state.processedBlock.show;
-      }
-      return true;
-    },
-    get childrenWithoutParentComponent() {
-      /**
-       * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
-       * we render them outside of `componentRef`.
-       * NOTE: We make sure not to render this if `repeatItemData` is non-null, because that means we are rendering an array of
-       * blocks, and the children will be repeated within those blocks.
-       */
-      const shouldRenderChildrenOutsideRef =
-        !state.component?.component && !state.repeatItem;
-      return shouldRenderChildrenOutsideRef
-        ? state.processedBlock.children ?? []
-        : [];
-    },
-    get componentRefProps() {
-      return {
-        blockChildren: state.processedBlock.children ?? [],
-        componentRef: state.component?.component,
-        componentOptions: {
-          ...getBlockComponentOptions(state.processedBlock),
-          builderContext: props.context,
-          ...(state.component?.name === "Symbol" ||
-          state.component?.name === "Columns"
-            ? {
-                builderComponents: props.registeredComponents,
-              }
-            : {}),
-        },
-        context: state.childrenContext,
-        registeredComponents: props.registeredComponents,
-        builderBlock: state.processedBlock,
-        includeBlockProps: state.component?.noWrap === true,
-        isInteractive: !state.component?.isRSC,
-      };
-    },
-    childrenContext: props.context,
-  };
+    })
+  );
+
+  function repeatItem() {
+    return getRepeatItemData({
+      block: props.block,
+      context: props.context,
+    });
+  }
+
+  function processedBlock() {
+    return repeatItem()
+      ? props.block
+      : getProcessedBlock({
+          block: props.block,
+          localState: props.context.localState,
+          rootState: props.context.rootState,
+          rootSetState: props.context.rootSetState,
+          context: props.context.context,
+          shouldEvaluateBindings: true,
+        });
+  }
+
+  const [Tag, setTag] = useState(() => props.block.tagName || "div");
+
+  function canShowBlock() {
+    if ("hide" in processedBlock()) {
+      return !processedBlock().hide;
+    }
+
+    if ("show" in processedBlock()) {
+      return processedBlock().show;
+    }
+
+    return true;
+  }
+
+  function childrenWithoutParentComponent() {
+    /**
+     * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
+     * we render them outside of `componentRef`.
+     * NOTE: We make sure not to render this if `repeatItemData` is non-null, because that means we are rendering an array of
+     * blocks, and the children will be repeated within those blocks.
+     */
+    const shouldRenderChildrenOutsideRef =
+      !component?.component && !repeatItem();
+    return shouldRenderChildrenOutsideRef
+      ? processedBlock().children ?? []
+      : [];
+  }
+
+  function componentRefProps() {
+    return {
+      blockChildren: processedBlock().children ?? [],
+      componentRef: component?.component,
+      componentOptions: {
+        ...getBlockComponentOptions(processedBlock()),
+        builderContext: props.context,
+        ...(component?.name === "Symbol" || component?.name === "Columns"
+          ? {
+              builderComponents: props.registeredComponents,
+            }
+          : {}),
+      },
+      context: childrenContext,
+      registeredComponents: props.registeredComponents,
+      builderBlock: processedBlock(),
+      includeBlockProps: component?.noWrap === true,
+      isInteractive: !component?.isRSC,
+    };
+  }
+
+  const [childrenContext, setChildrenContext] = useState(() => props.context);
 
   return (
     <>
-      {state.canShowBlock ? (
+      {canShowBlock() ? (
         <>
-          {!state.component?.noWrap ? (
+          {!component?.noWrap ? (
             <>
-              {isEmptyHtmlElement(state.Tag) ? (
+              {isEmptyHtmlElement(Tag) ? (
                 <>
                   <BlockWrapper
-                    Wrapper={state.Tag}
-                    block={state.processedBlock}
+                    Wrapper={Tag}
+                    block={processedBlock()}
                     context={props.context}
                     hasChildren={false}
-                    _context={_context}
                   />
                 </>
               ) : null}
-              {!isEmptyHtmlElement(state.Tag) && state.repeatItem ? (
+              {!isEmptyHtmlElement(Tag) && repeatItem() ? (
                 <>
-                  {state.repeatItem?.map((data, index) => (
+                  {repeatItem()?.map((data, index) => (
                     <RepeatedBlock
                       key={index}
                       repeatContext={data.context}
                       block={data.block}
                       registeredComponents={props.registeredComponents}
-                      _context={_context}
                     />
                   ))}
                 </>
               ) : null}
-              {!isEmptyHtmlElement(state.Tag) && !state.repeatItem ? (
+              {!isEmptyHtmlElement(Tag) && !repeatItem() ? (
                 <>
                   <BlockWrapper
-                    Wrapper={state.Tag}
-                    block={state.processedBlock}
+                    Wrapper={Tag}
+                    block={processedBlock()}
                     context={props.context}
                     hasChildren={true}
-                    _context={_context}
                   >
-                    <ComponentRef
-                      {...state.componentRefProps}
-                      _context={_context}
-                    />
+                    <ComponentRef {...componentRefProps()} />
 
-                    {state.childrenWithoutParentComponent?.map((child) => (
+                    {childrenWithoutParentComponent()?.map((child) => (
                       <Block
                         key={"block-" + child.id}
                         block={child}
-                        context={state.childrenContext}
+                        context={childrenContext}
                         registeredComponents={props.registeredComponents}
-                        _context={_context}
                       />
                     ))}
 
-                    {state.childrenWithoutParentComponent?.map((child) => (
+                    {childrenWithoutParentComponent()?.map((child) => (
                       <BlockStyles
                         key={"block-style-" + child.id}
                         block={child}
-                        context={state.childrenContext}
-                        _context={_context}
+                        context={childrenContext}
                       />
                     ))}
                   </BlockWrapper>
@@ -168,7 +167,7 @@ function Block(props: BlockProps) {
             </>
           ) : (
             <>
-              <ComponentRef {...state.componentRefProps} _context={_context} />
+              <ComponentRef {...componentRefProps()} />
             </>
           )}
         </>
