@@ -22,8 +22,6 @@ import { useTarget } from '@builder.io/mitosis';
 import EnableEditor from './components/enable-editor.lite';
 import InlinedScript from '../inlined-script.lite';
 import { wrapComponentRef } from './wrap-component-ref';
-import type { ComponentInfo } from '../../types/components';
-import type { Dictionary } from '../../types/typescript';
 
 useMetadata({
   qwik: {
@@ -69,18 +67,6 @@ export default function ContentComponent(props: ContentProps) {
         {}
       );
     },
-
-    get componentInfos() {
-      return Object.keys(state.registeredComponents).reduce<
-        Dictionary<ComponentInfo>
-      >((acc, key) => {
-        const { component: _, ...info } = state.registeredComponents[key];
-        return {
-          ...acc,
-          [key]: info,
-        };
-      }, {});
-    },
   });
 
   const [builderContextSignal, setBuilderContextSignal] =
@@ -103,7 +89,22 @@ export default function ContentComponent(props: ContentProps) {
         context: props.context || {},
         apiKey: props.apiKey,
         apiVersion: props.apiVersion,
-        componentInfos: state.componentInfos,
+        componentInfos: [
+          ...getDefaultRegisteredComponents(),
+          // While this `components` object is deprecated, we must maintain support for it.
+          // Since users are able to override our default components, we need to make sure that we do not break such
+          // existing usage.
+          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+          // which is the new standard way of providing custom components, and must therefore take precedence.
+          ...components,
+          ...(props.customComponents || []),
+        ].reduce<Dictionary<ComponentInfo>>(
+          (acc, { component: _, ...info }) => ({
+            ...acc,
+            [info.name]: serializeComponentInfo(info),
+          }),
+          {}
+        ),
         inheritedStyles: {},
       },
       { reactive: true }
