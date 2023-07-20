@@ -1,8 +1,7 @@
 import { processContentResult } from '../../sdk-src/functions/get-content';
-import { RenderContent } from '../../sdk-src';
+import { RenderContent } from '../../sdk-src-output/src';
 import type { Patch } from '../../sdk-src/helpers/apply-patch-with-mutation';
 import { applyPatchWithMinimalMutationChain } from '../../sdk-src/helpers/apply-patch-with-mutation';
-import CatFacts from '../../components/MyTextBox/CatFacts';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import { cookies } from 'next/headers';
@@ -99,17 +98,17 @@ export default async function Page(props: MyPageProps) {
             ...componentInfo,
             component: MyTextBox,
           },
-          {
-            name: 'CatFacts',
-            component: CatFacts,
-            inputs: [
-              {
-                name: 'text',
-                type: 'text',
-                defaultValue: 'default text',
-              },
-            ],
-          },
+          // {
+          //   name: 'CatFacts',
+          //   component: CatFacts,
+          //   inputs: [
+          //     {
+          //       name: 'text',
+          //       type: 'text',
+          //       defaultValue: 'default text',
+          //     },
+          //   ],
+          // },
         ]}
       />
     </div>

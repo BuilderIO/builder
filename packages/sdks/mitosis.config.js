@@ -50,7 +50,7 @@ const getTargetPath = ({ target }) => {
     case 'vue3':
       return 'vue/packages/_vue3';
     case 'rsc':
-      return 'react/packages/rsc';
+      return '../e2e/nextjs-react-app-dir/src/sdk-src-output';
     case 'react':
       return 'react/packages/react';
     default:
@@ -294,7 +294,29 @@ module.exports = {
       stylesType: 'style-tag',
     },
     rsc: {
-      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN],
+      typescript: true,
+      plugins: [
+        SRCSET_PLUGIN,
+        REACT_NEXT_V13_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              traverse(json).forEach(function (item) {
+                if (!isMitosisNode(item)) return;
+
+                if (item.bindings['dataSet']) {
+                  delete item.bindings['dataSet'];
+                }
+
+                if (item.properties['dataSet']) {
+                  delete item.properties['dataSet'];
+                }
+              });
+            },
+          },
+        }),
+      ],
+      stylesType: 'style-tag',
     },
     reactNative: {
       plugins: [
