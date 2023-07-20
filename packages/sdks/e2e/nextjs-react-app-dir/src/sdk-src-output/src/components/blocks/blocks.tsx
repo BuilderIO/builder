@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import * as React from "react";
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {

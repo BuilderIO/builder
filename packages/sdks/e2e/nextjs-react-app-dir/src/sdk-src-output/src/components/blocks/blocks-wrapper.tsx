@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import * as React from "react";
 
 export type BlocksWrapperProps = {
@@ -49,9 +49,12 @@ function BlocksWrapper(props: PropsWithChildren<BlocksWrapperProps>) {
   return (
     <>
       <div
-        className={className() + " div-087f2b0a"}
+        className={className() + " div-a65b9d0e"}
         builder-path={props.path}
         builder-parent-id={props.parent}
+        dataSet={{
+          class: className(),
+        }}
         style={props.styleProp}
         onClick={(event) => onClick()}
         onMouseEnter={(event) => onMouseEnter()}
@@ -60,7 +63,7 @@ function BlocksWrapper(props: PropsWithChildren<BlocksWrapperProps>) {
         {props.children}
       </div>
 
-      <style>{`.div-087f2b0a {
+      <style>{`.div-a65b9d0e {
   display: flex;
   flex-direction: column;
   align-items: stretch;

@@ -2,13 +2,6 @@ DONE:
 - dropped all JS suffixes (does this break any other SDK?)
 - context: good to keep providing it for user's component if ever needed
 
-
-- fix current build
-  - Vue2: reactivity broken
-  - Qwik: passing computed$ to export function
-  - Solid:
-  - Svelte:
-
 REMAINING:
 - useState:
   - 1 remaining due to VUE workaround
@@ -21,5 +14,5 @@ REMAINING:
 
 - Mitosis: add `use client` only to components that need it (if they have hooks or state)
 
-- data-fetching call:
+- new `getContent`:
   - take all the hardcoded logic and put it in an external file in the RSC package.
