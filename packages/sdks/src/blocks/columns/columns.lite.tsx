@@ -28,6 +28,12 @@ type CSSVal = string | number;
 
 type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
+useMetadata({
+  rsc: {
+    isRSC: true,
+  },
+});
+
 export interface ColumnProps extends BuilderComponentsProp {
   columns?: Column[];
   builderBlock: BuilderBlock;
@@ -178,7 +184,12 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
         lineHeight: 'normal',
       }}
       style={state.columnsCssVars}
-      dataSet={{ 'builder-block-name': 'builder-columns' }}
+      {...useTarget({
+        reactNative: {
+          dataSet: { 'builder-block-name': 'builder-columns' },
+        },
+        default: {},
+      })}
     >
       <Show when={TARGET !== 'reactNative'}>
         {/**

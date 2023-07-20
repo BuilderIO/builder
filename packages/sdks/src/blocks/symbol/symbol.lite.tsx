@@ -28,6 +28,9 @@ useMetadata({
       // stateType: 'variables',
     },
   },
+  rsc: {
+    isRSC: true,
+  },
 });
 
 export interface SymbolInfo {

@@ -137,14 +137,22 @@ const SRCSET_PLUGIN = () => ({
   },
 });
 
+const USE_CLIENT_STRING = "'use client';";
 /**
- * @type {Plugin}
+ * Needed for next v13 to work
+ * @type {(target: 'rsc' | 'react' | 'reactNative')=> Plugin}
  */
-const REACT_NEXT_V13_PLUGIN = () => ({
+const REACT_NEXT_V13_PLUGIN = (target) => () => ({
   code: {
-    post: (code) => {
-      // Needed for next v13 to work
-      return `'use client';\n${code}`;
+    pre: (code, json) => {
+      const shouldAddUseClient =
+        target === 'react' ||
+        target === 'reactNative' ||
+        !json.meta.useMetadata?.rsc?.isRSC;
+
+      if (!shouldAddUseClient) return code;
+
+      return `${USE_CLIENT_STRING}\n${code}`;
     },
   },
 });
@@ -267,14 +275,14 @@ module.exports = {
     vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN],
+      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN('react')],
       stylesType: 'style-tag',
     },
     rsc: {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
+        REACT_NEXT_V13_PLUGIN('rsc'),
         () => ({
           json: {
             pre: (json) => {
@@ -304,7 +312,7 @@ module.exports = {
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
+        REACT_NEXT_V13_PLUGIN('reactNative'),
         BASE_TEXT_PLUGIN,
         () => ({
           json: {
