@@ -83,3 +83,12 @@ Object {
   },
 }
 `;
+
+exports[`getTranslateableFields from plain data model content to match snapshot 1`] = `
+Object {
+  "metadata.title": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "Hello",
+  },
+}
+`;

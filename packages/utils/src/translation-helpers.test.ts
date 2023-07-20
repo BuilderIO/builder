@@ -55,6 +55,24 @@ test('getTranslateableFields from content to match snapshot', async () => {
   expect(result).toMatchSnapshot();
 });
 
+test('getTranslateableFields from plain data model content to match snapshot', async () => {
+  const content: BuilderContent = {
+    data: {
+      title: {
+        '@type': localizedType,
+        'en-US': 'Hello',
+        Default: 'Test',
+      },
+    },
+  };
+  const result = getTranslateableFields(
+    content,
+    'en-US',
+    'Visit https://builder.io/fiddle/... for more details'
+  );
+  expect(result).toMatchSnapshot();
+});
+
 test('applyTranslation from content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
