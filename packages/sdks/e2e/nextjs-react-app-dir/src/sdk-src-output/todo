@@ -1,2 +1,2 @@
 - dropped all JS suffixes (does this break any other SDK?)
-- 
+- context: good to keep providing it for user's component if ever needed

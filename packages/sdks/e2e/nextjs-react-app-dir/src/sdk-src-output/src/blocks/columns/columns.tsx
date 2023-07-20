@@ -22,7 +22,7 @@ import { getSizesForBreakpoints } from "../../constants/device-sizes";
 import type { SizeName } from "../../constants/device-sizes";
 import InlinedStyles from "../../components/inlined-styles";
 import { TARGET } from "../../constants/target";
-import BuilderContext from "../../context/builder.context.js";
+import BuilderContext from "../../context/builder.context";
 import type { Dictionary } from "../../types/typescript";
 import type {
   BuilderComponentsProp,

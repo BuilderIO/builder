@@ -44,11 +44,13 @@ useMetadata({
 
 export default function Block(props: BlockProps) {
   const state = useStore({
-    component: getComponent({
-      block: props.block,
-      context: props.context.value,
-      registeredComponents: props.registeredComponents,
-    }),
+    get component() {
+      return getComponent({
+        block: props.block,
+        context: props.context.value,
+        registeredComponents: props.registeredComponents,
+      });
+    },
     get repeatItem() {
       return getRepeatItemData({
         block: props.block,
@@ -67,7 +69,9 @@ export default function Block(props: BlockProps) {
             shouldEvaluateBindings: true,
           });
     },
-    Tag: props.block.tagName || 'div',
+    get Tag() {
+      return props.block.tagName || 'div';
+    },
     get canShowBlock() {
       if ('hide' in state.processedBlock) {
         return !state.processedBlock.hide;

@@ -28,13 +28,13 @@ import type { ComponentProps } from "./components/component-ref/component-ref.he
 import BlockWrapper from "./components/block-wrapper";
 
 function Block(props: BlockProps) {
-  const [component, setComponent] = useState(() =>
-    getComponent({
+  function component() {
+    return getComponent({
       block: props.block,
       context: props.context,
       registeredComponents: props.registeredComponents,
-    })
-  );
+    });
+  }
 
   function repeatItem() {
     return getRepeatItemData({
@@ -56,7 +56,9 @@ function Block(props: BlockProps) {
         });
   }
 
-  const [Tag, setTag] = useState(() => props.block.tagName || "div");
+  function Tag() {
+    return props.block.tagName || "div";
+  }
 
   function canShowBlock() {
     if ("hide" in processedBlock()) {
@@ -78,7 +80,7 @@ function Block(props: BlockProps) {
      * blocks, and the children will be repeated within those blocks.
      */
     const shouldRenderChildrenOutsideRef =
-      !component?.component && !repeatItem();
+      !component?.()?.component && !repeatItem();
     return shouldRenderChildrenOutsideRef
       ? processedBlock().children ?? []
       : [];
@@ -87,11 +89,12 @@ function Block(props: BlockProps) {
   function componentRefProps() {
     return {
       blockChildren: processedBlock().children ?? [],
-      componentRef: component?.component,
+      componentRef: component?.()?.component,
       componentOptions: {
         ...getBlockComponentOptions(processedBlock()),
         builderContext: props.context,
-        ...(component?.name === "Symbol" || component?.name === "Columns"
+        ...(component?.()?.name === "Symbol" ||
+        component?.()?.name === "Columns"
           ? {
               builderComponents: props.registeredComponents,
             }
@@ -100,8 +103,8 @@ function Block(props: BlockProps) {
       context: childrenContext,
       registeredComponents: props.registeredComponents,
       builderBlock: processedBlock(),
-      includeBlockProps: component?.noWrap === true,
-      isInteractive: !component?.isRSC,
+      includeBlockProps: component?.()?.noWrap === true,
+      isInteractive: !component?.()?.isRSC,
     };
   }
 
@@ -111,19 +114,19 @@ function Block(props: BlockProps) {
     <>
       {canShowBlock() ? (
         <>
-          {!component?.noWrap ? (
+          {!component?.()?.noWrap ? (
             <>
-              {isEmptyHtmlElement(Tag) ? (
+              {isEmptyHtmlElement(Tag()) ? (
                 <>
                   <BlockWrapper
-                    Wrapper={Tag}
+                    Wrapper={Tag()}
                     block={processedBlock()}
                     context={props.context}
                     hasChildren={false}
                   />
                 </>
               ) : null}
-              {!isEmptyHtmlElement(Tag) && repeatItem() ? (
+              {!isEmptyHtmlElement(Tag()) && repeatItem() ? (
                 <>
                   {repeatItem()?.map((data, index) => (
                     <RepeatedBlock
@@ -135,10 +138,10 @@ function Block(props: BlockProps) {
                   ))}
                 </>
               ) : null}
-              {!isEmptyHtmlElement(Tag) && !repeatItem() ? (
+              {!isEmptyHtmlElement(Tag()) && !repeatItem() ? (
                 <>
                   <BlockWrapper
-                    Wrapper={Tag}
+                    Wrapper={Tag()}
                     block={processedBlock()}
                     context={props.context}
                     hasChildren={true}

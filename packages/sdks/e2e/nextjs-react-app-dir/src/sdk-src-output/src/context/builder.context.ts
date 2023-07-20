@@ -1,4 +1,6 @@
-export default {
+import { createContext } from "react";
+
+export default createContext<any>({
   content: null,
   context: {},
   localState: undefined,
@@ -8,4 +10,4 @@ export default {
   apiVersion: undefined,
   componentInfos: {},
   inheritedStyles: {},
-};
+});

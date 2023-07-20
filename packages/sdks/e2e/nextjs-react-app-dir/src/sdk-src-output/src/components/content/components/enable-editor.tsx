@@ -17,7 +17,7 @@ import { isBrowser } from "../../../functions/is-browser";
 import { isEditing } from "../../../functions/is-editing";
 import { createRegisterComponentMessage } from "../../../functions/register-component";
 import { _track } from "../../../functions/track/index";
-import builderContext from "../../../context/builder.context.js";
+import builderContext from "../../../context/builder.context";
 import {
   registerInsertMenu,
   setupBrowserForEditing,
@@ -28,7 +28,6 @@ import type {
   ContentProps,
   BuilderComponentStateChange,
 } from "../content.types";
-import { TARGET } from "../../../constants/target";
 import { logger } from "../../../helpers/logger";
 import type { ComponentInfo } from "../../../types/components";
 import { getContent } from "../../../functions/get-content/index";
@@ -349,14 +348,7 @@ function EnableEditor(props: BuilderEditorProps) {
             onClick={(event) => onClick(event)}
             builder-content-id={props.builderContextSignal.content?.id}
             builder-model={props.model}
-            {...(TARGET === "reactNative"
-              ? {
-                  dataSet: {
-                    // currently, we can't set the actual ID here. // we don't need it right now, we just need to identify content divs for testing.
-                    "builder-content-id": "",
-                  },
-                }
-              : {})}
+            {...{}}
             {...(props.showContent
               ? {}
               : {

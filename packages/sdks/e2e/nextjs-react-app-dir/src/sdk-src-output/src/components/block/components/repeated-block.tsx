@@ -7,7 +7,7 @@ type Props = {
   repeatContext: BuilderContextInterface;
   registeredComponents: RegisteredComponents;
 };
-import BuilderContext from "../../../context/builder.context.js";
+import BuilderContext from "../../../context/builder.context";
 import type {
   BuilderContextInterface,
   RegisteredComponents,

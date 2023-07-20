@@ -27,21 +27,21 @@ import type { ComponentInfo } from "../../types/components";
 import type { Dictionary } from "../../types/typescript";
 
 function ContentComponent(props: ContentProps) {
-  const [scriptStr, setScriptStr] = useState(() =>
-    getRenderContentScriptString({
+  function scriptStr() {
+    return getRenderContentScriptString({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       variationId: props.content?.testVariationId!,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
-    })
-  );
+    });
+  }
 
   function contentSetState(newRootState: BuilderRenderState) {
     builderContextSignal.rootState = newRootState;
   }
 
-  const [registeredComponents, setRegisteredComponents] = useState(() =>
-    [
+  function registeredComponents() {
+    return [
       ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
       // Since users are able to override our default components, we need to make sure that we do not break such
       // existing usage.
@@ -58,8 +58,17 @@ function ContentComponent(props: ContentProps) {
         },
       }),
       {}
-    )
-  );
+    );
+  }
+
+  function componentInfos() {
+    return Object.keys(registeredComponents()).reduce<
+      Dictionary<ComponentInfo>
+    >((acc, key) => {
+      const { component: _, ...info } = registeredComponents()[key];
+      return { ...acc, [key]: info };
+    }, {});
+  }
 
   const [builderContextSignal, setBuilderContextSignal] = useState(() => ({
     content: getContentInitialValue({
@@ -76,21 +85,7 @@ function ContentComponent(props: ContentProps) {
     context: props.context || {},
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
-    componentInfos: [
-      ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
-      // Since users are able to override our default components, we need to make sure that we do not break such
-      // existing usage.
-      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-      // which is the new standard way of providing custom components, and must therefore take precedence.
-      ...components,
-      ...(props.customComponents || []),
-    ].reduce<Dictionary<ComponentInfo>>(
-      (acc, { component: _, ...info }) => ({
-        ...acc,
-        [info.name]: serializeComponentInfo(info),
-      }),
-      {}
-    ),
+    componentInfos: componentInfos(),
     inheritedStyles: {},
   }));
 
@@ -113,7 +108,7 @@ function ContentComponent(props: ContentProps) {
     >
       {props.isSsrAbTest ? (
         <>
-          <InlinedScript scriptStr={scriptStr} />
+          <InlinedScript scriptStr={scriptStr()} />
         </>
       ) : null}
 
@@ -130,7 +125,7 @@ function ContentComponent(props: ContentProps) {
       <Blocks
         blocks={builderContextSignal.content?.data?.blocks}
         context={builderContextSignal}
-        registeredComponents={registeredComponents}
+        registeredComponents={registeredComponents()}
       />
     </EnableEditor>
   );

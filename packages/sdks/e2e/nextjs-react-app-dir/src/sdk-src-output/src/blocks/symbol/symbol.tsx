@@ -27,7 +27,7 @@ export interface SymbolProps extends BuilderComponentsProp {
 }
 
 import ContentVariants from "../../components/content-variants/content-variants";
-import BuilderContext from "../../context/builder.context.js";
+import BuilderContext from "../../context/builder.context";
 import { getContent } from "../../functions/get-content/index";
 import type { BuilderContent } from "../../types/builder-content";
 import { logger } from "../../helpers/logger";

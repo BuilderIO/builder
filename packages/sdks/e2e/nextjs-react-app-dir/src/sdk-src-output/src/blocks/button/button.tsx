@@ -33,17 +33,17 @@ function Button(props: ButtonProps) {
       ) : (
         <>
           <button
-            className="USE_TARGET_BLOCK_3 button-f7e66294"
             {...{}}
             {...props.attributes}
             style={props.attributes.style}
+            className={props.attributes.class + " button-1040e6ac"}
           >
             {props.text}
           </button>
         </>
       )}
 
-      <style>{`.button-f7e66294 {
+      <style>{`.button-1040e6ac {
   all: unset;
 }`}</style>
     </>
