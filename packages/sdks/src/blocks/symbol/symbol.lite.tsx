@@ -71,21 +71,9 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
         .filter(Boolean)
         .join(' ');
     },
-    contentToUse: useTarget({
-      default: props.symbol?.content,
-      rsc: async () => props.symbol?.content || (await state.fetchContent()),
-    }),
-    setContent() {
-      if (state.contentToUse) return;
 
-      state.fetchContent().then((newContent) => {
-        if (newContent) {
-          state.contentToUse = newContent;
-        }
-      });
-    },
     fetchContent: () => {
-      const doAsync = async () => {
+      const doAsync = async (): Promise<BuilderContent | null | undefined> => {
         /**
          * If:
          * - we have a symbol prop
@@ -118,6 +106,19 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
       };
 
       return doAsync();
+    },
+    contentToUse: useTarget({
+      default: props.symbol?.content,
+      rsc: async () => props.symbol?.content || (await state.fetchContent()),
+    }),
+    setContent() {
+      if (state.contentToUse) return;
+
+      state.fetchContent().then((newContent) => {
+        if (newContent) {
+          state.contentToUse = newContent;
+        }
+      });
     },
   });
 

@@ -293,7 +293,7 @@ module.exports = {
               delete json.state.setContent;
 
               json.state.contentToUse = {
-                code: `(${json.state.contentToUse?.code})()`,
+                code: json.state.contentToUse?.code.split('=>')[1],
                 type: 'property',
               };
 
