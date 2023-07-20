@@ -1,5 +1,11 @@
 import Blocks from '../../components/blocks/blocks.lite';
-import { For, Show, useContext, useStore } from '@builder.io/mitosis';
+import {
+  For,
+  Show,
+  useContext,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
 import { getSizesForBreakpoints } from '../../constants/device-sizes';
 import type { SizeName } from '../../constants/device-sizes';
@@ -80,19 +86,16 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
     },
 
     get columnsCssVars(): Dictionary<string> {
-      if (TARGET === 'reactNative') {
-        return {
-          flexDirection: state.flexDir,
-        } as Dictionary<string>;
-      }
-
-      return {
-        '--flex-dir': state.flexDir,
-        '--flex-dir-tablet': state.getTabletStyle({
-          stackedStyle: state.flexDir,
-          desktopStyle: 'row',
-        }),
-      } as Dictionary<string>;
+      return useTarget({
+        reactNative: { flexDirection: state.flexDir },
+        default: {
+          '--flex-dir': state.flexDir,
+          '--flex-dir-tablet': state.getTabletStyle({
+            stackedStyle: state.flexDir,
+            desktopStyle: 'row',
+          }),
+        } as Dictionary<string>,
+      });
     },
 
     columnCssVars(index: number): Dictionary<string> {
@@ -109,7 +112,10 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 
-      const marginLeftKey = TARGET === 'react' ? 'marginLeft' : 'margin-left';
+      const marginLeftKey = useTarget({
+        react: 'marginLeft',
+        default: 'margin-left',
+      });
 
       return {
         width,
@@ -195,7 +201,12 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
           <div
             style={state.columnCssVars(index)}
             class="builder-column"
-            dataSet={{ 'builder-block-name': 'builder-column' }}
+            {...useTarget({
+              reactNative: {
+                dataSet: { 'builder-block-name': 'builder-column' },
+              },
+              default: {},
+            })}
             css={{
               display: 'flex',
               flexDirection: 'column',

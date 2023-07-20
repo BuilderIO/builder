@@ -6,6 +6,7 @@ import {
   onMount,
   onUpdate,
   useContext,
+  useMetadata,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
@@ -20,6 +21,14 @@ import { filterAttrs } from '../helpers';
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import { setAttrs } from '../helpers';
+
+useMetadata({
+  options: {
+    rsc: {
+      // stateType: 'variables',
+    },
+  },
+});
 
 export interface SymbolInfo {
   model?: string;
@@ -59,51 +68,62 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
         .filter(Boolean)
         .join(' ');
     },
-    contentToUse: props.symbol?.content,
-    fetchContent: async () => {
-      /**
-       * If:
-       * - we have a symbol prop
-       * - yet it does not have any content
-       * - and we have not already stored content from before
-       * - and it has a model name
-       *
-       * then we want to re-fetch the symbol content.
-       */
-      if (
-        !state.contentToUse &&
-        props.symbol?.model &&
-        // This is a hack, we should not need to check for this, but it is needed for Svelte.
-        builderContext.value?.apiKey
-      ) {
-        getContent({
-          model: props.symbol.model,
-          apiKey: builderContext.value.apiKey,
-          apiVersion: builderContext.value.apiVersion,
-          ...(props.symbol?.entry && {
-            query: {
-              id: props.symbol.entry,
-            },
-          }),
-        })
-          .then((response) => {
-            if (response) {
-              state.contentToUse = response;
-            }
-          })
-          .catch((err) => {
+    contentToUse: useTarget({
+      default: props.symbol?.content,
+      rsc: async () => props.symbol?.content || (await state.fetchContent()),
+    }),
+    setContent() {
+      if (state.contentToUse) return;
+
+      state.fetchContent().then((newContent) => {
+        if (newContent) {
+          state.contentToUse = newContent;
+        }
+      });
+    },
+    fetchContent: () => {
+      const doAsync = async () => {
+        /**
+         * If:
+         * - we have a symbol prop
+         * - yet it does not have any content
+         * - and we have not already stored content from before
+         * - and it has a model name
+         *
+         * then we want to re-fetch the symbol content.
+         */
+        if (
+          props.symbol?.model &&
+          // This is a hack, we should not need to check for this, but it is needed for Svelte.
+          builderContext.value?.apiKey
+        ) {
+          return getContent({
+            model: props.symbol.model,
+            apiKey: builderContext.value.apiKey,
+            apiVersion: builderContext.value.apiVersion,
+            ...(props.symbol?.entry && {
+              query: {
+                id: props.symbol.entry,
+              },
+            }),
+          }).catch((err) => {
             logger.error('Could not fetch symbol content: ', err);
+            return undefined;
           });
-      }
+        }
+        return undefined;
+      };
+
+      return doAsync();
     },
   });
 
   onUpdate(() => {
-    state.fetchContent();
+    state.setContent();
   }, [props.symbol]);
 
   onMount(() => {
-    state.fetchContent();
+    state.setContent();
   });
 
   return (
