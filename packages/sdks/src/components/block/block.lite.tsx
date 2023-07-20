@@ -40,6 +40,9 @@ useMetadata({
       asyncComponentImports: true,
     },
   },
+  qwik: {
+    setUseStoreFirst: true,
+  },
 });
 
 export default function Block(props: BlockProps) {

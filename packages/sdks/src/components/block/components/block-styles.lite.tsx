@@ -10,11 +10,18 @@ import { createCssClass } from '../../../helpers/css';
 import { checkIsDefined } from '../../../helpers/nullable';
 import type { BuilderBlock } from '../../../types/builder-block';
 import InlinedStyles from '../../inlined-styles.lite';
+import { useMetadata } from '@builder.io/mitosis';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
   context: BuilderContextInterface;
 };
+
+useMetadata({
+  qwik: {
+    setUseStoreFirst: true,
+  },
+});
 
 export default function BlockStyles(props: BlockStylesProps) {
   const state = useStore({

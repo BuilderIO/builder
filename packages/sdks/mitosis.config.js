@@ -50,7 +50,7 @@ const getTargetPath = ({ target }) => {
     case 'vue3':
       return 'vue/packages/_vue3';
     case 'rsc':
-      return 'react/packages/rsc';
+      return '../e2e/nextjs-react-app-dir/src/sdk-src-output';
     case 'react':
       return 'react/packages/react';
     default:
@@ -174,13 +174,13 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 module.exports = {
   files: 'src/**',
   targets: [
-    'reactNative',
-    'vue2',
-    'rsc',
-    'vue3',
-    'solid',
-    'svelte',
-    'react',
+    // 'reactNative',
+    // 'vue2',
+    // 'rsc',
+    // 'vue3',
+    // 'solid',
+    // 'svelte',
+    // 'react',
     'qwik',
   ],
   getTargetPath,
@@ -267,27 +267,7 @@ module.exports = {
     vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
       typescript: true,
-      plugins: [
-        SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
-        () => ({
-          json: {
-            pre: (json) => {
-              traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) return;
-
-                if (item.bindings['dataSet']) {
-                  delete item.bindings['dataSet'];
-                }
-
-                if (item.properties['dataSet']) {
-                  delete item.properties['dataSet'];
-                }
-              });
-            },
-          },
-        }),
-      ],
+      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN],
       stylesType: 'style-tag',
     },
     rsc: {
@@ -298,17 +278,23 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) return;
+              if (json.name !== 'Symbol') return json;
 
-                if (item.bindings['dataSet']) {
-                  delete item.bindings['dataSet'];
-                }
+              delete json.hooks.onMount;
+              delete json.hooks.onUpdate;
+              delete json.state.setContent;
 
-                if (item.properties['dataSet']) {
-                  delete item.properties['dataSet'];
-                }
-              });
+              json.state.contentToUse = {
+                code: `(${json.state.contentToUse?.code})()`,
+                type: 'property',
+              };
+
+              return json;
+            },
+          },
+          code: {
+            pre: (code) => {
+              return code.replace('function Symbol(', 'async function Symbol(');
             },
           },
         }),
