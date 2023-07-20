@@ -3,6 +3,7 @@ import {
   For,
   Show,
   useContext,
+  useMetadata,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
@@ -39,15 +40,9 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
-    get gutterSize() {
-      return typeof props.space === 'number' ? props.space || 0 : 20;
-    },
-    get cols() {
-      return props.columns || [];
-    },
-    get stackAt() {
-      return props.stackColumnsAt || 'tablet';
-    },
+    gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
+    cols: props.columns || [],
+    stackAt: props.stackColumnsAt || 'tablet',
     getWidth(index: number) {
       return state.cols[index]?.width || 100 / state.cols.length;
     },
@@ -77,13 +72,12 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
       return state.stackAt === 'never' ? desktopStyle : stackedStyle;
     },
 
-    get flexDir() {
-      return props.stackColumnsAt === 'never'
+    flexDir:
+      props.stackColumnsAt === 'never'
         ? 'row'
         : props.reverseColumnsWhenStacked
         ? 'column-reverse'
-        : 'column';
-    },
+        : 'column',
 
     get columnsCssVars(): Dictionary<string> {
       return useTarget({
