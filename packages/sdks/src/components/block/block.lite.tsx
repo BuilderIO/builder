@@ -44,7 +44,7 @@ useMetadata({
 
 export default function Block(props: BlockProps) {
   const state = useStore({
-    get component() {
+    get blockComponent() {
       return getComponent({
         block: props.block,
         context: props.context.value,
@@ -90,7 +90,7 @@ export default function Block(props: BlockProps) {
        * blocks, and the children will be repeated within those blocks.
        */
       const shouldRenderChildrenOutsideRef =
-        !state.component?.component && !state.repeatItem;
+        !state.blockComponent?.component && !state.repeatItem;
 
       return shouldRenderChildrenOutsideRef
         ? state.processedBlock.children ?? []
@@ -100,20 +100,20 @@ export default function Block(props: BlockProps) {
     get componentRefProps(): ComponentProps {
       return {
         blockChildren: state.processedBlock.children ?? [],
-        componentRef: state.component?.component,
+        componentRef: state.blockComponent?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
           builderContext: props.context,
-          ...(state.component?.name === 'Symbol' ||
-          state.component?.name === 'Columns'
+          ...(state.blockComponent?.name === 'Symbol' ||
+          state.blockComponent?.name === 'Columns'
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
         context: childrenContext,
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
-        includeBlockProps: state.component?.noWrap === true,
-        isInteractive: !state.component?.isRSC,
+        includeBlockProps: state.blockComponent?.noWrap === true,
+        isInteractive: !state.blockComponent?.isRSC,
       };
     },
   });
@@ -144,7 +144,7 @@ export default function Block(props: BlockProps) {
   return (
     <Show when={state.canShowBlock}>
       <Show
-        when={!state.component?.noWrap}
+        when={!state.blockComponent?.noWrap}
         else={<ComponentRef {...state.componentRefProps} />}
       >
         {/*

@@ -28,7 +28,7 @@ import type { ComponentProps } from "./components/component-ref/component-ref.he
 import BlockWrapper from "./components/block-wrapper";
 
 function Block(props: BlockProps) {
-  function component() {
+  function blockComponent() {
     return getComponent({
       block: props.block,
       context: props.context,
@@ -80,7 +80,7 @@ function Block(props: BlockProps) {
      * blocks, and the children will be repeated within those blocks.
      */
     const shouldRenderChildrenOutsideRef =
-      !component?.()?.component && !repeatItem();
+      !blockComponent?.()?.component && !repeatItem();
     return shouldRenderChildrenOutsideRef
       ? processedBlock().children ?? []
       : [];
@@ -89,12 +89,12 @@ function Block(props: BlockProps) {
   function componentRefProps() {
     return {
       blockChildren: processedBlock().children ?? [],
-      componentRef: component?.()?.component,
+      componentRef: blockComponent?.()?.component,
       componentOptions: {
         ...getBlockComponentOptions(processedBlock()),
         builderContext: props.context,
-        ...(component?.()?.name === "Symbol" ||
-        component?.()?.name === "Columns"
+        ...(blockComponent?.()?.name === "Symbol" ||
+        blockComponent?.()?.name === "Columns"
           ? {
               builderComponents: props.registeredComponents,
             }
@@ -103,8 +103,8 @@ function Block(props: BlockProps) {
       context: childrenContext,
       registeredComponents: props.registeredComponents,
       builderBlock: processedBlock(),
-      includeBlockProps: component?.()?.noWrap === true,
-      isInteractive: !component?.()?.isRSC,
+      includeBlockProps: blockComponent?.()?.noWrap === true,
+      isInteractive: !blockComponent?.()?.isRSC,
     };
   }
 
@@ -114,7 +114,7 @@ function Block(props: BlockProps) {
     <>
       {canShowBlock() ? (
         <>
-          {!component?.()?.noWrap ? (
+          {!blockComponent?.()?.noWrap ? (
             <>
               {isEmptyHtmlElement(Tag()) ? (
                 <>
