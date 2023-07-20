@@ -16,6 +16,7 @@ import {
   useMetadata,
   useRef,
   setContext,
+  useTarget,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
@@ -27,7 +28,6 @@ import type {
   ContentProps,
   BuilderComponentStateChange,
 } from '../content.types';
-import { TARGET } from '../../../constants/target';
 import { logger } from '../../../helpers/logger';
 import type { ComponentInfo } from '../../../types/components';
 import { getContent } from '../../../functions/get-content/index';
@@ -334,15 +334,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
         builder-content-id={props.builderContextSignal.value.content?.id}
         builder-model={props.model}
         className={props.classNameProp}
-        {...(TARGET === 'reactNative'
-          ? {
-              dataSet: {
-                // currently, we can't set the actual ID here.
-                // we don't need it right now, we just need to identify content divs for testing.
-                'builder-content-id': '',
-              },
-            }
-          : {})}
+        {...useTarget({
+          reactNative: {
+            // currently, we can't set the actual ID here.
+            // we don't need it right now, we just need to identify content divs for testing.
+            dataSet: { 'builder-content-id': '' },
+          },
+          default: {},
+        })}
         {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
       >
         {props.children}
