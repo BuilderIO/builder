@@ -22,6 +22,8 @@ import { useTarget } from '@builder.io/mitosis';
 import EnableEditor from './components/enable-editor.lite';
 import InlinedScript from '../inlined-script.lite';
 import { wrapComponentRef } from './wrap-component-ref';
+import type { ComponentInfo } from '../../types/components';
+import type { Dictionary } from '../../types/typescript';
 
 useMetadata({
   qwik: {
