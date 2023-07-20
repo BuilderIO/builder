@@ -39,8 +39,8 @@ import { filterAttrs } from "../helpers";
 import { setAttrs } from "../helpers";
 
 function Symbol(props: PropsWithBuilderData<SymbolProps>) {
-  const [className, setClassName] = useState(() =>
-    [
+  function className() {
+    return [
       ...[props.attributes.class],
       "builder-symbol",
       props.symbol?.inline ? "builder-inline-symbol" : undefined,
@@ -49,8 +49,8 @@ function Symbol(props: PropsWithBuilderData<SymbolProps>) {
         : undefined,
     ]
       .filter(Boolean)
-      .join(" ")
-  );
+      .join(" ");
+  }
 
   const [contentToUse, setContentToUse] = useState(() => props.symbol?.content);
 
@@ -101,7 +101,7 @@ function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   }, [props.symbol]);
 
   return (
-    <div {...{}} {...props.attributes} className={className}>
+    <div {...{}} {...props.attributes} className={className()}>
       <ContentVariants
         __isNestedRender={true}
         apiVersion={builderContext.apiVersion}

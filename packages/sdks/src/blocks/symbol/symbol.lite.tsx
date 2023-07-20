@@ -42,21 +42,23 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
-    className: [
-      ...useTarget({
-        vue2: Object.keys(props.attributes.class),
-        vue3: Object.keys(props.attributes.class),
-        react: [props.attributes.className],
-        default: [props.attributes.class],
-      }),
-      'builder-symbol',
-      props.symbol?.inline ? 'builder-inline-symbol' : undefined,
-      props.symbol?.dynamic || props.dynamic
-        ? 'builder-dynamic-symbol'
-        : undefined,
-    ]
-      .filter(Boolean)
-      .join(' '),
+    get className() {
+      return [
+        ...useTarget({
+          vue2: Object.keys(props.attributes.class),
+          vue3: Object.keys(props.attributes.class),
+          react: [props.attributes.className],
+          default: [props.attributes.class],
+        }),
+        'builder-symbol',
+        props.symbol?.inline ? 'builder-inline-symbol' : undefined,
+        props.symbol?.dynamic || props.dynamic
+          ? 'builder-dynamic-symbol'
+          : undefined,
+      ]
+        .filter(Boolean)
+        .join(' ');
+    },
     contentToUse: props.symbol?.content,
     fetchContent: async () => {
       /**
