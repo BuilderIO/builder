@@ -2,6 +2,13 @@ DONE:
 - dropped all JS suffixes (does this break any other SDK?)
 - context: good to keep providing it for user's component if ever needed
 
+
+- fix current build
+  - Vue2: reactivity broken
+  - Qwik: passing computed$ to export function
+  - Solid:
+  - Svelte:
+
 REMAINING:
 - useState:
   - 1 remaining due to VUE workaround

@@ -61,15 +61,6 @@ function ContentComponent(props: ContentProps) {
     );
   }
 
-  function componentInfos() {
-    return Object.keys(registeredComponents()).reduce<
-      Dictionary<ComponentInfo>
-    >((acc, key) => {
-      const { component: _, ...info } = registeredComponents()[key];
-      return { ...acc, [key]: info };
-    }, {});
-  }
-
   const [builderContextSignal, setBuilderContextSignal] = useState(() => ({
     content: getContentInitialValue({
       content: props.content,
@@ -85,7 +76,21 @@ function ContentComponent(props: ContentProps) {
     context: props.context || {},
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
-    componentInfos: componentInfos(),
+    componentInfos: [
+      ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
+      // Since users are able to override our default components, we need to make sure that we do not break such
+      // existing usage.
+      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+      // which is the new standard way of providing custom components, and must therefore take precedence.
+      ...components,
+      ...(props.customComponents || []),
+    ].reduce<Dictionary<ComponentInfo>>(
+      (acc, { component: _, ...info }) => ({
+        ...acc,
+        [info.name]: serializeComponentInfo(info),
+      }),
+      {}
+    ),
     inheritedStyles: {},
   }));
 
