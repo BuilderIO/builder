@@ -1,2 +1,11 @@
 - dropped all JS suffixes (does this break any other SDK?)
 - context: good to keep providing it for user's component if ever needed
+
+- useState:
+  - 1 remaining due to VUE workaround
+
+- Symbol:
+  - make it async, and await the content call
+
+- EnableEditor:
+  - add message logic in `useTarget`
