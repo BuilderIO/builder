@@ -1,6 +1,8 @@
+DONE:
 - dropped all JS suffixes (does this break any other SDK?)
 - context: good to keep providing it for user's component if ever needed
 
+REMAINING:
 - useState:
   - 1 remaining due to VUE workaround
 
@@ -8,4 +10,9 @@
   - make it async, and await the content call
 
 - EnableEditor:
-  - add message logic in `useTarget`
+  - add message logic into `useTarget`
+
+- Mitosis: add `use client` only to components that need it (if they have hooks or state)
+
+- data-fetching call:
+  - take all the hardcoded logic and put it in an external file in the RSC package.
