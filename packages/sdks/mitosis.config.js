@@ -256,10 +256,7 @@ module.exports = {
                     '<block-wrapper v-else ',
                     '<block-wrapper v-else-if="canShowBlock" '
                   )
-                  .replace(
-                    'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
-                    'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
-                  );
+                  .replace('&& canShowBlock)"', ') && canShowBlock"');
               }
               return code;
             },
