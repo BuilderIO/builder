@@ -60,7 +60,10 @@ function Video(props: VideoProps) {
   }
 
   function spreadProps() {
-    return { ...props.attributes, ...videoProps() };
+    return {
+      ...props.attributes,
+      ...videoProps(),
+    };
   }
 
   return (

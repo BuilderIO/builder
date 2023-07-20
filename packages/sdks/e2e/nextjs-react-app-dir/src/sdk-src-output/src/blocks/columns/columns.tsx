@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useContext } from "react";
 
 type Column = {
   blocks: BuilderBlock[];
@@ -21,7 +20,6 @@ import { getSizesForBreakpoints } from "../../constants/device-sizes";
 import type { SizeName } from "../../constants/device-sizes";
 import InlinedStyles from "../../components/inlined-styles";
 import { TARGET } from "../../constants/target";
-import BuilderContext from "../../context/builder.context";
 import type { Dictionary } from "../../types/typescript";
 import type {
   BuilderComponentsProp,
@@ -74,13 +72,11 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
   };
   const columnCssVars = function columnCssVars(index: number) {
     const gutter = index === 0 ? 0 : gutterSize;
-
     if (TARGET === "reactNative") {
       return {
         marginLeft: props.stackColumnsAt === "never" ? gutter : 0,
       } as any as Dictionary<string>;
     }
-
     const width = getColumnCssWidth(index);
     const gutterPixels = `${gutter}px`;
     const mobileWidth = "100%";
@@ -111,7 +107,7 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
     size: SizeName
   ) {
     const breakpointSizes = getSizesForBreakpoints(
-      builderContext.content?.meta?.breakpoints || {}
+      props.builderContext.content?.meta?.breakpoints || {}
     );
     return breakpointSizes[size].max;
   };
@@ -143,14 +139,12 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
       `;
   };
 
-  const builderContext = useContext(BuilderContext);
-
   return (
     <>
       <div
         className={
           `builder-columns ${props.builderBlock.id}-breakpoints` +
-          " div-757140f2"
+          " div-3e6a7b96"
         }
         style={columnsCssVars()}
         {...{}}
@@ -163,7 +157,7 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
 
         {props.columns?.map((column, index) => (
           <div
-            className="builder-column div-757140f2-2"
+            className="builder-column div-3e6a7b96-2"
             style={columnCssVars(index)}
             {...{}}
             key={index}
@@ -175,17 +169,17 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
               styleProp={{
                 flexGrow: "1",
               }}
-              context={builderContext}
+              context={props.builderContext}
               registeredComponents={props.builderComponents}
             />
           </div>
         ))}
       </div>
 
-      <style>{`.div-757140f2 {
+      <style>{`.div-3e6a7b96 {
   display: flex;
   line-height: normal;
-}.div-757140f2-2 {
+}.div-3e6a7b96-2 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

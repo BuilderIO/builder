@@ -2,7 +2,6 @@ import Blocks from '../../components/blocks/blocks.lite';
 import {
   For,
   Show,
-  useContext,
   useMetadata,
   useStore,
   useTarget,
@@ -12,7 +11,6 @@ import { getSizesForBreakpoints } from '../../constants/device-sizes';
 import type { SizeName } from '../../constants/device-sizes';
 import InlinedStyles from '../../components/inlined-styles.lite';
 import { TARGET } from '../../constants/target';
-import BuilderContext from '../../context/builder.context.lite';
 import type { Dictionary } from '../../types/typescript';
 import type {
   BuilderComponentsProp,
@@ -32,6 +30,9 @@ useMetadata({
   rsc: {
     isRSC: true,
   },
+  qwik: {
+    setUseStoreFirst: true,
+  },
 });
 
 export interface ColumnProps extends BuilderComponentsProp {
@@ -43,8 +44,6 @@ export interface ColumnProps extends BuilderComponentsProp {
 }
 
 export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
-  const builderContext = useContext(BuilderContext);
-
   const state = useStore({
     gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
     cols: props.columns || [],
@@ -141,7 +140,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
 
     getWidthForBreakpointSize(size: SizeName) {
       const breakpointSizes = getSizesForBreakpoints(
-        builderContext.value.content?.meta?.breakpoints || {}
+        props.builderContext.value.content?.meta?.breakpoints || {}
       );
 
       return breakpointSizes[size].max;
@@ -224,7 +223,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
-              context={builderContext}
+              context={props.builderContext}
               registeredComponents={props.builderComponents}
             />
           </div>
