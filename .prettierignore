@@ -14,3 +14,5 @@ packages/sdks/output/
 
 # it's along story
 packages/sdks/overrides/react-native/src/blocks/**/*
+
+packages/sdks/e2e/nextjs-react-app-dir/src/sdk-src-output/
