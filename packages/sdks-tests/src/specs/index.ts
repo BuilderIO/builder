@@ -79,6 +79,7 @@ const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
 export const getAPIKey = (): string => 'abcd';
+const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
@@ -99,12 +100,16 @@ export const getProps = async (args: {
   const pathname = normalizePathname(_pathname);
 
   if (data === 'real' && getContent) {
-    return await getContent({
+    return {
       model: 'page',
-      apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
-      userAttributes: { urlPath: pathname },
-      options,
-    });
+      apiKey: REAL_API_KEY,
+      content: await getContent({
+        model: 'page',
+        apiKey: REAL_API_KEY,
+        userAttributes: { urlPath: pathname },
+        options,
+      }),
+    };
   }
   const _content = getContentForPathname(pathname);
 
