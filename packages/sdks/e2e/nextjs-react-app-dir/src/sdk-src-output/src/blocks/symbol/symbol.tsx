@@ -36,7 +36,7 @@ import type { Nullable } from "../../types/typescript";
 async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const className = function className() {
     return [
-      ...[props.attributes.class],
+      ...[props.attributes.className],
       "builder-symbol",
       props.symbol?.inline ? "builder-inline-symbol" : undefined,
       props.symbol?.dynamic || props.dynamic

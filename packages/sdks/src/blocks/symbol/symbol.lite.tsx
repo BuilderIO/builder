@@ -51,6 +51,8 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
           vue2: Object.keys(props.attributes.class),
           vue3: Object.keys(props.attributes.class),
           react: [props.attributes.className],
+          rsc: [props.attributes.className],
+          reactNative: [],
           default: [props.attributes.class],
         }),
         'builder-symbol',
