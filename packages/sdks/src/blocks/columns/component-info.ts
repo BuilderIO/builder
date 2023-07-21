@@ -3,6 +3,7 @@ import type { ComponentInfo } from '../../types/components';
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc
   name: 'Columns',
+  isRSC: true,
 
   inputs: [
     {

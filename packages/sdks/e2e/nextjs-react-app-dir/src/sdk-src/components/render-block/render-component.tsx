@@ -29,15 +29,6 @@ import type { RenderBlockWrapperProps } from './render-block-wrapper';
 import RenderBlockWrapper from './render-block-wrapper';
 
 function RenderComponent(props: RenderComponentProps) {
-  function attributes() {
-    return getBlockProperties({
-      block: props.builderBlock,
-      context: props.context,
-    });
-  }
-
-  const attrs = props.includeBlockProps ? { attributes: attributes() } : {};
-
   const Wrapper = props.isRSC ? props.componentRef : RenderBlockWrapper;
 
   const renderBlockWrapperProps: RenderBlockWrapperProps = {
@@ -51,9 +42,22 @@ function RenderComponent(props: RenderComponentProps) {
   const wrapperProps = props.isRSC
     ? {
         ...props.componentOptions,
-        ...attrs,
+        ...(props.includeBlockProps
+          ? {
+              attributes: getBlockProperties({
+                block: props.builderBlock,
+                context: props.context,
+              }),
+            }
+          : {}),
       }
     : renderBlockWrapperProps;
+
+  console.log('wrapperProps', {
+    wrapper: wrapperProps.Wrapper,
+    isRSC: props.isRSC,
+    Wrapper,
+  });
 
   return (
     <>
