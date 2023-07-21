@@ -7,6 +7,7 @@ import { componentInfo } from '../../components/MyTextBox/component-info';
 import { cookies } from 'next/headers';
 import type { BuilderContent } from '../../sdk-src/types/builder-content';
 import { getProps } from '@builder.io/sdks-e2e-tests';
+import CatFacts from '@/components/MyTextBox/CatFacts';
 
 const processCookies = (content: BuilderContent) => {
   const cookieStore = cookies();
@@ -98,17 +99,17 @@ export default async function Page(props: MyPageProps) {
             ...componentInfo,
             component: MyTextBox,
           },
-          // {
-          //   name: 'CatFacts',
-          //   component: CatFacts,
-          //   inputs: [
-          //     {
-          //       name: 'text',
-          //       type: 'text',
-          //       defaultValue: 'default text',
-          //     },
-          //   ],
-          // },
+          {
+            name: 'CatFacts',
+            component: CatFacts,
+            inputs: [
+              {
+                name: 'text',
+                type: 'text',
+                defaultValue: 'default text',
+              },
+            ],
+          },
         ]}
       />
     </div>
