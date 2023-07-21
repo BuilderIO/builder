@@ -10,7 +10,10 @@
   },
   "targetDefaults": {
     "dev": {
-      "dependsOn": ["^dev"]
+      "dependsOn": ["^build"]
+    },
+    "serve": {
+      "dependsOn": ["build"]
     },
     "build": {
       "dependsOn": ["^build"]
