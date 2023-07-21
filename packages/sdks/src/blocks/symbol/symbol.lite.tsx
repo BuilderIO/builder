@@ -109,7 +109,10 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
         default: props.attributes,
       })}
       className={state.className}
-      dataSet={{ class: state.className }}
+      {...useTarget({
+        reactNative: { dataSet: { class: state.className } },
+        default: {},
+      })}
     >
       <ContentVariants
         __isNestedRender

@@ -53,14 +53,7 @@ async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     }))) as Nullable<BuilderContent>;
 
   return (
-    <div
-      {...{}}
-      {...props.attributes}
-      dataSet={{
-        class: className(),
-      }}
-      className={className()}
-    >
+    <div {...{}} {...props.attributes} {...{}} className={className()}>
       <ContentVariants
         __isNestedRender={true}
         apiVersion={props.builderContext.apiVersion}
