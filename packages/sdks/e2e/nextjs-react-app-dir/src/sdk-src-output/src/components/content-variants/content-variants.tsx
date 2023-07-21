@@ -1,6 +1,4 @@
-"use client";
 import * as React from "react";
-import { useState, useEffect } from "react";
 
 type VariantsProviderProps = ContentVariantsProps & {
   /**
@@ -23,14 +21,11 @@ import { TARGET } from "../../constants/target";
 import type { ContentVariantsProps } from "./content-variants.types";
 
 function ContentVariants(props: VariantsProviderProps) {
-  const [shouldRenderVariants, setShouldRenderVariants] = useState(() =>
-    checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    })
-  );
-
-  function variantScriptStr() {
+  const shouldRenderVariants = checkShouldRunVariants({
+    canTrack: getDefaultCanTrack(props.canTrack),
+    content: props.content,
+  });
+  const variantScriptStr = function variantScriptStr() {
     return getVariantsScriptString(
       getVariants(props.content).map((value) => ({
         id: value.testVariationId!,
@@ -38,20 +33,12 @@ function ContentVariants(props: VariantsProviderProps) {
       })),
       props.content?.id || ""
     );
-  }
-
-  function hideVariantsStyleString() {
+  };
+  const hideVariantsStyleString = function hideVariantsStyleString() {
     return getVariants(props.content)
       .map((value) => `.variant-${value.testVariationId} { display: none; } `)
       .join("");
-  }
-
-  useEffect(() => {
-    /**
-     * We unmount the non-winning variants post-hydration in Vue.
-     */
-    null;
-  }, []);
+  };
 
   return (
     <>

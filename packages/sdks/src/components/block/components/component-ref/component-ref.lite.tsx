@@ -1,15 +1,19 @@
 import BlockStyles from '../block-styles.lite';
 import Block from '../../block.lite';
-import { For, Show, useStore } from '@builder.io/mitosis';
+import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import InteractiveElement from '../interactive-element.lite';
 import type { ComponentProps } from './component-ref.helpers';
 import { getWrapperProps } from './component-ref.helpers';
 
+useMetadata({
+  rsc: {
+    isRSC: true,
+  },
+});
+
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
-    get Wrapper() {
-      return props.isInteractive ? InteractiveElement : props.componentRef;
-    },
+    Wrapper: props.isInteractive ? InteractiveElement : props.componentRef,
   });
   return (
     <Show when={props.componentRef}>

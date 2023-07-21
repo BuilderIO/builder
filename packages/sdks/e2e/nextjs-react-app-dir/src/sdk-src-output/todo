@@ -4,12 +4,10 @@ DONE:
 - Symbol:
   - make it async, and await the content call
 - Mitosis: add `use client` only to components that need it (if they have hooks or state)
-
-
-NEXT UP:
 - solidjs: figure out why its hanging infinitely. look at all the changes made to Block and CompRef etc.
   - something is making it hang
 
+NEXT UP:
 
 REMAINING:
 - useState:

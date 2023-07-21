@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import BlockStyles from "../block-styles";
 import Block from "../../block";
@@ -7,17 +6,13 @@ import type { ComponentProps } from "./component-ref.helpers";
 import { getWrapperProps } from "./component-ref.helpers";
 
 function ComponentRef(props: ComponentProps) {
-  function Wrapper() {
-    return props.isInteractive ? InteractiveElement : props.componentRef;
-  }
-
-  const WrapperRef = Wrapper();
+  const Wrapper = props.isInteractive ? InteractiveElement : props.componentRef;
 
   return (
     <>
       {props.componentRef ? (
         <>
-          <WrapperRef
+          <Wrapper
             {...getWrapperProps({
               componentOptions: props.componentOptions,
               builderBlock: props.builderBlock,
@@ -44,7 +39,7 @@ function ComponentRef(props: ComponentProps) {
                 context={props.context}
               />
             ))}
-          </WrapperRef>
+          </Wrapper>
         </>
       ) : null}
     </>

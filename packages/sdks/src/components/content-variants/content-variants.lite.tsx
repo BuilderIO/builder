@@ -1,4 +1,11 @@
-import { For, useStore, Show, onMount, useTarget } from '@builder.io/mitosis';
+import {
+  For,
+  useStore,
+  Show,
+  onMount,
+  useTarget,
+  useMetadata,
+} from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getScriptString,
@@ -12,6 +19,12 @@ import { handleABTestingSync } from '../../helpers/ab-tests';
 import InlinedScript from '../inlined-script.lite';
 import { TARGET } from '../../constants/target';
 import type { ContentVariantsProps } from './content-variants.types';
+
+useMetadata({
+  rsc: {
+    isRSC: true,
+  },
+});
 
 type VariantsProviderProps = ContentVariantsProps & {
   /**

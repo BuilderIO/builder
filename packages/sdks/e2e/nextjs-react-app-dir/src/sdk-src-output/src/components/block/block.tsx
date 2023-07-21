@@ -1,6 +1,4 @@
-"use client";
 import * as React from "react";
-import { useState } from "react";
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -28,22 +26,20 @@ import type { ComponentProps } from "./components/component-ref/component-ref.he
 import BlockWrapper from "./components/block-wrapper";
 
 function Block(props: BlockProps) {
-  function blockComponent() {
+  const blockComponent = function blockComponent() {
     return getComponent({
       block: props.block,
       context: props.context,
       registeredComponents: props.registeredComponents,
     });
-  }
-
-  function repeatItem() {
+  };
+  const repeatItem = function repeatItem() {
     return getRepeatItemData({
       block: props.block,
       context: props.context,
     });
-  }
-
-  function processedBlock() {
+  };
+  const processedBlock = function processedBlock() {
     return repeatItem()
       ? props.block
       : getProcessedBlock({
@@ -54,47 +50,42 @@ function Block(props: BlockProps) {
           context: props.context.context,
           shouldEvaluateBindings: true,
         });
-  }
-
-  function Tag() {
+  };
+  const Tag = function Tag() {
     return props.block.tagName || "div";
-  }
-
-  function canShowBlock() {
+  };
+  const canShowBlock = function canShowBlock() {
     if ("hide" in processedBlock()) {
       return !processedBlock().hide;
     }
-
     if ("show" in processedBlock()) {
       return processedBlock().show;
     }
-
     return true;
-  }
-
-  function childrenWithoutParentComponent() {
-    /**
-     * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
-     * we render them outside of `componentRef`.
-     * NOTE: We make sure not to render this if `repeatItemData` is non-null, because that means we are rendering an array of
-     * blocks, and the children will be repeated within those blocks.
-     */
-    const shouldRenderChildrenOutsideRef =
-      !blockComponent?.()?.component && !repeatItem();
-    return shouldRenderChildrenOutsideRef
-      ? processedBlock().children ?? []
-      : [];
-  }
-
-  function componentRefProps() {
+  };
+  const childrenWithoutParentComponent =
+    function childrenWithoutParentComponent() {
+      /**
+       * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
+       * we render them outside of `componentRef`.
+       * NOTE: We make sure not to render this if `repeatItemData` is non-null, because that means we are rendering an array of
+       * blocks, and the children will be repeated within those blocks.
+       */
+      const shouldRenderChildrenOutsideRef =
+        !blockComponent()?.component && !repeatItem();
+      return shouldRenderChildrenOutsideRef
+        ? processedBlock().children ?? []
+        : [];
+    };
+  const componentRefProps = function componentRefProps() {
     return {
       blockChildren: processedBlock().children ?? [],
-      componentRef: blockComponent?.()?.component,
+      componentRef: blockComponent()?.component,
       componentOptions: {
         ...getBlockComponentOptions(processedBlock()),
         builderContext: props.context,
-        ...(blockComponent?.()?.name === "Symbol" ||
-        blockComponent?.()?.name === "Columns"
+        ...(blockComponent()?.name === "Symbol" ||
+        blockComponent()?.name === "Columns"
           ? {
               builderComponents: props.registeredComponents,
             }
@@ -103,18 +94,17 @@ function Block(props: BlockProps) {
       context: childrenContext,
       registeredComponents: props.registeredComponents,
       builderBlock: processedBlock(),
-      includeBlockProps: blockComponent?.()?.noWrap === true,
-      isInteractive: !blockComponent?.()?.isRSC,
+      includeBlockProps: blockComponent()?.noWrap === true,
+      isInteractive: !blockComponent()?.isRSC,
     };
-  }
-
-  const [childrenContext, setChildrenContext] = useState(() => props.context);
+  };
+  const childrenContext = props.context;
 
   return (
     <>
       {canShowBlock() ? (
         <>
-          {!blockComponent?.()?.noWrap ? (
+          {!blockComponent()?.noWrap ? (
             <>
               {isEmptyHtmlElement(Tag()) ? (
                 <>

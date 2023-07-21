@@ -43,6 +43,9 @@ useMetadata({
   qwik: {
     setUseStoreFirst: true,
   },
+  rsc: {
+    isRSC: true,
+  },
 });
 
 export default function Block(props: BlockProps) {
