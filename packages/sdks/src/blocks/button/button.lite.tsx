@@ -1,4 +1,10 @@
 import { Show, useTarget } from '@builder.io/mitosis';
+import { filterAttrs } from '../helpers';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+import { setAttrs } from '../helpers';
 
 export interface ButtonProps {
   attributes?: any;
@@ -13,7 +19,18 @@ export default function Button(props: ButtonProps) {
       when={props.link}
       else={
         <button
-          {...props.attributes}
+          {...useTarget({
+            vue2: filterAttrs(props.attributes, 'v-on:', false),
+            vue3: filterAttrs(props.attributes, 'v-on:', false),
+            svelte: filterAttrs(props.attributes, 'on:', false),
+            default: {},
+          })}
+          {...useTarget({
+            vue2: filterAttrs(props.attributes, 'v-on:', true),
+            vue3: filterAttrs(props.attributes, 'v-on:', true),
+            svelte: filterAttrs(props.attributes, 'on:', true),
+            default: props.attributes,
+          })}
           css={{ all: 'unset' }}
           class={useTarget(
             /**
@@ -32,7 +49,18 @@ export default function Button(props: ButtonProps) {
       }
     >
       <a
-        {...props.attributes}
+        {...useTarget({
+          vue2: filterAttrs(props.attributes, 'v-on:', false),
+          vue3: filterAttrs(props.attributes, 'v-on:', false),
+          svelte: filterAttrs(props.attributes, 'on:', false),
+          default: {},
+        })}
+        {...useTarget({
+          vue2: filterAttrs(props.attributes, 'v-on:', true),
+          vue3: filterAttrs(props.attributes, 'v-on:', true),
+          svelte: filterAttrs(props.attributes, 'on:', true),
+          default: props.attributes,
+        })}
         role="button"
         href={props.link}
         target={props.openLinkInNewTab ? '_blank' : undefined}

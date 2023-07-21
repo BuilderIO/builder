@@ -1,3 +1,11 @@
+import { useTarget } from '@builder.io/mitosis';
+import { filterAttrs } from '../helpers';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+import { setAttrs } from '../helpers';
+
 export interface SectionProps {
   maxWidth?: number;
   attributes?: any;
@@ -8,7 +16,18 @@ export interface SectionProps {
 export default function SectionComponent(props: SectionProps) {
   return (
     <section
-      {...props.attributes}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', false),
+        vue3: filterAttrs(props.attributes, 'v-on:', false),
+        svelte: filterAttrs(props.attributes, 'on:', false),
+        default: {},
+      })}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', true),
+        vue3: filterAttrs(props.attributes, 'v-on:', true),
+        svelte: filterAttrs(props.attributes, 'on:', true),
+        default: props.attributes,
+      })}
       style={{
         width: '100%',
         alignSelf: 'stretch',
