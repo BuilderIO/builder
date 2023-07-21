@@ -53,7 +53,9 @@ export const applyPatchWithMinimalMutationChain = <T extends object>(
           : String(Number(nextProperty)) === nextProperty
           ? []
           : {};
-      objPart = objPart[property] = Array.isArray(newPart) ? [...newPart] : { ...newPart };
+      objPart = objPart[property] = Array.isArray(newPart)
+        ? [...newPart]
+        : { ...newPart };
     }
   }
 
