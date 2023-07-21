@@ -37,8 +37,8 @@ export const getWrapperProps = ({
     context,
     wrapperProps: componentOptions
   };
-  return isInteractive ? interactiveElementProps : {
-    ...componentOptions,
+  return isInteractive ? interactiveElementProps : { ...componentOptions,
+
     /**
      * If `noWrap` is set to `true`, then the block's props/attributes are provided to the
      * component itself directly. Otherwise, they are provided to the wrapper element.

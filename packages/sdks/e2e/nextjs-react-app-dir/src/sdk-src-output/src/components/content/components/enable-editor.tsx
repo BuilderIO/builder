@@ -62,17 +62,20 @@ function EnableEditor(props: BuilderEditorProps) {
 
   function processMessage(event: MessageEvent) {
     const { data } = event;
+
     if (data) {
       switch (data.type) {
         case "builder.configureSdk": {
           const messageContent = data.data;
           const { breakpoints, contentId } = messageContent;
+
           if (
             !contentId ||
             contentId !== props.builderContextSignal.content?.id
           ) {
             return;
           }
+
           if (breakpoints) {
             mergeNewContent({
               meta: {
@@ -80,9 +83,12 @@ function EnableEditor(props: BuilderEditorProps) {
               },
             });
           }
+
           setForceReRenderCount(forceReRenderCount + 1); // This is a hack to force Qwik to re-render.
+
           break;
         }
+
         case "builder.contentUpdate": {
           const messageContent = data.data;
           const key =
@@ -91,6 +97,7 @@ function EnableEditor(props: BuilderEditorProps) {
             messageContent.entry ||
             messageContent.modelName;
           const contentData = messageContent.data;
+
           if (key === props.model) {
             mergeNewContent(contentData);
             setForceReRenderCount(forceReRenderCount + 1); // This is a hack to force Qwik to re-render.
@@ -98,6 +105,7 @@ function EnableEditor(props: BuilderEditorProps) {
 
           break;
         }
+
         case "builder.patchUpdates": {
           // TODO
           break;
@@ -109,6 +117,7 @@ function EnableEditor(props: BuilderEditorProps) {
   function evaluateJsCode() {
     // run any dynamic JS code attached to content
     const jsCode = props.builderContextSignal.content?.data?.jsCode;
+
     if (jsCode) {
       evaluate({
         code: jsCode,
@@ -128,6 +137,7 @@ function EnableEditor(props: BuilderEditorProps) {
     if (props.builderContextSignal.content) {
       const variationId = props.builderContextSignal.content?.testVariationId;
       const contentId = props.builderContextSignal.content?.id;
+
       _track({
         type: "click",
         canTrack: canTrackToUse,
@@ -138,6 +148,7 @@ function EnableEditor(props: BuilderEditorProps) {
         unique: !clicked,
       });
     }
+
     if (!clicked) {
       setClicked(true);
     }
@@ -210,6 +221,7 @@ function EnableEditor(props: BuilderEditorProps) {
         "No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop."
       );
     }
+
     if (isBrowser()) {
       if (isEditing()) {
         setForceReRenderCount(forceReRenderCount + 1);
@@ -243,9 +255,11 @@ function EnableEditor(props: BuilderEditorProps) {
           emitStateUpdate
         );
       }
+
       if (props.builderContextSignal.content) {
         const variationId = props.builderContextSignal.content?.testVariationId;
         const contentId = props.builderContextSignal.content?.id;
+
         _track({
           type: "impression",
           canTrack: canTrackToUse,
@@ -253,9 +267,8 @@ function EnableEditor(props: BuilderEditorProps) {
           apiKey: props.apiKey,
           variationId: variationId !== contentId ? variationId : undefined,
         });
-      }
+      } // override normal content in preview mode
 
-      // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
         const searchParamPreviewModel = searchParams.get("builder.preview");
@@ -264,7 +277,6 @@ function EnableEditor(props: BuilderEditorProps) {
         );
         const previewApiKey =
           searchParams.get("apiKey") || searchParams.get("builder.space");
-
         /**
          * Make sure that:
          * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered  *  at the same time, e.g. header/page/footer.  * - the API key is the same, since we don't want to preview content from other organizations.
@@ -272,6 +284,7 @@ function EnableEditor(props: BuilderEditorProps) {
          *
          * TO-DO: should we only update the state when there is a change?
          **/
+
         if (
           searchParamPreviewModel === props.model &&
           previewApiKey === props.apiKey &&
@@ -288,6 +301,7 @@ function EnableEditor(props: BuilderEditorProps) {
           });
         }
       }
+
       evaluateJsCode();
       runHttpRequests();
       emitStateUpdate();

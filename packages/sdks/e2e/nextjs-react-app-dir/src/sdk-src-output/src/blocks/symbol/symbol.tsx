@@ -3,7 +3,8 @@ import { useContext } from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 export interface SymbolInfo {
   model?: string;
   entry?: string;
@@ -14,7 +15,8 @@ export interface SymbolInfo {
 }
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 export interface SymbolProps extends BuilderComponentsProp {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
@@ -60,8 +62,7 @@ async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
        * then we want to re-fetch the symbol content.
        */
       if (
-        props.symbol?.model &&
-        // This is a hack, we should not need to check for this, but it is needed for Svelte.
+        props.symbol?.model && // This is a hack, we should not need to check for this, but it is needed for Svelte.
         builderContext?.apiKey
       ) {
         return getContent({
@@ -78,8 +79,10 @@ async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
           return undefined;
         });
       }
+
       return undefined;
     };
+
     return doAsync();
   };
   const contentToUse = props.symbol?.content || (await fetchContent());

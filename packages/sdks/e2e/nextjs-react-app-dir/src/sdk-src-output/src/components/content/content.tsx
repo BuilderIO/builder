@@ -37,8 +37,7 @@ function ContentComponent(props: ContentProps) {
     builderContextSignal.rootState = newRootState;
   };
   const registeredComponents = [
-    ...getDefaultRegisteredComponents(),
-    // While this `components` object is deprecated, we must maintain support for it.
+    ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
     // Since users are able to override our default components, we need to make sure that we do not break such
     // existing usage.
     // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
@@ -71,8 +70,7 @@ function ContentComponent(props: ContentProps) {
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
     componentInfos: [
-      ...getDefaultRegisteredComponents(),
-      // While this `components` object is deprecated, we must maintain support for it.
+      ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
       // Since users are able to override our default components, we need to make sure that we do not break such
       // existing usage.
       // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,

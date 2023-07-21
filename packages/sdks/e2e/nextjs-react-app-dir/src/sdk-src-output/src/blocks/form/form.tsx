@@ -9,7 +9,9 @@ import { useState, useContext, useRef } from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
  * to be cleaned up before the component can actually be usable.
@@ -22,7 +24,9 @@ interface BuilderElement {}
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
  * to be cleaned up before the component can actually be usable.
@@ -56,7 +60,9 @@ export interface FormProps {
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
  * to be cleaned up before the component can actually be usable.
@@ -86,6 +92,7 @@ function FormComponent(props: FormProps) {
     }
   ) {
     const sendWithJs = props.sendWithJs || props.sendSubmissionsTo === "email";
+
     if (props.sendSubmissionsTo === "zapier") {
       event.preventDefault();
     } else if (sendWithJs) {
@@ -93,13 +100,13 @@ function FormComponent(props: FormProps) {
         event.preventDefault();
         return;
       }
+
       event.preventDefault();
       const el = event.currentTarget;
       const headers = props.customHeaders || {};
       let body: any;
-      const formData = new FormData(el);
+      const formData = new FormData(el); // TODO: maybe support null
 
-      // TODO: maybe support null
       const formPairs: {
         key: string;
         value: File | boolean | number | string | FileList;
@@ -110,6 +117,7 @@ function FormComponent(props: FormProps) {
         .map((el) => {
           let value: any;
           const key = (el as HTMLImageElement).name;
+
           if (el instanceof HTMLInputElement) {
             if (el.type === "radio") {
               if (el.checked) {
@@ -123,6 +131,7 @@ function FormComponent(props: FormProps) {
               value = el.checked;
             } else if (el.type === "number" || el.type === "range") {
               const num = el.valueAsNumber;
+
               if (!isNaN(num)) {
                 value = num;
               }
@@ -135,15 +144,18 @@ function FormComponent(props: FormProps) {
           } else {
             value = (el as HTMLInputElement).value;
           }
+
           return {
             key,
             value,
           };
         });
       let contentType = props.contentType;
+
       if (props.sendSubmissionsTo === "email") {
         contentType = "multipart/form-data";
       }
+
       Array.from(formPairs).forEach(({ value }) => {
         if (
           value instanceof File ||
@@ -152,11 +164,10 @@ function FormComponent(props: FormProps) {
         ) {
           contentType = "multipart/form-data";
         }
-      });
-
-      // TODO: send as urlEncoded or multipart by default
+      }); // TODO: send as urlEncoded or multipart by default
       // because of ease of use and reliability in browser API
       // for encoding the form?
+
       if (contentType !== "application/json") {
         body = formData;
       } else {
@@ -167,6 +178,7 @@ function FormComponent(props: FormProps) {
         });
         body = JSON.stringify(json);
       }
+
       if (contentType && contentType !== "multipart/form-data") {
         if (
           /* Zapier doesn't allow content-type header to be sent from browsers */ !(
@@ -304,7 +316,7 @@ function FormComponent(props: FormProps) {
         ) : null}{" "}
         {submissionState() === "error" && responseData ? (
           <>
-            <pre className="builder-form-error-text pre-5e40c480">
+            <pre className="builder-form-error-text pre-19fa5afa">
               {" "}
               {JSON.stringify(responseData, null, 2)}{" "}
             </pre>
@@ -319,7 +331,7 @@ function FormComponent(props: FormProps) {
           </>
         ) : null}{" "}
       </form>{" "}
-      <style>{`.pre-5e40c480 {   padding: 10px;   color: red;   text-align: center; }`}</style>{" "}
+      <style>{`.pre-19fa5afa {   padding: 10px;   color: red;   text-align: center; }`}</style>{" "}
     </>
   );
 }
