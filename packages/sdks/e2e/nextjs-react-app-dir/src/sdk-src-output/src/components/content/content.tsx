@@ -66,7 +66,7 @@ function ContentComponent(props: ContentProps) {
       data: props.data,
       locale: props.locale,
     }),
-    rootSetState: contentSetState,
+    rootSetState: undefined,
     context: props.context || {},
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
