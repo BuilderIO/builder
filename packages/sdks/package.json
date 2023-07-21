@@ -116,7 +116,7 @@
       }
     },
     "implicitDependencies": [
-      "@react"
+      "@builder.io/react"
     ]
   }
 }

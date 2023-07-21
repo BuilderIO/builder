@@ -6,7 +6,7 @@
     "build": "tsc",
     "dev": "tsc -w",
     "test": "playwright test",
-    "prebuild": "playwright install chromium --with-deps"
+    "install-playwright": "playwright install chromium --with-deps"
   },
   "type": "module",
   "main": "./dist/src/index.js",
@@ -29,5 +29,14 @@
     "nx": "^16.5.4",
     "nx-cloud": "^16.1.1",
     "zod": "^3.20.2"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "dependsOn": [
+          "install-playwright"
+        ]
+      }
+    }
   }
 }
