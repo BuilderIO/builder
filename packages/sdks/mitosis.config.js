@@ -292,10 +292,8 @@ module.exports = {
               delete json.hooks.onUpdate;
               delete json.state.setContent;
 
-              json.state.contentToUse = {
-                code: json.state.contentToUse?.code.split('=>')[1],
-                type: 'property',
-              };
+              json.state.contentToUse.code =
+                json.state.contentToUse?.code.replace('async () => ', '');
 
               return json;
             },
