@@ -214,12 +214,11 @@ ${useReturn ? `return (${code});` : code};
 };
 
 const getIsolateContext = () => {
-  const _Builder = Builder as any;
-  if (_Builder.serverContext) {
-    return _Builder.serverContext;
+  if (Builder.serverContext) {
+    return Builder.serverContext;
   }
   const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
   const isolate = new ivm.Isolate({ memoryLimit: 128 });
-  _Builder.serverContext = isolate.createContextSync();
-  return _Builder.serverContext;
+  Builder.setServerContext(isolate.createContextSync());
+  return Builder.serverContext;
 };
