@@ -35,11 +35,9 @@ function BlockStyles(props: BlockStylesProps) {
     if (checkIsDefined(processedBlock.hide)) {
       return !processedBlock.hide;
     }
-
     if (checkIsDefined(processedBlock.show)) {
       return processedBlock.show;
     }
-
     return true;
   }
 
@@ -53,11 +51,9 @@ function BlockStyles(props: BlockStylesProps) {
     const mediumStyles = styles?.medium;
     const smallStyles = styles?.small;
     const className = processedBlock.id;
-
     if (!className) {
       return "";
     }
-
     const largeStylesClass = largeStyles
       ? createCssClass({
           className,

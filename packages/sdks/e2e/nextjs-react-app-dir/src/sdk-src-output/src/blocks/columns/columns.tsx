@@ -72,18 +72,16 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
   };
   const columnCssVars = function columnCssVars(index: number) {
     const gutter = index === 0 ? 0 : gutterSize;
-
     if (TARGET === "reactNative") {
       return {
         marginLeft: props.stackColumnsAt === "never" ? gutter : 0,
       } as any as Dictionary<string>;
     }
-
     const width = getColumnCssWidth(index);
     const gutterPixels = `${gutter}px`;
     const mobileWidth = "100%";
     const mobileMarginLeft = 0;
-    const marginLeftKey = "margin-left";
+    const marginLeftKey = "marginLeft";
     return {
       width,
       [marginLeftKey]: gutterPixels,
@@ -146,7 +144,7 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
       <div
         className={
           `builder-columns ${props.builderBlock.id}-breakpoints` +
-          " div-a5e72598"
+          " div-6445a545"
         }
         style={columnsCssVars()}
         {...{}}
@@ -159,7 +157,7 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
 
         {props.columns?.map((column, index) => (
           <div
-            className="builder-column div-a5e72598-2"
+            className="builder-column div-6445a545-2"
             style={columnCssVars(index)}
             {...{}}
             key={index}
@@ -178,10 +176,10 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
         ))}
       </div>
 
-      <style>{`.div-a5e72598 {
+      <style>{`.div-6445a545 {
   display: flex;
   line-height: normal;
-}.div-a5e72598-2 {
+}.div-6445a545-2 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

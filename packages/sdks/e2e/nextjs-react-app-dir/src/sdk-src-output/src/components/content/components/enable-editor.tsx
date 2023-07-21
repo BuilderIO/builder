@@ -33,6 +33,7 @@ import type { ComponentInfo } from "../../../types/components";
 import { getContent } from "../../../functions/get-content/index";
 import { isPreviewing } from "../../../functions/is-previewing";
 import type { BuilderContent } from "../../../types/builder-content";
+import { useRouter } from "next/navigation";
 
 function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -60,22 +61,25 @@ function EnableEditor(props: BuilderEditorProps) {
     };
   }
 
+  const [lastUpdated, setLastUpdated] = useState(() => 0);
+
+  const [shouldSendResetCookie, setShouldSendResetCookie] = useState(
+    () => false
+  );
+
   function processMessage(event: MessageEvent) {
     const { data } = event;
-
     if (data) {
       switch (data.type) {
         case "builder.configureSdk": {
           const messageContent = data.data;
           const { breakpoints, contentId } = messageContent;
-
           if (
             !contentId ||
             contentId !== props.builderContextSignal.content?.id
           ) {
             return;
           }
-
           if (breakpoints) {
             mergeNewContent({
               meta: {
@@ -83,12 +87,9 @@ function EnableEditor(props: BuilderEditorProps) {
               },
             });
           }
-
           setForceReRenderCount(forceReRenderCount + 1); // This is a hack to force Qwik to re-render.
-
           break;
         }
-
         case "builder.contentUpdate": {
           const messageContent = data.data;
           const key =
@@ -97,7 +98,6 @@ function EnableEditor(props: BuilderEditorProps) {
             messageContent.entry ||
             messageContent.modelName;
           const contentData = messageContent.data;
-
           if (key === props.model) {
             mergeNewContent(contentData);
             setForceReRenderCount(forceReRenderCount + 1); // This is a hack to force Qwik to re-render.
@@ -105,9 +105,86 @@ function EnableEditor(props: BuilderEditorProps) {
 
           break;
         }
-
+        case "builder.hardReset": {
+          const lastUpdatedAutosave = parseInt(data.data.lastUpdatedAutosave);
+          console.log(
+            "received hard reset with lastUpdated: ",
+            lastUpdatedAutosave
+          );
+          const lastUpdatedToUse =
+            !isNaN(lastUpdatedAutosave) && lastUpdatedAutosave > lastUpdated
+              ? lastUpdatedAutosave
+              : lastUpdated;
+          setLastUpdated(lastUpdatedToUse);
+          console.log("builder.hardReset", {
+            shouldSendResetCookie: shouldSendResetCookie,
+          });
+          if (shouldSendResetCookie) {
+            console.log("refreshing with hard reset cookie");
+            document.cookie = `builder.hardReset=${lastUpdatedToUse};max-age=100`;
+            setShouldSendResetCookie(false);
+            router.refresh();
+          } else {
+            console.log("not refreshing.");
+          }
+          break;
+        }
         case "builder.patchUpdates": {
-          // TODO
+          const patches = data.data.data;
+          for (const contentId of Object.keys(patches)) {
+            const patchesForBlock = patches[contentId];
+
+            // TO-DO: fix scenario where we end up with -Infinity
+            const getLastIndex = () =>
+              Math.max(
+                ...document.cookie
+                  .split(";")
+                  .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                  .map((x) => {
+                    const parsedIndex = parseInt(
+                      x.split("=")[0].split(contentIdKeyPrefix)[1]
+                    );
+                    return isNaN(parsedIndex) ? 0 : parsedIndex;
+                  })
+              ) || 0;
+            const contentIdKeyPrefix = `builder.patch.${contentId}.`;
+
+            // get last index of patch for this block
+            const lastIndex = getLastIndex();
+            const cookie = {
+              name: `${contentIdKeyPrefix}${lastIndex + 1}`,
+              value: encodeURIComponent(JSON.stringify(patchesForBlock)),
+            };
+
+            // remove hard reset cookie just in case it was set in a prior update.
+            document.cookie = `builder.hardReset=no;max-age=0`;
+            document.cookie = `${cookie.name}=${cookie.value};max-age=30`;
+            const newCookieValue = document.cookie
+              .split(";")
+              .find((x) => x.trim().startsWith(cookie.name))
+              ?.split("=")[1];
+            if (newCookieValue !== cookie.value) {
+              console.warn("Cookie did not save correctly.");
+              console.log("Clearing all Builder patch cookies...");
+              window.parent?.postMessage(
+                {
+                  type: "builder.patchUpdatesFailed",
+                  data: data.data,
+                },
+                "*"
+              );
+              document.cookie
+                .split(";")
+                .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                .forEach((x) => {
+                  document.cookie = `${x.split("=")[0]}=;max-age=0`;
+                });
+              setShouldSendResetCookie(true);
+            } else {
+              console.log("cookie saved correctly");
+              router.refresh();
+            }
+          }
           break;
         }
       }
@@ -117,7 +194,6 @@ function EnableEditor(props: BuilderEditorProps) {
   function evaluateJsCode() {
     // run any dynamic JS code attached to content
     const jsCode = props.builderContextSignal.content?.data?.jsCode;
-
     if (jsCode) {
       evaluate({
         code: jsCode,
@@ -137,7 +213,6 @@ function EnableEditor(props: BuilderEditorProps) {
     if (props.builderContextSignal.content) {
       const variationId = props.builderContextSignal.content?.testVariationId;
       const contentId = props.builderContextSignal.content?.id;
-
       _track({
         type: "click",
         canTrack: canTrackToUse,
@@ -148,7 +223,6 @@ function EnableEditor(props: BuilderEditorProps) {
         unique: !clicked,
       });
     }
-
     if (!clicked) {
       setClicked(true);
     }
@@ -215,13 +289,14 @@ function EnableEditor(props: BuilderEditorProps) {
     }
   }
 
+  const router = useRouter();
+
   useEffect(() => {
     if (!props.apiKey) {
       logger.error(
         "No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop."
       );
     }
-
     if (isBrowser()) {
       if (isEditing()) {
         setForceReRenderCount(forceReRenderCount + 1);
@@ -255,11 +330,9 @@ function EnableEditor(props: BuilderEditorProps) {
           emitStateUpdate
         );
       }
-
       if (props.builderContextSignal.content) {
         const variationId = props.builderContextSignal.content?.testVariationId;
         const contentId = props.builderContextSignal.content?.id;
-
         _track({
           type: "impression",
           canTrack: canTrackToUse,
@@ -267,8 +340,9 @@ function EnableEditor(props: BuilderEditorProps) {
           apiKey: props.apiKey,
           variationId: variationId !== contentId ? variationId : undefined,
         });
-      } // override normal content in preview mode
+      }
 
+      // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
         const searchParamPreviewModel = searchParams.get("builder.preview");
@@ -277,6 +351,7 @@ function EnableEditor(props: BuilderEditorProps) {
         );
         const previewApiKey =
           searchParams.get("apiKey") || searchParams.get("builder.space");
+
         /**
          * Make sure that:
          * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered  *  at the same time, e.g. header/page/footer.  * - the API key is the same, since we don't want to preview content from other organizations.
@@ -284,7 +359,6 @@ function EnableEditor(props: BuilderEditorProps) {
          *
          * TO-DO: should we only update the state when there is a change?
          **/
-
         if (
           searchParamPreviewModel === props.model &&
           previewApiKey === props.apiKey &&
@@ -301,7 +375,6 @@ function EnableEditor(props: BuilderEditorProps) {
           });
         }
       }
-
       evaluateJsCode();
       runHttpRequests();
       emitStateUpdate();
