@@ -85,7 +85,7 @@ type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
   pathname?: string;
-  processContentResult: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+  processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
   getContent?: (opts: any) => Promise<BuilderContent | null>;
   options?: any;
   data?: 'real' | 'mock';
