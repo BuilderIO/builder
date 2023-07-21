@@ -27,15 +27,14 @@ function Image(props: ImageProps) {
   function srcSetToUse() {
     const imageToUse = props.image || props.src;
     const url = imageToUse;
-
     if (
-      !url || // We can auto add srcset for cdn.builder.io and shopify
+      !url ||
+      // We can auto add srcset for cdn.builder.io and shopify
       // images, otherwise you can supply this prop manually
       !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
     ) {
       return props.srcset;
     }
-
     if (props.srcset && props.image?.includes("builder.io/api/v1/image")) {
       if (!props.srcset.includes(props.image.split("?")[0])) {
         console.debug("Removed given srcset");
@@ -44,7 +43,6 @@ function Image(props: ImageProps) {
     } else if (props.image && !props.srcset) {
       return getSrcSet(url);
     }
-
     return getSrcSet(url);
   }
 
@@ -90,7 +88,7 @@ function Image(props: ImageProps) {
             className={
               "builder-image" +
               (props.className ? " " + props.className : "") +
-              " img-7d4e2fdf"
+              " img-399d393e"
             }
             src={props.image}
             srcSet={srcSetToUse()}
@@ -102,7 +100,7 @@ function Image(props: ImageProps) {
         !(props.builderBlock?.children?.length && props.fitContent) ? (
           <>
             <div
-              className="builder-image-sizer div-7d4e2fdf"
+              className="builder-image-sizer div-399d393e"
               style={{
                 paddingTop: props.aspectRatio! * 100 + "%",
               }}
@@ -116,19 +114,19 @@ function Image(props: ImageProps) {
 
         {!props.fitContent && props.children ? (
           <>
-            <div className="div-7d4e2fdf-2">{props.children}</div>
+            <div className="div-399d393e-2">{props.children}</div>
           </>
         ) : null}
       </>
 
-      <style>{`.img-7d4e2fdf {
+      <style>{`.img-399d393e {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
-}.div-7d4e2fdf {
+}.div-399d393e {
   width: 100%;
   pointer-events: none;
   font-size: 0;
-}.div-7d4e2fdf-2 {
+}.div-399d393e-2 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

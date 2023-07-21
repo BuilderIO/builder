@@ -3,8 +3,7 @@ import * as React from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */
-// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 export interface ButtonProps {
   attributes?: any;
   text?: string;
@@ -36,14 +35,14 @@ function Button(props: ButtonProps) {
             {...{}}
             {...props.attributes}
             style={props.attributes.style}
-            className={props.attributes.class + " button-78e4366a"}
+            className={props.attributes.class + " button-4c426b0d"}
           >
             {props.text}
           </button>
         </>
       )}
 
-      <style>{`.button-78e4366a {
+      <style>{`.button-4c426b0d {
   all: unset;
 }`}</style>
     </>

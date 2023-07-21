@@ -3,14 +3,14 @@ import * as React from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */
-// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 type BlockWrapperProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: BuilderContextInterface;
   hasChildren: boolean;
 };
+
 /**
  * This component renders a block's wrapper HTML element (from the block's `tagName` property).
  * It reuses the exact same logic as the `InteractiveElement` component, but we need to have 2 separate components for

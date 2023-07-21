@@ -49,7 +49,7 @@ export function getBlockProperties({
     ...extractRelevantRootBlockProperties(block),
     ...block.properties,
     'builder-id': block.id,
-    style: getStyleAttribute(block.style),
+    style: block.style ? getStyleAttribute(block.style) : undefined,
     class: [block.id, 'builder-block', block.class, block.properties?.class]
       .filter(Boolean)
       .join(' '),
@@ -71,12 +71,8 @@ export function getBlockProperties({
  * Additionally, Svelte, Vue and other frameworks use kebab-case styles, so we need to convert them.
  */
 function getStyleAttribute(
-  style: Partial<CSSStyleDeclaration> | undefined
-): string | Partial<CSSStyleDeclaration> | undefined {
-  if (!style) {
-    return undefined;
-  }
-
+  style: Partial<CSSStyleDeclaration>
+): string | Partial<CSSStyleDeclaration> {
   switch (TARGET) {
     case 'svelte':
     case 'vue2':
@@ -86,6 +82,7 @@ function getStyleAttribute(
     case 'qwik':
     case 'reactNative':
     case 'react':
+    case 'rsc':
       return style;
   }
 }
