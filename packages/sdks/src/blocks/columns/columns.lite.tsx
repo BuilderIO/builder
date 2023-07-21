@@ -113,6 +113,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
 
       const marginLeftKey = useTarget({
         react: 'marginLeft',
+        rsc: 'marginLeft',
         default: 'margin-left',
       });
 
