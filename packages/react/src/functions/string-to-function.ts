@@ -140,6 +140,7 @@ export function stringToFunction(
               ? new ivm.Reference(
                   index === 3
                     ? {
+                        // workaround: methods with default values for arguments is not being cloned over
                         ...arg,
                         getUserAttributes: () => arg.getUserAttributes(''),
                       }
