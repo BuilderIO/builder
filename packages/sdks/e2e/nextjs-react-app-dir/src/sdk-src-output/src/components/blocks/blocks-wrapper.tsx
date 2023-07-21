@@ -49,12 +49,10 @@ function BlocksWrapper(props: PropsWithChildren<BlocksWrapperProps>) {
   return (
     <>
       <div
-        className={className() + " div-a65b9d0e"}
+        className={className() + " div-5a6cb763"}
         builder-path={props.path}
         builder-parent-id={props.parent}
-        dataSet={{
-          class: className(),
-        }}
+        {...{}}
         style={props.styleProp}
         onClick={(event) => onClick()}
         onMouseEnter={(event) => onMouseEnter()}
@@ -63,7 +61,7 @@ function BlocksWrapper(props: PropsWithChildren<BlocksWrapperProps>) {
         {props.children}
       </div>
 
-      <style>{`.div-a65b9d0e {
+      <style>{`.div-5a6cb763 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

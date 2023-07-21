@@ -1,4 +1,4 @@
-import { useStore } from '@builder.io/mitosis';
+import { useStore, useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing';
 import type { BuilderBlock } from '../../types/builder-block';
 import type { PropsWithChildren } from '../../types/typescript';
@@ -52,9 +52,10 @@ export default function BlocksWrapper(
       class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
-      dataSet={{
-        class: state.className,
-      }}
+      {...useTarget({
+        reactNative: { dataSet: { class: state.className } },
+        default: {},
+      })}
       style={props.styleProp}
       css={{
         display: 'flex',
