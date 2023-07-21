@@ -4,9 +4,10 @@ import Block from "../../block";
 import InteractiveElement from "../interactive-element";
 import type { ComponentProps } from "./component-ref.helpers";
 import { getWrapperProps } from "./component-ref.helpers";
+import { wrapComponentRef } from "../../../content/wrap-component-ref";
 
 function ComponentRef(props: ComponentProps) {
-  const Wrapper = props.isInteractive ? InteractiveElement : props.componentRef;
+  const Wrapper = props.isInteractive ? wrapComponentRef(InteractiveElement) : props.componentRef;
 
   return (
     <>
