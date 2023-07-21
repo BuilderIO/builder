@@ -20,7 +20,7 @@ const externalDependencies = Object.keys(pkg.dependencies)
 const options = {
   input: `src/${libraryName}.ts`,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: ['vm2'],
+  external: ['isolated-vm'],
   watch: {
     include: '../**',
   },
@@ -44,7 +44,7 @@ const options = {
     // Compile TypeScript files
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
     commonjs({
-      exclude: ['node_modules/vm2/**'],
+      exclude: ['node_modules/isolated-vm/**'],
       namedExports: {
         'node_modules/react/index.js': [
           'cloneElement',
