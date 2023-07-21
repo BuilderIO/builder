@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useContext } from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
@@ -24,16 +23,15 @@ export interface SymbolProps extends BuilderComponentsProp {
 }
 
 import ContentVariants from "../../components/content-variants/content-variants";
-import BuilderContext from "../../context/builder.context";
-import { getContent } from "../../functions/get-content/index";
 import type { BuilderContent } from "../../types/builder-content";
-import { logger } from "../../helpers/logger";
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
 } from "../../types/builder-props";
 import { filterAttrs } from "../helpers";
 import { setAttrs } from "../helpers";
+import { fetchContent } from "./symbol.helpers";
+import type { Nullable } from "../../types/typescript";
 
 async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const className = function className() {
@@ -48,43 +46,11 @@ async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
       .filter(Boolean)
       .join(" ");
   };
-  const fetchContent = function fetchContent() {
-    const doAsync = async (): Promise<BuilderContent | null | undefined> => {
-      /**
-       * If:
-       * - we have a symbol prop
-       * - yet it does not have any content
-       * - and we have not already stored content from before
-       * - and it has a model name
-       *
-       * then we want to re-fetch the symbol content.
-       */
-      if (
-        props.symbol?.model &&
-        // This is a hack, we should not need to check for this, but it is needed for Svelte.
-        builderContext?.apiKey
-      ) {
-        return getContent({
-          model: props.symbol.model,
-          apiKey: builderContext.apiKey,
-          apiVersion: builderContext.apiVersion,
-          ...(props.symbol?.entry && {
-            query: {
-              id: props.symbol.entry,
-            },
-          }),
-        }).catch((err) => {
-          logger.error("Could not fetch symbol content: ", err);
-          return undefined;
-        });
-      }
-      return undefined;
-    };
-    return doAsync();
-  };
-  const contentToUse = props.symbol?.content || (await fetchContent());
-
-  const builderContext = useContext(BuilderContext);
+  const contentToUse = (props.symbol?.content ||
+    (await fetchContent({
+      symbol: props.symbol,
+      builderContextValue: props.builderContext,
+    }))) as Nullable<BuilderContent>;
 
   return (
     <div
@@ -97,13 +63,13 @@ async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     >
       <ContentVariants
         __isNestedRender={true}
-        apiVersion={builderContext.apiVersion}
-        apiKey={builderContext.apiKey!}
-        context={builderContext.context}
+        apiVersion={props.builderContext.apiVersion}
+        apiKey={props.builderContext.apiKey!}
+        context={props.builderContext.context}
         customComponents={Object.values(props.builderComponents)}
         data={{
           ...props.symbol?.data,
-          ...builderContext.localState,
+          ...props.builderContext.localState,
           ...contentToUse?.data?.state,
         }}
         model={props.symbol?.model}

@@ -1,16 +1,12 @@
 import ContentVariants from '../../components/content-variants/content-variants.lite';
-import BuilderContext from '../../context/builder.context.lite';
-import { getContent } from '../../functions/get-content/index';
 import type { BuilderContent } from '../../types/builder-content';
 import {
   onMount,
   onUpdate,
-  useContext,
   useMetadata,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import { logger } from '../../helpers/logger';
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
@@ -21,13 +17,10 @@ import { filterAttrs } from '../helpers';
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import { setAttrs } from '../helpers';
+import { fetchContent } from './symbol.helpers';
+import type { Nullable } from '../../types/typescript';
 
 useMetadata({
-  options: {
-    rsc: {
-      // stateType: 'variables',
-    },
-  },
   rsc: {
     isRSC: true,
   },
@@ -51,8 +44,6 @@ export interface SymbolProps extends BuilderComponentsProp {
 }
 
 export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
-  const builderContext = useContext(BuilderContext);
-
   const state = useStore({
     get className() {
       return [
@@ -72,49 +63,22 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
         .join(' ');
     },
 
-    fetchContent: () => {
-      const doAsync = async (): Promise<BuilderContent | null | undefined> => {
-        /**
-         * If:
-         * - we have a symbol prop
-         * - yet it does not have any content
-         * - and we have not already stored content from before
-         * - and it has a model name
-         *
-         * then we want to re-fetch the symbol content.
-         */
-        if (
-          props.symbol?.model &&
-          // This is a hack, we should not need to check for this, but it is needed for Svelte.
-          builderContext.value?.apiKey
-        ) {
-          return getContent({
-            model: props.symbol.model,
-            apiKey: builderContext.value.apiKey,
-            apiVersion: builderContext.value.apiVersion,
-            ...(props.symbol?.entry && {
-              query: {
-                id: props.symbol.entry,
-              },
-            }),
-          }).catch((err) => {
-            logger.error('Could not fetch symbol content: ', err);
-            return undefined;
-          });
-        }
-        return undefined;
-      };
-
-      return doAsync();
-    },
-    contentToUse: useTarget({
+    contentToUse: useTarget<Nullable<BuilderContent>>({
       default: props.symbol?.content,
-      rsc: async () => props.symbol?.content || (await state.fetchContent()),
+      rsc: (async () =>
+        props.symbol?.content ||
+        (await fetchContent({
+          symbol: props.symbol,
+          builderContextValue: props.builderContext.value,
+        }))) as Nullable<BuilderContent>,
     }),
     setContent() {
       if (state.contentToUse) return;
 
-      state.fetchContent().then((newContent) => {
+      fetchContent({
+        symbol: props.symbol,
+        builderContextValue: props.builderContext.value,
+      }).then((newContent) => {
         if (newContent) {
           state.contentToUse = newContent;
         }
@@ -149,13 +113,13 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     >
       <ContentVariants
         __isNestedRender
-        apiVersion={builderContext.value.apiVersion}
-        apiKey={builderContext.value.apiKey!}
-        context={builderContext.value.context}
+        apiVersion={props.builderContext.value.apiVersion}
+        apiKey={props.builderContext.value.apiKey!}
+        context={props.builderContext.value.context}
         customComponents={Object.values(props.builderComponents)}
         data={{
           ...props.symbol?.data,
-          ...builderContext.value.localState,
+          ...props.builderContext.value.localState,
           ...state.contentToUse?.data?.state,
         }}
         model={props.symbol?.model}
