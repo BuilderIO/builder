@@ -102,9 +102,7 @@ function ContentComponent(props: ContentProps) {
       classNameProp={props.classNameProp}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
-      {...{
-        setBuilderContextSignal: setBuilderContextSignal,
-      }}
+      {...{}}
     >
       {props.isSsrAbTest ? (
         <>

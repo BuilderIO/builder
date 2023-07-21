@@ -6,15 +6,15 @@ DONE:
 - Mitosis: add `use client` only to components that need it (if they have hooks or state)
 - solidjs: figure out why its hanging infinitely. look at all the changes made to Block and CompRef etc.
   - something is making it hang
-
-NEXT UP:
-
-REMAINING:
 - useState:
   - 1 remaining due to VUE workaround
 
+NEXT UP:
 - EnableEditor:
   - add message logic into `useTarget`
+
+
+REMAINING:
 
 - new `getContent`:
   - take all the hardcoded logic and put it in an external file in the RSC package.
