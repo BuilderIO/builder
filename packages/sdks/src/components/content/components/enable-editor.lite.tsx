@@ -71,6 +71,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       };
     },
+    lastUpdated: 0,
+    shouldSendResetCookie: false,
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
@@ -106,8 +108,109 @@ export default function EnableEditor(props: BuilderEditorProps) {
             }
             break;
           }
+          case 'builder.hardReset': {
+            const lastUpdatedAutosave = parseInt(data.data.lastUpdatedAutosave);
+
+            console.log(
+              'received hard reset with lastUpdated: ',
+              lastUpdatedAutosave
+            );
+
+            const lastUpdatedToUse =
+              !isNaN(lastUpdatedAutosave) &&
+              lastUpdatedAutosave > state.lastUpdated
+                ? lastUpdatedAutosave
+                : state.lastUpdated;
+            state.lastUpdated = lastUpdatedToUse;
+
+            console.log('builder.hardReset', {
+              shouldSendResetCookie: state.shouldSendResetCookie,
+            });
+            if (state.shouldSendResetCookie) {
+              console.log('refreshing with hard reset cookie');
+              document.cookie = `builder.hardReset=${lastUpdatedToUse};max-age=100`;
+              state.shouldSendResetCookie = false;
+
+              useTarget({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                rsc: router.refresh(),
+                default: undefined,
+              });
+            } else {
+              console.log('not refreshing.');
+            }
+            break;
+          }
+
           case 'builder.patchUpdates': {
-            // TODO
+            const patches = data.data.data;
+
+            for (const contentId of Object.keys(patches)) {
+              const patchesForBlock = patches[contentId];
+
+              // TO-DO: fix scenario where we end up with -Infinity
+              const getLastIndex = () =>
+                Math.max(
+                  ...document.cookie
+                    .split(';')
+                    .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                    .map((x) => {
+                      const parsedIndex = parseInt(
+                        x.split('=')[0].split(contentIdKeyPrefix)[1]
+                      );
+                      return isNaN(parsedIndex) ? 0 : parsedIndex;
+                    })
+                ) || 0;
+
+              const contentIdKeyPrefix = `builder.patch.${contentId}.`;
+
+              // get last index of patch for this block
+              const lastIndex = getLastIndex();
+
+              const cookie = {
+                name: `${contentIdKeyPrefix}${lastIndex + 1}`,
+                value: encodeURIComponent(JSON.stringify(patchesForBlock)),
+              };
+
+              // remove hard reset cookie just in case it was set in a prior update.
+              document.cookie = `builder.hardReset=no;max-age=0`;
+              document.cookie = `${cookie.name}=${cookie.value};max-age=30`;
+
+              const newCookieValue = document.cookie
+                .split(';')
+                .find((x) => x.trim().startsWith(cookie.name))
+                ?.split('=')[1];
+
+              if (newCookieValue !== cookie.value) {
+                console.warn('Cookie did not save correctly.');
+                console.log('Clearing all Builder patch cookies...');
+
+                window.parent?.postMessage(
+                  { type: 'builder.patchUpdatesFailed', data: data.data },
+                  '*'
+                );
+
+                document.cookie
+                  .split(';')
+                  .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                  .forEach((x) => {
+                    document.cookie = `${x.split('=')[0]}=;max-age=0`;
+                  });
+
+                state.shouldSendResetCookie = true;
+              } else {
+                console.log('cookie saved correctly');
+
+                useTarget({
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  rsc: router.refresh(),
+                  default: undefined,
+                });
+              }
+            }
+
             break;
           }
         }

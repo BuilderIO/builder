@@ -271,6 +271,17 @@ module.exports = {
                 // @ts-ignore
                 json.state.contentToUse.code =
                   json.state.contentToUse?.code.replace('async () => ', '');
+              } else if (json.name === 'EnableEditor') {
+                json.imports.push({
+                  path: 'next/navigation',
+                  imports: {
+                    useRouter: 'useRouter',
+                  },
+                });
+
+                json.hooks.init = {
+                  code: `const router = useRouter();`,
+                };
               }
               return json;
             },

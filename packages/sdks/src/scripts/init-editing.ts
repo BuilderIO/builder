@@ -43,7 +43,7 @@ export const setupBrowserForEditing = (
         data: {
           target: TARGET,
           version: SDK_VERSION,
-          supportsPatchUpdates: false,
+          supportsPatchUpdates: TARGET === 'rsc' ? true : false,
           // Supports builder-model="..." attribute which is needed to
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
