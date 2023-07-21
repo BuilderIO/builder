@@ -2,8 +2,7 @@ import * as React from "react";
 
 export interface RawTextProps {
   attributes?: any;
-  text?: string;
-  // builderBlock?: any;
+  text?: string; // builderBlock?: any;
 }
 
 function RawText(props: RawTextProps) {

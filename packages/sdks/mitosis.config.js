@@ -265,16 +265,13 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (json.name !== 'Symbol') return json;
+              if (json.name === 'Symbol') {
+                delete json.state.setContent;
 
-              delete json.hooks.onMount;
-              delete json.hooks.onUpdate;
-              delete json.state.setContent;
-
-              // @ts-ignore
-              json.state.contentToUse.code =
-                json.state.contentToUse?.code.replace('async () => ', '');
-
+                // @ts-ignore
+                json.state.contentToUse.code =
+                  json.state.contentToUse?.code.replace('async () => ', '');
+              }
               return json;
             },
           },

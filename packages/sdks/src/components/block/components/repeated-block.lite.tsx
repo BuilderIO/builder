@@ -20,6 +20,9 @@ useMetadata({
       asyncComponentImports: true,
     },
   },
+  rsc: {
+    componentType: 'server',
+  },
 });
 
 /**

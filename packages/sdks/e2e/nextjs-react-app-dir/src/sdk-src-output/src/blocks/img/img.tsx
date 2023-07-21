@@ -3,10 +3,12 @@ import * as React from "react";
 
 /**
  * This import is used by the Svelte SDK. Do not remove.
- */ // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 export interface ImgProps {
   attributes?: any;
   imgSrc?: string; // TODO(misko): I think this is unused
+
   image?: string;
   altText?: string;
   backgroundSize?: "cover" | "contain";
