@@ -22,7 +22,7 @@ import type { Nullable } from '../../types/typescript';
 
 useMetadata({
   rsc: {
-    isRSC: true,
+    componentType: 'server',
   },
 });
 

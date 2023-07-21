@@ -1,11 +1,17 @@
 import { isEditing } from '../../functions/is-editing';
-import { For, useTarget } from '@builder.io/mitosis';
+import { For, useMetadata, useTarget } from '@builder.io/mitosis';
 import { filterAttrs } from '../helpers';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import { setAttrs } from '../helpers';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export interface FormSelectProps {
   options?: { name?: string; value: string }[];

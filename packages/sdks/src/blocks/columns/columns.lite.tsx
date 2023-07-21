@@ -28,7 +28,7 @@ type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
 useMetadata({
   rsc: {
-    isRSC: true,
+    componentType: 'server',
   },
   qwik: {
     setUseStoreFirst: true,

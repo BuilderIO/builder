@@ -137,26 +137,6 @@ const SRCSET_PLUGIN = () => ({
   },
 });
 
-const USE_CLIENT_STRING = "'use client';";
-/**
- * Needed for next v13 to work
- * @type {(target: 'rsc' | 'react' | 'reactNative')=> Plugin}
- */
-const REACT_NEXT_V13_PLUGIN = (target) => () => ({
-  code: {
-    pre: (code, json) => {
-      const shouldAddUseClient =
-        target === 'react' ||
-        target === 'reactNative' ||
-        !json.meta.useMetadata?.rsc?.isRSC;
-
-      if (!shouldAddUseClient) return code;
-
-      return `${USE_CLIENT_STRING}\n${code}`;
-    },
-  },
-});
-
 /**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
@@ -275,14 +255,13 @@ module.exports = {
     vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN('react')],
+      plugins: [SRCSET_PLUGIN],
       stylesType: 'style-tag',
     },
     rsc: {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN('rsc'),
         () => ({
           json: {
             pre: (json) => {
@@ -292,6 +271,7 @@ module.exports = {
               delete json.hooks.onUpdate;
               delete json.state.setContent;
 
+              // @ts-ignore
               json.state.contentToUse.code =
                 json.state.contentToUse?.code.replace('async () => ', '');
 
@@ -310,7 +290,6 @@ module.exports = {
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN('reactNative'),
         BASE_TEXT_PLUGIN,
         () => ({
           json: {

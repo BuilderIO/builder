@@ -16,7 +16,7 @@ export type BlocksProps = Partial<BlocksWrapperProps> & {
 
 useMetadata({
   rsc: {
-    isRSC: true,
+    componentType: 'server',
   },
 });
 

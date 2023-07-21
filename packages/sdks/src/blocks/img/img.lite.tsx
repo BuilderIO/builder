@@ -1,4 +1,4 @@
-import { useTarget } from '@builder.io/mitosis';
+import { useMetadata, useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing';
 import { filterAttrs } from '../helpers';
 /**
@@ -6,6 +6,12 @@ import { filterAttrs } from '../helpers';
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import { setAttrs } from '../helpers';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export interface ImgProps {
   attributes?: any;

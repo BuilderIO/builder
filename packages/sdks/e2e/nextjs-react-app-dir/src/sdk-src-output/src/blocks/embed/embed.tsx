@@ -19,8 +19,10 @@ function Embed(props: EmbedProps) {
   function findAndRunScripts() {
     if (!elem.current || !elem.current.getElementsByTagName) return;
     const scripts = elem.current.getElementsByTagName("script");
+
     for (let i = 0; i < scripts.length; i++) {
       const script = scripts[i];
+
       if (script.src && !scriptsInserted.includes(script.src)) {
         scriptsInserted.push(script.src);
         const newScript = document.createElement("script");

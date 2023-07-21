@@ -1,7 +1,13 @@
-import { Show, useStore } from '@builder.io/mitosis';
+import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import type { BuilderBlock } from '../../types/builder-block';
 import { getSrcSet } from './image.helpers';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export interface ImageProps {
   className?: string;

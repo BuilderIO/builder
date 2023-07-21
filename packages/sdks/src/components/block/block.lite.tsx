@@ -44,7 +44,7 @@ useMetadata({
     setUseStoreFirst: true,
   },
   rsc: {
-    isRSC: true,
+    componentType: 'server',
   },
 });
 

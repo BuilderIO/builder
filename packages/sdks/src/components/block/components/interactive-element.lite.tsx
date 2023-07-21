@@ -18,6 +18,9 @@ useMetadata({
       asyncComponentImports: true,
     },
   },
+  rsc: {
+    componentType: 'client',
+  },
 });
 
 /**

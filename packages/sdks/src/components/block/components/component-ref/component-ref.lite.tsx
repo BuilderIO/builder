@@ -7,7 +7,7 @@ import { getWrapperProps } from './component-ref.helpers';
 
 useMetadata({
   rsc: {
-    isRSC: true,
+    componentType: 'server',
   },
 });
 

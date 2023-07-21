@@ -49,7 +49,7 @@ function BlocksWrapper(props: PropsWithChildren<BlocksWrapperProps>) {
   return (
     <>
       <div
-        className={className() + " div-5a6cb763"}
+        className={className() + " div-fb790174"}
         builder-path={props.path}
         builder-parent-id={props.parent}
         {...{}}
@@ -61,7 +61,7 @@ function BlocksWrapper(props: PropsWithChildren<BlocksWrapperProps>) {
         {props.children}
       </div>
 
-      <style>{`.div-5a6cb763 {
+      <style>{`.div-fb790174 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

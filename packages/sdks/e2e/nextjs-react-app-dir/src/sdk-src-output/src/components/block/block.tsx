@@ -58,9 +58,11 @@ function Block(props: BlockProps) {
     if ("hide" in processedBlock()) {
       return !processedBlock().hide;
     }
+
     if ("show" in processedBlock()) {
       return processedBlock().show;
     }
+
     return true;
   };
   const childrenWithoutParentComponent =

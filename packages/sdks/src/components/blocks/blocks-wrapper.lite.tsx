@@ -2,6 +2,13 @@ import { useStore, useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing';
 import type { BuilderBlock } from '../../types/builder-block';
 import type { PropsWithChildren } from '../../types/typescript';
+import { useMetadata } from '@builder.io/mitosis';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export type BlocksWrapperProps = {
   blocks: BuilderBlock[] | undefined;

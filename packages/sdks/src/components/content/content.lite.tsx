@@ -30,7 +30,7 @@ useMetadata({
     hasDeepStore: true,
   },
   rsc: {
-    isRSC: true,
+    componentType: 'server',
   },
 });
 

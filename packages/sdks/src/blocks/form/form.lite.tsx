@@ -1,3 +1,11 @@
+import { useMetadata } from '@builder.io/mitosis';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
+
 export default function FormComponent() {
   return <></>;
 }

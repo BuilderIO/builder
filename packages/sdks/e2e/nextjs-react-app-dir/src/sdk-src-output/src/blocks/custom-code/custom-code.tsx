@@ -21,12 +21,15 @@ function CustomCode(props: CustomCodeProps) {
       typeof window !== "undefined"
     ) {
       const scripts = elem.current.getElementsByTagName("script");
+
       for (let i = 0; i < scripts.length; i++) {
         const script = scripts[i];
+
         if (script.src) {
           if (scriptsInserted.includes(script.src)) {
             continue;
           }
+
           scriptsInserted.push(script.src);
           const newScript = document.createElement("script");
           newScript.async = true;
@@ -43,6 +46,7 @@ function CustomCode(props: CustomCodeProps) {
           if (scriptsRun.includes(script.innerText)) {
             continue;
           }
+
           try {
             scriptsRun.push(script.innerText);
             new Function(script.innerText)();

@@ -22,7 +22,7 @@ import type { ContentVariantsProps } from './content-variants.types';
 
 useMetadata({
   rsc: {
-    isRSC: true,
+    componentType: 'server',
   },
 });
 
