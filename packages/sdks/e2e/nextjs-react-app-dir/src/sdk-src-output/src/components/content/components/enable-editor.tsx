@@ -33,7 +33,6 @@ import type { ComponentInfo } from "../../../types/components";
 import { getContent } from "../../../functions/get-content/index";
 import { isPreviewing } from "../../../functions/is-previewing";
 import type { BuilderContent } from "../../../types/builder-content";
-import { TARGET } from "../../../constants/target";
 import { useRouter } from "next/navigation";
 
 function EnableEditor(props: BuilderEditorProps) {
@@ -107,84 +106,9 @@ function EnableEditor(props: BuilderEditorProps) {
           break;
         }
         case "builder.hardReset": {
-          const lastUpdatedAutosave = parseInt(data.data.lastUpdatedAutosave);
-          console.log("HARD RESET", {
-            lastUpdatedAutosave,
-          });
-          const lastUpdatedToUse =
-            !isNaN(lastUpdatedAutosave) && lastUpdatedAutosave > lastUpdated
-              ? lastUpdatedAutosave
-              : lastUpdated;
-          setLastUpdated(lastUpdatedToUse);
-          console.log("HARD RESET", {
-            shouldSendResetCookie: shouldSendResetCookie,
-          });
-          if (shouldSendResetCookie) {
-            console.log("HARD RESET: refreshing.");
-            document.cookie = `builder.hardReset=${lastUpdatedToUse};max-age=100`;
-            setShouldSendResetCookie(false);
-            router.refresh();
-          } else {
-            console.log("HARD RESET: not refreshing.");
-          }
           break;
         }
         case "builder.patchUpdates": {
-          const patches = data.data.data;
-          for (const contentId of Object.keys(patches)) {
-            const patchesForBlock = patches[contentId];
-
-            // TO-DO: fix scenario where we end up with -Infinity
-            const getLastIndex = () =>
-              Math.max(
-                ...document.cookie
-                  .split(";")
-                  .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
-                  .map((x) => {
-                    const parsedIndex = parseInt(
-                      x.split("=")[0].split(contentIdKeyPrefix)[1]
-                    );
-                    return isNaN(parsedIndex) ? 0 : parsedIndex;
-                  })
-              ) || 0;
-            const contentIdKeyPrefix = `builder.patch.${contentId}.`;
-
-            // get last index of patch for this block
-            const lastIndex = getLastIndex();
-            const cookie = {
-              name: `${contentIdKeyPrefix}${lastIndex + 1}`,
-              value: encodeURIComponent(JSON.stringify(patchesForBlock)),
-            };
-
-            // remove hard reset cookie just in case it was set in a prior update.
-            document.cookie = `builder.hardReset=no;max-age=0`;
-            document.cookie = `${cookie.name}=${cookie.value};max-age=30`;
-            const newCookieValue = document.cookie
-              .split(";")
-              .find((x) => x.trim().startsWith(cookie.name))
-              ?.split("=")[1];
-            if (newCookieValue !== cookie.value) {
-              console.warn("Cookie did not save correctly.");
-              console.log("Clearing all Builder patch cookies...");
-              window.parent?.postMessage(
-                {
-                  type: "builder.patchUpdatesFailed",
-                  data: data.data,
-                },
-                "*"
-              );
-              document.cookie
-                .split(";")
-                .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
-                .forEach((x) => {
-                  document.cookie = `${x.split("=")[0]}=;max-age=0`;
-                });
-              setShouldSendResetCookie(true);
-            } else {
-              console.log("cookie saved correctly");
-              router.refresh();
-            }
-          }
           break;
         }
       }
@@ -341,86 +265,13 @@ function EnableEditor(props: BuilderEditorProps) {
           variationId: variationId !== contentId ? variationId : undefined,
         });
       }
-
-      // override normal content in preview mode
-      if (isPreviewing()) {
-        const searchParams = new URL(location.href).searchParams;
-        const searchParamPreviewModel = searchParams.get("builder.preview");
-        const searchParamPreviewId = searchParams.get(
-          `builder.preview.${searchParamPreviewModel}`
-        );
-        const previewApiKey =
-          searchParams.get("apiKey") || searchParams.get("builder.space");
-
-        /**
-         * Make sure that:
-         * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered  *  at the same time, e.g. header/page/footer.  * - the API key is the same, since we don't want to preview content from other organizations.
-         * - if there is content, that the preview ID is the same as that of the one we receive.
-         *
-         * TO-DO: should we only update the state when there is a change?
-         **/
-        if (
-          searchParamPreviewModel === props.model &&
-          previewApiKey === props.apiKey &&
-          (!props.content || searchParamPreviewId === props.content.id)
-        ) {
-          getContent({
-            model: props.model,
-            apiKey: props.apiKey,
-            apiVersion: props.builderContextSignal.apiVersion,
-          }).then((content) => {
-            if (content) {
-              mergeNewContent(content);
-            }
-          });
-        }
-      }
       evaluateJsCode();
       runHttpRequests();
       emitStateUpdate();
     }
   }, []);
 
-  useEffect(() => {
-    if (TARGET !== "rsc") return;
-    if (!props.content) return;
-    const lastUpdatedAutosave = props.content.meta?.lastUpdatedAutosave;
-    const hardResetCookie = document.cookie
-      .split(";")
-      .find((x) => x.trim().startsWith("builder.hardReset"));
-    const hardResetCookieValue = hardResetCookie?.split("=")[1];
-    if (!hardResetCookieValue) return;
-    if (
-      lastUpdatedAutosave &&
-      parseInt(hardResetCookieValue) <= lastUpdatedAutosave
-    ) {
-      console.log("got fresh content! 🎉");
-      document.cookie = `builder.hardReset=;max-age=0`;
-      window.parent?.postMessage(
-        {
-          type: "builder.freshContentFetched",
-          data: {
-            contentId: props.content.id,
-            lastUpdated: lastUpdatedAutosave,
-          },
-        },
-        "*"
-      );
-    } else {
-      console.log(
-        "hard reset cookie is newer than lastUpdatedAutosave, refreshing"
-      );
-      document.cookie = `builder.hardReset=${hardResetCookieValue};max-age=100`;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      router.refresh();
-    }
-  }, [props.content]);
-  useEffect(() => {
-    if (props.content) {
-      mergeNewContent(props.content);
-    }
-  }, [props.content]);
+  useEffect(() => {}, [props.content]);
   useEffect(() => {
     window.removeEventListener("message", processMessage);
     window.addEventListener("message", processMessage);

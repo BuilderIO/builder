@@ -144,7 +144,7 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
       <div
         className={
           `builder-columns ${props.builderBlock.id}-breakpoints` +
-          " div-6445a545"
+          " div-5cabb5f2"
         }
         style={columnsCssVars()}
         {...{}}
@@ -157,7 +157,7 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
 
         {props.columns?.map((column, index) => (
           <div
-            className="builder-column div-6445a545-2"
+            className="builder-column div-5cabb5f2-2"
             style={columnCssVars(index)}
             {...{}}
             key={index}
@@ -176,10 +176,10 @@ function Columns(props: PropsWithBuilderData<ColumnProps>) {
         ))}
       </div>
 
-      <style>{`.div-6445a545 {
+      <style>{`.div-5cabb5f2 {
   display: flex;
   line-height: normal;
-}.div-6445a545-2 {
+}.div-5cabb5f2-2 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

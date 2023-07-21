@@ -35,14 +35,14 @@ function Button(props: ButtonProps) {
             {...{}}
             {...props.attributes}
             style={props.attributes.style}
-            className={props.attributes.class + " button-4c426b0d"}
+            className={props.attributes.class + " button-2b56f99f"}
           >
             {props.text}
           </button>
         </>
       )}
 
-      <style>{`.button-4c426b0d {
+      <style>{`.button-2b56f99f {
   all: unset;
 }`}</style>
     </>
