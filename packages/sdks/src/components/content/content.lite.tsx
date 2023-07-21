@@ -29,46 +29,45 @@ useMetadata({
   qwik: {
     hasDeepStore: true,
   },
+  rsc: {
+    isRSC: true,
+  },
 });
 
 export default function ContentComponent(props: ContentProps) {
   const state = useStore({
-    get scriptStr() {
-      return getRenderContentScriptString({
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-        variationId: props.content?.testVariationId!,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-        contentId: props.content?.id!,
-      });
-    },
+    scriptStr: getRenderContentScriptString({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      variationId: props.content?.testVariationId!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      contentId: props.content?.id!,
+    }),
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
     },
 
-    get registeredComponents() {
-      return [
-        ...getDefaultRegisteredComponents(),
-        // While this `components` object is deprecated, we must maintain support for it.
-        // Since users are able to override our default components, we need to make sure that we do not break such
-        // existing usage.
-        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-        // which is the new standard way of providing custom components, and must therefore take precedence.
-        ...components,
-        ...(props.customComponents || []),
-      ].reduce<RegisteredComponents>(
-        (acc, { component, ...info }) => ({
-          ...acc,
-          [info.name]: {
-            component: useTarget({
-              vue3: wrapComponentRef(component),
-              default: component,
-            }),
-            ...serializeComponentInfo(info),
-          },
-        }),
-        {}
-      );
-    },
+    registeredComponents: [
+      ...getDefaultRegisteredComponents(),
+      // While this `components` object is deprecated, we must maintain support for it.
+      // Since users are able to override our default components, we need to make sure that we do not break such
+      // existing usage.
+      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+      // which is the new standard way of providing custom components, and must therefore take precedence.
+      ...components,
+      ...(props.customComponents || []),
+    ].reduce<RegisteredComponents>(
+      (acc, { component, ...info }) => ({
+        ...acc,
+        [info.name]: {
+          component: useTarget({
+            vue3: wrapComponentRef(component),
+            default: component,
+          }),
+          ...serializeComponentInfo(info),
+        },
+      }),
+      {}
+    ),
   });
 
   const [builderContextSignal, setBuilderContextSignal] =
