@@ -363,8 +363,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
   }, [props.content]);
 
   onUpdate(() => {
-    window.removeEventListener('message', state.processMessage);
-    window.addEventListener('message', state.processMessage);
+    useTarget({
+      rsc: () => {
+        if (isBrowser()) {
+          window.removeEventListener('message', state.processMessage);
+          window.addEventListener('message', state.processMessage);
+        }
+      },
+    });
   }, [state.shouldSendResetCookie]);
 
   onUnMount(() => {
