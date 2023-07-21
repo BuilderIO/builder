@@ -272,10 +272,7 @@ function EnableEditor(props: BuilderEditorProps) {
   }, []);
 
   useEffect(() => {}, [props.content]);
-  useEffect(() => {
-    window.removeEventListener("message", processMessage);
-    window.addEventListener("message", processMessage);
-  }, [shouldSendResetCookie]);
+  useEffect(() => {}, [shouldSendResetCookie]);
   useEffect(() => {
     evaluateJsCode();
   }, [
