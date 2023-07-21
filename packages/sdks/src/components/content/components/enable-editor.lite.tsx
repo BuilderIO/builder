@@ -33,6 +33,7 @@ import type { ComponentInfo } from '../../../types/components';
 import { getContent } from '../../../functions/get-content/index';
 import { isPreviewing } from '../../../functions/is-previewing';
 import type { BuilderContent } from '../../../types/builder-content';
+import { TARGET } from '../../../constants/target';
 
 useMetadata({
   qwik: {
@@ -111,10 +112,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           case 'builder.hardReset': {
             const lastUpdatedAutosave = parseInt(data.data.lastUpdatedAutosave);
 
-            console.log(
-              'received hard reset with lastUpdated: ',
-              lastUpdatedAutosave
-            );
+            console.log('HARD RESET', { lastUpdatedAutosave });
 
             const lastUpdatedToUse =
               !isNaN(lastUpdatedAutosave) &&
@@ -123,11 +121,11 @@ export default function EnableEditor(props: BuilderEditorProps) {
                 : state.lastUpdated;
             state.lastUpdated = lastUpdatedToUse;
 
-            console.log('builder.hardReset', {
+            console.log('HARD RESET', {
               shouldSendResetCookie: state.shouldSendResetCookie,
             });
             if (state.shouldSendResetCookie) {
-              console.log('refreshing with hard reset cookie');
+              console.log('HARD RESET: refreshing.');
               document.cookie = `builder.hardReset=${lastUpdatedToUse};max-age=100`;
               state.shouldSendResetCookie = false;
 
@@ -138,7 +136,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
                 default: undefined,
               });
             } else {
-              console.log('not refreshing.');
+              console.log('HARD RESET: not refreshing.');
             }
             break;
           }
@@ -313,10 +311,55 @@ export default function EnableEditor(props: BuilderEditorProps) {
   setContext(builderContext, props.builderContextSignal);
 
   onUpdate(() => {
+    if (TARGET !== 'rsc') return;
+    if (!props.content) return;
+
+    const lastUpdatedAutosave = props.content.meta?.lastUpdatedAutosave;
+
+    const hardResetCookie = document.cookie
+      .split(';')
+      .find((x) => x.trim().startsWith('builder.hardReset'));
+    const hardResetCookieValue = hardResetCookie?.split('=')[1];
+
+    if (!hardResetCookieValue) return;
+
+    if (
+      lastUpdatedAutosave &&
+      parseInt(hardResetCookieValue) <= lastUpdatedAutosave
+    ) {
+      console.log('got fresh content! 🎉');
+      document.cookie = `builder.hardReset=;max-age=0`;
+
+      window.parent?.postMessage(
+        {
+          type: 'builder.freshContentFetched',
+          data: {
+            contentId: props.content.id,
+            lastUpdated: lastUpdatedAutosave,
+          },
+        },
+        '*'
+      );
+    } else {
+      console.log(
+        'hard reset cookie is newer than lastUpdatedAutosave, refreshing'
+      );
+      document.cookie = `builder.hardReset=${hardResetCookieValue};max-age=100`;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      router.refresh();
+    }
+  }, [props.content]);
+  onUpdate(() => {
     if (props.content) {
       state.mergeNewContent(props.content);
     }
   }, [props.content]);
+
+  onUpdate(() => {
+    window.removeEventListener('message', state.processMessage);
+    window.addEventListener('message', state.processMessage);
+  }, [state.shouldSendResetCookie]);
 
   onUnMount(() => {
     if (isBrowser()) {

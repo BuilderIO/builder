@@ -6,6 +6,7 @@ import type { BuilderContent } from '../../types/builder-content';
 import { fetch } from '../get-fetch';
 import { isBrowser } from '../is-browser';
 import { generateContentUrl } from './generate-content-url';
+import { processCookies } from './processCookies';
 import type { GetContentOptions } from './types';
 
 const checkContentHasResults = (
@@ -50,6 +51,14 @@ export const processContentResult = async (
   content: ContentResults
 ) => {
   const canTrack = getDefaultCanTrack(options.canTrack);
+
+  if (TARGET === 'rsc') {
+    const newResults: BuilderContent[] = [];
+    for (const item of content.results) {
+      newResults.push(processCookies(item));
+    }
+    content.results = newResults;
+  }
 
   if (!canTrack) return content;
   if (!(isBrowser() || TARGET === 'reactNative')) return content;

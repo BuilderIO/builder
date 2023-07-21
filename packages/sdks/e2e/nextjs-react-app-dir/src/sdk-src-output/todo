@@ -1,7 +1,0 @@
-NEXT:
-- EnableEditor:
-  - add message logic into `useTarget`
-
-REMAINING:
-- new `getContent`:
-  - take all the hardcoded logic and put it in an external file in the RSC package.
