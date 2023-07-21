@@ -31,5 +31,9 @@
     "implicitDependencies": [
       "@builder.io/sdks"
     ]
+  },
+  "dependencies": {
+    "nx": "^16.5.4",
+    "nx-cloud": "^16.1.1"
   }
 }

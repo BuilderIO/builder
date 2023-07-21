@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-rsc",
+  "name": "@e2e/rsc",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -27,13 +27,15 @@
   },
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "@headlessui/react": "^1.7.0",
     "@shopify/hydrogen": "^1.5.0",
     "@types/lodash.throttle": "^4.1.7",
     "clsx": "^1.1.1",
     "graphql-tag": "^2.12.6",
     "lodash.throttle": "^4.1.1",
+    "nx": "^16.5.4",
+    "nx-cloud": "^16.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-use": "^17.4.0",

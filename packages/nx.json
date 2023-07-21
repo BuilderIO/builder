@@ -16,7 +16,7 @@
       "dependsOn": ["build"]
     },
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "prebuild"]
     }
   },
   "affected": {

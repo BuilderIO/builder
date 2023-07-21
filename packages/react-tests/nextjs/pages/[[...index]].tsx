@@ -1,4 +1,4 @@
-import { ALL_PATHNAMES, getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
+import { ALL_PATHNAMES, getAPIKey, getProps } from '@e2e/tests';
 import { useRouter } from 'next/router';
 import type {
   GetStaticPaths,

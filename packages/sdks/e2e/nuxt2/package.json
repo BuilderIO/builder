@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-vue-nuxt2",
+  "name": "@e2e/nuxt2",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",
+    "nx": "^16.5.4",
+    "nx-cloud": "^16.1.1",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10"

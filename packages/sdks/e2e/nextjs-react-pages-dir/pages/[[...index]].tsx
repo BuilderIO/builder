@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { RenderContent, processContentResult } from '@builder.io/sdk-react';
-import { ALL_PATHNAMES, getProps } from '@builder.io/sdks-e2e-tests';
+import { ALL_PATHNAMES, getProps } from '@e2e/tests';
 import type {
   GetStaticPropsContext,
   GetStaticPathsResult,

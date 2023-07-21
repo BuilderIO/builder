@@ -1,4 +1,4 @@
-import { getProps } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@e2e/tests';
 import { processContentResult } from '@builder.io/sdk-react/server';
 
 // ✅ This pattern works. You can pass a Server Component

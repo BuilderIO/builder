@@ -12,7 +12,7 @@
     "cz": "cz",
     "build:mitosis": "../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:outputs": "yarn workspaces foreach --include \"*/sdk-*\" --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --verbose run build",
-    "build": "yarn run build:mitosis && yarn run build:outputs",
+    "build": "yarn run build:mitosis",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
     "test": "jest",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
@@ -28,18 +28,18 @@
     "ci:lint": "yarn run prettier --check && yarn run eslint",
     "ci:build": "yarn run typecheck && yarn run build",
     "ci:test": "yarn run test",
-    "e2e:build:specs": "yarn workspace @builder.io/sdks-e2e-tests build",
-    "e2e:build": "yarn workspace @builder.io/sdks-e2e-tests run build",
-    "e2e:build:svelte": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-svelte*\" run build",
-    "e2e:build:react-native": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-react-native*\" run build",
-    "e2e:build:solid": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-solid*\" run build",
-    "e2e:build:qwik": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-qwik*\" run build",
-    "e2e:build:react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e?(-*)-react\" run build",
-    "e2e:build:rsc": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-nextjs-app-dir-rsc\" run build",
-    "e2e:build:vue2": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*2\" run build",
-    "e2e:build:vue3": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*3\" run build",
+    "e2e:build:specs": "yarn workspace @e2e/tests build",
+    "e2e:build": "yarn workspace @e2e/tests run build",
+    "e2e:build:svelte": "nx run-many -t build -p @e2e/svelte @e2e/sveltekit",
+    "e2e:build:react-native": "nx run-many -t build -p @e2e/react-native",
+    "e2e:build:solid": "nx run-many -t build -p @e2e/solid @e2e/solid-start",
+    "e2e:build:qwik": "nx run-many -t build -p @e2e/qwik-city",
+    "e2e:build:react": "nx run-many -t build -p @e2e/react @e2e/next-pages-dir @e2e/next-app-dir-client",
+    "e2e:build:rsc": "nx run-many -t build -p @e2e/next-app-dir-rsc",
+    "e2e:build:vue2": "nx run-many -t build -p @e2e/vue2 @e2e/nuxt2",
+    "e2e:build:vue3": "nx run-many -t build -p @e2e/vue3 @e2e/nuxt3",
     "e2e:build:vue": "yarn run e2e:build:vue2 && yarn run e2e:build:vue3",
-    "e2e:run": "yarn workspace @builder.io/sdks-e2e-tests run test",
+    "e2e:run": "nx run @e2e/tests:test",
     "e2e:run:svelte": "SDK=svelte yarn e2e:run",
     "e2e:run:react-native": "SDK=reactNative yarn e2e:run",
     "e2e:run:solid": "SDK=solid yarn e2e:run",
@@ -49,9 +49,6 @@
     "e2e:run:vue2": "SDK=vue2 yarn e2e:run",
     "e2e:run:vue3": "SDK=vue3 yarn e2e:run",
     "e2e:run:old-react": "SDK=oldReact yarn e2e:run",
-    "e2e:build:all": "yarn workspaces foreach --include \"@builder.io/e2e-*\" --exclude @builder.io/e2e-rsc --verbose run build",
-    "e2e:run:all": "SDK=all yarn e2e:run",
-    "e2e:run:allNew": "SDK=allNew yarn e2e:run",
     "loop": "bash ./scripts/loop-command.sh",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:all:patch": "yarn build:mitosis && yarn loop release-sdk patch",
@@ -65,6 +62,8 @@
     "@builder.io/mitosis": "^0.0.114",
     "@builder.io/mitosis-cli": "^0.0.72",
     "node-fetch": "^2.6.1",
+    "nx": "^16.5.4",
+    "nx-cloud": "^16.1.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
   },
@@ -93,6 +92,9 @@
     "typescript": "^4",
     "watch": "^1.0.2"
   },
+  "engines": {
+    "yarn": ">= 3.0.0"
+  },
   "config": {
     "commitizen": {
       "path": "git-cz"
@@ -114,7 +116,7 @@
       }
     },
     "implicitDependencies": [
-      "@builder.io/react"
+      "@react"
     ]
   }
 }
