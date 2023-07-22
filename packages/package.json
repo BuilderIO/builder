@@ -4,7 +4,7 @@
   "private": true,
   "workspaces": [
     "sdks-tests",
-    "@builder.io/sdks",
+    "sdks",
     "react",
     "core",
     "react-tests/*",
@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "e2e-build-gen1-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
-    "e2e-run-gen1-react": "SDK=oldReact yarn workspace sdks run e2e:run"
+    "e2e-run-gen1-react": "SDK=oldReact nx run @builder.io/sdks:e2e:run"
   },
   "engines": {
     "yarn": ">= 3.0.0"

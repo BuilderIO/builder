@@ -85,7 +85,7 @@ export default defineConfig({
 
   webServer: things.map(({ packageName, port, portFlag }) => {
     return {
-      command: `PORT=${port} yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
+      command: `PORT=${port} yarn nx @builder.io/${packageName}:serve ${portFlag}`,
       port,
       reuseExistingServer: false,
       ...(packageName === 'e2e-react-native' ? { timeout: 120 * 1000 } : {}),
