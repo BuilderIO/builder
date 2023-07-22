@@ -1,0 +1,72 @@
+#icon-palette {
+  position: absolute;
+  max-width: 225px;
+  z-index: 999;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.bem {
+  font-size: 24px;
+  width: 34px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  margin: 2px;
+}
+#tab-filters {
+  width: 210px;
+  margin: 0px auto;
+  margin-top: 20px;
+}
+.icon-tab {
+  display: inline-table;
+  text-align: center;
+  width: 30px;
+  height: 100%;
+  min-height: 30px;
+  cursor: pointer;
+}
+.icon-tab > span {
+  font-size: 25px;
+}
+#tab-toolbar {
+  background-color: #f7f7f7;
+  padding: 4px 4px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+#tab-toolbar ul {
+  margin: 0px;
+  padding: 0px;
+}
+#tab-toolbar .active {
+  border-bottom: 3px solid #2ab27b;
+}
+#tab-panel {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-height: 220px;
+  overflow-y: scroll;
+  padding: 2px;
+  background-color: white;
+}
+#icon-close-div {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.toolbar-icon {
+  font-size: 20px;
+}
+
+.bem {
+  font-size: 24px;
+  width: 34px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  margin: 2px;
+}
