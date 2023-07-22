@@ -94,10 +94,10 @@ jobs:
         run: yarn ci:lint
 
       - name: Build
-        run: yarn nx build @builder.io/sdks
+        run: yarn nx run @builder.io/sdks:build
 
       - name: Run tests
-        run: yarn nx test @builder.io/sdks
+        run: yarn nx run @builder.io/sdks:test
 
   sdks-outputs:
     runs-on: ubuntu-latest
@@ -147,10 +147,10 @@ jobs:
         run: yarn
 
       - name: Build E2E apps
-        run: yarn e2e:build:${{ matrix.sdk }}
+        run: yarn workspace @builder.io/sdks e2e:build:${{ matrix.sdk }}
 
       - name: Run E2E tests
-        run: yarn e2e:run:${{ matrix.sdk }}
+        run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.sdk }}
 
   core-sdk:
     runs-on: ubuntu-latest
@@ -179,7 +179,7 @@ jobs:
         run: yarn
 
       - name: Build Core
-        run: yarn nx run build @builder.io/sdk
+        run: yarn nx run @builder.io/sdk:build
 
   old-react-sdk:
     runs-on: ubuntu-latest
@@ -208,7 +208,7 @@ jobs:
         run: yarn
 
       - name: Build E2E apps
-        run: yarn nx run e2e:build:old-react @builder.io/mono-repo
+        run: yarn workspace @builder.io/mono-repo e2e:build:old-react
 
       - name: Run E2E tests
-        run: yarn nx run e2e:run:old-react @builder.io/mono-repo
+        run: yarn workspace @builder.io/mono-repo e2e:run:old-react
