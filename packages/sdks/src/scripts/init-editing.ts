@@ -48,6 +48,7 @@ export const setupBrowserForEditing = (
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
           supportsCustomBreakpoints: true,
+          supportsGlobalSymbols: true,
         },
       },
       '*'

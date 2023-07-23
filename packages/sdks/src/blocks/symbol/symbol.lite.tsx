@@ -28,6 +28,7 @@ export interface SymbolInfo {
   content?: BuilderContent;
   inline?: boolean;
   dynamic?: boolean;
+  ownerId?: string;
 }
 
 export interface SymbolProps extends BuilderComponentsProp {
@@ -76,7 +77,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
       ) {
         getContent({
           model: props.symbol.model,
-          apiKey: builderContext.value.apiKey,
+          apiKey: props.symbol.ownerId || builderContext.value.apiKey,
           apiVersion: builderContext.value.apiVersion,
           ...(props.symbol?.entry && {
             query: {
@@ -124,7 +125,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
       <ContentVariants
         __isNestedRender
         apiVersion={builderContext.value.apiVersion}
-        apiKey={builderContext.value.apiKey!}
+        apiKey={props.symbol?.ownerId || builderContext.value.apiKey!}
         context={builderContext.value.context}
         customComponents={Object.values(props.builderComponents)}
         data={{
