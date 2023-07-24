@@ -22,7 +22,7 @@ export default function FormComponent() {
 //  * This import is used by the Svelte SDK. Do not remove.
 //  */
 // // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
-// import { setAttrs } from '../helpers';
+// import { setAttrs } from '../helpers.js';
 // import { set } from '../../functions/set';
 // /**
 //  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
