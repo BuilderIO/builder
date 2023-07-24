@@ -1,5 +1,5 @@
-import { camelToKebabCase } from '../functions/camel-to-kebab-case';
-import { checkIsDefined } from './nullable';
+import { camelToKebabCase } from '../functions/camel-to-kebab-case.js';
+import { checkIsDefined } from './nullable.js';
 
 export const convertStyleMapToCSSArray = (
   style: Partial<CSSStyleDeclaration>

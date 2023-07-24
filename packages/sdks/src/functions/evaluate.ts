@@ -1,9 +1,9 @@
 import type {
   BuilderContextInterface,
   BuilderRenderState,
-} from '../context/types';
-import { isBrowser } from './is-browser';
-import { isEditing } from './is-editing';
+} from '../context/types.js';
+import { isBrowser } from './is-browser.js';
+import { isEditing } from './is-editing.js';
 
 export function evaluate({
   code,

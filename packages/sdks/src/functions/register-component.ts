@@ -1,7 +1,7 @@
-import type { RegisteredComponent } from '../context/types';
-import type { ComponentInfo } from '../types/components';
-import type { Input } from '../types/input';
-import { fastClone } from './fast-clone';
+import type { RegisteredComponent } from '../context/types.js';
+import type { ComponentInfo } from '../types/components.js';
+import type { Input } from '../types/input.js';
+import { fastClone } from './fast-clone.js';
 
 /**
  * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.

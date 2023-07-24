@@ -3,7 +3,7 @@ import BuilderContext from '../../../context/builder.context.lite';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from '../../../context/types';
+} from '../../../context/types.js';
 import type { BuilderBlock } from '../../../types/builder-block';
 import Block from '../block.lite';
 import { useMetadata } from '@builder.io/mitosis';

@@ -1,5 +1,5 @@
 import ContentVariants from '../../components/content-variants/content-variants.lite';
-import type { BuilderContent } from '../../types/builder-content';
+import type { BuilderContent } from '../../types/builder-content.js';
 import {
   onMount,
   onUpdate,

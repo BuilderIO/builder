@@ -1,9 +1,9 @@
-import { TARGET } from '../constants/target';
-import type { BuilderContextInterface } from '../context/types';
-import { convertStyleMapToCSSArray } from '../helpers/css';
-import type { BuilderBlock } from '../types/builder-block';
-import { getReactNativeBlockStyles } from './get-react-native-block-styles';
-import { transformBlockProperties } from './transform-block-properties';
+import { TARGET } from '../constants/target.js';
+import type { BuilderContextInterface } from '../context/types.js';
+import { convertStyleMapToCSSArray } from '../helpers/css.js';
+import type { BuilderBlock } from '../types/builder-block.js';
+import { getReactNativeBlockStyles } from './get-react-native-block-styles.js';
+import { transformBlockProperties } from './transform-block-properties.js';
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   // currently we are only spreading the `href` property

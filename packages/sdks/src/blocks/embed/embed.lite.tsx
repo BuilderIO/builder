@@ -1,5 +1,5 @@
 import { onUpdate, useMetadata, useRef, useStore } from '@builder.io/mitosis';
-import { isJsScript } from './helpers';
+import { isJsScript } from './helpers.js';
 
 useMetadata({
   rsc: {

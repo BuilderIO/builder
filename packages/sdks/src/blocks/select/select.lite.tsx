@@ -1,6 +1,6 @@
-import { isEditing } from '../../functions/is-editing';
-import { For, useMetadata, useTarget } from '@builder.io/mitosis';
-import { filterAttrs } from '../helpers';
+import { isEditing } from '../../functions/is-editing.js';
+import { For, useTarget } from '@builder.io/mitosis';
+import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */

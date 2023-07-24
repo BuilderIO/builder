@@ -1,13 +1,13 @@
-import type { CanTrack } from '../types/can-track';
-import { getCookie, getCookieSync, setCookie } from './cookie';
+import type { CanTrack } from '../types/can-track.js';
+import { getCookie, getCookieSync, setCookie } from './cookie.js';
 import type {
   BuilderContent,
   BuilderContentVariation,
-} from '../types/builder-content';
-import type { Nullable, Overwrite } from '../types/typescript';
-import { checkIsDefined } from '../helpers/nullable';
-import { logger } from './logger';
-import { TARGET } from '../constants/target';
+} from '../types/builder-content.js';
+import type { Nullable, Overwrite } from '../types/typescript.js';
+import { checkIsDefined } from '../helpers/nullable.js';
+import { logger } from './logger.js';
+import { TARGET } from '../constants/target.js';
 
 const BUILDER_STORE_PREFIX = 'builder.tests';
 

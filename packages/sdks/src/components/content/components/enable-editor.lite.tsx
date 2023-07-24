@@ -1,10 +1,10 @@
-import type { BuilderContextInterface } from '../../../context/types';
-import { evaluate } from '../../../functions/evaluate';
-import { fetch } from '../../../functions/get-fetch';
-import { isBrowser } from '../../../functions/is-browser';
-import { isEditing } from '../../../functions/is-editing';
-import { createRegisterComponentMessage } from '../../../functions/register-component';
-import { _track } from '../../../functions/track/index';
+import type { BuilderContextInterface } from '../../../context/types.js';
+import { evaluate } from '../../../functions/evaluate.js';
+import { fetch } from '../../../functions/get-fetch.js';
+import { isBrowser } from '../../../functions/is-browser.js';
+import { isEditing } from '../../../functions/is-editing.js';
+import { createRegisterComponentMessage } from '../../../functions/register-component.js';
+import { _track } from '../../../functions/track/index.js';
 import builderContext from '../../../context/builder.context.lite';
 import type { Signal } from '@builder.io/mitosis';
 import {
@@ -21,18 +21,18 @@ import {
 import {
   registerInsertMenu,
   setupBrowserForEditing,
-} from '../../../scripts/init-editing';
-import { checkIsDefined } from '../../../helpers/nullable';
-import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction';
+} from '../../../scripts/init-editing.js';
+import { checkIsDefined } from '../../../helpers/nullable.js';
+import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import type {
   ContentProps,
   BuilderComponentStateChange,
-} from '../content.types';
-import { logger } from '../../../helpers/logger';
-import type { ComponentInfo } from '../../../types/components';
-import { getContent } from '../../../functions/get-content/index';
-import { isPreviewing } from '../../../functions/is-previewing';
-import type { BuilderContent } from '../../../types/builder-content';
+} from '../content.types.js';
+import { logger } from '../../../helpers/logger.js';
+import type { ComponentInfo } from '../../../types/components.js';
+import { getContent } from '../../../functions/get-content/index.js';
+import { isPreviewing } from '../../../functions/is-previewing.js';
+import type { BuilderContent } from '../../../types/builder-content.js';
 
 useMetadata({
   qwik: {

@@ -1,9 +1,9 @@
 import { useMetadata, type Signal } from '@builder.io/mitosis';
-import type { BuilderContextInterface } from '../../../context/types';
-import { getBlockActions } from '../../../functions/get-block-actions';
-import { getBlockProperties } from '../../../functions/get-block-properties';
-import type { BuilderBlock } from '../../../types/builder-block';
-import type { PropsWithChildren } from '../../../types/typescript';
+import type { BuilderContextInterface } from '../../../context/types.js';
+import { getBlockActions } from '../../../functions/get-block-actions.js';
+import { getBlockProperties } from '../../../functions/get-block-properties.js';
+import type { BuilderBlock } from '../../../types/builder-block.js';
+import type { PropsWithChildren } from '../../../types/typescript.js';
 
 export type InteractiveElementProps = {
   Wrapper: any;

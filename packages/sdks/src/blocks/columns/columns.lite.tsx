@@ -7,10 +7,10 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
-import { getSizesForBreakpoints } from '../../constants/device-sizes';
+import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
 import type { SizeName } from '../../constants/device-sizes';
 import InlinedStyles from '../../components/inlined-styles.lite';
-import { TARGET } from '../../constants/target';
+import { TARGET } from '../../constants/target.js';
 import type { Dictionary } from '../../types/typescript';
 import type {
   BuilderComponentsProp,

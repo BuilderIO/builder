@@ -1,6 +1,6 @@
-import type { BuilderContextInterface } from '../context/types';
-import type { BuilderBlock } from '../types/builder-block';
-import { evaluate } from './evaluate';
+import type { BuilderContextInterface } from '../context/types.js';
+import type { BuilderBlock } from '../types/builder-block.js';
+import { evaluate } from './evaluate.js';
 
 type Options = {
   block: BuilderBlock;

@@ -1,7 +1,7 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
-import type { BuilderBlock } from '../../types/builder-block';
-import { getSrcSet } from './image.helpers';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import { getSrcSet } from './image.helpers.js';
 
 useMetadata({
   rsc: {
