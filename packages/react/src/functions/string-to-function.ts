@@ -138,7 +138,7 @@ export function stringToFunction(
           args.map((arg, index) =>
             typeof arg === 'object'
               ? new ivm.Reference(
-                  index === 3
+                  index === indexOfBuilderInstance
                     ? {
                         // workaround: methods with default values for arguments is not being cloned over
                         ...arg,
@@ -184,7 +184,9 @@ export function stringToFunction(
   return final;
 }
 
+const indexOfBuilderInstance = 3;
 const makeFn = (code: string, useReturn: boolean) => {
+  // Order must match the order of the arguments to the function
   const names = ['state', 'event', 'block', 'builder', 'Device', 'update', 'Builder', 'context'];
   return `
   const refToProxy = (obj) => {
