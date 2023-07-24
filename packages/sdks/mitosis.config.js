@@ -168,7 +168,7 @@ module.exports = {
     // 'vue3',
     // 'solid',
     // 'svelte',
-    // 'react',
+    'react',
     // 'qwik',
   ],
   getTargetPath,
