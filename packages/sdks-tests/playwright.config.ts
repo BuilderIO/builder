@@ -20,9 +20,10 @@ const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
   solid: ['e2e-solidjs', 'e2e-solid-start'],
   qwik: ['e2e-qwik-city'],
   react: ['e2e-nextjs-react', 'e2e-react', 'e2e-nextjs-app-dir-client-react'],
-  vue: ['e2e-vue2', 'e2e-vue3', 'e2e-vue-nuxt3', 'e2e-vue-nuxt2'],
+  vue2: ['e2e-vue2', 'e2e-vue-nuxt2'],
+  vue3: ['e2e-vue3', 'e2e-vue-nuxt3'],
   svelte: ['e2e-svelte', 'e2e-sveltekit'],
-  rsc: [],
+  rsc: ['e2e-nextjs-app-dir-rsc'],
   oldReact: ['e2e-old-react', 'e2e-old-nextjs', 'e2e-old-react-remix'],
 };
 

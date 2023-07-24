@@ -5,8 +5,13 @@
 import Block from '../../components/block/block.lite';
 import BuilderBlocks from '../../components/blocks/blocks.lite';
 import { isEditing } from '../../functions/is-editing.js';
-import { For, Show, useRef, useStore } from '@builder.io/mitosis';
-
+import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
+import { filterAttrs } from '../helpers';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+import { setAttrs } from '../helpers';
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
  * to be cleaned up before the component can actually be usable.
@@ -268,7 +273,18 @@ export default function FormComponent(props: FormProps) {
       method={props.method}
       name={props.name}
       onSubmit={(event) => state.onSubmit(event)}
-      {...props.attributes}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', false),
+        vue3: filterAttrs(props.attributes, 'v-on:', false),
+        svelte: filterAttrs(props.attributes, 'on:', false),
+        default: {},
+      })}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', true),
+        vue3: filterAttrs(props.attributes, 'v-on:', true),
+        svelte: filterAttrs(props.attributes, 'on:', true),
+        default: props.attributes,
+      })}
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
         <For each={props.builderBlock?.children}>

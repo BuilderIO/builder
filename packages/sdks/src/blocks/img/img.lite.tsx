@@ -1,4 +1,11 @@
+import { useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
+import { filterAttrs } from '../helpers.js';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+import { setAttrs } from '../helpers';
 
 export interface ImgProps {
   attributes?: any;
@@ -28,7 +35,18 @@ export default function ImgComponent(props: ImgProps) {
       key={(isEditing() && props.imgSrc) || 'default-key'}
       alt={props.altText}
       src={props.imgSrc || props.image}
-      {...props.attributes}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', false),
+        vue3: filterAttrs(props.attributes, 'v-on:', false),
+        svelte: filterAttrs(props.attributes, 'on:', false),
+        default: {},
+      })}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', true),
+        vue3: filterAttrs(props.attributes, 'v-on:', true),
+        svelte: filterAttrs(props.attributes, 'on:', true),
+        default: props.attributes,
+      })}
     />
   );
 }

@@ -112,7 +112,22 @@ jobs:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
       fail-fast: false
       matrix:
-        sdk: ['svelte', 'qwik', 'react-native', 'react', 'solid', 'vue']
+        sdk: ['svelte', 'qwik', 'react-native', 'react', 'solid', 'vue2', 'vue3']
+        include:
+          - sdk: svelte
+            sdk-name: svelte
+          - sdk: qwik
+            sdk-name: qwik
+          - sdk: react-native
+            sdk-name: react-native
+          - sdk: react
+            sdk-name: react
+          - sdk: solid
+            sdk-name: solid
+          - sdk: vue2
+            sdk-name: vue
+          - sdk: vue3
+            sdk-name: vue
 
     defaults:
       run:
@@ -147,7 +162,7 @@ jobs:
         run: yarn build:mitosis
 
       - name: Build SDK
-        run: yarn workspace @builder.io/sdk-${{ matrix.sdk }} build
+        run: yarn workspace @builder.io/sdk-${{ matrix.sdk-name }} build
 
       - name: Install browsers for Playwright
         run: yarn workspace @builder.io/sdks-e2e-tests install-playwright

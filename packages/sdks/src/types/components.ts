@@ -32,6 +32,7 @@ export interface ComponentInfo {
    * like here github.com/BuilderIO/builder/blob/master/packages/react/src/blocks/forms/Input.tsx#L34
    */
   noWrap?: boolean;
+
   /**
    * Default children
    */
