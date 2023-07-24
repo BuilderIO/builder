@@ -22,6 +22,9 @@ interface PageProps {
   params: {
     slug: string[];
   };
+  searchParams: {
+    [key: string]: string;
+  };
 }
 
 // Pages are Server Components by default
@@ -29,7 +32,9 @@ export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
   const content = await getBuilderContent(urlPath);
 
-  if (!content.page) {
+  const isPreviewing = props.searchParams['builder.preview'];
+
+  if (!content.page && !isPreviewing) {
     return (
       <>
         <h1>404</h1>
