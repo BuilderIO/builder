@@ -3,8 +3,7 @@ import {
   getBuilderSearchParams,
   getContent,
   processContentResult,
-} from '../../sdk-src-output/src';
-
+} from '@builder.io/sdk-react';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';
