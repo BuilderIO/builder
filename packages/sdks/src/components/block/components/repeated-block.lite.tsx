@@ -4,7 +4,7 @@ import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../../context/types.js';
-import type { BuilderBlock } from '../../../types/builder-block';
+import type { BuilderBlock } from '../../../types/builder-block.js';
 import Block from '../block.lite';
 import { useMetadata } from '@builder.io/mitosis';
 

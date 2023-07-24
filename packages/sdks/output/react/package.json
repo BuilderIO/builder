@@ -8,13 +8,13 @@
   ],
   "exports": {
     ".": "./dist/sdk/index.js",
-    "./server": "./dist/sdk/functions/get-content/index.js"
+    "./server": "./dist/sdk/functions/get-content/index.js",
+    "./rsc": "./dist/server/index.js"
   },
   "scripts": {
-    "build:types:server": "tsc -p ./tsconfig.server.json",
-    "build:types:sdk": "tsc -p ./tsconfig.sdk.json",
-    "build:types": "yarn build:types:sdk",
-    "build": "yarn build:types"
+    "build:server": "tsc -p ./tsconfig.server.json",
+    "build:sdk": "tsc -p ./tsconfig.sdk.json",
+    "build": "yarn build:server && yarn build:sdk"
   },
   "peerDependencies": {
     "react": "^18.2.0"

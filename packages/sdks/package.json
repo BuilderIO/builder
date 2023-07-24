@@ -90,7 +90,7 @@
     "prettier": "^2.5.0",
     "prettier-plugin-svelte": "^2.10.1",
     "ts-jest": "^27.1.4",
-    "typescript": "^4",
+    "typescript": "^4.9.4",
     "watch": "^1.0.2"
   },
   "config": {

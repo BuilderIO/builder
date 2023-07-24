@@ -2,7 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist/server",
-    "module": "ESNext"
+    "module": "CommonJS",
   },
-  "include": ["./packages/react/src/functions/get-content/**/*"]
+  "include": [
+    "./packages/rsc/src/**/*"
+  ]
 }

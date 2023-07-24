@@ -10,7 +10,7 @@ import {
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
-} from '../../types/builder-props';
+} from '../../types/builder-props.js';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.

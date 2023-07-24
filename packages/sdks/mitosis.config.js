@@ -162,14 +162,14 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 module.exports = {
   files: 'src/**',
   targets: [
-    'reactNative',
-    'vue2',
+    // 'reactNative',
+    // 'vue2',
     'rsc',
-    'vue3',
-    'solid',
-    'svelte',
-    'react',
-    'qwik',
+    // 'vue3',
+    // 'solid',
+    // 'svelte',
+    // 'react',
+    // 'qwik',
   ],
   getTargetPath,
   options: {

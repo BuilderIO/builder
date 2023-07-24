@@ -4,7 +4,7 @@ import {
   normalizeSearchParams,
 } from '../get-builder-search-params/index.js';
 import type { GetContentOptions } from './types.js';
-import { DEFAULT_API_VERSION } from '../../types/api-version';
+import { DEFAULT_API_VERSION } from '../../types/api-version.js';
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
   const {

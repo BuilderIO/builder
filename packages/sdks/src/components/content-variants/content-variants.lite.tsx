@@ -11,14 +11,14 @@ import {
   getScriptString,
   getVariants,
   getVariantsScriptString,
-} from './helpers';
+} from './helpers.js';
 import ContentComponent from '../content/content.lite';
-import { getDefaultCanTrack } from '../../helpers/canTrack';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import InlinedStyles from '../inlined-styles.lite';
-import { handleABTestingSync } from '../../helpers/ab-tests';
+import { handleABTestingSync } from '../../helpers/ab-tests.js';
 import InlinedScript from '../inlined-script.lite';
-import { TARGET } from '../../constants/target';
-import type { ContentVariantsProps } from './content-variants.types';
+import { TARGET } from '../../constants/target.js';
+import type { ContentVariantsProps } from './content-variants.types.js';
 
 useMetadata({
   rsc: {

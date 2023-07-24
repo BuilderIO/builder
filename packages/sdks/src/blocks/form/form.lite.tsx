@@ -17,7 +17,7 @@ export default function FormComponent() {
 // import BuilderBlocks from '../../components/blocks/blocks.lite';
 // import { isEditing } from '../../functions/is-editing';
 // import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
-// import { filterAttrs } from '../helpers';
+// import { filterAttrs } from '../helpers.js';
 // /**
 //  * This import is used by the Svelte SDK. Do not remove.
 //  */
