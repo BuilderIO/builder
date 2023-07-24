@@ -13,14 +13,11 @@
     "allowSyntheticDefaultImports": true,
     // "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "classic",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "jsx": "react",
     "declaration": true
   },
-  "include": [
-    "./packages/react/src/**/*",
-  ],
   "exclude": [
     "./packages/react/src/blocks/form/form.tsx"
   ]

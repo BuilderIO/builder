@@ -2,7 +2,6 @@
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
   "version": "0.4.5",
-  "type": "module",
   "files": [
     "dist"
   ],
@@ -17,6 +16,7 @@
     "build": "yarn build:server && yarn build:sdk"
   },
   "peerDependencies": {
+    "next": "^13.4.4",
     "react": "^18.2.0"
   },
   "devDependencies": {

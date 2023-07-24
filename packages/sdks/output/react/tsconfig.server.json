@@ -5,6 +5,6 @@
     "module": "CommonJS",
   },
   "include": [
-    "./packages/rsc/src/**/*"
+    "./packages/rsc/src/index.ts"
   ]
 }
