@@ -32,7 +32,7 @@ export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
   const content = await getBuilderContent(urlPath);
 
-  const isPreviewing = !props.searchParams['builder.preview'];
+  const isPreviewing = props.searchParams['builder.preview'];
 
   if (!content.page && !isPreviewing) {
     return (
