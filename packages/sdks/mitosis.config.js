@@ -50,7 +50,7 @@ const getTargetPath = ({ target }) => {
     case 'vue3':
       return 'vue/packages/_vue3';
     case 'rsc':
-      return '../e2e/nextjs-react-app-dir/src/sdk-src-output';
+      return 'react/packages/rsc';
     case 'react':
       return 'react/packages/react';
     default:
