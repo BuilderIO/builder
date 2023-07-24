@@ -1,6 +1,6 @@
-"use client";
-import { BuilderComponent, useIsPreviewing } from "@builder.io/react";
-import DefaultErrorPage from "next/error";
+'use client';
+import { BuilderComponent, useIsPreviewing } from '@builder.io/react';
+import DefaultErrorPage from 'next/error';
 
 interface BuilderPageProps {
   content: any;

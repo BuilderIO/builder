@@ -1,10 +1,10 @@
-import React from "react";
-import { builder } from "@builder.io/sdk";
-import Head from "next/head";
-import { RenderBuilderContent } from "@/components/builder";
+import React from 'react';
+import { builder } from '@builder.io/sdk';
+import Head from 'next/head';
+import { RenderBuilderContent } from '@/components/builder';
 
 // Replace with your Public API Key
-builder.init("YJIGb4i01jvw0SRdL5Bt");
+builder.init('YJIGb4i01jvw0SRdL5Bt');
 
 interface PageProps {
   params: {
@@ -14,7 +14,7 @@ interface PageProps {
 
 export default async function SectionExample(props: PageProps) {
   const content = await builder
-    .get("blog-article", {
+    .get('blog-article', {
       prerender: false,
     })
     .toPromise();
@@ -26,9 +26,9 @@ export default async function SectionExample(props: PageProps) {
       </Head>
       <div
         style={{
-          background: "purple",
+          background: 'purple',
           fontSize: 24,
-          textAlign: "center",
+          textAlign: 'center',
           height: 200,
           padding: 20,
         }}
@@ -39,9 +39,9 @@ export default async function SectionExample(props: PageProps) {
       <RenderBuilderContent content={content} />
       <div
         style={{
-          background: "blue",
+          background: 'blue',
           fontSize: 14,
-          textAlign: "center",
+          textAlign: 'center',
           height: 200,
           padding: 20,
         }}
