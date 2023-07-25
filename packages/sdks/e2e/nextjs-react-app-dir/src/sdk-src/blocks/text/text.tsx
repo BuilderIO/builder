@@ -8,7 +8,7 @@ function Text(props: TextProps) {
   return (
     <span
       className="builder-text"
-      dangerouslySetInnerHTML={{ __html: props.text?.toString() }}
+      dangerouslySetInnerHTML={{ __html: props.text?.toString() || '' }}
       style={{
         outline: "none",
       }}

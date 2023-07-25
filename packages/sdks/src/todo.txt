@@ -1,3 +1,4 @@
 RSC types:
   - transpile React components to `.js` files
+    - actually, Next is ok with JSX files being named `.js`?
   - add explicit `.js` extensions to everything, including component imports.

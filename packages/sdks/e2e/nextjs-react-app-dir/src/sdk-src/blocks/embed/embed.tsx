@@ -10,9 +10,9 @@ import { isJsScript } from "./helpers";
 
 function Embed(props: EmbedProps) {
   const elem = useRef<HTMLDivElement>(null);
-  const [scriptsInserted, setScriptsInserted] = useState(() => []);
+  const [scriptsInserted, setScriptsInserted] = useState(() => [] as any);
 
-  const [scriptsRun, setScriptsRun] = useState(() => []);
+  const [scriptsRun, setScriptsRun] = useState(() => [] as any);
 
   const [ranInitFn, setRanInitFn] = useState(() => false);
 

@@ -24,7 +24,7 @@ import type { BuilderBlock } from "../../types/builder-block";
 import { getSrcSet } from "./image.helpers";
 
 function Image(props: ImageProps) {
-  function srcSetToUse() {
+  function srcSetToUse(): any {
     const imageToUse = props.image || props.src;
     const url = imageToUse;
     if (

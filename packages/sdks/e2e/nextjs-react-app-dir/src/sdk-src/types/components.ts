@@ -48,6 +48,7 @@ export interface ComponentInfo {
   defaults?: Partial<BuilderElement>;
   // eslint-disable-next-line @typescript-eslint/ban-types
   hooks?: {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     [key: string]: string | Function;
   };
   /**

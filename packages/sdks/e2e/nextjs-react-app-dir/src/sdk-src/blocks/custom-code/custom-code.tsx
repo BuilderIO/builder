@@ -9,9 +9,9 @@ export interface CustomCodeProps {
 
 function CustomCode(props: CustomCodeProps) {
   const elem = useRef<HTMLDivElement>(null);
-  const [scriptsInserted, setScriptsInserted] = useState(() => []);
+  const [scriptsInserted, setScriptsInserted] = useState(() => [] as string[]);
 
-  const [scriptsRun, setScriptsRun] = useState(() => []);
+  const [scriptsRun, setScriptsRun] = useState(() => [] as string[]);
 
   function findAndRunScripts() {
     // TODO: Move this function to standalone one in '@builder.io/utils'
