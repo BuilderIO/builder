@@ -29,6 +29,9 @@ useMetadata({
   qwik: {
     hasDeepStore: true,
   },
+  rsc: {
+    componentType: 'server',
+  },
 });
 
 export default function ContentComponent(props: ContentProps) {
@@ -82,6 +85,7 @@ export default function ContentComponent(props: ContentProps) {
         }),
         rootSetState: useTarget({
           qwik: undefined,
+          rsc: undefined,
           default: state.contentSetState,
         }),
         context: props.context || {},
@@ -126,8 +130,6 @@ export default function ContentComponent(props: ContentProps) {
         react: { setBuilderContextSignal: setBuilderContextSignal },
         // eslint-disable-next-line object-shorthand
         reactNative: { setBuilderContextSignal: setBuilderContextSignal },
-        // eslint-disable-next-line object-shorthand
-        rsc: { setBuilderContextSignal: setBuilderContextSignal },
         // eslint-disable-next-line object-shorthand
         solid: { setBuilderContextSignal: setBuilderContextSignal },
         default: {},

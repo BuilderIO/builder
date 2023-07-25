@@ -79,17 +79,38 @@ const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
 export const getAPIKey = (): string => 'abcd';
+const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
-export const getProps = async (
-  args: {
-    pathname?: string;
-    processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
-  } = {}
-) => {
-  const { pathname: _pathname = getPathnameFromWindow(), processContentResult } = args;
+export const getProps = async (args: {
+  pathname?: string;
+  processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+  getContent?: (opts: any) => Promise<BuilderContent | null>;
+  options?: any;
+  data?: 'real' | 'mock';
+}) => {
+  const {
+    pathname: _pathname = getPathnameFromWindow(),
+    processContentResult,
+    data = 'mock',
+    getContent,
+    options,
+  } = args;
   const pathname = normalizePathname(_pathname);
+
+  if (data === 'real' && getContent) {
+    return {
+      model: 'page',
+      apiKey: REAL_API_KEY,
+      content: await getContent({
+        model: 'page',
+        apiKey: REAL_API_KEY,
+        userAttributes: { urlPath: pathname },
+        options,
+      }),
+    };
+  }
   const _content = getContentForPathname(pathname);
 
   if (!_content) {

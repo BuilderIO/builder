@@ -1,7 +1,7 @@
 import BlockStyles from '../block/components/block-styles.lite';
 import Block from '../block/block.lite';
 import type { Signal } from '@builder.io/mitosis';
-import { For, Show } from '@builder.io/mitosis';
+import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type { BlocksWrapperProps } from './blocks-wrapper.lite';
 import BlocksWrapper from './blocks-wrapper.lite';
 import type {
@@ -13,6 +13,12 @@ export type BlocksProps = Partial<BlocksWrapperProps> & {
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
 };
+
+useMetadata({
+  rsc: {
+    componentType: 'server',
+  },
+});
 
 export default function Blocks(props: BlocksProps) {
   return (

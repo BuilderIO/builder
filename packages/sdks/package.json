@@ -35,7 +35,7 @@
     "e2e:build:solid": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-solid*\" run build",
     "e2e:build:qwik": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-qwik*\" run build",
     "e2e:build:react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e?(-*)-react\" run build",
-    "e2e:build:rsc": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-nextjs-app-dir-rsc\" run build",
+    "e2e:build:nextjs": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-nextjs-app-dir-rsc\" run build",
     "e2e:build:vue2": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*2\" run build",
     "e2e:build:vue3": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*3\" run build",
     "e2e:build:vue": "yarn run e2e:build:vue2 && yarn run e2e:build:vue3",
@@ -45,7 +45,7 @@
     "e2e:run:solid": "SDK=solid yarn e2e:run",
     "e2e:run:qwik": "SDK=qwik yarn e2e:run",
     "e2e:run:react": "SDK=react yarn e2e:run",
-    "e2e:run:rsc": "SDK=rsc yarn e2e:run",
+    "e2e:run:nextjs": "SDK=rsc yarn e2e:run",
     "e2e:run:vue2": "SDK=vue2 yarn e2e:run",
     "e2e:run:vue3": "SDK=vue3 yarn e2e:run",
     "e2e:run:old-react": "SDK=oldReact yarn e2e:run",
@@ -62,8 +62,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.114",
-    "@builder.io/mitosis-cli": "^0.0.72",
+    "@builder.io/mitosis": "^0.0.116",
+    "@builder.io/mitosis-cli": "^0.0.74",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
@@ -90,7 +90,7 @@
     "prettier": "^2.5.0",
     "prettier-plugin-svelte": "^2.10.1",
     "ts-jest": "^27.1.4",
-    "typescript": "^4",
+    "typescript": "^5.1.6",
     "watch": "^1.0.2"
   },
   "config": {

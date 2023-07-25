@@ -1,16 +1,21 @@
 import Blocks from '../../components/blocks/blocks.lite';
-import { For, Show, useContext, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block';
-import { getSizesForBreakpoints } from '../../constants/device-sizes';
-import type { SizeName } from '../../constants/device-sizes';
+import {
+  For,
+  Show,
+  useMetadata,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
+import type { SizeName } from '../../constants/device-sizes.js';
 import InlinedStyles from '../../components/inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
-import type { Dictionary } from '../../types/typescript';
+import type { Dictionary } from '../../types/typescript.js';
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
-} from '../../types/builder-props';
+} from '../../types/builder-props.js';
 
 type Column = {
   blocks: BuilderBlock[];
@@ -21,6 +26,15 @@ type CSSVal = string | number;
 
 type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
+useMetadata({
+  rsc: {
+    componentType: 'server',
+  },
+  qwik: {
+    setUseStoreFirst: true,
+  },
+});
+
 export interface ColumnProps extends BuilderComponentsProp {
   columns?: Column[];
   builderBlock: BuilderBlock;
@@ -30,8 +44,6 @@ export interface ColumnProps extends BuilderComponentsProp {
 }
 
 export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
-  const builderContext = useContext(BuilderContext);
-
   const state = useStore({
     gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
     cols: props.columns || [],
@@ -73,19 +85,16 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
         : 'column',
 
     get columnsCssVars(): Dictionary<string> {
-      if (TARGET === 'reactNative') {
-        return {
-          flexDirection: state.flexDir,
-        } as Dictionary<string>;
-      }
-
-      return {
-        '--flex-dir': state.flexDir,
-        '--flex-dir-tablet': state.getTabletStyle({
-          stackedStyle: state.flexDir,
-          desktopStyle: 'row',
-        }),
-      } as Dictionary<string>;
+      return useTarget({
+        reactNative: { flexDirection: state.flexDir },
+        default: {
+          '--flex-dir': state.flexDir,
+          '--flex-dir-tablet': state.getTabletStyle({
+            stackedStyle: state.flexDir,
+            desktopStyle: 'row',
+          }),
+        } as Dictionary<string>,
+      });
     },
 
     columnCssVars(index: number): Dictionary<string> {
@@ -102,7 +111,11 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 
-      const marginLeftKey = TARGET === 'react' ? 'marginLeft' : 'margin-left';
+      const marginLeftKey = useTarget({
+        react: 'marginLeft',
+        rsc: 'marginLeft',
+        default: 'margin-left',
+      });
 
       return {
         width,
@@ -128,7 +141,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
 
     getWidthForBreakpointSize(size: SizeName) {
       const breakpointSizes = getSizesForBreakpoints(
-        builderContext.value.content?.meta?.breakpoints || {}
+        props.builderContext.value.content?.meta?.breakpoints || {}
       );
 
       return breakpointSizes[size].max;
@@ -171,7 +184,12 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
         lineHeight: 'normal',
       }}
       style={state.columnsCssVars}
-      dataSet={{ 'builder-block-name': 'builder-columns' }}
+      {...useTarget({
+        reactNative: {
+          dataSet: { 'builder-block-name': 'builder-columns' },
+        },
+        default: {},
+      })}
     >
       <Show when={TARGET !== 'reactNative'}>
         {/**
@@ -188,7 +206,12 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
           <div
             style={state.columnCssVars(index)}
             class="builder-column"
-            dataSet={{ 'builder-block-name': 'builder-column' }}
+            {...useTarget({
+              reactNative: {
+                dataSet: { 'builder-block-name': 'builder-column' },
+              },
+              default: {},
+            })}
             css={{
               display: 'flex',
               flexDirection: 'column',
@@ -201,7 +224,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
-              context={builderContext}
+              context={props.builderContext}
               registeredComponents={props.builderComponents}
             />
           </div>

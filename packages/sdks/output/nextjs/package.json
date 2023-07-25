@@ -1,0 +1,24 @@
+{
+  "name": "@builder.io/sdk-react-nextjs",
+  "description": "Builder.io SDK for React",
+  "version": "0.4.5",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "next": "^13.4.4",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "next": "^13.4.4",
+    "react": "^18.2.0",
+    "typescript": "^5.1.6"
+  }
+}

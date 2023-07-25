@@ -2,29 +2,21 @@
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
   "version": "0.4.5",
-  "type": "module",
   "files": [
     "dist"
   ],
   "exports": {
-    ".": "./dist/sdk/index.js",
-    "./server": "./dist/sdk/functions/get-content/index.js"
+    ".": "./dist/index.js",
+    "./server": "./dist/functions/get-content/index.js"
   },
   "scripts": {
-    "build:types:server": "tsc -p ./tsconfig.server.json",
-    "build:types:sdk": "tsc -p ./tsconfig.sdk.json",
-    "build:types": "yarn build:types:sdk",
-    "build": "yarn build:types"
+    "build": "tsc"
   },
   "peerDependencies": {
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.0",
     "react": "^18.2.0",
-    "rollup-plugin-preserve-directives": "^0.1.0",
-    "typescript": "^4.9.4",
-    "vite": "^4.3.3",
-    "vite-plugin-dts": "^2.3.0"
+    "typescript": "^5.1.6"
   }
 }

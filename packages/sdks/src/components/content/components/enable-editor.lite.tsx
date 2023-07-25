@@ -16,6 +16,7 @@ import {
   useMetadata,
   useRef,
   setContext,
+  useTarget,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
@@ -27,7 +28,6 @@ import type {
   ContentProps,
   BuilderComponentStateChange,
 } from '../content.types.js';
-import { TARGET } from '../../../constants/target.js';
 import { logger } from '../../../helpers/logger.js';
 import type { ComponentInfo } from '../../../types/components.js';
 import { getContent } from '../../../functions/get-content/index.js';
@@ -37,6 +37,11 @@ import type { BuilderContent } from '../../../types/builder-content.js';
 useMetadata({
   qwik: {
     hasDeepStore: true,
+  },
+  plugins: {
+    reactNative: {
+      useScrollView: true,
+    },
   },
 });
 
@@ -71,6 +76,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       };
     },
+    lastUpdated: 0,
+    shouldSendResetCookie: false,
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
@@ -106,8 +113,109 @@ export default function EnableEditor(props: BuilderEditorProps) {
             }
             break;
           }
+          case 'builder.hardReset': {
+            useTarget({
+              rsc: () => {
+                const lastUpdatedAutosave = parseInt(
+                  data.data.lastUpdatedAutosave
+                );
+
+                console.log('HARD RESET', { lastUpdatedAutosave });
+
+                const lastUpdatedToUse =
+                  !isNaN(lastUpdatedAutosave) &&
+                  lastUpdatedAutosave > state.lastUpdated
+                    ? lastUpdatedAutosave
+                    : state.lastUpdated;
+                state.lastUpdated = lastUpdatedToUse;
+
+                console.log('HARD RESET', {
+                  shouldSendResetCookie: state.shouldSendResetCookie,
+                });
+                if (state.shouldSendResetCookie) {
+                  console.log('HARD RESET: refreshing.');
+                  document.cookie = `builder.hardReset=${lastUpdatedToUse};max-age=100`;
+                  state.shouldSendResetCookie = false;
+
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  router.refresh();
+                } else {
+                  console.log('HARD RESET: not refreshing.');
+                }
+              },
+            });
+            break;
+          }
+
           case 'builder.patchUpdates': {
-            // TODO
+            useTarget({
+              rsc: () => {
+                const patches = data.data.data;
+
+                for (const contentId of Object.keys(patches)) {
+                  const patchesForBlock = patches[contentId];
+
+                  // TO-DO: fix scenario where we end up with -Infinity
+                  const getLastIndex = () =>
+                    Math.max(
+                      ...document.cookie
+                        .split(';')
+                        .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                        .map((x) => {
+                          const parsedIndex = parseInt(
+                            x.split('=')[0].split(contentIdKeyPrefix)[1]
+                          );
+                          return isNaN(parsedIndex) ? 0 : parsedIndex;
+                        })
+                    ) || 0;
+
+                  const contentIdKeyPrefix = `builder.patch.${contentId}.`;
+
+                  // get last index of patch for this block
+                  const lastIndex = getLastIndex();
+
+                  const cookie = {
+                    name: `${contentIdKeyPrefix}${lastIndex + 1}`,
+                    value: encodeURIComponent(JSON.stringify(patchesForBlock)),
+                  };
+
+                  // remove hard reset cookie just in case it was set in a prior update.
+                  document.cookie = `builder.hardReset=no;max-age=0`;
+                  document.cookie = `${cookie.name}=${cookie.value};max-age=30`;
+
+                  const newCookieValue = document.cookie
+                    .split(';')
+                    .find((x) => x.trim().startsWith(cookie.name))
+                    ?.split('=')[1];
+
+                  if (newCookieValue !== cookie.value) {
+                    console.warn('Cookie did not save correctly.');
+                    console.log('Clearing all Builder patch cookies...');
+
+                    window.parent?.postMessage(
+                      { type: 'builder.patchUpdatesFailed', data: data.data },
+                      '*'
+                    );
+
+                    document.cookie
+                      .split(';')
+                      .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
+                      .forEach((x) => {
+                        document.cookie = `${x.split('=')[0]}=;max-age=0`;
+                      });
+
+                    state.shouldSendResetCookie = true;
+                  } else {
+                    console.log('cookie saved correctly');
+
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    router.refresh();
+                  }
+                }
+              },
+            });
             break;
           }
         }
@@ -210,10 +318,65 @@ export default function EnableEditor(props: BuilderEditorProps) {
   setContext(builderContext, props.builderContextSignal);
 
   onUpdate(() => {
-    if (props.content) {
-      state.mergeNewContent(props.content);
-    }
+    useTarget({
+      rsc: () => {
+        if (!props.content) return;
+
+        const lastUpdatedAutosave = props.content.meta?.lastUpdatedAutosave;
+
+        const hardResetCookie = document.cookie
+          .split(';')
+          .find((x) => x.trim().startsWith('builder.hardReset'));
+        const hardResetCookieValue = hardResetCookie?.split('=')[1];
+
+        if (!hardResetCookieValue) return;
+
+        if (
+          lastUpdatedAutosave &&
+          parseInt(hardResetCookieValue) <= lastUpdatedAutosave
+        ) {
+          console.log('got fresh content! 🎉');
+          document.cookie = `builder.hardReset=;max-age=0`;
+
+          window.parent?.postMessage(
+            {
+              type: 'builder.freshContentFetched',
+              data: {
+                contentId: props.content.id,
+                lastUpdated: lastUpdatedAutosave,
+              },
+            },
+            '*'
+          );
+        } else {
+          console.log(
+            'hard reset cookie is newer than lastUpdatedAutosave, refreshing'
+          );
+          document.cookie = `builder.hardReset=${hardResetCookieValue};max-age=100`;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          router.refresh();
+        }
+      },
+
+      default: () => {
+        if (props.content) {
+          state.mergeNewContent(props.content);
+        }
+      },
+    });
   }, [props.content]);
+
+  onUpdate(() => {
+    useTarget({
+      rsc: () => {
+        if (isBrowser()) {
+          window.removeEventListener('message', state.processMessage);
+          window.addEventListener('message', state.processMessage);
+        }
+      },
+    });
+  }, [state.shouldSendResetCookie]);
 
   onUnMount(() => {
     if (isBrowser()) {
@@ -267,41 +430,46 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
       }
 
-      // override normal content in preview mode
-      if (isPreviewing()) {
-        const searchParams = new URL(location.href).searchParams;
-        const searchParamPreviewModel = searchParams.get('builder.preview');
-        const searchParamPreviewId = searchParams.get(
-          `builder.preview.${searchParamPreviewModel}`
-        );
-        const previewApiKey =
-          searchParams.get('apiKey') || searchParams.get('builder.space');
+      useTarget({
+        rsc: () => {},
+        default: () => {
+          // override normal content in preview mode
+          if (isPreviewing()) {
+            const searchParams = new URL(location.href).searchParams;
+            const searchParamPreviewModel = searchParams.get('builder.preview');
+            const searchParamPreviewId = searchParams.get(
+              `builder.preview.${searchParamPreviewModel}`
+            );
+            const previewApiKey =
+              searchParams.get('apiKey') || searchParams.get('builder.space');
 
-        /**
-         * Make sure that:
-         * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
-         *  at the same time, e.g. header/page/footer.
-         * - the API key is the same, since we don't want to preview content from other organizations.
-         * - if there is content, that the preview ID is the same as that of the one we receive.
-         *
-         * TO-DO: should we only update the state when there is a change?
-         **/
-        if (
-          searchParamPreviewModel === props.model &&
-          previewApiKey === props.apiKey &&
-          (!props.content || searchParamPreviewId === props.content.id)
-        ) {
-          getContent({
-            model: props.model,
-            apiKey: props.apiKey,
-            apiVersion: props.builderContextSignal.value.apiVersion,
-          }).then((content) => {
-            if (content) {
-              state.mergeNewContent(content);
+            /**
+             * Make sure that:
+             * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
+             *  at the same time, e.g. header/page/footer.
+             * - the API key is the same, since we don't want to preview content from other organizations.
+             * - if there is content, that the preview ID is the same as that of the one we receive.
+             *
+             * TO-DO: should we only update the state when there is a change?
+             **/
+            if (
+              searchParamPreviewModel === props.model &&
+              previewApiKey === props.apiKey &&
+              (!props.content || searchParamPreviewId === props.content.id)
+            ) {
+              getContent({
+                model: props.model,
+                apiKey: props.apiKey,
+                apiVersion: props.builderContextSignal.value.apiVersion,
+              }).then((content) => {
+                if (content) {
+                  state.mergeNewContent(content);
+                }
+              });
             }
-          });
-        }
-      }
+          }
+        },
+      });
 
       state.evaluateJsCode();
       state.runHttpRequests();
@@ -334,15 +502,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
         builder-content-id={props.builderContextSignal.value.content?.id}
         builder-model={props.model}
         className={props.classNameProp}
-        {...(TARGET === 'reactNative'
-          ? {
-              dataSet: {
-                // currently, we can't set the actual ID here.
-                // we don't need it right now, we just need to identify content divs for testing.
-                'builder-content-id': '',
-              },
-            }
-          : {})}
+        {...useTarget({
+          reactNative: {
+            // currently, we can't set the actual ID here.
+            // we don't need it right now, we just need to identify content divs for testing.
+            dataSet: { 'builder-content-id': '' },
+          },
+          default: {},
+        })}
         {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
       >
         {props.children}

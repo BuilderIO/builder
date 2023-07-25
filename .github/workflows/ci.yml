@@ -112,7 +112,7 @@ jobs:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
       fail-fast: false
       matrix:
-        sdk: ['svelte', 'qwik', 'react-native', 'react', 'solid', 'vue2', 'vue3']
+        sdk: ['svelte', 'qwik', 'react-native', 'react', 'nextjs', 'solid', 'vue2', 'vue3']
         include:
           - sdk: svelte
             sdk-name: svelte
@@ -122,6 +122,8 @@ jobs:
             sdk-name: react-native
           - sdk: react
             sdk-name: react
+          - sdk: nextjs
+            sdk-name: react-nextjs
           - sdk: solid
             sdk-name: solid
           - sdk: vue2

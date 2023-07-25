@@ -50,9 +50,7 @@ const getTargetPath = ({ target }) => {
     case 'vue3':
       return 'vue/packages/_vue3';
     case 'rsc':
-      return 'react/packages/rsc';
-    case 'react':
-      return 'react/packages/react';
+      return 'nextjs';
     default:
       return kebabCase(target);
   }
@@ -133,18 +131,6 @@ const SRCSET_PLUGIN = () => ({
       // workaround until we resolve
       // https://github.com/BuilderIO/mitosis/issues/526
       return code.replace(/srcset=/g, 'srcSet=');
-    },
-  },
-});
-
-/**
- * @type {Plugin}
- */
-const REACT_NEXT_V13_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      // Needed for next v13 to work
-      return `'use client';\n${code}`;
     },
   },
 });
@@ -256,10 +242,7 @@ module.exports = {
                     '<block-wrapper v-else ',
                     '<block-wrapper v-else-if="canShowBlock" '
                   )
-                  .replace(
-                    'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
-                    'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
-                  );
+                  .replace('&& canShowBlock)"', ') && canShowBlock"');
               }
               return code;
             },
@@ -270,36 +253,49 @@ module.exports = {
     vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
       typescript: true,
+      plugins: [SRCSET_PLUGIN],
+      stylesType: 'style-tag',
+    },
+    rsc: {
+      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
-              traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) return;
+              if (json.name === 'Symbol') {
+                delete json.state.setContent;
 
-                if (item.bindings['dataSet']) {
-                  delete item.bindings['dataSet'];
-                }
+                // @ts-ignore
+                json.state.contentToUse.code =
+                  json.state.contentToUse?.code.replace('async () => ', '');
+              } else if (json.name === 'EnableEditor') {
+                json.imports.push({
+                  path: 'next/navigation',
+                  imports: {
+                    useRouter: 'useRouter',
+                  },
+                });
 
-                if (item.properties['dataSet']) {
-                  delete item.properties['dataSet'];
-                }
-              });
+                json.hooks.init = {
+                  code: `const router = useRouter();`,
+                };
+              }
+              return json;
+            },
+          },
+          code: {
+            pre: (code) => {
+              return code.replace('function Symbol(', 'async function Symbol(');
             },
           },
         }),
       ],
       stylesType: 'style-tag',
     },
-    rsc: {
-      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN],
-    },
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
         BASE_TEXT_PLUGIN,
         () => ({
           json: {
@@ -361,8 +357,7 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (!['BlocksWrapper', 'EnableEditor'].includes(json.name))
-                return;
+              if (!json.meta?.useMetadata?.reactNative?.useScrollView) return;
 
               /**
                * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
@@ -382,31 +377,7 @@ module.exports = {
     },
     qwik: {
       typescript: true,
-      plugins: [
-        SRCSET_PLUGIN,
-        () => ({
-          json: {
-            pre: (json) => {
-              // We want to keep this component as a light component to avoid the overhead of a full component, which is
-              // a ton of HTML comments. Therefore, we convert these properties to getters so we don't have `useStore`
-              // calls in the component.
-              if (json.name === 'Block') {
-                convertPropertyStateValueToGetter({
-                  value: json.state['repeatItemData'],
-                  key: 'repeatItemData',
-                });
-
-                convertPropertyStateValueToGetter({
-                  value: json.state['component'],
-                  key: 'component',
-                });
-              }
-
-              return json;
-            },
-          },
-        }),
-      ],
+      plugins: [SRCSET_PLUGIN],
     },
     svelte: {
       typescript: true,
