@@ -1,7 +1,6 @@
 import { getProps } from '@builder.io/sdks-e2e-tests';
 import { processContentResult, getContent } from '@builder.io/sdk-react/server';
-import { getBuilderSearchParams } from '@builder.io/sdk-react';
-import BuilderPage from './BuilderPage';
+import { RenderContent, getBuilderSearchParams } from '@builder.io/sdk-react';
 
 interface PageProps {
   params: {
@@ -29,7 +28,7 @@ export default async function Page(props: PageProps) {
       </>
     );
   }
-  return <BuilderPage builderProps={builderProps} />;
+  return <RenderContent {...builderProps} />;
 }
 
 export const revalidate = 4;
