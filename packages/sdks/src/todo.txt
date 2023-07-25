@@ -1,0 +1,3 @@
+RSC types:
+  - transpile React components to `.js` files
+  - add explicit `.js` extensions to everything, including component imports.
