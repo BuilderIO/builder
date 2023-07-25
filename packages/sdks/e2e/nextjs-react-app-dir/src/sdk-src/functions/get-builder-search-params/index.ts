@@ -10,6 +10,15 @@ export const convertSearchParamsToQueryObject = (searchParams: URLSearchParams):
   return options;
 };
 
+export const getHashForSearchParams = (options: Record<string, string | string[]>) => {
+  // const options = getBuilderSearchParams(searchParams);
+  
+  return Object.keys(options)
+    .sort()
+    .map(key => `${key}:${options[key]}`)
+    .join(',');
+};
+
 /**
  * Receives a `URLSearchParams` object or a regular query object, and returns the subset of query params that are
  * relevant to the Builder SDK.
@@ -21,8 +30,10 @@ export const getBuilderSearchParams = (_options: QueryObject | URLSearchParams |
     return {};
   }
   const options = normalizeSearchParams(_options);
+  
   const newOptions: QueryObject = {};
   Object.keys(options).forEach(key => {
+    
     if (key.startsWith(BUILDER_SEARCHPARAMS_PREFIX)) {
       const trimmedKey = key.replace(BUILDER_SEARCHPARAMS_PREFIX, '').replace(BUILDER_OPTIONS_PREFIX, '');
       newOptions[trimmedKey] = options[key];

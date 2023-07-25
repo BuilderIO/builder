@@ -25,7 +25,7 @@ export default async function Page(props: MyPageProps) {
     processContentResult,
     options: getBuilderSearchParams(props.searchParams),
     getContent,
-    data: 'real',
+    data: (props.searchParams.testData as any) || 'mock',
   });
 
   if (!builderProps) {
@@ -62,4 +62,4 @@ export default async function Page(props: MyPageProps) {
     </div>
   );
 }
-export const revalidate = 4;
+export const revalidate = 1;

@@ -1,3 +1,4 @@
+import { getPreviewContent } from '@/sdk-src/db';
 import { TARGET } from '../../constants/target';
 import { handleABTesting } from '../../helpers/ab-tests';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
@@ -28,7 +29,7 @@ type ContentResponse = ContentResults | {
 };
 const fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options);
-  const res = await fetch(url.href);
+  const res = await fetch(url.href, { next: { revalidate: 1 }});
   const content = await (res.json() as Promise<ContentResponse>);
   return content;
 };
@@ -71,6 +72,14 @@ export const processContentResult = async (options: GetContentOptions, content: 
 export async function getAllContent(options: GetContentOptions): Promise<ContentResponse | null> {
   try {
     const url = generateContentUrl(options);
+
+    const newLocal = getPreviewContent(options.options || {});
+
+    if (newLocal) {
+      console.log('Using preview content from db');
+      return {results: [newLocal]};
+    }
+
     const content = await fetchContent(options);
     if (!checkContentHasResults(content)) {
       logger.error('Error fetching data. ', {
