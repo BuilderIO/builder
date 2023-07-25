@@ -1,7 +1,7 @@
-import type { BuilderContextInterface } from '../../context/types';
-import { getContent } from '../../functions/get-content';
-import { logger } from '../../helpers/logger';
-import type { BuilderContent } from '../../types/builder-content';
+import type { BuilderContextInterface } from '../../context/types.js';
+import { getContent } from '../../functions/get-content/index.js';
+import { logger } from '../../helpers/logger.js';
+import type { BuilderContent } from '../../types/builder-content.js';
 
 export interface SymbolInfo {
   model?: string;

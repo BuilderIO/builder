@@ -1,11 +1,11 @@
 import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from '../../context/types';
-import { evaluate } from '../../functions/evaluate';
-import { getProcessedBlock } from '../../functions/get-processed-block';
-import type { BuilderBlock } from '../../types/builder-block';
-import type { RepeatData } from './types';
+} from '../../context/types.js';
+import { evaluate } from '../../functions/evaluate.js';
+import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import type { RepeatData } from './types.js';
 
 /**
  * https://developer.mozilla.org/en-US/docs/Glossary/Empty_element

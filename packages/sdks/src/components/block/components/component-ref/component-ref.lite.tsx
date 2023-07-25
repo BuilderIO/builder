@@ -11,6 +11,12 @@ useMetadata({
   },
 });
 
+useMetadata({
+  rsc: {
+    componentType: 'server',
+  },
+});
+
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
     Wrapper: props.isInteractive ? InteractiveElement : props.componentRef,

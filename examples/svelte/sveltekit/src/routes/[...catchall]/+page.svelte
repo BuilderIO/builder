@@ -40,16 +40,12 @@
 	<div>Below is your Builder Content:</div>
 	{#if canShowContent}
 		<div>page Title: {data.content?.data?.title || 'Unpublished'}</div>
-		<!-- force re-rendering of `RenderContent` on client-side navigation -->
-		{#key data.content}
-			<!-- Render builder content with all required props -->
-			<RenderContent
-				model="page"
-				content={data.content}
-				apiKey={BUILDER_PUBLIC_API_KEY}
-				customComponents={CUSTOM_COMPONENTS}
-			/>
-		{/key}
+		<RenderContent
+			model="page"
+			content={data.content}
+			apiKey={BUILDER_PUBLIC_API_KEY}
+			customComponents={CUSTOM_COMPONENTS}
+		/>
 	{:else}
 		Content Not Found
 	{/if}

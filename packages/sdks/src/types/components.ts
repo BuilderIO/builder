@@ -1,5 +1,5 @@
-import type { BuilderElement } from './element';
-import type { Input } from './input';
+import type { BuilderElement } from './element.js';
+import type { Input } from './input.js';
 
 export interface ComponentInfo {
   /**

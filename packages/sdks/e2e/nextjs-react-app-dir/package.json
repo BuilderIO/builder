@@ -10,7 +10,7 @@
     "serve": "yarn start"
   },
   "dependencies": {
-    "@builder.io/sdk-react": "workspace:*",
+    "@builder.io/sdk-react-nextjs": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "eslint-config-next": "^13",
     "next": "^13.4.4",
@@ -20,6 +20,6 @@
   "devDependencies": {
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
-    "typescript": "^4"
+    "typescript": "^5.1.6"
   }
 }

@@ -1,7 +1,13 @@
 import { getProps } from '@builder.io/sdks-e2e-tests';
-import { processContentResult, getContent } from '@builder.io/sdk-react/server';
-import { getBuilderSearchParams } from '@builder.io/sdk-react';
-import BuilderPage from './BuilderPage';
+import {
+  processContentResult,
+  getContent,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+} from '@builder.io/sdk-react/server';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { RenderContent, getBuilderSearchParams } from '@builder.io/sdk-react';
 
 interface PageProps {
   params: {
@@ -29,7 +35,7 @@ export default async function Page(props: PageProps) {
       </>
     );
   }
-  return <BuilderPage builderProps={builderProps} />;
+  return <RenderContent {...builderProps} />;
 }
 
 export const revalidate = 4;

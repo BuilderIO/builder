@@ -1,13 +1,13 @@
-import { TARGET } from '../../constants/target';
-import { handleABTesting } from '../../helpers/ab-tests';
-import { getDefaultCanTrack } from '../../helpers/canTrack';
-import { logger } from '../../helpers/logger';
-import type { BuilderContent } from '../../types/builder-content';
-import { fetch } from '../get-fetch';
-import { isBrowser } from '../is-browser';
-import { generateContentUrl } from './generate-content-url';
-import { processCookies } from './processCookies';
-import type { GetContentOptions } from './types';
+import { TARGET } from '../../constants/target.js';
+import { handleABTesting } from '../../helpers/ab-tests.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
+import { logger } from '../../helpers/logger.js';
+import type { BuilderContent } from '../../types/builder-content.js';
+import { fetch } from '../get-fetch.js';
+import { isBrowser } from '../is-browser.js';
+import { generateContentUrl } from './generate-content-url.js';
+import { processCookies } from './processCookies.js';
+import type { GetContentOptions } from './types.js';
 
 const checkContentHasResults = (
   content: ContentResponse

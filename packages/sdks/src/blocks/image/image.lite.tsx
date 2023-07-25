@@ -9,6 +9,12 @@ useMetadata({
   },
 });
 
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
+
 export interface ImageProps {
   className?: string;
   image: string;

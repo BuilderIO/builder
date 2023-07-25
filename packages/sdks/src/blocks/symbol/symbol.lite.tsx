@@ -1,5 +1,5 @@
 import ContentVariants from '../../components/content-variants/content-variants.lite';
-import type { BuilderContent } from '../../types/builder-content';
+import type { BuilderContent } from '../../types/builder-content.js';
 import {
   onMount,
   onUpdate,
@@ -10,15 +10,15 @@ import {
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
-} from '../../types/builder-props';
-import { filterAttrs } from '../helpers';
+} from '../../types/builder-props.js';
+import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
-import { setAttrs } from '../helpers';
-import { fetchContent } from './symbol.helpers';
-import type { Nullable } from '../../types/typescript';
+import { setAttrs } from '../helpers.js';
+import { fetchContent } from './symbol.helpers.js';
+import type { Nullable } from '../../types/typescript.js';
 
 useMetadata({
   rsc: {

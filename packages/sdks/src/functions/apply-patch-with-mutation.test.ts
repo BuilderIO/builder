@@ -1,4 +1,4 @@
-import { applyPatchWithMinimalMutationChain } from './apply-patch-with-mutation';
+import { applyPatchWithMinimalMutationChain } from './apply-patch-with-mutation.js';
 
 describe('applyPatchWithMinimalMutationChain', () => {
   test('Basic shallow update', () => {

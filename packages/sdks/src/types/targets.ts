@@ -1,7 +1,4 @@
-type MitosisTargets = import('@builder.io/mitosis').Target;
-
-export type Target = Extract<
-  MitosisTargets,
+export type Target =
   | 'vue3'
   | 'vue2'
   | 'reactNative'
@@ -9,5 +6,4 @@ export type Target = Extract<
   | 'qwik'
   | 'react'
   | 'solid'
-  | 'rsc'
->;
+  | 'rsc';

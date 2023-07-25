@@ -27,16 +27,21 @@ import { getInteractionPropertiesForEvent } from '../../../functions/track/inter
 import type {
   ContentProps,
   BuilderComponentStateChange,
-} from '../content.types';
-import { logger } from '../../../helpers/logger';
-import type { ComponentInfo } from '../../../types/components';
-import { getContent } from '../../../functions/get-content/index';
-import { isPreviewing } from '../../../functions/is-previewing';
-import type { BuilderContent } from '../../../types/builder-content';
+} from '../content.types.js';
+import { logger } from '../../../helpers/logger.js';
+import type { ComponentInfo } from '../../../types/components.js';
+import { getContent } from '../../../functions/get-content/index.js';
+import { isPreviewing } from '../../../functions/is-previewing.js';
+import type { BuilderContent } from '../../../types/builder-content.js';
 
 useMetadata({
   qwik: {
     hasDeepStore: true,
+  },
+  plugins: {
+    reactNative: {
+      useScrollView: true,
+    },
   },
 });
 

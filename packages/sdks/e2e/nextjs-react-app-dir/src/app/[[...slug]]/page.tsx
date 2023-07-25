@@ -3,8 +3,9 @@ import {
   getBuilderSearchParams,
   getContent,
   processContentResult,
-} from '../../sdk-src-output/src';
-
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+} from '@builder.io/sdk-react-nextjs';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';

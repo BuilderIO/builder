@@ -1,10 +1,10 @@
 import type {
   BuilderRenderContext,
   RegisteredComponent,
-} from '../../context/types';
-import type { ApiVersion } from '../../types/api-version';
-import type { BuilderContent } from '../../types/builder-content';
-import type { Nullable } from '../../types/typescript';
+} from '../../context/types.js';
+import type { ApiVersion } from '../../types/api-version.js';
+import type { BuilderContent } from '../../types/builder-content.js';
+import type { Nullable } from '../../types/typescript.js';
 
 export interface ContentVariantsProps {
   content?: Nullable<BuilderContent>;

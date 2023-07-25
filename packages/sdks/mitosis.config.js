@@ -50,9 +50,7 @@ const getTargetPath = ({ target }) => {
     case 'vue3':
       return 'vue/packages/_vue3';
     case 'rsc':
-      return '../e2e/nextjs-react-app-dir/src/sdk-src-output';
-    case 'react':
-      return 'react/packages/react';
+      return 'nextjs';
     default:
       return kebabCase(target);
   }
@@ -359,8 +357,7 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (!['BlocksWrapper', 'EnableEditor'].includes(json.name))
-                return;
+              if (!json.meta?.useMetadata?.reactNative?.useScrollView) return;
 
               /**
                * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
@@ -380,31 +377,7 @@ module.exports = {
     },
     qwik: {
       typescript: true,
-      plugins: [
-        SRCSET_PLUGIN,
-        () => ({
-          json: {
-            pre: (json) => {
-              // We want to keep this component as a light component to avoid the overhead of a full component, which is
-              // a ton of HTML comments. Therefore, we convert these properties to getters so we don't have `useStore`
-              // calls in the component.
-              if (json.name === 'Block') {
-                convertPropertyStateValueToGetter({
-                  value: json.state['repeatItemData'],
-                  key: 'repeatItemData',
-                });
-
-                convertPropertyStateValueToGetter({
-                  value: json.state['component'],
-                  key: 'component',
-                });
-              }
-
-              return json;
-            },
-          },
-        }),
-      ],
+      plugins: [SRCSET_PLUGIN],
     },
     svelte: {
       typescript: true,

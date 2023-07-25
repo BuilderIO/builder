@@ -6,16 +6,16 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block';
-import { getSizesForBreakpoints } from '../../constants/device-sizes';
-import type { SizeName } from '../../constants/device-sizes';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
+import type { SizeName } from '../../constants/device-sizes.js';
 import InlinedStyles from '../../components/inlined-styles.lite';
-import { TARGET } from '../../constants/target';
-import type { Dictionary } from '../../types/typescript';
+import { TARGET } from '../../constants/target.js';
+import type { Dictionary } from '../../types/typescript.js';
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
-} from '../../types/builder-props';
+} from '../../types/builder-props.js';
 
 type Column = {
   blocks: BuilderBlock[];

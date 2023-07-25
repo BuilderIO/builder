@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "es5",
+    "target": "ESNext",
     "jsx": "preserve",
     "jsxImportSource": "@builder.io/mitosis",
-    "esModuleInterop": true,
-    "lib": ["dom"],
+    "lib": ["dom", "ESNext"],
     "skipLibCheck": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
-    "checkJs": true,
     // needed to make sure vite/esbuild can bundle the code properly
     // https://vitejs.dev/guide/features.html#isolatedmodules
-    "isolatedModules": true
+    // "isolatedModules": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node16"
   },
-  "include": ["src", "typings", "mitosis.config.js"]
+  "include": ["src/**/*", "typings", "mitosis.config.js"]
 }

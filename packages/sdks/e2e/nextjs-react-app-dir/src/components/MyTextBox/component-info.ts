@@ -1,6 +1,4 @@
-import type { ComponentInfo } from '@/sdk-src';
-
-export const componentInfo: ComponentInfo = {
+export const componentInfo = {
   name: 'MyTextBox',
   static: true,
   image:

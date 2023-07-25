@@ -84,6 +84,7 @@ export function stringToFunction(
           }
           /* Alias */
           var ctx = context;
+          var log = console.log.bind(console);
           with (rootState) {
             ${useReturn ? `return (${str});` : str};
           }
@@ -118,21 +119,36 @@ export function stringToFunction(
         // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
         // for the server build
         // TODO: cache these for better performancs with new VmScript
-        // tslint:disable:comment-format
-        const { VM } = safeDynamicRequire('vm2') as typeof import('vm2');
-        const [state, event, _block, _builder, _Device, _update, _Builder, context] = args;
+        const isolateContext: import('isolated-vm').Context = getIsolateContext();
+        const jail = isolateContext.global;
+        // This makes the global object available in the context as `global`. We use `derefInto()` here
+        // because otherwise `global` would actually be a Reference{} object in the new isolate.
+        jail.setSync('global', jail.derefInto());
 
-        return new VM({
-          timeout: 100,
-          sandbox: {
-            ...state,
-            ...{ state },
-            ...{ context },
-            ...{ builder: api },
-            event,
-          },
-        }).run(str.replace(/(^|;)return /, '$1'));
-        // tslint:enable:comment-format
+        // We will create a basic `log` function for the new isolate to use.
+        jail.setSync('log', function (...args: any[]) {
+          if (isDebug()) {
+            console.log(...args);
+          }
+        });
+
+        const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
+        return isolateContext.evalClosureSync(
+          makeFn(str, useReturn),
+          args.map((arg, index) =>
+            typeof arg === 'object'
+              ? new ivm.Reference(
+                  index === indexOfBuilderInstance
+                    ? {
+                        // workaround: methods with default values for arguments is not being cloned over
+                        ...arg,
+                        getUserAttributes: () => arg.getUserAttributes(''),
+                      }
+                    : arg
+                )
+              : null
+          )
+        );
       }
     } catch (error: any) {
       if (Builder.isBrowser) {
@@ -167,3 +183,44 @@ export function stringToFunction(
 
   return final;
 }
+
+const indexOfBuilderInstance = 3;
+const makeFn = (code: string, useReturn: boolean) => {
+  // Order must match the order of the arguments to the function
+  const names = ['state', 'event', 'block', 'builder', 'Device', 'update', 'Builder', 'context'];
+  return `
+  const refToProxy = (obj) => {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+  return new Proxy({}, {
+      get(target, key) {
+          const val = obj.getSync(key);
+          if (typeof val?.getSync === 'function') {
+              return refToProxy(val);
+          }
+          return val;
+      },
+      set(target, key, value) {
+          obj.setSync(key, value);
+      },
+      deleteProperty(target, key) {
+          obj.deleteSync(key);
+      }
+    })
+}
+`.concat(names.map((arg, index) => `var ${arg} = refToProxy($${index});`).join('\n')).concat(`
+var ctx = context;
+${useReturn ? `return (${code});` : code};
+`);
+};
+
+const getIsolateContext = () => {
+  if (Builder.serverContext) {
+    return Builder.serverContext;
+  }
+  const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
+  const isolate = new ivm.Isolate({ memoryLimit: 128 });
+  Builder.setServerContext(isolate.createContextSync());
+  return Builder.serverContext;
+};

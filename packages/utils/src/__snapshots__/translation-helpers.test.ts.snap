@@ -67,6 +67,20 @@ Object {
 }
 `;
 
+exports[`applyTranslation from plain data model content to match snapshot 1`] = `
+Object {
+  "data": Object {
+    "title": Object {
+      "@type": "@builder.io/core:LocalizedValue",
+      "Default": "Test",
+      "de": "hallo",
+      "en-US": "Hello",
+      "fr-FR": "salut",
+    },
+  },
+}
+`;
+
 exports[`getTranslateableFields from content to match snapshot 1`] = `
 Object {
   "blocks.block-id#text": Object {
@@ -77,6 +91,15 @@ Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
     "value": "en-us headings!",
   },
+  "metadata.title": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "Hello",
+  },
+}
+`;
+
+exports[`getTranslateableFields from plain data model content to match snapshot 1`] = `
+Object {
   "metadata.title": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
     "value": "Hello",
