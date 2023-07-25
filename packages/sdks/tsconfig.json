@@ -4,10 +4,7 @@
     "target": "ESNext",
     "jsx": "preserve",
     "jsxImportSource": "@builder.io/mitosis",
-    "lib": [
-      "dom",
-      "ESNext"
-    ],
+    "lib": ["dom", "ESNext"],
     "skipLibCheck": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
@@ -15,11 +12,7 @@
     // https://vitejs.dev/guide/features.html#isolatedmodules
     // "isolatedModules": true,
     "module": "CommonJS",
-    "moduleResolution": "Node16",
+    "moduleResolution": "Node16"
   },
-  "include": [
-    "src/**/*",
-    "typings",
-    "mitosis.config.js"
-  ]
+  "include": ["src/**/*", "typings", "mitosis.config.js"]
 }

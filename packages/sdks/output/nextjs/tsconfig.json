@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -17,9 +13,7 @@
     "moduleResolution": "node",
     "jsx": "react",
     "declaration": true,
-    "outDir": "./dist",
+    "outDir": "./dist"
   },
-  "include": [
-    "./src/index.ts"
-  ]
+  "include": ["./src/index.ts"]
 }
