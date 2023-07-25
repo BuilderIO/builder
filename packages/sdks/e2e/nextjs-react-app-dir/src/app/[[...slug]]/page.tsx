@@ -2,12 +2,11 @@ import {
   RenderContent,
   getBuilderSearchParams,
   getContent,
-  processContentResult,
 } from '../../sdk-src';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';
-import { getProps } from '@builder.io/sdks-e2e-tests';
+const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 interface MyPageProps {
   params: {
@@ -20,46 +19,38 @@ interface MyPageProps {
 export default async function Page(props: MyPageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
-  const builderProps = await getProps({
-    pathname: urlPath,
-    processContentResult,
+  const content = await getContent({
+    model: 'page',
+    apiKey: REAL_API_KEY,
     options: getBuilderSearchParams(props.searchParams),
-    getContent,
-    data: (props.searchParams.testData as any) || 'mock',
+    userAttributes: {
+      urlPath,
+    },
   });
 
-  if (!builderProps) {
-    return (
-      <>
-        <h1>404</h1>
-        <p>Make sure you have your content published at builder.io.</p>
-      </>
-    );
-  }
-
   return (
-    <div>
-      <RenderContent
-        {...builderProps}
-        customComponents={[
-          {
-            ...componentInfo,
-            component: MyTextBox,
-          },
-          {
-            name: 'CatFacts',
-            component: CatFacts,
-            inputs: [
-              {
-                name: 'text',
-                type: 'text',
-                defaultValue: 'default text',
-              },
-            ],
-          },
-        ]}
-      />
-    </div>
+    <RenderContent
+      content={content}
+      model="page"
+      apiKey={REAL_API_KEY}
+      customComponents={[
+        {
+          ...componentInfo,
+          component: MyTextBox,
+        },
+        {
+          name: 'CatFacts',
+          component: CatFacts,
+          inputs: [
+            {
+              name: 'text',
+              type: 'text',
+              defaultValue: 'default text',
+            },
+          ],
+        },
+      ]}
+    />
   );
 }
 export const revalidate = 1;

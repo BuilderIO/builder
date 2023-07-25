@@ -3039,8 +3039,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-nextjs-app-dir-rsc@workspace:sdks/e2e/nextjs-react-app-dir"
   dependencies:
-    "@builder.io/sdk-react-nextjs": "workspace:*"
-    "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     eslint-config-next: ^13
@@ -3535,7 +3533,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-react-nextjs@workspace:*, @builder.io/sdk-react-nextjs@workspace:sdks/output/nextjs":
+"@builder.io/sdk-react-nextjs@workspace:sdks/output/nextjs":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react-nextjs@workspace:sdks/output/nextjs"
   dependencies:

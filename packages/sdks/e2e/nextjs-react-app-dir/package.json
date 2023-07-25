@@ -10,8 +10,6 @@
     "serve": "yarn start"
   },
   "dependencies": {
-    "@builder.io/sdk-react-nextjs": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
     "eslint-config-next": "^13",
     "lru-cache": "^10.0.0",
     "next": "^13.4.4",
