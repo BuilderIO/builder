@@ -41,7 +41,7 @@
     "svelte-check": "^3.3.2",
     "svelte-preprocess": "^4.10.6",
     "tslib": "^2.3.1",
-    "typescript": "^4",
+    "typescript": "^5.1.6",
     "vite": "^3.0.4"
   }
 }

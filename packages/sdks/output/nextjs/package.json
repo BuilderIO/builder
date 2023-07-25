@@ -18,6 +18,6 @@
   "devDependencies": {
     "next": "^13.4.4",
     "react": "^18.2.0",
-    "typescript": "^4.9.4"
+    "typescript": "^5.1.6"
   }
 }
