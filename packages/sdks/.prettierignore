@@ -23,3 +23,5 @@ output/svelte/.svelte-kit
 **/.solid
 
 e2e/sveltekit/.svelte-kit
+
+e2e/nextjs-react-app-dir/src/sdk-src/**/*
