@@ -2261,9 +2261,12 @@ export class Builder {
   // the core SDK for consistency
   requestUrl(
     url: string,
-    options?: { headers: { [header: string]: number | string | string[] | undefined } }
+    options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, {
+      next: { revalidate: 1, ...options?.next },
+      ...options,
+    } as SimplifiedFetchOptions).then(res => res.json());
   }
 
   get host() {
@@ -2456,7 +2459,7 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = { headers: {} };
+    const requestOptions = { headers: {}, next: { revalidate: 1 } };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,
