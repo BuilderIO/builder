@@ -1,3 +1,6 @@
+### 2.0.5
+- Add `setServerContext` to allow user to set the execution context of custom code bindings on the server.
+
 ### 2.0.4
 - change the way we import ApiVersion type
 
