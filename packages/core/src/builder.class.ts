@@ -2264,7 +2264,7 @@ export class Builder {
     options?: { headers: { [header: string]: number | string | string[] | undefined } }
   ) {
     return getFetch()(url, {
-      next: { revalidate: 1 },
+      next: { revalidate: 1, ...options?.next },
       ...options,
     } as SimplifiedFetchOptions).then(res => res.json());
   }
