@@ -42,24 +42,18 @@ The best way to test a change is to create a builder content JSON in the editor,
 
 This new test will run against every SDK & framework combination.
 
-If you want to manually test this integration test, you will have to (using `svelte` as an example):
+If you want to manually test this integration test, you will have to run all of these in parallel (using `svelte` as an example):
 
-- run `yarn run start` in `builder/packages/sdks` to run Mitosis' `build` command in watch mode
-- run `yarn run build --watch` in `builder/packages/sdks/output/svelte` to build the SDK in watch mode
-- run `yarn run dev` in `builder/packages/sdks-tests` to build the e2e tests in watch mode
-- run `yarn run dev` in `builder/packages/sdks/e2e/sveltekit`
+- Generate Mitosis output: `yarn run start` in `builder/packages/sdks`
+- Build SDK from Mitosis output: `yarn run build --watch` in `builder/packages/sdks/output/svelte`
+- Build tests: `yarn run dev` in `builder/packages/sdks-tests`
+- Run e2e server: run `yarn run dev` in `builder/packages/sdks/e2e/sveltekit`
 
 You can then test your changes in the sveltekit e2e example.
 
-### Manual testing
+### Live/real data testing
 
-Using `svelte` as an example, once you've built the SDK as per the previous steps:
-
-- go to `output/svelte` and run `npm link`.
-- go to an example in our monorepo that uses it, say `builder/examples/svelte/sveltekit`, and
-  - `npm install`
-  - `npm link @builder.io/sdk-svelte`
-  - `npm run dev` and test your change
+Go to your e2e server, find the `getProps` call, and add `data: "real"` as an argument. This will fetch the data from the Builder API instead of using the JSON mock files.
 
 #### NOTE: Testing React-Native SDK in iOS Simulator
 
@@ -76,6 +70,6 @@ All the above assumes you are using the latest version of Mitosis in production.
 
 You should now be using your local version of Mitosis.
 
-## REMOVING SYM-LINKS
+### REMOVING SYM-LINKS
 
 **IMPORTANT:** remember to run `yarn run remove-symlinks` before you commit to your branch. This applies to `project/sdks`, but also any example that you symlink the SDKs to (i.e. vue-storefront or react-native examples)
