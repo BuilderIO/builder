@@ -13,13 +13,13 @@
     "allowSyntheticDefaultImports": true,
     // "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
     "moduleResolution": "node",
     "jsx": "react",
     "declaration": true,
     "outDir": "./dist",
-    "module": "ESNext"
   },
   "include": [
-    "./src/**/*"
+    "./src/index.ts"
   ]
 }

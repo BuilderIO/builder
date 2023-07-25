@@ -3,7 +3,7 @@ import {
   getBuilderSearchParams,
   getContent,
   processContentResult,
-} from '@builder.io/sdk-react/rsc';
+} from '@builder.io/sdk-react-nextjs';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';

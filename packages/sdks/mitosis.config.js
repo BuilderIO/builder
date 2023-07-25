@@ -50,9 +50,7 @@ const getTargetPath = ({ target }) => {
     case 'vue3':
       return 'vue/packages/_vue3';
     case 'rsc':
-      return 'react/packages/rsc';
-    case 'react':
-      return 'react/packages/react';
+      return 'nextjs';
     default:
       return kebabCase(target);
   }
@@ -162,14 +160,14 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 module.exports = {
   files: 'src/**',
   targets: [
-    // 'reactNative',
-    // 'vue2',
+    'reactNative',
+    'vue2',
     'rsc',
-    // 'vue3',
-    // 'solid',
-    // 'svelte',
+    'vue3',
+    'solid',
+    'svelte',
     'react',
-    // 'qwik',
+    'qwik',
   ],
   getTargetPath,
   options: {
@@ -359,7 +357,7 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (!json.meta.useMetadata.reactNative.useScrollView) return;
+              if (!json.meta?.useMetadata?.reactNative?.useScrollView) return;
 
               /**
                * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
