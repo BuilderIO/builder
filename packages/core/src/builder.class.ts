@@ -846,6 +846,7 @@ export class Builder {
 
   static editors: any[] = [];
   static trustedHosts: string[] = ['builder.io', 'localhost'];
+  static serverContext: any;
   static plugins: any[] = [];
 
   static actions: Action[] = [];
@@ -917,6 +918,18 @@ export class Builder {
 
   static registerTrustedHost(host: string) {
     this.trustedHosts.push(host);
+  }
+
+  /**
+   * @param context @type {import('isolated-vm').Context}
+   * Use this function to control the execution context of custom code on the server.
+   * const ivm = require('isolated-vm');
+   * const isolate = new ivm.Isolate({ memoryLimit: 128 });
+   * const context = isolate.createContextSync();
+   * Builder.setServerContext(context);
+   */
+  static setServerContext(context: any) {
+    this.serverContext = context;
   }
 
   static isTrustedHost(hostname: string) {

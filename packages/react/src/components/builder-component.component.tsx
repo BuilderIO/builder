@@ -390,7 +390,24 @@ export class BuilderComponent extends React.Component<
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
-
+    const contentData = this.inlinedContent?.data;
+    if (contentData && Array.isArray(contentData.inputs) && contentData.inputs.length > 0) {
+      if (!contentData.state) {
+        contentData.state = {};
+      }
+      // set default values of content inputs on state
+      contentData.inputs.forEach((input: any) => {
+        if (input) {
+          if (
+            input.name &&
+            input.defaultValue !== undefined &&
+            contentData.state![input.name] === undefined
+          ) {
+            contentData.state![input.name] = input.defaultValue;
+          }
+        }
+      });
+    }
     this.state = {
       // TODO: should change if this prop changes
       context: {
