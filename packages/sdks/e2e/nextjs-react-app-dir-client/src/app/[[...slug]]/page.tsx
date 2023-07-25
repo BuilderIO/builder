@@ -1,5 +1,12 @@
 import { getProps } from '@builder.io/sdks-e2e-tests';
-import { processContentResult, getContent } from '@builder.io/sdk-react/server';
+import {
+  processContentResult,
+  getContent,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+} from '@builder.io/sdk-react/serverz';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { RenderContent, getBuilderSearchParams } from '@builder.io/sdk-react';
 
 interface PageProps {
