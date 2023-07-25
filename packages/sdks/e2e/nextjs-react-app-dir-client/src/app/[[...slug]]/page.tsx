@@ -4,7 +4,7 @@ import {
   getContent,
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-} from '@builder.io/sdk-react/serverz';
+} from '@builder.io/sdk-react/server';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { RenderContent, getBuilderSearchParams } from '@builder.io/sdk-react';
