@@ -38,6 +38,11 @@ useMetadata({
   qwik: {
     hasDeepStore: true,
   },
+  plugins: {
+    reactNative: {
+      useScrollView: true,
+    },
+  },
 });
 
 type BuilderEditorProps = Omit<
