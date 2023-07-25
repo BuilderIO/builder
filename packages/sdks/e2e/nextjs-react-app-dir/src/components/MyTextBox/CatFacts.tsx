@@ -12,7 +12,7 @@ async function CatFacts(props: TextProps) {
     <div>
       {props.text}. Here are some cat facts from an RSC:
       <ul style={{ display: 'flex', flexDirection: 'column' }}>
-        {catFacts.slice(3).map((fact) => (
+        {catFacts.slice(3).map((fact: { _id: string; text: string }) => (
           <li
             key={fact._id}
             style={{
