@@ -2261,7 +2261,7 @@ export class Builder {
   // the core SDK for consistency
   requestUrl(
     url: string,
-    options?: { headers: { [header: string]: number | string | string[] | undefined } }
+    options?: { headers: { [header: string]: number | string | string[] | undefined }, next?: any }
   ) {
     return getFetch()(url, {
       next: { revalidate: 1, ...options?.next },
