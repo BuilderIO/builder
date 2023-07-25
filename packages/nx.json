@@ -10,13 +10,17 @@
   },
   "targetDefaults": {
     "dev": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["build"]
     },
     "serve": {
       "dependsOn": ["build"]
     },
     "build": {
-      "dependsOn": ["^build", "prebuild"]
+      "dependsOn": ["^build", "prebuild"],
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build"
+      }
     }
   },
   "affected": {
