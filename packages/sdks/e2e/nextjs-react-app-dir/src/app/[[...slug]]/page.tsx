@@ -3,9 +3,7 @@ import {
   getBuilderSearchParams,
   getContent,
   processContentResult,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-} from '@builder.io/sdk-react-nextjs';
+} from '../../sdk-src';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';
@@ -27,6 +25,7 @@ export default async function Page(props: MyPageProps) {
     processContentResult,
     options: getBuilderSearchParams(props.searchParams),
     getContent,
+    data: 'real',
   });
 
   if (!builderProps) {
