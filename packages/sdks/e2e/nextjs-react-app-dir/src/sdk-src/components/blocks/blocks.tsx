@@ -11,7 +11,7 @@ import BlocksWrapper from "./blocks-wrapper";
 import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from "../../context/types.js";
+} from "../../context/types";
 
 function Blocks(props: BlocksProps) {
   return (

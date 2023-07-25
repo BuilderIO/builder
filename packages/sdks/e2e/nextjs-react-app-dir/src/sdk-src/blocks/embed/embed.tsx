@@ -6,7 +6,7 @@ export interface EmbedProps {
   content: string;
 }
 
-import { isJsScript } from "./helpers.js";
+import { isJsScript } from "./helpers";
 
 function Embed(props: EmbedProps) {
   const elem = useRef<HTMLDivElement>(null);

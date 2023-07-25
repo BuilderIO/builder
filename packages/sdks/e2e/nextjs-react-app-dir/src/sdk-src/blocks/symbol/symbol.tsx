@@ -23,15 +23,15 @@ export interface SymbolProps extends BuilderComponentsProp {
 }
 
 import ContentVariants from "../../components/content-variants/content-variants";
-import type { BuilderContent } from "../../types/builder-content.js";
+import type { BuilderContent } from "../../types/builder-content";
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
-} from "../../types/builder-props.js";
-import { filterAttrs } from "../helpers.js";
-import { setAttrs } from "../helpers.js";
-import { fetchContent } from "./symbol.helpers.js";
-import type { Nullable } from "../../types/typescript.js";
+} from "../../types/builder-props";
+import { filterAttrs } from "../helpers";
+import { setAttrs } from "../helpers";
+import { fetchContent } from "./symbol.helpers";
+import type { Nullable } from "../../types/typescript";
 
 async function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const className = function className() {

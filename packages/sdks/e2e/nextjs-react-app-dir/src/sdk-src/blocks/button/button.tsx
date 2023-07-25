@@ -11,8 +11,8 @@ export interface ButtonProps {
   openLinkInNewTab?: boolean;
 }
 
-import { filterAttrs } from "../helpers.js";
-import { setAttrs } from "../helpers.js";
+import { filterAttrs } from "../helpers";
+import { setAttrs } from "../helpers";
 
 function Button(props: ButtonProps) {
   return (

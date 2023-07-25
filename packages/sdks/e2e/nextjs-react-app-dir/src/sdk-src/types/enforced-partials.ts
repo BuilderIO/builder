@@ -1,4 +1,4 @@
-import type { Prettify } from './typescript.js';
+import type { Prettify } from './typescript';
 type OptionalFieldsOnly<T> = { [K in keyof T as T[K] extends Required<T>[K] ? never : K]: T[K] };
 type RequiredFieldsOnly<T> = { [K in keyof T as T[K] extends Required<T>[K] ? K : never]: T[K] };
 type Enforced<T> = { [K in keyof T]-?: T[K] };

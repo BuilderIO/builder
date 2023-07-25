@@ -11,8 +11,8 @@ export interface SectionProps {
   builderBlock?: any;
 }
 
-import { filterAttrs } from "../helpers.js";
-import { setAttrs } from "../helpers.js";
+import { filterAttrs } from "../helpers";
+import { setAttrs } from "../helpers";
 
 function SectionComponent(props: SectionProps) {
   return (

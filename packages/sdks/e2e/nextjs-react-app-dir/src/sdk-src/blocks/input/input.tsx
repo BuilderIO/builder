@@ -14,9 +14,9 @@ export interface FormInputProps {
   required?: boolean;
 }
 
-import { isEditing } from "../../functions/is-editing.js";
-import { filterAttrs } from "../helpers.js";
-import { setAttrs } from "../helpers.js";
+import { isEditing } from "../../functions/is-editing";
+import { filterAttrs } from "../helpers";
+import { setAttrs } from "../helpers";
 
 function FormInputComponent(props: FormInputProps) {
   return (

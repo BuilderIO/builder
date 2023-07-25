@@ -2,8 +2,8 @@ import * as React from "react";
 import BlockStyles from "../block-styles";
 import Block from "../../block";
 import InteractiveElement from "../interactive-element";
-import type { ComponentProps } from "./component-ref.helpers.js";
-import { getWrapperProps } from "./component-ref.helpers.js";
+import type { ComponentProps } from "./component-ref.helpers";
+import { getWrapperProps } from "./component-ref.helpers";
 
 function ComponentRef(props: ComponentProps) {
   const Wrapper = props.isInteractive ? InteractiveElement : props.componentRef;

@@ -1,4 +1,4 @@
-import { set } from './set.js';
+import { set } from './set';
 test('can shallow set a property', () => {
   const obj = {
     foo: 'bar'

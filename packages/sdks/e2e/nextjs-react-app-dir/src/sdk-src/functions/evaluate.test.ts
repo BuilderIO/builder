@@ -1,4 +1,4 @@
-import { flattenState } from './evaluate.js';
+import { flattenState } from './evaluate';
 describe('flatten state', () => {
   it('should behave normally when no PROTO_STATE', () => {
     const localState = {};

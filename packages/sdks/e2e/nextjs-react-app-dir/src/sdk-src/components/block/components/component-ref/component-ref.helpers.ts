@@ -1,7 +1,7 @@
-import type { BuilderContextInterface, RegisteredComponents } from '../../../../context/types.js';
-import { getBlockProperties } from '../../../../functions/get-block-properties.js';
-import type { BuilderBlock } from '../../../../types/builder-block.js';
-import type { PropsWithBuilderData } from '../../../../types/builder-props.js';
+import type { BuilderContextInterface, RegisteredComponents } from '../../../../context/types';
+import { getBlockProperties } from '../../../../functions/get-block-properties';
+import type { BuilderBlock } from '../../../../types/builder-block';
+import type { PropsWithBuilderData } from '../../../../types/builder-props';
 import type { InteractiveElementProps } from '../interactive-element';
 type ComponentOptions = PropsWithBuilderData<{
   [index: string]: any;

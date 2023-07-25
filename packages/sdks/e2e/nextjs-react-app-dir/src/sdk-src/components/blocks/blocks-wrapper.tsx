@@ -7,9 +7,9 @@ export type BlocksWrapperProps = {
   path: string | undefined;
   styleProp: Record<string, any> | undefined;
 };
-import { isEditing } from "../../functions/is-editing.js";
-import type { BuilderBlock } from "../../types/builder-block.js";
-import type { PropsWithChildren } from "../../types/typescript.js";
+import { isEditing } from "../../functions/is-editing";
+import type { BuilderBlock } from "../../types/builder-block";
+import type { PropsWithChildren } from "../../types/typescript";
 
 function BlocksWrapper(props: PropsWithChildren<BlocksWrapperProps>) {
   function className() {

@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components.js';
+import type { ComponentInfo } from '../../types/components';
 export const componentInfo: ComponentInfo = {
   name: 'Image',
   static: true,

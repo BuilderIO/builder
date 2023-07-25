@@ -1,28 +1,26 @@
 import * as React from "react";
-import { getDefaultRegisteredComponents } from "../../constants/builder-registered-components.js";
+import { getDefaultRegisteredComponents } from "../../constants/builder-registered-components";
 import type {
-  BuilderContextInterface,
   BuilderRenderState,
   RegisteredComponents,
-} from "../../context/types.js";
+} from "../../context/types";
 import {
   components,
   serializeComponentInfo,
-} from "../../functions/register-component.js";
+} from "../../functions/register-component";
 import Blocks from "../blocks/blocks";
 import ContentStyles from "./components/styles";
-import type { ContentProps } from "./content.types.js";
+import type { ContentProps } from "./content.types";
 import {
   getContentInitialValue,
   getContextStateInitialValue,
-} from "./content.helpers.js";
-import { TARGET } from "../../constants/target.js";
-import { getRenderContentScriptString } from "../content-variants/helpers.js";
+} from "./content.helpers";
+import { TARGET } from "../../constants/target";
+import { getRenderContentScriptString } from "../content-variants/helpers";
 import EnableEditor from "./components/enable-editor";
 import InlinedScript from "../inlined-script";
-import { wrapComponentRef } from "./wrap-component-ref.js";
-import type { ComponentInfo } from "../../types/components.js";
-import type { Dictionary } from "../../types/typescript.js";
+import type { ComponentInfo } from "../../types/components";
+import type { Dictionary } from "../../types/typescript";
 
 function ContentComponent(props: ContentProps) {
   const scriptStr = getRenderContentScriptString({
@@ -49,7 +47,7 @@ function ContentComponent(props: ContentProps) {
     (acc, { component, ...info }) => ({
       ...acc,
       [info.name]: {
-        component: component,
+        component,
         ...serializeComponentInfo(info),
       },
     }),

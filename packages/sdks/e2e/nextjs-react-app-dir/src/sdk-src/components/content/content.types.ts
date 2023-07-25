@@ -1,6 +1,6 @@
-import type { BuilderRenderState } from '../../context/types.js';
-import type { EnforcePartials } from '../../types/enforced-partials.js';
-import type { ContentVariantsProps } from '../content-variants/content-variants.types.js';
+import type { BuilderRenderState } from '../../context/types';
+import type { EnforcePartials } from '../../types/enforced-partials';
+import type { ContentVariantsProps } from '../content-variants/content-variants.types';
 interface InternalRenderProps {
   /**
    * TO-DO: improve qwik generator to not remap this name for non-HTML tags, then name it `className`

@@ -9,9 +9,9 @@ interface Props {
 }
 
 import InlinedStyles from "../../inlined-styles";
-import type { CustomFont } from "./styles.helpers.js";
-import { getCss } from "./styles.helpers.js";
-import { getFontCss } from "./styles.helpers.js";
+import type { CustomFont } from "./styles.helpers";
+import { getCss } from "./styles.helpers";
+import { getFontCss } from "./styles.helpers";
 
 function ContentStyles(props: Props) {
   const [injectedStyles, setInjectedStyles] = useState(() =>

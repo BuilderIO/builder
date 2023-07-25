@@ -1,4 +1,4 @@
-import { getGlobalThis } from './get-global-this.js';
+import { getGlobalThis } from './get-global-this';
 function getFetch(): typeof global.fetch {
   const globalFetch: typeof global.fetch = getGlobalThis().fetch;
   if (typeof globalFetch === 'undefined') {

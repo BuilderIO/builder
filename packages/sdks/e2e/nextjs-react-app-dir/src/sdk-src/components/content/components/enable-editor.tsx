@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState, useContext, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type BuilderEditorProps = Omit<
   ContentProps,
@@ -10,29 +10,27 @@ type BuilderEditorProps = Omit<
   setBuilderContextSignal?: (signal: any) => any;
   children?: any;
 };
-import type { BuilderContextInterface } from "../../../context/types.js";
-import { evaluate } from "../../../functions/evaluate.js";
-import { fetch } from "../../../functions/get-fetch.js";
-import { isBrowser } from "../../../functions/is-browser.js";
-import { isEditing } from "../../../functions/is-editing.js";
-import { createRegisterComponentMessage } from "../../../functions/register-component.js";
-import { _track } from "../../../functions/track/index.js";
+import type { BuilderContextInterface } from "../../../context/types";
+import { evaluate } from "../../../functions/evaluate";
+import { fetch } from "../../../functions/get-fetch";
+import { isBrowser } from "../../../functions/is-browser";
+import { isEditing } from "../../../functions/is-editing";
+import { createRegisterComponentMessage } from "../../../functions/register-component";
+import { _track } from "../../../functions/track/index";
 import builderContext from "../../../context/builder.context";
 import {
   registerInsertMenu,
   setupBrowserForEditing,
-} from "../../../scripts/init-editing.js";
-import { checkIsDefined } from "../../../helpers/nullable.js";
-import { getInteractionPropertiesForEvent } from "../../../functions/track/interaction.js";
+} from "../../../scripts/init-editing";
+import { checkIsDefined } from "../../../helpers/nullable";
+import { getInteractionPropertiesForEvent } from "../../../functions/track/interaction";
 import type {
   ContentProps,
   BuilderComponentStateChange,
-} from "../content.types.js";
-import { logger } from "../../../helpers/logger.js";
-import type { ComponentInfo } from "../../../types/components.js";
-import { getContent } from "../../../functions/get-content/index.js";
-import { isPreviewing } from "../../../functions/is-previewing.js";
-import type { BuilderContent } from "../../../types/builder-content.js";
+} from "../content.types";
+import { logger } from "../../../helpers/logger";
+import type { ComponentInfo } from "../../../types/components";
+import type { BuilderContent } from "../../../types/builder-content";
 import { useRouter } from "next/navigation";
 
 function EnableEditor(props: BuilderEditorProps) {
@@ -116,7 +114,7 @@ function EnableEditor(props: BuilderEditorProps) {
               : lastUpdated;
           setLastUpdated(lastUpdatedToUse);
           console.log("HARD RESET", {
-            shouldSendResetCookie: shouldSendResetCookie,
+            shouldSendResetCookie,
           });
           if (shouldSendResetCookie) {
             console.log("HARD RESET: refreshing.");

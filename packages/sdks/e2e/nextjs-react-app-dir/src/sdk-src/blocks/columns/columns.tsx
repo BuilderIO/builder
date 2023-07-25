@@ -15,16 +15,16 @@ export interface ColumnProps extends BuilderComponentsProp {
 }
 
 import Blocks from "../../components/blocks/blocks";
-import type { BuilderBlock } from "../../types/builder-block.js";
-import { getSizesForBreakpoints } from "../../constants/device-sizes.js";
-import type { SizeName } from "../../constants/device-sizes.js";
+import type { BuilderBlock } from "../../types/builder-block";
+import { getSizesForBreakpoints } from "../../constants/device-sizes";
+import type { SizeName } from "../../constants/device-sizes";
 import InlinedStyles from "../../components/inlined-styles";
-import { TARGET } from "../../constants/target.js";
-import type { Dictionary } from "../../types/typescript.js";
+import { TARGET } from "../../constants/target";
+import type { Dictionary } from "../../types/typescript";
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
-} from "../../types/builder-props.js";
+} from "../../types/builder-props";
 
 function Columns(props: PropsWithBuilderData<ColumnProps>) {
   const gutterSize = typeof props.space === "number" ? props.space || 0 : 20;

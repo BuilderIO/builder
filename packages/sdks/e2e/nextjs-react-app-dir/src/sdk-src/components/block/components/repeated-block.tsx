@@ -5,12 +5,11 @@ type Props = {
   repeatContext: BuilderContextInterface;
   registeredComponents: RegisteredComponents;
 };
-import BuilderContext from "../../../context/builder.context";
 import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from "../../../context/types.js";
-import type { BuilderBlock } from "../../../types/builder-block.js";
+} from "../../../context/types";
+import type { BuilderBlock } from "../../../types/builder-block";
 import Block from "../block";
 
 function RepeatedBlock(props: Props) {

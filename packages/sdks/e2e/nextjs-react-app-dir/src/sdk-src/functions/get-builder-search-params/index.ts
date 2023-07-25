@@ -1,4 +1,4 @@
-import { isBrowser } from '../is-browser.js';
+import { isBrowser } from '../is-browser';
 const BUILDER_SEARCHPARAMS_PREFIX = 'builder.';
 const BUILDER_OPTIONS_PREFIX = 'options.';
 type QueryObject = Record<string, string | string[]>;

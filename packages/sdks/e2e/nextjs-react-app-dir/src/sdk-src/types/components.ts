@@ -1,5 +1,5 @@
-import type { BuilderElement } from './element.js';
-import type { Input } from './input.js';
+import type { BuilderElement } from './element';
+import type { Input } from './input';
 export interface ComponentInfo {
   /**
    * Name your component something unique, e.g. 'MyButton'. You can override built-in components

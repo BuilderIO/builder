@@ -12,8 +12,8 @@ export interface TextareaProps {
   placeholder?: string;
 }
 
-import { filterAttrs } from "../helpers.js";
-import { setAttrs } from "../helpers.js";
+import { filterAttrs } from "../helpers";
+import { setAttrs } from "../helpers";
 
 function Textarea(props: TextareaProps) {
   return (

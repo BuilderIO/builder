@@ -1,6 +1,6 @@
-import { TARGET } from '../../constants/target.js';
-import type { Nullable } from '../../helpers/nullable.js';
-import { isBrowser } from '../is-browser.js';
+import { TARGET } from '../../constants/target';
+import type { Nullable } from '../../helpers/nullable';
+import { isBrowser } from '../is-browser';
 const getLocation = (): Nullable<URL> => {
   if (TARGET === 'reactNative') {
     return null;

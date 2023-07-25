@@ -22,9 +22,7 @@ export interface ImgProps {
     | "bottom right";
 }
 
-import { isEditing } from "../../functions/is-editing.js";
-import { filterAttrs } from "../helpers.js";
-import { setAttrs } from "../helpers.js";
+import { isEditing } from "../../functions/is-editing";
 
 function ImgComponent(props: ImgProps) {
   return (

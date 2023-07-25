@@ -11,14 +11,14 @@ import {
   getScriptString,
   getVariants,
   getVariantsScriptString,
-} from "./helpers.js";
+} from "./helpers";
 import ContentComponent from "../content/content";
-import { getDefaultCanTrack } from "../../helpers/canTrack.js";
+import { getDefaultCanTrack } from "../../helpers/canTrack";
 import InlinedStyles from "../inlined-styles";
-import { handleABTestingSync } from "../../helpers/ab-tests.js";
+import { handleABTestingSync } from "../../helpers/ab-tests";
 import InlinedScript from "../inlined-script";
-import { TARGET } from "../../constants/target.js";
-import type { ContentVariantsProps } from "./content-variants.types.js";
+import { TARGET } from "../../constants/target";
+import type { ContentVariantsProps } from "./content-variants.types";
 
 function ContentVariants(props: VariantsProviderProps) {
   const shouldRenderVariants = checkShouldRunVariants({

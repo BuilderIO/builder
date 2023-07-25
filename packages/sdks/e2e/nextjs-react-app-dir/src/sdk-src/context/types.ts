@@ -1,7 +1,7 @@
-import type { BuilderContent } from '../types/builder-content.js';
-import type { ComponentInfo } from '../types/components.js';
-import type { Dictionary, Nullable } from '../types/typescript.js';
-import type { ApiVersion } from '../types/api-version.js';
+import type { BuilderContent } from '../types/builder-content';
+import type { ComponentInfo } from '../types/components';
+import type { Dictionary, Nullable } from '../types/typescript';
+import type { ApiVersion } from '../types/api-version';
 export type RegisteredComponent = ComponentInfo & {
   component: any;
 };

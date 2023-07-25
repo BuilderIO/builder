@@ -1,7 +1,7 @@
-import { SDK_VERSION } from '../constants/sdk-version.js';
-import { TARGET } from '../constants/target.js';
-import { isBrowser } from '../functions/is-browser.js';
-import { register } from '../functions/register.js';
+import { SDK_VERSION } from '../constants/sdk-version';
+import { TARGET } from '../constants/target';
+import { isBrowser } from '../functions/is-browser';
+import { register } from '../functions/register';
 export const registerInsertMenu = () => {
   register('insertMenu', {
     name: '_default',

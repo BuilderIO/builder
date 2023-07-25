@@ -1,4 +1,4 @@
-import { TARGET } from '../constants/target.js';
+import { TARGET } from '../constants/target';
 type Target = import('../types/targets').Target;
 
 // TODO: babel compile to include certain code only if the target matches

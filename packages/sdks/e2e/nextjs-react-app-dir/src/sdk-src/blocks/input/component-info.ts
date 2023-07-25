@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components.js';
+import type { ComponentInfo } from '../../types/components';
 export const componentInfo: ComponentInfo = {
   name: 'Form:Input',
   image: 'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fad6f37889d9e40bbbbc72cdb5875d6ca',

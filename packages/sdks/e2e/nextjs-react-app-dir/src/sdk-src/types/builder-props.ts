@@ -1,5 +1,5 @@
-import type { BuilderContextInterface, RegisteredComponents } from '../context/types.js';
-import type { BuilderBlock } from './builder-block.js';
+import type { BuilderContextInterface, RegisteredComponents } from '../context/types';
+import type { BuilderBlock } from './builder-block';
 export type PropsWithBuilderData<T> = T & {
   builderBlock: BuilderBlock;
   builderContext: BuilderContextInterface;

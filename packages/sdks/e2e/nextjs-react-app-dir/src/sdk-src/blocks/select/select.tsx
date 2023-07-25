@@ -15,9 +15,7 @@ export interface FormSelectProps {
   defaultValue?: string;
 }
 
-import { isEditing } from "../../functions/is-editing.js";
-import { filterAttrs } from "../helpers.js";
-import { setAttrs } from "../helpers.js";
+import { isEditing } from "../../functions/is-editing";
 
 function SelectComponent(props: FormSelectProps) {
   return (

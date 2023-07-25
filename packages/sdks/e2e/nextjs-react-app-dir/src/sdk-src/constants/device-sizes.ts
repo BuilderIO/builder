@@ -1,4 +1,4 @@
-import { fastClone } from '../functions/fast-clone.js';
+import { fastClone } from '../functions/fast-clone';
 export type SizeName = 'large' | 'medium' | 'small';
 interface Size {
   min: number;
