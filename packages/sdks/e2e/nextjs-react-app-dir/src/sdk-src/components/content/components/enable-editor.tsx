@@ -32,7 +32,6 @@ import { logger } from "../../../helpers/logger";
 import type { ComponentInfo } from "../../../types/components";
 import type { BuilderContent } from "../../../types/builder-content";
 import { useRouter } from "next/navigation";
-import { postContent } from "@/sdk-src/set-db";
 
 function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -69,11 +68,6 @@ function EnableEditor(props: BuilderEditorProps) {
         key: newVal.id,
       }),
     });
-
-    // postContent({
-    //   value: newVal,
-    //   key: newVal.id,
-    // });
 
     router.refresh();
   }
