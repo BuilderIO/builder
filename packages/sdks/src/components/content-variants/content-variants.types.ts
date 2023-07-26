@@ -19,12 +19,4 @@ export interface ContentVariantsProps {
   /** @deprecated use `enrich` instead **/
   includeRefs?: boolean;
   enrich?: boolean;
-
-  postPreviewContent?: ({
-    key,
-    value,
-  }: {
-    key: string;
-    value: BuilderContent;
-  }) => Promise<any>;
 }
