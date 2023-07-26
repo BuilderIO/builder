@@ -1,5 +1,5 @@
 import InlinedStyles from '../../inlined-styles.lite';
-import { useStore } from '@builder.io/mitosis';
+import { useMetadata, useStore } from '@builder.io/mitosis';
 import type { CustomFont } from './styles.helpers.js';
 import { getCss } from './styles.helpers.js';
 import { getFontCss } from './styles.helpers.js';
@@ -9,6 +9,12 @@ interface Props {
   customFonts?: CustomFont[];
   contentId?: string;
 }
+
+useMetadata({
+  rsc: {
+    componentType: 'server',
+  },
+});
 
 export default function ContentStyles(props: Props) {
   const state = useStore({
