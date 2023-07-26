@@ -5,6 +5,7 @@
   "files": [
     "dist"
   ],
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
     "./server": "./dist/functions/get-content/index.js"
