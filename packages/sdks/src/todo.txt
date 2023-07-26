@@ -1,5 +1,6 @@
 Tasks:
-- Styles not working @done
+- Styles not working
+  - change didn't work. CSS specifity issue.
 
 - Next.js SDK TS types:
   - transpile React components to `.js` files
