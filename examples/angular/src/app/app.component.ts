@@ -29,15 +29,24 @@ BuilderBlock({
 })
 export class AppComponent {
   title = 'app';
-  options: any = {
-    cacheSeconds: 1,
-    data: {
-      locale: 'en-US',
-    },
-  };
+  // options: any = {
+  //   cacheSeconds: 1,
+  //   data: {
+  //     locale: 'en-US'
+  //   },
+  //   entry: '826bcb1c67574f01abef2041b0bf4df8'
+  //   // entry: {
+  //   //   id: '826bcb1c67574f01abef2041b0bf4df8'
+  //   // } 
+  // };
+  items = {passedInData: {
+    displayName: 'Tim',
+    rewardsRate: 'yes'
+  }}
 
   data = {
-    property: 'hello',
+    name: 'Tim',
+    someText: 'blo',
     fn: (text: string) => alert(text),
   };
 

@@ -1,6 +1,6 @@
 <script>
 	import Counter from '../../../lib/Counter.svelte';
-	import { isPreviewing, RenderContent } from '@builder.io/sdk-svelte';
+	import { isPreviewing, RenderContent, track } from '@builder.io/sdk-svelte';
 	import { BUILDER_PUBLIC_API_KEY } from '../../../apiKey';
 
 	// Create an array of your custom components and their properties
@@ -34,6 +34,7 @@
 	// we want to show unpublished content when in preview mode.
 	const canShowContent = data.content || isPreviewing();
 	const locale = data.locale;
+
 </script>
 
 <svelte:head>

@@ -1,8 +1,25 @@
 <script lang="ts">
-import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue/vue3';
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue';
+import { Builder } from '@builder.io/sdk';
 import '@builder.io/sdk-vue/vue3/css';
 
 import HelloWorldComponent from './components/HelloWorld.vue';
+import LargeBodyText from './components/LargeBodyText.vue';
+
+Builder.register('insertMenu', {
+  name: 'Typography Components',
+  items: [
+    {name: 'Hello World'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'}
+  ]
+})
 
 // Register your Builder components
 const REGISTERED_COMPONENTS = [
@@ -18,10 +35,31 @@ const REGISTERED_COMPONENTS = [
       },
     ],
   },
+  {
+    component: LargeBodyText,
+    name: 'Large Body Text',
+    canHaveChildren: true,
+    // defaultChildren: [
+    //   {
+    //     '@type': '@builder.io/sdk:Element',
+    //     component: { name: 'Text', options: { text: 'Large Body text here' } },
+    //   },
+    // ],
+    inputs: [
+      {
+        name: 'underline',
+        type: 'text',
+        defaultValue: 'false',
+      },
+    ],
+    // defaultStyles: {
+    //   marginTop: '0px',
+    // },
+  }
 ];
 
 // TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
+const BUILDER_PUBLIC_API_KEY = '271bdcf584e24ca896dede7a91dfb1cb'; // ggignore
 
 export default {
   name: 'DynamicallyRenderBuilderPage',

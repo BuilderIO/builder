@@ -9,13 +9,12 @@ import '@builder.io/widgets/dist/lib/builder-widgets-async'
 import * as fs from 'fs';
 
 // builder.init(builderConfig.apiKey)
-builder.init('271bdcf584e24ca896dede7a91dfb1cb');
+// builder.init('271bdcf584e24ca896dede7a91dfb1cb');
 
 export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ slug: string[] }>) {
     console.log('hello: ', params?.slug)
-  
   const articleData =
     (await builder
       .get('article', {
@@ -30,6 +29,7 @@ export async function getStaticProps({
         .get('blog-template', {
             userAttributes: {
                 urlPath: '/blog/' + (params?.slug),
+                category: articleData?.category
             }
         })
         .toPromise()) || null
@@ -83,7 +83,10 @@ export default function Page({
       {show404 ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
-        <BuilderComponent model="blog-template" content={articleTemplate} data={{article: articleData?.data}}/>
+        <>
+          <BuilderComponent model="ad-block" />
+          <BuilderComponent model="blog-template" content={articleTemplate} data={{article: articleData?.data}}/>
+        </>
       )}
     </>
   )

@@ -1,44 +1,59 @@
 import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
-import { BuilderComponent, builder, useIsPreviewing, BuilderContent } from '@builder.io/react'
+import { BuilderComponent, builder, useIsPreviewing, withChildren, BuilderContent, Builder, Image } from '@builder.io/react'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import builderConfig from '@config/builder'
 // loading widgets dynamically to reduce bundle size, will only be included in bundle when is used in the content
 import '@builder.io/widgets/dist/lib/builder-widgets-async'
-import * as fs from 'fs';
+import '@components/hero/Hero'
 
-// builder.init(builderConfig.apiKey)
-builder.init('271bdcf584e24ca896dede7a91dfb1cb');
-const locale ='en';
+// const MyImage = (props: any) => {
+//   return <Image {...props} /> 
+// }
+//ignore
+// console.log('COLUMNS: ', Image?.input)
+// Builder.registerComponent(MyImage, {
+//   name: 'Image',
+//   friendlyName: 'Mobile Only Button',
+  
+//   // Signify that this is an override
+//   override: true,
+
+//   inputs: [
+//     {
+//       name:'test',
+//       type: 'text'
+//     },
+//     // ...Image?.inputs
+//   ]
+// });
+
+const locale ='can-CAD';
+
 // builder.apiVersion = 'v1';
 export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ page: string[] }>) {
-  
+
   const page =
     (await builder
       .get('page', {
         userAttributes: {
           urlPath: '/' + (params?.page?.join('/') || ''),
-          tags: 'previousShopper'
-        }, 
+        },
+        enrich: true,
         options: {
-          enrich: true
+          enrich:  true
         },
         locale
       }).toPromise()) || null
 
-    console.log('PAGES: ',page)
-  
+    console.log('PAGES: ',page?.data?.state?.specialOffers)
+
   const footer =
       (await builder
-        .get('footer', {
-          userAttributes: {
-            tags: 'whaatever else'
-          }
-        })
+        .get('footer')
         .toPromise()) || null
 
   return {
@@ -67,17 +82,18 @@ export async function getStaticPaths() {
 
 export default function Page({
   page,
-  footer
+  footer,
+  demoSection
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const isPreviewingInBuilder = useIsPreviewing()
   const show404 = !page && !isPreviewingInBuilder
+  console.log('DEMO SECTION: ', demoSection)
 
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
-  console.log('CLIENT PAGE: ', page)
-
+  console.log('client page: ', page)
   const handleClick = () => {
     builder.track('my-custom-event');
     builder.trackConversion(99);
@@ -93,33 +109,23 @@ export default function Page({
       {show404 ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
-        <>
-          {/* <BuilderContent model="page" content={page}>
+        <> 
+          <BuilderComponent model="page" locale={locale} data={{ values: {"this-and-that": "whatever", "osmehting!": "this other"}, username: 'tim', hideAnyButton: true, locale}} />
+          <BuilderComponent model="footer"></BuilderComponent>
+          {/* <BuilderContent model="footer" content={footer}> 
             {(data, loading, content) => {
-                return (<>
-                    <div>{data?.title}</div>
-                    <h1 onClick={handleClick}>Button is {data?.hideBuyButton ? 'hidden' : 'visible'} </h1>
-                    <BuilderComponent locale={locale} model="page" content={page} />
-                  </>)
-            }}
-          </BuilderContent>  */}
-
-          <BuilderComponent locale={locale} model="page" content={page} data={{user: 'Tim', fundType: ' large cap'}}/>
-          <BuilderContent model="footer" content={footer}> 
-            {(data, loading, content) => {
-              // console.log('hello:', data)
                 return (
                 <>
                      {data?.footerLinks?.map((link:any) => {
                        return link?.footerLink?.map((innerLink:any) => {
-                         return <a href={innerLink.linkUrl}>{innerLink.linkName}</a>
+                         return <a key={innerLink.id} href={innerLink.linkUrl}>{innerLink.linkName}</a>
                        })
                      })
                    }
                 </>
                 )
             }}
-          </BuilderContent>
+          </BuilderContent> */}
         </>
       )}
     </>

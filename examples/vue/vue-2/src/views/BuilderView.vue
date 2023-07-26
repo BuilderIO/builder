@@ -22,10 +22,27 @@
 
 <script>
 import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue/vue2';
+import { Builder } from '@builder.io/sdk';
 import '@builder.io/sdk-vue/vue2/css';
 
 // Register your Builder components
 import HelloWorldComponent from '../components/HelloWorld.vue';
+import LargeBodyText from '../components/LargeBodyText.vue';
+
+Builder.register('insertMenu', {
+  name: 'Typography Components',
+  items: [
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'},
+    {name: 'LargeBodyText'}
+  ]
+})
 
 export const REGISTERED_COMPONENTS = [
   {
@@ -40,6 +57,7 @@ export const REGISTERED_COMPONENTS = [
       },
     ],
   },
+  LargeBodyText
 ];
 
 // TODO: enter your public API key

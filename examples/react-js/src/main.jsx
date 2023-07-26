@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
-import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react';
+import { BuilderComponent, builder, useIsPreviewing, BuilderContent } from '@builder.io/react';
 
 import './index.css';
 
 // Put your API key here
-builder.init('YOUR_API_KEY');
+builder.init('271bdcf584e24ca896dede7a91dfb1cb');
 
 function App() {
   const [allPages, setAllPages] = useState([]);
@@ -85,6 +85,14 @@ export default function CatchAllRoute() {
   return (
     <>
       {/* Render the Builder page */}
+      <BuilderContent model="page" content={content}>
+        {(data, loading, content) => {
+            console.log('BUILDER CONTENT DATA: ', {data, content} )
+          return(
+            <div>Hello</div>
+          )
+          }}
+      </BuilderContent>
       <BuilderComponent model="page" content={content} />
     </>
   );
