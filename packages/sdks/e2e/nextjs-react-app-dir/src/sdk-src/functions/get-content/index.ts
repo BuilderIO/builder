@@ -73,7 +73,7 @@ export async function getAllContent(options: GetContentOptions): Promise<Content
   try {
     const url = generateContentUrl(options);
 
-    const newLocal = getPreviewContent(options.options || {});
+    const newLocal = await getPreviewContent(options.options || {});
 
     if (newLocal) {
       console.log('Using preview content from db');

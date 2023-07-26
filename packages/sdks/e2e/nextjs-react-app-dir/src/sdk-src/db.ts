@@ -1,19 +1,27 @@
-import { LRUCache } from 'lru-cache';
-import { BuilderContent } from '@builder.io/sdks-e2e-tests/dist/src/specs/types';
+'use server'
 
-const options = {
+import { LRUCache } from 'lru-cache';
+import { BuilderContent } from './types/builder-content';
+
+const options: LRUCache.Options<string, BuilderContent, unknown> = {
   max: 500,
   // how long to live in ms
   ttl: 1000 * 60 * 5,
 };
 
-export const fancy_store = new LRUCache<string, BuilderContent>(options);
+globalThis._BUILDER_PREVIEW_LRU_CACHE = new LRUCache<string, BuilderContent>(options);
 
-
-export const getPreviewContent = (
+export async function getPreviewContent(
   searchParams: URLSearchParams | Record<string, string | string[]>
-) => {
-  const id = searchParams['overrides.page']
-  console.log('Getting preview content', fancy_store.get(id));
-  return fancy_store.get(id)
+) {
+  const id = searchParams instanceof URLSearchParams ? searchParams.get('overrides.page') : searchParams['overrides.page']
+  return globalThis._BUILDER_PREVIEW_LRU_CACHE.get(id)
 };
+
+
+export async function postPreviewContent({ key, value }: { key: string; value: BuilderContent }) {
+  'use server'
+  globalThis._BUILDER_PREVIEW_LRU_CACHE.set(key, value)
+  
+  return { [key]: value}
+}

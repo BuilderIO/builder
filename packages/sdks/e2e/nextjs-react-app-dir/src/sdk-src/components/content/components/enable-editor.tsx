@@ -32,6 +32,8 @@ import { logger } from "../../../helpers/logger";
 import type { ComponentInfo } from "../../../types/components";
 import type { BuilderContent } from "../../../types/builder-content";
 import { useRouter } from "next/navigation";
+import { postContent } from "@/sdk-src/set-db";
+import { postPreviewContent } from "@/sdk-src/db";
 
 function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -58,17 +60,10 @@ function EnableEditor(props: BuilderEditorProps) {
       },
     };
 
-    await fetch('/api/builder-preview', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        value: newVal,
-        key: newVal.id,
-      }),
-    });
-
+    await postPreviewContent({
+      value: newVal,
+      key: newVal.id!,
+    })
     router.refresh();
   }
 
