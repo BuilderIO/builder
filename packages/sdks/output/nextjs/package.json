@@ -6,8 +6,7 @@
     "dist"
   ],
   "exports": {
-    ".": "./dist/index.js",
-    "./postPreviewContent": "./dist/helpers/preview-lru-cache/set.js"
+    ".": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc"
