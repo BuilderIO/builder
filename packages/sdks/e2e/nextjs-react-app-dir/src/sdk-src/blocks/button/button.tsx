@@ -35,16 +35,12 @@ function Button(props: ButtonProps) {
             {...{}}
             {...props.attributes}
             style={props.attributes.style}
-            className={props.attributes.class + " button-dca069a6"}
+            className={'builder-button ' + props.attributes.className}
           >
             {props.text}
           </button>
         </>
       )}
-
-      <style>{`.button-dca069a6 {
-  all: unset;
-}`}</style>
     </>
   );
 }

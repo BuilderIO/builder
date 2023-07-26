@@ -36,6 +36,10 @@ ${getFontCss({
   text-align: inherit;
   font-family: inherit;
 }
+
+.builder-block.builder-button {
+  all: unset;
+}
 `.trim()
   );
 

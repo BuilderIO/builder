@@ -28,6 +28,10 @@ ${getFontCss({ customFonts: props.customFonts })}
   text-align: inherit;
   font-family: inherit;
 }
+
+.builder-block.builder-button {
+  all: unset;
+}
 `.trim(),
   });
 
