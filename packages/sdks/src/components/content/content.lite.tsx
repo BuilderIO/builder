@@ -124,6 +124,7 @@ export default function ContentComponent(props: ContentProps) {
       enrich={props.enrich}
       classNameProp={props.classNameProp}
       showContent={props.showContent}
+      postPreviewContent={props.postPreviewContent}
       builderContextSignal={builderContextSignal}
       {...useTarget({
         // eslint-disable-next-line object-shorthand

@@ -33,7 +33,7 @@ import type { ComponentInfo } from '../../../types/components.js';
 import { getContent } from '../../../functions/get-content/index.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
-import { postPreviewContent } from '../../../helpers/preview-lru-cache.js';
+import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 
 useMetadata({
   qwik: {
@@ -78,15 +78,15 @@ export default function EnableEditor(props: BuilderEditorProps) {
       };
 
       useTarget({
-        rsc: async () => {
-          await postPreviewContent({
+        rsc: () => {
+          postPreviewContent({
             value: newContentValue,
             key: newContentValue.id!,
+          }).then(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            router.refresh();
           });
-
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          router.refresh();
         },
         default: () => {
           props.builderContextSignal.value.content = newContentValue;
@@ -230,9 +230,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
   setContext(builderContext, props.builderContextSignal);
 
   onUpdate(() => {
-    if (props.content) {
-      state.mergeNewContent(props.content);
-    }
+    useTarget({
+      rsc: () => {},
+      default: () => {
+        if (props.content) {
+          state.mergeNewContent(props.content);
+        }
+      },
+    });
   }, [props.content]);
 
   onUpdate(() => {

@@ -2,11 +2,12 @@ import { TARGET } from '../../constants/target.js';
 import { handleABTesting } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { logger } from '../../helpers/logger.js';
+import { getPreviewContent } from '../../helpers/preview-lru-cache/get.js';
 import type { BuilderContent } from '../../types/builder-content.js';
+import { normalizeSearchParams } from '../get-builder-search-params/index.js';
 import { fetch } from '../get-fetch.js';
 import { isBrowser } from '../is-browser.js';
 import { generateContentUrl } from './generate-content-url.js';
-import { processCookies } from './processCookies.js';
 import type { GetContentOptions } from './types.js';
 
 const checkContentHasResults = (
@@ -52,10 +53,14 @@ export const processContentResult = async (
 ) => {
   const canTrack = getDefaultCanTrack(options.canTrack);
 
-  if (TARGET === 'rsc') {
+  // TO-DO: clean
+  const isPreviewing = normalizeSearchParams(options.options || {})['preview'];
+
+  if (TARGET === 'rsc' && isPreviewing) {
     const newResults: BuilderContent[] = [];
     for (const item of content.results) {
-      newResults.push(processCookies(item));
+      const previewContent = getPreviewContent(options.options || {});
+      newResults.push(previewContent || item);
     }
     content.results = newResults;
   }

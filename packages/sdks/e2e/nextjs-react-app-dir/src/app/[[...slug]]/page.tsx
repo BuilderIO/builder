@@ -2,12 +2,15 @@ import {
   RenderContent,
   getBuilderSearchParams,
   getContent,
+  processContentResult,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
 } from '@builder.io/sdk-react-nextjs';
+
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';
-const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+import { getProps } from '@builder.io/sdks-e2e-tests';
 
 interface MyPageProps {
   params: {
@@ -20,20 +23,26 @@ interface MyPageProps {
 export default async function Page(props: MyPageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
-  const content = await getContent({
-    model: 'page',
-    apiKey: REAL_API_KEY,
+  const builderProps = await getProps({
+    pathname: urlPath,
+    processContentResult,
     options: getBuilderSearchParams(props.searchParams),
-    userAttributes: {
-      urlPath,
-    },
+    getContent,
+    data: 'real',
   });
+
+  if (!builderProps) {
+    return (
+      <>
+        <h1>404</h1>
+        <p>Make sure you have your content published at builder.io.</p>
+      </>
+    );
+  }
 
   return (
     <RenderContent
-      content={content}
-      model="page"
-      apiKey={REAL_API_KEY}
+      {...builderProps}
       customComponents={[
         {
           ...componentInfo,
