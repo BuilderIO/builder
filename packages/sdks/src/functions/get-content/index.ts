@@ -2,11 +2,11 @@ import { TARGET } from '../../constants/target.js';
 import { handleABTesting } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { logger } from '../../helpers/logger.js';
+import { getPreviewContent } from '../../helpers/preview-lru-cache/get.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { fetch } from '../get-fetch.js';
 import { isBrowser } from '../is-browser.js';
 import { generateContentUrl } from './generate-content-url.js';
-import { processCookies } from './processCookies.js';
 import type { GetContentOptions } from './types.js';
 
 const checkContentHasResults = (
@@ -48,14 +48,18 @@ const fetchContent = async (options: GetContentOptions) => {
  */
 export const processContentResult = async (
   options: GetContentOptions,
-  content: ContentResults
+  content: ContentResults,
+  url: URL = generateContentUrl(options)
 ) => {
   const canTrack = getDefaultCanTrack(options.canTrack);
 
-  if (TARGET === 'rsc') {
+  const isPreviewing = url.search.includes(`preview=`);
+
+  if (TARGET === 'rsc' && isPreviewing) {
     const newResults: BuilderContent[] = [];
     for (const item of content.results) {
-      newResults.push(processCookies(item));
+      const previewContent = getPreviewContent(url.searchParams);
+      newResults.push(previewContent || item);
     }
     content.results = newResults;
   }

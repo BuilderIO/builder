@@ -67,7 +67,18 @@ const apiVersionPathToProp = {
 
 export type Path = keyof typeof pages;
 
-export const ALL_PATHNAMES = Object.keys(pages);
+const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1'];
+const GEN2_ONLY_PATHNAMES: Path[] = ['/api-version-v2'];
+
+export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
+  return Object.keys(pages).filter(pathname => {
+    if (target === 'gen1') {
+      return !GEN2_ONLY_PATHNAMES.includes(pathname as Path);
+    } else {
+      return !GEN1_ONLY_PATHNAMES.includes(pathname as Path);
+    }
+  });
+};
 
 const getContentForPathname = (pathname: string): BuilderContent | null => {
   return pages[pathname as keyof typeof pages] || null;

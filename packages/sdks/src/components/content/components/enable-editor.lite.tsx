@@ -33,6 +33,7 @@ import type { ComponentInfo } from '../../../types/components.js';
 import { getContent } from '../../../functions/get-content/index.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
+import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 
 useMetadata({
   qwik: {
@@ -60,7 +61,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     forceReRenderCount: 0,
     mergeNewContent(newContent: BuilderContent) {
-      props.builderContextSignal.value.content = {
+      const newContentValue = {
         ...props.builderContextSignal.value.content,
         ...newContent,
         data: {
@@ -75,6 +76,22 @@ export default function EnableEditor(props: BuilderEditorProps) {
             props.builderContextSignal.value.content?.meta?.breakpoints,
         },
       };
+
+      useTarget({
+        rsc: () => {
+          postPreviewContent({
+            value: newContentValue,
+            key: newContentValue.id!,
+          }).then(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            router.refresh();
+          });
+        },
+        default: () => {
+          props.builderContextSignal.value.content = newContentValue;
+        },
+      });
     },
     lastUpdated: 0,
     shouldSendResetCookie: false,
@@ -111,111 +128,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
               state.mergeNewContent(contentData);
               state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
-            break;
-          }
-          case 'builder.hardReset': {
-            useTarget({
-              rsc: () => {
-                const lastUpdatedAutosave = parseInt(
-                  data.data.lastUpdatedAutosave
-                );
-
-                console.log('HARD RESET', { lastUpdatedAutosave });
-
-                const lastUpdatedToUse =
-                  !isNaN(lastUpdatedAutosave) &&
-                  lastUpdatedAutosave > state.lastUpdated
-                    ? lastUpdatedAutosave
-                    : state.lastUpdated;
-                state.lastUpdated = lastUpdatedToUse;
-
-                console.log('HARD RESET', {
-                  shouldSendResetCookie: state.shouldSendResetCookie,
-                });
-                if (state.shouldSendResetCookie) {
-                  console.log('HARD RESET: refreshing.');
-                  document.cookie = `builder.hardReset=${lastUpdatedToUse};max-age=100`;
-                  state.shouldSendResetCookie = false;
-
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  router.refresh();
-                } else {
-                  console.log('HARD RESET: not refreshing.');
-                }
-              },
-            });
-            break;
-          }
-
-          case 'builder.patchUpdates': {
-            useTarget({
-              rsc: () => {
-                const patches = data.data.data;
-
-                for (const contentId of Object.keys(patches)) {
-                  const patchesForBlock = patches[contentId];
-
-                  // TO-DO: fix scenario where we end up with -Infinity
-                  const getLastIndex = () =>
-                    Math.max(
-                      ...document.cookie
-                        .split(';')
-                        .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
-                        .map((x) => {
-                          const parsedIndex = parseInt(
-                            x.split('=')[0].split(contentIdKeyPrefix)[1]
-                          );
-                          return isNaN(parsedIndex) ? 0 : parsedIndex;
-                        })
-                    ) || 0;
-
-                  const contentIdKeyPrefix = `builder.patch.${contentId}.`;
-
-                  // get last index of patch for this block
-                  const lastIndex = getLastIndex();
-
-                  const cookie = {
-                    name: `${contentIdKeyPrefix}${lastIndex + 1}`,
-                    value: encodeURIComponent(JSON.stringify(patchesForBlock)),
-                  };
-
-                  // remove hard reset cookie just in case it was set in a prior update.
-                  document.cookie = `builder.hardReset=no;max-age=0`;
-                  document.cookie = `${cookie.name}=${cookie.value};max-age=30`;
-
-                  const newCookieValue = document.cookie
-                    .split(';')
-                    .find((x) => x.trim().startsWith(cookie.name))
-                    ?.split('=')[1];
-
-                  if (newCookieValue !== cookie.value) {
-                    console.warn('Cookie did not save correctly.');
-                    console.log('Clearing all Builder patch cookies...');
-
-                    window.parent?.postMessage(
-                      { type: 'builder.patchUpdatesFailed', data: data.data },
-                      '*'
-                    );
-
-                    document.cookie
-                      .split(';')
-                      .filter((x) => x.trim().startsWith(contentIdKeyPrefix))
-                      .forEach((x) => {
-                        document.cookie = `${x.split('=')[0]}=;max-age=0`;
-                      });
-
-                    state.shouldSendResetCookie = true;
-                  } else {
-                    console.log('cookie saved correctly');
-
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    router.refresh();
-                  }
-                }
-              },
-            });
             break;
           }
         }
@@ -319,46 +231,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onUpdate(() => {
     useTarget({
-      rsc: () => {
-        if (!props.content) return;
-
-        const lastUpdatedAutosave = props.content.meta?.lastUpdatedAutosave;
-
-        const hardResetCookie = document.cookie
-          .split(';')
-          .find((x) => x.trim().startsWith('builder.hardReset'));
-        const hardResetCookieValue = hardResetCookie?.split('=')[1];
-
-        if (!hardResetCookieValue) return;
-
-        if (
-          lastUpdatedAutosave &&
-          parseInt(hardResetCookieValue) <= lastUpdatedAutosave
-        ) {
-          console.log('got fresh content! 🎉');
-          document.cookie = `builder.hardReset=;max-age=0`;
-
-          window.parent?.postMessage(
-            {
-              type: 'builder.freshContentFetched',
-              data: {
-                contentId: props.content.id,
-                lastUpdated: lastUpdatedAutosave,
-              },
-            },
-            '*'
-          );
-        } else {
-          console.log(
-            'hard reset cookie is newer than lastUpdatedAutosave, refreshing'
-          );
-          document.cookie = `builder.hardReset=${hardResetCookieValue};max-age=100`;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          router.refresh();
-        }
-      },
-
+      rsc: () => {},
       default: () => {
         if (props.content) {
           state.mergeNewContent(props.content);

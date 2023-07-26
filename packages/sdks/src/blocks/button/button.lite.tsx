@@ -45,6 +45,7 @@ export default function Button(props: ButtonProps) {
             {
               react: props.attributes.className,
               reactNative: props.attributes.className,
+              rsc: props.attributes.className,
               default: props.attributes.class,
             }
           )}

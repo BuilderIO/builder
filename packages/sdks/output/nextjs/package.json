@@ -2,10 +2,10 @@
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io SDK for React",
   "version": "0.4.5",
-  "type": "module",
   "files": [
     "dist"
   ],
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js"
   },
@@ -20,5 +20,8 @@
     "next": "^13.4.4",
     "react": "^18.2.0",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "lru-cache": "^10.0.0"
   }
 }
