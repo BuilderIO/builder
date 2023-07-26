@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "^0.4.5",
-    "@expo/webpack-config": "^18.0.4",
+    "@expo/webpack-config": "^0.17.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "expo": "^46.0.0",

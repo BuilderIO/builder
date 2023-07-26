@@ -1,3 +1,7 @@
+### 3.0.8
+- Replace deprecated package `vm2` with `isolated-vm`.
+- Fix for excessive caching in nextjs 13
+
 ### 3.0.7
 - add back the process keyword with a check for `typeof process` to fix Hydrogen SSR
 
