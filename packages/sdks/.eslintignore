@@ -17,5 +17,3 @@ e2e/rsc/
 **/vite.config.ts.timestamp-*
 
 **/.solid
-
-e2e/nextjs-react-app-dir/src/sdk-src/
