@@ -4,7 +4,6 @@ import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { logger } from '../../helpers/logger.js';
 import { getPreviewContent } from '../../helpers/preview-lru-cache/get.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { normalizeSearchParams } from '../get-builder-search-params/index.js';
 import { fetch } from '../get-fetch.js';
 import { isBrowser } from '../is-browser.js';
 import { generateContentUrl } from './generate-content-url.js';
@@ -49,17 +48,17 @@ const fetchContent = async (options: GetContentOptions) => {
  */
 export const processContentResult = async (
   options: GetContentOptions,
-  content: ContentResults
+  content: ContentResults,
+  url: URL = generateContentUrl(options)
 ) => {
   const canTrack = getDefaultCanTrack(options.canTrack);
 
-  // TO-DO: clean
-  const isPreviewing = normalizeSearchParams(options.options || {})['preview'];
+  const isPreviewing = url.search.includes(`preview=`);
 
   if (TARGET === 'rsc' && isPreviewing) {
     const newResults: BuilderContent[] = [];
     for (const item of content.results) {
-      const previewContent = getPreviewContent(options.options || {});
+      const previewContent = getPreviewContent(url.searchParams);
       newResults.push(previewContent || item);
     }
     content.results = newResults;
