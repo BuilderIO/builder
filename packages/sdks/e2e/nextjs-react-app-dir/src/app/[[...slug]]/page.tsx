@@ -28,7 +28,6 @@ export default async function Page(props: MyPageProps) {
     processContentResult,
     options: getBuilderSearchParams(props.searchParams),
     getContent,
-    data: 'real',
   });
 
   if (!builderProps) {
