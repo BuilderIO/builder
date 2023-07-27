@@ -1,6 +1,7 @@
 {
   "name": "builder-beta-sdk-next13-app-demo",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
