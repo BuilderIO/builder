@@ -85,13 +85,11 @@ export async function getStaticPaths() {
 
 export default function Page({
   page,
-  footer,
-  demoSection
+  footer
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const isPreviewingInBuilder = useIsPreviewing()
   const show404 = !page && !isPreviewingInBuilder
-  console.log('DEMO SECTION: ', demoSection)
 
   if (router.isFallback) {
     return <h1>Loading...</h1>
