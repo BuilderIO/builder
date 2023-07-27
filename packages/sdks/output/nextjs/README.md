@@ -1,6 +1,6 @@
 # Builder.io React NextJS SDK (BETA)
 
-This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory. 
+This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory.
 
 If you are using NextJS's pages directory, use the [React gen2 SDK](../react/) in Beta, or the stable React gen1 SDK [here](../../../react/) (i.e. `builder.io/react`).
 
@@ -30,7 +30,11 @@ type RenderContentProps = {
 Here is a simplified example showing how you would use both. This needs to be created created with the name `app/[[...slug]]/page.tsx`, so it catches all routes:
 
 ```tsx
-import { RenderContent, getBuilderSearchParams, getContent } from '@builder.io/sdk-react-nextjs';
+import {
+  RenderContent,
+  getBuilderSearchParams,
+  getContent,
+} from '@builder.io/sdk-react-nextjs';
 
 interface MyPageProps {
   params: {
