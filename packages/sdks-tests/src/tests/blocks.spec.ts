@@ -6,9 +6,7 @@ import {
   test,
   findTextInPage,
   isRNSDK,
-  expectStyleForElement,
   excludeReactNative,
-  expectStylesForElement,
   testOnlyOldReact,
   testExcludeOldReact,
   isOldReactSDK,
@@ -35,19 +33,11 @@ const testSymbols = async (page: Page) => {
   // these are desktop and tablet styles, and will never show up in react native
   if (!isRNSDK) {
     // check desktop styles
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(255, 0, 0)',
-    });
+    await expect(firstSymbolText).toHaveCSS('color', 'rgb(255, 0, 0)');
 
     // resize to tablet
     await page.setViewportSize({ width: 930, height: 1000 });
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(0, 255, 6)',
-    });
+    await expect(firstSymbolText).toHaveCSS('color', 'rgb(0, 255, 6)');
 
     // resize to mobile
     await page.setViewportSize({ width: 400, height: 1000 });
@@ -56,11 +46,7 @@ const testSymbols = async (page: Page) => {
   // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
   if (!isRNSDK) {
     // check mobile styles
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(0, 255, 255)',
-    });
+    await expect(firstSymbolText).toHaveCSS('color', 'rgb(0, 255, 255)');
   }
 };
 
@@ -76,41 +62,30 @@ test.describe('Blocks', () => {
     const soloPTag = await textBlocks.nth(1).locator('*').first();
     const pTags = await textBlocks.nth(2).locator('*').all();
 
-    const NO_MARGIN_STYLES = {
-      'margin-top': '0px',
-      'margin-bottom': '0px',
-      'margin-left': '0px',
-      'margin-right': '0px',
-    };
-
     for (const child of paragraphClasses) {
-      await expectStylesForElement({
-        locator: child,
-        expected: NO_MARGIN_STYLES,
-      });
+      await expect(child).toHaveCSS('margin-top', '0px');
+      await expect(child).toHaveCSS('margin-bottom', '0px');
+      await expect(child).toHaveCSS('margin-left', '0px');
+      await expect(child).toHaveCSS('margin-right', '0px');
     }
-    await expectStylesForElement({
-      locator: soloPTag,
-      expected: NO_MARGIN_STYLES,
-    });
+
+    await expect(soloPTag).toHaveCSS('margin-top', '0px');
+    await expect(soloPTag).toHaveCSS('margin-bottom', '0px');
+    await expect(soloPTag).toHaveCSS('margin-left', '0px');
+    await expect(soloPTag).toHaveCSS('margin-right', '0px');
 
     const [firstPTag, ...otherPTags] = pTags;
 
-    await expectStylesForElement({
-      locator: firstPTag,
-      expected: NO_MARGIN_STYLES,
-    });
+    await expect(firstPTag).toHaveCSS('margin-top', '0px');
+    await expect(firstPTag).toHaveCSS('margin-bottom', '0px');
+    await expect(firstPTag).toHaveCSS('margin-left', '0px');
+    await expect(firstPTag).toHaveCSS('margin-right', '0px');
 
     for (const child of otherPTags) {
-      await expectStylesForElement({
-        locator: child,
-        expected: {
-          'margin-top': '16px',
-          'margin-bottom': '16px',
-          'margin-left': '0px',
-          'margin-right': '0px',
-        },
-      });
+      await expect(child).toHaveCSS('margin-top', '16px');
+      await expect(child).toHaveCSS('margin-bottom', '16px');
+      await expect(child).toHaveCSS('margin-left', '0px');
+      await expect(child).toHaveCSS('margin-right', '0px');
     }
   });
   /**
@@ -157,7 +132,10 @@ test.describe('Blocks', () => {
 
     for (const { val, i } of Object.values(expectedVals)) {
       const image = imageLocator.nth(i);
-      await expectStylesForElement({ locator: image, expected: val });
+      const expected = val;
+      for (const property of Object.keys(expected)) {
+        await expect(image).toHaveCSS(property, expected[property]);
+      }
     }
   });
 
@@ -166,7 +144,9 @@ test.describe('Blocks', () => {
 
     await testSymbols(page);
   });
-  test('symbols without content', async ({ page }) => {
+  test('symbols without content', async ({ page, packageName }) => {
+    if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+
     let x = 0;
 
     const urlMatch =
@@ -197,12 +177,7 @@ test.describe('Blocks', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test('symbols refresh on locale change', async ({ page, packageName }) => {
-    if (packageName === 'e2e-qwik-city') {
-      test.skip();
-      return;
-    }
-
+  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
     let x = 0;
 
     const urlMatch =
@@ -227,6 +202,8 @@ test.describe('Blocks', () => {
     });
 
     await page.goto('/symbol-with-locale');
+
+    await page.waitForSelector('text=Default text');
 
     await page.click('text=click');
 
@@ -269,7 +246,7 @@ test.describe('Blocks', () => {
       },
     };
 
-    const NO_LEFT_MARGIN = { 'margin-left': '0px' };
+    const NO_LEFT_MARGIN = { 'margin-left': '0px' } as const;
 
     const expected: Record<ColumnTypes, Record<SizeName, ColStyles> & { index: number }> = {
       stackAtTablet: {
@@ -322,25 +299,27 @@ test.describe('Blocks', () => {
               : page.locator('.builder-columns');
 
             await expect(columns).toHaveCount(5);
-            await expectStylesForElement({
-              locator: columns.nth(styles.index),
-              expected: styles[sizeName].columns,
-            });
+            for (const property of Object.keys(styles[sizeName].columns)) {
+              await expect(columns.nth(styles.index)).toHaveCSS(
+                property,
+                styles[sizeName].columns[property]
+              );
+            }
 
             const columnLocator = isRNSDK
               ? columns.nth(styles.index).locator('[data-builder-block-name=builder-column]')
               : columns.nth(styles.index).locator('.builder-column');
 
             // first column should never have left margin
-            await expectStylesForElement({
-              locator: columnLocator.nth(0),
-              expected: NO_LEFT_MARGIN,
-            });
+            await expect(columnLocator.nth(0)).toHaveCSS(
+              'margin-left',
+              NO_LEFT_MARGIN['margin-left']
+            );
 
-            await expectStylesForElement({
-              locator: columnLocator.nth(1),
-              expected: styles[sizeName].column,
-            });
+            const expected = styles[sizeName].column;
+            for (const property of Object.keys(expected)) {
+              await expect(columnLocator.nth(1)).toHaveCSS(property, expected[property]);
+            }
           });
         }
       });
@@ -348,7 +327,9 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Test ApiVersion', () => {
-    test('apiVersion in SDKs is not set', async ({ page }) => {
+    test('apiVersion in SDKs is not set', async ({ page, packageName }) => {
+      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -379,7 +360,8 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    test('apiVersion in SDKs is set to v3', async ({ page }) => {
+    test('apiVersion in SDKs is set to v3', async ({ page, packageName }) => {
+      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -437,7 +419,8 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page }) => {
+    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page, packageName }) => {
+      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;

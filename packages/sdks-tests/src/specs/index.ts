@@ -12,6 +12,7 @@ import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as abTest } from './ab-test.js';
+import { CONTENT as symbolAbTest } from './symbol-ab-test.js';
 import {
   CONTENT as customBreakpoints,
   CONTENT_RESET as customBreakpointsReset,
@@ -48,6 +49,7 @@ const pages = {
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
   '/ab-test': abTest,
+  '/symbol-ab-test': symbolAbTest,
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': reactiveState,
   '/element-events': elementEvents,
@@ -65,7 +67,18 @@ const apiVersionPathToProp = {
 
 export type Path = keyof typeof pages;
 
-export const ALL_PATHNAMES = Object.keys(pages);
+const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1'];
+const GEN2_ONLY_PATHNAMES: Path[] = ['/api-version-v2'];
+
+export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
+  return Object.keys(pages).filter(pathname => {
+    if (target === 'gen1') {
+      return !GEN2_ONLY_PATHNAMES.includes(pathname as Path);
+    } else {
+      return !GEN1_ONLY_PATHNAMES.includes(pathname as Path);
+    }
+  });
+};
 
 const getContentForPathname = (pathname: string): BuilderContent | null => {
   return pages[pathname as keyof typeof pages] || null;
@@ -77,17 +90,38 @@ const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
 export const getAPIKey = (): string => 'abcd';
+const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
-export const getProps = async (
-  args: {
-    pathname?: string;
-    processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
-  } = {}
-) => {
-  const { pathname: _pathname = getPathnameFromWindow(), processContentResult } = args;
+export const getProps = async (args: {
+  pathname?: string;
+  processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+  getContent?: (opts: any) => Promise<BuilderContent | null>;
+  options?: any;
+  data?: 'real' | 'mock';
+}) => {
+  const {
+    pathname: _pathname = getPathnameFromWindow(),
+    processContentResult,
+    data = 'mock',
+    getContent,
+    options,
+  } = args;
   const pathname = normalizePathname(_pathname);
+
+  if (data === 'real' && getContent) {
+    return {
+      model: 'page',
+      apiKey: REAL_API_KEY,
+      content: await getContent({
+        model: 'page',
+        apiKey: REAL_API_KEY,
+        userAttributes: { urlPath: pathname },
+        options,
+      }),
+    };
+  }
   const _content = getContentForPathname(pathname);
 
   if (!_content) {

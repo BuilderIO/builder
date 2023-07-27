@@ -50,9 +50,7 @@ const getTargetPath = ({ target }) => {
     case 'vue3':
       return 'vue/packages/_vue3';
     case 'rsc':
-      return 'react/packages/rsc';
-    case 'react':
-      return 'react/packages/react';
+      return 'nextjs';
     default:
       return kebabCase(target);
   }
@@ -63,9 +61,7 @@ const getTargetPath = ({ target }) => {
  */
 const convertPropertyStateValueToGetter = (args) => {
   const { value, key } = args;
-  if (!value) {
-    return;
-  }
+  if (!value) return;
   value.code = `get ${key}() {\n return ${value.code} \n}`;
   value.type = 'getter';
 };
@@ -77,107 +73,46 @@ const vueConfig = {
   typescript: true,
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
   cssNamespace: getSeededId,
-  asyncComponentImports: true,
   plugins: [
     () => ({
       json: {
         // This plugin handles binding our actions to the `v-on:` Vue syntax:
         // - in our block components, the actions will come through `props.attributes` and need to be filtered
-        // - in RenderBlock, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
+        // - in Block, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
-          // this function is injected into a component, so it can't use anything outside of itself
-          /**
-           *
-           * @param {{[index: string]: any}} attrs
-           * @param {boolean} isEvent
-           * @returns
-           */
-          function filterAttrs(attrs = {}, isEvent) {
-            const eventPrefix = 'v-on:';
-            return Object.keys(attrs)
-              .filter((attr) => {
-                if (!attrs[attr]) {
-                  return false;
-                }
-
-                const isEventVal = attr.startsWith(eventPrefix);
-                return isEvent ? isEventVal : !isEventVal;
-              })
-              .reduce(
-                (acc, attr) => ({
-                  ...acc,
-                  [attr.replace(eventPrefix, '')]: attrs[attr],
-                }),
-                {}
-              );
-          }
-          const FILTER_ATTRIBUTES_CODE = filterAttrs.toString();
-
-          // this function is injected into a component, so it can't use anything outside of itself'
-          /**
-           * @param {{[index:string]: any}} actions
-           */
-          function stripVOn(actions = {}) {
-            return Object.keys(actions).reduce(
-              (acc, attr) => ({
-                ...acc,
-                [attr.replace('v-on:', '')]: actions[attr],
-              }),
-              {}
-            );
-          }
-
-          if (json.name === 'RenderBlock') {
-            const STRIP_VON_CODE = stripVOn.toString();
-
-            json.state['stripVOn'] = {
-              code: STRIP_VON_CODE,
-              type: 'function',
-            };
-          }
-
-          let hasFilterCode = false;
-
           traverse(json).forEach(function (item) {
-            if (!isMitosisNode(item)) {
-              return;
+            if (!isMitosisNode(item)) return;
+
+            if (json.name === 'BlockWrapper') {
+              const key = Object.keys(item.bindings).find((x) =>
+                x.startsWith('getBlockActions')
+              );
+              if (key) {
+                const binding = item.bindings[key];
+                if (binding) {
+                  item.bindings[key] = {
+                    ...binding,
+                    type: 'spread',
+                    spreadType: 'event-handlers',
+                  };
+                }
+              }
             }
 
-            if (json.name === 'RenderBlock') {
-              const key = 'state.actions';
-              if (item.bindings[key]) {
+            const filterAttrKeys = Object.entries(item.bindings).filter(
+              ([key, value]) =>
+                value?.code.includes('filterAttrs') &&
+                value.code.includes('true')
+            );
+
+            for (const [key, value] of filterAttrKeys) {
+              if (value) {
                 item.bindings[key] = {
-                  code: `stripVOn(${item.bindings[key].code})`,
+                  ...value,
                   type: 'spread',
                   spreadType: 'event-handlers',
                 };
-              } else {
-                return;
               }
-            }
-
-            const key = 'props.attributes';
-            if (item.bindings[key]) {
-              if (!hasFilterCode) {
-                hasFilterCode = true;
-                json.state['filterAttrs'] = {
-                  code: FILTER_ATTRIBUTES_CODE,
-                  type: 'function',
-                };
-              }
-
-              item.bindings['___SPREAD1'] = {
-                code: `filterAttrs(${key},  false)`,
-                type: 'spread',
-                spreadType: 'normal',
-              };
-              item.bindings['___SPREAD2'] = {
-                code: `filterAttrs(${key},  true)`,
-                type: 'spread',
-                spreadType: 'event-handlers',
-              };
-
-              delete item.bindings[key];
             }
           });
         },
@@ -201,18 +136,6 @@ const SRCSET_PLUGIN = () => ({
 });
 
 /**
- * @type {Plugin}
- */
-const REACT_NEXT_V13_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      // Needed for next v13 to work
-      return `'use client';\n${code}`;
-    },
-  },
-});
-
-/**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
  * @type {Plugin}
@@ -220,7 +143,7 @@ const REACT_NEXT_V13_PLUGIN = () => ({
 const BASE_TEXT_PLUGIN = () => ({
   code: {
     pre: (code) => {
-      if (code.includes('<Text>') && !code.includes('RenderInlinedStyles')) {
+      if (code.includes('<Text>') && !code.includes('InlinedStyles')) {
         return `
 import BaseText from '../BaseText';
 ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
@@ -250,6 +173,7 @@ module.exports = {
   options: {
     vue2: {
       ...vueConfig,
+      asyncComponentImports: true,
       plugins: [
         ...(vueConfig?.plugins || []),
         () => ({
@@ -260,14 +184,12 @@ module.exports = {
                 json.children[0].name = 'div';
               }
 
-              if (json.name === 'RenderBlock') {
+              if (json.name === 'Block') {
                 // drop the wrapper `Show`, move its condition to the root `<template>`
                 json.children = json.children[0].children;
 
                 traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
+                  if (!isMitosisNode(item)) return;
 
                   const children = item.children.filter(filterEmptyTextNodes);
 
@@ -313,17 +235,14 @@ module.exports = {
           },
           code: {
             pre: (code) => {
-              if (code.includes("name: 'render-block'")) {
+              if (code.includes("name: 'block'")) {
                 // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
                 return code
                   .replace(
-                    '<component v-else ',
-                    '<component v-else-if="canShowBlock" '
+                    '<block-wrapper v-else ',
+                    '<block-wrapper v-else-if="canShowBlock" '
                   )
-                  .replace(
-                    'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
-                    'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
-                  );
+                  .replace('&& canShowBlock)"', ') && canShowBlock"');
               }
               return code;
             },
@@ -334,55 +253,66 @@ module.exports = {
     vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
       typescript: true,
+      plugins: [SRCSET_PLUGIN],
+      stylesType: 'style-tag',
+    },
+    rsc: {
+      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
-              traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) {
-                  return;
-                }
+              if (json.name === 'Symbol') {
+                delete json.state.setContent;
 
-                if (item.bindings['dataSet']) {
-                  delete item.bindings['dataSet'];
-                }
+                // @ts-ignore
+                json.state.contentToUse.code =
+                  json.state.contentToUse?.code.replace('async () => ', '');
+              } else if (json.name === 'EnableEditor') {
+                json.imports.push({
+                  path: 'next/navigation',
+                  imports: {
+                    useRouter: 'useRouter',
+                  },
+                });
 
-                if (item.properties['dataSet']) {
-                  delete item.properties['dataSet'];
-                }
-              });
+                json.hooks.init = {
+                  code: `const router = useRouter();`,
+                };
+              }
+              return json;
+            },
+          },
+          code: {
+            pre: (code) => {
+              return code.replace('function Symbol(', 'async function Symbol(');
             },
           },
         }),
       ],
       stylesType: 'style-tag',
     },
-    rsc: {
-      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN],
-    },
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
         BASE_TEXT_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
               /**
-               * We cannot set context in `RenderComponent` because it's a light Qwik component.
+               * We cannot set context in `ComponentRef` because it's a light Qwik component.
                * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
                **/
-              if (json.name === 'RenderComponent') {
+              if (json.name === 'ComponentRef') {
                 json.imports.push({
                   imports: {
                     BuilderContext: 'default',
                   },
-                  path: '../../context/builder.context.lite',
+                  path: '../../../../context/builder.context.lite',
                 });
                 json.context.set = {
-                  '../../context/builder.context.lite:default': {
+                  '../../../../context/builder.context.lite:default': {
                     name: 'BuilderContext',
                     value: {
                       content: {
@@ -405,8 +335,8 @@ module.exports = {
                         code: 'props.context.apiKey',
                         type: 'property',
                       },
-                      registeredComponents: {
-                        code: 'props.context.registeredComponents',
+                      componentInfos: {
+                        code: 'props.context.componentInfos',
                         type: 'property',
                       },
                       inheritedStyles: {
@@ -427,21 +357,14 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (
-                json.name !== 'RenderBlocks' &&
-                json.name !== 'RenderContent'
-              ) {
-                return;
-              }
+              if (!json.meta?.useMetadata?.reactNative?.useScrollView) return;
 
               /**
-               * We need the ScrollView for the `RenderBlocks` and `RenderComponent` components to be able to scroll
+               * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
                * through the whole page.
                */
               traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) {
-                  return;
-                }
+                if (!isMitosisNode(item)) return;
 
                 if (item.name === 'View') {
                   item.name = 'ScrollView';
@@ -454,80 +377,17 @@ module.exports = {
     },
     qwik: {
       typescript: true,
-      plugins: [
-        SRCSET_PLUGIN,
-        () => ({
-          json: {
-            pre: (json) => {
-              // We want to keep this component as a light component to avoid the overhead of a full component, which is
-              // a ton of HTML comments. Therefore, we convert these properties to getters so we don't have `useStore`
-              // calls in the component.
-              if (json.name === 'RenderBlock') {
-                convertPropertyStateValueToGetter({
-                  value: json.state['repeatItemData'],
-                  key: 'repeatItemData',
-                });
-
-                convertPropertyStateValueToGetter({
-                  value: json.state['component'],
-                  key: 'component',
-                });
-              }
-
-              // TO-DO: remove this:
-              // For now, we exclude the `setState` function as Mitosis does not correctly know how to serialize it.
-              Object.values(json.context.set).forEach((context) => {
-                if (context?.value?.['setState']) {
-                  delete context.value['setState'];
-                }
-              });
-
-              return json;
-            },
-          },
-        }),
-        () => ({
-          json: {
-            pre: (json) => {
-              if (json.name === 'RenderInlinedStyles') {
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
-
-                  if (item.bindings.innerHTML) {
-                    item.name = 'style';
-                  }
-                });
-              }
-            },
-          },
-        }),
-      ],
+      plugins: [SRCSET_PLUGIN],
     },
     svelte: {
       typescript: true,
       plugins: [
-        () => ({
-          json: {
-            pre: (json) => {
-              Object.keys(json.context.set).forEach((contextKey) => {
-                const setValue = json.context.set[contextKey];
-                if (setValue.name === 'builderContext') {
-                  Object.keys(setValue.value || {}).forEach((valueKey) => {
-                    const value = setValue.value?.[valueKey];
-                    if (value && value.type === 'property') {
-                      convertPropertyStateValueToGetter({
-                        value,
-                        key: valueKey,
-                      });
-                    }
-                  });
-                }
-              });
-            },
-          },
-        }),
+        /**
+         * This plugin modifies `svelte:component` to elements to use the `svelte:element` syntax instead.
+         * `svelte:component` is used for rendering dynamic Svelte components, and `svelte:element` is used for
+         * rendering dynamic HTML elements. Mitosis can't know which one to use, and defaults to `svelte:component`,
+         * so we have to override that.
+         */
         () => ({
           json: {
             pre: (json) => {
@@ -538,9 +398,7 @@ module.exports = {
                 const tagArr = Array.isArray(tag) ? tag : [tag];
 
                 traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
+                  if (!isMitosisNode(item)) return;
 
                   if (tagArr.includes(item.name)) {
                     item.bindings.this = {
@@ -558,98 +416,50 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              /**
-               * Workaround to dynamically provide event handlers to components/elements
-               * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
-               */
-              const code = `
-              const setAttrs = (node, attrs = {}) => {
-                const attrKeys = Object.keys(attrs)
-            
-                const setup = attr => node.addEventListener(attr.substr(3), attrs[attr])
-                const teardown = attr => node.removeEventListener(attr.substr(3), attrs[attr])
-                
-                attrKeys.map(setup)
-            
-                return {
-                  update(attrs = {}) {
-                    const attrKeys = Object.keys(attrs)
-                    attrKeys.map(teardown)
-                    attrKeys.map(setup)
-                  },
-                  destroy() { attrKeys.map(teardown) }
-                }
-              }
-              `;
-              // handle case where we have a wrapper element, in which case the actions are assigned in `RenderBlock`.
-              if (json.name === 'RenderBlock') {
-                json.hooks.preComponent = { code };
+              // This plugin handles binding our actions to the `use:` Svelte syntax:
 
+              // handle case where we have a wrapper element, in which case the actions are assigned in `BlockWrapper`.
+              if (json.name === 'BlockWrapper') {
                 traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
-                  if (item.bindings['state.actions']) {
-                    item.bindings['use:setAttrs'] = {
-                      code: item.bindings['state.actions'].code,
-                      type: 'single',
-                    };
-                    delete item.bindings['state.actions'];
+                  if (!isMitosisNode(item)) return;
+
+                  const key = Object.keys(item.bindings).find((x) =>
+                    x.startsWith('getBlockActions')
+                  );
+                  if (key) {
+                    const binding = item.bindings[key];
+                    if (binding) {
+                      item.bindings['use:setAttrs'] = {
+                        ...binding,
+                        type: 'single',
+                      };
+                      delete item.bindings[key];
+                    }
                   }
                 });
-                return json;
-              } else if (json.name === 'RenderComponent') {
                 return json;
               }
 
               // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
               // builder blocks.
               traverse(json).forEach(function (item) {
-                /**
-                 * Additional snippet of code that helps split up the attributes into event handlers and the rest.
-                 * we can then apply these filters in 2 bindings: one that uses the `setAttrs` action, and another that
-                 * provides the non-event-handler attribtues as they are, spread into the component
-                 */
-                const filterCode = `
-                  const isEvent = attr => attr.startsWith('on:')
-                  const isNonEvent = attr => !attr.startsWith('on:')
+                if (!isMitosisNode(item)) return;
 
-                  const filterAttrs = (attrs = {}, filter) => {
-                    const validAttr = {}
-                    Object.keys(attrs).forEach(attr => {
-                      if (filter(attr)) {
-                        validAttr[attr] = attrs[attr]
-                      }
-                    })
-                    return validAttr
-                  }
-              `;
-
-                if (!isMitosisNode(item)) {
-                  return;
-                }
-                const spreadBinding = Object.entries(item.bindings).find(
-                  ([_key, value]) => value?.type === 'spread'
+                const filterAttrKeys = Object.entries(item.bindings).filter(
+                  ([key, value]) =>
+                    value?.code.includes('filterAttrs') &&
+                    value.code.includes('true')
                 );
 
-                if (spreadBinding) {
-                  const [key, value] = spreadBinding;
-                  if (!value) {
-                    throw new Error(
-                      `Could not find spread binding for ${json.name}`
-                    );
+                for (const [key, value] of filterAttrKeys) {
+                  if (value) {
+                    item.bindings['use:setAttrs'] = {
+                      ...value,
+                      type: 'single',
+                    };
+
+                    delete item.bindings[key];
                   }
-                  json.hooks.preComponent = {
-                    code: [filterCode, code].join('\n'),
-                  };
-                  item.bindings['use:setAttrs'] = {
-                    code: `filterAttrs(${value.code}, isEvent)`,
-                    type: 'single',
-                  };
-                  item.bindings[key] = {
-                    ...value,
-                    code: `filterAttrs(${value.code}, isNonEvent)`,
-                  };
                 }
               });
 

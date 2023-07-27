@@ -1,5 +1,5 @@
-import { generateContentUrl } from './generate-content-url';
-import type { GetContentOptions } from './types';
+import { generateContentUrl } from './generate-content-url.js';
+import type { GetContentOptions } from './types.js';
 
 const testKey = 'YJIGb4i01jvw0SRdL5Bt';
 const testModel = 'page';

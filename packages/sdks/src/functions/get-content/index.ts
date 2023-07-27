@@ -2,6 +2,7 @@ import { TARGET } from '../../constants/target.js';
 import { handleABTesting } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { logger } from '../../helpers/logger.js';
+import { getPreviewContent } from '../../helpers/preview-lru-cache/get.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { fetch } from '../get-fetch.js';
 import { isBrowser } from '../is-browser.js';
@@ -47,9 +48,21 @@ const fetchContent = async (options: GetContentOptions) => {
  */
 export const processContentResult = async (
   options: GetContentOptions,
-  content: ContentResults
+  content: ContentResults,
+  url: URL = generateContentUrl(options)
 ) => {
   const canTrack = getDefaultCanTrack(options.canTrack);
+
+  const isPreviewing = url.search.includes(`preview=`);
+
+  if (TARGET === 'rsc' && isPreviewing) {
+    const newResults: BuilderContent[] = [];
+    for (const item of content.results) {
+      const previewContent = getPreviewContent(url.searchParams);
+      newResults.push(previewContent || item);
+    }
+    content.results = newResults;
+  }
 
   if (!canTrack) return content;
   if (!(isBrowser() || TARGET === 'reactNative')) return content;

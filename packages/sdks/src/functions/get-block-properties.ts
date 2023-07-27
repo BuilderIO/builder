@@ -1,6 +1,8 @@
 import { TARGET } from '../constants/target.js';
+import type { BuilderContextInterface } from '../context/types.js';
 import { convertStyleMapToCSSArray } from '../helpers/css.js';
 import type { BuilderBlock } from '../types/builder-block.js';
+import { getReactNativeBlockStyles } from './get-react-native-block-styles.js';
 import { transformBlockProperties } from './transform-block-properties.js';
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
@@ -36,16 +38,30 @@ const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   return { href: (block as any).href };
 };
 
-export function getBlockProperties(block: BuilderBlock) {
+export function getBlockProperties({
+  block,
+  context,
+}: {
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+}) {
   const properties = {
     ...extractRelevantRootBlockProperties(block),
     ...block.properties,
     'builder-id': block.id,
-    style: getStyleAttribute(block.style),
+    style: block.style ? getStyleAttribute(block.style) : undefined,
     class: [block.id, 'builder-block', block.class, block.properties?.class]
       .filter(Boolean)
       .join(' '),
   };
+
+  if (TARGET === 'reactNative') {
+    properties.style = getReactNativeBlockStyles({
+      block,
+      context,
+      blockStyles: properties.style,
+    });
+  }
 
   return transformBlockProperties(properties);
 }
@@ -55,12 +71,8 @@ export function getBlockProperties(block: BuilderBlock) {
  * Additionally, Svelte, Vue and other frameworks use kebab-case styles, so we need to convert them.
  */
 function getStyleAttribute(
-  style: Partial<CSSStyleDeclaration> | undefined
-): string | Partial<CSSStyleDeclaration> | undefined {
-  if (!style) {
-    return undefined;
-  }
-
+  style: Partial<CSSStyleDeclaration>
+): string | Partial<CSSStyleDeclaration> {
   switch (TARGET) {
     case 'svelte':
     case 'vue2':
@@ -70,6 +82,7 @@ function getStyleAttribute(
     case 'qwik':
     case 'reactNative':
     case 'react':
+    case 'rsc':
       return style;
   }
 }
