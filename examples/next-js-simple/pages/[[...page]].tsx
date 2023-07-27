@@ -38,13 +38,16 @@ export async function getStaticProps({
 
   const page =
     (await builder
-      .get('page', {
-        userAttributes: {
-          urlPath: '/' + (params?.page?.join('/') || ''),
-        },
-        enrich: true,
-        options: {
-          enrich:  true
+      .get('product-pdp', {
+        // userAttributes: {
+        //   urlPath: '/' + (params?.page?.join('/') || ''),
+        // },
+        // enrich: true,
+        // options: {
+        //   enrich:  true
+        // },
+        query: {
+          id: '7ae7feccc69a4d6c8c5cb0e25ca219b9'
         },
         locale
       }).toPromise()) || null
@@ -104,14 +107,15 @@ export default function Page({
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
         {!page && <meta name="robots" content="noindex" />}
       </Head>
       {show404 ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
         <> 
-          <BuilderComponent model="page" locale={locale} data={{ values: {"this-and-that": "whatever", "osmehting!": "this other"}, username: 'tim', hideAnyButton: true, locale}} />
-          <BuilderComponent model="footer"></BuilderComponent>
+          <BuilderComponent model="product-pdp" locale={locale} content={page} data={{ values: {"this-and-that": "whatever", "osmehting!": "this other"}, username: 'tim', hideAnyButton: true, locale}} />
+          {/* <BuilderComponent model="footer"></BuilderComponent> */}
           {/* <BuilderContent model="footer" content={footer}> 
             {(data, loading, content) => {
                 return (
