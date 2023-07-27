@@ -7,7 +7,7 @@ import {
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';
-import { getAllPathnames, getProps } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@builder.io/sdks-e2e-tests';
 
 interface MyPageProps {
   params: {
@@ -61,9 +61,10 @@ export default async function Page(props: MyPageProps) {
 }
 export const revalidate = 1;
 
+// TO-DO: this breaks the build.
 // Return a list of `params` to populate the [slug] dynamic segment
-export async function generateStaticParams() {
-  return getAllPathnames('gen2').map((path) => ({
-    slug: path === '/' ? null : path.split('/').filter(Boolean),
-  }));
-}
+// export async function generateStaticParams() {
+//   return getAllPathnames('gen2').map((path) => ({
+//     slug: path === '/' ? null : path.split('/').filter(Boolean),
+//   }));
+// }
