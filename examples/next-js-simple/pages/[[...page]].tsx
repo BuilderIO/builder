@@ -38,21 +38,16 @@ export async function getStaticProps({
 
   const page =
     (await builder
-      .get('product-pdp', {
-        // userAttributes: {
-        //   urlPath: '/' + (params?.page?.join('/') || ''),
-        // },
+      .get('page', {
+      userAttributes: {
+          urlPath: '/' + (params?.page?.join('/') || ''),
+        },
         // enrich: true,
         // options: {
-        //   enrich:  true
-        // },
-        query: {
-          id: '7ae7feccc69a4d6c8c5cb0e25ca219b9'
-        },
-        locale
+        //     enrich:  true
+        //   },
+        // locale
       }).toPromise()) || null
-
-    console.log('PAGES: ',page?.data?.state?.specialOffers)
 
   const footer =
       (await builder
@@ -112,8 +107,8 @@ export default function Page({
         <DefaultErrorPage statusCode={404} />
       ) : (
         <> 
-          <BuilderComponent model="product-pdp" locale={locale} content={page} data={{ values: {"this-and-that": "whatever", "osmehting!": "this other"}, username: 'tim', hideAnyButton: true, locale}} />
-          {/* <BuilderComponent model="footer"></BuilderComponent> */}
+          <BuilderComponent model="page" locale={locale} content={page} data={{ values: {"this-and-that": "whatever", "osmehting!": "this other"}, username: 'tim', hideAnyButton: true, locale}} />
+          <BuilderComponent model="footer"></BuilderComponent>
           {/* <BuilderContent model="footer" content={footer}> 
             {(data, loading, content) => {
                 return (
