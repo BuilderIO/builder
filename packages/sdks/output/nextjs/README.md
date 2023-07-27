@@ -1,16 +1,14 @@
-# Builder.io React SDK v2 (BETA)
+# Builder.io React NextJS SDK (BETA)
 
-This is the React v2 SDK, `@builder.io/sdk-react`.
+This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory.
 
-NOTE: it is still in Beta. For the stable React v1 SDK [go here](../../../react/), i.e. `builder.io/react`.
+If you are using NextJS's pages directory, use the [React gen2 SDK](../react/) in Beta, or the stable React gen1 SDK [here](../../../react/) (i.e. `builder.io/react`).
 
 ## API Reference
 
 To use the SDK, you need to:
 
 - fetch the builder data using `getContent`: you can see how to use it here https://www.builder.io/c/docs/content-api, and how it differs from the React V1 SDK's `builder.get()` function.
-
-NOTE: if you are using the SDK in next v13's app directory, you will have to import `getContent` from @builder.io/sdk-react/server`. this is a special import that guarantees you don't import any client components with your data fetching.
 
 - pass that data to the `RenderContent` component, along with the following properties:
 
@@ -29,40 +27,35 @@ type RenderContentProps = {
 };
 ```
 
-Here is a simplified example showing how you would use both:
+Here is a simplified example showing how you would use both. This needs to be created created with the name `app/[[...slug]]/page.tsx`, so it catches all routes:
 
 ```tsx
-import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-react';
-import { useEffect, useState } from 'react';
+import {
+  RenderContent,
+  getBuilderSearchParams,
+  getContent,
+} from '@builder.io/sdk-react-nextjs';
 
-const BUILDER_PUBLIC_API_KEY = 'YOUR API KEY';
+interface MyPageProps {
+  params: {
+    slug: string[];
+  };
+  searchParams: Record<string, string>;
+}
 
-function App() {
-  const [content, setContent] = useState(undefined);
+const apiKey = 'YOUR_API_KEY_HERE';
 
-  useEffect(() => {
-    getContent({
-      model: 'page',
-      apiKey: BUILDER_PUBLIC_API_KEY,
-      userAttributes: {
-        urlPath: window.location.pathname || '/',
-      },
-    }).then((content) => {
-      setContent(content);
-    });
-  }, []);
+export default async function Page(props: MyPageProps) {
+  const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
-  const shouldRenderBuilderContent = content || isPreviewing();
+  const content = await getContent({
+    model: 'page',
+    apiKey,
+    options: getBuilderSearchParams(props.searchParams),
+    userAttributes: { urlPath },
+  });
 
-  return shouldRenderBuilderContent ? (
-    <RenderContent
-      content={content}
-      model="page"
-      apiKey={BUILDER_PUBLIC_API_KEY}
-    />
-  ) : (
-    <div>Content Not Found</div>
-  );
+  return <RenderContent content={content} model="page" apiKey={apiKey} />;
 }
 ```
 
@@ -79,14 +72,9 @@ To check the status of the SDK, look at [these tables](../../README.md#feature-i
 ## Getting Started
 
 ```
-npm install @builder.io/sdk-react
+npm install @builder.io/sdk-react-nextjs
 ```
 
 ## Examples
 
-- [React](../../../../examples/react-v2/)
-- [Next.js + app dir](../../../../examples/next-app-directory)
-
-## Fetch
-
-This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.
+- [Next.js SDK](../../../../examples/next-js-sdk-gen-2-experimental-app-directory)

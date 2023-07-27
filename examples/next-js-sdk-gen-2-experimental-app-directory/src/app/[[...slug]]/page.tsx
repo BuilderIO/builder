@@ -1,48 +1,24 @@
-import { getContent } from '@builder.io/sdk-react/server';
+import { RenderContent, getBuilderSearchParams, getContent } from '@builder.io/sdk-react-nextjs';
 
-// if you use VSCode and see a TS error for the line below, you can safely ignore it.
-import BuilderPage from './BuilderPage';
-import { API_KEY } from '../../builderConfig.js';
-
-async function getBuilderContent(urlPath: string) {
-  const page = await getContent({
-    apiKey: API_KEY,
-    model: 'page',
-    userAttributes: { urlPath },
-  });
-
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-  return {
-    page: page || null,
-  };
-}
-
-interface PageProps {
+interface MyPageProps {
   params: {
     slug: string[];
   };
-  searchParams: {
-    [key: string]: string;
-  };
+  searchParams: Record<string, string>;
 }
 
-// Pages are Server Components by default
-export default async function Page(props: PageProps) {
+const apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660';
+
+export default async function Page(props: MyPageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
-  const content = await getBuilderContent(urlPath);
 
-  const isPreviewing = props.searchParams['builder.preview'];
+  const content = await getContent({
+    model: 'page',
+    apiKey,
+    options: getBuilderSearchParams(props.searchParams),
+    userAttributes: { urlPath },
+  });
 
-  if (!content.page && !isPreviewing) {
-    return (
-      <>
-        <h1>404</h1>
-        <p>Make sure you have your content published at builder.io.</p>
-      </>
-    );
-  }
-  return <BuilderPage builderContent={content.page} />;
+  return <RenderContent content={content} model="page" apiKey={apiKey} />;
 }
-
-export const revalidate = 4;
+export const revalidate = 1;
