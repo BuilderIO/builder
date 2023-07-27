@@ -42,11 +42,11 @@ export async function getStaticProps({
       userAttributes: {
           urlPath: '/' + (params?.page?.join('/') || ''),
         },
-        // enrich: true,
-        // options: {
-        //     enrich:  true
-        //   },
-        // locale
+        enrich: true,
+        options: {
+            enrich:  true
+          },
+        locale
       }).toPromise()) || null
 
   const footer =
