@@ -1,5 +1,7 @@
+'use client';
 import { Builder } from '@builder.io/sdk';
 import { safeDynamicRequire } from './safe-dynamic-require';
+import { isDebug } from './is-debug';
 
 export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
   const value = str;
@@ -69,7 +71,7 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
     if (Builder.isBrowser) {
       console.warn('Builder custom code error:', error.message, 'in', str, error.stack);
     } else {
-      if (process?.env?.DEBUG) {
+      if (isDebug()) {
         console.debug('Builder custom code error:', error.message, 'in', str, error.stack);
       }
       // Add to req.options.errors to return to client

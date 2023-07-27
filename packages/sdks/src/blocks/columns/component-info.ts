@@ -1,9 +1,9 @@
-import type { ComponentInfo } from '../../types/components';
-import { serializeFn } from '../util.js';
+import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc
   name: 'Columns',
+  isRSC: true,
 
   inputs: [
     {
@@ -194,7 +194,7 @@ export const componentInfo: ComponentInfo = {
           ],
         },
       ],
-      onChange: serializeFn((options: Map<string, any>) => {
+      onChange: (options: Map<string, any>) => {
         function clearWidths() {
           columns.forEach((col) => {
             col.delete('width');
@@ -225,7 +225,7 @@ export const componentInfo: ComponentInfo = {
             }
           }
         }
-      }),
+      },
     },
     {
       name: 'space',

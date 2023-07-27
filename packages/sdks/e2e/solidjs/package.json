@@ -1,6 +1,5 @@
 {
   "name": "@builder.io/e2e-solidjs",
-  "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,12 +10,13 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4",
+    "typescript": "^5.1.6",
     "vite": "^3.1.4",
     "vite-plugin-solid": "^2.3.9"
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
+    "@builder.io/sdks-e2e-tests": "workspace:*",
     "solid-js": "^1.5.7"
   }
 }

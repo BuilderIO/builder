@@ -1,3 +1,29 @@
+### 3.0.8
+- Replace deprecated package `vm2` with `isolated-vm`.
+- Fix for excessive caching in nextjs 13
+
+### 3.0.7
+- add back the process keyword with a check for `typeof process` to fix Hydrogen SSR
+
+### 3.0.6
+- remove process keyword to fix Hydrogen SSR
+
+### 3.0.5
+- Fix: Pass locale from parent state to Symbols
+
+### 3.0.4
+- Chore: update `@builder.io/core` to `^2.0.4` to fix import issue
+
+### 3.0.3
+- Feature: Add support for `enrich` API flag.
+- Mark `includeRefs` as deprecated.
+
+### 3.0.0
+- `apiVersion` property now defaults to `v3`.
+
+### 2.2.0
+- Sets the default `apiVersion` to `v1`.
+
 ### 2.1.0
 - Sets the default `apiVersion` to `v3`.
 

@@ -42,6 +42,7 @@ Legend:
 | Input          | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
 | Select         | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
 | Slot           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
+| SubmitButton   | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
 
 ## Features
 
@@ -49,7 +50,7 @@ Legend:
 | ------------------------------ | --- | ------------ | ------ | ----- | ---- | ----- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | TypeScript Types               | 🏗   | 🏗            | ✅     | 🏗     | ✅   | 🏗     | Vue SDK has partial support: you can get Vue 2 types by importing from `@builder.io/sdk-vue` (which is an alias for the Vue 2 version) |
 | A/B Tests                      | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |                                                                                                                                        |
-| A/B Tests with SSG/SSR Support | 🏗   | ❌           | 🏗      | 🏗     | 🏗    | 🏗     | Does not apply to React Native.                                                                                                        |
+| A/B Tests with SSG/SSR Support | ✅  | ❌           | ✅     | ✅    | ✅   | ✅    | Does not apply to React Native.                                                                                                        |
 | SSR                            | ✅  | ❌           | ✅     | ✅    | ✅   | ✅    | Does not apply to React Native.                                                                                                        |
 | Children for Custom Components | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |                                                                                                                                        |
 | Dynamic Data Bindings          | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |                                                                                                                                        |
@@ -61,7 +62,7 @@ Legend:
 | Tracking/Analytics             | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |                                                                                                                                        |
 | Animations                     | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported                                |
 | Custom Actions/Events          | ✅  | 🏗            | 🏗      | 🏗     | ✅   | ✅    |                                                                                                                                        |
-| Builder's global `state`       | ✅  | 🏗            | 🏗      | 🏗     | ✅   | ✅    |
+| Builder's global `state`       | ✅  | 🏗            | ✅     | 🏗     | ✅   | ✅    |
 | Widgets                        | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |                                                                                                                                        |
 | Global Content Styles          | ✅  | ❌           | ✅     | ✅    | ✅   | ✅    |                                                                                                                                        |
 | CSS Nesting (`&` operator)     | ✅  | ❌           | ✅     | ✅    | ✅   | ✅    |                                                                                                                                        |

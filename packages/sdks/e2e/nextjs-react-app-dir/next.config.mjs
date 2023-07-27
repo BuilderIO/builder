@@ -4,9 +4,6 @@
 export default {
   experimental: {
     externalDir: true,
-    appDir: true,
-  },
-  typescript: {
-    tsconfigPath: './tsconfig.nextjs.json',
+    serverActions: true,
   },
 };

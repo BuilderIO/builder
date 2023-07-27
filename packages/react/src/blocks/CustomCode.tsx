@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { BuilderElement, Builder } from '@builder.io/sdk';
 import { withBuilder } from '../functions/with-builder';

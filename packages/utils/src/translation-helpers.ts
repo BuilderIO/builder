@@ -4,7 +4,6 @@ import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
-export const translatatedType = '@builder.io/core:TranslatedValue';
 
 export type TranslateableFields = {
   [key: string]: {
@@ -22,10 +21,6 @@ export function getTranslateableFields(
 
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
-  if (typeof blocks === 'undefined') {
-    blocks = JSON.parse(blocksString);
-  }
-
   // metadata [content's localized custom fields]
   traverse(customFields).forEach(function (el) {
     if (this.key && el && el['@type'] === localizedType) {
@@ -36,33 +31,39 @@ export function getTranslateableFields(
     }
   });
 
+  if (blocksString && typeof blocks === 'undefined') {
+    blocks = JSON.parse(blocksString);
+  }
+
   // blocks
-  traverse(blocks).forEach(function (el) {
-    if (this.key && el && el.meta?.localizedTextInputs) {
-      const localizedTextInputs = el.meta.localizedTextInputs as string[];
-      if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
-        localizedTextInputs
-          .filter(input => el.component?.options?.[input]?.['@type'] === localizedType)
-          .forEach(inputKey => {
-            const valueToBeTranslated =
-              el.component.options?.[inputKey]?.[sourceLocaleId] ||
-              el.component.options?.[inputKey]?.Default;
-            if (valueToBeTranslated) {
-              results[`blocks.${el.id}#${inputKey}`] = {
-                instructions: el.meta?.instructions || defaultInstructions,
-                value: valueToBeTranslated,
-              };
-            }
-          });
+  if (blocks) {
+    traverse(blocks).forEach(function (el) {
+      if (this.key && el && el.meta?.localizedTextInputs) {
+        const localizedTextInputs = el.meta.localizedTextInputs as string[];
+        if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
+          localizedTextInputs
+            .filter(input => el.component?.options?.[input]?.['@type'] === localizedType)
+            .forEach(inputKey => {
+              const valueToBeTranslated =
+                el.component.options?.[inputKey]?.[sourceLocaleId] ||
+                el.component.options?.[inputKey]?.Default;
+              if (valueToBeTranslated) {
+                results[`blocks.${el.id}#${inputKey}`] = {
+                  instructions: el.meta?.instructions || defaultInstructions,
+                  value: valueToBeTranslated,
+                };
+              }
+            });
+        }
       }
-    }
-    if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
-      results[`blocks.${el.id}#text`] = {
-        value: el.component.options.text,
-        instructions: el.meta?.instructions || defaultInstructions,
-      };
-    }
-  });
+      if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
+        results[`blocks.${el.id}#text`] = {
+          value: el.component.options.text,
+          instructions: el.meta?.instructions || defaultInstructions,
+        };
+      }
+    });
+  }
 
   return results;
 }
@@ -73,9 +74,6 @@ export function applyTranslation(
   locale: string
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
-  if (typeof blocks === 'undefined') {
-    blocks = JSON.parse(blocksString);
-  }
 
   traverse(customFields).forEach(function (el) {
     const path = this.path?.join('#');
@@ -87,81 +85,83 @@ export function applyTranslation(
     }
   });
 
-  traverse(blocks).forEach(function (el) {
-    if (
-      el &&
-      el.id &&
-      el.component?.name === 'Text' &&
-      !el.meta?.excludeFromTranslation &&
-      translation[`blocks.${el.id}#text`]
-    ) {
-      this.update({
-        ...el,
-        meta: {
-          ...el.meta,
-          translated: true,
-        },
-        bindings: {
-          ...el.bindings,
-          'component.options.text': `state.translation['blocks.${el.id}#text'][state.locale || 'Default'] || \`${el.component.options.text}\``,
-        },
-      });
-    }
+  if (blocksString && typeof blocks === 'undefined') {
+    blocks = JSON.parse(blocksString);
+  }
 
-    // custom components
-    if (el && el.id && el.meta?.localizedTextInputs) {
-      // there's a localized input
-      const keys = el.meta?.localizedTextInputs as string[];
-      let options = el.component.options;
+  if (blocks) {
+    traverse(blocks).forEach(function (el) {
+      if (
+        el &&
+        el.id &&
+        el.component?.name === 'Text' &&
+        !el.meta?.excludeFromTranslation &&
+        translation[`blocks.${el.id}#text`]
+      ) {
+        const localizedValues =
+          typeof el.component.options?.text === 'string'
+            ? {
+                Default: el.component.options.text,
+              }
+            : el.component.options.text;
 
-      keys.forEach(key => {
-        if (translation[`blocks.${el.id}#${key}`]) {
-          options = {
-            ...options,
-            [key]: {
-              ...el.component.options[key],
-              [locale]: unescape(translation[`blocks.${el.id}#${key}`].value),
+        this.update({
+          ...el,
+          meta: {
+            ...el.meta,
+            translated: true,
+            // this tells the editor that this is a forced localized input similar to clicking the globe icon
+            'transformed.text': 'localized',
+          },
+          options: {
+            ...el.component.options,
+            text: {
+              '@type': localizedType,
+              ...localizedValues,
+              [locale]: unescape(translation[`blocks.${el.id}#text`].value),
             },
-          };
-          this.update({
-            ...el,
-            meta: {
-              ...el.meta,
-              translated: true,
-            },
-            component: {
-              ...el.component,
-              options,
-            },
-          });
-        }
-      });
-    }
-  });
+          },
+        });
+      }
 
-  const translationState = Object.keys(translation).reduce((acc, key) => {
-    if (key.startsWith('blocks.')) {
-      return {
-        ...acc,
-        [key]: {
-          '@type': translatatedType,
-          ...content.data!.state?.translation?.[key],
-          [locale]: unescape(translation[key].value),
-        },
-      };
-    }
+      // custom components
+      if (el && el.id && el.meta?.localizedTextInputs) {
+        // there's a localized input
+        const keys = el.meta?.localizedTextInputs as string[];
+        let options = el.component.options;
 
-    return acc;
-  }, {});
-
-  content.data!.state = {
-    ...content.data!.state,
-    translation: translationState,
-  };
+        keys.forEach(key => {
+          if (translation[`blocks.${el.id}#${key}`]) {
+            options = {
+              ...options,
+              [key]: {
+                ...el.component.options[key],
+                [locale]: unescape(translation[`blocks.${el.id}#${key}`].value),
+              },
+            };
+            this.update({
+              ...el,
+              meta: {
+                ...el.meta,
+                translated: true,
+              },
+              component: {
+                ...el.component,
+                options,
+              },
+            });
+          }
+        });
+      }
+    });
+    content.data = {
+      ...omit(content.data, 'blocksString'),
+      blocks,
+    };
+  }
 
   content.data = {
-    ...omit(content.data, 'blocksString'),
-    blocks,
+    ...content.data,
     ...customFields,
   };
 

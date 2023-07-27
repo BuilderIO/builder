@@ -1,4 +1,4 @@
-import { ALL_PATHNAMES, getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
+import { getAPIKey, getProps, getAllPathnames } from '@builder.io/sdks-e2e-tests';
 import { useRouter } from 'next/router';
 import type {
   GetStaticPaths,
@@ -16,12 +16,14 @@ builder.init(getAPIKey());
 type StaticProps = { index: string[] };
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
-  return { props: getProps(x.params.index ? `/${x.params.index.join('/')}` : '/') };
+  return {
+    props: await getProps({ pathname: x.params.index ? `/${x.params.index.join('/')}` : '/' }),
+  };
 }
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    paths: ALL_PATHNAMES.map(path => {
+    paths: getAllPathnames('gen1').map(path => {
       const output: StaticProps = {
         index: path === '/' ? null : path.split('/').filter(Boolean),
       };

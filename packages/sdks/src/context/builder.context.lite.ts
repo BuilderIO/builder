@@ -1,13 +1,17 @@
 import { createContext } from '@builder.io/mitosis';
-import type { BuilderContextInterface } from './types';
+import type { BuilderContextInterface } from './types.js';
 
-export default createContext<BuilderContextInterface>({
-  content: null,
-  context: {},
-  state: {},
-  setState: () => {},
-  apiKey: null,
-  apiVersion: undefined,
-  registeredComponents: {},
-  inheritedStyles: {},
-});
+export default createContext<BuilderContextInterface>(
+  {
+    content: null,
+    context: {},
+    localState: undefined,
+    rootSetState: () => {},
+    rootState: {},
+    apiKey: null,
+    apiVersion: undefined,
+    componentInfos: {},
+    inheritedStyles: {},
+  },
+  { reactive: true }
+);

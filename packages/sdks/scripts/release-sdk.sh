@@ -1,4 +1,42 @@
+set -eo nounset
+
 # doing this for each SDK is getting tedious, and I'm lazy.
-VERSION=${2:-'patch'}    
-echo "releasing $VERSION version of SDK $1";
-cd "output/$1" && npm run release:$VERSION && echo "released $1";
+VERSION=${2:-'patch'}
+
+LOOP=${3:-'not-loop'}
+
+if [[ "$VERSION" != 'dev' && "$LOOP" == 'not-loop' ]]; then
+  echo "Error: cannot release $VERSION version of only one SDK. You must release all SDKs at once to keep them in sync."
+  echo "Error: only 'dev' versions are allowed to be released on a per-SDK basis."
+  echo "Error: please run 'yarn release:all:$VERSION' to release all SDKs, or 'yarn release-sdk $1 dev' to release a dev version of $1."
+  echo "Exiting."
+  exit 1
+fi
+
+echo "Releasing a new '$VERSION' version of '$1' SDK."
+
+cd "output/$1"
+
+# bump the version number
+
+if [[ "$VERSION" == 'dev' ]]; then
+  npm version prerelease
+else
+  npm version $VERSION
+fi
+
+# set the SDK version number in `sdk-version` files
+yarn workspace @builder.io/sdks set-sdk-version $1
+
+echo "Building SDK..."
+yarn run build
+
+echo "Publishing SDK..."
+
+if [[ "$VERSION" == 'dev' ]]; then
+  npm publish --tag dev
+else
+  npm publish
+fi
+
+echo "released $1!"

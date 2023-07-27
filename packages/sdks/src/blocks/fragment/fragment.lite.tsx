@@ -1,3 +1,10 @@
+import { useMetadata } from '@builder.io/mitosis';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 export interface FragmentProps {
   maxWidth?: number;
   attributes?: any;

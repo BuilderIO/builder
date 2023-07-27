@@ -1,17 +1,29 @@
-import { component$ } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
-import { RenderContent } from '@builder.io/sdk-qwik';
 import { getProps } from '@builder.io/sdks-e2e-tests';
+import { RenderContent, processContentResult } from '@builder.io/sdk-qwik';
+import { component$ } from '@builder.io/qwik';
+import { routeLoader$ } from '@builder.io/qwik-city';
 
 export interface MainProps {
   url: string;
 }
-export default component$(() => {
-  const { url } = useLocation();
 
-  const contentProps = getProps(url.pathname);
-  return contentProps ? (
-    <RenderContent {...contentProps} />
+export const useBuilderContentLoader = routeLoader$(async (event) => {
+  const data = await getProps({
+    pathname: event.url.pathname,
+    processContentResult,
+  });
+
+  if (!data) {
+    event.status(404);
+  }
+
+  return data;
+});
+
+export default component$(() => {
+  const contentProps = useBuilderContentLoader();
+  return contentProps.value ? (
+    <RenderContent {...contentProps.value} />
   ) : (
     <div>Content Not Found</div>
   );

@@ -6,9 +6,6 @@ Object {
     "blocks": Array [
       Object {
         "@type": "@builder.io/sdk:Element",
-        "bindings": Object {
-          "component.options.text": "state.translation['blocks.block-id#text'][state.locale || 'Default'] || \`test\`",
-        },
         "component": Object {
           "name": "Text",
           "options": Object {
@@ -17,7 +14,15 @@ Object {
         },
         "id": "block-id",
         "meta": Object {
+          "transformed.text": "localized",
           "translated": true,
+        },
+        "options": Object {
+          "text": Object {
+            "@type": "@builder.io/core:LocalizedValue",
+            "Default": "test",
+            "de": "german translatated",
+          },
         },
       },
       Object {
@@ -51,25 +56,20 @@ Object {
         },
       },
     ],
-    "state": Object {
-      "translation": Object {
-        "blocks.block-id#text": Object {
-          "@type": "@builder.io/core:TranslatedValue",
-          "de": "german translatated",
-          "fr-FR": "fench translated text",
-        },
-        "blocks.builder-custom-component-id#heading": Object {
-          "@type": "@builder.io/core:TranslatedValue",
-          "de": "\\"german heading\\"",
-          "fr-FR": "french translated heading",
-        },
-        "blocks.builder-custom-component-id#subtitle": Object {
-          "@type": "@builder.io/core:TranslatedValue",
-          "de": "german translated subtitle",
-          "fr-FR": "french translated subtitle",
-        },
-      },
+    "title": Object {
+      "@type": "@builder.io/core:LocalizedValue",
+      "Default": "Test",
+      "de": "hallo",
+      "en-US": "Hello",
+      "fr-FR": "salut",
     },
+  },
+}
+`;
+
+exports[`applyTranslation from plain data model content to match snapshot 1`] = `
+Object {
+  "data": Object {
     "title": Object {
       "@type": "@builder.io/core:LocalizedValue",
       "Default": "Test",
@@ -91,6 +91,15 @@ Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
     "value": "en-us headings!",
   },
+  "metadata.title": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "Hello",
+  },
+}
+`;
+
+exports[`getTranslateableFields from plain data model content to match snapshot 1`] = `
+Object {
   "metadata.title": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
     "value": "Hello",

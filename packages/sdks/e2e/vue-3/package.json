@@ -1,7 +1,6 @@
 {
   "name": "@builder.io/e2e-vue3",
   "private": true,
-  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
@@ -11,11 +10,13 @@
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
+    "cross-fetch": "^4.0.0",
+    "vite-plugin-ssr": "^0.4.133",
     "vue": "^3.2.37"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
-    "typescript": "^4",
+    "typescript": "^5.1.6",
     "vite": "^3.0.4",
     "vue-tsc": "^0.38.2"
   }

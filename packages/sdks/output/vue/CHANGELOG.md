@@ -1,3 +1,44 @@
+### 0.4.5
+
+- Fix: show dynamic symbols correctly in Preview mode.
+- Feature: SSR A/B test Symbols nested inside page content.
+- Fix: inlined scripts and styles not rendering in SSR.
+- Fix: Hydration mismatch when using SSR A/B tests.
+
+### 0.4.4
+
+- Fix: tracking URL from `builder.io/api/v1/track` to `cdn.builder.io/api/v1/track` for improved reliability.
+
+### 0.4.3
+
+- Fix: SSR A/B test environment check (`isHydrationTarget`) now accurately checks current environment.
+- Fix: Stop using `defineAsyncComponent` to import SDK components (except those absolutely necessary to avoid circular dependencies, `RenderComponent` and `RenderRepeatedBlock`). This fixes an issue with A/B test inline styles not updating properly.
+
+### 0.4.2
+
+- No external changes.
+
+### 0.4.1
+
+- Fix: bring back `getBuilderSearchParams` export that was accidentally removed.
+
+### 0.4.0
+
+- Feature: A/B tests are now rendered correctly during server-side rendering (SSR) when applicable. This behaviour is backwards compatible with previous versions.
+- Fix: memory leak caused by passing reactive component references.
+- Feature: Add support for `enrich` API flag.
+- Mark `noTraverse` and `includeRefs` as deprecated.- Fix: memory leak caused by passing reactive component references.
+
+### 0.3.1
+
+- Feature: Added SDK version to data sent to visual editor for improved debugging.
+- Fix: Columns block: removed redundant margin-left in first column.
+- Fix: dynamic action bindings in repeated data. (Vue 3 SDK only)
+
+### 0.3.0
+
+- No Changes.
+
 ### 0.2.3
 
 - No Changes.

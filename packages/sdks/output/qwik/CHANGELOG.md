@@ -1,3 +1,40 @@
+### 0.4.5
+
+- Fix: show dynamic symbols correctly in Preview mode.
+- Feature: SSR A/B test Symbols nested inside page content.
+
+### 0.4.4
+
+- Fix: tracking URL from `builder.io/api/v1/track` to `cdn.builder.io/api/v1/track` for improved reliability.
+
+### 0.4.3
+
+- Fix: SSR A/B test environment check (`isHydrationTarget`) now accurately checks current environment.
+
+### 0.4.2
+
+- No external changes.
+
+### 0.4.1
+
+- Fix: bring back `getBuilderSearchParams` export that was accidentally removed.
+
+### 0.4.0
+
+- Feature: A/B tests are now rendered correctly during server-side rendering (SSR) when applicable. This behaviour is backwards compatible with previous versions.
+- Feature: Add support for `enrich` API flag.
+- Mark `noTraverse` and `includeRefs` as deprecated.
+
+### 0.3.1
+
+- Feature: Added SDK version to data sent to visual editor for improved debugging.
+- Fix: Columns block: removed redundant margin-left in first column.
+- Fix: dynamic action bindings in repeated data.
+
+### 0.3.0
+
+- Updated `qwik` to `v1.0.0`
+
 ### 0.2.3
 
 - No Changes.

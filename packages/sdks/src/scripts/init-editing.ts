@@ -1,3 +1,4 @@
+import { SDK_VERSION } from '../constants/sdk-version.js';
 import { TARGET } from '../constants/target.js';
 import { isBrowser } from '../functions/is-browser.js';
 import { register } from '../functions/register.js';
@@ -26,6 +27,7 @@ export const registerInsertMenu = () => {
 let isSetupForEditing = false;
 export const setupBrowserForEditing = (
   options: {
+    enrich?: boolean;
     includeRefs?: boolean;
     locale?: string;
   } = {}
@@ -40,9 +42,7 @@ export const setupBrowserForEditing = (
         type: 'builder.sdkInfo',
         data: {
           target: TARGET,
-          // TODO: compile these in
-          // type: process.env.SDK_TYPE,
-          // version: process.env.SDK_VERSION,
+          version: SDK_VERSION,
           supportsPatchUpdates: false,
           // Supports builder-model="..." attribute which is needed to
           // scope our '+ add block' button styling

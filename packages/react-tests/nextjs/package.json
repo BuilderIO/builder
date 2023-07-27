@@ -12,13 +12,13 @@
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
-    "next": "^12.2.5",
+    "next": "^13.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^16.4.1",
     "@types/react-dom": "^18.0.5",
-    "typescript": "^4"
+    "typescript": "^5.1.6"
   }
 }

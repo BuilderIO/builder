@@ -1,11 +1,30 @@
-import RenderContent from '../../components/render-content/render-content.lite';
-import BuilderContext from '../../context/builder.context.lite';
-import { getContent } from '../../functions/get-content/index.js';
+import ContentVariants from '../../components/content-variants/content-variants.lite';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block.js';
-import { TARGET } from '../../constants/target';
-import { logger } from '../../helpers/logger';
+import {
+  onMount,
+  onUpdate,
+  useMetadata,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
+import type {
+  BuilderComponentsProp,
+  PropsWithBuilderData,
+} from '../../types/builder-props.js';
+import { filterAttrs } from '../helpers.js';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+import { setAttrs } from '../helpers.js';
+import { fetchContent } from './symbol.helpers.js';
+import type { Nullable } from '../../types/typescript.js';
+
+useMetadata({
+  rsc: {
+    componentType: 'server',
+  },
+});
 
 export interface SymbolInfo {
   model?: string;
@@ -16,90 +35,96 @@ export interface SymbolInfo {
   dynamic?: boolean;
 }
 
-export interface SymbolProps {
+export interface SymbolProps extends BuilderComponentsProp {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
   dynamic?: boolean;
-  builderBlock?: BuilderBlock;
   attributes?: any;
   inheritState?: boolean;
 }
 
-export default function Symbol(props: SymbolProps) {
-  const builderContext = useContext(BuilderContext);
-
+export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const state = useStore({
-    className: [
-      ...(TARGET === 'vue2' || TARGET === 'vue3'
-        ? Object.keys(props.attributes.class)
-        : [props.attributes.class]),
-      'builder-symbol',
-      props.symbol?.inline ? 'builder-inline-symbol' : undefined,
-      props.symbol?.dynamic || props.dynamic
-        ? 'builder-dynamic-symbol'
-        : undefined,
-    ]
-      .filter(Boolean)
-      .join(' '),
-    contentToUse: props.symbol?.content,
-    fetchContent: async () => {
-      /**
-       * If:
-       * - we have a symbol prop
-       * - yet it does not have any content
-       * - and we have not already stored content from before
-       * - and it has a model name
-       *
-       * then we want to re-fetch the symbol content.
-       */
-      if (
-        !state.contentToUse &&
-        props.symbol?.model &&
-        // This is a hack, we should not need to check for this, but it is needed for Svelte.
-        builderContext?.apiKey
-      ) {
-        getContent({
-          model: props.symbol.model,
-          apiKey: builderContext.apiKey,
-          apiVersion: builderContext.apiVersion,
-          query: {
-            id: props.symbol.entry,
-          },
-        })
-          .then((response) => {
-            if (response) {
-              state.contentToUse = response;
-            }
-          })
-          .catch((err) => {
-            logger.error('Could not fetch symbol content: ', err);
-          });
-      }
+    get className() {
+      return [
+        ...useTarget({
+          vue2: Object.keys(props.attributes.class),
+          vue3: Object.keys(props.attributes.class),
+          react: [props.attributes.className],
+          rsc: [props.attributes.className],
+          reactNative: [],
+          default: [props.attributes.class],
+        }),
+        'builder-symbol',
+        props.symbol?.inline ? 'builder-inline-symbol' : undefined,
+        props.symbol?.dynamic || props.dynamic
+          ? 'builder-dynamic-symbol'
+          : undefined,
+      ]
+        .filter(Boolean)
+        .join(' ');
+    },
+
+    contentToUse: useTarget<Nullable<BuilderContent>>({
+      default: props.symbol?.content,
+      rsc: (async () =>
+        props.symbol?.content ||
+        (await fetchContent({
+          symbol: props.symbol,
+          builderContextValue: props.builderContext.value,
+        }))) as Nullable<BuilderContent>,
+    }),
+    setContent() {
+      if (state.contentToUse) return;
+
+      fetchContent({
+        symbol: props.symbol,
+        builderContextValue: props.builderContext.value,
+      }).then((newContent) => {
+        if (newContent) {
+          state.contentToUse = newContent;
+        }
+      });
     },
   });
 
   onUpdate(() => {
-    state.fetchContent();
+    state.setContent();
   }, [props.symbol]);
 
   onMount(() => {
-    state.fetchContent();
+    state.setContent();
   });
 
   return (
     <div
-      {...props.attributes}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', false),
+        vue3: filterAttrs(props.attributes, 'v-on:', false),
+        svelte: filterAttrs(props.attributes, 'on:', false),
+        default: {},
+      })}
+      {...useTarget({
+        vue2: filterAttrs(props.attributes, 'v-on:', true),
+        vue3: filterAttrs(props.attributes, 'v-on:', true),
+        svelte: filterAttrs(props.attributes, 'on:', true),
+        default: props.attributes,
+      })}
       className={state.className}
-      dataSet={{ class: state.className }}
+      {...useTarget({
+        reactNative: { dataSet: { class: state.className } },
+        default: {},
+      })}
     >
-      <RenderContent
-        apiVersion={builderContext.apiVersion}
-        apiKey={builderContext.apiKey!}
-        context={builderContext.context}
-        customComponents={Object.values(builderContext.registeredComponents)}
+      <ContentVariants
+        __isNestedRender
+        apiVersion={props.builderContext.value.apiVersion}
+        apiKey={props.builderContext.value.apiKey!}
+        context={props.builderContext.value.context}
+        customComponents={Object.values(props.builderComponents)}
         data={{
           ...props.symbol?.data,
-          ...builderContext.state,
+          ...props.builderContext.value.localState,
           ...state.contentToUse?.data?.state,
         }}
         model={props.symbol?.model}

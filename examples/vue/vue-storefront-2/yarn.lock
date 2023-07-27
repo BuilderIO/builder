@@ -1389,11 +1389,11 @@ __metadata:
   linkType: hard
 
 "@builder.io/sdk-vue@npm:latest":
-  version: 0.2.3
-  resolution: "@builder.io/sdk-vue@npm:0.2.3"
+  version: 0.4.5
+  resolution: "@builder.io/sdk-vue@npm:0.4.5"
   peerDependencies:
     vue: ">= 2"
-  checksum: f182d84b80eecca9110c56235ce731d7877238f45365658482dcafa9c47b8cb239ccb0041df3b907273b301491200620892f56ab3eb9d43af41062c7cdf5840a
+  checksum: f8d6930732f3f394ebdfc4f835e66307abcd2137a0c3b481e30915a2d6521c26bb1090b350662fd9e03411216d10e7263f987e572d48cedca2b9c67417c588ac
   languageName: node
   linkType: hard
 
@@ -14405,11 +14405,11 @@ __metadata:
   linkType: hard
 
 "semver@npm:2 || 3 || 4 || 5, semver@npm:^5.5.0, semver@npm:^5.6.0":
-  version: 5.7.1
-  resolution: "semver@npm:5.7.1"
+  version: 5.7.2
+  resolution: "semver@npm:5.7.2"
   bin:
-    semver: ./bin/semver
-  checksum: 57fd0acfd0bac382ee87cd52cd0aaa5af086a7dc8d60379dfe65fea491fb2489b6016400813930ecd61fd0952dae75c115287a1b16c234b1550887117744dfaf
+    semver: bin/semver
+  checksum: fb4ab5e0dd1c22ce0c937ea390b4a822147a9c53dbd2a9a0132f12fe382902beef4fbf12cf51bb955248d8d15874ce8cd89532569756384f994309825f10b686
   languageName: node
   linkType: hard
 
@@ -16981,9 +16981,9 @@ __metadata:
   linkType: hard
 
 "word-wrap@npm:~1.2.3":
-  version: 1.2.3
-  resolution: "word-wrap@npm:1.2.3"
-  checksum: 30b48f91fcf12106ed3186ae4fa86a6a1842416df425be7b60485de14bec665a54a68e4b5156647dec3a70f25e84d270ca8bc8cd23182ed095f5c7206a938c1f
+  version: 1.2.4
+  resolution: "word-wrap@npm:1.2.4"
+  checksum: 8f1f2e0a397c0e074ca225ba9f67baa23f99293bc064e31355d426ae91b8b3f6b5f6c1fc9ae5e9141178bb362d563f55e62fd8d5c31f2a77e3ade56cb3e35bd1
   languageName: node
   linkType: hard
 

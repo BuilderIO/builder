@@ -1,5 +1,5 @@
-import { generateContentUrl } from './generate-content-url';
-import type { GetContentOptions } from './types';
+import { generateContentUrl } from './generate-content-url.js';
+import type { GetContentOptions } from './types.js';
 
 const testKey = 'YJIGb4i01jvw0SRdL5Bt';
 const testModel = 'page';
@@ -91,5 +91,22 @@ describe('Generate Content URL', () => {
     }).toThrow(
       `Invalid apiVersion: expected 'v2' or 'v3', received 'INVALID_API_VERSION'`
     );
+  });
+
+  test('generate content url with enrich option true', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      enrich: true,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with enrich option not present', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+    });
+    expect(output).toMatchSnapshot();
   });
 });

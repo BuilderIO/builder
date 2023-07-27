@@ -21,7 +21,9 @@ test('Can process bindings', () => {
   const processed = getProcessedBlock({
     block,
     context: {},
-    state: { test: 'hello' },
+    rootState: { test: 'hello' },
+    rootSetState: undefined,
+    localState: undefined,
     shouldEvaluateBindings: true,
   });
   expect(processed).not.toEqual(block);

@@ -21,8 +21,7 @@ import { parse as urlParse } from './url';
 import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
-import type { ApiVersion } from './types/api-version';
-import { DEFAULT_API_VERSION } from './types/api-version';
+import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
 
 export type Url = any;
 
@@ -272,7 +271,12 @@ export interface UserAttributes {
   operatingSystem?: string;
 }
 
-export interface GetContentOptions {
+type AllowEnrich =
+  | { apiVersion?: Extract<ApiVersion, 'v1'> }
+  | { apiVersion?: Extract<ApiVersion, 'v3'>; enrich?: boolean }
+  | { apiVersion?: never; enrich?: boolean };
+
+export type GetContentOptions = AllowEnrich & {
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
@@ -298,6 +302,7 @@ export interface GetContentOptions {
   /**
    * Follow references. If you use the `reference` field to pull in other content without this
    * enabled we will not fetch that content for the final response.
+   * @deprecated use `enrich` instead
    */
   includeRefs?: boolean;
   /**
@@ -448,9 +453,7 @@ export interface GetContentOptions {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
-
-  apiVersion?: ApiVersion;
-}
+};
 
 export type Class = {
   name?: string;
@@ -843,6 +846,7 @@ export class Builder {
 
   static editors: any[] = [];
   static trustedHosts: string[] = ['builder.io', 'localhost'];
+  static serverContext: any;
   static plugins: any[] = [];
 
   static actions: Action[] = [];
@@ -914,6 +918,18 @@ export class Builder {
 
   static registerTrustedHost(host: string) {
     this.trustedHosts.push(host);
+  }
+
+  /**
+   * @param context @type {import('isolated-vm').Context}
+   * Use this function to control the execution context of custom code on the server.
+   * const ivm = require('isolated-vm');
+   * const isolate = new ivm.Isolate({ memoryLimit: 128 });
+   * const context = isolate.createContextSync();
+   * Builder.setServerContext(context);
+   */
+  static setServerContext(context: any) {
+    this.serverContext = context;
   }
 
   static isTrustedHost(hostname: string) {
@@ -1708,10 +1724,11 @@ export class Builder {
       }
 
       if (options) {
-        // picking only locale and includeRefs
+        // picking only locale, includeRefs, and enrich for now
         this.queryOptions = {
           ...(options.locale && { locale: options.locale }),
           ...(options.includeRefs && { includeRefs: options.includeRefs }),
+          ...(options.enrich && { enrich: options.enrich }),
         };
       }
 
@@ -2244,9 +2261,12 @@ export class Builder {
   // the core SDK for consistency
   requestUrl(
     url: string,
-    options?: { headers: { [header: string]: number | string | string[] | undefined } }
+    options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, {
+      next: { revalidate: 1, ...options?.next },
+      ...options,
+    } as SimplifiedFetchOptions).then(res => res.json());
   }
 
   get host() {
@@ -2304,6 +2324,10 @@ export class Builder {
       ...queue[0].options,
       ...this.queryOptions,
     };
+
+    if (queue[0].locale) {
+      queryParams.locale = queue[0].locale;
+    }
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
     }
@@ -2374,12 +2398,6 @@ export class Builder {
       }
     }
 
-    if (!Builder.isReact) {
-      // TODO: remove me once v1 page editors converted to v2
-      // queryParams.extractCss = true;
-      queryParams.prerender = true;
-    }
-
     for (const options of queue) {
       if (options.format) {
         queryParams.format = options.format;
@@ -2441,7 +2459,7 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = { headers: {} };
+    const requestOptions = { headers: {}, next: { revalidate: 1 } };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,

@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { jsx, css } from '@emotion/core';
@@ -32,6 +33,7 @@ import { BuilderMetaContext } from '../store/builder-meta';
 import { tryEval } from '../functions/try-eval';
 import { toError } from '../to-error';
 import { getBuilderPixel } from '../functions/get-builder-pixel';
+import { isDebug } from '../functions/is-debug';
 
 function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const ret: any = {};
@@ -89,7 +91,7 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-let fetch: typeof globalThis['fetch'];
+let fetch: (typeof globalThis)['fetch'];
 if (globalThis.fetch) fetch = globalThis.fetch;
 fetch ??= require('node-fetch');
 
@@ -388,7 +390,24 @@ export class BuilderComponent extends React.Component<
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
-
+    const contentData = this.inlinedContent?.data;
+    if (contentData && Array.isArray(contentData.inputs) && contentData.inputs.length > 0) {
+      if (!contentData.state) {
+        contentData.state = {};
+      }
+      // set default values of content inputs on state
+      contentData.inputs.forEach((input: any) => {
+        if (input) {
+          if (
+            input.name &&
+            input.defaultValue !== undefined &&
+            contentData.state![input.name] === undefined
+          ) {
+            contentData.state![input.name] = input.defaultValue;
+          }
+        }
+      });
+    }
     this.state = {
       // TODO: should change if this prop changes
       context: {
@@ -1388,7 +1407,7 @@ export class BuilderComponent extends React.Component<
               error.stack
             );
           } else {
-            if (process?.env?.DEBUG) {
+            if (isDebug()) {
               console.debug(
                 'Builder custom code error:',
                 error.message,

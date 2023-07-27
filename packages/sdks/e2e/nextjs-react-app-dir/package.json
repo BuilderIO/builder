@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-nextjs-app-dir-react",
+  "name": "@builder.io/e2e-nextjs-app-dir-rsc",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,16 +10,17 @@
     "serve": "yarn start"
   },
   "dependencies": {
-    "@builder.io/sdk-react": "workspace:*",
+    "@builder.io/sdk-react-nextjs": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "eslint-config-next": "^13",
-    "next": "^13",
+    "lru-cache": "^10.0.0",
+    "next": "^13.4.4",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
-    "typescript": "^4"
+    "typescript": "^5.1.6"
   }
 }

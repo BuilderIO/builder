@@ -108,6 +108,15 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
 
 ## Try it out!
 
+Try the code in your browser with the [Builder playground](https://www.builder.io):
+
+<a href="https://www.builder.io" target="_blank">
+  <img alt="Builder playground example" src="https://github.com/BuilderIO/builder/assets/844291/e9b4282b-1500-48e6-8ba7-a2a26bbd2909">
+</a>
+
+<br>
+<br>
+
 <table>
   <tr>
     <td align="center">Editor Demo</td>

@@ -1,4 +1,4 @@
-import type { ComponentInfo } from '../../types/components';
+import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
   name: 'Video',
@@ -56,6 +56,12 @@ export const componentInfo: ComponentInfo = {
       type: 'text',
       defaultValue: 'cover',
       enum: ['contain', 'cover', 'fill', 'auto'],
+    },
+    {
+      name: 'preload',
+      type: 'text',
+      defaultValue: 'metadata',
+      enum: ['auto', 'metadata', 'none'],
     },
     {
       name: 'fitContent',
