@@ -3044,7 +3044,6 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     eslint-config-next: ^13
-    lru-cache: ^10.0.0
     next: ^13.4.4
     react: ^18
     react-dom: ^18

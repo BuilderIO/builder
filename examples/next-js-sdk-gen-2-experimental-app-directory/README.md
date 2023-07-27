@@ -22,6 +22,8 @@ A basic understanding of the following is helpful too:
 - [Next.js 13](https://beta.nextjs.org/docs/getting-started)
 - What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 
+NOTE: This example's `next.config.mjs` includes specific configurations needed for Builder.io to work with Next.js 13.
+
 ## Overview
 
 To use this project, you need to do three things:
@@ -45,7 +47,7 @@ This example provides you with a ready-made application that you can copy locall
 1. Change into the example application by using the `cd` command:
 
    ```shell
-   cd builder/examples/next-app-directory
+   cd builder/examples/next-js-sdk-gen-2-experimental-app-directory
    ```
 
 1. Open this directory in your favorite code editor.
