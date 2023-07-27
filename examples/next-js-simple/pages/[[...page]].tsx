@@ -43,9 +43,6 @@ export async function getStaticProps({
           urlPath: '/' + (params?.page?.join('/') || ''),
         },
         enrich: true,
-        options: {
-            enrich:  true
-          },
         locale
       }).toPromise()) || null
 
