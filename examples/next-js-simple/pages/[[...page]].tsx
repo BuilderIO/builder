@@ -29,7 +29,7 @@ import '@components/hero/Hero'
 //   ]
 // });
 
-const locale ='can-CAD';
+const locale ='en';
 
 // builder.apiVersion = 'v1';
 export async function getStaticProps({
