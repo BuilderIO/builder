@@ -3,9 +3,9 @@
  */
 export default {
   experimental: {
-    appDir: true,
-  },
-  typescript: {
-    tsconfigPath: './tsconfig.nextjs.json',
+    /**
+     * You need to enable this setting for Builder's Visual Editor to work with your site.
+     */
+    serverActions: true,
   },
 };
