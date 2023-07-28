@@ -176,7 +176,7 @@
         break;
       }
     }
-    return { line: line, column: offset - cur };
+    return { line, column: offset - cur };
   };
 
   // JS-Interpreter change:
@@ -1844,7 +1844,7 @@
             : tokType === _switch
             ? 'switch'
             : null;
-          labels.push({ name: maybeName, kind: kind });
+          labels.push({ name: maybeName, kind });
           node.body = parseStatement();
           labels.pop();
           node.label = expr;

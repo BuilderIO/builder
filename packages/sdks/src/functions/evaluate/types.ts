@@ -1,6 +1,5 @@
 import type {
   BuilderRenderState,
-  BuilderRenderContext,
   BuilderContextInterface,
 } from '../../context/types';
 export type ExecutorArgs = Pick<
