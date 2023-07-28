@@ -1,7 +1,5 @@
-import type {
-  BuilderRenderState,
-  BuilderContextInterface,
-} from '../../context/types';
+import type { BuilderContextInterface } from '../../context/types';
+
 export type ExecutorArgs = Pick<
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
@@ -12,6 +10,5 @@ export type ExecutorArgs = Pick<
     isBrowser: boolean | undefined;
     isServer: boolean | undefined;
   };
-  state: BuilderRenderState;
   event: Event | undefined;
 };

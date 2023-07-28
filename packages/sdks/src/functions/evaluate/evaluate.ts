@@ -4,6 +4,7 @@ import type {
 } from '../../context/types.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
+import { isNonNodeServer } from '../is-non-node-server.js';
 import { runInNonNode } from './non-node-runtime.js';
 import type { ExecutorArgs } from './types.js';
 export const isNode = () => {
@@ -33,8 +34,7 @@ export function evaluate({
     isEditing: isEditing(),
     isBrowser: isBrowser(),
     isServer: !isBrowser(),
-    // TO-DO: make this more accurate. differentiate node from serverless
-    isNonNodeRuntime: !isBrowser(),
+    isNonNodeRuntime: isNonNodeServer(),
   };
 
   // Be able to handle simple expressions like "state.foo" or "1 + 1"
@@ -48,11 +48,9 @@ export function evaluate({
       code.trim().startsWith('return ')
     );
   const useCode = useReturn ? `return (${code});` : code;
-  const state = flattenState(rootState, localState, rootSetState);
   const args: ExecutorArgs = {
     useCode,
     builder,
-    state,
     context,
     event,
     rootSetState,
@@ -68,10 +66,14 @@ export function evaluate({
 export const runInBrowser = ({
   useCode,
   builder,
-  state,
   context,
   event,
+  localState,
+  rootSetState,
+  rootState,
 }: ExecutorArgs) => {
+  const state = flattenState(rootState, localState, rootSetState);
+
   try {
     return new Function(
       'builder',
@@ -90,9 +92,12 @@ export const runInBrowser = ({
     );
   }
 };
+
 export const runInNode = (args: ExecutorArgs) => {
+  // TO-DO: use vm-isolate
   return runInBrowser(args);
 };
+
 export function flattenState(
   rootState: Record<string | symbol, any>,
   localState: Record<string | symbol, any> | undefined,

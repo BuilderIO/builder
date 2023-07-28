@@ -1,3 +1,4 @@
+import { logger } from '../../helpers/logger';
 import { set } from '../set';
 import Interpreter from './interpreter.js';
 import type { ExecutorArgs } from './types';
@@ -7,6 +8,7 @@ const processCode = (code: string) => {
     .map((line) => {
       const trimmed = line.trim();
 
+      // this async wrapper doesn't work in JS-interpreter, so we drop it.
       if (line.includes('__awaiter')) return undefined;
 
       const isStateSetter = trimmed.startsWith('state.');
@@ -53,18 +55,14 @@ export const runInNonNode = ({
   const cleanedCode = processCode(useCode);
 
   if (cleanedCode === '') {
-    console.warn('Skipping evaluation of empty code block.');
+    logger.warn('Skipping evaluation of empty code block.');
     return;
   }
 
   const transformed = `
 function theFunction() {
-  // prepended code:
   ${prependedCode}
 
-  // CHECK:
-  // throw new Error('running code in non-node runtime: ' + Object.keys(state).join(', '))
-  // user code:
   ${cleanedCode}
 }
 theFunction();
@@ -97,14 +95,13 @@ theFunction();
     const myInterpreter = new Interpreter(transformed, initFunc);
     myInterpreter.run();
     const output = myInterpreter.pseudoToNative(myInterpreter.value);
-    console.log('output', output);
 
     return output;
   } catch (e) {
-    console.warn('Builder custom code error: \n While Evaluating: \n ', {
-      transformed,
-      e,
-    });
+    logger.warn(
+      'Custom code error in non-node runtime. SDK can only execute ES5 JavaScript.',
+      { e }
+    );
     return;
   }
 };
