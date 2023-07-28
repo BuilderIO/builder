@@ -13,7 +13,7 @@
     "build:outputs": "yarn workspaces foreach --include \"*/sdk-*\" --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --verbose run build",
     "build": "yarn run build:mitosis && yarn run build:outputs",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
-    "test": "jest",
+    "test": "vitest run",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
     "add-symlinks": "./scripts/add-resolutions.sh && yarn",
     "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
@@ -70,7 +70,6 @@
   },
   "devDependencies": {
     "@builder.io/eslint-plugin-mitosis": "^0.0.14",
-    "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
     "@types/seedrandom": "^3.0.4",
     "@types/traverse": "^0.6.32",
@@ -83,14 +82,12 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "git-cz": "^4.8.0",
     "husky": "^7.0.4",
-    "jest": "^27.5.1",
-    "jest-fetch-mock": "^3.0.3",
     "npm-run-all": "^4.1.5",
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
     "prettier-plugin-svelte": "^2.10.1",
-    "ts-jest": "^27.1.4",
     "typescript": "^5.1.6",
+    "vitest": "^0.33.0",
     "watch": "^1.0.2"
   },
   "config": {
