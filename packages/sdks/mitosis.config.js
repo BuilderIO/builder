@@ -149,6 +149,7 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
  */
 module.exports = {
   files: 'src/**',
+  exclude: ['src/**/*.test.ts'],
   targets: [
     'reactNative',
     'vue2',
