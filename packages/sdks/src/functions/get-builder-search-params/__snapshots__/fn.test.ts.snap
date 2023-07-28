@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Get Builder SearchParams correctly converts URLSearchParams to object 1`] = `
-Object {
+exports[`Get Builder SearchParams > correctly converts URLSearchParams to object 1`] = `
+{
   "__builder_editing__": "true",
   "abc": "klfdjklgfds",
   "builder.cachebust": "true",
@@ -15,8 +15,8 @@ Object {
 }
 `;
 
-exports[`Get Builder SearchParams correctly extracts all builder params from a query object 1`] = `
-Object {
+exports[`Get Builder SearchParams > correctly extracts all builder params from a query object 1`] = `
+{
   "cachebust": "true",
   "noCache": "true",
   "overrides.037948e52eaf4743afed464f02c70da4": "037948e52eaf4743afed464f02c70da4",

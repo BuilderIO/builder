@@ -57,16 +57,6 @@ const getTargetPath = ({ target }) => {
 };
 
 /**
- * @param {{value: StateValue | undefined, key: string}} args
- */
-const convertPropertyStateValueToGetter = (args) => {
-  const { value, key } = args;
-  if (!value) return;
-  value.code = `get ${key}() {\n return ${value.code} \n}`;
-  value.type = 'getter';
-};
-
-/**
  * @type {MitosisConfig['options']['vue']}
  */
 const vueConfig = {
@@ -159,6 +149,7 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
  */
 module.exports = {
   files: 'src/**',
+  exclude: ['src/**/*.test.ts'],
   targets: [
     'reactNative',
     'vue2',

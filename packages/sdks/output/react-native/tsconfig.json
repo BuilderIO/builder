@@ -4,6 +4,8 @@
     "target": "ES2018",
     "allowJs": true,
     "noEmitOnError": false,
+    // Override: exclude jest types.
+    "types": ["react-native"],
     "outDir": "dist",
     // we don't use react-native, as that preserves the JSX tags
     "jsx": "react",

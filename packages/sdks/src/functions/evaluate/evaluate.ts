@@ -1,9 +1,13 @@
 import type {
   BuilderContextInterface,
   BuilderRenderState,
-} from '../context/types.js';
-import { isBrowser } from './is-browser.js';
-import { isEditing } from './is-editing.js';
+} from '../../context/types.js';
+import { logger } from '../../helpers/logger.js';
+import { isBrowser } from '../is-browser.js';
+import { isEditing } from '../is-editing.js';
+import { isNonNodeServer } from '../is-non-node-server.js';
+import { runInNonNode } from './non-node-runtime.js';
+import type { ExecutorArgs } from './types.js';
 
 export function evaluate({
   code,
@@ -22,10 +26,9 @@ export function evaluate({
   'localState' | 'context' | 'rootState' | 'rootSetState'
 >): any {
   if (code === '') {
-    console.warn('Skipping evaluation of empty code block.');
+    logger.warn('Skipping evaluation of empty code block.');
     return;
   }
-
   const builder = {
     isEditing: isEditing(),
     isBrowser: isBrowser(),
@@ -42,8 +45,33 @@ export function evaluate({
       code.includes(' return ') ||
       code.trim().startsWith('return ')
     );
-
   const useCode = useReturn ? `return (${code});` : code;
+  const args: ExecutorArgs = {
+    useCode,
+    builder,
+    context,
+    event,
+    rootSetState,
+    rootState,
+    localState,
+  };
+
+  if (isBrowser()) return runInBrowser(args);
+
+  if (isNonNodeServer()) return runInNonNode(args);
+
+  return runInNode(args);
+}
+export const runInBrowser = ({
+  useCode,
+  builder,
+  context,
+  event,
+  localState,
+  rootSetState,
+  rootState,
+}: ExecutorArgs) => {
+  const state = flattenState(rootState, localState, rootSetState);
 
   try {
     return new Function(
@@ -53,22 +81,21 @@ export function evaluate({
       'context',
       'event',
       useCode
-    )(
-      builder,
-      builder,
-      flattenState(rootState, localState, rootSetState),
-      context,
-      event
-    );
+    )(builder, builder, state, context, event);
   } catch (e) {
-    console.warn(
+    logger.warn(
       'Builder custom code error: \n While Evaluating: \n ',
       useCode,
       '\n',
       e
     );
   }
-}
+};
+
+export const runInNode = (args: ExecutorArgs) => {
+  // TO-DO: use vm-isolate
+  return runInBrowser(args);
+};
 
 export function flattenState(
   rootState: Record<string | symbol, any>,
@@ -78,6 +105,7 @@ export function flattenState(
   if (rootState === localState) {
     throw new Error('rootState === localState');
   }
+
   return new Proxy(rootState, {
     get: (_, prop) => {
       if (localState && prop in localState) {

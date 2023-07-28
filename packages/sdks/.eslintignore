@@ -1,6 +1,5 @@
 **/node_modules/*
 output/
-jest.config.js
 .eslintrc.js
 mitosis.config.js
 tsconfig.json
