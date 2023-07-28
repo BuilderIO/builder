@@ -1,5 +1,5 @@
 import type { BuilderContextInterface } from '../../../context/types.js';
-import { evaluate } from '../../../functions/evaluate.js';
+import { evaluate } from '../../../functions/evaluate';
 import { fetch } from '../../../functions/get-fetch.js';
 import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';

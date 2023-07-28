@@ -1,9 +1,15 @@
 import type {
   BuilderContextInterface,
   BuilderRenderState,
-} from '../context/types.js';
-import { isBrowser } from './is-browser.js';
-import { isEditing } from './is-editing.js';
+} from '../../context/types.js';
+import { isBrowser } from '../is-browser.js';
+import { isEditing } from '../is-editing.js';
+import { runInNonNode } from './non-node-runtime.js';
+import type { ExecutorArgs } from './types.js';
+
+export const isNode = () => {
+  return typeof window === 'undefined';
+};
 
 export function evaluate({
   code,
@@ -30,6 +36,8 @@ export function evaluate({
     isEditing: isEditing(),
     isBrowser: isBrowser(),
     isServer: !isBrowser(),
+    // TO-DO: make this more accurate. differentiate node from serverless
+    isNonNodeRuntime: !isBrowser(),
   };
 
   // Be able to handle simple expressions like "state.foo" or "1 + 1"
@@ -44,7 +52,30 @@ export function evaluate({
     );
 
   const useCode = useReturn ? `return (${code});` : code;
+  const state = flattenState(rootState, localState, rootSetState);
 
+  const args: ExecutorArgs = {
+    useCode,
+    builder,
+    state,
+    context,
+    event,
+  };
+
+  if (isBrowser()) return runInBrowser(args);
+
+  // if (isNode()) return runInNode(args);
+
+  return runInNonNode(args);
+}
+
+export const runInBrowser = ({
+  useCode,
+  builder,
+  state,
+  context,
+  event,
+}: ExecutorArgs) => {
   try {
     return new Function(
       'builder',
@@ -53,13 +84,7 @@ export function evaluate({
       'context',
       'event',
       useCode
-    )(
-      builder,
-      builder,
-      flattenState(rootState, localState, rootSetState),
-      context,
-      event
-    );
+    )(builder, builder, state, context, event);
   } catch (e) {
     console.warn(
       'Builder custom code error: \n While Evaluating: \n ',
@@ -68,7 +93,11 @@ export function evaluate({
       e
     );
   }
-}
+};
+
+export const runInNode = (args: ExecutorArgs) => {
+  return runInBrowser(args);
+};
 
 export function flattenState(
   rootState: Record<string | symbol, any>,
