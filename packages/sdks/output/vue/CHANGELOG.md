@@ -1,4 +1,4 @@
-### NEXT RELEASE
+### 0.4.6
 
 - Feature: Added support for rudimentary data-bindings in Non-Node.js (edge, serverless, etc.) server runtimes.
 
