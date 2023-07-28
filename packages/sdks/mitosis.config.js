@@ -57,16 +57,6 @@ const getTargetPath = ({ target }) => {
 };
 
 /**
- * @param {{value: StateValue | undefined, key: string}} args
- */
-const convertPropertyStateValueToGetter = (args) => {
-  const { value, key } = args;
-  if (!value) return;
-  value.code = `get ${key}() {\n return ${value.code} \n}`;
-  value.type = 'getter';
-};
-
-/**
  * @type {MitosisConfig['options']['vue']}
  */
 const vueConfig = {
