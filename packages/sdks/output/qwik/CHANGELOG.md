@@ -1,3 +1,7 @@
+### NEXT RELEASE
+
+- Feature: Added support for rudimentary data-bindings in Non-Node.js (edge, serverless, etc.) server runtimes.
+
 ### 0.4.5
 
 - Fix: show dynamic symbols correctly in Preview mode.
