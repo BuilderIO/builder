@@ -1,16 +1,11 @@
-import type {
-  BuilderContextInterface,
-  BuilderRenderState,
-} from '../../context/types.js';
+import type { BuilderContextInterface, BuilderRenderState } from '../../context/types.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { runInNonNode } from './non-node-runtime.js';
 import type { ExecutorArgs } from './types.js';
-
 export const isNode = () => {
   return typeof window === 'undefined';
 };
-
 export function evaluate({
   code,
   context,
@@ -18,111 +13,84 @@ export function evaluate({
   rootState,
   rootSetState,
   event,
-  isExpression = true,
+  isExpression = true
 }: {
   code: string;
   event?: Event;
   isExpression?: boolean;
-} & Pick<
-  BuilderContextInterface,
-  'localState' | 'context' | 'rootState' | 'rootSetState'
->): any {
+} & Pick<BuilderContextInterface, 'localState' | 'context' | 'rootState' | 'rootSetState'>): any {
   if (code === '') {
     console.warn('Skipping evaluation of empty code block.');
     return;
   }
-
   const builder = {
     isEditing: isEditing(),
     isBrowser: isBrowser(),
     isServer: !isBrowser(),
     // TO-DO: make this more accurate. differentiate node from serverless
-    isNonNodeRuntime: !isBrowser(),
+    isNonNodeRuntime: !isBrowser()
   };
 
   // Be able to handle simple expressions like "state.foo" or "1 + 1"
   // as well as full blocks like "var foo = "bar"; return foo"
   const useReturn =
-    // we disable this for cases where we definitely don't want a return
-    isExpression &&
-    !(
-      code.includes(';') ||
-      code.includes(' return ') ||
-      code.trim().startsWith('return ')
-    );
-
+  // we disable this for cases where we definitely don't want a return
+  isExpression && !(code.includes(';') || code.includes(' return ') || code.trim().startsWith('return '));
   const useCode = useReturn ? `return (${code});` : code;
   const state = flattenState(rootState, localState, rootSetState);
-
   const args: ExecutorArgs = {
     useCode,
     builder,
     state,
     context,
     event,
+    rootSetState,
+    rootState,
+    localState
   };
-
   if (isBrowser()) return runInBrowser(args);
 
   // if (isNode()) return runInNode(args);
 
-  return runInNonNode(args);
+  return runInNonNode({...args, rootState, localState, rootSetState});
 }
-
 export const runInBrowser = ({
   useCode,
   builder,
   state,
   context,
-  event,
+  event
 }: ExecutorArgs) => {
   try {
-    return new Function(
-      'builder',
-      'Builder' /* <- legacy */,
-      'state',
-      'context',
-      'event',
-      useCode
-    )(builder, builder, state, context, event);
+    return new Function('builder', 'Builder' /* <- legacy */, 'state', 'context', 'event', useCode)(builder, builder, state, context, event);
   } catch (e) {
-    console.warn(
-      'Builder custom code error: \n While Evaluating: \n ',
-      useCode,
-      '\n',
-      e
-    );
+    console.warn('Builder custom code error: \n While Evaluating: \n ', useCode, '\n', e);
   }
 };
-
 export const runInNode = (args: ExecutorArgs) => {
   return runInBrowser(args);
 };
-
-export function flattenState(
-  rootState: Record<string | symbol, any>,
-  localState: Record<string | symbol, any> | undefined,
-  rootSetState: ((rootState: BuilderRenderState) => void) | undefined
-): BuilderRenderState {
+export function flattenState(rootState: Record<string | symbol, any>, localState: Record<string | symbol, any> | undefined, rootSetState: ((rootState: BuilderRenderState) => void) | undefined): BuilderRenderState {
   if (rootState === localState) {
     throw new Error('rootState === localState');
   }
+
+  // console.log('flattenState', Object.keys( rootState));
+  
   return new Proxy(rootState, {
     get: (_, prop) => {
       if (localState && prop in localState) {
         return localState[prop];
       }
-      return rootState[prop as string];
+      return rootState[(prop as string)];
     },
     set: (_, prop, value) => {
       if (localState && prop in localState) {
-        throw new Error(
-          'Writing to local state is not allowed as it is read-only.'
-        );
+        throw new Error('Writing to local state is not allowed as it is read-only.');
       }
-      rootState[prop as string] = value;
+      rootState[(prop as string)] = value;
       rootSetState?.(rootState);
       return true;
-    },
+    }
   });
 }

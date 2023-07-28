@@ -1,9 +1,5 @@
-import type {
-  BuilderRenderState,
-  BuilderRenderContext,
-} from '../../context/types';
-
-export type ExecutorArgs = {
+import type { BuilderRenderState, BuilderRenderContext, BuilderContextInterface } from '../../context/types';
+export type ExecutorArgs = Pick<BuilderContextInterface, 'localState' | 'context' | 'rootState' | 'rootSetState'>&{
   useCode: string;
   builder: {
     isEditing: boolean | undefined;
@@ -11,6 +7,5 @@ export type ExecutorArgs = {
     isServer: boolean | undefined;
   };
   state: BuilderRenderState;
-  context: BuilderRenderContext;
   event: Event | undefined;
-};
+}
