@@ -1,3 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+/* eslint-disable */
+
+/**
+ * Copied from source: https://github.com/NeilFraser/JS-Interpreter/blob/master/acorn_interpreter.js
+ */
+
 /**
  * @license
  * Copyright 2012 Marijn Haverbeke
