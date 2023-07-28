@@ -4,6 +4,9 @@ import { isRNSDK, test } from './helpers.js';
 test.describe('State binding', () => {
   test.describe('inside repeater', () => {
     test('writing to state should update binding', async ({ page, packageName }) => {
+      /**
+       * This only works in Qwik at the moment.
+       */
       if (
         isRNSDK ||
         packageName === 'e2e-react-native' ||
@@ -14,7 +17,8 @@ test.describe('State binding', () => {
         packageName === 'e2e-svelte' ||
         packageName === 'e2e-sveltekit' ||
         packageName === 'e2e-nextjs-app-dir-rsc' ||
-        packageName === 'e2e-vue3'
+        packageName === 'e2e-vue3' ||
+        packageName === 'e2e-vue-nuxt3'
       ) {
         test.skip();
         return;
