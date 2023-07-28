@@ -12,7 +12,7 @@ test('Can process bindings', () => {
       'responsiveStyles.large.zIndex': '1 + 1',
       'properties.test': 'state.test',
       'properties.block': `
-        const foo = 'bar';
+        var foo = 'bar';
         return foo;
       `,
       'properties.isEditing': 'builder.isEditing',
