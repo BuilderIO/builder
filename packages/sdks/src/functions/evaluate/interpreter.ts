@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-nocheck
 /* eslint-disable */
 
 /**
@@ -16,7 +16,6 @@
  * @fileoverview Interpreting JavaScript in JavaScript.
  * @author fraser@google.com (Neil Fraser)
  */
-'use strict';
 
 /**
  * Create a new interpreter.
@@ -163,9 +162,9 @@ Interpreter.SCOPE_REFERENCE = { SCOPE_REFERENCE: true };
  * parameter in calls to setProperty and friends, that the value
  * should be taken from the property descriptor instead.
  */
-Interpreter.VALUE_IN_DESCRIPTOR = /** @type {!Interpreter.Value} */ ({
+Interpreter.VALUE_IN_DESCRIPTOR = /** @type {!Interpreter.Value} */ {
   VALUE_IN_DESCRIPTOR: true,
-});
+};
 
 /**
  * Unique symbol for indicating that a RegExp timeout has occurred in a VM.
@@ -286,7 +285,7 @@ Interpreter.stripLocations_ = function (node, start, end) {
     if (name !== 'loc' && node.hasOwnProperty(name)) {
       var prop = node[name];
       if (prop && typeof prop === 'object') {
-        Interpreter.stripLocations_(/** @type {!Object} */ (prop), start, end);
+        Interpreter.stripLocations_(/** @type {!Object} */ prop, start, end);
       }
     }
   }
@@ -1010,7 +1009,7 @@ Interpreter.prototype.initObject = function (globalObject) {
       thisInterpreter.setProperty(
         pseudoDescriptor,
         'value',
-        /** @type {!Interpreter.Value} */ (descriptor['value'])
+        /** @type {!Interpreter.Value} */ descriptor['value']
       );
       thisInterpreter.setProperty(
         pseudoDescriptor,
@@ -1707,8 +1706,8 @@ Interpreter.prototype.initString = function (globalObject) {
     try {
       return String(this).localeCompare(
         compareString,
-        /** @type {?} */ (locales),
-        /** @type {?} */ (options)
+        /** @type {?} */ locales,
+        /** @type {?} */ options
       );
     } catch (e) {
       thisInterpreter.throwException(
@@ -2043,8 +2042,8 @@ Interpreter.prototype.initNumber = function (globalObject) {
     options = options ? thisInterpreter.pseudoToNative(options) : undefined;
     try {
       return Number(this).toLocaleString(
-        /** @type {?} */ (locales),
-        /** @type {?} */ (options)
+        /** @type {?} */ locales,
+        /** @type {?} */ options
       );
     } catch (e) {
       thisInterpreter.throwException(
@@ -3059,9 +3058,7 @@ Interpreter.prototype.pseudoToNative = function (pseudoObj, opt_cycles) {
  */
 Interpreter.prototype.arrayNativeToPseudo = function (nativeArray) {
   var pseudoArray = this.createArray();
-  var props = /** @type {!Array<?>} */ (
-    Object.getOwnPropertyNames(nativeArray)
-  );
+  var props = /** @type {!Array<?>} */ Object.getOwnPropertyNames(nativeArray);
   for (var i = 0; i < props.length; i++) {
     this.setProperty(pseudoArray, props[i], nativeArray[props[i]]);
   }
@@ -3079,7 +3076,7 @@ Interpreter.prototype.arrayNativeToPseudo = function (nativeArray) {
 Interpreter.prototype.arrayPseudoToNative = function (pseudoArray) {
   var nativeArray = [];
   for (var key in pseudoArray.properties) {
-    nativeArray[/** @type {?} */ (key)] = this.getProperty(pseudoArray, key);
+    nativeArray[/** @type {?} */ key] = this.getProperty(pseudoArray, key);
   }
   // pseudoArray might be an object pretending to be an array.  In this case
   // it's possible that length is non-existent, invalid, or smaller than the
@@ -4114,7 +4111,7 @@ Interpreter.Object.prototype.valueOf = function () {
   if (this.data instanceof Date) {
     return this.data.valueOf(); // Milliseconds.
   }
-  return /** @type {(boolean|number|string)} */ (this.data); // Boxed primitive.
+  return /** @type {(boolean|number|string)} */ this.data; // Boxed primitive.
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4167,7 +4164,7 @@ Interpreter.prototype['stepAssignmentExpression'] = function (
       if (this.getterStep_) {
         // Call the getter function.
         state.doneGetter_ = true;
-        var func = /** @type {!Interpreter.Object} */ (leftValue);
+        var func = /** @type {!Interpreter.Object} */ leftValue;
         return this.createGetter_(func, state.leftReference_);
       }
     }
@@ -4389,7 +4386,7 @@ Interpreter.prototype['stepCallExpression'] = function (stack, state, node) {
         // Call the getter function.
         state.doneCallee_ = 1;
         return this.createGetter_(
-          /** @type {!Interpreter.Object} */ (func),
+          /** @type {!Interpreter.Object} */ func,
           state.value
         );
       }
@@ -4850,7 +4847,7 @@ Interpreter.prototype['stepIdentifier'] = function (stack, state, node) {
   // An identifier could be a getter if it's a property on the global object.
   if (this.getterStep_) {
     // Call the getter function.
-    var func = /** @type {!Interpreter.Object} */ (value);
+    var func = /** @type {!Interpreter.Object} */ value;
     return this.createGetter_(func, this.globalObject);
   }
   stack[stack.length - 1].value = value;
@@ -4932,7 +4929,7 @@ Interpreter.prototype['stepMemberExpression'] = function (stack, state, node) {
     var value = this.getProperty(state.object_, propName);
     if (this.getterStep_) {
       // Call the getter function.
-      var func = /** @type {!Interpreter.Object} */ (value);
+      var func = /** @type {!Interpreter.Object} */ value;
       return this.createGetter_(func, state.object_);
     }
     stack[stack.length - 1].value = value;
@@ -5215,7 +5212,7 @@ Interpreter.prototype['stepUpdateExpression'] = function (stack, state, node) {
     if (this.getterStep_) {
       // Call the getter function.
       state.doneGetter_ = true;
-      var func = /** @type {!Interpreter.Object} */ (leftValue);
+      var func = /** @type {!Interpreter.Object} */ leftValue;
       return this.createGetter_(func, state.leftSide_);
     }
   }
@@ -5324,4 +5321,4 @@ import { parse } from 'acorn';
 Interpreter.nativeGlobal.acornParse = parse;
 
 // BUILDER.IO: exported Interpreter
-export default Interpreter;
+export default Interpreter as typeof Interpreter;

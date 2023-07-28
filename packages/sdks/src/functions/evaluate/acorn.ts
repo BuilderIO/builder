@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-nocheck
 /* eslint-disable */
 
 /**
@@ -41,8 +41,6 @@
     return define(['exports'], mod); // AMD
   mod(root.acorn || (root.acorn = {})); // Plain browser env
 })(this, function (exports) {
-  'use strict';
-
   exports.version = '0.5.0';
   // Plus additional edits marked with 'JS-Interpreter change' comments.
 
@@ -1270,7 +1268,7 @@
   function readHexChar(len) {
     var n = readInt(16, len);
     if (n === null) raise(tokStart, 'Bad character escape sequence');
-    return /** @type {number} */ (n);
+    return /** @type {number} */ n;
   }
 
   // Used to signal to callers of `readWord1` whether the word
