@@ -133,7 +133,7 @@ export function stringToFunction(
         });
 
         const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
-        return isolateContext.evalClosureSync(
+        const resultStr = isolateContext.evalClosureSync(
           makeFn(str, useReturn),
           args.map((arg, index) =>
             typeof arg === 'object'
@@ -149,6 +149,12 @@ export function stringToFunction(
               : null
           )
         );
+        try {
+          const res = JSON.parse(resultStr);
+          return res;
+        } catch (_error: any) {
+          return resultStr;
+        }
       }
     } catch (error: any) {
       if (Builder.isBrowser) {
@@ -195,6 +201,9 @@ const makeFn = (code: string, useReturn: boolean) => {
   }
   return new Proxy({}, {
       get(target, key) {
+          if (key === 'copySync') {
+            return () => obj.copySync();
+          }
           const val = obj.getSync(key);
           if (typeof val?.getSync === 'function') {
               return refToProxy(val);
@@ -211,7 +220,13 @@ const makeFn = (code: string, useReturn: boolean) => {
 }
 `.concat(names.map((arg, index) => `var ${arg} = refToProxy($${index});`).join('\n')).concat(`
 var ctx = context;
-${useReturn ? `return (${code});` : code};
+var stringify = (val) => {
+  if (typeof val === 'object' && val !== null) {
+    return JSON.stringify(val.copySync());
+  }
+  return val;
+}
+${useReturn ? `return stringify(${code});` : code};
 `);
 };
 
