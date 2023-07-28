@@ -1,5 +1,5 @@
 import { set } from '../set';
-import Interpreter from './interpreter';
+import Interpreter from './interpreter.js';
 import type { ExecutorArgs } from './types';
 const processCode = (code: string) => {
   return code

@@ -25,7 +25,7 @@
  *     global scope object.
  * @constructor
  */
-var Interpreter = function (code, opt_initFunc) {
+var Interpreter = function (code: string, opt_initFunc) {
   if (typeof code === 'string') {
     code = this.parse_(code, 'code');
   }
@@ -5321,4 +5321,4 @@ import { parse } from 'acorn';
 Interpreter.nativeGlobal.acornParse = parse;
 
 // BUILDER.IO: exported Interpreter
-export default Interpreter as typeof Interpreter;
+export default Interpreter as Class;
