@@ -3,7 +3,8 @@
 /* eslint-disable */
 
 /**
- * Copied from source: https://github.com/NeilFraser/JS-Interpreter/blob/master/acorn_interpreter.js
+ * Copied from source: https://github.com/NeilFraser/JS-Interpreter/blob/master/acorn.js
+ * Any changes made here have a comment above them starting with: "// BUILDER.IO"
  */
 
 /**
