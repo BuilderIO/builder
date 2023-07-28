@@ -33,7 +33,6 @@ export function evaluate({
     isEditing: isEditing(),
     isBrowser: isBrowser(),
     isServer: !isBrowser(),
-    isNonNodeRuntime: isNonNodeServer(),
   };
 
   // Be able to handle simple expressions like "state.foo" or "1 + 1"
@@ -56,9 +55,12 @@ export function evaluate({
     rootState,
     localState,
   };
+
   if (isBrowser()) return runInBrowser(args);
 
-  return runInNonNode({ ...args, rootState, localState, rootSetState });
+  if (isNonNodeServer()) return runInNonNode(args);
+
+  return runInNode(args);
 }
 export const runInBrowser = ({
   useCode,

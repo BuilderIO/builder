@@ -11,6 +11,7 @@ const processCode = (code: string) => {
       // this async wrapper doesn't work in JS-interpreter, so we drop it.
       if (line.includes('__awaiter')) return undefined;
 
+      // we find all state setter expressions and append a call to setRootState afterwards
       const isStateSetter = trimmed.startsWith('state.');
       if (!isStateSetter) return line;
       const [lhs, rhs] = trimmed.split('=');
@@ -18,9 +19,7 @@ const processCode = (code: string) => {
       const setExpr = `setRootState('${setStr}', ${rhs.trim()})`;
       return `
   ${line}
-  if (Builder.isNonNodeRuntime) {
-    ${setExpr}
-  }
+  ${setExpr}
   `;
     })
     .filter(Boolean)
