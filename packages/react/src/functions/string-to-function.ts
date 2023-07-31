@@ -150,6 +150,7 @@ export function stringToFunction(
           )
         );
         try {
+          // returning objects throw errors in isolated vm, so we stringify it and parse it back
           const res = JSON.parse(resultStr);
           return res;
         } catch (_error: any) {
@@ -191,41 +192,53 @@ export function stringToFunction(
 }
 
 const indexOfBuilderInstance = 3;
+
 const makeFn = (code: string, useReturn: boolean) => {
   // Order must match the order of the arguments to the function
   const names = ['state', 'event', 'block', 'builder', 'Device', 'update', 'Builder', 'context'];
-  return `
-  const refToProxy = (obj) => {
-  if (typeof obj !== 'object' || obj === null) {
-    return obj;
+
+  // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
+  // https://github.com/laverdet/isolated-vm#referencecopysync
+  const refToProxyFn = `
+  var refToProxy = (obj) => {
+    if (typeof obj !== 'object' || obj === null) {
+      return obj;
+    }
+    return new Proxy({}, {
+        get(target, key) {
+            if (key === 'copySync') {
+              return () => obj.copySync();
+            }
+            const val = obj.getSync(key);
+            if (typeof val?.getSync === 'function') {
+                return refToProxy(val);
+            }
+            return val;
+        },
+        set(target, key, value) {
+            obj.setSync(key, value);
+        },
+        deleteProperty(target, key) {
+            obj.deleteSync(key);
+        }
+      })
   }
-  return new Proxy({}, {
-      get(target, key) {
-          if (key === 'copySync') {
-            return () => obj.copySync();
-          }
-          const val = obj.getSync(key);
-          if (typeof val?.getSync === 'function') {
-              return refToProxy(val);
-          }
-          return val;
-      },
-      set(target, key, value) {
-          obj.setSync(key, value);
-      },
-      deleteProperty(target, key) {
-          obj.deleteSync(key);
+`;
+  // Returned object  will be stringified and parsed back to the parent isolate
+  const strinfigyFn = `
+    var stringify = (val) => {
+      if (typeof val === 'object' && val !== null) {
+        return JSON.stringify(val.copySync ? val.copySync() : val);
       }
-    })
-}
+      return val;
+    }
+  `;
+
+  return `
+${refToProxyFn}
+${strinfigyFn}
 `.concat(names.map((arg, index) => `var ${arg} = refToProxy($${index});`).join('\n')).concat(`
 var ctx = context;
-var stringify = (val) => {
-  if (typeof val === 'object' && val !== null) {
-    return JSON.stringify(val.copySync());
-  }
-  return val;
-}
 ${useReturn ? `return stringify(${code});` : code};
 `);
 };
