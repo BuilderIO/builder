@@ -1,17 +1,19 @@
 import BlockStyles from '../block/components/block-styles.lite';
 import Block from '../block/block.lite';
 import type { Signal } from '@builder.io/mitosis';
-import { For, Show, useMetadata } from '@builder.io/mitosis';
+import { For, Show, useContext, useMetadata } from '@builder.io/mitosis';
 import type { BlocksWrapperProps } from './blocks-wrapper.lite';
 import BlocksWrapper from './blocks-wrapper.lite';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../context/types.js';
+import BuilderContext from '../../context/builder.context.lite';
+import ComponentsContext from '../../context/components.context.lite';
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {
-  context: Signal<BuilderContextInterface>;
-  registeredComponents: RegisteredComponents;
+  context?: Signal<BuilderContextInterface>;
+  registeredComponents?: RegisteredComponents;
 };
 
 useMetadata({
@@ -21,6 +23,9 @@ useMetadata({
 });
 
 export default function Blocks(props: BlocksProps) {
+  const builderContext = useContext(BuilderContext);
+  const componentsContext = useContext(ComponentsContext);
+
   return (
     <BlocksWrapper
       blocks={props.blocks}
@@ -38,8 +43,11 @@ export default function Blocks(props: BlocksProps) {
             <Block
               key={'render-block-' + block.id}
               block={block}
-              context={props.context}
-              registeredComponents={props.registeredComponents}
+              context={props.context || builderContext}
+              registeredComponents={
+                props.registeredComponents ||
+                componentsContext.registeredComponents
+              }
             />
           )}
         </For>
