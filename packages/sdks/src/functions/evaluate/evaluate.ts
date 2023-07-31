@@ -8,10 +8,15 @@ import { isEditing } from '../is-editing.js';
 import { isNonNodeServer } from '../is-non-node-server.js';
 import type { ExecutorArgs } from './types.js';
 
+/**
+ * We need to lazy-load this module so it doesn't leak into the browser, as it is massive and not needed there.
+ */
 let runInNonNode: typeof import('./non-node-runtime.js').runInNonNode;
-import('./non-node-runtime.js').then(
-  (theModule) => (runInNonNode = theModule.runInNonNode)
-);
+if (isNonNodeServer()) {
+  import('./non-node-runtime.js').then(
+    (theModule) => (runInNonNode = theModule.runInNonNode)
+  );
+}
 
 export function evaluate({
   code,
