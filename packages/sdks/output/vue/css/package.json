@@ -1,0 +1,4 @@
+{
+  "module": "./vue3/dist/style.css",
+  "main": "./vue3/dist/style.css"
+}

@@ -13,6 +13,7 @@
     "vue2/css/**/*",
     "vue3/dist/**/*",
     "vue3/css/**/*",
+    "css/**/*",
     "vue2/package.json",
     "vue3/package.json"
   ],

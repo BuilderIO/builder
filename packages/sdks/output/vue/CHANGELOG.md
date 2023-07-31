@@ -154,7 +154,7 @@ import * as BuilderSDK from '@builder.io/sdk-vue/vue2';
 import * as BuilderSDK from '@builder.io/sdk-vue';
 
 // imports Vue 3 SDK
-import * as BuilderSDK from '@builder.io/sdk-vue/vue3';
+import * as BuilderSDK from '@builder.io/sdk-vue';
 ```
 
 ### 0.0.1-54

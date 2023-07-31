@@ -1,6 +1,6 @@
 <script setup>
-import { RenderContent, processContentResult } from '@builder.io/sdk-vue/vue3';
-import '@builder.io/sdk-vue/vue3/css';
+import { RenderContent, processContentResult } from '@builder.io/sdk-vue';
+import '@builder.io/sdk-vue/css';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 
 const route = useRoute();
