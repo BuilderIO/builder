@@ -15,10 +15,10 @@
     "build": "echo 'no need to build solid SDK'"
   },
   "dependencies": {
-    "js-interpreter": "^4.0.0",
     "solid-styled-components": "^0.27.6"
   },
   "peerDependencies": {
+    "js-interpreter": "^4.0.0",
     "solid-js": "^1.5.7"
   },
   "devDependencies": {

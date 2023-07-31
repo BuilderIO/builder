@@ -14,6 +14,7 @@
     "build": "yarn clean && tsc"
   },
   "peerDependencies": {
+    "js-interpreter": "^4.0.0",
     "next": "^13.4.4",
     "react": "^18.2.0"
   },
@@ -24,7 +25,6 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "js-interpreter": "^4.0.0",
     "lru-cache": "^10.0.0"
   }
 }
