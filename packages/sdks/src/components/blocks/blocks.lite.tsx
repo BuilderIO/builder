@@ -1,7 +1,13 @@
 import BlockStyles from '../block/components/block-styles.lite';
 import Block from '../block/block.lite';
 import type { Signal } from '@builder.io/mitosis';
-import { For, Show, useContext, useMetadata } from '@builder.io/mitosis';
+import {
+  For,
+  Show,
+  useContext,
+  useMetadata,
+  useTarget,
+} from '@builder.io/mitosis';
 import type { BlocksWrapperProps } from './blocks-wrapper.lite';
 import BlocksWrapper from './blocks-wrapper.lite';
 import type {
@@ -43,11 +49,16 @@ export default function Blocks(props: BlocksProps) {
             <Block
               key={'render-block-' + block.id}
               block={block}
-              context={props.context || builderContext}
-              registeredComponents={
-                props.registeredComponents ||
-                componentsContext.registeredComponents
-              }
+              context={useTarget({
+                rsc: props.context,
+                default: props.context || builderContext,
+              })}
+              registeredComponents={useTarget({
+                rsc: props.registeredComponents,
+                default:
+                  props.registeredComponents ||
+                  componentsContext.registeredComponents,
+              })}
             />
           )}
         </For>
@@ -58,7 +69,10 @@ export default function Blocks(props: BlocksProps) {
             <BlockStyles
               key={'block-style-' + block.id}
               block={block}
-              context={props.context.value}
+              context={useTarget({
+                rsc: props.context?.value,
+                default: props.context?.value || builderContext.value,
+              })}
             />
           )}
         </For>
