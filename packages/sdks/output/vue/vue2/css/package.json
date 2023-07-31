@@ -1,4 +1,4 @@
 {
-  "module": "./dist/style.css",
-  "main": "./dist/style.css"
+  "module": "../dist/style.css",
+  "main": "../dist/style.css"
 }
