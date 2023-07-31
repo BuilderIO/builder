@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "files": [
     "dist"
   ],
@@ -11,13 +11,15 @@
     "./server": "./dist/functions/get-content/index.js"
   },
   "scripts": {
-    "build": "tsc"
+    "clean": "rimraf dist",
+    "build": "yarn clean && tsc"
   },
   "peerDependencies": {
     "react": "^18.2.0"
   },
   "devDependencies": {
     "react": "^18.2.0",
+    "rimraf": "^3.0.2",
     "typescript": "^5.1.6"
   }
 }

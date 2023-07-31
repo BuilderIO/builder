@@ -1,3 +1,7 @@
+### 0.5.2
+
+- No Changes.
+
 ### 0.5.1
 
 - Fix: make `RenderBlocks` properties `context` and `registeredComponents` optional for external use.

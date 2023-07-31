@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io SDK for React",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "files": [
     "dist"
   ],
@@ -10,7 +10,8 @@
     ".": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc"
+    "clean": "rimraf dist",
+    "build": "yarn clean && tsc"
   },
   "peerDependencies": {
     "next": "^13.4.4",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "next": "^13.4.4",
     "react": "^18.2.0",
+    "rimraf": "^3.0.2",
     "typescript": "^5.1.6"
   },
   "dependencies": {
