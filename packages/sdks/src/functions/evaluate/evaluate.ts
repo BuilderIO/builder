@@ -6,8 +6,12 @@ import { logger } from '../../helpers/logger.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { isNonNodeServer } from '../is-non-node-server.js';
-import { runInNonNode } from './non-node-runtime.js';
 import type { ExecutorArgs } from './types.js';
+
+let runInNonNode: typeof import('./non-node-runtime.js').runInNonNode;
+import('./non-node-runtime.js').then(
+  (theModule) => (runInNonNode = theModule.runInNonNode)
+);
 
 export function evaluate({
   code,
