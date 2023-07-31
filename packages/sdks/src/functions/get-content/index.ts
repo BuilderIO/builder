@@ -17,7 +17,8 @@ export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
   const allContent = await getAllContent({ ...options, limit: 1 });
-  if (allContent && checkContentHasResults(allContent)) {
+
+  if (allContent) {
     return allContent.results[0] || null;
   }
 
