@@ -15,7 +15,15 @@ import type { ExecutorArgs } from './types.js';
 let runInNonNode: typeof import('./non-node-runtime.js').runInNonNode;
 (async () => {
   if (isNonNodeServer()) {
-    runInNonNode = (await import('./non-node-runtime.js')).runInNonNode;
+    try {
+      runInNonNode = (await import('./non-node-runtime.js')).runInNonNode;
+    } catch (err) {
+      logger.error(
+        `Error importing JS interpreter for non-node runtimes. Make sure you have js-interpreter installed.
+        Read more here: https://github.com/BuilderIO/builder/tree/main/packages/sdks/README.md#non-nodejs-runtimes-edge-serverless`,
+        err
+      );
+    }
   }
 })();
 
