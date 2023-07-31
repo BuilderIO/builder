@@ -21,5 +21,8 @@
     "react": "^18.2.0",
     "rimraf": "^3.0.2",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "js-interpreter": "^4.0.0"
   }
 }

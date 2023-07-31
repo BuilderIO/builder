@@ -3028,6 +3028,7 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     eslint-config-next: ^13
+    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18
     react-dom: ^18
@@ -3044,6 +3045,7 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     eslint-config-next: ^13
+    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18
     react-dom: ^18
@@ -3059,6 +3061,7 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
+    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -3133,6 +3136,7 @@ __metadata:
     "@typescript-eslint/parser": 5.48.0
     eslint: 8.31.0
     eslint-plugin-qwik: 0.16.2
+    js-interpreter: ^4.0.0
     node-fetch: 3.3.0
     prettier: 2.8.1
     typescript: ^5.1.6
@@ -3154,6 +3158,7 @@ __metadata:
     "@react-navigation/native-stack": ^6.9.0
     expo: ~46.0.9
     expo-status-bar: ~1.4.0
+    js-interpreter: ^4.0.0
     react: 18.0.0
     react-dom: 18.0.0
     react-native: 0.69.5
@@ -3173,6 +3178,7 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     "@vitejs/plugin-react": ^4.0.1
+    js-interpreter: ^4.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -3190,6 +3196,7 @@ __metadata:
     "@solidjs/router": ^0.8.2
     "@types/node": ^18.11.18
     esbuild: ^0.14.54
+    js-interpreter: ^4.0.0
     postcss: ^8.4.21
     solid-js: ^1.7.2
     solid-start: ^0.2.26
@@ -3206,6 +3213,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
+    js-interpreter: ^4.0.0
     solid-js: ^1.5.7
     typescript: ^5.1.6
     vite: ^3.1.4
@@ -3221,6 +3229,7 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^2.0.3
     "@tsconfig/svelte": ^4.0.1
+    js-interpreter: ^4.0.0
     svelte: ^3.57.0
     svelte-check: ^2.10.3
     tslib: ^2.5.0
@@ -3237,6 +3246,7 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
     "@sveltejs/kit": ^1.16.2
+    js-interpreter: ^4.0.0
     svelte: ^3.59.1
     svelte-check: ^3.3.2
     tslib: ^2.4.1
@@ -3260,6 +3270,7 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-nuxt: ^4.0.0
     eslint-plugin-vue: ^9.5.1
+    js-interpreter: ^4.0.0
     nuxt: ^2.15.8
     vue: ^2.7.10
     vue-server-renderer: ^2.7.10
@@ -3274,6 +3285,7 @@ __metadata:
     "@builder.io/sdk-vue": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/node": ^18
+    js-interpreter: ^4.0.0
     nuxt: ^3.5.2
   languageName: unknown
   linkType: soft
@@ -3285,6 +3297,7 @@ __metadata:
     "@builder.io/sdk-vue": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@vitejs/plugin-vue2": ^1.1.2
+    js-interpreter: ^4.0.0
     typescript: ^5.1.6
     unplugin-vue-components: ^0.22.7
     vite: ^3.0.4
@@ -3303,6 +3316,7 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@vitejs/plugin-vue": ^2.3.3
     cross-fetch: ^4.0.0
+    js-interpreter: ^4.0.0
     typescript: ^5.1.6
     vite: ^3.0.4
     vite-plugin-ssr: ^0.4.133
@@ -3509,6 +3523,7 @@ __metadata:
   dependencies:
     "@builder.io/qwik": ^1.0.0
     "@types/node": latest
+    js-interpreter: ^4.0.0
     typescript: ^5.1.6
     vite: ^3.0.4
   peerDependencies:
@@ -3523,6 +3538,7 @@ __metadata:
     "@react-native-async-storage/async-storage": ^1.17.10
     "@tsconfig/react-native": ^2.0.3
     "@types/react-native-video": ^5.0.9
+    js-interpreter: ^4.0.0
     react-native-render-html: ^6.3.4
     react-native-storage: ^1.0.1
     react-native-url-polyfill: ^1.3.0
@@ -3539,6 +3555,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react-nextjs@workspace:sdks/output/nextjs"
   dependencies:
+    js-interpreter: ^4.0.0
     lru-cache: ^10.0.0
     next: ^13.4.4
     react: ^18.2.0
@@ -3554,6 +3571,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react@workspace:sdks/output/react"
   dependencies:
+    js-interpreter: ^4.0.0
     react: ^18.2.0
     rimraf: ^3.0.2
     typescript: ^5.1.6
@@ -3566,6 +3584,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-solid@workspace:sdks/output/solid"
   dependencies:
+    js-interpreter: ^4.0.0
     solid-js: ^1.5.7
     solid-styled-components: ^0.27.6
     vite: ^3.0.4
@@ -3582,6 +3601,7 @@ __metadata:
     "@sveltejs/adapter-auto": 1.0.0-next.71
     "@sveltejs/kit": ^1.16.2
     "@sveltejs/package": 1.0.0-next.1
+    js-interpreter: ^4.0.0
     svelte: ^3.59.1
     svelte-check: ^3.3.2
     svelte-preprocess: ^4.10.6
@@ -3598,6 +3618,7 @@ __metadata:
     "@types/node": ^16.11.45
     "@vitejs/plugin-vue2": ^1.1.2
     "@vue/tsconfig": ^0.1.3
+    js-interpreter: ^4.0.0
     npm-run-all: ^4.1.5
     terser: ^5.14.2
     typescript: ^5.1.6
@@ -3615,6 +3636,7 @@ __metadata:
     "@types/node": ^16.11.47
     "@vitejs/plugin-vue": ^3.0.1
     "@vue/tsconfig": ^0.1.3
+    js-interpreter: ^4.0.0
     npm-run-all: ^4.1.5
     typescript: ^5.1.6
     vite: ^3.0.4
@@ -3628,6 +3650,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-vue@workspace:sdks/output/vue"
   dependencies:
+    js-interpreter: ^4.0.0
     vue: ^2.7
   peerDependencies:
     vue: ">= 2"
@@ -3708,6 +3731,7 @@ __metadata:
     eslint-plugin-unused-imports: ^2.0.0
     git-cz: ^4.8.0
     husky: ^7.0.4
+    js-interpreter: ^4.0.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
     pinst: ^3.0.0
@@ -25229,6 +25253,17 @@ __metadata:
   version: 1.1.0
   resolution: "join-component@npm:1.1.0"
   checksum: b904c2f98549e4195022caca3a7dc837f9706c670ff333f3d617f2aed23bce2841322a999734683b6ab8e202568ad810c11ff79b58a64df66888153f04750239
+  languageName: node
+  linkType: hard
+
+"js-interpreter@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "js-interpreter@npm:4.0.0"
+  dependencies:
+    minimist: ^1.2.6
+  bin:
+    js-interpreter: lib/cli.min.js
+  checksum: eca9931ea080a1bbf86cbc83b2ec823f7f560582bb17152265d82e7854c4823c3486b013f8d746ca49a5eae7c8ab005ff69dea8d7d3b11c662a01068b212d5c0
   languageName: node
   linkType: hard
 

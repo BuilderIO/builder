@@ -1,7 +1,8 @@
 import { logger } from '../../helpers/logger';
 import { set } from '../set';
-import Interpreter from './interpreter.js';
+import Interpreter from 'js-interpreter';
 import type { ExecutorArgs } from './types';
+
 const processCode = (code: string) => {
   return code
     .split('\n')

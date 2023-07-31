@@ -24,6 +24,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "js-interpreter": "^4.0.0",
     "lru-cache": "^10.0.0"
   }
 }

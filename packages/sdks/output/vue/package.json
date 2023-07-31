@@ -46,5 +46,8 @@
   },
   "devDependencies": {
     "vue": "^2.7"
+  },
+  "dependencies": {
+    "js-interpreter": "^4.0.0"
   }
 }
