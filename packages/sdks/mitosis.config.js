@@ -45,10 +45,10 @@ const getTargetPath = ({ target }) => {
     // we have to workaround a name collision, where the folder can't have the name of the `exports` property in package.json.
     // crazy, crazy stuff.
     case 'vue2':
-      return 'vue/packages/_vue2';
+      return 'vue/vue2';
     case 'vue':
     case 'vue3':
-      return 'vue/packages/_vue3';
+      return 'vue/vue3';
     case 'rsc':
       return 'nextjs';
     default:

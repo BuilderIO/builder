@@ -6,13 +6,13 @@
     "vue3"
   ],
   "version": "0.4.5",
-  "main": "./packages/_vue3/dist/sdk.js",
-  "module": "./packages/_vue3/dist/sdk.js",
+  "main": "./vue3/dist/sdk.js",
+  "module": "./vue3/dist/sdk.js",
   "files": [
-    "packages/_vue2/dist",
-    "packages/_vue3/dist",
-    "vue2",
-    "vue3"
+    "vue2/dist",
+    "vue3/dist",
+    "vue2/package.json",
+    "vue3/package.json"
   ],
   "scripts": {
     "add-debug": "bash ./scripts/add-debug.sh",
