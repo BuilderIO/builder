@@ -94,6 +94,10 @@ export class BehaviorSubject<T = any, ErrorType = any> {
   promise() {
     return this.toPromise();
   }
+
+  then: Promise<T>['then'] = (...args) => {
+    return this.toPromise().then(...args);
+  };
 }
 
 // TODO: make different classes
