@@ -10,13 +10,14 @@ import type { ExecutorArgs } from './types.js';
 
 /**
  * We need to lazy-load this module so it doesn't leak into the browser, as it is massive and not needed there.
+ * https://css-tricks.com/dynamic-conditional-imports/
  */
 let runInNonNode: typeof import('./non-node-runtime.js').runInNonNode;
-if (isNonNodeServer()) {
-  import('./non-node-runtime.js').then(
-    (theModule) => (runInNonNode = theModule.runInNonNode)
-  );
-}
+(async () => {
+  if (isNonNodeServer()) {
+    runInNonNode = (await import('./non-node-runtime.js')).runInNonNode;
+  }
+})();
 
 export function evaluate({
   code,
