@@ -17,7 +17,8 @@ export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
   const allContent = await getAllContent({ ...options, limit: 1 });
-  if (allContent && checkContentHasResults(allContent)) {
+
+  if (allContent) {
     return allContent.results[0] || null;
   }
 
@@ -86,16 +87,14 @@ export const processContentResult = async (
   return content;
 };
 
-export async function getAllContent(
-  options: GetContentOptions
-): Promise<ContentResponse | null> {
+export async function getAllContent(options: GetContentOptions) {
   try {
     const url = generateContentUrl(options);
     const content = await fetchContent(options);
 
     if (!checkContentHasResults(content)) {
       logger.error('Error fetching data. ', { url, content, options });
-      return content;
+      return null;
     }
 
     return processContentResult(options, content);
