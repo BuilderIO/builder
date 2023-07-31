@@ -30,7 +30,7 @@ import InlinedScript from '../inlined-script.lite';
 import { wrapComponentRef } from './wrap-component-ref.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
-import ComponentsContext from '../../context/components.context.lite.js';
+import ComponentsContext from '../../context/components.context.lite';
 
 useMetadata({
   qwik: {
