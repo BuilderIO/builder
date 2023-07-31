@@ -3028,7 +3028,6 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     eslint-config-next: ^13
-    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18
     react-dom: ^18
@@ -3045,7 +3044,6 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     eslint-config-next: ^13
-    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18
     react-dom: ^18
@@ -3061,7 +3059,6 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
-    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -3136,7 +3133,6 @@ __metadata:
     "@typescript-eslint/parser": 5.48.0
     eslint: 8.31.0
     eslint-plugin-qwik: 0.16.2
-    js-interpreter: ^4.0.0
     node-fetch: 3.3.0
     prettier: 2.8.1
     typescript: ^5.1.6
@@ -3158,7 +3154,6 @@ __metadata:
     "@react-navigation/native-stack": ^6.9.0
     expo: ~46.0.9
     expo-status-bar: ~1.4.0
-    js-interpreter: ^4.0.0
     react: 18.0.0
     react-dom: 18.0.0
     react-native: 0.69.5
@@ -3178,7 +3173,6 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     "@vitejs/plugin-react": ^4.0.1
-    js-interpreter: ^4.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -3196,7 +3190,6 @@ __metadata:
     "@solidjs/router": ^0.8.2
     "@types/node": ^18.11.18
     esbuild: ^0.14.54
-    js-interpreter: ^4.0.0
     postcss: ^8.4.21
     solid-js: ^1.7.2
     solid-start: ^0.2.26
@@ -3213,7 +3206,6 @@ __metadata:
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
-    js-interpreter: ^4.0.0
     solid-js: ^1.5.7
     typescript: ^5.1.6
     vite: ^3.1.4
@@ -3229,7 +3221,6 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^2.0.3
     "@tsconfig/svelte": ^4.0.1
-    js-interpreter: ^4.0.0
     svelte: ^3.57.0
     svelte-check: ^2.10.3
     tslib: ^2.5.0
@@ -3246,7 +3237,6 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
     "@sveltejs/kit": ^1.16.2
-    js-interpreter: ^4.0.0
     svelte: ^3.59.1
     svelte-check: ^3.3.2
     tslib: ^2.4.1
@@ -3270,7 +3260,6 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-nuxt: ^4.0.0
     eslint-plugin-vue: ^9.5.1
-    js-interpreter: ^4.0.0
     nuxt: ^2.15.8
     vue: ^2.7.10
     vue-server-renderer: ^2.7.10
@@ -3285,7 +3274,6 @@ __metadata:
     "@builder.io/sdk-vue": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/node": ^18
-    js-interpreter: ^4.0.0
     nuxt: ^3.5.2
   languageName: unknown
   linkType: soft
@@ -3297,7 +3285,6 @@ __metadata:
     "@builder.io/sdk-vue": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@vitejs/plugin-vue2": ^1.1.2
-    js-interpreter: ^4.0.0
     typescript: ^5.1.6
     unplugin-vue-components: ^0.22.7
     vite: ^3.0.4
@@ -3316,7 +3303,6 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@vitejs/plugin-vue": ^2.3.3
     cross-fetch: ^4.0.0
-    js-interpreter: ^4.0.0
     typescript: ^5.1.6
     vite: ^3.0.4
     vite-plugin-ssr: ^0.4.133
