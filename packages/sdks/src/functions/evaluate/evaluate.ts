@@ -70,7 +70,7 @@ export function evaluate({
 
   if (isNonNodeServer()) return runInNonNode(args);
 
-  return runInNode(args);
+  return runInNonNode(args);
 }
 export const runInBrowser = ({
   useCode,
