@@ -1,0 +1,5 @@
+{
+  "module": "../packages/_vue3/dist/sdk.js",
+  "types": "../packages/_vue3/dist/sdk.d.ts",
+  "main": "../packages/_vue3/dist/sdk.cjs"
+}

@@ -2,40 +2,18 @@
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
   "workspaces": [
-    "packages/*"
+    "vue2",
+    "vue3"
   ],
   "version": "0.4.5",
-  "main": "./packages/_vue2/dist/sdk.js",
-  "module": "./packages/_vue2/dist/sdk.js",
-  "type": "module",
+  "main": "./packages/_vue3/dist/sdk.js",
+  "module": "./packages/_vue3/dist/sdk.js",
   "files": [
     "packages/_vue2/dist",
-    "packages/_vue3/dist"
+    "packages/_vue3/dist",
+    "vue2",
+    "vue3"
   ],
-  "exports": {
-    ".": {
-      "import": "./packages/_vue2/dist/sdk.js",
-      "require": "./packages/_vue2/dist/sdk.cjs"
-    },
-    "./vue2": {
-      "import": "./packages/_vue2/dist/sdk.js",
-      "require": "./packages/_vue2/dist/sdk.cjs"
-    },
-    "./vue2/css": "./packages/_vue2/dist/style.css",
-    "./vue3": {
-      "import": "./packages/_vue3/dist/sdk.js",
-      "require": "./packages/_vue3/dist/sdk.cjs"
-    },
-    "./vue3/css": "./packages/_vue3/dist/style.css",
-    "./nuxt": {
-      "import": "./nuxt.js",
-      "require": "./nuxt.js"
-    },
-    "./nuxt2": {
-      "import": "./nuxt.js",
-      "require": "./nuxt.js"
-    }
-  },
   "scripts": {
     "add-debug": "bash ./scripts/add-debug.sh",
     "remove-debug": "bash ./scripts/remove-debug.sh",
