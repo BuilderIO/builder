@@ -9,8 +9,8 @@
   "main": "./vue3/dist/sdk.js",
   "module": "./vue3/dist/sdk.js",
   "files": [
-    "vue2/dist",
-    "vue3/dist",
+    "vue2/dist/**/*",
+    "vue3/dist/**/*",
     "vue2/package.json",
     "vue3/package.json"
   ],
