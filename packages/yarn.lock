@@ -15483,6 +15483,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-1d6ae2@workspace:sdks/output/vue/css":
+  version: 0.0.0-use.local
+  resolution: "css-1d6ae2@workspace:sdks/output/vue/css"
+  languageName: unknown
+  linkType: soft
+
+"css-65dbd2@workspace:sdks/output/vue/vue2/css":
+  version: 0.0.0-use.local
+  resolution: "css-65dbd2@workspace:sdks/output/vue/vue2/css"
+  languageName: unknown
+  linkType: soft
+
 "css-blank-pseudo@npm:^5.0.2":
   version: 5.0.2
   resolution: "css-blank-pseudo@npm:5.0.2"
@@ -15526,6 +15538,12 @@ __metadata:
   checksum: b716bc3d79154d3d618a90bd192533adf6604307c176e25e715a3b7cde587ef16971769fbf496118a376794280edf97016653477936c38c5a74cc852d6e38873
   languageName: node
   linkType: hard
+
+"css-e8940e@workspace:sdks/output/vue/vue3/css":
+  version: 0.0.0-use.local
+  resolution: "css-e8940e@workspace:sdks/output/vue/vue3/css"
+  languageName: unknown
+  linkType: soft
 
 "css-has-pseudo@npm:^5.0.2":
   version: 5.0.2
