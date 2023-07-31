@@ -86,16 +86,14 @@ export const processContentResult = async (
   return content;
 };
 
-export async function getAllContent(
-  options: GetContentOptions
-): Promise<ContentResponse | null> {
+export async function getAllContent(options: GetContentOptions) {
   try {
     const url = generateContentUrl(options);
     const content = await fetchContent(options);
 
     if (!checkContentHasResults(content)) {
       logger.error('Error fetching data. ', { url, content, options });
-      return content;
+      return null;
     }
 
     return processContentResult(options, content);
