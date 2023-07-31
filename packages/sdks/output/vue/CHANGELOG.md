@@ -1,6 +1,9 @@
 ### 0.5.0
 
 - Feature: Added support for rudimentary data-bindings in Non-Node.js (edge, serverless, etc.) server runtimes.
+- Remove inaccurate `"type": "module"` in `package.json`
+- Feature: add working TypeScript type exports for Vue2 and Vue3
+- Breaking Change: make Vue3 the default `@builder.io/sdk-vue` export instead of Vue2
 
 ### 0.4.5
 
