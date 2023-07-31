@@ -10,7 +10,9 @@
   "module": "./vue3/dist/sdk.js",
   "files": [
     "vue2/dist/**/*",
+    "vue2/css/**/*",
     "vue3/dist/**/*",
+    "vue3/css/**/*",
     "vue2/package.json",
     "vue3/package.json"
   ],
