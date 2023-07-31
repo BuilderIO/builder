@@ -172,11 +172,11 @@ Performance is our top priority. All content is delivered from the edge, rendera
 
 Some example SDK sizes from Bundle.js:
 
-| SDK   | Size                                                                                                                                                                                                                             |
-| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| React | ![React Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-react&treeshake=[*]&badge=detailed)                                                                                                                       |
-| Vue   | ![Vue Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-vue/vue3&treeshake=[*]&badge=detailed&config={%22esbuild%22:{%22external%22:[%22@vue/runtime-dom%22,%22@vue/runtime-core%22,%22@vue/shared%22,%22vue%22]}}) |
-| Qwik  | ![Qwik Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-qwik&treeshake=[*]&config={"esbuild":{"external":["@builder.io/qwik"]}}&badge=detailed)                                                                    |
+| SDK   | Size                                                                                                                                                                                                              |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| React | ![React Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-react&treeshake=[*])                                                                                                                       |
+| Vue   | ![Vue Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-vue/vue3&treeshake=[*]&config={%22esbuild%22:{%22external%22:[%22@vue/runtime-dom%22,%22@vue/runtime-core%22,%22@vue/shared%22,%22vue%22]}}) |
+| Qwik  | ![Qwik Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-qwik&treeshake=[*]&config={"esbuild":{"external":["@builder.io/qwik"]}})                                                                    |
 
 Importantly, there are no hacks here - no iframes, no unneeded client side code or rendering, our rule of thumb is we produce content just like if you wrote it by hand. Assets are optimized, DOM is minimized, and it's all native to your framework (so all React components if you use React, Svelte for Svelte, etc)
 
