@@ -1,3 +1,6 @@
+### 3.0.9
+- Fix issue with collection/repeat and returning objects from code bindings in SSR.
+
 ### 3.0.8
 - Replace deprecated package `vm2` with `isolated-vm`.
 - Fix for excessive caching in nextjs 13
