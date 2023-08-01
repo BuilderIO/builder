@@ -193,7 +193,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     if (this.name !== '_inline') {
       // TODO:... using targeting...? express.request hmmm
       this.subscriptions.add(
-        builder.queueGetContent(this.name, this.options).subscribe(
+        this.builder.queueGetContent(this.name, this.options).subscribe(
           matches => {
             const match = matches && matches[0];
             this.setState({
@@ -204,7 +204,8 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
             // causing the sdk to resolve this call to the initialContent instead of the previewed/edited content
             // so we test here if the BuilderContent is being used directly ( not inlined ) and it has initial content ( content prop ), we let the first render go through to show the initial content
             // and we subscribe again to get the draft/editing content
-            const isPreviewing = (builder.editingModel || builder.previewingModel) === this.name;
+            const isPreviewing =
+              (this.builder.editingModel || this.builder.previewingModel) === this.name;
             if (!this.props.inline && this.props.content && this.firstLoad && isPreviewing) {
               this.firstLoad = false;
               this.subscriptions.unsubscribe();
