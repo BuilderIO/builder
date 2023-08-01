@@ -259,7 +259,7 @@ test.describe(targetContext.name, () => {
       });
     });
     test('Dynamic Data Bindings', async ({ page, packageName }) => {
-      if (packageName === 'vue-nuxt3') {
+      if (packageName === 'nuxt3') {
         test.skip();
       }
       await page.goto('/data-bindings');

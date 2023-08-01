@@ -11,14 +11,14 @@ test.describe('State binding', () => {
         isRNSDK ||
         packageName === 'react-native' ||
         packageName === 'vue2' ||
-        packageName === 'vue-nuxt2' ||
-        packageName === 'solidjs' ||
+        packageName === 'nuxt2' ||
+        packageName === 'solid' ||
         packageName === 'solid-start' ||
         packageName === 'svelte' ||
         packageName === 'sveltekit' ||
         packageName === 'next-app-dir' ||
         packageName === 'vue3' ||
-        packageName === 'vue-nuxt3'
+        packageName === 'nuxt3'
       ) {
         test.skip();
         return;
