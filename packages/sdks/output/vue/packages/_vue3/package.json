@@ -1,12 +1,13 @@
 {
   "name": "@builder.io/sdk-vue-3",
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "build": "vite build",
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
@@ -18,5 +19,10 @@
     "vite": "^3.0.4",
     "vite-plugin-dts": "^1.5.0",
     "vue-tsc": "^0.39.5"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@builder.io/sdks"
+    ]
   }
 }

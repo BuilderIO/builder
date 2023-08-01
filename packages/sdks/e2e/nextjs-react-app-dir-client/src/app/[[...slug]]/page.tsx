@@ -1,4 +1,4 @@
-import { getProps } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@e2e/tests';
 import {
   processContentResult,
   getContent,

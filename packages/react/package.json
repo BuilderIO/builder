@@ -126,6 +126,8 @@
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "isolated-vm": "^4.5.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "preact": "^10.1.0"
   },
   "installConfig": {

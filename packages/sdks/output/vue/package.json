@@ -39,12 +39,22 @@
   "scripts": {
     "add-debug": "bash ./scripts/add-debug.sh",
     "remove-debug": "bash ./scripts/remove-debug.sh",
-    "build": "yarn workspaces foreach run build"
+    "build": "nx run-many -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3"
   },
   "peerDependencies": {
     "vue": ">= 2"
   },
   "devDependencies": {
     "vue": "^2.7"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@builder.io/sdk-vue-2",
+      "@builder.io/sdk-vue-3"
+    ]
+  },
+  "dependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0"
   }
 }

@@ -7,7 +7,7 @@ import {
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import CatFacts from '@/components/MyTextBox/CatFacts';
-import { getProps } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@e2e/tests';
 
 interface MyPageProps {
   params: {

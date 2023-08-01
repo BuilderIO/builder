@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-vue3",
+  "name": "@e2e/vue3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "cross-fetch": "^4.0.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "vite-plugin-ssr": "^0.4.133",
     "vue": "^3.2.37"
   },

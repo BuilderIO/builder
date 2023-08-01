@@ -1,0 +1,36 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "options": {
+        "skipNxCache": true
+      }
+    }
+  },
+  "targetDefaults": {
+    "dev": {
+      "dependsOn": ["build"],
+      "configurations": {},
+      "options": {}
+    },
+    "serve": {
+      "dependsOn": ["build"]
+    },
+    "build": {
+      "dependsOn": ["^build", "prebuild"],
+      "outputs": ["{workspaceRoot}/dist"],
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build"
+      }
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": ["default"]
+  }
+}

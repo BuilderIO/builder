@@ -26,7 +26,6 @@
     "release:patch:nightly": "yarn run build && yarn version patch && yarn npm publish",
     "release:dev": "yarn run build && yarn version prerelease && yarn npm publish --tag dev",
     "prepublishOnly": "block-publish",
-    "ci:build": "yarn run build",
     "test": "jest --color"
   },
   "devDependencies": {
@@ -65,6 +64,8 @@
   "dependencies": {
     "hash-sum": "^2.0.0",
     "node-fetch": "^2.3.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "tslib": "^1.10.0"
   },
   "installConfig": {

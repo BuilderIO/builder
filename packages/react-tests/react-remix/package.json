@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-old-react-remix",
+  "name": "@e2e/gen1-remix",
   "private": true,
   "scripts": {
     "build": "remix build",
@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "@remix-run/node": "^1.14.3",
     "@remix-run/react": "^1.14.3",
     "@remix-run/serve": "^1.14.3",
     "isbot": "^3.6.5",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -8,7 +8,7 @@
 set -o nounset
 
 # We expect to run this script from repo root. So we need to `cd` into the correct directory.
-# PS: Calling it using 'yarn workspace @builder.io/sdks set-sdk-version' is equivalent to running it from the root.
+# PS: Calling it using 'yarn workspace sdks set-sdk-version' is equivalent to running it from the root.
 cd "output/$1"
 
 LOCAL_DIR=$(pwd)

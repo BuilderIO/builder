@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-vue2",
+  "name": "@e2e/vue2",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "vue": "^2.7",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2"
