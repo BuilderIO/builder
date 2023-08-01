@@ -47,7 +47,14 @@
   "nx": {
     "implicitDependencies": [
       "@builder.io/sdks"
-    ]
+    ],
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/package"
+        ]
+      }
+    }
   },
   "dependencies": {
     "nx": "^16.6.0",
