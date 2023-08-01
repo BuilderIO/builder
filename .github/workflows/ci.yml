@@ -30,6 +30,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         package: ['webcomponents', 'widgets']
 
@@ -55,7 +56,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: NPM install
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: packages/${{ matrix.package }}
 
       - name: Build
