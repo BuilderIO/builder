@@ -9,16 +9,16 @@ test.describe('State binding', () => {
        */
       if (
         isRNSDK ||
-        packageName === 'e2e-react-native' ||
-        packageName === 'e2e-vue2' ||
-        packageName === 'e2e-vue-nuxt2' ||
-        packageName === 'e2e-solidjs' ||
-        packageName === 'e2e-solid-start' ||
-        packageName === 'e2e-svelte' ||
-        packageName === 'e2e-sveltekit' ||
-        packageName === 'e2e-nextjs-app-dir-rsc' ||
-        packageName === 'e2e-vue3' ||
-        packageName === 'e2e-vue-nuxt3'
+        packageName === 'react-native' ||
+        packageName === 'vue2' ||
+        packageName === 'vue-nuxt2' ||
+        packageName === 'solidjs' ||
+        packageName === 'solid-start' ||
+        packageName === 'svelte' ||
+        packageName === 'sveltekit' ||
+        packageName === 'nextjs-app-dir-rsc' ||
+        packageName === 'vue3' ||
+        packageName === 'vue-nuxt3'
       ) {
         test.skip();
         return;
