@@ -1,34 +1,23 @@
 {
   "tasksRunnerOptions": {
     "default": {
-      "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build"
-        ],
-        "accessToken": "NDk4OGFkMjktNDNmZC00MjQzLWEwNjMtZjU3ZDRkN2E0MmI0fHJlYWQtd3JpdGU="
+        "skipNxCache": true
       }
     }
   },
   "targetDefaults": {
     "dev": {
-      "dependsOn": [
-        "build"
-      ]
+      "dependsOn": ["build"],
+      "configurations": {},
+      "options": {}
     },
     "serve": {
-      "dependsOn": [
-        "build"
-      ]
+      "dependsOn": ["build"]
     },
     "build": {
-      "dependsOn": [
-        "^build",
-        "prebuild"
-      ],
-      "outputs": [
-        "{workspaceRoot}/dist"
-      ],
+      "dependsOn": ["^build", "prebuild"],
+      "outputs": ["{workspaceRoot}/dist"],
       "executor": "nx:run-script",
       "options": {
         "script": "build"
@@ -40,13 +29,8 @@
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [],
-    "production": [
-      "default"
-    ]
+    "production": ["default"]
   }
 }
