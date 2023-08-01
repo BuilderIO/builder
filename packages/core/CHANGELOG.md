@@ -1,33 +1,47 @@
+### 2.0.6
+
+- Allow `builder.get` to be awaited: https://github.com/BuilderIO/builder/pull/2512
+
 ### 2.0.5
+
 - Add `setServerContext` to allow user to set the execution context of custom code bindings on the server.
 
 ### 2.0.4
+
 - change the way we import ApiVersion type
 
 ### 2.0.3
+
 - Feature: Add support for `enrich` API flag.
 - Mark `includeRefs` as deprecated.
 
 ### 2.0.0
+
 - `apiVersion` property now defaults to `v3`.
 
 ### 1.3.0
+
 - `apiVersion` property now defaults to `v1`.
 
 ### 1.2.0
+
 - `apiVersion` property now defaults to `v3`.
 
 ### 1.1.35
+
 - Add new `apiVersion` property to toggle between Builder API versions. Defaults to `v1`. Possible values: `v1` and `v3`.
 
 ### 1.1.34
+
 - Use correct types for enum, fixes remix type checks.
 - Use fetch fallback safely, fixes issues on Salesforce managed runtime.
 
 ### 1.1.33
+
 - Use correct types for `responsiveStyles`, fixes remix type checks.
 
 ### 1.1.30
+
 - Add support for threhold and repeat inputs on `ScrollInvView` animations.
 
 ### 1.1.29
