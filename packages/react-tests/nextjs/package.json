@@ -13,8 +13,8 @@
     "@builder.io/react": "workspace:*",
     "@e2e/tests": "workspace:*",
     "next": "^13.4.4",
-    "nx": "^16.5.4",
-    "nx-cloud": "^16.1.1",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

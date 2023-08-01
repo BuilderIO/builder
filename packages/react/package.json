@@ -125,8 +125,8 @@
     "@builder.io/sdk": "workspace:*",
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
-    "nx": "^16.5.4",
-    "nx-cloud": "^16.1.1",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "preact": "^10.1.0",
     "vm2": "^3.9.18"
   },

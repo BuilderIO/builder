@@ -15,8 +15,8 @@
     "build": "echo 'no need to build solid SDK'"
   },
   "dependencies": {
-    "nx": "^16.5.4",
-    "nx-cloud": "^16.1.1",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "solid-styled-components": "^0.27.6"
   },
   "peerDependencies": {

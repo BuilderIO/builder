@@ -11,8 +11,8 @@
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
     "@e2e/tests": "workspace:*",
-    "nx": "^16.5.4",
-    "nx-cloud": "^16.1.1"
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0"
   },
   "devDependencies": {
     "@types/node": "^18",

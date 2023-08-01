@@ -27,10 +27,10 @@
     "prettier": "2.8.8",
     "@builder.io/react": "workspace:*"
   },
-  "packageManager": "yarn@3.4.1",
+  "packageManager": "yarn@3.6.1",
   "devDependencies": {
-    "nx": "^16.5.4",
-    "nx-cloud": "^16.1.1",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "prettier": "^2.8.8"
   }
 }

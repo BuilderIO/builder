@@ -3266,8 +3266,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/mono-repo@workspace:."
   dependencies:
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     prettier: ^2.8.8
   languageName: unknown
   linkType: soft
@@ -3326,8 +3326,8 @@ __metadata:
     jest-environment-jsdom: ^28.1.3
     lint-staged: ^7.0.0
     node-fetch: ^2.6.1
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     preact: ^10.1.0
     prettier: ^2.8.8
     prompt: ^1.0.0
@@ -3376,8 +3376,8 @@ __metadata:
   dependencies:
     "@builder.io/qwik": ^1.0.0
     "@types/node": latest
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     typescript: ^4
     vite: ^3.0.4
   peerDependencies:
@@ -3392,8 +3392,8 @@ __metadata:
     "@react-native-async-storage/async-storage": ^1.17.10
     "@tsconfig/react-native": ^2.0.3
     "@types/react-native-video": ^5.0.9
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react-native-render-html: ^6.3.4
     react-native-storage: ^1.0.1
     react-native-url-polyfill: ^1.3.0
@@ -3410,8 +3410,8 @@ __metadata:
   resolution: "@builder.io/sdk-react@workspace:sdks/output/react"
   dependencies:
     "@vitejs/plugin-react": ^4.0.0
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18.2.0
     rollup-plugin-preserve-directives: ^0.1.0
     typescript: ^4.9.4
@@ -3426,8 +3426,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-solid@workspace:sdks/output/solid"
   dependencies:
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     solid-js: ^1.5.7
     solid-styled-components: ^0.27.6
     vite: ^3.0.4
@@ -3444,8 +3444,8 @@ __metadata:
     "@sveltejs/adapter-auto": 1.0.0-next.71
     "@sveltejs/kit": ^1.16.2
     "@sveltejs/package": 1.0.0-next.1
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     svelte: ^3.59.1
     svelte-check: ^3.3.2
     svelte-preprocess: ^4.10.6
@@ -3463,8 +3463,8 @@ __metadata:
     "@vitejs/plugin-vue2": ^1.1.2
     "@vue/tsconfig": ^0.1.3
     npm-run-all: ^4.1.5
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     terser: ^5.14.2
     typescript: ^4
     vite: ^3.0.4
@@ -3482,8 +3482,8 @@ __metadata:
     "@vitejs/plugin-vue": ^3.0.1
     "@vue/tsconfig": ^0.1.3
     npm-run-all: ^4.1.5
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     typescript: ^4
     vite: ^3.0.4
     vite-plugin-dts: ^1.5.0
@@ -3496,8 +3496,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-vue@workspace:sdks/output/vue"
   dependencies:
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     vue: ^2.7
   peerDependencies:
     vue: ">= 2"
@@ -3528,8 +3528,8 @@ __metadata:
     hash-sum: ^2.0.0
     jest: 27.4.7
     node-fetch: ^2.3.0
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     rollup: ^0.58.2
     rollup-plugin-alias: ^1.4.0
     rollup-plugin-commonjs: ^9.1.3
@@ -3571,8 +3571,8 @@ __metadata:
     jest-fetch-mock: ^3.0.3
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     pinst: ^3.0.0
     prettier: ^2.5.0
     prettier-plugin-svelte: ^2.10.1
@@ -4222,8 +4222,8 @@ __metadata:
     "@types/react": ^16.4.1
     "@types/react-dom": ^18.0.5
     next: ^13.4.4
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^4
@@ -4239,8 +4239,8 @@ __metadata:
     "@types/react": ^18.0.27
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.1.0
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^4.9.3
@@ -4263,8 +4263,8 @@ __metadata:
     "@types/react-dom": ^18.0.8
     eslint: ^8.27.0
     isbot: ^3.6.5
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^4.8.4
@@ -4281,8 +4281,8 @@ __metadata:
     "@types/react-dom": ^18.0.5
     eslint-config-next: ^13
     next: ^13.4.4
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18
     react-dom: ^18
     typescript: ^4
@@ -4298,8 +4298,8 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     next: ^13.4.4
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^4
@@ -4316,8 +4316,8 @@ __metadata:
     "@nuxt/typescript-build": ^2.1.0
     core-js: ^3.25.3
     nuxt: ^2.15.8
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     vue: ^2.7.10
     vue-server-renderer: ^2.7.10
     vue-template-compiler: ^2.7.10
@@ -4332,8 +4332,8 @@ __metadata:
     "@e2e/tests": "workspace:*"
     "@types/node": ^18
     nuxt: ^3.5.2
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
   languageName: unknown
   linkType: soft
 
@@ -4353,8 +4353,8 @@ __metadata:
     eslint: 8.31.0
     eslint-plugin-qwik: 0.16.2
     node-fetch: 3.3.0
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     prettier: 2.8.1
     typescript: 4.9.4
     undici: 5.19.1
@@ -4375,8 +4375,8 @@ __metadata:
     "@react-navigation/native-stack": ^6.9.0
     expo: ~46.0.9
     expo-status-bar: ~1.4.0
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: 18.0.0
     react-dom: 18.0.0
     react-native: 0.69.5
@@ -4396,8 +4396,8 @@ __metadata:
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
     "@vitejs/plugin-react": ^4.0.1
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^4
@@ -4425,8 +4425,8 @@ __metadata:
     eslint-plugin-hydrogen: ^0.12.2
     graphql-tag: ^2.12.6
     lodash.throttle: ^4.1.1
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     postcss: ^8.4.14
     postcss-import: ^14.1.0
     postcss-preset-env: ^7.6.0
@@ -4452,8 +4452,8 @@ __metadata:
     "@solidjs/router": ^0.8.2
     "@types/node": ^18.11.18
     esbuild: ^0.14.54
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     postcss: ^8.4.21
     solid-js: ^1.7.2
     solid-start: ^0.2.26
@@ -4470,8 +4470,8 @@ __metadata:
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
     "@e2e/tests": "workspace:*"
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     solid-js: ^1.5.7
     typescript: ^4
     vite: ^3.1.4
@@ -4487,8 +4487,8 @@ __metadata:
     "@e2e/tests": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^2.0.3
     "@tsconfig/svelte": ^4.0.1
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     svelte: ^3.57.0
     svelte-check: ^2.10.3
     tslib: ^2.5.0
@@ -4505,8 +4505,8 @@ __metadata:
     "@e2e/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
     "@sveltejs/kit": ^1.16.2
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     svelte: ^3.59.1
     svelte-check: ^3.3.2
     tslib: ^2.4.1
@@ -4524,8 +4524,8 @@ __metadata:
     "@typescript-eslint/parser": latest
     eslint: ^8.12.0
     eslint-plugin-unused-imports: ^2.0.0
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     typescript: ^4.9
     zod: ^3.20.2
   languageName: unknown
@@ -4538,8 +4538,8 @@ __metadata:
     "@builder.io/sdk-vue": "workspace:*"
     "@e2e/tests": "workspace:*"
     "@vitejs/plugin-vue2": ^1.1.2
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     typescript: ^4
     unplugin-vue-components: ^0.22.7
     vite: ^3.0.4
@@ -4558,8 +4558,8 @@ __metadata:
     "@e2e/tests": "workspace:*"
     "@vitejs/plugin-vue": ^2.3.3
     cross-fetch: ^4.0.0
-    nx: ^16.5.4
-    nx-cloud: ^16.1.1
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     typescript: ^4
     vite: ^3.0.4
     vite-plugin-ssr: ^0.4.133
@@ -7423,23 +7423,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/nx-cloud@npm:16.1.1":
-  version: 16.1.1
-  resolution: "@nrwl/nx-cloud@npm:16.1.1"
+"@nrwl/nx-cloud@npm:16.2.0":
+  version: 16.2.0
+  resolution: "@nrwl/nx-cloud@npm:16.2.0"
   dependencies:
-    nx-cloud: 16.1.1
-  checksum: 8cc2fdf9a13b3533968ac892239fbef8aa75936ee9c44ac46a2a288d4d538676fea550c3af4c908120fc7025f0c23d759fd7024176d3bae697c0cbafd679682f
+    nx-cloud: 16.2.0
+  checksum: 37f42b629532b0e07ad785c77b0940045fde7a71afe1e78882b578aeff8b78e1573593b70481f1048db630fe1e3e1d3216486a46ae3d727848372ac25fb6d299
   languageName: node
   linkType: hard
 
-"@nrwl/tao@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nrwl/tao@npm:16.5.4"
+"@nrwl/tao@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nrwl/tao@npm:16.6.0"
   dependencies:
-    nx: 16.5.4
+    nx: 16.6.0
+    tslib: ^2.3.0
   bin:
     tao: index.js
-  checksum: 1b948ae7a7962fade765776874132b5ab7175b79d908d46380fa5463a46c3597e8262a4bd388dce1e46df5cec4f37cff317fd081f9333e883bf6edbf1763e28f
+  checksum: bce14477431750bb0dffb90ce23822f2b169f73186d91f59e5fd073a0cdc1f8e75631b0f61c9552b9f0cf5be1b3ae3c65c316dbce53abf096e0c1cabbeb5fdc6
   languageName: node
   linkType: hard
 
@@ -7976,72 +7977,72 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-darwin-arm64@npm:16.5.4"
+"@nx/nx-darwin-arm64@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-darwin-arm64@npm:16.6.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-x64@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-darwin-x64@npm:16.5.4"
+"@nx/nx-darwin-x64@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-darwin-x64@npm:16.6.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-freebsd-x64@npm:16.5.4"
+"@nx/nx-freebsd-x64@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-freebsd-x64@npm:16.6.0"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm-gnueabihf@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:16.5.4"
+"@nx/nx-linux-arm-gnueabihf@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:16.6.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-linux-arm64-gnu@npm:16.5.4"
+"@nx/nx-linux-arm64-gnu@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-linux-arm64-gnu@npm:16.6.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-musl@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-linux-arm64-musl@npm:16.5.4"
+"@nx/nx-linux-arm64-musl@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-linux-arm64-musl@npm:16.6.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-linux-x64-gnu@npm:16.5.4"
+"@nx/nx-linux-x64-gnu@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-linux-x64-gnu@npm:16.6.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-musl@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-linux-x64-musl@npm:16.5.4"
+"@nx/nx-linux-x64-musl@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-linux-x64-musl@npm:16.6.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-win32-arm64-msvc@npm:16.5.4"
+"@nx/nx-win32-arm64-msvc@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-win32-arm64-msvc@npm:16.6.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-x64-msvc@npm:16.5.4":
-  version: 16.5.4
-  resolution: "@nx/nx-win32-x64-msvc@npm:16.5.4"
+"@nx/nx-win32-x64-msvc@npm:16.6.0":
+  version: 16.6.0
+  resolution: "@nx/nx-win32-x64-msvc@npm:16.6.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -32075,7 +32076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-machine-id@npm:^1.1.12":
+"node-machine-id@npm:1.1.12, node-machine-id@npm:^1.1.12":
   version: 1.1.12
   resolution: "node-machine-id@npm:1.1.12"
   checksum: e23088a0fb4a77a1d6484b7f09a22992fd3e0054d4f2e427692b4c7081e6cf30118ba07b6113b6c89f1ce46fd26ec5ab1d76dcaf6c10317717889124511283a5
@@ -32727,11 +32728,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx-cloud@npm:16.1.1, nx-cloud@npm:^16.1.1":
-  version: 16.1.1
-  resolution: "nx-cloud@npm:16.1.1"
+"nx-cloud@npm:16.2.0, nx-cloud@npm:^16.2.0":
+  version: 16.2.0
+  resolution: "nx-cloud@npm:16.2.0"
   dependencies:
-    "@nrwl/nx-cloud": 16.1.1
+    "@nrwl/nx-cloud": 16.2.0
     axios: 1.1.3
     chalk: ^4.1.0
     dotenv: ~10.0.0
@@ -32743,25 +32744,25 @@ __metadata:
     yargs-parser: ">=21.1.1"
   bin:
     nx-cloud: bin/nx-cloud.js
-  checksum: 63cf0312281acfab5d9596fdde9507ff1ae3765869a13cb805507fc0c6a91bedef628342205bbb4567e545ee97b0416bcc2aba83494e6d47f58b0a8dd0481310
+  checksum: 820379f3e47db75e131326d9477ffb69c40f200914e440edec58efcaef8d2f90345b307bd1fa6f442c6f5bd0819a78cf996eda5f75ce98dfcf49205d882a8845
   languageName: node
   linkType: hard
 
-"nx@npm:16.5.4, nx@npm:^16.5.4":
-  version: 16.5.4
-  resolution: "nx@npm:16.5.4"
+"nx@npm:16.6.0, nx@npm:^16.6.0":
+  version: 16.6.0
+  resolution: "nx@npm:16.6.0"
   dependencies:
-    "@nrwl/tao": 16.5.4
-    "@nx/nx-darwin-arm64": 16.5.4
-    "@nx/nx-darwin-x64": 16.5.4
-    "@nx/nx-freebsd-x64": 16.5.4
-    "@nx/nx-linux-arm-gnueabihf": 16.5.4
-    "@nx/nx-linux-arm64-gnu": 16.5.4
-    "@nx/nx-linux-arm64-musl": 16.5.4
-    "@nx/nx-linux-x64-gnu": 16.5.4
-    "@nx/nx-linux-x64-musl": 16.5.4
-    "@nx/nx-win32-arm64-msvc": 16.5.4
-    "@nx/nx-win32-x64-msvc": 16.5.4
+    "@nrwl/tao": 16.6.0
+    "@nx/nx-darwin-arm64": 16.6.0
+    "@nx/nx-darwin-x64": 16.6.0
+    "@nx/nx-freebsd-x64": 16.6.0
+    "@nx/nx-linux-arm-gnueabihf": 16.6.0
+    "@nx/nx-linux-arm64-gnu": 16.6.0
+    "@nx/nx-linux-arm64-musl": 16.6.0
+    "@nx/nx-linux-x64-gnu": 16.6.0
+    "@nx/nx-linux-x64-musl": 16.6.0
+    "@nx/nx-win32-arm64-msvc": 16.6.0
+    "@nx/nx-win32-x64-msvc": 16.6.0
     "@parcel/watcher": 2.0.4
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.0-rc.46
@@ -32783,6 +32784,7 @@ __metadata:
     jsonc-parser: 3.2.0
     lines-and-columns: ~2.0.3
     minimatch: 3.0.5
+    node-machine-id: 1.1.12
     npm-run-path: ^4.0.1
     open: ^8.4.0
     semver: 7.5.3
@@ -32826,7 +32828,7 @@ __metadata:
       optional: true
   bin:
     nx: bin/nx.js
-  checksum: c49a90541ec7360320f586c89745fde9a78b3f54e1f73f28bc63b7d3835b5b5e40745e3ec2aee88c7e96504bca750b86775a0f1ba0e9443e843b43f20218d7d0
+  checksum: 5910d1bd27cc8a2716f31a6dad1573d0fb455ea1bcffde3d2a8016cee552e3ad8b4aaa98f9176cf107032c9c0074698085157b10937a2601ac016a3e28b8d0b8
   languageName: node
   linkType: hard
 
@@ -43244,21 +43246,21 @@ __metadata:
 
 "typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@^5.0.2#~builtin<compat/typescript>, typescript@patch:typescript@^5.0.3#~builtin<compat/typescript>":
   version: 5.0.4
-  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=1f5320"
+  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=b5f058"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 6a1fe9a77bb9c5176ead919cc4a1499ee63e46b4e05bf667079f11bf3a8f7887f135aa72460a4c3b016e6e6bb65a822cb8689a6d86cbfe92d22cc9f501f09213
+  checksum: d26b6ba97b6d163c55dbdffd9bbb4c211667ebebc743accfeb2c8c0154aace7afd097b51165a72a5bad2cf65a4612259344ff60f8e642362aa1695c760d303ac
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=289587"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
+  checksum: 2160f7ad975c59b2f5816817d3916be1d156c5688a7517602b3b640c5015e740f4ba933996ac85371d68f7bbdd41602150fb8b68334122ac637fdb5418085e7a
   languageName: node
   linkType: hard
 
@@ -43274,11 +43276,11 @@ __metadata:
 
 "typescript@patch:typescript@^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.9#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
+  checksum: 1f8f3b6aaea19f0f67cba79057674ba580438a7db55057eb89cc06950483c5d632115c14077f6663ea76fd09fce3c190e6414bb98582ec80aa5a4eaf345d5b68
   languageName: node
   linkType: hard
 
