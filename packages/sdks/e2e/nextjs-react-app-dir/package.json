@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-nextjs-app-dir-rsc",
+  "name": "@e2e/next-app-dir",
   "private": true,
   "type": "module",
   "scripts": {

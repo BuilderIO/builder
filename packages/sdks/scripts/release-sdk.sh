@@ -29,7 +29,7 @@ fi
 yarn workspace sdks set-sdk-version $1
 
 echo "Building SDK..."
-nx run build
+yarn nx build
 
 echo "Publishing SDK..."
 

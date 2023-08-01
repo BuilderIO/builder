@@ -11,7 +11,7 @@ You might need [jq](https://stedolan.github.io/jq/) for symlinking mitosis or th
 
 ## Build an SDK
 
-- `yarn nx run @builder.io/sdk-svelte:build` (replace `svelte` with the SDK you want to build)
+- `yarn nx build @builder.io/sdk-svelte` (replace `svelte` with the SDK you want to build)
 
 ## Test an SDK
 

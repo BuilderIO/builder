@@ -79,7 +79,7 @@ const initializeAbTest = async (
   if (packageName === 'gen1-nextjs') test.skip();
 
   // TO-DO: fix this
-  if (packageName === 'nextjs-app-dir-rsc') test.skip();
+  if (packageName === 'next-app-dir') test.skip();
 
   // React Native SDK needs some extra time to sort its feelings out.
   if (packageName === 'react-native') test.slow();

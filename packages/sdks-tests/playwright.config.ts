@@ -17,13 +17,13 @@ const getDirName = () => {
 
 const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
   reactNative: ['react-native'],
-  solid: ['solidjs', 'solid-start'],
+  solid: ['solid', 'solid-start'],
   qwik: ['qwik-city'],
-  react: ['nextjs-react', 'react', 'nextjs-app-dir-client-react'],
-  vue2: ['vue2', 'vue-nuxt2'],
-  vue3: ['vue3', 'vue-nuxt3'],
+  react: ['next-pages-dir', 'react', 'next-app-dir-client'],
+  vue2: ['vue2', 'nuxt2'],
+  vue3: ['vue3', 'nuxt3'],
   svelte: ['svelte', 'sveltekit'],
-  rsc: ['nextjs-app-dir-rsc'],
+  rsc: ['next-app-dir'],
   oldReact: ['gen1-react', 'gen1-nextjs', 'gen1-remix'],
 };
 
@@ -84,11 +84,15 @@ export default defineConfig({
   })),
 
   webServer: things.map(({ packageName, port, portFlag }) => {
-    return {
+    const webServers = {
       command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
       port,
       reuseExistingServer: false,
       ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
     };
+
+    console.log(webServers);
+
+    return webServers;
   }),
 });

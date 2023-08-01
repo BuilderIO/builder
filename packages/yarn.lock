@@ -3019,22 +3019,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/e2e-nextjs-app-dir-rsc@workspace:sdks/e2e/nextjs-react-app-dir":
-  version: 0.0.0-use.local
-  resolution: "@builder.io/e2e-nextjs-app-dir-rsc@workspace:sdks/e2e/nextjs-react-app-dir"
-  dependencies:
-    "@builder.io/sdk-react-nextjs": "workspace:*"
-    "@e2e/tests": "workspace:*"
-    "@types/react": ^18.0.14
-    "@types/react-dom": ^18.0.5
-    eslint-config-next: ^13
-    next: ^13.4.4
-    react: ^18
-    react-dom: ^18
-    typescript: ^5.1.6
-  languageName: unknown
-  linkType: soft
-
 "@builder.io/eslint-plugin-mitosis@npm:^0.0.14":
   version: 0.0.14
   resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.14"
@@ -4002,6 +3986,22 @@ __metadata:
     next: ^13.4.4
     nx: ^16.6.0
     nx-cloud: ^16.2.0
+    react: ^18
+    react-dom: ^18
+    typescript: ^5.1.6
+  languageName: unknown
+  linkType: soft
+
+"@e2e/next-app-dir@workspace:sdks/e2e/nextjs-react-app-dir":
+  version: 0.0.0-use.local
+  resolution: "@e2e/next-app-dir@workspace:sdks/e2e/nextjs-react-app-dir"
+  dependencies:
+    "@builder.io/sdk-react-nextjs": "workspace:*"
+    "@e2e/tests": "workspace:*"
+    "@types/react": ^18.0.14
+    "@types/react-dom": ^18.0.5
+    eslint-config-next: ^13
+    next: ^13.4.4
     react: ^18
     react-dom: ^18
     typescript: ^5.1.6

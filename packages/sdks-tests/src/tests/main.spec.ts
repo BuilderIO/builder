@@ -179,7 +179,7 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
-        if (packageName === 'nextjs-app-dir-rsc') {
+        if (packageName === 'next-app-dir') {
           test.skip();
         }
 
@@ -243,7 +243,7 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
-        if (packageName === 'nextjs-app-dir-rsc') {
+        if (packageName === 'next-app-dir') {
           test.skip();
         }
 

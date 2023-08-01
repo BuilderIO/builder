@@ -94,10 +94,10 @@ jobs:
         run: yarn ci:lint
 
       - name: Build
-        run: yarn nx run @builder.io/sdks:build
+        run: yarn nx build @builder.io/sdks
 
       - name: Run tests
-        run: yarn nx run @builder.io/sdks:test
+        run: yarn nx test @builder.io/sdks
 
   sdks-outputs:
     runs-on: ubuntu-latest
@@ -181,7 +181,7 @@ jobs:
         run: yarn
 
       - name: Build Core
-        run: yarn nx run @builder.io/sdk:build
+        run: yarn nx build @builder.io/sdk
 
   old-react-sdk:
     runs-on: ubuntu-latest
