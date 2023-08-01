@@ -78,7 +78,7 @@ export function evaluate({
 
   if (isNonNodeServer()) return runInNonNode(args);
 
-  return runInNonNode(args);
+  return runInNode(args);
 }
 export const runInBrowser = ({
   useCode,
