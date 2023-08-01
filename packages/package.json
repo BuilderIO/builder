@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "e2e:build:old-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
-    "e2e:run:old-react": "SDK=oldReact nx e2e:run @builder.io/sdks:e2e"
+    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run"
   },
   "engines": {
     "yarn": ">= 3.0.0"
