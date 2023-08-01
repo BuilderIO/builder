@@ -13,22 +13,23 @@ import type { ExecutorArgs } from './types.js';
  * https://css-tricks.com/dynamic-conditional-imports/
  */
 let runInNonNode: typeof import('./non-node-runtime.js').runInNonNode;
-(async () => {
-  if (isNonNodeServer()) {
-    try {
-      runInNonNode = (await import('./non-node-runtime.js')).runInNonNode;
-    } catch (err) {
+
+if (isNonNodeServer()) {
+  import('./non-node-runtime.js')
+    .then((m) => {
+      runInNonNode = m.runInNonNode;
+    })
+    .catch((err) => {
       const ERROR_MESSAGE = `Error importing JS interpreter for non-Node.js runtimes. Make sure \`js-interpreter\` is installed.
-        Read more here: https://github.com/BuilderIO/builder/tree/main/packages/sdks/README.md#non-nodejs-runtimes-edge-serverless
-        `;
+      Read more here: https://github.com/BuilderIO/builder/tree/main/packages/sdks/README.md#non-nodejs-runtimes-edge-serverless
+      `;
       logger.error(ERROR_MESSAGE, err);
       runInNonNode = (..._args) => {
         logger.error(ERROR_MESSAGE);
         return undefined;
       };
-    }
-  }
-})();
+    });
+}
 
 export function evaluate({
   code,
