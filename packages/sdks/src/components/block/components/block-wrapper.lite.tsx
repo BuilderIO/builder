@@ -9,7 +9,7 @@ import { getBlockProperties } from '../../../functions/get-block-properties.js';
  * This import is used by the Svelte SDK. Do not remove.
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
-import { setAttrs } from '../../../blocks/helpers';
+import { setAttrs } from '../../../blocks/helpers.js';
 
 useMetadata({
   elementTag: 'props.Wrapper',
@@ -17,6 +17,9 @@ useMetadata({
     vue3: {
       asyncComponentImports: true,
     },
+  },
+  rsc: {
+    componentType: 'client',
   },
 });
 

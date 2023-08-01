@@ -1,5 +1,11 @@
-import { onUpdate, useRef, useStore } from '@builder.io/mitosis';
+import { onUpdate, useMetadata, useRef, useStore } from '@builder.io/mitosis';
 import { isJsScript } from './helpers.js';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export interface EmbedProps {
   content: string;

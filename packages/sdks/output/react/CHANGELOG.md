@@ -1,3 +1,17 @@
+### 0.5.2
+
+- Fix: remove old `evaluate` logic that accidentally stayed in the bundle.
+
+### 0.5.1
+
+- Fix: make `RenderBlocks` properties `context` and `registeredComponents` optional for external use.
+
+### 0.5.0
+
+- Feature: Added support for rudimentary data-bindings in Non-Node.js (edge, serverless, etc.) server runtimes.
+- Feature: Added TypeScript type support.
+- Misc: removed `"type": "module"` from `package.json`
+
 ### 0.4.5
 
 - Fix: show dynamic symbols correctly in Preview mode.

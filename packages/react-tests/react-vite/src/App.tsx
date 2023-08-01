@@ -10,7 +10,7 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps().then(resp => {
+    getProps({}).then(resp => {
       setProps(resp);
     });
   }, []);

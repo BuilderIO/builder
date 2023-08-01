@@ -19,3 +19,16 @@ declare module '@builder.io/mitosis/jsx-runtime' {
     }
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-imports
+import { ComponentMetadata } from '@builder.io/mitosis';
+
+export module '@builder.io/mitosis' {
+  export interface ComponentMetadata {
+    plugins?: {
+      reactNative?: {
+        useScrollView?: boolean;
+      };
+    };
+  }
+}

@@ -1,5 +1,5 @@
 import type { BuilderContextInterface } from '../../../context/types.js';
-import { evaluate } from '../../../functions/evaluate.js';
+import { evaluate } from '../../../functions/evaluate';
 import { fetch } from '../../../functions/get-fetch.js';
 import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
@@ -16,6 +16,7 @@ import {
   useMetadata,
   useRef,
   setContext,
+  useTarget,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
@@ -27,16 +28,21 @@ import type {
   ContentProps,
   BuilderComponentStateChange,
 } from '../content.types.js';
-import { TARGET } from '../../../constants/target.js';
 import { logger } from '../../../helpers/logger.js';
 import type { ComponentInfo } from '../../../types/components.js';
 import { getContent } from '../../../functions/get-content/index.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
+import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 
 useMetadata({
   qwik: {
     hasDeepStore: true,
+  },
+  plugins: {
+    reactNative: {
+      useScrollView: true,
+    },
   },
 });
 
@@ -55,7 +61,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     forceReRenderCount: 0,
     mergeNewContent(newContent: BuilderContent) {
-      props.builderContextSignal.value.content = {
+      const newContentValue = {
         ...props.builderContextSignal.value.content,
         ...newContent,
         data: {
@@ -70,7 +76,25 @@ export default function EnableEditor(props: BuilderEditorProps) {
             props.builderContextSignal.value.content?.meta?.breakpoints,
         },
       };
+
+      useTarget({
+        rsc: () => {
+          postPreviewContent({
+            value: newContentValue,
+            key: newContentValue.id!,
+          }).then(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            router.refresh();
+          });
+        },
+        default: () => {
+          props.builderContextSignal.value.content = newContentValue;
+        },
+      });
     },
+    lastUpdated: 0,
+    shouldSendResetCookie: false,
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
@@ -104,10 +128,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
               state.mergeNewContent(contentData);
               state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
-            break;
-          }
-          case 'builder.patchUpdates': {
-            // TODO
             break;
           }
         }
@@ -210,10 +230,26 @@ export default function EnableEditor(props: BuilderEditorProps) {
   setContext(builderContext, props.builderContextSignal);
 
   onUpdate(() => {
-    if (props.content) {
-      state.mergeNewContent(props.content);
-    }
+    useTarget({
+      rsc: () => {},
+      default: () => {
+        if (props.content) {
+          state.mergeNewContent(props.content);
+        }
+      },
+    });
   }, [props.content]);
+
+  onUpdate(() => {
+    useTarget({
+      rsc: () => {
+        if (isBrowser()) {
+          window.removeEventListener('message', state.processMessage);
+          window.addEventListener('message', state.processMessage);
+        }
+      },
+    });
+  }, [state.shouldSendResetCookie]);
 
   onUnMount(() => {
     if (isBrowser()) {
@@ -267,41 +303,46 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
       }
 
-      // override normal content in preview mode
-      if (isPreviewing()) {
-        const searchParams = new URL(location.href).searchParams;
-        const searchParamPreviewModel = searchParams.get('builder.preview');
-        const searchParamPreviewId = searchParams.get(
-          `builder.preview.${searchParamPreviewModel}`
-        );
-        const previewApiKey =
-          searchParams.get('apiKey') || searchParams.get('builder.space');
+      useTarget({
+        rsc: () => {},
+        default: () => {
+          // override normal content in preview mode
+          if (isPreviewing()) {
+            const searchParams = new URL(location.href).searchParams;
+            const searchParamPreviewModel = searchParams.get('builder.preview');
+            const searchParamPreviewId = searchParams.get(
+              `builder.preview.${searchParamPreviewModel}`
+            );
+            const previewApiKey =
+              searchParams.get('apiKey') || searchParams.get('builder.space');
 
-        /**
-         * Make sure that:
-         * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
-         *  at the same time, e.g. header/page/footer.
-         * - the API key is the same, since we don't want to preview content from other organizations.
-         * - if there is content, that the preview ID is the same as that of the one we receive.
-         *
-         * TO-DO: should we only update the state when there is a change?
-         **/
-        if (
-          searchParamPreviewModel === props.model &&
-          previewApiKey === props.apiKey &&
-          (!props.content || searchParamPreviewId === props.content.id)
-        ) {
-          getContent({
-            model: props.model,
-            apiKey: props.apiKey,
-            apiVersion: props.builderContextSignal.value.apiVersion,
-          }).then((content) => {
-            if (content) {
-              state.mergeNewContent(content);
+            /**
+             * Make sure that:
+             * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
+             *  at the same time, e.g. header/page/footer.
+             * - the API key is the same, since we don't want to preview content from other organizations.
+             * - if there is content, that the preview ID is the same as that of the one we receive.
+             *
+             * TO-DO: should we only update the state when there is a change?
+             **/
+            if (
+              searchParamPreviewModel === props.model &&
+              previewApiKey === props.apiKey &&
+              (!props.content || searchParamPreviewId === props.content.id)
+            ) {
+              getContent({
+                model: props.model,
+                apiKey: props.apiKey,
+                apiVersion: props.builderContextSignal.value.apiVersion,
+              }).then((content) => {
+                if (content) {
+                  state.mergeNewContent(content);
+                }
+              });
             }
-          });
-        }
-      }
+          }
+        },
+      });
 
       state.evaluateJsCode();
       state.runHttpRequests();
@@ -334,15 +375,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
         builder-content-id={props.builderContextSignal.value.content?.id}
         builder-model={props.model}
         className={props.classNameProp}
-        {...(TARGET === 'reactNative'
-          ? {
-              dataSet: {
-                // currently, we can't set the actual ID here.
-                // we don't need it right now, we just need to identify content divs for testing.
-                'builder-content-id': '',
-              },
-            }
-          : {})}
+        {...useTarget({
+          reactNative: {
+            // currently, we can't set the actual ID here.
+            // we don't need it right now, we just need to identify content divs for testing.
+            dataSet: { 'builder-content-id': '' },
+          },
+          default: {},
+        })}
         {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
       >
         {props.children}

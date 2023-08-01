@@ -1,7 +1,19 @@
-import { useStore } from '@builder.io/mitosis';
+import { useStore, useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { PropsWithChildren } from '../../types/typescript.js';
+import { useMetadata } from '@builder.io/mitosis';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+  plugins: {
+    reactNative: {
+      useScrollView: true,
+    },
+  },
+});
 
 export type BlocksWrapperProps = {
   blocks: BuilderBlock[] | undefined;
@@ -52,9 +64,10 @@ export default function BlocksWrapper(
       class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
-      dataSet={{
-        class: state.className,
-      }}
+      {...useTarget({
+        reactNative: { dataSet: { class: state.className } },
+        default: {},
+      })}
       style={props.styleProp}
       css={{
         display: 'flex',

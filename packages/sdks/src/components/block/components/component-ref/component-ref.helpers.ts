@@ -2,10 +2,10 @@ import type { Signal } from '@builder.io/mitosis';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from '../../../../context/types';
-import { getBlockProperties } from '../../../../functions/get-block-properties';
-import type { BuilderBlock } from '../../../../types/builder-block';
-import type { PropsWithBuilderData } from '../../../../types/builder-props';
+} from '../../../../context/types.js';
+import { getBlockProperties } from '../../../../functions/get-block-properties.js';
+import type { BuilderBlock } from '../../../../types/builder-block.js';
+import type { PropsWithBuilderData } from '../../../../types/builder-props.js';
 import type { InteractiveElementProps } from '../interactive-element.lite';
 
 type ComponentOptions = PropsWithBuilderData<{

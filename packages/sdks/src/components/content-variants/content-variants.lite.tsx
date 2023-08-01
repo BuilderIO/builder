@@ -1,17 +1,30 @@
-import { For, useStore, Show, onMount, useTarget } from '@builder.io/mitosis';
+import {
+  For,
+  useStore,
+  Show,
+  onMount,
+  useTarget,
+  useMetadata,
+} from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getScriptString,
   getVariants,
   getVariantsScriptString,
-} from './helpers';
+} from './helpers.js';
 import ContentComponent from '../content/content.lite';
-import { getDefaultCanTrack } from '../../helpers/canTrack';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import InlinedStyles from '../inlined-styles.lite';
-import { handleABTestingSync } from '../../helpers/ab-tests';
+import { handleABTestingSync } from '../../helpers/ab-tests.js';
 import InlinedScript from '../inlined-script.lite';
-import { TARGET } from '../../constants/target';
-import type { ContentVariantsProps } from './content-variants.types';
+import { TARGET } from '../../constants/target.js';
+import type { ContentVariantsProps } from './content-variants.types.js';
+
+useMetadata({
+  rsc: {
+    componentType: 'server',
+  },
+});
 
 type VariantsProviderProps = ContentVariantsProps & {
   /**
@@ -25,9 +38,14 @@ export default function ContentVariants(props: VariantsProviderProps) {
     /**
      * We unmount the non-winning variants post-hydration in Vue.
      */
-    if (TARGET === 'vue2' || TARGET === 'vue3') {
-      state.shouldRenderVariants = false;
-    }
+    useTarget({
+      vue2: () => {
+        state.shouldRenderVariants = false;
+      },
+      vue3: () => {
+        state.shouldRenderVariants = false;
+      },
+    });
   });
 
   const state = useStore({
@@ -35,17 +53,21 @@ export default function ContentVariants(props: VariantsProviderProps) {
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     }),
-    variantScriptStr: getVariantsScriptString(
-      getVariants(props.content).map((value) => ({
-        id: value.testVariationId!,
-        testRatio: value.testRatio,
-      })),
-      props.content?.id || ''
-    ),
+    get variantScriptStr() {
+      return getVariantsScriptString(
+        getVariants(props.content).map((value) => ({
+          id: value.testVariationId!,
+          testRatio: value.testRatio,
+        })),
+        props.content?.id || ''
+      );
+    },
 
-    hideVariantsStyleString: getVariants(props.content)
-      .map((value) => `.variant-${value.testVariationId} { display: none; } `)
-      .join(''),
+    get hideVariantsStyleString() {
+      return getVariants(props.content)
+        .map((value) => `.variant-${value.testVariationId} { display: none; } `)
+        .join('');
+    },
   });
 
   return (

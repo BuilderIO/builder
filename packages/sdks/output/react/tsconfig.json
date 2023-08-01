@@ -9,12 +9,11 @@
     "allowSyntheticDefaultImports": true,
     // "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
+    "moduleResolution": "node",
     "jsx": "react",
-    "declaration": true
+    "declaration": true,
+    "outDir": "./dist",
+    "module": "ESNext"
   },
-  "include": ["./packages/react/src/**/*"],
-  "exclude": ["./packages/react/src/blocks/form/form.tsx"]
+  "include": ["./src/**/*"]
 }

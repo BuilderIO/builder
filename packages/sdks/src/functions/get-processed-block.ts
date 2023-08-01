@@ -1,6 +1,6 @@
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
-import { evaluate } from './evaluate.js';
+import { evaluate } from './evaluate';
 import { fastClone } from './fast-clone.js';
 import { set } from './set.js';
 import { transformBlock } from './transform-block.js';

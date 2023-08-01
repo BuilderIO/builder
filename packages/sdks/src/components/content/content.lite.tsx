@@ -10,7 +10,13 @@ import {
 } from '../../functions/register-component.js';
 import Blocks from '../blocks/blocks.lite';
 import ContentStyles from './components/styles.lite';
-import { Show, useStore, useMetadata, useState } from '@builder.io/mitosis';
+import {
+  Show,
+  useStore,
+  useMetadata,
+  useState,
+  setContext,
+} from '@builder.io/mitosis';
 import type { ContentProps } from './content.types.js';
 import {
   getContentInitialValue,
@@ -24,10 +30,14 @@ import InlinedScript from '../inlined-script.lite';
 import { wrapComponentRef } from './wrap-component-ref.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
+import ComponentsContext from '../../context/components.context.lite';
 
 useMetadata({
   qwik: {
     hasDeepStore: true,
+  },
+  rsc: {
+    componentType: 'server',
   },
 });
 
@@ -82,6 +92,7 @@ export default function ContentComponent(props: ContentProps) {
         }),
         rootSetState: useTarget({
           qwik: undefined,
+          rsc: undefined,
           default: state.contentSetState,
         }),
         context: props.context || {},
@@ -108,6 +119,10 @@ export default function ContentComponent(props: ContentProps) {
       { reactive: true }
     );
 
+  setContext(ComponentsContext, {
+    registeredComponents: state.registeredComponents,
+  });
+
   return (
     <EnableEditor
       content={props.content}
@@ -126,8 +141,6 @@ export default function ContentComponent(props: ContentProps) {
         react: { setBuilderContextSignal: setBuilderContextSignal },
         // eslint-disable-next-line object-shorthand
         reactNative: { setBuilderContextSignal: setBuilderContextSignal },
-        // eslint-disable-next-line object-shorthand
-        rsc: { setBuilderContextSignal: setBuilderContextSignal },
         // eslint-disable-next-line object-shorthand
         solid: { setBuilderContextSignal: setBuilderContextSignal },
         default: {},

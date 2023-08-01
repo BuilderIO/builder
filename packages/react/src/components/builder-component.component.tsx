@@ -50,6 +50,8 @@ function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
   return ret;
 }
 
+const instancesMap = new Map<string, Builder>();
+
 const wrapComponent = (info: any) => {
   return (props: any) => {
     // TODO: convention for all of this, like builderTagProps={{ style: {} foo: 'bar' }}
@@ -390,12 +392,29 @@ export class BuilderComponent extends React.Component<
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
-
+    const contentData = this.inlinedContent?.data;
+    if (contentData && Array.isArray(contentData.inputs) && contentData.inputs.length > 0) {
+      if (!contentData.state) {
+        contentData.state = {};
+      }
+      // set default values of content inputs on state
+      contentData.inputs.forEach((input: any) => {
+        if (input) {
+          if (
+            input.name &&
+            input.defaultValue !== undefined &&
+            contentData.state![input.name] === undefined
+          ) {
+            contentData.state![input.name] = input.defaultValue;
+          }
+        }
+      });
+    }
     this.state = {
       // TODO: should change if this prop changes
       context: {
         ...props.context,
-        apiKey: builder.apiKey || this.props.apiKey,
+        apiKey: this.props.apiKey || builder.apiKey,
       },
       state: Object.assign(this.rootState, {
         ...(this.inlinedContent && this.inlinedContent.data && this.inlinedContent.data.state),
@@ -416,8 +435,10 @@ export class BuilderComponent extends React.Component<
 
     if (Builder.isBrowser) {
       const key = this.props.apiKey;
-      if (key && key !== this.builder.apiKey) {
-        this.builder.apiKey = key;
+      if (key && key !== this.builder.apiKey && !instancesMap.has(key)) {
+        // We create a builder instance for each api key to support loading of symbols from other spaces
+        const instance = new Builder(key, undefined, undefined, true);
+        instancesMap.set(key, instance);
       }
 
       if (this.inlinedContent) {
@@ -429,7 +450,8 @@ export class BuilderComponent extends React.Component<
   }
 
   get builder() {
-    return this.props.builder || builder;
+    const instance = this.props.apiKey && instancesMap.get(this.props.apiKey);
+    return instance || this.props.builder || builder;
   }
 
   getHtmlData() {

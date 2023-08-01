@@ -1,14 +1,25 @@
+import { useTarget } from '@builder.io/mitosis';
+
 export interface RawTextProps {
   attributes?: any;
   text?: string;
-  // builderBlock?: any;
 }
 
 export default function RawText(props: RawTextProps) {
   return (
     <span
-      class={props.attributes?.class || props.attributes?.className}
-      innerHTML={props.text || ''}
+      class={useTarget(
+        /**
+         * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.
+         */
+        {
+          react: props.attributes.className,
+          reactNative: props.attributes.className,
+          rsc: props.attributes.className,
+          default: props.attributes.class,
+        }
+      )}
+      innerHTML={props.text?.toString() || ''}
     />
   );
 }

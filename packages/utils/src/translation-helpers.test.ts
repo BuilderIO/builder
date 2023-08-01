@@ -55,6 +55,24 @@ test('getTranslateableFields from content to match snapshot', async () => {
   expect(result).toMatchSnapshot();
 });
 
+test('getTranslateableFields from plain data model content to match snapshot', async () => {
+  const content: BuilderContent = {
+    data: {
+      title: {
+        '@type': localizedType,
+        'en-US': 'Hello',
+        Default: 'Test',
+      },
+    },
+  };
+  const result = getTranslateableFields(
+    content,
+    'en-US',
+    'Visit https://builder.io/fiddle/... for more details'
+  );
+  expect(result).toMatchSnapshot();
+});
+
 test('applyTranslation from content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
@@ -97,6 +115,43 @@ test('applyTranslation from content to match snapshot', async () => {
           },
         },
       ],
+    },
+  };
+
+  const frenchTranslations = {
+    'metadata.title': { value: 'salut' },
+    'blocks.block-id#text': { value: 'fench translated text' },
+    'blocks.builder-custom-component-id#heading': {
+      value: 'french translated heading',
+    },
+    'blocks.builder-custom-component-id#subtitle': {
+      value: 'french translated subtitle',
+    },
+  };
+  const germanTranslations = {
+    'metadata.title': { value: 'hallo' },
+    'blocks.block-id#text': { value: 'german translatated' },
+    'blocks.builder-custom-component-id#heading': {
+      value: '&quot;german heading&quot;',
+    },
+    'blocks.builder-custom-component-id#subtitle': {
+      value: 'german translated subtitle',
+    },
+  };
+
+  let result = applyTranslation(content, frenchTranslations, 'fr-FR');
+  result = applyTranslation(result, germanTranslations, 'de');
+  expect(result).toMatchSnapshot();
+});
+
+test('applyTranslation from plain data model content to match snapshot', async () => {
+  const content: BuilderContent = {
+    data: {
+      title: {
+        '@type': localizedType,
+        'en-US': 'Hello',
+        Default: 'Test',
+      },
     },
   };
 

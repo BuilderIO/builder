@@ -34,6 +34,7 @@ export interface SymbolInfo {
   content?: any;
   inline?: boolean;
   dynamic?: boolean;
+  ownerId?: string;
 }
 
 export interface SymbolProps {
@@ -89,7 +90,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
       ? NoWrap
       : (this.props.builderBlock && this.props.builderBlock.tagName) || 'div';
 
-    const { model, entry, data, content, inline } = symbol || {};
+    const { model, entry, data, content, inline, ownerId } = symbol || {};
     const dynamic = symbol?.dynamic || this.props.dynamic;
     if (!(model && (entry || dynamic)) && !content?.data?.blocksJs && !inline) {
       showPlaceholder = true;
@@ -122,11 +123,12 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 this.placeholder
               ) : (
                 <BuilderComponent
+                  {...(ownerId && { apiKey: ownerId })}
                   {...(state.state?.locale && { locale: state.state.locale })}
                   isChild
                   ref={(ref: any) => (this.ref = ref)}
                   context={{ ...state.context, symbolId: this.props.builderBlock?.id }}
-                  modelName={model}
+                  model={model}
                   entry={entry}
                   data={{
                     ...data,
