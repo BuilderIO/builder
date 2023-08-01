@@ -1,33 +1,47 @@
+### 3.0.10
+
+- Allow `builder.get` to be awaited: https://github.com/BuilderIO/builder/pull/2512
+
 ### 3.0.9
+
 - Fix issue with collection/repeat and returning objects from code bindings in SSR.
 
 ### 3.0.8
+
 - Replace deprecated package `vm2` with `isolated-vm`.
 - Fix for excessive caching in nextjs 13
 
 ### 3.0.7
+
 - add back the process keyword with a check for `typeof process` to fix Hydrogen SSR
 
 ### 3.0.6
+
 - remove process keyword to fix Hydrogen SSR
 
 ### 3.0.5
+
 - Fix: Pass locale from parent state to Symbols
 
 ### 3.0.4
+
 - Chore: update `@builder.io/core` to `^2.0.4` to fix import issue
 
 ### 3.0.3
+
 - Feature: Add support for `enrich` API flag.
 - Mark `includeRefs` as deprecated.
 
 ### 3.0.0
+
 - `apiVersion` property now defaults to `v3`.
 
 ### 2.2.0
+
 - Sets the default `apiVersion` to `v1`.
 
 ### 2.1.0
+
 - Sets the default `apiVersion` to `v3`.
 
 In case you feel the need to use our older API Version `v1`, reach out to us at support@builder.io first. But you can override the default by setting `apiVersion` explicitly to `v1` as follows:
@@ -35,12 +49,14 @@ In case you feel the need to use our older API Version `v1`, reach out to us at 
 ```js
 import { builder } from '@builder.io/react';
 
-builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.init('YOUR_BUILDER_PUBLIC_KEY');
 builder.apiVersion = 'v1';
 ```
+
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
 
 ### 2.0.17
+
 - Add new `apiVersion` property to toggle between Builder API versions. Defaults to `v1`. Possible values: `v1` and `v3`.
 
 You can set the apiVersion using `builder.init` or `builder.apiVersion`:
@@ -48,17 +64,20 @@ You can set the apiVersion using `builder.init` or `builder.apiVersion`:
 ```js
 import { builder } from '@builder.io/react';
 
-builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.init('YOUR_BUILDER_PUBLIC_KEY');
 builder.apiVersion = 'v3';
 ```
 
 ### 2.0.16
+
 - Safe access to node-fetch and process.env.
 
 ### 2.0.15
+
 - Use correct types for `responsiveStyles`, fixes remix type checks.
 
 ### 2.0.13
+
 - Fix hydration errors when a/b testing with react 18
 - Fix overriding state in editor's data tab.
 
