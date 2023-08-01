@@ -513,7 +513,7 @@ test.describe(targetContext.name, () => {
         await page.locator(`a[href="/static-url"]`).waitFor();
       });
       test('renders with dynamic value', async ({ page, packageName }) => {
-        if (packageName === 'gen1-nextjs') {
+        if (packageName === 'gen1-next') {
           test.skip();
         }
         await page.goto('/link-url');

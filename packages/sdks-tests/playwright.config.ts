@@ -24,7 +24,7 @@ const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
   vue3: ['vue3', 'nuxt3'],
   svelte: ['svelte', 'sveltekit'],
   rsc: ['next-app-dir'],
-  oldReact: ['gen1-react', 'gen1-nextjs', 'gen1-remix'],
+  oldReact: ['gen1-react', 'gen1-next', 'gen1-remix'],
 };
 
 targetContext.name = sdk;

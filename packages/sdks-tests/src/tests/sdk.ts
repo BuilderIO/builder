@@ -40,4 +40,4 @@ export type PackageName =
   | 'sveltekit'
   | 'gen1-react'
   | 'gen1-remix'
-  | 'gen1-nextjs';
+  | 'gen1-next';
