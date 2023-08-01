@@ -18,11 +18,14 @@ let runInNonNode: typeof import('./non-node-runtime.js').runInNonNode;
     try {
       runInNonNode = (await import('./non-node-runtime.js')).runInNonNode;
     } catch (err) {
-      throw new Error(
-        `[Builder.io]: Error importing JS interpreter for non-node runtimes. Make sure you have \`js-interpreter\` installed.
+      const ERROR_MESSAGE = `Error importing JS interpreter for non-Node.js runtimes. Make sure \`js-interpreter\` is installed.
         Read more here: https://github.com/BuilderIO/builder/tree/main/packages/sdks/README.md#non-nodejs-runtimes-edge-serverless
-        ` + err
-      );
+        `;
+      logger.error(ERROR_MESSAGE, err);
+      runInNonNode = (..._args) => {
+        logger.error(ERROR_MESSAGE);
+        return undefined;
+      };
     }
   }
 })();
