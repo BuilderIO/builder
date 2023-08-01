@@ -46,5 +46,21 @@
   },
   "peerDependencies": {
     "js-interpreter": "^4.0.0"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@builder.io/sdks"
+    ],
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/package"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0"
   }
 }

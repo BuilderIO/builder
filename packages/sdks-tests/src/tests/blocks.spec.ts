@@ -145,7 +145,7 @@ test.describe('Blocks', () => {
     await testSymbols(page);
   });
   test('symbols without content', async ({ page, packageName }) => {
-    if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+    if (packageName === 'next-app-dir') test.skip();
 
     let x = 0;
 
@@ -328,7 +328,7 @@ test.describe('Blocks', () => {
 
   test.describe('Test ApiVersion', () => {
     test('apiVersion in SDKs is not set', async ({ page, packageName }) => {
-      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+      if (packageName === 'next-app-dir') test.skip();
 
       let x = 0;
 
@@ -361,7 +361,7 @@ test.describe('Blocks', () => {
     });
 
     test('apiVersion in SDKs is set to v3', async ({ page, packageName }) => {
-      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+      if (packageName === 'next-app-dir') test.skip();
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -420,7 +420,7 @@ test.describe('Blocks', () => {
     });
 
     testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page, packageName }) => {
-      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+      if (packageName === 'next-app-dir') test.skip();
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;

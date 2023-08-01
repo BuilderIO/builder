@@ -1,4 +1,4 @@
-import { getProps } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@e2e/tests';
 import { RenderContent, processContentResult } from '@builder.io/sdk-qwik';
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';

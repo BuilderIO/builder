@@ -26,5 +26,10 @@
   },
   "dependencies": {
     "lru-cache": "^10.0.0"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@builder.io/sdks"
+    ]
   }
 }

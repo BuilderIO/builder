@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/sdks-e2e-tests",
+  "name": "@e2e/tests",
   "description": "Workspace containing e2e tests for SDKs",
   "private": true,
   "scripts": {
@@ -26,6 +26,17 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "zod": "^3.20.2"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "dependsOn": [
+          "install-playwright"
+        ]
+      }
+    }
   }
 }

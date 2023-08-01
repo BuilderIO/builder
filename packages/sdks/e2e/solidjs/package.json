@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-solidjs",
+  "name": "@e2e/solid",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,9 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "solid-js": "^1.5.7"
   }
 }

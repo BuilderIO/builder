@@ -93,17 +93,11 @@ jobs:
       - name: Run prettier
         run: yarn ci:lint
 
-      - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/react build
-
       - name: Build
-        run: yarn build:mitosis
+        run: yarn nx build @builder.io/sdks
 
       - name: Run tests
-        run: yarn ci:test
+        run: yarn nx test @builder.io/sdks
 
   sdks-outputs:
     runs-on: ubuntu-latest
@@ -154,29 +148,11 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/react build
-
-      - name: Build Mitosis
-        run: yarn build:mitosis
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/sdk-${{ matrix.sdk-name }} build
-
-      - name: Install browsers for Playwright
-        run: yarn workspace @builder.io/sdks-e2e-tests install-playwright
-
-      - name: Build E2E tests
-        run: yarn e2e:build:specs
-
       - name: Build E2E apps
-        run: yarn e2e:build:${{ matrix.sdk }}
+        run: yarn workspace @builder.io/sdks e2e:build:${{ matrix.sdk }}
 
       - name: Run E2E tests
-        run: yarn e2e:run:${{ matrix.sdk }}
+        run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.sdk }}
 
   core-sdk:
     runs-on: ubuntu-latest
@@ -205,7 +181,7 @@ jobs:
         run: yarn
 
       - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
+        run: yarn nx build @builder.io/sdk
 
   old-react-sdk:
     runs-on: ubuntu-latest
@@ -233,20 +209,8 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/react build
-
-      - name: Install browsers for Playwright
-        run: yarn workspace @builder.io/sdks-e2e-tests install-playwright
-
-      - name: Build E2E tests
-        run: yarn workspace @builder.io/sdks-e2e-tests build
-
       - name: Build E2E apps
-        run: yarn workspace @builder.io/react-tests build
+        run: yarn workspace @builder.io/mono-repo e2e:build:old-react
 
       - name: Run E2E tests
-        run: yarn workspace @builder.io/sdks e2e:run:old-react
+        run: yarn workspace @builder.io/mono-repo e2e:run:old-react

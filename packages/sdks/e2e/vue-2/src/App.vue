@@ -7,7 +7,7 @@
 <script lang="ts">
 import { RenderContent, processContentResult } from '@builder.io/sdk-vue';
 import '@builder.io/sdk-vue/vue2/css';
-import { getProps } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@e2e/tests';
 import { defineComponent } from 'vue';
 
 export default defineComponent({

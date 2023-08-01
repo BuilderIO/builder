@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-react-native",
+  "name": "@e2e/react-native",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "type": "module",
@@ -14,12 +14,14 @@
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "@expo/webpack-config": "^0.17.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
     "expo": "~46.0.9",
     "expo-status-bar": "~1.4.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.5",

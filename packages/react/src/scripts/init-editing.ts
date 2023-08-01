@@ -8,6 +8,7 @@ if (typeof window !== 'undefined') {
         value: true,
         supportsPatchUpdates: 'v4',
         supportsCustomBreakpoints: true,
+        supportsGlobalSymbols: true,
         priorVersion: version,
       },
     },

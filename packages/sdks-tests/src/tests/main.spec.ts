@@ -17,7 +17,7 @@ test.describe(targetContext.name, () => {
     test.describe('cookies', () => {
       test('do not appear if canTrack=false', async ({ page, context, packageName }) => {
         // TO-DO: figure out why Remix fails this test
-        if (packageName === 'e2e-old-react-remix') {
+        if (packageName === 'gen1-remix') {
           test.skip();
         }
 
@@ -179,7 +179,7 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
-        if (packageName === 'e2e-nextjs-app-dir-rsc') {
+        if (packageName === 'next-app-dir') {
           test.skip();
         }
 
@@ -243,7 +243,7 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
-        if (packageName === 'e2e-nextjs-app-dir-rsc') {
+        if (packageName === 'next-app-dir') {
           test.skip();
         }
 
@@ -259,7 +259,7 @@ test.describe(targetContext.name, () => {
       });
     });
     test('Dynamic Data Bindings', async ({ page, packageName }) => {
-      if (packageName === 'e2e-vue-nuxt3') {
+      if (packageName === 'nuxt3') {
         test.skip();
       }
       await page.goto('/data-bindings');
@@ -513,7 +513,7 @@ test.describe(targetContext.name, () => {
         await page.locator(`a[href="/static-url"]`).waitFor();
       });
       test('renders with dynamic value', async ({ page, packageName }) => {
-        if (packageName === 'e2e-old-nextjs') {
+        if (packageName === 'gen1-next') {
           test.skip();
         }
         await page.goto('/link-url');

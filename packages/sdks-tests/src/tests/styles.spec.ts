@@ -11,7 +11,7 @@ import {
 test.describe('Styles', () => {
   excludeReactNative('data-binding-styles', async ({ page, packageName }) => {
     // TODO: FIX broken test for NextJS
-    if (packageName === 'e2e-old-nextjs') {
+    if (packageName === 'gen1-next') {
       return;
     }
 
@@ -25,7 +25,7 @@ test.describe('Styles', () => {
   test.describe('Style Bindings', () => {
     test('Content', async ({ page, packageName }) => {
       // TODO: FIX broken test for NextJS
-      if (packageName === 'e2e-old-nextjs') {
+      if (packageName === 'gen1-next') {
         return;
       }
 
@@ -53,7 +53,7 @@ test.describe('Styles', () => {
     });
     test('Symbol', async ({ page, packageName }) => {
       // TODO: FIX broken test for NextJS
-      if (packageName === 'e2e-old-nextjs') {
+      if (packageName === 'gen1-next') {
         return;
       }
 

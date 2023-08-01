@@ -11,23 +11,7 @@ You might need [jq](https://stedolan.github.io/jq/) for symlinking mitosis or th
 
 ## Build an SDK
 
-- You need to run these scripts to build everything: https://github.com/BuilderIO/builder/blob/62dc353fbe6873984133b774d7862beeb68b3d6b/.github/workflows/ci.yml#L140-L151
-
-```
-      - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/react build
-
-      - name: Build Mitosis
-        run: yarn build:mitosis
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/sdk-${{ matrix.sdk }} build
-```
-
-- replace `${{ matrix.sdk }}` with whichever SDK you want to test: qwik, vue, react, etc. Let’s say you picked `svelte`
+- `yarn nx build @builder.io/sdk-svelte` (replace `svelte` with the SDK you want to build)
 
 ## Test an SDK
 

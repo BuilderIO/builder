@@ -1,4 +1,4 @@
-import { getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
+import { getAPIKey, getProps } from '@e2e/tests';
 import { BuilderComponent, builder } from '@builder.io/react';
 import { useEffect, useState } from 'react';
 
