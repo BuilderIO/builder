@@ -1,8 +1,10 @@
 {
   "tasksRunnerOptions": {
     "default": {
+      "runner": "nx-cloud",
       "options": {
-        "skipNxCache": true
+        "accessToken": "MTRkMmFiNTQtZWYzMi00YWRmLTg2OTctZjE1Mjk1ZTlkZDYyfHJlYWQ=",
+        "cacheableOperations": ["build"]
       }
     }
   },
