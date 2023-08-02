@@ -9,7 +9,7 @@ import { isNonNodeServer } from '../is-non-node-server.js';
 import type { ExecutorArgs } from './types.js';
 
 // TEMPORARY FIX UNTIL https://github.com/BuilderIO/qwik/issues/4899 is fixed.
-import {runInNonNode} from ('./non-node-runtime.js')
+import { runInNonNode } from './non-node-runtime.js';
 
 export function evaluate({
   code,
