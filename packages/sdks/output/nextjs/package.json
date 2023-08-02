@@ -24,7 +24,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "lru-cache": "^10.0.0"
+    "lru-cache": "^10.0.0",
+    "react-dom": "^18.2.0"
   },
   "nx": {
     "implicitDependencies": [
