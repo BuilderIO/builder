@@ -78,14 +78,14 @@ jobs:
       - name: Setup
         uses: actions/checkout@v3
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: sudo apt-get install python3 g++ build-essential
-
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
 
       - name: Cache SDKs
         id: cache-primes
@@ -140,14 +140,14 @@ jobs:
       - name: Setup
         uses: actions/checkout@v3
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: sudo apt-get install python3 g++ build-essential
-
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
 
       - name: Cache SDKs
         id: cache-primes
@@ -176,14 +176,14 @@ jobs:
       - name: Setup
         uses: actions/checkout@v3
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: sudo apt-get install python3 g++ build-essential
-
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
 
       - name: Cache SDKs
         id: cache-primes
@@ -209,14 +209,14 @@ jobs:
       - name: Setup
         uses: actions/checkout@v3
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: sudo apt-get install python3 g++ build-essential
-
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
 
       - name: Cache SDKs
         id: cache-primes
