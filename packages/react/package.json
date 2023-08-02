@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -63,7 +63,7 @@
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/react": "^14.0.0",
     "@types/hash-sum": "^1.0.0",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.17.13",
@@ -87,7 +87,7 @@
     "prompt": "^1.0.0",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
-    "react-test-renderer": "^16.13 || ^17.0.1",
+    "react-test-renderer": "^18.2.0",
     "replace-in-file": "^3.0.0-beta.2",
     "rimraf": "^2.6.1",
     "rollup": "^2.38.5",
@@ -133,6 +133,5 @@
   "installConfig": {
     "hoistingLimits": "workspaces"
   },
-  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951",
-  "stableVersion": "3.0.6"
+  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
 }

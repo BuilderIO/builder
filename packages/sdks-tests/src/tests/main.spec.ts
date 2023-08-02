@@ -175,7 +175,11 @@ test.describe(targetContext.name, () => {
       excludeReactNative('shows default value', async ({ page }) => {
         await page.goto('/reactive-state');
 
-        await findTextInPage({ page, text: '0' });
+        const locator = isRNSDK
+          ? page.locator('[data-builder-text]')
+          : page.locator('.builder-text');
+
+        await locator.getByText('0', { exact: true });
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
@@ -185,11 +189,15 @@ test.describe(targetContext.name, () => {
 
         await page.goto('/reactive-state');
 
-        await findTextInPage({ page, text: '0' });
+        const locator = isRNSDK
+          ? page.locator('[data-builder-text]')
+          : page.locator('.builder-text');
+
+        await locator.getByText('0', { exact: true });
 
         await page.getByText('Increment Number').click();
 
-        await findTextInPage({ page, text: '1' });
+        await locator.getByText('1', { exact: true });
       });
     });
     test.describe('Element Events', () => {

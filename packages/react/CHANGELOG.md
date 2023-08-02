@@ -1,3 +1,7 @@
+### 3.0.11
+
+- Add support for loading symbols from other spaces for the `global symbols` feature.
+
 ### 3.0.10
 
 - Allow `builder.get` to be awaited: https://github.com/BuilderIO/builder/pull/2512
