@@ -21,6 +21,7 @@ import { CONTENT as reactiveState } from './reactive-state';
 import { CONTENT as showHideIf } from './show-hide-if';
 import { CONTENT as textBlock } from './text-block';
 import { CONTENT as stateBinding } from './state-binding';
+import { CONTENT as inputDisabledBinding } from './input-disabled-binding.js';
 import type { BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
@@ -57,6 +58,7 @@ const pages = {
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
   '/state-binding': stateBinding,
+  '/input-disabled-binding': inputDisabledBinding,
 } as const;
 
 const apiVersionPathToProp = {

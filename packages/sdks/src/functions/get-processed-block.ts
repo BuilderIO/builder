@@ -37,6 +37,7 @@ const evaluateBindings = ({
       context,
     });
     set(copied, binding, value);
+    set(copied.properties, binding, value);
   }
 
   return copied;
