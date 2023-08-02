@@ -19,7 +19,7 @@
     },
     "build": {
       "dependsOn": ["^build", "prebuild"],
-      "outputs": ["{workspaceRoot}/dist"],
+      "outputs": ["{projectRoot}/dist"],
       "executor": "nx:run-script",
       "options": {
         "script": "build"
