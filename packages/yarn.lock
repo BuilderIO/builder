@@ -3179,7 +3179,7 @@ __metadata:
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     typescript: ^5.1.6
-    vite: ^4.4.7
+    vite: ^4.3.2
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
     js-interpreter: ^4.0.0
@@ -41446,46 +41446,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 6b7f2189f097110846e49a3f1d463bd620dfe9e4f433b1967e5b99f0789610ff4475e85e3e71476e6fa40be25449bb6f1c45edb95c79deba6f3f173699bff948
-  languageName: node
-  linkType: hard
-
-"vite@npm:^4.4.7":
-  version: 4.4.7
-  resolution: "vite@npm:4.4.7"
-  dependencies:
-    esbuild: ^0.18.10
-    fsevents: ~2.3.2
-    postcss: ^8.4.26
-    rollup: ^3.25.2
-  peerDependencies:
-    "@types/node": ">= 14"
-    less: "*"
-    lightningcss: ^1.21.0
-    sass: "*"
-    stylus: "*"
-    sugarss: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 787c4d891da18d0a0545bee07dec73c3201979dcf2b1ea3dc13fdd2d3b9ad76d413bcc0e68502183e309007a612c1f4116adefe0093d95fbbb9cf1c1755f7e41
   languageName: node
   linkType: hard
 
