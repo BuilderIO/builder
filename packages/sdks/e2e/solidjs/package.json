@@ -19,6 +19,6 @@
     "@e2e/tests": "workspace:*",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
-    "solid-js": "^1.5.7"
+    "solid-js": "^1.7.8"
   }
 }

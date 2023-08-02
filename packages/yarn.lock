@@ -2144,12 +2144,12 @@ __metadata:
   dependencies:
     nx: ^16.6.0
     nx-cloud: ^16.2.0
-    solid-js: ^1.5.7
+    solid-js: ">=1.5.7"
     solid-styled-components: ^0.27.6
     vite: ^3.0.4
     vite-plugin-solid: ^2.2.6
   peerDependencies:
-    solid-js: ^1.5.7
+    solid-js: ">=1.5.7"
   languageName: unknown
   linkType: soft
 
@@ -2985,7 +2985,7 @@ __metadata:
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     postcss: ^8.4.21
-    solid-js: ^1.7.2
+    solid-js: 1.6.14
     solid-start: ^0.2.26
     solid-start-node: ^0.2.19
     typescript: ^5.1.6
@@ -3002,7 +3002,7 @@ __metadata:
     "@e2e/tests": "workspace:*"
     nx: ^16.6.0
     nx-cloud: ^16.2.0
-    solid-js: ^1.5.7
+    solid-js: ^1.7.8
     typescript: ^5.1.6
     vite: ^3.1.4
     vite-plugin-solid: ^2.3.9
@@ -7995,6 +7995,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/debug@npm:^4.1.7":
+  version: 4.1.8
+  resolution: "@types/debug@npm:4.1.8"
+  dependencies:
+    "@types/ms": "*"
+  checksum: a9a9bb40a199e9724aa944e139a7659173a9b274798ea7efbc277cb084bc37d32fc4c00877c3496fac4fed70a23243d284adb75c00b5fdabb38a22154d18e5df
+  languageName: node
+  linkType: hard
+
 "@types/es6-promise@npm:^3.3.0":
   version: 3.3.0
   resolution: "@types/es6-promise@npm:3.3.0"
@@ -11601,7 +11610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-solid@npm:^1.3.13, babel-preset-solid@npm:^1.6.9, babel-preset-solid@npm:^1.7.2":
+"babel-preset-solid@npm:^1.3.13, babel-preset-solid@npm:^1.6.3, babel-preset-solid@npm:^1.6.9, babel-preset-solid@npm:^1.7.2":
   version: 1.7.7
   resolution: "babel-preset-solid@npm:1.7.7"
   dependencies:
@@ -34782,13 +34791,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solid-js@npm:^1.5.7, solid-js@npm:^1.7.2":
-  version: 1.7.6
-  resolution: "solid-js@npm:1.7.6"
+"solid-js@npm:1.6.14":
+  version: 1.6.14
+  resolution: "solid-js@npm:1.6.14"
+  dependencies:
+    csstype: ^3.1.0
+  checksum: 7c48dedfef497ba7960489baee733afaa76fec134d6411d344a4db19eae438668e2c2c98d3f67024291f9454c21952c4774d78f5d928639eedb95efbe0205c84
+  languageName: node
+  linkType: hard
+
+"solid-js@npm:>=1.5.7, solid-js@npm:^1.7.8":
+  version: 1.7.8
+  resolution: "solid-js@npm:1.7.8"
   dependencies:
     csstype: ^3.1.0
     seroval: ^0.5.0
-  checksum: 35306e7f16309075f41caec5aeaa832ecd7795e908195a55e9505e0840e8b2d0cbf04a3531ad9df5bce6a96ab595b1c754513123d612571d3d28783e3418af9c
+  checksum: e86ed6e8aa4a9afff652c4a9d49c7e78eae167b9139de8f41095b750f099c25be44a4506d28e927ddb6a684d70ca8c0c2e3398979542ffcbfab55659ad9eedb6
   languageName: node
   linkType: hard
 
@@ -34826,8 +34844,8 @@ __metadata:
   linkType: hard
 
 "solid-start@npm:^0.2.26":
-  version: 0.2.26
-  resolution: "solid-start@npm:0.2.26"
+  version: 0.2.30
+  resolution: "solid-start@npm:0.2.30"
   dependencies:
     "@babel/core": ^7.20.12
     "@babel/generator": ^7.20.7
@@ -34836,6 +34854,7 @@ __metadata:
     "@babel/preset-typescript": ^7.18.6
     "@babel/template": ^7.20.7
     "@types/cookie": ^0.5.1
+    "@types/debug": ^4.1.7
     chokidar: ^3.5.3
     compression: ^1.7.4
     connect: ^3.7.0
@@ -34872,7 +34891,7 @@ __metadata:
     solid-start-node: "*"
     solid-start-static: "*"
     solid-start-vercel: "*"
-    vite: ^4.1.4
+    vite: ^4.4.6
   peerDependenciesMeta:
     solid-start-aws:
       optional: true
@@ -34894,7 +34913,7 @@ __metadata:
     solid: bin.cjs
     solid-start: bin.cjs
     start: bin.cjs
-  checksum: b52df02d3edaed3ba4a8e4b50a01d877124078d91d2af8c98d7e526838b73846b6b4ac17c727fdcf75790ac924a6a9e15fdbb42115159b67153aad6ee374ab8a
+  checksum: 56785bf92a7a82885cb20069ba80ec9585dd8720587709ca375d199ce415a1b50a2769ac75874e6dd1d522ac00ab1ef2fd5cbf20958a713c623ee30fd5d507f9
   languageName: node
   linkType: hard
 
@@ -38719,7 +38738,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-solid@npm:^2.2.6, vite-plugin-solid@npm:^2.3.9, vite-plugin-solid@npm:^2.7.0":
+"vite-plugin-solid@npm:^2.2.6, vite-plugin-solid@npm:^2.3.9":
+  version: 2.6.1
+  resolution: "vite-plugin-solid@npm:2.6.1"
+  dependencies:
+    "@babel/core": ^7.20.5
+    "@babel/preset-typescript": ^7.18.6
+    "@types/babel__core": ^7.1.20
+    babel-preset-solid: ^1.6.3
+    merge-anything: ^5.1.4
+    solid-refresh: ^0.5.0
+    vitefu: ^0.2.3
+  peerDependencies:
+    solid-js: ^1.3.17 || ^1.4.0 || ^1.5.0 || ^1.6.0
+    vite: ^3.0.0 || ^4.0.0
+  checksum: e974ae7bb2f338a7660e90504e9f8e2f897806adbb111e953796c747d8709a83a634cba3dbd64b34dda6d97a2a5b66d08069f3c1ccba92240fda506d86d13221
+  languageName: node
+  linkType: hard
+
+"vite-plugin-solid@npm:^2.7.0":
   version: 2.7.0
   resolution: "vite-plugin-solid@npm:2.7.0"
   dependencies:
