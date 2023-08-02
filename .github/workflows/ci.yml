@@ -80,7 +80,7 @@ jobs:
 
       # https://github.com/laverdet/isolated-vm#requirements
       - name: install isolate-vm build deps
-        run: sudo apt-get install python g++ build-essential
+        run: apk add g++ make python3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -142,7 +142,7 @@ jobs:
 
       # https://github.com/laverdet/isolated-vm#requirements
       - name: install isolate-vm build deps
-        run: sudo apt-get install python g++ build-essential
+        run: apk add g++ make python3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -178,7 +178,7 @@ jobs:
 
       # https://github.com/laverdet/isolated-vm#requirements
       - name: install isolate-vm build deps
-        run: sudo apt-get install python g++ build-essential
+        run: apk add g++ make python3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -211,7 +211,7 @@ jobs:
 
       # https://github.com/laverdet/isolated-vm#requirements
       - name: install isolate-vm build deps
-        run: sudo apt-get install python g++ build-essential
+        run: apk add g++ make python3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
