@@ -83,6 +83,10 @@ jobs:
         with:
           node-version: '16.x'
 
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
+
       - name: Cache SDKs
         id: cache-primes
         uses: actions/cache@v3
@@ -141,6 +145,10 @@ jobs:
         with:
           node-version: '16.x'
 
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
+
       - name: Cache SDKs
         id: cache-primes
         uses: actions/cache@v3
@@ -173,6 +181,10 @@ jobs:
         with:
           node-version: '16.x'
 
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
+
       - name: Cache SDKs
         id: cache-primes
         uses: actions/cache@v3
@@ -201,6 +213,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+
+      # https://github.com/laverdet/isolated-vm#requirements
+      - name: install isolate-vm build deps
+        run: npm install -g node-gyp
 
       - name: Cache SDKs
         id: cache-primes

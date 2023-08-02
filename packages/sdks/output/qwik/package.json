@@ -25,13 +25,14 @@
     "build": "tsc && vite build --mode lib"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.0.0",
+    "@builder.io/qwik": "^1.2.6",
     "@types/node": "latest",
     "typescript": "^5.1.6",
     "vite": "^3.0.4"
   },
   "peerDependencies": {
-    "@builder.io/qwik": ">=1.0.0"
+    "@builder.io/qwik": ">=1.0.0",
+    "undici": "^5.14.0"
   },
   "nx": {
     "implicitDependencies": [
