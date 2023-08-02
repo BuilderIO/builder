@@ -10,16 +10,19 @@ on:
     branches:
       - main
 
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Use node version 12
-        uses: actions/setup-node@v2
+      - name: Use node version 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: '16.x'
 
       - run: npm run ci:lint
 
@@ -27,24 +30,24 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [12]
         package: ['webcomponents', 'widgets']
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Use node version ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Use node version 16
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '16.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -53,7 +56,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: NPM install
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: packages/${{ matrix.package }}
 
       - name: Build
@@ -73,7 +76,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -131,7 +134,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -163,7 +166,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -192,7 +195,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3

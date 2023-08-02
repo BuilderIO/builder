@@ -91,8 +91,6 @@ export default defineConfig({
       ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
     };
 
-    console.log(webServers);
-
     return webServers;
   }),
 });
