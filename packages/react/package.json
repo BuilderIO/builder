@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -133,6 +133,5 @@
   "installConfig": {
     "hoistingLimits": "workspaces"
   },
-  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951",
-  "stableVersion": "3.0.6"
+  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
 }
