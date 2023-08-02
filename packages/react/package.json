@@ -63,7 +63,7 @@
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/react": "^14.0.0",
     "@types/hash-sum": "^1.0.0",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.17.13",

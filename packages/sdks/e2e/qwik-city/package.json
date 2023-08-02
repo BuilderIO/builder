@@ -19,7 +19,7 @@
     "serve": "yarn run dev"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.0.0",
+    "@builder.io/qwik": "^1.2.6",
     "@builder.io/qwik-city": "^1.0.0",
     "@builder.io/sdk-qwik": "workspace:*",
     "@e2e/tests": "workspace:*",
