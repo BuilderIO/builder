@@ -28,5 +28,15 @@
   },
   "engines": {
     "node": ">=16.8"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.solid",
+          "{projectRoot}/dist"
+        ]
+      }
+    }
   }
 }
