@@ -1,6 +1,6 @@
 import { getProps } from '@e2e/tests';
 import {
-  processContentResult,
+  _processContentResult,
   getContent,
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -22,7 +22,7 @@ export default async function Page(props: PageProps) {
 
   const builderProps = await getProps({
     pathname: urlPath,
-    processContentResult,
+    _processContentResult,
     options: getBuilderSearchParams(props.searchParams),
     getContent,
   });

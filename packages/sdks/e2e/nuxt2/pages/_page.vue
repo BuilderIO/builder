@@ -7,7 +7,7 @@
 
 <script>
 import Vue from 'vue'
-import { RenderContent, processContentResult } from '@builder.io/sdk-vue'
+import { RenderContent, _processContentResult } from '@builder.io/sdk-vue'
 import { getProps } from '@e2e/tests'
 
 export default Vue.extend({
@@ -20,7 +20,7 @@ export default Vue.extend({
   async fetch() {
     this.props = await getProps({
       pathname: this.$route.path,
-      processContentResult,
+      _processContentResult,
     })
   },
 })

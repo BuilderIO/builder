@@ -13,10 +13,10 @@ const checkContentHasResults = (
   content: ContentResponse
 ): content is ContentResults => 'results' in content;
 
-export async function getContent(
+export async function fetchContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  const allContent = await getAllContent({ ...options, limit: 1 });
+  const allContent = await fetchAllContent({ ...options, limit: 1 });
 
   if (allContent) {
     return allContent.results[0] || null;
@@ -24,6 +24,11 @@ export async function getContent(
 
   return null;
 }
+
+/**
+ * @deprecated Use `fetchContent` instead.
+ */
+export const getContent = fetchContent;
 
 type ContentResults = {
   results: BuilderContent[];
@@ -36,7 +41,7 @@ type ContentResponse =
       message: string;
     };
 
-const fetchContent = async (options: GetContentOptions) => {
+const _fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options);
 
   const res = await fetch(url.href);
@@ -47,7 +52,7 @@ const fetchContent = async (options: GetContentOptions) => {
 /**
  * Exported only for testing purposes. Should not be used directly.
  */
-export const processContentResult = async (
+export const _processContentResult = async (
   options: GetContentOptions,
   content: ContentResults,
   url: URL = generateContentUrl(options)
@@ -87,19 +92,24 @@ export const processContentResult = async (
   return content;
 };
 
-export async function getAllContent(options: GetContentOptions) {
+export async function fetchAllContent(options: GetContentOptions) {
   try {
     const url = generateContentUrl(options);
-    const content = await fetchContent(options);
+    const content = await _fetchContent(options);
 
     if (!checkContentHasResults(content)) {
       logger.error('Error fetching data. ', { url, content, options });
       return null;
     }
 
-    return processContentResult(options, content);
+    return _processContentResult(options, content);
   } catch (error) {
     logger.error('Error fetching data. ', error);
     return null;
   }
 }
+
+/**
+ * @deprecated Use `fetchAllContent` instead.
+ */
+export const getAllContent = fetchAllContent;

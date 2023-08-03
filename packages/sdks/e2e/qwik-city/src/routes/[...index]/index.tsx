@@ -1,5 +1,5 @@
 import { getProps } from '@e2e/tests';
-import { RenderContent, processContentResult } from '@builder.io/sdk-qwik';
+import { RenderContent, _processContentResult } from '@builder.io/sdk-qwik';
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
@@ -10,7 +10,7 @@ export interface MainProps {
 export const useBuilderContentLoader = routeLoader$(async (event) => {
   const data = await getProps({
     pathname: event.url.pathname,
-    processContentResult,
+    _processContentResult,
   });
 
   if (!data) {
