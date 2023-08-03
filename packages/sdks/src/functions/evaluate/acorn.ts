@@ -35,14 +35,15 @@
 // [dammit]: acorn_loose.js
 // [walk]: util/walk.js
 
-(function (root, mod) {
-  if (typeof exports === 'object' && typeof module === 'object')
-    return mod(exports); // CommonJS
-  if (typeof define === 'function' && define.amd)
-    return define(['exports'], mod); // AMD
-  mod(root.acorn || (root.acorn = {})); // Plain browser env
-})(this, function (exports) {
-  exports.version = '0.5.0';
+export const version = '0.5.0';
+export const parse = (i, o) => {
+  let line;
+  let column;
+  let type;
+  let start;
+  let end;
+  let source;
+
   // Plus additional edits marked with 'JS-Interpreter change' comments.
 
   // JS-Interpreter change:
@@ -77,13 +78,15 @@
    * @param {Object=} opts
    * @returns
    */
-  exports.parse = function (inpt, opts) {
+  function _parse(inpt, opts) {
     input = String(inpt);
     inputLen = input.length;
     setOptions(opts);
     initTokenState();
     return parseTopLevel(options.program);
-  };
+  }
+
+  _parse(i, o);
 
   // A second optional argument can be given to further configure
   // the parser process. These options are recognized:
@@ -183,7 +186,10 @@
         break;
       }
     }
-    return { line, column: offset - cur };
+    return {
+      line,
+      column: offset - cur,
+    };
   };
 
   // JS-Interpreter change:
@@ -344,11 +350,21 @@
   // These are the general types. The `type` property is only used to
   // make them recognizeable when debugging.
 
-  var _num = { type: 'num' };
-  var _regexp = { type: 'regexp' };
-  var _string = { type: 'string' };
-  var _name = { type: 'name' };
-  var _eof = { type: 'eof' };
+  var _num = {
+    type: 'num',
+  };
+  var _regexp = {
+    type: 'regexp',
+  };
+  var _string = {
+    type: 'string',
+  };
+  var _name = {
+    type: 'name',
+  };
+  var _eof = {
+    type: 'eof',
+  };
 
   // Keyword tokens. The `keyword` property (also used in keyword-like
   // operators) indicates that the token originated from an
@@ -363,39 +379,102 @@
   // to know when parsing a label, in order to allow or disallow
   // continue jumps to that label.
 
-  var _break = { keyword: 'break' };
-  var _case = { keyword: 'case', beforeExpr: true };
-  var _catch = { keyword: 'catch' };
-  var _continue = { keyword: 'continue' };
-  var _debugger = { keyword: 'debugger' };
-  var _default = { keyword: 'default' };
-  var _do = { keyword: 'do', isLoop: true };
-  var _else = { keyword: 'else', beforeExpr: true };
-  var _finally = { keyword: 'finally' };
-  var _for = { keyword: 'for', isLoop: true };
-  var _function = { keyword: 'function' };
-  var _if = { keyword: 'if' };
-  var _return = { keyword: 'return', beforeExpr: true };
-  var _switch = { keyword: 'switch' };
-  var _throw = { keyword: 'throw', beforeExpr: true };
-  var _try = { keyword: 'try' };
-  var _var = { keyword: 'var' };
-  var _while = { keyword: 'while', isLoop: true };
-  var _with = { keyword: 'with' };
-  var _new = { keyword: 'new', beforeExpr: true };
-  var _this = { keyword: 'this' };
+  var _break = {
+    keyword: 'break',
+  };
+  var _case = {
+    keyword: 'case',
+    beforeExpr: true,
+  };
+  var _catch = {
+    keyword: 'catch',
+  };
+  var _continue = {
+    keyword: 'continue',
+  };
+  var _debugger = {
+    keyword: 'debugger',
+  };
+  var _default = {
+    keyword: 'default',
+  };
+  var _do = {
+    keyword: 'do',
+    isLoop: true,
+  };
+  var _else = {
+    keyword: 'else',
+    beforeExpr: true,
+  };
+  var _finally = {
+    keyword: 'finally',
+  };
+  var _for = {
+    keyword: 'for',
+    isLoop: true,
+  };
+  var _function = {
+    keyword: 'function',
+  };
+  var _if = {
+    keyword: 'if',
+  };
+  var _return = {
+    keyword: 'return',
+    beforeExpr: true,
+  };
+  var _switch = {
+    keyword: 'switch',
+  };
+  var _throw = {
+    keyword: 'throw',
+    beforeExpr: true,
+  };
+  var _try = {
+    keyword: 'try',
+  };
+  var _var = {
+    keyword: 'var',
+  };
+  var _while = {
+    keyword: 'while',
+    isLoop: true,
+  };
+  var _with = {
+    keyword: 'with',
+  };
+  var _new = {
+    keyword: 'new',
+    beforeExpr: true,
+  };
+  var _this = {
+    keyword: 'this',
+  };
 
   // The keywords that denote values.
 
-  var _null = { keyword: 'null', atomValue: null };
-  var _true = { keyword: 'true', atomValue: true };
-  var _false = { keyword: 'false', atomValue: false };
+  var _null = {
+    keyword: 'null',
+    atomValue: null,
+  };
+  var _true = {
+    keyword: 'true',
+    atomValue: true,
+  };
+  var _false = {
+    keyword: 'false',
+    atomValue: false,
+  };
 
   // Some keywords are treated as regular operators. `in` sometimes
   // (when parsing `for`) needs to be tested against specifically, so
   // we assign a variable name to it for quick comparing.
 
-  var _in = { keyword: 'in', binop: 7, beforeExpr: true };
+  var _in = {
+    keyword: 'in',
+    binop: 7,
+    beforeExpr: true,
+  };
 
   // Map keyword names to token types.
 
@@ -424,26 +503,71 @@
     false: _false,
     new: _new,
     in: _in,
-    instanceof: { keyword: 'instanceof', binop: 7, beforeExpr: true },
+    instanceof: {
+      keyword: 'instanceof',
+      binop: 7,
+      beforeExpr: true,
+    },
     this: _this,
-    typeof: { keyword: 'typeof', prefix: true, beforeExpr: true },
-    void: { keyword: 'void', prefix: true, beforeExpr: true },
-    delete: { keyword: 'delete', prefix: true, beforeExpr: true },
+    typeof: {
+      keyword: 'typeof',
+      prefix: true,
+      beforeExpr: true,
+    },
+    void: {
+      keyword: 'void',
+      prefix: true,
+      beforeExpr: true,
+    },
+    delete: {
+      keyword: 'delete',
+      prefix: true,
+      beforeExpr: true,
+    },
   };
 
   // Punctuation token types. Again, the `type` property is purely for debugging.
 
-  var _bracketL = { type: '[', beforeExpr: true };
-  var _bracketR = { type: ']' };
-  var _braceL = { type: '{', beforeExpr: true };
-  var _braceR = { type: '}' };
-  var _parenL = { type: '(', beforeExpr: true };
-  var _parenR = { type: ')' };
-  var _comma = { type: ',', beforeExpr: true };
-  var _semi = { type: ';', beforeExpr: true };
-  var _colon = { type: ':', beforeExpr: true };
-  var _dot = { type: '.' };
-  var _question = { type: '?', beforeExpr: true };
+  var _bracketL = {
+    type: '[',
+    beforeExpr: true,
+  };
+  var _bracketR = {
+    type: ']',
+  };
+  var _braceL = {
+    type: '{',
+    beforeExpr: true,
+  };
+  var _braceR = {
+    type: '}',
+  };
+  var _parenL = {
+    type: '(',
+    beforeExpr: true,
+  };
+  var _parenR = {
+    type: ')',
+  };
+  var _comma = {
+    type: ',',
+    beforeExpr: true,
+  };
+  var _semi = {
+    type: ';',
+    beforeExpr: true,
+  };
+  var _colon = {
+    type: ':',
+    beforeExpr: true,
+  };
+  var _dot = {
+    type: '.',
+  };
+  var _question = {
+    type: '?',
+    beforeExpr: true,
+  };
 
   // Operators. These carry several kinds of properties to help the
   // parser use them properly (the presence of these properties is
@@ -461,21 +585,68 @@
   // binary operators with a very low precedence, that should result
   // in AssignmentExpression nodes.
 
-  var _slash = { binop: 10, beforeExpr: true };
-  var _eq = { isAssign: true, beforeExpr: true };
-  var _assign = { isAssign: true, beforeExpr: true };
-  var _incDec = { postfix: true, prefix: true, isUpdate: true };
-  var _prefix = { prefix: true, beforeExpr: true };
-  var _logicalOR = { binop: 1, beforeExpr: true };
-  var _logicalAND = { binop: 2, beforeExpr: true };
-  var _bitwiseOR = { binop: 3, beforeExpr: true };
-  var _bitwiseXOR = { binop: 4, beforeExpr: true };
-  var _bitwiseAND = { binop: 5, beforeExpr: true };
-  var _equality = { binop: 6, beforeExpr: true };
-  var _relational = { binop: 7, beforeExpr: true };
-  var _bitShift = { binop: 8, beforeExpr: true };
-  var _plusMin = { binop: 9, prefix: true, beforeExpr: true };
-  var _multiplyModulo = { binop: 10, beforeExpr: true };
+  var _slash = {
+    binop: 10,
+    beforeExpr: true,
+  };
+  var _eq = {
+    isAssign: true,
+    beforeExpr: true,
+  };
+  var _assign = {
+    isAssign: true,
+    beforeExpr: true,
+  };
+  var _incDec = {
+    postfix: true,
+    prefix: true,
+    isUpdate: true,
+  };
+  var _prefix = {
+    prefix: true,
+    beforeExpr: true,
+  };
+  var _logicalOR = {
+    binop: 1,
+    beforeExpr: true,
+  };
+  var _logicalAND = {
+    binop: 2,
+    beforeExpr: true,
+  };
+  var _bitwiseOR = {
+    binop: 3,
+    beforeExpr: true,
+  };
+  var _bitwiseXOR = {
+    binop: 4,
+    beforeExpr: true,
+  };
+  var _bitwiseAND = {
+    binop: 5,
+    beforeExpr: true,
+  };
+  var _equality = {
+    binop: 6,
+    beforeExpr: true,
+  };
+  var _relational = {
+    binop: 7,
+    beforeExpr: true,
+  };
+  var _bitShift = {
+    binop: 8,
+    beforeExpr: true,
+  };
+  var _plusMin = {
+    binop: 9,
+    prefix: true,
+    beforeExpr: true,
+  };
+  var _multiplyModulo = {
+    binop: 10,
+    beforeExpr: true,
+  };
 
   // JS-Interpreter change:
   // tokTypes map never used.  Removed.
@@ -593,8 +764,8 @@
    * @constructor
    */
   function line_loc_t() {
-    this.line = tokCurLine;
-    this.column = tokPos - tokLineStart;
+    line = tokCurLine;
+    column = tokPos - tokLineStart;
   }
 
   /**
@@ -625,7 +796,6 @@
     tokVal = val;
     tokRegexpAllowed = type.beforeExpr;
   }
-
   function skipBlockComment() {
     var startLoc = options.onComment && options.locations && new line_loc_t();
     var start = tokPos;
@@ -653,7 +823,6 @@
       );
     }
   }
-
   function skipLineComment() {
     var start = tokPos;
     var startLoc = options.onComment && options.locations && new line_loc_t();
@@ -752,7 +921,6 @@
       finishToken(_dot);
     }
   }
-
   function readToken_slash() {
     // '/'
     var next = input.charCodeAt(tokPos + 1);
@@ -765,7 +933,6 @@
       finishOp(_slash, 1);
     }
   }
-
   function readToken_mult_modulo() {
     // '%*'
     var next = input.charCodeAt(tokPos + 1);
@@ -790,7 +957,6 @@
       finishOp(code === 124 ? _bitwiseOR : _bitwiseAND, 1);
     }
   }
-
   function readToken_caret() {
     // '^'
     var next = input.charCodeAt(tokPos + 1);
@@ -884,7 +1050,8 @@
     switch (code) {
       // The interpretation of a dot depends on whether it is followed
       // by a digit.
-      case 46: // '.'
+      case 46:
+        // '.'
         return readToken_dot();
 
       // Punctuation tokens.
@@ -920,7 +1087,8 @@
         return finishToken(_question);
 
       // '0x' is a hexadecimal number.
-      case 48: // '0'
+      case 48:
+        // '0'
         var next = input.charCodeAt(tokPos + 1);
         if (next === 120 || next === 88) return readHexNumber();
       // Anything else beginning with a digit is an integer, octal
@@ -933,12 +1101,14 @@
       case 54:
       case 55:
       case 56:
-      case 57: // 1-9
+      case 57:
+        // 1-9
         return readNumber(false);
 
       // Quotes produce strings.
       case 34:
-      case 39: // '"', "'"
+      case 39:
+        // '"', "'"
         return readString(code);
 
       // Operators are parsed inline in tiny state machines. '=' (61) is
@@ -946,36 +1116,36 @@
       // characters it is given as second argument, and returns a token
       // of the type given by its first argument.
 
-      case 47: // '/'
+      case 47:
+        // '/'
         return readToken_slash();
-
       case 37:
-      case 42: // '%*'
+      case 42:
+        // '%*'
         return readToken_mult_modulo();
-
       case 124:
-      case 38: // '|&'
+      case 38:
+        // '|&'
         return readToken_pipe_amp(code);
-
-      case 94: // '^'
+      case 94:
+        // '^'
         return readToken_caret();
-
       case 43:
-      case 45: // '+-'
+      case 45:
+        // '+-'
         return readToken_plus_min(code);
-
       case 60:
-      case 62: // '<>'
+      case 62:
+        // '<>'
         return readToken_lt_gt(code);
-
       case 61:
-      case 33: // '=!'
+      case 33:
+        // '=!'
         return readToken_eq_excl(code);
-
-      case 126: // '~'
+      case 126:
+        // '~'
         return finishOp(_prefix, 1);
     }
-
     return false;
   }
 
@@ -993,7 +1163,6 @@
     }
     if (forceRegexp) return readRegexp();
     if (tokPos >= inputLen) return finishToken(_eof);
-
     var code = input.charCodeAt(tokPos);
     // Identifier or keyword. '\uXXXX' sequences are allowed in
     // identifiers, so '\' also dispatches to that.
@@ -1001,9 +1170,7 @@
       // '\'
       return readWord();
     }
-
     var tok = getTokenFromCode(code);
-
     if (tok === false) {
       // If we are here, we either found a non-ASCII identifier
       // character, or something that's entirely disallowed.
@@ -1109,7 +1276,6 @@
     }
     return total;
   }
-
   function readHexNumber() {
     tokPos += 2; // 0x
     var val = readInt(16);
@@ -1146,6 +1312,7 @@
       if (next === 43 || next === 45) {
         ++tokPos; // '+-'
       }
+
       if (readInt(10) === null) {
         raise(start, 'Invalid number');
       }
@@ -1154,7 +1321,6 @@
     if (isIdentifierStart(input.charCodeAt(tokPos))) {
       raise(tokPos, 'Identifier directly after number');
     }
-
     var str = input.slice(start, tokPos);
     var val;
     if (isFloat) {
@@ -1207,39 +1373,52 @@
           switch (ch) {
             case 110:
               out += '\n';
-              break; // 'n' -> '\n'
+              break;
+            // 'n' -> '\n'
             case 114:
               out += '\r';
-              break; // 'r' -> '\r'
+              break;
+            // 'r' -> '\r'
             case 120:
               out += String.fromCharCode(readHexChar(2));
-              break; // 'x'
+              break;
+            // 'x'
             case 117:
               out += String.fromCharCode(readHexChar(4));
-              break; // 'u'
+              break;
+            // 'u'
             case 85:
               out += String.fromCharCode(readHexChar(8));
-              break; // 'U'
+              break;
+            // 'U'
             case 116:
               out += '\t';
-              break; // 't' -> '\t'
+              break;
+            // 't' -> '\t'
             case 98:
               out += '\b';
-              break; // 'b' -> '\b'
+              break;
+            // 'b' -> '\b'
             case 118:
               out += '\u000b';
-              break; // 'v' -> '\u000b'
+              break;
+            // 'v' -> '\u000b'
             case 102:
               out += '\f';
-              break; // 'f' -> '\f'
+              break;
+            // 'f' -> '\f'
             case 48:
               out += '\0';
-              break; // 0 -> '\0'
-            case 13: // '\r'
+              break;
+            // 0 -> '\0'
+            case 13:
+              // '\r'
               if (input.charCodeAt(tokPos) === 10) {
                 ++tokPos; // '\r\n'
               }
-            case 10: // ' \n'
+
+            case 10:
+              // ' \n'
               if (options.locations) {
                 tokLineStart = tokPos;
                 ++tokCurLine;
@@ -1396,19 +1575,19 @@
    * @constructor
    */
   function node_t() {
-    this.type = null;
-    this.start = tokStart;
-    this.end = null;
+    type = null;
+    start = tokStart;
+    end = null;
   }
 
   /**
    * @constructor
    */
   function node_loc_t() {
-    this.start = tokStartLoc;
-    this.end = null;
+    start = tokStartLoc;
+    end = null;
     if (sourceFile) {
-      this.source = sourceFile;
+      source = sourceFile;
     }
   }
 
@@ -1576,7 +1755,6 @@
     inFunction = strict = false;
     labels = [];
     readToken();
-
     var node = program || startNode();
     var first = true;
     if (!program) {
@@ -1592,9 +1770,12 @@
     }
     return finishNode(node, 'Program');
   }
-
-  var loopLabel = { kind: 'loop' };
-  var switchLabel = { kind: 'switch' };
+  var loopLabel = {
+    kind: 'loop',
+  };
+  var switchLabel = {
+    kind: 'switch',
+  };
 
   /**
    * Parse a single statement.
@@ -1610,7 +1791,6 @@
     if (tokType === _slash || (tokType === _assign && tokVal === '/=')) {
       readToken(true);
     }
-
     var starttype = tokType;
     var node = startNode();
 
@@ -1648,12 +1828,10 @@
           node,
           isBreak ? 'BreakStatement' : 'ContinueStatement'
         );
-
       case _debugger:
         next();
         semicolon();
         return finishNode(node, 'DebuggerStatement');
-
       case _do:
         next();
         labels.push(loopLabel);
@@ -1692,18 +1870,15 @@
           return parseForIn(node, init);
         }
         return parseFor(node, init);
-
       case _function:
         next();
         return parseFunction(node, true);
-
       case _if:
         next();
         node.test = parseParenExpression();
         node.consequent = parseStatement();
         node.alternate = eat(_else) ? parseStatement() : null;
         return finishNode(node, 'IfStatement');
-
       case _return:
         if (!inFunction && !options.allowReturnOutsideFunction) {
           raise(tokStart, "'return' outside of function");
@@ -1721,7 +1896,6 @@
           semicolon();
         }
         return finishNode(node, 'ReturnStatement');
-
       case _switch:
         next();
         node.discriminant = parseParenExpression();
@@ -1761,7 +1935,6 @@
         next(); // Closing brace
         labels.pop();
         return finishNode(node, 'SwitchStatement');
-
       case _throw:
         next();
         if (newline.test(input.slice(lastEnd, tokStart)))
@@ -1769,7 +1942,6 @@
         node.argument = parseExpression();
         semicolon();
         return finishNode(node, 'ThrowStatement');
-
       case _try:
         next();
         node.block = parseBlock();
@@ -1800,13 +1972,11 @@
         if (!node.handler && !node.finalizer)
           raise(node.start, 'Missing catch or finally clause');
         return finishNode(node, 'TryStatement');
-
       case _var:
         next();
         parseVar(node);
         semicolon();
         return finishNode(node, 'VariableDeclaration');
-
       case _while:
         next();
         node.test = parseParenExpression();
@@ -1814,17 +1984,14 @@
         node.body = parseStatement();
         labels.pop();
         return finishNode(node, 'WhileStatement');
-
       case _with:
         if (strict) raise(tokStart, "'with' in strict mode");
         next();
         node.object = parseParenExpression();
         node.body = parseStatement();
         return finishNode(node, 'WithStatement');
-
       case _braceL:
         return parseBlock();
-
       case _semi:
         next();
         return finishNode(node, 'EmptyStatement');
@@ -1851,7 +2018,10 @@
             : tokType === _switch
             ? 'switch'
             : null;
-          labels.push({ name: maybeName, kind });
+          labels.push({
+            name: maybeName,
+            kind,
+          });
           node.body = parseStatement();
           labels.pop();
           node.label = expr;
@@ -2174,7 +2344,6 @@
         node.raw = input.slice(tokStart, tokEnd);
         next();
         return finishNode(node, 'Literal');
-
       case _null:
       case _true:
       case _false:
@@ -2183,7 +2352,6 @@
         node.raw = tokType.keyword;
         next();
         return finishNode(node, 'Literal');
-
       case _parenL:
         var tokStartLoc1 = tokStartLoc;
         var tokStart1 = tokStart;
@@ -2200,21 +2368,17 @@
         }
         expect(_parenR);
         return val;
-
       case _bracketL:
         node = startNode();
         next();
         node.elements = parseExprList(_bracketR, true, true);
         return finishNode(node, 'ArrayExpression');
-
       case _braceL:
         return parseObj();
-
       case _function:
         node = startNode();
         next();
         return parseFunction(node, false);
-
       case _new:
         return parseNew();
     }
@@ -2257,8 +2421,9 @@
       } else {
         first = false;
       }
-
-      var prop = { key: parsePropertyName() };
+      var prop = {
+        key: parsePropertyName(),
+      };
       var isGetSet = false;
       var kind;
       if (eat(_colon)) {
@@ -2375,7 +2540,6 @@
         }
       }
     }
-
     return finishNode(
       node,
       isStatement ? 'FunctionDeclaration' : 'FunctionExpression'
@@ -2406,7 +2570,6 @@
       } else {
         first = false;
       }
-
       elts.push(
         allowEmpty && tokType === _comma ? null : parseExpression(true)
       );
@@ -2446,4 +2609,4 @@
     next();
     return finishNode(node, 'Identifier');
   }
-});
+};
