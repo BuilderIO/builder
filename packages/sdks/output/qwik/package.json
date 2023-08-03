@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.5.2",
+  "version": "0.5.3-3",
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/index.qwik.cjs",
@@ -28,10 +28,11 @@
     "@builder.io/qwik": "^1.2.6",
     "@types/node": "latest",
     "typescript": "^5.1.6",
-    "vite": "^3.0.4"
+    "vite": "^4.3.2"
   },
   "peerDependencies": {
     "@builder.io/qwik": ">=1.0.0",
+    "js-interpreter": "^4.0.0",
     "undici": "^5.14.0"
   },
   "nx": {

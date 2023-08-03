@@ -55,6 +55,7 @@
   "dependencies": {
     "@builder.io/mitosis": "^0.0.117",
     "@builder.io/mitosis-cli": "^0.0.75",
+    "js-interpreter": "^4.0.0",
     "node-fetch": "^2.6.1",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",

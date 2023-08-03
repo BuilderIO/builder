@@ -3179,9 +3179,10 @@ __metadata:
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     typescript: ^5.1.6
-    vite: ^3.0.4
+    vite: ^4.3.2
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
+    js-interpreter: ^4.0.0
     undici: ^5.14.0
   languageName: unknown
   linkType: soft
@@ -3202,6 +3203,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^4.9.4
   peerDependencies:
+    js-interpreter: ^4.0.0
     react: ^18.0.0
     react-dom: ^18.0.0
     react-native: ">=0.64.3"
@@ -3220,6 +3222,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
+    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18.2.0
   languageName: unknown
@@ -3235,6 +3238,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^4.9.4
   peerDependencies:
+    js-interpreter: ^4.0.0
     react: ^18.2.0
   languageName: unknown
   linkType: soft
@@ -3250,6 +3254,7 @@ __metadata:
     vite: ^3.0.4
     vite-plugin-solid: ^2.2.6
   peerDependencies:
+    js-interpreter: ^4.0.0
     solid-js: ^1.5.7
   languageName: unknown
   linkType: soft
@@ -3269,6 +3274,8 @@ __metadata:
     tslib: ^2.3.1
     typescript: ^5.1.6
     vite: ^4.4.8
+  peerDependencies:
+    js-interpreter: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -3288,6 +3295,8 @@ __metadata:
     vite-plugin-dts: ^1.5.0
     vue: ^2.7.7
     vue-tsc: ^0.38.8
+  peerDependencies:
+    js-interpreter: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -3306,6 +3315,8 @@ __metadata:
     vite-plugin-dts: ^1.5.0
     vue: ^3.2.37
     vue-tsc: ^0.39.5
+  peerDependencies:
+    js-interpreter: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -3317,6 +3328,7 @@ __metadata:
     nx-cloud: ^16.2.0
     vue: ^2.7
   peerDependencies:
+    js-interpreter: ^4.0.0
     vue: ">= 2"
   languageName: unknown
   linkType: soft
@@ -3386,6 +3398,7 @@ __metadata:
     eslint-plugin-unused-imports: ^2.0.0
     git-cz: ^4.8.0
     husky: ^7.0.4
+    js-interpreter: ^4.0.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
     nx: ^16.6.0
@@ -25739,6 +25752,17 @@ __metadata:
   version: 1.1.0
   resolution: "join-component@npm:1.1.0"
   checksum: b904c2f98549e4195022caca3a7dc837f9706c670ff333f3d617f2aed23bce2841322a999734683b6ab8e202568ad810c11ff79b58a64df66888153f04750239
+  languageName: node
+  linkType: hard
+
+"js-interpreter@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "js-interpreter@npm:4.0.0"
+  dependencies:
+    minimist: ^1.2.6
+  bin:
+    js-interpreter: lib/cli.min.js
+  checksum: eca9931ea080a1bbf86cbc83b2ec823f7f560582bb17152265d82e7854c4823c3486b013f8d746ca49a5eae7c8ab005ff69dea8d7d3b11c662a01068b212d5c0
   languageName: node
   linkType: hard
 
