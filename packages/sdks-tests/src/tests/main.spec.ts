@@ -2,6 +2,7 @@ import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { targetContext } from './context.js';
 import {
+  BUILDER_TEXT_SELECTOR,
   excludeReactNative,
   expectStylesForElement,
   findTextInPage,
@@ -175,9 +176,7 @@ test.describe(targetContext.name, () => {
       excludeReactNative('shows default value', async ({ page }) => {
         await page.goto('/reactive-state');
 
-        const locator = isRNSDK
-          ? page.locator('[data-builder-text]')
-          : page.locator('.builder-text');
+        const locator = page.locator(BUILDER_TEXT_SELECTOR);
 
         await locator.getByText('0', { exact: true });
       });
