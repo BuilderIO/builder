@@ -24,6 +24,9 @@ useMetadata({
   rsc: {
     componentType: 'server',
   },
+  qwik: {
+    setUseStoreFirst: true,
+  },
 });
 
 type VariantsProviderProps = ContentVariantsProps & {
