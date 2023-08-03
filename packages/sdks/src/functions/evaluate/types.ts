@@ -12,3 +12,5 @@ export type ExecutorArgs = Pick<
   };
   event: Event | undefined;
 };
+
+export type Executor = (args: ExecutorArgs) => any;
