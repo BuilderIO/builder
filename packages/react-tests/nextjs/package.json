@@ -22,5 +22,14 @@
     "@types/react": "^16.4.1",
     "@types/react-dom": "^18.0.5",
     "typescript": "^5.1.6"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.next"
+        ]
+      }
+    }
   }
 }
