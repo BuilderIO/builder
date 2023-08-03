@@ -34,7 +34,8 @@
     "targets": {
       "build": {
         "outputs": [
-          "{projectRoot}/build"
+          "{projectRoot}/build",
+          "{projectRoot}/public/build"
         ]
       }
     }

@@ -101,8 +101,8 @@
           "{projectRoot}/output/solid/src",
           "{projectRoot}/output/vue/packages/_vue2/src",
           "{projectRoot}/output/vue/packages/_vue3/src",
-          "{projectRoot}/output/react/packages/rsc/src",
-          "{projectRoot}/output/react/packages/react/src"
+          "{projectRoot}/output/nextjs/src",
+          "{projectRoot}/output/react/src"
         ]
       }
     },

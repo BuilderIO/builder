@@ -83,19 +83,12 @@ jobs:
         with:
           node-version: '16.x'
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: npm install -g node-gyp
-
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Run prettier
         run: yarn ci:lint
@@ -145,19 +138,12 @@ jobs:
         with:
           node-version: '16.x'
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: npm install -g node-gyp
-
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Build E2E apps
         run: yarn workspace @builder.io/sdks e2e:build:${{ matrix.sdk }}
@@ -181,19 +167,12 @@ jobs:
         with:
           node-version: '16.x'
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: npm install -g node-gyp
-
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Build Core
         run: yarn nx build @builder.io/sdk
@@ -214,19 +193,12 @@ jobs:
         with:
           node-version: '16.x'
 
-      # https://github.com/laverdet/isolated-vm#requirements
-      - name: install isolate-vm build deps
-        run: npm install -g node-gyp
-
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Build E2E apps
         run: yarn workspace @builder.io/mono-repo e2e:build:old-react
