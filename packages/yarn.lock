@@ -2114,13 +2114,15 @@ __metadata:
   dependencies:
     lru-cache: ^10.0.0
     next: ^13.4.4
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     react: ^18.2.0
-    react-dom: ^18.2.0
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
     next: ^13.4.4
     react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 

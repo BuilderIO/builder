@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io SDK for React",
-  "version": "0.5.3-0",
+  "version": "0.5.3",
   "files": [
     "dist"
   ],
@@ -15,17 +15,19 @@
   },
   "peerDependencies": {
     "next": "^13.4.4",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "next": "^13.4.4",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "react": "^18.2.0",
     "rimraf": "^3.0.2",
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "lru-cache": "^10.0.0",
-    "react-dom": "^18.2.0"
+    "lru-cache": "^10.0.0"
   },
   "nx": {
     "implicitDependencies": [
