@@ -24,6 +24,7 @@ output/svelte/.svelte-kit
 
 e2e/sveltekit/.svelte-kit
 
-**/acorn_interpreter.js
+**/evaluate/acorn*
+**/evaluate/interpreter*
 **/proxy-polyfill.js
 **/proxy-polyfill-es5.js
