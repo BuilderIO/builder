@@ -15,14 +15,14 @@
     "build": "echo 'no need to build solid SDK'"
   },
   "dependencies": {
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
     "solid-styled-components": "^0.27.6"
   },
   "peerDependencies": {
     "solid-js": ">=1.5.7"
   },
   "devDependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "solid-js": ">=1.5.7",
     "vite": "^3.0.4",
     "vite-plugin-solid": "^2.2.6"

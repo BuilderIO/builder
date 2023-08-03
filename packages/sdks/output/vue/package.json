@@ -45,6 +45,8 @@
     "vue": ">= 2"
   },
   "devDependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "vue": "^2.7"
   },
   "nx": {
@@ -52,9 +54,5 @@
       "@builder.io/sdk-vue-2",
       "@builder.io/sdk-vue-3"
     ]
-  },
-  "dependencies": {
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0"
   }
 }

@@ -27,6 +27,8 @@
   "devDependencies": {
     "@builder.io/qwik": "^1.2.6",
     "@types/node": "latest",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "typescript": "^5.1.6",
     "vite": "^4.3.2"
   },
@@ -47,9 +49,5 @@
         ]
       }
     }
-  },
-  "dependencies": {
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0"
   }
 }
