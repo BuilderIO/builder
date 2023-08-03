@@ -22,7 +22,7 @@
     "@solidjs/router": "^0.8.2",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
-    "solid-js": "1.6.14",
+    "solid-js": "^1.7.2",
     "solid-start": "^0.2.26",
     "undici": "^5.15.1"
   },
