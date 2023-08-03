@@ -25,7 +25,8 @@
     "targets": {
       "build": {
         "outputs": [
-          "{projectRoot}/.nuxt"
+          "{projectRoot}/.nuxt",
+          "{projectRoot}/.output"
         ]
       }
     }
