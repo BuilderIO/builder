@@ -42,7 +42,6 @@
     "build": "nx run-many -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3"
   },
   "peerDependencies": {
-    "js-interpreter": "^4.0.0",
     "vue": ">= 2"
   },
   "devDependencies": {

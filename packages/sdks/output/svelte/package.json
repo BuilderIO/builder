@@ -44,9 +44,7 @@
     "typescript": "^5.1.6",
     "vite": "^4.4.8"
   },
-  "peerDependencies": {
-    "js-interpreter": "^4.0.0"
-  },
+  "peerDependencies": {},
   "nx": {
     "implicitDependencies": [
       "@builder.io/sdks"
