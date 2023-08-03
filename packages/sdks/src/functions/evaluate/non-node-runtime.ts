@@ -1,6 +1,6 @@
 import { logger } from '../../helpers/logger';
 import { set } from '../set';
-import Interpreter from 'js-interpreter';
+import Interpreter from './interpreter.js';
 import type { ExecutorArgs } from './types';
 
 const processCode = (code: string) => {

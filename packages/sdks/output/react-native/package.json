@@ -25,7 +25,6 @@
     "react-native-video": "^5.1.1"
   },
   "peerDependencies": {
-    "js-interpreter": "^4.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-native": ">=0.64.3",
