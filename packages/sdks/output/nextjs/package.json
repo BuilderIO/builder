@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io SDK for React",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "files": [
     "dist"
   ],

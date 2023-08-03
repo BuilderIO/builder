@@ -1,3 +1,7 @@
+### 0.5.4
+
+- Fix build issues caused by extraneous `acorn` import.
+
 ### 0.5.2
 
 - Fix: remove old `evaluate` logic that accidentally stayed in the bundle.
