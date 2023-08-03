@@ -5318,7 +5318,7 @@ Interpreter.prototype['setStateStack'] = Interpreter.prototype.setStateStack;
 Interpreter['VALUE_IN_DESCRIPTOR'] = Interpreter.VALUE_IN_DESCRIPTOR;
 
 // BUILDER.IO: added acorn.parse import here
-import { parse } from 'acorn';
+import { parse } from './acorn';
 Interpreter.nativeGlobal.acornParse = parse;
 
 // BUILDER.IO: exported Interpreter
