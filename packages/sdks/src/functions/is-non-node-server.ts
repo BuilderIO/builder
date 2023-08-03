@@ -7,5 +7,5 @@ export function isNonNodeServer(): boolean {
   const hasNode = () =>
     typeof process !== 'undefined' && process?.versions?.node;
 
-  return !isBrowser() && !hasNode();
+  return !isBrowser();
 }
