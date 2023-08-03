@@ -21,6 +21,9 @@
     "vite-plugin-dts": "^1.5.0",
     "vue-tsc": "^0.38.8"
   },
+  "peerDependencies": {
+    "js-interpreter": "^4.0.0"
+  },
   "nx": {
     "implicitDependencies": [
       "@builder.io/sdks"
