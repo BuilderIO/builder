@@ -26,9 +26,6 @@
     "solid-start": "^0.2.26",
     "undici": "^5.15.1"
   },
-  "engines": {
-    "node": ">=16.8"
-  },
   "nx": {
     "targets": {
       "build": {

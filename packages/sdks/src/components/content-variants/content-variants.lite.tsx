@@ -24,6 +24,9 @@ useMetadata({
   rsc: {
     componentType: 'server',
   },
+  qwik: {
+    setUseStoreFirst: true,
+  },
 });
 
 type VariantsProviderProps = ContentVariantsProps & {
@@ -67,6 +70,14 @@ export default function ContentVariants(props: VariantsProviderProps) {
       return getVariants(props.content)
         .map((value) => `.variant-${value.testVariationId} { display: none; } `)
         .join('');
+    },
+    get defaultContent() {
+      return state.shouldRenderVariants
+        ? { ...props.content, testVariationId: props.content?.id }
+        : handleABTestingSync({
+            item: props.content,
+            canTrack: getDefaultCanTrack(props.canTrack),
+          });
     },
   });
 
@@ -115,14 +126,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
           },
           default: {},
         })}
-        content={
-          state.shouldRenderVariants
-            ? props.content
-            : handleABTestingSync({
-                item: props.content,
-                canTrack: getDefaultCanTrack(props.canTrack),
-              })
-        }
+        content={state.defaultContent}
         classNameProp={`variant-${props.content?.id}`}
         showContent
         model={props.model}
