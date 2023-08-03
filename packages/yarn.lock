@@ -2081,7 +2081,6 @@ __metadata:
     vite: ^4.3.2
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
-    js-interpreter: ^4.0.0
     undici: ^5.14.0
   languageName: unknown
   linkType: soft
@@ -2102,7 +2101,6 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^4.9.4
   peerDependencies:
-    js-interpreter: ^4.0.0
     react: ^18.0.0
     react-dom: ^18.0.0
     react-native: ">=0.64.3"
@@ -2121,7 +2119,6 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
-    js-interpreter: ^4.0.0
     next: ^13.4.4
     react: ^18.2.0
   languageName: unknown
@@ -2137,7 +2134,6 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^4.9.4
   peerDependencies:
-    js-interpreter: ^4.0.0
     react: ^18.2.0
   languageName: unknown
   linkType: soft
@@ -2153,7 +2149,6 @@ __metadata:
     vite: ^3.0.4
     vite-plugin-solid: ^2.2.6
   peerDependencies:
-    js-interpreter: ^4.0.0
     solid-js: ">=1.5.7"
   languageName: unknown
   linkType: soft
@@ -2173,8 +2168,6 @@ __metadata:
     tslib: ^2.3.1
     typescript: ^5.1.6
     vite: ^4.4.8
-  peerDependencies:
-    js-interpreter: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -2194,8 +2187,6 @@ __metadata:
     vite-plugin-dts: ^1.5.0
     vue: ^2.7.7
     vue-tsc: ^0.38.8
-  peerDependencies:
-    js-interpreter: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -2214,8 +2205,6 @@ __metadata:
     vite-plugin-dts: ^1.5.0
     vue: ^3.2.37
     vue-tsc: ^0.39.5
-  peerDependencies:
-    js-interpreter: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -2227,7 +2216,6 @@ __metadata:
     nx-cloud: ^16.2.0
     vue: ^2.7
   peerDependencies:
-    js-interpreter: ^4.0.0
     vue: ">= 2"
   languageName: unknown
   linkType: soft
