@@ -15,7 +15,6 @@
     "build": "yarn clean && tsc"
   },
   "peerDependencies": {
-    "js-interpreter": "^4.0.0",
     "react": "^18.2.0"
   },
   "devDependencies": {
