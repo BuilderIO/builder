@@ -26,7 +26,10 @@ export async function fetchContent(
 }
 
 /**
- * @deprecated Use `fetchContent` instead.
+ * @deprecated
+ * Consider using `fetchBuilderProps` instead for easier setup.
+ *
+ * NOTE: `getContent` was renamed to `fetchContent`, and will be removed in a future release.
  */
 export const getContent = fetchContent;
 
