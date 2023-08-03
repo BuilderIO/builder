@@ -90,9 +90,6 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Install dependencies
-        run: yarn
-
       - name: Run prettier
         run: yarn ci:lint
 
@@ -148,9 +145,6 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Install dependencies
-        run: yarn
-
       - name: Build E2E apps
         run: yarn workspace @builder.io/sdks e2e:build:${{ matrix.sdk }}
 
@@ -180,9 +174,6 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Install dependencies
-        run: yarn
-
       - name: Build Core
         run: yarn nx build @builder.io/sdk
 
@@ -208,9 +199,6 @@ jobs:
           cwd: 'packages/'
           cache-node-modules: true
           cache-install-state: true
-
-      - name: Install dependencies
-        run: yarn
 
       - name: Build E2E apps
         run: yarn workspace @builder.io/mono-repo e2e:build:old-react
