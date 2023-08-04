@@ -13,10 +13,13 @@ const checkContentHasResults = (
   content: ContentResponse
 ): content is ContentResults => 'results' in content;
 
+/**
+ * Returns a the first entry that matches the given options.
+ */
 export async function fetchOneEntry(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  const allContent = await fetchAllEntries({ ...options, limit: 1 });
+  const allContent = await fetchEntries({ ...options, limit: 1 });
 
   if (allContent) {
     return allContent.results[0] || null;
@@ -95,7 +98,10 @@ export const _processContentResult = async (
   return content;
 };
 
-export async function fetchAllEntries(options: GetContentOptions) {
+/**
+ * Returns a paginated array of entries that match the given options.
+ */
+export async function fetchEntries(options: GetContentOptions) {
   try {
     const url = generateContentUrl(options);
     const content = await _fetchContent(options);
@@ -113,6 +119,6 @@ export async function fetchAllEntries(options: GetContentOptions) {
 }
 
 /**
- * @deprecated Use `fetchAllEntries` instead.
+ * @deprecated Use `fetchEntries` instead.
  */
-export const getAllContent = fetchAllEntries;
+export const getAllContent = fetchEntries;

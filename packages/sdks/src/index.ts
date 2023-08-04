@@ -12,7 +12,7 @@ export { setEditorSettings } from './functions/set-editor-settings.js';
 export type { Settings } from './functions/set-editor-settings.js';
 
 export {
-  fetchAllEntries,
+  fetchEntries,
   fetchOneEntry,
   getAllContent,
   getContent,
