@@ -13,7 +13,7 @@ export type { Settings } from './functions/set-editor-settings.js';
 
 export {
   fetchAllContent,
-  fetchContent,
+  fetchOneContent,
   getAllContent,
   getContent,
   _processContentResult,
