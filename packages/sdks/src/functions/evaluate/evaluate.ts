@@ -1,13 +1,16 @@
-import type {
-  BuilderContextInterface,
-  BuilderRenderState,
-} from '../../context/types.js';
+import type { BuilderContextInterface } from '../../context/types.js';
 import { logger } from '../../helpers/logger.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { isNonNodeServer } from '../is-non-node-server.js';
-import type { ExecutorArgs } from './types.js';
+import {
+  flattenState,
+  type ExecutorArgs,
+  getFunctionArguments,
+} from './helpers.js';
 import { runInNonNode } from './non-node-runtime/index.js';
+import { getUserAttributes } from '../track/helpers.js';
+import { runInNode } from './node-runtime/index.js';
 
 export function evaluate({
   code,
@@ -29,10 +32,11 @@ export function evaluate({
     logger.warn('Skipping evaluation of empty code block.');
     return;
   }
-  const builder = {
+  const builder: ExecutorArgs['builder'] = {
     isEditing: isEditing(),
     isBrowser: isBrowser(),
     isServer: !isBrowser(),
+    getUserAttributes: () => getUserAttributes(),
   };
 
   // Be able to handle simple expressions like "state.foo" or "1 + 1"
@@ -71,17 +75,17 @@ export const runInBrowser = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const state = flattenState(rootState, localState, rootSetState);
+  const functionArgs = getFunctionArguments({
+    builder,
+    context,
+    event,
+    state: flattenState(rootState, localState, rootSetState),
+  });
 
   try {
-    return new Function(
-      'builder',
-      'Builder' /* <- legacy */,
-      'state',
-      'context',
-      'event',
-      useCode
-    )(builder, builder, state, context, event);
+    return new Function(...functionArgs.map(([name]) => name), useCode)(
+      ...functionArgs.map(([, value]) => value)
+    );
   } catch (e) {
     logger.warn(
       'Builder custom code error: \n While Evaluating: \n ',
@@ -91,37 +95,3 @@ export const runInBrowser = ({
     );
   }
 };
-
-export const runInNode = (args: ExecutorArgs) => {
-  // TO-DO: use vm-isolate
-  return runInBrowser(args);
-};
-
-export function flattenState(
-  rootState: Record<string | symbol, any>,
-  localState: Record<string | symbol, any> | undefined,
-  rootSetState: ((rootState: BuilderRenderState) => void) | undefined
-): BuilderRenderState {
-  if (rootState === localState) {
-    throw new Error('rootState === localState');
-  }
-
-  return new Proxy(rootState, {
-    get: (_, prop) => {
-      if (localState && prop in localState) {
-        return localState[prop];
-      }
-      return rootState[prop as string];
-    },
-    set: (_, prop, value) => {
-      if (localState && prop in localState) {
-        throw new Error(
-          'Writing to local state is not allowed as it is read-only.'
-        );
-      }
-      rootState[prop as string] = value;
-      rootSetState?.(rootState);
-      return true;
-    },
-  });
-}

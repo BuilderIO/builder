@@ -1,7 +1,7 @@
 import { logger } from '../../../helpers/logger';
 import { set } from '../../set';
 import Interpreter from '../acorn-interpreter.js';
-import type { ExecutorArgs } from '../types';
+import { getFunctionArguments, type ExecutorArgs } from '../helpers';
 
 const processCode = (code: string) => {
   return code
@@ -38,19 +38,18 @@ export const runInNonNode = ({
 }: ExecutorArgs) => {
   const state = { ...rootState, ...localState };
 
-  const properties = {
-    state,
-    Builder: builder,
+  const properties = getFunctionArguments({
     builder,
     context,
     event,
-  };
+    state,
+  });
 
   /**
    * Deserialize all properties from JSON strings to JS objects
    */
-  const prependedCode = Object.keys(properties)
-    .map((key) => `var ${key} = JSON.parse(${getJSONValName(key)});`)
+  const prependedCode = properties
+    .map(([key]) => `var ${key} = JSON.parse(${getJSONValName(key)});`)
     .join('\n');
   const cleanedCode = processCode(useCode);
 
@@ -75,8 +74,7 @@ theFunction();
     /**
      * serialize all function args to JSON strings
      */
-    Object.keys(properties).forEach((key) => {
-      const val = properties[key as keyof typeof properties] || {};
+    properties.forEach(([key, val]) => {
       const jsonVal = JSON.stringify(val);
       interpreter.setProperty(globalObject, getJSONValName(key), jsonVal);
     });

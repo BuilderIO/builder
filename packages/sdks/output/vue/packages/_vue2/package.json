@@ -25,5 +25,8 @@
     "implicitDependencies": [
       "@builder.io/sdks"
     ]
+  },
+  "peerDependencies": {
+    "isolated-vm": "^4.6.0"
   }
 }

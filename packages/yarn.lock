@@ -2081,6 +2081,7 @@ __metadata:
     vite: ^4.3.2
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
+    isolated-vm: ^4.6.0
     undici: ^5.14.0
   languageName: unknown
   linkType: soft
@@ -2101,6 +2102,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^4.9.4
   peerDependencies:
+    isolated-vm: ^4.6.0
     react: ^18.0.0
     react-dom: ^18.0.0
     react-native: ">=0.64.3"
@@ -2120,6 +2122,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
+    isolated-vm: ^4.6.0
     next: ^13.4.4
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -2136,6 +2139,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^4.9.4
   peerDependencies:
+    isolated-vm: ^4.6.0
     react: ^18.2.0
   languageName: unknown
   linkType: soft
@@ -2151,6 +2155,7 @@ __metadata:
     vite: ^3.0.4
     vite-plugin-solid: ^2.2.6
   peerDependencies:
+    isolated-vm: ^4.6.0
     solid-js: ">=1.5.7"
   languageName: unknown
   linkType: soft
@@ -2170,6 +2175,8 @@ __metadata:
     tslib: ^2.3.1
     typescript: ^5.1.6
     vite: ^4.4.8
+  peerDependencies:
+    isolated-vm: ^4.6.0
   languageName: unknown
   linkType: soft
 
@@ -2189,6 +2196,8 @@ __metadata:
     vite-plugin-dts: ^1.5.0
     vue: ^2.7.7
     vue-tsc: ^0.38.8
+  peerDependencies:
+    isolated-vm: ^4.6.0
   languageName: unknown
   linkType: soft
 
@@ -2207,6 +2216,8 @@ __metadata:
     vite-plugin-dts: ^1.5.0
     vue: ^3.2.37
     vue-tsc: ^0.39.5
+  peerDependencies:
+    isolated-vm: ^4.6.0
   languageName: unknown
   linkType: soft
 
@@ -2218,6 +2229,7 @@ __metadata:
     nx-cloud: ^16.2.0
     vue: ^2.7
   peerDependencies:
+    isolated-vm: ^4.6.0
     vue: ">= 2"
   languageName: unknown
   linkType: soft
@@ -2287,6 +2299,7 @@ __metadata:
     eslint-plugin-unused-imports: ^2.0.0
     git-cz: ^4.8.0
     husky: ^7.0.4
+    isolated-vm: ^4.6.0
     js-interpreter: ^4.0.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
@@ -18076,6 +18089,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expand-template@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "expand-template@npm:2.0.3"
+  checksum: 588c19847216421ed92befb521767b7018dc88f88b0576df98cb242f20961425e96a92cbece525ef28cc5becceae5d544ae0f5b9b5e2aa05acb13716ca5b3099
+  languageName: node
+  linkType: hard
+
 "expand-tilde@npm:^2.0.0, expand-tilde@npm:^2.0.2":
   version: 2.0.2
   resolution: "expand-tilde@npm:2.0.2"
@@ -19715,6 +19735,13 @@ __metadata:
   dependencies:
     git-up: ^7.0.0
   checksum: 212a9b0343e9199998b6a532efe2014476a7a1283af393663ca49ac28d4768929aad16d3322e2685236065ee394dbc93e7aa63a48956531e984c56d8b5edb54d
+  languageName: node
+  linkType: hard
+
+"github-from-package@npm:0.0.0":
+  version: 0.0.0
+  resolution: "github-from-package@npm:0.0.0"
+  checksum: 14e448192a35c1e42efee94c9d01a10f42fe790375891a24b25261246ce9336ab9df5d274585aedd4568f7922246c2a78b8a8cd2571bfe99c693a9718e7dd0e3
   languageName: node
   linkType: hard
 
@@ -22506,6 +22533,16 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: 86626a72d35ed0ee731e00ad19bc6e8a0433c4f34a5dd5b1d415d425f1f0f6b0d04c6d10e7a588025b2956d562fcf7a69e9e20f96746978d3a4e7862374a3806
+  languageName: node
+  linkType: hard
+
+"isolated-vm@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "isolated-vm@npm:4.6.0"
+  dependencies:
+    node-gyp: latest
+    prebuild-install: ^7.1.1
+  checksum: 011853d46bc934751012f5c1ed3eaba43dc4bd274672e59ff8e4c7eb0df668c93f3e0b91e3b4e812d2b8476c9ace218f34e7a3188b08b343409370e70044a874
   languageName: node
   linkType: hard
 
@@ -27135,7 +27172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp-classic@npm:^0.5.2":
+"mkdirp-classic@npm:^0.5.2, mkdirp-classic@npm:^0.5.3":
   version: 0.5.3
   resolution: "mkdirp-classic@npm:0.5.3"
   checksum: 3f4e088208270bbcc148d53b73e9a5bd9eef05ad2cbf3b3d0ff8795278d50dd1d11a8ef1875ff5aea3fa888931f95bfcb2ad5b7c1061cfefd6284d199e6776ac
@@ -27397,6 +27434,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"napi-build-utils@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "napi-build-utils@npm:1.0.2"
+  checksum: 06c14271ee966e108d55ae109f340976a9556c8603e888037145d6522726aebe89dd0c861b4b83947feaf6d39e79e08817559e8693deedc2c94e82c5cbd090c7
+  languageName: node
+  linkType: hard
+
 "natural-compare-lite@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare-lite@npm:1.4.0"
@@ -27615,6 +27659,15 @@ __metadata:
   version: 3.0.4
   resolution: "nocache@npm:3.0.4"
   checksum: 6be9ee67eb561ecedc56d805c024c0fda55b9836ecba659c720073b067929aa4fe04bb7121480e004c9cf52989e62d8720f29a7fe0269f1a4941221a1e4be1c2
+  languageName: node
+  linkType: hard
+
+"node-abi@npm:^3.3.0":
+  version: 3.45.0
+  resolution: "node-abi@npm:3.45.0"
+  dependencies:
+    semver: ^7.3.5
+  checksum: 18c4305d7de5f1132741a2a66ba652941518210d02c9268702abe97ce1c166db468b4fc3e85fff04b9c19218c2e47f4e295f9a46422dc834932f4e11443400cd
   languageName: node
   linkType: hard
 
@@ -31546,6 +31599,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prebuild-install@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "prebuild-install@npm:7.1.1"
+  dependencies:
+    detect-libc: ^2.0.0
+    expand-template: ^2.0.3
+    github-from-package: 0.0.0
+    minimist: ^1.2.3
+    mkdirp-classic: ^0.5.3
+    napi-build-utils: ^1.0.1
+    node-abi: ^3.3.0
+    pump: ^3.0.0
+    rc: ^1.2.7
+    simple-get: ^4.0.0
+    tar-fs: ^2.0.0
+    tunnel-agent: ^0.6.0
+  bin:
+    prebuild-install: bin.js
+  checksum: dbf96d0146b6b5827fc8f67f72074d2e19c69628b9a7a0a17d0fad1bf37e9f06922896972e074197fc00a52eae912993e6ef5a0d471652f561df5cb516f3f467
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -32254,7 +32329,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rc@npm:^1.0.1, rc@npm:^1.1.6, rc@npm:^1.2.8, rc@npm:~1.2.7":
+"rc@npm:^1.0.1, rc@npm:^1.1.6, rc@npm:^1.2.7, rc@npm:^1.2.8, rc@npm:~1.2.7":
   version: 1.2.8
   resolution: "rc@npm:1.2.8"
   dependencies:
@@ -34601,6 +34676,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"simple-concat@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "simple-concat@npm:1.0.1"
+  checksum: 4d211042cc3d73a718c21ac6c4e7d7a0363e184be6a5ad25c8a1502e49df6d0a0253979e3d50dbdd3f60ef6c6c58d756b5d66ac1e05cda9cacd2e9fc59e3876a
+  languageName: node
+  linkType: hard
+
+"simple-get@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "simple-get@npm:4.0.1"
+  dependencies:
+    decompress-response: ^6.0.0
+    once: ^1.3.1
+    simple-concat: ^1.0.0
+  checksum: e4132fd27cf7af230d853fa45c1b8ce900cb430dd0a3c6d3829649fe4f2b26574c803698076c4006450efb0fad2ba8c5455fbb5755d4b0a5ec42d4f12b31d27e
+  languageName: node
+  linkType: hard
+
 "simple-plist@npm:^1.1.0":
   version: 1.4.0
   resolution: "simple-plist@npm:1.4.0"
@@ -36278,7 +36371,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar-fs@npm:^2.1.1":
+"tar-fs@npm:^2.0.0, tar-fs@npm:^2.1.1":
   version: 2.1.1
   resolution: "tar-fs@npm:2.1.1"
   dependencies:
