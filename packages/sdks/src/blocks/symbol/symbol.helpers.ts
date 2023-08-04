@@ -1,6 +1,6 @@
 import type { BuilderContextInterface } from '../../context/types.js';
-import { getContent } from '../../functions/get-content/index.js';
 import { logger } from '../../helpers/logger.js';
+import { fetchOneEntry } from '../../index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 
 export interface SymbolInfo {
@@ -12,7 +12,7 @@ export interface SymbolInfo {
   dynamic?: boolean;
 }
 
-export const fetchContent = async ({
+export const fetchSymbolContent = async ({
   builderContextValue,
   symbol,
 }: {
@@ -33,7 +33,7 @@ export const fetchContent = async ({
     // This is a hack, we should not need to check for this, but it is needed for Svelte.
     builderContextValue?.apiKey
   ) {
-    return getContent({
+    return fetchOneEntry({
       model: symbol.model,
       apiKey: builderContextValue.apiKey,
       apiVersion: builderContextValue.apiVersion,

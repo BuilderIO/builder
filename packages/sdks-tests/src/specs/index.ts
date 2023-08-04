@@ -96,14 +96,14 @@ type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
   pathname?: string;
-  processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+  _processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
   getContent?: (opts: any) => Promise<BuilderContent | null>;
   options?: any;
   data?: 'real' | 'mock';
 }) => {
   const {
     pathname: _pathname = getPathnameFromWindow(),
-    processContentResult,
+    _processContentResult,
     data = 'mock',
     getContent,
     options,
@@ -145,8 +145,8 @@ export const getProps = async (args: {
     ...extraApiVersionProp,
   };
 
-  const content = processContentResult
-    ? (await processContentResult(props, { results: [_content] })).results[0]
+  const content = _processContentResult
+    ? (await _processContentResult(props, { results: [_content] })).results[0]
     : _content;
 
   return { ...props, content } as any;

@@ -17,7 +17,7 @@ import { filterAttrs } from '../helpers.js';
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import { setAttrs } from '../helpers.js';
-import { fetchContent } from './symbol.helpers.js';
+import { fetchSymbolContent } from './symbol.helpers.js';
 import type { Nullable } from '../../types/typescript.js';
 
 useMetadata({
@@ -69,7 +69,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
       default: props.symbol?.content,
       rsc: (async () =>
         props.symbol?.content ||
-        (await fetchContent({
+        (await fetchSymbolContent({
           symbol: props.symbol,
           builderContextValue: props.builderContext.value,
         }))) as Nullable<BuilderContent>,
@@ -77,7 +77,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     setContent() {
       if (state.contentToUse) return;
 
-      fetchContent({
+      fetchSymbolContent({
         symbol: props.symbol,
         builderContextValue: props.builderContext.value,
       }).then((newContent) => {

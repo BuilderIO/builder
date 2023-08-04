@@ -30,7 +30,7 @@ import type {
 } from '../content.types.js';
 import { logger } from '../../../helpers/logger.js';
 import type { ComponentInfo } from '../../../types/components.js';
-import { getContent } from '../../../functions/get-content/index.js';
+import { fetchOneEntry } from '../../../functions/get-content/index.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
@@ -330,7 +330,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
               previewApiKey === props.apiKey &&
               (!props.content || searchParamPreviewId === props.content.id)
             ) {
-              getContent({
+              fetchOneEntry({
                 model: props.model,
                 apiKey: props.apiKey,
                 apiVersion: props.builderContextSignal.value.apiVersion,
