@@ -1,13 +1,7 @@
-import { getIdFromSearchParams } from './helpers';
-import { init } from './init';
-import type { GlobalWCache } from './types';
+import type { BuilderContent } from '../../types/builder-content';
 
-export function getPreviewContent(searchParams: URLSearchParams) {
-  init();
-
-  const id = getIdFromSearchParams(searchParams);
-
-  return typeof id === 'string'
-    ? (globalThis as GlobalWCache)._BUILDER_PREVIEW_LRU_CACHE.get(id)
-    : undefined;
+export function getPreviewContent(
+  _searchParams: URLSearchParams
+): BuilderContent | undefined {
+  return undefined;
 }

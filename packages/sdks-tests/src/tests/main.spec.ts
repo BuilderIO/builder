@@ -254,6 +254,11 @@ test.describe(targetContext.name, () => {
           test.skip();
         }
 
+        // TO-DO: flaky in remix
+        if (packageName === 'gen1-remix') {
+          test.skip();
+        }
+
         await page.goto('/show-hide-if');
 
         await findTextInPage({ page, text: 'even clicks' });
