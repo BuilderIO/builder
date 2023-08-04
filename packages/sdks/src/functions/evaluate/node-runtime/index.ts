@@ -1,10 +1,6 @@
 import * as ivm from 'isolated-vm';
-import type { FunctionArguments } from '../helpers';
-import {
-  flattenState,
-  type ExecutorArgs,
-  getFunctionArguments,
-} from '../helpers';
+import type { FunctionArguments, ExecutorArgs } from '../helpers';
+import { flattenState, getFunctionArguments } from '../helpers';
 
 const makeFn = ({
   code,

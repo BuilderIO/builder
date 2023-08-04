@@ -3,11 +3,8 @@ import { logger } from '../../helpers/logger.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { isNonNodeServer } from '../is-non-node-server.js';
-import {
-  flattenState,
-  type ExecutorArgs,
-  getFunctionArguments,
-} from './helpers.js';
+import type { ExecutorArgs } from './helpers.js';
+import { flattenState, getFunctionArguments } from './helpers.js';
 import { runInNonNode } from './non-node-runtime/index.js';
 import { getUserAttributes } from '../track/helpers.js';
 import { runInNode } from './node-runtime/index.js';
