@@ -12,8 +12,8 @@ export { setEditorSettings } from './functions/set-editor-settings.js';
 export type { Settings } from './functions/set-editor-settings.js';
 
 export {
-  fetchAllContent,
-  fetchOneContent,
+  fetchAllEntries,
+  fetchOneEntry,
   getAllContent,
   getContent,
   _processContentResult,

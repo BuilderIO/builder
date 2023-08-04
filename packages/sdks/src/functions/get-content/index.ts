@@ -13,10 +13,10 @@ const checkContentHasResults = (
   content: ContentResponse
 ): content is ContentResults => 'results' in content;
 
-export async function fetchOneContent(
+export async function fetchOneEntry(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  const allContent = await fetchAllContent({ ...options, limit: 1 });
+  const allContent = await fetchAllEntries({ ...options, limit: 1 });
 
   if (allContent) {
     return allContent.results[0] || null;
@@ -29,9 +29,9 @@ export async function fetchOneContent(
  * @deprecated
  * Consider using `fetchBuilderProps` instead for easier setup.
  *
- * NOTE: `getContent` was renamed to `fetchOneContent` and will be removed in a future release.
+ * NOTE: `getContent` was renamed to `fetchOneEntry` and will be removed in a future release.
  */
-export const getContent = fetchOneContent;
+export const getContent = fetchOneEntry;
 
 type ContentResults = {
   results: BuilderContent[];
@@ -95,7 +95,7 @@ export const _processContentResult = async (
   return content;
 };
 
-export async function fetchAllContent(options: GetContentOptions) {
+export async function fetchAllEntries(options: GetContentOptions) {
   try {
     const url = generateContentUrl(options);
     const content = await _fetchContent(options);
@@ -113,6 +113,6 @@ export async function fetchAllContent(options: GetContentOptions) {
 }
 
 /**
- * @deprecated Use `fetchAllContent` instead.
+ * @deprecated Use `fetchAllEntries` instead.
  */
-export const getAllContent = fetchAllContent;
+export const getAllContent = fetchAllEntries;

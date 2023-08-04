@@ -1,7 +1,7 @@
 import { getBuilderSearchParams } from './get-builder-search-params/index.js';
 import type { ContentVariantsProps } from '../components/content-variants/content-variants.types';
 import type { Dictionary } from '../types/typescript';
-import { fetchOneContent } from './get-content';
+import { fetchOneEntry } from './get-content';
 import type { GetContentOptions } from './get-content/types';
 
 type GetBuilderPropsOptions = (Omit<GetContentOptions, 'model'> & {
@@ -67,6 +67,6 @@ export const fetchBuilderProps = async (
   return {
     apiKey: getContentArgs.apiKey,
     model: getContentArgs.model,
-    content: await fetchOneContent(getContentArgs),
+    content: await fetchOneEntry(getContentArgs),
   };
 };
