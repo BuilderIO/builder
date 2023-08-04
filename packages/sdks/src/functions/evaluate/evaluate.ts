@@ -57,11 +57,16 @@ export function evaluate({
     localState,
   };
 
-  if (isBrowser()) return runInBrowser(args);
+  try {
+    if (isBrowser()) return runInBrowser(args);
 
-  if (isNonNodeServer()) return runInNonNode(args);
+    if (isNonNodeServer()) return runInNonNode(args);
 
-  return runInNode(args);
+    return runInNode(args);
+  } catch (e) {
+    logger.warn('Custom code error.', { useCode, error: e });
+    return undefined;
+  }
 }
 export const runInBrowser = ({
   useCode,

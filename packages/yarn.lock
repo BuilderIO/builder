@@ -2934,6 +2934,7 @@ __metadata:
     "@typescript-eslint/parser": 5.48.0
     eslint: 8.31.0
     eslint-plugin-qwik: 0.16.2
+    isolated-vm: ^4.6.0
     node-fetch: 3.3.0
     nx: ^16.6.0
     nx-cloud: ^16.2.0

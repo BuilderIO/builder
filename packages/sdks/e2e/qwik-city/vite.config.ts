@@ -15,5 +15,16 @@ export default defineConfig(() => {
         'Cache-Control': 'public, max-age=600',
       },
     },
+    build: {
+      rollupOptions: {
+        external: ['@builder.io/qwik', 'js-interpreter', 'isolated-vm'],
+      },
+    },
+    optimizeDeps: {
+      exclude: ['isolated-vm'],
+    },
+    esbuild: {
+      exclude: ['isolated-vm'],
+    },
   };
 });

@@ -10,7 +10,7 @@ export default defineConfig(() => {
         fileName: (format) => `index.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
       },
       rollupOptions: {
-        external: ['@builder.io/qwik', 'js-interpreter'],
+        external: ['@builder.io/qwik', 'js-interpreter', 'isolated-vm'],
       },
     },
     plugins: [qwikVite()],
