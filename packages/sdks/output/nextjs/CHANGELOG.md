@@ -1,3 +1,7 @@
+### 0.5.5
+
+- No changes.
+
 ### 0.5.4
 
 - Fix build issues caused by extraneous `acorn` import.
