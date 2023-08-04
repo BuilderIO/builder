@@ -1,6 +1,12 @@
+/**
+ *  - /data-bindings page shows issues getting state.entries.article: nested values
+ *  - works fine in react SDK
+ *
+ */
+
 import * as ivm from 'isolated-vm';
 import type { FunctionArguments, ExecutorArgs } from '../helpers';
-import { flattenState, getFunctionArguments } from '../helpers';
+import { getFunctionArguments } from '../helpers';
 import { logger } from '../../../helpers/logger';
 const processCode = ({
   code,
@@ -108,7 +114,7 @@ export const runInNode = ({
   });
 
   const useCode = processCode({
-    code: code,
+    code,
     args,
     useReturn,
   });
