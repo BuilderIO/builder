@@ -1,4 +1,4 @@
-import { getBuilderSearchParams } from '..';
+import { getBuilderSearchParams } from './get-builder-search-params/index.js';
 import type { ContentVariantsProps } from '../components/content-variants/content-variants.types';
 import type { Dictionary } from '../types/typescript';
 import { fetchContent } from './get-content';
@@ -42,6 +42,9 @@ type GetBuilderPropsOptions = (Omit<GetContentOptions, 'model'> & {
       }
   );
 
+/**
+ * Fetches builder content, and returns it along with sensible defaults for other props that `Content` needs to render.
+ */
 export const fetchBuilderProps = async (
   _args: GetBuilderPropsOptions
 ): Promise<ContentVariantsProps> => {
