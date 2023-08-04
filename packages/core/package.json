@@ -47,6 +47,8 @@
     "glob": "^7.2.3",
     "glob-promise": "^4.2.2",
     "jest": "27.4.7",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "rollup": "^2.38.5",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -67,8 +69,6 @@
   "dependencies": {
     "hash-sum": "^2.0.0",
     "node-fetch": "^2.3.0",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
     "tslib": "^1.10.0"
   },
   "installConfig": {
