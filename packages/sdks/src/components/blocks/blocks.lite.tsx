@@ -1,6 +1,6 @@
 import BlockStyles from '../block/components/block-styles.lite';
+import type { BlockProps } from '../block/block.lite';
 import Block from '../block/block.lite';
-import type { Signal } from '@builder.io/mitosis';
 import {
   For,
   Show,
@@ -10,17 +10,11 @@ import {
 } from '@builder.io/mitosis';
 import type { BlocksWrapperProps } from './blocks-wrapper.lite';
 import BlocksWrapper from './blocks-wrapper.lite';
-import type {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../context/types.js';
 import BuilderContext from '../../context/builder.context.lite';
 import ComponentsContext from '../../context/components.context.lite';
 
-export type BlocksProps = Partial<BlocksWrapperProps> & {
-  context?: Signal<BuilderContextInterface>;
-  registeredComponents?: RegisteredComponents;
-};
+export type BlocksProps = Partial<BlocksWrapperProps> &
+  Omit<BlockProps, 'block'>;
 
 useMetadata({
   rsc: {
@@ -53,12 +47,12 @@ export default function Blocks(props: BlocksProps) {
                 rsc: props.context,
                 default: props.context || builderContext,
               })}
-              registeredComponents={useTarget({
-                rsc: props.registeredComponents,
+              components={useTarget({
+                rsc: props.components,
                 default:
-                  props.registeredComponents ||
-                  componentsContext.registeredComponents,
+                  props.components || componentsContext.registeredComponents,
               })}
+              serverExecutor={props.serverExecutor}
             />
           )}
         </For>
@@ -71,8 +65,9 @@ export default function Blocks(props: BlocksProps) {
               block={block}
               context={useTarget({
                 rsc: props.context?.value,
-                default: props.context?.value || builderContext.value,
+                default: props.context.value || builderContext.value,
               })}
+              serverExecutor={props.serverExecutor}
             />
           )}
         </For>

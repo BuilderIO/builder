@@ -136,6 +136,7 @@ export default function ContentComponent(props: ContentProps) {
       classNameProp={props.classNameProp}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
+      serverExecutor={props.serverExecutor}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },
@@ -159,7 +160,8 @@ export default function ContentComponent(props: ContentProps) {
       <Blocks
         blocks={builderContextSignal.value.content?.data?.blocks}
         context={builderContextSignal}
-        registeredComponents={state.registeredComponents}
+        components={state.registeredComponents}
+        serverExecutor={props.serverExecutor}
       />
     </EnableEditor>
   );

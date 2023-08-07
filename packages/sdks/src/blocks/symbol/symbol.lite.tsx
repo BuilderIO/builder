@@ -8,7 +8,7 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import type {
-  BuilderComponentsProp,
+  BuilderRenderingOptionsProps,
   PropsWithBuilderData,
 } from '../../types/builder-props.js';
 import { filterAttrs } from '../helpers.js';
@@ -35,7 +35,7 @@ export interface SymbolInfo {
   dynamic?: boolean;
 }
 
-export interface SymbolProps extends BuilderComponentsProp {
+export interface SymbolProps extends BuilderRenderingOptionsProps {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
   dynamic?: boolean;

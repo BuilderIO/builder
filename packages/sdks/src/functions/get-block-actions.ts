@@ -1,22 +1,21 @@
 import { TARGET } from '../constants/target.js';
-import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { getEventHandlerName } from './event-handler-name.js';
+import type { Options } from './get-block-actions-handler.js';
 import { createEventHandler } from './get-block-actions-handler.js';
 
 type Actions = { [index: string]: (event: Event) => any };
 
-export function getBlockActions(
-  options: {
-    block: BuilderBlock;
-    stripPrefix?: boolean;
-  } & Pick<
-    BuilderContextInterface,
-    'localState' | 'context' | 'rootState' | 'rootSetState'
-  >
-): Actions {
+export function getBlockActions({
+  block,
+  stripPrefix,
+  ...options
+}: {
+  block: BuilderBlock;
+  stripPrefix?: boolean;
+} & Options): Actions {
   const obj: Actions = {};
-  const optionActions = options.block.actions ?? {};
+  const optionActions = block.actions ?? {};
 
   for (const key in optionActions) {
     // eslint-disable-next-line no-prototype-builtins
@@ -27,7 +26,7 @@ export function getBlockActions(
 
     let eventHandlerName = getEventHandlerName(key);
 
-    if (options.stripPrefix) {
+    if (stripPrefix) {
       switch (TARGET) {
         case 'vue2':
         case 'vue3':

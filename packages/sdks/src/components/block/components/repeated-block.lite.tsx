@@ -43,7 +43,7 @@ export default function RepeatedBlock(props: Props) {
     <Block
       block={props.block}
       context={store}
-      registeredComponents={props.registeredComponents}
+      components={props.registeredComponents}
     />
   );
 }

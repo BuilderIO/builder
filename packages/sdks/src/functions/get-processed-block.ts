@@ -1,22 +1,21 @@
-import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate';
+import type { EvaluatorArgs } from './evaluate/evaluate.js';
 import { fastClone } from './fast-clone.js';
 import { set } from './set.js';
 import { transformBlock } from './transform-block.js';
 
+type PassThroughProps = Pick<
+  EvaluatorArgs,
+  'localState' | 'context' | 'rootState' | 'rootSetState' | 'serverExecutor'
+>;
+
 const evaluateBindings = ({
   block,
-  context,
-  localState,
-  rootState,
-  rootSetState,
+  ...args
 }: {
   block: BuilderBlock;
-} & Pick<
-  BuilderContextInterface,
-  'localState' | 'context' | 'rootState' | 'rootSetState'
->): BuilderBlock => {
+} & PassThroughProps): BuilderBlock => {
   if (!block.bindings) {
     return block;
   }
@@ -31,10 +30,7 @@ const evaluateBindings = ({
     const expression = block.bindings[binding];
     const value = evaluate({
       code: expression,
-      localState,
-      rootState,
-      rootSetState,
-      context,
+      ...args,
     });
     set(copied, binding, value);
   }
@@ -44,11 +40,8 @@ const evaluateBindings = ({
 
 export function getProcessedBlock({
   block,
-  context,
   shouldEvaluateBindings,
-  localState,
-  rootState,
-  rootSetState,
+  ...args
 }: {
   block: BuilderBlock;
   /**
@@ -56,19 +49,13 @@ export function getProcessedBlock({
    * also sometimes too early to consider bindings, e.g. when we might be looking at a repeated block.
    */
   shouldEvaluateBindings: boolean;
-} & Pick<
-  BuilderContextInterface,
-  'localState' | 'context' | 'rootState' | 'rootSetState'
->): BuilderBlock {
+} & PassThroughProps): BuilderBlock {
   const transformedBlock = transformBlock(block);
 
   if (shouldEvaluateBindings) {
     return evaluateBindings({
       block: transformedBlock,
-      localState,
-      rootState,
-      rootSetState,
-      context,
+      ...args,
     });
   } else {
     return transformedBlock;

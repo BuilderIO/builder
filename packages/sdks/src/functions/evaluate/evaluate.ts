@@ -2,12 +2,19 @@ import type { BuilderContextInterface } from '../../context/types.js';
 import { logger } from '../../helpers/logger.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
-import { isNonNodeServer } from '../is-non-node-server.js';
-import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
-import { runInNonNode } from './non-node-runtime/index.js';
+import type { BuilderGlobals, Executor, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
-import { runInNode } from './node-runtime/index.js';
 import { runInBrowser } from './browser-runtime/index.js';
+
+export type EvaluatorArgs = {
+  code: string;
+  event?: Event;
+  isExpression?: boolean;
+  serverExecutor: Executor | undefined;
+} & Pick<
+  BuilderContextInterface,
+  'localState' | 'context' | 'rootState' | 'rootSetState'
+>;
 
 export function evaluate({
   code,
@@ -17,14 +24,8 @@ export function evaluate({
   rootSetState,
   event,
   isExpression = true,
-}: {
-  code: string;
-  event?: Event;
-  isExpression?: boolean;
-} & Pick<
-  BuilderContextInterface,
-  'localState' | 'context' | 'rootState' | 'rootSetState'
->): any {
+  serverExecutor,
+}: EvaluatorArgs): any {
   if (code === '') {
     logger.warn('Skipping evaluation of empty code block.');
     return;
@@ -60,9 +61,16 @@ export function evaluate({
   try {
     if (isBrowser()) return runInBrowser(args);
 
-    if (isNonNodeServer()) return runInNonNode(args);
+    console.log('serverExecutor', serverExecutor);
 
-    return runInNode(args);
+    if (serverExecutor) {
+      return serverExecutor(args);
+    } else {
+      logger.warn(
+        'No server executor was provided. Code evaluation will not work.'
+      );
+      return undefined;
+    }
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });
     return undefined;

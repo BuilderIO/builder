@@ -26,6 +26,7 @@ export default function ComponentRef(props: ComponentProps) {
           includeBlockProps: props.includeBlockProps,
           isInteractive: props.isInteractive,
           contextValue: props.context.value,
+          serverExecutor: props.serverExecutor,
         })}
       >
         {/**
@@ -38,7 +39,7 @@ export default function ComponentRef(props: ComponentProps) {
               key={'block-' + child.id}
               block={child}
               context={props.context}
-              registeredComponents={props.registeredComponents}
+              components={props.registeredComponents}
             />
           )}
         </For>
@@ -48,6 +49,7 @@ export default function ComponentRef(props: ComponentProps) {
               key={'block-style-' + child.id}
               block={child}
               context={props.context.value}
+              serverExecutor={props.serverExecutor}
             />
           )}
         </For>

@@ -10,6 +10,7 @@ import { getBlockProperties } from '../../../functions/get-block-properties.js';
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import { setAttrs } from '../../../blocks/helpers.js';
+import type { Executor } from '../../../functions/evaluate/helpers.js';
 
 useMetadata({
   elementTag: 'props.Wrapper',
@@ -28,6 +29,7 @@ type BlockWrapperProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
   hasChildren: boolean;
+  serverExecutor: Executor | undefined;
 };
 
 /**
@@ -60,6 +62,7 @@ export default function BlockWrapper(
             localState: props.context.value.localState,
             context: props.context.value.context,
             stripPrefix: true,
+            serverExecutor: props.serverExecutor,
           })}
         />
       }
@@ -80,6 +83,7 @@ export default function BlockWrapper(
           localState: props.context.value.localState,
           context: props.context.value.context,
           stripPrefix: true,
+          serverExecutor: props.serverExecutor,
         })}
       >
         {props.children}

@@ -3,6 +3,8 @@ import type { ContentVariantsProps } from '../components/content-variants/conten
 import type { Dictionary } from '../types/typescript';
 import { fetchOneEntry } from './get-content';
 import type { GetContentOptions } from './get-content/types';
+import { isBrowser } from './is-browser.js';
+import { isNonNodeServer } from './is-non-node-server.js';
 
 type GetBuilderPropsOptions = (Omit<GetContentOptions, 'model'> & {
   model?: string;
@@ -68,5 +70,10 @@ export const fetchBuilderProps = async (
     apiKey: getContentArgs.apiKey,
     model: getContentArgs.model,
     content: await fetchOneEntry(getContentArgs),
+    serverExecutor: isBrowser()
+      ? undefined
+      : isNonNodeServer()
+      ? (await import('./evaluate/node-runtime/index.js')).evaluator
+      : (await import('./evaluate/node-runtime/index.js')).evaluator,
   };
 };

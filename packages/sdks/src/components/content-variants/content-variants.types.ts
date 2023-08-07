@@ -2,6 +2,7 @@ import type {
   BuilderRenderContext,
   RegisteredComponent,
 } from '../../context/types.js';
+import type { Executor } from '../../functions/evaluate/helpers.js';
 import type { ApiVersion } from '../../types/api-version.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
@@ -19,4 +20,5 @@ export interface ContentVariantsProps {
   /** @deprecated use `enrich` instead **/
   includeRefs?: boolean;
   enrich?: boolean;
+  serverExecutor?: Executor;
 }

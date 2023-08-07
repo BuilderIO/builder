@@ -3,6 +3,7 @@ import type {
   RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate';
+import type { Executor } from '../../functions/evaluate/helpers.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
@@ -39,10 +40,12 @@ export const getComponent = ({
   block,
   context,
   registeredComponents,
+  serverExecutor,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
   registeredComponents: RegisteredComponents;
+  serverExecutor: Executor | undefined;
 }) => {
   const componentName = getProcessedBlock({
     block,
@@ -51,6 +54,7 @@ export const getComponent = ({
     rootSetState: context.rootSetState,
     context: context.context,
     shouldEvaluateBindings: false,
+    serverExecutor,
   }).component?.name;
 
   if (!componentName) {
@@ -73,9 +77,11 @@ export const getComponent = ({
 export const getRepeatItemData = ({
   block,
   context,
+  serverExecutor,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
+  serverExecutor?: Executor;
 }): RepeatData[] | undefined => {
   /**
    * we don't use `state.processedBlock` here because the processing done within its logic includes evaluating the block's bindings,
@@ -93,6 +99,7 @@ export const getRepeatItemData = ({
     rootState: context.rootState,
     rootSetState: context.rootSetState,
     context: context.context,
+    serverExecutor,
   });
 
   if (!Array.isArray(itemsArray)) {
