@@ -22,11 +22,12 @@
     "vue-tsc": "^0.38.8"
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0"},
+    "isolated-vm": "^4.6.0"
+  },
   "nx": {
     "implicitDependencies": [
       "@builder.io/sdks"
-    ]
+    ],
     "targets": {
       "build": {
         "dependsOn": [
