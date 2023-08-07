@@ -13,6 +13,9 @@ const config = defineConfig({
 
   build: {
     minify: true,
+    rollupOptions: {
+      external: ['isolated-vm'],
+    },
   },
 
   plugins: [vue(), Components()],

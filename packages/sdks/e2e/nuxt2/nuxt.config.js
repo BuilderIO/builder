@@ -1,3 +1,6 @@
+/**
+ * @type {import('@nuxt/types').NuxtConfig}
+ */
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -32,6 +35,16 @@ export default {
   build: {
     // This is needed because the package is an ESM module
     transpile: ['@builder.io/sdk-vue', '@e2e/tests'],
+
+    extend(config, ctx) {
+      if (Array.isArray(config.externals)) {
+        config.externals.push('isolated-vm')
+      } else if (config.externals) {
+        config.externals = [config.externals, 'isolated-vm']
+      } else {
+        config.externals = ['isolated-vm']
+      }
+    },
   },
 
   // We need to import the CSS for the SDK in the Nuxt Config here
