@@ -3,9 +3,9 @@ import { CONTENT as elementEvents } from './element-events.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
 import { CONTENT as symbols, CONTENT_WITHOUT_SYMBOLS } from './symbols.js';
-import { CONTENT as contentBindings } from './content-bindings';
+import { CONTENT as contentBindings } from './content-bindings.js';
 import { CONTENT as linkUrl } from './link-url.js';
-import { CONTENT as symbolBindings } from './symbol-bindings';
+import { CONTENT as symbolBindings } from './symbol-bindings.js';
 import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.js';
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT as image } from './image.js';
@@ -17,10 +17,10 @@ import {
   CONTENT as customBreakpoints,
   CONTENT_RESET as customBreakpointsReset,
 } from './custom-breakpoints.js';
-import { CONTENT as reactiveState } from './reactive-state';
-import { CONTENT as showHideIf } from './show-hide-if';
-import { CONTENT as textBlock } from './text-block';
-import { CONTENT as stateBinding } from './state-binding';
+import { CONTENT as reactiveState } from './reactive-state.js';
+import { CONTENT as showHideIf } from './show-hide-if.js';
+import { CONTENT as textBlock } from './text-block.js';
+import { CONTENT as stateBinding } from './state-binding.js';
 import type { BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
