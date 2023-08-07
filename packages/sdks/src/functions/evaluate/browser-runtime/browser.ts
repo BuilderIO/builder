@@ -1,6 +1,6 @@
-import type { BuilderRenderState } from '../../context/types.js';
-import type { ExecutorArgs } from './helpers.js';
-import { getFunctionArguments } from './helpers.js';
+import type { BuilderRenderState } from '../../../context/types.js';
+import type { ExecutorArgs } from '../helpers.js';
+import { getFunctionArguments } from '../helpers.js';
 
 export const runInBrowser = ({
   code,
@@ -23,7 +23,7 @@ export const runInBrowser = ({
   );
 };
 
-function flattenState(
+export function flattenState(
   rootState: Record<string | symbol, any>,
   localState: Record<string | symbol, any> | undefined,
   rootSetState: ((rootState: BuilderRenderState) => void) | undefined

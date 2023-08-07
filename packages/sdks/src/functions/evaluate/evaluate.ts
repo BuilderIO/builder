@@ -7,7 +7,7 @@ import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
 import { runInNonNode } from './non-node-runtime/index.js';
 import { getUserAttributes } from '../track/helpers.js';
 import { runInNode } from './node-runtime/index.js';
-import { runInBrowser } from './browser.js';
+import { runInBrowser } from './browser-runtime/index.js';
 
 export function evaluate({
   code,

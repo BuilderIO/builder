@@ -34,8 +34,7 @@ export const getFunctionArguments = ({
 }) => {
   return Object.entries({
     state,
-    // legacy
-    Builder: builder,
+    Builder: builder, // legacy
     builder,
     context,
     event,
