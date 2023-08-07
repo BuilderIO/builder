@@ -1,6 +1,7 @@
 import * as ivm from 'isolated-vm';
 import type { FunctionArguments, ExecutorArgs } from '../helpers';
-import { flattenState, getFunctionArguments } from '../helpers';
+import { getFunctionArguments } from '../helpers';
+import type { BuilderRenderState } from 'src/sdk-src/context/types';
 
 const makeFn = ({
   code,
@@ -30,7 +31,9 @@ const makeFn = ({
             return val;
         },
         set(target, key, value) {
+            log('setting: ', key)
             obj.setSync(key, value);
+            BUILDER_SET_STATE(obj.copySync())
         },
         deleteProperty(target, key) {
             obj.deleteSync(key);
@@ -49,18 +52,31 @@ const makeFn = ({
   `;
 
   return `
+
+  function theFunction() {
 ${refToProxyFn}
 ${strinfigyFn}
 ${args
   .map(
-    ([arg], index) => `
-var ${arg} = refToProxy($${index});`
+    ([arg]) => `
+var ${arg} = refToProxy(${getSyncValName(arg)});`
   )
   .join('')}
 var ctx = context;
-${useReturn ? `return stringify(${code});` : code};
+${code}
+  }
+
+  const val = theFunction()
+
+  if (typeof val === 'object' && val !== null) {
+    JSON.stringify(val.copySync ? val.copySync() : val);
+  } else {
+    val
+  };
 `;
 };
+
+const getSyncValName = (key: string) => `${key}_sync`;
 
 const getIsolateContext = () => {
   // if (Builder.serverContext) {
@@ -80,7 +96,7 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const state = flattenState(rootState, localState, rootSetState);
+  const state = { ...rootState, ...localState };
 
   const args = getFunctionArguments({
     builder,
@@ -100,15 +116,16 @@ export const runInNode = ({
     console.log(...args);
   });
 
-  const resultStr = isolateContext.evalClosureSync(
-    makeFn({
-      code: useCode,
-      args,
-      // TODO: does this work
-      useReturn: true,
-    }),
-    args.map(([key, arg]) => {
-      return typeof arg === 'object'
+  if (rootSetState) {
+    jail.setSync('BUILDER_SET_STATE', function (newState: BuilderRenderState) {
+      console.log('setting new state');
+      rootSetState(newState);
+    });
+  }
+
+  args.forEach(([key, arg]) => {
+    const val =
+      typeof arg === 'object'
         ? new ivm.Reference(
             key === 'builder'
               ? {
@@ -120,13 +137,30 @@ export const runInNode = ({
               : arg
           )
         : null;
-    })
-  );
+
+    jail.setSync(getSyncValName(key), val);
+  });
+
+  const evalStr = makeFn({
+    code: useCode,
+    args,
+    // TODO: does this work
+    useReturn: true,
+  });
+
   try {
-    // returning objects throw errors in isolated vm, so we stringify it and parse it back
-    const res = JSON.parse(resultStr);
-    return res;
-  } catch (_error: any) {
-    return resultStr;
+    const resultStr = isolateContext.evalSync(evalStr);
+    try {
+      // console.log('resultStr', resultStr);
+
+      // returning objects throw errors in isolated vm, so we stringify it and parse it back
+      const res = JSON.parse(resultStr);
+      return res;
+    } catch (_error: any) {
+      return resultStr;
+    }
+  } catch (e: any) {
+    console.error(`Failed to eval: ${e.message}. Code: ${useCode} `);
+    return undefined;
   }
 };

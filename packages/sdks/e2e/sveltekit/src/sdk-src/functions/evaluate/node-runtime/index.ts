@@ -1,4 +1,3 @@
-import { logger } from '../../../helpers/logger.js';
 import { isBrowser } from '../../is-browser.js';
 import { isNonNodeServer } from '../../is-non-node-server.js';
 
@@ -11,20 +10,19 @@ let runInNode: typeof import('./node-runtime.js').runInNode;
 if (!isBrowser() && !isNonNodeServer()) {
   console.log('importing node runtime');
 
-  import('./node-runtime.js')
-    .then((m) => {
-      runInNode = m.runInNode;
-    })
-    .catch((err) => {
-      const ERROR_MESSAGE = `Error importing JS interpreter for Node.js runtimes. Make sure \`isolated-vm\` is installed.
-      Read more here: https://github.com/BuilderIO/builder/tree/main/packages/sdks/README.md#non-nodejs-runtimes-edge-serverless
-      `;
-      logger.error(ERROR_MESSAGE, err);
-      runInNode = (..._args) => {
-        logger.error(ERROR_MESSAGE);
-        return undefined;
-      };
-    });
+  import('./node-runtime.js').then((m) => {
+    runInNode = m.runInNode;
+  });
+  // .catch((err) => {
+  //   const ERROR_MESSAGE = `Error importing JS interpreter for Node.js runtimes. Make sure \`isolated-vm\` is installed.
+  //   Read more here: https://github.com/BuilderIO/builder/tree/main/packages/sdks/README.md#non-nodejs-runtimes-edge-serverless
+  //   `;
+  //   logger.error(ERROR_MESSAGE, err);
+  //   runInNode = (..._args) => {
+  //     logger.error(ERROR_MESSAGE);
+  //     return undefined;
+  //   };
+  // });
 }
 
 export { runInNode };
