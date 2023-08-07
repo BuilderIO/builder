@@ -52,6 +52,10 @@
     ],
     "targets": {
       "build": {
+        "dependsOn": [
+          "^build:svelte",
+          "^build"
+        ],
         "outputs": [
           "{projectRoot}/package"
         ]

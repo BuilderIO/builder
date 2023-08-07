@@ -144,22 +144,21 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
   },
 });
 
+const target = process.argv
+  .find((arg) => arg.startsWith('--target='))
+  ?.split('=')[1];
+
+const targets = target
+  ? [target]
+  : ['reactNative', 'vue2', 'rsc', 'vue3', 'solid', 'svelte', 'react', 'qwik'];
+
 /**
  * @type {MitosisConfig}
  */
 module.exports = {
   files: 'src/**',
   exclude: ['src/**/*.test.ts'],
-  targets: [
-    'reactNative',
-    'vue2',
-    'rsc',
-    'vue3',
-    'solid',
-    'svelte',
-    'react',
-    'qwik',
-  ],
+  targets,
   getTargetPath,
   options: {
     vue2: {

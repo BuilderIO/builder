@@ -28,6 +28,14 @@
   "nx": {
     "implicitDependencies": [
       "@builder.io/sdks"
-    ]
+    ],
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "^build:react",
+          "^build"
+        ]
+      }
+    }
   }
 }

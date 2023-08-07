@@ -24,6 +24,9 @@
       "options": {
         "script": "build"
       }
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
     }
   },
   "affected": {
