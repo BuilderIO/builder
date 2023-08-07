@@ -36,7 +36,7 @@ import { toError } from '../to-error';
 import { getBuilderPixel } from '../functions/get-builder-pixel';
 import { isDebug } from '../functions/is-debug';
 
-export type RegisterComponent = Component & {
+export type RegisteredComponent = Component & {
   component?: React.ComponentType<any>;
 };
 
@@ -296,7 +296,7 @@ export interface BuilderComponentProps {
   /**
    * Pass a list of custom components to register with Builder.io.
    */
-  customComponents?: Array<RegisterComponent>;
+  customComponents?: Array<RegisteredComponent>;
 }
 
 export interface BuilderComponentState {
