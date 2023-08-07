@@ -297,7 +297,6 @@ export interface BuilderComponentProps {
    * Pass a list of custom components to register with Builder.io.
    */
   customComponents?: Array<RegisterComponent>;
-
 }
 
 export interface BuilderComponentState {
@@ -458,6 +457,8 @@ export class BuilderComponent extends React.Component<
         this.onContentLoaded(content?.data, getContentWithInfo(content)!);
       }
     }
+
+    this.registerCustomComponents();
   }
 
   get builder() {
@@ -712,7 +713,7 @@ export class BuilderComponent extends React.Component<
     if (this.props.customComponents) {
       for (const customComponent of this.props.customComponents) {
         if (customComponent) {
-          const { component, ...registration }  = customComponent;
+          const { component, ...registration } = customComponent;
           Builder.registerComponent(component, registration);
         }
       }
@@ -760,7 +761,6 @@ export class BuilderComponent extends React.Component<
         );
       });
     }
-    this.registerCustomComponents();
   }
 
   updateState = (fn?: (state: any) => void) => {
