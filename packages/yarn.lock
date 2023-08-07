@@ -3052,6 +3052,7 @@ __metadata:
     "@e2e/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
     "@sveltejs/kit": ^1.16.2
+    isolated-vm: ^4.6.0
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     svelte: ^3.59.1
