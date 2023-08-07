@@ -1,3 +1,7 @@
+### 3.0.12
+
+- Fix: remove dev dependency from `dependencies` (`nx` and `nx-cloud`)
+
 ### 3.0.11
 
 - Add support for loading symbols from other spaces for the `global symbols` feature.

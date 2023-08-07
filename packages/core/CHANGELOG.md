@@ -1,3 +1,7 @@
+### 2.0.7
+
+- Fix: remove dev dependency from `dependencies` (`nx` and `nx-cloud`)
+
 ### 2.0.6
 
 - Allow `builder.get` to be awaited: https://github.com/BuilderIO/builder/pull/2512
