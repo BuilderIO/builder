@@ -4,17 +4,19 @@ import type {
 } from '../../context/types';
 import type { getUserAttributes } from '../track/helpers';
 
+export type BuilderGlobals = {
+  isEditing: boolean | undefined;
+  isBrowser: boolean | undefined;
+  isServer: boolean | undefined;
+  getUserAttributes: typeof getUserAttributes;
+};
+
 export type ExecutorArgs = Pick<
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
 > & {
   code: string;
-  builder: {
-    isEditing: boolean | undefined;
-    isBrowser: boolean | undefined;
-    isServer: boolean | undefined;
-    getUserAttributes: typeof getUserAttributes;
-  };
+  builder: BuilderGlobals;
   event: Event | undefined;
 };
 

@@ -1,5 +1,9 @@
 import * as ivm from 'isolated-vm';
-import type { FunctionArguments, ExecutorArgs } from '../helpers';
+import type {
+  FunctionArguments,
+  ExecutorArgs,
+  BuilderGlobals,
+} from '../helpers';
 import { getFunctionArguments } from '../helpers';
 import type { BuilderRenderState } from '../../../context/types';
 
@@ -117,12 +121,12 @@ export const runInNode = ({
     const val =
       typeof arg === 'object'
         ? new ivm.Reference(
+            // workaround: methods with default values for arguments is not being cloned over
             key === 'builder'
               ? {
-                  // workaround: methods with default values for arguments is not being cloned over
                   ...arg,
                   getUserAttributes: () =>
-                    (arg as ExecutorArgs['builder']).getUserAttributes(),
+                    (arg as BuilderGlobals).getUserAttributes(),
                 }
               : arg
           )
