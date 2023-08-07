@@ -108,14 +108,11 @@ export const runInNode = ({
   /**
    * Propagate state changes back to the reactive root state.
    */
-  if (rootSetState) {
-    jail.setSync(
-      BUILDER_SET_STATE_NAME,
-      function (newState: BuilderRenderState) {
-        rootSetState(newState);
-      }
-    );
-  }
+  jail.setSync(BUILDER_SET_STATE_NAME, function (newState: BuilderRenderState) {
+    if (rootSetState) {
+      rootSetState(newState);
+    }
+  });
 
   args.forEach(([key, arg]) => {
     const val =

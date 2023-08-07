@@ -63,8 +63,8 @@ export function evaluate({
     if (isNonNodeServer()) return runInNonNode(args);
 
     return runInNode(args);
-  } catch (e) {
-    logger.warn('Custom code error.', { code, error: e });
+  } catch (e: any) {
+    logger.error('Failed code evaluation: ' + e.message, { code });
     return undefined;
   }
 }
