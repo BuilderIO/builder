@@ -11,7 +11,15 @@
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
     "build:mitosis": "../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
-    "build": "yarn run build:mitosis",
+    "build:react": "yarn build:mitosis --target=react",
+    "build:qwik": "yarn build:mitosis --target=qwik",
+    "build:svelte": "yarn build:mitosis --target=svelte",
+    "build:solid": "yarn build:mitosis --target=solid",
+    "build:react-native": "yarn build:mitosis --target=reactNative",
+    "build:vue2": "yarn build:mitosis --target=vue2",
+    "build:vue3": "yarn build:mitosis --target=vue3",
+    "build:nextjs": "yarn build:mitosis --target=rsc",
+    "build:all": "yarn build:mitosis",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
     "test": "vitest run",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
@@ -94,97 +102,65 @@
   "nx": {
     "targets": {
       "build:react": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=react"
-        },
         "outputs": [
           "{projectRoot}/output/react/src"
         ]
       },
       "build:qwik": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=qwik"
-        },
         "outputs": [
           "{projectRoot}/output/qwik/src"
         ]
       },
       "build:svelte": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=svelte"
-        },
         "outputs": [
           "{projectRoot}/output/svelte/src"
         ]
       },
       "build:solid": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=solid"
-        },
         "outputs": [
           "{projectRoot}/output/solid/src"
         ]
       },
       "build:react-native": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=reactNative"
-        },
         "outputs": [
           "{projectRoot}/output/react-native/src"
         ]
       },
       "build:vue2": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=vue2"
-        },
         "outputs": [
           "{projectRoot}/output/vue/packages/_vue2/src"
         ]
       },
       "build:vue3": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=vue3"
-        },
         "outputs": [
           "{projectRoot}/output/vue/packages/_vue3/src"
         ]
       },
       "build:nextjs": {
-        "executor": "nx:run-script",
         "dependsOn": [
           "^build"
         ],
-        "options": {
-          "script": "build --target=rsc"
-        },
         "outputs": [
           "{projectRoot}/output/nextjs/src"
         ]
