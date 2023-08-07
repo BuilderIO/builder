@@ -13,6 +13,7 @@
     "@builder.io/sdk-react": "workspace:*",
     "@e2e/tests": "workspace:*",
     "eslint-config-next": "^13",
+    "isolated-vm": "^4.6.0",
     "next": "^13.4.4",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",

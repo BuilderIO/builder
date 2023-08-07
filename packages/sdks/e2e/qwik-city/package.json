@@ -30,6 +30,7 @@
     "@typescript-eslint/parser": "5.48.0",
     "eslint": "8.31.0",
     "eslint-plugin-qwik": "0.16.2",
+    "isolated-vm": "^4.6.0",
     "node-fetch": "3.3.0",
     "prettier": "2.8.1",
     "typescript": "^5.1.6",
