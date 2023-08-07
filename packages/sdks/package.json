@@ -93,16 +93,100 @@
   },
   "nx": {
     "targets": {
-      "build": {
+      "build:react": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=react"
+        },
         "outputs": [
-          "{projectRoot}/output/qwik/src",
-          "{projectRoot}/output/svelte/src",
-          "{projectRoot}/output/react-native/src",
-          "{projectRoot}/output/solid/src",
-          "{projectRoot}/output/vue/packages/_vue2/src",
-          "{projectRoot}/output/vue/packages/_vue3/src",
-          "{projectRoot}/output/nextjs/src",
           "{projectRoot}/output/react/src"
+        ]
+      },
+      "build:qwik": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=qwik"
+        },
+        "outputs": [
+          "{projectRoot}/output/qwik/src"
+        ]
+      },
+      "build:svelte": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=svelte"
+        },
+        "outputs": [
+          "{projectRoot}/output/svelte/src"
+        ]
+      },
+      "build:solid": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=solid"
+        },
+        "outputs": [
+          "{projectRoot}/output/solid/src"
+        ]
+      },
+      "build:react-native": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=reactNative"
+        },
+        "outputs": [
+          "{projectRoot}/output/react-native/src"
+        ]
+      },
+      "build:vue2": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=vue2"
+        },
+        "outputs": [
+          "{projectRoot}/output/vue/packages/_vue2/src"
+        ]
+      },
+      "build:vue3": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=vue3"
+        },
+        "outputs": [
+          "{projectRoot}/output/vue/packages/_vue3/src"
+        ]
+      },
+      "build:nextjs": {
+        "executor": "nx:run-script",
+        "dependsOn": [
+          "^build"
+        ],
+        "options": {
+          "script": "build --target=rsc"
+        },
+        "outputs": [
+          "{projectRoot}/output/nextjs/src"
         ]
       }
     },
