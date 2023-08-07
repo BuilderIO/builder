@@ -15,7 +15,7 @@ packages/sdks/output/
 # it's along story
 packages/sdks/overrides/react-native/src/blocks/**/*
 
-packages/sdks/**/evaluate/acorn-interpreter*
+**/acorn-interpreter*
 
 **/.svelte-kit
 **/.solid
