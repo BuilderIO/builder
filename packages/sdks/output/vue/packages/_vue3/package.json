@@ -23,6 +23,14 @@
   "nx": {
     "implicitDependencies": [
       "@builder.io/sdks"
-    ]
+    ],
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "^build:vue3",
+          "^build"
+        ]
+      }
+    }
   }
 }

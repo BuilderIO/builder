@@ -11,7 +11,15 @@
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
     "build:mitosis": "../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
-    "build": "yarn run build:mitosis",
+    "build:react": "yarn build:mitosis --target=react",
+    "build:qwik": "yarn build:mitosis --target=qwik",
+    "build:svelte": "yarn build:mitosis --target=svelte",
+    "build:solid": "yarn build:mitosis --target=solid",
+    "build:react-native": "yarn build:mitosis --target=reactNative",
+    "build:vue2": "yarn build:mitosis --target=vue2",
+    "build:vue3": "yarn build:mitosis --target=vue3",
+    "build:nextjs": "yarn build:mitosis --target=rsc",
+    "build:all": "yarn build:mitosis",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
     "test": "vitest run",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
@@ -93,16 +101,68 @@
   },
   "nx": {
     "targets": {
-      "build": {
+      "build:react": {
+        "dependsOn": [
+          "^build"
+        ],
         "outputs": [
-          "{projectRoot}/output/qwik/src",
-          "{projectRoot}/output/svelte/src",
-          "{projectRoot}/output/react-native/src",
-          "{projectRoot}/output/solid/src",
-          "{projectRoot}/output/vue/packages/_vue2/src",
-          "{projectRoot}/output/vue/packages/_vue3/src",
-          "{projectRoot}/output/nextjs/src",
           "{projectRoot}/output/react/src"
+        ]
+      },
+      "build:qwik": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/qwik/src"
+        ]
+      },
+      "build:svelte": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/svelte/src"
+        ]
+      },
+      "build:solid": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/solid/src"
+        ]
+      },
+      "build:react-native": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/react-native/src"
+        ]
+      },
+      "build:vue2": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/vue/packages/_vue2/src"
+        ]
+      },
+      "build:vue3": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/vue/packages/_vue3/src"
+        ]
+      },
+      "build:nextjs": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/nextjs/src"
         ]
       }
     },

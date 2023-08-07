@@ -42,6 +42,10 @@
     ],
     "targets": {
       "build": {
+        "dependsOn": [
+          "^build:qwik",
+          "^build"
+        ],
         "outputs": [
           "{projectRoot}/lib",
           "{projectRoot}/types",

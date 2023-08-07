@@ -40,6 +40,14 @@
   "nx": {
     "implicitDependencies": [
       "@builder.io/sdks"
-    ]
+    ],
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "^build:react-native",
+          "^build"
+        ]
+      }
+    }
   }
 }
