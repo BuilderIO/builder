@@ -25,7 +25,6 @@ var refToProxy = (obj) => {
         return val;
     },
     set(target, key, value) {
-        log('setting: ', key)
         obj.setSync(key, value);
         ${BUILDER_SET_STATE_NAME}(obj.copySync())
     },
