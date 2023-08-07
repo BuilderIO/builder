@@ -1,64 +1,66 @@
 import * as ivm from 'isolated-vm';
 import type { FunctionArguments, ExecutorArgs } from '../helpers';
-import { flattenState, getFunctionArguments } from '../helpers';
+import { getFunctionArguments } from '../helpers';
+import type { BuilderRenderState } from '../../../context/types';
 
-const makeFn = ({
+const getSyncValName = (key: string) => `bldr_${key}_sync`;
+const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
+
+// Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
+// https://github.com/laverdet/isolated-vm#referencecopysync
+const REF_TO_PROXY_FN = `
+var refToProxy = (obj) => {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+  return new Proxy({}, {
+    get(target, key) {
+        if (key === 'copySync') {
+          return () => obj.copySync();
+        }
+        const val = obj.getSync(key);
+        if (typeof val?.getSync === 'function') {
+            return refToProxy(val);
+        }
+        return val;
+    },
+    set(target, key, value) {
+        log('setting: ', key)
+        obj.setSync(key, value);
+        ${BUILDER_SET_STATE_NAME}(obj.copySync())
+    },
+    deleteProperty(target, key) {
+        obj.deleteSync(key);
+    }
+  })
+}
+`;
+
+const processCode = ({
   code,
-  useReturn,
   args,
 }: {
   code: string;
-  useReturn: boolean;
   args: FunctionArguments;
 }) => {
-  // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
-  // https://github.com/laverdet/isolated-vm#referencecopysync
-  const refToProxyFn = `
-  var refToProxy = (obj) => {
-    if (typeof obj !== 'object' || obj === null) {
-      return obj;
-    }
-    return new Proxy({}, {
-        get(target, key) {
-            if (key === 'copySync') {
-              return () => obj.copySync();
-            }
-            const val = obj.getSync(key);
-            if (typeof val?.getSync === 'function') {
-                return refToProxy(val);
-            }
-            return val;
-        },
-        set(target, key, value) {
-            obj.setSync(key, value);
-        },
-        deleteProperty(target, key) {
-            obj.deleteSync(key);
-        }
-      })
-  }
-`;
-  // Returned object  will be stringified and parsed back to the parent isolate
-  const strinfigyFn = `
-    var stringify = (val) => {
-      if (typeof val === 'object' && val !== null) {
-        return JSON.stringify(val.copySync ? val.copySync() : val);
-      }
-      return val;
-    }
-  `;
+  const fnArgs = args
+    .map(([name]) => `var ${name} = refToProxy(${getSyncValName(name)}); `)
+    .join('');
 
+  // At the end of the code, the output will be stringified and parsed back to the parent isolate if needed.
   return `
-${refToProxyFn}
-${strinfigyFn}
-${args
-  .map(
-    ([arg], index) => `
-var ${arg} = refToProxy($${index});`
-  )
-  .join('')}
-var ctx = context;
-${useReturn ? `return stringify(${code});` : code};
+${REF_TO_PROXY_FN}
+${fnArgs}
+function theFunction() {
+  ${code}
+}
+
+const output = theFunction()
+
+if (typeof output === 'object' && output !== null) {
+  JSON.stringify(output.copySync ? output.copySync() : output);
+}
+output;
 `;
 };
 
@@ -80,7 +82,7 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const state = flattenState(rootState, localState, rootSetState);
+  const state = { ...rootState, ...localState };
 
   const args = getFunctionArguments({
     builder,
@@ -96,19 +98,25 @@ export const runInNode = ({
   jail.setSync('global', jail.derefInto());
 
   // We will create a basic `log` function for the new isolate to use.
-  jail.setSync('log', function (...args: any[]) {
-    console.log(...args);
+  jail.setSync('log', function (...logArgs: any[]) {
+    console.log(...logArgs);
   });
 
-  const resultStr = isolateContext.evalClosureSync(
-    makeFn({
-      code: useCode,
-      args,
-      // TODO: does this work
-      useReturn: true,
-    }),
-    args.map(([key, arg]) => {
-      return typeof arg === 'object'
+  /**
+   * Propagate state changes back to the reactive root state.
+   */
+  if (rootSetState) {
+    jail.setSync(
+      BUILDER_SET_STATE_NAME,
+      function (newState: BuilderRenderState) {
+        rootSetState(newState);
+      }
+    );
+  }
+
+  args.forEach(([key, arg]) => {
+    const val =
+      typeof arg === 'object'
         ? new ivm.Reference(
             key === 'builder'
               ? {
@@ -120,8 +128,13 @@ export const runInNode = ({
               : arg
           )
         : null;
-    })
-  );
+
+    jail.setSync(getSyncValName(key), val);
+  });
+
+  const evalStr = processCode({ code: useCode, args });
+  const resultStr = isolateContext.evalSync(evalStr);
+
   try {
     // returning objects throw errors in isolated vm, so we stringify it and parse it back
     const res = JSON.parse(resultStr);
