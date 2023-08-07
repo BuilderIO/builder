@@ -1,4 +1,4 @@
-import { _processContentResult } from '@builder.io/sdk-svelte';
+import { _processContentResult } from '../../sdk-src';
 import { getProps } from '@e2e/tests';
 
 /** @type {import('./$types').PageServerLoad} */
