@@ -74,7 +74,7 @@ const getIsolateContext = () => {
 };
 
 export const runInNode = ({
-  useCode,
+  code,
   builder,
   context,
   event,
@@ -132,7 +132,7 @@ export const runInNode = ({
     jail.setSync(getSyncValName(key), val);
   });
 
-  const evalStr = processCode({ code: useCode, args });
+  const evalStr = processCode({ code, args });
   const resultStr = isolateContext.evalSync(evalStr);
 
   try {

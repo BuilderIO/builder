@@ -35,7 +35,7 @@ export const runInNonNode = ({
   rootState,
   localState,
   rootSetState,
-  useCode,
+  code,
 }: ExecutorArgs) => {
   const state = { ...rootState, ...localState };
 
@@ -52,7 +52,7 @@ export const runInNonNode = ({
   const prependedCode = properties
     .map(([key]) => `var ${key} = JSON.parse(${getJSONValName(key)});`)
     .join('\n');
-  const cleanedCode = processCode(useCode);
+  const cleanedCode = processCode(code);
 
   if (cleanedCode === '') {
     logger.warn('Skipping evaluation of empty code block.');

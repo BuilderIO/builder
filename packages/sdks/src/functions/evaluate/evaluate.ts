@@ -4,10 +4,10 @@ import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { isNonNodeServer } from '../is-non-node-server.js';
 import type { ExecutorArgs } from './helpers.js';
-import { flattenState, getFunctionArguments } from './helpers.js';
 import { runInNonNode } from './non-node-runtime/index.js';
 import { getUserAttributes } from '../track/helpers.js';
 import { runInNode } from './node-runtime/index.js';
+import { runInBrowser } from './browser.js';
 
 export function evaluate({
   code,
@@ -48,7 +48,7 @@ export function evaluate({
     );
   const useCode = useReturn ? `return (${code});` : code;
   const args: ExecutorArgs = {
-    useCode,
+    code: useCode,
     builder,
     context,
     event,
@@ -64,36 +64,7 @@ export function evaluate({
 
     return runInNode(args);
   } catch (e) {
-    logger.warn('Custom code error.', { useCode, error: e });
+    logger.warn('Custom code error.', { code, error: e });
     return undefined;
   }
 }
-export const runInBrowser = ({
-  useCode,
-  builder,
-  context,
-  event,
-  localState,
-  rootSetState,
-  rootState,
-}: ExecutorArgs) => {
-  const functionArgs = getFunctionArguments({
-    builder,
-    context,
-    event,
-    state: flattenState(rootState, localState, rootSetState),
-  });
-
-  try {
-    return new Function(...functionArgs.map(([name]) => name), useCode)(
-      ...functionArgs.map(([, value]) => value)
-    );
-  } catch (e) {
-    logger.warn(
-      'Builder custom code error: \n While Evaluating: \n ',
-      useCode,
-      '\n',
-      e
-    );
-  }
-};
