@@ -1,4 +1,4 @@
-import type { BuilderContent } from '../../types/builder-content';
+import type { BuilderContent } from '../../types/builder-content.js';
 
 export function getPreviewContent(
   _searchParams: URLSearchParams

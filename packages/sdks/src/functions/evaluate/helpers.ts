@@ -1,8 +1,8 @@
 import type {
   BuilderContextInterface,
   BuilderRenderState,
-} from '../../context/types';
-import type { getUserAttributes } from '../track/helpers';
+} from '../../context/types.js';
+import type { getUserAttributes } from '../track/helpers.js';
 
 export type BuilderGlobals = {
   isEditing: boolean | undefined;

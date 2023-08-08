@@ -23,8 +23,8 @@ export { getBuilderSearchParams } from './functions/get-builder-search-params/in
 
 export { track } from './functions/track/index.js';
 
-export type { RegisteredComponent } from './context/types';
-export type { ComponentInfo } from './types/components';
+export type { RegisteredComponent } from './context/types.js';
+export type { ComponentInfo } from './types/components.js';
 export type { ContentProps } from './components/content/content.types.js';
 
 export { fetchBuilderProps } from './functions/fetch-builder-props.js';

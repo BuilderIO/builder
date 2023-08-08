@@ -1,8 +1,8 @@
-import { logger } from '../../../helpers/logger';
-import { set } from '../../set';
+import { logger } from '../../../helpers/logger.js';
+import { set } from '../../set.js';
 import Interpreter from './acorn-interpreter.js';
-import type { ExecutorArgs } from '../helpers';
-import { getFunctionArguments } from '../helpers';
+import type { ExecutorArgs } from '../helpers.js';
+import { getFunctionArguments } from '../helpers.js';
 
 const processCode = (code: string) => {
   return code

@@ -3,9 +3,9 @@ import type {
   FunctionArguments,
   ExecutorArgs,
   BuilderGlobals,
-} from '../helpers';
-import { getFunctionArguments } from '../helpers';
-import type { BuilderRenderState } from '../../../context/types';
+} from '../helpers.js';
+import { getFunctionArguments } from '../helpers.js';
+import type { BuilderRenderState } from '../../../context/types.js';
 
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
 const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
