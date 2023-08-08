@@ -1,9 +1,12 @@
+import type { BuilderContextInterface } from '../context/types.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate';
-import type { EvaluatorArgs } from './evaluate/evaluate.js';
 
-export type Options = Pick<
-  EvaluatorArgs,
-  'localState' | 'context' | 'rootState' | 'rootSetState' | 'serverExecutor'
+type Options = {
+  block: BuilderBlock;
+} & Pick<
+  BuilderContextInterface,
+  'localState' | 'context' | 'rootState' | 'rootSetState'
 >;
 
 type EventHandler = (event: Event) => any;
@@ -13,7 +16,10 @@ export const createEventHandler =
   (event) =>
     evaluate({
       code: value,
+      context: options.context,
+      localState: options.localState,
+      rootState: options.rootState,
+      rootSetState: options.rootSetState,
       event,
       isExpression: false,
-      ...options,
     });

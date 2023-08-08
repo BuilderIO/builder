@@ -7,7 +7,6 @@ import { getBlockProperties } from '../../../../functions/get-block-properties.j
 import type { BuilderBlock } from '../../../../types/builder-block.js';
 import type { PropsWithBuilderData } from '../../../../types/builder-props.js';
 import type { InteractiveElementProps } from '../interactive-element.lite';
-import type { Executor } from '../../../../functions/evaluate/helpers.js';
 
 type ComponentOptions = PropsWithBuilderData<{
   [index: string]: any;
@@ -22,7 +21,6 @@ export interface ComponentProps {
   blockChildren: BuilderBlock[];
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
-  serverExecutor: Executor | undefined;
   builderBlock: BuilderBlock;
   includeBlockProps: boolean;
   isInteractive: boolean | undefined;
@@ -36,7 +34,6 @@ export const getWrapperProps = ({
   includeBlockProps,
   isInteractive,
   contextValue,
-  serverExecutor,
 }: Omit<ComponentProps, 'blockChildren' | 'registeredComponents'> & {
   contextValue: BuilderContextInterface;
 }) => {
@@ -45,7 +42,6 @@ export const getWrapperProps = ({
     block: builderBlock,
     context,
     wrapperProps: componentOptions,
-    serverExecutor,
   };
 
   return isInteractive

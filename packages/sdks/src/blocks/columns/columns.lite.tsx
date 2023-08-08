@@ -13,7 +13,7 @@ import InlinedStyles from '../../components/inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type {
-  BuilderRenderingOptionsProps,
+  BuilderComponentsProp,
   PropsWithBuilderData,
 } from '../../types/builder-props.js';
 
@@ -35,7 +35,7 @@ useMetadata({
   },
 });
 
-export interface ColumnProps extends BuilderRenderingOptionsProps {
+export interface ColumnProps extends BuilderComponentsProp {
   columns?: Column[];
   builderBlock: BuilderBlock;
   space?: number;
@@ -225,8 +225,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}
               context={props.builderContext}
-              components={props.builderComponents}
-              serverExecutor={props.builderServerExecutor}
+              registeredComponents={props.builderComponents}
             />
           </div>
         )}

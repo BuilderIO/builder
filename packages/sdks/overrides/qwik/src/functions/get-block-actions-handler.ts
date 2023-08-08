@@ -1,22 +1,23 @@
-import { $ } from '@builder.io/qwik';
+import type { BuilderContextInterface } from '../context/types.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate';
-import type { EvaluatorArgs } from './evaluate/evaluate.js';
-
-export type Options = Pick<
-  EvaluatorArgs,
-  'localState' | 'context' | 'rootState' | 'rootSetState' | 'serverExecutor'
->;
+import { $ } from '@builder.io/qwik';
 
 export function createEventHandler(
   value: string,
-  options: Options
+  options: { block: BuilderBlock } & Pick<
+    BuilderContextInterface,
+    'localState' | 'context' | 'rootState' | 'rootSetState'
+  >
 ): (event: Event) => any {
   return $((event: Event) =>
     evaluate({
       code: value,
+      context: options.context,
+      localState: options.localState,
+      rootState: options.rootState,
+      rootSetState: options.rootSetState,
       event,
-      isExpression: false,
-      ...options,
     })
   );
 }

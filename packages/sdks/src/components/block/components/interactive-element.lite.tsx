@@ -4,13 +4,11 @@ import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { PropsWithChildren } from '../../../types/typescript.js';
-import type { Executor } from '../../../functions/evaluate/helpers.js';
 
 export type InteractiveElementProps = {
   Wrapper: any;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  serverExecutor: Executor | undefined;
   wrapperProps: object;
 };
 
@@ -46,7 +44,6 @@ export default function InteractiveElement(
           rootSetState: props.context.value.rootSetState,
           localState: props.context.value.localState,
           context: props.context.value.context,
-          serverExecutor: props.serverExecutor,
         }),
       }}
     >

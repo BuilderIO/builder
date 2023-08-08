@@ -1,3 +1,7 @@
+import type {
+  BuilderContextInterface,
+  RegisteredComponents,
+} from '../../context/types.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
@@ -8,6 +12,7 @@ import {
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './block.helpers.js';
+import type { Signal } from '@builder.io/mitosis';
 import {
   For,
   Show,
@@ -21,10 +26,11 @@ import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import ComponentRef from './components/component-ref/component-ref.lite';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
 import BlockWrapper from './components/block-wrapper.lite';
-import type { BuilderRenderingOptions } from '../../types/builder-props.js';
 
-export type BlockProps = BuilderRenderingOptions & {
+export type BlockProps = {
   block: BuilderBlock;
+  context: Signal<BuilderContextInterface>;
+  registeredComponents: RegisteredComponents;
 };
 
 useMetadata({
@@ -48,8 +54,7 @@ export default function Block(props: BlockProps) {
       return getComponent({
         block: props.block,
         context: props.context.value,
-        registeredComponents: props.components,
-        serverExecutor: props.serverExecutor,
+        registeredComponents: props.registeredComponents,
       });
     },
     get repeatItem() {
@@ -68,7 +73,6 @@ export default function Block(props: BlockProps) {
             rootSetState: props.context.value.rootSetState,
             context: props.context.value.context,
             shouldEvaluateBindings: true,
-            serverExecutor: props.serverExecutor,
           });
     },
     get Tag() {
@@ -108,15 +112,14 @@ export default function Block(props: BlockProps) {
           builderContext: props.context,
           ...(state.blockComponent?.name === 'Symbol' ||
           state.blockComponent?.name === 'Columns'
-            ? { builderComponents: props.components }
+            ? { builderComponents: props.registeredComponents }
             : {}),
         },
         context: childrenContext,
-        registeredComponents: props.components,
+        registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
         includeBlockProps: state.blockComponent?.noWrap === true,
         isInteractive: !state.blockComponent?.isRSC,
-        serverExecutor: props.serverExecutor,
       };
     },
   });
@@ -156,7 +159,6 @@ export default function Block(props: BlockProps) {
          */}
         <Show when={isEmptyHtmlElement(state.Tag)}>
           <BlockWrapper
-            serverExecutor={props.serverExecutor}
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
@@ -170,14 +172,13 @@ export default function Block(props: BlockProps) {
                 key={index}
                 repeatContext={data.context}
                 block={data.block}
-                registeredComponents={props.components}
+                registeredComponents={props.registeredComponents}
               />
             )}
           </For>
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
           <BlockWrapper
-            serverExecutor={props.serverExecutor}
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
@@ -194,7 +195,7 @@ export default function Block(props: BlockProps) {
                   key={'block-' + child.id}
                   block={child}
                   context={childrenContext}
-                  components={props.components}
+                  registeredComponents={props.registeredComponents}
                 />
               )}
             </For>
@@ -204,7 +205,6 @@ export default function Block(props: BlockProps) {
                   key={'block-style-' + child.id}
                   block={child}
                   context={childrenContext.value}
-                  serverExecutor={props.serverExecutor}
                 />
               )}
             </For>

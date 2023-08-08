@@ -1,16 +1,15 @@
-import type { BuilderContextInterface } from '../../context/types.js';
 import { logger } from '../../helpers/logger.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
-import type { BuilderGlobals, Executor, ExecutorArgs } from './helpers.js';
+import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
 import { evaluator } from '#code-evaluator';
+import type { BuilderContextInterface } from '../../context/types.js';
 
 export type EvaluatorArgs = {
   code: string;
   event?: Event;
   isExpression?: boolean;
-  serverExecutor: Executor | undefined;
 } & Pick<
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'

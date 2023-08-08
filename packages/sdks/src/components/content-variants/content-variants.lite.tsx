@@ -112,7 +112,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
               includeRefs={props.includeRefs}
               enrich={props.enrich}
               isSsrAbTest={state.shouldRenderVariants}
-              serverExecutor={props.serverExecutor}
             />
           )}
         </For>
@@ -141,7 +140,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
         includeRefs={props.includeRefs}
         enrich={props.enrich}
         isSsrAbTest={state.shouldRenderVariants}
-        serverExecutor={props.serverExecutor}
       />
     </>
   );

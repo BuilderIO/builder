@@ -11,12 +11,10 @@ import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import InlinedStyles from '../../inlined-styles.lite';
 import { useMetadata } from '@builder.io/mitosis';
-import type { Executor } from '../../../functions/evaluate/helpers.js';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
   context: BuilderContextInterface;
-  serverExecutor: Executor | undefined;
 };
 
 useMetadata({
@@ -34,7 +32,6 @@ export default function BlockStyles(props: BlockStylesProps) {
       rootSetState: props.context.rootSetState,
       context: props.context.context,
       shouldEvaluateBindings: true,
-      serverExecutor: props.serverExecutor,
     }),
 
     get canShowBlock() {
