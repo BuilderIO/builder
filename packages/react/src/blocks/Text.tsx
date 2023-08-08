@@ -32,7 +32,8 @@ class TextComponent extends React.Component<TextProps> {
   }
 
   componentDidMount() {
-    if (this.textRef) {
+    // test if there are any expressions in text before assigning innerHTML
+    if (this.textRef && !/{{([^}]+)}}/.test(this.props.text)) {
       this.textRef.innerHTML = this.props.text;
     }
   }
