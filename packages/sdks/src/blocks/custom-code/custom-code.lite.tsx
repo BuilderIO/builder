@@ -1,4 +1,11 @@
+import { useMetadata } from '@builder.io/mitosis';
 import { onMount, useRef, useStore } from '@builder.io/mitosis';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export interface CustomCodeProps {
   code: string;

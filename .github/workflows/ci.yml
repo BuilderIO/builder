@@ -10,16 +10,19 @@ on:
     branches:
       - main
 
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Use node version 12
-        uses: actions/setup-node@v2
+      - name: Use node version 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: '16.x'
 
       - run: npm run ci:lint
 
@@ -27,24 +30,24 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [12]
         package: ['webcomponents', 'widgets']
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Use node version ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Use node version 16
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '16.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -53,7 +56,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: NPM install
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: packages/${{ matrix.package }}
 
       - name: Build
@@ -73,37 +76,28 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Run prettier
         run: yarn ci:lint
 
-      - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/react build
-
-      - name: Build
-        run: yarn build:mitosis
+      - name: Typecheck
+        run: yarn nx typecheck @builder.io/sdks
 
       - name: Run tests
-        run: yarn ci:test
+        run: yarn nx test @builder.io/sdks
 
   sdks-outputs:
     runs-on: ubuntu-latest
@@ -112,7 +106,7 @@ jobs:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
       fail-fast: false
       matrix:
-        sdk: ['svelte', 'qwik', 'react-native', 'react', 'solid', 'vue2', 'vue3']
+        sdk: ['svelte', 'qwik', 'react-native', 'react', 'nextjs', 'solid', 'vue2', 'vue3']
         include:
           - sdk: svelte
             sdk-name: svelte
@@ -122,6 +116,8 @@ jobs:
             sdk-name: react-native
           - sdk: react
             sdk-name: react
+          - sdk: nextjs
+            sdk-name: react-nextjs
           - sdk: solid
             sdk-name: solid
           - sdk: vue2
@@ -135,46 +131,25 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/react build
-
-      - name: Build Mitosis
-        run: yarn build:mitosis
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/sdk-${{ matrix.sdk-name }} build
-
-      - name: Install browsers for Playwright
-        run: yarn workspace @builder.io/sdks-e2e-tests install-playwright
-
-      - name: Build E2E tests
-        run: yarn e2e:build:specs
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Build E2E apps
-        run: yarn e2e:build:${{ matrix.sdk }}
+        run: yarn workspace @builder.io/sdks e2e:build:${{ matrix.sdk }}
 
       - name: Run E2E tests
-        run: yarn e2e:run:${{ matrix.sdk }}
+        run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.sdk }}
 
   core-sdk:
     runs-on: ubuntu-latest
@@ -185,25 +160,22 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
+        run: yarn nx build @builder.io/sdk
 
   old-react-sdk:
     runs-on: ubuntu-latest
@@ -214,37 +186,22 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
         with:
-          path: packages/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build Core
-        run: yarn workspace @builder.io/sdk ci:build
-
-      - name: Build SDK
-        run: yarn workspace @builder.io/react build
-
-      - name: Install browsers for Playwright
-        run: yarn workspace @builder.io/sdks-e2e-tests install-playwright
-
-      - name: Build E2E tests
-        run: yarn workspace @builder.io/sdks-e2e-tests build
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
 
       - name: Build E2E apps
-        run: yarn workspace @builder.io/react-tests build
+        run: yarn workspace @builder.io/mono-repo e2e:build:old-react
 
       - name: Run E2E tests
-        run: yarn workspace @builder.io/sdks e2e:run:old-react
+        run: yarn workspace @builder.io/mono-repo e2e:run:old-react

@@ -1,8 +1,8 @@
-import { TARGET } from '../../constants/target';
-import { isBrowser } from '../../functions/is-browser';
-import type { Nullable } from '../../helpers/nullable';
-import type { BuilderContent } from '../../types/builder-content';
-import type { Target } from '../../types/targets';
+import { TARGET } from '../../constants/target.js';
+import { isBrowser } from '../../functions/is-browser.js';
+import type { Nullable } from '../../helpers/nullable.js';
+import type { BuilderContent } from '../../types/builder-content.js';
+import type { Target } from '../../types/targets.js';
 
 export const getVariants = (content: Nullable<BuilderContent>) =>
   Object.values(content?.variations || {}).map((variant) => ({

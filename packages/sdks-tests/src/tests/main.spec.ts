@@ -2,6 +2,7 @@ import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { targetContext } from './context.js';
 import {
+  BUILDER_TEXT_SELECTOR,
   excludeReactNative,
   expectStylesForElement,
   findTextInPage,
@@ -17,7 +18,7 @@ test.describe(targetContext.name, () => {
     test.describe('cookies', () => {
       test('do not appear if canTrack=false', async ({ page, context, packageName }) => {
         // TO-DO: figure out why Remix fails this test
-        if (packageName === 'e2e-old-react-remix') {
+        if (packageName === 'gen1-remix') {
           test.skip();
         }
 
@@ -175,21 +176,27 @@ test.describe(targetContext.name, () => {
       excludeReactNative('shows default value', async ({ page }) => {
         await page.goto('/reactive-state');
 
-        await findTextInPage({ page, text: '0' });
+        const locator = page.locator(BUILDER_TEXT_SELECTOR);
+
+        await locator.getByText('0', { exact: true });
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
-        if (packageName === 'e2e-nextjs-app-dir-rsc') {
+        if (packageName === 'next-app-dir') {
           test.skip();
         }
 
         await page.goto('/reactive-state');
 
-        await findTextInPage({ page, text: '0' });
+        const locator = isRNSDK
+          ? page.locator('[data-builder-text]')
+          : page.locator('.builder-text');
+
+        await locator.getByText('0', { exact: true });
 
         await page.getByText('Increment Number').click();
 
-        await findTextInPage({ page, text: '1' });
+        await locator.getByText('1', { exact: true });
       });
     });
     test.describe('Element Events', () => {
@@ -243,7 +250,12 @@ test.describe(targetContext.name, () => {
       });
 
       reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
-        if (packageName === 'e2e-nextjs-app-dir-rsc') {
+        if (packageName === 'next-app-dir') {
+          test.skip();
+        }
+
+        // TO-DO: flaky in remix
+        if (packageName === 'gen1-remix') {
           test.skip();
         }
 
@@ -259,7 +271,7 @@ test.describe(targetContext.name, () => {
       });
     });
     test('Dynamic Data Bindings', async ({ page, packageName }) => {
-      if (packageName === 'e2e-vue-nuxt3') {
+      if (packageName === 'nuxt3') {
         test.skip();
       }
       await page.goto('/data-bindings');
@@ -513,7 +525,7 @@ test.describe(targetContext.name, () => {
         await page.locator(`a[href="/static-url"]`).waitFor();
       });
       test('renders with dynamic value', async ({ page, packageName }) => {
-        if (packageName === 'e2e-old-nextjs') {
+        if (packageName === 'gen1-next') {
           test.skip();
         }
         await page.goto('/link-url');

@@ -1,12 +1,12 @@
 import 'cross-fetch/dist/node-polyfill.js';
 
 export { onBeforeRender };
-import { getProps } from '@builder.io/sdks-e2e-tests';
-import { processContentResult } from '@builder.io/sdk-vue/vue3';
+import { getProps } from '@e2e/tests';
+import { _processContentResult } from '@builder.io/sdk-vue/vue3';
 
 async function onBeforeRender(pageContext) {
   const props = await getProps({
-    processContentResult,
+    _processContentResult,
     pathname: pageContext.urlOriginal,
   });
 

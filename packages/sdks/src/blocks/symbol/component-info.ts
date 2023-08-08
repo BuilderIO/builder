@@ -1,9 +1,10 @@
-import type { ComponentInfo } from '../../types/components';
+import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
   name: 'Symbol',
   noWrap: true,
   static: true,
+  isRSC: true,
 
   inputs: [
     {

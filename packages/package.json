@@ -1,14 +1,22 @@
 {
-  "name": "all-sdks-mono-repo",
+  "name": "@builder.io/mono-repo",
   "description": "This mono-repo includes the new SDKs and their integration tests.",
   "private": true,
   "workspaces": [
     "sdks-tests",
     "sdks",
     "react",
-    "react-tests",
-    "core"
+    "core",
+    "react-tests/*",
+    "sdks/e2e/*",
+    "sdks/output/*",
+    "sdks/output/vue/packages/*",
+    "sdks/output/react/packages/*"
   ],
+  "scripts": {
+    "e2e:build:old-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
+    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run"
+  },
   "engines": {
     "yarn": ">= 3.0.0"
   },
@@ -19,8 +27,10 @@
     "prettier": "2.8.8",
     "@builder.io/react": "workspace:*"
   },
-  "packageManager": "yarn@3.4.1",
+  "packageManager": "yarn@3.6.1",
   "devDependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "prettier": "^2.8.8"
   }
 }

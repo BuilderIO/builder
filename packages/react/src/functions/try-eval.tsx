@@ -2,6 +2,7 @@
 import { Builder } from '@builder.io/sdk';
 import { safeDynamicRequire } from './safe-dynamic-require';
 import { isDebug } from './is-debug';
+import { getIsolateContext, makeFn } from './string-to-function';
 
 export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
   const value = str;
@@ -52,16 +53,16 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
       // Below is a hack to get certain code to *only* load in the server build, to not screw with
       // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
       // for the server build
-      // tslint:disable:comment-format
-      const { VM } = safeDynamicRequire('vm2');
-      return new VM({
-        sandbox: {
-          ...data,
-          ...{ state: data },
-        },
-        // TODO: convert reutrn to module.exports on server
-      }).run(value.replace(/(^|;)return /, '$1'));
-      // tslint:enable:comment-format
+      const ivm = safeDynamicRequire('isolated-vm');
+      const context = getIsolateContext();
+      const fnString = makeFn(str!, useReturn, ['state']);
+      const resultStr = context.evalClosureSync(fnString, [new ivm.Reference(data || {})]);
+      try {
+        // returning objects throw errors in isolated vm, so we stringify it and parse it back
+        return JSON.parse(resultStr);
+      } catch (_error: any) {
+        return resultStr;
+      }
     }
   } catch (error: any) {
     if (errors) {

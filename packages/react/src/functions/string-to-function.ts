@@ -84,6 +84,7 @@ export function stringToFunction(
           }
           /* Alias */
           var ctx = context;
+          var log = console.log.bind(console);
           with (rootState) {
             ${useReturn ? `return (${str});` : str};
           }
@@ -118,21 +119,31 @@ export function stringToFunction(
         // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
         // for the server build
         // TODO: cache these for better performancs with new VmScript
-        // tslint:disable:comment-format
-        const { VM } = safeDynamicRequire('vm2') as typeof import('vm2');
-        const [state, event, _block, _builder, _Device, _update, _Builder, context] = args;
-
-        return new VM({
-          timeout: 100,
-          sandbox: {
-            ...state,
-            ...{ state },
-            ...{ context },
-            ...{ builder: api },
-            event,
-          },
-        }).run(str.replace(/(^|;)return /, '$1'));
-        // tslint:enable:comment-format
+        const isolateContext: import('isolated-vm').Context = getIsolateContext();
+        const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
+        const resultStr = isolateContext.evalClosureSync(
+          makeFn(str, useReturn),
+          args.map((arg, index) =>
+            typeof arg === 'object'
+              ? new ivm.Reference(
+                  index === indexOfBuilderInstance
+                    ? {
+                        // workaround: methods with default values for arguments is not being cloned over
+                        ...arg,
+                        getUserAttributes: () => arg.getUserAttributes(''),
+                      }
+                    : arg
+                )
+              : null
+          )
+        );
+        try {
+          // returning objects throw errors in isolated vm, so we stringify it and parse it back
+          const res = JSON.parse(resultStr);
+          return res;
+        } catch (_error: any) {
+          return resultStr;
+        }
       }
     } catch (error: any) {
       if (Builder.isBrowser) {
@@ -167,3 +178,86 @@ export function stringToFunction(
 
   return final;
 }
+
+const indexOfBuilderInstance = 3;
+
+export const makeFn = (code: string, useReturn: boolean, args?: string[]) => {
+  // Order must match the order of the arguments to the function
+  const names = args || [
+    'state',
+    'event',
+    'block',
+    'builder',
+    'Device',
+    'update',
+    'Builder',
+    'context',
+  ];
+
+  // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
+  // https://github.com/laverdet/isolated-vm#referencecopysync
+  const refToProxyFn = `
+  var refToProxy = (obj) => {
+    if (typeof obj !== 'object' || obj === null) {
+      return obj;
+    }
+    return new Proxy({}, {
+        get(target, key) {
+            if (key === 'copySync') {
+              return () => obj.copySync();
+            }
+            const val = obj.getSync(key);
+            if (typeof val?.getSync === 'function') {
+                return refToProxy(val);
+            }
+            return val;
+        },
+        set(target, key, value) {
+            obj.setSync(key, value);
+        },
+        deleteProperty(target, key) {
+            obj.deleteSync(key);
+        }
+      })
+  }
+`;
+  // Returned object  will be stringified and parsed back to the parent isolate
+  const strinfigyFn = `
+    var stringify = (val) => {
+      if (typeof val === 'object' && val !== null) {
+        return JSON.stringify(val.copySync ? val.copySync() : val);
+      }
+      return val;
+    }
+  `;
+
+  return `
+${refToProxyFn}
+${strinfigyFn}
+`.concat(names.map((arg, index) => `var ${arg} = refToProxy($${index});`).join('\n')).concat(`
+${names.includes('context') ? 'var ctx = context;' : ''}
+${useReturn ? `return stringify(${code});` : code};
+`);
+};
+
+export const getIsolateContext = () => {
+  let isolatedContext = Builder.serverContext;
+
+  if (!isolatedContext) {
+    const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
+    const isolate = new ivm.Isolate({ memoryLimit: 128 });
+    isolatedContext = isolate.createContextSync();
+    Builder.setServerContext(isolatedContext);
+  }
+  const jail = isolatedContext!.global;
+  // This makes the global object available in the context as `global`. We use `derefInto()` here
+  // because otherwise `global` would actually be a Reference{} object in the new isolate.
+  jail.setSync('global', jail.derefInto());
+  // We will create a basic `log` function for the new isolate to use.
+  jail.setSync('log', function (...args: any[]) {
+    if (isDebug()) {
+      console.log(...args);
+    }
+  });
+  return isolatedContext;
+};

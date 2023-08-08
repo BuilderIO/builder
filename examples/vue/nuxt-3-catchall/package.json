@@ -11,6 +11,6 @@
     "nuxt": "^3.4.3"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "^0.4.5"
+    "@builder.io/sdk-vue": "^0.5.5"
   }
 }

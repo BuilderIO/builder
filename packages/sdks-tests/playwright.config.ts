@@ -16,15 +16,15 @@ const getDirName = () => {
 };
 
 const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
-  reactNative: ['e2e-react-native'],
-  solid: ['e2e-solidjs', 'e2e-solid-start'],
-  qwik: ['e2e-qwik-city'],
-  react: ['e2e-nextjs-react', 'e2e-react', 'e2e-nextjs-app-dir-client-react'],
-  vue2: ['e2e-vue2', 'e2e-vue-nuxt2'],
-  vue3: ['e2e-vue3', 'e2e-vue-nuxt3'],
-  svelte: ['e2e-svelte', 'e2e-sveltekit'],
-  rsc: ['e2e-nextjs-app-dir-rsc'],
-  oldReact: ['e2e-old-react', 'e2e-old-nextjs', 'e2e-old-react-remix'],
+  reactNative: ['react-native'],
+  solid: ['solid', 'solid-start'],
+  qwik: ['qwik-city'],
+  react: ['next-pages-dir', 'react', 'next-app-dir-client'],
+  vue2: ['vue2', 'nuxt2'],
+  vue3: ['vue3', 'nuxt3'],
+  svelte: ['svelte', 'sveltekit'],
+  rsc: ['next-app-dir'],
+  oldReact: ['gen1-react', 'gen1-next', 'gen1-remix'],
 };
 
 targetContext.name = sdk;
@@ -40,7 +40,7 @@ const packagesToRun =
     : WEB_SERVERS[sdk];
 
 const things = packagesToRun.map((packageName, i) => {
-  const isReactNative = packageName === 'e2e-react-native';
+  const isReactNative = packageName === 'react-native';
   const port = isReactNative ? 19006 : 1111 + i;
   const portFlag = isReactNative ? '' : `--port=${port}`;
 
@@ -84,11 +84,13 @@ export default defineConfig({
   })),
 
   webServer: things.map(({ packageName, port, portFlag }) => {
-    return {
-      command: `PORT=${port} yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
+    const webServers = {
+      command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
       port,
       reuseExistingServer: false,
-      ...(packageName === 'e2e-react-native' ? { timeout: 120 * 1000 } : {}),
+      ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
     };
+
+    return webServers;
   }),
 });

@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-qwik-city",
+  "name": "@e2e/qwik-city",
   "private": true,
   "type": "module",
   "scripts": {
@@ -19,10 +19,10 @@
     "serve": "yarn run dev"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.0.0",
+    "@builder.io/qwik": "^1.2.6",
     "@builder.io/qwik-city": "^1.0.0",
     "@builder.io/sdk-qwik": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "@types/eslint": "8.4.10",
     "@types/node": "^18.11.18",
     "@types/node-fetch": "latest",
@@ -32,9 +32,13 @@
     "eslint-plugin-qwik": "0.16.2",
     "node-fetch": "3.3.0",
     "prettier": "2.8.1",
-    "typescript": "4.9.4",
+    "typescript": "^5.1.6",
     "undici": "5.19.1",
     "vite": "4.0.3",
     "vite-tsconfig-paths": "3.5.0"
+  },
+  "dependencies": {
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0"
   }
 }

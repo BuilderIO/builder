@@ -76,13 +76,13 @@ const initializeAbTest = async (
   if (!baseURL) throw new Error('Missing baseURL');
 
   // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-  if (packageName === 'e2e-old-nextjs') test.skip();
+  if (packageName === 'gen1-next') test.skip();
 
   // TO-DO: fix this
-  if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+  if (packageName === 'next-app-dir') test.skip();
 
   // React Native SDK needs some extra time to sort its feelings out.
-  if (packageName === 'e2e-react-native') test.slow();
+  if (packageName === 'react-native') test.slow();
 
   const context = await createContextWithCookies({
     baseURL,
@@ -202,7 +202,7 @@ test.describe('A/B tests', () => {
         browser,
         context: _context,
       }) => {
-        if (packageName === 'e2e-react-native') test.skip();
+        if (packageName === 'react-native') test.skip();
 
         const { page, msgs } = await initializeAbTest(
           {
@@ -236,7 +236,7 @@ test.describe('A/B tests', () => {
         browser,
         context: _context,
       }) => {
-        if (packageName === 'e2e-react-native') test.skip();
+        if (packageName === 'react-native') test.skip();
 
         const { page, msgs } = await initializeAbTest(
           {

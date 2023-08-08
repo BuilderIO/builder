@@ -40,15 +40,23 @@ useMetadata({
       asyncComponentImports: true,
     },
   },
+  qwik: {
+    setUseStoreFirst: true,
+  },
+  rsc: {
+    componentType: 'server',
+  },
 });
 
 export default function Block(props: BlockProps) {
   const state = useStore({
-    component: getComponent({
-      block: props.block,
-      context: props.context.value,
-      registeredComponents: props.registeredComponents,
-    }),
+    get blockComponent() {
+      return getComponent({
+        block: props.block,
+        context: props.context.value,
+        registeredComponents: props.registeredComponents,
+      });
+    },
     get repeatItem() {
       return getRepeatItemData({
         block: props.block,
@@ -67,7 +75,9 @@ export default function Block(props: BlockProps) {
             shouldEvaluateBindings: true,
           });
     },
-    Tag: props.block.tagName || 'div',
+    get Tag() {
+      return props.block.tagName || 'div';
+    },
     get canShowBlock() {
       if ('hide' in state.processedBlock) {
         return !state.processedBlock.hide;
@@ -86,7 +96,7 @@ export default function Block(props: BlockProps) {
        * blocks, and the children will be repeated within those blocks.
        */
       const shouldRenderChildrenOutsideRef =
-        !state.component?.component && !state.repeatItem;
+        !state.blockComponent?.component && !state.repeatItem;
 
       return shouldRenderChildrenOutsideRef
         ? state.processedBlock.children ?? []
@@ -96,20 +106,20 @@ export default function Block(props: BlockProps) {
     get componentRefProps(): ComponentProps {
       return {
         blockChildren: state.processedBlock.children ?? [],
-        componentRef: state.component?.component,
+        componentRef: state.blockComponent?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
           builderContext: props.context,
-          ...(state.component?.name === 'Symbol' ||
-          state.component?.name === 'Columns'
+          ...(state.blockComponent?.name === 'Symbol' ||
+          state.blockComponent?.name === 'Columns'
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
         context: childrenContext,
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
-        includeBlockProps: state.component?.noWrap === true,
-        isInteractive: true,
+        includeBlockProps: state.blockComponent?.noWrap === true,
+        isInteractive: !state.blockComponent?.isRSC,
       };
     },
   });
@@ -140,7 +150,7 @@ export default function Block(props: BlockProps) {
   return (
     <Show when={state.canShowBlock}>
       <Show
-        when={!state.component?.noWrap}
+        when={!state.blockComponent?.noWrap}
         else={<ComponentRef {...state.componentRefProps} />}
       >
         {/*

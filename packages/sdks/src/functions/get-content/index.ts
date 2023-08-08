@@ -2,6 +2,7 @@ import { TARGET } from '../../constants/target.js';
 import { handleABTesting } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { logger } from '../../helpers/logger.js';
+import { getPreviewContent } from '../../helpers/preview-lru-cache/get.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { fetch } from '../get-fetch.js';
 import { isBrowser } from '../is-browser.js';
@@ -12,16 +13,28 @@ const checkContentHasResults = (
   content: ContentResponse
 ): content is ContentResults => 'results' in content;
 
-export async function getContent(
+/**
+ * Returns a the first entry that matches the given options.
+ */
+export async function fetchOneEntry(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  const allContent = await getAllContent({ ...options, limit: 1 });
-  if (allContent && checkContentHasResults(allContent)) {
+  const allContent = await fetchEntries({ ...options, limit: 1 });
+
+  if (allContent) {
     return allContent.results[0] || null;
   }
 
   return null;
 }
+
+/**
+ * @deprecated
+ * Consider using `fetchBuilderProps` instead for easier setup.
+ *
+ * NOTE: `getContent` was renamed to `fetchOneEntry` and will be removed in a future release.
+ */
+export const getContent = fetchOneEntry;
 
 type ContentResults = {
   results: BuilderContent[];
@@ -34,7 +47,7 @@ type ContentResponse =
       message: string;
     };
 
-const fetchContent = async (options: GetContentOptions) => {
+const _fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options);
 
   const res = await fetch(url.href);
@@ -45,11 +58,23 @@ const fetchContent = async (options: GetContentOptions) => {
 /**
  * Exported only for testing purposes. Should not be used directly.
  */
-export const processContentResult = async (
+export const _processContentResult = async (
   options: GetContentOptions,
-  content: ContentResults
+  content: ContentResults,
+  url: URL = generateContentUrl(options)
 ) => {
   const canTrack = getDefaultCanTrack(options.canTrack);
+
+  const isPreviewing = url.search.includes(`preview=`);
+
+  if (TARGET === 'rsc' && isPreviewing) {
+    const newResults: BuilderContent[] = [];
+    for (const item of content.results) {
+      const previewContent = getPreviewContent(url.searchParams);
+      newResults.push(previewContent || item);
+    }
+    content.results = newResults;
+  }
 
   if (!canTrack) return content;
   if (!(isBrowser() || TARGET === 'reactNative')) return content;
@@ -73,21 +98,27 @@ export const processContentResult = async (
   return content;
 };
 
-export async function getAllContent(
-  options: GetContentOptions
-): Promise<ContentResponse | null> {
+/**
+ * Returns a paginated array of entries that match the given options.
+ */
+export async function fetchEntries(options: GetContentOptions) {
   try {
     const url = generateContentUrl(options);
-    const content = await fetchContent(options);
+    const content = await _fetchContent(options);
 
     if (!checkContentHasResults(content)) {
       logger.error('Error fetching data. ', { url, content, options });
-      return content;
+      return null;
     }
 
-    return processContentResult(options, content);
+    return _processContentResult(options, content);
   } catch (error) {
     logger.error('Error fetching data. ', error);
     return null;
   }
 }
+
+/**
+ * @deprecated Use `fetchEntries` instead.
+ */
+export const getAllContent = fetchEntries;

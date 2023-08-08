@@ -1,11 +1,11 @@
-import { processContentResult } from '@builder.io/sdk-svelte';
-import { getProps } from '@builder.io/sdks-e2e-tests';
+import { _processContentResult } from '@builder.io/sdk-svelte';
+import { getProps } from '@e2e/tests';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ url }) {
   const props = await getProps({
     pathname: url.pathname,
-    processContentResult,
+    _processContentResult,
   });
 
   return { props };

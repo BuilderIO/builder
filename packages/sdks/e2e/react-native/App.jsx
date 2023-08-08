@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
 import React, { Fragment, useEffect, useState } from 'react';
-import { getProps } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@e2e/tests';
 import {
   RenderContent,
-  processContentResult,
+  _processContentResult,
 } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,7 +28,7 @@ const BuilderContent = ({ route }) => {
   const [props, setProps] = useState(undefined);
 
   useEffect(() => {
-    getProps({ pathname: route.path || '/', processContentResult }).then(
+    getProps({ pathname: route.path || '/', _processContentResult }).then(
       (resp) => {
         setProps(resp);
       }

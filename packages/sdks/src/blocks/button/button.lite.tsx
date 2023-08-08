@@ -1,10 +1,16 @@
-import { Show, useTarget } from '@builder.io/mitosis';
-import { filterAttrs } from '../helpers';
+import { useMetadata, Show, useTarget } from '@builder.io/mitosis';
+import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
-import { setAttrs } from '../helpers';
+import { setAttrs } from '../helpers.js';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export interface ButtonProps {
   attributes?: any;
@@ -39,6 +45,7 @@ export default function Button(props: ButtonProps) {
             {
               react: props.attributes.className,
               reactNative: props.attributes.className,
+              rsc: props.attributes.className,
               default: props.attributes.class,
             }
           )}

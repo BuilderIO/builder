@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { RenderContent, processContentResult } from '@builder.io/sdk-react';
-import { ALL_PATHNAMES, getProps } from '@builder.io/sdks-e2e-tests';
+import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
+import { getAllPathnames, getProps } from '@e2e/tests';
 import type {
   GetStaticPropsContext,
   GetStaticPathsResult,
@@ -12,7 +10,7 @@ export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
   return {
     props: await getProps({
       pathname: x.params.index ? `/${x.params.index.join('/')}` : '/',
-      processContentResult,
+      _processContentResult,
     }),
   };
 }
@@ -21,7 +19,7 @@ type StaticProps = { index: string[] };
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    paths: ALL_PATHNAMES.map((path) => {
+    paths: getAllPathnames('gen2').map((path) => {
       const output: StaticProps = {
         index: path === '/' ? null : path.split('/').filter(Boolean),
       };

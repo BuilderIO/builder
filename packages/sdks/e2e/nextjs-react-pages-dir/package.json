@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-nextjs-react",
+  "name": "@e2e/next-pages-dir",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,14 +11,25 @@
   },
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",
-    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "next": "^13.4.4",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
-    "typescript": "^4"
+    "typescript": "^5.1.6"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.next"
+        ]
+      }
+    }
   }
 }

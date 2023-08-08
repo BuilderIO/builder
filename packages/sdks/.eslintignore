@@ -1,6 +1,5 @@
 **/node_modules/*
 output/
-jest.config.js
 .eslintrc.js
 mitosis.config.js
 tsconfig.json
@@ -11,11 +10,10 @@ e2e/qwik/server/
 e2e/qwik/lib-types/
 e2e/qwik-city/server/
 e2e/rsc/
+e2e/nuxt2/
 
 **/playwright-report/*
 **/test-results/*
 **/vite.config.ts.timestamp-*
 
 **/.solid
-
-e2e/nextjs-react-app-dir/src/sdk-src/

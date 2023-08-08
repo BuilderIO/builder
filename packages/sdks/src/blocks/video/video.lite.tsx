@@ -1,4 +1,10 @@
-import { useStore } from '@builder.io/mitosis';
+import { useMetadata, useStore } from '@builder.io/mitosis';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export interface VideoProps {
   attributes?: any;

@@ -4,24 +4,25 @@ import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js
 import type { ExpectedStyles } from './helpers.js';
 import {
   test,
-  findTextInPage,
   isRNSDK,
   excludeReactNative,
   testOnlyOldReact,
   testExcludeOldReact,
   isOldReactSDK,
+  BUILDER_TEXT_SELECTOR,
 } from './helpers.js';
 import { sdk } from './sdk.js';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale';
 
 const testSymbols = async (page: Page) => {
-  await findTextInPage({ page, text: 'special test description' });
+  const locator = page.locator(BUILDER_TEXT_SELECTOR);
+  await locator.getByText('special test description', { exact: true });
   await page
     .locator(
       '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
     )
     .isVisible();
-  await findTextInPage({ page, text: 'default description' });
+  await locator.getByText('default description', { exact: true });
   await page
     .locator(
       '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
@@ -145,7 +146,7 @@ test.describe('Blocks', () => {
     await testSymbols(page);
   });
   test('symbols without content', async ({ page, packageName }) => {
-    if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+    if (packageName === 'next-app-dir') test.skip();
 
     let x = 0;
 
@@ -328,7 +329,7 @@ test.describe('Blocks', () => {
 
   test.describe('Test ApiVersion', () => {
     test('apiVersion in SDKs is not set', async ({ page, packageName }) => {
-      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+      if (packageName === 'next-app-dir') test.skip();
 
       let x = 0;
 
@@ -361,7 +362,7 @@ test.describe('Blocks', () => {
     });
 
     test('apiVersion in SDKs is set to v3', async ({ page, packageName }) => {
-      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+      if (packageName === 'next-app-dir') test.skip();
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -420,7 +421,7 @@ test.describe('Blocks', () => {
     });
 
     testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page, packageName }) => {
-      if (packageName === 'e2e-nextjs-app-dir-rsc') test.skip();
+      if (packageName === 'next-app-dir') test.skip();
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;

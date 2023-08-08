@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { RenderContent, processContentResult } from '@builder.io/sdk-svelte';
-  import { getProps } from '@builder.io/sdks-e2e-tests';
+  import { RenderContent, _processContentResult } from '@builder.io/sdk-svelte';
+  import { getProps } from '@e2e/tests';
 
   let props = undefined;
   const fetch = async () => {
-    props = await getProps({ processContentResult });
+    props = await getProps({ _processContentResult });
   };
 
   fetch();

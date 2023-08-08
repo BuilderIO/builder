@@ -1,4 +1,4 @@
-import { getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
+import { getAPIKey, getProps } from '@e2e/tests';
 import { BuilderComponent, builder } from '@builder.io/react';
 import { useEffect, useState } from 'react';
 
@@ -10,7 +10,7 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps().then(resp => {
+    getProps({}).then(resp => {
       setProps(resp);
     });
   }, []);
