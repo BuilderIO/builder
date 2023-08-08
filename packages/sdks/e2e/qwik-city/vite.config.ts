@@ -17,14 +17,8 @@ export default defineConfig(() => {
     },
     build: {
       rollupOptions: {
-        external: ['@builder.io/qwik', 'js-interpreter', 'isolated-vm'],
+        external: ['@builder.io/qwik'],
       },
-    },
-    optimizeDeps: {
-      exclude: ['isolated-vm'],
-    },
-    esbuild: {
-      exclude: ['isolated-vm'],
     },
   };
 });
