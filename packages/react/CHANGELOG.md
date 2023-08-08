@@ -1,6 +1,6 @@
 ### 3.0.13
 - Add support for `customComponents` prop on `BuilderComponent`
-- Fix: SSR with text block eval expressio
+- Fix: SSR with text block eval expression
 
 ### 3.0.12
 
