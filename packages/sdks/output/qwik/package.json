@@ -14,6 +14,22 @@
     "types",
     "lib"
   ],
+  "imports": {
+    "#code-evaluator": {
+      "edge-routine": "./src/functions/evaluate/non-node-runtime/index.ts",
+      "workerd": "./src/functions/evaluate/non-node-runtime/index.ts",
+      "deno": "./src/functions/evaluate/non-node-runtime/index.ts",
+      "lagon": "./src/functions/evaluate/non-node-runtime/index.ts",
+      "netlify": "./src/functions/evaluate/non-node-runtime/index.ts",
+      "edge-light": "./src/functions/evaluate/non-node-runtime/index.ts",
+      "bun": "./src/functions/evaluate/non-node-runtime/index.ts",
+      "browser": "./src/functions/evaluate/browser-runtime/index.ts",
+      "default": "./src/functions/evaluate/browser-runtime/index.ts",
+      "react-native": "./src/functions/evaluate/node-runtime/index.ts",
+      "electron": "./src/functions/evaluate/node-runtime/index.ts",
+      "node": "./src/functions/evaluate/node-runtime/index.ts"
+    }
+  },
   "exports": {
     ".": {
       "import": "./lib/index.qwik.mjs",

@@ -4,7 +4,7 @@ import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import type { BuilderGlobals, Executor, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
-import { runInBrowser } from './browser-runtime/index.js';
+import { evaluator } from '#code-evaluator';
 
 export type EvaluatorArgs = {
   code: string;
@@ -24,7 +24,6 @@ export function evaluate({
   rootSetState,
   event,
   isExpression = true,
-  serverExecutor,
 }: EvaluatorArgs): any {
   if (code === '') {
     logger.warn('Skipping evaluation of empty code block.');
@@ -59,18 +58,7 @@ export function evaluate({
   };
 
   try {
-    if (isBrowser()) return runInBrowser(args);
-
-    console.log('serverExecutor', serverExecutor);
-
-    if (serverExecutor) {
-      return serverExecutor(args);
-    } else {
-      logger.warn(
-        'No server executor was provided. Code evaluation will not work.'
-      );
-      return undefined;
-    }
+    return evaluator(args);
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });
     return undefined;
