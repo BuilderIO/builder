@@ -14,9 +14,6 @@
     "types",
     "lib"
   ],
-  "imports": {
-    "#code-evaluator": "./src/functions/evaluate/node-runtime/index.js"
-  },
   "exports": {
     ".": {
       "node": {

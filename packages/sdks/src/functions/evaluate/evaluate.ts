@@ -3,7 +3,7 @@ import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
-import { evaluator } from '#code-evaluator';
+import { evaluator } from './browser-runtime/index.js';
 import type { BuilderContextInterface } from '../../context/types.js';
 
 export type EvaluatorArgs = {

@@ -18,7 +18,9 @@ export default defineConfig((a) => {
   return {
     resolve: {
       alias: {
-        '#code-evaluator': getEvaluatorPath(process.env.SDK_ENV as SdkEnv),
+        './browser-runtime/index.js': getEvaluatorPath(
+          process.env.SDK_ENV as SdkEnv
+        ),
       },
     },
     build: {

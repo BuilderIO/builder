@@ -7,9 +7,6 @@
     "output/vue/packages/*",
     "output/react/packages/*"
   ],
-  "imports": {
-    "#code-evaluator": "./src/functions/evaluate/node-runtime/index.ts"
-  },
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
