@@ -6,7 +6,7 @@
   "main": "./lib/edge/index.cjs",
   "module": "./lib/edge/index.mjs",
   "qwik": "./lib/browser/index.mjs",
-  "types": "./types/index.d.ts",
+  "types": "./types/src/index.d.ts",
   "files": [
     "README.md",
     "package.json",
@@ -64,6 +64,18 @@
         "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
       }
+    },
+    "./edge": {
+      "import": "./lib/edge/index.mjs",
+      "require": "./lib/edge/index.cjs"
+    },
+    "./node": {
+      "import": "./lib/node/index.mjs",
+      "require": "./lib/node/index.cjs"
+    },
+    "./browser": {
+      "import": "./lib/browser/index.mjs",
+      "require": "./lib/browser/index.cjs"
     }
   },
   "scripts": {
