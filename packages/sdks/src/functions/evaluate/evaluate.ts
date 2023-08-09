@@ -5,7 +5,7 @@ import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
 import { evaluator } from './placeholder-runtime.js';
 
-export type EvaluatorArgs = Omit<ExecutorArgs, 'builder'> & {
+export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
   isExpression?: boolean;
 };
