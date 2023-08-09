@@ -18,7 +18,7 @@ export default defineConfig((a) => {
   return {
     resolve: {
       alias: {
-        './browser-runtime/index.js': getEvaluatorPath(
+        './placeholder-runtime.js': getEvaluatorPath(
           process.env.SDK_ENV as SdkEnv
         ),
       },
