@@ -12,6 +12,7 @@ import {
   BehaviorSubject,
   BuilderElement,
   BuilderContent as Content,
+  Component,
 } from '@builder.io/sdk';
 import { BuilderStoreContext } from '../store/builder-store';
 import hash from 'hash-sum';
@@ -34,6 +35,10 @@ import { tryEval } from '../functions/try-eval';
 import { toError } from '../to-error';
 import { getBuilderPixel } from '../functions/get-builder-pixel';
 import { isDebug } from '../functions/is-debug';
+
+export type RegisteredComponent = Component & {
+  component?: React.ComponentType<any>;
+};
 
 function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const ret: any = {};
@@ -287,6 +292,11 @@ export interface BuilderComponentProps {
    * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
    */
   locale?: string;
+
+  /**
+   * Pass a list of custom components to register with Builder.io.
+   */
+  customComponents?: Array<RegisteredComponent>;
 }
 
 export interface BuilderComponentState {
@@ -447,6 +457,8 @@ export class BuilderComponent extends React.Component<
         this.onContentLoaded(content?.data, getContentWithInfo(content)!);
       }
     }
+
+    this.registerCustomComponents();
   }
 
   get builder() {
@@ -697,6 +709,17 @@ export class BuilderComponent extends React.Component<
 
   mounted = false;
 
+  registerCustomComponents() {
+    if (this.props.customComponents) {
+      for (const customComponent of this.props.customComponents) {
+        if (customComponent) {
+          const { component, ...registration } = customComponent;
+          Builder.registerComponent(component, registration);
+        }
+      }
+    }
+  }
+
   componentDidMount() {
     this.mounted = true;
     if (this.asServer) {
@@ -915,6 +938,10 @@ export class BuilderComponent extends React.Component<
       this.state.update((state: any) => {
         Object.assign(state, this.externalState);
       });
+    }
+
+    if (this.props.customComponents && this.props.customComponents !== prevProps.customComponents) {
+      this.registerCustomComponents();
     }
 
     if (Builder.isEditing) {

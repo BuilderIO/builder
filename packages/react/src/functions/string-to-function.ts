@@ -120,18 +120,6 @@ export function stringToFunction(
         // for the server build
         // TODO: cache these for better performancs with new VmScript
         const isolateContext: import('isolated-vm').Context = getIsolateContext();
-        const jail = isolateContext.global;
-        // This makes the global object available in the context as `global`. We use `derefInto()` here
-        // because otherwise `global` would actually be a Reference{} object in the new isolate.
-        jail.setSync('global', jail.derefInto());
-
-        // We will create a basic `log` function for the new isolate to use.
-        jail.setSync('log', function (...args: any[]) {
-          if (isDebug()) {
-            console.log(...args);
-          }
-        });
-
         const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
         const resultStr = isolateContext.evalClosureSync(
           makeFn(str, useReturn),
@@ -193,9 +181,18 @@ export function stringToFunction(
 
 const indexOfBuilderInstance = 3;
 
-const makeFn = (code: string, useReturn: boolean) => {
+export const makeFn = (code: string, useReturn: boolean, args?: string[]) => {
   // Order must match the order of the arguments to the function
-  const names = ['state', 'event', 'block', 'builder', 'Device', 'update', 'Builder', 'context'];
+  const names = args || [
+    'state',
+    'event',
+    'block',
+    'builder',
+    'Device',
+    'update',
+    'Builder',
+    'context',
+  ];
 
   // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
   // https://github.com/laverdet/isolated-vm#referencecopysync
@@ -238,17 +235,29 @@ const makeFn = (code: string, useReturn: boolean) => {
 ${refToProxyFn}
 ${strinfigyFn}
 `.concat(names.map((arg, index) => `var ${arg} = refToProxy($${index});`).join('\n')).concat(`
-var ctx = context;
+${names.includes('context') ? 'var ctx = context;' : ''}
 ${useReturn ? `return stringify(${code});` : code};
 `);
 };
 
-const getIsolateContext = () => {
-  if (Builder.serverContext) {
-    return Builder.serverContext;
+export const getIsolateContext = () => {
+  let isolatedContext = Builder.serverContext;
+
+  if (!isolatedContext) {
+    const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
+    const isolate = new ivm.Isolate({ memoryLimit: 128 });
+    isolatedContext = isolate.createContextSync();
+    Builder.setServerContext(isolatedContext);
   }
-  const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
-  const isolate = new ivm.Isolate({ memoryLimit: 128 });
-  Builder.setServerContext(isolate.createContextSync());
-  return Builder.serverContext;
+  const jail = isolatedContext!.global;
+  // This makes the global object available in the context as `global`. We use `derefInto()` here
+  // because otherwise `global` would actually be a Reference{} object in the new isolate.
+  jail.setSync('global', jail.derefInto());
+  // We will create a basic `log` function for the new isolate to use.
+  jail.setSync('log', function (...args: any[]) {
+    if (isDebug()) {
+      console.log(...args);
+    }
+  });
+  return isolatedContext;
 };

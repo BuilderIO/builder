@@ -17,22 +17,9 @@ export interface TextProps {
 class TextComponent extends React.Component<TextProps> {
   textRef: HTMLSpanElement | null = null;
 
-  componentDidUpdate(prevProps: TextProps) {
-    if (!this.allowTextEdit) {
-      return;
-    }
-    if (
-      this.textRef &&
-      !(this.textRef.contentEditable === 'true' && this.textRef === document.activeElement)
-    ) {
-      if (this.props.text !== prevProps.text) {
-        this.textRef.innerHTML = this.props.text;
-      }
-    }
-  }
-
   componentDidMount() {
-    if (this.textRef) {
+    // test if there are any expressions in text before assigning innerHTML
+    if (this.textRef && !/{{([^}]+)}}/.test(this.props.text)) {
       this.textRef.innerHTML = this.props.text;
     }
   }
@@ -41,24 +28,7 @@ class TextComponent extends React.Component<TextProps> {
     return String(expression).replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, state));
   }
 
-  get allowTextEdit() {
-    return (
-      Builder.isBrowser &&
-      Builder.isEditing &&
-      location.search.includes('builder.allowTextEdit=true') &&
-      !(
-        this.props.builderBlock &&
-        this.props.builderBlock.bindings &&
-        (this.props.builderBlock.bindings['component.options.text'] ||
-          this.props.builderBlock.bindings['options.text'] ||
-          this.props.builderBlock.bindings['text'])
-      )
-    );
-  }
-
   render() {
-    const allowEditingText = this.allowTextEdit;
-
     const textCSS: InterpolationWithTheme<any> = {
       outline: 'none',
       '& p:first-of-type, & .builder-paragraph:first-of-type': {
@@ -89,67 +59,19 @@ class TextComponent extends React.Component<TextProps> {
                 ref={ref => {
                   this.textRef = ref;
                 }}
-                contentEditable={allowEditingText || undefined}
-                onInput={e => {
-                  if (allowEditingText) {
-                    window.parent?.postMessage(
-                      {
-                        type: 'builder.textEdited',
-                        data: {
-                          id: this.props.builderBlock && this.props.builderBlock.id,
-                          value: e.currentTarget.innerHTML,
-                        },
-                      },
-                      '*'
-                    );
-                  }
-                }}
-                onKeyDown={e => {
-                  if (
-                    allowEditingText &&
-                    this.textRef &&
-                    e.which === 27 &&
-                    document.activeElement === this.textRef
-                  ) {
-                    this.textRef.blur();
-                  }
-                }}
-                onFocus={e => {
-                  if (allowEditingText) {
-                    window.parent?.postMessage(
-                      {
-                        type: 'builder.textFocused',
-                        data: {
-                          id: this.props.builderBlock && this.props.builderBlock.id,
-                        },
-                      },
-                      '*'
-                    );
-                  }
-                }}
-                onBlur={e => {
-                  if (allowEditingText) {
-                    window.parent?.postMessage(
-                      {
-                        type: 'builder.textBlurred',
-                        data: {
-                          id: this.props.builderBlock && this.props.builderBlock.id,
-                        },
-                      },
-                      '*'
-                    );
-                  }
-                }}
                 css={textCSS}
-                className="builder-text"
-                {...(!allowEditingText && {
+                className={
+                  /* NOTE: This class name must be "builder-text" for inline editing to work in the Builder editor */
+                  'builder-text'
+                }
+                {...{
                   dangerouslySetInnerHTML: {
                     __html: this.evalExpression(
                       this.props.text || (this.props as any).content || '',
                       state.state
                     ),
                   },
-                })}
+                }}
               />
             </React.Fragment>
           );
