@@ -15,14 +15,8 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "rootDir": "./",
+    "rootDir": "./"
   },
-  "include": [
-    "types.d.ts",
-    "types-hack.d.ts",
-    "src"
-  ],
-  "exclude": [
-    "src/blocks/form/form.tsx",
-  ]
+  "include": ["types.d.ts", "types-hack.d.ts", "src"],
+  "exclude": ["src/blocks/form/form.tsx"]
 }
