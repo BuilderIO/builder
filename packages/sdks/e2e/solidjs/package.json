@@ -17,7 +17,6 @@
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
     "@e2e/tests": "workspace:*",
-    "isolated-vm": "^4.6.0",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "solid-js": "^1.5.7"

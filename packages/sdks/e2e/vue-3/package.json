@@ -11,7 +11,6 @@
     "@builder.io/sdk-vue": "workspace:*",
     "@e2e/tests": "workspace:*",
     "cross-fetch": "^4.0.0",
-    "isolated-vm": "^4.6.0",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "vite-plugin-ssr": "^0.4.133",

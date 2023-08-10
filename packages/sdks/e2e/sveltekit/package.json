@@ -13,7 +13,6 @@
   "dependencies": {
     "@builder.io/sdk-svelte": "workspace:*",
     "@e2e/tests": "workspace:*",
-    "isolated-vm": "^4.6.0",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0"
   },

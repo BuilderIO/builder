@@ -20,7 +20,6 @@
     "@e2e/tests": "workspace:*",
     "@solidjs/meta": "^0.28.2",
     "@solidjs/router": "^0.8.2",
-    "isolated-vm": "^4.6.0",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "solid-js": "^1.7.2",
