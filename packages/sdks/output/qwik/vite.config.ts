@@ -1,30 +1,17 @@
 import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
+import {
+  getEvaluatorPathAlias,
+  getSdkOutputPath,
+} from '../../output-generation';
 
-type SdkEnv = 'node' | 'edge' | 'browser';
-
-const getEvaluatorPath = (sdkEnv: SdkEnv) => {
-  switch (sdkEnv) {
-    case 'node':
-      return './node-runtime/index.ts';
-    case 'edge':
-      return './non-node-runtime/index.ts';
-    case 'browser':
-      return './browser-runtime/index.ts';
-  }
-};
-
-export default defineConfig((a) => {
+export default defineConfig(() => {
   return {
     resolve: {
-      alias: {
-        './placeholder-runtime.js': getEvaluatorPath(
-          process.env.SDK_ENV as SdkEnv
-        ),
-      },
+      alias: getEvaluatorPathAlias('input'),
     },
     build: {
-      outDir: ['lib', process.env.SDK_ENV].join('/'),
+      outDir: getSdkOutputPath(),
       lib: {
         entry: './src/index.ts',
         formats: ['es', 'cjs'],

@@ -24,9 +24,6 @@
     "isolated-vm": "^4.6.0"
   },
   "nx": {
-    "implicitDependencies": [
-      "@builder.io/sdks"
-    ],
     "targets": {
       "build": {
         "dependsOn": [

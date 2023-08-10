@@ -22,6 +22,7 @@
     "solid-js": ">=1.5.7"
   },
   "devDependencies": {
+    "@builder.io/sdks": "workspace:*",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "solid-js": ">=1.5.7",
@@ -29,9 +30,6 @@
     "vite-plugin-solid": "^2.2.6"
   },
   "nx": {
-    "implicitDependencies": [
-      "@builder.io/sdks"
-    ],
     "targets": {
       "build": {
         "dependsOn": [

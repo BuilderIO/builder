@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@builder.io/sdks": "workspace:*",
     "next": "^13.4.4",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
@@ -31,9 +32,6 @@
     "lru-cache": "^10.0.0"
   },
   "nx": {
-    "implicitDependencies": [
-      "@builder.io/sdks"
-    ],
     "targets": {
       "build": {
         "dependsOn": [

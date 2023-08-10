@@ -87,6 +87,7 @@
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.6",
+    "@builder.io/sdks": "workspace:*",
     "@types/node": "latest",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
@@ -101,9 +102,6 @@
     "undici": "^5.14.0"
   },
   "nx": {
-    "implicitDependencies": [
-      "@builder.io/sdks"
-    ],
     "targets": {
       "build": {
         "dependsOn": [
