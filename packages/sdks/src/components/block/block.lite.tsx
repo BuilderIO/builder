@@ -76,7 +76,12 @@ export default function Block(props: BlockProps) {
           });
     },
     get Tag() {
-      return props.block.tagName || 'div';
+      return useTarget({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        reactNative: props.block.tagName || ScrollView,
+        default: props.block.tagName || 'div',
+      });
     },
     get canShowBlock() {
       if ('hide' in state.processedBlock) {
