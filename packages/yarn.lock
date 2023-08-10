@@ -1882,11 +1882,11 @@ __metadata:
   linkType: hard
 
 "@builder.io/mitosis-cli@npm:dev":
-  version: 0.0.77-0
-  resolution: "@builder.io/mitosis-cli@npm:0.0.77-0"
+  version: 0.0.77-1
+  resolution: "@builder.io/mitosis-cli@npm:0.0.77-1"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.0.119-0
+    "@builder.io/mitosis": 0.0.119-1
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1909,13 +1909,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 7e0e7b1d72fd76e9e3b3ccb7ba26de5dba7096992498a6652f6cd7c5be31e880a4ecd6d00b753a00ecfa568246bfc4ddf38423c8a0263525bc0775bde547bfb9
+  checksum: 4c3c8e4051f78b7f54f55f192162fb45a3a02feac7a1a6d409d050bc296064a85396e6fbc131ba529795067c2ec731a77a63f245d8fbaf7af779bca7c0a334c1
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.119-0, @builder.io/mitosis@npm:dev":
-  version: 0.0.119-0
-  resolution: "@builder.io/mitosis@npm:0.0.119-0"
+"@builder.io/mitosis@npm:0.0.119-1, @builder.io/mitosis@npm:dev":
+  version: 0.0.119-1
+  resolution: "@builder.io/mitosis@npm:0.0.119-1"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1955,7 +1955,7 @@ __metadata:
     ts-morph: ^19.0.0
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 58069ab196da3a730497f2a59ef22f800fee51ff118ee74e183cdd4b18a935112901b90a444c8ce173c3514d4a0defc1ba032e9812ed6b809fdeb67666256758
+  checksum: aa30ab7746eef4d5235034c36d7bb9e4a5b789340309c60f760178efdaee3ae3064765129d7f480c47267b07b102b18aea8858ac5a655c0c7c43017ffcf9bbbb
   languageName: node
   linkType: hard
 
