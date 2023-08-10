@@ -1,8 +1,8 @@
 import { getBuilderSearchParams } from './get-builder-search-params/index.js';
-import type { ContentVariantsProps } from '../components/content-variants/content-variants.types';
-import type { Dictionary } from '../types/typescript';
-import { fetchOneEntry } from './get-content';
-import type { GetContentOptions } from './get-content/types';
+import type { ContentVariantsProps } from '../components/content-variants/content-variants.types.js';
+import type { Dictionary } from '../types/typescript.js';
+import { fetchOneEntry } from './get-content/index.js';
+import type { GetContentOptions } from './get-content/types.js';
 
 type GetBuilderPropsOptions = (Omit<GetContentOptions, 'model'> & {
   model?: string;

@@ -1,2 +1,2 @@
-// TEMPORARY FIX UNTIL https://github.com/BuilderIO/qwik/issues/4899 is fixed.
+// TEMPORARY FIX UNTIL we fix dynamic imports
 export { runInNonNode } from './non-node-runtime.js';

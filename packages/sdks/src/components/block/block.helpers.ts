@@ -2,7 +2,7 @@ import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../context/types.js';
-import { evaluate } from '../../functions/evaluate';
+import { evaluate } from '../../functions/evaluate/index.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';

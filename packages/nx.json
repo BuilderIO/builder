@@ -4,6 +4,7 @@
       "runner": "nx-cloud",
       "options": {
         "accessToken": "MTRkMmFiNTQtZWYzMi00YWRmLTg2OTctZjE1Mjk1ZTlkZDYyfHJlYWQ=",
+        "cacheDirectory": ".nx-cache",
         "cacheableOperations": ["build"]
       }
     }

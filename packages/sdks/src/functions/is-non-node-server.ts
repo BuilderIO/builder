@@ -1,4 +1,4 @@
-import { isBrowser } from './is-browser';
+import { isBrowser } from './is-browser.js';
 
 /**
  * Identifies non-node server runtimes (edge, workers, serverless, etc.)
