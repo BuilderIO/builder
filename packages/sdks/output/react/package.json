@@ -15,7 +15,6 @@
     "build": "yarn clean && tsc"
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0",
     "react": "^18.2.0"
   },
   "devDependencies": {

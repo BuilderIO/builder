@@ -1,1 +1,1 @@
-export { evaluate } from './evaluate.js';
+export { evaluate } from './evaluate';

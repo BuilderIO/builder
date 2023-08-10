@@ -1,8 +1,7 @@
-import { logger } from '../../../helpers/logger.js';
-import { set } from '../../set.js';
-import Interpreter from './acorn-interpreter.js';
-import type { ExecutorArgs } from '../helpers.js';
-import { getFunctionArguments } from '../helpers.js';
+import { logger } from '../../../helpers/logger';
+import { set } from '../../set';
+import Interpreter from '../acorn-interpreter.js';
+import type { ExecutorArgs } from '../types';
 
 const processCode = (code: string) => {
   return code
@@ -35,24 +34,25 @@ export const runInNonNode = ({
   rootState,
   localState,
   rootSetState,
-  code,
+  useCode,
 }: ExecutorArgs) => {
   const state = { ...rootState, ...localState };
 
-  const properties = getFunctionArguments({
+  const properties = {
+    state,
+    Builder: builder,
     builder,
     context,
     event,
-    state,
-  });
+  };
 
   /**
    * Deserialize all properties from JSON strings to JS objects
    */
-  const prependedCode = properties
-    .map(([key]) => `var ${key} = JSON.parse(${getJSONValName(key)});`)
+  const prependedCode = Object.keys(properties)
+    .map((key) => `var ${key} = JSON.parse(${getJSONValName(key)});`)
     .join('\n');
-  const cleanedCode = processCode(code);
+  const cleanedCode = processCode(useCode);
 
   if (cleanedCode === '') {
     logger.warn('Skipping evaluation of empty code block.');
@@ -75,7 +75,8 @@ theFunction();
     /**
      * serialize all function args to JSON strings
      */
-    properties.forEach(([key, val]) => {
+    Object.keys(properties).forEach((key) => {
+      const val = properties[key as keyof typeof properties] || {};
       const jsonVal = JSON.stringify(val);
       interpreter.setProperty(globalObject, getJSONValName(key), jsonVal);
     });
