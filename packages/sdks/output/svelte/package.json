@@ -38,8 +38,8 @@
   "types": "./lib/browser/index.d.ts",
   "scripts": {
     "build": "nx run-many -p @builder.io/sdk-svelte -t build:node build:edge build:browser",
-    "build:node": "svelte-kit sync && SDK_ENV=node svelte-package -i src/ -o lib/node",
-    "build:edge": "svelte-kit sync && SDK_ENV=edge svelte-package -i src/ -o lib/edge",
+    "build:node": "SDK_ENV=node  svelte-kit sync && svelte-package -i src/ -o lib/node",
+    "build:edge": "SDK_ENV=edge  svelte-kit sync && svelte-package -i src/ -o lib/edge",
     "build:browser": "SDK_ENV=browser svelte-kit sync && SDK_ENV=browser svelte-package -i src/ -o lib/browser",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
