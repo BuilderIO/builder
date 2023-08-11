@@ -1,12 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import {
-  RenderContent,
-  isPreviewing,
-  getContent,
-  ContentVariants,
-} from '@builder.io/sdk-react-native';
+import { RenderContent, isPreviewing, getContent } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
