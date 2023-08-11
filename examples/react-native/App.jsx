@@ -47,7 +47,7 @@ const BuilderContent = ({ route }) => {
       apiKey: BUILDER_API_KEY,
       options: route.params,
       userAttributes: {
-        urlPath: '/columns',
+        urlPath: route.path || '/',
       },
     })
       .then(content => {
