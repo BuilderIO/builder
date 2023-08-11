@@ -76,7 +76,15 @@ export default function Block(props: BlockProps) {
           });
     },
     get Tag() {
-      return props.block.tagName || 'div';
+      return useTarget({
+        /**
+         * `tagName` will always be an HTML element. In the future, we might't map those to the right React Native components
+         * For now, we just use `View` for all of them.
+         * eslint-disable-next-line @typescript-eslint/ban-ts-comment
+         * @ts-ignore */
+        reactNative: View,
+        default: props.block.tagName || 'div',
+      });
     },
     get canShowBlock() {
       if ('hide' in state.processedBlock) {

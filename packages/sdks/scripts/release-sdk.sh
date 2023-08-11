@@ -25,9 +25,6 @@ else
   npm version $VERSION
 fi
 
-# set the SDK version number in `sdk-version` files
-yarn workspace @builder.io/sdks set-sdk-version $1
-
 echo "Building SDK..."
 yarn nx build
 

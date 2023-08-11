@@ -347,7 +347,8 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (!json.meta?.useMetadata?.reactNative?.useScrollView) return;
+              if (!json.meta?.useMetadata?.plugins?.reactNative?.useScrollView)
+                return;
 
               /**
                * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
@@ -356,7 +357,10 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                if (item.name === 'View') {
+                /**
+                 * Not sure when the div->View transformation happens in Mitosis, so we check both to be safe.
+                 */
+                if (item.name === 'View' || item.name === 'div') {
                   item.name = 'ScrollView';
                 }
               });
