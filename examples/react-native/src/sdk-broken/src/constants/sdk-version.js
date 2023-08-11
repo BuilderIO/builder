@@ -1,0 +1,2 @@
+const SDK_VERSION = "UNKNOWN_VERSION";
+export { SDK_VERSION }
