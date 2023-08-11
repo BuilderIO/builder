@@ -1,3 +1,7 @@
+### 0.5.8
+
+- Fix: properly serialize messages sent to visual editor.
+
 ### 0.5.7
 
 - Fix: Drag'n'Drop in Visual Editor (rendered elements were missing `builder-id` attribute)
