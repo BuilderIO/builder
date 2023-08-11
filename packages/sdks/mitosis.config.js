@@ -356,7 +356,10 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                if (item.name === 'View') {
+                /**
+                 * Not sure when the div->View transformation happens in Mitosis, so we check both to be safe.
+                 */
+                if (item.name === 'View' || item.name === 'div') {
                   item.name = 'ScrollView';
                 }
               });

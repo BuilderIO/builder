@@ -77,9 +77,12 @@ export default function Block(props: BlockProps) {
     },
     get Tag() {
       return useTarget({
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        reactNative: props.block.tagName || ScrollView,
+        /**
+         * `tagName` will always be an HTML element. In the future, we might't map those to the right React Native components
+         * For now, we just use `View` for all of them.
+         * eslint-disable-next-line @typescript-eslint/ban-ts-comment
+         * @ts-ignore */
+        reactNative: View,
         default: props.block.tagName || 'div',
       });
     },
