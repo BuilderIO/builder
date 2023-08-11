@@ -18,7 +18,7 @@
     "build:react-native": "yarn build:mitosis --target=reactNative && yarn run set-sdk-version react-native",
     "build:vue2": "yarn build:mitosis --target=vue2 && yarn run set-sdk-version vue",
     "build:vue3": "yarn build:mitosis --target=vue3 && yarn run set-sdk-version vue",
-    "build:nextjs": "yarn build:mitosis --target=rsc && yarn run set-sdk-version rsc",
+    "build:nextjs": "yarn build:mitosis --target=rsc && yarn run set-sdk-version nextjs",
     "build:all": "yarn build:mitosis",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
     "test": "vitest run",
