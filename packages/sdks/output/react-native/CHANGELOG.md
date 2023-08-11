@@ -1,3 +1,8 @@
+### 0.5.6
+
+- Fix: use `ScrollView` instead of `View` for the `RenderContent` wrapper, to allow for scrolling the Builder content.
+- Fix: use `View` instead of HTML tagnames for Block wrappers, preventing crashes when rendering content.
+
 ### 0.5.5
 
 - Fix: remove `lru-cache` import and usage.
