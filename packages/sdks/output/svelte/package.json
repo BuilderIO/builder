@@ -37,11 +37,12 @@
   },
   "types": "./lib/browser/index.d.ts",
   "scripts": {
+    "prepare": "svelte-kit sync",
     "build": "nx run-many -p @builder.io/sdk-svelte -t build:node build:edge build:browser",
-    "build:node": "SDK_ENV=node svelte-kit sync && svelte-package -i src/ -o lib/node",
-    "build:edge": "SDK_ENV=edge svelte-kit sync && svelte-package -i src/ -o lib/edge",
-    "build:browser": "SDK_ENV=browser svelte-kit sync && SDK_ENV=browser svelte-package -i src/ -o lib/browser",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+    "build:node": "SDK_ENV=node svelte-package -i src/ -o lib/node",
+    "build:edge": "SDK_ENV=edge svelte-package -i src/ -o lib/edge",
+    "build:browser": "SDK_ENV=browser svelte-package -i src/ -o lib/browser",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
@@ -62,7 +63,8 @@
       "build": {
         "dependsOn": [
           "^build:svelte",
-          "^build"
+          "^build",
+          "prepare"
         ],
         "outputs": [
           "{projectRoot}/package"
