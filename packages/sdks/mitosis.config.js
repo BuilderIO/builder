@@ -347,7 +347,8 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (!json.meta?.useMetadata?.reactNative?.useScrollView) return;
+              if (!json.meta?.useMetadata?.plugins?.reactNative?.useScrollView)
+                return;
 
               /**
                * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
