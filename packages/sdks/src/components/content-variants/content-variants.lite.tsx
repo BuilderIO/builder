@@ -12,11 +12,11 @@ import {
   getVariants,
   getVariantsScriptString,
 } from './helpers.js';
-import ContentComponent from '../content/content.lite';
+import ContentComponent from '../content/content.lite.jsx';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
-import InlinedStyles from '../inlined-styles.lite';
+import InlinedStyles from '../inlined-styles.lite.jsx';
 import { handleABTestingSync } from '../../helpers/ab-tests.js';
-import InlinedScript from '../inlined-script.lite';
+import InlinedScript from '../inlined-script.lite.jsx';
 import { TARGET } from '../../constants/target.js';
 import type { ContentVariantsProps } from './content-variants.types.js';
 

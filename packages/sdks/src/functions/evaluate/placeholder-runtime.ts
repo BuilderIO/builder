@@ -1,4 +1,4 @@
-import type { ExecutorArgs } from './helpers';
+import type { ExecutorArgs } from './helpers.js';
 
 export const evaluator = (_args: ExecutorArgs) => {
   throw new Error(

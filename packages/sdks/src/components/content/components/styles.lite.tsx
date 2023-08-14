@@ -1,4 +1,4 @@
-import InlinedStyles from '../../inlined-styles.lite';
+import InlinedStyles from '../../inlined-styles.lite.jsx';
 import { useMetadata, useStore } from '@builder.io/mitosis';
 import type { CustomFont } from './styles.helpers.js';
 import { getCss } from './styles.helpers.js';

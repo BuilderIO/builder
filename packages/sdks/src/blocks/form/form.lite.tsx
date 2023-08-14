@@ -13,8 +13,8 @@ export default function FormComponent() {
 // // @ts-nocheck
 
 // /* eslint-disable */
-// import Block from '../../components/block/block.lite';
-// import BuilderBlocks from '../../components/blocks/blocks.lite';
+// import Block from '../../components/block/block.lite.jsx';
+// import BuilderBlocks from '../../components/blocks/blocks.lite.jsx';
 // import { isEditing } from '../../functions/is-editing';
 // import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
 // import { filterAttrs } from '../helpers.js';

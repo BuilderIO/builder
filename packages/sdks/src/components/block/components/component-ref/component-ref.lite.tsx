@@ -1,7 +1,7 @@
-import BlockStyles from '../block-styles.lite';
-import Block from '../../block.lite';
+import BlockStyles from '../block-styles.lite.jsx';
+import Block from '../../block.lite.jsx';
 import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
-import InteractiveElement from '../interactive-element.lite';
+import InteractiveElement from '../interactive-element.lite.jsx';
 import type { ComponentProps } from './component-ref.helpers.js';
 import { getWrapperProps } from './component-ref.helpers.js';
 
