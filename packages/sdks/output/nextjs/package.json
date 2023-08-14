@@ -122,7 +122,8 @@
       "build": {
         "dependsOn": [
           "^build:nextjs",
-          "^build"
+          "^build",
+          "prepare"
         ]
       }
     }
