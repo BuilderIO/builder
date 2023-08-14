@@ -5,9 +5,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview",
     "check": "NODE_ENV=browser svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "NODE_ENV=browser svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "serve": "vite preview"
   },
   "dependencies": {
