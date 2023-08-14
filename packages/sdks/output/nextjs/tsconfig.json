@@ -13,11 +13,13 @@
     "moduleResolution": "node",
     "jsx": "react",
     "declaration": true,
+    "emitDeclarationOnly": true,
     "paths": {
       "placeholder-runtime": [
         "./src/functions/evaluate/browser-runtime/index.js"
       ]
-    }
+    },
+    "outDir": "./types"
   },
   "include": ["./src/index.ts"]
 }

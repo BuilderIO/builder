@@ -13,12 +13,7 @@ export default defineConfig({
   resolve: {
     alias: getEvaluatorPathAlias('input'),
   },
-  plugins: [
-    react(),
-    dts({
-      insertTypesEntry: true,
-    }),
-  ],
+  plugins: [react()],
   build: {
     outDir: getSdkOutputPath(),
     lib: {

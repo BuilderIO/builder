@@ -3,36 +3,98 @@
   "description": "Builder.io SDK for React",
   "version": "0.5.8",
   "files": [
-    "lib"
+    "lib",
+    "types"
   ],
-  "types": "./lib/browser/index.d.ts",
-  "main": "./lib/node/index.js",
-  "module": "./lib/node/index.js",
+  "types": "./types/index.d.ts",
+  "main": "./lib/node/index.cjs",
+  "module": "./lib/node/index.mjs",
   "exports": {
     ".": {
-      "node": "./lib/node/index.js",
-      "browser": "./lib/browser/index.js",
-      "edge-routine": "./lib/edge/index.js",
-      "workerd": "./lib/edge/index.js",
-      "deno": "./lib/edge/index.js",
-      "lagon": "./lib/edge/index.js",
-      "netlify": "./lib/edge/index.js",
-      "edge-light": "./lib/edge/index.js",
-      "bun": "./lib/edge/index.js",
-      "react-native": "./lib/node/index.js",
-      "electron": "./lib/node/index.js",
-      "default": "./lib/browser/index.js"
+      "node": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "browser": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      },
+      "edge-routine": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "workerd": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "deno": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "lagon": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "netlify": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "edge-light": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "bun": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "react-native": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "electron": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "default": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      }
     },
-    "./edge": "./lib/edge/index.js",
-    "./node": "./lib/node/index.js",
-    "./browser": "./lib/browser/index.js"
+    "./edge": {
+      "types": "./types/index.d.ts",
+      "import": "./lib/edge/index.mjs",
+      "require": "./lib/edge/index.cjs"
+    },
+    "./node": {
+      "types": "./types/index.d.ts",
+      "import": "./lib/node/index.mjs",
+      "require": "./lib/node/index.cjs"
+    },
+    "./browser": {
+      "types": "./types/index.d.ts",
+      "import": "./lib/browser/index.mjs",
+      "require": "./lib/browser/index.cjs"
+    }
   },
   "scripts": {
     "prepare": "rimraf lib",
-    "build": "nx run-many -p @builder.io/sdk-react-nextjs -t build:node build:edge build:browser",
-    "build:node": "tsc && SDK_ENV=node vite build --mode lib",
-    "build:edge": "tsc && SDK_ENV=edge vite build --mode lib",
-    "build:browser": "tsc && SDK_ENV=browser vite build --mode lib"
+    "types": "tsc",
+    "build": "nx run-many -p @builder.io/sdk-react-nextjs -t types build:node build:edge build:browser",
+    "build:node": "SDK_ENV=node vite build --mode lib",
+    "build:edge": "SDK_ENV=edge vite build --mode lib",
+    "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
     "isolated-vm": "^4.6.0",
