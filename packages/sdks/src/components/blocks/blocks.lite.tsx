@@ -14,8 +14,8 @@ import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../context/types.js';
-import BuilderContext from '../../context/builder.context.lite.jsx';
-import ComponentsContext from '../../context/components.context.lite.jsx';
+import BuilderContext from '../../context/builder.context.lite.js';
+import ComponentsContext from '../../context/components.context.lite.js';
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {
   context?: Signal<BuilderContextInterface>;

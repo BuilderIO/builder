@@ -1,5 +1,5 @@
 import { useState, setContext } from '@builder.io/mitosis';
-import BuilderContext from '../../../context/builder.context.lite.jsx';
+import BuilderContext from '../../../context/builder.context.lite.js';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
