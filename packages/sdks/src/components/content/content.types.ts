@@ -1,6 +1,6 @@
 import type { BuilderRenderState } from '../../context/types.js';
 import type { EnforcePartials } from '../../types/enforced-partials.js';
-import type { ContentVariantsProps } from '../content-variants/content-variants.types.js';
+import type { ContentVariantsPrps } from '../content-variants/content-variants.types.js';
 
 interface InternalRenderProps {
   /**
@@ -12,7 +12,7 @@ interface InternalRenderProps {
 }
 
 export type ContentProps = InternalRenderProps &
-  EnforcePartials<ContentVariantsProps>;
+  EnforcePartials<ContentVariantsPrps>;
 
 export interface BuilderComponentStateChange {
   state: BuilderRenderState;
