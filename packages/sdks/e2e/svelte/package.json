@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "yarn run check && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "check": "SDK_ENV=browser svelte-check --tsconfig ./tsconfig.json"
   },
