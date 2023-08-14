@@ -2364,6 +2364,7 @@ __metadata:
     vite: ^4.4.8
   peerDependencies:
     isolated-vm: ^4.6.0
+    svelte: ^4.1.2
   languageName: unknown
   linkType: soft
 
