@@ -62,6 +62,7 @@
     "targets": {
       "prepare": {
         "dependsOn": [
+          "^build:svelte",
           "^build"
         ],
         "outputs": [
