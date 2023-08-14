@@ -60,6 +60,14 @@
   },
   "nx": {
     "targets": {
+      "prepare": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/.svelte-kit"
+        ]
+      },
       "build": {
         "dependsOn": [
           "^build:svelte",
