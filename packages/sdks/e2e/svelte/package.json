@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "yarn run check && vite build",
     "serve": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "SDK_ENV=browser svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@builder.io/sdk-svelte": "workspace:*",
