@@ -3,7 +3,7 @@ import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
-import { evaluator } from './placeholder-runtime.js';
+import { evaluator } from 'placeholder-runtime';
 
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;

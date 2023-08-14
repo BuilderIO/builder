@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "paths": {
-      "./placeholder-runtime.js": ["./node-runtime/index.js"]
-    }
-  }
-}

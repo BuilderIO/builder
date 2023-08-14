@@ -32,7 +32,7 @@ const buildPath = (pointTo) => {
  */
 export const getEvaluatorPathAlias = (pointTo) => {
   return {
-    './placeholder-runtime.js': buildPath(pointTo),
+    'placeholder-runtime': buildPath(pointTo),
   };
 };
 
