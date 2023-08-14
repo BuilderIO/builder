@@ -4,7 +4,7 @@
   "version": "0.5.8",
   "type": "module",
   "files": [
-    "package",
+    "lib",
     "src"
   ],
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/svelte#readme",
@@ -76,7 +76,7 @@
           "prepare"
         ],
         "outputs": [
-          "{projectRoot}/package"
+          "{projectRoot}/lib"
         ]
       }
     }
