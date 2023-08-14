@@ -80,7 +80,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "nx run-many -t build:node build:edge build:browser",
+    "build": "nx run-many -p @builder.io/sdk-qwik -t build:node build:edge build:browser",
     "build:node": "tsc && SDK_ENV=node vite build --mode lib",
     "build:edge": "tsc && SDK_ENV=edge vite build --mode lib",
     "build:browser": "tsc && SDK_ENV=browser vite build --mode lib"

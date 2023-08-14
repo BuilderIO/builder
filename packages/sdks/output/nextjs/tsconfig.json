@@ -1,11 +1,23 @@
 {
-  "extends": ["./tsconfig.base.json"],
   "compilerOptions": {
-    "outDir": "./lib/browser",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    // "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "declaration": true,
     "paths": {
       "placeholder-runtime": [
         "./src/functions/evaluate/browser-runtime/index.js"
       ]
     }
-  }
+  },
+  "include": ["./src/index.ts"]
 }
