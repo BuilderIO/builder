@@ -8,11 +8,6 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
-  plugins: {
-    reactNative: {
-      useScrollView: true,
-    },
-  },
 });
 
 export type BlocksWrapperProps = {

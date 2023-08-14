@@ -23,7 +23,7 @@ export function registerComponent(component: any, info: ComponentInfo): void {
 
 export const createRegisterComponentMessage = (info: ComponentInfo) => ({
   type: 'builder.registerComponent',
-  data: info,
+  data: serializeComponentInfo(info),
 });
 
 // eslint-disable-next-line @typescript-eslint/ban-types

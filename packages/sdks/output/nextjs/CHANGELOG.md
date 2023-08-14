@@ -1,3 +1,15 @@
+### 0.5.8
+
+- Fix: properly serialize messages sent to visual editor.
+
+### 0.5.7
+
+- No Changes.
+
+### 0.5.6
+
+- No Changes.
+
 ### 0.5.5
 
 - No changes.

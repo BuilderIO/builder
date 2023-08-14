@@ -34,6 +34,7 @@ import { fetchOneEntry } from '../../../functions/get-content/index.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
+import { fastClone } from '../../../functions/fast-clone.js';
 
 useMetadata({
   qwik: {
@@ -215,7 +216,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
             'builder:component:stateChange',
             {
               detail: {
-                state: props.builderContextSignal.value.rootState,
+                state: fastClone(props.builderContextSignal.value.rootState),
                 ref: {
                   name: props.model,
                 },
