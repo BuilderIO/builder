@@ -12,8 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "jsx": "react",
-    "declaration": true,
-    "outDir": "./dist"
+    "declaration": true
   },
   "include": ["./src/index.ts"]
 }

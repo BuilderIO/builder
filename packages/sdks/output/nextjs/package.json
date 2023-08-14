@@ -3,15 +3,36 @@
   "description": "Builder.io SDK for React",
   "version": "0.5.8",
   "files": [
-    "dist"
+    "lib"
   ],
-  "types": "./dist/index.d.ts",
+  "types": "./lib/browser/index.d.ts",
+  "main": "./lib/node/index.js",
+  "module": "./lib/node/index.js",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "node": "./lib/node/index.js",
+      "browser": "./lib/browser/index.js",
+      "edge-routine": "./lib/edge/index.js",
+      "workerd": "./lib/edge/index.js",
+      "deno": "./lib/edge/index.js",
+      "lagon": "./lib/edge/index.js",
+      "netlify": "./lib/edge/index.js",
+      "edge-light": "./lib/edge/index.js",
+      "bun": "./lib/edge/index.js",
+      "react-native": "./lib/node/index.js",
+      "electron": "./lib/node/index.js",
+      "default": "./lib/browser/index.js"
+    },
+    "./edge": "./lib/edge/index.js",
+    "./node": "./lib/node/index.js",
+    "./browser": "./lib/browser/index.js"
   },
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "yarn clean && tsc"
+    "prepare": "rimraf lib",
+    "build": "nx run-many -p @builder.io/sdk-react-nextjs -t build:node build:edge build:browser",
+    "build:browser": "yarn tsc --project tsconfig.browser.json",
+    "build:node": "yarn tsc --project tsconfig.node.json",
+    "build:edge": "yarn tsc --project tsconfig.edge.json"
   },
   "peerDependencies": {
     "isolated-vm": "^4.6.0",
