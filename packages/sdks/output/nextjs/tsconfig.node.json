@@ -1,9 +1,9 @@
 {
-  "extends": [
-    "./tsconfig.base.json",
-    "../../output-tsconfigs/tsconfig.node.json"
-  ],
+  "extends": ["./tsconfig.base.json"],
   "compilerOptions": {
-    "outDir": "./lib/node"
+    "outDir": "./lib/node",
+    "paths": {
+      "placeholder-runtime": ["./src/functions/evaluate/node-runtime/index.js"]
+    }
   }
 }

@@ -1,9 +1,11 @@
 {
-  "extends": [
-    "./tsconfig.base.json",
-    "../../output-tsconfigs/tsconfig.edge.json"
-  ],
+  "extends": ["./tsconfig.base.json"],
   "compilerOptions": {
-    "outDir": "./lib/edge"
+    "outDir": "./lib/edge",
+    "paths": {
+      "placeholder-runtime": [
+        "./src/functions/evaluate/non-node-runtime/index.js"
+      ]
+    }
   }
 }

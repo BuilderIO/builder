@@ -1,9 +1,11 @@
 {
-  "extends": [
-    "./tsconfig.base.json",
-    "../../output-tsconfigs/tsconfig.browser.json"
-  ],
+  "extends": ["./tsconfig.base.json"],
   "compilerOptions": {
-    "outDir": "./lib/browser"
+    "outDir": "./lib/browser",
+    "paths": {
+      "placeholder-runtime": [
+        "./src/functions/evaluate/browser-runtime/index.js"
+      ]
+    }
   }
 }
