@@ -1,12 +1,9 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import {
   getEvaluatorPathAlias,
   getSdkOutputPath,
 } from '../../output-generation';
-import * as packageJson from './package.json';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
 const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
@@ -24,11 +21,12 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      // plugins: [nodeResolve()],
       external: [
-        ...Object.keys(packageJson.peerDependencies).map(
-          (key) => new RegExp(`node_modules/${key}`)
-        ),
+        'isolated-vm',
+        'next/navigation',
+        'react',
+        'react/jsx-runtime',
+        'react-dom',
       ],
       output: {
         manualChunks(id, { getModuleInfo }) {
