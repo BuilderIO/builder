@@ -18,8 +18,7 @@ Then:
 Svelte: WORKS 🎉
 Qwik: Bundles, but there is a code issue with calling rootSetState
 NextJS: Bundles, but has an issue importing the server bundle from the client bundle.
-
-React:
+React: Bundles correctly everywhere except Next App Dir project.
 
 Solid:
 Vue:

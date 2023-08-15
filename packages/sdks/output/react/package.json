@@ -89,8 +89,8 @@
     },
     "./server": {
       "types": "./types/functions/get-content/index.d.ts",
-      "import": "./lib/node/server.mjs",
-      "require": "./lib/node/server.cjs"
+      "import": "./lib/node/server-entry.mjs",
+      "require": "./lib/node/server-entry.cjs"
     }
   },
   "scripts": {

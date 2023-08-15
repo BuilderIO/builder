@@ -17,7 +17,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: './src/index.ts',
-        [SERVER_ENTRY]: './src/functions/get-content/index.ts',
+        [SERVER_ENTRY]: './src/server-index.ts',
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) =>
@@ -31,8 +31,10 @@ export default defineConfig({
           'react-dom': 'ReactDOM',
           'react/jsx-runtime': 'react/jsx-runtime',
         },
-        manualChunks(id) {
-          if (id.includes('get-content')) {
+        manualChunks(id, { getModuleIds, getModuleInfo }) {
+          const moduleInfo = getModuleInfo(id);
+
+          if (moduleInfo.importers.some((x) => x.includes('server-index.ts'))) {
             return SERVER_ENTRY;
           }
         },
