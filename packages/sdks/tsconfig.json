@@ -13,10 +13,7 @@
     // "isolatedModules": true,
     "module": "CommonJS",
     "moduleResolution": "Node16",
-    "types": ["vitest/globals"],
-    "paths": {
-      "placeholder-runtime": ["./src/functions/evaluate/placeholder-runtime.js"]
-    }
+    "types": ["vitest/globals"]
   },
-  "include": ["src/**/*", "typings", "mitosis.config.js", "output-generation"]
+  "include": ["src/**/*", "typings", "mitosis.config.js"]
 }

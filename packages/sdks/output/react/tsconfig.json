@@ -11,15 +11,9 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "jsx": "react",
-    "module": "ESNext",
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "paths": {
-      "placeholder-runtime": [
-        "./src/functions/evaluate/browser-runtime/index.js"
-      ]
-    },
-    "outDir": "./types"
+    "outDir": "./dist",
+    "module": "ESNext"
   },
   "include": ["./src/**/*"]
 }
