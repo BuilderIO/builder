@@ -27,6 +27,7 @@ export default defineConfig({
         'react',
         'react/jsx-runtime',
         'react-dom',
+        // 'lru-cache',
       ],
       output: {
         manualChunks(id, { getModuleInfo }) {

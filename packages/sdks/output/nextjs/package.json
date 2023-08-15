@@ -89,7 +89,6 @@
     }
   },
   "scripts": {
-    "prepare": "rimraf lib",
     "types": "tsc",
     "build": "nx run-many -p @builder.io/sdk-react-nextjs -t types build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",
@@ -122,8 +121,7 @@
       "build": {
         "dependsOn": [
           "^build:nextjs",
-          "^build",
-          "prepare"
+          "^build"
         ]
       }
     }

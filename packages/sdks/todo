@@ -3,10 +3,6 @@ Investigate why the `isolated-vm` module isn't being imported correctly:
 - tried vue and react, neither work
   - probably wanna focus on an SDK that uses vite to bundle, since we need to externalize the `isolated-vm` module. So React SDK wouldn't be good for now.
 
-- try to use https://github.com/QuiiBz/detect-runtime to add conditional import 
-
-
-
 Test with Qwik SDK first:
 
 Fix build:
@@ -15,3 +11,16 @@ Fix build:
 
 Then:
 - add back `codeEvaluator` prop to `fetchBuilderProps`
+
+
+
+
+Svelte: WORKS 🎉
+Qwik: Bundles, but there is a code issue with calling rootSetState
+NextJS: Bundles, but has an issue importing the server bundle from the client bundle.
+
+React:
+
+Solid:
+Vue:
+React Native:
