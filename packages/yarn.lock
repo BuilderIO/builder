@@ -2298,6 +2298,7 @@ __metadata:
   resolution: "@builder.io/sdk-react-nextjs@workspace:sdks/output/nextjs"
   dependencies:
     "@builder.io/sdks": "workspace:*"
+    "@rollup/plugin-node-resolve": ^15.1.0
     "@vitejs/plugin-react": ^4.0.4
     lru-cache: ^10.0.0
     next: ^13.4.4
@@ -7268,7 +7269,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-node-resolve@npm:^15.0.2":
+"@rollup/plugin-node-resolve@npm:^15.0.2, @rollup/plugin-node-resolve@npm:^15.1.0":
   version: 15.1.0
   resolution: "@rollup/plugin-node-resolve@npm:15.1.0"
   dependencies:

@@ -104,6 +104,7 @@
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
+    "@rollup/plugin-node-resolve": "^15.1.0",
     "@vitejs/plugin-react": "^4.0.4",
     "next": "^13.4.4",
     "nx": "^16.6.0",
