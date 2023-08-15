@@ -18,7 +18,6 @@
     "solid-styled-components": "^0.27.6"
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0",
     "solid-js": ">=1.5.7"
   },
   "devDependencies": {

@@ -64,7 +64,6 @@
   "dependencies": {
     "@builder.io/mitosis": "dev",
     "@builder.io/mitosis-cli": "dev",
-    "isolated-vm": "^4.6.0",
     "js-interpreter": "^4.0.0",
     "node-fetch": "^2.6.1",
     "nx": "^16.6.0",
