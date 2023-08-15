@@ -2,13 +2,14 @@
   "name": "@builder.io/sdk-vue-2",
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "build": "nx run-many -p @builder.io/sdk-vue-2 -t build:node build:edge build:browser",
+    "build:node": "SDK_ENV=node vite build --mode lib",
+    "build:edge": "SDK_ENV=edge vite build --mode lib",
+    "build:browser": "SDK_ENV=browser vite build --mode lib",
     "type-check": "vue-tsc --noEmit"
   },
-  "dependencies": {
-    "vue": "^2.7.7"
-  },
   "devDependencies": {
+    "@builder.io/sdks": "workspace:*",
     "@types/node": "^16.11.45",
     "@vitejs/plugin-vue2": "^1.1.2",
     "@vue/tsconfig": "^0.1.3",
@@ -19,10 +20,12 @@
     "typescript": "^5.1.6",
     "vite": "^4.0.0",
     "vite-plugin-dts": "^1.5.0",
+    "vue": "^2.7.7",
     "vue-tsc": "^0.38.8"
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0"
+    "isolated-vm": "^4.6.0",
+    "vue": "^2.7.7"
   },
   "nx": {
     "targets": {
