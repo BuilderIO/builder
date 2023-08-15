@@ -43,6 +43,11 @@ export default defineConfig({
             return "'use server';";
           }
         },
+        globals: {
+          react: 'react',
+          'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'react/jsx-runtime',
+        },
       },
     },
   },
