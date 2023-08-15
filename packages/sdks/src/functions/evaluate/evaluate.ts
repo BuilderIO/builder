@@ -4,6 +4,9 @@ import { isEditing } from '../is-editing.js';
 import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
 import { evaluator } from 'placeholder-runtime';
+import { runInBrowser } from './browser-runtime/browser.js';
+import { runInNonNode } from './non-node-runtime/index.js';
+import { isNonNodeServer } from '../is-non-node-server.js';
 
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
@@ -52,7 +55,11 @@ export function evaluate({
   };
 
   try {
-    return evaluator(args);
+    if (isBrowser()) return runInBrowser(args);
+
+    if (isNonNodeServer()) return runInNonNode(args);
+
+    return runInBrowser(args);
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });
     return undefined;
