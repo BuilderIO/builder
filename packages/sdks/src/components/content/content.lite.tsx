@@ -8,8 +8,8 @@ import {
   components,
   serializeComponentInfo,
 } from '../../functions/register-component.js';
-import Blocks from '../blocks/blocks.lite';
-import ContentStyles from './components/styles.lite';
+import Blocks from '../blocks/blocks.lite.jsx';
+import ContentStyles from './components/styles.lite.jsx';
 import {
   Show,
   useStore,
@@ -25,12 +25,12 @@ import {
 import { TARGET } from '../../constants/target.js';
 import { getRenderContentScriptString } from '../content-variants/helpers.js';
 import { useTarget } from '@builder.io/mitosis';
-import EnableEditor from './components/enable-editor.lite';
-import InlinedScript from '../inlined-script.lite';
+import EnableEditor from './components/enable-editor.lite.jsx';
+import InlinedScript from '../inlined-script.lite.jsx';
 import { wrapComponentRef } from './wrap-component-ref.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
-import ComponentsContext from '../../context/components.context.lite';
+import ComponentsContext from '../../context/components.context.lite.js';
 
 useMetadata({
   qwik: {

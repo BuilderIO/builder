@@ -1,13 +1,16 @@
-import type {
-  BuilderContextInterface,
-  BuilderRenderState,
-} from '../../context/types.js';
 import { logger } from '../../helpers/logger.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
-import { isNonNodeServer } from '../is-non-node-server.js';
-import type { ExecutorArgs } from './types.js';
+import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
+import { getUserAttributes } from '../track/helpers.js';
+import { runInBrowser } from './browser-runtime/browser.js';
 import { runInNonNode } from './non-node-runtime/index.js';
+import { isNonNodeServer } from '../is-non-node-server.js';
+
+export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
+  event?: Event;
+  isExpression?: boolean;
+};
 
 export function evaluate({
   code,
@@ -17,22 +20,16 @@ export function evaluate({
   rootSetState,
   event,
   isExpression = true,
-}: {
-  code: string;
-  event?: Event;
-  isExpression?: boolean;
-} & Pick<
-  BuilderContextInterface,
-  'localState' | 'context' | 'rootState' | 'rootSetState'
->): any {
+}: EvaluatorArgs): any {
   if (code === '') {
     logger.warn('Skipping evaluation of empty code block.');
     return;
   }
-  const builder = {
+  const builder: BuilderGlobals = {
     isEditing: isEditing(),
     isBrowser: isBrowser(),
     isServer: !isBrowser(),
+    getUserAttributes: () => getUserAttributes(),
   };
 
   // Be able to handle simple expressions like "state.foo" or "1 + 1"
@@ -47,7 +44,7 @@ export function evaluate({
     );
   const useCode = useReturn ? `return (${code});` : code;
   const args: ExecutorArgs = {
-    useCode,
+    code: useCode,
     builder,
     context,
     event,
@@ -56,72 +53,14 @@ export function evaluate({
     localState,
   };
 
-  if (isBrowser()) return runInBrowser(args);
-
-  if (isNonNodeServer()) return runInNonNode(args);
-
-  return runInNode(args);
-}
-export const runInBrowser = ({
-  useCode,
-  builder,
-  context,
-  event,
-  localState,
-  rootSetState,
-  rootState,
-}: ExecutorArgs) => {
-  const state = flattenState(rootState, localState, rootSetState);
-
   try {
-    return new Function(
-      'builder',
-      'Builder' /* <- legacy */,
-      'state',
-      'context',
-      'event',
-      useCode
-    )(builder, builder, state, context, event);
-  } catch (e) {
-    logger.warn(
-      'Builder custom code error: \n While Evaluating: \n ',
-      useCode,
-      '\n',
-      e
-    );
+    if (isBrowser()) return runInBrowser(args);
+
+    if (isNonNodeServer()) return runInNonNode(args);
+
+    return runInBrowser(args);
+  } catch (e: any) {
+    logger.error('Failed code evaluation: ' + e.message, { code });
+    return undefined;
   }
-};
-
-export const runInNode = (args: ExecutorArgs) => {
-  // TO-DO: use vm-isolate
-  return runInBrowser(args);
-};
-
-export function flattenState(
-  rootState: Record<string | symbol, any>,
-  localState: Record<string | symbol, any> | undefined,
-  rootSetState: ((rootState: BuilderRenderState) => void) | undefined
-): BuilderRenderState {
-  if (rootState === localState) {
-    throw new Error('rootState === localState');
-  }
-
-  return new Proxy(rootState, {
-    get: (_, prop) => {
-      if (localState && prop in localState) {
-        return localState[prop];
-      }
-      return rootState[prop as string];
-    },
-    set: (_, prop, value) => {
-      if (localState && prop in localState) {
-        throw new Error(
-          'Writing to local state is not allowed as it is read-only.'
-        );
-      }
-      rootState[prop as string] = value;
-      rootSetState?.(rootState);
-      return true;
-    },
-  });
 }

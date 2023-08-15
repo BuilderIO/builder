@@ -6,7 +6,7 @@ import type {
 import { getBlockProperties } from '../../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../../types/builder-block.js';
 import type { PropsWithBuilderData } from '../../../../types/builder-props.js';
-import type { InteractiveElementProps } from '../interactive-element.lite';
+import type { InteractiveElementProps } from '../interactive-element.lite.jsx';
 
 type ComponentOptions = PropsWithBuilderData<{
   [index: string]: any;

@@ -9,7 +9,7 @@ import { getProcessedBlock } from '../../../functions/get-processed-block.js';
 import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
-import InlinedStyles from '../../inlined-styles.lite';
+import InlinedStyles from '../../inlined-styles.lite.jsx';
 import { useMetadata } from '@builder.io/mitosis';
 
 export type BlockStylesProps = {

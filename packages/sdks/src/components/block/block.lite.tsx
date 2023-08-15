@@ -6,7 +6,7 @@ import { getBlockComponentOptions } from '../../functions/get-block-component-op
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import BlockStyles from './components/block-styles.lite';
+import BlockStyles from './components/block-styles.lite.jsx';
 import {
   getComponent,
   getRepeatItemData,
@@ -21,11 +21,11 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import RepeatedBlock from './components/repeated-block.lite';
+import RepeatedBlock from './components/repeated-block.lite.jsx';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import ComponentRef from './components/component-ref/component-ref.lite';
+import ComponentRef from './components/component-ref/component-ref.lite.jsx';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
-import BlockWrapper from './components/block-wrapper.lite';
+import BlockWrapper from './components/block-wrapper.lite.jsx';
 
 export type BlockProps = {
   block: BuilderBlock;

@@ -1,4 +1,4 @@
-import ContentVariants from '../../components/content-variants/content-variants.lite';
+import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
 import type { BuilderContent } from '../../types/builder-content.js';
 import {
   onMount,

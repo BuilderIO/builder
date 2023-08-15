@@ -1,4 +1,4 @@
-import Blocks from '../../components/blocks/blocks.lite';
+import Blocks from '../../components/blocks/blocks.lite.jsx';
 import {
   For,
   Show,
@@ -9,7 +9,7 @@ import {
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
 import type { SizeName } from '../../constants/device-sizes.js';
-import InlinedStyles from '../../components/inlined-styles.lite';
+import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { TARGET } from '../../constants/target.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type {

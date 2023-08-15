@@ -5,7 +5,7 @@ import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
 import { _track } from '../../../functions/track/index.js';
-import builderContext from '../../../context/builder.context.lite';
+import builderContext from '../../../context/builder.context.lite.js';
 import type { Signal } from '@builder.io/mitosis';
 import {
   Show,

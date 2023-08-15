@@ -1,5 +1,5 @@
 import { useContext } from '@builder.io/mitosis';
-import BuilderContext from '../context/builder.context.lite';
+import BuilderContext from '../context/builder.context.lite.js';
 
 /**
  * NO-OP placeholder for react-native BaseText implementation

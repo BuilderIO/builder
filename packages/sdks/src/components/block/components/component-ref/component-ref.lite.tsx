@@ -1,9 +1,16 @@
-import BlockStyles from '../block-styles.lite';
-import Block from '../../block.lite';
-import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
-import InteractiveElement from '../interactive-element.lite';
+import BlockStyles from '../block-styles.lite.jsx';
+import Block from '../../block.lite.jsx';
+import {
+  For,
+  Show,
+  useMetadata,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
+import InteractiveElement from '../interactive-element.lite.jsx';
 import type { ComponentProps } from './component-ref.helpers.js';
 import { getWrapperProps } from './component-ref.helpers.js';
+import { wrapComponentRef } from '../../../content/wrap-component-ref.js';
 
 useMetadata({
   rsc: {
@@ -13,7 +20,13 @@ useMetadata({
 
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
-    Wrapper: props.isInteractive ? InteractiveElement : props.componentRef,
+    Wrapper: props.isInteractive
+      ? useTarget({
+          vue2: wrapComponentRef(InteractiveElement),
+          vue3: wrapComponentRef(InteractiveElement),
+          default: InteractiveElement,
+        })
+      : props.componentRef,
   });
   return (
     <Show when={props.componentRef}>
