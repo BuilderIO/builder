@@ -1,25 +1,18 @@
-Investigate why the `isolated-vm` module isn't being imported correctly:
-- last commit tries to pass `serverExecutor` from the start
-- tried vue and react, neither work
-  - probably wanna focus on an SDK that uses vite to bundle, since we need to externalize the `isolated-vm` module. So React SDK wouldn't be good for now.
+WORKS 🎉🎉🎉
+- Svelte
 
-Test with Qwik SDK first:
+Partially working:
+- Qwik: Bundles, but there is a code issue with calling `rootSetState`
+- NextJS: Bundles, but has an issue importing the server bundle from the client bundle.
+- React: Bundles correctly everywhere except Next App Dir project. Probably same issue as above
 
-Fix build:
-- create 3 vite bundles, each aliasing the #code-evaluator path to the right file
-- check if this works correctly in all 3 envs
+NEXT UP:
+- Vue
+- Solid
+- ReactNative
 
-Then:
+
+
+
+LATER:
 - add back `codeEvaluator` prop to `fetchBuilderProps`
-
-
-
-
-Svelte: WORKS 🎉
-Qwik: Bundles, but there is a code issue with calling rootSetState
-NextJS: Bundles, but has an issue importing the server bundle from the client bundle.
-React: Bundles correctly everywhere except Next App Dir project.
-
-Solid:
-Vue:
-React Native:
