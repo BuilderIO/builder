@@ -3,7 +3,6 @@ import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import type { BuilderGlobals, ExecutorArgs } from './helpers.js';
 import { getUserAttributes } from '../track/helpers.js';
-import { evaluator } from 'placeholder-runtime';
 import { runInBrowser } from './browser-runtime/browser.js';
 import { runInNonNode } from './non-node-runtime/index.js';
 import { isNonNodeServer } from '../is-non-node-server.js';
