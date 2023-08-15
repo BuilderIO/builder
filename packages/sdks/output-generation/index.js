@@ -1,9 +1,12 @@
 // type SdkEnv = 'node' | 'edge' | 'browser';
 
-const SDK_ENV = process.env.SDK_ENV;
+/**
+ * this isn't a costant to make sure the `SDK_ENV` is correctly set by whatever is building the SDK.
+ */
+const getSdkEnv = () => process.env.SDK_ENV;
 
 const getFilename = () => {
-  switch (SDK_ENV) {
+  switch (getSdkEnv()) {
     case 'node':
       return 'node-runtime';
     case 'edge':
@@ -11,7 +14,7 @@ const getFilename = () => {
     case 'browser':
       return 'browser-runtime';
     default:
-      throw new Error(`Unknown SDK_ENV: ${SDK_ENV}`);
+      throw new Error(`Unknown SDK_ENV: ${getSdkEnv()}`);
   }
 };
 
@@ -19,7 +22,7 @@ const buildPath = (pointTo) => {
   const fileName = getFilename();
 
   if (pointTo === 'output') {
-    return `./${SDK_ENV}/functions/evaluate/${fileName}/index.js`;
+    return `./${getSdkEnv()}/functions/evaluate/${fileName}/index.js`;
   }
 
   return `./${fileName}/index.ts`;
@@ -37,12 +40,12 @@ export const getEvaluatorPathAlias = (pointTo) => {
 };
 
 export const getSdkOutputPath = () => {
-  switch (SDK_ENV) {
+  switch (getSdkEnv()) {
     case 'node':
     case 'edge':
     case 'browser':
-      return ['lib', process.env.SDK_ENV].join('/');
+      return ['lib', getSdkEnv()].join('/');
     default:
-      throw new Error(`Unknown SDK_ENV: ${SDK_ENV}`);
+      throw new Error(`Unknown SDK_ENV: ${getSdkEnv()}`);
   }
 };
