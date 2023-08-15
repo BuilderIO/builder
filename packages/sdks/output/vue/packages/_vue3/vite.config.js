@@ -14,7 +14,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    dts({}),
+    dts({ insertTypesEntry: true }),
     // https://stackoverflow.com/a/72572426
     // libCss(),
   ],
