@@ -1,1 +1,1 @@
-export { evaluator } from '../browser-runtime';
+export { evaluator } from '../browser-runtime/index.js';
