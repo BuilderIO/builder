@@ -24,7 +24,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       fileName: 'sdk',
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
+      fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
       external: ['vue', 'js-interpreter', 'isolated-vm'],
