@@ -103,8 +103,7 @@
         ],
         "outputs": [
           "{projectRoot}/lib",
-          "{projectRoot}/types",
-          "{projectRoot}/dist"
+          "{projectRoot}/types"
         ]
       }
     }

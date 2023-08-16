@@ -1,3 +1,32 @@
+#1- adding multiple bundles
+
+WORKS 🎉🎉🎉
+- Svelte
+- React
+- Vue3
+
+
+Breaks:
+- Qwik: Bundles, but tests fail
+- NextJS: bundling issues (importing server bundle from client bundle)
+- Vue2: Nuxt2 bundling issues (cannot find dependency)
+
+
+- Solid: not done yet
+- React Native: not done yet
+
+
+
+
+
+
+
+
+
+
+
+FINAL PR:
+
 WORKS 🎉🎉🎉
 - Svelte
 
