@@ -28,7 +28,6 @@
       "netlify": "./lib/edge/index.js",
       "edge-light": "./lib/edge/index.js",
       "bun": "./lib/edge/index.js",
-      "react-native": "./lib/node/index.js",
       "electron": "./lib/node/index.js",
       "default": "./lib/browser/index.js"
     },
