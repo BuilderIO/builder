@@ -16,7 +16,6 @@ export const useBuilderContentLoader = routeLoader$(async (event) => {
   if (!data) {
     event.status(404);
   }
-
   return data;
 });
 
