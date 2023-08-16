@@ -39,7 +39,7 @@ export const getWrapperProps = ({
     context,
     wrapperProps: componentOptions,
   };
-  return isInteractive
+  const outputProps = isInteractive
     ? interactiveElementProps
     : {
         ...componentOptions,
@@ -56,4 +56,8 @@ export const getWrapperProps = ({
             }
           : {}),
       };
+
+  console.log('outputProps', outputProps);
+
+  return outputProps;
 };

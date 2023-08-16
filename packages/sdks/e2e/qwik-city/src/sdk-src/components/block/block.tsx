@@ -117,6 +117,12 @@ export const Block = component$((props: BlockProps) => {
   });
   return (
     <>
+      <div>in Block: prop: {props.block?.component?.options.text}</div>
+      <div>
+        in Block: processed block:{' '}
+        {processedBlock.value?.component?.options.text}
+      </div>
+
       {canShowBlock.value ? (
         !blockComponent.value?.noWrap ? (
           <>

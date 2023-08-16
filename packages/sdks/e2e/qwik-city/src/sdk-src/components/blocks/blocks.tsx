@@ -24,29 +24,36 @@ export const Blocks = component$((props: BlocksProps) => {
   const componentsContext = useContext(ComponentsContext);
 
   return (
-    <BlocksWrapper
-      blocks={props.blocks}
-      parent={props.parent}
-      path={props.path}
-      styleProp={props.styleProp}
-    >
+    <div>
+      <div>
+        in Blocks. context:{' '}
+        {builderContext?.content?.data?.blocks?.[0]?.component?.options.text}
+      </div>
+      <div>in Blocks. block: {props.blocks?.[0]?.component?.options.text}</div>
+
+      {/* <Block
+        block={props.blocks?.[0]}
+        context={props.context || builderContext}
+        registeredComponents={
+          props.registeredComponents || componentsContext.registeredComponents
+        }
+      ></Block> */}
+
+      {builderContext?.content?.data?.blocks?.map((block) => {
+        return (
+          <Block
+            key={'render-block-' + block.id}
+            block={block}
+            context={props.context || builderContext}
+            registeredComponents={
+              props.registeredComponents ||
+              componentsContext.registeredComponents
+            }
+          ></Block>
+        );
+      })}
       {props.blocks
-        ? (props.blocks || []).map(function (block) {
-            return (
-              <Block
-                key={'render-block-' + block.id}
-                block={block}
-                context={props.context || builderContext}
-                registeredComponents={
-                  props.registeredComponents ||
-                  componentsContext.registeredComponents
-                }
-              ></Block>
-            );
-          })
-        : null}
-      {props.blocks
-        ? (props.blocks || []).map(function (block) {
+        ? props.blocks.map(function (block) {
             return (
               <BlockStyles
                 key={'block-style-' + block.id}
@@ -56,7 +63,7 @@ export const Blocks = component$((props: BlocksProps) => {
             );
           })
         : null}
-    </BlocksWrapper>
+    </div>
   );
 });
 

@@ -1,3 +1,4 @@
+import builderContext from '~/sdk-src/context/builder.context';
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components';
 
 import { TARGET } from '../../constants/target';
@@ -51,44 +52,49 @@ export const contentSetState = function contentSetState(
   state,
   newRootState: BuilderRenderState
 ) {
-  state.builderContextSignal.rootState = newRootState;
+  builderContextSignal.rootState = newRootState;
 };
 export const ContentComponent = component$((props: ContentProps) => {
-  const state = useStore<any>(
+  const builderContextSignal = useStore(
     {
-      builderContextSignal: {
-        content: getContentInitialValue({
-          content: props.content,
-          data: props.data,
+      content: getContentInitialValue({
+        content: props.content,
+        data: props.data,
+      }),
+      localState: undefined,
+      rootState: getContextStateInitialValue({
+        content: props.content,
+        data: props.data,
+        locale: props.locale,
+      }),
+      rootSetState: undefined,
+      context: props.context || {},
+      apiKey: props.apiKey,
+      apiVersion: props.apiVersion,
+      componentInfos: [
+        ...getDefaultRegisteredComponents(),
+        // While this `components` object is deprecated, we must maintain support for it.
+        // Since users are able to override our default components, we need to make sure that we do not break such
+        // existing usage.
+        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+        // which is the new standard way of providing custom components, and must therefore take precedence.
+        ...components,
+        ...(props.customComponents || []),
+      ].reduce<Dictionary<ComponentInfo>>(
+        (acc, { component: _, ...info }) => ({
+          ...acc,
+          [info.name]: serializeComponentInfo(info),
         }),
-        localState: undefined,
-        rootState: getContextStateInitialValue({
-          content: props.content,
-          data: props.data,
-          locale: props.locale,
-        }),
-        rootSetState: undefined,
-        context: props.context || {},
-        apiKey: props.apiKey,
-        apiVersion: props.apiVersion,
-        componentInfos: [
-          ...getDefaultRegisteredComponents(),
-          // While this `components` object is deprecated, we must maintain support for it.
-          // Since users are able to override our default components, we need to make sure that we do not break such
-          // existing usage.
-          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-          // which is the new standard way of providing custom components, and must therefore take precedence.
-          ...components,
-          ...(props.customComponents || []),
-        ].reduce<Dictionary<ComponentInfo>>(
-          (acc, { component: _, ...info }) => ({
-            ...acc,
-            [info.name]: serializeComponentInfo(info),
-          }),
-          {}
-        ),
-        inheritedStyles: {},
-      },
+        {}
+      ),
+      inheritedStyles: {},
+    },
+    {
+      deep: true,
+    }
+  );
+  const state = useStore(
+    {
       registeredComponents: [
         ...getDefaultRegisteredComponents(),
         // While this `components` object is deprecated, we must maintain support for it.
@@ -121,6 +127,7 @@ export const ContentComponent = component$((props: ContentProps) => {
     ComponentsContext,
     useStore({ registeredComponents: state.registeredComponents })
   );
+  useContextProvider(builderContext, builderContextSignal);
 
   return (
     <EnableEditor
@@ -134,22 +141,29 @@ export const ContentComponent = component$((props: ContentProps) => {
       enrich={props.enrich}
       classNameProp={props.classNameProp}
       showContent={props.showContent}
-      builderContextSignal={state.builderContextSignal}
+      builderContextSignal={builderContextSignal}
       {...{}}
     >
+      <div>
+        in Editor:{' '}
+        {
+          builderContextSignal?.content?.data?.blocks?.[0]?.component?.options
+            .text
+        }
+      </div>
       {props.isSsrAbTest ? (
         <InlinedScript scriptStr={state.scriptStr}></InlinedScript>
       ) : null}
       {TARGET !== 'reactNative' ? (
         <ContentStyles
-          contentId={state.builderContextSignal.content?.id}
-          cssCode={state.builderContextSignal.content?.data?.cssCode}
-          customFonts={state.builderContextSignal.content?.data?.customFonts}
+          contentId={builderContextSignal.content?.id}
+          cssCode={builderContextSignal.content?.data?.cssCode}
+          customFonts={builderContextSignal.content?.data?.customFonts}
         ></ContentStyles>
       ) : null}
       <Blocks
-        blocks={state.builderContextSignal.content?.data?.blocks}
-        context={state.builderContextSignal}
+        blocks={builderContextSignal.content?.data?.blocks}
+        context={builderContextSignal}
         registeredComponents={state.registeredComponents}
       ></Blocks>
     </EnableEditor>
