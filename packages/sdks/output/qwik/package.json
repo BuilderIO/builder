@@ -3,10 +3,10 @@
   "version": "0.5.8",
   "description": "Builder.io Qwik SDK",
   "type": "module",
-  "main": "./lib/edge/index.cjs",
-  "module": "./lib/edge/index.mjs",
-  "qwik": "./lib/browser/index.mjs",
-  "types": "./types/src/index.d.ts",
+  "main": "./lib/edge/index.qwik.cjs",
+  "module": "./lib/edge/index.qwik.mjs",
+  "qwik": "./lib/browser/index.qwik.mjs",
+  "types": "./types/src/index.qwik.d.ts",
   "files": [
     "README.md",
     "package.json",
@@ -17,69 +17,70 @@
   "exports": {
     ".": {
       "node": {
-        "import": "./lib/node/index.mjs",
-        "require": "./lib/node/index.cjs"
+        "import": "./lib/node/index.qwik.mjs",
+        "require": "./lib/node/index.qwik.cjs"
       },
       "browser": {
-        "import": "./lib/browser/index.mjs",
-        "require": "./lib/browser/index.cjs"
+        "import": "./lib/browser/index.qwik.mjs",
+        "require": "./lib/browser/index.qwik.cjs"
       },
       "edge-routine": {
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
       },
       "workerd": {
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
       },
       "deno": {
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
       },
       "lagon": {
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
       },
       "netlify": {
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
       },
       "edge-light": {
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
       },
       "bun": {
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
       },
       "electron": {
-        "import": "./lib/node/index.mjs",
-        "require": "./lib/node/index.cjs"
+        "import": "./lib/node/index.qwik.mjs",
+        "require": "./lib/node/index.qwik.cjs"
       },
       "default": {
-        "import": "./lib/browser/index.mjs",
-        "require": "./lib/browser/index.cjs"
+        "import": "./lib/browser/index.qwik.mjs",
+        "require": "./lib/browser/index.qwik.cjs"
       }
     },
     "./edge": {
-      "import": "./lib/edge/index.mjs",
-      "require": "./lib/edge/index.cjs"
+      "import": "./lib/edge/index.qwik.mjs",
+      "require": "./lib/edge/index.qwik.cjs"
     },
     "./node": {
-      "import": "./lib/node/index.mjs",
-      "require": "./lib/node/index.cjs"
+      "import": "./lib/node/index.qwik.mjs",
+      "require": "./lib/node/index.qwik.cjs"
     },
     "./browser": {
-      "import": "./lib/browser/index.mjs",
-      "require": "./lib/browser/index.cjs"
+      "import": "./lib/browser/index.qwik.mjs",
+      "require": "./lib/browser/index.qwik.cjs"
     }
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "nx run-many -p @builder.io/sdk-qwik -t build:node build:edge build:browser",
-    "build:node": "tsc && SDK_ENV=node vite build --mode lib",
-    "build:edge": "tsc && SDK_ENV=edge vite build --mode lib",
-    "build:browser": "tsc && SDK_ENV=browser vite build --mode lib"
+    "tsc": "tsc",
+    "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
+    "build:node": "SDK_ENV=node vite build --mode lib",
+    "build:edge": "SDK_ENV=edge vite build --mode lib",
+    "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.6",
