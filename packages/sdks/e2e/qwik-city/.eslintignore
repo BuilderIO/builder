@@ -33,3 +33,5 @@ vite.config.ts
 *.spec.ts
 
 server
+
+sdk-src
