@@ -59,11 +59,6 @@
         "import": "./packages/_vue3/lib/edge/index.mjs",
         "require": "./packages/_vue3/lib/edge/index.cjs"
       },
-      "react-native": {
-        "types": "./packages/_vue3/lib/node/index.d.ts",
-        "import": "./packages/_vue3/lib/node/index.mjs",
-        "require": "./packages/_vue3/lib/node/index.cjs"
-      },
       "electron": {
         "types": "./packages/_vue3/lib/node/index.d.ts",
         "import": "./packages/_vue3/lib/node/index.mjs",

@@ -52,10 +52,6 @@
         "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
-      "react-native": {
-        "import": "./lib/node/index.mjs",
-        "require": "./lib/node/index.cjs"
-      },
       "electron": {
         "import": "./lib/node/index.mjs",
         "require": "./lib/node/index.cjs"
