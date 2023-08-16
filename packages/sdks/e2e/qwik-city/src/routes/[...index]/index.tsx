@@ -1,4 +1,5 @@
-import { Content, fetchBuilderProps } from '../../sdk-src';
+import { getProps } from '@e2e/tests';
+import { RenderContent, _processContentResult } from '@builder.io/sdk-qwik';
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
@@ -7,19 +8,22 @@ export interface MainProps {
 }
 
 export const useBuilderContentLoader = routeLoader$(async (event) => {
-  const data = await fetchBuilderProps({
-    url: event.url,
-    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
+  const data = await getProps({
+    pathname: event.url.pathname,
+    _processContentResult,
   });
 
   if (!data) {
     event.status(404);
   }
-
   return data;
 });
 
 export default component$(() => {
   const contentProps = useBuilderContentLoader();
-  return <Content {...contentProps.value} />;
+  return contentProps.value ? (
+    <RenderContent {...contentProps.value} />
+  ) : (
+    <div>Content Not Found</div>
+  );
 });
