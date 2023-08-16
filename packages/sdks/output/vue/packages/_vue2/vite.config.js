@@ -22,7 +22,6 @@ export default defineConfig({
     outDir: getSdkOutputPath(),
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      fileName: 'sdk',
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },

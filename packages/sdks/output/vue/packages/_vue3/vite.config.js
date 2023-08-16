@@ -22,17 +22,12 @@ export default defineConfig({
     outDir: getSdkOutputPath(),
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      fileName: 'sdk',
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
       external: ['vue', 'js-interpreter', 'isolated-vm'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
         globals: {
           vue: 'Vue',
         },
