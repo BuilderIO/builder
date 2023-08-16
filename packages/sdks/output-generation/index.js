@@ -18,24 +18,31 @@ const getFilename = () => {
   }
 };
 
-const buildPath = (pointTo) => {
+/**
+ *
+ * @param {'output' | 'input'} pointTo
+ * @param {'ts' | 'js'} format
+ * @returns
+ */
+const buildPath = (pointTo, format) => {
   const fileName = getFilename();
 
   if (pointTo === 'output') {
-    return `./${getSdkEnv()}/functions/evaluate/${fileName}/index.js`;
+    return `./${getSdkEnv()}/functions/evaluate/${fileName}/index.${format}`;
   }
 
-  return `./${fileName}/index.ts`;
+  return `./${fileName}/index.${format}`;
 };
 
 /**
  *
  * @param {'output' | 'input'} pointTo
+ * @param {'ts' | 'js'} format
  * @returns
  */
-export const getEvaluatorPathAlias = (pointTo) => {
+export const getEvaluatorPathAlias = (pointTo, format = 'ts') => {
   return {
-    'placeholder-runtime': buildPath(pointTo),
+    'placeholder-runtime': buildPath(pointTo, format),
   };
 };
 
