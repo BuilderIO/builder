@@ -1,3 +1,7 @@
+### 0.5.9
+
+Fix: react and rerender components when Builder content updates.
+
 ### 0.5.8
 
 - Fix: properly serialize messages sent to visual editor.
