@@ -33,6 +33,9 @@ const storage = initStorage();
 
 const getStorageName = (name: string) => `builderio.${name}`;
 
+// stub, never called, but needed to fix bundling.
+export const getCookieSync = () => {};
+
 export const getCookie = async ({
   name,
   canTrack,
