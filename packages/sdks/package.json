@@ -147,7 +147,7 @@
           "^build"
         ],
         "outputs": [
-          "{projectRoot}/output/vue/packages/_vue2/src"
+          "{projectRoot}/output/vue/vue2/src"
         ]
       },
       "build:vue3": {
@@ -155,7 +155,7 @@
           "^build"
         ],
         "outputs": [
-          "{projectRoot}/output/vue/packages/_vue3/src"
+          "{projectRoot}/output/vue/vue3/src"
         ]
       },
       "build:nextjs": {

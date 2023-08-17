@@ -7,9 +7,11 @@ WORKS 🎉🎉🎉
 - Qwik
 - Solid
 
+Should be fixed:
+- Vue2: Nuxt2 bundling issues (cannot find dependency)
+
 Breaks:
 - NextJS: bundling issues (importing server bundle from client bundle)
-- Vue2: Nuxt2 bundling issues (cannot find dependency)
 
 
 IN PROGRESS:
