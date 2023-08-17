@@ -83,24 +83,20 @@ const getSdkOutputPath = () => {
  * `alias` to point to the correct evaluator for that runtime.
  *
  * @param {Partial<Options>} options
+ * @returns {VitePlugin}
  */
-const viteOutputGenerator = (options = {}) => {
-  /**
-   * @type {VitePlugin}
-   */
-  const plugin = {
-    name: 'output-generator',
-    config: () => ({
-      resolve: {
-        alias: getEvaluatorPathAlias(options),
-      },
-      build: {
-        outDir: getSdkOutputPath(),
-      },
-    }),
-  };
-  return plugin;
-};
+const viteOutputGenerator = (options = {}) => ({
+  name: 'output-generator',
+  enforce: 'pre',
+  config: () => ({
+    resolve: {
+      alias: getEvaluatorPathAlias(options),
+    },
+    build: {
+      outDir: getSdkOutputPath(),
+    },
+  }),
+});
 
 /**
  *
