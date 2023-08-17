@@ -5,6 +5,3 @@
 **/vite.config.ts.timestamp-*
 
 **/todo.todo
-
-output-generation/index.js
-output-generation/index.d.ts
