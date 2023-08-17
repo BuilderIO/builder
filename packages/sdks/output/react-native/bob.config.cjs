@@ -1,16 +1,24 @@
-// import { viteOutputGenerator } from '@builder.io/sdks/output-generation';
+const {
+  getSdkOutputPath,
+} = require('@builder.io/sdks/output-generation/index.js');
 
 module.exports = {
   source: 'src',
-  output: 'lib',
+  output: getSdkOutputPath(),
   targets: [
     [
       'commonjs',
       {
         copyFlow: true,
+        configFile: true,
       },
     ],
-    'module',
+    [
+      'module',
+      {
+        configFile: true,
+      },
+    ],
     'typescript',
   ],
 };

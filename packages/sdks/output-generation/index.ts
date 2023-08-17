@@ -1,5 +1,5 @@
 import type { Plugin as EsBuildPlugin } from 'esbuild';
-import type { Plugin as VitePlugin } from 'vite';
+type VitePlugin = import('vite').Plugin;
 
 /**
  * This isn't a constant to make sure that whatever is calling this code has enough time

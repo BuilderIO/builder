@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ES2016",
     "allowJs": true,
     "noEmitOnError": false,
     "noEmit": false,
@@ -13,7 +13,8 @@
       "placeholder-runtime": [
         "./src/functions/evaluate/browser-runtime/index.js"
       ]
-    }
+    },
+    "outDir": "./dist"
   },
   "include": ["typings/*.d.ts", "src/**/*"]
 }

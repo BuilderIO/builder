@@ -4,9 +4,10 @@
     "target": "ESNext",
     "noImplicitReturns": true,
     "module": "ESNext",
-    "moduleResolution": "Node16",
+    "moduleResolution": "Bundler",
     "outDir": "./",
-    "declaration": true
+    "declaration": true,
+    "types": []
   },
   "include": ["index.ts"],
   "exclude": []

@@ -1,3 +1,10 @@
+/**
+ * Using vite hasn't worked so far, but holding on to this file just in case we need to try again
+ * in the future. We use `react-native-bob-builder` instead.
+ *
+ * The main issue is that externalizing `react-native` does not seem to work when Expo tries to consume this library.
+ */
+
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { viteOutputGenerator } from '@builder.io/sdks/output-generation';
@@ -8,6 +15,7 @@ export default defineConfig({
     // react()
   ],
   build: {
+    target: 'es2015',
     lib: {
       entry: './src/index.js',
       formats: ['es', 'cjs'],
