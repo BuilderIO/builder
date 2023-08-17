@@ -92,9 +92,10 @@
     "typecheck": "tsc --noEmit",
     "tsc": "tsc",
     "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
-    "build:node": "SDK_ENV=node vite build --mode lib",
-    "build:edge": "SDK_ENV=edge vite build --mode lib",
-    "build:browser": "SDK_ENV=browser vite build --mode lib"
+    "build:one": "vite build --mode lib",
+    "build:node": "SDK_ENV=node yarn build:one",
+    "build:edge": "SDK_ENV=edge yarn build:one",
+    "build:browser": "SDK_ENV=browser yarn build:one"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.6",
