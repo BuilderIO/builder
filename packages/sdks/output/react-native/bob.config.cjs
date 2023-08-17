@@ -1,6 +1,4 @@
-const {
-  getSdkOutputPath,
-} = require('@builder.io/sdks/output-generation/index.js');
+const { getSdkOutputPath } = require('../../output-generation/index.js');
 
 module.exports = {
   source: 'src',

@@ -1,7 +1,6 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
-  "type": "module",
   "workspaces": [
     "e2e/*",
     "output/*",
@@ -11,8 +10,6 @@
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "build": "yarn build:output-gen",
-    "build:output-gen": "tsc -p output-generation/tsconfig.json",
     "build:mitosis": "../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:react": "yarn build:mitosis --target=react && yarn run set-sdk-version react",
     "build:qwik": "yarn build:mitosis --target=qwik && yarn run set-sdk-version qwik",
@@ -107,15 +104,6 @@
   },
   "nx": {
     "targets": {
-      "build": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "{projectRoot}/output-generation/index.d.ts",
-          "{projectRoot}/output-generation/index.js"
-        ]
-      },
       "build:react": {
         "dependsOn": [
           "^build"

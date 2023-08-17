@@ -3,17 +3,96 @@
   "description": "Builder.io SDK for React Native",
   "version": "0.5.8",
   "type": "module",
-  "main": "lib/node/commonjs/index.js",
-  "module": "lib/node/module/index.js",
+  "main": "lib/browser/commonjs/index.js",
+  "module": "lib/browser/module/index.js",
   "react-native": "src/index.js",
-  "types": "lib/node/typescript/index.d.ts",
+  "types": "lib/browser/typescript/index.d.ts",
+  "exports": {
+    ".": {
+      "react-native": {
+        "types": "./lib/browser/typescript/index.d.ts",
+        "import": "./lib/browser/module/index.js",
+        "require": "./lib/browser/commonjs/index.js"
+      },
+      "node": {
+        "types": "./lib/node/typescript/index.d.ts",
+        "import": "./lib/node/module/index.js",
+        "require": "./lib/node/commonjs/index.js"
+      },
+      "browser": {
+        "types": "./lib/browser/typescript/index.d.ts",
+        "import": "./lib/browser/module/index.js",
+        "require": "./lib/browser/commonjs/index.js"
+      },
+      "edge-routine": {
+        "types": "./lib/edge/typescript/index.d.ts",
+        "import": "./lib/edge/module/index.js",
+        "require": "./lib/edge/commonjs/index.js"
+      },
+      "workerd": {
+        "types": "./lib/edge/typescript/index.d.ts",
+        "import": "./lib/edge/module/index.js",
+        "require": "./lib/edge/commonjs/index.js"
+      },
+      "deno": {
+        "types": "./lib/edge/typescript/index.d.ts",
+        "import": "./lib/edge/module/index.js",
+        "require": "./lib/edge/commonjs/index.js"
+      },
+      "lagon": {
+        "types": "./lib/edge/typescript/index.d.ts",
+        "import": "./lib/edge/module/index.js",
+        "require": "./lib/edge/commonjs/index.js"
+      },
+      "netlify": {
+        "types": "./lib/edge/typescript/index.d.ts",
+        "import": "./lib/edge/module/index.js",
+        "require": "./lib/edge/commonjs/index.js"
+      },
+      "edge-light": {
+        "types": "./lib/edge/typescript/index.d.ts",
+        "import": "./lib/edge/module/index.js",
+        "require": "./lib/edge/commonjs/index.js"
+      },
+      "bun": {
+        "types": "./lib/edge/typescript/index.d.ts",
+        "import": "./lib/edge/module/index.js",
+        "require": "./lib/edge/commonjs/index.js"
+      },
+      "electron": {
+        "types": "./lib/node/typescript/index.d.ts",
+        "import": "./lib/node/module/index.js",
+        "require": "./lib/node/commonjs/index.js"
+      },
+      "default": {
+        "types": "./lib/browser/typescript/index.d.ts",
+        "import": "./lib/browser/module/index.js",
+        "require": "./lib/browser/commonjs/index.js"
+      }
+    },
+    "./edge": {
+      "types": "./lib/edge/typescript/index.d.ts",
+      "import": "./lib/edge/module/index.js",
+      "require": "./lib/edge/commonjs/index.js"
+    },
+    "./node": {
+      "types": "./lib/node/typescript/index.d.ts",
+      "import": "./lib/node/module/index.js",
+      "require": "./lib/node/commonjs/index.js"
+    },
+    "./browser": {
+      "types": "./lib/browser/typescript/index.d.ts",
+      "import": "./lib/browser/module/index.js",
+      "require": "./lib/browser/commonjs/index.js"
+    }
+  },
   "files": [
     "lib/",
     "src/"
   ],
   "scripts": {
     "build:one": "bob build",
-    "build": "nx run-many -p @builder.io/sdk-react-native -t build:node build:edge build:browser",
+    "build": "nx run-many -p @builder.io/sdk-react-native -t  build:browser build:node build:edge --parallel=false",
     "build:node": "SDK_ENV=node yarn build:one",
     "build:edge": "SDK_ENV=edge yarn build:one",
     "build:browser": "SDK_ENV=browser yarn build:one"
@@ -38,7 +117,6 @@
     "@builder.io/sdks": "workspace:*",
     "@tsconfig/react-native": "^2.0.3",
     "@types/react-native-video": "^5.0.9",
-    "@vitejs/plugin-react": "^4.0.4",
     "babel-plugin-module-resolver": "^5.0.0",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
@@ -46,8 +124,7 @@
     "react-native-url-polyfill": "^1.3.0",
     "rimraf": "^3.0.2",
     "tsup": "^7.2.0",
-    "typescript": "^4.9.4",
-    "vite": "^4.4.9"
+    "typescript": "^4.9.4"
   },
   "nx": {
     "targets": {
