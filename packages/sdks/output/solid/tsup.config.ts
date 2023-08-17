@@ -8,7 +8,7 @@ import * as preset from 'tsup-preset-solid';
 import {
   getEvaluatorPathAlias,
   getSdkOutputPath,
-} from '@builder.io/sdks/output-generation.js';
+} from '@builder.io/sdks/output-generation';
 
 const preset_options: preset.PresetOptions = {
   // array or single object

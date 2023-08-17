@@ -19,19 +19,12 @@ const getFolderName = () => {
   }
 };
 
-/**
- * @typedef {{
- *  pointTo: 'output' | 'input' | 'full-input',
- *  format: 'ts' | 'js'
- * }} options
- */
+type Options = {
+  pointTo: 'output' | 'input' | 'full-input';
+  format: 'ts' | 'js';
+};
 
-/**
- *
- * @param {Partial<options>} options
- * @returns
- */
-export const getEvaluatorPathAlias = (options = {}) => {
+export const getEvaluatorPathAlias = (options: Partial<Options> = {}) => {
   const pointTo = options.pointTo || 'input';
   const format = options.format || 'ts';
 
@@ -55,7 +48,7 @@ export const getEvaluatorPathAlias = (options = {}) => {
   };
 
   return {
-    'placeholder-runtime': buildPath(pointTo, format),
+    'placeholder-runtime': buildPath(),
   };
 };
 
@@ -73,14 +66,10 @@ export const getSdkOutputPath = () => {
 /**
  * Based on the current SDK_ENV, sets the build `outDir` to the correct subfolder, and the path
  * `alias` to point to the correct evaluator for that runtime.
- * @param {Partial<options>} options
- * @returns {import('vite').UserConfig}
  */
-export const outputGenerator = (options = {}) => {
-  /**
-   * @type {import('vite').Plugin}
-   */
-  const plugin = {
+export const outputGenerator = (options: Partial<Options> = {}) => {
+  const plugin: import('vite').Plugin = {
+    name: 'output-generator',
     config: () => ({
       resolve: {
         alias: getEvaluatorPathAlias(options),

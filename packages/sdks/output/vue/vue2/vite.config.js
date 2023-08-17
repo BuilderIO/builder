@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import vue2 from '@vitejs/plugin-vue2';
 import dts from 'vite-plugin-dts';
-import { outputGenerator } from '@builder.io/sdks/output-generation.js';
+import { outputGenerator } from '@builder.io/sdks/output-generation';
 
 // https://vitejs.dev/config/
 export default defineConfig({

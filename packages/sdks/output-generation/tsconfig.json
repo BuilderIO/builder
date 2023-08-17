@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "noImplicitReturns": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node16",
+    "outDir": "./",
+    "declaration": true
+  },
+  "include": ["index.ts"],
+  "exclude": []
+}

@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { outputGenerator } from '@builder.io/sdks/output-generation.js';
+import { outputGenerator } from '@builder.io/sdks/output-generation';
 
 export default defineConfig({
   plugins: [
