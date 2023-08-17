@@ -3,15 +3,16 @@
   "description": "Builder.io SDK for React Native",
   "version": "0.5.8",
   "type": "module",
-  "main": "./lib/browser/index.cjs",
-  "module": "./lib/browser/index.cjs",
-  "exports": {
-    ".": "./lib/browser/index.cjs"
-  },
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "react-native": "src/index.ts",
+  "types": "lib/typescript/index.d.ts",
   "files": [
-    "lib"
+    "lib/",
+    "src/"
   ],
   "scripts": {
+    "prepack": "bob build",
     "build": "nx run-many -p @builder.io/sdk-react-native -t build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",
     "build:edge": "SDK_ENV=edge vite build --mode lib",
@@ -36,8 +37,10 @@
     "@vitejs/plugin-react": "^4.0.4",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
+    "react-native-builder-bob": "^0.21.3",
     "react-native-url-polyfill": "^1.3.0",
     "rimraf": "^3.0.2",
+    "tsup": "^7.2.0",
     "typescript": "^4.9.4",
     "vite": "^4.4.9"
   },
