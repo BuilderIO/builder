@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
-import { getEvaluatorPathAlias } from './output-generation';
+import { getEvaluatorPathAlias } from './output-generation.js';
 
 console.log('Running tests for environment: ', process.env.SDK_ENV);
 

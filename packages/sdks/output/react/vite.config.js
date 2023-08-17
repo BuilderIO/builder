@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { outputGenerator } from '@builder.io/sdks/output-generation';
+import { outputGenerator } from '@builder.io/sdks/output-generation.js';
 
 const SERVER_ENTRY = 'server-entry';
 
