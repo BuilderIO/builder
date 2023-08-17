@@ -2356,6 +2356,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-solid@workspace:sdks/output/solid"
   dependencies:
+    "@builder.io/sdks": "workspace:*"
     esbuild: ^0.18.15
     esbuild-plugin-solid: ^0.5.0
     nx: ^16.6.0

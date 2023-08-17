@@ -86,6 +86,7 @@
     "solid-js": "^1.6.0"
   },
   "devDependencies": {
+    "@builder.io/sdks": "workspace:*",
     "esbuild": "^0.18.15",
     "esbuild-plugin-solid": "^0.5.0",
     "nx": "^16.6.0",
