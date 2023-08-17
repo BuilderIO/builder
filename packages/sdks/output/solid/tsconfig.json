@@ -17,7 +17,12 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "types": [],
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "placeholder-runtime": [
+        "./src/functions/evaluate/browser-runtime/index.js"
+      ]
+    }
   },
   "exclude": ["node_modules", "dist", "./dev"]
 }
