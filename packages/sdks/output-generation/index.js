@@ -70,7 +70,8 @@ export const getSdkOutputPath = () => {
 };
 
 /**
- * Sets the build `outDir` for the runtime, and the path `alias` for the runtime evaluator.
+ * Based on the current SDK_ENV, sets the build `outDir` to the correct subfolder, and the path
+ * `alias` to point to the correct evaluator for that runtime.
  * @param {Partial<options>} options
  * @returns {import('vite').UserConfig}
  */
