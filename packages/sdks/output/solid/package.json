@@ -97,5 +97,19 @@
   },
   "keywords": [
     "solid"
-  ]
+  ],
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "^build:solid",
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/dist"
+        ]
+      }
+    }
+  }
 }
