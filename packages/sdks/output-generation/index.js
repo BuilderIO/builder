@@ -5,7 +5,7 @@
  */
 const getSdkEnv = () => process.env.SDK_ENV;
 
-const getFilename = () => {
+const getFolderName = () => {
   switch (getSdkEnv()) {
     case 'node':
       return 'node-runtime';
@@ -20,27 +20,36 @@ const getFilename = () => {
 
 /**
  *
- * @param {'output' | 'input'} pointTo
+ * @param {'output' | 'input' | 'full-input'} pointTo
  * @param {'ts' | 'js'} format
  * @returns
  */
 const buildPath = (pointTo, format) => {
-  const fileName = getFilename();
+  const folder = getFolderName();
+  const fileName = `${folder}/index.${format}`;
 
-  if (pointTo === 'output') {
-    return `./${getSdkEnv()}/functions/evaluate/${fileName}/index.${format}`;
+  switch (pointTo) {
+    case 'output':
+      return `./${getSdkEnv()}/functions/evaluate/${fileName}`;
+
+    case 'input':
+      return `./${fileName}`;
+
+    case 'full-input':
+      return `./src/functions/evaluate/${fileName}`;
+
+    default:
+      throw new Error(`Unknown pointTo: ${pointTo}`);
   }
-
-  return `./${fileName}/index.${format}`;
 };
 
 /**
  *
- * @param {'output' | 'input'} pointTo
+ * @param {'output' | 'input' | 'full-input'} pointTo
  * @param {'ts' | 'js'} format
  * @returns
  */
-export const getEvaluatorPathAlias = (pointTo, format = 'ts') => {
+export const getEvaluatorPathAlias = (pointTo = 'input', format = 'ts') => {
   return {
     'placeholder-runtime': buildPath(pointTo, format),
   };

@@ -2,43 +2,53 @@
   "name": "@builder.io/sdk-solid",
   "version": "0.5.8",
   "description": "",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "sideEffects": false,
   "type": "module",
-  "main": "./lib/browser/index.jsx",
-  "module": "./lib/browser/index.jsx",
+  "main": "./lib/browser/index.js",
+  "module": "./lib/browser/index.js",
+  "types": "./dist/index.d.ts",
+  "browser": {},
   "exports": {
-    ".": {
-      "default": "./lib/browser/index.jsx",
-      "solid": "./lib/browser/index.jsx"
+    "solid": {
+      "development": "./lib/browser/dev.jsx",
+      "import": "./lib/browser/index.jsx"
+    },
+    "development": {
+      "import": {
+        "types": "./dist'/index.d.ts",
+        "default": "./lib/browser/dev.js"
+      }
+    },
+    "import": {
+      "types": "./dist/index.d.ts",
+      "default": "./lib/browser/index.js"
     }
   },
+  "typesVersions": {},
   "scripts": {
-    "build:all": "nx run-many -p @builder.io/sdk-qwik -t build:node build:edge build:browser",
-    "build:node": "SDK_ENV=node vite build --mode lib",
-    "build:edge": "SDK_ENV=edge vite build --mode lib",
-    "build": "SDK_ENV=browser vite build --mode lib"
+    "dev": "vite serve dev",
+    "build": "tsup",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "solid-styled-components": "^0.27.6"
   },
   "peerDependencies": {
-    "solid-js": ">=1.5.7"
+    "solid-js": "^1.6.0"
   },
   "devDependencies": {
-    "@builder.io/sdks": "workspace:*",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
-    "solid-js": "^1.7.11",
-    "vite": "^4.4.9",
-    "vite-plugin-solid": "^2.7.0"
+    "esbuild": "^0.18.15",
+    "esbuild-plugin-solid": "^0.5.0",
+    "solid-js": "^1.7.8",
+    "tsup": "^7.1.0",
+    "tsup-preset-solid": "^2.0.1",
+    "typescript": "^5.1.6"
   },
-  "nx": {
-    "targets": {
-      "build": {
-        "dependsOn": [
-          "^build:solid",
-          "^build"
-        ]
-      }
-    }
-  }
+  "keywords": [
+    "solid"
+  ]
 }
