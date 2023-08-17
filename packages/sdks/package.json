@@ -106,6 +106,15 @@
   },
   "nx": {
     "targets": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output-generation/index.d.ts",
+          "{projectRoot}/output-generation/index.js"
+        ]
+      },
       "build:react": {
         "dependsOn": [
           "^build"
