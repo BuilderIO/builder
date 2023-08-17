@@ -15,47 +15,47 @@
   "exports": {
     "solid": {
       "node": {
-        "development": "./lib/node/dev.js",
+        "development": "./lib/node/dev.jsx",
         "import": "./lib/node/index.jsx"
       },
       "browser": {
-        "development": "./lib/browser/dev.js",
+        "development": "./lib/browser/dev.jsx",
         "import": "./lib/browser/index.jsx"
       },
       "edge-routine": {
-        "development": "./lib/edge/dev.js",
+        "development": "./lib/edge/dev.jsx",
         "import": "./lib/edge/index.jsx"
       },
       "workerd": {
-        "development": "./lib/edge/dev.js",
+        "development": "./lib/edge/dev.jsx",
         "import": "./lib/edge/index.jsx"
       },
       "deno": {
-        "development": "./lib/edge/dev.js",
+        "development": "./lib/edge/dev.jsx",
         "import": "./lib/edge/index.jsx"
       },
       "lagon": {
-        "development": "./lib/edge/dev.js",
+        "development": "./lib/edge/dev.jsx",
         "import": "./lib/edge/index.jsx"
       },
       "netlify": {
-        "development": "./lib/edge/dev.js",
+        "development": "./lib/edge/dev.jsx",
         "import": "./lib/edge/index.jsx"
       },
       "edge-light": {
-        "development": "./lib/edge/dev.js",
+        "development": "./lib/edge/dev.jsx",
         "import": "./lib/edge/index.jsx"
       },
       "bun": {
-        "development": "./lib/edge/dev.js",
+        "development": "./lib/edge/dev.jsx",
         "import": "./lib/edge/index.jsx"
       },
       "electron": {
-        "development": "./lib/node/dev.js",
+        "development": "./lib/node/dev.jsx",
         "import": "./lib/node/index.jsx"
       },
       "default": {
-        "development": "./lib/browser/dev.js",
+        "development": "./lib/browser/dev.jsx",
         "import": "./lib/browser/index.jsx"
       }
     },
