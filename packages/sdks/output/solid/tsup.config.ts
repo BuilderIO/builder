@@ -1,3 +1,8 @@
+/**
+ * This is reusing a public template, and making necessary modifications:
+ * https://github.com/solidjs-community/solid-lib-starter
+ */
+
 import { defineConfig } from 'tsup';
 import * as preset from 'tsup-preset-solid';
 import {
