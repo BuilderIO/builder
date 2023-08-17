@@ -1,20 +1,13 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import {
-  getEvaluatorPathAlias,
-  getSdkOutputPath,
-} from '../../output-generation';
+import { outputGenerator } from '../../output-generation';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
 const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
 
 export default defineConfig({
-  resolve: {
-    alias: getEvaluatorPathAlias('input'),
-  },
-  plugins: [react()],
+  plugins: [outputGenerator(), react()],
   build: {
-    outDir: getSdkOutputPath(),
     lib: {
       entry: './src/index.ts',
       formats: ['es', 'cjs'],

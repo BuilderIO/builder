@@ -1,17 +1,10 @@
 import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
-import {
-  getEvaluatorPathAlias,
-  getSdkOutputPath,
-} from '../../output-generation';
+import { outputGenerator } from '../../output-generation';
 
 export default defineConfig(() => {
   return {
-    resolve: {
-      alias: getEvaluatorPathAlias('input'),
-    },
     build: {
-      outDir: getSdkOutputPath(),
       lib: {
         entry: './src/index.ts',
         formats: ['es', 'cjs'],
@@ -24,6 +17,6 @@ export default defineConfig(() => {
         external: ['@builder.io/qwik', 'js-interpreter', 'isolated-vm'],
       },
     },
-    plugins: [qwikVite()],
+    plugins: [outputGenerator(), qwikVite()],
   };
 });

@@ -1,19 +1,12 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import {
-  getEvaluatorPathAlias,
-  getSdkOutputPath,
-} from '../../output-generation';
+import { outputGenerator } from '../../output-generation';
 
 const SERVER_ENTRY = 'server-entry';
 
 export default defineConfig({
-  resolve: {
-    alias: getEvaluatorPathAlias('input'),
-  },
-  plugins: [react()],
+  plugins: [outputGenerator({ pointTo: 'input' }), react()],
   build: {
-    outDir: getSdkOutputPath(),
     lib: {
       entry: {
         index: './src/index.ts',

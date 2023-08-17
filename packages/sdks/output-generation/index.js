@@ -19,12 +19,18 @@ const getFolderName = () => {
 };
 
 /**
+ * @typedef {{
+ *  pointTo: 'output' | 'input' | 'full-input',
+ *  format: 'ts' | 'js'
+ * }} options
+ */
+
+/**
  *
- * @param {'output' | 'input' | 'full-input'} pointTo
- * @param {'ts' | 'js'} format
+ * @param {options} options
  * @returns
  */
-const buildPath = (pointTo, format) => {
+const buildPath = ({ pointTo, format }) => {
   const folder = getFolderName();
   const fileName = `${folder}/index.${format}`;
 
@@ -45,11 +51,12 @@ const buildPath = (pointTo, format) => {
 
 /**
  *
- * @param {'output' | 'input' | 'full-input'} pointTo
- * @param {'ts' | 'js'} format
+ * @param {Partial<options>} options
  * @returns
  */
-export const getEvaluatorPathAlias = (pointTo = 'input', format = 'ts') => {
+export const getEvaluatorPathAlias = (
+  { pointTo = 'input', format = 'ts' } = { pointTo: 'input', format: 'ts' }
+) => {
   return {
     'placeholder-runtime': buildPath(pointTo, format),
   };
@@ -64,4 +71,26 @@ export const getSdkOutputPath = () => {
     default:
       throw new Error(`Unknown SDK_ENV: ${getSdkEnv()}`);
   }
+};
+
+/**
+ * Sets the build `outDir` for the runtime, and the path `alias` for the runtime evaluator.
+ * @param {Partial<options>} options
+ * @returns {import('vite').UserConfig}
+ */
+export const outputGenerator = (options = {}) => {
+  /**
+   * @type {import('vite').Plugin}
+   */
+  const plugin = {
+    config: () => ({
+      resolve: {
+        alias: getEvaluatorPathAlias(options),
+      },
+      build: {
+        outDir: getSdkOutputPath(),
+      },
+    }),
+  };
+  return plugin;
 };

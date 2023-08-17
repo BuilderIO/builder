@@ -2297,6 +2297,7 @@ __metadata:
     "@react-native-async-storage/async-storage": ^1.17.10
     "@tsconfig/react-native": ^2.0.3
     "@types/react-native-video": ^5.0.9
+    "@vitejs/plugin-react": ^4.0.4
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     react-native-render-html: ^6.3.4
@@ -2305,6 +2306,7 @@ __metadata:
     react-native-video: ^5.1.1
     rimraf: ^3.0.2
     typescript: ^4.9.4
+    vite: ^4.4.9
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
@@ -2392,9 +2394,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-vue-2@workspace:sdks/output/vue/packages/_vue2":
+"@builder.io/sdk-vue-2@workspace:sdks/output/vue/vue2":
   version: 0.0.0-use.local
-  resolution: "@builder.io/sdk-vue-2@workspace:sdks/output/vue/packages/_vue2"
+  resolution: "@builder.io/sdk-vue-2@workspace:sdks/output/vue/vue2"
   dependencies:
     "@builder.io/sdks": "workspace:*"
     "@types/node": ^16.11.45
@@ -2414,9 +2416,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-vue-3@workspace:sdks/output/vue/packages/_vue3":
+"@builder.io/sdk-vue-3@workspace:sdks/output/vue/vue3":
   version: 0.0.0-use.local
-  resolution: "@builder.io/sdk-vue-3@workspace:sdks/output/vue/packages/_vue3"
+  resolution: "@builder.io/sdk-vue-3@workspace:sdks/output/vue/vue3"
   dependencies:
     "@builder.io/sdks": "workspace:*"
     "@types/node": ^16.11.47
