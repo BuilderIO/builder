@@ -31,7 +31,7 @@ const getFolderName = () => {
  * @param {Partial<options>} options
  * @returns
  */
-export const getEvaluatorPathAlias = (options) => {
+export const getEvaluatorPathAlias = (options = {}) => {
   const pointTo = options.pointTo || 'input';
   const format = options.format || 'ts';
 
