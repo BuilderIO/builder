@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { outputGenerator } from '../../output-generation';
+import { outputGenerator } from '@builder.io/sdks/output-generation';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
 const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
