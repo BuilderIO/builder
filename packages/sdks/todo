@@ -5,6 +5,7 @@ WORKS 🎉🎉🎉
 - React
 - Vue3
 - Qwik
+- Solid
 
 Breaks:
 - NextJS: bundling issues (importing server bundle from client bundle)
@@ -12,9 +13,6 @@ Breaks:
 
 
 IN PROGRESS:
-- Solid: 
-
-LATER:
 - React Native: not done yet
 
 

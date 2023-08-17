@@ -134,9 +134,14 @@ const BASE_TEXT_PLUGIN = () => ({
   code: {
     pre: (code) => {
       if (code.includes('<Text>') && !code.includes('InlinedStyles')) {
+        const importStatement = `import BaseText from '../BaseText';`;
+        // we put the import statement after the first line so the `use client` comment stays at the top.
+        // probably doesn't matter but just in case
+        const [firstLine, ...restOfCode] = code.split('\n');
         return `
-import BaseText from '../BaseText';
-${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
+${firstLine}
+${importStatement}
+${restOfCode.join('\n').replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 `;
       }
       return code;
