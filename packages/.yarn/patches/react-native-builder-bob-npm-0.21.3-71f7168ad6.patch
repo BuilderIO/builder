@@ -1,0 +1,17 @@
+diff --git a/lib/index.js b/lib/index.js
+index 53748c0ce5c6df6ac4883c818270f119f7e5e6a4..3a6d715f56a0b86672d69e23b912790378cc2019 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -40,7 +40,11 @@ const {
+ 
+ const root = process.cwd();
+ const explorer = (0, _cosmiconfig.cosmiconfigSync)(name, {
+-  searchPlaces: ['package.json', `bob.config.js`]
++  /**
++   * Patching until PR is merged:
++   * https://github.com/callstack/react-native-builder-bob/pull/442
++   */
++  searchPlaces: ['package.json', `bob.config.js`, 'bob.config.cjs']
+ });
+ const FLOW_PRGAMA_REGEX = /\*?\s*@(flow)\b/m; // eslint-disable-next-line babel/no-unused-expressions
+ 
