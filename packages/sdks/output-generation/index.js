@@ -1,5 +1,6 @@
 /**
- * This isn't a constant to make sure the `SDK_ENV` is correctly set by whatever is building the SDK.
+ * This isn't a constant to make sure that whatever is calling this code has enough time
+ * to set the `SDK_ENV` environment variable.
  */
 const getSdkEnv = () => process.env.SDK_ENV;
 
