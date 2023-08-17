@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
-import { outputGenerator } from '@builder.io/sdks/output-generation';
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation';
 
 export default defineConfig(() => {
   return {
@@ -17,6 +17,6 @@ export default defineConfig(() => {
         external: ['@builder.io/qwik', 'js-interpreter', 'isolated-vm'],
       },
     },
-    plugins: [outputGenerator(), qwikVite()],
+    plugins: [viteOutputGenerator(), qwikVite()],
   };
 });

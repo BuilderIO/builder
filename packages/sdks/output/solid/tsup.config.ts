@@ -5,10 +5,7 @@
 
 import { defineConfig } from 'tsup';
 import * as preset from 'tsup-preset-solid';
-import {
-  getEvaluatorPathAlias,
-  getSdkOutputPath,
-} from '@builder.io/sdks/output-generation';
+import { esbuildOutputGenerator } from '@builder.io/sdks/output-generation';
 
 const preset_options: preset.PresetOptions = {
   // array or single object
@@ -26,14 +23,12 @@ const preset_options: preset.PresetOptions = {
   // Set to `true` to generate a CommonJS build alongside ESM
   // cjs: true,
 
-  modify_esbuild_options: (options, permutation) => {
-    options.alias = getEvaluatorPathAlias({
+  esbuild_plugins: [
+    esbuildOutputGenerator({
       pointTo: 'full-input',
       format: 'js',
-    });
-    options.outdir = getSdkOutputPath();
-    return options;
-  },
+    }),
+  ],
 };
 
 const CI =

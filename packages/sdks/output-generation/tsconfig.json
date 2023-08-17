@@ -3,7 +3,7 @@
     "strict": true,
     "target": "ESNext",
     "noImplicitReturns": true,
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "Node16",
     "outDir": "./",
     "declaration": true

@@ -2,12 +2,12 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import vue2 from '@vitejs/plugin-vue2';
 import dts from 'vite-plugin-dts';
-import { outputGenerator } from '@builder.io/sdks/output-generation';
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    outputGenerator(),
+    viteOutputGenerator(),
     vue2(),
     dts({ insertTypesEntry: true }),
     // https://stackoverflow.com/a/72572426

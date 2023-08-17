@@ -1,11 +1,11 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { outputGenerator } from '@builder.io/sdks/output-generation';
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation';
 
 const SERVER_ENTRY = 'server-entry';
 
 export default defineConfig({
-  plugins: [outputGenerator({ pointTo: 'input' }), react()],
+  plugins: [viteOutputGenerator({ pointTo: 'input' }), react()],
   build: {
     lib: {
       entry: {

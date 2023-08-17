@@ -1,10 +1,10 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { outputGenerator } from '@builder.io/sdks/output-generation';
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation';
 
 export default defineConfig({
   plugins: [
-    outputGenerator({ format: 'js' }),
+    viteOutputGenerator({ format: 'js' }),
     // react()
   ],
   build: {

@@ -1,6 +1,7 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
+  "type": "module",
   "workspaces": [
     "e2e/*",
     "output/*",

@@ -1,3 +1,6 @@
+import type { Plugin as EsBuildPlugin } from 'esbuild';
+import type { Plugin as VitePlugin } from 'vite';
+
 /**
  * This isn't a constant to make sure that whatever is calling this code has enough time
  * to set the `SDK_ENV` environment variable.
@@ -67,8 +70,8 @@ export const getSdkOutputPath = () => {
  * Based on the current SDK_ENV, sets the build `outDir` to the correct subfolder, and the path
  * `alias` to point to the correct evaluator for that runtime.
  */
-export const outputGenerator = (options: Partial<Options> = {}) => {
-  const plugin: import('vite').Plugin = {
+export const viteOutputGenerator = (options: Partial<Options> = {}) => {
+  const plugin: VitePlugin = {
     name: 'output-generator',
     config: () => ({
       resolve: {
@@ -78,6 +81,17 @@ export const outputGenerator = (options: Partial<Options> = {}) => {
         outDir: getSdkOutputPath(),
       },
     }),
+  };
+  return plugin;
+};
+
+export const esbuildOutputGenerator = (options: Partial<Options> = {}) => {
+  const plugin: EsBuildPlugin = {
+    name: 'output-generator',
+    setup(build) {
+      build.initialOptions.alias = getEvaluatorPathAlias(options);
+      build.initialOptions.outdir = getSdkOutputPath();
+    },
   };
   return plugin;
 };
