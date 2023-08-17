@@ -12,15 +12,15 @@
     "@e2e/tests": "workspace:*",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.8",
-    "@nuxt/typescript-build": "^2.1.0"
+    "@nuxt/typescript-build": "^2.1.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"

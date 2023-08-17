@@ -4,21 +4,18 @@ WORKS 🎉🎉🎉
 - Svelte
 - React
 - Vue3
-
+- Qwik
 
 Breaks:
-- Qwik: Bundles, but tests fail
 - NextJS: bundling issues (importing server bundle from client bundle)
 - Vue2: Nuxt2 bundling issues (cannot find dependency)
 
 
-- Solid: not done yet
+IN PROGRESS:
+- Solid: 
+
+LATER:
 - React Native: not done yet
-
-
-
-
-
 
 
 

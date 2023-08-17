@@ -3,16 +3,19 @@
   "version": "0.5.8",
   "description": "",
   "type": "module",
-  "main": "./solid-index.jsx",
-  "module": "./solid-index.jsx",
+  "main": "./lib/browser/index.jsx",
+  "module": "./lib/browser/index.jsx",
   "exports": {
     ".": {
-      "default": "./solid-index.jsx",
-      "solid": "./solid-index.jsx"
+      "default": "./lib/browser/index.jsx",
+      "solid": "./lib/browser/index.jsx"
     }
   },
   "scripts": {
-    "build": "echo 'no need to build solid SDK'"
+    "build:all": "nx run-many -p @builder.io/sdk-qwik -t build:node build:edge build:browser",
+    "build:node": "SDK_ENV=node vite build --mode lib",
+    "build:edge": "SDK_ENV=edge vite build --mode lib",
+    "build": "SDK_ENV=browser vite build --mode lib"
   },
   "dependencies": {
     "solid-styled-components": "^0.27.6"
@@ -24,9 +27,9 @@
     "@builder.io/sdks": "workspace:*",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
-    "solid-js": ">=1.5.7",
-    "vite": "^3.0.4",
-    "vite-plugin-solid": "^2.2.6"
+    "solid-js": "^1.7.11",
+    "vite": "^4.4.9",
+    "vite-plugin-solid": "^2.7.0"
   },
   "nx": {
     "targets": {
