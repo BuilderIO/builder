@@ -38,7 +38,6 @@ registerCommercePlugin(
       apiVersion: settings.get('apiVersion') || '2020-07',
     });
 
-    console.log(' here settings in plugin ', JSON.stringify(settings));
     const service: any = {
       product: {
         async findById(id: string) {
