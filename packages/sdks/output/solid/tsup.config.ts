@@ -10,8 +10,6 @@ import {
   getSdkOutputPath,
 } from '../../output-generation';
 
-process.env.SDK_ENV = 'browser';
-
 const preset_options: preset.PresetOptions = {
   // array or single object
   entries: [
@@ -54,7 +52,7 @@ export default defineConfig((config) => {
     );
 
     // will update ./package.json with the correct export fields
-    preset.writePackageJson(package_fields);
+    // preset.writePackageJson(package_fields);
   }
 
   return preset.generateTsupOptions(parsed_options);

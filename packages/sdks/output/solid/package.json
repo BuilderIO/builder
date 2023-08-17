@@ -14,12 +14,54 @@
   "browser": {},
   "exports": {
     "solid": {
-      "development": "./lib/browser/dev.jsx",
-      "import": "./lib/browser/index.jsx"
+      "node": {
+        "development": "./lib/node/dev.js",
+        "import": "./lib/node/index.jsx"
+      },
+      "browser": {
+        "development": "./lib/browser/dev.js",
+        "import": "./lib/browser/index.jsx"
+      },
+      "edge-routine": {
+        "development": "./lib/edge/dev.js",
+        "import": "./lib/edge/index.jsx"
+      },
+      "workerd": {
+        "development": "./lib/edge/dev.js",
+        "import": "./lib/edge/index.jsx"
+      },
+      "deno": {
+        "development": "./lib/edge/dev.js",
+        "import": "./lib/edge/index.jsx"
+      },
+      "lagon": {
+        "development": "./lib/edge/dev.js",
+        "import": "./lib/edge/index.jsx"
+      },
+      "netlify": {
+        "development": "./lib/edge/dev.js",
+        "import": "./lib/edge/index.jsx"
+      },
+      "edge-light": {
+        "development": "./lib/edge/dev.js",
+        "import": "./lib/edge/index.jsx"
+      },
+      "bun": {
+        "development": "./lib/edge/dev.js",
+        "import": "./lib/edge/index.jsx"
+      },
+      "electron": {
+        "development": "./lib/node/dev.js",
+        "import": "./lib/node/index.jsx"
+      },
+      "default": {
+        "development": "./lib/browser/dev.js",
+        "import": "./lib/browser/index.jsx"
+      }
     },
     "development": {
       "import": {
-        "types": "./dist'/index.d.ts",
+        "types": "./dist/index.d.ts",
         "default": "./lib/browser/dev.js"
       }
     },
@@ -30,8 +72,11 @@
   },
   "typesVersions": {},
   "scripts": {
-    "dev": "vite serve dev",
-    "build": "tsup",
+    "build": "nx run-many -p @builder.io/sdk-qwik -t build:node build:edge build:browser",
+    "build:one": "tsup",
+    "build:node": "SDK_ENV=node yarn build:one",
+    "build:edge": "SDK_ENV=edge yarn build:one",
+    "build:browser": "SDK_ENV=browser yarn build:one",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
@@ -43,6 +88,8 @@
   "devDependencies": {
     "esbuild": "^0.18.15",
     "esbuild-plugin-solid": "^0.5.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "solid-js": "^1.7.8",
     "tsup": "^7.1.0",
     "tsup-preset-solid": "^2.0.1",
