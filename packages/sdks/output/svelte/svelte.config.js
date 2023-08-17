@@ -9,7 +9,7 @@ const config = {
   preprocess: preprocess(),
   kit: {
     adapter: adapter(),
-    alias: getEvaluatorPathAlias('output'),
+    alias: getEvaluatorPathAlias('output', 'js'),
   },
 };
 
