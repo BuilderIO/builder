@@ -1,4 +1,4 @@
-import { BUILDER_TEXT_SELECTOR, test } from './helpers.js';
+import { findTextInPage, test } from './helpers.js';
 import { CONTENT as HOMEPAGE } from '../specs/homepage.js';
 import { CONTENT as COLUMNS } from '../specs/columns.js';
 import traverse from 'traverse';
@@ -10,7 +10,7 @@ const checkIsElement = (x: any): x is BuilderBlock => x['@type'] === '@builder.i
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string) => EMBEDDED_SERVER_URL + path;
 
-test.describe('Visual Editing', () => {
+test.describe.only('Visual Editing', () => {
   test('correctly updates Text block', async ({ page }) => {
     await page.goto(getEmbeddedServerURL('/'));
 
@@ -43,9 +43,7 @@ test.describe('Visual Editing', () => {
       );
     }, newContent);
 
-    const locator = page.locator(BUILDER_TEXT_SELECTOR);
-
-    await locator.getByText(NEW_TEXT, { exact: true });
+    await findTextInPage({ page, text: NEW_TEXT });
   });
   test('correctly updates Text block in a Column block', async ({ page }) => {
     await page.goto(getEmbeddedServerURL('/columns'));
@@ -83,8 +81,6 @@ test.describe('Visual Editing', () => {
       );
     }, newContent);
 
-    const locator = page.locator(BUILDER_TEXT_SELECTOR);
-
-    await locator.getByText(NEW_TEXT, { exact: true });
+    await findTextInPage({ page, text: NEW_TEXT });
   });
 });
