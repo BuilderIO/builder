@@ -8,11 +8,12 @@ import { EMBEDDER_PORT } from './context.js';
 const checkIsElement = (x: any): x is BuilderBlock => x['@type'] === '@builder.io/sdk:Element';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
-const getEmbeddedServerURL = (path: string) => EMBEDDED_SERVER_URL + path;
+const getEmbeddedServerURL = (path: string, port: number) =>
+  EMBEDDED_SERVER_URL + path + '?port=' + port;
 
-test.describe.only('Visual Editing', () => {
-  test('correctly updates Text block', async ({ page }) => {
-    await page.goto(getEmbeddedServerURL('/'));
+test.describe('Visual Editing', () => {
+  test('correctly updates Text block', async ({ page, basePort }) => {
+    await page.goto(getEmbeddedServerURL('/', basePort));
 
     const NEW_TEXT = 'completely new text.';
     const newContent = { ...HOMEPAGE };

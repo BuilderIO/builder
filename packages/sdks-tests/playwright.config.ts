@@ -76,6 +76,7 @@ export default defineConfig({
     use: {
       ...devices['Desktop Chrome'],
       baseURL: `http://localhost:${port}`,
+      basePort: port,
       /**
        * This provides the package name to the test as a variable to check which exact server the test is running.
        */
