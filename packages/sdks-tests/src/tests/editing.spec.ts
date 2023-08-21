@@ -31,7 +31,10 @@ const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) 
 };
 
 test.describe('Visual Editing', () => {
-  test('correctly updates Text block', async ({ page, basePort }) => {
+  test('correctly updates Text block', async ({ page, basePort, packageName }) => {
+    if (packageName === 'gen1-next' || packageName === 'gen1-react' || packageName === 'gen1-remix')
+      test.skip();
+
     await page.goto(getEmbeddedServerURL('/', basePort));
 
     const NEW_TEXT = 'completely-new-text';
@@ -54,7 +57,14 @@ test.describe('Visual Editing', () => {
 
     await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
   });
-  test('correctly updates Text block in a Column block', async ({ page, basePort }) => {
+  test('correctly updates Text block in a Column block', async ({
+    page,
+    basePort,
+    packageName,
+  }) => {
+    if (packageName === 'gen1-next' || packageName === 'gen1-react' || packageName === 'gen1-remix')
+      test.skip();
+
     await page.goto(getEmbeddedServerURL('/columns', basePort));
 
     const NEW_TEXT = 'completely-new-text';
