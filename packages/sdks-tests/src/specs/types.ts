@@ -9,6 +9,14 @@ export type BuilderContent = Partial<{
   meta?: { breakpoints?: Nullable<Breakpoints>; [index: string]: any };
 }>;
 
+type JSONValue = string | number | boolean | JSONObject | JSONArray;
+
+interface JSONObject {
+  [x: string]: JSONValue;
+}
+
+interface JSONArray extends Array<JSONValue> {}
+
 export interface BuilderBlock {
   '@type': '@builder.io/sdk:Element';
   '@version'?: number;
