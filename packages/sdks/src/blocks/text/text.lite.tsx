@@ -1,5 +1,3 @@
-import { useTarget } from '@builder.io/mitosis';
-
 export default function Text(props: { text?: string }) {
   return (
     <span
@@ -9,12 +7,6 @@ export default function Text(props: { text?: string }) {
       }
       innerHTML={props.text?.toString() || ''}
       style={{ outline: 'none' }}
-      {...useTarget({
-        reactNative: {
-          dataSet: { 'builder-text': 'true' },
-        },
-        default: {},
-      })}
     />
   );
 }

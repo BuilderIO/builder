@@ -129,5 +129,3 @@ export const getBuilderSessionIdCookie = async ({ context }: { context: BrowserC
   const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
   return builderSessionCookie;
 };
-
-export const BUILDER_TEXT_SELECTOR = isRNSDK ? '[data-builder-text]' : '.builder-text';

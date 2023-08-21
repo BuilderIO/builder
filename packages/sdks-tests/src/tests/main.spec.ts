@@ -2,7 +2,6 @@ import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { targetContext } from './context.js';
 import {
-  BUILDER_TEXT_SELECTOR,
   excludeReactNative,
   expectStylesForElement,
   findTextInPage,
@@ -176,9 +175,7 @@ test.describe(targetContext.name, () => {
       excludeReactNative('shows default value', async ({ page }) => {
         await page.goto('/reactive-state');
 
-        const locator = page.locator(BUILDER_TEXT_SELECTOR);
-
-        await expect(locator.getByText('0', { exact: true })).toBeVisible();
+        await expect(page.getByText('0', { exact: true })).toBeVisible();
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
