@@ -30,7 +30,7 @@ const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) 
   }, newContent);
 };
 
-test.describe.only('Visual Editing', () => {
+test.describe('Visual Editing', () => {
   test('correctly updates Text block', async ({ page, basePort }) => {
     await page.goto(getEmbeddedServerURL('/', basePort));
 
