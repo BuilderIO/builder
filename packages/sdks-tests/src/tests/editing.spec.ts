@@ -10,7 +10,7 @@ const checkIsElement = (x: any): x is BuilderBlock => x['@type'] === '@builder.i
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string) => EMBEDDED_SERVER_URL + path;
 
-test.describe.only('Visual Editing', () => {
+test.describe('Visual Editing', () => {
   test('correctly updates Text block', async ({ page }) => {
     await page.goto(getEmbeddedServerURL('/'));
 
