@@ -3,12 +3,16 @@ import { CONTENT as HOMEPAGE } from '../specs/homepage.js';
 import { CONTENT as COLUMNS } from '../specs/columns.js';
 import traverse from 'traverse';
 import type { BuilderBlock } from '../specs/types.js';
+import { EMBEDDER_PORT } from './context.js';
 
 const checkIsElement = (x: any): x is BuilderBlock => x['@type'] === '@builder.io/sdk:Element';
 
-test.describe('Visual Editing', () => {
+const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
+const getEmbeddedServerURL = (path: string) => EMBEDDED_SERVER_URL + path;
+
+test.describe.only('Visual Editing', () => {
   test('correctly updates Text block', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(getEmbeddedServerURL('/'));
 
     const NEW_TEXT = 'completely new text.';
     const newContent = { ...HOMEPAGE };
@@ -26,25 +30,25 @@ test.describe('Visual Editing', () => {
       newContent.data.blocks[0].children[0].component.options.text = NEW_TEXT;
     }
 
-    await page.evaluate(() => {
+    await page.evaluate(msgData => {
       document.querySelector('iframe')?.contentWindow?.postMessage(
         {
           type: 'builder.contentUpdate',
           data: {
-            id: HOMEPAGE.id,
-            data: HOMEPAGE,
+            id: msgData.id,
+            data: msgData.data,
           },
         },
         '*'
       );
-    });
+    }, newContent);
 
     const locator = page.locator(BUILDER_TEXT_SELECTOR);
 
     await locator.getByText(NEW_TEXT, { exact: true });
   });
   test('correctly updates Text block in a Column block', async ({ page }) => {
-    await page.goto('/columns');
+    await page.goto(getEmbeddedServerURL('/columns'));
 
     const NEW_TEXT = 'completely new text.';
     const newContent = { ...COLUMNS };
@@ -66,18 +70,18 @@ test.describe('Visual Editing', () => {
       }
     });
 
-    await page.evaluate(() => {
+    await page.evaluate(msgData => {
       document.querySelector('iframe')?.contentWindow?.postMessage(
         {
           type: 'builder.contentUpdate',
           data: {
-            id: HOMEPAGE.id,
-            data: HOMEPAGE,
+            id: msgData.id,
+            data: msgData.data,
           },
         },
         '*'
       );
-    });
+    }, newContent);
 
     const locator = page.locator(BUILDER_TEXT_SELECTOR);
 

@@ -11,11 +11,5 @@
     "declaration": true,
     "allowJs": true
   },
-  "include": [
-    "src/**/*",
-    "./playwright.config.ts",
-    "../sdks/typings/**/*",
-    "embedder/**/*",
-    ".eslintrc.cjs"
-  ]
+  "include": ["src/**/*", "./playwright.config.ts", "embedder/**/*", ".eslintrc.cjs"]
 }

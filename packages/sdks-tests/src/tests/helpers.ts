@@ -12,6 +12,7 @@ import { sdk } from './sdk.js';
 
 type TestOptions = {
   packageName: PackageName | 'DEFAULT';
+  baseUrl?: string;
 };
 
 // https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
