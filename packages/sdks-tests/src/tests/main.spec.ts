@@ -178,7 +178,7 @@ test.describe(targetContext.name, () => {
 
         const locator = page.locator(BUILDER_TEXT_SELECTOR);
 
-        await locator.getByText('0', { exact: true });
+        await expect(locator.getByText('0', { exact: true })).toBeVisible();
       });
 
       reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
@@ -192,11 +192,11 @@ test.describe(targetContext.name, () => {
           ? page.locator('[data-builder-text]')
           : page.locator('.builder-text');
 
-        await locator.getByText('0', { exact: true });
+        await expect(locator.getByText('0', { exact: true })).toBeVisible();
 
         await page.getByText('Increment Number').click();
 
-        await locator.getByText('1', { exact: true });
+        await expect(locator.getByText('1', { exact: true })).toBeVisible();
       });
     });
     test.describe('Element Events', () => {
