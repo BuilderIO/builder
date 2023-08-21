@@ -3,15 +3,22 @@ import http from 'http';
 /**
  * Very simple HTTP server that returns SDK content in an iframe to mimic the visual editor.
  *
- * Requires the first url fragment to be a `port` value.
- * Forwards all remaining URL fragments (& query params) to the SDK.
+ * Requires a `port` query param.
+ * Forwards all remaining query param along with URL to the SDK.
  *
  * @type {import('http').RequestListener} server
  */
 const server = (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
-  const [port, initialUrl] = req.url.split('/');
-  const url = `http://localhost:${port}${initialUrl}`;
+  const fullUrl = new URL(req.url, `http://${req.headers.host}`);
+
+  // enable visual editing
+  fullUrl.searchParams.set('builder.frameEditing', 'true');
+
+  const port = fullUrl.searchParams.get('port');
+  fullUrl.searchParams.delete('port');
+
+  const url = `http://localhost:${port}${fullUrl.pathname}${fullUrl.search}`;
 
   /**
    * alternative #2: https://stackoverflow.com/a/5868263/1520787
