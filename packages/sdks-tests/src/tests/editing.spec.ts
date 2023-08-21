@@ -46,8 +46,8 @@ test.describe('Visual Editing', () => {
 
     await findTextInPage({ page, text: NEW_TEXT });
   });
-  test('correctly updates Text block in a Column block', async ({ page }) => {
-    await page.goto(getEmbeddedServerURL('/columns'));
+  test('correctly updates Text block in a Column block', async ({ page, basePort }) => {
+    await page.goto(getEmbeddedServerURL('/columns', basePort));
 
     const NEW_TEXT = 'completely new text.';
     const newContent = { ...COLUMNS };
