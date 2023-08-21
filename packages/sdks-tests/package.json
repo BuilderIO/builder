@@ -6,6 +6,7 @@
     "build": "tsc",
     "dev": "tsc -w",
     "test": "playwright test",
+    "run-embedder": "node embedder/index.js",
     "install-playwright": "playwright install chromium --with-deps"
   },
   "type": "module",
