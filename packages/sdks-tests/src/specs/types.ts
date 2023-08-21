@@ -5,6 +5,7 @@ export interface Breakpoints {
 }
 export type Nullable<T> = T | null | undefined;
 export type BuilderContent = Partial<{
+  id?: string;
   data: { [index: string]: any };
   meta?: { breakpoints?: Nullable<Breakpoints>; [index: string]: any };
 }>;

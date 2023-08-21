@@ -2,14 +2,33 @@ import { findTextInPage, test } from './helpers.js';
 import { CONTENT as HOMEPAGE } from '../specs/homepage.js';
 import { CONTENT as COLUMNS } from '../specs/columns.js';
 import traverse from 'traverse';
-import type { BuilderBlock } from '../specs/types.js';
+import type { BuilderBlock, BuilderContent } from '../specs/types.js';
 import { EMBEDDER_PORT } from './context.js';
+import type { Page } from '@playwright/test';
 
 const checkIsElement = (x: any): x is BuilderBlock => x['@type'] === '@builder.io/sdk:Element';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>
   EMBEDDED_SERVER_URL + path + '?port=' + port;
+
+const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) => {
+  await page.evaluate(msgData => {
+    document.querySelector('iframe')?.contentWindow?.postMessage(
+      {
+        type: 'builder.contentUpdate',
+        data: {
+          key: 'page',
+          data: {
+            id: msgData.id,
+            data: msgData.data,
+          },
+        },
+      },
+      '*'
+    );
+  }, newContent);
+};
 
 test.describe('Visual Editing', () => {
   test('correctly updates Text block', async ({ page, basePort }) => {
@@ -30,19 +49,7 @@ test.describe('Visual Editing', () => {
     if (newContent.data.blocks[0].children?.[0].component?.options.text) {
       newContent.data.blocks[0].children[0].component.options.text = NEW_TEXT;
     }
-
-    await page.evaluate(msgData => {
-      document.querySelector('iframe')?.contentWindow?.postMessage(
-        {
-          type: 'builder.contentUpdate',
-          data: {
-            id: msgData.id,
-            data: msgData.data,
-          },
-        },
-        '*'
-      );
-    }, newContent);
+    await sendContentUpdateMessage(page, newContent);
 
     await findTextInPage({ page, text: NEW_TEXT });
   });
@@ -69,18 +76,7 @@ test.describe('Visual Editing', () => {
       }
     });
 
-    await page.evaluate(msgData => {
-      document.querySelector('iframe')?.contentWindow?.postMessage(
-        {
-          type: 'builder.contentUpdate',
-          data: {
-            id: msgData.id,
-            data: msgData.data,
-          },
-        },
-        '*'
-      );
-    }, newContent);
+    await sendContentUpdateMessage(page, newContent);
 
     await findTextInPage({ page, text: NEW_TEXT });
   });
