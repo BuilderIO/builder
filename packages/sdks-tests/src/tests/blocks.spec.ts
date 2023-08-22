@@ -54,7 +54,7 @@ const testSymbols = async (page: Page) => {
   }
 };
 
-test.describe.only('Blocks', () => {
+test.describe('Blocks', () => {
   excludeReactNative('Text block', async ({ page }) => {
     await page.goto('/text-block');
 
@@ -148,7 +148,7 @@ test.describe.only('Blocks', () => {
 
     await testSymbols(page);
   });
-  test.only('symbols without content', async ({ page, packageName }) => {
+  test('symbols without content', async ({ page, packageName }) => {
     if (packageName === 'next-app-dir') test.skip();
 
     let x = 0;
