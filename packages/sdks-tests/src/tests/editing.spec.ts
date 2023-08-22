@@ -41,7 +41,8 @@ test.describe('Visual Editing', () => {
         packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'vue3' ||
-        packageName === 'vue2'
+        packageName === 'vue2' ||
+        packageName === 'nuxt3'
     );
 
     await page.goto(getEmbeddedServerURL('/', basePort));
@@ -79,7 +80,8 @@ test.describe('Visual Editing', () => {
       packageName === 'qwik-city' ||
         packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
-        packageName === 'vue3'
+        packageName === 'vue3' ||
+        packageName === 'nuxt3'
     );
 
     await page.goto(getEmbeddedServerURL('/columns', basePort));
