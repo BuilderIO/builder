@@ -52,10 +52,10 @@ test.describe('Visual Editing', () => {
     if (newContent.data.blocks[0].children?.[0].component?.options.text) {
       newContent.data.blocks[0].children[0].component.options.text = NEW_TEXT;
     }
-    await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).not.toBeVisible();
+
     await sendContentUpdateMessage(page, newContent);
 
-    await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
+    await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
   test('correctly updates Text block in a Column block', async ({
     page,

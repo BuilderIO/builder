@@ -14,23 +14,23 @@ import { sdk } from './sdk.js';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale';
 
 const testSymbols = async (page: Page) => {
-  await expect(page.locator('body')).toContainText('special test description');
+  await page.getByText('special test description').locator('visible=true').waitFor();
 
-  const imgs1 = await page
+  await page
     .locator(
       '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
     )
-    .elementHandles();
-  await expect(imgs1.length).toBeGreaterThanOrEqual(1);
+    .locator('visible=true')
+    .waitFor();
 
-  await expect(page.locator('body')).toContainText('default description');
+  await page.getByText('default description').locator('visible=true').waitFor();
 
-  const imgs2 = await page
+  await page
     .locator(
       '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
     )
-    .elementHandles();
-  await expect(imgs2.length).toBeGreaterThanOrEqual(1);
+    .locator('visible=true')
+    .waitFor();
 
   const firstSymbolText = await page.locator('text="Description of image:"').first();
 
