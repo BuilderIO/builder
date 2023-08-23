@@ -41,6 +41,8 @@ test.describe('Visual Editing', () => {
         packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'vue3' ||
+        packageName === 'vue2' ||
+        packageName === 'sveltekit' ||
         packageName === 'nuxt3'
     );
 
@@ -80,6 +82,8 @@ test.describe('Visual Editing', () => {
         packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'vue3' ||
+        packageName === 'vue2' ||
+        packageName === 'sveltekit' ||
         packageName === 'nuxt3'
     );
 
