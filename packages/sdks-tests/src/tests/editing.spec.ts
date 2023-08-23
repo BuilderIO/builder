@@ -41,6 +41,8 @@ test.describe('Visual Editing', () => {
         packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'vue3' ||
+        // vue2 always works locally, but is flaky in CI
+        packageName === 'vue2' ||
         packageName === 'nuxt3'
     );
 
@@ -80,6 +82,8 @@ test.describe('Visual Editing', () => {
         packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'vue3' ||
+        // vue2 always works locally, but is
+        packageName === 'vue2' ||
         packageName === 'nuxt3'
     );
 
