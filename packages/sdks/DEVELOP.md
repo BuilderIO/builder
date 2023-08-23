@@ -26,14 +26,18 @@ The best way to test a change is to create a builder content JSON in the editor,
 
 This new test will run against every SDK & framework combination.
 
-If you want to manually test this integration test, you will have to run all of these in parallel (using `svelte` as an example):
+If you want to run the integration tests locally, you can do so by running (using `svelte` as an example):
 
-- Generate Mitosis output: `yarn run start` in `builder/packages/sdks`
-- Build SDK from Mitosis output: `yarn run build --watch` in `builder/packages/sdks/output/svelte`
-- Build tests: `yarn run dev` in `builder/packages/sdks-tests`
-- Run e2e server: run `yarn run dev` in `builder/packages/sdks/e2e/sveltekit`
+- Build tests: `yarn e2e:build:svelte` in `builder/packages/sdks`
+- Run Playwright tests: `yarn e2e:run:svelte` in `builder/packages/sdks`
 
-You can then test your changes in the sveltekit e2e example.
+PS: To run the tests against the gen1 React SDK, the commands are `e2e:build:old-react` and `e2e:run:old-react` in `builder/packages`.
+
+### Running Integration server locally
+
+If you want to run the integration server locally without running the actual Playwright tests, you can do so by running:
+
+- `yarn nx serve @e2e/sveltekit` (replace `@e2e/sveltekit` with the name of the server you want to run)
 
 ### Live/real data testing
 
