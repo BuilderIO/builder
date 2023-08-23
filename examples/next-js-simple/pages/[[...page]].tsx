@@ -7,6 +7,7 @@ import builderConfig from '@config/builder'
 // loading widgets dynamically to reduce bundle size, will only be included in bundle when is used in the content
 import '@builder.io/widgets/dist/lib/builder-widgets-async'
 import '@components/hero/Hero'
+// import '@components/abTestComp/AbTestComp'
 
 // const MyImage = (props: any) => {
 //   return <Image {...props} /> 
@@ -38,22 +39,44 @@ export async function getStaticProps({
 
   const page =
     (await builder
-      .get('page', {
+      .get("page", {
       userAttributes: {
-          urlPath: '/' + (params?.page?.join('/') || ''),
+          urlPath: '/' + (params?.page?.join('/') || '')
         },
         enrich: true,
         locale
       }).toPromise()) || null
 
-  const footer =
+      // const footer =
+      // (await builder
+      //   .get('footer')
+      //   .toPromise()) || null
+
+    const header =
       (await builder
-        .get('footer')
+        .get('banner', {
+          userAttributes: {
+            urlPath: '/' + (params?.page?.join('/') || '')
+          },  
+          query: {
+            'data.type': 'header'
+          }
+        })
+        .toPromise()) || null
+
+      const footer =
+      (await builder
+        .get('banner', {
+          query: {
+            'data.type': 'footer'
+          }
+        })
         .toPromise()) || null
 
   return {
     props: {
       page,
+      header,
       footer
     },
     // Next.js will attempt to re-generate the page:
@@ -64,10 +87,23 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
+  const limit = 100;
+  let offset = 0;
   const pages = await builder.getAll('page', {
     options: { noTargeting: true },
-    omit: 'data.blocks',
+    fields: 'data.url',
   })
+
+  // while(pages.length === (limit + offset)) {
+  //   offset += pages.length;
+  //   pages.push(...(await builder.getAll('page', {
+  //     options: { noTargeting: true },
+  //     fields: 'data.url',
+  //     offset, 
+  //     limit
+  //   })))
+  // }
+  // console.log('pages: ', pages)
 
   return {
     paths: pages.map((page) => `${page.data?.url}`),
@@ -77,17 +113,20 @@ export async function getStaticPaths() {
 
 export default function Page({
   page,
-  footer
+  footer,
+  header
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const isPreviewingInBuilder = useIsPreviewing()
   const show404 = !page && !isPreviewingInBuilder
+  const model = builder.editingModel;
 
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
   console.log('client page: ', page)
   const handleClick = () => {
+    console.log('hello')
     builder.track('my-custom-event');
     builder.trackConversion(99);
     builder.track('some-other-event', { meta: { productId: 'abc123', somethingElse: true }})
@@ -104,8 +143,15 @@ export default function Page({
         <DefaultErrorPage statusCode={404} />
       ) : (
         <> 
-          <BuilderComponent model="page" locale={locale} content={page} data={{ values: {"this-and-that": "whatever", "osmehting!": "this other"}, username: 'tim', hideAnyButton: true, locale}} />
-          <BuilderComponent model="footer"></BuilderComponent>
+          <BuilderComponent model="banner" content={header} /> 
+          <BuilderComponent 
+            model="page" 
+            locale={locale} 
+            content={page}
+            context={{handleClick}} 
+            data={{ loggedIn: false, values: {"this-and-that": "whatever", "osmehting!": "this other"}, username: 'Justin', hideAnyButton: true, locale}} />
+          <BuilderComponent model="banner" content={footer} /> 
+          {/* <BuilderComponent model="footer"></BuilderComponent> */}
           {/* <BuilderContent model="footer" content={footer}> 
             {(data, loading, content) => {
                 return (

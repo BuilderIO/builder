@@ -29,7 +29,7 @@ export async function getStaticProps({
         .get('blog-template', {
             userAttributes: {
                 urlPath: '/blog/' + (params?.slug),
-                category: articleData?.category
+                category: articleData?.data.category
             }
         })
         .toPromise()) || null

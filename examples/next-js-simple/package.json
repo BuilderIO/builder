@@ -44,7 +44,7 @@
     ]
   },
   "dependencies": {
-    "@builder.io/react": "^3.0.8",
+    "@builder.io/react": "^3.0.13",
     "@builder.io/widgets": "^1.2.23",
     "next": "^13.3.1",
     "next-seo": "^5.4.0",
