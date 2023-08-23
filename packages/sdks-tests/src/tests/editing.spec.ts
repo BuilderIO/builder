@@ -37,8 +37,7 @@ test.describe('Visual Editing', () => {
 
     // TO-DO: temporary while we fix the SDKs
     test.skip(
-      packageName === 'qwik-city' ||
-        packageName === 'react-native' ||
+      packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'vue3' ||
         // vue2 always works locally, but is flaky in CI
