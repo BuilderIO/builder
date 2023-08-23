@@ -1,12 +1,10 @@
 import { test } from './helpers.js';
-import { CONTENT as HOMEPAGE } from '../specs/homepage.js';
-import { CONTENT as COLUMNS } from '../specs/columns.js';
-import traverse from 'traverse';
-import type { BuilderBlock, BuilderContent } from '../specs/types.js';
+import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
+import { MODIFIED_COLUMNS } from '../specs/columns.js';
+import type { BuilderContent } from '../specs/types.js';
 import { EMBEDDER_PORT } from './context.js';
 import { expect, type Page } from '@playwright/test';
-
-const checkIsElement = (x: any): x is BuilderBlock => x['@type'] === '@builder.io/sdk:Element';
+import { NEW_TEXT } from '../specs/helpers.js';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>
@@ -53,23 +51,16 @@ test.describe('Visual Editing', () => {
 
     await page.goto(getEmbeddedServerURL('/', basePort));
 
-    const NEW_TEXT = 'completely-new-text';
-    const newContent = { ...HOMEPAGE };
-
-    traverse(newContent).forEach(function (x) {
-      if (!checkIsElement(x)) return;
-
-      if (x.component?.name === 'Text') {
-        x.component.options.text = NEW_TEXT;
-        this.stop();
-      }
+    /**
+     * Make sure the homepage loaded inside the iframe
+     */
+    const links = page.frameLocator('iframe').locator('a');
+    const columnsLink = await links.filter({
+      hasText: 'Columns (with images) ',
     });
+    await expect(columnsLink).toHaveCount(1);
 
-    if (newContent.data.blocks[0].children?.[0].component?.options.text) {
-      newContent.data.blocks[0].children[0].component.options.text = NEW_TEXT;
-    }
-
-    await sendContentUpdateMessage(page, newContent);
+    await sendContentUpdateMessage(page, MODIFIED_HOMEPAGE);
 
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
@@ -93,29 +84,9 @@ test.describe('Visual Editing', () => {
     );
 
     await page.goto(getEmbeddedServerURL('/columns', basePort));
+    await page.frameLocator('iframe').getByText('Stack at tablet');
 
-    const NEW_TEXT = 'completely-new-text';
-    const newContent = { ...COLUMNS };
-
-    // update first text block in first column.
-    traverse(newContent).forEach(function (x) {
-      if (!checkIsElement(x)) return;
-
-      if (x.component?.name === 'Columns') {
-        traverse(x).forEach(function (y) {
-          if (!checkIsElement(y)) return;
-
-          if (y.component?.name === 'Text') {
-            y.component.options.text = NEW_TEXT;
-            this.stop();
-          }
-        });
-        this.stop();
-      }
-    });
-
-    await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).not.toBeVisible();
-    await sendContentUpdateMessage(page, newContent);
+    await sendContentUpdateMessage(page, MODIFIED_COLUMNS);
 
     await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
   });
