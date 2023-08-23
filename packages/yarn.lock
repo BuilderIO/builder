@@ -3239,12 +3239,14 @@ __metadata:
   resolution: "@e2e/tests@workspace:sdks-tests"
   dependencies:
     "@playwright/test": ^1.34.3
+    "@types/traverse": ^0.6.32
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
     eslint: ^8.12.0
     eslint-plugin-unused-imports: ^2.0.0
     nx: ^16.6.0
     nx-cloud: ^16.2.0
+    traverse: ^0.6.7
     typescript: ^5.1.6
     zod: ^3.20.2
   languageName: unknown
@@ -37311,7 +37313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"traverse@npm:^0.6.6, traverse@npm:~0.6.6":
+"traverse@npm:^0.6.6, traverse@npm:^0.6.7, traverse@npm:~0.6.6":
   version: 0.6.7
   resolution: "traverse@npm:0.6.7"
   checksum: 21018085ab72f717991597e12e2b52446962ed59df591502e4d7e1a709bc0a989f7c3d451aa7d882666ad0634f1546d696c5edecda1f2fc228777df7bb529a1e

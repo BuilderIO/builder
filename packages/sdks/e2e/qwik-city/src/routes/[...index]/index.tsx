@@ -21,9 +21,13 @@ export const useBuilderContentLoader = routeLoader$(async (event) => {
 
 export default component$(() => {
   const contentProps = useBuilderContentLoader();
-  return contentProps.value ? (
-    <RenderContent {...contentProps.value} />
-  ) : (
-    <div>Content Not Found</div>
+  return (
+    <>
+      {contentProps.value ? (
+        <RenderContent {...contentProps.value} />
+      ) : (
+        <div>Content Not Found</div>
+      )}
+    </>
   );
 });
