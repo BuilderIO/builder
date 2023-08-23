@@ -1186,6 +1186,6 @@ export const CONTENT = {
   rev: 'zxiskiseoj',
 };
 
-export const MODIFIED_COLUMNS = { ...CONTENT };
+export const MODIFIED_COLUMNS = JSON.parse(JSON.stringify(CONTENT));
 MODIFIED_COLUMNS.data.blocks[2].children![1]!.component.options.columns![0].blocks[1].component.options.text =
   NEW_TEXT;

@@ -1015,5 +1015,5 @@ export const CONTENT = {
   rev: 'ooerksctkc',
 };
 
-export const MODIFIED_HOMEPAGE = { ...CONTENT };
+export const MODIFIED_HOMEPAGE = JSON.parse(JSON.stringify(CONTENT));
 MODIFIED_HOMEPAGE.data.blocks[0].children![0].component!.options.text = NEW_TEXT;
