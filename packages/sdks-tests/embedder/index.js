@@ -1,4 +1,5 @@
 import http from 'http';
+import { SDK_LOADED_MSG } from '../src/tests/context.js';
 
 /**
  * Very simple HTTP server that returns SDK content in an iframe to mimic the visual editor.
@@ -19,7 +20,6 @@ const server = (req, res) => {
   fullUrl.searchParams.delete('port');
 
   const url = `http://localhost:${port}${fullUrl.pathname}${fullUrl.search}`;
-  const SDK_LOADED_MSG = 'EMBEDDER MESSAGE: SDK IS LOADED.';
 
   /**
    * alternative #2: https://stackoverflow.com/a/5868263/1520787

@@ -4,31 +4,11 @@ import { MODIFIED_COLUMNS } from '../specs/columns.js';
 import type { BuilderContent } from '../specs/types.js';
 import { type Page } from '@playwright/test';
 import { NEW_TEXT } from '../specs/helpers.js';
+import { EMBEDDER_PORT, SDK_LOADED_MSG } from './context.js';
 
-const SDK_LOADED_MSG = 'EMBEDDER MESSAGE: SDK IS LOADED.';
-const createContent = ({ path, port }: { path: string; port: number }) => {
-  // `builder.frameEditing` enables visual editing
-  const url = `http://localhost:${port}${path}?builder.frameEditing=true`;
-
-  return `
-  <body style="margin:0px;padding:0px;overflow:hidden">
-    <script>
-      window.addEventListener('message', (event) => {
-        if (event.data.type === 'builder.sdkInfo') {
-          console.log('${SDK_LOADED_MSG}')
-        }
-      })
-    </script>
-    <iframe
-      src="${url}"
-      frameborder="0"
-      style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px"
-      height="100%"
-      width="100%"
-    ></iframe>
-  </body>
-`;
-};
+const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
+const getEmbeddedServerURL = (path: string, port: number) =>
+  EMBEDDED_SERVER_URL + path + '?port=' + port;
 
 const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) => {
   await page.evaluate(msgData => {
@@ -61,7 +41,7 @@ const launchEmbedderAndWaitForSdk = async ({
   path: string;
 }) => {
   const msgPromise = page.waitForEvent('console', msg => msg.text() === SDK_LOADED_MSG);
-  await page.setContent(createContent({ path, port: basePort }));
+  await page.goto(getEmbeddedServerURL(path, basePort));
   await msgPromise;
 };
 
