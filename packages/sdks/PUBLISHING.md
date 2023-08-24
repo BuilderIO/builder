@@ -1,16 +1,14 @@
-# Publishing
-
 ## ⚠️ WARNING ⚠️: Do not publish packages manually
 
-The `builder.io` SDKs are meant to be published using the `release-sdk` script, and should not be manually released. This is because the script does a few things:
+The SDKs are meant to be published using the `release-sdk` script, and never manually released. This is because the script does a few important things:
 
 - Guarantees that all dependencies are properly built.
-- Updates the `SDK_VERSION` constant in each SDK to the version number that is about to be published. The Visual Editor uses this constant to tell us which version of the SDK is being used in a given page. This helps our team a lot when debugging user issues.
-- Guarantees that all `builder.io` SDKs are published with the same version number. This makes it much easier to communicate interally and externally about which SDK versions offer a certain feature (e.g. "v0.5.9 adds support for Nested Symbols").
+- Updates the `SDK_VERSION` constant in each SDK to match the version you are about to publish. The Visual Editor uses this constant to tell us which version of the SDK is being used on a given page. This helps our team a lot when debugging user issues.
+- Guarantees that all SDKs are published with the exact same version number. This makes it much easier to communicate internally and externally about which SDK versions offer a certain feature (e.g. "v0.5.9 adds support for Nested Symbols", instead of "v0.4.3 on Qwik, v0.4.8 on Vue, v0.5.7 on NextJS").
 
-PS: the one exception to the last point is publishing `dev` versions, which are allowed to have different version numbers.
+PS: The one exception to the last point is publishing `dev` versions. You are free to publish these for just one SDK.
 
-## Steps
+# Steps
 
 ## 1- Setup
 
@@ -18,11 +16,11 @@ PS: the one exception to the last point is publishing `dev` versions, which are 
 - Make sure you are logged in to NPM via yarn, using `yarn npm login`.
 - Make sure you have the permissions needed to publish all of the SDKs on `npm`.
 
-### 2- Update `CHANGELOG.md`
+## 2- Update `CHANGELOG.md`
 
-Before publishing, make sure to update the `CHANGELOG.md` inside each folder in `packages/output/**`. If the new version only impacts certain SDKs and not others, you should still update the `CHANGELOG.md` with the new version number and write "- No Changes" where needed.
+Before publishing, make sure to update the `CHANGELOG.md` inside each folder in `packages/output/**`. If the changes only impact certain SDKs and not others, you should still update the `CHANGELOG.md` with the new version number and write "- No Changes" where needed. See previous `CHANGELOG.md` logs for examples.
 
-### Publish `patch`, `minor` versions
+## 3a- Publish `patch`, `minor` versions
 
 When publishing `patch` or `minor` versions, you can use the following commands:
 
@@ -31,7 +29,7 @@ yarn release:all:patch
 yarn release:all:minor
 ```
 
-### Publish `dev` versions
+## 3b- Publish `dev` versions
 
 ```bash
 # Release a dev version of all packages
