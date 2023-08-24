@@ -127,8 +127,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
             const contentData = messageContent.data;
 
             if (key === props.model) {
-              console.log('Updating Content: ', contentData);
-
               state.mergeNewContent(contentData);
               state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
