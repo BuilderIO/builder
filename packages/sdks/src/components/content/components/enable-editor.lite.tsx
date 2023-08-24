@@ -62,8 +62,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     forceReRenderCount: 0,
     mergeNewContent(newContent: BuilderContent) {
-      console.log('Merging new content: ', newContent);
-
       const newContentValue = {
         ...props.builderContextSignal.value.content,
         ...newContent,
@@ -100,7 +98,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     shouldSendResetCookie: false,
     processMessage(event: MessageEvent): void {
       const { data } = event;
-      console.log('Recieved Message: ', data.type);
 
       if (data) {
         switch (data.type) {
@@ -127,11 +124,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
               messageContent.entry ||
               messageContent.modelName;
 
-            console.log('Recieved Content Update: ', {
-              key,
-              propsModel: props.model,
-              messageContent,
-            });
             const contentData = messageContent.data;
 
             if (key === props.model) {
@@ -377,7 +369,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     state.emitStateUpdate();
   }, [props.builderContextSignal.value.rootState]);
 
-  // TODO: `else` message for when there is no content passed, or maybe a console.log
   return (
     <Show when={props.builderContextSignal.value.content}>
       <div
