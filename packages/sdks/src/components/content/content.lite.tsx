@@ -81,7 +81,7 @@ export default function ContentComponent(props: ContentProps) {
     useState<BuilderContextInterface>(
       {
         content: getContentInitialValue({
-          content: props.content,
+          content: JSON.parse(JSON.stringify(props.content)),
           data: props.data,
         }),
         localState: undefined,

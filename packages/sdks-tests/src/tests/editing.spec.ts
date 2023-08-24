@@ -65,11 +65,7 @@ test.describe('Visual Editing', () => {
       test.skip();
 
     // TO-DO: temporary while we fix the SDKs
-    test.skip(
-      packageName === 'qwik-city' ||
-        packageName === 'react-native' ||
-        packageName === 'next-app-dir'
-    );
+    test.skip(packageName === 'react-native' || packageName === 'next-app-dir');
 
     await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
     await sendContentUpdateMessage(page, MODIFIED_COLUMNS);
