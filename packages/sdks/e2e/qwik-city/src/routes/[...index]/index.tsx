@@ -1,94 +1,52 @@
-import { getProps } from '@e2e/tests';
-import { RenderContent, _processContentResult } from '../../sdk-src';
-import { component$, useStore } from '@builder.io/qwik';
-import { routeLoader$ } from '@builder.io/qwik-city';
-
-export interface MainProps {
-  url: string;
-}
-
-export const useBuilderContentLoader = routeLoader$(async (event) => {
-  const data = await getProps({
-    pathname: event.url.pathname,
-    _processContentResult,
-  });
-
-  if (!data) {
-    event.status(404);
-  }
-  return data;
-});
-
-type Block = {
-  textValue: string;
-};
-
-type Column = {
-  blocks: Block[];
-  id: string;
-};
-
-type Columns = Column[];
-
-const Block = component$<{ block: Block }>((props) => {
-  return <div>{props.block.textValue}</div>;
-});
-
-const Column = component$<{ blocks: Block[] }>((props) => {
-  return (
-    <div>
-      {props.blocks.map((item) => {
-        return <div>{item.textValue}</div>;
-      })}
-    </div>
-  );
-});
-
-const Columns = component$<{ columns: Columns }>((props) => {
-  return (
-    <div>
-      {props.columns.map((column, index) => {
-        return (
-          <div key={index}>
-            <Column key={column.id} blocks={column.blocks} />
-          </div>
-        );
-      })}
-    </div>
-  );
-});
+import { component$ } from '@builder.io/qwik';
+import ContentComponent from '~/sdk-src/components/content/content';
 
 export default component$(() => {
-  const contentProps = useBuilderContentLoader();
-  const store = useStore<{ columns: Columns }>(
-    {
-      columns: [
-        { id: 'first', blocks: [{ textValue: '1' }, { textValue: '2' }] },
-        { id: 'second', blocks: [{ textValue: '5' }, { textValue: '72' }] },
-      ],
-    },
-    {
-      deep: true,
-    }
-  );
   return (
-    <>
-      <>
-        {contentProps.value ? (
-          <RenderContent {...contentProps.value} />
-        ) : (
-          <div>Content Not Found</div>
-        )}
-      </>
-      {/* <button
-        onClick$={$(() => {
-          store.columns[0].blocks[1].textValue = 'NEW VALUE';
-        })}
-      >
-        update
-      </button>
-      <Columns columns={store.columns} /> */}
-    </>
+    <ContentComponent
+      content={{
+        data: {
+          title: 'Columns',
+          blocks: [
+            {
+              '@type': '@builder.io/sdk:Element',
+              id: 'builder-25c64e9c18804f46b73985264df3c41c',
+              component: {
+                name: 'Columns',
+                options: {
+                  columns: [
+                    {
+                      blocks: [
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          id: 'builder-71c14581f362486eb24214d27c0c24d0',
+                          component: {
+                            name: 'Text',
+                            options: { text: '<p>text in column 1</p>' },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        },
+        id: 'f24c6940ee5f46458369151cc9ec598c',
+      }}
+      showContent={true}
+      classNameProp={undefined}
+      data={undefined}
+      context={undefined}
+      apiVersion={undefined}
+      customComponents={undefined}
+      canTrack={undefined}
+      locale={undefined}
+      includeRefs={undefined}
+      enrich={undefined}
+      isSsrAbTest={false}
+    />
   );
-  ('');
 });

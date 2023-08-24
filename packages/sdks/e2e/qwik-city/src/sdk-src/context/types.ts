@@ -1,15 +1,14 @@
 import type { BuilderContent } from '../types/builder-content';
-import type { ComponentInfo } from '../types/components';
-import type { Dictionary, Nullable } from '../types/typescript';
-import type { ApiVersion } from '../types/api-version';
+type ComponentInfo = object;
+
 export type RegisteredComponent = ComponentInfo & {
   component: any;
 };
-export type RegisteredComponents = Dictionary<RegisteredComponent>;
+export type RegisteredComponents = object;
 export type BuilderRenderState = Record<string, unknown>;
 export type BuilderRenderContext = Record<string, unknown>;
 export interface BuilderContextInterface {
-  content: Nullable<BuilderContent>;
+  content: BuilderContent;
   context: BuilderRenderContext;
   /**
    * The state of the application.
@@ -29,8 +28,8 @@ export interface BuilderContextInterface {
    */
   localState: BuilderRenderState | undefined;
   apiKey: string | null;
-  apiVersion: ApiVersion | undefined;
-  componentInfos: Dictionary<ComponentInfo>;
+  apiVersion: '' | undefined;
+  componentInfos: object;
   // Used to recursively store all CSS coming from a parent that would apply to a Text block
   inheritedStyles: Record<string, unknown>;
 }
