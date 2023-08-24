@@ -33,10 +33,7 @@ const createContent = ({ path, port }: { path: string; port: number }) => {
 const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) => {
   await page.evaluate(msgData => {
     const contentWindow = document.querySelector('iframe')?.contentWindow;
-
     if (!contentWindow) throw new Error('Could not find iframe');
-
-    console.log('sending message!');
 
     contentWindow.postMessage(
       {
