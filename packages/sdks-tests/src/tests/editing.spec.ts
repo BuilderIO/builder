@@ -2,13 +2,24 @@ import { test } from './helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import { MODIFIED_COLUMNS } from '../specs/columns.js';
 import type { BuilderContent } from '../specs/types.js';
-import { EMBEDDER_PORT } from './context.js';
 import { expect, type Page } from '@playwright/test';
 import { NEW_TEXT } from '../specs/helpers.js';
 
-const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
-const getEmbeddedServerURL = (path: string, port: number) =>
-  EMBEDDED_SERVER_URL + path + '?port=' + port;
+const createContent = ({ path, port }: { path: string; port: number }) => {
+  // `builder.frameEditing` enables visual editing
+  const url = `http://localhost:${port}${path}?builder.frameEditing=true`;
+
+  return `
+<body style="margin:0px;padding:0px;overflow:hidden">
+  <iframe
+    src="${url}"
+    frameborder="0"
+    style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px"
+    height="100%"
+    width="100%">
+  </iframe>
+</body>`;
+};
 
 const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) => {
   await page.evaluate(msgData => {
@@ -49,7 +60,7 @@ test.describe('Visual Editing', () => {
         packageName === 'nuxt3'
     );
 
-    await page.goto(getEmbeddedServerURL('/', basePort));
+    await page.setContent(createContent({ path: '/', port: basePort }));
 
     /**
      * Make sure the homepage loaded inside the iframe
@@ -83,7 +94,7 @@ test.describe('Visual Editing', () => {
         packageName === 'nuxt3'
     );
 
-    await page.goto(getEmbeddedServerURL('/columns', basePort));
+    await page.setContent(createContent({ path: '/columns', port: basePort }));
     await page.frameLocator('iframe').getByText('Stack at tablet');
 
     await sendContentUpdateMessage(page, MODIFIED_COLUMNS);

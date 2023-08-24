@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { EMBEDDER_PORT, targetContext } from './src/tests/context.js';
+import { targetContext } from './src/tests/context.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { PackageName, Sdk } from './src/tests/sdk.js';
@@ -84,22 +84,14 @@ export default defineConfig({
     },
   })),
 
-  webServer: things
-    .map(({ packageName, port, portFlag }) => {
-      const webServers = {
-        command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
-        port,
-        reuseExistingServer: false,
-        ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
-      };
+  webServer: things.map(({ packageName, port, portFlag }) => {
+    const webServers = {
+      command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
+      port,
+      reuseExistingServer: false,
+      ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
+    };
 
-      return webServers;
-    })
-    .concat([
-      {
-        command: `PORT=${EMBEDDER_PORT} yarn workspace @e2e/tests run-embedder`,
-        port: EMBEDDER_PORT,
-        reuseExistingServer: false,
-      },
-    ]),
+    return webServers;
+  }),
 });
