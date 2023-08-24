@@ -151,6 +151,15 @@ jobs:
       - name: Run E2E tests
         run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.sdk }}
 
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v3
+        # Only upload the report if the tests failed
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.sdk }}-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
+
   core-sdk:
     runs-on: ubuntu-latest
 

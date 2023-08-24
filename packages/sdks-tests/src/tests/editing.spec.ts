@@ -1,12 +1,10 @@
 import { test } from './helpers.js';
-import { CONTENT as HOMEPAGE } from '../specs/homepage.js';
-import { CONTENT as COLUMNS } from '../specs/columns.js';
-import traverse from 'traverse';
-import type { BuilderBlock, BuilderContent } from '../specs/types.js';
-import { EMBEDDER_PORT } from './context.js';
-import { expect, type Page } from '@playwright/test';
-
-const checkIsElement = (x: any): x is BuilderBlock => x['@type'] === '@builder.io/sdk:Element';
+import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
+import { MODIFIED_COLUMNS } from '../specs/columns.js';
+import type { BuilderContent } from '../specs/types.js';
+import { type Page } from '@playwright/test';
+import { NEW_TEXT } from '../specs/helpers.js';
+import { EMBEDDER_PORT, SDK_LOADED_MSG } from './context.js';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>
@@ -14,7 +12,10 @@ const getEmbeddedServerURL = (path: string, port: number) =>
 
 const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) => {
   await page.evaluate(msgData => {
-    document.querySelector('iframe')?.contentWindow?.postMessage(
+    const contentWindow = document.querySelector('iframe')?.contentWindow;
+    if (!contentWindow) throw new Error('Could not find iframe');
+
+    contentWindow.postMessage(
       {
         type: 'builder.contentUpdate',
         data: {
@@ -30,42 +31,29 @@ const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) 
   }, newContent);
 };
 
+const launchEmbedderAndWaitForSdk = async ({
+  page,
+  basePort,
+  path,
+}: {
+  page: Page;
+  basePort: number;
+  path: string;
+}) => {
+  const msgPromise = page.waitForEvent('console', msg => msg.text() === SDK_LOADED_MSG);
+  await page.goto(getEmbeddedServerURL(path, basePort));
+  await msgPromise;
+};
+
 test.describe('Visual Editing', () => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {
     if (packageName === 'gen1-next' || packageName === 'gen1-react' || packageName === 'gen1-remix')
       test.skip();
 
-    // TO-DO: temporary while we fix the SDKs
-    test.skip(
-      packageName === 'qwik-city' ||
-        packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
-        packageName === 'vue3' ||
-        packageName === 'vue2' ||
-        packageName === 'sveltekit' ||
-        packageName === 'nuxt3'
-    );
+    test.skip(packageName === 'react-native' || packageName === 'next-app-dir');
 
-    await page.goto(getEmbeddedServerURL('/', basePort));
-
-    const NEW_TEXT = 'completely-new-text';
-    const newContent = { ...HOMEPAGE };
-
-    traverse(newContent).forEach(function (x) {
-      if (!checkIsElement(x)) return;
-
-      if (x.component?.name === 'Text') {
-        x.component.options.text = NEW_TEXT;
-        this.stop();
-      }
-    });
-
-    if (newContent.data.blocks[0].children?.[0].component?.options.text) {
-      newContent.data.blocks[0].children[0].component.options.text = NEW_TEXT;
-    }
-
-    await sendContentUpdateMessage(page, newContent);
-
+    await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
+    await sendContentUpdateMessage(page, MODIFIED_HOMEPAGE);
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
   test('correctly updates Text block in a Column block', async ({
@@ -80,38 +68,11 @@ test.describe('Visual Editing', () => {
     test.skip(
       packageName === 'qwik-city' ||
         packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
-        packageName === 'vue3' ||
-        packageName === 'vue2' ||
-        packageName === 'sveltekit' ||
-        packageName === 'nuxt3'
+        packageName === 'next-app-dir'
     );
 
-    await page.goto(getEmbeddedServerURL('/columns', basePort));
-
-    const NEW_TEXT = 'completely-new-text';
-    const newContent = { ...COLUMNS };
-
-    // update first text block in first column.
-    traverse(newContent).forEach(function (x) {
-      if (!checkIsElement(x)) return;
-
-      if (x.component?.name === 'Columns') {
-        traverse(x).forEach(function (y) {
-          if (!checkIsElement(y)) return;
-
-          if (y.component?.name === 'Text') {
-            y.component.options.text = NEW_TEXT;
-            this.stop();
-          }
-        });
-        this.stop();
-      }
-    });
-
-    await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).not.toBeVisible();
-    await sendContentUpdateMessage(page, newContent);
-
-    await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
+    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+    await sendContentUpdateMessage(page, MODIFIED_COLUMNS);
+    await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
 });

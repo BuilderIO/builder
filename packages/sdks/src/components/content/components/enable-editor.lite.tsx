@@ -98,6 +98,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     shouldSendResetCookie: false,
     processMessage(event: MessageEvent): void {
       const { data } = event;
+
       if (data) {
         switch (data.type) {
           case 'builder.configureSdk': {
@@ -366,7 +367,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     state.emitStateUpdate();
   }, [props.builderContextSignal.value.rootState]);
 
-  // TODO: `else` message for when there is no content passed, or maybe a console.log
   return (
     <Show when={props.builderContextSignal.value.content}>
       <div
