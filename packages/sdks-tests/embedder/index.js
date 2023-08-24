@@ -19,6 +19,7 @@ const server = (req, res) => {
   fullUrl.searchParams.delete('port');
 
   const url = `http://localhost:${port}${fullUrl.pathname}${fullUrl.search}`;
+  const SDK_LOADED_MSG = 'EMBEDDER MESSAGE: SDK IS LOADED.';
 
   /**
    * alternative #2: https://stackoverflow.com/a/5868263/1520787
@@ -27,13 +28,20 @@ const server = (req, res) => {
 <!DOCTYPE html>
 <html>
   <body style="margin:0px;padding:0px;overflow:hidden">
-    <iframe
-      src="${url}"
-      frameborder="0"
-      style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px"
-      height="100%"
-      width="100%">
-    </iframe>
+  <script>
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'builder.sdkInfo') {
+        console.log('${SDK_LOADED_MSG}')
+      }
+    })
+  </script>
+  <iframe
+    src="${url}"
+    frameborder="0"
+    style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px"
+    height="100%"
+    width="100%"
+  ></iframe>
   </body>
 </html>
 `);
