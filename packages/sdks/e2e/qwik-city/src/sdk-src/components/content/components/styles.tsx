@@ -1,8 +1,9 @@
 import InlinedStyles from '../../inlined-styles';
 
-import { CustomFont, getCss, getFontCss } from './styles.helpers.js';
+import type { CustomFont } from './styles.helpers';
+import { getCss, getFontCss } from './styles.helpers';
 
-import { Fragment, component$, h, useStore } from '@builder.io/qwik';
+import { component$, useStore } from '@builder.io/qwik';
 
 interface Props {
   cssCode?: string;

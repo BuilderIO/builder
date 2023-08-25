@@ -1,4 +1,4 @@
-import { wrapComponentRef } from '../../../content/wrap-component-ref.js';
+import { wrapComponentRef } from '../../../content/wrap-component-ref';
 
 import Block from '../../block';
 
@@ -6,7 +6,7 @@ import BlockStyles from '../block-styles';
 
 import InteractiveElement from '../interactive-element';
 
-import { ComponentProps, getWrapperProps } from './component-ref.helpers.js';
+import { ComponentProps, getWrapperProps } from './component-ref.helpers';
 
 import { Fragment, component$, h, useStore } from '@builder.io/qwik';
 

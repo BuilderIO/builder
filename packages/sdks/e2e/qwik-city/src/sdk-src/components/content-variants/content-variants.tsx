@@ -1,8 +1,8 @@
-import { TARGET } from '../../constants/target.js';
+import { TARGET } from '../../constants/target';
 
-import { handleABTestingSync } from '../../helpers/ab-tests.js';
+import { handleABTestingSync } from '../../helpers/ab-tests';
 
-import { getDefaultCanTrack } from '../../helpers/canTrack.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack';
 
 import ContentComponent from '../content/content';
 
@@ -10,19 +10,18 @@ import InlinedScript from '../inlined-script';
 
 import InlinedStyles from '../inlined-styles';
 
-import { ContentVariantsPrps } from './content-variants.types.js';
+import type { ContentVariantsPrps } from './content-variants.types';
 
 import {
   checkShouldRunVariants,
   getScriptString,
   getVariants,
   getVariantsScriptString,
-} from './helpers.js';
+} from './helpers';
 
 import {
   Fragment,
   component$,
-  h,
   useComputed$,
   useStore,
   useVisibleTask$,

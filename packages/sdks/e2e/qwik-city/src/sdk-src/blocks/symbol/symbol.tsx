@@ -1,17 +1,17 @@
 import ContentVariants from '../../components/content-variants/content-variants';
 
-import { BuilderContent } from '../../types/builder-content.js';
+import { BuilderContent } from '../../types/builder-content';
 
 import {
   BuilderComponentsProp,
   PropsWithBuilderData,
-} from '../../types/builder-props.js';
+} from '../../types/builder-props';
 
-import { Nullable } from '../../types/typescript.js';
+import { Nullable } from '../../types/typescript';
 
-import { filterAttrs, setAttrs } from '../helpers.js';
+import { filterAttrs, setAttrs } from '../helpers';
 
-import { fetchSymbolContent } from './symbol.helpers.js';
+import { fetchSymbolContent } from './symbol.helpers';
 
 import {
   Fragment,

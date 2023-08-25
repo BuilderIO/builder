@@ -1,21 +1,15 @@
-import BuilderContext from '../../../context/builder.context.js';
+import BuilderContext from '../../../context/builder.context';
 
-import {
+import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from '../../../context/types.js';
+} from '../../../context/types';
 
-import { BuilderBlock } from '../../../types/builder-block.js';
+import type { BuilderBlock } from '../../../types/builder-block';
 
 import Block from '../block';
 
-import {
-  Fragment,
-  component$,
-  h,
-  useContextProvider,
-  useStore,
-} from '@builder.io/qwik';
+import { component$, useContextProvider, useStore } from '@builder.io/qwik';
 
 type Props = {
   block: BuilderBlock;

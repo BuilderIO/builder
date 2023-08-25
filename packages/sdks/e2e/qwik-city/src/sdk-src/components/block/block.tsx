@@ -1,41 +1,29 @@
-import {
+import type {
   BuilderContextInterface,
   RegisteredComponents,
-} from '../../context/types.js';
+} from '../../context/types';
 
-import { extractTextStyles } from '../../functions/extract-text-styles.js';
+import { getBlockComponentOptions } from '../../functions/get-block-component-options';
 
-import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
+import { getProcessedBlock } from '../../functions/get-processed-block';
 
-import { getBlockProperties } from '../../functions/get-block-properties.js';
-
-import { getProcessedBlock } from '../../functions/get-processed-block.js';
-
-import { BuilderBlock } from '../../types/builder-block.js';
+import type { BuilderBlock } from '../../types/builder-block';
 
 import {
   getComponent,
   getRepeatItemData,
   isEmptyHtmlElement,
-} from './block.helpers.js';
+} from './block.helpers';
 
 import BlockStyles from './components/block-styles';
 
 import BlockWrapper from './components/block-wrapper';
 
-import { ComponentProps } from './components/component-ref/component-ref.helpers.js';
-
 import ComponentRef from './components/component-ref/component-ref';
 
 import RepeatedBlock from './components/repeated-block';
 
-import {
-  Fragment,
-  component$,
-  h,
-  useComputed$,
-  useStore,
-} from '@builder.io/qwik';
+import { component$, useComputed$, useStore } from '@builder.io/qwik';
 
 export type BlockProps = {
   block: BuilderBlock;

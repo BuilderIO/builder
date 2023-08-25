@@ -1,29 +1,23 @@
 import {
   getMaxWidthQueryForSize,
   getSizesForBreakpoints,
-} from '../../../constants/device-sizes.js';
+} from '../../../constants/device-sizes';
 
-import { TARGET } from '../../../constants/target.js';
+import { TARGET } from '../../../constants/target';
 
-import { BuilderContextInterface } from '../../../context/types.js';
+import type { BuilderContextInterface } from '../../../context/types';
 
-import { getProcessedBlock } from '../../../functions/get-processed-block.js';
+import { getProcessedBlock } from '../../../functions/get-processed-block';
 
-import { createCssClass } from '../../../helpers/css.js';
+import { createCssClass } from '../../../helpers/css';
 
-import { checkIsDefined } from '../../../helpers/nullable.js';
+import { checkIsDefined } from '../../../helpers/nullable';
 
-import { BuilderBlock } from '../../../types/builder-block.js';
+import type { BuilderBlock } from '../../../types/builder-block';
 
 import InlinedStyles from '../../inlined-styles';
 
-import {
-  Fragment,
-  component$,
-  h,
-  useComputed$,
-  useStore,
-} from '@builder.io/qwik';
+import { component$, useComputed$, useStore } from '@builder.io/qwik';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
