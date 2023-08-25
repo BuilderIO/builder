@@ -18,17 +18,6 @@ export const EnableEditor = component$((props) => {
           const newContentValue = {
             ...props.builderContextSignal.content,
             ...MODIFIED_COLUMNS,
-            data: {
-              ...props.builderContextSignal.content?.data,
-              ...MODIFIED_COLUMNS?.data,
-            },
-            meta: {
-              ...props.builderContextSignal.content?.meta,
-              ...MODIFIED_COLUMNS?.meta,
-              breakpoints:
-                MODIFIED_COLUMNS?.meta?.breakpoints ||
-                props.builderContextSignal.content?.meta?.breakpoints,
-            },
           };
           console.log('newContentValue', newContentValue);
 

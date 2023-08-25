@@ -1,12 +1,8 @@
 import Blocks from '../blocks/blocks';
-
 import EnableEditor from './components/enable-editor';
-
-import type { ContentProps } from './content.types';
-
 import { component$, useStore } from '@builder.io/qwik';
 
-export const ContentComponent = component$((props: ContentProps) => {
+export const ContentComponent = component$((props) => {
   const state = useStore<any>(
     {
       builderContextSignal: {
