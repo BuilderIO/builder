@@ -25,15 +25,12 @@ export default component$(() => {
     <ContentComponent
       content={{
         data: {
-          title: 'Columns',
           blocks: [
             {
               columns: ['<p>text in column 1</p>'],
-              id: 'builder-1253ebf62a87451db1a31e103189b5bb',
             },
           ],
         },
-        id: 'f24c6940ee5f46458369151cc9ec598c',
       }}
     />
   );

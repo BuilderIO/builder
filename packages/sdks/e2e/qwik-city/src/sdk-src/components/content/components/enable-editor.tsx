@@ -4,12 +4,10 @@ const MODIFIED_COLUMNS = {
   data: {
     blocks: [
       {
-        id: 'builder-1253ebf62a87451db1a31e103189b5bb',
         columns: ['updated text!'],
       },
     ],
   },
-  id: 'f24c6940ee5f46458369151cc9ec598c',
 };
 
 export const EnableEditor = component$((props) => {
