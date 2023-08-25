@@ -5,11 +5,7 @@ const MODIFIED_COLUMNS = {
     blocks: [
       {
         id: 'builder-1253ebf62a87451db1a31e103189b5bb',
-        columns: [
-          {
-            text: 'updated text!',
-          },
-        ],
+        columns: ['updated text!'],
       },
     ],
   },

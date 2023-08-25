@@ -28,11 +28,7 @@ export default component$(() => {
           title: 'Columns',
           blocks: [
             {
-              columns: [
-                {
-                  text: '<p>text in column 1</p>',
-                },
-              ],
+              columns: ['<p>text in column 1</p>'],
               id: 'builder-1253ebf62a87451db1a31e103189b5bb',
             },
           ],
