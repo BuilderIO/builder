@@ -21,7 +21,9 @@ export interface ColumnProps extends BuilderComponentsProp {
 }
 export const Columns = component$(
   (props: PropsWithBuilderData<ColumnProps>) => {
-    return <div>in Columns: {props.columns[0].component.options.text}</div>;
+    return (
+      <div>in Columns: {props.columns[0].blocks[1].component.options.text}</div>
+    );
   }
 );
 

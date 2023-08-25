@@ -1,19 +1,36 @@
-import { Fragment, component$ } from '@builder.io/qwik';
-import type { Content } from '../content/content.types';
+import type { BlocksWrapperProps } from './blocks-wrapper';
 
-export const Columns = component$((props: { block: string }) => {
-  return <div>in Columns: {props.block}</div>;
+import { Fragment, component$ } from '@builder.io/qwik';
+
+export type BlocksProps = Partial<BlocksWrapperProps> & {};
+
+export const Columns = component$((props: any) => {
+  return (
+    <div>in Columns: {props.columns[0].blocks[1].component.options.text}</div>
+  );
 });
 
-export const Blocks = component$((props: { x: { content: Content } }) => {
+export const Blocks = component$((props: BlocksProps) => {
   return (
     <>
-      {/* <div>in BLOCKS (outside loop): {props.blocks[0].columns}</div> */}
-      {props.x.content.blocks.map((block) => (
-        <Fragment key={'render-block-' + block}>
-          <Columns block={block} />
-        </Fragment>
-      ))}
+      <div>
+        in BLOCKS (outside loop):{' '}
+        {
+          // @ts-ignore
+          props.blocks[0].children[1].component.options.columns[0].blocks[1]
+            .component.options.text
+        }
+      </div>
+      {props.blocks?.map((block) => {
+        return (
+          <Fragment key={'render-block-' + block.id}>
+            {/* <div>
+        in BLOCKS (inside loop): {props.context.content.data.blocks[0].children[1].component.options.columns[0].blocks[1].component.options.text}
+      </div> */}
+            <Columns columns={block.children[1].component.options.columns} />
+          </Fragment>
+        );
+      })}
     </>
   );
 });
