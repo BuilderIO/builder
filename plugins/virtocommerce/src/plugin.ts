@@ -11,7 +11,7 @@ registerCommercePlugin(
     id: pkg.name,
     settings: [
       {
-        name: 'storefrontUrl',
+        name: 'virtoCommerceUrl',
         type: 'string',
         required: true,
       },
@@ -36,23 +36,23 @@ registerCommercePlugin(
         required: false,
       },
     ],
-    ctaText: `Connect your VirtoCommerce store`,
+    ctaText: `Connect your Virto Commerce Store`,
   },
   settings => {
     const basicCache = new Map();
 
-    let storefrontUrl = settings.get('storefrontUrl');
+    let virtoCommerceUrl = settings.get('virtoCommerceUrl');
     const storeId = settings.get('storeId');
     const login = settings.get('login');
     const password = settings.get('password');
     const locale = settings.get('locale');
 
-    if (storefrontUrl && storefrontUrl.endsWith('/')) {
-      storefrontUrl = storefrontUrl.slice(0, -1);
+    if (virtoCommerceUrl && virtoCommerceUrl.endsWith('/')) {
+      virtoCommerceUrl = virtoCommerceUrl.slice(0, -1);
     }
 
     const baseUrl = (url: string) => {
-      const endUrl = `${storefrontUrl}/${url}`;
+      const endUrl = `${virtoCommerceUrl}/${url}`;
       return `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
       // return endUrl;
     };
