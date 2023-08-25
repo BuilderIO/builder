@@ -18,13 +18,6 @@ export const ContentComponent = component$((props: ContentProps) => {
 
   return (
     <EnableEditor builderContextSignal={state.builderContextSignal}>
-      <div>
-        in CONTENT:{' '}
-        {
-          state.builderContextSignal?.content?.data?.blocks[0]?.children?.[1]
-            ?.component.options.columns[0].blocks[1].component.options.text
-        }
-      </div>
       <Blocks
         blocks={state.builderContextSignal.content?.data?.blocks}
       ></Blocks>
