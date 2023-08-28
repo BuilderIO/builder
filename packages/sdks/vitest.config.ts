@@ -7,7 +7,4 @@ export default defineConfig({
     include: ['src/**/*.test.ts'],
     alias: getEvaluatorPathAlias(),
   },
-  resolve: {
-    alias: getEvaluatorPathAlias('input'),
-  },
 });
