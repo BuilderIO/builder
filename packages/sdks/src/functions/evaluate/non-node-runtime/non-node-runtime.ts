@@ -50,7 +50,10 @@ export const runInNonNode = ({
    * Deserialize all properties from JSON strings to JS objects
    */
   const prependedCode = properties
-    .map(([key]) => `var ${key} = JSON.parse(${getJSONValName(key)});`)
+    .map(([key]) => {
+      const jsonValName = getJSONValName(key);
+      return `var ${key} = ${jsonValName} === undefined ? undefined : JSON.parse(${jsonValName});`;
+    })
     .join('\n');
   const cleanedCode = processCode(code);
 
