@@ -18,14 +18,6 @@ The page will reload, asking you to enter in your Virto Commerce credentials:
 
 You will now see new field types (for [model](https://builder.io/c/docs/guides/getting-started-with-models) fields, [symbol](https://builder.io/c/docs/guides/symbols) inputs, [custom components](https://builder.io/c/docs/custom-react-components) fields), and [custom targeting attributes](https://www.builder.io/c/docs/guides/targeting-and-scheduling#custom-targeting) that can be used in three different contexts:
 
-## CORS
-CORS is off by default for security purposes in Virto Commerce. Adjust environment configuration by adding these response headers:
-
-* Access-Control-Allow-Origin: *
-* Access-Control-Allow-Headers: Content-Type
-* Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS
-* Access-Control-Allow-Credentials: true
-
 ### Custom targeting
 
 Custom targeting in Builder.io allow users to target content by a multitude of attributes, and in this plugin you'll be able to add specific content to Virto Commerce products, for this you'll need first to set the target attributes on the host site, either by setting the `userAttributes` if you're rendering client side:
@@ -75,6 +67,14 @@ Using the field types `Virto Commerce Product` and `Virto Commerce Collection` a
 }
 ```
 
+## CORS
+CORS is off by default for security purposes in Virto Commerce. Adjust environment configuration by adding these response headers:
+
+* Access-Control-Allow-Origin: *
+* Access-Control-Allow-Headers: Content-Type
+* Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS
+* Access-Control-Allow-Credentials: true
+
 ## How to develop?
 
 ### Install
@@ -107,7 +107,6 @@ To uninstall your plugin,remove it in the plugins UI
 
 Try creating a custom [model](https://builder.io/c/docs/guides/getting-started-with-models), [component](https://builder.io/c/docs/custom-react-components), or [symbol](https://builder.io/c/docs/guides/symbols) using an Virto Commerce field, and edit away!
 
-![Seeing your plugin in the editor example gif](https://github.com/VirtoCommerce/builder-io/blob/virtocommerce/plugins/virtocommerce/vc-builder-io.gif?raw=true)
 
 ### Frameworks
 
