@@ -4,11 +4,7 @@ import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js
 
 export default defineConfig(() => {
   return {
-    resolve: {
-      alias: getEvaluatorPathAlias('input'),
-    },
     build: {
-      outDir: getSdkOutputPath(),
       lib: {
         entry: './src/index.ts',
         formats: ['es', 'cjs'],
