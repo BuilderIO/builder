@@ -2,205 +2,162 @@
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
   "workspaces": [
-    "packages/*"
+    "vue2",
+    "vue3"
   ],
   "version": "0.5.8",
-  "main": "./packages/_vue3/lib/node/index.cjs",
-  "module": "./packages/_vue3/lib/node/index.mjs",
-  "types": "./packages/_vue3/lib/node/index.d.ts",
+  "main": "./vue3/lib/node/index.cjs",
+  "module": "./vue3/lib/node/index.js",
+  "type": "module",
   "files": [
-    "packages/_vue2/lib",
-    "packages/_vue3/lib"
+    "vue2",
+    "vue3"
   ],
   "exports": {
     ".": {
       "node": {
-        "types": "./packages/_vue3/lib/node/index.d.ts",
-        "import": "./packages/_vue3/lib/node/index.mjs",
-        "require": "./packages/_vue3/lib/node/index.cjs"
+        "import": "./vue3/lib/node/index.js",
+        "require": "./vue3/lib/node/index.cjs"
       },
       "browser": {
-        "types": "./packages/_vue3/lib/browser/index.d.ts",
-        "import": "./packages/_vue3/lib/browser/index.mjs",
-        "require": "./packages/_vue3/lib/browser/index.cjs"
+        "import": "./vue3/lib/browser/index.js",
+        "require": "./vue3/lib/browser/index.cjs"
       },
       "edge-routine": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
       },
       "workerd": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
       },
       "deno": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
       },
       "lagon": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
       },
       "netlify": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
       },
       "edge-light": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
       },
       "bun": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "react-native": {
-        "types": "./packages/_vue3/lib/node/index.d.ts",
-        "import": "./packages/_vue3/lib/node/index.mjs",
-        "require": "./packages/_vue3/lib/node/index.cjs"
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
       },
       "electron": {
-        "types": "./packages/_vue3/lib/node/index.d.ts",
-        "import": "./packages/_vue3/lib/node/index.mjs",
-        "require": "./packages/_vue3/lib/node/index.cjs"
+        "import": "./vue3/lib/node/index.js",
+        "require": "./vue3/lib/node/index.cjs"
       },
       "default": {
-        "types": "./packages/_vue3/lib/browser/index.d.ts",
-        "import": "./packages/_vue3/lib/browser/index.mjs",
-        "require": "./packages/_vue3/lib/browser/index.cjs"
-      }
-    },
-    "./vue3": {
-      "node": {
-        "types": "./packages/_vue3/lib/node/index.d.ts",
-        "import": "./packages/_vue3/lib/node/index.mjs",
-        "require": "./packages/_vue3/lib/node/index.cjs"
-      },
-      "browser": {
-        "types": "./packages/_vue3/lib/browser/index.d.ts",
-        "import": "./packages/_vue3/lib/browser/index.mjs",
-        "require": "./packages/_vue3/lib/browser/index.cjs"
-      },
-      "edge-routine": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "workerd": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "deno": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "lagon": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "netlify": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "edge-light": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "bun": {
-        "types": "./packages/_vue3/lib/edge/index.d.ts",
-        "import": "./packages/_vue3/lib/edge/index.mjs",
-        "require": "./packages/_vue3/lib/edge/index.cjs"
-      },
-      "react-native": {
-        "types": "./packages/_vue3/lib/node/index.d.ts",
-        "import": "./packages/_vue3/lib/node/index.mjs",
-        "require": "./packages/_vue3/lib/node/index.cjs"
-      },
-      "electron": {
-        "types": "./packages/_vue3/lib/node/index.d.ts",
-        "import": "./packages/_vue3/lib/node/index.mjs",
-        "require": "./packages/_vue3/lib/node/index.cjs"
-      },
-      "default": {
-        "types": "./packages/_vue3/lib/browser/index.d.ts",
-        "import": "./packages/_vue3/lib/browser/index.mjs",
-        "require": "./packages/_vue3/lib/browser/index.cjs"
+        "import": "./vue3/lib/browser/index.js",
+        "require": "./vue3/lib/browser/index.cjs"
       }
     },
     "./vue2": {
       "node": {
-        "types": "./packages/_vue2/lib/node/index.d.ts",
-        "import": "./packages/_vue2/lib/node/index.mjs",
-        "require": "./packages/_vue2/lib/node/index.cjs"
+        "import": "./vue2/lib/node/index.js",
+        "require": "./vue2/lib/node/index.cjs"
       },
       "browser": {
-        "types": "./packages/_vue2/lib/browser/index.d.ts",
-        "import": "./packages/_vue2/lib/browser/index.mjs",
-        "require": "./packages/_vue2/lib/browser/index.cjs"
+        "import": "./vue2/lib/browser/index.js",
+        "require": "./vue2/lib/browser/index.cjs"
       },
       "edge-routine": {
-        "types": "./packages/_vue2/lib/edge/index.d.ts",
-        "import": "./packages/_vue2/lib/edge/index.mjs",
-        "require": "./packages/_vue2/lib/edge/index.cjs"
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
       },
       "workerd": {
-        "types": "./packages/_vue2/lib/edge/index.d.ts",
-        "import": "./packages/_vue2/lib/edge/index.mjs",
-        "require": "./packages/_vue2/lib/edge/index.cjs"
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
       },
       "deno": {
-        "types": "./packages/_vue2/lib/edge/index.d.ts",
-        "import": "./packages/_vue2/lib/edge/index.mjs",
-        "require": "./packages/_vue2/lib/edge/index.cjs"
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
       },
       "lagon": {
-        "types": "./packages/_vue2/lib/edge/index.d.ts",
-        "import": "./packages/_vue2/lib/edge/index.mjs",
-        "require": "./packages/_vue2/lib/edge/index.cjs"
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
       },
       "netlify": {
-        "types": "./packages/_vue2/lib/edge/index.d.ts",
-        "import": "./packages/_vue2/lib/edge/index.mjs",
-        "require": "./packages/_vue2/lib/edge/index.cjs"
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
       },
       "edge-light": {
-        "types": "./packages/_vue2/lib/edge/index.d.ts",
-        "import": "./packages/_vue2/lib/edge/index.mjs",
-        "require": "./packages/_vue2/lib/edge/index.cjs"
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
       },
       "bun": {
-        "types": "./packages/_vue2/lib/edge/index.d.ts",
-        "import": "./packages/_vue2/lib/edge/index.mjs",
-        "require": "./packages/_vue2/lib/edge/index.cjs"
-      },
-      "react-native": {
-        "types": "./packages/_vue2/lib/node/index.d.ts",
-        "import": "./packages/_vue2/lib/node/index.mjs",
-        "require": "./packages/_vue2/lib/node/index.cjs"
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
       },
       "electron": {
-        "types": "./packages/_vue2/lib/node/index.d.ts",
-        "import": "./packages/_vue2/lib/node/index.mjs",
-        "require": "./packages/_vue2/lib/node/index.cjs"
+        "import": "./vue2/lib/node/index.js",
+        "require": "./vue2/lib/node/index.cjs"
       },
       "default": {
-        "types": "./packages/_vue2/lib/browser/index.d.ts",
-        "import": "./packages/_vue2/lib/browser/index.mjs",
-        "require": "./packages/_vue2/lib/browser/index.cjs"
+        "import": "./vue2/lib/browser/index.js",
+        "require": "./vue2/lib/browser/index.cjs"
       }
     },
-    "./vue2/css": "./packages/_vue2/lib/browser/style.css",
-    "./vue3/css": "./packages/_vue3/lib/browser/style.css"
+    "./vue2/css": "./vue2/lib/browser/style.css",
+    "./vue3": {
+      "node": {
+        "import": "./vue3/lib/node/index.js",
+        "require": "./vue3/lib/node/index.cjs"
+      },
+      "browser": {
+        "import": "./vue3/lib/browser/index.js",
+        "require": "./vue3/lib/browser/index.cjs"
+      },
+      "edge-routine": {
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
+      },
+      "workerd": {
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
+      },
+      "deno": {
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
+      },
+      "lagon": {
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
+      },
+      "netlify": {
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
+      },
+      "edge-light": {
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
+      },
+      "bun": {
+        "import": "./vue3/lib/edge/index.js",
+        "require": "./vue3/lib/edge/index.cjs"
+      },
+      "react-native": {
+        "import": "./vue3/lib/node/index.js",
+        "require": "./vue3/lib/node/index.cjs"
+      },
+      "electron": {
+        "import": "./vue3/lib/node/index.js",
+        "require": "./vue3/lib/node/index.cjs"
+      },
+      "default": {
+        "import": "./vue3/lib/browser/index.js",
+        "require": "./vue3/lib/browser/index.cjs"
+      }
+    },
+    "./vue3/css": "./vue3/lib/browser/style.css"
   },
   "scripts": {
     "add-debug": "bash ./scripts/add-debug.sh",

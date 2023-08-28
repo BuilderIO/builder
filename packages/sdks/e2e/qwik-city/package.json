@@ -19,10 +19,8 @@
     "serve": "yarn run dev"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.2.6",
-    "@builder.io/qwik-city": "^1.0.0",
-    "@builder.io/sdk-qwik": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@builder.io/qwik": "^1.2.7",
+    "@builder.io/qwik-city": "^1.2.7",
     "@types/eslint": "8.4.10",
     "@types/node": "^18.11.18",
     "@types/node-fetch": "latest",
@@ -31,6 +29,8 @@
     "eslint": "8.31.0",
     "eslint-plugin-qwik": "0.16.2",
     "node-fetch": "3.3.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
     "prettier": "2.8.1",
     "typescript": "^5.1.6",
     "undici": "5.19.1",
@@ -38,7 +38,7 @@
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0"
+    "@builder.io/sdk-qwik": "workspace:*",
+    "@e2e/tests": "workspace:*"
   }
 }

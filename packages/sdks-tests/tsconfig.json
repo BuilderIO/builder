@@ -4,16 +4,18 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "module": "ESNext",
     "skipLibCheck": true,
     "outDir": "dist",
     "declaration": true,
-    "allowJs": true,
+    "allowJs": true
   },
   "include": [
     "src/**/*",
     "./playwright.config.ts",
-    "../sdks/typings/**/*"
-  ],
+    "../sdks/typings/**/*",
+    "embedder/**/*",
+    ".eslintrc.cjs"
+  ]
 }

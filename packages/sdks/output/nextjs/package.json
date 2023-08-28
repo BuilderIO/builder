@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
-  "description": "Builder.io SDK for React",
+  "description": "Builder.io RSC SDK for NextJS App Directory",
   "version": "0.5.8",
   "files": [
     "lib",
@@ -97,14 +97,14 @@
   },
   "peerDependencies": {
     "isolated-vm": "^4.6.0",
-    "next": "^13.4.4",
+    "next": "13.4.20-canary.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
     "@vitejs/plugin-react": "^4.0.4",
-    "next": "^13.4.4",
+    "next": "13.4.20-canary.10",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "react": "^18.2.0",

@@ -1,6 +1,11 @@
 {
   "name": "@builder.io/sdk-vue-2",
   "type": "module",
+  "main": "./lib/node/index.cjs",
+  "module": "./lib/node/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "nx run-many -p @builder.io/sdk-vue-2 -t build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",

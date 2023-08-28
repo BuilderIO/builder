@@ -45,10 +45,10 @@ const getTargetPath = ({ target }) => {
     // we have to workaround a name collision, where the folder can't have the name of the `exports` property in package.json.
     // crazy, crazy stuff.
     case 'vue2':
-      return 'vue/packages/_vue2';
+      return 'vue/vue2';
     case 'vue':
     case 'vue3':
-      return 'vue/packages/_vue3';
+      return 'vue/vue3';
     case 'rsc':
       return 'nextjs';
     default:
@@ -134,9 +134,14 @@ const BASE_TEXT_PLUGIN = () => ({
   code: {
     pre: (code) => {
       if (code.includes('<Text>') && !code.includes('InlinedStyles')) {
+        const importStatement = `import BaseText from '../BaseText';`;
+        // we put the import statement after the first line so the `use client` comment stays at the top.
+        // probably doesn't matter but just in case
+        const [firstLine, ...restOfCode] = code.split('\n');
         return `
-import BaseText from '../BaseText';
-${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
+${firstLine}
+${importStatement}
+${restOfCode.join('\n').replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 `;
       }
       return code;

@@ -1,20 +1,13 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import {
-  getEvaluatorPathAlias,
-  getSdkOutputPath,
-} from '../../output-generation';
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
 const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
 
 export default defineConfig({
-  resolve: {
-    alias: getEvaluatorPathAlias('input'),
-  },
-  plugins: [react()],
+  plugins: [viteOutputGenerator(), react()],
   build: {
-    outDir: getSdkOutputPath(),
     lib: {
       entry: './src/index.ts',
       formats: ['es', 'cjs'],
@@ -27,14 +20,20 @@ export default defineConfig({
         'react',
         'react/jsx-runtime',
         'react-dom',
-        // 'lru-cache',
+        'lru-cache',
       ],
       output: {
         manualChunks(id, { getModuleInfo }) {
-          if (getModuleInfo(id).code.match(/^['"]use client['"]/)) {
+          const code = getModuleInfo(id).code;
+          if (
+            code.match(/^['"]use client['"]/) ||
+            code.includes('createContext')
+          ) {
             return USE_CLIENT_BUNDLE_NAME;
-          } else if (getModuleInfo(id).code.match(/^['"]use server['"]/)) {
+          } else if (code.match(/^['"]use server['"]/)) {
             return USE_SERVER_BUNDLE_NAME;
+          } else {
+            return 'bundle';
           }
         },
         banner(chunk) {

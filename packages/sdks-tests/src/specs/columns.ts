@@ -1,3 +1,5 @@
+import { NEW_TEXT } from './helpers.js';
+
 export const CONTENT = {
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   createdDate: 1644861548711,
@@ -1183,3 +1185,7 @@ export const CONTENT = {
   firstPublished: 1644862675476,
   rev: 'zxiskiseoj',
 };
+
+export const MODIFIED_COLUMNS = JSON.parse(JSON.stringify(CONTENT));
+MODIFIED_COLUMNS.data.blocks[2].children![1]!.component.options.columns![0].blocks[1].component.options.text =
+  NEW_TEXT;
