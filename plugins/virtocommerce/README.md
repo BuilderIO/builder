@@ -107,7 +107,7 @@ To uninstall your plugin,remove it in the plugins UI
 
 Try creating a custom [model](https://builder.io/c/docs/guides/getting-started-with-models), [component](https://builder.io/c/docs/custom-react-components), or [symbol](https://builder.io/c/docs/guides/symbols) using an Virto Commerce field, and edit away!
 
-![Seeing your plugin in the editor example gif](vc-build-io.gif)
+![Seeing your plugin in the editor example gif](https://github.com/VirtoCommerce/builder-io/blob/virtocommerce/plugins/virtocommerce/vc-builder-io.gif?raw=true)
 
 ### Frameworks
 
