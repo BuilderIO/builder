@@ -23,12 +23,12 @@ registerCommercePlugin(
       {
         name: 'login',
         type: 'string',
-        required: true,
+        required: false,
       },
       {
         name: 'password',
         type: 'string',
-        required: true,
+        required: false,
       },
       {
         name: 'locale',

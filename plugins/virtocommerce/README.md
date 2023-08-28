@@ -10,11 +10,11 @@ Go to [builder.io/account/organization](https://builder.io/account/organization)
 
 The page will reload, asking you to enter in your Virto Commerce credentials: 
 
-* **VirtoCommerceUrl** (<span style="color:red">Required</span>) - Path to your Virto Commerce Storefront or Backend. The plugin uses GraphQL endpoint. Ex: https://vcst-demo-storefront.paas.govirto.com/
-* **StoreId** (<span style="color:red">Required</span>) - The code of the your store. You can find it in Virto Commerce Backend, Stores section. Ex: B2B-store.
-* **Login** (Optional) - Your user name. If empty, you will request the data as anonymous.
-* **Password** (Optional) - Your password. 
-* **Locale** (Optional) - Prefered locale of your store; otherwise default store locale will be used. Ex: en-US.
+* **virtoCommerceUrl** (<span style="color:red">Required</span>) - Path to your Virto Commerce Storefront or Backend. The plugin uses GraphQL endpoint. Ex: https://vcst-demo-storefront.paas.govirto.com/
+* **storeId** (<span style="color:red">Required</span>) - The code of the your store. You can find it in Virto Commerce Backend, Stores section. Ex: B2B-store.
+* **login** (Optional) - Your user name. If empty, you will request the data as anonymous.
+* **password** (Optional) - Your password. 
+* **locale** (Optional) - Prefered locale of your store; otherwise default store locale will be used. Ex: en-US.
 
 You will now see new field types (for [model](https://builder.io/c/docs/guides/getting-started-with-models) fields, [symbol](https://builder.io/c/docs/guides/symbols) inputs, [custom components](https://builder.io/c/docs/custom-react-components) fields), and [custom targeting attributes](https://www.builder.io/c/docs/guides/targeting-and-scheduling#custom-targeting) that can be used in three different contexts:
 
@@ -81,7 +81,7 @@ Using the field types `Virto Commerce Product` and `Virto Commerce Collection` a
 
 ```bash
 git clone https://github.com/BuilderIO/builder.git
-cd plugins/Virto Commerce
+cd plugins/virtocommerce
 npm install
 ```
 
@@ -107,7 +107,7 @@ To uninstall your plugin,remove it in the plugins UI
 
 Try creating a custom [model](https://builder.io/c/docs/guides/getting-started-with-models), [component](https://builder.io/c/docs/custom-react-components), or [symbol](https://builder.io/c/docs/guides/symbols) using an Virto Commerce field, and edit away!
 
-<img src="https://i.imgur.com/uVOLn7A.gif" alt="Seeing your plugin in the editor example gif">
+<img src="vc-build-io.gif" alt="Seeing your plugin in the editor example gif">
 
 ### Frameworks
 
