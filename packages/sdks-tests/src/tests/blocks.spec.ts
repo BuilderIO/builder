@@ -449,4 +449,11 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
   });
+
+  test('nested symbols with inherit', async ({ page }) => {
+    await page.goto('/nested-symbols');
+
+    const symbols = page.locator('[builder-model="symbol"]');
+    await expect(symbols).toHaveCount(2);
+  });
 });
