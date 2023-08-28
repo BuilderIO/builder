@@ -1,0 +1,44 @@
+{
+  "name": "@builder.io/sdk-vue-2",
+  "type": "module",
+  "main": "./lib/node/index.cjs",
+  "module": "./lib/node/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "nx run-many -p @builder.io/sdk-vue-2 -t build:node build:edge build:browser",
+    "build:node": "SDK_ENV=node vite build --mode lib",
+    "build:edge": "SDK_ENV=edge vite build --mode lib",
+    "build:browser": "SDK_ENV=browser vite build --mode lib",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "devDependencies": {
+    "@builder.io/sdks": "workspace:*",
+    "@types/node": "^16.11.45",
+    "@vitejs/plugin-vue2": "^1.1.2",
+    "@vue/tsconfig": "^0.1.3",
+    "npm-run-all": "^4.1.5",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
+    "terser": "^5.14.2",
+    "typescript": "^5.1.6",
+    "vite": "^4.0.0",
+    "vite-plugin-dts": "^3.5.2",
+    "vue": "^2.7.7",
+    "vue-tsc": "^0.38.8"
+  },
+  "peerDependencies": {
+    "vue": "^2.7.7"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [
+          "^build:vue2",
+          "^build"
+        ]
+      }
+    }
+  }
+}

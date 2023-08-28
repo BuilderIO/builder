@@ -2,40 +2,113 @@
   "name": "@builder.io/sdk-solid",
   "version": "0.5.8",
   "description": "",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "sideEffects": false,
   "type": "module",
-  "main": "./solid-index.jsx",
-  "module": "./solid-index.jsx",
+  "main": "./lib/browser/index.js",
+  "module": "./lib/browser/index.js",
+  "types": "./dist/index.d.ts",
+  "browser": {},
   "exports": {
-    ".": {
-      "default": "./solid-index.jsx",
-      "solid": "./solid-index.jsx"
+    "solid": {
+      "node": {
+        "development": "./lib/node/dev.jsx",
+        "import": "./lib/node/index.jsx"
+      },
+      "browser": {
+        "development": "./lib/browser/dev.jsx",
+        "import": "./lib/browser/index.jsx"
+      },
+      "edge-routine": {
+        "development": "./lib/edge/dev.jsx",
+        "import": "./lib/edge/index.jsx"
+      },
+      "workerd": {
+        "development": "./lib/edge/dev.jsx",
+        "import": "./lib/edge/index.jsx"
+      },
+      "deno": {
+        "development": "./lib/edge/dev.jsx",
+        "import": "./lib/edge/index.jsx"
+      },
+      "lagon": {
+        "development": "./lib/edge/dev.jsx",
+        "import": "./lib/edge/index.jsx"
+      },
+      "netlify": {
+        "development": "./lib/edge/dev.jsx",
+        "import": "./lib/edge/index.jsx"
+      },
+      "edge-light": {
+        "development": "./lib/edge/dev.jsx",
+        "import": "./lib/edge/index.jsx"
+      },
+      "bun": {
+        "development": "./lib/edge/dev.jsx",
+        "import": "./lib/edge/index.jsx"
+      },
+      "electron": {
+        "development": "./lib/node/dev.jsx",
+        "import": "./lib/node/index.jsx"
+      },
+      "default": {
+        "development": "./lib/browser/dev.jsx",
+        "import": "./lib/browser/index.jsx"
+      }
+    },
+    "development": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./lib/browser/dev.js"
+      }
+    },
+    "import": {
+      "types": "./dist/index.d.ts",
+      "default": "./lib/browser/index.js"
     }
   },
+  "typesVersions": {},
   "scripts": {
-    "build": "echo 'no need to build solid SDK'"
+    "build": "nx run-many -p @builder.io/sdk-solid -t build:node build:edge build:browser",
+    "build:one": "tsup",
+    "build:node": "SDK_ENV=node yarn build:one",
+    "build:edge": "SDK_ENV=edge yarn build:one",
+    "build:browser": "SDK_ENV=browser yarn build:one",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "solid-styled-components": "^0.27.6"
   },
   "peerDependencies": {
-    "solid-js": ">=1.5.7"
+    "solid-js": "^1.6.0"
   },
   "devDependencies": {
+    "@builder.io/sdks": "workspace:*",
+    "esbuild": "^0.18.15",
+    "esbuild-plugin-solid": "^0.5.0",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
-    "solid-js": ">=1.5.7",
-    "vite": "^3.0.4",
-    "vite-plugin-solid": "^2.2.6"
+    "solid-js": "^1.7.8",
+    "tsup": "^7.1.0",
+    "tsup-preset-solid": "^2.0.1",
+    "typescript": "^5.1.6"
   },
+  "keywords": [
+    "solid"
+  ],
   "nx": {
-    "implicitDependencies": [
-      "@builder.io/sdks"
-    ],
     "targets": {
       "build": {
         "dependsOn": [
           "^build:solid",
           "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/dist"
         ]
       }
     }

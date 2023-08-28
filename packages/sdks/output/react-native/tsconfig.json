@@ -1,16 +1,20 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ES2016",
     "allowJs": true,
     "noEmitOnError": false,
+    "noEmit": false,
     // Override: exclude jest types.
     "types": ["react-native"],
-    "outDir": "dist",
     // we don't use react-native, as that preserves the JSX tags
     "jsx": "react",
-    "emitDeclarationOnly": false,
-    "noEmit": false
+    "paths": {
+      "placeholder-runtime": [
+        "./src/functions/evaluate/browser-runtime/index.js"
+      ]
+    },
+    "outDir": "./dist"
   },
   "include": ["typings/*.d.ts", "src/**/*"]
 }

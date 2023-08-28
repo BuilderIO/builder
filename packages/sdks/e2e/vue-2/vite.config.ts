@@ -1,25 +1,21 @@
+import { fileURLToPath, URL } from 'node:url';
+
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue2';
-import Components from 'unplugin-vue-components/vite';
+import legacy from '@vitejs/plugin-legacy';
+import vue2 from '@vitejs/plugin-vue2';
 
-import { resolve } from 'path';
-
-const config = defineConfig({
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    vue2(),
+    legacy({
+      targets: ['ie >= 11'],
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
+    }),
+  ],
   resolve: {
     alias: {
-      '@': `${resolve(__dirname, 'src')}`,
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-
-  build: {
-    minify: true,
-  },
-
-  plugins: [vue(), Components()],
-
-  server: {
-    port: 8080,
-  },
 });
-
-export default config;

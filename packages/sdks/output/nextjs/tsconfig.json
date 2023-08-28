@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES5",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
@@ -13,7 +13,13 @@
     "moduleResolution": "node",
     "jsx": "react",
     "declaration": true,
-    "outDir": "./dist"
+    "emitDeclarationOnly": true,
+    "paths": {
+      "placeholder-runtime": [
+        "./src/functions/evaluate/browser-runtime/index.js"
+      ]
+    },
+    "outDir": "./types"
   },
   "include": ["./src/index.ts"]
 }

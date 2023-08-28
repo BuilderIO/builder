@@ -11,7 +11,7 @@ import {
   isOldReactSDK,
 } from './helpers.js';
 import { sdk } from './sdk.js';
-import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale';
+import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 
 const testSymbols = async (page: Page) => {
   await page.getByText('special test description').locator('visible=true').waitFor();

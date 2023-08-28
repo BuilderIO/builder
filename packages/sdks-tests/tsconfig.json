@@ -4,7 +4,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "module": "ESNext",
     "skipLibCheck": true,
     "outDir": "dist",

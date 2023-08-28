@@ -7,7 +7,7 @@
 
 <script>
 import Vue from 'vue'
-import { RenderContent, _processContentResult } from '@builder.io/sdk-vue'
+import { RenderContent, _processContentResult } from '@builder.io/sdk-vue/vue2'
 import { getProps } from '@e2e/tests'
 
 export default Vue.extend({
