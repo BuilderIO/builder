@@ -76,7 +76,7 @@ const getIsolateContext = () => {
   return isolate.createContextSync();
 };
 
-export const runInNode = ({
+export const evaluator = ({
   code,
   builder,
   context,
