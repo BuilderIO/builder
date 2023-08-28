@@ -19,14 +19,20 @@ export default defineConfig({
         'react',
         'react/jsx-runtime',
         'react-dom',
-        // 'lru-cache',
+        'lru-cache',
       ],
       output: {
         manualChunks(id, { getModuleInfo }) {
-          if (getModuleInfo(id).code.match(/^['"]use client['"]/)) {
+          const code = getModuleInfo(id).code;
+          if (
+            code.match(/^['"]use client['"]/) ||
+            code.includes('createContext')
+          ) {
             return USE_CLIENT_BUNDLE_NAME;
-          } else if (getModuleInfo(id).code.match(/^['"]use server['"]/)) {
+          } else if (code.match(/^['"]use server['"]/)) {
             return USE_SERVER_BUNDLE_NAME;
+          } else {
+            return 'bundle';
           }
         },
         banner(chunk) {
