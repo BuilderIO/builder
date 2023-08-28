@@ -7,7 +7,7 @@ import type {
   PlaywrightTestArgs,
   PlaywrightWorkerArgs,
 } from '@playwright/test';
-import type { PackageName, Sdk } from './sdk';
+import type { PackageName, Sdk } from './sdk.js';
 import { sdk } from './sdk.js';
 
 type TestOptions = {

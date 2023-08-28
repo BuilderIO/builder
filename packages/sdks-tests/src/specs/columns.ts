@@ -1,4 +1,4 @@
-import { NEW_TEXT } from './helpers';
+import { NEW_TEXT } from './helpers.js';
 
 export const CONTENT = {
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
