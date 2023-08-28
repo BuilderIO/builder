@@ -6,9 +6,6 @@ import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  resolve: {
-    alias: getEvaluatorPathAlias('input'),
-  },
   plugins: [
     viteOutputGenerator(),
     vue(),
@@ -17,7 +14,6 @@ export default defineConfig({
     // libCss(),
   ],
   build: {
-    outDir: getSdkOutputPath(),
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       formats: ['es', 'cjs'],
