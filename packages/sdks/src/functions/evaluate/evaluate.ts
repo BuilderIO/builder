@@ -9,7 +9,7 @@ import { getUserAttributes } from '../track/helpers.js';
  * it points to the correct runtime for that configuration, which are expected to live exactly at:
  *  - ./browser-runtime/index.js
  *  - ./node-runtime/index.js
- *  - ./non-node-runtime/index.js
+ *  - ./edge-runtime/index.js
  *
  * We have code in `/output-generation` that does this aliasing, and is re-used by each SDK.
  * Also, each individual `tsconfig.json` aliases this import to the browser runtime so that the

@@ -28,7 +28,7 @@ const processCode = (code: string) => {
     .join('\n');
 };
 const getJSONValName = (val: string) => val + 'JSON';
-export const runInNonNode = ({
+export const runInEdge = ({
   builder,
   context,
   event,
@@ -101,7 +101,7 @@ theFunction();
     return output;
   } catch (e) {
     logger.warn(
-      'Custom code error in non-node runtime. SDK can only execute ES5 JavaScript.',
+      'Custom code error in edge runtime. NOTE: your code must be ES5 JavaScript.',
       { e }
     );
     return;

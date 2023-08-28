@@ -19,7 +19,7 @@ const getFolderName = () => {
     case 'node':
       return 'node-runtime';
     case 'edge':
-      return 'non-node-runtime';
+      return 'edge-runtime';
     case 'browser':
       return 'browser-runtime';
     default:

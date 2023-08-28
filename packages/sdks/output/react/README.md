@@ -90,7 +90,3 @@ npm install @builder.io/sdk-react
 ## Fetch
 
 This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.
-
-## Non-Node.js Runtimes (Edge, Serverless)
-
-If planning to deploy your app to a non-Node.js runtime (like Edge or Serverless functions), make sure to read the [Non-Node.js Runtimes](../../README.md#non-nodejs-runtimes-edge-serverless) section of the main README.
