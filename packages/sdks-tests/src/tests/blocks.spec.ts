@@ -450,8 +450,18 @@ test.describe('Blocks', () => {
     });
   });
 
-  test('nested symbols with inherit', async ({ page }) => {
+  test('nested symbols with inherit', async ({ packageName, page }) => {
     await page.goto('/nested-symbols');
+
+    // Skipping the test as v2 sdks currently don't support Slot
+    // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
+    if (
+      ['react-native', 'vue2', 'vue3', 'svelte', 'qwik-city', 'gen1-remix', 'gen1-next'].includes(
+        packageName
+      )
+    ) {
+      test.skip();
+    }
 
     const symbols = page.locator('[builder-model="symbol"]');
     await expect(symbols).toHaveCount(2);
