@@ -12,6 +12,7 @@ import { sdk } from './sdk.js';
 
 type TestOptions = {
   packageName: PackageName | 'DEFAULT';
+  basePort: number;
 };
 
 // https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
@@ -36,6 +37,7 @@ async function screenshotOnFailure(
 export const test = base.extend<TestOptions>({
   // this is provided by `playwright.config.ts`
   packageName: ['DEFAULT', { option: true }],
+  basePort: [0, { option: true }],
 });
 test.afterEach(screenshotOnFailure);
 
@@ -127,5 +129,3 @@ export const getBuilderSessionIdCookie = async ({ context }: { context: BrowserC
   const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
   return builderSessionCookie;
 };
-
-export const BUILDER_TEXT_SELECTOR = isRNSDK ? '[data-builder-text]' : '.builder-text';

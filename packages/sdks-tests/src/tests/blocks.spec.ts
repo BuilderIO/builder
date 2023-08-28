@@ -9,25 +9,28 @@ import {
   testOnlyOldReact,
   testExcludeOldReact,
   isOldReactSDK,
-  BUILDER_TEXT_SELECTOR,
 } from './helpers.js';
 import { sdk } from './sdk.js';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale';
 
 const testSymbols = async (page: Page) => {
-  const locator = page.locator(BUILDER_TEXT_SELECTOR);
-  await locator.getByText('special test description', { exact: true });
+  await page.getByText('special test description').locator('visible=true').waitFor();
+
   await page
     .locator(
       '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
     )
-    .isVisible();
-  await locator.getByText('default description', { exact: true });
+    .locator('visible=true')
+    .waitFor();
+
+  await page.getByText('default description').locator('visible=true').waitFor();
+
   await page
     .locator(
       '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
     )
-    .isVisible();
+    .locator('visible=true')
+    .waitFor();
 
   const firstSymbolText = await page.locator('text="Description of image:"').first();
 
@@ -328,7 +331,7 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Test ApiVersion', () => {
-    test('apiVersion in SDKs is not set', async ({ page, packageName }) => {
+    test('apiVersion is not set', async ({ page, packageName }) => {
       if (packageName === 'next-app-dir') test.skip();
 
       let x = 0;
@@ -361,7 +364,7 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    test('apiVersion in SDKs is set to v3', async ({ page, packageName }) => {
+    test('apiVersion is set to v3', async ({ page, packageName }) => {
       if (packageName === 'next-app-dir') test.skip();
       let x = 0;
 
@@ -393,7 +396,7 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testOnlyOldReact('apiVersion in old react is set to v1', async ({ page }) => {
+    testOnlyOldReact('apiVersion is set to v1', async ({ page }) => {
       let x = 0;
 
       const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
@@ -420,7 +423,7 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page, packageName }) => {
+    testExcludeOldReact('apiVersion is set to v2', async ({ page, packageName }) => {
       if (packageName === 'next-app-dir') test.skip();
       let x = 0;
 

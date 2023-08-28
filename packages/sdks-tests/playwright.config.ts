@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { targetContext } from './src/tests/context.js';
+import { EMBEDDER_PORT, targetContext } from './src/tests/context.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { PackageName, Sdk } from './src/tests/sdk.js';
@@ -62,7 +62,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [[process.env.CI ? 'github' : 'list'], ['html']],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -76,6 +76,7 @@ export default defineConfig({
     use: {
       ...devices['Desktop Chrome'],
       baseURL: `http://localhost:${port}`,
+      basePort: port,
       /**
        * This provides the package name to the test as a variable to check which exact server the test is running.
        */
@@ -83,14 +84,22 @@ export default defineConfig({
     },
   })),
 
-  webServer: things.map(({ packageName, port, portFlag }) => {
-    const webServers = {
-      command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
-      port,
-      reuseExistingServer: false,
-      ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
-    };
+  webServer: things
+    .map(({ packageName, port, portFlag }) => {
+      const webServers = {
+        command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
+        port,
+        reuseExistingServer: false,
+        ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
+      };
 
-    return webServers;
-  }),
+      return webServers;
+    })
+    .concat([
+      {
+        command: `PORT=${EMBEDDER_PORT} yarn workspace @e2e/tests run-embedder`,
+        port: EMBEDDER_PORT,
+        reuseExistingServer: false,
+      },
+    ]),
 });

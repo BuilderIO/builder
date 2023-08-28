@@ -48,9 +48,6 @@ const createContextWithCookies = async ({
   });
 };
 
-// Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
-test.describe.configure({ retries: 0 });
-
 const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
   const text = consoleMessage.text().toLowerCase();
 

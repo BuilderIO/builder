@@ -6,6 +6,7 @@
     "build": "tsc",
     "dev": "tsc -w",
     "test": "playwright test",
+    "run-embedder": "node embedder/index.js",
     "install-playwright": "playwright install chromium --with-deps"
   },
   "type": "module",
@@ -18,7 +19,8 @@
     "./*": "./dist/src/*.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.34.3",
+    "@playwright/test": "^1.37.1",
+    "@types/traverse": "^0.6.32",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "eslint": "^8.12.0",
@@ -28,6 +30,7 @@
   "dependencies": {
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
+    "traverse": "^0.6.7",
     "zod": "^3.20.2"
   },
   "nx": {

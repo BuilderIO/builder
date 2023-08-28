@@ -100,12 +100,6 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
     columnCssVars(index: number): Dictionary<string> {
       const gutter = index === 0 ? 0 : state.gutterSize;
 
-      if (TARGET === 'reactNative') {
-        return {
-          marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
-        } as any as Dictionary<string>;
-      }
-
       const width = state.getColumnCssWidth(index);
       const gutterPixels = `${gutter}px`;
       const mobileWidth = '100%';
@@ -117,26 +111,31 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
         default: 'margin-left',
       });
 
-      return {
-        width,
-        [marginLeftKey]: gutterPixels,
-        '--column-width-mobile': state.getMobileStyle({
-          stackedStyle: mobileWidth,
-          desktopStyle: width,
-        }),
-        '--column-margin-left-mobile': state.getMobileStyle({
-          stackedStyle: mobileMarginLeft,
-          desktopStyle: gutterPixels,
-        }),
-        '--column-width-tablet': state.getTabletStyle({
-          stackedStyle: mobileWidth,
-          desktopStyle: width,
-        }),
-        '--column-margin-left-tablet': state.getTabletStyle({
-          stackedStyle: mobileMarginLeft,
-          desktopStyle: gutterPixels,
-        }),
-      } as any as Dictionary<string>;
+      return useTarget({
+        reactNative: {
+          marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
+        } as any as Dictionary<string>,
+        default: {
+          width,
+          [marginLeftKey]: gutterPixels,
+          '--column-width-mobile': state.getMobileStyle({
+            stackedStyle: mobileWidth,
+            desktopStyle: width,
+          }),
+          '--column-margin-left-mobile': state.getMobileStyle({
+            stackedStyle: mobileMarginLeft,
+            desktopStyle: gutterPixels,
+          }),
+          '--column-width-tablet': state.getTabletStyle({
+            stackedStyle: mobileWidth,
+            desktopStyle: width,
+          }),
+          '--column-margin-left-tablet': state.getTabletStyle({
+            stackedStyle: mobileMarginLeft,
+            desktopStyle: gutterPixels,
+          }),
+        } as Dictionary<string>,
+      });
     },
 
     getWidthForBreakpointSize(size: SizeName) {
