@@ -456,9 +456,24 @@ test.describe('Blocks', () => {
     // Skipping the test as v2 sdks currently don't support Slot
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
     if (
-      ['react-native', 'vue2', 'vue3', 'svelte', 'qwik-city', 'gen1-remix', 'gen1-next'].includes(
-        packageName
-      )
+      [
+        'react-native',
+        'solid',
+        'solid-start',
+        'qwik-city',
+        'next-pages-dir',
+        'next-app-dir-client',
+        'next-app-dir',
+        'react',
+        'vue2',
+        'vue3',
+        'nuxt3',
+        'nuxt2',
+        'svelte',
+        'sveltekit',
+        'gen1-remix',
+        'gen1-next',
+      ].includes(packageName)
     ) {
       test.skip();
     }
