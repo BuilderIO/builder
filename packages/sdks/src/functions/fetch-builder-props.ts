@@ -43,7 +43,8 @@ type GetBuilderPropsOptions = (Omit<GetContentOptions, 'model'> & {
   );
 
 /**
- * Fetches builder content, and returns it along with sensible defaults for other props that `Content` needs to render.
+ * Given an `apiKey` and `url` (or `path` + `searchParams`), provides all props that `Content` needs to render Builder Content.
+ *
  */
 export const fetchBuilderProps = async (
   _args: GetBuilderPropsOptions

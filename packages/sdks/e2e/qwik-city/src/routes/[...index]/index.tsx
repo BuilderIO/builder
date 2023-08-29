@@ -3,10 +3,6 @@ import { RenderContent, _processContentResult } from '@builder.io/sdk-qwik';
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
-export interface MainProps {
-  url: string;
-}
-
 export const useBuilderContentLoader = routeLoader$(async (event) => {
   const data = await getProps({
     pathname: event.url.pathname,

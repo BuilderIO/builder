@@ -13,10 +13,10 @@ import { default as Content } from '../components/content-variants/content-varia
 export { Blocks, Content };
 
 /**
- * @deprecated Use `Blocks` instead.
+ * @deprecated Renamed to `Blocks`.
  */
 export const RenderBlocks = Blocks;
 /**
- * @deprecated Use `Content` instead.
+ * @deprecated Renamed to `Content`.
  */
 export const RenderContent = Content;

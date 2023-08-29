@@ -64,12 +64,7 @@ test.describe('Visual Editing', () => {
     if (packageName === 'gen1-next' || packageName === 'gen1-react' || packageName === 'gen1-remix')
       test.skip();
 
-    // TO-DO: temporary while we fix the SDKs
-    test.skip(
-      packageName === 'qwik-city' ||
-        packageName === 'react-native' ||
-        packageName === 'next-app-dir'
-    );
+    test.skip(packageName === 'react-native' || packageName === 'next-app-dir');
 
     await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
     await sendContentUpdateMessage(page, MODIFIED_COLUMNS);
