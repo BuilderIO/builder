@@ -7,6 +7,7 @@ import hash from 'hash-sum';
 import { NoWrap } from '../components/no-wrap';
 import { BuilderStoreContext } from '../store/builder-store';
 import { withBuilder } from '../functions/with-builder';
+import { omit } from '../functions/utils';
 
 const size = (thing: object) => Object.keys(thing).length;
 
@@ -102,7 +103,6 @@ class SymbolComponent extends React.Component<SymbolProps> {
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString;
     }
-
     const attributes = this.props.attributes || {};
     return (
       <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>
@@ -132,7 +132,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   entry={entry}
                   data={{
                     ...data,
-                    ...(!!this.props.inheritState && state.state),
+                    ...(!!this.props.inheritState && omit(state.state, 'children')),
                     ...this.props.builderBlock?.component?.options?.symbol?.content?.data?.state,
                   }}
                   renderLink={state.renderLink}

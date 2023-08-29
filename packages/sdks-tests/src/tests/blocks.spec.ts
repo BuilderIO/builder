@@ -449,4 +449,36 @@ test.describe('Blocks', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
   });
+
+  test('nested symbols with inherit', async ({ packageName, page }) => {
+    await page.goto('/nested-symbols');
+
+    // Skipping the test as v2 sdks currently don't support Slot
+    // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
+    if (
+      [
+        'react-native',
+        'solid',
+        'solid-start',
+        'qwik-city',
+        'next-pages-dir',
+        'next-app-dir-client',
+        'next-app-dir',
+        'react',
+        'vue2',
+        'vue3',
+        'nuxt3',
+        'nuxt2',
+        'svelte',
+        'sveltekit',
+        'gen1-remix',
+        'gen1-next',
+      ].includes(packageName)
+    ) {
+      test.skip();
+    }
+
+    const symbols = page.locator('[builder-model="symbol"]');
+    await expect(symbols).toHaveCount(2);
+  });
 });
