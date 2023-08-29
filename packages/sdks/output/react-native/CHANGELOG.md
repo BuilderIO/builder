@@ -1,3 +1,7 @@
+### 0.6.2
+
+- No Changes.
+
 ### 0.6.1
 
 - No Changes.

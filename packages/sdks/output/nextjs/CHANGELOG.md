@@ -1,3 +1,7 @@
+### 0.6.2
+
+- Fix: `next` peerDependency version range to go above canary version that includes `serverActions` fix.
+
 ### 0.6.1
 
 - No Changes.

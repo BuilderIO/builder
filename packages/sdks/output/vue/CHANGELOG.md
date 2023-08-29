@@ -1,3 +1,7 @@
+### 0.6.2
+
+- No Changes.
+
 ### 0.6.1
 
 - Fix npm publishing configuration to include new bundling output.
