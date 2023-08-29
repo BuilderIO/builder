@@ -21,6 +21,7 @@ import { CONTENT as reactiveState } from './reactive-state.js';
 import { CONTENT as showHideIf } from './show-hide-if.js';
 import { CONTENT as textBlock } from './text-block.js';
 import { CONTENT as stateBinding } from './state-binding.js';
+import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import type { BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
@@ -57,6 +58,7 @@ const pages = {
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
   '/state-binding': stateBinding,
+  '/nested-symbols': nestedSymbols,
 } as const;
 
 const apiVersionPathToProp = {
