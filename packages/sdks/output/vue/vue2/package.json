@@ -8,9 +8,10 @@
   ],
   "scripts": {
     "build": "nx run-many -p @builder.io/sdk-vue-2 -t build:node build:edge build:browser",
-    "build:node": "SDK_ENV=node vite build --mode lib",
-    "build:edge": "SDK_ENV=edge vite build --mode lib",
-    "build:browser": "SDK_ENV=browser vite build --mode lib",
+    "vite-build": "vite build --mode lib",
+    "build:node": "SDK_ENV=node yarn vite-build",
+    "build:edge": "SDK_ENV=edge yarn vite-build",
+    "build:browser": "SDK_ENV=browser yarn vite-build",
     "type-check": "vue-tsc --noEmit"
   },
   "devDependencies": {
@@ -37,6 +38,10 @@
         "dependsOn": [
           "^build:vue2",
           "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/types"
         ]
       }
     }

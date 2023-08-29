@@ -121,6 +121,10 @@
         "dependsOn": [
           "^build:nextjs",
           "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/types"
         ]
       }
     }

@@ -133,6 +133,10 @@
         "dependsOn": [
           "^build:react-native",
           "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/types"
         ]
       }
     }
