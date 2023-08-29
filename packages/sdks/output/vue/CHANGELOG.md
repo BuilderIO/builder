@@ -1,3 +1,7 @@
+### 0.6.1
+
+- Fix npm publishing configuration to include new bundling output.
+
 ### 0.6.0
 
 - Update build pipeline to generate 3 separate bundles for each environment: browser, node and edge runtimes.
