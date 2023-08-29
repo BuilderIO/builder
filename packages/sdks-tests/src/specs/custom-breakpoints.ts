@@ -1,4 +1,4 @@
-import { BuilderContent } from './types';
+import type { BuilderContent } from './types.js';
 
 export const CONTENT = {
   meta: {

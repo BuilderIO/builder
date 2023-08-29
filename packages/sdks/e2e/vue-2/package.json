@@ -1,27 +1,29 @@
 {
   "name": "@e2e/vue2",
   "private": true,
-  "version": "0.0.1",
-  "type": "module",
   "scripts": {
-    "build": "tsc --noEmit && vite build",
-    "dev": "tsc --noEmit && vite",
-    "serve": "vite preview"
+    "dev": "vite",
+    "build": "run-p type-check build-only",
+    "serve": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
     "@e2e/tests": "workspace:*",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
-    "vue": "^2.7",
-    "vue-class-component": "^7.2.6",
-    "vue-property-decorator": "^9.1.2"
+    "vue": "^2.7.7"
   },
   "devDependencies": {
+    "@types/node": "^16.11.45",
+    "@vitejs/plugin-legacy": "^2.0.0",
     "@vitejs/plugin-vue2": "^1.1.2",
-    "typescript": "^5.1.6",
-    "unplugin-vue-components": "^0.22.7",
-    "vite": "^3.0.4",
-    "vue-template-compiler": "^2.7.8"
+    "@vue/tsconfig": "^0.1.3",
+    "npm-run-all": "^4.1.5",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
+    "terser": "^5.14.2",
+    "typescript": "~4.7.4",
+    "vite": "^3.0.2",
+    "vue-tsc": "^0.38.8"
   }
 }

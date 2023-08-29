@@ -1,0 +1,63 @@
+diff --git a/lib/index.js b/lib/index.js
+index 53748c0ce5c6df6ac4883c818270f119f7e5e6a4..8307d0c4c9e2fc91c7fdbbf6e49648b56df00523 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -40,7 +40,10 @@ const {
+ 
+ const root = process.cwd();
+ const explorer = (0, _cosmiconfig.cosmiconfigSync)(name, {
+-  searchPlaces: ['package.json', `bob.config.js`]
++  // PATCH: add `bob.config.cjs` as possible config, to allow `type: module` in `package.json`
++  // waiting for PR to merge:
++  // https://github.com/callstack/react-native-builder-bob/pull/442
++  searchPlaces: ["package.json", `bob.config.js`, "bob.config.cjs"],
+ });
+ const FLOW_PRGAMA_REGEX = /\*?\s*@(flow)\b/m; // eslint-disable-next-line babel/no-unused-expressions
+ 
+diff --git a/lib/utils/compile.js b/lib/utils/compile.js
+index dd9c893ff6e8abdc20258972533fc5888f66ac52..35dc85a1cbb3afa0cd2fe5dc6898d0add1506f32 100644
+--- a/lib/utils/compile.js
++++ b/lib/utils/compile.js
+@@ -64,6 +64,12 @@ async function compile({
+     }
+ 
+     const content = await _fsExtra.default.readFile(filepath, 'utf-8');
++    
++    /**
++     * This allows us to set the preset again in the `babel.config.js` file.
++     */
++    process.env.BOB_BUILDER_MODULES = modules;
++
+     const result = await babel.transformAsync(content, {
+       cwd: root,
+       babelrc: babelrc,
+@@ -72,16 +78,19 @@ async function compile({
+       sourceRoot: _path.default.relative(_path.default.dirname(outputFilename), source),
+       sourceFileName: _path.default.relative(source, filepath),
+       filename: filepath,
+-      ...(babelrc || configFile ? null : {
+-        presets: [[require.resolve('@babel/preset-env'), {
+-          targets: _browserslist.default.findConfig(root) ?? {
+-            browsers: ['>1%', 'last 2 chrome versions', 'last 2 edge versions', 'last 2 firefox versions', 'last 2 safari versions', 'not dead', 'not ie <= 11', 'not op_mini all', 'not android <= 4.4', 'not samsung <= 4'],
+-            node: '16'
+-          },
+-          useBuiltIns: false,
+-          modules
+-        }], require.resolve('@babel/preset-react'), require.resolve('@babel/preset-typescript'), require.resolve('@babel/preset-flow')]
+-      })
++      /**
++       * We want all the default configs to be applied. We can't pass `modules` to the 
++       * `babel.config.js`, so we can't re-set these defaults ourselves. This is why we patch 
++       * the logic here to always set these defaults.
++       */
++      presets: [[require.resolve('@babel/preset-env'), {
++        targets: _browserslist.default.findConfig(root) ?? {
++          browsers: ['>1%', 'last 2 chrome versions', 'last 2 edge versions', 'last 2 firefox versions', 'last 2 safari versions', 'not dead', 'not ie <= 11', 'not op_mini all', 'not android <= 4.4', 'not samsung <= 4'],
++          node: '16'
++        },
++        useBuiltIns: false,
++        modules
++      }], require.resolve('@babel/preset-react'), require.resolve('@babel/preset-typescript'), require.resolve('@babel/preset-flow')]
+     });
+ 
+     if (result == null) {

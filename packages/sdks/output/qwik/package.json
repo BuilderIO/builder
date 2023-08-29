@@ -3,10 +3,10 @@
   "version": "0.5.8",
   "description": "Builder.io Qwik SDK",
   "type": "module",
-  "main": "./lib/index.qwik.cjs",
-  "module": "./lib/index.qwik.mjs",
-  "qwik": "./lib/index.qwik.mjs",
-  "types": "./types/index.d.ts",
+  "main": "./lib/edge/index.qwik.cjs",
+  "module": "./lib/edge/index.qwik.mjs",
+  "qwik": "./lib/browser/index.qwik.mjs",
+  "types": "./types/src/index.d.ts",
   "files": [
     "README.md",
     "package.json",
@@ -16,16 +16,90 @@
   ],
   "exports": {
     ".": {
-      "import": "./lib/index.qwik.mjs",
-      "require": "./lib/index.qwik.cjs"
+      "node": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/node/index.qwik.mjs",
+        "require": "./lib/node/index.qwik.cjs"
+      },
+      "browser": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/browser/index.qwik.mjs",
+        "require": "./lib/browser/index.qwik.cjs"
+      },
+      "edge-routine": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
+      },
+      "workerd": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
+      },
+      "deno": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
+      },
+      "lagon": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
+      },
+      "netlify": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
+      },
+      "edge-light": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
+      },
+      "bun": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/edge/index.qwik.mjs",
+        "require": "./lib/edge/index.qwik.cjs"
+      },
+      "electron": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/node/index.qwik.mjs",
+        "require": "./lib/node/index.qwik.cjs"
+      },
+      "default": {
+        "types": "./types/src/index.d.ts",
+        "import": "./lib/browser/index.qwik.mjs",
+        "require": "./lib/browser/index.qwik.cjs"
+      }
+    },
+    "./edge": {
+      "types": "./types/src/index.d.ts",
+      "import": "./lib/edge/index.qwik.mjs",
+      "require": "./lib/edge/index.qwik.cjs"
+    },
+    "./node": {
+      "types": "./types/src/index.d.ts",
+      "import": "./lib/node/index.qwik.mjs",
+      "require": "./lib/node/index.qwik.cjs"
+    },
+    "./browser": {
+      "types": "./types/src/index.d.ts",
+      "import": "./lib/browser/index.qwik.mjs",
+      "require": "./lib/browser/index.qwik.cjs"
     }
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "tsc && vite build --mode lib"
+    "tsc": "tsc",
+    "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
+    "build:one": "vite build --mode lib",
+    "build:node": "SDK_ENV=node yarn build:one",
+    "build:edge": "SDK_ENV=edge yarn build:one",
+    "build:browser": "SDK_ENV=browser yarn build:one"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.6",
+    "@builder.io/sdks": "workspace:*",
     "@types/node": "latest",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
@@ -37,9 +111,6 @@
     "undici": "^5.14.0"
   },
   "nx": {
-    "implicitDependencies": [
-      "@builder.io/sdks"
-    ],
     "targets": {
       "build": {
         "dependsOn": [
@@ -48,8 +119,7 @@
         ],
         "outputs": [
           "{projectRoot}/lib",
-          "{projectRoot}/types",
-          "{projectRoot}/dist"
+          "{projectRoot}/types"
         ]
       }
     }

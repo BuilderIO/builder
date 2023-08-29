@@ -5,6 +5,6 @@ export default defineConfig({
   plugins: [solid()],
   optimizeDeps: {
     // For some reason this is needed for the `dev` server to work
-    exclude: ['nx', 'nx/cloud'],
+    exclude: ['nx', 'nx/cloud', '@builder.io/sdk-solid'],
   },
 });

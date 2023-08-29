@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
-    "@e2e/tests": "workspace:*",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0"
+    "@e2e/tests": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18",
-    "nuxt": "^3.5.2"
+    "nuxt": "^3.5.2",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"

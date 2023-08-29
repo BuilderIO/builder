@@ -4,8 +4,8 @@
   "workspaces": [
     "e2e/*",
     "output/*",
-    "output/vue/packages/*",
-    "output/react/packages/*"
+    "output/vue/vue2",
+    "output/vue/vue3"
   ],
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
@@ -21,7 +21,10 @@
     "build:nextjs": "yarn build:mitosis --target=rsc && yarn run set-sdk-version nextjs",
     "build:all": "yarn build:mitosis",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
-    "test": "vitest run",
+    "test": "yarn test:browser && yarn test:node && yarn test:edge",
+    "test:browser": "SDK_ENV=browser vitest run",
+    "test:node": "SDK_ENV=node vitest run",
+    "test:edge": "SDK_ENV=edge vitest run",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
     "add-symlinks": "./scripts/add-resolutions.sh && yarn",
     "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
@@ -146,7 +149,7 @@
           "^build"
         ],
         "outputs": [
-          "{projectRoot}/output/vue/packages/_vue2/src"
+          "{projectRoot}/output/vue/vue2/src"
         ]
       },
       "build:vue3": {
@@ -154,7 +157,7 @@
           "^build"
         ],
         "outputs": [
-          "{projectRoot}/output/vue/packages/_vue3/src"
+          "{projectRoot}/output/vue/vue3/src"
         ]
       },
       "build:nextjs": {

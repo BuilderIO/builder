@@ -10,8 +10,8 @@
     "react-tests/*",
     "sdks/e2e/*",
     "sdks/output/*",
-    "sdks/output/vue/packages/*",
-    "sdks/output/react/packages/*"
+    "sdks/output/vue/vue2",
+    "sdks/output/vue/vue3"
   ],
   "scripts": {
     "e2e:build:old-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
@@ -25,7 +25,8 @@
     "minimist": "^1.2.7",
     "json5": "2.2.1",
     "prettier": "2.8.8",
-    "@builder.io/react": "workspace:*"
+    "@builder.io/react": "workspace:*",
+    "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
   },
   "packageManager": "yarn@3.6.1",
   "devDependencies": {
