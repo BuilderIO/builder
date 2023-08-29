@@ -1,3 +1,12 @@
+### 0.6.0
+
+- Update build pipeline to generate 3 separate bundles for each environment: browser, node and edge runtimes.
+- Make the default import (`import Sdk from '@builder.io/sdk-vue'`) point to `vue3` sub-export instead of `vue2`.
+
+### 0.5.9
+
+No Changes.
+
 ### 0.5.8
 
 - Fix: properly serialize messages sent to visual editor.
