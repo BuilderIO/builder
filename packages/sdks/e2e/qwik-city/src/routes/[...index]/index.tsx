@@ -1,74 +1,32 @@
-import { Slot, component$, useStore, Fragment } from '@builder.io/qwik';
+import { getProps } from '@e2e/tests';
+import { RenderContent, _processContentResult } from '@builder.io/sdk-qwik';
+import { component$ } from '@builder.io/qwik';
+import { routeLoader$ } from '@builder.io/qwik-city';
 
-type Columns = Array<string>;
+export interface MainProps {
+  url: string;
+}
 
-type Content = {
-  blocks: Array<{
-    columns: Columns;
-  }>;
-};
-
-const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));
-
-const MODIFIED_COLUMNS: Content = { blocks: [{ columns: ['updated text!'] }] };
-
-export const EnableEditor = component$(
-  (props: { context: { content: Content } }) => {
-    return (
-      <>
-        <button
-          onClick$={() => {
-            const newContentValue = {
-              ...props.context.content,
-              ...MODIFIED_COLUMNS,
-            };
-            props.context.content = newContentValue;
-          }}
-        >
-          update me
-        </button>
-        <Slot></Slot>
-      </>
-    );
+export const useBuilderContentLoader = routeLoader$(async (event) => {
+  const data = await getProps({
+    pathname: event.url.pathname,
+    _processContentResult,
+  });
+  if (!data) {
+    event.status(404);
   }
-);
-
-export const Columns = component$((props: { columns: Columns }) => {
-  return <div>in Columns: {props.columns[0]}</div>;
+  return data;
 });
 
-export const Blocks = component$((props: { content: Content }) => {
+export default component$(() => {
+  const contentProps = useBuilderContentLoader();
   return (
     <>
-      <div>outside loop: {JSON.stringify(props.content.blocks[0].columns)}</div>
-      {props.content.blocks.map((block) => {
-        return (
-          <Fragment key={'render-block-' + block}>
-            {/* uncomment this to fix  */}
-            {/* <div>in BLOCKS (inside loop): {JSON.stringify(block.columns)}</div> */}
-            <Columns columns={block.columns} />
-          </Fragment>
-        );
-      })}
+      {contentProps.value ? (
+        <RenderContent {...contentProps.value} />
+      ) : (
+        <div>Content Not Found</div>
+      )}
     </>
   );
 });
-
-export const ContentComponent = component$((props: { content: Content }) => {
-  const state = useStore(
-    { context: { content: clone(props.content) } },
-    { deep: true }
-  );
-
-  return (
-    <EnableEditor context={state.context}>
-      <Blocks content={state.context.content}></Blocks>
-    </EnableEditor>
-  );
-});
-
-export default component$(() => (
-  <ContentComponent
-    content={{ blocks: [{ columns: ['<p>text in column 1</p>'] }] }}
-  />
-));
