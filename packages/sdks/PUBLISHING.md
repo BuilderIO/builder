@@ -6,14 +6,14 @@ The SDKs are meant to be published using the `release-sdk` script, and never man
 - Updates the `SDK_VERSION` constant in each SDK to match the version you are about to publish. The Visual Editor uses this constant to tell us which version of the SDK is being used on a given page. This helps our team a lot when debugging user issues.
 - Guarantees that all SDKs are published with the exact same version number. This makes it much easier to communicate internally and externally about which SDK versions offer a certain feature (e.g. "v0.5.9 adds support for Nested Symbols", instead of "v0.4.3 on Qwik, v0.4.8 on Vue, v0.5.7 on NextJS").
 
-PS: The one exception to the last point is publishing `dev` versions. You are free to publish these for just one SDK.
+PS: The one exception to the last point is publishing `dev` versions. You are free to publish these for just one SDK, as they are meant for testing/dev purposes.
 
 # Steps
 
 ## 1- Setup
 
 - Make sure you've run `yarn` in `packages/sdks/`.
-- Make sure you are logged in to NPM via yarn, using `yarn npm login`.
+- Make sure you are logged in to NPM via yarn, using `yarn npm login`. You will need to provide your one-time password every time you release each SDK.
 - Make sure you have the permissions needed to publish all of the SDKs on `npm`.
 
 ## 2- Update `CHANGELOG.md`
