@@ -6,7 +6,7 @@ export const CONTENT = {
     title: 'css-nesting',
     themeId: false,
     cssCode:
-      "/*\n* Custom CSS styles\n*\n* Global by default, but use `&` to scope to just this content, e.g.\n*\n*   & .foo {\n*     color: 'red'\n*   }\n*/\n\n& > div > div > div {\n  color: rgb(0, 0, 255)\n}\n& > div > div > div > div {\n  color: rgb(65, 117, 5)\n}\n",
+      "/*\n* Custom CSS styles\n*\n* Global by default, but use `&` to scope to just this content, e.g.\n*\n*   & .foo {\n*     color: 'red'\n*   }\n*/\n\n& > div > div > div > .builder-text {\n  color: rgb(0, 0, 255)\n}\n& > div > div > div > div > .builder-text {\n  color: rgb(65, 117, 5)\n}\n",
     blocks: [
       {
         '@type': '@builder.io/sdk:Element',
