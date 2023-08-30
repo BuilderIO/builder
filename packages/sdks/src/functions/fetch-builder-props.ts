@@ -45,6 +45,13 @@ type GetBuilderPropsOptions = (Omit<GetContentOptions, 'model'> & {
 /**
  * Given an `apiKey` and `url` (or `path` + `searchParams`), provides all props that `Content` needs to render Builder Content.
  *
+ *
+ * TBD:
+ *
+ * @example
+ *
+ * ```jsx
+ * ```
  */
 export const fetchBuilderProps = async (
   _args: GetBuilderPropsOptions
