@@ -18,6 +18,15 @@ useMetadata({
   },
 });
 
+/**
+ * This is a wrapper around `InteractiveElement`. We need this wrapper so that custom component RSC's can be rendered
+ * in the NextJS SDK.
+ *
+ * - If `isInteractive === false`, then we are dealing with an RSC custom component, so we render the `componentRef`
+ *   directly without providing any interactive props (event handlers, etc.).
+ * - If `isInteractive === true`, then we render the `InteractiveElement` client component, which will render the
+ *  `componentRef` with interactive props.
+ */
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
     Wrapper: props.isInteractive
