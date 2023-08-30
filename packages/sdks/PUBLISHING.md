@@ -39,3 +39,11 @@ yarn release:all:dev
 # replace `qwik` with the name of the SDK you want to release
 yarn release-sdk qwik dev
 ```
+
+## 4- Update examples
+
+```
+yarn upgrade-example:all
+```
+
+This will upgrade every example that uses the SDKs, so that they point to the new version you just released. This is very handy for keeping the examples in sync.
