@@ -49,8 +49,17 @@ type GetBuilderPropsOptions = (Omit<GetContentOptions, 'model'> & {
  * TBD:
  *
  * @example
- *
  * ```jsx
+ * const builderProps = await fetchBuilderProps({
+ *    apiKey: 'API_KEY',
+ *    // provide `url`
+ *    url: yourPageUrl,
+ *    // OR provide `path` + `searchParams`
+ *    path: yourPath,
+ *    searchParams: yourSearchParams,
+ * });
+ *
+ * return <Content {...builderProps} />;
  * ```
  */
 export const fetchBuilderProps = async (
