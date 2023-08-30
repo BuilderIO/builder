@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
-  "version": "0.5.8",
+  "version": "0.6.2",
   "type": "module",
   "main": "lib/browser/commonjs/index.js",
   "module": "lib/browser/module/index.js",
@@ -133,6 +133,10 @@
         "dependsOn": [
           "^build:react-native",
           "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/types"
         ]
       }
     }

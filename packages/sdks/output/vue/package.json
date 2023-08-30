@@ -5,13 +5,17 @@
     "vue2",
     "vue3"
   ],
-  "version": "0.5.8",
+  "version": "0.6.2",
   "main": "./vue3/lib/node/index.cjs",
   "module": "./vue3/lib/node/index.js",
   "type": "module",
   "files": [
-    "vue2",
-    "vue3"
+    "vue2/lib",
+    "vue2/css/package.json",
+    "vue2/package.json",
+    "vue3/lib",
+    "vue3/css/package.json",
+    "vue3/package.json"
   ],
   "exports": {
     ".": {

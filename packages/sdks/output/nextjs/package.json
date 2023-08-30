@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io RSC SDK for NextJS App Directory",
-  "version": "0.5.8",
+  "version": "0.6.2",
   "files": [
     "lib",
     "types"
@@ -96,7 +96,7 @@
     "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
-    "next": "13.4.20-canary.10",
+    "next": "^13.4.20-canary.10 || ^13.4.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -121,6 +121,10 @@
         "dependsOn": [
           "^build:nextjs",
           "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/types"
         ]
       }
     }

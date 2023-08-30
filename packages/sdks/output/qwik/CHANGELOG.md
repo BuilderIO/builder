@@ -1,3 +1,20 @@
+### 0.6.2
+
+- No Changes.
+
+### 0.6.1
+
+- No Changes.
+
+### 0.6.0
+
+- Update build pipeline to generate 3 separate bundles for each environment: browser, node and edge runtimes.
+- Fix: update content in Column block when edited within Visual Editor.
+
+### 0.5.9
+
+Fix: react and rerender components when Builder content updates.
+
 ### 0.5.8
 
 - Fix: properly serialize messages sent to visual editor.

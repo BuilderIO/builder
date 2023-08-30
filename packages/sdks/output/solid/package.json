@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-solid",
-  "version": "0.5.8",
+  "version": "0.6.2",
   "description": "",
   "files": [
     "dist",
@@ -76,8 +76,7 @@
     "build:one": "tsup",
     "build:node": "SDK_ENV=node yarn build:one",
     "build:edge": "SDK_ENV=edge yarn build:one",
-    "build:browser": "SDK_ENV=browser yarn build:one",
-    "prepublishOnly": "pnpm build"
+    "build:browser": "SDK_ENV=browser yarn build:one"
   },
   "dependencies": {
     "solid-styled-components": "^0.27.6"
