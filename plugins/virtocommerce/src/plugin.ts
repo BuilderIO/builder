@@ -66,10 +66,12 @@ registerCommercePlugin(
         //     "token_type": "...",
         //     "expires_in": number
         // }
-        const token = await fetch(url, { method: 'POST', headers, body }).then(x => x.json()).then(x => x.access_token);
+        const token = await fetch(url, { method: 'POST', headers, body })
+          .then(x => x.json())
+          .then(x => x.access_token);
         headers.Authorization = `Bearer ${token}`;
       }
-    }
+    };
 
     const headers = {
       Authorization: <any>null,
@@ -91,7 +93,7 @@ registerCommercePlugin(
       return fetch(baseUrl('graphql'), {
         method: 'POST',
         headers,
-        body: JSON.stringify(request)
+        body: JSON.stringify(request),
       }).then(x => x.json());
     };
 
@@ -101,7 +103,8 @@ registerCommercePlugin(
           await auth();
           const key = `${id}productById`;
           const request = productRequest(storeId, locale, id);
-          const product: any = basicCache.get(key) ||
+          const product: any =
+            basicCache.get(key) ||
             (await requestData(request).then(x => transformResource(x.data.product)));
           console.log(product);
           basicCache.set(key, product);
@@ -138,7 +141,9 @@ registerCommercePlugin(
           const request = categoryRequest(storeId, locale, id);
           const category =
             basicCache.get(key) ||
-            (await requestData(request).then(x => x.data.category).then(transformResource));
+            (await requestData(request)
+              .then(x => x.data.category)
+              .then(transformResource));
           basicCache.set(key, category);
           console.log(category);
           return category;

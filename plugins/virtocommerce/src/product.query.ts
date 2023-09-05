@@ -1,5 +1,5 @@
 export function productRequest(storeId: string, locale: string, productId: string) {
-    const query = `
+  const query = `
         query GetProduct($storeId: String!, $currencyCode: String!, $cultureName: String, $id: String!) {
             product(storeId: $storeId, id: $id, currencyCode: $currencyCode, cultureName: $cultureName) {
                 name
@@ -52,10 +52,10 @@ export function productRequest(storeId: string, locale: string, productId: strin
             }
         }
 `;
-    const request = {
-        "operationName": "GetProduct",
-        "variables": { "storeId": storeId, "cultureName": locale, "currencyCode": "USD", "id": productId },
-        "query": query
-    }
-    return request;
+  const request = {
+    operationName: 'GetProduct',
+    variables: { storeId: storeId, cultureName: locale, currencyCode: 'USD', id: productId },
+    query: query,
+  };
+  return request;
 }

@@ -1,5 +1,5 @@
 export function searchProductsRequest(storeId: string, locale: string, search: string) {
-    const query = `
+  const query = `
         query SearchProducts($storeId: String!, $cultureName: String, $after: String, $first: Int, $query: String) {
             products(
                 storeId: $storeId
@@ -23,16 +23,16 @@ export function searchProductsRequest(storeId: string, locale: string, search: s
         }
 `;
 
-    const request = {
-        "operationName": "SearchProducts",
-        "variables": {
-            "storeId": storeId,
-            "cultureName": locale,
-            "query": search, 
-            "first": 5, 
-            "after": "0"
-        },
-        "query": query
-    };
-    return request;
+  const request = {
+    operationName: 'SearchProducts',
+    variables: {
+      storeId: storeId,
+      cultureName: locale,
+      query: search,
+      first: 5,
+      after: '0',
+    },
+    query: query,
+  };
+  return request;
 }

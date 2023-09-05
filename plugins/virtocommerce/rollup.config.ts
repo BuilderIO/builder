@@ -38,17 +38,16 @@ export default {
     nodeResolve({ mainFields: ['module', 'browser'] }),
     esbuild(),
 
-    ...([
-          serve({
-            contentBase: 'dist',
-            port: 1268,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              // https://developer.chrome.com/blog/private-network-access-preflight/#new-in-pna
-              'Access-Control-Allow-Private-Network': 'true',
-            },
-          }),
-        ]
-      ),
+    ...[
+      serve({
+        contentBase: 'dist',
+        port: 1268,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          // https://developer.chrome.com/blog/private-network-access-preflight/#new-in-pna
+          'Access-Control-Allow-Private-Network': 'true',
+        },
+      }),
+    ],
   ],
 };

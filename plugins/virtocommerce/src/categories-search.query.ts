@@ -1,5 +1,5 @@
 export function searchCategoriesRequest(storeId: string, locale: string, search: string) {
-    const query = `
+  const query = `
         query Categories($storeId: String!, $cultureName: String, $after: String, $first: Int, $filter: String, $query: String) {
             categories(
                 storeId: $storeId
@@ -18,17 +18,17 @@ export function searchCategoriesRequest(storeId: string, locale: string, search:
             }
         }
     `;
-    const request = {
-        "operationName": "Categories",
-        "variables": {
-            "after": "0",
-            "cultureName": locale,
-            "filter": "status:visible",
-            "first": 10,
-            "storeId": storeId,
-            "query": search
-        },
-        "query": query
-    }
-    return request;
+  const request = {
+    operationName: 'Categories',
+    variables: {
+      after: '0',
+      cultureName: locale,
+      filter: 'status:visible',
+      first: 10,
+      storeId: storeId,
+      query: search,
+    },
+    query: query,
+  };
+  return request;
 }
