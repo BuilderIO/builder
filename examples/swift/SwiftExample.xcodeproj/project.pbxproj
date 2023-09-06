@@ -363,7 +363,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BuilderIO/builder-swift";
 			requirement = {
-				branch = "shyam-ios-fixes";
+				branch = main;
 				kind = branch;
 			};
 		};

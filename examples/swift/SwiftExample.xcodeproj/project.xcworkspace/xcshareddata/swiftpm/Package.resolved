@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/BuilderIO/builder-swift",
       "state" : {
-        "branch" : "shyam-ios-fixes",
-        "revision" : "20b619ba5c35023560b9728c45837f6a2c27f3d5"
+        "branch" : "main",
+        "revision" : "2973d0c86e54b7514ec3e25b8fd7d1d85edd1a27"
       }
     },
     {
