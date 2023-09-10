@@ -1,4 +1,4 @@
-[@builder.io/react](../README.md) / [Modules](../modules.md) / [builder-component.component](../modules/builder_component_component.md) / BuilderComponentProps
+[@builder.io/react](../README.md) / [Modules](../modules.md) / [builder-component.component](../modules/builder_component_component.md) / BuilderComponentProps 
 
 # Interface: BuilderComponentProps
 
