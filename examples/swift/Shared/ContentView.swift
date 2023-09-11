@@ -1,18 +1,6 @@
 import SwiftUI
 import BuilderIO
 
-class BuilderContentWrapper: ObservableObject {
-    var content: BuilderContent? = nil;
-    init(content: BuilderContent? = nil) {
-        self.content = content
-    }
-    
-    func changeContent(_ newValue: BuilderContent?) {
-        self.content = newValue;
-        self.objectWillChange.send();
-    }
-}
-
 struct ContentView: View {
     @ObservedObject var content: BuilderContentWrapper = BuilderContentWrapper();
     
@@ -24,6 +12,16 @@ struct ContentView: View {
     }
     
     func fetchContent() {
+        print("TRIGGER FETCH CONTENT")
+        
+        let isAppetize = UserDefaults.standard.bool(forKey: "isAppetize");
+        print("IS APPETIZE??", isAppetize);
+        let contentId = UserDefaults.standard.string(forKey: "builderContentId") ?? "NO CONTENT ID";
+        let modelName = UserDefaults.standard.string(forKey: "builderModelName") ?? "NO MODEL NAME";
+        
+        let modelId = UserDefaults.standard.string(forKey: "builderModelId") ?? "NO MODEL ID";
+        print("FETCH CONtent iN APP", isAppetize, contentId, modelName, modelId);
+        
         Content.getContent(model: "page", apiKey: "e084484c0e0241579f01abba29d9be10", url: "/custom-components", locale: "", preview: "") { content in
             DispatchQueue.main.async {
                 self.content.changeContent(content);
@@ -38,9 +36,15 @@ struct ContentView: View {
             }
         }
         
-        Button("Reload") {
-            fetchContent()
+        if (Content.isPreviewing()) {
+            Button("Reload") {
+                fetchContent();
+            }.onReceive(NotificationCenter.default.publisher(for: deviceDidShakeNotification)) { _ in
+                fetchContent()
+                
+            }
         }
+        
     }
 }
 
