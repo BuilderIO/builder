@@ -750,7 +750,6 @@ export interface Component {
     query?: any;
   };
 
-  /** @hidden @deprecated */
   friendlyName?: string;
 
   /**
