@@ -1,3 +1,6 @@
+### 3.0.14
+- Fix: Update core sdk to fix issue with edge runtime in next.js
+
 ### 3.0.13
 - Add support for `customComponents` prop on `BuilderComponent`
 - Fix: SSR with text block eval expression
