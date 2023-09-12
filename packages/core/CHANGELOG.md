@@ -1,3 +1,7 @@
+### 2.0.8
+
+- Fix: remove `setImmediate` usage to fix issue with next.js edge runtime.
+
 ### 2.0.7
 
 - Fix: remove dev dependency from `dependencies` (`nx` and `nx-cloud`)
