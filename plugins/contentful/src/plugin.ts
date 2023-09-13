@@ -27,6 +27,15 @@ registerDataPlugin(
         helperText:
           'Get your access token, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
       },
+      {
+        name: 'environment',
+        type: 'string',
+        required: false,
+        defaultValue: 'master',
+        helperText:
+          'The environment you used when generating your access token, default to "master" https://www.contentful.com/developers/docs/references/authentication/',
+      },
+
     ],
     ctaText: `Connect your Contentful space`,
   },
@@ -34,9 +43,11 @@ registerDataPlugin(
   async settings => {
     const spaceId = settings.get('spaceId')?.trim();
     const accessToken = settings.get('accessToken')?.trim();
+    const environment= settings.get('environment')?.trim() || 'master';
     const client = await contentful.createClient({
       space: spaceId,
       accessToken,
+      environment,
     });
     return {
       async getResourceTypes() {
@@ -141,7 +152,7 @@ registerDataPlugin(
             if (options.entry) {
               // todo: maybe environment should be an input
               return buildUrl(
-                `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${type.sys.id}&sys.id=${options.entry}&include=10`,
+                `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/entries?access_token=${accessToken}&content_type=${type.sys.id}&sys.id=${options.entry}&include=10`,
                 locale,
                 true
               );
@@ -164,7 +175,7 @@ registerDataPlugin(
             );
             // by query
             return buildUrl(
-              `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?${params}`,
+              `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/entries?${params}`,
               locale
             );
           },
