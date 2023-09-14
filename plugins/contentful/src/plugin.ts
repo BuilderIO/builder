@@ -33,7 +33,7 @@ registerDataPlugin(
         required: false,
         defaultValue: 'master',
         helperText:
-          'The environment you used when generating your access token, default to "master" https://www.contentful.com/developers/docs/references/authentication/',
+          'The environment you used when generating your access token. This defaults to "master." Learn more: https://www.contentful.com/developers/docs/references/authentication/',
       },
 
     ],
