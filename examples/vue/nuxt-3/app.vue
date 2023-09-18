@@ -41,8 +41,7 @@ const REGISTERED_COMPONENTS = [
 ];
 
 // TODO: enter your public API key
-// const BUILDER_PUBLIC_API_KEY = '717f6f07a937428fb26823965e8bc41c'; // ggignore
-const BUILDER_PUBLIC_API_KEY = '27a7dd0a85424a03a17032d03fa429c6'; // ggignore
+const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
 const route = useRoute();
 
