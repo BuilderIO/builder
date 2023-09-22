@@ -2337,7 +2337,7 @@ export class Builder {
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
         ? QueryString.parseDeep(location.search.substr(1))
-        : undefined || {};
+        : undefined || {}; // TODO: WHAT about SSR (this.request) ?
 
     const userAttributes =
       // FIXME: HACK: only checks first in queue for user attributes overrides, should check all
@@ -2663,6 +2663,14 @@ export class Builder {
       if (options.apiVersion && !this.apiVersion) {
         this.apiVersion = options.apiVersion;
       }
+    }
+
+    if (!options.options) {
+      options.options = {
+        enrich: false,
+      };
+    } else if (!('enrich' in options.options)) {
+      options.options.enrich = false;
     }
 
     return instance
