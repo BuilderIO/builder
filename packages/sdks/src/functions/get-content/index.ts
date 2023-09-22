@@ -47,6 +47,16 @@ type ContentResponse =
     };
 
 const _fetchContent = async (options: GetContentOptions) => {
+  if (options.limit === undefined || options.limit > 1) {
+    if (!options.options) {
+      options.options = {
+        enrich: false,
+      };
+    } else if (!('enrich' in options.options)) {
+      options.options.set('enrich', false);
+    }
+  }
+
   const url = generateContentUrl(options);
 
   const res = await fetch(url.href);
