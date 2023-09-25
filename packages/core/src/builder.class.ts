@@ -2667,10 +2667,10 @@ export class Builder {
 
     if (!options.options) {
       options.options = {
-        enrich: false,
+        noTraverse: true,
       };
-    } else if (!('enrich' in options.options)) {
-      options.options.enrich = false;
+    } else if (!('noTraverse' in options.options)) {
+      options.options.noTraverse = true;
     }
 
     return instance

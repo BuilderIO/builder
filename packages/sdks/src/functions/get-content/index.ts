@@ -50,10 +50,10 @@ const _fetchContent = async (options: GetContentOptions) => {
   if (options.limit === undefined || options.limit > 1) {
     if (!options.options) {
       options.options = {
-        enrich: false,
+        noTraverse: true,
       };
-    } else if (!('enrich' in options.options)) {
-      options.options.set('enrich', false);
+    } else if (!('noTraverse' in options.options)) {
+      options.options.set('noTraverse', true);
     }
   }
 
