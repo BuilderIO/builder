@@ -2665,6 +2665,7 @@ export class Builder {
       }
     }
 
+    // Set noTraverse=true if NOT already passed by user, for query performance
     if (!options.options) {
       options.options = {
         noTraverse: true,
