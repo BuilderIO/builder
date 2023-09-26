@@ -61,7 +61,7 @@ const _fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options);
 
   const res = await fetch(url.href);
-  const content = await(res.json() as Promise<ContentResponse>);
+  const content = await (res.json() as Promise<ContentResponse>);
   return content;
 };
 
