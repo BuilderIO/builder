@@ -49,12 +49,8 @@ type ContentResponse =
 const _fetchContent = async (options: GetContentOptions) => {
   // Set noTraverse=true if NOT already passed by user, for query performance
   if (options.limit === undefined || options.limit > 1) {
-    if (!options.options) {
-      options.options = {
-        noTraverse: true,
-      };
-    } else if (!('noTraverse' in options.options)) {
-      options.options.set('noTraverse', true);
+    if (!('noTraverse' in options)) {
+      options.noTraverse = true;
     }
   }
 

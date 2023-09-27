@@ -453,6 +453,13 @@ export type GetContentOptions = AllowEnrich & {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
+
+  /**
+   * If set to `true`, it will lazy load symbols/references.
+   * If set to `false`, it will render the entire content tree eagerly.
+   * @deprecated use `enrich` instead
+   */
+  noTraverse?: boolean;
 };
 
 export type Class = {
@@ -2332,6 +2339,9 @@ export class Builder {
     }
     if (queue[0].format) {
       queryParams.format = queue[0].format;
+    }
+    if (queue[0].noTraverse) {
+      queryParams.noTraverse = queue[0].noTraverse;
     }
 
     const pageQueryParams: ParamsMap =
