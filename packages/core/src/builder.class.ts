@@ -2340,7 +2340,7 @@ export class Builder {
     if (queue[0].format) {
       queryParams.format = queue[0].format;
     }
-    if (queue[0].noTraverse) {
+    if ('noTraverse' in queue[0]) {
       queryParams.noTraverse = queue[0].noTraverse;
     }
 
@@ -2676,12 +2676,8 @@ export class Builder {
     }
 
     // Set noTraverse=true if NOT already passed by user, for query performance
-    if (!options.options) {
-      options.options = {
-        noTraverse: true,
-      };
-    } else if (!('noTraverse' in options.options)) {
-      options.options.noTraverse = true;
+    if (!('noTraverse' in options)) {
+      options.noTraverse = true;
     }
 
     return instance
