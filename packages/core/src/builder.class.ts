@@ -14,14 +14,13 @@ import { omit } from './functions/omit.function';
 import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
-import { parse as urlParse } from './url';
+import { emptyUrl, parse as urlParse, UrlLike } from './url';
 
 // Do not change this to a require! It throws runtime errors - rollup
 // will preserve the `require` and throw runtime errors
 import hash from 'hash-sum';
 import { toError } from './functions/to-error';
-import { emptyUrl, UrlLike } from './url';
-import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
+import { ApiVersion, DEFAULT_API_VERSION } from './types/api-version';
 
 export type Url = any;
 
@@ -1027,27 +1026,38 @@ export class Builder {
     }
   }
 
+  private static convertFnToString({
+    input,
+    keysToConvert,
+  }: {
+    input: Input;
+    keysToConvert: string[];
+  }) {
+    for (const key of keysToConvert) {
+      if (input[key] && typeof input[key] === 'function') {
+        const fn = input[key];
+        input = {
+          ...input,
+          [key]: `return (${fn.toString()}).apply(this, arguments)`,
+          ...(input.subFields == null
+            ? null
+            : {
+                subFields: input.subFields.map(input => {
+                  return this.convertFnToString({ keysToConvert, input });
+                }),
+              }),
+        };
+      }
+    }
+    return input;
+  }
+
   private static prepareComponentSpecToSend(spec: Component): Component {
     return {
       ...spec,
       ...(spec.inputs && {
-        inputs: spec.inputs.map((input: any) => {
-          // TODO: do for nexted fields too
-          // TODO: probably just convert all functions, not just
-          // TODO: put this in input hooks: { onChange: ..., showIf: ... }
-          const keysToConvertFnToString = ['onChange', 'showIf'];
-
-          for (const key of keysToConvertFnToString) {
-            if (input[key] && typeof input[key] === 'function') {
-              const fn = input[key];
-              input = {
-                ...input,
-                [key]: `return (${fn.toString()}).apply(this, arguments)`,
-              };
-            }
-          }
-
-          return input;
+        inputs: spec.inputs.map(input => {
+          return this.convertFnToString({ keysToConvert: ['onChange', 'showIf'], input });
         }),
       }),
       hooks: Object.keys(spec.hooks || {}).reduce((memo, key) => {
