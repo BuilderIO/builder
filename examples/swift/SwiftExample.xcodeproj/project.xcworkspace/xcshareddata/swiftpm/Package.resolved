@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/BuilderIO/builder-swift",
       "state" : {
-        "branch" : "debug-custom-components",
-        "revision" : "12af438998a650ddb1e1b14dfcf0e92bec2495ec"
+        "branch" : "main",
+        "revision" : "8c9e6dd2b1b76cd7c2073c1ca036d63ea33deb35"
       }
     },
     {

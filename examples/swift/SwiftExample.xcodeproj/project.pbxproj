@@ -363,7 +363,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BuilderIO/builder-swift";
 			requirement = {
-				branch = "debug-custom-components";
+				branch = main;
 				kind = branch;
 			};
 		};
