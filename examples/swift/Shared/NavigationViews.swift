@@ -9,13 +9,35 @@ import SwiftUI
 
 struct NavigationViews: View {
     var body: some View {
-        NavigationView {
-            NavigationLink(destination: ContentView()) {
-                    Text("Navigate to Home Screen")
+        TabView {
+            ContentView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
                 }
-                .navigationBarTitle("Login!")
-            }
-        
+            Text("Search Screen")
+                .tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("Search")
+                }
+            Text("Bag Screen")
+                .tabItem {
+                    Image(systemName: "bag.fill")
+                    Text("Bag")
+                }
+            Text("Profile Screen")
+                .tabItem {
+                    Image(systemName: "person.crop.circle")
+                    Text("Profile")
+                }
+        }
+//        NavigationView {
+//            NavigationLink(destination: ContentView()) {
+//                    Text("Navigate to Home Screen")
+//                }
+//                .navigationBarTitle("Login!")
+//            }
+//        
     }
 }
 

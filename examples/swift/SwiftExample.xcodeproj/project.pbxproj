@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -363,7 +363,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BuilderIO/builder-swift";
 			requirement = {
-				branch = main;
+				branch = "debug-custom-components";
 				kind = branch;
 			};
 		};
