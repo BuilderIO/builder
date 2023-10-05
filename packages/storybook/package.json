@@ -36,7 +36,7 @@
     "@babel/preset-typescript": "^7.3.3",
     "@storybook/addons": "^5.0.3",
     "@storybook/api": "^5.3.14",
-    "@storybook/react": "^5.0.3",
+    "@storybook/react": "^7.4.6",
     "@types/js-beautify": "^1.8.0",
     "@types/react": "^16.8.8",
     "@types/storybook__react": "^4.0.1",
