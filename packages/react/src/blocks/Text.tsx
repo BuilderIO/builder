@@ -25,7 +25,26 @@ class TextComponent extends React.Component<TextProps> {
   }
 
   evalExpression(expression: string, state: any) {
+    // Don't interpolate when inline editing
+    if (this.allowTextEdit) {
+      return String(expression);
+    }
     return String(expression).replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, state));
+  }
+
+  get allowTextEdit() {
+    return (
+      Builder.isBrowser &&
+      Builder.isEditing &&
+      location.search.includes('builder.allowTextEdit=true') &&
+      !(
+        this.props.builderBlock &&
+        this.props.builderBlock.bindings &&
+        (this.props.builderBlock.bindings['component.options.text'] ||
+          this.props.builderBlock.bindings['options.text'] ||
+          this.props.builderBlock.bindings['text'])
+      )
+    );
   }
 
   render() {
