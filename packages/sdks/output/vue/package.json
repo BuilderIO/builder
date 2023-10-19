@@ -5,7 +5,7 @@
     "vue2",
     "vue3"
   ],
-  "version": "0.6.2",
+  "version": "0.6.3",
   "main": "./vue3/lib/node/index.cjs",
   "module": "./vue3/lib/node/index.js",
   "type": "module",
