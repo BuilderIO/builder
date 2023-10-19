@@ -14,7 +14,7 @@
     "@react-three/drei": "8.11.0",
     "@react-three/fiber": "7.0.26",
     "@vercel/fetch": "^6.1.0",
-    "next": "^12.1.0",
+    "next": "^13.5.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "three": "0.137.5"
