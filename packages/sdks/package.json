@@ -64,8 +64,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "BuilderIO/mitosis-build#370c82bc470ec44a9eaf2919c8a0bdafa1ebeec4",
-    "@builder.io/mitosis-cli": "dev",
+    "@builder.io/mitosis": "^0.0.121",
+    "@builder.io/mitosis-cli": "^0.0.79",
     "js-interpreter": "^4.0.0",
     "node-fetch": "^2.6.1",
     "nx": "^16.6.0",
@@ -77,7 +77,7 @@
     "@builder.io/mitosis": "BuilderIO/mitosis-build#370c82bc470ec44a9eaf2919c8a0bdafa1ebeec4"
   },
   "devDependencies": {
-    "@builder.io/eslint-plugin-mitosis": "dev",
+    "@builder.io/eslint-plugin-mitosis": "^0.0.15",
     "@types/node-fetch": "^2.5.12",
     "@types/seedrandom": "^3.0.4",
     "@types/traverse": "^0.6.32",
