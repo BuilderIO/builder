@@ -73,9 +73,6 @@
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
   },
-  "resolutions": {
-    "@builder.io/mitosis": "BuilderIO/mitosis-build#370c82bc470ec44a9eaf2919c8a0bdafa1ebeec4"
-  },
   "devDependencies": {
     "@builder.io/eslint-plugin-mitosis": "^0.0.15",
     "@types/node-fetch": "^2.5.12",
