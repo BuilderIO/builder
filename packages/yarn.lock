@@ -2988,7 +2988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.120-2, @builder.io/mitosis@npm:dev":
+"@builder.io/mitosis@npm:0.0.120-2":
   version: 0.0.120-2
   resolution: "@builder.io/mitosis@npm:0.0.120-2"
   dependencies:
@@ -3392,7 +3392,6 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": dev
-    "@builder.io/mitosis": dev
     "@builder.io/mitosis-cli": dev
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
