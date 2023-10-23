@@ -23,6 +23,7 @@ import { CONTENT as textBlock } from './text-block.js';
 import { CONTENT as stateBinding } from './state-binding.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import type { BuilderContent } from './types.js';
+import { EDITING_STYLES } from './editing-styles.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -59,6 +60,7 @@ const pages = {
   '/text-block': textBlock,
   '/state-binding': stateBinding,
   '/nested-symbols': nestedSymbols,
+  '/editing-styles': EDITING_STYLES,
 } as const;
 
 const apiVersionPathToProp = {
