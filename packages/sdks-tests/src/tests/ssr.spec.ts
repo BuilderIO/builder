@@ -5,13 +5,13 @@ test.describe('SSR', () => {
   test('js enabled', async ({ page }) => {
     await page.goto('/');
 
-    const btn = page.locator('text=Data Bindings');
+    const btn = page.getByRole('link', { name: 'Data Bindings' });
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');
   });
 
   test('js disabled', async ({ browser, packageName }) => {
-    if (!isSSRFramework(packageName)) test.skip();
+    test.skip(!isSSRFramework(packageName));
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
@@ -20,7 +20,7 @@ test.describe('SSR', () => {
 
     await page.goto('/');
 
-    const btn = page.locator('text=Data Bindings');
+    const btn = page.getByRole('link', { name: 'Data Bindings' });
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');
   });
