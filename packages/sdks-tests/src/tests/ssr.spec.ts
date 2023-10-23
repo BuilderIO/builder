@@ -1,11 +1,13 @@
 import { expect } from '@playwright/test';
-import { isSSRFramework, test } from './helpers.js';
+import { isRNSDK, isSSRFramework, test } from './helpers.js';
 
 test.describe('SSR', () => {
   test('js enabled', async ({ page }) => {
     await page.goto('/');
 
-    const btn = page.getByRole('link', { name: 'Data Bindings' });
+    const btn = isRNSDK
+      ? page.getByRole('link', { name: 'Data Bindings' })
+      : page.locator('text=Data Bindings');
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');
   });
@@ -20,7 +22,9 @@ test.describe('SSR', () => {
 
     await page.goto('/');
 
-    const btn = page.getByRole('link', { name: 'Data Bindings' });
+    const btn = isRNSDK
+      ? page.getByRole('link', { name: 'Data Bindings' })
+      : page.locator('text=Data Bindings');
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');
   });
