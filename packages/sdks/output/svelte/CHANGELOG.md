@@ -1,3 +1,7 @@
+### 0.6.4
+
+- Fix issue with styles not rendering properly during SSR.
+
 ### 0.6.3
 
 - Fix issue with block styles not updating when editing them.
