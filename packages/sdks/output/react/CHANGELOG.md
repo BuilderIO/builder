@@ -1,3 +1,7 @@
+### 0.6.4
+
+- No Change.
+
 ### 0.6.3
 
 - Fix issue with block styles not updating when editing them.
