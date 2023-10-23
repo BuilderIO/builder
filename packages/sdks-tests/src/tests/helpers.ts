@@ -42,11 +42,13 @@ export const test = base.extend<TestOptions>({
 test.afterEach(screenshotOnFailure);
 
 export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
+  // Easier to list non-ssr than other way around.
   const isNonSSR =
     packageName === 'solid' ||
     packageName === 'react' ||
     packageName === 'vue2' ||
     packageName === 'svelte' ||
+    packageName === 'react-native' ||
     packageName === 'gen1-react';
   return !isNonSSR;
 };
