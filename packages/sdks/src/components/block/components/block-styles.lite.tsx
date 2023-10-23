@@ -25,28 +25,36 @@ useMetadata({
 
 export default function BlockStyles(props: BlockStylesProps) {
   const state = useStore({
-    processedBlock: getProcessedBlock({
-      block: props.block,
-      localState: props.context.localState,
-      rootState: props.context.rootState,
-      rootSetState: props.context.rootSetState,
-      context: props.context.context,
-      shouldEvaluateBindings: true,
-    }),
-
     get canShowBlock() {
+      const processedBlock = getProcessedBlock({
+        block: props.block,
+        localState: props.context.localState,
+        rootState: props.context.rootState,
+        rootSetState: props.context.rootSetState,
+        context: props.context.context,
+        shouldEvaluateBindings: true,
+      });
       // only render styles for blocks that are visible
-      if (checkIsDefined(state.processedBlock.hide)) {
-        return !state.processedBlock.hide;
+      if (checkIsDefined(processedBlock.hide)) {
+        return !processedBlock.hide;
       }
-      if (checkIsDefined(state.processedBlock.show)) {
-        return state.processedBlock.show;
+      if (checkIsDefined(processedBlock.show)) {
+        return processedBlock.show;
       }
       return true;
     },
 
     get css(): string {
-      const styles = state.processedBlock.responsiveStyles;
+      const processedBlock = getProcessedBlock({
+        block: props.block,
+        localState: props.context.localState,
+        rootState: props.context.rootState,
+        rootSetState: props.context.rootSetState,
+        context: props.context.context,
+        shouldEvaluateBindings: true,
+      });
+
+      const styles = processedBlock.responsiveStyles;
 
       const content = props.context.content;
       const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(
@@ -57,7 +65,7 @@ export default function BlockStyles(props: BlockStylesProps) {
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
 
-      const className = state.processedBlock.id;
+      const className = processedBlock.id;
 
       if (!className) {
         return '';
