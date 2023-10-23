@@ -41,6 +41,16 @@ export const test = base.extend<TestOptions>({
 });
 test.afterEach(screenshotOnFailure);
 
+export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
+  const isNonSSR =
+    packageName === 'solid' ||
+    packageName === 'react' ||
+    packageName === 'vue2' ||
+    packageName === 'svelte' ||
+    packageName === 'gen1-react';
+  return !isNonSSR;
+};
+
 export const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
   await page.locator(`text=${text}`).waitFor();
 };

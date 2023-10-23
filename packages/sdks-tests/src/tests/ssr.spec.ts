@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from './helpers.js';
+import { isSSRFramework, test } from './helpers.js';
 
 test.describe('SSR', () => {
   test('js enabled', async ({ page }) => {
@@ -10,7 +10,9 @@ test.describe('SSR', () => {
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');
   });
 
-  test('js disabled', async ({ browser }) => {
+  test('js disabled', async ({ browser, packageName }) => {
+    if (!isSSRFramework(packageName)) test.skip();
+
     const context = await browser.newContext({
       javaScriptEnabled: false,
     });
