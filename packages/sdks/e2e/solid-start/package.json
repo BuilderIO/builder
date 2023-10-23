@@ -12,7 +12,7 @@
     "esbuild": "^0.14.54",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.31",
     "solid-start-node": "^0.2.19",
     "typescript": "^5.1.6",
     "vite": "^4.1.4"
