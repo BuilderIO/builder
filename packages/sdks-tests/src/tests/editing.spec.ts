@@ -89,11 +89,11 @@ test.describe('Visual Editing', () => {
     );
 
     await launchEmbedderAndWaitForSdk({ path: '/editing-styles', basePort, page });
-    const btn1 = page.frameLocator('iframe').getByText('Enter some text...');
-    await expect(btn1).toHaveCSS('background-color', 'rgba(74, 144, 226, 1)');
+    const btn1 = page.frameLocator('iframe').getByRole('button');
+    await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
 
     await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
-    const btn = page.frameLocator('iframe').getByText('Enter some text...');
-    await expect(btn).toHaveCSS('background-color', 'rgba(245, 166, 35, 1)');
+    const btn = page.frameLocator('iframe').getByRole('button');
+    await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
   });
 });
