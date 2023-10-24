@@ -89,7 +89,6 @@
     }
   },
   "scripts": {
-    "version": "npm version",
     "publish": "npm publish",
     "typecheck": "tsc --noEmit",
     "tsc": "tsc",

@@ -7,7 +7,6 @@
     "lib"
   ],
   "scripts": {
-    "version": "npm version",
     "publish": "npm publish",
     "build": "nx run-many -p @builder.io/sdk-vue-2 -t build:node build:edge build:browser",
     "vite-build": "vite build --mode lib",

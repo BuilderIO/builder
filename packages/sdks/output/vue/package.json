@@ -164,7 +164,6 @@
     "./vue3/css": "./vue3/lib/browser/style.css"
   },
   "scripts": {
-    "version": "npm version",
     "publish": "npm publish",
     "add-debug": "bash ./scripts/add-debug.sh",
     "remove-debug": "bash ./scripts/remove-debug.sh",

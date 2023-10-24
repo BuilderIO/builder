@@ -91,7 +91,6 @@
     "src/"
   ],
   "scripts": {
-    "version": "npm version",
     "publish": "npm publish",
     "build:one": "bob build",
     "/**/": "the command below cannot be run in parallel because build:browser MUST run first.",

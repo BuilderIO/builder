@@ -94,7 +94,6 @@
     }
   },
   "scripts": {
-    "version": "npm version",
     "publish": "npm publish",
     "types": "tsc",
     "build": "nx run-many -p @builder.io/sdk-react -t types build:node build:edge build:browser",
