@@ -1,0 +1,63 @@
+---
+name: Publish new generation SDKs
+
+on:
+  workflow_dispatch:
+    inputs:
+      dist-tag:
+        description: 'Publish SDK(s) to NPM using this dist-tag. The "latest" and "next" dist-tags will use the version number already committed in package.json.'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - latest
+      sdk:
+        description: 'Choose which SDK to publish.'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - qwik
+          - react
+          - react-native
+          - react-nextjs
+          - solid
+          - svelte
+          - vue
+
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
+
+jobs:
+  Publish sdks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages/sdks
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cwd: 'packages/'
+          cache-node-modules: true
+          cache-install-state: true
+
+      - name: 📦 Publish All SDKs
+        run: yarn nx run-many -t publish --projects=@builder.io/sdk-\* --${{ github.event.inputs.dist-tag }}
+        if: ${{ github.event.inputs.sdk === 'all' }}
+
+      - name: 📦 Publish ${{ matrix.sdk-name }} SDK
+        run: yarn nx run publish @builder.io/sdk-${{ matrix.sdk }} --${{ github.event.inputs.dist-tag }}
+        if: ${{ github.event.inputs.sdk !== 'all' }}
