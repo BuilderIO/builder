@@ -72,6 +72,8 @@
   },
   "typesVersions": {},
   "scripts": {
+    "version": "npm version",
+    "publish": "npm publish",
     "build": "nx run-many -p @builder.io/sdk-solid -t build:node build:edge build:browser",
     "build:one": "tsup",
     "build:node": "SDK_ENV=node yarn build:one",
