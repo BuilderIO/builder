@@ -94,6 +94,7 @@
     }
   },
   "scripts": {
+    "publish": "npm publish",
     "types": "tsc",
     "build": "nx run-many -p @builder.io/sdk-react -t types build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",

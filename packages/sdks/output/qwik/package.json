@@ -89,6 +89,7 @@
     }
   },
   "scripts": {
+    "publish": "npm publish",
     "typecheck": "tsc --noEmit",
     "tsc": "tsc",
     "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",

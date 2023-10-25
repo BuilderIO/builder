@@ -28,6 +28,9 @@
     },
     "typecheck": {
       "dependsOn": ["^build"]
+    },
+    "publish": {
+      "dependsOn": ["build"]
     }
   },
   "affected": {
