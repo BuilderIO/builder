@@ -1,6 +1,14 @@
+/**
+ * @type {import('gatsby').GatsbyConfig}
+ */
+
 const path = require('path');
 
 module.exports = {
+  siteMetadata: {
+    title: `Gatsby Minimal Starter`,
+    siteUrl: `https://www.yourdomain.tld`,
+  },
   plugins: [
     'gatsby-plugin-typescript',
     {
@@ -19,4 +27,4 @@ module.exports = {
       }
     }
   ]
-};
+}

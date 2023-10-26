@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { BuilderComponent, builder } from '@builder.io/react';
 import '@builder.io/widgets';
-/**
- * Hero is an example of a custom component that you can use in the builder.io editor
- * https://www.builder.io/c/docs/custom-react-components
- */
-import '../components/Hero/Hero.builder';
+
 
 // TODO: enter your public API key
 builder.init('jdGaMusrVpYgdcAnAtgn');

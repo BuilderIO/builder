@@ -4,11 +4,13 @@ import { graphql } from 'gatsby';
 import { BuilderComponent, builder } from '@builder.io/react';
 import { Helmet } from 'react-helmet';
 import '@builder.io/widgets';
+import  Hero  from "/src/components/Hero/Hero.jsx"
+import "/src/components/Hero/Hero.builder.js"
 /**
  * Hero is an example of a custom component that you can use in the builder.io editor
  * https://www.builder.io/c/docs/custom-react-components
  */
-import '../components/Hero/Hero.builder';
+// import '../components/Hero/Hero.builder';
 
 // TODO: enter your public API key
 builder.init('jdGaMusrVpYgdcAnAtgn');
@@ -21,7 +23,15 @@ const PageTemplate = ({ data }) => {
         <title>{content?.data.title}</title>
       </Helmet>
       <header>
-        <h1>Gatsby Minimal Starter</h1>
+        {/* <Hero 
+        title={'what up'}     
+        image={"https://st.depositphotos.com/1017187/1389/i/950/depositphotos_13895630-stock-photo-funny-horse-with-a-silly.jpg"}
+        parallaxStrength={1}
+        buttonLink={"https://www.google.com"}
+        buttonText={"let's boogie"}
+        height="700px"
+    darkMode></Hero> */}
+       
       </header>
 
       <BuilderComponent content={content} model="page" />

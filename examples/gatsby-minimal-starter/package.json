@@ -1,61 +1,26 @@
 {
-  "name": "@builder-io/gatsby-builder-example",
-  "description": "A demo for integrating Builder.io components with gatsby",
+  "name": "gatsby-builder-example",
   "version": "1.0.0",
   "private": true,
+  "description": "gatsby-builder-example",
   "keywords": [
-    "gatsby",
-    "builder"
+    "gatsby"
   ],
-  "license": "MIT",
-  "main": "n/a",
   "scripts": {
-    "build": "gatsby clean && gatsby build",
-    "clean": "rimraf public",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
-    "dev": "gatsby develop",
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
     "serve": "gatsby serve",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md}\"",
-    "lint": "eslint 'src/**/*.{js,jsx}'",
-    "start": "npm run dev",
-    "test": "npm run type-check && npm run lint",
-    "type-check": "tsc"
-  },
-  "engines": {
-    "node": ">=12.13.0"
+    "clean": "gatsby clean"
   },
   "dependencies": {
     "@builder.io/gatsby": "^3.0.3",
-    "@builder.io/react": "^2.0.4",
-    "@builder.io/widgets": "^1.2.23",
-    "@material-ui/core": "^4.9.5",
-    "classnames": "^2.2.6",
-    "gatsby": "^5.10.0",
-    "gatsby-image": "^2.2.1",
-    "gatsby-plugin-typescript": "^4.25.0",
-    "polished": "^3.4.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-helmet": "^5.2.1",
-    "react-parallax": "^3.0.3",
-    "react-syntax-highlighter": "^15.4.3",
-    "typescript": "^4.5.5"
-  },
-  "devDependencies": {
-    "@types/classnames": "^2.2.8",
-    "@types/node": "^12.0.10",
-    "@types/react": "^16.8.22",
-    "@types/react-dom": "^16.8.4",
-    "@types/react-helmet": "^5.0.8",
-    "@types/react-syntax-highlighter": "^11.0.4",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
-    "eslint": "^7.25.0",
-    "eslint-config-blvd": "^1.2.1",
-    "eslint-config-prettier": "^6.5.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "gh-pages": "^2.0.1",
-    "prettier": "^1.18.2",
-    "rimraf": "^2.6.3"
+    "@builder.io/widgets": "^1.2.24",
+    "@mui/material": "^5.14.14",
+    "gatsby": "^5.12.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-parallax": "^3.5.1"
   }
 }
