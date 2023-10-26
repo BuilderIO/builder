@@ -23,14 +23,7 @@ const PageTemplate = ({ data }) => {
         <title>{content?.data.title}</title>
       </Helmet>
       <header>
-        {/* <Hero 
-        title={'what up'}     
-        image={"https://st.depositphotos.com/1017187/1389/i/950/depositphotos_13895630-stock-photo-funny-horse-with-a-silly.jpg"}
-        parallaxStrength={1}
-        buttonLink={"https://www.google.com"}
-        buttonText={"let's boogie"}
-        height="700px"
-    darkMode></Hero> */}
+
        
       </header>
 
