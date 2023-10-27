@@ -60,7 +60,6 @@ const getTargetPath = ({ target }) => {
  * @type {MitosisConfig['options']['vue']}
  */
 const vueConfig = {
-  typescript: true,
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
   cssNamespace: getSeededId,
   plugins: [
@@ -90,7 +89,7 @@ const vueConfig = {
             }
 
             const filterAttrKeys = Object.entries(item.bindings).filter(
-              ([key, value]) =>
+              ([_key, value]) =>
                 value?.code.includes('filterAttrs') &&
                 value.code.includes('true')
             );
@@ -165,7 +164,13 @@ module.exports = {
   exclude: ['src/**/*.test.ts'],
   targets,
   getTargetPath,
+  commonOptions: {
+    typescript: true,
+  },
   options: {
+    solid: {
+      typescript: false,
+    },
     vue2: {
       ...vueConfig,
       asyncComponentImports: true,
@@ -247,12 +252,10 @@ module.exports = {
     },
     vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
-      typescript: true,
       plugins: [SRCSET_PLUGIN],
       stylesType: 'style-tag',
     },
     rsc: {
-      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
         () => ({
@@ -261,6 +264,7 @@ module.exports = {
               if (json.name === 'Symbol') {
                 delete json.state.setContent;
 
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 json.state.contentToUse.code =
                   json.state.contentToUse?.code.replace('async () => ', '');
@@ -375,11 +379,9 @@ module.exports = {
       ],
     },
     qwik: {
-      typescript: true,
       plugins: [SRCSET_PLUGIN],
     },
     svelte: {
-      typescript: true,
       plugins: [
         /**
          * This plugin modifies `svelte:component` to elements to use the `svelte:element` syntax instead.
@@ -445,7 +447,7 @@ module.exports = {
                 if (!isMitosisNode(item)) return;
 
                 const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([key, value]) =>
+                  ([_key, value]) =>
                     value?.code.includes('filterAttrs') &&
                     value.code.includes('true')
                 );
