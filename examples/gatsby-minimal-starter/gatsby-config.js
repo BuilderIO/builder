@@ -22,9 +22,9 @@ module.exports = {
         templates: {
           // Render every `page` model as a new page using the /page.tsx template
           // based on the URL provided in Builder.io
-          page: path.resolve('src/templates/page.jsx')
-        }
-      }
-    }
-  ]
-}
+          page: path.resolve('src/templates/page.jsx'),
+        },
+      },
+    },
+  ],
+};

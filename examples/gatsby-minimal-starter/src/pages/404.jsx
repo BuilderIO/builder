@@ -2,7 +2,6 @@ import * as React from 'react';
 import { BuilderComponent, builder } from '@builder.io/react';
 import '@builder.io/widgets';
 
-
 // TODO: enter your public API key
 builder.init('jdGaMusrVpYgdcAnAtgn');
 
@@ -13,15 +12,13 @@ const Dev404 = () => {
   ) : (
     <BuilderComponent
       model="page"
-      contentLoaded={(content) => {
+      contentLoaded={content => {
         if (!content) {
           setNotFound(true);
         }
       }}
     >
-      <div className="loading">
-        No matching page generated, checking Builder.io ...
-      </div>
+      <div className="loading">No matching page generated, checking Builder.io ...</div>
     </BuilderComponent>
   );
 };

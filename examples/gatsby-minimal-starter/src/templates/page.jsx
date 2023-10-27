@@ -4,13 +4,12 @@ import { graphql } from 'gatsby';
 import { BuilderComponent, builder } from '@builder.io/react';
 import { Helmet } from 'react-helmet';
 import '@builder.io/widgets';
-import  Hero  from "/src/components/Hero/Hero.jsx"
-import "/src/components/Hero/Hero.builder.js"
+import Hero from '/src/components/Hero/Hero.jsx';
+import '/src/components/Hero/Hero.builder.js';
 /**
  * Hero is an example of a custom component that you can use in the builder.io editor
  * https://www.builder.io/c/docs/custom-react-components
  */
-
 
 // TODO: enter your public API key
 builder.init('jdGaMusrVpYgdcAnAtgn');
@@ -22,10 +21,7 @@ const PageTemplate = ({ data }) => {
       <Helmet>
         <title>{content?.data.title}</title>
       </Helmet>
-      <header>
-
-       
-      </header>
+      <header></header>
 
       <BuilderComponent content={content} model="page" />
       <footer>
