@@ -47,13 +47,6 @@ type ContentResponse =
     };
 
 const _fetchContent = async (options: GetContentOptions) => {
-  // Set noTraverse=true if NOT already passed by user, for query performance
-  if (options.limit === undefined || options.limit > 1) {
-    if (!('noTraverse' in options)) {
-      options.noTraverse = true;
-    }
-  }
-
   const url = generateContentUrl(options);
 
   const res = await fetch(url.href);
