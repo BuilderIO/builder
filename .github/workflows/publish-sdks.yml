@@ -55,9 +55,9 @@ jobs:
           cache-install-state: true
 
       - name: 📦 Publish All SDKs
-        run: yarn nx run-many -t publish --projects=@builder.io/sdk-\* --${{ github.event.inputs.dist-tag }}
+        run: yarn nx run-many -t release --projects=@builder.io/sdk-\* --${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk === 'all' }}
 
       - name: 📦 Publish ${{ matrix.sdk-name }} SDK
-        run: yarn nx publish @builder.io/sdk-${{ matrix.sdk }} --${{ github.event.inputs.dist-tag }}
+        run: yarn nx release @builder.io/sdk-${{ matrix.sdk }} --${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk !== 'all' }}

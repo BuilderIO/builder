@@ -37,7 +37,7 @@
   },
   "types": "./lib/browser/index.d.ts",
   "scripts": {
-    "publish": "npm publish",
+    "release": "npm publish",
     "prepare": "SDK_ENV=browser svelte-kit sync",
     "build": "nx run-many -p @builder.io/sdk-svelte -t build:node build:edge build:browser",
     "build:node": "SDK_ENV=node svelte-package -i src/ -o lib/node",
