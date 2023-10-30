@@ -3178,9 +3178,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@BuilderIO/mitosis-build#d9ed49e66c7fb6e9aacb0e5476e43f9eb6b3bf25":
-  version: 0.0.122
-  resolution: "@builder.io/mitosis@https://github.com/BuilderIO/mitosis-build.git#commit=d9ed49e66c7fb6e9aacb0e5476e43f9eb6b3bf25"
+"@builder.io/mitosis@npm:0.0.124, @builder.io/mitosis@npm:^0.0.124":
+  version: 0.0.124
+  resolution: "@builder.io/mitosis@npm:0.0.124"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -3207,7 +3207,7 @@ __metadata:
     ts-morph: ^19.0.0
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 38cbd7beb9283cee62985de80f3887188e771e5dd0bd112b7b1ec61d4e5133acd8c98249274952670e807a01e275e622da88cdc05ef6059fec0f82e77248135a
+  checksum: abb75d39a46defec9123c92ca627faef3df1ab05350eaa625f232d8429c5e8b2e4f1efdb7e3d1de65b6891b3e92624acf7eae6d887f601b8fc248c9141416c2d
   languageName: node
   linkType: hard
 

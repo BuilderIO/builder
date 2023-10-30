@@ -26,8 +26,7 @@
     "json5": "2.2.1",
     "prettier": "2.8.8",
     "@builder.io/react": "workspace:*",
-    "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch",
-    "@builder.io/mitosis": "BuilderIO/mitosis-build#d9ed49e66c7fb6e9aacb0e5476e43f9eb6b3bf25"
+    "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
   },
   "packageManager": "yarn@3.6.1",
   "devDependencies": {
