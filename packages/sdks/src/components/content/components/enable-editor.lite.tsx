@@ -227,6 +227,63 @@ export default function EnableEditor(props: BuilderEditorProps) {
         );
       }
     },
+
+    initEditing(_event: Event) {
+      state.forceReRenderCount = state.forceReRenderCount + 1;
+      window.addEventListener('message', state.processMessage);
+
+      registerInsertMenu();
+      setupBrowserForEditing({
+        ...(props.locale ? { locale: props.locale } : {}),
+        ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
+        ...(props.enrich ? { enrich: props.enrich } : {}),
+      });
+      Object.values<ComponentInfo>(
+        props.builderContextSignal.value.componentInfos
+      ).forEach((registeredComponent) => {
+        const message = createRegisterComponentMessage(registeredComponent);
+        window.parent?.postMessage(message, '*');
+      });
+      window.addEventListener(
+        'builder:component:stateChangeListenerActivated',
+        state.emitStateUpdate
+      );
+    },
+
+    initPreview(_event: Event) {
+      const searchParams = new URL(location.href).searchParams;
+      const searchParamPreviewModel = searchParams.get('builder.preview');
+      const searchParamPreviewId = searchParams.get(
+        `builder.preview.${searchParamPreviewModel}`
+      );
+      const previewApiKey =
+        searchParams.get('apiKey') || searchParams.get('builder.space');
+
+      /**
+       * Make sure that:
+       * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
+       *  at the same time, e.g. header/page/footer.
+       * - the API key is the same, since we don't want to preview content from other organizations.
+       * - if there is content, that the preview ID is the same as that of the one we receive.
+       *
+       * TO-DO: should we only update the state when there is a change?
+       **/
+      if (
+        searchParamPreviewModel === props.model &&
+        previewApiKey === props.apiKey &&
+        (!props.content || searchParamPreviewId === props.content.id)
+      ) {
+        fetchOneEntry({
+          model: props.model,
+          apiKey: props.apiKey,
+          apiVersion: props.builderContextSignal.value.apiVersion,
+        }).then((content) => {
+          if (content) {
+            state.mergeNewContent(content);
+          }
+        });
+      }
+    },
   });
 
   setContext(builderContext, props.builderContextSignal);
@@ -263,67 +320,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
     }
   });
 
-  function initEditing() {
-    state.forceReRenderCount = state.forceReRenderCount + 1;
-    window.addEventListener('message', state.processMessage);
-
-    registerInsertMenu();
-    setupBrowserForEditing({
-      ...(props.locale ? { locale: props.locale } : {}),
-      ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
-      ...(props.enrich ? { enrich: props.enrich } : {}),
-    });
-    Object.values<ComponentInfo>(
-      props.builderContextSignal.value.componentInfos
-    ).forEach((registeredComponent) => {
-      const message = createRegisterComponentMessage(registeredComponent);
-      window.parent?.postMessage(message, '*');
-    });
-    window.addEventListener(
-      'builder:component:stateChangeListenerActivated',
-      state.emitStateUpdate
-    );
-  }
-
-  function initPreview() {
-    const searchParams = new URL(location.href).searchParams;
-    const searchParamPreviewModel = searchParams.get('builder.preview');
-    const searchParamPreviewId = searchParams.get(
-      `builder.preview.${searchParamPreviewModel}`
-    );
-    const previewApiKey =
-      searchParams.get('apiKey') || searchParams.get('builder.space');
-
-    /**
-     * Make sure that:
-     * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
-     *  at the same time, e.g. header/page/footer.
-     * - the API key is the same, since we don't want to preview content from other organizations.
-     * - if there is content, that the preview ID is the same as that of the one we receive.
-     *
-     * TO-DO: should we only update the state when there is a change?
-     **/
-    if (
-      searchParamPreviewModel === props.model &&
-      previewApiKey === props.apiKey &&
-      (!props.content || searchParamPreviewId === props.content.id)
-    ) {
-      fetchOneEntry({
-        model: props.model,
-        apiKey: props.apiKey,
-        apiVersion: props.builderContextSignal.value.apiVersion,
-      }).then((content) => {
-        if (content) {
-          state.mergeNewContent(content);
-        }
-      });
-    }
-  }
-
   onEvent(
     'initEditingBldr',
-    () => {
-      initEditing();
+    (event) => {
+      state.initEditing(event);
     },
     elementRef,
     true
@@ -331,8 +331,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onEvent(
     'initPreviewingBldr',
-    () => {
-      initPreview();
+    (event) => {
+      state.initPreview(event);
     },
     elementRef,
     true
@@ -346,7 +346,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     }
 
     if (isBrowser()) {
-      if (isEditing()) {
+      if (isEditing() && elementRef) {
         elementRef.dispatchEvent(new CustomEvent('initEditingBldr'));
       }
       if (props.builderContextSignal.value.content) {
@@ -366,7 +366,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         rsc: () => {},
         default: () => {
           // override normal content in preview mode
-          if (isPreviewing()) {
+          if (isPreviewing() && elementRef) {
             elementRef.dispatchEvent(new CustomEvent('initPreviewingBldr'));
           }
         },
