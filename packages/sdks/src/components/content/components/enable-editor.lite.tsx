@@ -345,14 +345,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       });
 
-      useTarget({
-        qwik: () => {},
-        default: () => {
-          state.evaluateJsCode();
-          state.runHttpRequests();
-          state.emitStateUpdate();
-        },
-      });
+      state.evaluateJsCode();
+      state.runHttpRequests();
+      state.emitStateUpdate();
     }
   });
 
