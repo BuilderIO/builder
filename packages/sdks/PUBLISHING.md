@@ -1,6 +1,6 @@
 ## ⚠️ WARNING ⚠️: Do not publish packages manually
 
-The SDKs are meant to be published using the `release-sdk` script, and never manually released. This is because the script does a few important things:
+The SDKs are meant to be published using the Github Action, and never manually released. This is because the script does a few important things:
 
 - Guarantees that all dependencies are properly built.
 - Updates the `SDK_VERSION` constant in each SDK to match the version you are about to publish. The Visual Editor uses this constant to tell us which version of the SDK is being used on a given page. This helps our team a lot when debugging user issues.
@@ -10,17 +10,13 @@ PS: The one exception to the last point is publishing `dev` versions. You are fr
 
 # Steps
 
-## 1- Setup
-
-- Make sure you've run `yarn` in `packages/sdks/`.
-- Make sure you are logged in to NPM via yarn, using `yarn npm login`. You will need to provide your one-time password every time you release each SDK.
-- Make sure you have the permissions needed to publish all of the SDKs on `npm`.
-
-## 2- Update `CHANGELOG.md`
+## 1- Update `CHANGELOG.md`
 
 Before publishing, make sure to update the `CHANGELOG.md` inside each folder in `packages/output/**`. If the changes only impact certain SDKs and not others, you should still update the `CHANGELOG.md` with the new version number and write "- No Changes" where needed. See previous `CHANGELOG.md` logs for examples.
 
-## 3a- Bump versions
+## 2- Bump package versions
+
+## 2a- patch
 
 When bumping `patch` or `minor` versions, you can use the following commands:
 
@@ -29,7 +25,7 @@ yarn version:all:patch
 yarn version:all:minor
 ```
 
-## 3b- Bump `dev` versions
+## 2b- `dev`
 
 ```bash
 # bump a dev version of all packages
@@ -40,11 +36,13 @@ yarn version:all:dev
 yarn version-sdks dev qwik
 ```
 
+## 3- Merge PR
+
 ## 4- Publish
 
 Run the Release SDKs Github Action workflow.
 
-## 4- Update examples
+## 5- Update examples (optional)
 
 ```
 yarn upgrade-example:all
