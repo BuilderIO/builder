@@ -1,3 +1,7 @@
+### 0.7.0
+
+- Setting `noTraverse` option's default to `true` when fetching multiple content entries.
+
 ### 0.6.4
 
 - Fix issue with styles not rendering properly during SSR.
