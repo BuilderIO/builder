@@ -27,9 +27,6 @@ on:
           - svelte
           - vue
 
-env:
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
-
 jobs:
   publish-sdks:
     runs-on: ubuntu-latest
@@ -46,6 +43,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -57,7 +55,11 @@ jobs:
       - name: 📦 Publish All SDKs
         run: yarn nx run-many -t release --projects=@builder.io/sdk-\* --tag=${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk == 'all' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
 
       - name: 📦 Publish ${{ matrix.sdk-name }} SDK
         run: yarn nx release @builder.io/sdk-${{ matrix.sdk }} --tag=${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk != 'all' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
