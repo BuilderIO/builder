@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       dist-tag:
-        description: 'Publish SDK(s) to NPM using this dist-tag. The "latest" and "next" dist-tags will use the version number already committed in package.json.'
+        description: 'Publish SDK(s) to NPM using this dist-tag. The "latest" and "dev" dist-tags will use the version number already committed in package.json.'
         required: true
         default: 'dev'
         type: choice
