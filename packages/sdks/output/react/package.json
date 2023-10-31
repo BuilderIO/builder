@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.6.2",
+  "version": "0.6.4",
   "files": [
     "lib",
     "types"
@@ -94,6 +94,7 @@
     }
   },
   "scripts": {
+    "publish": "npm publish",
     "types": "tsc",
     "build": "nx run-many -p @builder.io/sdk-react -t types build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",
