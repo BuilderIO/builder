@@ -2,6 +2,7 @@ import fse from 'fs-extra';
 import traverse from 'traverse';
 import { ChildProcess, spawn } from 'child_process';
 import path from 'path';
+import { createHash } from 'crypto';
 
 const childrenProcesses: ChildProcess[] = [];
 
@@ -36,6 +37,29 @@ export const replaceField = (json: any, newValue: string, oldValue: string) => {
     }
   });
 };
+
+export const updateIdsMap = (idsMap: Record<string, string>, organizationId: string) => Object.values(idsMap).reduce<
+    Record<string, string>
+  >(
+    (modelMap, id) => ({
+      ...modelMap,
+      [id]: createHash('sha256')
+        .update(id + organizationId)
+        .digest('hex'),
+    }),
+    {}
+  );
+
+export const replaceIds = (obj: any, ...idsMaps: Record<string, string>[]) =>
+  traverse(obj).map(function (field) {
+    // we keep meta props as is for debugging puprposes
+    if (this.key?.includes('@')) {
+      return;
+    }
+    idsMaps.forEach((idsMap) => {
+      if (idsMap[field]) this.update(idsMap[field])
+    })
+  });
 
 export function writeFile(fileContents: string, filePath: string, fileName: string) {
   if (!fse.existsSync(filePath)) {
