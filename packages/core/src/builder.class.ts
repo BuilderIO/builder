@@ -453,6 +453,13 @@ export type GetContentOptions = AllowEnrich & {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
+
+  /**
+   * If set to `true`, it will lazy load symbols/references.
+   * If set to `false`, it will render the entire content tree eagerly.
+   * @deprecated use `enrich` instead
+   */
+  noTraverse?: boolean;
 };
 
 export type Class = {
@@ -2333,11 +2340,14 @@ export class Builder {
     if (queue[0].format) {
       queryParams.format = queue[0].format;
     }
+    if ('noTraverse' in queue[0]) {
+      queryParams.noTraverse = queue[0].noTraverse;
+    }
 
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
         ? QueryString.parseDeep(location.search.substr(1))
-        : undefined || {};
+        : undefined || {}; // TODO: WHAT about SSR (this.request) ?
 
     const userAttributes =
       // FIXME: HACK: only checks first in queue for user attributes overrides, should check all
@@ -2663,6 +2673,11 @@ export class Builder {
       if (options.apiVersion && !this.apiVersion) {
         this.apiVersion = options.apiVersion;
       }
+    }
+
+    // Set noTraverse=true if NOT already passed by user, for query performance
+    if (!('noTraverse' in options)) {
+      options.noTraverse = true;
     }
 
     return instance
