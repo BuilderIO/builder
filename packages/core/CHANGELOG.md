@@ -1,3 +1,7 @@
+### 2.1.0
+
+- Setting `noTraverse` option's default to `true` when fetching multiple content entries.
+
 ### 2.0.8
 
 - Fix: remove `setImmediate` usage to fix issue with next.js edge runtime.
