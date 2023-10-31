@@ -29,7 +29,7 @@
     "typecheck": {
       "dependsOn": ["^build"]
     },
-    "publish": {
+    "release": {
       "dependsOn": ["build"]
     }
   },

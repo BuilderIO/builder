@@ -90,7 +90,7 @@ const vueConfig = {
             }
 
             const filterAttrKeys = Object.entries(item.bindings).filter(
-              ([key, value]) =>
+              ([_key, value]) =>
                 value?.code.includes('filterAttrs') &&
                 value.code.includes('true')
             );
@@ -261,6 +261,7 @@ module.exports = {
               if (json.name === 'Symbol') {
                 delete json.state.setContent;
 
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 json.state.contentToUse.code =
                   json.state.contentToUse?.code.replace('async () => ', '');
@@ -445,7 +446,7 @@ module.exports = {
                 if (!isMitosisNode(item)) return;
 
                 const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([key, value]) =>
+                  ([_key, value]) =>
                     value?.code.includes('filterAttrs') &&
                     value.code.includes('true')
                 );

@@ -2947,7 +2947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.80":
+"@builder.io/mitosis-cli@npm:0.0.80":
   version: 0.0.80
   resolution: "@builder.io/mitosis-cli@npm:0.0.80"
   dependencies:
@@ -2979,7 +2979,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.122, @builder.io/mitosis@npm:^0.0.122":
+"@builder.io/mitosis@npm:0.0.122":
   version: 0.0.122
   resolution: "@builder.io/mitosis@npm:0.0.122"
   dependencies:
@@ -3370,8 +3370,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.15
-    "@builder.io/mitosis": ^0.0.122
-    "@builder.io/mitosis-cli": ^0.0.80
+    "@builder.io/mitosis": 0.0.122
+    "@builder.io/mitosis-cli": 0.0.80
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
