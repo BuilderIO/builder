@@ -53,7 +53,7 @@ jobs:
           cache-install-state: true
 
       - name: 📦 Publish All SDKs
-        run: yarn nx run-many -t release --projects=@builder.io/sdk-\* --tag=${{ github.event.inputs.dist-tag }}
+        run: yarn nx run-many -t release --projects=@builder.io/sdk-\* --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --tag=${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk == 'all' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
