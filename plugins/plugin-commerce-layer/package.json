@@ -122,7 +122,6 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/commerce-plugin-tools": "^0.2.1-4",
-    "@moltin/sdk": "^8.8.1"
+    "@builder.io/commerce-plugin-tools": "^0.2.1-4"
   }
 }

@@ -37,7 +37,6 @@ registerCommercePlugin(
         }),
       });
       const data = await response.json();
-      console.log('returning auth token ', data.access_token);
       return data.access_token;
     };
 
@@ -87,7 +86,6 @@ registerCommercePlugin(
           });
           return response.data.map(transformResource);
         },
-
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request',
