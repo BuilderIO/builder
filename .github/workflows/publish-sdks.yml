@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       dist-tag:
-        description: 'Publish SDK(s) to NPM using this dist-tag. The "latest" and "next" dist-tags will use the version number already committed in package.json.'
+        description: 'Publish SDK(s) to NPM using this dist-tag. The "latest" and "dev" dist-tags will use the version number already committed in package.json.'
         required: true
         default: 'dev'
         type: choice
@@ -55,9 +55,9 @@ jobs:
           cache-install-state: true
 
       - name: 📦 Publish All SDKs
-        run: yarn nx run-many -t publish --projects=@builder.io/sdk-\* --${{ github.event.inputs.dist-tag }}
+        run: yarn nx run-many -t release --projects=@builder.io/sdk-\* --tag=${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk === 'all' }}
 
       - name: 📦 Publish ${{ matrix.sdk-name }} SDK
-        run: yarn nx run publish @builder.io/sdk-${{ matrix.sdk }} --${{ github.event.inputs.dist-tag }}
+        run: yarn nx release @builder.io/sdk-${{ matrix.sdk }} --tag=${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk !== 'all' }}

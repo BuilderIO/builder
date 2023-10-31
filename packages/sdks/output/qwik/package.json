@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.6.4",
+  "version": "0.6.5-4",
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/edge/index.qwik.cjs",
@@ -89,7 +89,7 @@
     }
   },
   "scripts": {
-    "publish": "npm publish",
+    "release": "npm publish",
     "typecheck": "tsc --noEmit",
     "tsc": "tsc",
     "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
