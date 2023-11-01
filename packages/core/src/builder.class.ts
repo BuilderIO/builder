@@ -2651,6 +2651,7 @@ export class Builder {
       req?: IncomingMessage;
       res?: ServerResponse;
       apiKey?: string;
+      authToken?: string;
     } = {}
   ): Promise<BuilderContent[]> {
     let instance: Builder = this;
@@ -2660,7 +2661,7 @@ export class Builder {
         options.req,
         options.res,
         false,
-        null,
+        options.authToken || this.authToken,
         options.apiVersion || this.apiVersion
       );
       instance.setUserAttributes(this.getUserAttributes());
@@ -2669,6 +2670,9 @@ export class Builder {
       // directly calls .get on the singleton instance of Builder
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
+      }
+      if (options.authToken && !this.authToken) {
+        this.authToken = options.authToken;
       }
       if (options.apiVersion && !this.apiVersion) {
         this.apiVersion = options.apiVersion;

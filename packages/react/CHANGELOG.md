@@ -1,3 +1,6 @@
+### 3.1.1
+- Use latest core sdk, to enable passing `authToken` to `getAll` on private models.
+
 ### 3.1.0
 - Updated to use latest core sdk (v2.1.0) which now uses `true` as default for `noTraverse` option when fetching multiple content entries.
 
