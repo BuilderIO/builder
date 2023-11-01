@@ -1,6 +1,6 @@
 ### 2.1.1
 
-- Accept `authToken` optoin in `getAll` to fetch private models.
+- Accept `authToken` option in `getAll` to fetch private models.
 
 ### 2.1.0
 
