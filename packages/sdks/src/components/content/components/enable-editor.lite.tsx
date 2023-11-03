@@ -332,13 +332,12 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onMount(() => {
     if (isBrowser()) {
-      if (isEditing() && elementRef) {
+      if (isEditing()) {
         elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
       }
 
       const shouldTrackImpression = useTarget({
         qwik:
-          elementRef &&
           elementRef.attributes.getNamedItem('shouldTrack')?.value === 'true',
         default:
           props.builderContextSignal.value.content &&
@@ -347,20 +346,15 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
       if (shouldTrackImpression) {
         const variationId = useTarget({
-          qwik:
-            elementRef &&
-            elementRef.attributes.getNamedItem('variationId')?.value,
+          qwik: elementRef.attributes.getNamedItem('variationId')?.value,
           default: props.builderContextSignal.value.content?.testVariationId,
         });
         const contentId = useTarget({
-          qwik:
-            elementRef &&
-            elementRef.attributes.getNamedItem('contentId')?.value,
+          qwik: elementRef.attributes.getNamedItem('contentId')?.value,
           default: props.builderContextSignal.value.content?.id,
         });
         const apiKeyProp = useTarget({
-          qwik:
-            elementRef && elementRef.attributes.getNamedItem('apiKey')?.value,
+          qwik: elementRef.attributes.getNamedItem('apiKey')?.value,
           default: props.apiKey,
         });
 
@@ -377,7 +371,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         rsc: () => {},
         default: () => {
           // override normal content in preview mode
-          if (isPreviewing() && elementRef) {
+          if (isPreviewing()) {
             elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
           }
         },
