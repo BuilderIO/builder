@@ -432,9 +432,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
             contentId: props.builderContextSignal.value.content?.id,
             variationId:
               props.builderContextSignal.value.content?.testVariationId,
-            shouldTrack:
+            shouldTrack: String(
               props.builderContextSignal.value.content &&
-              getDefaultCanTrack(props.canTrack),
+                getDefaultCanTrack(props.canTrack)
+            ),
           },
           default: {},
         })}
