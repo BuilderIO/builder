@@ -7,11 +7,12 @@ import type { GetContentOptions } from './types.js';
 import { DEFAULT_API_VERSION } from '../../types/api-version.js';
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
+  let { noTraverse = false } = options;
+
   const {
     limit = 30,
     userAttributes,
     query,
-    noTraverse = false,
     model,
     apiKey,
     includeRefs = true,
@@ -28,6 +29,14 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     throw new Error(
       `Invalid apiVersion: expected 'v2' or 'v3', received '${apiVersion}'`
     );
+  }
+
+  // Set noTraverse=true if NOT already passed by user, for query performance
+  if (
+    (options.limit === undefined || options.limit > 1) &&
+    !('noTraverse' in options)
+  ) {
+    noTraverse = true;
   }
 
   const url = new URL(
