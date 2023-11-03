@@ -321,7 +321,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   });
 
   onEvent(
-    'initEditingBldr',
+    'initeditingbldr',
     (event) => {
       state.initEditing(event);
     },
@@ -330,7 +330,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   );
 
   onEvent(
-    'initPreviewingBldr',
+    'initpreviewingbldr',
     (event) => {
       state.initPreview(event);
     },
