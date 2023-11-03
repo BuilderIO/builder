@@ -338,26 +338,51 @@ export default function EnableEditor(props: BuilderEditorProps) {
     true
   );
 
+  // make this a `useOn('qvisible')`
   onMount(() => {
-    if (!props.apiKey) {
-      logger.error(
-        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
-      );
-    }
+    useTarget({
+      qwik: () => {},
+      default: () => {
+        if (!props.apiKey) {
+          logger.error(
+            'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+          );
+        }
+      },
+    });
 
     if (isBrowser()) {
       if (isEditing() && elementRef) {
         elementRef.dispatchEvent(new CustomEvent('initEditingBldr'));
       }
-      if (props.builderContextSignal.value.content) {
-        const variationId =
-          props.builderContextSignal.value.content?.testVariationId;
-        const contentId = props.builderContextSignal.value.content?.id;
+
+      const shouldTrackImpression = useTarget({
+        qwik:
+          elementRef.attributes.getNamedItem('shouldTrack')?.value === 'true',
+        default:
+          props.builderContextSignal.value.content &&
+          getDefaultCanTrack(props.canTrack),
+      });
+
+      if (shouldTrackImpression) {
+        const variationId = useTarget({
+          qwik: elementRef.attributes.getNamedItem('variationId')?.value,
+          default: props.builderContextSignal.value.content?.testVariationId,
+        });
+        const contentId = useTarget({
+          qwik: elementRef.attributes.getNamedItem('contentId')?.value,
+          default: props.builderContextSignal.value.content?.id,
+        });
+        const apiKey = useTarget({
+          qwik: elementRef.attributes.getNamedItem('apiKey')?.value,
+          default: props.apiKey,
+        });
+
         _track({
           type: 'impression',
           canTrack: getDefaultCanTrack(props.canTrack),
           contentId,
-          apiKey: props.apiKey,
+          apiKey,
           variationId: variationId !== contentId ? variationId : undefined,
         });
       }
@@ -401,6 +426,18 @@ export default function EnableEditor(props: BuilderEditorProps) {
   return (
     <Show when={props.builderContextSignal.value.content}>
       <div
+        {...useTarget({
+          qwik: {
+            apiKey: props.apiKey,
+            contentId: props.builderContextSignal.value.content?.id,
+            variationId:
+              props.builderContextSignal.value.content?.testVariationId,
+            shouldTrack:
+              props.builderContextSignal.value.content &&
+              getDefaultCanTrack(props.canTrack),
+          },
+          default: {},
+        })}
         key={state.forceReRenderCount}
         ref={elementRef}
         onClick={(event) => state.onClick(event)}
