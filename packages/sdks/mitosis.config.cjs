@@ -293,6 +293,7 @@ module.exports = {
       stylesType: 'style-tag',
     },
     reactNative: {
+      typescript: false,
       plugins: [
         SRCSET_PLUGIN,
         BASE_TEXT_PLUGIN,
