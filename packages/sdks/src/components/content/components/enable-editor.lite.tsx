@@ -341,7 +341,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onMount(() => {
     if (isBrowser()) {
       if (isEditing() && elementRef) {
-        elementRef.dispatchEvent(new CustomEvent('initEditingBldr'));
+        elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
       }
 
       const shouldTrackImpression = useTarget({
@@ -386,7 +386,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         default: () => {
           // override normal content in preview mode
           if (isPreviewing() && elementRef) {
-            elementRef.dispatchEvent(new CustomEvent('initPreviewingBldr'));
+            elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
           }
         },
       });
