@@ -60,6 +60,7 @@ const getTargetPath = ({ target }) => {
  * @type {MitosisConfig['options']['vue']}
  */
 const vueConfig = {
+  typescript: true,
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
   cssNamespace: getSeededId,
   plugins: [
@@ -164,13 +165,7 @@ module.exports = {
   exclude: ['src/**/*.test.ts'],
   targets,
   getTargetPath,
-  commonOptions: {
-    typescript: true,
-  },
   options: {
-    solid: {
-      typescript: false,
-    },
     vue2: {
       ...vueConfig,
       asyncComponentImports: true,
@@ -252,10 +247,12 @@ module.exports = {
     },
     vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
+      typescript: true,
       plugins: [SRCSET_PLUGIN],
       stylesType: 'style-tag',
     },
     rsc: {
+      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
         () => ({
@@ -293,7 +290,6 @@ module.exports = {
       stylesType: 'style-tag',
     },
     reactNative: {
-      typescript: false,
       plugins: [
         SRCSET_PLUGIN,
         BASE_TEXT_PLUGIN,
@@ -380,9 +376,11 @@ module.exports = {
       ],
     },
     qwik: {
+      typescript: true,
       plugins: [SRCSET_PLUGIN],
     },
     svelte: {
+      typescript: true,
       plugins: [
         /**
          * This plugin modifies `svelte:component` to elements to use the `svelte:element` syntax instead.
