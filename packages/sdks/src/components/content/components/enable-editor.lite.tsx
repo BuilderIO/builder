@@ -366,7 +366,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
             elementRef.attributes.getNamedItem('contentId')?.value,
           default: props.builderContextSignal.value.content?.id,
         });
-        const apiKey = useTarget({
+        const apiKeyProp = useTarget({
           qwik:
             elementRef && elementRef.attributes.getNamedItem('apiKey')?.value,
           default: props.apiKey,
@@ -376,7 +376,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           type: 'impression',
           canTrack: true,
           contentId,
-          apiKey: apiKey!,
+          apiKey: apiKeyProp!,
           variationId: variationId !== contentId ? variationId : undefined,
         });
       }
