@@ -338,19 +338,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     true
   );
 
-  // make this a `useOn('qvisible')`
   onMount(() => {
-    useTarget({
-      qwik: () => {},
-      default: () => {
-        if (!props.apiKey) {
-          logger.error(
-            'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
-          );
-        }
-      },
-    });
-
     if (isBrowser()) {
       if (isEditing() && elementRef) {
         elementRef.dispatchEvent(new CustomEvent('initEditingBldr'));
@@ -380,7 +368,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
         _track({
           type: 'impression',
-          canTrack: getDefaultCanTrack(props.canTrack),
+          canTrack: true,
           contentId,
           apiKey,
           variationId: variationId !== contentId ? variationId : undefined,
@@ -396,17 +384,23 @@ export default function EnableEditor(props: BuilderEditorProps) {
           }
         },
       });
-
-      useTarget({
-        qwik: () => {},
-        default: () => {
-          state.evaluateJsCode();
-          state.runHttpRequests();
-          state.emitStateUpdate();
-        },
-      });
     }
   });
+
+  onMount(
+    () => {
+      if (!props.apiKey) {
+        logger.error(
+          'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+        );
+      }
+
+      state.evaluateJsCode();
+      state.runHttpRequests();
+      state.emitStateUpdate();
+    },
+    { onSSR: true }
+  );
 
   onUpdate(() => {
     state.evaluateJsCode();
