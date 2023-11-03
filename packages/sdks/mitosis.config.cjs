@@ -377,7 +377,31 @@ module.exports = {
     },
     qwik: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              if (!json.name === 'EnableEditor') return;
+
+              json.hooks.onMount.forEach((hook, i) => {
+                if (hook.onSSR) return;
+
+                json.hooks.onMount.splice(i, 1);
+
+                json.hooks.onEvent.push({
+                  code: hook.code.replaceAll('elementRef', 'element'),
+                  eventArgName: 'event',
+                  eventName: 'qvisible',
+                  isRoot: true,
+                  refName: 'element',
+                  elementArgName: 'element',
+                });
+              });
+            },
+          },
+        }),
+      ],
     },
     svelte: {
       typescript: true,
