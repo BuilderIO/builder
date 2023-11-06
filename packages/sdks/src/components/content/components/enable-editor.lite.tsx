@@ -58,6 +58,9 @@ type BuilderEditorProps = Omit<
 };
 
 export default function EnableEditor(props: BuilderEditorProps) {
+  /**
+   * This var name is hard-coded in some Mitosis Plugins. Do not change.
+   */
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
@@ -332,8 +335,15 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onMount(() => {
     if (isBrowser()) {
-      if (isEditing()) {
-        elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
+      if (isEditing() && elementRef) {
+        useTarget({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          solid: () => INJECT_EDITING_HOOK_HERE,
+          default: () => {
+            elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
+          },
+        });
       }
 
       const shouldTrackImpression = useTarget({
@@ -367,15 +377,18 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
       }
 
-      useTarget({
-        rsc: () => {},
-        default: () => {
-          // override normal content in preview mode
-          if (isPreviewing()) {
+      // override normal content in preview mode
+      if (isPreviewing() && elementRef) {
+        useTarget({
+          rsc: () => {},
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          solid: () => INJECT_PREVIEWING_HOOK_HERE,
+          default: () => {
             elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
-          }
-        },
-      });
+          },
+        });
+      }
     }
   });
 
