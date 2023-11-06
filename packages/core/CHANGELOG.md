@@ -1,3 +1,7 @@
+### 2.1.1
+
+- Accept `authToken` option in `getAll` to fetch private models.
+
 ### 2.1.0
 
 - Setting `noTraverse` option's default to `true` when fetching multiple content entries.
