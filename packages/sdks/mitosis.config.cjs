@@ -197,6 +197,11 @@ module.exports = {
                     );
                   }
                 });
+
+                onMountHook.code = onMountHook.code.replaceAll(
+                  'elementRef',
+                  'true'
+                );
               });
 
               json.hooks.onEvent = [];
