@@ -1,3 +1,0 @@
-function init() {}
-
-export { init }

@@ -1,2 +1,0 @@
-const DEFAULT_API_VERSION = "v3";
-export { DEFAULT_API_VERSION }
