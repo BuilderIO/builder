@@ -81,7 +81,13 @@ export default function ContentComponent(props: ContentProps) {
     useState<BuilderContextInterface>(
       {
         content: getContentInitialValue({
-          content: props.content,
+          content: useTarget({
+            /**
+             * Temporary workaround until https://github.com/BuilderIO/qwik/pull/5013 is merged.
+             */
+            qwik: JSON.parse(JSON.stringify(props.content || {})),
+            default: props.content,
+          }),
           data: props.data,
         }),
         localState: undefined,

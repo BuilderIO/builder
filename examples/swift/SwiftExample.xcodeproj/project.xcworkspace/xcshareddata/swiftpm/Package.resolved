@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/BuilderIO/builder-swift",
       "state" : {
-        "branch" : "shyam-custom-components",
-        "revision" : "d9b837ad5a3514c37f353971177d8f12aa95053d"
+        "branch" : "main",
+        "revision" : "2973d0c86e54b7514ec3e25b8fd7d1d85edd1a27"
       }
     },
     {

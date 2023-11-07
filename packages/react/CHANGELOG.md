@@ -1,3 +1,12 @@
+### 3.1.1
+- Use latest core sdk, to enable passing `authToken` to `getAll` on private models.
+
+### 3.1.0
+- Updated to use latest core sdk (v2.1.0) which now uses `true` as default for `noTraverse` option when fetching multiple content entries.
+
+### 3.0.14
+- Fix: Update core sdk to fix issue with edge runtime in next.js
+
 ### 3.0.13
 - Add support for `customComponents` prop on `BuilderComponent`
 - Fix: SSR with text block eval expression

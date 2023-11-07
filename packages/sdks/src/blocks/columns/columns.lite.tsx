@@ -16,6 +16,7 @@ import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
 } from '../../types/builder-props.js';
+import { deoptSignal } from '../../functions/deopt.js';
 
 type Column = {
   blocks: BuilderBlock[];
@@ -219,7 +220,13 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
             key={index}
           >
             <Blocks
-              blocks={column.blocks}
+              blocks={useTarget({
+                /**
+                 * Workaround until https://github.com/BuilderIO/qwik/issues/5017 is fixed.
+                 */
+                qwik: deoptSignal(column.blocks),
+                default: column.blocks,
+              })}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{ flexGrow: '1' }}

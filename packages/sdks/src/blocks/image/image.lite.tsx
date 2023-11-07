@@ -1,7 +1,7 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
-import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { getSrcSet } from './image.helpers.js';
+import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 
 useMetadata({
   rsc: {
@@ -21,7 +21,7 @@ export interface ImageProps {
   backgroundPosition?: string;
   srcset?: string;
   aspectRatio?: number;
-  children?: JSX.Element;
+  children?: any;
   fitContent?: boolean;
   builderBlock?: BuilderBlock;
   noWebp?: boolean;

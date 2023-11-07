@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
-  "version": "0.5.9",
+  "version": "0.7.0",
   "type": "module",
   "main": "lib/browser/commonjs/index.js",
   "module": "lib/browser/module/index.js",
@@ -91,6 +91,7 @@
     "src/"
   ],
   "scripts": {
+    "release": "npm publish",
     "build:one": "bob build",
     "/**/": "the command below cannot be run in parallel because build:browser MUST run first.",
     "build": "nx run-many -p @builder.io/sdk-react-native -t build:browser build:node build:edge --parallel=false",
@@ -134,6 +135,10 @@
         "dependsOn": [
           "^build:react-native",
           "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/lib",
+          "{projectRoot}/types"
         ]
       }
     }

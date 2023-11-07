@@ -2,7 +2,7 @@
 
 This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory.
 
-If you are using NextJS's pages directory, use the [React gen2 SDK](../react/) in Beta, or the stable React gen1 SDK [here](../../../react/) (i.e. `builder.io/react`).
+Note: you can use _any_ Builder React SDK with Next.js. Our [Gen1](../../../react/) and [Gen2](../react/) SDKs both work with Next.js (pages router or app router). This SDK, though, is the only one that supports [registering](<[url](https://www.builder.io/c/docs/custom-components-setup)>) server components, and also includes nearly 0 client side JS runtime. Our other SDKs only support registering client components in React, due to how RSC's runtime works.
 
 ## API Reference
 

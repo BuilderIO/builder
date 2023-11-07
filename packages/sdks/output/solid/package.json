@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-solid",
-  "version": "0.5.9",
+  "version": "0.7.0",
   "description": "",
   "files": [
     "dist",
@@ -72,12 +72,12 @@
   },
   "typesVersions": {},
   "scripts": {
+    "release": "npm publish",
     "build": "nx run-many -p @builder.io/sdk-solid -t build:node build:edge build:browser",
     "build:one": "tsup",
     "build:node": "SDK_ENV=node yarn build:one",
     "build:edge": "SDK_ENV=edge yarn build:one",
-    "build:browser": "SDK_ENV=browser yarn build:one",
-    "prepublishOnly": "pnpm build"
+    "build:browser": "SDK_ENV=browser yarn build:one"
   },
   "dependencies": {
     "solid-styled-components": "^0.27.6"

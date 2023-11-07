@@ -29,10 +29,9 @@ export async function fetchOneEntry(
 }
 
 /**
- * @deprecated
- * Consider using `fetchBuilderProps` instead for easier setup.
+ * @deprecated `getContent` was renamed to `fetchOneEntry`. This is a temporary alias to avoid breaking changes.
  *
- * NOTE: `getContent` was renamed to `fetchOneEntry` and will be removed in a future release.
+ * NOTE: consider using `fetchBuilderProps` instead for easier setup.
  */
 export const getContent = fetchOneEntry;
 
@@ -56,7 +55,7 @@ const _fetchContent = async (options: GetContentOptions) => {
 };
 
 /**
- * Exported only for testing purposes. Should not be used directly.
+ * @internal Exported only for testing purposes. Do not use.
  */
 export const _processContentResult = async (
   options: GetContentOptions,
@@ -119,6 +118,6 @@ export async function fetchEntries(options: GetContentOptions) {
 }
 
 /**
- * @deprecated Use `fetchEntries` instead.
+ * @deprecated `getAllContent` was renamed to `fetchEntries`. This is a temporary alias to avoid breaking changes.
  */
 export const getAllContent = fetchEntries;

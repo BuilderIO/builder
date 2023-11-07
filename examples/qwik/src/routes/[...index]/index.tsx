@@ -2,7 +2,7 @@ import { component$, useStore } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import type { RegisteredComponent } from '@builder.io/sdk-qwik';
-import { getContent, RenderContent } from '@builder.io/sdk-qwik';
+import { fetchOneEntry, Content } from '@builder.io/sdk-qwik';
 
 // Enter your key here!
 export const apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
@@ -36,7 +36,7 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
 ];
 
 export const useBuilderContentLoader = routeLoader$(async event => {
-  const data = await getContent({
+  const data = await fetchOneEntry({
     model: 'page',
     apiKey: apiKey,
     userAttributes: { urlPath: event.url.pathname },
@@ -62,7 +62,7 @@ export default component$(() => {
   // }
 
   return (
-    <RenderContent
+    <Content
       model="page"
       content={content.value}
       apiKey={apiKey}

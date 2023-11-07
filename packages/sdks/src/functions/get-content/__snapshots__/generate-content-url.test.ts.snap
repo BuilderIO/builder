@@ -1,15 +1,33 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Generate Content URL > Handles overrides correctly 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
+exports[`Generate Content URL > Handles overrides correctly 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
-exports[`Generate Content URL > generate content url with apiVersion as default 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
+exports[`Generate Content URL > generate content url with apiVersion as default 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
-exports[`Generate Content URL > generate content url with apiVersion as v2 1`] = `"https://cdn.builder.io/api/v2/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
+exports[`Generate Content URL > generate content url with apiVersion as v2 1`] = `"https://cdn.builder.io/api/v2/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
-exports[`Generate Content URL > generate content url with apiVersion as v3 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
+exports[`Generate Content URL > generate content url with apiVersion as v3 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
-exports[`Generate Content URL > generate content url with enrich option not present 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true"`;
+exports[`Generate Content URL > generate content url with enrich option not present 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true"`;
 
-exports[`Generate Content URL > generate content url with enrich option true 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true&enrich=true"`;
+exports[`Generate Content URL > generate content url with enrich option true 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&enrich=true"`;
 
-exports[`Generate Content URL > generates the proper value for a simple query 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
+exports[`Generate Content URL > generate content url with limit set to 1 and check for noTraverse 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=false&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with limit set to 2 and check for noTraverse 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=2&noTraverse=true&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with limit unset and check for noTraverse 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with noTraverse option false 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=false&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with noTraverse option false and limit set to 1 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=false&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with noTraverse option false and limit set to 2 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=2&noTraverse=false&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with noTraverse option true 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with noTraverse option true and limit set to 1 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=true&includeRefs=true"`;
+
+exports[`Generate Content URL > generate content url with noTraverse option true and limit set to 2 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=2&noTraverse=true&includeRefs=true"`;
+
+exports[`Generate Content URL > generates the proper value for a simple query 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&query.id=%22c1b81bab59704599b997574eb0736def%22"`;

@@ -1,4 +1,0 @@
-# having the sub-project causes weird issues in Vite projects trying to consume the project.
-# We only nede the `dist/*` at the root of this project anyways, so we can safely ignore the sub-dirs.
-/vue2/
-/vue3/

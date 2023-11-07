@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
-  "version": "0.5.9",
+  "version": "0.7.0",
   "type": "module",
   "files": [
     "lib",
@@ -37,6 +37,7 @@
   },
   "types": "./lib/browser/index.d.ts",
   "scripts": {
+    "release": "npm publish",
     "prepare": "SDK_ENV=browser svelte-kit sync",
     "build": "nx run-many -p @builder.io/sdk-svelte -t build:node build:edge build:browser",
     "build:node": "SDK_ENV=node svelte-package -i src/ -o lib/node",

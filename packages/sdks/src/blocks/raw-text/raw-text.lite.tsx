@@ -7,7 +7,7 @@ export interface RawTextProps {
 
 export default function RawText(props: RawTextProps) {
   return (
-    <span
+    <div
       class={useTarget(
         /**
          * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.

@@ -102,7 +102,6 @@ export interface ComponentInfo {
     query?: any;
   };
 
-  /** not yet implemented */
   friendlyName?: string;
 
   /**

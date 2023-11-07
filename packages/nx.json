@@ -3,7 +3,7 @@
     "default": {
       "runner": "nx-cloud",
       "options": {
-        "accessToken": "MTRkMmFiNTQtZWYzMi00YWRmLTg2OTctZjE1Mjk1ZTlkZDYyfHJlYWQ=",
+        "accessToken": "MWRjZDNhMmQtMTlhMi00YWExLTkzZDAtMTA1NzM1ZmIxMmRkfHJlYWQ=",
         "cacheDirectory": ".nx-cache",
         "cacheableOperations": ["build"]
       }
@@ -28,6 +28,9 @@
     },
     "typecheck": {
       "dependsOn": ["^build"]
+    },
+    "release": {
+      "dependsOn": ["build"]
     }
   },
   "affected": {

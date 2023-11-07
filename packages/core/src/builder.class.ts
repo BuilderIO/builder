@@ -453,6 +453,13 @@ export type GetContentOptions = AllowEnrich & {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
+
+  /**
+   * If set to `true`, it will lazy load symbols/references.
+   * If set to `false`, it will render the entire content tree eagerly.
+   * @deprecated use `enrich` instead
+   */
+  noTraverse?: boolean;
 };
 
 export type Class = {
@@ -750,7 +757,6 @@ export interface Component {
     query?: any;
   };
 
-  /** @hidden @deprecated */
   friendlyName?: string;
 
   /**
@@ -2334,11 +2340,14 @@ export class Builder {
     if (queue[0].format) {
       queryParams.format = queue[0].format;
     }
+    if ('noTraverse' in queue[0]) {
+      queryParams.noTraverse = queue[0].noTraverse;
+    }
 
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
         ? QueryString.parseDeep(location.search.substr(1))
-        : undefined || {};
+        : undefined || {}; // TODO: WHAT about SSR (this.request) ?
 
     const userAttributes =
       // FIXME: HACK: only checks first in queue for user attributes overrides, should check all
@@ -2642,6 +2651,7 @@ export class Builder {
       req?: IncomingMessage;
       res?: ServerResponse;
       apiKey?: string;
+      authToken?: string;
     } = {}
   ): Promise<BuilderContent[]> {
     let instance: Builder = this;
@@ -2651,7 +2661,7 @@ export class Builder {
         options.req,
         options.res,
         false,
-        null,
+        options.authToken || this.authToken,
         options.apiVersion || this.apiVersion
       );
       instance.setUserAttributes(this.getUserAttributes());
@@ -2661,9 +2671,17 @@ export class Builder {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
       }
+      if (options.authToken && !this.authToken) {
+        this.authToken = options.authToken;
+      }
       if (options.apiVersion && !this.apiVersion) {
         this.apiVersion = options.apiVersion;
       }
+    }
+
+    // Set noTraverse=true if NOT already passed by user, for query performance
+    if (!('noTraverse' in options)) {
+      options.noTraverse = true;
     }
 
     return instance
