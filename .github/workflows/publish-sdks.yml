@@ -53,13 +53,13 @@ jobs:
           cache-install-state: true
 
       - name: 📦 Publish All SDKs
-        run: yarn nx run-many -t release --projects=@builder.io/sdk-\* --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --tag=${{ github.event.inputs.dist-tag }}
+        run: yarn nx run-many --skip-nx-cache -t release --projects=@builder.io/sdk-\* --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --tag=${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk == 'all' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
 
       - name: 📦 Publish ${{ matrix.sdk-name }} SDK
-        run: yarn nx release @builder.io/sdk-${{ matrix.sdk }} --tag=${{ github.event.inputs.dist-tag }}
+        run: yarn nx release --skip-nx-cache @builder.io/sdk-${{ matrix.sdk }} --tag=${{ github.event.inputs.dist-tag }}
         if: ${{ github.event.inputs.sdk != 'all' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
