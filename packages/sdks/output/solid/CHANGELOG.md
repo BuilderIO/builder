@@ -1,3 +1,28 @@
+### 0.7.0
+
+- Setting `noTraverse` option's default to `true` when fetching multiple content entries.
+
+### 0.6.4
+
+- No Change.
+
+### 0.6.3
+
+- Fix issue with block styles not updating when editing them.
+
+### 0.6.2
+
+- No Changes.
+
+### 0.6.1
+
+- No Changes.
+
+### 0.6.0
+
+- Update build pipeline to generate 3 separate bundles for each environment: browser, node and edge runtimes.
+- Use Rollup to build SDK
+
 ### 0.5.9
 
 No Changes.

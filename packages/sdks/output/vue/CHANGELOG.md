@@ -1,3 +1,28 @@
+### 0.7.0
+
+- Setting `noTraverse` option's default to `true` when fetching multiple content entries.
+
+### 0.6.4
+
+- No Change.
+
+### 0.6.3
+
+- Fix issue with block styles not updating when editing them.
+
+### 0.6.2
+
+- No Changes.
+
+### 0.6.1
+
+- Fix npm publishing configuration to include new bundling output.
+
+### 0.6.0
+
+- Update build pipeline to generate 3 separate bundles for each environment: browser, node and edge runtimes.
+- Make the default import (`import Sdk from '@builder.io/sdk-vue'`) point to `vue3` sub-export instead of `vue2`.
+
 ### 0.5.9
 
 No Changes.
