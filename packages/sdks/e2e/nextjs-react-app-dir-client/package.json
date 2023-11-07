@@ -13,7 +13,7 @@
     "@builder.io/sdk-react": "workspace:*",
     "@e2e/tests": "workspace:*",
     "isolated-vm": "^4.6.0",
-    "next": "13.4.20-canary.10",
+    "next": "^13.4.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
