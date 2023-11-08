@@ -426,6 +426,11 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
+              if (json.name === 'Symbol') {
+                json.hooks.onMount = [];
+                return;
+              }
+
               if (json.name !== 'EnableEditor') return;
 
               json.hooks.onMount.forEach((hook, i) => {
