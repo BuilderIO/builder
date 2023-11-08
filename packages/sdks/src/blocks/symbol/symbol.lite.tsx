@@ -92,9 +92,12 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     state.setContent();
   }, [props.symbol]);
 
-  onMount(() => {
-    state.setContent();
-  });
+  onMount(
+    () => {
+      state.setContent();
+    },
+    { onSSR: true }
+  );
 
   return (
     <div
