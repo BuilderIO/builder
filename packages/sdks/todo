@@ -1,23 +1,23 @@
-WORKS 🎉🎉🎉
-- Svelte
+Why does `isolated-vm` not work?
+
+- svelte: works
+- react-native: works
+
+- react: breaks
+- nextjs: breaks
+- qwik: breaks
+  - need to OptimizeDeps.exclude `isolated-vm`
+  - ships `/lib/node/index.qwik.js` instead of `/lib/browser/index.qwik.js` to the browser. probably a Qwik Vite plugin bug.
+- solidjs: breaks
+- vue2: breaks
+- vue3: breaks
+  - seems to load just fine but tests fail.
+  
+
+Fundamentally, is this a bundling issue? in a clean repo, I am able to import and use `isolated-vm` just fine.
+  - is this a yarn issue specific to this yarn version?
+  - is this a workspaces issue? we can test by releasing a dev version.
+
 
 Partially working:
 - Qwik: Bundles, but there is a code issue with calling `rootSetState`
-- NextJS: Bundles, but has an issue importing the server bundle from the client bundle.
-- React: Bundles correctly everywhere except Next App Dir project. Probably same issue as above
-
-NEXT UP:
-- Vue
-- Solid
-- ReactNative
-
-
-
-
-LATER:
-- add back `codeEvaluator` prop to `fetchBuilderProps`
-
-MISC:
-- e2e tests: add check for all tests of absence of warnings:
-  - Vue received a Component which was made a reactive object
-  - NextJS hydration mismatch

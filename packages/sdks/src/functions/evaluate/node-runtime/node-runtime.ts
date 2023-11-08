@@ -1,4 +1,4 @@
-import * as ivm from 'isolated-vm';
+import ivm from 'isolated-vm';
 import type {
   FunctionArguments,
   ExecutorArgs,
