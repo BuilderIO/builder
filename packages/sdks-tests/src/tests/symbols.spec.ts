@@ -2,8 +2,14 @@ import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
 import { test, isRNSDK, testOnlyOldReact, testExcludeOldReact, isOldReactSDK } from './helpers.js';
+import type { PackageName } from './sdk.js';
 import { sdk } from './sdk.js';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
+
+/**
+ * These packages fetch symbol content on the server, so we cannot test them.
+ */
+const SSR_FETCHING_PACKAGES: (PackageName | 'DEFAULT')[] = ['next-app-dir', 'qwik-city'];
 
 const testSymbols = async (page: Page) => {
   await page.getByText('special test description').locator('visible=true').waitFor();
@@ -53,7 +59,7 @@ test.describe('Symbols', () => {
     await testSymbols(page);
   });
   test('fetch content if not provided', async ({ page, packageName }) => {
-    if (packageName === 'next-app-dir') test.skip();
+    test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
 
@@ -122,7 +128,7 @@ test.describe('Symbols', () => {
 
   test.describe('apiVersion', () => {
     test('apiVersion is not set', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') test.skip();
+      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
 
@@ -155,7 +161,7 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v3', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') test.skip();
+      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -214,7 +220,7 @@ test.describe('Symbols', () => {
     });
 
     testExcludeOldReact('apiVersion is set to v2', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') test.skip();
+      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
