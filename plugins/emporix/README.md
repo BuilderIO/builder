@@ -1,4 +1,4 @@
-# Builder.io Virto Commerce plugin
+# Builder.io Emporix plugin
 
 Easily connect your Emporix Digital Commerce Platform catalog to your Builder.io content!
 
