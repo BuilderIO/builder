@@ -49,19 +49,36 @@ export class EmporixClient {
     return await response.json();
   }
 
+  getProductUrl(id: string) {
+    return `https://api.emporix.io/product/${this._tenant}/products/${id}`;
+  }
+
+  async getHeaders() {
+    const token = await this.anonymousTokenHelper.getAnonymousToken()
+    const headers = {
+      'Authorization' : `Bearer ${token}`,
+      'X-Version' : 'v2'
+    }
+    return headers;
+  }
+
   async searchCategories(search: string) {
-    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?localizedName=${search}`, {'X-Version' : 'v2'})
+    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?localizedName=${search}`, {'X-Version' : 'v2', 'Accept-Language' : 'en'})
     return await response.json();
   }
 
   async getCategoryById(id: string) {
-    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories/${id}`, {'X-Version' : 'v2'})
+    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories/${id}`, {'X-Version' : 'v2', 'Accept-Language' : 'en'})
     return await response.json();
   }
 
   async getCategoryByCode(code: string) {
-    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?code=${code}`, {'X-Version' : 'v2', })
+    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?code=${code}`, {'X-Version' : 'v2', 'Accept-Language' : 'en'})
     return await response.json();
+  }
+
+  getCategoryUrl(id: string) {
+    return `https://api.emporix.io/category/${this._tenant}/categories/${id}`;
   }
 
   async _executeRequest(url: string, headers: any) {

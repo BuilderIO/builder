@@ -61,8 +61,18 @@ registerCommercePlugin(
           const response = await emporixClient.searchProducts(search);
           return response.map(transformProduct);
         },
-        getRequestObject(id: string) {
-          return id;
+        async getRequestObject(id: string) {
+          const headers = await emporixClient.getHeaders();
+          return {
+            '@type': '@builder.io/core:Request',
+            request: {
+              url: emporixClient.getProductUrl(id),
+              headers,
+            },
+            options: {
+              product: id,
+            },
+          };
         },
       },
       category: {
@@ -77,6 +87,19 @@ registerCommercePlugin(
         async search(search: string) {
           const response = await emporixClient.searchCategories(search);
           return response.map(transformCategory);
+        },
+        async getRequestObject(id: string) {
+          const headers = await emporixClient.getHeaders();
+          return {
+            '@type': '@builder.io/core:Request',
+            request: {
+              url: emporixClient.getCategoryUrl(id),
+              headers,
+            },
+            options: {
+              category: id,
+            },
+          };
         },
       },
     };
