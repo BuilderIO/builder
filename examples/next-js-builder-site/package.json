@@ -30,7 +30,7 @@
     "@types/dedent": "0.7.0",
     "@types/react-syntax-highlighter": "13.5.0",
     "amplitude-js": "7.4.1",
-    "axios": "0.21.2",
+    "axios": "1.6.0",
     "dedent": "0.7.0",
     "lodash": "4.17.21",
     "module-alias": "2.2.2",
