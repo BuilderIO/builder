@@ -97,14 +97,14 @@
     "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
-    "next": "^13.4.20-canary.10 || ^13.4.20",
+    "next": "^13.4.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
     "@vitejs/plugin-react": "^4.0.4",
-    "next": "13.4.20-canary.10",
+    "next": "^13.4.20",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "react": "^18.2.0",
