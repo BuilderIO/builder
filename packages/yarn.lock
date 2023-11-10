@@ -3223,7 +3223,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react@workspace:sdks/output/react"
   dependencies:
+    "@builder.io/sdks": "workspace:*"
+    "@vitejs/plugin-react": ^4.0.4
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
+    react: ^18.2.0
+    rimraf: ^3.0.2
+    typescript: ^4.9.4
+    vite: ^4.4.9
+  peerDependencies:
     isolated-vm: ^4.6.0
+    react: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -3925,6 +3935,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@e2e/next-app-dir-client@workspace:sdks/e2e/nextjs-react-app-dir-client"
   dependencies:
+    "@builder.io/sdk-react": "workspace:*"
     "@e2e/tests": "workspace:*"
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
@@ -3961,7 +3972,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@e2e/next-pages-dir@workspace:sdks/e2e/nextjs-react-pages-dir"
   dependencies:
-    "@builder.io/my-lib": "workspace:*"
+    "@builder.io/sdk-react": "workspace:*"
     "@e2e/tests": "workspace:*"
     "@types/react": ^18.0.14
     "@types/react-dom": ^18.0.5
