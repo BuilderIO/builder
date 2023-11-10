@@ -13,5 +13,10 @@ export default defineConfig(() => {
     optimizeDeps: {
       exclude: ['isolated-vm'],
     },
+    build: {
+      rollupOptions: {
+        external: ['isolated-vm'],
+      },
+    },
   };
 });

@@ -3,9 +3,9 @@
   "version": "0.7.1-3",
   "description": "Builder.io Qwik SDK",
   "type": "module",
-  "main": "./lib/edge/index.qwik.cjs",
-  "module": "./lib/edge/index.qwik.mjs",
-  "qwik": "./lib/browser/index.qwik.mjs",
+  "main": "./lib/index.qwik.js",
+  "module": "./lib/index.qwik.js",
+  "qwik": "./lib/index.qwik.js",
   "types": "./types/src/index.d.ts",
   "files": [
     "README.md",
@@ -18,85 +18,68 @@
     ".": {
       "node": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/node/index.qwik.mjs",
-        "require": "./lib/node/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "browser": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/browser/index.qwik.mjs",
-        "require": "./lib/browser/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "edge-routine": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/edge/index.qwik.mjs",
-        "require": "./lib/edge/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "workerd": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/edge/index.qwik.mjs",
-        "require": "./lib/edge/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "deno": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/edge/index.qwik.mjs",
-        "require": "./lib/edge/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "lagon": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/edge/index.qwik.mjs",
-        "require": "./lib/edge/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "netlify": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/edge/index.qwik.mjs",
-        "require": "./lib/edge/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "edge-light": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/edge/index.qwik.mjs",
-        "require": "./lib/edge/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "bun": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/edge/index.qwik.mjs",
-        "require": "./lib/edge/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "electron": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/node/index.qwik.mjs",
-        "require": "./lib/node/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       },
       "default": {
         "types": "./types/src/index.d.ts",
-        "import": "./lib/browser/index.qwik.mjs",
-        "require": "./lib/browser/index.qwik.cjs"
+        "import": "./lib/index.qwik.js"
       }
     },
     "./edge": {
       "types": "./types/src/index.d.ts",
-      "import": "./lib/edge/index.qwik.mjs",
-      "require": "./lib/edge/index.qwik.cjs"
+      "import": "./lib/index.qwik.js"
     },
     "./node": {
       "types": "./types/src/index.d.ts",
-      "import": "./lib/node/index.qwik.mjs",
-      "require": "./lib/node/index.qwik.cjs"
+      "import": "./lib/index.qwik.js"
     },
     "./browser": {
       "types": "./types/src/index.d.ts",
-      "import": "./lib/browser/index.qwik.mjs",
-      "require": "./lib/browser/index.qwik.cjs"
+      "import": "./lib/index.qwik.js"
     }
   },
   "scripts": {
     "release": "npm publish",
     "typecheck": "tsc --noEmit",
     "tsc": "tsc",
-    "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
-    "build:one": "vite build --mode lib",
-    "build:node": "SDK_ENV=node yarn build:one",
-    "build:edge": "SDK_ENV=edge yarn build:one",
-    "build:browser": "SDK_ENV=browser yarn build:one"
+    "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:one",
+    "build:one": "vite build --mode lib"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.6",
@@ -105,7 +88,9 @@
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "typescript": "^5.1.6",
-    "vite": "^4.3.2"
+    "vite": "^4.3.2",
+    "vite-plugin-top-level-await": "^1.3.1",
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "dependencies": {
     "isolated-vm": "^4.6.0"

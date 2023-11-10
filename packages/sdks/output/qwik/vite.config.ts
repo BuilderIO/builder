@@ -1,22 +1,21 @@
 import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import topLevelAwait from 'vite-plugin-top-level-await';
 
 export default defineConfig(() => {
   return {
     build: {
+      target: 'esnext',
       lib: {
         entry: './src/index.ts',
-        formats: ['es', 'cjs'],
-        /**
-         * https://github.com/BuilderIO/qwik/issues/4952
-         */
-        fileName: (format) => `index.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
+        formats: ['es' as const],
+        fileName: `index.qwik`,
       },
       rollupOptions: {
         external: ['@builder.io/qwik', 'js-interpreter', 'isolated-vm'],
       },
     },
-    plugins: [viteOutputGenerator(), qwikVite()],
+    plugins: [topLevelAwait(), tsconfigPaths(), qwikVite()],
   };
 });
