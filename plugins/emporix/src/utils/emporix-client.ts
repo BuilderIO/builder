@@ -63,17 +63,17 @@ export class EmporixClient {
   }
 
   async searchCategories(search: string) {
-    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?localizedName=${search}`, {'X-Version' : 'v2', 'Accept-Language' : 'en'})
+    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?localizedName=${search}`, {'X-Version' : 'v2'})
     return await response.json();
   }
 
   async getCategoryById(id: string) {
-    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories/${id}`, {'X-Version' : 'v2', 'Accept-Language' : 'en'})
+    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories/${id}`, {'X-Version' : 'v2'})
     return await response.json();
   }
 
   async getCategoryByCode(code: string) {
-    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?code=${code}`, {'X-Version' : 'v2', 'Accept-Language' : 'en'})
+    const response = await this._executeRequest(`https://api.emporix.io/category/${this._tenant}/categories?code=${code}`, {'X-Version' : 'v2'})
     return await response.json();
   }
 
