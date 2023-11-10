@@ -5,7 +5,8 @@
     "e2e/*",
     "output/*",
     "output/vue/vue2",
-    "output/vue/vue3"
+    "output/vue/vue3",
+    "my-lib"
   ],
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
