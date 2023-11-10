@@ -24,7 +24,7 @@
     "@solidjs/router": "^0.8.2",
     "solid-js": "^1.7.2",
     "solid-start": "^0.2.26",
-    "undici": "^5.15.1"
+    "undici": "^5.26.2"
   },
   "nx": {
     "targets": {
