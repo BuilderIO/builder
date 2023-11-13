@@ -38,6 +38,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@builder.io/react": "^3.1.1",
     "husky": "^7.0.4",
     "octokit": "^2.0.14",
     "pinst": "^3.0.0",
