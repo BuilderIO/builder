@@ -1,3 +1,10 @@
+NEXT STEPS:
+- undo pnpm changes
+- bring in `safeDynamicRequire` (hopefully)
+- check if we can keep yarn/node upgrades
+- see how many SDKs now work out of the bag
+
+
 Why does `isolated-vm` not work?
 
 - svelte: works

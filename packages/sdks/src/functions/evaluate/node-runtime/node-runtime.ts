@@ -1,4 +1,3 @@
-import * as ivm from 'isolated-vm';
 import type {
   FunctionArguments,
   ExecutorArgs,
@@ -6,6 +5,9 @@ import type {
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
 import type { BuilderRenderState } from '../../../context/types.js';
+import { safeDynamicRequire } from './safeDynamicRequire.js';
+
+const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
 
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
 const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
@@ -76,7 +78,7 @@ const getIsolateContext = () => {
   return isolate.createContextSync();
 };
 
-export const evaluator = ({
+export const runInNode = ({
   code,
   builder,
   context,

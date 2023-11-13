@@ -28,6 +28,7 @@ module.exports = {
     '@builder.io/mitosis/no-var-declaration-or-assignment-in-component': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     'unused-imports/no-unused-imports': 'error',
     'object-shorthand': 'error',
     '@typescript-eslint/consistent-type-imports': [

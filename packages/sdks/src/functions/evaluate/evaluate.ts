@@ -16,6 +16,7 @@ import { getUserAttributes } from '../track/helpers.js';
  * types can be resolved correctly.
  */
 import { evaluator } from 'placeholder-runtime';
+import { runInBrowser } from './browser-runtime/browser.js';
 
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
@@ -64,7 +65,11 @@ export function evaluate({
   };
 
   try {
-    return evaluator(args);
+    /**
+     * Even though we have separate runtimes for browser/node/edge, sometimes frameworks will
+     * end up sending the server runtime code to the browser (most notably in dev mode).
+     */
+    return isBrowser() ? runInBrowser(args) : evaluator(args);
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });
     return undefined;
