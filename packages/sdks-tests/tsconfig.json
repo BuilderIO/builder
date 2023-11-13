@@ -4,7 +4,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "moduleResolution": "Node16",
+    "moduleResolution": "Bundler",
     "module": "ESNext",
     "skipLibCheck": true,
     "outDir": "dist",
