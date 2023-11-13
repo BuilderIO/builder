@@ -4315,6 +4315,8 @@ __metadata:
     nuxt: "npm:^3.8.1"
     nx: "npm:^16.6.0"
     nx-cloud: "npm:^16.2.0"
+    vue: "npm:^3.3.8"
+    vue-router: "npm:^4.2.5"
   languageName: unknown
   linkType: soft
 
