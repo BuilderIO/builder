@@ -1,6 +1,6 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
-import { EmporixClient } from './utils/emporix-client'
+import { EmporixClient } from './utils/emporix-client';
 
 const pluginId = pkg.name;
 
@@ -19,8 +19,9 @@ registerCommercePlugin(
         type: 'text',
         name: 'storefrontApiKey',
         required: true,
-        helperText: 'Get your Storefront API Key, from your Emporix Dev Portal space > https://app.emporix.io/api-keys',
-      }
+        helperText:
+          'Get your Storefront API Key, from your Emporix Dev Portal space > https://app.emporix.io/api-keys',
+      },
     ],
     ctaText: `Connect Emporix Digital Commerce Platform`,
   },
@@ -29,7 +30,7 @@ registerCommercePlugin(
     // Get public key input from user
     const tenant = settings.get('tenant')?.trim();
     const storefrontApiKey = settings.get('storefrontApiKey')?.trim();
-    const emporixClient = new EmporixClient(tenant, storefrontApiKey)
+    const emporixClient = new EmporixClient(tenant, storefrontApiKey);
 
     const transformProduct = (resource: any) => ({
       ...resource,
@@ -37,7 +38,10 @@ registerCommercePlugin(
       title: resource?.name,
       handle: resource?.id,
       image: {
-        src: resource?.media && resource?.media.length > 0 ? resource?.media[0].url : 'https://dashboard.emporix.io/assets/logo-dark.185dfcb0.png'
+        src:
+          resource?.media && resource?.media.length > 0
+            ? resource?.media[0].url
+            : 'https://dashboard.emporix.io/assets/logo-dark.185dfcb0.png',
       },
     });
 
@@ -47,7 +51,10 @@ registerCommercePlugin(
       title: category?.name,
       handle: category?.code,
       image: {
-        src: category?.media && category?.media.length > 0 ? category?.media[0].url : 'https://dashboard.emporix.io/assets/logo-dark.185dfcb0.png'
+        src:
+          category?.media && category?.media.length > 0
+            ? category?.media[0].url
+            : 'https://dashboard.emporix.io/assets/logo-dark.185dfcb0.png',
       },
     });
 
