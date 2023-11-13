@@ -13,6 +13,9 @@ export default defineConfig({
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
+    commonjsOptions: {
+      exclude: ['node_modules/isolated-vm/**'],
+    },
     rollupOptions: {
       external: [
         'isolated-vm',
@@ -27,7 +30,9 @@ export default defineConfig({
           const code = getModuleInfo(id).code;
           if (
             code.match(/^['"]use client['"]/) ||
-            code.includes('createContext')
+            // TO-DO: This might catch unrelated `createContext` logic...brittle. Should replace this with having
+            // `'use-client'` at the top of the Context file itself (to be done by Mitosis).
+            code.includes(' createContext')
           ) {
             return USE_CLIENT_BUNDLE_NAME;
           } else if (code.match(/^['"]use server['"]/)) {

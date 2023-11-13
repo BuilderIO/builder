@@ -1,11 +1,9 @@
 import { isBrowser } from './is-browser.js';
+import { isNodeRuntime } from './is-node-runtime.js';
 
 /**
  * Identifies edge runtimes (edge, workers, serverless, etc.)
  */
 export function isEdgeRuntime(): boolean {
-  const hasNode = () =>
-    typeof process !== 'undefined' && process?.versions?.node;
-
-  return !isBrowser() && !hasNode();
+  return !isBrowser() && !isNodeRuntime();
 }

@@ -1,1 +1,1 @@
-export { evaluator } from './node-runtime.js';
+export { runInNode } from './node-runtime.js';
