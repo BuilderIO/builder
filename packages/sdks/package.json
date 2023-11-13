@@ -11,7 +11,7 @@
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "build-mitosis": "../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build-mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:react": "yarn build-mitosis --target=react && yarn run set-sdk-version react",
     "build:qwik": "yarn build-mitosis --target=qwik && yarn run set-sdk-version qwik",
     "build:svelte": "yarn build-mitosis --target=svelte && yarn run set-sdk-version svelte",

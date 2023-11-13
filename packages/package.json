@@ -28,10 +28,13 @@
     "@builder.io/react": "workspace:*",
     "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
   },
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@4.0.1",
   "devDependencies": {
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "isolated-vm": "^4.6.0"
   }
 }

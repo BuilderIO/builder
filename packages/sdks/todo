@@ -19,5 +19,10 @@ Fundamentally, is this a bundling issue? in a clean repo, I am able to import an
   - is this a workspaces issue? we can test by releasing a dev version.
 
 
-Partially working:
+Actual VM implementation is only partially working:
 - Qwik: Bundles, but there is a code issue with calling `rootSetState`
+
+
+
+debugging the issues:
+- Qwik: rollup breaks due to SDK being in monorepo. qwikcity routeLoader$ import is initialized too late 

@@ -9,7 +9,7 @@
   "type": "module",
   "devDependencies": {
     "@types/node": "^18.11.18",
-    "esbuild": "^0.14.54",
+    "esbuild": "^0.17.19",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "postcss": "^8.4.21",

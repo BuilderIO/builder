@@ -33,8 +33,5 @@
         ]
       }
     }
-  },
-  "installConfig": {
-    "hoistingLimits": "workspaces"
   }
 }

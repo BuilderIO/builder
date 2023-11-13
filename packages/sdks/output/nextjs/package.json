@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io RSC SDK for NextJS App Directory",
-  "version": "0.7.0",
+  "version": "0.7.1-0",
   "files": [
     "lib",
     "types"
@@ -115,6 +115,7 @@
     "vite-plugin-dts": "^3.5.2"
   },
   "dependencies": {
+    "@types/react": "^18.2.37",
     "isolated-vm": "^4.6.0",
     "lru-cache": "^10.0.0"
   },

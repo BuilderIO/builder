@@ -4,7 +4,7 @@ DIST_TAG=$1
 SDK=$2
 
 function version {
-  echo "Bumping @builder.io/$1@$DIST_TAG..."
+  echo "Bumping @builder.io/sdk-$1@$DIST_TAG..."
 
   cd "output/$1"
 
@@ -14,7 +14,7 @@ function version {
     npm version $DIST_TAG
   fi
 
-  echo "Bumped @builder.io/$1@$DIST_TAG."
+  echo "Bumped @builder.io/sdk-$1@$DIST_TAG."
 }
 
 if [[ "$SDK" == 'all' ]]; then
