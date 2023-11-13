@@ -22,7 +22,7 @@ jobs:
       - name: Use node version 16
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.13.0'
 
       - run: npm run ci:lint
 
@@ -40,7 +40,7 @@ jobs:
       - name: Use node version 16
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.13.0'
 
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -81,7 +81,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.13.0'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -136,7 +136,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.13.0'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -174,7 +174,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.13.0'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -200,7 +200,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.13.0'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
