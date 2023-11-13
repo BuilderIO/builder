@@ -6,5 +6,4 @@ export default {
     externalDir: true,
     serverActions: true,
   },
-  transpilePackages: ['isolated-vm', '@builder.io/sdk-react-nextjs'],
 };

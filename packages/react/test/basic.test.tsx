@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { render } from '@testing-library/react';
@@ -97,7 +98,7 @@ describe('Data rendering', () => {
 
   it('works with dom', () => {
     const testApi = render(getBindingExampleElement());
-    (expect(testApi.getByText(TEXT_STRING)) as any).toBeInTheDocument();
+    expect(testApi.getByText(TEXT_STRING)).toBeInTheDocument();
   });
 
   it('works with SSR', () => {
@@ -127,7 +128,7 @@ describe('Content changes when new content provided', () => {
       />
     );
 
-    (expect(testApi.getByText(textA)) as any).toBeInTheDocument();
+    expect(testApi.getByText(textA)).toBeInTheDocument();
 
     testApi.rerender(
       <BuilderPage
@@ -140,7 +141,7 @@ describe('Content changes when new content provided', () => {
         }}
       />
     );
-    (expect(testApi.getByText(textB)) as any).toBeInTheDocument();
+    expect(testApi.getByText(textB)).toBeInTheDocument();
   });
 
   it('Should be in controlled mode for null or underined content', () => {
@@ -159,7 +160,7 @@ describe('Content changes when new content provided', () => {
         }}
       />
     );
-    (expect(testApi.getByText(textB)) as any).toBeInTheDocument();
+    expect(testApi.getByText(textB)).toBeInTheDocument();
   });
 
   it('Should be in controlled mode for null or underined content', () => {
@@ -178,7 +179,7 @@ describe('Content changes when new content provided', () => {
         }}
       />
     );
-    (expect(testApi.getByText(textB)) as any).toBeInTheDocument();
+    expect(testApi.getByText(textB)).toBeInTheDocument();
   });
 });
 
