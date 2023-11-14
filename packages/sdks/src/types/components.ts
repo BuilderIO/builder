@@ -113,6 +113,11 @@ export interface ComponentInfo {
 
   // TO-DO: is this used?
   hidden?: boolean;
+
+  /**
+   * Used to store additional component information.
+   */
+  meta?: Record<string, any>;
 }
 
 type Permission =
