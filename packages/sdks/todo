@@ -1,30 +1,13 @@
-NEXT STEPS:
-- undo pnpm changes
-- bring in `safeDynamicRequire` (hopefully)
-- check if we can keep yarn/node upgrades
-- see how many SDKs now work out of the bag
-
-
-Why does `isolated-vm` not work?
-
 - svelte: works
 - react-native: works
+- react: works
+- solidjs: works
+- vue2: works
 
-- react: breaks
-- nextjs: breaks
-- qwik: breaks
-  - need to OptimizeDeps.exclude `isolated-vm`
-  - ships `/lib/node/index.qwik.js` instead of `/lib/browser/index.qwik.js` to the browser. probably a Qwik Vite plugin bug.
-- solidjs: breaks
-- vue2: breaks
+- nextjs: breaks: 
+  - 1 test case, reactivity issue (`rootSetState` ?)
+- qwik: breaks:
+  - code issue with calling `rootSetState` most likely
 - vue3: breaks
-  - seems to load just fine but tests fail.
+  - unable to build, duplicate symbol identifiers.
   
-
-Fundamentally, is this a bundling issue? in a clean repo, I am able to import and use `isolated-vm` just fine.
-  - is this a yarn issue specific to this yarn version?
-  - is this a workspaces issue? we can test by releasing a dev version.
-
-
-Partially working:
-- Qwik: Bundles, but there is a code issue with calling `rootSetState`
