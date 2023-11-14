@@ -10,8 +10,10 @@ export default defineConfig(() => {
       qwikVite(),
       tsconfigPaths({ projects: ['./tsconfig.json'] }),
     ],
-    optimizeDeps: {
-      exclude: ['isolated-vm'],
+    preview: {
+      headers: {
+        'Cache-Control': 'public, max-age=600',
+      },
     },
   };
 });
