@@ -61,6 +61,10 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     url.searchParams.set('fields', fields);
   }
 
+  if (Number.isFinite(offset) && offset! > -1) {
+    url.searchParams.set('offset', String(Math.floor(offset!)));
+  }
+
   if (typeof includeUnpublished === 'boolean') {
     url.searchParams.set('includeUnpublished', String(includeUnpublished));
   }

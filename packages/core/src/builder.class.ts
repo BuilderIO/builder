@@ -331,6 +331,10 @@ export type GetContentOptions = AllowEnrich & {
    */
   limit?: number;
   /**
+   * Use to specify an offset for pagination of results. The default is 0.
+   */
+  offset?: number;
+  /**
    * Mongodb style query of your data. E.g.:
    *
    * ```js
@@ -363,10 +367,6 @@ export type GetContentOptions = AllowEnrich & {
    * Extract any styles to a separate css property when generating HTML.
    */
   extractCss?: boolean;
-  /**
-   * Use to specify an offset for pagination of results. The default is 0.
-   */
-  offset?: number;
   /**
    * @package
    *
@@ -404,6 +404,7 @@ export type GetContentOptions = AllowEnrich & {
   alias?: string;
   /**
    * Only include these fields.
+   * Note: 'omit' takes precedence over 'fields'
    *
    * @example
    * ```
@@ -413,6 +414,7 @@ export type GetContentOptions = AllowEnrich & {
   fields?: string;
   /**
    * Omit only these fields.
+   * Note: 'omit' takes precedence over 'fields'
    *
    * @example
    * ```
@@ -486,7 +488,7 @@ export type GetContentOptions = AllowEnrich & {
 
   /**
    * Include content entries in a response that are still in
-   * draft mode and un-archived.
+   * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
 };

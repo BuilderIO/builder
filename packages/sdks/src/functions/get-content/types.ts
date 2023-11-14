@@ -9,6 +9,11 @@ export interface GetContentOptions {
   limit?: number;
 
   /**
+   * Use to specify an offset for pagination of results. The default is 0.
+   */
+  offset?: number;
+
+  /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
    *
@@ -87,6 +92,7 @@ export interface GetContentOptions {
 
   /**
    * Only include these fields.
+   * Note: 'omit' takes precedence over 'fields'
    *
    * @example
    * ```
@@ -97,6 +103,7 @@ export interface GetContentOptions {
 
   /**
    * Omit only these fields.
+   * Note: 'omit' takes precedence over 'fields'
    *
    * @example
    * ```
@@ -104,11 +111,6 @@ export interface GetContentOptions {
    * ```
    */
   omit?: string;
-
-  /**
-   * Use to specify an offset for pagination of results. The default is 0.
-   */
-  offset?: number;
 
   /**
    * Seconds to cache content. Sets the max-age of the cache-control header
@@ -148,7 +150,7 @@ export interface GetContentOptions {
 
   /**
    * Include content entries in a response that are still in
-   * draft mode and un-archived.
+   * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
 }
