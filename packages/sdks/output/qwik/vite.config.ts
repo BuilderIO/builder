@@ -15,6 +15,16 @@ export default defineConfig(() => {
       },
       rollupOptions: {
         external: ['@builder.io/qwik', 'node:module'],
+        output: {
+          manualChunks(id, { getModuleIds, getModuleInfo }) {
+            const moduleInfo = getModuleInfo(id);
+
+            // We need to move this node-only code to its own file so that `isServer` can tree-shake it.
+            if (moduleInfo?.code?.includes('node:module')) {
+              return 'node-evaluate';
+            }
+          },
+        },
       },
     },
     plugins: [viteOutputGenerator(), qwikVite()],

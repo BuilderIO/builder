@@ -4,11 +4,5 @@ TO-DO:
   That's the main concern around having it in deps.
 
 - [ ] fix errors in VM code execution.
-  - nextjs:
-    - 1 test case, reactivity issue (`rootSetState` ?)
-  - qwik:
-    - code issue with calling `rootSetState` most likely
-  - vue3:
-    - ??
-    
-  - nextjs/qwik: see what changes need to be made when `rootSetState` is not provided.
+  - nextjs/qwik/vue3, all in Dynamic Data Bindings. Therefore related to repeated items.    
+  - qwik: reactivity does not work. `rootSetState` replacement doesn't work.
