@@ -1,5 +1,3 @@
-import { createRequire } from 'node:module';
-
 const noop = () => null;
 
 /**
@@ -14,8 +12,9 @@ const noop = () => null;
  */
 export let safeDynamicRequire: typeof require =
   noop as unknown as typeof require;
+
 try {
-  safeDynamicRequire = createRequire(import.meta.url);
+  safeDynamicRequire = eval('require');
 } catch (error) {
   /* empty */
 }

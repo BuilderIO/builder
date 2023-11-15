@@ -20,7 +20,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['vue', 'node:module'],
+      external: ['vue', 'js-interpreter', 'isolated-vm'],
       output: {
         globals: {
           vue: 'Vue',

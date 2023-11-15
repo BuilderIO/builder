@@ -22,11 +22,6 @@ const preset_options: preset.PresetOptions = {
   drop_console: true,
   // Set to `true` to generate a CommonJS build alongside ESM
   // cjs: true,
-  modify_esbuild_options(options, context) {
-    options.external = [...(options.external || []), 'node:module'];
-
-    return options;
-  },
 
   esbuild_plugins: [
     esbuildOutputGenerator({
