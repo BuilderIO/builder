@@ -18,7 +18,6 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        'isolated-vm',
         'next/navigation',
         'react',
         'react/jsx-runtime',
