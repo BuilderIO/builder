@@ -3678,7 +3678,6 @@ __metadata:
     git-cz: ^4.8.0
     husky: ^7.0.4
     isolated-vm: ^4.6.0
-    js-interpreter: ^4.0.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
     nx: ^16.6.0
@@ -26248,17 +26247,6 @@ __metadata:
   version: 3.1.1
   resolution: "joycon@npm:3.1.1"
   checksum: 8003c9c3fc79c5c7602b1c7e9f7a2df2e9916f046b0dbad862aa589be78c15734d11beb9fe846f5e06138df22cb2ad29961b6a986ba81c4920ce2b15a7f11067
-  languageName: node
-  linkType: hard
-
-"js-interpreter@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "js-interpreter@npm:4.0.0"
-  dependencies:
-    minimist: ^1.2.6
-  bin:
-    js-interpreter: lib/cli.min.js
-  checksum: eca9931ea080a1bbf86cbc83b2ec823f7f560582bb17152265d82e7854c4823c3486b013f8d746ca49a5eae7c8ab005ff69dea8d7d3b11c662a01068b212d5c0
   languageName: node
   linkType: hard
 
