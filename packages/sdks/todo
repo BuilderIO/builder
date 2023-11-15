@@ -1,19 +1,14 @@
-- svelte: works
-- react-native: works
-- react: works
-- solidjs: works
-- vue2: works
+TO-DO: 
+- [ ] decide whether to put isolated-vm in peerDeps or deps:
+  -  try publishing a dev version with `isolated-vm` under `deps` and uploading it to an edge server, to see if it works.
+  That's the main concern around having it in deps.
 
-- nextjs: breaks: 
-  - 1 test case, reactivity issue (`rootSetState` ?)
-- qwik: breaks:
-  - code issue with calling `rootSetState` most likely
-- vue3: breaks
-  - unable to build, duplicate symbol identifiers.
-  
-
-
-Next up:
-- fix the nuxt3 build somehow.
-  - try a brand new nuxt3 starter, see if that works
-- check the failures in nextjs/qwik, see what changes need to be made when `rootSetState` is not provided.
+- [ ] fix errors in VM code execution.
+  - nextjs:
+    - 1 test case, reactivity issue (`rootSetState` ?)
+  - qwik:
+    - code issue with calling `rootSetState` most likely
+  - vue3:
+    - ??
+    
+  - nextjs/qwik: see what changes need to be made when `rootSetState` is not provided.

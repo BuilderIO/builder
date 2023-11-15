@@ -4,6 +4,11 @@ import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js
 
 export default defineConfig(() => {
   return {
+    resolve: {
+      alias: {
+        'node:module': 'fs',
+      },
+    },
     build: {
       lib: {
         entry: './src/index.ts',
@@ -14,7 +19,7 @@ export default defineConfig(() => {
         fileName: (format) => `index.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
       },
       rollupOptions: {
-        external: ['@builder.io/qwik', 'js-interpreter', 'isolated-vm'],
+        external: ['@builder.io/qwik', 'node:module'],
       },
     },
     plugins: [viteOutputGenerator(), qwikVite()],
