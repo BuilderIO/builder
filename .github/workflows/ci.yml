@@ -99,7 +99,7 @@ jobs:
       - name: Run tests
         run: yarn nx test @builder.io/sdks
 
-  sdks-outputs:
+  sdks:
     runs-on: ubuntu-latest
 
     strategy:
@@ -160,7 +160,7 @@ jobs:
           path: packages/sdks-tests/playwright-report/
           retention-days: 30
 
-  core-sdk:
+  gen1-sdk-core:
     runs-on: ubuntu-latest
 
     defaults:
@@ -186,7 +186,7 @@ jobs:
       - name: Build Core
         run: yarn nx build @builder.io/sdk
 
-  old-react-sdk:
+  gen1-react-sdk:
     runs-on: ubuntu-latest
 
     defaults:
