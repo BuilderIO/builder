@@ -4,11 +4,6 @@ import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js
 
 export default defineConfig(() => {
   return {
-    resolve: {
-      alias: {
-        'node:module': 'fs',
-      },
-    },
     build: {
       lib: {
         entry: './src/index.ts',
