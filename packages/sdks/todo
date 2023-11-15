@@ -11,3 +11,9 @@
 - vue3: breaks
   - unable to build, duplicate symbol identifiers.
   
+
+
+Next up:
+- fix the nuxt3 build somehow.
+  - try a brand new nuxt3 starter, see if that works
+- check the failures in nextjs/qwik, see what changes need to be made when `rootSetState` is not provided.

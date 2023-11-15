@@ -161,7 +161,8 @@
         "require": "./vue3/lib/browser/index.cjs"
       }
     },
-    "./vue3/css": "./vue3/lib/browser/style.css"
+    "./vue3/css": "./vue3/lib/browser/style.css",
+    "./css": "./vue3/lib/browser/style.css"
   },
   "scripts": {
     "release": "npm publish",
