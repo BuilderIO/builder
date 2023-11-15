@@ -78,11 +78,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
 
   if (sort) {
-    try {
-      const stringifiedSortValue = JSON.stringify(sort);
-      url.searchParams.set('sort', stringifiedSortValue);
-    } catch (ex) {
-      console.error(`Error stringifying sort field with value ${sort} !`, ex);
+    const flattened = flatten({ sort });
+    for (const key in flattened) {
+      url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
     }
   }
 

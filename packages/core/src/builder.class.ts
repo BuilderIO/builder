@@ -2378,12 +2378,7 @@ export class Builder {
       queryParams.includeUnpublished = queue[0].includeUnpublished;
     }
     if (queue[0].sort) {
-      try {
-        queryParams.sort = JSON.stringify(queue[0].sort);
-      } catch (ex) {
-        console.error(`Error stringifying sort field with value ${queue[0].sort} !`, ex);
-        delete queryParams.sort;
-      }
+      queryParams.sort = queue[0].sort;
     }
 
     const pageQueryParams: ParamsMap =
