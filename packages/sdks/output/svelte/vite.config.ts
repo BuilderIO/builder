@@ -3,6 +3,11 @@ import type { UserConfig } from 'vite';
 
 const config: UserConfig = {
   plugins: [sveltekit()],
+  build: {
+    rollupOptions: {
+      external: ['node:module'],
+    },
+  },
 };
 
 export default config;

@@ -6,14 +6,9 @@
     "jsxImportSource": "@builder.io/mitosis",
     "lib": ["dom", "ESNext"],
     "skipLibCheck": true,
-    // needed for `isolated-vm`
-    "esModuleInterop": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
-    // needed to make sure vite/esbuild can bundle the code properly
-    // https://vitejs.dev/guide/features.html#isolatedmodules
-    // "isolatedModules": true,
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "Node16",
     "types": ["vitest/globals"],
     "paths": {
