@@ -10,6 +10,32 @@ export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   isExpression?: boolean;
 };
 
+const getBuilderGlobals = (): BuilderGlobals => ({
+  isEditing: isEditing(),
+  isBrowser: isBrowser(),
+  isServer: !isBrowser(),
+  getUserAttributes: () => getUserAttributes(),
+});
+
+const parseCode = (
+  code: string,
+  { isExpression = true }: Pick<EvaluatorArgs, 'isExpression'>
+) => {
+  // Be able to handle simple expressions like "state.foo" or "1 + 1"
+  // as well as full blocks like "var foo = "bar"; return foo"
+  const useReturn =
+    // we disable this for cases where we definitely don't want a return
+    isExpression &&
+    !(
+      code.includes(';') ||
+      code.includes(' return ') ||
+      code.trim().startsWith('return ')
+    );
+  const useCode = useReturn ? `return (${code});` : code;
+
+  return useCode;
+};
+
 export function evaluate({
   code,
   context,
@@ -23,27 +49,10 @@ export function evaluate({
     logger.warn('Skipping evaluation of empty code block.');
     return;
   }
-  const builder: BuilderGlobals = {
-    isEditing: isEditing(),
-    isBrowser: isBrowser(),
-    isServer: !isBrowser(),
-    getUserAttributes: () => getUserAttributes(),
-  };
 
-  // Be able to handle simple expressions like "state.foo" or "1 + 1"
-  // as well as full blocks like "var foo = "bar"; return foo"
-  const useReturn =
-    // we disable this for cases where we definitely don't want a return
-    isExpression &&
-    !(
-      code.includes(';') ||
-      code.includes(' return ') ||
-      code.trim().startsWith('return ')
-    );
-  const useCode = useReturn ? `return (${code});` : code;
   const args: ExecutorArgs = {
-    code: useCode,
-    builder,
+    code: parseCode(code, { isExpression }),
+    builder: getBuilderGlobals(),
     context,
     event,
     rootSetState,

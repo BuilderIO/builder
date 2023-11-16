@@ -4,11 +4,10 @@ import type {
   BuilderGlobals,
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
-import type { BuilderRenderState } from '../../../context/types.js';
 import { safeDynamicRequire } from './safeDynamicRequire.js';
-
+import { fastClone } from '../../fast-clone.js';
+import { set } from '../../set.js';
 const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
-
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
 const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
 
@@ -32,7 +31,7 @@ var refToProxy = (obj) => {
     },
     set(target, key, value) {
         obj.setSync(key, value);
-        ${BUILDER_SET_STATE_NAME}(obj.copySync())
+        ${BUILDER_SET_STATE_NAME}(key, value)
     },
     deleteProperty(target, key) {
         obj.deleteSync(key);
@@ -63,9 +62,11 @@ function theFunction() {
 const output = theFunction()
 
 if (typeof output === 'object' && output !== null) {
-  JSON.stringify(output.copySync ? output.copySync() : output);
+  const x = JSON.stringify(output.copySync ? output.copySync() : output);
+  x;
+} else {
+  output;
 }
-output;
 `;
 };
 
@@ -87,7 +88,10 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const state = { ...rootState, ...localState };
+  const state = fastClone({
+    ...rootState,
+    ...localState,
+  });
 
   const args = getFunctionArguments({
     builder,
@@ -110,10 +114,9 @@ export const runInNode = ({
   /**
    * Propagate state changes back to the reactive root state.
    */
-  jail.setSync(BUILDER_SET_STATE_NAME, function (newState: BuilderRenderState) {
-    if (rootSetState) {
-      rootSetState(newState);
-    }
+  jail.setSync(BUILDER_SET_STATE_NAME, function (key: string, value: any) {
+    rootState = set(state, key, value);
+    rootSetState?.(rootState);
   });
 
   args.forEach(([key, arg]) => {
