@@ -119,7 +119,10 @@ describe('node-runtime', () => {
     expect(output).toBe(14);
   });
   test('set & read simple state value (with `rootSetState`)', async () => {
-    const rootState = {};
+    const rootState: {
+      a?: number;
+      b?: number;
+    } = {};
 
     const output = runInNode({
       ...DEFAULTS,
