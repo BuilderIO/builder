@@ -35,9 +35,7 @@ var refToProxy = (obj) => {
     },
     set(target, key, value) {
         const v = typeof value === 'object' ? new ${INJECTED_IVM_GLOBAL}.Reference(value) : value;
-        log('set...', {key});
         obj.setSync(key, v);
-        log('set OK', {key});
         ${BUILDER_SET_STATE_NAME}(key, value)
     },
     deleteProperty(target, key) {
@@ -147,17 +145,12 @@ export const runInNode = ({
     code,
     args,
   });
+  const resultStr = isolateContext.evalSync(evalStr);
   try {
-    const resultStr = isolateContext.evalSync(evalStr);
-    try {
-      // returning objects throw errors in isolated vm, so we stringify it and parse it back
-      const res = JSON.parse(resultStr);
-      return res;
-    } catch (_error: any) {
-      return resultStr;
-    }
-  } catch (e: any) {
-    console.log('yeenah!', e.message);
-    return {};
+    // returning objects throw errors in isolated vm, so we stringify it and parse it back
+    const res = JSON.parse(resultStr);
+    return res;
+  } catch (_error: any) {
+    return resultStr;
   }
 };
