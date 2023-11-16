@@ -13,7 +13,8 @@ test.describe('State binding', () => {
           packageName === 'solid-start' ||
           packageName === 'svelte' ||
           packageName === 'sveltekit' ||
-          packageName === 'next-app-dir'
+          packageName === 'next-app-dir' ||
+          packageName === 'vue3'
       );
 
       await page.goto('/state-binding/', { waitUntil: 'networkidle' });
