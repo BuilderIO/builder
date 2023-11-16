@@ -259,10 +259,7 @@ test.describe('Features', () => {
       await expect(page.locator('body')).not.toContainText('even clicks');
     });
   });
-  test('Dynamic Data Bindings', async ({ page, packageName }) => {
-    if (packageName === 'nuxt3') {
-      test.skip();
-    }
+  test('Dynamic Data Bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
     await expect(page.locator(`text="1234"`).first()).toBeVisible();
