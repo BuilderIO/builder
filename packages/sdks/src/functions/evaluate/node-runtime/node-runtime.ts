@@ -8,8 +8,12 @@ import { safeDynamicRequire } from './safeDynamicRequire.js';
 import { fastClone } from '../../fast-clone.js';
 import { set } from '../../set.js';
 const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
+
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
+
 const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
+
+const INJECTED_IVM_GLOBAL = 'BUILDER_IVM';
 
 // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
 // https://github.com/laverdet/isolated-vm#referencecopysync
@@ -30,7 +34,10 @@ var refToProxy = (obj) => {
         return val;
     },
     set(target, key, value) {
-        obj.setSync(key, value);
+        const v = typeof value === 'object' ? new ${INJECTED_IVM_GLOBAL}.Reference(value) : value;
+        log('set...', {key});
+        obj.setSync(key, v);
+        log('set OK', {key});
         ${BUILDER_SET_STATE_NAME}(key, value)
     },
     deleteProperty(target, key) {
@@ -39,7 +46,6 @@ var refToProxy = (obj) => {
   })
 }
 `;
-
 const processCode = ({
   code,
   args,
@@ -51,7 +57,7 @@ const processCode = ({
     .map(([name]) => `var ${name} = refToProxy(${getSyncValName(name)}); `)
     .join('');
 
-  // At the end of the code, the output will be stringified and parsed back to the parent isolate if needed.
+  // the output is stringified and parsed back to the parent isolate if needed (when it's an `object`)
   return `
 ${REF_TO_PROXY_FN}
 ${fnArgs}
@@ -59,26 +65,25 @@ function theFunction() {
   ${code}
 }
 
-const output = theFunction()
+let output = theFunction()
 
 if (typeof output === 'object' && output !== null) {
-  const x = JSON.stringify(output.copySync ? output.copySync() : output);
-  x;
-} else {
-  output;
+  output = JSON.stringify(output.copySync ? output.copySync() : output);
 }
+
+output;
 `;
 };
-
 const getIsolateContext = () => {
   // if (Builder.serverContext) {
   //   return Builder.serverContext;
   // }
   // Builder.setServerContext(isolate.createContextSync());
-  const isolate = new ivm.Isolate({ memoryLimit: 128 });
+  const isolate = new ivm.Isolate({
+    memoryLimit: 128,
+  });
   return isolate.createContextSync();
 };
-
 export const runInNode = ({
   code,
   builder,
@@ -92,14 +97,12 @@ export const runInNode = ({
     ...rootState,
     ...localState,
   });
-
   const args = getFunctionArguments({
     builder,
     context,
     event,
     state,
   });
-
   const isolateContext = getIsolateContext();
   const jail = isolateContext.global;
   // This makes the global object available in the context as `global`. We use `derefInto()` here
@@ -115,10 +118,12 @@ export const runInNode = ({
    * Propagate state changes back to the reactive root state.
    */
   jail.setSync(BUILDER_SET_STATE_NAME, function (key: string, value: any) {
-    rootState = set(state, key, value);
+    // mutate the `rootState` object itself. Important for cases where we do not have `rootSetState`
+    // like Qwik.
+    set(rootState, key, value);
+    // call the `rootSetState` function if it exists
     rootSetState?.(rootState);
   });
-
   args.forEach(([key, arg]) => {
     const val =
       typeof arg === 'object'
@@ -133,18 +138,26 @@ export const runInNode = ({
               : arg
           )
         : null;
-
     jail.setSync(getSyncValName(key), val);
   });
 
-  const evalStr = processCode({ code, args });
-  const resultStr = isolateContext.evalSync(evalStr);
+  jail.setSync(INJECTED_IVM_GLOBAL, ivm);
 
+  const evalStr = processCode({
+    code,
+    args,
+  });
   try {
-    // returning objects throw errors in isolated vm, so we stringify it and parse it back
-    const res = JSON.parse(resultStr);
-    return res;
-  } catch (_error: any) {
-    return resultStr;
+    const resultStr = isolateContext.evalSync(evalStr);
+    try {
+      // returning objects throw errors in isolated vm, so we stringify it and parse it back
+      const res = JSON.parse(resultStr);
+      return res;
+    } catch (_error: any) {
+      return resultStr;
+    }
+  } catch (e: any) {
+    console.log('yeenah!', e.message);
+    return {};
   }
 };
