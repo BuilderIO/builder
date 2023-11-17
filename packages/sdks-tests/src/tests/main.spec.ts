@@ -248,12 +248,17 @@ test.describe('Features', () => {
         test.skip();
       }
 
-      await page.goto('/show-hide-if');
+      await page.goto(
+        '/show-hide-if',
+        // mostly needed for vue3/nuxt3. They're flaky due to the button click not being registered.
+        // Hydration seems to be flaky/slow there.
+        { waitUntil: 'domcontentloaded' }
+      );
 
       await findTextInPage({ page, text: 'even clicks' });
       await expect(page.locator('body')).not.toContainText('odd clicks');
 
-      await page.locator('text=Click me!').click();
+      await page.getByRole('button').click();
 
       await findTextInPage({ page, text: 'odd clicks' });
       await expect(page.locator('body')).not.toContainText('even clicks');
