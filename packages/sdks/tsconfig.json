@@ -18,5 +18,5 @@
       "placeholder-runtime": ["./src/functions/evaluate/placeholder-runtime.js"]
     }
   },
-  "include": ["src/**/*", "typings", "mitosis.config.js"]
+  "include": ["src/**/*", "typings", "mitosis.config.js", "output-generation"]
 }

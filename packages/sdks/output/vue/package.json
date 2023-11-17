@@ -161,7 +161,8 @@
         "require": "./vue3/lib/browser/index.cjs"
       }
     },
-    "./vue3/css": "./vue3/lib/browser/style.css"
+    "./vue3/css": "./vue3/lib/browser/style.css",
+    "./css": "./vue3/lib/browser/style.css"
   },
   "scripts": {
     "release": "npm publish",
@@ -170,6 +171,7 @@
     "build": "nx run-many -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3"
   },
   "peerDependencies": {
+    "isolated-vm": "^4.6.0",
     "vue": ">= 2"
   },
   "devDependencies": {

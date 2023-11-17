@@ -1,1 +1,1 @@
-export { evaluator } from '../browser-runtime/index.js';
+export { runInNode as evaluator } from './node-runtime.js';

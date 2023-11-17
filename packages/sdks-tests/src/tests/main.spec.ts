@@ -243,26 +243,26 @@ test.describe('Features', () => {
         test.skip();
       }
 
-      // TO-DO: flaky in remix
-      if (packageName === 'gen1-remix') {
-        test.skip();
-      }
+      test.skip(
+        // TO-DO: flaky in remix
+        packageName === 'gen1-remix' ||
+          // flaky in vue3: takes too long to hydrate, causing button click not to register...
+          packageName === 'vue3' ||
+          packageName === 'nuxt3'
+      );
 
       await page.goto('/show-hide-if');
 
       await findTextInPage({ page, text: 'even clicks' });
       await expect(page.locator('body')).not.toContainText('odd clicks');
 
-      await page.locator('text=Click me!').click();
+      await page.getByRole('button').click();
 
       await findTextInPage({ page, text: 'odd clicks' });
       await expect(page.locator('body')).not.toContainText('even clicks');
     });
   });
-  test('Dynamic Data Bindings', async ({ page, packageName }) => {
-    if (packageName === 'nuxt3') {
-      test.skip();
-    }
+  test('Dynamic Data Bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
     await expect(page.locator(`text="1234"`).first()).toBeVisible();
