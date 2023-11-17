@@ -13,7 +13,7 @@ test.describe('SSR', () => {
   });
 
   test('js disabled', async ({ browser, packageName }) => {
-    test.skip(!isSSRFramework(packageName));
+    test.fail(!isSSRFramework(packageName));
 
     const context = await browser.newContext({
       javaScriptEnabled: false,

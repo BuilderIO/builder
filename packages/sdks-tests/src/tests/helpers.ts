@@ -60,42 +60,30 @@ export const findTextInPage = async ({ page, text }: { page: Page; text: string 
 export const isRNSDK = sdk === 'reactNative';
 export const isOldReactSDK = sdk === 'oldReact';
 
+type SDK_EXCLUSION_DICT = {
+  [X in Sdk]?: boolean;
+};
+
 /**
  * Useful tool to skip tests when features aren't implemented in a specific output yet.
  * We use the negative tense, so that the default behavior is to run the test, unless specifically omitted.
  *
  */
-export const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
-  return sdks[sdk] ? test.skip : test;
+export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT) => {
+  return sdks[sdk] || false;
 };
-
-/**
- * reactive state works in:
- * - Vue
- * - React
- * - old React
- * - Qwik
- * - Svelte
- *
- * so we skip the other environments.
- */
-export const reactiveStateTest = excludeTestFor({
-  reactNative: true,
-  rsc: true,
-  solid: true,
-});
 
 /**
  * We exclude some new tests from old React until we fix them.
  */
-export const testExcludeOldReact = excludeTestFor({
+export const EXCLUDE_GEN_1 = excludeTestFor({
   oldReact: true,
 });
 
 /**
  * We exclude some tests from SDKs which are not from old React.
  */
-export const testOnlyOldReact = excludeTestFor({
+export const EXCLUDE_GEN_2 = excludeTestFor({
   qwik: true,
   react: true,
   reactNative: true,
@@ -106,7 +94,7 @@ export const testOnlyOldReact = excludeTestFor({
   vue3: true,
 });
 
-export const excludeReactNative = excludeTestFor({
+export const EXCLUDE_RN = excludeTestFor({
   reactNative: true,
 });
 

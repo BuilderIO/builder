@@ -1,23 +1,21 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import {
-  excludeReactNative,
+  EXCLUDE_RN,
   expectStylesForElement,
   findTextInPage,
   getBuilderSessionIdCookie,
   isRNSDK,
-  reactiveStateTest,
   test,
-  testExcludeOldReact,
+  EXCLUDE_GEN_1,
+  excludeTestFor,
 } from './helpers.js';
 
 test.describe('Tracking', () => {
   test.describe('cookies', () => {
     test('do not appear if canTrack=false', async ({ page, context, packageName }) => {
       // TO-DO: figure out why Remix fails this test
-      if (packageName === 'gen1-remix') {
-        test.skip();
-      }
+      test.fail(packageName === 'gen1-remix');
 
       // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
       // which guarantees that the cookie was set or not.
@@ -27,7 +25,8 @@ test.describe('Tracking', () => {
       const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
-    excludeReactNative('appear by default', async ({ page, context }) => {
+    test('appear by default', async ({ page, context }) => {
+      test.fail(EXCLUDE_RN);
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST'
@@ -87,7 +86,8 @@ test.describe('Tracking', () => {
       }
     });
 
-    testExcludeOldReact('POSTs correct click data', async ({ page }) => {
+    test('POSTs correct click data', async ({ page }) => {
+      test.skip(EXCLUDE_GEN_1);
       await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
@@ -166,16 +166,21 @@ test('Client-side navigation', async ({ page }) => {
 
 test.describe('Features', () => {
   test.describe('Reactive State', () => {
-    excludeReactNative('shows default value', async ({ page }) => {
+    test('shows default value', async ({ page }) => {
+      test.fail(EXCLUDE_RN);
       await page.goto('/reactive-state');
 
       await expect(page.getByText('0', { exact: true })).toBeVisible();
     });
 
-    reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') {
-        test.skip();
-      }
+    test('increments value correctly', async ({ page, packageName }) => {
+      test.fail(
+        excludeTestFor({
+          reactNative: true,
+          rsc: true,
+        })
+      );
+      test.fail(packageName === 'next-app-dir');
 
       await page.goto('/reactive-state');
 
@@ -238,11 +243,16 @@ test.describe('Features', () => {
       await expect(page.locator('body')).not.toContainText('this never appears');
     });
 
-    reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') {
-        test.skip();
-      }
+    test('works on reactive conditions', async ({ page, packageName }) => {
+      test.fail(
+        excludeTestFor({
+          reactNative: true,
+          rsc: true,
+          solid: true,
+        })
+      );
 
+      // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
       test.skip(
         // TO-DO: flaky in remix
         packageName === 'gen1-remix' ||
@@ -253,12 +263,14 @@ test.describe('Features', () => {
 
       await page.goto('/show-hide-if');
 
-      await findTextInPage({ page, text: 'even clicks' });
+      await expect(page.getByText('even clicks')).toBeVisible();
       await expect(page.locator('body')).not.toContainText('odd clicks');
 
-      await page.getByRole('button').click();
+      const button = page.getByRole('button');
+      await expect(button).toBeVisible();
+      await button.click();
 
-      await findTextInPage({ page, text: 'odd clicks' });
+      await expect(page.getByText('odd clicks')).toBeVisible();
       await expect(page.locator('body')).not.toContainText('even clicks');
     });
   });
@@ -284,7 +296,7 @@ test.describe('Features', () => {
   },
   */
     test.describe('when applied', () => {
-      testExcludeOldReact('large desktop size', async ({ page }) => {
+      test('large desktop size', async ({ page }) => {
         await page.setViewportSize({ width: 801, height: 1000 });
 
         await page.goto('/custom-breakpoints');
@@ -323,7 +335,7 @@ test.describe('Features', () => {
         }
       });
 
-      testExcludeOldReact('medium tablet size', async ({ page }) => {
+      test('medium tablet size', async ({ page }) => {
         await page.setViewportSize({ width: 501, height: 1000 });
 
         await page.goto('/custom-breakpoints');
@@ -514,9 +526,6 @@ test.describe('Features', () => {
       await page.locator(`a[href="/static-url"]`).waitFor();
     });
     test('renders with dynamic value', async ({ page, packageName }) => {
-      if (packageName === 'gen1-next') {
-        test.skip();
-      }
       await page.goto('/link-url');
 
       await page.locator(`a[href="/dynamic-url"]`).waitFor();

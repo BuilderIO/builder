@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { test, isRNSDK, testOnlyOldReact, testExcludeOldReact, isOldReactSDK } from './helpers.js';
+import { test, isRNSDK, EXCLUDE_GEN_2, EXCLUDE_GEN_1, isOldReactSDK } from './helpers.js';
 import type { PackageName } from './sdk.js';
 import { sdk } from './sdk.js';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
@@ -12,23 +12,25 @@ import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-lo
 const SSR_FETCHING_PACKAGES: (PackageName | 'DEFAULT')[] = ['next-app-dir', 'qwik-city'];
 
 const testSymbols = async (page: Page) => {
-  await page.getByText('special test description').locator('visible=true').waitFor();
+  await expect(page.getByText('special test description').locator('visible=true')).toBeVisible();
 
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
-    )
-    .locator('visible=true')
-    .waitFor();
+  await expect(
+    page
+      .locator(
+        '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
+      )
+      .locator('visible=true')
+  ).toBeVisible();
 
-  await page.getByText('default description').locator('visible=true').waitFor();
+  await expect(page.getByText('default description').locator('visible=true')).toBeVisible();
 
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
-    )
-    .locator('visible=true')
-    .waitFor();
+  await expect(
+    page
+      .locator(
+        '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
+      )
+      .locator('visible=true')
+  ).toBeVisible();
 
   const firstSymbolText = await page.locator('text="Description of image:"').first();
 
@@ -59,7 +61,7 @@ test.describe('Symbols', () => {
     await testSymbols(page);
   });
   test('fetch content if not provided', async ({ page, packageName }) => {
-    test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+    test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
 
@@ -91,7 +93,10 @@ test.describe('Symbols', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  testOnlyOldReact('refresh on locale change', async ({ page }) => {
+  test('refresh on locale change', async ({ page }) => {
+    // have to use `.skip()` because this test sometimes works in gen2 but flaky
+    test.skip(EXCLUDE_GEN_2);
+
     let x = 0;
 
     const urlMatch =
@@ -117,18 +122,18 @@ test.describe('Symbols', () => {
 
     await page.goto('/symbol-with-locale');
 
-    await page.waitForSelector('text=Default text');
+    await expect(page.locator('text=Default text')).toBeVisible();
 
     await page.click('text=click');
 
-    await page.waitForSelector('text=French text');
+    await expect(page.locator('text=French text')).toBeVisible();
 
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
   test.describe('apiVersion', () => {
     test('apiVersion is not set', async ({ page, packageName }) => {
-      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
 
@@ -161,7 +166,7 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v3', async ({ page, packageName }) => {
-      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -192,7 +197,8 @@ test.describe('Symbols', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testOnlyOldReact('apiVersion is set to v1', async ({ page }) => {
+    test('apiVersion is set to v1', async ({ page }) => {
+      test.fail(EXCLUDE_GEN_2);
       let x = 0;
 
       const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
@@ -219,8 +225,9 @@ test.describe('Symbols', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testExcludeOldReact('apiVersion is set to v2', async ({ page, packageName }) => {
-      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+    test('apiVersion is set to v2', async ({ page, packageName }) => {
+      test.fail(EXCLUDE_GEN_1);
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
@@ -251,7 +258,7 @@ test.describe('Symbols', () => {
 
     // Skipping the test as v2 sdks currently don't support Slot
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    if (
+    test.fail(
       [
         'react-native',
         'solid',
@@ -270,9 +277,7 @@ test.describe('Symbols', () => {
         'gen1-remix',
         'gen1-next',
       ].includes(packageName)
-    ) {
-      test.skip();
-    }
+    );
 
     const symbols = page.locator('[builder-model="symbol"]');
     await expect(symbols).toHaveCount(2);
