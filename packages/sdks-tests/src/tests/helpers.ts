@@ -74,22 +74,6 @@ export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT) => {
 };
 
 /**
- * reactive state works in:
- * - Vue
- * - React
- * - old React
- * - Qwik
- * - Svelte
- *
- * so we skip the other environments.
- */
-export const REACTIVE_STATE = excludeTestFor({
-  reactNative: true,
-  rsc: true,
-  solid: true,
-});
-
-/**
  * We exclude some new tests from old React until we fix them.
  */
 export const EXCLUDE_GEN_1 = excludeTestFor({

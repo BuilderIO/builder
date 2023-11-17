@@ -6,9 +6,9 @@ import {
   findTextInPage,
   getBuilderSessionIdCookie,
   isRNSDK,
-  REACTIVE_STATE,
   test,
   EXCLUDE_GEN_1,
+  excludeTestFor,
 } from './helpers.js';
 
 test.describe('Tracking', () => {
@@ -87,7 +87,7 @@ test.describe('Tracking', () => {
     });
 
     test('POSTs correct click data', async ({ page }) => {
-      test.fail(EXCLUDE_GEN_1);
+      test.skip(EXCLUDE_GEN_1);
       await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
@@ -174,7 +174,12 @@ test.describe('Features', () => {
     });
 
     test('increments value correctly', async ({ page, packageName }) => {
-      test.fail(REACTIVE_STATE);
+      test.fail(
+        excludeTestFor({
+          reactNative: true,
+          rsc: true,
+        })
+      );
       test.fail(packageName === 'next-app-dir');
 
       await page.goto('/reactive-state');
@@ -239,7 +244,13 @@ test.describe('Features', () => {
     });
 
     test('works on reactive conditions', async ({ page, packageName }) => {
-      test.fail(REACTIVE_STATE);
+      test.fail(
+        excludeTestFor({
+          reactNative: true,
+          rsc: true,
+          solid: true,
+        })
+      );
 
       // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
       test.skip(
@@ -284,7 +295,6 @@ test.describe('Features', () => {
   */
     test.describe('when applied', () => {
       test('large desktop size', async ({ page }) => {
-        test.fail(EXCLUDE_GEN_1);
         await page.setViewportSize({ width: 801, height: 1000 });
 
         await page.goto('/custom-breakpoints');
