@@ -8,9 +8,7 @@ import {
 } from './helpers.js';
 
 test.describe('Styles', () => {
-  test('data-binding-styles', async ({ page, packageName }) => {
-    test.fail(packageName === 'gen1-next');
-
+  test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
     await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
       'color',
