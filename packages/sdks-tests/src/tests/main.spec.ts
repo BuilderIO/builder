@@ -266,7 +266,9 @@ test.describe('Features', () => {
       await expect(page.getByText('even clicks')).toBeVisible();
       await expect(page.locator('body')).not.toContainText('odd clicks');
 
-      await page.getByRole('button').click();
+      const button = page.getByRole('button');
+      await expect(button).toBeVisible();
+      await button.click();
 
       await expect(page.getByText('odd clicks')).toBeVisible();
       await expect(page.locator('body')).not.toContainText('even clicks');

@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 import {
   test,
-  EXCLUDE_RN,
   isRNSDK,
   expectStylesForElement,
   findTextInPage,
@@ -10,11 +9,7 @@ import {
 
 test.describe('Styles', () => {
   test('data-binding-styles', async ({ page, packageName }) => {
-    test.fail(EXCLUDE_RN);
-    // TODO: FIX broken test for NextJS
-    if (packageName === 'gen1-next') {
-      return;
-    }
+    test.fail(packageName === 'gen1-next');
 
     await page.goto('/data-binding-styles');
     await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
@@ -25,10 +20,7 @@ test.describe('Styles', () => {
 
   test.describe('Style Bindings', () => {
     test('Content', async ({ page, packageName }) => {
-      // TODO: FIX broken test for NextJS
-      if (packageName === 'gen1-next') {
-        return;
-      }
+      test.fail(packageName === 'gen1-next');
 
       await page.goto('/content-bindings');
 
@@ -53,11 +45,7 @@ test.describe('Styles', () => {
       // title: 'some special title'
     });
     test('Symbol', async ({ page, packageName }) => {
-      // TODO: FIX broken test for NextJS
-      if (packageName === 'gen1-next') {
-        return;
-      }
-
+      test.fail(packageName === 'gen1-next');
       await page.goto('/symbol-bindings');
 
       const expected = {
