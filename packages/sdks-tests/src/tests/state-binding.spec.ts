@@ -4,7 +4,7 @@ import { isRNSDK, test } from './helpers.js';
 test.describe('State binding', () => {
   test.describe('inside repeater', () => {
     test('writing to state should update binding', async ({ page, packageName }) => {
-      test.skip(
+      test.fail(
         isRNSDK ||
           packageName === 'react-native' ||
           packageName === 'vue2' ||

@@ -15,9 +15,7 @@ test.describe('Tracking', () => {
   test.describe('cookies', () => {
     test('do not appear if canTrack=false', async ({ page, context, packageName }) => {
       // TO-DO: figure out why Remix fails this test
-      if (packageName === 'gen1-remix') {
-        test.skip();
-      }
+      test.fail(packageName === 'gen1-remix');
 
       // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
       // which guarantees that the cookie was set or not.
@@ -27,7 +25,8 @@ test.describe('Tracking', () => {
       const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
-    excludeReactNative('appear by default', async ({ page, context }) => {
+    test('appear by default', async ({ page, context }) => {
+      excludeReactNative();
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST'
@@ -87,7 +86,8 @@ test.describe('Tracking', () => {
       }
     });
 
-    testExcludeOldReact('POSTs correct click data', async ({ page }) => {
+    test('POSTs correct click data', async ({ page }) => {
+      testExcludeOldReact();
       await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
@@ -166,16 +166,16 @@ test('Client-side navigation', async ({ page }) => {
 
 test.describe('Features', () => {
   test.describe('Reactive State', () => {
-    excludeReactNative('shows default value', async ({ page }) => {
+    test('shows default value', async ({ page }) => {
+      excludeReactNative();
       await page.goto('/reactive-state');
 
       await expect(page.getByText('0', { exact: true })).toBeVisible();
     });
 
-    reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') {
-        test.skip();
-      }
+    test('increments value correctly', async ({ page, packageName }) => {
+      reactiveStateTest();
+      test.fail(packageName === 'next-app-dir');
 
       await page.goto('/reactive-state');
 
@@ -238,12 +238,11 @@ test.describe('Features', () => {
       await expect(page.locator('body')).not.toContainText('this never appears');
     });
 
-    reactiveStateTest('works on reactive conditions', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') {
-        test.skip();
-      }
+    test('works on reactive conditions', async ({ page, packageName }) => {
+      reactiveStateTest();
+      test.fail(packageName === 'next-app-dir');
 
-      test.skip(
+      test.fail(
         // TO-DO: flaky in remix
         packageName === 'gen1-remix' ||
           // flaky in vue3: takes too long to hydrate, causing button click not to register...
@@ -284,7 +283,8 @@ test.describe('Features', () => {
   },
   */
     test.describe('when applied', () => {
-      testExcludeOldReact('large desktop size', async ({ page }) => {
+      test('large desktop size', async ({ page }) => {
+        testExcludeOldReact();
         await page.setViewportSize({ width: 801, height: 1000 });
 
         await page.goto('/custom-breakpoints');
@@ -323,7 +323,8 @@ test.describe('Features', () => {
         }
       });
 
-      testExcludeOldReact('medium tablet size', async ({ page }) => {
+      test('medium tablet size', async ({ page }) => {
+        testExcludeOldReact();
         await page.setViewportSize({ width: 501, height: 1000 });
 
         await page.goto('/custom-breakpoints');
@@ -514,9 +515,7 @@ test.describe('Features', () => {
       await page.locator(`a[href="/static-url"]`).waitFor();
     });
     test('renders with dynamic value', async ({ page, packageName }) => {
-      if (packageName === 'gen1-next') {
-        test.skip();
-      }
+      test.fail(packageName === 'gen1-next');
       await page.goto('/link-url');
 
       await page.locator(`a[href="/dynamic-url"]`).waitFor();

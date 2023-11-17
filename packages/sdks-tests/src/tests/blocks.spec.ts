@@ -3,7 +3,8 @@ import type { ExpectedStyles } from './helpers.js';
 import { test, isRNSDK, excludeReactNative } from './helpers.js';
 
 test.describe('Blocks', () => {
-  excludeReactNative('Text block', async ({ page }) => {
+  test('Text block', async ({ page }) => {
+    excludeReactNative();
     await page.goto('/text-block');
 
     const textBlocks = page.locator('.builder-text');
@@ -164,9 +165,7 @@ test.describe('Blocks', () => {
       const [sizeName, size] = entry as [SizeName, Size];
 
       // only test mobile for RN
-      if (isRNSDK && sizeName !== 'mobile') {
-        test.skip();
-      }
+      test.fail(isRNSDK && sizeName !== 'mobile');
 
       test.describe(sizeName, () => {
         for (const [columnType, styles] of Object.entries(expected)) {

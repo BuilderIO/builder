@@ -66,7 +66,7 @@ export const isOldReactSDK = sdk === 'oldReact';
  *
  */
 export const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
-  return sdks[sdk] ? test.skip : test;
+  test.fail(sdks[sdk] || false);
 };
 
 /**
@@ -79,36 +79,40 @@ export const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
  *
  * so we skip the other environments.
  */
-export const reactiveStateTest = excludeTestFor({
-  reactNative: true,
-  rsc: true,
-  solid: true,
-});
+export const reactiveStateTest = () =>
+  excludeTestFor({
+    reactNative: true,
+    rsc: true,
+    solid: true,
+  });
 
 /**
  * We exclude some new tests from old React until we fix them.
  */
-export const testExcludeOldReact = excludeTestFor({
-  oldReact: true,
-});
+export const testExcludeOldReact = () =>
+  excludeTestFor({
+    oldReact: true,
+  });
 
 /**
  * We exclude some tests from SDKs which are not from old React.
  */
-export const testOnlyOldReact = excludeTestFor({
-  qwik: true,
-  react: true,
-  reactNative: true,
-  rsc: true,
-  solid: true,
-  svelte: true,
-  vue2: true,
-  vue3: true,
-});
+export const testOnlyOldReact = () =>
+  excludeTestFor({
+    qwik: true,
+    react: true,
+    reactNative: true,
+    rsc: true,
+    solid: true,
+    svelte: true,
+    vue2: true,
+    vue3: true,
+  });
 
-export const excludeReactNative = excludeTestFor({
-  reactNative: true,
-});
+export const excludeReactNative = () =>
+  excludeTestFor({
+    reactNative: true,
+  });
 
 export const getElementStyleValue = async ({
   locator,

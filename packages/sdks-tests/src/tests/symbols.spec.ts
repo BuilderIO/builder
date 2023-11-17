@@ -59,7 +59,7 @@ test.describe('Symbols', () => {
     await testSymbols(page);
   });
   test('fetch content if not provided', async ({ page, packageName }) => {
-    test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+    test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
 
@@ -91,7 +91,8 @@ test.describe('Symbols', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  testOnlyOldReact('refresh on locale change', async ({ page }) => {
+  test('refresh on locale change', async ({ page }) => {
+    testOnlyOldReact();
     let x = 0;
 
     const urlMatch =
@@ -128,7 +129,7 @@ test.describe('Symbols', () => {
 
   test.describe('apiVersion', () => {
     test('apiVersion is not set', async ({ page, packageName }) => {
-      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
 
@@ -161,7 +162,7 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v3', async ({ page, packageName }) => {
-      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 
       const urlMatch = isOldReactSDK
@@ -192,7 +193,8 @@ test.describe('Symbols', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testOnlyOldReact('apiVersion is set to v1', async ({ page }) => {
+    test('apiVersion is set to v1', async ({ page }) => {
+      testOnlyOldReact();
       let x = 0;
 
       const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
@@ -219,8 +221,9 @@ test.describe('Symbols', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    testExcludeOldReact('apiVersion is set to v2', async ({ page, packageName }) => {
-      test.skip(SSR_FETCHING_PACKAGES.includes(packageName));
+    test('apiVersion is set to v2', async ({ page, packageName }) => {
+      testExcludeOldReact();
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
@@ -251,7 +254,7 @@ test.describe('Symbols', () => {
 
     // Skipping the test as v2 sdks currently don't support Slot
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    if (
+    test.fail(
       [
         'react-native',
         'solid',
@@ -270,9 +273,7 @@ test.describe('Symbols', () => {
         'gen1-remix',
         'gen1-next',
       ].includes(packageName)
-    ) {
-      test.skip();
-    }
+    );
 
     const symbols = page.locator('[builder-model="symbol"]');
     await expect(symbols).toHaveCount(2);

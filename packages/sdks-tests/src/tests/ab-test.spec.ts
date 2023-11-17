@@ -73,10 +73,10 @@ const initializeAbTest = async (
   if (!baseURL) throw new Error('Missing baseURL');
 
   // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-  if (packageName === 'gen1-next') test.skip();
+  test.fail(packageName === 'gen1-next');
 
   // TO-DO: fix this
-  if (packageName === 'next-app-dir') test.skip();
+  test.fail(packageName === 'next-app-dir');
 
   // React Native SDK needs some extra time to sort its feelings out.
   if (packageName === 'react-native') test.slow();
@@ -199,7 +199,7 @@ test.describe('A/B tests', () => {
         browser,
         context: _context,
       }) => {
-        if (packageName === 'react-native') test.skip();
+        test.fail(packageName === 'react-native');
 
         const { page, msgs } = await initializeAbTest(
           {
@@ -233,7 +233,7 @@ test.describe('A/B tests', () => {
         browser,
         context: _context,
       }) => {
-        if (packageName === 'react-native') test.skip();
+        test.fail(packageName === 'react-native');
 
         const { page, msgs } = await initializeAbTest(
           {

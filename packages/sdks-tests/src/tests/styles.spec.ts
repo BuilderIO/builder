@@ -9,7 +9,8 @@ import {
 } from './helpers.js';
 
 test.describe('Styles', () => {
-  excludeReactNative('data-binding-styles', async ({ page, packageName }) => {
+  test('data-binding-styles', async ({ page, packageName }) => {
+    excludeReactNative();
     // TODO: FIX broken test for NextJS
     if (packageName === 'gen1-next') {
       return;
@@ -96,14 +97,13 @@ test.describe('Styles', () => {
     await expect(locator).toHaveCSS('margin-left', '0px');
   });
 
-  const excludeReactNativeAndOldReact = excludeTestFor({
-    // we don't support CSS nesting in RN.
-    reactNative: true,
-    // old React SDK should support CSS nesting, but it seems to not be implemented properly.
-    oldReact: true,
-  });
-
-  excludeReactNativeAndOldReact('Should apply CSS nesting', async ({ page }) => {
+  test('Should apply CSS nesting', async ({ page }) => {
+    excludeTestFor({
+      // we don't support CSS nesting in RN.
+      reactNative: true,
+      // old React SDK should support CSS nesting, but it seems to not be implemented properly.
+      oldReact: true,
+    });
     await page.goto('./css-nesting');
 
     const blueText = page.locator('text=blue');

@@ -48,7 +48,7 @@ const launchEmbedderAndWaitForSdk = async ({
 
 test.describe('Visual Editing', () => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {
-    test.skip(
+    test.fail(
       packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'gen1-next' ||
@@ -66,7 +66,7 @@ test.describe('Visual Editing', () => {
     basePort,
     packageName,
   }) => {
-    test.skip(
+    test.fail(
       packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'gen1-next' ||
@@ -80,7 +80,7 @@ test.describe('Visual Editing', () => {
   });
 
   test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
-    test.skip(
+    test.fail(
       packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
         packageName === 'gen1-next' ||
