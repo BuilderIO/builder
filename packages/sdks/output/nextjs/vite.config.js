@@ -13,9 +13,6 @@ export default defineConfig({
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
-    commonjsOptions: {
-      exclude: ['node_modules/isolated-vm/**'],
-    },
     rollupOptions: {
       external: [
         'next/navigation',
