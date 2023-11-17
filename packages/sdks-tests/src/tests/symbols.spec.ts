@@ -1,14 +1,7 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import {
-  test,
-  isRNSDK,
-  EXCLUDE_GEN_2,
-  EXCLUDE_GEN_1,
-  isOldReactSDK,
-  excludeTestFor,
-} from './helpers.js';
+import { test, isRNSDK, EXCLUDE_GEN_2, EXCLUDE_GEN_1, isOldReactSDK } from './helpers.js';
 import type { PackageName } from './sdk.js';
 import { sdk } from './sdk.js';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
@@ -100,18 +93,19 @@ test.describe('Symbols', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test('refresh on locale change', async ({ page }) => {
+  test('refresh on locale change', async ({ page, packageName }) => {
     test.fail(
-      excludeTestFor({
-        qwik: true,
-        react: true,
-        reactNative: true,
-        rsc: true,
-        solid: true,
-        // svelte: true,
-        vue2: true,
-        vue3: true,
-      })
+      packageName === 'qwik-city' ||
+        packageName === 'react' ||
+        packageName === 'next-pages-dir' ||
+        packageName === 'react-native' ||
+        packageName === 'solid' ||
+        packageName === 'solid-start' ||
+        packageName === 'vue2' ||
+        packageName === 'vue3' ||
+        packageName === 'nuxt2' ||
+        packageName === 'nuxt3' ||
+        packageName === 'svelte'
     );
 
     let x = 0;
