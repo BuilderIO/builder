@@ -20,11 +20,11 @@ test.describe('State binding', () => {
       );
 
       await page.goto('/state-binding/', { waitUntil: 'networkidle' });
-      await expect(page.locator('text=initial Name')).toContainText('initial Name');
+      await expect(page.locator('text=initial Name')).toBeVisible();
       const buttonLocator = page.getByText('first');
       await expect(buttonLocator).toBeVisible();
       await buttonLocator.click();
-      await expect(page.locator('text=repeated set')).toContainText('repeated set');
+      await expect(page.locator('text=repeated set')).toBeVisible();
     });
   });
 });
