@@ -19,9 +19,7 @@ test.describe('Styles', () => {
   });
 
   test.describe('Style Bindings', () => {
-    test('Content', async ({ page, packageName }) => {
-      test.fail(packageName === 'gen1-next');
-
+    test('Content', async ({ page }) => {
       await page.goto('/content-bindings');
 
       const expected = {
@@ -44,8 +42,7 @@ test.describe('Styles', () => {
       // check the title is correct
       // title: 'some special title'
     });
-    test('Symbol', async ({ page, packageName }) => {
-      test.fail(packageName === 'gen1-next');
+    test('Symbol', async ({ page }) => {
       await page.goto('/symbol-bindings');
 
       const expected = {

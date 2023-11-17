@@ -336,7 +336,6 @@ test.describe('Features', () => {
       });
 
       test('medium tablet size', async ({ page }) => {
-        test.fail(EXCLUDE_GEN_1);
         await page.setViewportSize({ width: 501, height: 1000 });
 
         await page.goto('/custom-breakpoints');
@@ -527,7 +526,6 @@ test.describe('Features', () => {
       await page.locator(`a[href="/static-url"]`).waitFor();
     });
     test('renders with dynamic value', async ({ page, packageName }) => {
-      test.fail(packageName === 'gen1-next');
       await page.goto('/link-url');
 
       await page.locator(`a[href="/dynamic-url"]`).waitFor();
