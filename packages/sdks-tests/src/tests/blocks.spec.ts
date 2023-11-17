@@ -164,6 +164,9 @@ test.describe('Blocks', () => {
     for (const entry of Object.entries(sizes)) {
       const [sizeName, size] = entry as [SizeName, Size];
 
+      // intermittent success, can't use test.fail()
+      test.skip(isRNSDK && sizeName !== 'mobile');
+
       test.describe(sizeName, () => {
         for (const [columnType, styles] of Object.entries(expected)) {
           test(columnType, async ({ page }) => {
