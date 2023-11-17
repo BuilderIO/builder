@@ -115,7 +115,6 @@
     "vite-plugin-dts": "^3.5.2"
   },
   "dependencies": {
-    "isolated-vm": "^4.6.0",
     "lru-cache": "^10.0.0"
   },
   "nx": {

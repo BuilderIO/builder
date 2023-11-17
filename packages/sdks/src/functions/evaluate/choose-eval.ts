@@ -1,3 +1,7 @@
+import { runInBrowser } from './browser-runtime/browser.js';
+import type { ExecutorArgs } from './helpers.js';
+import { isBrowser } from '../is-browser.js';
+
 /**
  * THIS IS A MAGICAL IMPORT. It is aliased by the build process of every SDK configuration, so that
  * it points to the correct runtime for that configuration, which are expected to live exactly at:
@@ -10,9 +14,6 @@
  * types can be resolved correctly.
  */
 import { evaluator } from 'placeholder-runtime';
-import { runInBrowser } from './browser-runtime/browser.js';
-import type { ExecutorArgs } from './helpers.js';
-import { isBrowser } from '../is-browser.js';
 
 /**
  * Even though we have separate runtimes for browser/node/edge, sometimes frameworks will

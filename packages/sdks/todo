@@ -1,8 +1,0 @@
-TO-DO: 
-- [ ] decide whether to put isolated-vm in peerDeps or deps:
-  -  try publishing a dev version with `isolated-vm` under `deps` and uploading it to an edge server, to see if it works.
-  That's the main concern around having it in deps.
-
-- [ ] fix errors in VM code execution.
-  - nextjs/qwik/vue3, all in Dynamic Data Bindings. Therefore related to repeated items.    
-  - qwik: reactivity does not work. `rootSetState` replacement doesn't work.

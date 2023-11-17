@@ -107,11 +107,9 @@
     "typescript": "^5.1.6",
     "vite": "^4.3.2"
   },
-  "dependencies": {
-    "isolated-vm": "^4.6.0"
-  },
   "peerDependencies": {
     "@builder.io/qwik": ">=1.0.0",
+    "isolated-vm": "^4.6.0",
     "undici": "^5.14.0"
   },
   "nx": {

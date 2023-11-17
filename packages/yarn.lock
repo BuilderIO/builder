@@ -3427,13 +3427,13 @@ __metadata:
     "@builder.io/qwik": ^1.2.6
     "@builder.io/sdks": "workspace:*"
     "@types/node": latest
-    isolated-vm: ^4.6.0
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     typescript: ^5.1.6
     vite: ^4.3.2
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
+    isolated-vm: ^4.6.0
     undici: ^5.14.0
   languageName: unknown
   linkType: soft
@@ -3476,7 +3476,6 @@ __metadata:
   dependencies:
     "@builder.io/sdks": "workspace:*"
     "@vitejs/plugin-react": ^4.0.4
-    isolated-vm: ^4.6.0
     lru-cache: ^10.0.0
     next: ^13.4.20
     nx: ^16.6.0
