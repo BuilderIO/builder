@@ -300,13 +300,14 @@ export type GetContentOptions = AllowEnrich & {
    */
   includeUrl?: boolean;
   /**
-   * Follow references. If you use the `reference` field to pull in other content without this
+   * Include content of references in the response.
+   * If you use the `reference` field to pull in other content without this
    * enabled we will not fetch that content for the final response.
    * @deprecated use `enrich` instead
    */
   includeRefs?: boolean;
   /**
-   * How long in seconds content should be cached for. Sets the max-age of the cache-control header
+   * Seconds to cache content. Sets the max-age of the cache-control header
    * response header.
    *
    * Use a higher value for better performance, lower for content that will change more frequently
@@ -329,6 +330,10 @@ export type GetContentOptions = AllowEnrich & {
    * Maximum number of results to return. Defaults to `1`.
    */
   limit?: number;
+  /**
+   * Use to specify an offset for pagination of results. The default is 0.
+   */
+  offset?: number;
   /**
    * Mongodb style query of your data. E.g.:
    *
@@ -362,10 +367,6 @@ export type GetContentOptions = AllowEnrich & {
    * Extract any styles to a separate css property when generating HTML.
    */
   extractCss?: boolean;
-  /**
-   * Pagination results offset. Defaults to zero.
-   */
-  offset?: number;
   /**
    * @package
    *
@@ -401,13 +402,23 @@ export type GetContentOptions = AllowEnrich & {
    * @hidden
    */
   alias?: string;
-  fields?: string;
   /**
-   * Omit only these fields.
+   * Only include these fields.
+   * Note: 'omit' takes precedence over 'fields'
    *
    * @example
    * ```
-   * &omit=data.bigField,data.blocks
+   * fields: 'id, name, data.customField'
+   * ```
+   */
+  fields?: string;
+  /**
+   * Omit only these fields.
+   * Note: 'omit' takes precedence over 'fields'
+   *
+   * @example
+   * ```
+   * omit: 'data.bigField,data.blocks'
    * ```
    */
   omit?: string;
@@ -460,6 +471,26 @@ export type GetContentOptions = AllowEnrich & {
    * @deprecated use `enrich` instead
    */
   noTraverse?: boolean;
+
+  /**
+   * Property to order results by.
+   * Use 1 for ascending and -1 for descending.
+   *
+   * The key is what you're sorting on, so the following example sorts by createdDate
+   * and because the value is 1, the sort is ascending.
+   *
+   * @example
+   * ```
+   * createdDate: 1
+   * ```
+   */
+  sort?: { [key: string]: 1 | -1 };
+
+  /**
+   * Include content entries in a response that are still in
+   * draft mode and un-archived. Default is false.
+   */
+  includeUnpublished?: boolean;
 };
 
 export type Class = {
@@ -2342,6 +2373,12 @@ export class Builder {
     }
     if ('noTraverse' in queue[0]) {
       queryParams.noTraverse = queue[0].noTraverse;
+    }
+    if ('includeUnpublished' in queue[0]) {
+      queryParams.includeUnpublished = queue[0].includeUnpublished;
+    }
+    if (queue[0].sort) {
+      queryParams.sort = queue[0].sort;
     }
 
     const pageQueryParams: ParamsMap =

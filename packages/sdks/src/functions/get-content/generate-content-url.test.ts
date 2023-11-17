@@ -193,4 +193,34 @@ describe('Generate Content URL', () => {
     });
     expect(output).toMatchSnapshot();
   });
+
+  test('generate content url with omit, fields, offset, includeUnpublished, cacheSeconds, staleCacheSeconds and sort combination', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      omit: 'someId, some.nested.id',
+      fields: 'id, nested.property',
+      offset: 1,
+      includeUnpublished: true,
+      cacheSeconds: 5,
+      staleCacheSeconds: 10,
+      sort: {
+        updatedDate: -1,
+        createdDate: 1,
+      },
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url when given invalid values of offset, includeUnpublished, cacheSeconds, staleCacheSeconds', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      offset: -10,
+      includeUnpublished: false,
+      cacheSeconds: -5,
+      staleCacheSeconds: -10,
+    });
+    expect(output).toMatchSnapshot();
+  });
 });
