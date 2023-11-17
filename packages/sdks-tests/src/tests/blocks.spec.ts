@@ -1,10 +1,10 @@
 import { expect } from '@playwright/test';
 import type { ExpectedStyles } from './helpers.js';
-import { test, isRNSDK, excludeReactNative } from './helpers.js';
+import { test, isRNSDK, EXCLUDE_RN } from './helpers.js';
 
 test.describe('Blocks', () => {
   test('Text block', async ({ page }) => {
-    excludeReactNative();
+    test.fail(EXCLUDE_RN);
     await page.goto('/text-block');
 
     const textBlocks = page.locator('.builder-text');

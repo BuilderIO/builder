@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { test, isRNSDK, testOnlyOldReact, testExcludeOldReact, isOldReactSDK } from './helpers.js';
+import { test, isRNSDK, EXCLUDE_GEN_2, EXCLUDE_GEN_1, isOldReactSDK } from './helpers.js';
 import type { PackageName } from './sdk.js';
 import { sdk } from './sdk.js';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
@@ -92,7 +92,7 @@ test.describe('Symbols', () => {
   });
 
   test('refresh on locale change', async ({ page }) => {
-    testOnlyOldReact();
+    test.fail(EXCLUDE_GEN_2);
     let x = 0;
 
     const urlMatch =
@@ -194,7 +194,7 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v1', async ({ page }) => {
-      testOnlyOldReact();
+      test.fail(EXCLUDE_GEN_2);
       let x = 0;
 
       const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
@@ -222,7 +222,7 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v2', async ({ page, packageName }) => {
-      testExcludeOldReact();
+      test.fail(EXCLUDE_GEN_1);
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 

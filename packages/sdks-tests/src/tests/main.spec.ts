@@ -1,14 +1,14 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 import {
-  excludeReactNative,
+  EXCLUDE_RN,
   expectStylesForElement,
   findTextInPage,
   getBuilderSessionIdCookie,
   isRNSDK,
-  reactiveStateTest,
+  REACTIVE_STATE,
   test,
-  testExcludeOldReact,
+  EXCLUDE_GEN_1,
 } from './helpers.js';
 
 test.describe('Tracking', () => {
@@ -26,7 +26,7 @@ test.describe('Tracking', () => {
       expect(builderSessionCookie).toBeUndefined();
     });
     test('appear by default', async ({ page, context }) => {
-      excludeReactNative();
+      test.fail(EXCLUDE_RN);
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST'
@@ -87,7 +87,7 @@ test.describe('Tracking', () => {
     });
 
     test('POSTs correct click data', async ({ page }) => {
-      testExcludeOldReact();
+      test.fail(EXCLUDE_GEN_1);
       await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
@@ -167,14 +167,14 @@ test('Client-side navigation', async ({ page }) => {
 test.describe('Features', () => {
   test.describe('Reactive State', () => {
     test('shows default value', async ({ page }) => {
-      excludeReactNative();
+      test.fail(EXCLUDE_RN);
       await page.goto('/reactive-state');
 
       await expect(page.getByText('0', { exact: true })).toBeVisible();
     });
 
     test('increments value correctly', async ({ page, packageName }) => {
-      reactiveStateTest();
+      test.fail(REACTIVE_STATE);
       test.fail(packageName === 'next-app-dir');
 
       await page.goto('/reactive-state');
@@ -239,7 +239,7 @@ test.describe('Features', () => {
     });
 
     test('works on reactive conditions', async ({ page, packageName }) => {
-      reactiveStateTest();
+      test.fail(REACTIVE_STATE);
       test.fail(packageName === 'next-app-dir');
 
       test.fail(
@@ -284,7 +284,7 @@ test.describe('Features', () => {
   */
     test.describe('when applied', () => {
       test('large desktop size', async ({ page }) => {
-        testExcludeOldReact();
+        test.fail(EXCLUDE_GEN_1);
         await page.setViewportSize({ width: 801, height: 1000 });
 
         await page.goto('/custom-breakpoints');
@@ -324,7 +324,7 @@ test.describe('Features', () => {
       });
 
       test('medium tablet size', async ({ page }) => {
-        testExcludeOldReact();
+        test.fail(EXCLUDE_GEN_1);
         await page.setViewportSize({ width: 501, height: 1000 });
 
         await page.goto('/custom-breakpoints');

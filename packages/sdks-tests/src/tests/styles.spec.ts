@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import {
   test,
-  excludeReactNative,
+  EXCLUDE_RN,
   isRNSDK,
   expectStylesForElement,
   findTextInPage,
@@ -10,7 +10,7 @@ import {
 
 test.describe('Styles', () => {
   test('data-binding-styles', async ({ page, packageName }) => {
-    excludeReactNative();
+    test.fail(EXCLUDE_RN);
     // TODO: FIX broken test for NextJS
     if (packageName === 'gen1-next') {
       return;
@@ -98,12 +98,14 @@ test.describe('Styles', () => {
   });
 
   test('Should apply CSS nesting', async ({ page }) => {
-    excludeTestFor({
-      // we don't support CSS nesting in RN.
-      reactNative: true,
-      // old React SDK should support CSS nesting, but it seems to not be implemented properly.
-      oldReact: true,
-    });
+    test.fail(
+      excludeTestFor({
+        // we don't support CSS nesting in RN.
+        reactNative: true,
+        // old React SDK should support CSS nesting, but it seems to not be implemented properly.
+        oldReact: true,
+      })
+    );
     await page.goto('./css-nesting');
 
     const blueText = page.locator('text=blue');
