@@ -12,23 +12,25 @@ import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-lo
 const SSR_FETCHING_PACKAGES: (PackageName | 'DEFAULT')[] = ['next-app-dir', 'qwik-city'];
 
 const testSymbols = async (page: Page) => {
-  await page.getByText('special test description').locator('visible=true').waitFor();
+  await expect(page.getByText('special test description').locator('visible=true')).toBeVisible();
 
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
-    )
-    .locator('visible=true')
-    .waitFor();
+  await expect(
+    page
+      .locator(
+        '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
+      )
+      .locator('visible=true')
+  ).toBeVisible();
 
-  await page.getByText('default description').locator('visible=true').waitFor();
+  await expect(page.getByText('default description').locator('visible=true')).toBeVisible();
 
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
-    )
-    .locator('visible=true')
-    .waitFor();
+  await expect(
+    page
+      .locator(
+        '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
+      )
+      .locator('visible=true')
+  ).toBeVisible();
 
   const firstSymbolText = await page.locator('text="Description of image:"').first();
 
@@ -93,6 +95,7 @@ test.describe('Symbols', () => {
 
   test('refresh on locale change', async ({ page }) => {
     test.fail(EXCLUDE_GEN_2);
+
     let x = 0;
 
     const urlMatch =
@@ -118,11 +121,11 @@ test.describe('Symbols', () => {
 
     await page.goto('/symbol-with-locale');
 
-    await page.waitForSelector('text=Default text');
+    await expect(page.locator('text=Default text')).toBeVisible();
 
     await page.click('text=click');
 
-    await page.waitForSelector('text=French text');
+    await expect(page.locator('text=French text')).toBeVisible();
 
     await expect(x).toBeGreaterThanOrEqual(2);
   });

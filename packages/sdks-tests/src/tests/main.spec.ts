@@ -242,7 +242,8 @@ test.describe('Features', () => {
       test.fail(REACTIVE_STATE);
       test.fail(packageName === 'next-app-dir');
 
-      test.fail(
+      // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
+      test.skip(
         // TO-DO: flaky in remix
         packageName === 'gen1-remix' ||
           // flaky in vue3: takes too long to hydrate, causing button click not to register...
