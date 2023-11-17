@@ -93,20 +93,9 @@ test.describe('Symbols', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test('refresh on locale change', async ({ page, packageName }) => {
-    test.fail(
-      packageName === 'qwik-city' ||
-        packageName === 'react' ||
-        packageName === 'next-pages-dir' ||
-        packageName === 'react-native' ||
-        packageName === 'solid' ||
-        packageName === 'solid-start' ||
-        packageName === 'vue2' ||
-        packageName === 'vue3' ||
-        packageName === 'nuxt2' ||
-        packageName === 'nuxt3' ||
-        packageName === 'svelte'
-    );
+  test('refresh on locale change', async ({ page }) => {
+    // have to use `.skip()` because this test sometimes works in gen2 but flaky
+    test.skip(EXCLUDE_GEN_2);
 
     let x = 0;
 
