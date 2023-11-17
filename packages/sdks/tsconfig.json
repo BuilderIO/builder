@@ -6,8 +6,6 @@
     "jsxImportSource": "@builder.io/mitosis",
     "lib": ["dom", "ESNext"],
     "skipLibCheck": true,
-    // needed for `isolated-vm`
-    "esModuleInterop": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
     // needed to make sure vite/esbuild can bundle the code properly
