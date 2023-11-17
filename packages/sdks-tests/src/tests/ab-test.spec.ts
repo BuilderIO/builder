@@ -75,9 +75,6 @@ const initializeAbTest = async (
   // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
   test.fail(packageName === 'gen1-next');
 
-  // TO-DO: fix this
-  test.fail(packageName === 'next-app-dir');
-
   // React Native SDK needs some extra time to sort its feelings out.
   if (packageName === 'react-native') test.slow();
 

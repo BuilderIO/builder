@@ -240,7 +240,6 @@ test.describe('Features', () => {
 
     test('works on reactive conditions', async ({ page, packageName }) => {
       test.fail(REACTIVE_STATE);
-      test.fail(packageName === 'next-app-dir');
 
       // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
       test.skip(
@@ -253,12 +252,12 @@ test.describe('Features', () => {
 
       await page.goto('/show-hide-if');
 
-      await findTextInPage({ page, text: 'even clicks' });
+      await expect(page.getByText('even clicks')).toBeVisible();
       await expect(page.locator('body')).not.toContainText('odd clicks');
 
       await page.getByRole('button').click();
 
-      await findTextInPage({ page, text: 'odd clicks' });
+      await expect(page.getByText('odd clicks')).toBeVisible();
       await expect(page.locator('body')).not.toContainText('even clicks');
     });
   });
