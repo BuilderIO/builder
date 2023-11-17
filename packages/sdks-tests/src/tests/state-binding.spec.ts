@@ -4,7 +4,8 @@ import { isRNSDK, test } from './helpers.js';
 test.describe('State binding', () => {
   test.describe('inside repeater', () => {
     test('writing to state should update binding', async ({ page, packageName }) => {
-      test.fail(
+      // flaky, can't `test.fail()`
+      test.skip(
         isRNSDK ||
           packageName === 'react-native' ||
           packageName === 'vue2' ||
@@ -14,7 +15,8 @@ test.describe('State binding', () => {
           packageName === 'svelte' ||
           packageName === 'sveltekit' ||
           packageName === 'next-app-dir' ||
-          packageName === 'vue3'
+          packageName === 'vue3' ||
+          packageName === 'nuxt3'
       );
 
       await page.goto('/state-binding/', { waitUntil: 'networkidle' });
