@@ -10,7 +10,7 @@
     // "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "jsx": "react",
     "declaration": true,
     "emitDeclarationOnly": true,

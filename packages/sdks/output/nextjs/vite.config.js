@@ -1,13 +1,42 @@
+import { copyFileSync, rmSync } from 'node:fs';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import {
+  viteOutputGenerator,
+  getEvaluatorPathAlias,
+  getSdkOutputPath,
+} from '@builder.io/sdks/output-generation/index.js';
+import dts from 'vite-plugin-dts';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
 const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
 
 export default defineConfig({
-  plugins: [viteOutputGenerator(), react()],
+  plugins: [
+    viteOutputGenerator(),
+    react(),
+    dts({
+      compilerOptions: {
+        paths: getEvaluatorPathAlias(),
+        outFile: 'index.d.cts',
+        outDir: getSdkOutputPath(),
+        module: 'commonjs',
+      },
+      afterBuild: () => {
+        const dir = getSdkOutputPath();
+
+        /**
+         * https://github.com/qmhc/vite-plugin-dts/issues/267#issuecomment-1786996676
+         */
+        copyFileSync(`${dir}/index.d.ts`, `${dir}/index.d.mts`);
+        copyFileSync(`${dir}/index.d.ts`, `${dir}/index.d.cts`);
+        rmSync(`${dir}/index.d.ts`);
+      },
+      copyDtsFiles: true,
+    }),
+  ],
   build: {
+    emptyOutDir: true,
     lib: {
       entry: './src/index.ts',
       formats: ['es', 'cjs'],
