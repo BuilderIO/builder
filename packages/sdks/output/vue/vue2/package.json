@@ -15,6 +15,9 @@
     "build:browser": "SDK_ENV=browser yarn vite-build",
     "type-check": "vue-tsc --noEmit"
   },
+  "dependencies": {
+    "isolated-vm": "^4.6.0"
+  },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
     "@types/node": "^16.11.45",
@@ -31,7 +34,6 @@
     "vue-tsc": "^0.38.8"
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0",
     "vue": "^2.7.7"
   },
   "nx": {
