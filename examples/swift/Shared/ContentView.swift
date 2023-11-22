@@ -23,7 +23,7 @@ struct ContentView: View {
     }
     
     func fetchContent() {
-        Content.getContent(model: "page", apiKey: "e084484c0e0241579f01abba29d9be10", url: "/native-figma-import-2", locale: "", preview: "") { content in
+        Content.getContent(model: "page", apiKey: "e084484c0e0241579f01abba29d9be10", url: "/buttons", locale: "", preview: "") { content in
             DispatchQueue.main.async {
                 self.content.changeContent(content);
             }
@@ -34,8 +34,11 @@ struct ContentView: View {
         VStack {
             ScrollView {
                 if $content.content.wrappedValue != nil {
-                    RenderContent(content: $content.content.wrappedValue!, apiKey: "e084484c0e0241579f01abba29d9be10")
+                    RenderContent(content: $content.content.wrappedValue!, apiKey: "e084484c0e0241579f01abba29d9be10") { text, urlString in
+                        print("Some one clicked a button!!", text, urlString ?? "empty url");
+                    }
                 }
+//                HeroComponent(headingText: "HEADING TEXT", detailText: "Some details here", ctaText: "Click me", image: "https://cdn.builder.io/api/v1/image/assets/TEMP/5f780b17-6959-4cb2-84a3-f9f8fd20292e?placeholderIfAbsent=true")
             }.frame(idealWidth: .infinity, maxWidth: .infinity)
             
             if (Content.isPreviewing()) {
