@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@builder.io/dev-tools": "^0.1.14",
-    "@builder.io/sdk-qwik": "^0.7.1-4"
+    "@builder.io/sdk-qwik": "^0.7.1-6"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.10",
