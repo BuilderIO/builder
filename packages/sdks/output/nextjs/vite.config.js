@@ -1,4 +1,4 @@
-import { copyFileSync, rmSync } from 'node:fs';
+import { renameSync } from 'node:fs';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import {
@@ -18,7 +18,7 @@ export default defineConfig({
     dts({
       compilerOptions: {
         paths: getEvaluatorPathAlias(),
-        outFile: 'index.d.cts',
+        outFile: 'index.d.ts',
         outDir: getSdkOutputPath(),
         module: 'commonjs',
       },
@@ -28,12 +28,25 @@ export default defineConfig({
         /**
          * https://github.com/qmhc/vite-plugin-dts/issues/267#issuecomment-1786996676
          */
-        copyFileSync(`${dir}/index.d.ts`, `${dir}/index.d.mts`);
-        copyFileSync(`${dir}/index.d.ts`, `${dir}/index.d.cts`);
-        rmSync(`${dir}/index.d.ts`);
+        // renameSync(`${dir}/index.d.ts`, `${dir}/index.d.cts`);
       },
       copyDtsFiles: true,
     }),
+    // dts({
+    //   compilerOptions: {
+    //     paths: getEvaluatorPathAlias(),
+    //     outDir: getSdkOutputPath(),
+    //   },
+    //   afterBuild: () => {
+    //     const dir = getSdkOutputPath();
+
+    //     /**
+    //      * https://github.com/qmhc/vite-plugin-dts/issues/267#issuecomment-1786996676
+    //      */
+    //     renameSync(`${dir}/index.d.ts`, `${dir}/index.d.mts`);
+    //   },
+    //   copyDtsFiles: true,
+    // }),
   ],
   build: {
     emptyOutDir: true,

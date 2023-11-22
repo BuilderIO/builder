@@ -1,0 +1,4 @@
+TO-DO:
+  - NextJS SDK isn't picking up edge runtime code by default.
+  - We need to make NextJS SDK a `type: module` SDK so that the `exports` work properly
+  - We need to fix types generation for NextJS SDK, so that it works with `type: module`
