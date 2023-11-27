@@ -115,7 +115,7 @@
           "{projectRoot}/tsconfig.json",
           "{projectRoot}/tsconfig.cjs.json",
           "{projectRoot}/tsconfig.esm.json",
-          "{projectRoot}/vite.config.ts"
+          "{projectRoot}/vite.config.js"
         ],
         "outputs": [
           "{projectRoot}/lib"

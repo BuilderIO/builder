@@ -1,5 +1,5 @@
-import react from '@vitejs/plugin-react/dist/index.mjs';
-import { defineConfig } from 'vite/dist/node/index.js';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
@@ -19,9 +19,9 @@ const typeIndexGenerator = () => ({
     this.emitFile({
       type: 'asset',
       fileName: `index.d.${isESM ? 'mts' : 'cts'}`,
-      source: `export * from '../../types/index-${
+      source: `export * from '../../types/${
         isESM ? 'esm' : 'cjs'
-      }.d.ts';`,
+      }/index.d.ts';`,
     });
   },
 });
