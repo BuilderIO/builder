@@ -1,37 +1,52 @@
-import { renameSync } from 'node:fs';
-import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
-import {
-  viteOutputGenerator,
-  getEvaluatorPathAlias,
-  getSdkOutputPath,
-} from '@builder.io/sdks/output-generation/index.js';
-import dts from 'vite-plugin-dts';
+import react from '@vitejs/plugin-react/dist/index.mjs';
+import { defineConfig } from 'vite/dist/node/index.js';
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
 const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
+
+/**
+ * @typedef {import('vite').Plugin} VitePlugin
+ *
+ *
+ * @returns {VitePlugin}
+ */
+const typeIndexGenerator = () => ({
+  name: 'type-index-generator',
+  enforce: 'pre',
+  generateBundle(options, bundle) {
+    const isESM = options.format === 'es';
+    this.emitFile({
+      type: 'asset',
+      fileName: `index.d.${isESM ? 'mts' : 'cts'}`,
+      source: `export * from '../../types/index-${
+        isESM ? 'esm' : 'cjs'
+      }.d.ts';`,
+    });
+  },
+});
 
 export default defineConfig({
   plugins: [
     viteOutputGenerator(),
     react(),
-    dts({
-      compilerOptions: {
-        paths: getEvaluatorPathAlias(),
-        outFile: 'index.d.ts',
-        outDir: getSdkOutputPath(),
-        module: 'commonjs',
-      },
-      afterBuild: () => {
-        const dir = getSdkOutputPath();
-
-        /**
-         * https://github.com/qmhc/vite-plugin-dts/issues/267#issuecomment-1786996676
-         */
-        // renameSync(`${dir}/index.d.ts`, `${dir}/index.d.cts`);
-      },
-      copyDtsFiles: true,
-    }),
+    typeIndexGenerator(),
+    // dts({
+    //   compilerOptions: {
+    //     paths: getEvaluatorPathAlias(),
+    //     outFile: 'index.d.ts',
+    //     outDir: getSdkOutputPath(),
+    //     module: 'commonjs',
+    //   },
+    //   afterBuild: () => {
+    //     const dir = getSdkOutputPath();
+    //     /**
+    //      * https://github.com/qmhc/vite-plugin-dts/issues/267#issuecomment-1786996676
+    //      */
+    //     // renameSync(`${dir}/index.d.ts`, `${dir}/index.d.cts`);
+    //   },
+    //   copyDtsFiles: true,
+    // }),
     // dts({
     //   compilerOptions: {
     //     paths: getEvaluatorPathAlias(),
@@ -39,7 +54,6 @@ export default defineConfig({
     //   },
     //   afterBuild: () => {
     //     const dir = getSdkOutputPath();
-
     //     /**
     //      * https://github.com/qmhc/vite-plugin-dts/issues/267#issuecomment-1786996676
     //      */
@@ -66,7 +80,6 @@ export default defineConfig({
       output: {
         manualChunks(id, { getModuleInfo }) {
           const code = getModuleInfo(id).code;
-
           if (
             code.match(/^['"]use client['"]/) ||
             // context file has to be in the client bundle due to `createContext` not working in RSCs.

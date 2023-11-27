@@ -1,4 +1,4 @@
-import { logger } from '../logger';
+import { logger } from '../logger.js';
 
 export const getIdFromSearchParams = (searchParams: URLSearchParams) => {
   const previewedModel = searchParams.get('preview');

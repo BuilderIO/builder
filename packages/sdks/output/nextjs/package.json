@@ -3,7 +3,8 @@
   "description": "Builder.io RSC SDK for NextJS App Directory",
   "version": "0.7.1-4",
   "files": [
-    "lib"
+    "lib",
+    "types"
   ],
   "main": "./lib/edge/index.cjs",
   "module": "./lib/edge/index.mjs",
@@ -74,7 +75,9 @@
   },
   "scripts": {
     "release": "npm publish",
-    "build": "nx run-many -p @builder.io/sdk-react-nextjs -t build:node build:edge build:browser",
+    "types:cjs": "yarn tsc --p ./tsconfig.cjs.json",
+    "types:esm": "yarn tsc --p ./tsconfig.esm.json",
+    "build": "nx run-many -p @builder.io/sdk-react-nextjs -t types:cjs types:esm build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",
     "build:edge": "SDK_ENV=edge vite build --mode lib",
     "build:browser": "SDK_ENV=browser vite build --mode lib"
@@ -106,6 +109,13 @@
         "dependsOn": [
           "^build:nextjs",
           "^build"
+        ],
+        "inputs": [
+          "{projectRoot}/src",
+          "{projectRoot}/tsconfig.json",
+          "{projectRoot}/tsconfig.cjs.json",
+          "{projectRoot}/tsconfig.esm.json",
+          "{projectRoot}/vite.config.ts"
         ],
         "outputs": [
           "{projectRoot}/lib"

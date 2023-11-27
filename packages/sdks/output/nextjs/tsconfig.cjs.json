@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "NodeNext",
+    // "outFile": "./types/index-cjs.cjs",
+    "outDir": "./types/cjs"
+  }
+}

@@ -1,6 +1,6 @@
-import { getIdFromSearchParams } from './helpers';
-import { init } from './init';
-import type { GlobalWCache } from './types';
+import { getIdFromSearchParams } from './helpers.js';
+import { init } from './init.js';
+import type { GlobalWCache } from './types.js';
 
 export function getPreviewContent(searchParams: URLSearchParams) {
   init();

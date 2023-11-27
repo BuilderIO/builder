@@ -1,8 +1,8 @@
 'use server';
 
-import type { BuilderContent } from '../../types/builder-content';
-import { init } from './init';
-import type { GlobalWCache } from './types';
+import type { BuilderContent } from '../../types/builder-content.js';
+import { init } from './init.js';
+import type { GlobalWCache } from './types.js';
 
 export async function postPreviewContent({
   key,
