@@ -110,15 +110,9 @@
           "^build:nextjs",
           "^build"
         ],
-        "inputs": [
-          "{projectRoot}/src",
-          "{projectRoot}/tsconfig.json",
-          "{projectRoot}/tsconfig.cjs.json",
-          "{projectRoot}/tsconfig.esm.json",
-          "{projectRoot}/vite.config.js"
-        ],
         "outputs": [
-          "{projectRoot}/lib"
+          "{projectRoot}/lib",
+          "{projectRoot}/types"
         ]
       }
     }
