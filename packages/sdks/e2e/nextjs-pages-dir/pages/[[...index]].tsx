@@ -9,7 +9,7 @@ import type {
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
   return {
     props: await getProps({
-      pathname: x.params.index ? `/${x.params.index.join('/')}` : '/',
+      pathname: x.params?.index ? `/${x.params.index.join('/')}` : '/',
       _processContentResult,
     }),
   };
