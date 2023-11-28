@@ -4204,9 +4204,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-app-dir-client@workspace:sdks/e2e/nextjs-react-app-dir-client":
+"@e2e/next-app-dir-client@workspace:sdks/e2e/nextjs-app-dir-client":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-app-dir-client@workspace:sdks/e2e/nextjs-react-app-dir-client"
+  resolution: "@e2e/next-app-dir-client@workspace:sdks/e2e/nextjs-app-dir-client"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@e2e/tests": "workspace:*"
@@ -4221,9 +4221,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-app-dir@workspace:sdks/e2e/nextjs-react-app-dir":
+"@e2e/next-app-dir@workspace:sdks/e2e/nextjs-app-dir":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-app-dir@workspace:sdks/e2e/nextjs-react-app-dir"
+  resolution: "@e2e/next-app-dir@workspace:sdks/e2e/nextjs-app-dir"
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
     "@e2e/tests": "workspace:*"
@@ -4240,9 +4240,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-pages-dir@workspace:sdks/e2e/nextjs-react-pages-dir":
+"@e2e/next-pages-dir@workspace:sdks/e2e/nextjs-pages-dir":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-pages-dir@workspace:sdks/e2e/nextjs-react-pages-dir"
+  resolution: "@e2e/next-pages-dir@workspace:sdks/e2e/nextjs-pages-dir"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@e2e/tests": "workspace:*"
