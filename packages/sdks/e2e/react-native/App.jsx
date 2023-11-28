@@ -1,3 +1,7 @@
+import { setupURLPolyfill } from 'react-native-url-polyfill';
+
+setupURLPolyfill();
+
 import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
 import React, { Fragment, useEffect, useState } from 'react';
