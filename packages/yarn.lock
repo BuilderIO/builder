@@ -4210,14 +4210,17 @@ __metadata:
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@e2e/tests": "workspace:*"
-    "@types/react": ^18.0.14
-    "@types/react-dom": ^18.0.5
-    next: ^13.4.20
+    "@types/node": ^20
+    "@types/react": ^18
+    "@types/react-dom": ^18
+    eslint: ^8
+    eslint-config-next: 14.0.3
+    next: 14.0.3
     nx: ^16.6.0
     nx-cloud: ^16.2.0
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    typescript: ^5.1.6
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
   languageName: unknown
   linkType: soft
 
@@ -4238,23 +4241,6 @@ __metadata:
     react: ^18
     react-dom: ^18
     typescript: ^5
-  languageName: unknown
-  linkType: soft
-
-"@e2e/next-pages-dir@workspace:sdks/e2e/nextjs-pages-dir":
-  version: 0.0.0-use.local
-  resolution: "@e2e/next-pages-dir@workspace:sdks/e2e/nextjs-pages-dir"
-  dependencies:
-    "@builder.io/sdk-react": "workspace:*"
-    "@e2e/tests": "workspace:*"
-    "@types/react": ^18.0.14
-    "@types/react-dom": ^18.0.5
-    next: ^13.4.20
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    typescript: ^5.1.6
   languageName: unknown
   linkType: soft
 
