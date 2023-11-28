@@ -217,7 +217,7 @@ registerPlugin(
         }
         const element = selectedElements[0];
         const isExcluded = element.meta?.get(transcludedMetaKey);
-        return element.component?.name === 'Text' && !isExcluded;
+        return !isExcluded;
       },
       onClick(elements) {
         elements.forEach(el => el.meta.set('excludeFromTranslation', true));
@@ -233,7 +233,7 @@ registerPlugin(
         }
         const element = selectedElements[0];
         const isExcluded = element.meta?.get(transcludedMetaKey);
-        return element.component?.name === 'Text' && isExcluded;
+        return isExcluded;
       },
       onClick(elements) {
         elements.forEach(el => el.meta.set('excludeFromTranslation', false));

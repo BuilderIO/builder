@@ -56,7 +56,7 @@ export function getTranslateableFields(
             });
         }
       }
-      if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
+      if (el && el.id && !el.meta?.excludeFromTranslation) {
         results[`blocks.${el.id}#text`] = {
           value: el.component.options.text,
           instructions: el.meta?.instructions || defaultInstructions,
