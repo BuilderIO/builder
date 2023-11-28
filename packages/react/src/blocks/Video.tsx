@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import { throttle } from '../functions/throttle';
 import { withChildren } from '../functions/with-children';
@@ -8,23 +8,25 @@ import { Builder } from '@builder.io/sdk';
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
 
-class VideoComponent extends React.Component<{
-  video: string;
-  autoPlay?: boolean;
-  controls?: boolean;
-  muted?: boolean;
-  loop?: boolean;
-  playsInline?: boolean;
-  aspectRatio?: number;
-  width?: number;
-  height?: number;
-  fit?: 'contain' | 'cover' | 'fill';
-  preload?: 'auto' | 'metadata' | 'none';
-  position?: string;
-  posterImage?: string;
-  lazyLoad?: boolean;
-  fitContent?: boolean;
-}> {
+class VideoComponent extends React.Component<
+  PropsWithChildren<{
+    video: string;
+    autoPlay?: boolean;
+    controls?: boolean;
+    muted?: boolean;
+    loop?: boolean;
+    playsInline?: boolean;
+    aspectRatio?: number;
+    width?: number;
+    height?: number;
+    fit?: 'contain' | 'cover' | 'fill';
+    preload?: 'auto' | 'metadata' | 'none';
+    position?: string;
+    posterImage?: string;
+    lazyLoad?: boolean;
+    fitContent?: boolean;
+  }>
+> {
   video: HTMLVideoElement | null = null;
   containerRef: HTMLElement | null = null;
 
