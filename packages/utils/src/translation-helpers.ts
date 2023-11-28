@@ -59,7 +59,10 @@ export function getTranslateableFields(
       if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
         const componentText = el.component.options.text;
         results[`blocks.${el.id}#text`] = {
-          value: typeof componentText === 'string' ? componentText : componentText?.[sourceLocaleId] || componentText?.Default,
+          value:
+            typeof componentText === 'string'
+              ? componentText
+              : componentText?.[sourceLocaleId] || componentText?.Default,
           instructions: el.meta?.instructions || defaultInstructions,
         };
       }

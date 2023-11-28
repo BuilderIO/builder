@@ -36,7 +36,7 @@ test('getTranslateableFields from content to match snapshot', async () => {
                 '@type': localizedType,
                 'en-US': 'en-us text!',
                 Default: 'default text!',
-              }
+              },
             },
           },
         },
