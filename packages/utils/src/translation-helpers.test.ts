@@ -24,6 +24,23 @@ test('getTranslateableFields from content to match snapshot', async () => {
           },
         },
         {
+          meta: {
+            instructions: 'This is a mobile only element',
+          },
+          id: 'block-pre-localized-element',
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Text',
+            options: {
+              text: {
+                '@type': localizedType,
+                'en-US': 'en-us text!',
+                Default: 'default text!',
+              },
+            },
+          },
+        },
+        {
           '@type': '@builder.io/sdk:Element',
           id: 'builder-custom-component-id',
           meta: {

@@ -87,6 +87,10 @@ Object {
     "instructions": "This is a mobile only element",
     "value": "test",
   },
+  "blocks.block-pre-localized-element#text": Object {
+    "instructions": "This is a mobile only element",
+    "value": "en-us text!",
+  },
   "blocks.builder-custom-component-id#heading": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
     "value": "en-us headings!",
