@@ -1,7 +1,6 @@
 {
   "name": "@e2e/next-app-dir",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
