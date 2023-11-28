@@ -88,7 +88,7 @@
       "require": "./lib/browser/index.cjs"
     },
     "./server": {
-      "types": "./types/functions/get-content/index.d.ts",
+      "types": "./types/server-index.d.ts",
       "import": "./lib/node/server-entry.mjs",
       "require": "./lib/node/server-entry.cjs"
     }
