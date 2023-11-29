@@ -87,8 +87,7 @@
     }
   },
   "files": [
-    "lib/",
-    "src/"
+    "lib/"
   ],
   "scripts": {
     "release": "npm publish",
