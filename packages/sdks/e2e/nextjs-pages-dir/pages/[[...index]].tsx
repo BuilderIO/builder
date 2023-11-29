@@ -21,7 +21,7 @@ export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
     paths: getAllPathnames('gen2').map((path) => {
       const output: StaticProps = {
-        index: path === '/' ? null : path.split('/').filter(Boolean),
+        index: path === '/' ? [] : path.split('/').filter(Boolean),
       };
 
       return { params: output };
