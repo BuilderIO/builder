@@ -28,7 +28,9 @@
   "nx": {
     "targets": {
       "build": {
-        "outputs": ["{projectRoot}/.next"]
+        "outputs": [
+          "{projectRoot}/.next"
+        ]
       }
     }
   }
