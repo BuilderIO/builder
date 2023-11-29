@@ -14,8 +14,8 @@ overrides/react-native/src/blocks/**/*
 **/.expo
 **/playwright-report
 
-output/qwik/types
-output/qwik/lib
+output/**/types
+output/**/lib
 
 output/svelte/package
 output/svelte/.svelte-kit
