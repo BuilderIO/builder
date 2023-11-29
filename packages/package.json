@@ -33,5 +33,8 @@
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.27.1"
   }
 }
