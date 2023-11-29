@@ -68,7 +68,10 @@ export default function Button(props: ButtonProps) {
           svelte: filterAttrs(props.attributes, 'on:', true),
           default: props.attributes,
         })}
-        role="button"
+        role={useTarget({
+          reactNative: 'link',
+          default: 'button',
+        })}
         href={props.link}
         target={props.openLinkInNewTab ? '_blank' : undefined}
       >

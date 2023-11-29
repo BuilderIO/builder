@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
-  "version": "0.7.0",
+  "version": "0.7.1-1",
   "type": "module",
   "files": [
     "lib",
@@ -45,6 +45,9 @@
     "build:browser": "SDK_ENV=browser svelte-package -i src/ -o lib/browser",
     "check": "SDK_ENV=browser svelte-check --tsconfig ./tsconfig.json"
   },
+  "dependencies": {
+    "isolated-vm": "^4.6.0"
+  },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
     "@sveltejs/adapter-auto": "^2.1.0",
@@ -83,7 +86,6 @@
     }
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0",
     "svelte": "^4.1.2"
   }
 }

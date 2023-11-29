@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { BuilderComponent } from '../components/builder-component.component';
 import { Builder, BuilderElement } from '@builder.io/sdk';
 import hash from 'hash-sum';
@@ -47,7 +47,7 @@ export interface SymbolProps {
   inheritState?: boolean;
 }
 
-class SymbolComponent extends React.Component<SymbolProps> {
+class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
   ref: BuilderComponent | null = null;
   staticRef: HTMLDivElement | null = null;
 

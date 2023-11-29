@@ -1,7 +1,6 @@
 {
   "name": "@e2e/gen1-next",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,16 +11,19 @@
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@e2e/tests": "workspace:*",
-    "next": "^13.4.20",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "next": "14.0.3",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/react": "^16.4.1",
-    "@types/react-dom": "^18.0.5",
-    "typescript": "^5.1.6"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
+    "typescript": "^5"
   },
   "nx": {
     "targets": {

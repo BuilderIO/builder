@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.7.1-3",
+  "version": "0.7.1-6",
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/edge/index.qwik.cjs",
@@ -98,6 +98,9 @@
     "build:edge": "SDK_ENV=edge yarn build:one",
     "build:browser": "SDK_ENV=browser yarn build:one"
   },
+  "dependencies": {
+    "isolated-vm": "^4.6.0"
+  },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.6",
     "@builder.io/sdks": "workspace:*",
@@ -109,7 +112,6 @@
   },
   "peerDependencies": {
     "@builder.io/qwik": ">=1.0.0",
-    "isolated-vm": "^4.6.0",
     "undici": "^5.14.0"
   },
   "nx": {

@@ -5,7 +5,7 @@
     "vue2",
     "vue3"
   ],
-  "version": "0.7.0",
+  "version": "0.7.1-1",
   "main": "./vue3/lib/node/index.cjs",
   "module": "./vue3/lib/node/index.js",
   "type": "module",
@@ -171,8 +171,10 @@
     "build": "nx run-many -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3"
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0",
     "vue": ">= 2"
+  },
+  "dependencies": {
+    "isolated-vm": "^4.6.0"
   },
   "devDependencies": {
     "nx": "^16.6.0",

@@ -17,7 +17,7 @@ type StaticProps = { index: string[] };
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
   return {
-    props: await getProps({ pathname: x.params.index ? `/${x.params.index.join('/')}` : '/' }),
+    props: await getProps({ pathname: x.params?.index ? `/${x.params.index.join('/')}` : '/' }),
   };
 }
 
@@ -25,7 +25,7 @@ export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
     paths: getAllPathnames('gen1').map(path => {
       const output: StaticProps = {
-        index: path === '/' ? null : path.split('/').filter(Boolean),
+        index: path === '/' ? [] : path.split('/').filter(Boolean),
       };
 
       return { params: output };

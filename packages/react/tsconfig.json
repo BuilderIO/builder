@@ -7,6 +7,7 @@
     "module": "es2015",
     "lib": ["dom", "es5", "es2015.promise"],
     "strict": true,
+    "noImplicitAny": false,
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,

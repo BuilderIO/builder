@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { BuilderElement } from '@builder.io/sdk';
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
 import { withBuilder } from '../functions/with-builder';
@@ -14,7 +14,10 @@ interface SectionProps {
   lazyStyles?: any;
 }
 
-class SectionComponent extends React.Component<SectionProps, { inView?: boolean }> {
+class SectionComponent extends React.Component<
+  PropsWithChildren<SectionProps>,
+  { inView?: boolean }
+> {
   ref: HTMLElement | null = null;
 
   unmountCallbacks: Function[] = [];

@@ -101,10 +101,7 @@ interface VariantsProviderProps {
   children: (variants: BuilderContent[], renderScript?: () => JSX.Element) => JSX.Element;
 }
 
-export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
-  initialContent,
-  children,
-}) => {
+export const VariantsProvider = ({ initialContent, children }: VariantsProviderProps) => {
   if (Builder.isBrowser && !builder.canTrack) {
     return children([initialContent]);
   }

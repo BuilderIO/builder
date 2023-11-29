@@ -6,7 +6,7 @@ test.describe('SSR', () => {
     await page.goto('/');
 
     const btn = isRNSDK
-      ? page.getByRole('link', { name: 'Data Bindings' })
+      ? page.locator('a').filter({ hasText: 'Data Bindings' })
       : page.locator('text=Data Bindings');
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');
@@ -23,7 +23,7 @@ test.describe('SSR', () => {
     await page.goto('/');
 
     const btn = isRNSDK
-      ? page.getByRole('link', { name: 'Data Bindings' })
+      ? page.locator('a').filter({ hasText: 'Data Bindings' })
       : page.locator('text=Data Bindings');
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');

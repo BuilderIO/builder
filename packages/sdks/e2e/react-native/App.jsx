@@ -57,6 +57,7 @@ const App = () => (
     style={{
       // mimick body stylesheets from the web
       margin: 8,
+      width: '100%',
     }}
   >
     <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>

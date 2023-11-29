@@ -7,7 +7,6 @@ module.exports = {
     [
       'commonjs',
       {
-        copyFlow: true,
         configFile: true,
       },
     ],

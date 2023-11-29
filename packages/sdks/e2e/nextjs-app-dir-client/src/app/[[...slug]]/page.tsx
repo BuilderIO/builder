@@ -3,12 +3,8 @@ import {
   _processContentResult,
   getContent,
   getBuilderSearchParams,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
 } from '@builder.io/sdk-react/server';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { RenderContent } from '@builder.io/sdk-react';
 
 interface PageProps {

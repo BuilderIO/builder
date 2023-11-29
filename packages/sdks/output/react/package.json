@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.7.0",
+  "version": "0.7.1-1",
   "files": [
     "lib",
     "types"
@@ -88,7 +88,7 @@
       "require": "./lib/browser/index.cjs"
     },
     "./server": {
-      "types": "./types/functions/get-content/index.d.ts",
+      "types": "./types/server-index.d.ts",
       "import": "./lib/node/server-entry.mjs",
       "require": "./lib/node/server-entry.cjs"
     }
@@ -102,8 +102,10 @@
     "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
-    "isolated-vm": "^4.6.0",
     "react": "^18.2.0"
+  },
+  "dependencies": {
+    "isolated-vm": "^4.6.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",

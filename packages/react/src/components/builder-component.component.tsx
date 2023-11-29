@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom';
 import { jsx, css } from '@emotion/core';
 import { BuilderContent, getContentWithInfo } from './builder-content.component';
@@ -336,7 +336,7 @@ function searchToObject(location: Location | Url) {
  * `props.content`.
  */
 export class BuilderComponent extends React.Component<
-  BuilderComponentProps,
+  PropsWithChildren<BuilderComponentProps>,
   BuilderComponentState
 > {
   static defaults: Pick<BuilderComponentProps, 'codegen'> = {

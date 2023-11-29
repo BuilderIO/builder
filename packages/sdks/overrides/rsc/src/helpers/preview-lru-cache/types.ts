@@ -5,7 +5,7 @@
  */
 
 import type { LRUCache } from 'lru-cache';
-import type { BuilderContent } from '../../types/builder-content';
+import type { BuilderContent } from '../../types/builder-content.js';
 
 type BuilderLRUCache = LRUCache<string, BuilderContent>;
 
