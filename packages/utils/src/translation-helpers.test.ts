@@ -169,11 +169,11 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-custom-component-id#heading': {
       value: 'french translated heading',
     },
-    "metadata.seo":  {
+    'metadata.seo': {
       value: {
-        name: "french name in subfield",
+        name: 'french name in subfield',
       },
-    }, 
+    },
     'blocks.builder-custom-component-id#subtitle': {
       value: 'french translated subtitle',
     },
@@ -184,11 +184,11 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-custom-component-id#heading': {
       value: '&quot;german heading&quot;',
     },
-    "metadata.seo":  {
-     value: {
-       name: "german name in subfield",
-     },
-   },
+    'metadata.seo': {
+      value: {
+        name: 'german name in subfield',
+      },
+    },
     'blocks.builder-custom-component-id#subtitle': {
       value: 'german translated subtitle',
     },
