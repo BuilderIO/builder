@@ -8,9 +8,29 @@ export const localizedType = '@builder.io/core:LocalizedValue';
 export type TranslateableFields = {
   [key: string]: {
     instructions?: string;
-    value: string;
+    value: string | Record<string, any>;
   };
 };
+
+function unescapeStringOrObject(input: string | Record<string, any>) {
+  // Check if input is a string
+  if (typeof input === 'string') {
+    return unescape(input);
+  }
+
+  // Check if input is an object
+  if (typeof input === 'object' && input !== null) {
+    Object.keys(input).forEach(key => {
+      if (typeof input[key] === 'string') {
+        input[key] = unescape(input[key]);
+      }
+    });
+    return input;
+  }
+
+  // Return input as is if it's neither a string nor an object
+  return input;
+}
 
 export function getTranslateableFields(
   content: BuilderContent,
@@ -84,7 +104,7 @@ export function applyTranslation(
     if (translation[`metadata.${path}`]) {
       this.update({
         ...el,
-        [locale]: unescape(translation[`metadata.${path}`].value),
+        [locale]: unescapeStringOrObject(translation[`metadata.${path}`].value),
       });
     }
   });
@@ -122,7 +142,7 @@ export function applyTranslation(
             text: {
               '@type': localizedType,
               ...localizedValues,
-              [locale]: unescape(translation[`blocks.${el.id}#text`].value),
+              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#text`].value),
             },
           },
         });
@@ -140,7 +160,7 @@ export function applyTranslation(
               ...options,
               [key]: {
                 ...el.component.options[key],
-                [locale]: unescape(translation[`blocks.${el.id}#${key}`].value),
+                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
               },
             };
             this.update({

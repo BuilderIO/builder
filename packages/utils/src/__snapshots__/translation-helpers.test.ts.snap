@@ -56,6 +56,26 @@ Object {
         },
       },
     ],
+    "seo": Object {
+      "@type": "@builder.io/core:LocalizedValue",
+      "Default": Object {
+        "name": "default name in subfield",
+      },
+      "de": Object {
+        "name": "german name in subfield",
+      },
+      "en-US": Object {
+        "menuItems": Array [
+          Object {
+            "menuName": "en menu name",
+          },
+        ],
+        "name": "en name in subfield",
+      },
+      "fr-FR": Object {
+        "name": "french name in subfield",
+      },
+    },
     "title": Object {
       "@type": "@builder.io/core:LocalizedValue",
       "Default": "Test",
@@ -94,6 +114,17 @@ Object {
   "blocks.builder-custom-component-id#heading": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
     "value": "en-us headings!",
+  },
+  "metadata.seo": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": Object {
+      "menuItems": Array [
+        Object {
+          "menuName": "en menu name",
+        },
+      ],
+      "name": "en name in subfield",
+    },
   },
   "metadata.title": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
