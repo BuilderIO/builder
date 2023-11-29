@@ -7,6 +7,8 @@
     "noEmit": false,
     // Override: exclude jest types.
     "types": ["react-native"],
+    "noImplicitAny": false,
+    "strictNullChecks": false,
     // we don't use react-native, as that preserves the JSX tags
     "jsx": "react",
     "paths": {
