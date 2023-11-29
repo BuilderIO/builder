@@ -1,3 +1,5 @@
+# Builder.io Svelte SDK Changelog
+
 ## 0.7.0
 
 - Setting `noTraverse` option's default to `true` when fetching multiple content entries.
