@@ -1,4 +1,4 @@
-# Builder.io Vue SDK Changelog
+# Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
 ## 0.7.0
 

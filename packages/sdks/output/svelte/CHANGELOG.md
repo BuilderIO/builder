@@ -1,4 +1,4 @@
-# Builder.io Svelte SDK Changelog
+# Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
 ## 0.7.0
 

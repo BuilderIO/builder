@@ -1,4 +1,4 @@
-# Builder.io React SDK Changelog
+# Builder.io React SDK Changelog (@builder.io/sdk-react)
 
 ## 0.7.0
 

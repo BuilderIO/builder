@@ -1,4 +1,4 @@
-# Builder.io React Native SDK Changelog
+# Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
 ## 0.7.0
 
