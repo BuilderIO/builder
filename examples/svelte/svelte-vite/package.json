@@ -8,22 +8,22 @@
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@sveltejs/adapter-auto": "next",
-    "@sveltejs/vite-plugin-svelte": "^1.0.1",
+    "@sveltejs/vite-plugin-svelte": "^2.4.5",
     "@tsconfig/svelte": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
-    "eslint": "^7.32.0",
+    "eslint": "^8.50.0",
+    "svelte-eslint-parser": "0.33.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-svelte3": "^3.2.1",
     "prettier": "^2.5.1",
     "prettier-plugin-svelte": "^2.5.0",
-    "svelte": "^3.52.0",
+    "svelte": "^4.2.7",
     "typescript": "~4.6.2",
-    "vite": "^3.2.7"
+    "vite": "^4.4.2"
   },
   "type": "module",
   "dependencies": {
     "@builder.io/sdk-svelte": "^0.7.0",
-    "svelte-preprocess": "^4.10.7"
+    "svelte-preprocess": "^5.1.0"
   }
 }
