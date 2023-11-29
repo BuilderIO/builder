@@ -335,7 +335,6 @@ module.exports = {
       stylesType: 'style-tag',
     },
     reactNative: {
-      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
         BASE_TEXT_PLUGIN,
