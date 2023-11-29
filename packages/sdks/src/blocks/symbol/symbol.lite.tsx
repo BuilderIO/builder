@@ -93,7 +93,14 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   }, [props.symbol]);
 
   onMount(() => {
-    state.setContent();
+    useTarget({
+      react: () => {},
+      reactNative: () => {},
+
+      default: () => {
+        state.setContent();
+      },
+    });
   });
 
   return (
