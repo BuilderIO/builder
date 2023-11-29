@@ -1,5 +1,5 @@
 import * as React from 'react';
-import HTML from 'react-native-render-html';
+import {RenderHTML } from 'react-native-render-html';
 import BuilderContext from '../../context/builder.context';
 
 /**
@@ -89,7 +89,7 @@ function getCss(block, inheritedStyles) {
 export default function Text(props) {
   const builderContext = React.useContext(BuilderContext);
   return (
-    <HTML
+    <RenderHTML
       source={{
         html: `<div style="${getCss(props.builderBlock, builderContext.inheritedStyles)}">${
           props.text || ''
