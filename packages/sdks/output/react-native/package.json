@@ -5,7 +5,7 @@
   "type": "module",
   "main": "lib/browser/commonjs/index.js",
   "module": "lib/browser/module/index.js",
-  "react-native": "src/index.js",
+  "react-native": "lib/browser/commonjs/index.js",
   "types": "lib/browser/typescript/index.d.ts",
   "exports": {
     ".": {
