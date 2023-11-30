@@ -68,7 +68,7 @@ jobs:
         working-directory: packages/${{ matrix.package }}
 
   sdks-base:
-    name: gen2 SDKs checks
+    name: Gen 2 SDKs checks
     runs-on: ubuntu-latest
 
     steps:
@@ -96,6 +96,7 @@ jobs:
         run: yarn nx test @builder.io/sdks
 
   sdks:
+    name: Gen 2 SDKs
     runs-on: ubuntu-latest
 
     strategy:
