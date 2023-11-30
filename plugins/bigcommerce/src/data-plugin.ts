@@ -6,11 +6,20 @@ type BigCommerceResourceType = 'product' | 'category';
 import { BuilderStore, BuilderStoreContext } from '@builder.io/react';
 import { useContext, useEffect } from 'react';
 
+const buildHeaders = (headers: any) => {
+
+    return Object.entries(headers)
+        .map(([key, value]) => `headers.${key}=${value}`)
+        .join('&');
+};
+
+
 function buildBigCommerceUrl({
     resource,
     resourceId,
     query,
     limit,
+    headers
 }) {
     const base = `https://cdn.builder.io/api/v1/proxy-api?url=https%3A%2F%2Fapi.bigcommerce.com%2Fstores%2Fpdfuqrrtbk%2Fv3%2Fcatalog`;
     let path = resource;
@@ -23,7 +32,7 @@ function buildBigCommerceUrl({
 
         path += `/${resourceId}`;
     }
-
+  
     // Initialize URLSearchParams object to construct query parameters
     const params = new URLSearchParams();
 
@@ -38,27 +47,9 @@ function buildBigCommerceUrl({
     }
 
     // Construct the full URL
-    return `${base}/${path}?${params.toString()}`;
+    console.log("headers in bigCommerceURL()"   , headers)
+    return `${base}/${path}?${params.toString()}&${buildHeaders(headers)}`;
 }
-
-
-// const buildPath = ({
-//     resource,
-//     resourceId,
-// }: {
-//     resource: BigCommerceResourceType;
-//     resourceId?: string;
-// }) => {
-//     // BigCommerce API paths for products and categories
-//     switch (resource) {
-//         case 'product':
-//             return resourceId ? `products/${resourceId}` : 'products';
-//         case 'category':
-//             return resourceId ? `categories/${resourceId}` : 'categories';
-//         default:
-//             throw new Error('Unsupported resource type');
-//     }
-// };
 
 
 const RESOURCE_TYPES: {
@@ -83,10 +74,11 @@ interface DataPluginConfig extends APIOperations {
     icon: string;
 }
 
-export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig => {
+export const getDataConfig = (service: CommerceAPIOperations, headers: any): DataPluginConfig => {
+    console.log("headers in getDataConfig()", headers)
     return {
         name: 'BigCommerce',
-        icon: 'https://iili.io/JnTyc4s.png',
+        icon: 'https://iili.io/JnTyc4s.png', //bigcommerce logo png, should be replaced with a png hosted by builder
         getResourceTypes: async () =>
             RESOURCE_TYPES.map(
                 (model): ResourceType => ({
@@ -108,12 +100,13 @@ export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig 
                     ],
 
                     toUrl: ({ entry, query, limit }) =>
-                        //this request fails due to lack of auth headers but doesn't seem to affect the functionality
+                    
                         buildBigCommerceUrl({
                             query,
                             limit,
                             resource: model.id,
                             resourceId: entry,
+                            headers
                         }),
                     canPickEntries: true,
                 })
@@ -121,18 +114,11 @@ export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig 
         getEntriesByResourceType: async (resourceTypeId, options = {}) => {
             // Fetch entries from BigCommerce using the provided service
             const entry = options.resourceEntryId;
-
+            console.log("service", service)
             if (entry) {
-                //get the product or category's data
+
                 const entryObj = await service[resourceTypeId].findById(entry);
-
-                //filter out undefined properties
-                const newObj = filterOutUndefinedProperties(entryObj)
-
-                //set the product or category data to state
-                appState.designerState.editingContentModel.data.set('state', { [resourceTypeId]: newObj })
-
-                //return the product or category title and id for the dropdown
+   
                 return [
                     {
                         id: String(entryObj.id),
