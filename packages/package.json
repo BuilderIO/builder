@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/mono-repo",
+  "name": "@builder.io/packages",
   "description": "This mono-repo includes the new SDKs and their integration tests.",
   "private": true,
   "scripts": {
@@ -8,18 +8,6 @@
     "g:changeset": "changeset",
     "ci:changeset": "changeset status --since=main",
     "ci:release": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\* && yarn g:changeset publish"
-  },
-  "engines": {
-    "yarn": ">= 3.0.0"
-  },
-  "packageManager": "yarn@3.6.1",
-  "resolutions": {
-    "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch",
-    "minimist": "^1.2.7",
-    "json5": "2.2.1",
-    "prettier": "2.8.8",
-    "@builder.io/react": "workspace:*",
-    "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
