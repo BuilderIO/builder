@@ -34,3 +34,5 @@ Pods/
 
 .env
 .vercel
+
+.nx-cache
