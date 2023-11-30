@@ -39,7 +39,7 @@
   "scripts": {
     "release": "npm publish",
     "prepare": "SDK_ENV=browser svelte-kit sync",
-    "build": "nx run-many -p @builder.io/sdk-svelte -t build:node build:edge build:browser",
+    "build": "nx run-many -p @builder.io/sdk-svelte -t build:node build:edge build:browser --parallel=false",
     "build:node": "SDK_ENV=node svelte-package -i src/ -o lib/node",
     "build:edge": "SDK_ENV=edge svelte-package -i src/ -o lib/edge",
     "build:browser": "SDK_ENV=browser svelte-package -i src/ -o lib/browser",
