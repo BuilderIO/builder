@@ -125,7 +125,6 @@ registerCommercePlugin(
         },
       },
     };
-    console.log('headers', headers);
     appState.registerDataPlugin(getDataConfig(service, headers));
 
     return service;

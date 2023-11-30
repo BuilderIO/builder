@@ -38,7 +38,6 @@ function buildBigCommerceUrl({ resource, resourceId, query, limit, headers }) {
   }
 
   // Construct the full URL
-  console.log('headers in bigCommerceURL()', headers);
   return `${base}/${path}?${params.toString()}&${buildHeaders(headers)}`;
 }
 
@@ -65,7 +64,6 @@ interface DataPluginConfig extends APIOperations {
 }
 
 export const getDataConfig = (service: CommerceAPIOperations, headers: any): DataPluginConfig => {
-  console.log('headers in getDataConfig()', headers);
   return {
     name: 'BigCommerce',
     icon: 'https://iili.io/JnTyc4s.png', //bigcommerce logo png, should be replaced with a png hosted by builder
@@ -103,7 +101,6 @@ export const getDataConfig = (service: CommerceAPIOperations, headers: any): Dat
     getEntriesByResourceType: async (resourceTypeId, options = {}) => {
       // Fetch entries from BigCommerce using the provided service
       const entry = options.resourceEntryId;
-      console.log('service', service);
       if (entry) {
         const entryObj = await service[resourceTypeId].findById(entry);
 
