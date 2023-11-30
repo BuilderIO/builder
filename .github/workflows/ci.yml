@@ -71,10 +71,6 @@ jobs:
     name: gen2 SDKs checks
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: packages/sdks
-
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -87,12 +83,11 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cwd: 'packages/'
           cache-node-modules: true
           cache-install-state: true
 
       - name: Run prettier
-        run: yarn ci:lint
+        run: yarn workspace @builder.io/sdks ci:lint:sdks
 
       - name: Typecheck
         run: yarn nx typecheck @builder.io/sdks
@@ -126,10 +121,6 @@ jobs:
           - sdk: vue3
             sdk-name: vue
 
-    defaults:
-      run:
-        working-directory: packages/sdks
-
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -142,7 +133,6 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cwd: 'packages/'
           cache-node-modules: true
           cache-install-state: true
 
@@ -165,10 +155,6 @@ jobs:
     name: Gen 1 SDK Core
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: packages
-
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -181,7 +167,6 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cwd: 'packages/'
           cache-node-modules: true
           cache-install-state: true
 
@@ -192,10 +177,6 @@ jobs:
     name: Gen 1 React SDK
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: packages
-
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -208,7 +189,6 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cwd: 'packages/'
           cache-node-modules: true
           cache-install-state: true
 

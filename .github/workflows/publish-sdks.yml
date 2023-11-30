@@ -13,10 +13,6 @@ jobs:
     name: Publish new generation SDKs
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: packages/sdks
-
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -30,7 +26,6 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cwd: 'packages/'
           cache-node-modules: true
           cache-install-state: true
 
@@ -38,8 +33,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          cwd: 'packages/'
-          publish: yarn ci:release
+          publish: yarn workspace @builder.io/sdks ci:release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
