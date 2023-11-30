@@ -100,9 +100,6 @@ jobs:
       - name: Run tests
         run: yarn nx test @builder.io/sdks
 
-      - name: Check Changesets
-        run: yarn ci:changeset
-
   sdks:
     runs-on: ubuntu-latest
 
