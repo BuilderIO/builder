@@ -32840,7 +32840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-builder-bob@npm:0.21.3":
+"react-native-builder-bob@npm:^0.21.3":
   version: 0.21.3
   resolution: "react-native-builder-bob@npm:0.21.3"
   dependencies:
@@ -32870,39 +32870,6 @@ __metadata:
   bin:
     bob: bin/bob
   checksum: 0a7b05926556dcba0ed9dbadd1316136886bcb054b2229ff58af6ba71178c0add0bcbd31d78b11683f05cacfd8ba408f1d50d7ec6c413ae694a51b11f02ea2de
-  languageName: node
-  linkType: hard
-
-"react-native-builder-bob@patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch::locator=%40builder.io%2Froot%40workspace%3A.":
-  version: 0.21.3
-  resolution: "react-native-builder-bob@patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch::version=0.21.3&hash=586aaf&locator=%40builder.io%2Froot%40workspace%3A."
-  dependencies:
-    "@babel/core": ^7.18.5
-    "@babel/plugin-proposal-class-properties": ^7.17.12
-    "@babel/preset-env": ^7.18.2
-    "@babel/preset-flow": ^7.17.12
-    "@babel/preset-react": ^7.17.12
-    "@babel/preset-typescript": ^7.17.12
-    browserslist: ^4.20.4
-    cosmiconfig: ^7.0.1
-    cross-spawn: ^7.0.3
-    dedent: ^0.7.0
-    del: ^6.1.1
-    fs-extra: ^10.1.0
-    glob: ^8.0.3
-    is-git-dirty: ^2.0.1
-    jetifier: ^2.0.0
-    json5: ^2.2.1
-    kleur: ^4.1.4
-    prompts: ^2.4.2
-    which: ^2.0.2
-    yargs: ^17.5.1
-  dependenciesMeta:
-    jetifier:
-      optional: true
-  bin:
-    bob: bin/bob
-  checksum: ac522262305f9a970fa1a597f579a204c00be53da2a5a07a0a376e3fb8dfe2db4ecde7be662a880fd228f6a47c84d7b1329077a32e5b3f9047b571118c48fa45
   languageName: node
   linkType: hard
 
