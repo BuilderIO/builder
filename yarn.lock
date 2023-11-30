@@ -3441,7 +3441,7 @@ __metadata:
     vite: ^4.4.8
     vite-plugin-ssr: ^0.4.133
     vue: ^3.2.37
-    vue-tsc: ^0.38.2
+    vue-tsc: ^1.8.24
   languageName: unknown
   linkType: soft
 
@@ -39703,7 +39703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:^0.38.2, vue-tsc@npm:^0.38.8":
+"vue-tsc@npm:^0.38.8":
   version: 0.38.9
   resolution: "vue-tsc@npm:0.38.9"
   dependencies:
@@ -39730,7 +39730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:^1.8.20":
+"vue-tsc@npm:^1.8.20, vue-tsc@npm:^1.8.24":
   version: 1.8.24
   resolution: "vue-tsc@npm:1.8.24"
   dependencies:
