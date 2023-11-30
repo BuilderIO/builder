@@ -2112,7 +2112,6 @@ __metadata:
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     octokit: ^2.0.14
-    prettier: ^2.8.8
     zx: 7.2.1
   languageName: unknown
   linkType: soft
