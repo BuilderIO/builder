@@ -194,7 +194,7 @@ jobs:
           cache-install-state: true
 
       - name: Build E2E apps
-        run: yarn workspace @builder.io/mono-repo e2e:build:old-react
+        run: yarn workspace @builder.io/packages e2e:build:old-react
 
       - name: Run E2E tests
-        run: yarn workspace @builder.io/mono-repo e2e:run:old-react
+        run: yarn workspace @builder.io/packages e2e:run:old-react
