@@ -1,7 +1,8 @@
-import { useMetadata, useStore, useTarget } from '@builder.io/mitosis';
+import { useStore, useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { PropsWithChildren } from '../../types/typescript.js';
+import { useMetadata } from '@builder.io/mitosis';
 
 useMetadata({
   rsc: {

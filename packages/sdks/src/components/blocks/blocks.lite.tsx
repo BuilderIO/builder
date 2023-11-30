@@ -1,3 +1,5 @@
+import BlockStyles from '../block/components/block-styles.lite.jsx';
+import Block from '../block/block.lite.jsx';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -6,16 +8,14 @@ import {
   useMetadata,
   useTarget,
 } from '@builder.io/mitosis';
-import BuilderContext from '../../context/builder.context.lite.js';
-import ComponentsContext from '../../context/components.context.lite.js';
+import type { BlocksWrapperProps } from './blocks-wrapper.lite.jsx';
+import BlocksWrapper from './blocks-wrapper.lite.jsx';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../context/types.js';
-import Block from '../block/block.lite.jsx';
-import BlockStyles from '../block/components/block-styles.lite.jsx';
-import type { BlocksWrapperProps } from './blocks-wrapper.lite.jsx';
-import BlocksWrapper from './blocks-wrapper.lite.jsx';
+import BuilderContext from '../../context/builder.context.lite.js';
+import ComponentsContext from '../../context/components.context.lite.js';
 
 export type BlocksProps = Partial<BlocksWrapperProps> & {
   context?: Signal<BuilderContextInterface>;

@@ -1,3 +1,5 @@
+import BlockStyles from '../block-styles.lite.jsx';
+import Block from '../../block.lite.jsx';
 import {
   For,
   Show,
@@ -5,12 +7,10 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import { wrapComponentRef } from '../../../content/wrap-component-ref.js';
-import Block from '../../block.lite.jsx';
-import BlockStyles from '../block-styles.lite.jsx';
 import InteractiveElement from '../interactive-element.lite.jsx';
 import type { ComponentProps } from './component-ref.helpers.js';
 import { getWrapperProps } from './component-ref.helpers.js';
+import { wrapComponentRef } from '../../../content/wrap-component-ref.js';
 
 useMetadata({
   rsc: {

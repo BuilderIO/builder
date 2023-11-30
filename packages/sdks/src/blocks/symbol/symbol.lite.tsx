@@ -1,3 +1,5 @@
+import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
+import type { BuilderContent } from '../../types/builder-content.js';
 import {
   onMount,
   onUpdate,
@@ -5,8 +7,6 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
-import type { BuilderContent } from '../../types/builder-content.js';
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
@@ -16,8 +16,9 @@ import { filterAttrs } from '../helpers.js';
  * This import is used by the Svelte SDK. Do not remove.
  */
 // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
-import type { Nullable } from '../../types/typescript.js';
+import { setAttrs } from '../helpers.js';
 import { fetchSymbolContent } from './symbol.helpers.js';
+import type { Nullable } from '../../types/typescript.js';
 
 useMetadata({
   rsc: {
