@@ -6,6 +6,7 @@
     "jsxImportSource": "@builder.io/mitosis",
     "lib": ["dom", "ESNext"],
     "skipLibCheck": true,
+    "allowJs": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
     // needed to make sure vite/esbuild can bundle the code properly
@@ -18,5 +19,5 @@
       "placeholder-runtime": ["./src/functions/evaluate/placeholder-runtime.js"]
     }
   },
-  "include": ["src/**/*", "typings", "mitosis.config.js", "output-generation"]
+  "include": ["src/**/*", "typings", "mitosis.config.cjs", "output-generation"]
 }
