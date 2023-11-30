@@ -38,7 +38,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: yarn nx release --skip-nx-cache @builder.io/sdk-${{ matrix.sdk }}
+          publish: yarn ci:release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}

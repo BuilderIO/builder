@@ -20,7 +20,7 @@ When testing something, you are free to publish `dev` versions for just one SDK 
 
 ## 1- Add Changeset
 
-From anywhere in the mono-repo, run:
+in your PR, run the following command from anywhere in the mono-repo:
 
 ```bash
 yarn g:changeset
@@ -30,19 +30,23 @@ Follow the CLI instructions to create a changeset.
 
 **NOTE:** If your changes do not impact all SDKs, you will need to run `yarn g:changeset add --empty` afterwards to create another empty changeset for each SDK that was not impacted.
 
-## 2- Bump package versions
+## 2- Bump package versions & Release
+
+Once you merge your PR changes, a workflow will automaically create a PR for you with the version bump. Once this PR is merged, the SDKs will be published to NPM.
+
+If you need to do this manually:
+
+- bump the versions:
 
 ```bash
 yarn g:changeset version
 ```
 
-## 3- Merge PR
+- release the packages:
 
-Merge your PR into `main`.
-
-## 4- Publish
-
-Run the Release SDKs Github Action workflow to publish your changes to NPM.
+```bash
+yarn nx ci:release
+```
 
 ## 5- Update examples (optional)
 

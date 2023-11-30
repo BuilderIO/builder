@@ -69,7 +69,6 @@
     "version:all:minor": "yarn version-sdks minor all",
     "version:all:dev": "yarn version-sdks dev all",
     "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
-    "ci:publish": "./scripts/publish-sdks-ci.sh",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
