@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import { RenderContent, _processContentResult } from '@builder.io/sdk-qwik';
+import { Content, _processContentResult } from '@builder.io/sdk-qwik';
 import { getProps } from '@e2e/tests';
 
 export const useBuilderContentLoader = routeLoader$(async (event) => {
@@ -19,7 +19,7 @@ export default component$(() => {
   return (
     <>
       {contentProps.value ? (
-        <RenderContent {...contentProps.value} />
+        <Content {...(contentProps.value as any)} />
       ) : (
         <div>Content Not Found</div>
       )}
