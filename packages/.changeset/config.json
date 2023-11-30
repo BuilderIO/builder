@@ -13,9 +13,9 @@
       "@builder.io/sdk-react-native"
     ]
   ],
-  "linked": [["@builder.io/sdk", "@builder.io/react"]],
+  "linked": [],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@e2e/*"]
+  "ignore": ["@e2e/*", "@builder.io/sdk", "@builder.io/react"]
 }
