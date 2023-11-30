@@ -15,7 +15,9 @@
   ],
   "scripts": {
     "e2e:build:old-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
-    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run"
+    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run",
+    "g:changeset": "changeset",
+    "ci:changeset": "changeset status --since=main"
   },
   "engines": {
     "yarn": ">= 3.0.0"
@@ -30,11 +32,9 @@
   },
   "packageManager": "yarn@3.6.1",
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",
     "prettier": "^2.8.8"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.27.1"
   }
 }
