@@ -21,7 +21,7 @@ export default function FormComponent() {
 // /**
 //  * This import is used by the Svelte SDK. Do not remove.
 //  */
-// // eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+//
 // import { setAttrs } from '../helpers.js';
 // import { set } from '../../functions/set';
 // /**
