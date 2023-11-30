@@ -15,7 +15,6 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "@typescript-eslint/parser": "^4.28.3",
     "dotenv": "^16.0.3",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",

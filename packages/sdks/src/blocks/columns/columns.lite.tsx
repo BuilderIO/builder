@@ -1,4 +1,3 @@
-import Blocks from '../../components/blocks/blocks.lite.jsx';
 import {
   For,
   Show,
@@ -6,17 +5,18 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block.js';
-import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
-import type { SizeName } from '../../constants/device-sizes.js';
+import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
+import type { SizeName } from '../../constants/device-sizes.js';
+import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
-import type { Dictionary } from '../../types/typescript.js';
+import { deoptSignal } from '../../functions/deopt.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
 import type {
   BuilderComponentsProp,
   PropsWithBuilderData,
 } from '../../types/builder-props.js';
-import { deoptSignal } from '../../functions/deopt.js';
+import type { Dictionary } from '../../types/typescript.js';
 
 type Column = {
   blocks: BuilderBlock[];

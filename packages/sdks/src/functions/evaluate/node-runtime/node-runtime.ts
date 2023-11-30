@@ -1,12 +1,12 @@
+import { fastClone } from '../../fast-clone.js';
+import { set } from '../../set.js';
 import type {
-  FunctionArguments,
-  ExecutorArgs,
   BuilderGlobals,
+  ExecutorArgs,
+  FunctionArguments,
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
 import { safeDynamicRequire } from './safeDynamicRequire.js';
-import { fastClone } from '../../fast-clone.js';
-import { set } from '../../set.js';
 const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
 
 const getSyncValName = (key: string) => `bldr_${key}_sync`;

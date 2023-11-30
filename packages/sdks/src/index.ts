@@ -1,5 +1,5 @@
-export * from './index-helpers/top-of-file.js';
 export * from './index-helpers/blocks-exports.js';
+export * from './index-helpers/top-of-file.js';
 
 /**
  * We have a separate entry point to the SDKs that guarantees no components are being imported. This is useful

@@ -1,8 +1,8 @@
 import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
 import { getAllPathnames, getProps } from '@e2e/tests';
 import type {
-  GetStaticPropsContext,
   GetStaticPathsResult,
+  GetStaticPropsContext,
   InferGetStaticPropsType,
 } from 'next';
 

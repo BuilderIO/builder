@@ -1,13 +1,13 @@
+import CatFacts from '@/components/MyTextBox/CatFacts';
 import {
   RenderContent,
+  _processContentResult,
   getBuilderSearchParams,
   getContent,
-  _processContentResult,
 } from '@builder.io/sdk-react-nextjs';
+import { getProps } from '@e2e/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
-import CatFacts from '@/components/MyTextBox/CatFacts';
-import { getProps } from '@e2e/tests';
 
 interface MyPageProps {
   params: {

@@ -1,8 +1,8 @@
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 
 // https://vitejs.dev/config/
 export default defineConfig({

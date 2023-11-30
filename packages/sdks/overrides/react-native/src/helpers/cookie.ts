@@ -1,9 +1,9 @@
 import type { CanTrack } from '../types/can-track.js';
 import { logger } from './logger.js';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Storage from 'react-native-storage';
 import { isBrowser } from '../functions/is-browser.js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
 

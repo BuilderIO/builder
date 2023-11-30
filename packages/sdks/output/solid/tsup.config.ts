@@ -3,9 +3,9 @@
  * https://github.com/solidjs-community/solid-lib-starter
  */
 
+import { esbuildOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 import { defineConfig } from 'tsup';
 import * as preset from 'tsup-preset-solid';
-import { esbuildOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 
 const preset_options: preset.PresetOptions = {
   // array or single object
