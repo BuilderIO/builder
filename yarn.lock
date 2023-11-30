@@ -2102,7 +2102,6 @@ __metadata:
     vite: ^4.3.2
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
-    undici: ^5.14.0
   languageName: unknown
   linkType: soft
 
