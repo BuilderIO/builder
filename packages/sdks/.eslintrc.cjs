@@ -29,7 +29,10 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-imports': [
+      'error',
+      { varsIgnorePattern: 'setAttrs' },
+    ],
     'object-shorthand': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',
@@ -37,7 +40,7 @@ module.exports = {
     ],
     '@typescript-eslint/no-unused-vars': [
       'error',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      { argsIgnorePattern: '^_', varsIgnorePattern: '(^_|setAttrs)' },
     ],
 
     // Note: you must disable the base rule as it can report incorrect errors
