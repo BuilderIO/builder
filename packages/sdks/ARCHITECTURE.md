@@ -2,7 +2,7 @@
 
 The gen2 SDKs, along with gen1 React SDK, are part of the same monorepo. The monorepo is configured using yarn v3 workspaces and [Nx](https://nx.app/).
 
-The root of the yarn monorepo is and called `@builder.io/root`. It is made up of the following:
+The root of the yarn monorepo is the same as the github repo and called `@builder.io/root`. It is made up of the following:
 
 - `package/sdks`: the gen2 SDKs, along with all of their integration tests
 - `packages/react`: the gen1 React SDK
