@@ -113,7 +113,6 @@ export const getProps = async (args: {
     options,
   } = args;
   const pathname = normalizePathname(_pathname);
-  console.log('getProps', { pathname });
 
   if (data === 'real' && getContent) {
     return {
