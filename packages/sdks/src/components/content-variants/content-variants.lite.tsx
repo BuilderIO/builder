@@ -48,6 +48,9 @@ export default function ContentVariants(props: VariantsProviderProps) {
       vue3: () => {
         state.shouldRenderVariants = false;
       },
+      solid: () => {
+        state.shouldRenderVariants = false;
+      },
     });
   });
 
