@@ -1,10 +1,6 @@
 import { APIOperations, ResourceType } from '@builder.io/data-plugin-tools';
-import appState from '@builder.io/app-context';
 import { CommerceAPIOperations } from '@builder.io/commerce-plugin-tools';
-import pkg from '../package.json';
 type BigCommerceResourceType = 'product' | 'category';
-import { BuilderStore, BuilderStoreContext } from '@builder.io/react';
-import { useContext, useEffect } from 'react';
 
 const buildHeaders = (headers: any) => {
   return Object.entries(headers)
@@ -28,7 +24,7 @@ function buildBigCommerceUrl({ resource, resourceId, query, limit, headers }) {
   const params = new URLSearchParams();
 
   // Set 'limit' parameter
-  if (limit) {
+  if (limit && resource !== 'category') {
     params.set('limit', limit.toString());
   }
 
