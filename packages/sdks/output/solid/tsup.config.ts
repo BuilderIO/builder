@@ -26,7 +26,6 @@ const preset_options: preset.PresetOptions = {
   // cjs: true,
 
   modify_esbuild_options: (options) => {
-    // options.external = [...(options.external || []), 'isolated-vm'];
     options.platform = getSdkEnv() === 'node' ? 'node' : 'browser';
 
     return options;
