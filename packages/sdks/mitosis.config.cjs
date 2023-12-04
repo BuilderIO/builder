@@ -168,6 +168,7 @@ module.exports = {
   getTargetPath,
   options: {
     solid: {
+      typescript: true,
       plugins: [
         () => ({
           json: {

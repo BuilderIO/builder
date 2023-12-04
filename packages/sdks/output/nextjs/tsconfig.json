@@ -7,7 +7,7 @@
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
     "module": "CommonJS",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Node",
     "jsx": "react",
     "declaration": true,
     "emitDeclarationOnly": true,

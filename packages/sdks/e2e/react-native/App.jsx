@@ -1,13 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import React, { Fragment, useEffect, useState } from 'react';
-import { getProps } from '@e2e/tests';
 import {
   RenderContent,
   _processContentResult,
 } from '@builder.io/sdk-react-native';
+import { getProps } from '@e2e/tests';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
+import { Fragment, useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 
 const linking = {
   prefixes: ['http://localhost:19006'],

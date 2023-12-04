@@ -2,7 +2,7 @@ import type { Component } from 'solid-js';
 import { createResource, Show } from 'solid-js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { RenderContent, _processContentResult } from '@builder.io/sdk-solid';
+import { _processContentResult, RenderContent } from '@builder.io/sdk-solid';
 import { getProps } from '@e2e/tests';
 
 const App: Component = () => {

@@ -1,38 +1,18 @@
-import type { Browser, BrowserContext, ConsoleMessage } from '@playwright/test';
+import type { Browser, ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { findTextInPage, isRNSDK, test } from './helpers.js';
-const SELECTOR = isRNSDK ? 'div[data-builder-content-id]' : 'div[builder-content-id]';
+import { test } from './helpers.js';
+const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
   cookies,
   baseURL,
   browser,
-  context,
 }: {
   browser: Browser;
   baseURL: string;
   cookies: { name: string; value: string }[];
-  context: BrowserContext;
 }) => {
-  if (isRNSDK) {
-    await context.addInitScript(
-      items => {
-        items.map(({ name, value }) => {
-          window.localStorage.setItem(name, value);
-        });
-      },
-      cookies.map(({ name, value }) => ({
-        name: `builderio.${name}`,
-        value: JSON.stringify({
-          rawData: { value },
-          // add long expiry
-          expires: Date.now() + 1000 * 60 * 60 * 24 * 365 * 10,
-        }),
-      }))
-    );
-    return context;
-  }
-  return await browser.newContext({
+  const context = await browser.newContext({
     storageState: {
       cookies: cookies.map(cookie => {
         const newCookie = {
@@ -40,12 +20,14 @@ const createContextWithCookies = async ({
           value: cookie.value,
           // this is valid but types seem to be mismatched.
           url: baseURL,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any;
         return newCookie;
       }),
       origins: [],
     },
   });
+  return context;
 };
 
 const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
@@ -63,10 +45,9 @@ const initializeAbTest = async (
     baseURL,
     packageName,
     browser,
-    context: _context,
   }: Pick<
     Parameters<Parameters<typeof test>[1]>[0],
-    'page' | 'baseURL' | 'packageName' | 'browser' | 'context'
+    'page' | 'baseURL' | 'packageName' | 'browser'
   >,
   { cookieName, cookieValue }: { cookieName: string; cookieValue: string }
 ) => {
@@ -78,14 +59,18 @@ const initializeAbTest = async (
   // RN can't have SSR, we don't support/export it.
   test.skip(packageName === 'react-native');
 
+  /**
+   * This test is flaky on `next-app-dir` and `qwik-city`. Most likely because it is the very first test that runs.
+   */
+  test.slow(packageName === 'next-app-dir' || packageName === 'qwik-city');
+
   const context = await createContextWithCookies({
     baseURL,
     browser,
     cookies: [{ name: cookieName, value: cookieValue }],
-    context: _context,
   });
 
-  const page = isRNSDK ? _page : await context.newPage();
+  const page = await context.newPage();
 
   const msgs = [] as ConsoleMessage[];
   page.on('console', msg => {
@@ -119,7 +104,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
         const { page, msgs } = await initializeAbTest(
           {
@@ -127,7 +111,6 @@ test.describe('A/B tests', () => {
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -137,7 +120,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test');
 
-        await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
+        await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
         await expect(msgs).toEqual([]);
@@ -148,7 +131,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
         const { page, msgs } = await initializeAbTest(
           {
@@ -156,7 +138,6 @@ test.describe('A/B tests', () => {
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -166,7 +147,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test');
 
-        await findTextInPage({ page, text: TEXTS.VARIANT_1 });
+        await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
         await expect(msgs).toEqual([]);
@@ -194,7 +175,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
         const { page, msgs } = await initializeAbTest(
           {
@@ -202,7 +182,6 @@ test.describe('A/B tests', () => {
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -211,7 +190,7 @@ test.describe('A/B tests', () => {
         );
         await page.goto('/symbol-ab-test');
 
-        await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
+        await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_1 })
         ).toBeHidden();
@@ -226,7 +205,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
         const { page, msgs } = await initializeAbTest(
           {
@@ -234,7 +212,6 @@ test.describe('A/B tests', () => {
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -244,7 +221,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/symbol-ab-test');
 
-        await findTextInPage({ page, text: TEXTS.VARIANT_1 });
+        await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.DEFAULT_CONTENT })
         ).toBeHidden();

@@ -1,9 +1,9 @@
-import { getProps } from '@e2e/tests';
 import {
   _processContentResult,
-  getContent,
   getBuilderSearchParams,
+  getContent,
 } from '@builder.io/sdk-react/server';
+import { getProps } from '@e2e/tests';
 
 import { RenderContent } from '@builder.io/sdk-react';
 

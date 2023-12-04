@@ -1,7 +1,7 @@
 import { logger } from '../../helpers/logger.js';
+import { chooseBrowserOrServerEval } from './choose-eval.js';
 import type { EvaluatorArgs, ExecutorArgs } from './helpers.js';
 import { getBuilderGlobals, parseCode } from './helpers.js';
-import { chooseBrowserOrServerEval } from './choose-eval.js';
 
 export function evaluate({
   code,
