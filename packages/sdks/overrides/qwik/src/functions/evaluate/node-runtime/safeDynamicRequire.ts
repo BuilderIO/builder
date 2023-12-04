@@ -1,6 +1,6 @@
 /**
- * We use the less hacky, but more modern `createRequire` API for Qwik. That's because the `eval('require')` trick does
- * not work with Qwik.
+ * We use the less hacky, but more modern `createRequire` API. That's because the `eval('require')` trick does
+ * not work with for this framework.
  */
 
 import { createRequire } from 'node:module';
