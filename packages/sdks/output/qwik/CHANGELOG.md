@@ -1,5 +1,13 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.7.1
+
+### Patch Changes
+
+- f7e1a5e: Chore: added changesets workflow to automate changelogs and release process
+- 89e5965: add `isolated-vm` package to sandbox VM code when running in Node environments
+- 89e5965: Trigger visual editing logic via custom events instead of OnMount, removing all hydration logic.
+
 ## 0.7.0
 
 - Setting `noTraverse` option's default to `true` when fetching multiple content entries.

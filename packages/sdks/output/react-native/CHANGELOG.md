@@ -1,5 +1,15 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.7.1
+
+### Patch Changes
+
+- 89e5965: Fix URL polyfill in react-native-web environments
+- f7e1a5e: Chore: added changesets workflow to automate changelogs and release process
+- 89e5965: add `isolated-vm` package to sandbox VM code when running in Node environments
+- 89e5965: fix broken content reactivity
+- 89e5965: Fix placeholder-runtime import causing runtime crash on devices.
+
 ## 0.7.0
 
 - Setting `noTraverse` option's default to `true` when fetching multiple content entries.
