@@ -91,7 +91,7 @@ jobs:
           cache-install-state: true
 
       - name: Run prettier
-        run: yarn ci:lint
+        run: yarn ci:lint:sdks
 
       - name: Typecheck
         run: yarn nx typecheck @builder.io/sdks
