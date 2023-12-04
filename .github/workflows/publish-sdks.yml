@@ -34,6 +34,7 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: yarn workspace @builder.io/sdks ci:release
+          title: '📦 Publish SDKs'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
