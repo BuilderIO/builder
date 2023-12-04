@@ -10,7 +10,7 @@
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/svelte#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BuilderIO/builder.git",
+    "url": "git+https://github.com/BuilderIO/builder.git",
     "directory": "packages/sdks/output/svelte"
   },
   "main": "./lib/node/index.js",
