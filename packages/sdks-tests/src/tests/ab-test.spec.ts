@@ -120,7 +120,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test');
 
-        await expect(page.getByText(TEXTS.DEFAULT_CONTENT)).toBeVisible();
+        await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
         await expect(msgs).toEqual([]);
@@ -147,7 +147,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test');
 
-        await expect(page.getByText(TEXTS.VARIANT_1)).toBeVisible();
+        await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
         await expect(msgs).toEqual([]);
@@ -190,7 +190,7 @@ test.describe('A/B tests', () => {
         );
         await page.goto('/symbol-ab-test');
 
-        await expect(page.getByText(TEXTS.DEFAULT_CONTENT)).toBeVisible();
+        await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_1 })
         ).toBeHidden();
@@ -221,7 +221,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/symbol-ab-test');
 
-        await expect(page.getByText(TEXTS.VARIANT_1)).toBeVisible();
+        await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.DEFAULT_CONTENT })
         ).toBeHidden();
