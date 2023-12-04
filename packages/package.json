@@ -5,7 +5,6 @@
   "scripts": {
     "e2e:build:old-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
     "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run",
-    "g:changeset": "changeset",
     "ci:changeset": "changeset status --since=main",
     "ci:release": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\* && yarn g:changeset publish"
   },
