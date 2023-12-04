@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {

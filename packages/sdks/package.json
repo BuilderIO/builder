@@ -1,16 +1,10 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
-  "workspaces": [
-    "e2e/*",
-    "output/*",
-    "output/vue/vue2",
-    "output/vue/vue3"
-  ],
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "build-mitosis": "../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build-mitosis": "../../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:react": "yarn build-mitosis --target=react && yarn run set-sdk-version react",
     "build:qwik": "yarn build-mitosis --target=qwik && yarn run set-sdk-version qwik",
     "build:svelte": "yarn build-mitosis --target=svelte && yarn run set-sdk-version svelte",
@@ -44,7 +38,7 @@
     "eslint:watch": "watch 'yarn run eslint' ./src ./overrides",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "yarn run typecheck --watch",
-    "ci:lint": "yarn run prettier --check && yarn run eslint",
+    "ci:lint:sdks": "yarn run prettier --check && yarn run eslint",
     "e2e:build:svelte": "nx run-many -t build -p @e2e/svelte @e2e/sveltekit",
     "e2e:build:react-native": "nx run-many -t build -p @e2e/react-native",
     "e2e:build:solid": "nx run-many -t build -p @e2e/solid @e2e/solid-start",
@@ -69,7 +63,6 @@
     "version:all:minor": "yarn version-sdks minor all",
     "version:all:dev": "yarn version-sdks dev all",
     "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
-    "ci:publish": "./scripts/publish-sdks-ci.sh",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },

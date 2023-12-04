@@ -1,4 +1,4 @@
-import { Show, useStore } from '@builder.io/mitosis';
+import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import {
   getMaxWidthQueryForSize,
   getSizesForBreakpoints,
@@ -10,7 +10,6 @@ import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
-import { useMetadata } from '@builder.io/mitosis';
 
 export type BlockStylesProps = {
   block: BuilderBlock;

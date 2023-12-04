@@ -1,10 +1,10 @@
 import { flatten } from '../../helpers/flatten.js';
+import { DEFAULT_API_VERSION } from '../../types/api-version.js';
 import {
   getBuilderSearchParamsFromWindow,
   normalizeSearchParams,
 } from '../get-builder-search-params/index.js';
 import type { GetContentOptions } from './types.js';
-import { DEFAULT_API_VERSION } from '../../types/api-version.js';
 
 const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;

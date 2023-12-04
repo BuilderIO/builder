@@ -1,5 +1,4 @@
-import { useMetadata } from '@builder.io/mitosis';
-import { onMount, useRef, useStore } from '@builder.io/mitosis';
+import { onMount, useMetadata, useRef, useStore } from '@builder.io/mitosis';
 
 useMetadata({
   rsc: {

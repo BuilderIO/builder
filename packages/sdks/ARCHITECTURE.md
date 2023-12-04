@@ -2,7 +2,7 @@
 
 The gen2 SDKs, along with gen1 React SDK, are part of the same monorepo. The monorepo is configured using yarn v3 workspaces and [Nx](https://nx.app/).
 
-The root of the yarn monorepo is `packages/package.json` and called `@builder.io/mono-repo`. It is made up of the following:
+The root of the yarn monorepo is the same as the github repo and called `@builder.io/root`. It is made up of the following:
 
 - `package/sdks`: the gen2 SDKs, along with all of their integration tests
 - `packages/react`: the gen1 React SDK
@@ -10,7 +10,7 @@ The root of the yarn monorepo is `packages/package.json` and called `@builder.io
 - `packages/react-tests`: the gen1 React SDK integration tests
 - `packages/sdks-tests`: the integration test specs & playwright configuration for both gen1 and gen2 SDKs.
 
-**NOTE:** Even though the monorepo root is at `packages/*`, not every sub-folder is part of the monorepo. Only the ones listed above are.
+**NOTE:** Even though the monorepo root is the same root as the entire repo, not every sub-folder is part of the monorepo. Only the ones listed above are.
 
 ## Nx
 

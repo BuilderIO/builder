@@ -1,13 +1,25 @@
 {
+  "name": "@builder.io/root",
   "private": true,
+  "workspaces": [
+    "packages",
+    "packages/sdks-tests",
+    "packages/sdks",
+    "packages/react",
+    "packages/core",
+    "packages/react-tests/*",
+    "packages/sdks/e2e/*",
+    "packages/sdks/output/*",
+    "packages/sdks/output/vue/vue2",
+    "packages/sdks/output/vue/vue3"
+  ],
   "devDependencies": {
-    "@builder.io/block-publish": "^1.1.2",
-    "@typescript-eslint/parser": "^4.28.3",
-    "babel-preset-solid": "^1.0.1",
+    "@changesets/cli": "^2.27.1",
     "dotenv": "^16.0.3",
-    "lerna": "^3.20.2",
-    "tslib": "^2.2.0",
-    "typescript": "^4.9.0"
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
+    "octokit": "^2.0.14",
+    "zx": "7.2.1"
   },
   "license": "MIT",
   "repository": {
@@ -15,33 +27,18 @@
     "url": "https://github.com/BuilderIO/builder"
   },
   "scripts": {
-    "prettier": "prettier",
-    "verify-git-not-dirty": "git diff --quiet || exit 1",
-    "_unlink": "lerna run _unlink --parallel",
-    "_install": "lerna run _install --stream",
-    "test": "lerna run test --stream",
-    "lerna": "lerna",
-    "install:packages": "npm run _install",
-    "bootstrap": "lerna bootstrap --force-local",
-    "reset": "npm run _install && npm run bootstrap && npm run _unlink",
-    "watch": "npm run start",
-    "develop": "npm run start",
-    "build": "lerna run build --stream --no-private --ignore @builder.io/plugin-loader --ignore @builder.io/plugin-shopify --ignore @builder.io/memsource-connector",
-    "release:patch": "npm run verify-git-not-dirty && npm run _install && npm run bootstrap && npm run build && lerna version patch --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes",
-    "release:minor": "npm run verify-git-not-dirty && npm run _install && npm run bootstrap && npm run build && lerna version minor --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes",
-    "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --dist-tag dev --yes",
-    "release:dev": "npm run _install && npm run bootstrap && npm run release:prerelease:dev",
-    "prepublishOnly": "block-publish",
     "ci:lint": "npx prettier@2.8.8 --check '**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "npx prettier@2.8.8 --write '**/*.{js,jsx,ts,tsx}'",
-    "update-npm-dependency": "zx ./scripts/update-npm-dependency.mjs",
-    "prepare": "husky install"
+    "update-npm-dependency": "zx ./scripts/update-npm-dependency.mjs"
   },
-  "dependencies": {
-    "husky": "^7.0.4",
-    "octokit": "^2.0.14",
-    "pinst": "^3.0.0",
-    "prettier": "^2.8.8",
-    "zx": "7.2.1"
+  "engines": {
+    "yarn": ">= 3.0.0"
+  },
+  "packageManager": "yarn@3.6.1",
+  "resolutions": {
+    "minimist": "^1.2.7",
+    "json5": "2.2.1",
+    "@builder.io/react": "workspace:*",
+    "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
   }
 }

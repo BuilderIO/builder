@@ -15,4 +15,15 @@ declare global {
   }
 }
 
+declare module 'solid-js' {
+  namespace JSX {
+    interface IntrinsicAttributes {
+      key?: any;
+    }
+    interface HTMLAttributes {
+      key?: any;
+    }
+  }
+}
+
 export {};

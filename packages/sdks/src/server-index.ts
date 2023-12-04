@@ -11,19 +11,19 @@ export { setEditorSettings } from './functions/set-editor-settings.js';
 export type { Settings } from './functions/set-editor-settings.js';
 
 export {
+  _processContentResult,
   fetchEntries,
   fetchOneEntry,
   getAllContent,
   getContent,
-  _processContentResult,
 } from './functions/get-content/index.js';
 
 export { getBuilderSearchParams } from './functions/get-builder-search-params/index.js';
 
 export { track } from './functions/track/index.js';
 
+export type { ContentProps } from './components/content/content.types.js';
 export type { RegisteredComponent } from './context/types.js';
 export type { ComponentInfo } from './types/components.js';
-export type { ContentProps } from './components/content/content.types.js';
 
 export { fetchBuilderProps } from './functions/fetch-builder-props.js';

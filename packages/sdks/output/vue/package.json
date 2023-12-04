@@ -1,10 +1,6 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "workspaces": [
-    "vue2",
-    "vue3"
-  ],
   "version": "0.7.1-1",
   "main": "./vue3/lib/node/index.cjs",
   "module": "./vue3/lib/node/index.js",

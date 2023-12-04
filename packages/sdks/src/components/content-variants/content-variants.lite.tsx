@@ -1,24 +1,24 @@
 import {
   For,
-  useStore,
   Show,
   onMount,
-  useTarget,
   useMetadata,
+  useStore,
+  useTarget,
 } from '@builder.io/mitosis';
+import { TARGET } from '../../constants/target.js';
+import { handleABTestingSync } from '../../helpers/ab-tests.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
+import ContentComponent from '../content/content.lite.jsx';
+import InlinedScript from '../inlined-script.lite.jsx';
+import InlinedStyles from '../inlined-styles.lite.jsx';
+import type { ContentVariantsPrps } from './content-variants.types.js';
 import {
   checkShouldRunVariants,
   getScriptString,
   getVariants,
   getVariantsScriptString,
 } from './helpers.js';
-import ContentComponent from '../content/content.lite.jsx';
-import { getDefaultCanTrack } from '../../helpers/canTrack.js';
-import InlinedStyles from '../inlined-styles.lite.jsx';
-import { handleABTestingSync } from '../../helpers/ab-tests.js';
-import InlinedScript from '../inlined-script.lite.jsx';
-import { TARGET } from '../../constants/target.js';
-import type { ContentVariantsPrps } from './content-variants.types.js';
 
 useMetadata({
   rsc: {
@@ -46,6 +46,9 @@ export default function ContentVariants(props: VariantsProviderProps) {
         state.shouldRenderVariants = false;
       },
       vue3: () => {
+        state.shouldRenderVariants = false;
+      },
+      solid: () => {
         state.shouldRenderVariants = false;
       },
     });

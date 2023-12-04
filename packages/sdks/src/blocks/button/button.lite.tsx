@@ -1,9 +1,9 @@
-import { useMetadata, Show, useTarget } from '@builder.io/mitosis';
+import { Show, useMetadata, useTarget } from '@builder.io/mitosis';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
-// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
+
 import { setAttrs } from '../helpers.js';
 
 useMetadata({

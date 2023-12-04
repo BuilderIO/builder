@@ -2,38 +2,16 @@
 name: Publish new generation SDKs
 
 on:
-  workflow_dispatch:
-    inputs:
-      dist-tag:
-        description: 'Publish SDK(s) to NPM using this dist-tag. The "latest" and "dev" dist-tags will use the version number already committed in package.json.'
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-          - dev
-          - latest
-      sdk:
-        description: 'Choose which SDK to publish.'
-        required: true
-        default: 'all'
-        type: choice
-        options:
-          - all
-          - qwik
-          - react
-          - react-native
-          - react-nextjs
-          - solid
-          - svelte
-          - vue
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   publish-sdks:
+    name: Publish new generation SDKs
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: packages/sdks
 
     steps:
       - name: Setup
@@ -48,18 +26,15 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cwd: 'packages/'
           cache-node-modules: true
           cache-install-state: true
 
-      - name: 📦 Publish All SDKs
-        run: yarn nx run-many --skip-nx-cache -t release --projects=@builder.io/sdk-\* --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --tag=${{ github.event.inputs.dist-tag }}
-        if: ${{ github.event.inputs.sdk == 'all' }}
+      - name: Create Release Pull Request & Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: yarn workspace @builder.io/sdks ci:release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
-
-      - name: 📦 Publish ${{ matrix.sdk-name }} SDK
-        run: yarn nx release --skip-nx-cache @builder.io/sdk-${{ matrix.sdk }} --tag=${{ github.event.inputs.dist-tag }}
-        if: ${{ github.event.inputs.sdk != 'all' }}
-        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}

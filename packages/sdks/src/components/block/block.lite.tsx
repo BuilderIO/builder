@@ -1,17 +1,3 @@
-import type {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../context/types.js';
-import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
-import { getBlockProperties } from '../../functions/get-block-properties.js';
-import { getProcessedBlock } from '../../functions/get-processed-block.js';
-import type { BuilderBlock } from '../../types/builder-block.js';
-import BlockStyles from './components/block-styles.lite.jsx';
-import {
-  getComponent,
-  getRepeatItemData,
-  isEmptyHtmlElement,
-} from './block.helpers.js';
 import type { Signal } from '@builder.io/mitosis';
 import {
   For,
@@ -21,11 +7,25 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import RepeatedBlock from './components/repeated-block.lite.jsx';
+import type {
+  BuilderContextInterface,
+  RegisteredComponents,
+} from '../../context/types.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import ComponentRef from './components/component-ref/component-ref.lite.jsx';
-import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
+import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
+import { getBlockProperties } from '../../functions/get-block-properties.js';
+import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import {
+  getComponent,
+  getRepeatItemData,
+  isEmptyHtmlElement,
+} from './block.helpers.js';
+import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
+import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
+import ComponentRef from './components/component-ref/component-ref.lite.jsx';
+import RepeatedBlock from './components/repeated-block.lite.jsx';
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -159,7 +159,18 @@ export default function Block(props: BlockProps) {
     <Show when={state.canShowBlock}>
       <Show
         when={!state.blockComponent?.noWrap}
-        else={<ComponentRef {...state.componentRefProps} />}
+        else={
+          <ComponentRef
+            componentRef={state.componentRefProps.componentRef}
+            componentOptions={state.componentRefProps.componentOptions}
+            blockChildren={state.componentRefProps.blockChildren}
+            context={state.componentRefProps.context}
+            registeredComponents={state.componentRefProps.registeredComponents}
+            builderBlock={state.componentRefProps.builderBlock}
+            includeBlockProps={state.componentRefProps.includeBlockProps}
+            isInteractive={state.componentRefProps.isInteractive}
+          />
+        }
       >
         {/*
          * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -192,7 +203,18 @@ export default function Block(props: BlockProps) {
             context={props.context}
             hasChildren
           >
-            <ComponentRef {...state.componentRefProps} />
+            <ComponentRef
+              componentRef={state.componentRefProps.componentRef}
+              componentOptions={state.componentRefProps.componentOptions}
+              blockChildren={state.componentRefProps.blockChildren}
+              context={state.componentRefProps.context}
+              registeredComponents={
+                state.componentRefProps.registeredComponents
+              }
+              builderBlock={state.componentRefProps.builderBlock}
+              includeBlockProps={state.componentRefProps.includeBlockProps}
+              isInteractive={state.componentRefProps.isInteractive}
+            />
             {/**
              * We need to run two separate loops for content + styles to workaround the fact that Vue 2
              * does not support multiple root elements.

@@ -11,7 +11,7 @@
     "noImplicitAny": false,
     "strict": false,
     "strictNullChecks": false,
-    "isolatedModules": false,
+    // "isolatedModules": false,
     // we don't use react-native, as that preserves the JSX tags
     "jsx": "react",
     "paths": {

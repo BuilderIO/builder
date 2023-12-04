@@ -1,0 +1,28 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [
+    [
+      "@builder.io/sdk-react",
+      "@builder.io/sdk-react-nextjs",
+      "@builder.io/sdk-vue",
+      "@builder.io/sdk-qwik",
+      "@builder.io/sdk-solid",
+      "@builder.io/sdk-svelte",
+      "@builder.io/sdk-react-native"
+    ]
+  ],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "@builder.io/sdk",
+    "@builder.io/react",
+    "@e2e/*",
+    "@e2e/gen1-next",
+    "@e2e/gen1-remix",
+    "@e2e/gen1-react"
+  ]
+}

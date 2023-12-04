@@ -1,8 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-if npx zx scripts/check-is-husky-ready-dir.mjs --git-prefix=$GIT_PREFIX; then
-  cd $GIT_PREFIX
-  # https://github.com/commitizen/cz-cli/tree/3c2553f421a7fda935f648068bf51860a0cfe88e#husky
-  exec </dev/tty && yarn run cz --hook || true
-fi

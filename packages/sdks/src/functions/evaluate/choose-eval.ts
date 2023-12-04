@@ -1,6 +1,6 @@
+import { isBrowser } from '../is-browser.js';
 import { runInBrowser } from './browser-runtime/browser.js';
 import type { ExecutorArgs } from './helpers.js';
-import { isBrowser } from '../is-browser.js';
 
 /**
  * THIS IS A MAGICAL IMPORT. It is aliased by the build process of every SDK configuration, so that
