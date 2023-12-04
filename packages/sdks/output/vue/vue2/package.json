@@ -1,6 +1,7 @@
 {
   "name": "@builder.io/sdk-vue-2",
   "type": "module",
+  "private": true,
   "main": "./lib/node/index.cjs",
   "module": "./lib/node/index.js",
   "files": [
