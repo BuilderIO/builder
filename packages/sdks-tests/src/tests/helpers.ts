@@ -1,12 +1,12 @@
-import { test as base, expect } from '@playwright/test';
 import type {
-  Page,
-  TestInfo,
-  Locator,
   BrowserContext,
+  Locator,
+  Page,
   PlaywrightTestArgs,
   PlaywrightWorkerArgs,
+  TestInfo,
 } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import type { PackageName, Sdk } from './sdk.js';
 import { sdk } from './sdk.js';
 
@@ -38,6 +38,27 @@ export const test = base.extend<TestOptions>({
   // this is provided by `playwright.config.ts`
   packageName: ['DEFAULT', { option: true }],
   basePort: [0, { option: true }],
+});
+test.beforeEach(({ page }) => {
+  page.on('console', msg => {
+    const originalText = msg.text();
+    const text = originalText.toLowerCase();
+    const isVueHydrationMismatch =
+      text.includes('[vue warn]') && text.includes('hydration') && text.includes('mismatch');
+    const isReactHydrationMismatch =
+      text.includes('did not expect server') ||
+      text.includes('content does not match') ||
+      text.includes('hydration') ||
+      text.includes('mismatch');
+
+    const filterHydrationmismatchMessages = isVueHydrationMismatch || isReactHydrationMismatch;
+
+    if (filterHydrationmismatchMessages) {
+      throw new Error(
+        'TEST FAILED: Hydration mismatch detected in console logs. Error: ' + originalText
+      );
+    }
+  });
 });
 test.afterEach(screenshotOnFailure);
 

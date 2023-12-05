@@ -1,4 +1,4 @@
-import type { Browser, ConsoleMessage } from '@playwright/test';
+import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { test } from './helpers.js';
 const SELECTOR = 'div[builder-content-id]';
@@ -28,15 +28,6 @@ const createContextWithCookies = async ({
     },
   });
   return context;
-};
-
-const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
-  const text = consoleMessage.text().toLowerCase();
-
-  const isVueHydrationMismatch =
-    text.includes('[vue warn]') && text.includes('hydration') && text.includes('mismatch');
-
-  return isVueHydrationMismatch;
 };
 
 const initializeAbTest = async (
@@ -72,14 +63,7 @@ const initializeAbTest = async (
 
   const page = await context.newPage();
 
-  const msgs = [] as ConsoleMessage[];
-  page.on('console', msg => {
-    if (filterHydrationmismatchMessages(msg)) {
-      msgs.push(msg);
-    }
-  });
-
-  return { page, msgs };
+  return { page };
 };
 
 test.describe('A/B tests', () => {
@@ -105,7 +89,7 @@ test.describe('A/B tests', () => {
         packageName,
         browser,
       }) => {
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
@@ -123,7 +107,6 @@ test.describe('A/B tests', () => {
         await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
 
       test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
@@ -132,7 +115,7 @@ test.describe('A/B tests', () => {
         packageName,
         browser,
       }) => {
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
@@ -150,7 +133,6 @@ test.describe('A/B tests', () => {
         await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
     }
   });
@@ -176,7 +158,7 @@ test.describe('A/B tests', () => {
         packageName,
         browser,
       }) => {
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
@@ -197,7 +179,6 @@ test.describe('A/B tests', () => {
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_2 })
         ).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
 
       test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
@@ -206,7 +187,7 @@ test.describe('A/B tests', () => {
         packageName,
         browser,
       }) => {
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
@@ -228,7 +209,6 @@ test.describe('A/B tests', () => {
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_2 })
         ).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
     }
   });
