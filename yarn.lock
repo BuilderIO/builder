@@ -2211,7 +2211,7 @@ __metadata:
     typescript: ^4.9.4
     vite: ^4.4.9
   peerDependencies:
-    react: ^18.2.0
+    react: ">=16"
   languageName: unknown
   linkType: soft
 
