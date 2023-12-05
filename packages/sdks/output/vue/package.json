@@ -5,6 +5,10 @@
   "main": "./vue3/lib/node/index.cjs",
   "module": "./vue3/lib/node/index.js",
   "type": "module",
+  "workspaces": [
+    "vue2",
+    "vue3"
+  ],
   "files": [
     "vue2/lib",
     "vue2/css/package.json",

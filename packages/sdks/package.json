@@ -36,6 +36,9 @@
     "lint": "yarn run prettier --write && yarn run eslint --fix",
     "eslint": "eslint . --quiet",
     "eslint:watch": "watch 'yarn run eslint' ./src ./overrides",
+    "g:publint": "cd $INIT_CWD && publint",
+    "g:attw": "cd $INIT_CWD && attw --pack .",
+    "g:pkg:lint": "cd $INIT_CWD && yarn g:publint && yarn g:attw",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "yarn run typecheck --watch",
     "ci:lint:sdks": "yarn run prettier --check && yarn run eslint",
@@ -77,6 +80,7 @@
     "traverse": "^0.6.6"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.13.3",
     "@builder.io/eslint-plugin-mitosis": "^0.0.15",
     "@types/node-fetch": "^2.5.12",
     "@types/seedrandom": "^3.0.4",
@@ -93,6 +97,7 @@
     "npm-run-all": "^4.1.5",
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
+    "publint": "^0.2.6",
     "typescript": "^5.1.6",
     "vitest": "^0.33.0",
     "watch": "^1.0.2"
