@@ -48,6 +48,7 @@ test.beforeEach(({ page }) => {
     const isReactHydrationMismatch =
       text.includes('did not expect server') ||
       text.includes('content does not match') ||
+      text.includes('did not match') ||
       text.includes('hydration') ||
       text.includes('mismatch');
 
