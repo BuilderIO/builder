@@ -1,5 +1,7 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.7.3
+
 ## 0.7.2
 
 ### Patch Changes

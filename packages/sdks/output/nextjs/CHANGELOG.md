@@ -1,5 +1,7 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.7.3
+
 ## 0.7.2
 
 ## 0.7.1

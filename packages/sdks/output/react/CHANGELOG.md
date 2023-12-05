@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 0.7.3
+
+### Patch Changes
+
+- 90e6abb: reduce React peer dependency to >= v16
+
 ## 0.7.2
 
 ## 0.7.1
