@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io RSC SDK for NextJS App Directory",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "files": [
     "lib",
     "types"

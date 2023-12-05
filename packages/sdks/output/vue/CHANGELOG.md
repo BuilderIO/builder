@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.7.2
+
+### Patch Changes
+
+- da956c3: Fix publishing configuration
+
 ## 0.7.1
 
 ### Patch Changes
