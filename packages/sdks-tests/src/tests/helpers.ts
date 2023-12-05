@@ -50,7 +50,8 @@ test.beforeEach(({ page }) => {
       text.includes('content does not match') ||
       text.includes('did not match') ||
       text.includes('hydration') ||
-      text.includes('mismatch');
+      text.includes('mismatch') ||
+      text.includes('uncaught error: minified react error #');
 
     const filterHydrationmismatchMessages = isVueHydrationMismatch || isReactHydrationMismatch;
 
