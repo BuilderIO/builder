@@ -1,0 +1,3 @@
+{
+  "excludeEntrypoints": ["css", "vue2/css", "vue3/css"]
+}
