@@ -7,6 +7,7 @@ import type {
   TestInfo,
 } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
+import { SDK_LOADED_MSG } from './context.js';
 import type { PackageName, Sdk } from './sdk.js';
 import { sdk } from './sdk.js';
 
@@ -38,29 +39,6 @@ export const test = base.extend<TestOptions>({
   // this is provided by `playwright.config.ts`
   packageName: ['DEFAULT', { option: true }],
   basePort: [0, { option: true }],
-});
-test.beforeEach(({ page }) => {
-  page.on('console', msg => {
-    const originalText = msg.text();
-    const text = originalText.toLowerCase();
-    const isVueHydrationMismatch =
-      text.includes('[vue warn]') && text.includes('hydration') && text.includes('mismatch');
-    const isReactHydrationMismatch =
-      text.includes('did not expect server') ||
-      text.includes('content does not match') ||
-      text.includes('did not match') ||
-      text.includes('hydration') ||
-      text.includes('mismatch') ||
-      text.includes('uncaught error: minified react error #');
-
-    const filterHydrationmismatchMessages = isVueHydrationMismatch || isReactHydrationMismatch;
-
-    if (filterHydrationmismatchMessages) {
-      throw new Error(
-        'TEST FAILED: Hydration mismatch detected in console logs. Error: ' + originalText
-      );
-    }
-  });
 });
 test.afterEach(screenshotOnFailure);
 
@@ -152,3 +130,64 @@ export const getBuilderSessionIdCookie = async ({ context }: { context: BrowserC
   const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
   return builderSessionCookie;
 };
+
+export const checkIfIsHydrationErrorMessage = (_text: string) => {
+  const text = _text.toLowerCase();
+  const isVueHydrationMismatch =
+    text.includes('[vue warn]') || text.includes('hydration') || text.includes('mismatch');
+  const isReactHydrationMismatch =
+    text.includes('did not expect server') ||
+    text.includes('content does not match') ||
+    text.includes('did not match') ||
+    text.includes('hydration') ||
+    text.includes('mismatch') ||
+    text.includes('minified react error #');
+
+  const filterHydrationmismatchMessages = isVueHydrationMismatch || isReactHydrationMismatch;
+  return filterHydrationmismatchMessages;
+};
+
+export async function checkConsoleForHydrationErrors(context: BrowserContext) {
+  console.log('Checking console for hydration errors');
+
+  await context.addInitScript(() => {
+    console.log('Adding init script', window, window.addEventListener);
+
+    window.addEventListener('message', event => {
+      console.log('MESSAGE: ', event.data);
+
+      if (event.data.type === 'builder.sdkInfo') {
+        console.log(SDK_LOADED_MSG);
+      }
+    });
+  });
+
+  const msgs: string[] = [];
+  context.on('console', msg => {
+    console.log('CONSOLE LOG: ', msg.text());
+
+    const originalText = msg.text();
+
+    if (checkIfIsHydrationErrorMessage(originalText)) {
+      console.log('BAD CONSOLE DETECTED: ', originalText);
+      msgs.push(originalText);
+      // throw new Error(
+      //   'TEST FAILED: Hydration mismatch detected in console logs. Error: ' + originalText
+      // );
+    }
+  });
+
+  const msgPromise = context.waitForEvent('console', msg => {
+    const newLocal = msg.text();
+    console.log('CONSOLE LOG: ', newLocal);
+    if (checkIfIsHydrationErrorMessage(newLocal)) {
+      console.log('BAD CONSOLE DETECTED: ', newLocal);
+      throw new Error(
+        'TEST FAILED: Hydration mismatch detected in console logs. Error: ' + newLocal
+      );
+    }
+    return newLocal === SDK_LOADED_MSG;
+  });
+
+  return msgPromise;
+}
