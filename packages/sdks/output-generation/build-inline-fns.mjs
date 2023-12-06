@@ -7,6 +7,14 @@ import fs from 'fs';
 import glob from 'glob';
 
 /**
+ * - run after mitosis build, before sdk builds
+ * - make sdk build depend on this
+ * = this depends on mitosis build
+ *
+ * - add watch cmd that combines sdkbuild and this
+ */
+
+/**
  * @typedef {import('@babel/core').PluginObj} babel.PluginObj
  * @typedef {babel.PluginObj} InlinePlugin
  */
@@ -14,7 +22,7 @@ import glob from 'glob';
 const buildInlineFns = async () => {
   console.log('Building inline functions...');
 
-  const inlineFnsFile = glob.glob('src/**/*/inlined-fns.ts', { sync: true })[0];
+  const inlineFnsFile = glob.glob('src/**/*/inlined-fns.*', { sync: true })[0];
 
   if (!inlineFnsFile) {
     throw new Error('No inline functions file found.');
