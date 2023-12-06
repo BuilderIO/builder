@@ -1,3 +1,4 @@
+import { AB_TEST_INTERACTIVE } from './ab-test-interactive.js';
 import { CONTENT as abTest } from './ab-test.js';
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
@@ -51,6 +52,7 @@ const pages = {
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
   '/ab-test': abTest,
+  '/ab-test-interactive': AB_TEST_INTERACTIVE,
   '/symbol-ab-test': symbolAbTest,
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': reactiveState,
