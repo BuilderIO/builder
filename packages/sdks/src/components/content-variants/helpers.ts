@@ -3,12 +3,16 @@ import { isBrowser } from '../../functions/is-browser.js';
 import type { Nullable } from '../../helpers/nullable.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Target } from '../../types/targets.js';
-import {
-  AB_TEST_FN_NAME,
-  BLDR_AB_TEST_SCRIPT,
-  BLDR_CONTENT_SCRIPT,
-  CONTENT_FN_NAME,
-} from './inlined-fns.js';
+import { BLDR_AB_TEST_SCRIPT, BLDR_CONTENT_SCRIPT } from './inlined-fns.js';
+
+/**
+ * We hardcode explicit function names here, because the `.toString()` of a function can change depending on the bundler.
+ * Some bundlers will minify the fn name, etc.
+ *
+ * So we hardcode the function names here, and then use those names in the script string to make sure the function names are consistent.
+ */
+const AB_TEST_FN_NAME = 'builderIoAbTest';
+const CONTENT_FN_NAME = 'builderIoRenderContent';
 
 export const getVariants = (content: Nullable<BuilderContent>) =>
   Object.values(content?.variations || {}).map((variant) => ({

@@ -168,14 +168,9 @@ function bldrCntntScrpt(
 }
 
 /**
- * We hardcode explicit function names here, because the `.toString()` of a function can change depending on the bundler.
- * Some bundlers will minify the fn name, etc.
- *
- * So we hardcode the function names here, and then use those names in the script string to make sure the function names are consistent.
+ * IMPORTANT: both of these stringifications happen at compile-time to guarantee that the strings
+ * are always the exact same. This is crucial to avoiding hydration mismatches.
  */
-export const AB_TEST_FN_NAME = 'builderIoAbTest';
-export const CONTENT_FN_NAME = 'builderIoRenderContent';
-
 export const BLDR_AB_TEST_SCRIPT = bldrAbTest.toString().replace(/\s+/g, ' ');
 export const BLDR_CONTENT_SCRIPT = bldrCntntScrpt
   .toString()
