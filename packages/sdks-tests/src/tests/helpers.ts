@@ -7,7 +7,6 @@ import type {
   TestInfo,
 } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
-import { SDK_LOADED_MSG } from './context.js';
 import type { PackageName, Sdk } from './sdk.js';
 import { sdk } from './sdk.js';
 
@@ -146,48 +145,3 @@ export const checkIfIsHydrationErrorMessage = (_text: string) => {
   const filterHydrationmismatchMessages = isVueHydrationMismatch || isReactHydrationMismatch;
   return filterHydrationmismatchMessages;
 };
-
-export async function checkConsoleForHydrationErrors(context: BrowserContext) {
-  console.log('Checking console for hydration errors');
-
-  await context.addInitScript(() => {
-    console.log('Adding init script', window, window.addEventListener);
-
-    window.addEventListener('message', event => {
-      console.log('MESSAGE: ', event.data);
-
-      if (event.data.type === 'builder.sdkInfo') {
-        console.log(SDK_LOADED_MSG);
-      }
-    });
-  });
-
-  const msgs: string[] = [];
-  context.on('console', msg => {
-    console.log('CONSOLE LOG: ', msg.text());
-
-    const originalText = msg.text();
-
-    if (checkIfIsHydrationErrorMessage(originalText)) {
-      console.log('BAD CONSOLE DETECTED: ', originalText);
-      msgs.push(originalText);
-      // throw new Error(
-      //   'TEST FAILED: Hydration mismatch detected in console logs. Error: ' + originalText
-      // );
-    }
-  });
-
-  const msgPromise = context.waitForEvent('console', msg => {
-    const newLocal = msg.text();
-    console.log('CONSOLE LOG: ', newLocal);
-    if (checkIfIsHydrationErrorMessage(newLocal)) {
-      console.log('BAD CONSOLE DETECTED: ', newLocal);
-      throw new Error(
-        'TEST FAILED: Hydration mismatch detected in console logs. Error: ' + newLocal
-      );
-    }
-    return newLocal === SDK_LOADED_MSG;
-  });
-
-  return msgPromise;
-}
