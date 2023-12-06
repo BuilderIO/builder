@@ -121,7 +121,9 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
+    "@builder.io/app-context": "^1.0.0",
     "@builder.io/commerce-plugin-tools": "^0.2.1-4",
+    "@builder.io/data-plugin-tools": "^0.0.4",
     "@moltin/sdk": "^8.8.1"
   }
 }
