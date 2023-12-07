@@ -141,7 +141,7 @@ export const getBuilderSessionIdCookie = async ({ context }: { context: BrowserC
 export const checkIfIsHydrationErrorMessage = (_text: string) => {
   const text = _text.toLowerCase();
   const isVueHydrationMismatch =
-    text.includes('[vue warn]') || text.includes('hydration') || text.includes('mismatch');
+    text.includes('[vue warn]') && (text.includes('hydration') || text.includes('mismatch'));
   const isReactHydrationMismatch =
     text.includes('did not expect server') ||
     text.includes('content does not match') ||
