@@ -6,7 +6,7 @@ import { checkIfIsHydrationErrorMessage, findTextInPage, test } from './helpers.
  * This is why, for all these tests, we click on a link,
  * and only then are we able to look at the console logs.
  */
-test.describe.only('Hydration', () => {
+test.describe('Hydration', () => {
   test('No mismatch on regular content', async ({ page }) => {
     const msgs: string[] = [];
     page.on('console', msg => {
