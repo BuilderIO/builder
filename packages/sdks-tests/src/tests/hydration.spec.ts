@@ -35,7 +35,7 @@ test.describe('Hydration', () => {
       if (checkIfIsHydrationErrorMessage(originalText)) msgs.push(originalText);
     });
 
-    await page.goto('/');
+    await page.goto('/ab-test-interactive');
     await page.locator('a').first().click();
     await findTextInPage({ page, text: 'Stack at tablet' });
 
