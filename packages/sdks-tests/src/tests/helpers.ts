@@ -42,10 +42,26 @@ export const test = base.extend<TestOptions>({
 test.afterEach(screenshotOnFailure);
 test.beforeEach(({ page, context }) => {
   context.on('weberror', err => {
-    throw err;
+    console.error(err);
+    throw new Error('Failing test due to error in browser: ' + err);
   });
   page.on('pageerror', err => {
-    throw err;
+    console.error(err);
+    throw new Error('Failing test due to error in browser: ' + err);
+  });
+
+  context.on('console', msg => {
+    const originalText = msg.text();
+    if (checkIfIsHydrationErrorMessage(originalText)) {
+      throw new Error('Hydration error detected: ' + originalText);
+    }
+  });
+
+  page.on('console', msg => {
+    const originalText = msg.text();
+    if (checkIfIsHydrationErrorMessage(originalText)) {
+      throw new Error('Hydration error detected: ' + originalText);
+    }
   });
 });
 
