@@ -72,7 +72,7 @@ const buildInlineFns = async () => {
             if (!fnNode)
               throw new Error('No function node found for ' + nameOfFn);
 
-            const generated = generate.default(fnNode.path).code;
+            const generated = generate.default(fnNode.node).code;
             const stringifiedNode = babel.transformSync(generated, {
               filename: 'generated.js',
               configFile: false,
