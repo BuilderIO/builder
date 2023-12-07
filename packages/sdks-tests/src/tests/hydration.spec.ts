@@ -13,6 +13,10 @@ test.describe('Hydration', () => {
       const originalText = msg.text();
       if (checkIfIsHydrationErrorMessage(originalText)) msgs.push(originalText);
     });
+    page.on('pageerror', webError => {
+      const originalText = webError.message;
+      if (checkIfIsHydrationErrorMessage(originalText)) msgs.push(originalText);
+    });
 
     await page.goto('/');
 
@@ -32,6 +36,10 @@ test.describe('Hydration', () => {
     const msgs: string[] = [];
     page.on('console', msg => {
       const originalText = msg.text();
+      if (checkIfIsHydrationErrorMessage(originalText)) msgs.push(originalText);
+    });
+    page.on('pageerror', webError => {
+      const originalText = webError.message;
       if (checkIfIsHydrationErrorMessage(originalText)) msgs.push(originalText);
     });
 
