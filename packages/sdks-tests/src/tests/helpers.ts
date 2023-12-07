@@ -42,8 +42,8 @@ export const test = base.extend<TestOptions>({
 test.afterEach(screenshotOnFailure);
 test.beforeEach(({ page, context }) => {
   context.on('weberror', err => {
-    console.error(err);
-    throw new Error('Failing test due to error in browser: ' + err);
+    console.error(err.error());
+    throw new Error('Failing test due to error in browser: ' + err.error());
   });
   page.on('pageerror', err => {
     console.error(err);
