@@ -30,11 +30,6 @@ export default defineConfig({
           if (moduleInfo.importers.some((x) => x.includes('server-index.ts'))) {
             return SERVER_ENTRY;
           }
-          // We move `inlined-fns` to its own file so that Rollup generates the exact same file for all bundles.
-          // This is needed to fix hydration mismatches.
-          else if (id.includes('inlined-fns')) {
-            return 'inlined-fns';
-          }
         },
         banner(chunk) {
           if (chunk.name !== SERVER_ENTRY) {

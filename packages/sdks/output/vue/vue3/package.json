@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "build": "nx run-many -p @builder.io/sdk-vue-3 -t build:node build:edge build:browser",
     "vite-build": "vite build --mode lib",
     "build:node": "SDK_ENV=node yarn vite-build",
@@ -40,6 +41,7 @@
     "targets": {
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:vue3",
           "^build"
         ],

@@ -166,6 +166,7 @@
   },
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "add-debug": "bash ./scripts/add-debug.sh",
     "remove-debug": "bash ./scripts/remove-debug.sh",
     "build": "nx run-many -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3"

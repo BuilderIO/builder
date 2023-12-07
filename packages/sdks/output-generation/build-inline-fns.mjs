@@ -7,10 +7,6 @@ import fs from 'fs';
 import glob from 'glob';
 
 /**
- * - run after mitosis build, before sdk builds
- * - make sdk build depend on this
- * = this depends on mitosis build
- *
  * - add watch cmd that combines sdkbuild and this
  */
 
@@ -22,10 +18,14 @@ import glob from 'glob';
 const buildInlineFns = async () => {
   console.log('Building inline functions...');
 
-  const inlineFnsFile = glob.glob('src/**/*/inlined-fns.*', { sync: true })[0];
+  const inlineFnsFile = glob.glob('**/src/**/*/inlined-fns.*', {
+    sync: true,
+  })[0];
 
   if (!inlineFnsFile) {
-    throw new Error('No inline functions file found.');
+    throw new Error(
+      'No inline functions file found. Expected a file named `inlined-fns.ts` containing stringified function exports.'
+    );
   }
 
   /**
@@ -69,7 +69,8 @@ const buildInlineFns = async () => {
               },
             });
 
-            if (!fnNode) throw new Error('No function node found.');
+            if (!fnNode)
+              throw new Error('No function node found for ' + nameOfFn);
 
             const generated = generate.default(fnNode.path).code;
             const stringifiedNode = babel.transformSync(generated, {
@@ -97,7 +98,7 @@ const buildInlineFns = async () => {
     ],
   });
 
-  fs.writeFileSync('src/inlined-fns.ts', newFile.code);
+  fs.writeFileSync(inlineFnsFile, newFile.code);
 };
 
 buildInlineFns();

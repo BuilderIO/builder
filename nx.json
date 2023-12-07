@@ -19,6 +19,9 @@
     "serve": {
       "dependsOn": ["build"]
     },
+    "build-inline-fns": {
+      "dependsOn": ["^build"]
+    },
     "build": {
       "dependsOn": ["^build", "prebuild"],
       "outputs": ["{projectRoot}/dist"],
