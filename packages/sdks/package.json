@@ -4,7 +4,7 @@
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "g:build-inline-fns": "node ./output-generation/build-inline-fns.mjs",
+    "g:build-inline-fns": "echo 'skip'",
     "build-mitosis": "../../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:react": "yarn build-mitosis --target=react && yarn run set-sdk-version react",
     "build:qwik": "yarn build-mitosis --target=qwik && yarn run set-sdk-version qwik",
