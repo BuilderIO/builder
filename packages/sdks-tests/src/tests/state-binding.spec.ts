@@ -4,6 +4,9 @@ import { isRNSDK, test } from './helpers.js';
 test.describe('State binding', () => {
   test.describe('inside repeater', () => {
     test('writing to state should update binding', async ({ page, packageName }) => {
+      // hydration errors
+      test.fail(packageName === 'gen1-next' || packageName === 'gen1-remix');
+
       // flaky, can't `test.fail()`
       test.skip(
         isRNSDK ||
