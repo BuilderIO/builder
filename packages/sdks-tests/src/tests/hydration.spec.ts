@@ -44,7 +44,7 @@ test.describe('Hydration', () => {
     });
 
     await page.goto('/ab-test-interactive');
-    await page.locator('a').first().click();
+    await page.locator('a').locator('visible=true').first().click();
     await findTextInPage({ page, text: 'Stack at tablet' });
 
     await expect(msgs).toHaveLength(0);
