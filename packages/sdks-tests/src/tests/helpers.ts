@@ -40,6 +40,14 @@ export const test = base.extend<TestOptions>({
   basePort: [0, { option: true }],
 });
 test.afterEach(screenshotOnFailure);
+test.beforeEach(({ page, context }) => {
+  context.on('weberror', err => {
+    throw err;
+  });
+  page.on('pageerror', err => {
+    throw err;
+  });
+});
 
 export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
   // Easier to list non-ssr than other way around.
