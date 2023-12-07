@@ -22,7 +22,7 @@ test.describe('Hydration', () => {
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 
-  test.only('No mismatch on A/B test content', async ({ page }) => {
+  test('No mismatch on A/B test content', async ({ page }) => {
     await page.goto('/ab-test-interactive');
     await page.locator('a').locator('visible=true').first().click();
     await findTextInPage({ page, text: 'Stack at tablet' });
