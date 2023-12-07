@@ -34,36 +34,40 @@ async function screenshotOnFailure(
   }
 }
 
-export const test = base.extend<TestOptions>({
+const test = base.extend<TestOptions>({
   // this is provided by `playwright.config.ts`
   packageName: ['DEFAULT', { option: true }],
   basePort: [0, { option: true }],
+  page: async ({ context, page }, use) => {
+    context.on('weberror', err => {
+      console.error(err.error());
+      throw new Error('Failing test due to error in browser: ' + err.error());
+    });
+    page.on('pageerror', err => {
+      console.error(err);
+      throw new Error('Failing test due to error in browser: ' + err);
+    });
+
+    context.on('console', msg => {
+      const originalText = msg.text();
+      if (checkIfIsHydrationErrorMessage(originalText)) {
+        throw new Error('Hydration error detected: ' + originalText);
+      }
+    });
+
+    page.on('console', msg => {
+      const originalText = msg.text();
+      if (checkIfIsHydrationErrorMessage(originalText)) {
+        throw new Error('Hydration error detected: ' + originalText);
+      }
+    });
+
+    await use(page);
+  },
 });
 test.afterEach(screenshotOnFailure);
-test.beforeEach(({ page, context }) => {
-  context.on('weberror', err => {
-    console.error(err.error());
-    throw new Error('Failing test due to error in browser: ' + err.error());
-  });
-  page.on('pageerror', err => {
-    console.error(err);
-    throw new Error('Failing test due to error in browser: ' + err);
-  });
 
-  context.on('console', msg => {
-    const originalText = msg.text();
-    if (checkIfIsHydrationErrorMessage(originalText)) {
-      throw new Error('Hydration error detected: ' + originalText);
-    }
-  });
-
-  page.on('console', msg => {
-    const originalText = msg.text();
-    if (checkIfIsHydrationErrorMessage(originalText)) {
-      throw new Error('Hydration error detected: ' + originalText);
-    }
-  });
-});
+export { test };
 
 export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
   // Easier to list non-ssr than other way around.
