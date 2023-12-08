@@ -28,7 +28,10 @@ function ContentVariants(props: VariantsProviderProps) {
     content: props.content,
   });
 
-  console.log('ContentVariants:', { shouldRenderVariants });
+  console.log('ContentVariants:', {
+    shouldRenderVariants,
+    window: typeof window !== 'undefined' ? window : null,
+  });
 
   function variantScriptStr() {
     return getVariantsScriptString(
@@ -57,6 +60,17 @@ function ContentVariants(props: VariantsProviderProps) {
           canTrack: getDefaultCanTrack(props.canTrack),
         });
   }
+
+  /**
+   * logs this entire component's HTML
+   */
+  const printNode = `
+    if (typeof window !== 'undefined') {
+      let k = (document.currentScript?.parentElement.outerHTML);
+
+      console.log(k)
+    }
+  `;
 
   useEffect(() => {
     /**
@@ -118,6 +132,8 @@ function ContentVariants(props: VariantsProviderProps) {
         enrich={props.enrich}
         isSsrAbTest={shouldRenderVariants}
       />
+
+      <InlinedScript scriptStr={printNode} />
     </>
   );
 }
