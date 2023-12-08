@@ -160,7 +160,7 @@ function updateVariantVisibility(
      *  - hide the default variant if it's not the winning variant.
      *  - show non-default variant if it is the winning variant.
      */
-     else if (!isWinningVariant && isDefaultContent) {
+    if (!isWinningVariant && isDefaultContent) {
       parentDiv?.setAttribute('hidden', 'true');
       parentDiv?.setAttribute('aria-hidden', 'true');
     }
