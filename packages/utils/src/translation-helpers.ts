@@ -137,12 +137,15 @@ export function applyTranslation(
             // this tells the editor that this is a forced localized input similar to clicking the globe icon
             'transformed.text': 'localized',
           },
-          options: {
-            ...el.component.options,
-            text: {
-              '@type': localizedType,
-              ...localizedValues,
-              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#text`].value),
+          component: {
+            ...el.component,
+            options: {
+              ...el.component.options,
+              text: {
+                '@type': localizedType,
+                ...localizedValues,
+                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#text`].value),
+              },
             },
           },
         });

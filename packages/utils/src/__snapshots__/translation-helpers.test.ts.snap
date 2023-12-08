@@ -9,20 +9,18 @@ Object {
         "component": Object {
           "name": "Text",
           "options": Object {
-            "text": "test",
+            "text": Object {
+              "@type": "@builder.io/core:LocalizedValue",
+              "Default": "test",
+              "de": "german translatated",
+              "fr-FR": "fench translated text",
+            },
           },
         },
         "id": "block-id",
         "meta": Object {
           "transformed.text": "localized",
           "translated": true,
-        },
-        "options": Object {
-          "text": Object {
-            "@type": "@builder.io/core:LocalizedValue",
-            "Default": "test",
-            "de": "german translatated",
-          },
         },
       },
       Object {
