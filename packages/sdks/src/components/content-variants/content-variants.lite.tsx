@@ -14,10 +14,10 @@ import InlinedScript from '../inlined-script.lite.jsx';
 import InlinedStyles from '../inlined-styles.lite.jsx';
 import type { ContentVariantsPrps } from './content-variants.types.js';
 import {
-  checkShouldRunVariants,
+  checkShouldRenderVariants,
   getScriptString,
+  getUpdateCookieAndStylesScript,
   getVariants,
-  getVariantsScriptString,
 } from './helpers.js';
 
 useMetadata({
@@ -55,12 +55,12 @@ export default function ContentVariants(props: VariantsProviderProps) {
   });
 
   const state = useStore({
-    shouldRenderVariants: checkShouldRunVariants({
+    shouldRenderVariants: checkShouldRenderVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     }),
-    get variantScriptStr() {
-      return getVariantsScriptString(
+    get updateCookieAndStylesScriptStr() {
+      return getUpdateCookieAndStylesScript(
         getVariants(props.content).map((value) => ({
           id: value.testVariationId!,
           testRatio: value.testRatio,
@@ -95,7 +95,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
           styles={state.hideVariantsStyleString}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
-        <InlinedScript scriptStr={state.variantScriptStr} />
+        <InlinedScript scriptStr={state.updateCookieAndStylesScriptStr} />
 
         <For each={getVariants(props.content)}>
           {(variant) => (

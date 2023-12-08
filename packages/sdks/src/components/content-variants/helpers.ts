@@ -3,7 +3,10 @@ import { isBrowser } from '../../functions/is-browser.js';
 import type { Nullable } from '../../helpers/nullable.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Target } from '../../types/targets.js';
-import { BLDR_AB_TEST_SCRIPT, BLDR_CONTENT_SCRIPT } from './inlined-fns.js';
+import {
+  UPDATE_COOKIES_AND_STYLES_SCRIPT,
+  UPDATE_VARIANT_VISIBILITY_SCRIPT,
+} from './inlined-fns.js';
 
 /**
  * We hardcode explicit function names here, because the `.toString()` of a function can change depending on the bundler.
@@ -11,8 +14,8 @@ import { BLDR_AB_TEST_SCRIPT, BLDR_CONTENT_SCRIPT } from './inlined-fns.js';
  *
  * So we hardcode the function names here, and then use those names in the script string to make sure the function names are consistent.
  */
-const AB_TEST_FN_NAME = 'builderIoAbTest';
-const CONTENT_FN_NAME = 'builderIoRenderContent';
+const UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME = 'builderIoAbTest';
+const UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME = 'builderIoRenderContent';
 
 export const getVariants = (content: Nullable<BuilderContent>) =>
   Object.values(content?.variations || {}).map((variant) => ({
@@ -21,7 +24,7 @@ export const getVariants = (content: Nullable<BuilderContent>) =>
     id: content?.id,
   }));
 
-export const checkShouldRunVariants = ({
+export const checkShouldRenderVariants = ({
   canTrack,
   content,
 }: {
@@ -63,25 +66,25 @@ const getIsHydrationTarget = (target: Target) =>
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
 export const getScriptString = () => `
-  window.${AB_TEST_FN_NAME} = ${BLDR_AB_TEST_SCRIPT}
-  window.${CONTENT_FN_NAME} = ${BLDR_CONTENT_SCRIPT}
+  window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
+  window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
   `;
 
-export const getVariantsScriptString = (
+export const getUpdateCookieAndStylesScript = (
   variants: VariantData[],
   contentId: string
 ) => `
-  window.${AB_TEST_FN_NAME}(
+  window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME}(
     "${contentId}",${JSON.stringify(variants)}, ${isHydrationTarget}
   )`;
 
-export const getRenderContentScriptString = ({
+export const getUpdateVariantVisibilityScript = ({
   contentId,
   variationId,
 }: {
   variationId: string;
   contentId: string;
 }) =>
-  `window.${CONTENT_FN_NAME}(
+  `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(
     "${variationId}", "${contentId}", ${isHydrationTarget}
   )`;

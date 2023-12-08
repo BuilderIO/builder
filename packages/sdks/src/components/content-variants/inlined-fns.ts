@@ -8,10 +8,10 @@ type VariantData = {
 };
 
 /**
- * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
- * Make sure to write multi-line comments only.
+ * For more information on how this works,
+ * see our [SSR A/B Test Docs](https://github.com/BuilderIO/builder/tree/main/packages/sdks/src/SSR_AB_TEST.md)
  */
-function bldrAbTest(
+function updateCookiesAndStyles(
   contentId: string,
   variants: VariantData[],
   isHydrationTarget: boolean
@@ -104,10 +104,10 @@ function bldrAbTest(
 }
 
 /**
- * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
- * Make sure to write multi-line comments only.
+ * For more information on how this works,
+ * see our [SSR A/B Test Docs](https://github.com/BuilderIO/builder/tree/main/packages/sdks/src/SSR_AB_TEST.md)
  */
-function bldrCntntScrpt(
+function updateVariantVisibility(
   variantContentId: string,
   defaultContentId: string,
   isHydrationTarget: boolean
@@ -127,41 +127,38 @@ function bldrCntntScrpt(
     return null;
   }
   const cookieName = `builder.tests.${defaultContentId}`;
-  const variantId = getCookie(cookieName);
+  const winningVariant = getCookie(cookieName);
 
   const parentDiv = document.currentScript?.parentElement;
 
-  const variantIsDefaultContent = variantContentId === defaultContentId;
+  const isDefaultContent = variantContentId === defaultContentId;
+  const isWinningVariant = winningVariant === variantContentId;
 
-  if (variantId === variantContentId) {
-    if (variantIsDefaultContent) {
-      /** the default content is already visible, no need to do anything */
-      return;
+  /**
+   * For Hydration frameworks, we need to remove the node if it's not the winning variant.
+   */
+  if (isHydrationTarget) {
+    if (!isWinningVariant) {
+      parentDiv?.remove();
     }
 
-    /** this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr */
-
-    parentDiv?.removeAttribute('hidden');
-    parentDiv?.removeAttribute('aria-hidden');
-  } else {
-    if (variantIsDefaultContent) {
-      if (isHydrationTarget) {
-        /**
-         * For React to work, we need to support hydration, in which case the first CSR will have none of the hidden variants.
-         * So we completely remove that node.
-         */
-        parentDiv?.remove();
-      } else {
-        /** this is not the winning variant, add `hidden` attr */
-        parentDiv?.setAttribute('hidden', 'true');
-        parentDiv?.setAttribute('aria-hidden', 'true');
-      }
-    }
-
-    /** This is not the winning variant, and it's not the default content.
-     * There's no need to hide it, because it's already hidden.
-     */
+    const thisScriptEl = document.currentScript;
+    thisScriptEl?.remove();
     return;
+  } else if (!isHydrationTarget) {
+    /**
+     * For non-hydration frameworks, we need to
+     *  - hide the default variant if it's not the winning variant.
+     *  - show non-default variant if it is the winning variant.
+     */
+    if (isWinningVariant && !isDefaultContent) {
+      /** this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr */
+      parentDiv?.removeAttribute('hidden');
+      parentDiv?.removeAttribute('aria-hidden');
+    } else if (!isWinningVariant && isDefaultContent) {
+      parentDiv?.setAttribute('hidden', 'true');
+      parentDiv?.setAttribute('aria-hidden', 'true');
+    }
   }
 
   return;
@@ -171,7 +168,9 @@ function bldrCntntScrpt(
  * IMPORTANT: both of these stringifications happen at compile-time to guarantee that the strings
  * are always the exact same. This is crucial to avoiding hydration mismatches.
  */
-export const BLDR_AB_TEST_SCRIPT = bldrAbTest.toString().replace(/\s+/g, ' ');
-export const BLDR_CONTENT_SCRIPT = bldrCntntScrpt
+export const UPDATE_COOKIES_AND_STYLES_SCRIPT = updateCookiesAndStyles
+  .toString()
+  .replace(/\s+/g, ' ');
+export const UPDATE_VARIANT_VISIBILITY_SCRIPT = updateVariantVisibility
   .toString()
   .replace(/\s+/g, ' ');
