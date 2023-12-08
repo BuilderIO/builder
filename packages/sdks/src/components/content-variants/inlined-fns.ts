@@ -1,5 +1,6 @@
 /**
- * WARNING: This file contains functions that get stringified and inlined into the HTML. They cannot import anything.
+ * WARNING: This file contains functions that get stringified and inlined into the HTML at build-time.
+ * They cannot import anything.
  */
 
 type VariantData = {
@@ -135,44 +136,39 @@ function updateVariantVisibility(
   const isWinningVariant = winningVariant === variantContentId;
 
   /**
-   * For all frameworks, we need to make the winning (non-default) variant visible.
+   * For all frameworks, we need to:
+   *  - make the winning (non-default) variant visible.
+   *  - hide the non-winning variants.
+   *
+   * Technically, the second step is redundant in hydration frameworks, as we delete the entire content at the end of
+   * this script. However, this vastly simplifies the logic.
    */
   if (isWinningVariant && !isDefaultContent) {
     parentDiv?.removeAttribute('hidden');
     parentDiv?.removeAttribute('aria-hidden');
     return;
+  } else if (!isWinningVariant && isDefaultContent) {
+    parentDiv?.setAttribute('hidden', 'true');
+    parentDiv?.setAttribute('aria-hidden', 'true');
   }
 
-  /**
-   * For Hydration frameworks, we need to remove the node if it's not the winning variant.
-   */
   if (isHydrationTarget) {
+    /**
+     * For Hydration frameworks, we need to remove the node if it's not the winning variant.
+     */
     if (!isWinningVariant) {
       parentDiv?.remove();
     }
 
+    /**
+     * For Hydration frameworks, we need to remove this script tag as it doesn't render in CSR.
+     */
     const thisScriptEl = document.currentScript;
     thisScriptEl?.remove();
-    return;
-  } else if (!isHydrationTarget) {
-    /**
-     * For non-hydration frameworks, we need to
-     *  - hide the default variant if it's not the winning variant.
-     *  - show non-default variant if it is the winning variant.
-     */
-    if (!isWinningVariant && isDefaultContent) {
-      parentDiv?.setAttribute('hidden', 'true');
-      parentDiv?.setAttribute('aria-hidden', 'true');
-    }
   }
-
   return;
 }
 
-/**
- * IMPORTANT: both of these stringifications happen at compile-time to guarantee that the strings
- * are always the exact same. This is crucial to avoiding hydration mismatches.
- */
 export const UPDATE_COOKIES_AND_STYLES_SCRIPT = updateCookiesAndStyles
   .toString()
   .replace(/\s+/g, ' ');
