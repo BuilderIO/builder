@@ -1,10 +1,10 @@
+import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
 import { getAllPathnames, getProps } from '@e2e/tests';
 import type {
   GetStaticPathsResult,
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from 'next';
-import { RenderContent, _processContentResult } from '../src/sdk-src';
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
   return {
