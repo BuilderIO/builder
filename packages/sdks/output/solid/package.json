@@ -103,6 +103,11 @@
   ],
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:solid"
+        ]
+      },
       "build": {
         "dependsOn": [
           "build-inline-fns",

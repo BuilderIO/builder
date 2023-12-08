@@ -6,7 +6,18 @@
       "options": {
         "accessToken": "MWRjZDNhMmQtMTlhMi00YWExLTkzZDAtMTA1NzM1ZmIxMmRkfHJlYWQ=",
         "cacheDirectory": ".nx-cache",
-        "cacheableOperations": ["build"]
+        "cacheableOperations": [
+          "build",
+          "build-inline-fns",
+          "build:react",
+          "build:qwik",
+          "build:svelte",
+          "build:solid",
+          "build:react-native",
+          "build:vue2",
+          "build:vue3",
+          "build:nextjs"
+        ]
       }
     }
   },
@@ -20,7 +31,8 @@
       "dependsOn": ["build"]
     },
     "build-inline-fns": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/src"]
     },
     "build": {
       "dependsOn": ["^build", "prebuild"],

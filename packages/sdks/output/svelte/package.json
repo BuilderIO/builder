@@ -67,11 +67,17 @@
     "targets": {
       "prepare": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:svelte",
           "^build"
         ],
         "outputs": [
           "{projectRoot}/.svelte-kit"
+        ]
+      },
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:svelte"
         ]
       },
       "build": {

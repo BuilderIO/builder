@@ -120,6 +120,11 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:react"
+        ]
+      },
       "build": {
         "dependsOn": [
           "build-inline-fns",

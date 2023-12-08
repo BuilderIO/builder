@@ -116,6 +116,11 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:qwik"
+        ]
+      },
       "build": {
         "dependsOn": [
           "build-inline-fns",

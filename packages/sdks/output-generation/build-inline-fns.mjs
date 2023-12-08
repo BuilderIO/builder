@@ -18,15 +18,33 @@ import glob from 'glob';
 const buildInlineFns = async () => {
   console.log('Building inline functions...');
 
-  const inlineFnsFile = glob.glob('**/src/**/*/inlined-fns.*', {
-    sync: true,
-  })[0];
+  const init_cwd = process.env.INIT_CWD;
 
-  if (!inlineFnsFile) {
+  if (!init_cwd || !init_cwd.includes('/packages/sdks/output/')) {
+    throw new Error(
+      `build-inline-fns script must run from one of the SDKs root. Instead it was called from: "${init_cwd}".`
+    );
+  }
+
+  const foundFiles = glob.glob(init_cwd + '/**/src/**/*/inlined-fns.*', {
+    sync: true,
+  });
+
+  if (foundFiles.length > 1) {
+    throw new Error(
+      'Multiple inline functions files found. Expected only one file named `inlined-fns.ts` containing stringified function exports.'
+    );
+  }
+
+  const inlineFnsFile = foundFiles[0];
+
+  if (!inlineFnsFile || !fs.existsSync(inlineFnsFile)) {
     throw new Error(
       'No inline functions file found. Expected a file named `inlined-fns.ts` containing stringified function exports.'
     );
   }
+
+  console.log(`Found inline functions file at: "${inlineFnsFile}".`);
 
   /**
    *
@@ -98,7 +116,11 @@ const buildInlineFns = async () => {
     ],
   });
 
+  console.log('Writing inline functions to file...');
+
   fs.writeFileSync(inlineFnsFile, newFile.code);
+
+  console.log('Done building inline functions.');
 };
 
 buildInlineFns();

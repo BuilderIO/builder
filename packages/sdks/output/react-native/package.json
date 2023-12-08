@@ -131,6 +131,11 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:react-native"
+        ]
+      },
       "build": {
         "dependsOn": [
           "build-inline-fns",

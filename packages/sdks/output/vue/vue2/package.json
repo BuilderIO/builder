@@ -40,6 +40,11 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:vue2"
+        ]
+      },
       "build": {
         "dependsOn": [
           "build-inline-fns",
