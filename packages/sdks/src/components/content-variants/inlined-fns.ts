@@ -135,6 +135,15 @@ function updateVariantVisibility(
   const isWinningVariant = winningVariant === variantContentId;
 
   /**
+   * For all frameworks, we need to make the winning (non-default) variant visible.
+   */
+  if (isWinningVariant && !isDefaultContent) {
+    parentDiv?.removeAttribute('hidden');
+    parentDiv?.removeAttribute('aria-hidden');
+    return;
+  }
+
+  /**
    * For Hydration frameworks, we need to remove the node if it's not the winning variant.
    */
   if (isHydrationTarget) {
@@ -151,11 +160,7 @@ function updateVariantVisibility(
      *  - hide the default variant if it's not the winning variant.
      *  - show non-default variant if it is the winning variant.
      */
-    if (isWinningVariant && !isDefaultContent) {
-      /** this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr */
-      parentDiv?.removeAttribute('hidden');
-      parentDiv?.removeAttribute('aria-hidden');
-    } else if (!isWinningVariant && isDefaultContent) {
+     else if (!isWinningVariant && isDefaultContent) {
       parentDiv?.setAttribute('hidden', 'true');
       parentDiv?.setAttribute('aria-hidden', 'true');
     }
