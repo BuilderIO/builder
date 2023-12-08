@@ -3407,11 +3407,11 @@ __metadata:
     "@builder.io/sdk-svelte": "workspace:*"
     "@e2e/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
-    "@sveltejs/kit": ^1.16.2
+    "@sveltejs/kit": ^1.27.7
     nx: ^16.6.0
     nx-cloud: ^16.2.0
-    svelte: ^3.59.1
-    svelte-check: ^3.4.6
+    svelte: ^4.2.8
+    svelte-check: ^3.6.2
     tslib: ^2.4.1
     typescript: ^5.1.6
     vite: ^4.0.0
@@ -8398,7 +8398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^1.16.2, @sveltejs/kit@npm:^1.22.4":
+"@sveltejs/kit@npm:^1.22.4":
   version: 1.27.6
   resolution: "@sveltejs/kit@npm:1.27.6"
   dependencies:
@@ -8421,6 +8421,32 @@ __metadata:
   bin:
     svelte-kit: svelte-kit.js
   checksum: 6c2ed98f15da0fc837fc00ff7d76929ebf600c0031a6e5341cb5d6cd8a310b83a30bb0268e6a67268e833f2ecdc5accd3b8ab950a6382b679d3d660759de20b8
+  languageName: node
+  linkType: hard
+
+"@sveltejs/kit@npm:^1.27.7":
+  version: 1.27.7
+  resolution: "@sveltejs/kit@npm:1.27.7"
+  dependencies:
+    "@sveltejs/vite-plugin-svelte": ^2.5.0
+    "@types/cookie": ^0.5.1
+    cookie: ^0.5.0
+    devalue: ^4.3.1
+    esm-env: ^1.0.0
+    kleur: ^4.1.5
+    magic-string: ^0.30.0
+    mrmime: ^1.0.1
+    sade: ^1.8.1
+    set-cookie-parser: ^2.6.0
+    sirv: ^2.0.2
+    tiny-glob: ^0.2.9
+    undici: ~5.26.2
+  peerDependencies:
+    svelte: ^3.54.0 || ^4.0.0-next.0 || ^5.0.0-next.0
+    vite: ^4.0.0
+  bin:
+    svelte-kit: svelte-kit.js
+  checksum: 48016158758f93e96efa11af464baae1294f333bddf135d01eada73db2decfddf42012151235e49b2dc7b18d7df056e1b9a62319b6cf5f043d54a60c4e64e58f
   languageName: node
   linkType: hard
 
@@ -36536,7 +36562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-check@npm:^3.4.6":
+"svelte-check@npm:^3.4.6, svelte-check@npm:^3.6.2":
   version: 3.6.2
   resolution: "svelte-check@npm:3.6.2"
   dependencies:
@@ -36624,14 +36650,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^3.30.0, svelte@npm:^3.57.0, svelte@npm:^3.59.1":
+"svelte@npm:^3.30.0, svelte@npm:^3.57.0":
   version: 3.59.2
   resolution: "svelte@npm:3.59.2"
   checksum: 3e9d770292ab5a0061ff2d3a6f77b323014399de7458371ab507465f9860d04d0c8c7a50239d15c78b920cd42065953e3c4a36abb69a2285c52c825017621444
   languageName: node
   linkType: hard
 
-"svelte@npm:^4.1.2":
+"svelte@npm:^4.1.2, svelte@npm:^4.2.8":
   version: 4.2.8
   resolution: "svelte@npm:4.2.8"
   dependencies:
