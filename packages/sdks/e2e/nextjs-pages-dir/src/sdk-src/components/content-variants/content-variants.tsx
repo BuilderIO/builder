@@ -118,6 +118,12 @@ function ContentVariants(props: VariantsProviderProps) {
         enrich={props.enrich}
         isSsrAbTest={shouldRenderVariants}
       />
+
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `console.log(document.currentScript.parentElement.innerHTML)`,
+        }}
+      ></script>
     </>
   );
 }

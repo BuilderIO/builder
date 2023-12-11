@@ -1,11 +1,10 @@
 'use client';
 import * as React from 'react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components';
 import { TARGET } from '../../constants/target';
 import ComponentsContext from '../../context/components.context';
 import type {
-  BuilderContextInterface,
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types';
@@ -17,7 +16,6 @@ import type { ComponentInfo } from '../../types/components';
 import type { Dictionary } from '../../types/typescript';
 import Blocks from '../blocks/blocks';
 import { getUpdateVariantVisibilityScript } from '../content-variants/helpers';
-import InlinedScript from '../inlined-script';
 import EnableEditor from './components/enable-editor';
 import ContentStyles from './components/styles';
 import {
@@ -25,7 +23,6 @@ import {
   getContextStateInitialValue,
 } from './content.helpers';
 import type { ContentProps } from './content.types';
-import { wrapComponentRef } from './wrap-component-ref';
 
 function ContentComponent(props: ContentProps) {
   const [scriptStr, setScriptStr] = useState(() =>
@@ -58,7 +55,7 @@ function ContentComponent(props: ContentProps) {
       (acc, { component, ...info }) => ({
         ...acc,
         [info.name]: {
-          component: component,
+          component,
           ...serializeComponentInfo(info),
         },
       }),
@@ -103,7 +100,7 @@ function ContentComponent(props: ContentProps) {
   return (
     <ComponentsContext.Provider
       value={{
-        registeredComponents: registeredComponents,
+        registeredComponents,
       }}
     >
       <EnableEditor
@@ -119,14 +116,11 @@ function ContentComponent(props: ContentProps) {
         showContent={props.showContent}
         builderContextSignal={builderContextSignal}
         {...{
-          setBuilderContextSignal: setBuilderContextSignal,
+          setBuilderContextSignal,
         }}
       >
-        {props.isSsrAbTest ? (
-          <>
-            <InlinedScript scriptStr={scriptStr} />
-          </>
-        ) : null}
+        {/* <InlinedScript scriptStr={scriptStr} /> */}
+        {props.isSsrAbTest ? <></> : null}
 
         {TARGET !== 'reactNative' ? (
           <>

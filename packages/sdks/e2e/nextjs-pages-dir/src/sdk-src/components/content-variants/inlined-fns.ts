@@ -1,14 +1,4 @@
 /**
- * WARNING: This file contains functions that get stringified and inlined into the HTML at build-time.
- * They cannot import anything.
- */
-
-type VariantData = {
-  id: string;
-  testRatio?: number;
-};
-
-/**
  * For more information on how this works,
  * see our [SSR A/B Test Docs](https://github.com/BuilderIO/builder/tree/main/packages/sdks/src/SSR_AB_TEST.md)
  */
@@ -18,5 +8,102 @@ type VariantData = {
  * see our [SSR A/B Test Docs](https://github.com/BuilderIO/builder/tree/main/packages/sdks/src/SSR_AB_TEST.md)
  */
 
-export const UPDATE_COOKIES_AND_STYLES_SCRIPT = "function updateCookiesAndStyles(contentId, variants, isHydrationTarget) {\n  function getAndSetVariantId() {\n    function setCookie(name, value, days) {\n      let expires = '';\n      if (days) {\n        const date = new Date();\n        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);\n        expires = '; expires=' + date.toUTCString();\n      }\n      document.cookie = name + '=' + (value || '') + expires + '; path=/' + '; Secure; SameSite=None';\n    }\n    function getCookie(name) {\n      const nameEQ = name + '=';\n      const ca = document.cookie.split(';');\n      for (let i = 0; i < ca.length; i++) {\n        let c = ca[i];\n        while (c.charAt(0) === ' ') c = c.substring(1, c.length);\n        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);\n      }\n      return null;\n    }\n    const cookieName = `builder.tests.${contentId}`;\n    const variantInCookie = getCookie(cookieName);\n    const availableIDs = variants.map(vr => vr.id).concat(contentId);\n    if (variantInCookie && availableIDs.includes(variantInCookie)) {\n      return variantInCookie;\n    }\n    let n = 0;\n    const random = Math.random();\n    for (let i = 0; i < variants.length; i++) {\n      const variant = variants[i];\n      const testRatio = variant.testRatio;\n      n += testRatio;\n      if (random < n) {\n        setCookie(cookieName, variant.id);\n        return variant.id;\n      }\n    }\n    setCookie(cookieName, contentId);\n    return contentId;\n  }\n  const winningVariantId = getAndSetVariantId();\n  const styleEl = document.currentScript?.previousElementSibling;\n  if (isHydrationTarget) {\n    styleEl.remove();\n    const thisScriptEl = document.currentScript;\n    thisScriptEl?.remove();\n  } else {\n    const newStyleStr = variants.concat({\n      id: contentId\n    }).filter(variant => variant.id !== winningVariantId).map(value => {\n      return `.variant-${value.id} {  display: none; }\n        `;\n    }).join('');\n    styleEl.innerHTML = newStyleStr;\n  }\n}";
-export const UPDATE_VARIANT_VISIBILITY_SCRIPT = "function updateVariantVisibility(variantContentId, defaultContentId, isHydrationTarget) {\n  if (!navigator.cookieEnabled) {\n    return;\n  }\n  function getCookie(name) {\n    const nameEQ = name + '=';\n    const ca = document.cookie.split(';');\n    for (let i = 0; i < ca.length; i++) {\n      let c = ca[i];\n      while (c.charAt(0) === ' ') c = c.substring(1, c.length);\n      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);\n    }\n    return null;\n  }\n  const cookieName = `builder.tests.${defaultContentId}`;\n  const winningVariant = getCookie(cookieName);\n  const parentDiv = document.currentScript?.parentElement;\n  const isDefaultContent = variantContentId === defaultContentId;\n  const isWinningVariant = winningVariant === variantContentId;\n  if (isWinningVariant && !isDefaultContent) {\n    parentDiv?.removeAttribute('hidden');\n    parentDiv?.removeAttribute('aria-hidden');\n    return;\n  } else if (!isWinningVariant && isDefaultContent) {\n    parentDiv?.setAttribute('hidden', 'true');\n    parentDiv?.setAttribute('aria-hidden', 'true');\n  }\n  if (isHydrationTarget) {\n    if (!isWinningVariant) {\n      parentDiv?.remove();\n    }\n    const thisScriptEl = document.currentScript;\n    thisScriptEl?.remove();\n  }\n  return;\n}";
+export const UPDATE_COOKIES_AND_STYLES_SCRIPT = `function updateCookiesAndStyles(contentId, variants, isHydrationTarget) {
+    function getAndSetVariantId() {
+      function setCookie(name, value, days) {
+        let expires = '';
+      if (days) {
+          const date = new Date();
+          date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+          expires = '; expires=' + date.toUTCString();
+      }
+      document.cookie = name + '=' + (value || '') + expires + '; path=/' + '; Secure; SameSite=None';
+    }
+    function getCookie(name) {
+        const nameEQ = name + '=';
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+    const cookieName = \`builder.tests.\${contentId}\`;
+    const variantInCookie = getCookie(cookieName);
+    const availableIDs = variants.map(vr => vr.id).concat(contentId);
+    if (variantInCookie && availableIDs.includes(variantInCookie)) {
+        return variantInCookie;
+    }
+    let n = 0;
+    const random = Math.random();
+    for (let i = 0; i < variants.length; i++) {
+        const variant = variants[i];
+        const testRatio = variant.testRatio;
+        n += testRatio;
+        if (random < n) {
+          setCookie(cookieName, variant.id);
+          return variant.id;
+      }
+    }
+    setCookie(cookieName, contentId);
+    return contentId;
+  }
+  const winningVariantId = getAndSetVariantId();
+  const styleEl = document.currentScript?.previousElementSibling;
+  if (isHydrationTarget) {
+      styleEl.remove();
+      const thisScriptEl = document.currentScript;
+      thisScriptEl?.remove();
+  } else {
+      const newStyleStr = variants.concat({
+        id: contentId
+    }).filter(variant => variant.id !== winningVariantId).map(value => {
+        return \`.variant-\${value.id} {  display: none; }
+        \`;
+    }).join('');
+    styleEl.innerHTML = newStyleStr;
+  }
+}`;
+export const UPDATE_VARIANT_VISIBILITY_SCRIPT = `function updateVariantVisibility(variantContentId, defaultContentId, isHydrationTarget) {
+    if (!navigator.cookieEnabled) {
+      return;
+  }
+  function getCookie(name) {
+      const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+  const cookieName = \`builder.tests.\${defaultContentId}\`;
+  const winningVariant = getCookie(cookieName);
+  const parentDiv = document.currentScript?.parentElement;
+  const isDefaultContent = variantContentId === defaultContentId;
+  const isWinningVariant = winningVariant === variantContentId;
+  
+  if (isWinningVariant && !isDefaultContent) {
+    console.log('removing hidden attribute', variantContentId)
+      parentDiv?.removeAttribute('hidden');
+    parentDiv?.removeAttribute('aria-hidden');
+    return;
+  } else if (!isWinningVariant && isDefaultContent) {
+    console.log('setting hidden attribute', variantContentId)
+      parentDiv?.setAttribute('hidden', 'true');
+    parentDiv?.setAttribute('aria-hidden', 'true');
+  }
+  if (isHydrationTarget) {
+      if (!isWinningVariant) {
+        console.log('removing losing variant', variantContentId)
+        parentDiv?.remove();
+    }
+
+    console.log('removin script itself', variantContentId)
+    const thisScriptEl = document.currentScript;
+    // thisScriptEl?.remove();
+  }
+  return;
+}`;
