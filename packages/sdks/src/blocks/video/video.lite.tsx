@@ -100,7 +100,7 @@ export default function Video(props: VideoProps) {
           {props.children}
         </div>
       </Show>
-      <Show when={props.children && !props.fit}>
+      <Show when={props.children && !props.fitContent}>
         <div
           style={{
             pointerEvents: 'none',
