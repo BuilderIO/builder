@@ -1,5 +1,5 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block';
+import type { BuilderBlock } from '../../types/builder-block.js';
 
 useMetadata({
   rsc: {
