@@ -1,4 +1,5 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
+import type { BuilderBlock } from '../../types/builder-block';
 
 useMetadata({
   rsc: {
@@ -33,6 +34,7 @@ export interface VideoProps {
   lazyLoad?: boolean;
   children?: any;
   fitContent?: boolean;
+  builderBlock?: BuilderBlock;
 }
 
 export default function Video(props: VideoProps) {
@@ -51,7 +53,11 @@ export default function Video(props: VideoProps) {
         ...state.videoProps,
       };
     },
+    get aspectRatio() {
+      return props.aspectRatio! * 100 + '%';
+    }
   });
+
   return (
     <div style={{ position: 'relative' }}>
       <video
@@ -79,17 +85,23 @@ export default function Video(props: VideoProps) {
       >
         {!props.lazyLoad && <source type="video/mp4" src={props.video} />}
       </video>
-      <Show when={props.aspectRatio && !(props.fitContent && props.children)}>
+      {/* preserve aspect ratio trick. Only applies when there are no children meant to fit the content width. */}
+      <Show
+        when={
+          props.aspectRatio &&
+          !(props.fitContent && props.builderBlock?.children?.length)
+        }
+      >
         <div
           style={{
             width: '100%',
-            paddingTop: props.aspectRatio! * 100 + '%',
+            paddingTop: state.aspectRatio,
             pointerEvents: 'none',
             fontSize: '0px',
           }}
         />
       </Show>
-      <Show when={props.children && props.fitContent}>
+      <Show when={props.builderBlock?.children?.length && props.fitContent}>
         <div
           style={{
             display: 'flex',
@@ -100,7 +112,7 @@ export default function Video(props: VideoProps) {
           {props.children}
         </div>
       </Show>
-      <Show when={props.children && !props.fitContent}>
+      <Show when={props.builderBlock?.children?.length && !props.fitContent}>
         <div
           style={{
             pointerEvents: 'none',
