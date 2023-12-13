@@ -55,7 +55,7 @@ export default function Video(props: VideoProps) {
     },
     get aspectRatio() {
       return props.aspectRatio! * 100 + '%';
-    }
+    },
   });
 
   return (
