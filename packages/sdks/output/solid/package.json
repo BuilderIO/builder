@@ -73,6 +73,7 @@
   "typesVersions": {},
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "build": "nx run-many -p @builder.io/sdk-solid -t build:node build:edge build:browser",
     "build:one": "tsup",
     "build:node": "SDK_ENV=node yarn build:one",
@@ -102,8 +103,14 @@
   ],
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:solid"
+        ]
+      },
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:solid",
           "^build"
         ],

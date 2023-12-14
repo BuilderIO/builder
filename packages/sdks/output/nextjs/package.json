@@ -75,6 +75,7 @@
   },
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "types:cjs": "yarn tsc --p ./tsconfig.cjs.json",
     "types:esm": "yarn tsc --p ./tsconfig.esm.json",
     "build": "nx run-many -p @builder.io/sdk-react-nextjs -t types:cjs types:esm build:node build:edge build:browser",
@@ -105,8 +106,14 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:nextjs"
+        ]
+      },
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:nextjs",
           "^build"
         ],

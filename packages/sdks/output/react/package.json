@@ -95,6 +95,7 @@
   },
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "types": "tsc",
     "build": "nx run-many -p @builder.io/sdk-react -t types build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",
@@ -119,8 +120,14 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:react"
+        ]
+      },
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:react",
           "^build"
         ],

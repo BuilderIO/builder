@@ -38,6 +38,7 @@
   "types": "./lib/browser/index.d.ts",
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "prepare": "SDK_ENV=browser svelte-kit sync",
     "build": "nx run-many -p @builder.io/sdk-svelte -t build:node build:edge build:browser --parallel=false",
     "build:node": "SDK_ENV=node svelte-package -i src/ -o lib/node",
@@ -66,6 +67,7 @@
     "targets": {
       "prepare": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:svelte",
           "^build"
         ],
@@ -73,8 +75,14 @@
           "{projectRoot}/.svelte-kit"
         ]
       },
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:svelte"
+        ]
+      },
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:svelte",
           "^build",
           "prepare"

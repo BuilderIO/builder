@@ -14,10 +14,10 @@ import InlinedScript from '../inlined-script.lite.jsx';
 import InlinedStyles from '../inlined-styles.lite.jsx';
 import type { ContentVariantsPrps } from './content-variants.types.js';
 import {
-  checkShouldRunVariants,
+  checkShouldRenderVariants,
   getScriptString,
+  getUpdateCookieAndStylesScript,
   getVariants,
-  getVariantsScriptString,
 } from './helpers.js';
 
 useMetadata({
@@ -51,16 +51,19 @@ export default function ContentVariants(props: VariantsProviderProps) {
       solid: () => {
         state.shouldRenderVariants = false;
       },
+      svelte: () => {
+        state.shouldRenderVariants = false;
+      },
     });
   });
 
   const state = useStore({
-    shouldRenderVariants: checkShouldRunVariants({
+    shouldRenderVariants: checkShouldRenderVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     }),
-    get variantScriptStr() {
-      return getVariantsScriptString(
+    get updateCookieAndStylesScriptStr() {
+      return getUpdateCookieAndStylesScript(
         getVariants(props.content).map((value) => ({
           id: value.testVariationId!,
           testRatio: value.testRatio,
@@ -95,7 +98,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
           styles={state.hideVariantsStyleString}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
-        <InlinedScript scriptStr={state.variantScriptStr} />
+        <InlinedScript scriptStr={state.updateCookieAndStylesScriptStr} />
 
         <For each={getVariants(props.content)}>
           {(variant) => (
@@ -103,7 +106,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
               key={variant.testVariationId}
               content={variant}
               showContent={false}
-              classNameProp={undefined}
               model={props.model}
               data={props.data}
               context={props.context}
@@ -130,7 +132,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
           default: {},
         })}
         content={state.defaultContent}
-        classNameProp={`variant-${props.content?.id}`}
         showContent
         model={props.model}
         data={props.data}

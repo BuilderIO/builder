@@ -91,6 +91,7 @@
   ],
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "build:one": "bob build",
     "/**/": "the command below cannot be run in parallel because build:browser MUST run first.",
     "build": "nx run-many -p @builder.io/sdk-react-native -t build:browser build:node build:edge --parallel=false",
@@ -130,8 +131,14 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:react-native"
+        ]
+      },
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:react-native",
           "^build"
         ],

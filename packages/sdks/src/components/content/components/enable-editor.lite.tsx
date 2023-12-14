@@ -443,7 +443,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
         onClick={(event) => state.onClick(event)}
         builder-content-id={props.builderContextSignal.value.content?.id}
         builder-model={props.model}
-        className={props.classNameProp}
+        className={`variant-${
+          props.content?.testVariationId || props.content?.id
+        }`}
         {...useTarget({
           reactNative: {
             // currently, we can't set the actual ID here.

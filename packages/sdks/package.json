@@ -4,6 +4,7 @@
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
+    "g:build-inline-fns": "node ./output-generation/build-inline-fns.mjs",
     "build-mitosis": "../../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:react": "yarn build-mitosis --target=react && yarn run set-sdk-version react",
     "build:qwik": "yarn build-mitosis --target=qwik && yarn run set-sdk-version qwik",
@@ -70,8 +71,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.136",
-    "@builder.io/mitosis-cli": "^0.0.95",
+    "@builder.io/mitosis": "^0.0.137",
+    "@builder.io/mitosis-cli": "^0.0.96",
     "isolated-vm": "^4.6.0",
     "node-fetch": "^2.6.1",
     "nx": "^16.6.0",

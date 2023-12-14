@@ -90,6 +90,7 @@
   },
   "scripts": {
     "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "typecheck": "tsc --noEmit",
     "tsc": "tsc",
     "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
@@ -115,8 +116,14 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:qwik"
+        ]
+      },
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:qwik",
           "^build"
         ],

@@ -1932,12 +1932,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.95":
-  version: 0.0.95
-  resolution: "@builder.io/mitosis-cli@npm:0.0.95"
+"@builder.io/mitosis-cli@npm:^0.0.96":
+  version: 0.0.96
+  resolution: "@builder.io/mitosis-cli@npm:0.0.96"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.0.136
+    "@builder.io/mitosis": 0.0.137
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1960,13 +1960,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 2e836f07efe97fe747e1bd9c8fdc274840b4a93547da2888fee8762d4ab1c7193544409e9dc15e6504abc63fa8522b5016cb5216423b580a687746155b1d65cf
+  checksum: 49bab2652c9e91181a4d565df73714f0e464b35da6c0481d5f66fb38f8c974d2d4f3130c04ab7e6d07d941f1039fa19f8eab7ae1169f3e3fe99bb473935c7e9b
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.136, @builder.io/mitosis@npm:^0.0.136":
-  version: 0.0.136
-  resolution: "@builder.io/mitosis@npm:0.0.136"
+"@builder.io/mitosis@npm:0.0.137, @builder.io/mitosis@npm:^0.0.137":
+  version: 0.0.137
+  resolution: "@builder.io/mitosis@npm:0.0.137"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1993,7 +1993,7 @@ __metadata:
     ts-morph: ^19.0.0
     typescript: ^5.3.2
     vue: ~2.6
-  checksum: 2205bf1be4b63ac338d4f95c104966d606e28b5aad8735112de37469ae2b12a83185c81e1a2c4cc06981bfb65c7756f531a3f6f273545d6535721d425166f449
+  checksum: dcaac626b94928e9b10cebe139e3d3cd678f559e4f7acc67fa845f7a5ae5708b3f36200be3a2a7e1449ff6a4893cca849b03ead719baadb7516508f706fcedd6
   languageName: node
   linkType: hard
 
@@ -2035,6 +2035,19 @@ __metadata:
   bin:
     qwik: qwik.cjs
   checksum: 1b088bb0d2a76be035766ce84dff52b0123109e01e16fe61e13af1e9b6d5758d68c7aee03732dfa7b6292c99bb4cdfb07bfbfa9f2c993eaec8cef0c0e6c08513
+  languageName: node
+  linkType: hard
+
+"@builder.io/react-hydration-overlay@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@builder.io/react-hydration-overlay@npm:0.0.4"
+  dependencies:
+    beautify: ^0.0.8
+    react-diff-viewer: ^3.1.1
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: ad8485a6f41ee34829bdc92e393feee3deb5ccad1753daf684f58b3d47acf8f272a8b9c51ab463989cd84313831b987d54954953beafea3ea4782b004b846be0
   languageName: node
   linkType: hard
 
@@ -2367,8 +2380,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.15
-    "@builder.io/mitosis": ^0.0.136
-    "@builder.io/mitosis-cli": ^0.0.95
+    "@builder.io/mitosis": ^0.0.137
+    "@builder.io/mitosis-cli": ^0.0.96
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
@@ -3234,17 +3247,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@e2e/next-pages-dir@workspace:packages/sdks/e2e/nextjs-pages-dir"
   dependencies:
+    "@builder.io/react-hydration-overlay": ^0.0.4
     "@builder.io/sdk-react": "workspace:*"
     "@e2e/tests": "workspace:*"
+    "@types/diff": ^5.0.9
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
+    diff: ^5.1.0
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.0.3
     nx: ^16.6.0
     nx-cloud: ^16.2.0
+    pretty: ^2.0.0
     react: ^18
+    react-diff-viewer: ^3.1.1
     react-dom: ^18
     typescript: ^5
   languageName: unknown
@@ -3407,11 +3425,11 @@ __metadata:
     "@builder.io/sdk-svelte": "workspace:*"
     "@e2e/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
-    "@sveltejs/kit": ^1.16.2
+    "@sveltejs/kit": ^1.27.7
     nx: ^16.6.0
     nx-cloud: ^16.2.0
-    svelte: ^3.59.1
-    svelte-check: ^3.4.6
+    svelte: ^4.2.8
+    svelte-check: ^3.6.2
     tslib: ^2.4.1
     typescript: ^5.1.6
     vite: ^4.0.0
@@ -7024,6 +7042,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@one-ini/wasm@npm:0.1.1":
+  version: 0.1.1
+  resolution: "@one-ini/wasm@npm:0.1.1"
+  checksum: 11de17108eae57c797e552e36b259398aede999b4a689d78be6459652edc37f3428472410590a9d328011a8751b771063a5648dd5c4205631c55d1d58e313156
+  languageName: node
+  linkType: hard
+
 "@parcel/watcher-android-arm64@npm:2.3.0":
   version: 2.3.0
   resolution: "@parcel/watcher-android-arm64@npm:2.3.0"
@@ -8398,7 +8423,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^1.16.2, @sveltejs/kit@npm:^1.22.4":
+"@sveltejs/kit@npm:^1.22.4":
   version: 1.27.6
   resolution: "@sveltejs/kit@npm:1.27.6"
   dependencies:
@@ -8421,6 +8446,32 @@ __metadata:
   bin:
     svelte-kit: svelte-kit.js
   checksum: 6c2ed98f15da0fc837fc00ff7d76929ebf600c0031a6e5341cb5d6cd8a310b83a30bb0268e6a67268e833f2ecdc5accd3b8ab950a6382b679d3d660759de20b8
+  languageName: node
+  linkType: hard
+
+"@sveltejs/kit@npm:^1.27.7":
+  version: 1.27.7
+  resolution: "@sveltejs/kit@npm:1.27.7"
+  dependencies:
+    "@sveltejs/vite-plugin-svelte": ^2.5.0
+    "@types/cookie": ^0.5.1
+    cookie: ^0.5.0
+    devalue: ^4.3.1
+    esm-env: ^1.0.0
+    kleur: ^4.1.5
+    magic-string: ^0.30.0
+    mrmime: ^1.0.1
+    sade: ^1.8.1
+    set-cookie-parser: ^2.6.0
+    sirv: ^2.0.2
+    tiny-glob: ^0.2.9
+    undici: ~5.26.2
+  peerDependencies:
+    svelte: ^3.54.0 || ^4.0.0-next.0 || ^5.0.0-next.0
+    vite: ^4.0.0
+  bin:
+    svelte-kit: svelte-kit.js
+  checksum: 48016158758f93e96efa11af464baae1294f333bddf135d01eada73db2decfddf42012151235e49b2dc7b18d7df056e1b9a62319b6cf5f043d54a60c4e64e58f
   languageName: node
   linkType: hard
 
@@ -8838,6 +8889,13 @@ __metadata:
   dependencies:
     "@types/ms": "*"
   checksum: 47876a852de8240bfdaf7481357af2b88cb660d30c72e73789abf00c499d6bc7cd5e52f41c915d1b9cd8ec9fef5b05688d7b7aef17f7f272c2d04679508d1053
+  languageName: node
+  linkType: hard
+
+"@types/diff@npm:^5.0.9":
+  version: 5.0.9
+  resolution: "@types/diff@npm:5.0.9"
+  checksum: fb5cb6d6407e3ebcd8883bdc9f9124b57ebc04720cfb605afc5f839f9a71878ccf895da66b09d5d8df25e684cfe57a6f6f4bf65f87ccc0ce0b58a18b1f3ce5b0
   languageName: node
   linkType: hard
 
@@ -12745,6 +12803,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"beautify@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "beautify@npm:0.0.8"
+  dependencies:
+    cssbeautify: ^0.3.1
+    html: ^1.0.0
+    js-beautify: ^1.6.4
+  bin:
+    beautify: ./bin/beautify.js
+  checksum: 29945230bb72e9e236a485d29d0adb8085ea3001fc1ecbb408540f349efb1cf79c532ac38a9a3410900bc99e502df5b564f433f3c2783922e9c6f85bddc17e8e
+  languageName: node
+  linkType: hard
+
 "before-after-hook@npm:^2.2.0":
   version: 2.2.3
   resolution: "before-after-hook@npm:2.2.3"
@@ -13966,6 +14037,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.2.6":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e
+  languageName: node
+  linkType: hard
+
 "clean-css@npm:^4.2.1, clean-css@npm:^4.2.3":
   version: 4.2.4
   resolution: "clean-css@npm:4.2.4"
@@ -14429,7 +14507,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^10.0.1":
+"commander@npm:^10.0.0, commander@npm:^10.0.1":
   version: 10.0.1
   resolution: "commander@npm:10.0.1"
   checksum: 436901d64a818295803c1996cd856621a74f30b9f9e28a588e726b2b1670665bccd7c1a77007ebf328729f0139838a88a19265858a0fa7a8728c4656796db948
@@ -14606,7 +14684,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concat-stream@npm:^1.4.4, concat-stream@npm:^1.5.0":
+"concat-stream@npm:^1.4.4, concat-stream@npm:^1.4.7, concat-stream@npm:^1.5.0":
   version: 1.6.2
   resolution: "concat-stream@npm:1.6.2"
   dependencies:
@@ -14618,7 +14696,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"config-chain@npm:^1.1.11":
+"condense-newlines@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "condense-newlines@npm:0.2.1"
+  dependencies:
+    extend-shallow: ^2.0.1
+    is-whitespace: ^0.3.0
+    kind-of: ^3.0.2
+  checksum: 3c20ff6ee88b5d2e81c122f33b5ba5d6976cdf86d83527fadea308b3020ed70af7ed98c2e2d94d36f27fcd723a7a477941c19575e0d2c8db6afc4aac6926a54e
+  languageName: node
+  linkType: hard
+
+"config-chain@npm:^1.1.11, config-chain@npm:^1.1.13":
   version: 1.1.13
   resolution: "config-chain@npm:1.1.13"
   dependencies:
@@ -15043,6 +15132,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"create-emotion@npm:^10.0.14, create-emotion@npm:^10.0.27":
+  version: 10.0.27
+  resolution: "create-emotion@npm:10.0.27"
+  dependencies:
+    "@emotion/cache": ^10.0.27
+    "@emotion/serialize": ^0.11.15
+    "@emotion/sheet": 0.9.4
+    "@emotion/utils": 0.11.3
+  checksum: 6838f6fe0a3e8d6a7a354685f1ffed6a23f28e74ce4bcdd045882f8e007715dc61596bddc05937cdfd67581eb66a697621a6d01c1a7357b85a816fddc22203fe
+  languageName: node
+  linkType: hard
+
 "create-hash@npm:^1.1.0, create-hash@npm:^1.1.2, create-hash@npm:^1.2.0":
   version: 1.2.0
   resolution: "create-hash@npm:1.2.0"
@@ -15381,6 +15482,15 @@ __metadata:
   version: 1.5.1
   resolution: "css.escape@npm:1.5.1"
   checksum: f6d38088d870a961794a2580b2b2af1027731bb43261cfdce14f19238a88664b351cc8978abc20f06cc6bbde725699dec8deb6fe9816b139fc3f2af28719e774
+  languageName: node
+  linkType: hard
+
+"cssbeautify@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "cssbeautify@npm:0.3.1"
+  bin:
+    cssbeautify: bin/cssbeautify
+  checksum: 8553be112a64cf3eca4d0e47a0fa785863b36deccfea1be69a07549f7c14f15a8169326aa01b406e1fbba435c06571b73d8b87cd09bb72807cd25ee458714ff2
   languageName: node
   linkType: hard
 
@@ -16647,6 +16757,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"editorconfig@npm:^1.0.3":
+  version: 1.0.4
+  resolution: "editorconfig@npm:1.0.4"
+  dependencies:
+    "@one-ini/wasm": 0.1.1
+    commander: ^10.0.0
+    minimatch: 9.0.1
+    semver: ^7.5.3
+  bin:
+    editorconfig: bin/editorconfig
+  checksum: 09904f19381b3ddf132cea0762971aba887236f387be3540909e96b8eb9337e1793834e10f06890cd8e8e7bb1ba80cb13e7d50a863f227806c9ca74def4165fb
+  languageName: node
+  linkType: hard
+
 "ee-first@npm:1.1.1":
   version: 1.1.1
   resolution: "ee-first@npm:1.1.1"
@@ -16747,6 +16871,16 @@ __metadata:
   version: 3.0.0
   resolution: "emojis-list@npm:3.0.0"
   checksum: ddaaa02542e1e9436c03970eeed445f4ed29a5337dfba0fe0c38dfdd2af5da2429c2a0821304e8a8d1cadf27fdd5b22ff793571fa803ae16852a6975c65e8e70
+  languageName: node
+  linkType: hard
+
+"emotion@npm:^10.0.14":
+  version: 10.0.27
+  resolution: "emotion@npm:10.0.27"
+  dependencies:
+    babel-plugin-emotion: ^10.0.27
+    create-emotion: ^10.0.27
+  checksum: e925a6ae323e77df7fd3064004c16d37a150c838d5fbf96b50075e5176315d0e4b8b6d60ca036fa767c0eabecbe941ec79382f4d3a392d9a06f84b6039d0af49
   languageName: node
   linkType: hard
 
@@ -20587,7 +20721,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.2, glob@npm:^10.3.10":
+"glob@npm:^10.2.2, glob@npm:^10.3.10, glob@npm:^10.3.3":
   version: 10.3.10
   resolution: "glob@npm:10.3.10"
   dependencies:
@@ -21485,6 +21619,17 @@ __metadata:
   peerDependencies:
     webpack: ^5.20.0
   checksum: ccf685195739c372ad641bbd0c9100a847904f34eedc7aff3ece7856cd6c78fd3746d2d615af1bb71e5727993fe711b89e9b744f033ed3fde646540bf5d5e954
+  languageName: node
+  linkType: hard
+
+"html@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "html@npm:1.0.0"
+  dependencies:
+    concat-stream: ^1.4.7
+  bin:
+    html: ./bin/html.js
+  checksum: 131f5a7b18f6a86c434aba047244ee5d7c8e578d377ee00231fb854778c4500c4dfee1e44eacfd06b6ffad6a90857bd14c4b6ec2c627ed96f67e8e6afa5cef26
   languageName: node
   linkType: hard
 
@@ -23041,6 +23186,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-whitespace@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "is-whitespace@npm:0.3.0"
+  checksum: dac8fc9a9b797afeef703f625269601715552883790d1385d6bb27dd04ffdafd5fddca8f2d85ee96913850211595da2ba483dac1f166829c4078fb58ce815140
+  languageName: node
+  linkType: hard
+
 "is-windows@npm:^1.0.0, is-windows@npm:^1.0.1, is-windows@npm:^1.0.2":
   version: 1.0.2
   resolution: "is-windows@npm:1.0.2"
@@ -24403,6 +24555,22 @@ __metadata:
   version: 3.1.1
   resolution: "joycon@npm:3.1.1"
   checksum: 8003c9c3fc79c5c7602b1c7e9f7a2df2e9916f046b0dbad862aa589be78c15734d11beb9fe846f5e06138df22cb2ad29961b6a986ba81c4920ce2b15a7f11067
+  languageName: node
+  linkType: hard
+
+"js-beautify@npm:^1.6.12, js-beautify@npm:^1.6.4":
+  version: 1.14.11
+  resolution: "js-beautify@npm:1.14.11"
+  dependencies:
+    config-chain: ^1.1.13
+    editorconfig: ^1.0.3
+    glob: ^10.3.3
+    nopt: ^7.2.0
+  bin:
+    css-beautify: js/bin/css-beautify.js
+    html-beautify: js/bin/html-beautify.js
+    js-beautify: js/bin/js-beautify.js
+  checksum: 92512b8dcc54330fe075569fd0226a1960da3fbb68f91e35dbfb110cc2b85e53e3ef17878c8be88b0888277bc5d51b1a692d72a00142d653ce7a8cbd48c66ee0
   languageName: node
   linkType: hard
 
@@ -26649,7 +26817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memoize-one@npm:^5.0.0":
+"memoize-one@npm:^5.0.0, memoize-one@npm:^5.0.4":
   version: 5.2.1
   resolution: "memoize-one@npm:5.2.1"
   checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
@@ -27658,6 +27826,15 @@ __metadata:
   dependencies:
     brace-expansion: ^1.1.7
   checksum: a3b84b426eafca947741b864502cee02860c4e7b145de11ad98775cfcf3066fef422583bc0ffce0952ddf4750c1ccf4220b1556430d4ce10139f66247d87d69e
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:9.0.1":
+  version: 9.0.1
+  resolution: "minimatch@npm:9.0.1"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: 97f5f5284bb57dc65b9415dec7f17a0f6531a33572193991c60ff18450dcfad5c2dad24ffeaf60b5261dccd63aae58cc3306e2209d57e7f88c51295a532d8ec3
   languageName: node
   linkType: hard
 
@@ -28684,7 +28861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nopt@npm:^7.0.0":
+"nopt@npm:^7.0.0, nopt@npm:^7.2.0":
   version: 7.2.0
   resolution: "nopt@npm:7.2.0"
   dependencies:
@@ -32160,6 +32337,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pretty@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "pretty@npm:2.0.0"
+  dependencies:
+    condense-newlines: ^0.2.1
+    extend-shallow: ^2.0.1
+    js-beautify: ^1.6.12
+  checksum: 9c41ae0559195af2fb2496d84c6f442843e045d269d4008a6dd336f8372d7481395ed5ab23e5711b6172682c27cb0542e1ab3ca11b38da48f1109c0b701d0ef9
+  languageName: node
+  linkType: hard
+
 "proc-log@npm:^2.0.0, proc-log@npm:^2.0.1":
   version: 2.0.1
   resolution: "proc-log@npm:2.0.1"
@@ -32283,7 +32471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:*, prop-types@npm:^15.5.7, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:*, prop-types@npm:^15.5.7, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -32689,6 +32877,23 @@ __metadata:
     shell-quote: ^1.6.1
     ws: ^7
   checksum: d8e4b32ffcfe1ada5c9f7decffd04afc4707a3d6261953a92b8aed1c8abe15cd57d6eb4ce711f842180a2f5c60d2947209e3c1202f7ea29303ee150c55da59e0
+  languageName: node
+  linkType: hard
+
+"react-diff-viewer@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "react-diff-viewer@npm:3.1.1"
+  dependencies:
+    classnames: ^2.2.6
+    create-emotion: ^10.0.14
+    diff: ^4.0.1
+    emotion: ^10.0.14
+    memoize-one: ^5.0.4
+    prop-types: ^15.6.2
+  peerDependencies:
+    react: ^15.3.0 || ^16.0.0
+    react-dom: ^15.3.0 || ^16.0.0
+  checksum: 073445730ecc617768107ca6ccdd0cc93a1b42fa472d4d20aee13de9ddcf1bbcae00b64a350fb07ad1da619ca04ed1c5111d9b170b325e40e44920145170c7c1
   languageName: node
   linkType: hard
 
@@ -36536,7 +36741,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-check@npm:^3.4.6":
+"svelte-check@npm:^3.4.6, svelte-check@npm:^3.6.2":
   version: 3.6.2
   resolution: "svelte-check@npm:3.6.2"
   dependencies:
@@ -36624,14 +36829,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^3.30.0, svelte@npm:^3.57.0, svelte@npm:^3.59.1":
+"svelte@npm:^3.30.0, svelte@npm:^3.57.0":
   version: 3.59.2
   resolution: "svelte@npm:3.59.2"
   checksum: 3e9d770292ab5a0061ff2d3a6f77b323014399de7458371ab507465f9860d04d0c8c7a50239d15c78b920cd42065953e3c4a36abb69a2285c52c825017621444
   languageName: node
   linkType: hard
 
-"svelte@npm:^4.1.2":
+"svelte@npm:^4.1.2, svelte@npm:^4.2.8":
   version: 4.2.8
   resolution: "svelte@npm:4.2.8"
   dependencies:
