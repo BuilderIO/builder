@@ -8,7 +8,6 @@
     "lib"
   ],
   "scripts": {
-    "release": "npm publish",
     "build-inline-fns": "yarn g:build-inline-fns",
     "build": "nx run-many -p @builder.io/sdk-vue-2 -t build:node build:edge build:browser",
     "vite-build": "vite build --mode lib",

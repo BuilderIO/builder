@@ -26,7 +26,7 @@ const buildInlineFns = async () => {
     );
   }
 
-  const foundFiles = glob.glob(init_cwd + '/**/src/**/*/inlined-fns.*', {
+  const foundFiles = glob.glob(init_cwd + '/src/**/*/inlined-fns.*', {
     sync: true,
   });
 
