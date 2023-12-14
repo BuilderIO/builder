@@ -107,7 +107,6 @@ test.describe('Blocks', () => {
     await page.route('**/*', route => {
       const request = route.request();
       if (request.url().includes(VIDEO_CDN_URL)) {
-        console.log('mocking video request: ', request.url());
         route.fulfill({
           status: 200,
           contentType: 'video/mp4',
