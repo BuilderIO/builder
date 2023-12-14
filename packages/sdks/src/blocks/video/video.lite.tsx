@@ -72,7 +72,7 @@ export default function Video(props: VideoProps) {
           // Hack to get object fit to work as expected and
           // not have the video overflow
           zIndex: 2,
-          borderRadius: 1,
+          borderRadius: '1px',
           ...(props.aspectRatio
             ? {
                 position: 'absolute',
