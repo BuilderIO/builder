@@ -103,7 +103,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
               key={variant.testVariationId}
               content={variant}
               showContent={false}
-              classNameProp={`variant-${variant.testVariationId}`}
               model={props.model}
               data={props.data}
               context={props.context}
@@ -130,7 +129,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
           default: {},
         })}
         content={state.defaultContent}
-        classNameProp={`variant-${props.content?.id}`}
         showContent
         model={props.model}
         data={props.data}

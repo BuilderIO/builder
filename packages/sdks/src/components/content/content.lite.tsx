@@ -139,7 +139,6 @@ export default function ContentComponent(props: ContentProps) {
       locale={props.locale}
       includeRefs={props.includeRefs}
       enrich={props.enrich}
-      classNameProp={props.classNameProp}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
       {...useTarget({
