@@ -140,13 +140,13 @@ function updateVariantVisibility(
    *  - make the winning (non-default) variant visible.
    *  - hide the non-winning variants.
    *
-   * Technically, the second step is redundant in hydration frameworks, as we delete the entire content at the end of
-   * this script. However, this vastly simplifies the logic.
+   * Technically, the second step is redundant in hydration frameworks,
+   * as we delete the entire content at the end of this script.
+   * However, this vastly simplifies the logic.
    */
   if (isWinningVariant && !isDefaultContent) {
     parentDiv?.removeAttribute('hidden');
     parentDiv?.removeAttribute('aria-hidden');
-    return;
   } else if (!isWinningVariant && isDefaultContent) {
     parentDiv?.setAttribute('hidden', 'true');
     parentDiv?.setAttribute('aria-hidden', 'true');
