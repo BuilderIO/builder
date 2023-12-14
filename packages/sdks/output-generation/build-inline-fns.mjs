@@ -7,7 +7,7 @@ import fs from 'fs';
 import glob from 'glob';
 
 /**
- * - add watch cmd that combines sdkbuild and this
+ * - add watch cmd that combines sdk build and this
  */
 
 /**

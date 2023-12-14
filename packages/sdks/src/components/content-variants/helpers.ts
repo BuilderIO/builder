@@ -42,13 +42,15 @@ export const checkShouldRenderVariants = ({
   if (!canTrack) return false;
 
   /**
-   * For Vue 2 and Vue 3, we need to (initially) render the variants. This is to avoid hydration mismatch errors.
+   * For Vue and Svelte, we need to (initially) render the variants. This is to avoid hydration mismatch errors.
    * Unlike React, Vue's hydration checks are shallow and do not check the attributes/contents of each element, so we
    * are able to modify the `hidden` HTML attributes and `display` CSS properties without causing a hydration mismatch error.
    *
-   * NOTE: after the app is hydrated, we strip the variants from the DOM (on mount) to reduce the amount of HTML in the DOM.
+   * NOTE: For Vue: after the app is hydrated, we strip the variants from the DOM (on mount) to reduce the amount of HTML in the DOM.
+   * This isn't necessary, just a nice to have.
    */
-  if (TARGET === 'vue2' || TARGET === 'vue3') return true;
+  if (TARGET === 'vue2' || TARGET === 'vue3' || TARGET === 'svelte')
+    return true;
 
   if (isBrowser()) return false;
 
