@@ -1,3 +1,7 @@
+const {
+  withHydrationOverlay,
+} = require('@builder.io/react-hydration-overlay/next');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -9,4 +13,4 @@ const nextConfig = {
   transpilePackages: ['@builder.io/sdk-react-nextjs'],
 };
 
-module.exports = nextConfig;
+module.exports = withHydrationOverlay()(nextConfig);
