@@ -28,7 +28,7 @@ First, our SSR'd HTML will look roughly like this:
 
 The desired outcome will depend on the framework used:
 
-#### Hydration frameworks (React, Vue)
+#### React
 
 Hydration is a heavy process, so we need to delete everything (other variants, style & script tags) except for the winning variant to keep the cost of hydrating Builder content at a minimum.
 
@@ -38,9 +38,9 @@ The intended CSR should look like this:
 <div id="winning-variant" />
 ```
 
-#### Non-hydration frameworks (Qwik, Svelte, Solid)
+#### Qwik
 
-For non-hydration frameworks, there is no problem with keeping extra DOM elements around, as they do not have a hydration cost. Therefore, the intended CSR will look like this:
+Since Qwik doesn't have hydration, there is no problem with keeping extra DOM elements around, as they do not have a hydration cost. Therefore, the intended CSR will look like this:
 
 ```html
 <script src="{updateCookieAndStyles}" />
@@ -60,6 +60,34 @@ For non-hydration frameworks, there is no problem with keeping extra DOM element
 
 We need to update the styles and HTML attributes to hide the correct variants.
 
+#### Vue, Svelte, Solid
+
+These hydrate, but we ran into issues trying to delete everything instantly. Instead, we update HTML+CSS visibility attributes to show the correct variant, and have an `onMount` trigger that removes all the other variants.
+
+The intended CSR will first look like this:
+
+```html
+<script src="{updateCookieAndStyles}" />
+<script src="{updateVariantVisibility}" />
+<style>
+  .losing-var-1 {
+    display: none;
+  }
+  .losing-var-2 {
+    display: none;
+  }
+</style>
+<div id="losing-var-1" hidden aria-hidden="true" />
+<div id="winning-variant" />
+<div id="loasing-var-2" hidden aria-hidden="true" />
+```
+
+followed right after by:
+
+```html
+<div id="winning-variant" />
+```
+
 ### CSR Modifications
 
 To recap, initially:
@@ -73,11 +101,13 @@ On CSR, 2 scripts will run:
 
   - It will update the cookie to the winning variant.
   - it will modify the styles:
-    - Hydration frameworks: delete all `display: none` styles.
+    - React: delete all `display: none` styles.
     - Other frameworks: update the CSS to hide losing variants only.
 
 - `updateVariantVisibility` will run for each variant:
-  - Hydration frameworks: it will delete the node if it's not the winning variant,
+  - React: it will delete the node if it's not the winning variant,
   - Other frameworks: it will hide the node if it's not the winning variant
 
 Both scripts and the variant style tag "self-destruct" in hydration frameworks by removing themselves, as they are not needed anymore.
+
+And as a last extra step for Svelte/Solid/Vue: on the second CSR, we unmount everything except for the winning variant.
