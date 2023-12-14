@@ -53,9 +53,6 @@ export default function Video(props: VideoProps) {
         ...state.videoProps,
       };
     },
-    get aspectRatio() {
-      return props.aspectRatio! * 100 + '%';
-    },
   });
 
   return (
@@ -95,7 +92,7 @@ export default function Video(props: VideoProps) {
         <div
           style={{
             width: '100%',
-            paddingTop: state.aspectRatio,
+            paddingTop: props.aspectRatio! * 100 + '%',
             pointerEvents: 'none',
             fontSize: '0px',
           }}
