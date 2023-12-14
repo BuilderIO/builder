@@ -159,15 +159,13 @@ function updateVariantVisibility(
     if (!isWinningVariant) {
       parentDiv?.remove();
     }
-  }
 
-  /**
-   * We need to remove this script tag for various reasons:
-   * - React: fixes hydration mismatch
-   * - Svelte: inlining scripts is not well-supported
-   */
-  const thisScriptEl = document.currentScript;
-  thisScriptEl?.remove();
+    /**
+     * For Hydration frameworks, we need to remove this script tag as it doesn't render in CSR.
+     */
+    const thisScriptEl = document.currentScript;
+    thisScriptEl?.remove();
+  }
   return;
 }
 

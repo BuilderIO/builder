@@ -68,8 +68,6 @@ const isHydrationTarget = getIsHydrationTarget(TARGET);
 export const getScriptString = () => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
   window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
-
-  document.currentScript?.remove();
   `;
 
 export const getUpdateCookieAndStylesScript = (
@@ -78,9 +76,7 @@ export const getUpdateCookieAndStylesScript = (
 ) => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME}(
     "${contentId}",${JSON.stringify(variants)}, ${isHydrationTarget}
-  )
-  document.currentScript?.remove();
-  `;
+  )`;
 
 export const getUpdateVariantVisibilityScript = ({
   contentId,
@@ -91,6 +87,4 @@ export const getUpdateVariantVisibilityScript = ({
 }) =>
   `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(
     "${variationId}", "${contentId}", ${isHydrationTarget}
-  )
-  document.currentScript?.remove();
-  `;
+  )`;

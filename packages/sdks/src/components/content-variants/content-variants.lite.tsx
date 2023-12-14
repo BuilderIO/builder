@@ -86,10 +86,10 @@ export default function ContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
+      <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
+        <InlinedScript scriptStr={getScriptString()} />
+      </Show>
       <Show when={state.shouldRenderVariants}>
-        <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
-          <InlinedScript scriptStr={getScriptString()} />
-        </Show>
         <InlinedStyles
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
