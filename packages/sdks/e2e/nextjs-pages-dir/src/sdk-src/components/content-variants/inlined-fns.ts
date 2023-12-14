@@ -89,7 +89,6 @@ export const UPDATE_VARIANT_VISIBILITY_SCRIPT = `function updateVariantVisibilit
     console.log('removing hidden attribute', variantContentId)
       parentDiv?.removeAttribute('hidden');
     parentDiv?.removeAttribute('aria-hidden');
-    return;
   } else if (!isWinningVariant && isDefaultContent) {
     console.log('setting hidden attribute', variantContentId)
       parentDiv?.setAttribute('hidden', 'true');
@@ -103,7 +102,7 @@ export const UPDATE_VARIANT_VISIBILITY_SCRIPT = `function updateVariantVisibilit
 
     console.log('removin script itself', variantContentId)
     const thisScriptEl = document.currentScript;
-    // thisScriptEl?.remove();
+    thisScriptEl?.remove();
   }
   return;
 }`;

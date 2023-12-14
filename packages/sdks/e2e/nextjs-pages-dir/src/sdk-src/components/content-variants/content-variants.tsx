@@ -84,7 +84,6 @@ function ContentVariants(props: VariantsProviderProps) {
               key={variant.testVariationId}
               content={variant}
               showContent={false}
-              classNameProp={`variant-${variant.testVariationId}`}
               model={props.model}
               data={props.data}
               context={props.context}
@@ -104,7 +103,6 @@ function ContentVariants(props: VariantsProviderProps) {
       <ContentComponent
         {...{}}
         content={defaultContent()}
-        classNameProp={`variant-${props.content?.id}`}
         showContent={true}
         model={props.model}
         data={props.data}
@@ -118,12 +116,6 @@ function ContentVariants(props: VariantsProviderProps) {
         enrich={props.enrich}
         isSsrAbTest={shouldRenderVariants}
       />
-
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `console.log(document.currentScript.parentElement.innerHTML)`,
-        }}
-      ></script>
     </>
   );
 }

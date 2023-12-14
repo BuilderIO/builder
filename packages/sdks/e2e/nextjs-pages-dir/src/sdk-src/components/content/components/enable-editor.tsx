@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import builderContext from '../../../context/builder.context';
 import type { BuilderContextInterface } from '../../../context/types';
 import { evaluate } from '../../../functions/evaluate/index';
@@ -15,7 +15,6 @@ import { _track } from '../../../functions/track/index';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction';
 import { getDefaultCanTrack } from '../../../helpers/canTrack';
 import { logger } from '../../../helpers/logger';
-import { postPreviewContent } from '../../../helpers/preview-lru-cache/set';
 import {
   registerInsertMenu,
   setupBrowserForEditing,
@@ -366,6 +365,14 @@ function EnableEditor(props: BuilderEditorProps) {
     };
   }, []);
 
+  // console.log('EnableEditor: ', {
+  //   testId: props.content?.testVariationId,
+  //   id: props.content?.id,
+  //   testIdSignal: props.builderContextSignal.content?.testVariationId,
+  //   idSignal: props.builderContextSignal.content?.id,
+  //   variandClassName,
+  // });
+
   return (
     <builderContext.Provider value={props.builderContextSignal}>
       {props.builderContextSignal.content ? (
@@ -384,7 +391,9 @@ function EnableEditor(props: BuilderEditorProps) {
                   hidden: true,
                   'aria-hidden': true,
                 })}
-            className={props.classNameProp}
+            className={`variant-${
+              props.content?.testVariationId || props.content?.id
+            }`}
           >
             {props.children}
           </div>

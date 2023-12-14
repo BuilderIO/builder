@@ -16,6 +16,7 @@ import type { ComponentInfo } from '../../types/components';
 import type { Dictionary } from '../../types/typescript';
 import Blocks from '../blocks/blocks';
 import { getUpdateVariantVisibilityScript } from '../content-variants/helpers';
+import InlinedScript from '../inlined-script';
 import EnableEditor from './components/enable-editor';
 import ContentStyles from './components/styles';
 import {
@@ -112,7 +113,6 @@ function ContentComponent(props: ContentProps) {
         locale={props.locale}
         includeRefs={props.includeRefs}
         enrich={props.enrich}
-        classNameProp={props.classNameProp}
         showContent={props.showContent}
         builderContextSignal={builderContextSignal}
         {...{
@@ -120,7 +120,11 @@ function ContentComponent(props: ContentProps) {
         }}
       >
         {/* <InlinedScript scriptStr={scriptStr} /> */}
-        {props.isSsrAbTest ? <></> : null}
+        {props.isSsrAbTest ? (
+          <>
+            <InlinedScript scriptStr={scriptStr} />
+          </>
+        ) : null}
 
         {TARGET !== 'reactNative' ? (
           <>
