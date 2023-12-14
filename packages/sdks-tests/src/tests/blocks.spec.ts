@@ -99,7 +99,7 @@ test.describe('Blocks', () => {
     }
   });
 
-  test.only('video', async ({ page }) => {
+  test('video', async ({ page }) => {
     test.skip(isRNSDK);
     const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
     const mockVideoBuffer = fs.readFileSync(mockVideoPath);
