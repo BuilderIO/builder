@@ -4,5 +4,5 @@ interface Props {
 }
 
 export default function InlinedScript(props: Props) {
-  return <script innerHTML={props.scriptStr} id={props.id} />;
+  return <script innerHTML={props.scriptStr} id={props.id || ''} />;
 }

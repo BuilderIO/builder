@@ -51,6 +51,9 @@ export default function ContentVariants(props: VariantsProviderProps) {
       solid: () => {
         state.shouldRenderVariants = false;
       },
+      svelte: () => {
+        state.shouldRenderVariants = false;
+      },
     });
   });
 
