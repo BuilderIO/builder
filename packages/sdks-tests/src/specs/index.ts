@@ -24,6 +24,7 @@ import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.j
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
+import { CONTENT as video } from './video.js';
 import type { BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
@@ -63,6 +64,7 @@ const pages = {
   '/state-binding': stateBinding,
   '/nested-symbols': nestedSymbols,
   '/editing-styles': EDITING_STYLES,
+  '/video': video,
 } as const;
 
 const apiVersionPathToProp = {

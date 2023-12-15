@@ -1,6 +1,13 @@
 import { expect } from '@playwright/test';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from './helpers.js';
-import { test, isRNSDK, EXCLUDE_RN } from './helpers.js';
+import { EXCLUDE_RN, isRNSDK, test } from './helpers.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test.describe('Blocks', () => {
   test('Text block', async ({ page }) => {
@@ -90,6 +97,107 @@ test.describe('Blocks', () => {
         await expect(image).toHaveCSS(property, expected[property]);
       }
     }
+  });
+
+  test.describe('video', () => {
+    test('video render and styles', async ({ page }) => {
+      test.skip(isRNSDK);
+      const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          route.continue();
+        }
+      });
+
+      await page.goto('/video');
+
+      const videoLocator = page.locator('video');
+
+      const expectedCSS: Record<string, string>[] = [
+        {
+          width: '152px',
+          'object-fit': 'cover',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+        {
+          width: '1249px',
+          'object-fit': 'contain',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+        {
+          width: '744px',
+          'object-fit': 'cover',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+        {
+          width: '152px',
+          'object-fit': 'cover',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+      ];
+
+      await expect(videoLocator).toHaveCount(expectedCSS.length);
+
+      const expectedVals = expectedCSS.map((val, i) => ({ val, i }));
+
+      for (const { val, i } of Object.values(expectedVals)) {
+        const video = videoLocator.nth(i);
+        const expected = val;
+        for (const property of Object.keys(expected)) {
+          await expect(video).toHaveCSS(property, expected[property]);
+        }
+      }
+    });
+
+    test('video children', async ({ page }) => {
+      test.skip(isRNSDK);
+      const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          route.continue();
+        }
+      });
+
+      await page.goto('/video');
+
+      const videoContainers = page.locator('.some-class');
+      const noOfVideos = await page.locator('.builder-video').count();
+
+      await expect(videoContainers).toHaveCount(noOfVideos);
+
+      for (let i = 0; i < noOfVideos; i++) {
+        const container = videoContainers.nth(i);
+        const textBlock = container.locator('.builder-text p');
+        await expect(textBlock).toBeVisible();
+        await expect(textBlock).toHaveText('asfgasgasgasg some test');
+      }
+    });
   });
 
   test.describe('Columns', () => {
