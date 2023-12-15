@@ -1,5 +1,14 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.7.4
+
+### Patch Changes
+
+- 5500600: Multiples fixes to SSR A/B testing logic
+- d3c613d: Fix: Video block styles (aspect ratio, fitContent, etc.).
+  Fix: Allow Video block to render children components.
+- 5500600: Fix: Stringify inlined SSR A/B test scripts at build-time. Avoids mismatches caused by run-time stringification.
+
 ## 0.7.3
 
 ## 0.7.2
