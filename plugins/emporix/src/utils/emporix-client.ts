@@ -67,7 +67,7 @@ export class EmporixClient {
   }
 
   getHeadersFromCache() {
-    const token = this.anonymousTokenHelper._cache['access_token']
+    const token = this.anonymousTokenHelper._cache['access_token'];
     const headers = {
       Authorization: `Bearer ${token}`,
       'X-Version': 'v2',
