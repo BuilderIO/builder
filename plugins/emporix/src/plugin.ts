@@ -68,8 +68,12 @@ registerCommercePlugin(
           const response = await emporixClient.searchProducts(search);
           return response.map(transformProduct);
         },
-        async getRequestObject(id: string) {
-          const headers = await emporixClient.getHeaders();
+        async findByHandle(handle: string) {
+          const productResponse = await emporixClient.getProduct(handle);
+          return transformProduct(productResponse);
+        },
+        getRequestObject(id: string) {
+          const headers = emporixClient.getHeadersFromCache();
           return {
             '@type': '@builder.io/core:Request',
             request: {
@@ -95,8 +99,8 @@ registerCommercePlugin(
           const response = await emporixClient.searchCategories(search);
           return response.map(transformCategory);
         },
-        async getRequestObject(id: string) {
-          const headers = await emporixClient.getHeaders();
+        getRequestObject(id: string) {
+          const headers = emporixClient.getHeadersFromCache();
           return {
             '@type': '@builder.io/core:Request',
             request: {
