@@ -27,3 +27,4 @@ export type { RegisteredComponent } from './context/types.js';
 export type { ComponentInfo } from './types/components.js';
 
 export { fetchBuilderProps } from './functions/fetch-builder-props.js';
+export { isBrowser } from './functions/is-browser.js';
