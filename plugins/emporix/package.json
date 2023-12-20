@@ -75,7 +75,7 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^7.1.2",
+    "@commitlint/cli": "^7.6.1",
     "@commitlint/config-conventional": "^7.1.2",
     "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-json": "^4.1.0",
@@ -84,7 +84,7 @@
     "@types/node": "^10.17.5",
     "@types/react": "^16.9.11",
     "colors": "^1.3.2",
-    "commitizen": "^3.0.0",
+    "commitizen": "^4.3.0",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "cz-conventional-changelog": "^2.1.0",
