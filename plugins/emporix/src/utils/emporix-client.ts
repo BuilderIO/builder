@@ -66,6 +66,15 @@ export class EmporixClient {
     return headers;
   }
 
+  getHeadersFromCache() {
+    const token = this.anonymousTokenHelper._cache['access_token'];
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'X-Version': 'v2',
+    };
+    return headers;
+  }
+
   async searchCategories(search: string) {
     const response = await this._executeRequest(
       `https://api.emporix.io/category/${this._tenant}/categories?localizedName=${search}`,
