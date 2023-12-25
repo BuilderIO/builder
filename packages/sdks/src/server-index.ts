@@ -28,3 +28,4 @@ export type { ComponentInfo } from './types/components.js';
 
 export { fetchBuilderProps } from './functions/fetch-builder-props.js';
 export { isBrowser } from './functions/is-browser.js';
+export { isServer } from './functions/is-server.js';
