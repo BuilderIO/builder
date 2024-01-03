@@ -17,30 +17,21 @@ export const REPEAT_ITEMS_BINDINGS = {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
             actions: {
-              mouseEnter: 'state.testArray=[1,2,3,4,5]',
-              mouseLeave: 'var _virtual_index=state.testArray=void 0;return _virtual_index',
+              click: 'state.testArray=[1,2,3,4,5]',
             },
             code: {
               actions: {
-                mouseEnter: 'state.testArray = [1, 2, 3, 4, 5];\n',
-                mouseLeave: 'state.testArray = undefined;\n',
+                click: 'state.testArray = [1, 2, 3, 4, 5];\n',
               },
             },
             id: 'builder-c1455ff055cb46e9942d702b7753645c',
             meta: {
               eventActions: {
-                mouseEnter: [
+                click: [
                   {
                     '@type': '@builder.io/core:Action',
                     action: '@builder.io:customCode',
                     options: { code: 'state.testArray = [1,2,3,4,5];' },
-                  },
-                ],
-                mouseLeave: [
-                  {
-                    '@type': '@builder.io/core:Action',
-                    action: '@builder.io:customCode',
-                    options: { code: 'state.testArray = undefined' },
                   },
                 ],
               },
@@ -48,7 +39,7 @@ export const REPEAT_ITEMS_BINDINGS = {
             component: {
               name: 'Core:Button',
               options: {
-                text: 'Hover over me to state up!',
+                text: 'Click me to state up!',
                 openLinkInNewTab: false,
               },
             },
