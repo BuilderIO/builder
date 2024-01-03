@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.7.5
+
+### Patch Changes
+
+- ddb31e4: Fix: setting default input values
+- ddb31e4: Fix: collection repetition bug for empty/undefined lists
+
 ## 0.7.4
 
 ## 0.7.3
