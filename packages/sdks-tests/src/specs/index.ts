@@ -13,6 +13,7 @@ import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as image } from './image.js';
+import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import { CONTENT as reactiveState } from './reactive-state.js';
@@ -67,6 +68,7 @@ const pages = {
   '/editing-styles': EDITING_STYLES,
   '/video': video,
   '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
+  '/input-default-value': INPUT_DEFAULT_VALUE,
 } as const;
 
 const apiVersionPathToProp = {
