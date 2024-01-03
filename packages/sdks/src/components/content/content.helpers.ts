@@ -14,11 +14,7 @@ export const getContextStateInitialValue = ({
 
   // set default values for content state inputs
   content?.data?.inputs?.forEach((input) => {
-    if (
-      input.name &&
-      input.defaultValue !== undefined &&
-      initialState[input.name] === undefined
-    ) {
+    if (input.name && input.defaultValue !== undefined) {
       defaultValues[input.name] = input.defaultValue;
     }
   });
