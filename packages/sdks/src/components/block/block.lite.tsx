@@ -64,7 +64,7 @@ export default function Block(props: BlockProps) {
       });
     },
     get processedBlock(): BuilderBlock {
-      return state.repeatItem
+      return props.block.repeat?.collection
         ? props.block
         : getProcessedBlock({
             block: props.block,
@@ -93,6 +93,11 @@ export default function Block(props: BlockProps) {
       if ('show' in state.processedBlock) {
         return state.processedBlock.show;
       }
+
+      if (props.block.repeat?.collection && !state.repeatItem?.length) {
+        return false;
+      }
+
       return true;
     },
 
