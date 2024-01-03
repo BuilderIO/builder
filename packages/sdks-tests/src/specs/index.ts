@@ -16,6 +16,7 @@ import { CONTENT as image } from './image.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import { CONTENT as reactiveState } from './reactive-state.js';
+import { REPEAT_ITEMS_BINDINGS } from './repeat-items-bindings.js';
 import { CONTENT as showHideIf } from './show-hide-if.js';
 import { CONTENT as stateBinding } from './state-binding.js';
 import { CONTENT as symbolAbTest } from './symbol-ab-test.js';
@@ -24,8 +25,8 @@ import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.j
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
-import { CONTENT as video } from './video.js';
 import type { BuilderContent } from './types.js';
+import { CONTENT as video } from './video.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -65,6 +66,7 @@ const pages = {
   '/nested-symbols': nestedSymbols,
   '/editing-styles': EDITING_STYLES,
   '/video': video,
+  '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
 } as const;
 
 const apiVersionPathToProp = {
