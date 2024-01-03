@@ -1,26 +1,15 @@
 import { expect } from '@playwright/test';
 import { test } from './helpers.js';
+import { sdk } from './sdk.js';
 
 test.describe('Repeat items bindings', () => {
   test('Updating state should display repeat collection', async ({ page, packageName }) => {
-    // hydration errors
-    // test.fail(packageName === 'gen1-next' || packageName === 'gen1-remix');
-
-    // // flaky, can't `test.fail()`
-    // test.skip(
-    //   isRNSDK ||
-    //     packageName === 'react-native' ||
-    //     packageName === 'vue2' ||
-    //     packageName === 'nuxt2' ||
-    //     packageName === 'solid' ||
-    //     packageName === 'solid-start' ||
-    //     packageName === 'svelte' ||
-    //     packageName === 'sveltekit' ||
-    //     packageName === 'next-app-dir' ||
-    //     packageName === 'vue3' ||
-    //     packageName === 'nuxt3'
-    // );
-
+    test.fail(
+      // NextJS fundamentally doesn't support state updates
+      sdk === 'rsc' ||
+        // not sure why vue2 fails
+        sdk === 'vue2'
+    );
     await page.goto('/repeat-items-bindings/');
     const buttonLocator = page.getByText('Hover over me');
     await expect(buttonLocator).toBeVisible();
