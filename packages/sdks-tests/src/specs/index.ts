@@ -18,7 +18,8 @@ import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import { CONTENT as reactiveState } from './reactive-state.js';
 import { REPEAT_ITEMS_BINDINGS } from './repeat-items-bindings.js';
-import { CONTENT as showHideIf } from './show-hide-if.js';
+import { SHOW_HIDE_IF_REPEATS } from './show-hide-if-repeat.js';
+import { SHOW_HIDE_IF } from './show-hide-if.js';
 import { CONTENT as stateBinding } from './state-binding.js';
 import { CONTENT as symbolAbTest } from './symbol-ab-test.js';
 import { CONTENT as symbolBindings } from './symbol-bindings.js';
@@ -60,7 +61,8 @@ const pages = {
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': reactiveState,
   '/element-events': elementEvents,
-  '/show-hide-if': showHideIf,
+  '/show-hide-if': SHOW_HIDE_IF,
+  '/show-hide-if-repeats': SHOW_HIDE_IF_REPEATS,
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
   '/state-binding': stateBinding,

@@ -39,4 +39,33 @@ test.describe('Show If & Hide If', () => {
     await expect(page.getByText('odd clicks')).toBeVisible();
     await expect(page.locator('body')).not.toContainText('even clicks');
   });
+  test('works with repeat elements', async ({ page }) => {
+    await page.goto('/show-hide-if-repeats');
+
+    await expect(page.locator('body')).not.toContainText('zero');
+    await expect(page.locator('body')).not.toContainText('one');
+    await expect(page.locator('body')).not.toContainText('two');
+    await expect(page.locator('body')).not.toContainText('three');
+
+    await page.hover('text=button1');
+
+    await expect(page.locator('body')).not.toContainText('zero');
+    await expect(page.locator('body')).not.toContainText('one');
+    await expect(page.locator('body')).not.toContainText('two');
+    await expect(page.locator('body')).not.toContainText('three');
+
+    await page.hover('text=button2');
+
+    await expect(page.locator('body')).not.toContainText('zero');
+    await expect(page.locator('body')).not.toContainText('one');
+    await expect(page.locator('body')).toContainText('two');
+    await expect(page.locator('body')).not.toContainText('three');
+
+    await page.hover('text=button3');
+
+    await expect(page.locator('body')).not.toContainText('zero');
+    await expect(page.locator('body')).not.toContainText('one');
+    await expect(page.locator('body')).not.toContainText('two');
+    await expect(page.locator('body')).toContainText('three');
+  });
 });

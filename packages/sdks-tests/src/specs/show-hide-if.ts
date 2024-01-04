@@ -1,4 +1,4 @@
-export const CONTENT = {
+export const SHOW_HIDE_IF = {
   data: {
     title: 'dynamic-data-bindings',
     themeId: false,
