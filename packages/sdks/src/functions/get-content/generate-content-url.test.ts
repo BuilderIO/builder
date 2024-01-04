@@ -109,4 +109,118 @@ describe('Generate Content URL', () => {
     });
     expect(output).toMatchSnapshot();
   });
+
+  test('generate content url with limit unset and check for noTraverse', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with noTraverse option true', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      noTraverse: true,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with noTraverse option false', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      noTraverse: false,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with noTraverse option true and limit set to 2', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      noTraverse: true,
+      limit: 2,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with noTraverse option false and limit set to 2', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      noTraverse: false,
+      limit: 2,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with limit set to 2 and check for noTraverse', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      limit: 2,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with limit set to 1 and check for noTraverse', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      limit: 1,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with noTraverse option true and limit set to 1', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      noTraverse: true,
+      limit: 1,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with noTraverse option false and limit set to 1', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      noTraverse: false,
+      limit: 1,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with omit, fields, offset, includeUnpublished, cacheSeconds, staleCacheSeconds and sort combination', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      omit: 'someId, some.nested.id',
+      fields: 'id, nested.property',
+      offset: 1,
+      includeUnpublished: true,
+      cacheSeconds: 5,
+      staleCacheSeconds: 10,
+      sort: {
+        updatedDate: -1,
+        createdDate: 1,
+      },
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url when given invalid values of offset, includeUnpublished, cacheSeconds, staleCacheSeconds', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      offset: -10,
+      includeUnpublished: false,
+      cacheSeconds: -5,
+      staleCacheSeconds: -10,
+    });
+    expect(output).toMatchSnapshot();
+  });
 });

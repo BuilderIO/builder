@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { BuilderElement, builder, Builder } from '@builder.io/sdk';
 import { BuilderStoreContext } from '../store/builder-store';
 import { BuilderComponent } from '../components/builder-component.component';
@@ -55,7 +55,7 @@ export interface RouteEvent {
   preventDefault(): void;
 }
 
-class RouterComponent extends React.Component<RouterProps> {
+class RouterComponent extends React.Component<PropsWithChildren<RouterProps>> {
   builder = builder;
 
   routed = false;

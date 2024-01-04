@@ -33,3 +33,6 @@ Pods/
 .rpt2_cache/
 
 .env
+.vercel
+
+.nx-cache

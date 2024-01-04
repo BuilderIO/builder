@@ -1,4 +1,14 @@
+import {
+  Show,
+  setContext,
+  useMetadata,
+  useState,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
+import { TARGET } from '../../constants/target.js';
+import ComponentsContext from '../../context/components.context.lite.js';
 import type {
   BuilderContextInterface,
   BuilderRenderState,
@@ -8,29 +18,19 @@ import {
   components,
   serializeComponentInfo,
 } from '../../functions/register-component.js';
+import type { ComponentInfo } from '../../types/components.js';
+import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
+import { getUpdateVariantVisibilityScript } from '../content-variants/helpers.js';
+import InlinedScript from '../inlined-script.lite.jsx';
+import EnableEditor from './components/enable-editor.lite.jsx';
 import ContentStyles from './components/styles.lite.jsx';
-import {
-  Show,
-  useStore,
-  useMetadata,
-  useState,
-  setContext,
-} from '@builder.io/mitosis';
-import type { ContentProps } from './content.types.js';
 import {
   getContentInitialValue,
   getContextStateInitialValue,
 } from './content.helpers.js';
-import { TARGET } from '../../constants/target.js';
-import { getRenderContentScriptString } from '../content-variants/helpers.js';
-import { useTarget } from '@builder.io/mitosis';
-import EnableEditor from './components/enable-editor.lite.jsx';
-import InlinedScript from '../inlined-script.lite.jsx';
+import type { ContentProps } from './content.types.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
-import type { ComponentInfo } from '../../types/components.js';
-import type { Dictionary } from '../../types/typescript.js';
-import ComponentsContext from '../../context/components.context.lite.js';
 
 useMetadata({
   qwik: {
@@ -43,7 +43,7 @@ useMetadata({
 
 export default function ContentComponent(props: ContentProps) {
   const state = useStore({
-    scriptStr: getRenderContentScriptString({
+    scriptStr: getUpdateVariantVisibilityScript({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       variationId: props.content?.testVariationId!,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
@@ -139,7 +139,6 @@ export default function ContentComponent(props: ContentProps) {
       locale={props.locale}
       includeRefs={props.includeRefs}
       enrich={props.enrich}
-      classNameProp={props.classNameProp}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
       {...useTarget({

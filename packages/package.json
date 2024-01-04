@@ -1,37 +1,16 @@
 {
-  "name": "@builder.io/mono-repo",
+  "name": "@builder.io/packages",
   "description": "This mono-repo includes the new SDKs and their integration tests.",
   "private": true,
-  "workspaces": [
-    "sdks-tests",
-    "sdks",
-    "react",
-    "core",
-    "react-tests/*",
-    "sdks/e2e/*",
-    "sdks/output/*",
-    "sdks/output/vue/vue2",
-    "sdks/output/vue/vue3"
-  ],
   "scripts": {
     "e2e:build:old-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
-    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run"
+    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run",
+    "ci:changeset": "changeset status --since=main",
+    "ci:release": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\* && yarn g:changeset publish"
   },
-  "engines": {
-    "yarn": ">= 3.0.0"
-  },
-  "resolutions": {
-    "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch",
-    "minimist": "^1.2.7",
-    "json5": "2.2.1",
-    "prettier": "2.8.8",
-    "@builder.io/react": "workspace:*",
-    "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
-  },
-  "packageManager": "yarn@3.6.1",
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
-    "prettier": "^2.8.8"
+    "nx-cloud": "^16.2.0"
   }
 }

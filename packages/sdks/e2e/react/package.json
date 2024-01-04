@@ -1,7 +1,6 @@
 {
   "name": "@e2e/react",
   "private": true,
-  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "build": "tsc --noEmit && vite build",
@@ -15,8 +14,8 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
+    "@types/react": "^18.2.39",
+    "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.0.4",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",

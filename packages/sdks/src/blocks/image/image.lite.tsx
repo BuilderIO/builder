@@ -21,7 +21,7 @@ export interface ImageProps {
   backgroundPosition?: string;
   srcset?: string;
   aspectRatio?: number;
-  children?: JSX.Element;
+  children?: any;
   fitContent?: boolean;
   builderBlock?: BuilderBlock;
   noWebp?: boolean;

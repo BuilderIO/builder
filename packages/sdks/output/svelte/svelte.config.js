@@ -1,6 +1,6 @@
+import { getEvaluatorPathAlias } from '@builder.io/sdks/output-generation/index.js';
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
-import { getEvaluatorPathAlias } from '@builder.io/sdks/output-generation/index.js';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {

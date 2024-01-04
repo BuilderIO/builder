@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/utils",
-  "version": "1.1.15",
+  "version": "1.1.19",
   "description": "Utils for working with Builder.io content",
   "main": "./dist/index.js",
   "scripts": {

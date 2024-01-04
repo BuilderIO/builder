@@ -58,7 +58,7 @@ test.describe('Visual Editing', () => {
 
     await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
     await sendContentUpdateMessage(page, MODIFIED_HOMEPAGE);
-    await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
+    await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
   });
 
   test('correctly updates Text block in a Column block', async ({

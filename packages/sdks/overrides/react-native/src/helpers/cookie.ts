@@ -1,10 +1,9 @@
 import type { CanTrack } from '../types/can-track.js';
-import type { OrgId } from './document-cookie';
 import { logger } from './logger.js';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Storage from 'react-native-storage';
 import { isBrowser } from '../functions/is-browser.js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
@@ -34,15 +33,18 @@ const storage = initStorage();
 const getStorageName = (name: string) => `builderio.${name}`;
 
 // stub, never called, but needed to fix bundling.
-export const getCookieSync = () => {};
+export const getCookieSync = (
+  _: {
+    name: string;
+  } & CanTrack
+): any => {};
 
 export const getCookie = async ({
   name,
   canTrack,
 }: {
   name: string;
-} & CanTrack &
-  OrgId) => {
+} & CanTrack) => {
   try {
     if (!canTrack) {
       return undefined;
@@ -71,8 +73,7 @@ export const setCookie = async ({
   name: string;
   value: string;
   expires?: Date;
-} & CanTrack &
-  OrgId) => {
+} & CanTrack) => {
   try {
     if (!canTrack) {
       return undefined;

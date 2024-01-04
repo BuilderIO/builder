@@ -5,8 +5,13 @@
     "allowJs": true,
     "noEmitOnError": false,
     "noEmit": false,
+    "lib": ["ESNext", "dom"],
     // Override: exclude jest types.
     "types": ["react-native"],
+    "noImplicitAny": false,
+    "strict": false,
+    "strictNullChecks": false,
+    // "isolatedModules": false,
     // we don't use react-native, as that preserves the JSX tags
     "jsx": "react",
     "paths": {

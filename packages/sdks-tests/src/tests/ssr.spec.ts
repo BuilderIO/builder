@@ -6,14 +6,14 @@ test.describe('SSR', () => {
     await page.goto('/');
 
     const btn = isRNSDK
-      ? page.getByRole('link', { name: 'Data Bindings' })
+      ? page.locator('a').filter({ hasText: 'Data Bindings' })
       : page.locator('text=Data Bindings');
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');
   });
 
   test('js disabled', async ({ browser, packageName }) => {
-    test.skip(!isSSRFramework(packageName));
+    test.fail(!isSSRFramework(packageName));
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
@@ -23,7 +23,7 @@ test.describe('SSR', () => {
     await page.goto('/');
 
     const btn = isRNSDK
-      ? page.getByRole('link', { name: 'Data Bindings' })
+      ? page.locator('a').filter({ hasText: 'Data Bindings' })
       : page.locator('text=Data Bindings');
 
     await expect(btn).toHaveCSS('background-color', 'rgb(56, 152, 236)');

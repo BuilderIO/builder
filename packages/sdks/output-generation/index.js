@@ -121,4 +121,5 @@ module.exports = {
   getSdkOutputPath,
   viteOutputGenerator,
   esbuildOutputGenerator,
+  getSdkEnv,
 };

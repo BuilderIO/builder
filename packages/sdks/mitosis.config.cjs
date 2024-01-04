@@ -8,6 +8,7 @@ const rng = seedrandom('vue-sdk-seed');
  * @typedef {import('@builder.io/mitosis').StateValue} StateValue
  * @typedef {import('@builder.io/mitosis').MitosisConfig} MitosisConfig
  * @typedef {import('@builder.io/mitosis').Plugin} Plugin
+ * @typedef {import('@builder.io/mitosis').OnMountHook} OnMountHook
  */
 
 /**
@@ -90,7 +91,7 @@ const vueConfig = {
             }
 
             const filterAttrKeys = Object.entries(item.bindings).filter(
-              ([key, value]) =>
+              ([_key, value]) =>
                 value?.code.includes('filterAttrs') &&
                 value.code.includes('true')
             );
@@ -166,6 +167,50 @@ module.exports = {
   targets,
   getTargetPath,
   options: {
+    solid: {
+      typescript: true,
+      plugins: [
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name !== 'EnableEditor') return;
+              json.hooks.onMount.forEach((onMountHook) => {
+                json.hooks.onEvent.forEach((eventHook) => {
+                  const isEditingHook =
+                    onMountHook.code.includes('INJECT_EDITING_HOOK_HERE') &&
+                    eventHook.eventName === 'initeditingbldr';
+
+                  if (isEditingHook) {
+                    onMountHook.code = onMountHook.code.replace(
+                      'INJECT_EDITING_HOOK_HERE',
+                      eventHook.code
+                    );
+                  }
+
+                  const isPreviewingHook =
+                    onMountHook.code.includes('INJECT_PREVIEWING_HOOK_HERE') &&
+                    eventHook.eventName === 'initpreviewingbldr';
+
+                  if (isPreviewingHook) {
+                    onMountHook.code = onMountHook.code.replace(
+                      'INJECT_PREVIEWING_HOOK_HERE',
+                      eventHook.code
+                    );
+                  }
+                });
+
+                onMountHook.code = onMountHook.code.replaceAll(
+                  'elementRef',
+                  'true'
+                );
+              });
+
+              json.hooks.onEvent = [];
+            },
+          },
+        }),
+      ],
+    },
     vue2: {
       ...vueConfig,
       asyncComponentImports: true,
@@ -252,6 +297,7 @@ module.exports = {
       stylesType: 'style-tag',
     },
     rsc: {
+      explicitImportFileExtension: true,
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
@@ -261,6 +307,7 @@ module.exports = {
               if (json.name === 'Symbol') {
                 delete json.state.setContent;
 
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 json.state.contentToUse.code =
                   json.state.contentToUse?.code.replace('async () => ', '');
@@ -296,7 +343,7 @@ module.exports = {
           json: {
             pre: (json) => {
               /**
-               * We cannot set context in `ComponentRef` because it's a light Qwik component.
+               * We cannot set context in `ComponentRef` because it's a light component.
                * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
                **/
               if (json.name === 'ComponentRef') {
@@ -376,7 +423,41 @@ module.exports = {
     },
     qwik: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        /**
+         * cleanup `onMount` hooks
+         * - rmv unnecessary ones
+         * - migrate necessary `onMount` hooks to `useOn('qvisible')` hooks
+         */
+        () => ({
+          json: {
+            pre: (json) => {
+              if (['Symbol', 'ContentVariants'].includes(json.name)) {
+                json.hooks.onMount = [];
+                return;
+              }
+
+              if (['EnableEditor', 'CustomCode'].includes(json.name)) {
+                json.hooks.onMount.forEach((hook, i) => {
+                  if (hook.onSSR) return;
+
+                  json.hooks.onMount.splice(i, 1);
+
+                  json.hooks.onEvent.push({
+                    code: hook.code.replaceAll('elementRef', 'element'),
+                    eventArgName: 'event',
+                    eventName: 'qvisible',
+                    isRoot: true,
+                    refName: 'element',
+                    elementArgName: 'element',
+                  });
+                });
+              }
+            },
+          },
+        }),
+      ],
     },
     svelte: {
       typescript: true,
@@ -445,7 +526,7 @@ module.exports = {
                 if (!isMitosisNode(item)) return;
 
                 const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([key, value]) =>
+                  ([_key, value]) =>
                     value?.code.includes('filterAttrs') &&
                     value.code.includes('true')
                 );

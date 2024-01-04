@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 import {
   test,
-  excludeReactNative,
   isRNSDK,
   expectStylesForElement,
   findTextInPage,
@@ -9,12 +8,7 @@ import {
 } from './helpers.js';
 
 test.describe('Styles', () => {
-  excludeReactNative('data-binding-styles', async ({ page, packageName }) => {
-    // TODO: FIX broken test for NextJS
-    if (packageName === 'gen1-next') {
-      return;
-    }
-
+  test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
     await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
       'color',
@@ -23,12 +17,7 @@ test.describe('Styles', () => {
   });
 
   test.describe('Style Bindings', () => {
-    test('Content', async ({ page, packageName }) => {
-      // TODO: FIX broken test for NextJS
-      if (packageName === 'gen1-next') {
-        return;
-      }
-
+    test('Content', async ({ page }) => {
       await page.goto('/content-bindings');
 
       const expected = {
@@ -51,12 +40,7 @@ test.describe('Styles', () => {
       // check the title is correct
       // title: 'some special title'
     });
-    test('Symbol', async ({ page, packageName }) => {
-      // TODO: FIX broken test for NextJS
-      if (packageName === 'gen1-next') {
-        return;
-      }
-
+    test('Symbol', async ({ page }) => {
       await page.goto('/symbol-bindings');
 
       const expected = {
@@ -96,14 +80,15 @@ test.describe('Styles', () => {
     await expect(locator).toHaveCSS('margin-left', '0px');
   });
 
-  const excludeReactNativeAndOldReact = excludeTestFor({
-    // we don't support CSS nesting in RN.
-    reactNative: true,
-    // old React SDK should support CSS nesting, but it seems to not be implemented properly.
-    oldReact: true,
-  });
-
-  excludeReactNativeAndOldReact('Should apply CSS nesting', async ({ page }) => {
+  test('Should apply CSS nesting', async ({ page }) => {
+    test.fail(
+      excludeTestFor({
+        // we don't support CSS nesting in RN.
+        reactNative: true,
+        // old React SDK should support CSS nesting, but it seems to not be implemented properly.
+        oldReact: true,
+      })
+    );
     await page.goto('./css-nesting');
 
     const blueText = page.locator('text=blue');

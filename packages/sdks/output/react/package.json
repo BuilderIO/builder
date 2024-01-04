@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.6.4",
+  "version": "0.7.6",
   "files": [
     "lib",
     "types"
@@ -88,13 +88,14 @@
       "require": "./lib/browser/index.cjs"
     },
     "./server": {
-      "types": "./types/functions/get-content/index.d.ts",
+      "types": "./types/server-index.d.ts",
       "import": "./lib/node/server-entry.mjs",
       "require": "./lib/node/server-entry.cjs"
     }
   },
   "scripts": {
-    "publish": "npm publish",
+    "release": "npm publish",
+    "build-inline-fns": "yarn g:build-inline-fns",
     "types": "tsc",
     "build": "nx run-many -p @builder.io/sdk-react -t types build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",
@@ -102,7 +103,10 @@
     "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": ">=16"
+  },
+  "dependencies": {
+    "isolated-vm": "^4.6.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
@@ -116,8 +120,14 @@
   },
   "nx": {
     "targets": {
+      "build-inline-fns": {
+        "dependsOn": [
+          "^build:react"
+        ]
+      },
       "build": {
         "dependsOn": [
+          "build-inline-fns",
           "^build:react",
           "^build"
         ],

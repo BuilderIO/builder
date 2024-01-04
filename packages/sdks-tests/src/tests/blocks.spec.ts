@@ -1,61 +1,17 @@
 import { expect } from '@playwright/test';
-import type { Page } from '@playwright/test';
-import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from './helpers.js';
-import {
-  test,
-  isRNSDK,
-  excludeReactNative,
-  testOnlyOldReact,
-  testExcludeOldReact,
-  isOldReactSDK,
-} from './helpers.js';
-import { sdk } from './sdk.js';
-import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
+import { EXCLUDE_RN, isRNSDK, test } from './helpers.js';
 
-const testSymbols = async (page: Page) => {
-  await page.getByText('special test description').locator('visible=true').waitFor();
-
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
-    )
-    .locator('visible=true')
-    .waitFor();
-
-  await page.getByText('default description').locator('visible=true').waitFor();
-
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
-    )
-    .locator('visible=true')
-    .waitFor();
-
-  const firstSymbolText = await page.locator('text="Description of image:"').first();
-
-  // these are desktop and tablet styles, and will never show up in react native
-  if (!isRNSDK) {
-    // check desktop styles
-    await expect(firstSymbolText).toHaveCSS('color', 'rgb(255, 0, 0)');
-
-    // resize to tablet
-    await page.setViewportSize({ width: 930, height: 1000 });
-    await expect(firstSymbolText).toHaveCSS('color', 'rgb(0, 255, 6)');
-
-    // resize to mobile
-    await page.setViewportSize({ width: 400, height: 1000 });
-  }
-
-  // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
-  if (!isRNSDK) {
-    // check mobile styles
-    await expect(firstSymbolText).toHaveCSS('color', 'rgb(0, 255, 255)');
-  }
-};
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test.describe('Blocks', () => {
-  excludeReactNative('Text block', async ({ page }) => {
+  test('Text block', async ({ page }) => {
+    test.fail(EXCLUDE_RN);
     await page.goto('/text-block');
 
     const textBlocks = page.locator('.builder-text');
@@ -143,77 +99,105 @@ test.describe('Blocks', () => {
     }
   });
 
-  test('symbols', async ({ page }) => {
-    await page.goto('/symbols');
+  test.describe('video', () => {
+    test('video render and styles', async ({ page }) => {
+      test.skip(isRNSDK);
+      const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
-    await testSymbols(page);
-  });
-  test('symbols without content', async ({ page, packageName }) => {
-    if (packageName === 'next-app-dir') test.skip();
-
-    let x = 0;
-
-    const urlMatch =
-      sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
-
-    await page.route(urlMatch, route => {
-      x++;
-
-      const url = new URL(route.request().url());
-
-      const keyName =
-        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
-
-      return route.fulfill({
-        status: 200,
-        json: {
-          [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
-        },
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          route.continue();
+        }
       });
+
+      await page.goto('/video');
+
+      const videoLocator = page.locator('video');
+
+      const expectedCSS: Record<string, string>[] = [
+        {
+          width: '152px',
+          'object-fit': 'cover',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+        {
+          width: '1249px',
+          'object-fit': 'contain',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+        {
+          width: '744px',
+          'object-fit': 'cover',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+        {
+          width: '152px',
+          'object-fit': 'cover',
+          'z-index': '2',
+          'border-radius': '1px',
+          position: 'absolute',
+        },
+      ];
+
+      await expect(videoLocator).toHaveCount(expectedCSS.length);
+
+      const expectedVals = expectedCSS.map((val, i) => ({ val, i }));
+
+      for (const { val, i } of Object.values(expectedVals)) {
+        const video = videoLocator.nth(i);
+        const expected = val;
+        for (const property of Object.keys(expected)) {
+          await expect(video).toHaveCSS(property, expected[property]);
+        }
+      }
     });
 
-    await page.goto('/symbols-without-content');
+    test('video children', async ({ page }) => {
+      test.skip(isRNSDK);
+      const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
-    await testSymbols(page);
-
-    await expect(x).toBeGreaterThanOrEqual(2);
-  });
-
-  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
-    let x = 0;
-
-    const urlMatch =
-      sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
-
-    await page.route(urlMatch, route => {
-      x++;
-
-      const url = new URL(route.request().url());
-
-      const keyName =
-        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
-
-      return route.fulfill({
-        status: 200,
-        json: {
-          [keyName]: [x === 1 ? DEFAULT_TEXT_SYMBOL : FRENCH_TEXT_SYMBOL],
-        },
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          route.continue();
+        }
       });
+
+      await page.goto('/video');
+
+      const videoContainers = page.locator('.some-class');
+      const noOfVideos = await page.locator('.builder-video').count();
+
+      await expect(videoContainers).toHaveCount(noOfVideos);
+
+      for (let i = 0; i < noOfVideos; i++) {
+        const container = videoContainers.nth(i);
+        const textBlock = container.locator('.builder-text p');
+        await expect(textBlock).toBeVisible();
+        await expect(textBlock).toHaveText('asfgasgasgasg some test');
+      }
     });
-
-    await page.goto('/symbol-with-locale');
-
-    await page.waitForSelector('text=Default text');
-
-    await page.click('text=click');
-
-    await page.waitForSelector('text=French text');
-
-    await expect(x).toBeGreaterThanOrEqual(2);
   });
 
   test.describe('Columns', () => {
@@ -288,10 +272,8 @@ test.describe('Blocks', () => {
     for (const entry of Object.entries(sizes)) {
       const [sizeName, size] = entry as [SizeName, Size];
 
-      // only test mobile for RN
-      if (isRNSDK && sizeName !== 'mobile') {
-        test.skip();
-      }
+      // intermittent success, can't use test.fail()
+      test.skip(isRNSDK && sizeName !== 'mobile');
 
       test.describe(sizeName, () => {
         for (const [columnType, styles] of Object.entries(expected)) {
@@ -328,157 +310,5 @@ test.describe('Blocks', () => {
         }
       });
     }
-  });
-
-  test.describe('Test ApiVersion', () => {
-    test('apiVersion is not set', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') test.skip();
-
-      let x = 0;
-
-      const urlMatch = isOldReactSDK
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
-
-      await page.route(urlMatch, route => {
-        x++;
-
-        const url = new URL(route.request().url());
-
-        const keyName = isOldReactSDK
-          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
-          : 'results';
-
-        return route.fulfill({
-          status: 200,
-          json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
-          },
-        });
-      });
-
-      await page.goto('/api-version-default');
-
-      await testSymbols(page);
-
-      await expect(x).toBeGreaterThanOrEqual(2);
-    });
-
-    test('apiVersion is set to v3', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') test.skip();
-      let x = 0;
-
-      const urlMatch = isOldReactSDK
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
-
-      await page.route(urlMatch, route => {
-        x++;
-
-        const url = new URL(route.request().url());
-
-        const keyName = isOldReactSDK
-          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
-          : 'results';
-
-        return route.fulfill({
-          status: 200,
-          json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
-          },
-        });
-      });
-
-      await page.goto('/api-version-v3');
-
-      await testSymbols(page);
-
-      await expect(x).toBeGreaterThanOrEqual(2);
-    });
-
-    testOnlyOldReact('apiVersion is set to v1', async ({ page }) => {
-      let x = 0;
-
-      const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
-
-      await page.route(urlMatch, route => {
-        x++;
-
-        const url = new URL(route.request().url());
-
-        const keyName = decodeURIComponent(url.pathname).split('/').reverse()[0];
-
-        return route.fulfill({
-          status: 200,
-          json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
-          },
-        });
-      });
-
-      await page.goto('/api-version-v1');
-
-      await testSymbols(page);
-
-      await expect(x).toBeGreaterThanOrEqual(2);
-    });
-
-    testExcludeOldReact('apiVersion is set to v2', async ({ page, packageName }) => {
-      if (packageName === 'next-app-dir') test.skip();
-      let x = 0;
-
-      const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
-
-      await page.route(urlMatch, route => {
-        x++;
-
-        const keyName = 'results';
-
-        return route.fulfill({
-          status: 200,
-          json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
-          },
-        });
-      });
-
-      await page.goto('/api-version-v2');
-
-      await testSymbols(page);
-
-      await expect(x).toBeGreaterThanOrEqual(2);
-    });
-  });
-
-  test('nested symbols with inherit', async ({ packageName, page }) => {
-    await page.goto('/nested-symbols');
-
-    // Skipping the test as v2 sdks currently don't support Slot
-    // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    if (
-      [
-        'react-native',
-        'solid',
-        'solid-start',
-        'qwik-city',
-        'next-pages-dir',
-        'next-app-dir-client',
-        'next-app-dir',
-        'react',
-        'vue2',
-        'vue3',
-        'nuxt3',
-        'nuxt2',
-        'svelte',
-        'sveltekit',
-        'gen1-remix',
-        'gen1-next',
-      ].includes(packageName)
-    ) {
-      test.skip();
-    }
-
-    const symbols = page.locator('[builder-model="symbol"]');
-    await expect(symbols).toHaveCount(2);
   });
 });

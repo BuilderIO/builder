@@ -9,6 +9,20 @@ test('getTranslateableFields from content to match snapshot', async () => {
         'en-US': 'Hello',
         Default: 'Test',
       },
+      seo: {
+        '@type': localizedType,
+        'en-US': {
+          menuItems: [
+            {
+              menuName: 'en menu name',
+            },
+          ],
+          name: 'en name in subfield',
+        },
+        Default: {
+          name: 'default name in subfield',
+        },
+      },
       blocks: [
         {
           meta: {
@@ -20,6 +34,23 @@ test('getTranslateableFields from content to match snapshot', async () => {
             name: 'Text',
             options: {
               text: 'test',
+            },
+          },
+        },
+        {
+          meta: {
+            instructions: 'This is a mobile only element',
+          },
+          id: 'block-pre-localized-element',
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Text',
+            options: {
+              text: {
+                '@type': localizedType,
+                'en-US': 'en-us text!',
+                Default: 'default text!',
+              },
             },
           },
         },
@@ -81,6 +112,20 @@ test('applyTranslation from content to match snapshot', async () => {
         'en-US': 'Hello',
         Default: 'Test',
       },
+      seo: {
+        '@type': localizedType,
+        'en-US': {
+          menuItems: [
+            {
+              menuName: 'en menu name',
+            },
+          ],
+          name: 'en name in subfield',
+        },
+        Default: {
+          name: 'default name in subfield',
+        },
+      },
       blocks: [
         {
           id: 'block-id',
@@ -124,6 +169,11 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-custom-component-id#heading': {
       value: 'french translated heading',
     },
+    'metadata.seo': {
+      value: {
+        name: 'french name in subfield',
+      },
+    },
     'blocks.builder-custom-component-id#subtitle': {
       value: 'french translated subtitle',
     },
@@ -133,6 +183,11 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.block-id#text': { value: 'german translatated' },
     'blocks.builder-custom-component-id#heading': {
       value: '&quot;german heading&quot;',
+    },
+    'metadata.seo': {
+      value: {
+        name: 'german name in subfield',
+      },
     },
     'blocks.builder-custom-component-id#subtitle': {
       value: 'german translated subtitle',

@@ -98,14 +98,12 @@ export const CONTENT = {
         '@version': 2,
         actions: { click: 'state.name="repeated set"' },
         bindings: {
-          _newProperty: '',
           'component.options.text':
             'var _virtual_index=state.listItem+": (click me to change `name`)";return _virtual_index',
         },
         code: {
           actions: { click: 'state.name = "repeated set";\n' },
           bindings: {
-            _newProperty: '',
             'component.options.text': 'state.listItem + ": (click me to change `name`)";\n',
           },
         },

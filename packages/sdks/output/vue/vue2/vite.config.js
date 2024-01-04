@@ -1,8 +1,8 @@
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import vue2 from '@vitejs/plugin-vue2';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import vue2 from '@vitejs/plugin-vue2';
 import dts from 'vite-plugin-dts';
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,7 +20,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['vue', 'js-interpreter', 'isolated-vm'],
+      external: ['vue'],
       output: {
         globals: {
           vue: 'Vue',

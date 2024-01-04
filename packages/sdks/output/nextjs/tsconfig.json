@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES5",
-    "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     // "strict": true,
+    "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "jsx": "react",
     "declaration": true,
     "emitDeclarationOnly": true,
@@ -18,8 +15,7 @@
       "placeholder-runtime": [
         "./src/functions/evaluate/browser-runtime/index.js"
       ]
-    },
-    "outDir": "./types"
+    }
   },
-  "include": ["./src/index.ts"]
+  "include": ["./src/index.ts", "module-augmentations.d.ts"]
 }

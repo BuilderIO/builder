@@ -1,6 +1,6 @@
-import { getBuilderSearchParams } from './get-builder-search-params/index.js';
 import type { ContentVariantsPrps } from '../components/content-variants/content-variants.types.js';
 import type { Dictionary } from '../types/typescript.js';
+import { getBuilderSearchParams } from './get-builder-search-params/index.js';
 import { fetchOneEntry } from './get-content/index.js';
 import type { GetContentOptions } from './get-content/types.js';
 

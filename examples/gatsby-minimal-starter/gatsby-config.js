@@ -1,6 +1,14 @@
+/**
+ * @type {import('gatsby').GatsbyConfig}
+ */
+
 const path = require('path');
 
 module.exports = {
+  siteMetadata: {
+    title: `Gatsby Minimal Starter`,
+    siteUrl: `https://www.yourdomain.tld`,
+  },
   plugins: [
     'gatsby-plugin-typescript',
     {
@@ -14,9 +22,9 @@ module.exports = {
         templates: {
           // Render every `page` model as a new page using the /page.tsx template
           // based on the URL provided in Builder.io
-          page: path.resolve('src/templates/page.jsx')
-        }
-      }
-    }
-  ]
+          page: path.resolve('src/templates/page.jsx'),
+        },
+      },
+    },
+  ],
 };

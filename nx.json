@@ -1,0 +1,60 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx-cloud",
+      "options": {
+        "accessToken": "MWRjZDNhMmQtMTlhMi00YWExLTkzZDAtMTA1NzM1ZmIxMmRkfHJlYWQ=",
+        "cacheDirectory": ".nx-cache",
+        "cacheableOperations": [
+          "build",
+          "build-inline-fns",
+          "build:react",
+          "build:qwik",
+          "build:svelte",
+          "build:solid",
+          "build:react-native",
+          "build:vue2",
+          "build:vue3",
+          "build:nextjs"
+        ]
+      }
+    }
+  },
+  "targetDefaults": {
+    "dev": {
+      "dependsOn": ["build"],
+      "configurations": {},
+      "options": {}
+    },
+    "serve": {
+      "dependsOn": ["build"]
+    },
+    "build-inline-fns": {
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/src"]
+    },
+    "build": {
+      "dependsOn": ["^build", "prebuild"],
+      "outputs": ["{projectRoot}/dist"],
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build"
+      }
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "release": {
+      "dependsOn": ["build"]
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": ["default"]
+  }
+}

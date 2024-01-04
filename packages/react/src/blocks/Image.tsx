@@ -118,7 +118,7 @@ export const getSizes = (
       })
       .join(', ');
   } else if (block && block.responsiveStyles) {
-    const generatedSizes = [];
+    const generatedSizes: string[] = [];
     let hasSmallOrMediumSize = false;
     const unitRegex = /^\d+/;
 

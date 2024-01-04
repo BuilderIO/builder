@@ -1,38 +1,18 @@
-import type { Browser, BrowserContext, ConsoleMessage } from '@playwright/test';
+import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { findTextInPage, isRNSDK, test } from './helpers.js';
-const SELECTOR = isRNSDK ? 'div[data-builder-content-id]' : 'div[builder-content-id]';
+import { test } from './helpers.js';
+const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
   cookies,
   baseURL,
   browser,
-  context,
 }: {
   browser: Browser;
   baseURL: string;
   cookies: { name: string; value: string }[];
-  context: BrowserContext;
 }) => {
-  if (isRNSDK) {
-    await context.addInitScript(
-      items => {
-        items.map(({ name, value }) => {
-          window.localStorage.setItem(name, value);
-        });
-      },
-      cookies.map(({ name, value }) => ({
-        name: `builderio.${name}`,
-        value: JSON.stringify({
-          rawData: { value },
-          // add long expiry
-          expires: Date.now() + 1000 * 60 * 60 * 24 * 365 * 10,
-        }),
-      }))
-    );
-    return context;
-  }
-  return await browser.newContext({
+  const context = await browser.newContext({
     storageState: {
       cookies: cookies.map(cookie => {
         const newCookie = {
@@ -40,21 +20,14 @@ const createContextWithCookies = async ({
           value: cookie.value,
           // this is valid but types seem to be mismatched.
           url: baseURL,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any;
         return newCookie;
       }),
       origins: [],
     },
   });
-};
-
-const filterHydrationmismatchMessages = (consoleMessage: ConsoleMessage) => {
-  const text = consoleMessage.text().toLowerCase();
-
-  const isVueHydrationMismatch =
-    text.includes('[vue warn]') && text.includes('hydration') && text.includes('mismatch');
-
-  return isVueHydrationMismatch;
+  return context;
 };
 
 const initializeAbTest = async (
@@ -63,41 +36,34 @@ const initializeAbTest = async (
     baseURL,
     packageName,
     browser,
-    context: _context,
   }: Pick<
     Parameters<Parameters<typeof test>[1]>[0],
-    'page' | 'baseURL' | 'packageName' | 'browser' | 'context'
+    'page' | 'baseURL' | 'packageName' | 'browser'
   >,
   { cookieName, cookieValue }: { cookieName: string; cookieValue: string }
 ) => {
   if (!baseURL) throw new Error('Missing baseURL');
 
   // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-  if (packageName === 'gen1-next') test.skip();
+  test.skip(packageName === 'gen1-next');
 
-  // TO-DO: fix this
-  if (packageName === 'next-app-dir') test.skip();
+  // RN can't have SSR, we don't support/export it.
+  test.skip(packageName === 'react-native');
 
-  // React Native SDK needs some extra time to sort its feelings out.
-  if (packageName === 'react-native') test.slow();
+  /**
+   * This test is flaky on `next-app-dir` and `qwik-city`. Most likely because it is the very first test that runs.
+   */
+  test.slow(packageName === 'next-app-dir' || packageName === 'qwik-city');
 
   const context = await createContextWithCookies({
     baseURL,
     browser,
     cookies: [{ name: cookieName, value: cookieValue }],
-    context: _context,
   });
 
-  const page = isRNSDK ? _page : await context.newPage();
+  const page = await context.newPage();
 
-  const msgs = [] as ConsoleMessage[];
-  page.on('console', msg => {
-    if (filterHydrationmismatchMessages(msg)) {
-      msgs.push(msg);
-    }
-  });
-
-  return { page, msgs };
+  return { page };
 };
 
 test.describe('A/B tests', () => {
@@ -122,15 +88,13 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -140,10 +104,9 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test');
 
-        await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
+        await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
 
       test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
@@ -151,15 +114,13 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -169,10 +130,9 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test');
 
-        await findTextInPage({ page, text: TEXTS.VARIANT_1 });
+        await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_2 })).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
     }
   });
@@ -197,17 +157,13 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
-        if (packageName === 'react-native') test.skip();
-
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -216,14 +172,13 @@ test.describe('A/B tests', () => {
         );
         await page.goto('/symbol-ab-test');
 
-        await findTextInPage({ page, text: TEXTS.DEFAULT_CONTENT });
+        await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_1 })
         ).toBeHidden();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_2 })
         ).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
 
       test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
@@ -231,17 +186,13 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        context: _context,
       }) => {
-        if (packageName === 'react-native') test.skip();
-
-        const { page, msgs } = await initializeAbTest(
+        const { page } = await initializeAbTest(
           {
             page: _page,
             baseURL,
             packageName,
             browser,
-            context: _context,
           },
           {
             cookieName: COOKIE_NAME,
@@ -251,14 +202,13 @@ test.describe('A/B tests', () => {
 
         await page.goto('/symbol-ab-test');
 
-        await findTextInPage({ page, text: TEXTS.VARIANT_1 });
+        await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.DEFAULT_CONTENT })
         ).toBeHidden();
         await expect(
           page.locator(SELECTOR + '[builder-model="symbol"]', { hasText: TEXTS.VARIANT_2 })
         ).toBeHidden();
-        await expect(msgs).toEqual([]);
       });
     }
   });

@@ -1,6 +1,6 @@
+import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 
 const SERVER_ENTRY = 'server-entry';
 
@@ -17,7 +17,7 @@ export default defineConfig({
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['isolated-vm', 'react', 'react/jsx-runtime', 'react-dom'],
+      external: ['react', 'react/jsx-runtime', 'react-dom'],
       output: {
         globals: {
           react: 'react',

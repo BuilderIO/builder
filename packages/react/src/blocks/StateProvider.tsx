@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { BuilderElement } from '@builder.io/sdk';
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
 import { BuilderStoreContext } from '../store/builder-store';
@@ -11,7 +11,7 @@ interface StateProviderProps {
   context?: any;
 }
 
-class StateProviderComponent extends React.Component<StateProviderProps> {
+class StateProviderComponent extends React.Component<PropsWithChildren<StateProviderProps>> {
   render() {
     return (
       <BuilderStoreContext.Consumer>
