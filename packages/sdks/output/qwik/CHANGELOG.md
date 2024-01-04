@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.7.6
+
+### Patch Changes
+
+- 992a97e: Fix: Show & Hide If properties when combined with repeated elements
+
 ## 0.7.5
 
 ### Patch Changes
