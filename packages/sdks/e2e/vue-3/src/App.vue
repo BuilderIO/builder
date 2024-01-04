@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { RenderContent } from '@builder.io/sdk-vue/vue3';
-import '@builder.io/sdk-vue/vue3/css';
 
 export default defineComponent({
   name: 'DynamicallyRenderBuilderPage',

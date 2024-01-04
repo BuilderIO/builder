@@ -6,7 +6,6 @@
 </template>
 <script lang="ts">
 import { RenderContent, _processContentResult } from '@builder.io/sdk-vue/vue2';
-import '@builder.io/sdk-vue/vue2/css';
 import { getProps } from '@e2e/tests';
 import { defineComponent } from 'vue';
 
