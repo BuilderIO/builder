@@ -7,9 +7,6 @@
   "files": [
     "lib"
   ],
-  "sideEffects": [
-    "./lib/browser/style.css"
-  ],
   "scripts": {
     "build-inline-fns": "yarn g:build-inline-fns",
     "build": "nx run-many -p @builder.io/sdk-vue-3 -t build:node build:edge build:browser",
