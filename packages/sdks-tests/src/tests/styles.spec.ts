@@ -1,10 +1,11 @@
 import { expect } from '@playwright/test';
 import {
-  test,
-  isRNSDK,
+  excludeTestFor,
   expectStylesForElement,
   findTextInPage,
-  excludeTestFor,
+  getClassSelector,
+  isRNSDK,
+  test,
 } from './helpers.js';
 
 test.describe('Styles', () => {
@@ -27,9 +28,7 @@ test.describe('Styles', () => {
         'border-bottom-right-radius': '30px',
       };
 
-      const selector = isRNSDK
-        ? '[data-class*=builder-blocks] > div'
-        : '[class*=builder-blocks] > div';
+      const selector = `${getClassSelector('builder-blocks')} > div`;
 
       const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
 
@@ -49,10 +48,7 @@ test.describe('Styles', () => {
         'border-bottom-left-radius': '30px',
         'border-bottom-right-radius': '40px',
       };
-
-      const selector = isRNSDK
-        ? '[data-class*=builder-blocks] > div'
-        : '[class*=builder-blocks] > div';
+      const selector = `${getClassSelector('builder-blocks')} > div`;
 
       const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
 

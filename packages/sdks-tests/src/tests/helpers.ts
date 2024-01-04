@@ -173,3 +173,7 @@ export const checkIfIsHydrationErrorMessage = (_text: string) => {
   const filterHydrationmismatchMessages = isVueHydrationMismatch || isReactHydrationMismatch;
   return filterHydrationmismatchMessages;
 };
+
+export const getClassSelector = (className: string) => {
+  return isRNSDK ? `[data-class*=${className}]` : `.${className}`;
+};
