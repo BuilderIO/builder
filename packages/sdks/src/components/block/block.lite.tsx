@@ -87,18 +87,17 @@ export default function Block(props: BlockProps) {
       });
     },
     get canShowBlock() {
-      if ('hide' in state.processedBlock) {
-        return !state.processedBlock.hide;
-      }
-      if ('show' in state.processedBlock) {
-        return state.processedBlock.show;
-      }
-
-      if (props.block.repeat?.collection && !state.repeatItem?.length) {
+      if (props.block.repeat?.collection) {
+        if (state.repeatItem?.length) return true;
         return false;
       }
 
-      return true;
+      const shouldHide =
+        'hide' in state.processedBlock ? state.processedBlock.hide : false;
+      const shouldShow =
+        'show' in state.processedBlock ? state.processedBlock.show : true;
+
+      return shouldShow && !shouldHide;
     },
 
     get childrenWithoutParentComponent() {
