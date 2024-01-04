@@ -8,7 +8,9 @@
     "lib"
   ],
   "sideEffects": [
-    "./lib/browser/style.css"
+    "./lib/browser/style.css",
+    "./lib/node/style.css",
+    "./lib/edge/style.css"
   ],
   "scripts": {
     "build-inline-fns": "yarn g:build-inline-fns",
