@@ -2,6 +2,12 @@
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
   "version": "0.7.6",
+  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react-native",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuilderIO/builder.git",
+    "directory": "packages/sdks/output/react-native"
+  },
   "type": "module",
   "main": "lib/browser/commonjs/index.js",
   "module": "lib/browser/module/index.js",

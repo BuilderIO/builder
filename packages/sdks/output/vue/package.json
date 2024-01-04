@@ -9,6 +9,12 @@
     "vue2",
     "vue3"
   ],
+  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/vue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuilderIO/builder.git",
+    "directory": "packages/sdks/output/vue"
+  },
   "files": [
     "vue2/lib",
     "vue2/css/package.json",
