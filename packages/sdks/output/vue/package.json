@@ -9,12 +9,16 @@
     "vue2",
     "vue3"
   ],
+  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/vue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuilderIO/builder.git",
+    "directory": "packages/sdks/output/vue"
+  },
   "files": [
     "vue2/lib",
-    "vue2/css/package.json",
     "vue2/package.json",
     "vue3/lib",
-    "vue3/css/package.json",
     "vue3/package.json"
   ],
   "exports": {
@@ -110,7 +114,6 @@
         "require": "./vue2/lib/browser/index.cjs"
       }
     },
-    "./vue2/css": "./vue2/lib/browser/style.css",
     "./vue3": {
       "node": {
         "import": "./vue3/lib/node/index.js",
@@ -160,9 +163,7 @@
         "import": "./vue3/lib/browser/index.js",
         "require": "./vue3/lib/browser/index.cjs"
       }
-    },
-    "./vue3/css": "./vue3/lib/browser/style.css",
-    "./css": "./vue3/lib/browser/style.css"
+    }
   },
   "scripts": {
     "release": "npm publish",

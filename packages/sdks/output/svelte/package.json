@@ -7,7 +7,7 @@
     "lib",
     "src"
   ],
-  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/svelte#readme",
+  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/svelte",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BuilderIO/builder.git",

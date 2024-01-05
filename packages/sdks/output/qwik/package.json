@@ -1,6 +1,12 @@
 {
   "name": "@builder.io/sdk-qwik",
   "version": "0.7.6",
+  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/qwik",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuilderIO/builder.git",
+    "directory": "packages/sdks/output/qwik"
+  },
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/edge/index.qwik.cjs",

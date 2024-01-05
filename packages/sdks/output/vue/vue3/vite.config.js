@@ -25,6 +25,7 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
+        intro: 'import "./style.css";',
       },
     },
   },
