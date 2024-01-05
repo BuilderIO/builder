@@ -1,7 +1,8 @@
+import { logger } from '../helpers/logger';
+import type { Dictionary } from '../types/typescript';
+
 const propertiesThatMustBeNumber = new Set(['lineHeight']);
 const displayValues = new Set(['flex', 'none']);
-
-const SHOW_WARNINGS = false;
 
 type Styles = Record<string, string | number>;
 
@@ -16,16 +17,39 @@ const normalizeNumber = (value: number): number | undefined => {
   }
 };
 
+const sanitizeStringProperty = (
+  key: string,
+  value: string
+): Dictionary<number | string> => {
+  // `px` units need to be stripped and replaced with numbers
+  // https://regexr.com/6ualn
+  const isPixelUnit = value.match(/^-?(\d*)(\.?)(\d*)*px$/);
+
+  if (isPixelUnit) {
+    const newValue = parseFloat(value);
+    const normalizedValue = normalizeNumber(newValue);
+    if (normalizedValue) {
+      return { [key]: normalizedValue };
+    } else {
+      return {};
+    }
+  } else if (value === '0') {
+    // 0 edge case needs to be handled
+    return { [key]: 0 };
+  } else {
+    return { [key]: value };
+  }
+};
+
 export const sanitizeReactNativeBlockStyles = (styles: Styles): Styles => {
   return Object.keys(styles).reduce<Styles>((acc, key): Styles => {
     const propertyValue = styles[key];
 
     if (key === 'display' && !displayValues.has(propertyValue as string)) {
-      if (SHOW_WARNINGS) {
-        console.warn(
-          `Style value for key "display" must be "flex" or "none" but had ${propertyValue}`
-        );
-      }
+      logger.warn(
+        `Style key "display" must be "flex" or "none", but had value: "${propertyValue}".`
+      );
+
       return acc;
     }
 
@@ -33,31 +57,15 @@ export const sanitizeReactNativeBlockStyles = (styles: Styles): Styles => {
       propertiesThatMustBeNumber.has(key) &&
       typeof propertyValue !== 'number'
     ) {
-      if (SHOW_WARNINGS) {
-        console.warn(
-          `Style key ${key} must be a number, but had value \`${styles[key]}\``
-        );
-      }
+      logger.warn(
+        `Style key "${key}" must be a number, but had value: "${styles[key]}".`
+      );
+
       return acc;
     }
 
     if (typeof propertyValue === 'string') {
-      // `px` units need to be stripped and replaced with numbers
-      // https://regexr.com/6ualn
-      const isPixelUnit = propertyValue.match(/^-?(\d*)(\.?)(\d*)*px$/);
-
-      if (isPixelUnit) {
-        const newValue = parseFloat(propertyValue);
-        const normalizedValue = normalizeNumber(newValue);
-        if (normalizedValue) {
-          return { ...acc, [key]: normalizedValue };
-        } else {
-          return acc;
-        }
-      } else if (propertyValue === '0') {
-        // 0 edge case needs to be handled
-        return { ...acc, [key]: 0 };
-      }
+      return { ...acc, ...sanitizeStringProperty(key, propertyValue) };
     }
 
     return { ...acc, [key]: propertyValue };
