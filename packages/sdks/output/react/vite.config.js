@@ -17,7 +17,7 @@ export default defineConfig({
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['react', 'react/jsx-runtime', 'react-dom'],
+      external: ['react', 'react/jsx-runtime', 'react-dom', 'node:module'],
       output: {
         globals: {
           react: 'react',
