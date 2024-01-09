@@ -1,4 +1,4 @@
-const noop = () => null;
+const noop = () => {};
 
 /**
  * Allows us to require node-specific code safely within bundlers.
@@ -10,11 +10,19 @@ const noop = () => null;
  * However, it might still end up running in the `browser` if the `node` bundle is loaded in the
  * browser (which happens in many apps' dev mode, and certain other scenarios like Qwik's prod mode).
  */
+import { createRequire } from 'node:module';
+
 export let safeDynamicRequire: typeof require =
   noop as unknown as typeof require;
 
 try {
-  safeDynamicRequire = eval('require');
+  safeDynamicRequire = createRequire(import.meta.url);
 } catch (error) {
-  /* empty */
+  try {
+    safeDynamicRequire = eval('require');
+  } catch (error) {
+    throw new Error(
+      'Could not create safeDynamicRequire. Unable to import `isolated-vm` to evaluate JS blocks as a result.'
+    );
+  }
 }
