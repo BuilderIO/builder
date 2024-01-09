@@ -2168,6 +2168,7 @@ __metadata:
     "@tsconfig/react-native": ^2.0.3
     "@types/react-native-video": ^5.0.9
     babel-plugin-module-resolver: ^5.0.0
+    css-to-react-native: ^3.2.0
     isolated-vm: ^4.6.0
     nx: ^16.6.0
     nx-cloud: ^16.2.0
@@ -15430,7 +15431,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-to-react-native@npm:^3.0.0":
+"css-to-react-native@npm:^3.0.0, css-to-react-native@npm:^3.2.0":
   version: 3.2.0
   resolution: "css-to-react-native@npm:3.2.0"
   dependencies:
