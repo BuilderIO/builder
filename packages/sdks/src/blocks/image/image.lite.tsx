@@ -60,7 +60,7 @@ export default function Image(props: ImageProps) {
         return '';
       }
     },
-
+    
     get aspectRatioCss():
       | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
           position: 'absolute';
