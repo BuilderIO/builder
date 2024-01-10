@@ -8,7 +8,7 @@ import kotlinx.serialization.json.Json
 import java.net.URL
 
 fun getContent(modelName: String, apiKey: String, url: String, onDone: (BuilderContent) -> Unit) {
-    val url = "https://cdn.builder.io/api/v2/content/$modelName?url=$url&apiKey=$apiKey&single=true"
+    val url = "https://cdn.builder.io/api/v3/content/$modelName?url=$url&apiKey=$apiKey&single=true"
     GlobalScope.launch {
         val responseString = URL(url).readText()
         val obj = Json {

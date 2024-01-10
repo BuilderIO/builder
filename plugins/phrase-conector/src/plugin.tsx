@@ -74,7 +74,7 @@ registerPlugin(
           const sourceLocale = content.meta?.translationSourceLang;
           if (isPending && sourceLocale && content.published === 'published') {
             const lastPublishedContent = await fetch(
-              `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
+              `https://cdn.builder.io/api/v3/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
             ).then(res => res.json());
             const translatableFields = getTranslateableFields(
               lastPublishedContent,
