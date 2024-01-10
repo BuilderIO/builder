@@ -3,6 +3,7 @@
   "description": "Builder.io SDK for React",
   "version": "0.8.0",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BuilderIO/builder.git",
