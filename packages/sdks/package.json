@@ -47,7 +47,7 @@
     "e2e:build:react-native": "nx run-many -t build -p @e2e/react-native",
     "e2e:build:solid": "nx run-many -t build -p @e2e/solid @e2e/solid-start",
     "e2e:build:qwik": "nx run-many -t build -p @e2e/qwik-city",
-    "e2e:build:react": "nx run-many -t build -p @e2e/react @e2e/next-pages-dir @e2e/next-app-dir-client",
+    "e2e:build:react": "nx run-many -t build -p @e2e/react @e2e/next-pages-dir --exclude @e2e/next-app-dir-client",
     "e2e:build:nextjs": "nx run-many -t build -p @e2e/next-app-dir",
     "e2e:build:vue2": "nx run-many -t build -p @e2e/vue2 @e2e/nuxt2",
     "e2e:build:vue3": "nx run-many -t build -p @e2e/vue3 @e2e/nuxt3",
