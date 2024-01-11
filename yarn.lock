@@ -3326,8 +3326,8 @@ __metadata:
     "@builder.io/sdk-react-native": "workspace:*"
     "@e2e/tests": "workspace:*"
     "@expo/webpack-config": ^19.0.0
-    "@react-navigation/native": ^6.0.13
-    "@react-navigation/native-stack": ^6.9.0
+    "@react-navigation/native": ^6.1.9
+    "@react-navigation/native-stack": ^6.9.17
     "@types/react": ~18.2.14
     expo: ~49.0.15
     expo-status-bar: ~1.6.0
@@ -7623,7 +7623,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native-stack@npm:^6.9.0":
+"@react-navigation/native-stack@npm:^6.9.17":
   version: 6.9.17
   resolution: "@react-navigation/native-stack@npm:6.9.17"
   dependencies:
@@ -7639,7 +7639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^6.0.13":
+"@react-navigation/native@npm:^6.1.9":
   version: 6.1.9
   resolution: "@react-navigation/native@npm:6.1.9"
   dependencies:
