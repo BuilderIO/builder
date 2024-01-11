@@ -1,5 +1,5 @@
 /**
- * Overriding usage of `node:module` because of https://github.com/vercel/next.js/issues/60491
+ * Overriding usage of `node:module` because it breaks for vue2. eval('require') works just as well.
  */
 
 const noop = () => {};
