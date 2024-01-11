@@ -1,13 +1,10 @@
-import {
-  RenderContent,
-  _processContentResult,
-} from '@builder.io/sdk-react-native';
 import { getProps } from '@e2e/tests';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { Fragment, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { RenderContent, _processContentResult } from './sdk-src';
 
 const linking = {
   prefixes: ['http://localhost:19006'],
@@ -56,11 +53,13 @@ const App = () => (
   <View
     style={{
       // mimick body stylesheets from the web
-      margin: 8,
+      margin: 18,
       width: '100%',
+      paddingTop: 50,
     }}
   >
     <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+      <Text>Before Builder</Text>
       <Stack.Navigator
         initialRouteName="Page"
         screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
@@ -69,6 +68,7 @@ const App = () => (
           {({ route }) => <BuilderContent route={route} />}
         </Stack.Screen>
       </Stack.Navigator>
+      <Text>After Builder</Text>
     </NavigationContainer>
   </View>
 );
