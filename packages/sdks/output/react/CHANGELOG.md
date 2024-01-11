@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 0.8.1
+
+### Patch Changes
+
+- f5ea331: Fix: dynamic import of `isolated-vm` to rely on `createRequire` instead of `eval("require")`
+
 ## 0.8.0
 
 ## 0.7.6

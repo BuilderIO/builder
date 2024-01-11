@@ -119,7 +119,7 @@ function setCookie(name: string, value: string, expires?: Date) {
       expiresString +
       '; path=/' +
       `; domain=${getTopLevelDomain(location.hostname)}` +
-      (secure ? ';secure ; SameSite=None' : '');
+      (secure ? '; secure; SameSite=None' : '');
   } catch (err) {
     console.warn('Could not set cookie', err);
   }
