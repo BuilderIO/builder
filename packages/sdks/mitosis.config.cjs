@@ -158,6 +158,42 @@ const targets = target
   ? [target]
   : ['reactNative', 'vue2', 'rsc', 'vue3', 'solid', 'svelte', 'react', 'qwik'];
 
+const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name !== 'EnableEditor') return;
+      json.hooks.onMount.forEach((onMountHook) => {
+        json.hooks.onEvent.forEach((eventHook) => {
+          const isEditingHook =
+            onMountHook.code.includes('INJECT_EDITING_HOOK_HERE') &&
+            eventHook.eventName === 'initeditingbldr';
+
+          if (isEditingHook) {
+            onMountHook.code = onMountHook.code.replace(
+              'INJECT_EDITING_HOOK_HERE',
+              eventHook.code
+            );
+          }
+
+          const isPreviewingHook =
+            onMountHook.code.includes('INJECT_PREVIEWING_HOOK_HERE') &&
+            eventHook.eventName === 'initpreviewingbldr';
+
+          if (isPreviewingHook) {
+            onMountHook.code = onMountHook.code.replace(
+              'INJECT_PREVIEWING_HOOK_HERE',
+              eventHook.code
+            );
+          }
+        });
+
+        onMountHook.code = onMountHook.code.replaceAll('elementRef', 'true');
+      });
+
+      json.hooks.onEvent = [];
+    },
+  },
+});
 /**
  * @type {MitosisConfig}
  */
@@ -169,47 +205,7 @@ module.exports = {
   options: {
     solid: {
       typescript: true,
-      plugins: [
-        () => ({
-          json: {
-            pre: (json) => {
-              if (json.name !== 'EnableEditor') return;
-              json.hooks.onMount.forEach((onMountHook) => {
-                json.hooks.onEvent.forEach((eventHook) => {
-                  const isEditingHook =
-                    onMountHook.code.includes('INJECT_EDITING_HOOK_HERE') &&
-                    eventHook.eventName === 'initeditingbldr';
-
-                  if (isEditingHook) {
-                    onMountHook.code = onMountHook.code.replace(
-                      'INJECT_EDITING_HOOK_HERE',
-                      eventHook.code
-                    );
-                  }
-
-                  const isPreviewingHook =
-                    onMountHook.code.includes('INJECT_PREVIEWING_HOOK_HERE') &&
-                    eventHook.eventName === 'initpreviewingbldr';
-
-                  if (isPreviewingHook) {
-                    onMountHook.code = onMountHook.code.replace(
-                      'INJECT_PREVIEWING_HOOK_HERE',
-                      eventHook.code
-                    );
-                  }
-                });
-
-                onMountHook.code = onMountHook.code.replaceAll(
-                  'elementRef',
-                  'true'
-                );
-              });
-
-              json.hooks.onEvent = [];
-            },
-          },
-        }),
-      ],
+      plugins: [INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN],
     },
     vue2: {
       ...vueConfig,
@@ -339,6 +335,7 @@ module.exports = {
       plugins: [
         SRCSET_PLUGIN,
         BASE_TEXT_PLUGIN,
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         () => ({
           json: {
             pre: (json) => {

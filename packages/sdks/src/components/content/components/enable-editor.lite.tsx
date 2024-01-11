@@ -340,6 +340,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           solid: () => INJECT_EDITING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: () => INJECT_EDITING_HOOK_HERE,
           default: () => {
             elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
           },
@@ -384,6 +387,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           solid: () => INJECT_PREVIEWING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: () => INJECT_PREVIEWING_HOOK_HERE,
           default: () => {
             elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
           },
