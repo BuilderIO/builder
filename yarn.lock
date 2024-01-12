@@ -1932,12 +1932,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.96":
-  version: 0.0.96
-  resolution: "@builder.io/mitosis-cli@npm:0.0.96"
+"@builder.io/mitosis-cli@npm:^0.0.97":
+  version: 0.0.97
+  resolution: "@builder.io/mitosis-cli@npm:0.0.97"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.0.137
+    "@builder.io/mitosis": 0.0.138
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1955,18 +1955,19 @@ __metadata:
     micromatch: ^4.0.4
     parse5: ^3.0.3
     prettier: ^2.6.1
+    rimraf: ^5.0.5
     ts-morph: ^19.0.0
     vue-template-es2015-compiler: ^1.9.1
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 49bab2652c9e91181a4d565df73714f0e464b35da6c0481d5f66fb38f8c974d2d4f3130c04ab7e6d07d941f1039fa19f8eab7ae1169f3e3fe99bb473935c7e9b
+  checksum: bccacf68b4e14a1cb345527a2a15d27c7d606b5e50bdb46bf3f5e5f375b48c8c1cf1a17f3c023d46a2184ed24cf802f5d6ac994ee66c93f1a01ca2b1128a9753
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.137, @builder.io/mitosis@npm:^0.0.137":
-  version: 0.0.137
-  resolution: "@builder.io/mitosis@npm:0.0.137"
+"@builder.io/mitosis@npm:0.0.138, @builder.io/mitosis@npm:^0.0.138":
+  version: 0.0.138
+  resolution: "@builder.io/mitosis@npm:0.0.138"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1976,7 +1977,7 @@ __metadata:
     "@babel/plugin-syntax-typescript": ^7.20.0
     "@babel/plugin-transform-react-jsx": ^7.13.12
     "@babel/preset-typescript": ^7.13.0
-    "@builder.io/react": ^1.1.50
+    "@builder.io/sdk": ^2.1.1
     astring: ^1.8.3
     csstype: ^3.0.4
     fp-ts: ^2.11.10
@@ -1993,7 +1994,7 @@ __metadata:
     ts-morph: ^19.0.0
     typescript: ^5.3.2
     vue: ~2.6
-  checksum: dcaac626b94928e9b10cebe139e3d3cd678f559e4f7acc67fa845f7a5ae5708b3f36200be3a2a7e1449ff6a4893cca849b03ead719baadb7516508f706fcedd6
+  checksum: 7ec9ef1877ac152ff24088d28103a4c2ff921b781806578ce87574e449afaf1f7a7710d1f7f8ebb430cd82c4e2aa2c9aae70ff106590c0046e3a9437bbb07ea3
   languageName: node
   linkType: hard
 
@@ -2329,7 +2330,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk@workspace:*, @builder.io/sdk@workspace:packages/core":
+"@builder.io/sdk@^2.1.1, @builder.io/sdk@workspace:*, @builder.io/sdk@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk@workspace:packages/core"
   dependencies:
@@ -2381,8 +2382,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.15
-    "@builder.io/mitosis": ^0.0.137
-    "@builder.io/mitosis-cli": ^0.0.96
+    "@builder.io/mitosis": ^0.0.138
+    "@builder.io/mitosis-cli": ^0.0.97
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
@@ -20779,7 +20780,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.2, glob@npm:^10.3.10, glob@npm:^10.3.3":
+"glob@npm:^10.2.2, glob@npm:^10.3.10, glob@npm:^10.3.3, glob@npm:^10.3.7":
   version: 10.3.10
   resolution: "glob@npm:10.3.10"
   dependencies:
@@ -34239,6 +34240,17 @@ __metadata:
   bin:
     rimraf: bin.js
   checksum: 87f4164e396f0171b0a3386cc1877a817f572148ee13a7e113b238e48e8a9f2f31d009a92ec38a591ff1567d9662c6b67fd8818a2dbbaed74bc26a87a2a4a9a0
+  languageName: node
+  linkType: hard
+
+"rimraf@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "rimraf@npm:5.0.5"
+  dependencies:
+    glob: ^10.3.7
+  bin:
+    rimraf: dist/esm/bin.mjs
+  checksum: d66eef829b2e23b16445f34e73d75c7b7cf4cbc8834b04720def1c8f298eb0753c3d76df77325fad79d0a2c60470525d95f89c2475283ad985fd7441c32732d1
   languageName: node
   linkType: hard
 
