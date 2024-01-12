@@ -268,23 +268,32 @@ function getReactNativeBlockStyles({
   return newStyles;
 }
 
-export function transformBlockProperties(block: BuilderBlock, context) {
-  block.style = getReactNativeBlockStyles({
+export function transformBlockProperties({
+  block,
+  context,
+  properties,
+}: {
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+  properties: any;
+}) {
+  const newStyles = getReactNativeBlockStyles({
     block,
     context,
     blockStyles: block.style,
   });
+  properties.style = newStyles;
 
-  block.className = block.class;
-  delete block.class;
+  properties.className = properties.class;
+  delete properties.class;
 
-  const id = block['builder-id'];
+  const id = properties['builder-id'];
 
   if (!id && isEditing()) {
-    console.warn('No builder-id found on block', block);
+    console.warn('No builder-id found on properties', properties);
   }
 
-  block.ref = (ref) => {
+  properties.ref = (ref) => {
     if (isEditing()) {
       const el = findDOMNode(ref);
       if (el && !(el instanceof Text)) {
@@ -293,5 +302,5 @@ export function transformBlockProperties(block: BuilderBlock, context) {
       }
     }
   };
-  return block;
+  return properties;
 }

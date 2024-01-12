@@ -54,7 +54,7 @@ export function getBlockProperties({
       .join(' '),
   };
 
-  return transformBlockProperties(properties, context);
+  return transformBlockProperties({ properties, context, block });
 }
 /**
  * Svelte does not support style attribute as an object so we need to flatten it.
