@@ -24,7 +24,7 @@ async function edit(model: string) {
 
   const current = await fetch(
     // See https://www.builder.io/c/docs/query-api
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${user.apiKey}&query.published.$ne=archived&single=true&cachebust=true&fields=id`,
+    `https://cdn.builder.io/api/v3/content/${model}?apiKey=${user.apiKey}&query.published.$ne=archived&single=true&cachebust=true&fields=id`,
     {
       headers: user.authHeaders,
     }
@@ -52,7 +52,7 @@ export function SimplePage() {
       const { user } = context
       const pages = await fetch(
         // See https://www.builder.io/c/docs/query-api
-        `https://cdn.builder.io/api/v2/content/page?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
+        `https://cdn.builder.io/api/v3/content/page?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
         {
           headers: user.authHeaders,
         }

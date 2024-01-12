@@ -76,7 +76,7 @@ export function CampaignsPage(props: AppTabProps) {
       const { user } = props.context
       const teams = await fetch(
         // See https://www.builder.io/c/docs/query-api
-        `https://cdn.builder.io/api/v2/content/team?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
+        `https://cdn.builder.io/api/v3/content/team?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
         {
           headers: user.authHeaders,
         }
@@ -89,7 +89,7 @@ export function CampaignsPage(props: AppTabProps) {
       const { user } = props.context
       const campaigns = await fetch(
         // See https://www.builder.io/c/docs/query-api
-        `https://cdn.builder.io/api/v2/content/campaign?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
+        `https://cdn.builder.io/api/v3/content/campaign?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
         {
           headers: user.authHeaders,
         }
