@@ -393,29 +393,6 @@ module.exports = {
             },
           },
         }),
-        () => ({
-          json: {
-            pre: (json) => {
-              if (!json.meta?.useMetadata?.plugins?.reactNative?.useScrollView)
-                return;
-
-              /**
-               * We need the ScrollView for the `BlocksWrapper` and `EnableEditor` components to be able to scroll
-               * through the whole page.
-               */
-              traverse(json).forEach(function (item) {
-                if (!isMitosisNode(item)) return;
-
-                /**
-                 * Not sure when the div->View transformation happens in Mitosis, so we check both to be safe.
-                 */
-                if (item.name === 'View' || item.name === 'div') {
-                  item.name = 'ScrollView';
-                }
-              });
-            },
-          },
-        }),
       ],
     },
     qwik: {

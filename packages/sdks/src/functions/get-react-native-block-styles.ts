@@ -5,7 +5,6 @@ import type { Dictionary } from '../types/typescript.js';
 import { ALLOWED_CSS_PROPERTIES } from './sanitize-rn-allowed-css';
 
 const DISPLAY_VALUES = ['flex', 'none'];
-type Styles = Record<string, string | number>;
 
 function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
   const newObject = Object.assign({}, obj);

@@ -14,6 +14,14 @@ export type BlocksWrapperProps = {
   parent: string | undefined;
   path: string | undefined;
   styleProp: Record<string, any> | undefined;
+  /**
+   * The element that wraps each list of blocks. Defaults to a `div` element ('ScrollView' in React Native).
+   */
+  BlocksWrapper: any;
+  /**
+   * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+   */
+  BlocksWrapperProps: any;
 };
 
 export default function BlocksWrapper(
@@ -54,7 +62,7 @@ export default function BlocksWrapper(
   });
 
   return (
-    <div
+    <props.BlocksWrapper
       class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
@@ -69,13 +77,14 @@ export default function BlocksWrapper(
         alignItems: 'stretch',
       }}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onClick={(event) => state.onClick()}
+      onClick={(event: any) => state.onClick()}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onMouseEnter={(event) => state.onMouseEnter()}
+      onMouseEnter={(event: any) => state.onMouseEnter()}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onKeyPress={(event) => state.onClick()}
+      onKeyPress={(event: any) => state.onClick()}
+      {...props.BlocksWrapperProps}
     >
       {props.children}
-    </div>
+    </props.BlocksWrapper>
   );
 }

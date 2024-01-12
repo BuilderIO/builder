@@ -19,13 +19,3 @@ declare module '@builder.io/mitosis/jsx-runtime' {
     }
   }
 }
-
-declare module '@builder.io/mitosis' {
-  declare interface ComponentMetadata {
-    plugins?: {
-      reactNative?: {
-        useScrollView?: boolean;
-      };
-    };
-  }
-}
