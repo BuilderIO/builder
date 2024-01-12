@@ -20,7 +20,7 @@ export interface ContentVariantsPrps {
   includeRefs?: boolean;
   enrich?: boolean;
   /**
-   * The element that wraps your content. Defaults to a `div` element ('ScrollView' in React Native).
+   * The element that wraps your content. Defaults to `div` ('ScrollView' in React Native).
    */
   contentWrapper?: any;
   /**
@@ -28,7 +28,7 @@ export interface ContentVariantsPrps {
    */
   contentWrapperProps?: any;
   /**
-   * The element that wraps your blocks. Defaults to a `div` element ('ScrollView' in React Native).
+   * The element that wraps your blocks. Defaults to `div` ('ScrollView' in React Native).
    */
   blocksWrapper?: any;
   /**
