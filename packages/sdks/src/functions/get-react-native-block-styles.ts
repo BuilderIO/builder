@@ -2,7 +2,7 @@ import cssToStyleSheet from 'css-to-react-native';
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import type { Dictionary } from '../types/typescript.js';
-import { ALLOWED_CSS_PROPERTIES } from './sanitize-rn-allowed-css';
+import { ALLOWED_CSS_PROPERTIES } from './sanitize-rn-allowed-css.js';
 
 const DISPLAY_VALUES = ['flex', 'none'];
 
