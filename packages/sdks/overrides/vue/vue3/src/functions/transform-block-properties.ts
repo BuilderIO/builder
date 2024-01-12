@@ -1,5 +1,3 @@
-import type { BuilderBlock } from '../types/builder-block.js';
-
 function classStringToObject(str: string) {
   const obj = {};
   if (typeof str !== 'string') {
@@ -12,7 +10,13 @@ function classStringToObject(str: string) {
   return obj;
 }
 
-export function transformBlockProperties(block: BuilderBlock) {
-  block.class = classStringToObject(block.class);
-  return block;
+export function transformBlockProperties({
+  properties,
+}: {
+  properties: any;
+  block: any;
+  context: any;
+}) {
+  properties.class = classStringToObject(properties.class);
+  return properties;
 }

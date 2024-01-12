@@ -107,6 +107,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.10",
+    "css-to-react-native": "^3.2.0",
     "isolated-vm": "^4.6.0",
     "react-native-render-html": "^6.3.4",
     "react-native-storage": "^1.0.1",

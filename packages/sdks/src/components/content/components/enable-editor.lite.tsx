@@ -41,16 +41,17 @@ useMetadata({
   qwik: {
     hasDeepStore: true,
   },
-  plugins: {
-    reactNative: {
-      useScrollView: true,
-    },
-  },
+  elementTag: 'state.ContentWrapper',
 });
 
 type BuilderEditorProps = Omit<
   ContentProps,
-  'customComponents' | 'data' | 'apiVersion' | 'isSsrAbTest'
+  | 'customComponents'
+  | 'data'
+  | 'apiVersion'
+  | 'isSsrAbTest'
+  | 'blocksWrapper'
+  | 'blocksWrapperProps'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
   setBuilderContextSignal?: (signal: any) => any;
@@ -99,6 +100,12 @@ export default function EnableEditor(props: BuilderEditorProps) {
     },
     lastUpdated: 0,
     shouldSendResetCookie: false,
+    ContentWrapper: useTarget({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      reactNative: props.contentWrapper || ScrollView,
+      default: props.contentWrapper || 'div',
+    }),
     processMessage(event: MessageEvent): void {
       const { data } = event;
 
@@ -340,6 +347,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           solid: () => INJECT_EDITING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: () => INJECT_EDITING_HOOK_HERE,
           default: () => {
             elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
           },
@@ -384,6 +394,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           solid: () => INJECT_PREVIEWING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: () => INJECT_PREVIEWING_HOOK_HERE,
           default: () => {
             elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
           },
@@ -424,7 +437,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   return (
     <Show when={props.builderContextSignal.value.content}>
-      <div
+      <state.ContentWrapper
         {...useTarget({
           qwik: {
             apiKey: props.apiKey,
@@ -440,7 +453,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         })}
         key={state.forceReRenderCount}
         ref={elementRef}
-        onClick={(event) => state.onClick(event)}
+        onClick={(event: any) => state.onClick(event)}
         builder-content-id={props.builderContextSignal.value.content?.id}
         builder-model={props.model}
         className={`variant-${
@@ -455,9 +468,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
           default: {},
         })}
         {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
+        {...props.contentWrapperProps}
       >
         {props.children}
-      </div>
+      </state.ContentWrapper>
     </Show>
   );
 }

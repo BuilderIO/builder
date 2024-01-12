@@ -139,14 +139,7 @@ export default function Block(props: BlockProps) {
   const [childrenContext] = useState(
     useTarget({
       reactNative: {
-        apiKey: props.context.value.apiKey,
-        apiVersion: props.context.value.apiVersion,
-        localState: props.context.value.localState,
-        rootState: props.context.value.rootState,
-        rootSetState: props.context.value.rootSetState,
-        content: props.context.value.content,
-        context: props.context.value.context,
-        componentInfos: props.context.value.componentInfos,
+        ...props.context.value,
         inheritedStyles: extractTextStyles(
           getBlockProperties({
             block: state.processedBlock,

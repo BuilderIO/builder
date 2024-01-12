@@ -8,6 +8,11 @@ import {
   test,
 } from './helpers.js';
 
+const FIRST_BLOCK_SELECTOR = isRNSDK
+  ? // ScrollView adds an extra div wrapper
+    `${getClassSelector('builder-blocks')} > div > div`
+  : `${getClassSelector('builder-blocks')} > div`;
+
 test.describe('Styles', () => {
   test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
@@ -28,11 +33,10 @@ test.describe('Styles', () => {
         'border-bottom-right-radius': '30px',
       };
 
-      const selector = `${getClassSelector('builder-blocks')} > div`;
-
-      const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
-
-      page.locator(selector).innerText;
+      const locator = page
+        .locator(FIRST_BLOCK_SELECTOR)
+        .filter({ hasText: 'Enter some text...' })
+        .last();
 
       await expectStylesForElement({ expected, locator });
       // TODO: fix this
@@ -48,9 +52,10 @@ test.describe('Styles', () => {
         'border-bottom-left-radius': '30px',
         'border-bottom-right-radius': '40px',
       };
-      const selector = `${getClassSelector('builder-blocks')} > div`;
-
-      const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
+      const locator = page
+        .locator(FIRST_BLOCK_SELECTOR)
+        .filter({ hasText: 'Enter some text...' })
+        .last();
 
       await expectStylesForElement({ expected, locator });
       // TODO: fix this

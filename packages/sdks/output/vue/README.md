@@ -18,7 +18,7 @@ This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-pack
 
 ## Version Support
 
-This SDK supports Vue >2.7, Vue 3+, Nuxt 2 & Nuxt 3.
+This SDK supports Vue 3 and Nuxt 3.
 
 ## Getting Started
 
@@ -30,7 +30,4 @@ npm install @builder.io/sdk-vue
 
 You can see examples of using Builder.io:
 
-- with Vue 2 [here](/examples/vue/vue-2/)
-- with Nuxt 2 [here](/examples/vue/nuxt-2/)
-- with Vue Storefront 2 [here](/examples/vue/vue-storefront-2)
 - with Vue 3 [here](/examples/vue/vue-3/)
