@@ -1,7 +1,3 @@
-import {
-  RenderContent,
-  _processContentResult,
-} from '@builder.io/sdk-react-native';
 import { getProps } from '@e2e/tests';
 import {
   NavigationContainer,
@@ -10,6 +6,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { RenderContent, _processContentResult } from './sdk-src';
 
 /**
  * @typedef {import('@react-navigation/native').LinkingOptions} LinkingOptions
