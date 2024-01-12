@@ -117,6 +117,10 @@ export default function ContentVariants(props: VariantsProviderProps) {
               includeRefs={props.includeRefs}
               enrich={props.enrich}
               isSsrAbTest={state.shouldRenderVariants}
+              blocksWrapper={props.blocksWrapper}
+              blocksWrapperProps={props.blocksWrapperProps}
+              contentWrapper={props.contentWrapper}
+              contentWrapperProps={props.contentWrapperProps}
             />
           )}
         </For>
@@ -144,6 +148,10 @@ export default function ContentVariants(props: VariantsProviderProps) {
         includeRefs={props.includeRefs}
         enrich={props.enrich}
         isSsrAbTest={state.shouldRenderVariants}
+        blocksWrapper={props.blocksWrapper}
+        blocksWrapperProps={props.blocksWrapperProps}
+        contentWrapper={props.contentWrapper}
+        contentWrapperProps={props.contentWrapperProps}
       />
     </>
   );
