@@ -6,6 +6,11 @@ import type { BuilderBlock } from '../types/builder-block.js';
 import type { Dictionary } from '../types/typescript.js';
 import { isEditing } from './is-editing.js';
 
+const cssToReactNative: typeof cssToStyleSheet = (cssToStyleSheet as any)
+  .default
+  ? (cssToStyleSheet as any).default
+  : cssToStyleSheet;
+
 type StyleSheetProperties = ImageStyle & TextStyle & ViewStyle;
 
 /**
@@ -261,7 +266,7 @@ function getReactNativeBlockStyles({
 
   const cleanedCSS = cleanCssStyleProps(styles as any);
 
-  const newStyles = cssToStyleSheet(
+  const newStyles = cssToReactNative(
     Object.entries(cleanedCSS)
   ) as any as CSSStyleDeclaration;
 
