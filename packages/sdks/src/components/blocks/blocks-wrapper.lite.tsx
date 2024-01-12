@@ -7,6 +7,7 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
+  elementTag: 'props.BlocksWrapper',
 });
 
 export type BlocksWrapperProps = {
