@@ -2,8 +2,6 @@
 output/**/src
 .pnp.*
 
-e2e/react-native/sdk-src
-
 **/.next
 **/.nuxt
 **/.output
