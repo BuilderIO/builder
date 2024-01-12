@@ -1,5 +1,38 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.9.0
+
+### Minor Changes
+
+- 435c5ee: Breaking: Now that Vue 2 has reached EOL, the Vue 2 SDK is no longer actively tested nor maintained.
+
+  See https://v2.vuejs.org/lts/ for EOL announcement.
+
+### Patch Changes
+
+- 435c5ee: Feature: add `contentWrapper`, `contentWrapperProps`, `blocksWrapper`, `blocksWrapperProps` props to Content:
+
+  ```ts
+  {
+   /**
+     * The element that wraps your content. Defaults to `div` ('ScrollView' in React Native).
+     */
+    contentWrapper?: any;
+    /**
+     * Additonal props to pass to `contentWrapper`. Defaults to `{}`.
+     */
+    contentWrapperProps?: any;
+    /**
+     * The element that wraps your blocks. Defaults to `div` ('ScrollView' in React Native).
+     */
+    blocksWrapper?: any;
+    /**
+     * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+     */
+    blocksWrapperProps?: any;
+  }
+  ```
+
 ## 0.8.1
 
 ## 0.8.0
