@@ -74,7 +74,11 @@ export default function BlocksWrapper(
       css={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'stretch',
+        ...useTarget({
+          // react native's ScrollView can't accept `alignItems` in styles.
+          reactNative: {},
+          default: { alignItems: 'stretch' },
+        }),
       }}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onClick={(event: any) => state.onClick()}
