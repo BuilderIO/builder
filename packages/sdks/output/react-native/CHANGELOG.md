@@ -1,5 +1,33 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.9.0
+
+### Patch Changes
+
+- 435c5ee: Fix: style parsing and sanitization
+- 435c5ee: Feature: add `contentWrapper`, `contentWrapperProps`, `blocksWrapper`, `blocksWrapperProps` props to Content:
+
+  ```ts
+  {
+   /**
+     * The element that wraps your content. Defaults to `div` ('ScrollView' in React Native).
+     */
+    contentWrapper?: any;
+    /**
+     * Additonal props to pass to `contentWrapper`. Defaults to `{}`.
+     */
+    contentWrapperProps?: any;
+    /**
+     * The element that wraps your blocks. Defaults to `div` ('ScrollView' in React Native).
+     */
+    blocksWrapper?: any;
+    /**
+     * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+     */
+    blocksWrapperProps?: any;
+  }
+  ```
+
 ## 0.8.1
 
 ### Patch Changes
