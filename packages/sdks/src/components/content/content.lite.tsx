@@ -148,6 +148,8 @@ export default function ContentComponent(props: ContentProps) {
       enrich={props.enrich}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
+      contentWrapper={props.contentWrapper}
+      contentWrapperProps={props.contentWrapperProps}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },

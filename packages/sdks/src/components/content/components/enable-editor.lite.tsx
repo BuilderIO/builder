@@ -45,7 +45,12 @@ useMetadata({
 
 type BuilderEditorProps = Omit<
   ContentProps,
-  'customComponents' | 'data' | 'apiVersion' | 'isSsrAbTest'
+  | 'customComponents'
+  | 'data'
+  | 'apiVersion'
+  | 'isSsrAbTest'
+  | 'blocksWrapper'
+  | 'blocksWrapperProps'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
   setBuilderContextSignal?: (signal: any) => any;
