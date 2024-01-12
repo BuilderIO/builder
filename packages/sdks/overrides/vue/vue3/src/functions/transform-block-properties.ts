@@ -12,7 +12,7 @@ function classStringToObject(str: string) {
   return obj;
 }
 
-export function transformBlockProperties(block: BuilderBlock) {
+export function transformBlockProperties(block: BuilderBlock, _context: any) {
   block.class = classStringToObject(block.class);
   return block;
 }
