@@ -1,8 +1,15 @@
 import { findDOMNode } from 'react-dom';
 import type { BuilderBlock } from '../types/builder-block.js';
+import { getReactNativeBlockStyles } from './get-react-native-block-styles.js';
 import { isEditing } from './is-editing.js';
 
-export function transformBlockProperties(block: BuilderBlock) {
+export function transformBlockProperties(block: BuilderBlock, context) {
+  block.style = getReactNativeBlockStyles({
+    block,
+    context,
+    blockStyles: block.style,
+  });
+
   block.className = block.class;
   delete block.class;
 

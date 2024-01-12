@@ -73,7 +73,7 @@ const processValue = (
 /**
  * @description Cleans styles that RN can't handle and css-to-react-native doesn't fix
  */
-export const cleanCssStyleProps = (styles: {
+const cleanCssStyleProps = (styles: {
   [key: string]: string;
 }): { [key: string]: string } =>
   Object.entries(styles).reduce((acc, [key, value]) => {
