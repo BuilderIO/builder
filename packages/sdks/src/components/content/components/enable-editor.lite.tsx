@@ -41,6 +41,7 @@ useMetadata({
   qwik: {
     hasDeepStore: true,
   },
+  elementTag: 'state.ContentWrapper',
 });
 
 type BuilderEditorProps = Omit<
