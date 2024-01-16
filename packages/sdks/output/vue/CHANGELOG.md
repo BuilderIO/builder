@@ -40,7 +40,7 @@
 ### Minor Changes
 
 - 792ffaf: Fix: remove the need for users to manually import CSS stylesheet.
-  Breaking: remove the CSS stylesheet exports:
+- 🧨 Breaking Changes: remove the CSS stylesheet exports:
   - `import '@builder.io/sdk-vue/css'`
   - `import '@builder.io/sdk-vue/vue2/css'`
   - `import '@builder.io/sdk-vue/vue3/css'`
