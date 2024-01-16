@@ -7,6 +7,8 @@ const SERVER_ENTRY = 'server-entry';
 export default defineConfig({
   plugins: [viteOutputGenerator({ pointTo: 'input' }), react()],
   build: {
+    // This is to allow Webpack 4 to consume the output.
+    target: 'es2019',
     lib: {
       entry: {
         index: './src/index.ts',
