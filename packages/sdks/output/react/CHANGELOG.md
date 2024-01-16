@@ -1,5 +1,15 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 0.10.0
+
+### Minor Changes
+
+- 39149d5: 🧨 Breaking: `fetchAllEntries`/`getAllContent` now returns the array of contents directly, instead of an object with a `results` property.
+
+### Patch Changes
+
+- 39149d5: compile SDK to ES2019 to support webpack 4 more easily.
+
 ## 0.9.0
 
 ### Patch Changes
