@@ -22,7 +22,7 @@ export async function fetchOneEntry(
   const allContent = await fetchEntries({ ...options, limit: 1 });
 
   if (allContent) {
-    return allContent.results[0] || null;
+    return allContent[0] || null;
   }
 
   return null;
@@ -61,7 +61,7 @@ export const _processContentResult = async (
   options: GetContentOptions,
   content: ContentResults,
   url: URL = generateContentUrl(options)
-) => {
+): Promise<BuilderContent[]> => {
   const canTrack = getDefaultCanTrack(options.canTrack);
 
   const isPreviewing = url.search.includes(`preview=`);
@@ -75,8 +75,8 @@ export const _processContentResult = async (
     content.results = newResults;
   }
 
-  if (!canTrack) return content;
-  if (!(isBrowser() || TARGET === 'reactNative')) return content;
+  if (!canTrack) return content.results;
+  if (!(isBrowser() || TARGET === 'reactNative')) return content.results;
 
   /**
    * For client-side navigations, it is ideal to handle AB testing at this point instead of using our
@@ -94,7 +94,7 @@ export const _processContentResult = async (
     logger.error('Could not process A/B tests. ', e);
   }
 
-  return content;
+  return content.results;
 };
 
 /**
