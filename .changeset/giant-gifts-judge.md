@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': minor
 ---
 
-Breaking: `fetchAllEntries`/`getAllContent` now returns the array of contents directly, instead of an object with a `results` property.
+🧨 Breaking: `fetchAllEntries`/`getAllContent` now returns the array of contents directly, instead of an object with a `results` property.
