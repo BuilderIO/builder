@@ -1,6 +1,5 @@
 <script lang="ts">
-import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue/vue3';
-import '@builder.io/sdk-vue/vue3/css';
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue';
 
 import HelloWorldComponent from './components/HelloWorld.vue';
 
