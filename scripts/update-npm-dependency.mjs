@@ -40,7 +40,8 @@ const folderNames = filesGrepOutput
   .toString()
   .trim()
   .split('\n')
-  .map(file => file.replace('./builder/', '').replace('package.json', ''));
+  .map(file => file.replace('./builder/', '').replace('package.json', ''))
+  .filter(x => !x.includes('packages/sdks/e2e'));
 
 echo`\n Found "${NPM_MODULE_TO_UPDATE}" in the following projects:\n${folderNames.join('\n')}`;
 

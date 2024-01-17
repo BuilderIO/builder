@@ -2,7 +2,7 @@
   "name": "my-qwik-basic-starter",
   "description": "Demo App with Routing built-in (recommended)",
   "engines": {
-    "node": ">=15.0.0"
+    "node": ">=18.0.0"
   },
   "private": true,
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@builder.io/dev-tools": "^0.1.14",
-    "@builder.io/sdk-qwik": "^0.7.0"
+    "@builder.io/sdk-qwik": "^0.10.0"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.10",
