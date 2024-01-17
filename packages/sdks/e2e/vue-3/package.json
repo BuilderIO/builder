@@ -1,5 +1,5 @@
 {
-  "name": "@e2e/vue3",
+  "name": "@e2e/vue",
   "private": true,
   "type": "module",
   "scripts": {

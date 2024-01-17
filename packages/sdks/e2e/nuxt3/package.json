@@ -1,5 +1,5 @@
 {
-  "name": "@e2e/nuxt3",
+  "name": "@e2e/nuxt",
   "private": true,
   "scripts": {
     "build": "nuxt build",

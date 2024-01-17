@@ -15,7 +15,7 @@ type Props = {
 
 useMetadata({
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },

@@ -36,7 +36,7 @@ export type BlockProps = {
 useMetadata({
   elementTag: 'state.Tag',
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },

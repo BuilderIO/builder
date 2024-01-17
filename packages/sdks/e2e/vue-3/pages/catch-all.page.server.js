@@ -1,4 +1,4 @@
-import { _processContentResult } from '@builder.io/sdk-vue/vue3';
+import { _processContentResult } from '@builder.io/sdk-vue';
 import { getProps } from '@e2e/tests';
 import 'cross-fetch/dist/node-polyfill.js';
 

@@ -14,7 +14,7 @@ import { setAttrs } from '../../../blocks/helpers.js';
 useMetadata({
   elementTag: 'props.Wrapper',
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },

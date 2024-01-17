@@ -67,7 +67,7 @@ export default function ContentComponent(props: ContentProps) {
         ...acc,
         [info.name]: {
           component: useTarget({
-            vue3: wrapComponentRef(component),
+            vue: wrapComponentRef(component),
             default: component,
           }),
           ...serializeComponentInfo(info),

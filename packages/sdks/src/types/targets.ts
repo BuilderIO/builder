@@ -1,6 +1,5 @@
 export type Target =
-  | 'vue3'
-  | 'vue2'
+  | 'vue'
   | 'reactNative'
   | 'svelte'
   | 'qwik'
