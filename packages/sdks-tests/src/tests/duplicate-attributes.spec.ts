@@ -5,7 +5,7 @@ test.describe('Duplicate Attributes', () => {
   test('wrapped block has no duplicate attributes', async ({ page, packageName }) => {
     await page.goto('/duplicate-attributes');
 
-    const footer = await page.locator(`footer`);
+    const footer = await page.locator('footer');
     const section = await page.locator('section');
 
     const footerId = await footer.getAttribute('builder-id');
@@ -17,6 +17,6 @@ test.describe('Duplicate Attributes', () => {
     expect(footerId).toBe('builder-6a8ccf9861154b7689ba9adfe4577a55');
     expect(sectionId).toBeNull();
     expect(footerClass?.includes('builder-6a8ccf9861154b7689ba9adfe4577a55')).toBe(true);
-    expect(sectionClass?.includes('builder-6a8ccf9861154b7689ba9adfe4577a55')).toBe(false);
+    expect(!!sectionClass?.includes('builder-6a8ccf9861154b7689ba9adfe4577a55')).toBe(false);
   });
 });
