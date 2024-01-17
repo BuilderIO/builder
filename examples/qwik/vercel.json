@@ -12,5 +12,6 @@
     }
   ],
   "buildCommand": "npm install",
-  "outputDirectory": ".vercel/output"
+  "outputDirectory": ".vercel/output",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet ."
 }
