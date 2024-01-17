@@ -29,6 +29,7 @@ import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
+import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -71,6 +72,7 @@ const pages = {
   '/video': video,
   '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
   '/input-default-value': INPUT_DEFAULT_VALUE,
+  '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
 } as const;
 
 const apiVersionPathToProp = {
