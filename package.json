@@ -9,9 +9,7 @@
     "packages/core",
     "packages/react-tests/*",
     "packages/sdks/e2e/*",
-    "packages/sdks/output/*",
-    "packages/sdks/output/vue/vue2",
-    "packages/sdks/output/vue/vue3"
+    "packages/sdks/output/*"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
