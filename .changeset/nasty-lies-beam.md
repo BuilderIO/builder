@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-fix duplicate attributes getting applied to inner element
+Fix: duplicate attributes getting applied to both the block and its wrapper element.
