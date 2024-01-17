@@ -11,5 +11,6 @@
       ]
     }
   ],
-  "buildCommand": "npm install"
+  "buildCommand": "npm install",
+  "outputDirectory": ".vercel/output"
 }
