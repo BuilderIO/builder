@@ -1,6 +1,5 @@
 import { useMetadata, type Signal } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
-import { getBlockActions } from '../../../functions/get-block-actions.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type {
   Dictionary,
@@ -35,16 +34,7 @@ export default function InteractiveElement(
   return (
     <props.Wrapper
       {...props.wrapperProps}
-      attributes={{
-        ...props.wrapperProps.attributes,
-        ...getBlockActions({
-          block: props.block,
-          rootState: props.context.value.rootState,
-          rootSetState: props.context.value.rootSetState,
-          localState: props.context.value.localState,
-          context: props.context.value.context,
-        }),
-      }}
+      attributes={props.wrapperProps.attributes}
     >
       {props.children}
     </props.Wrapper>
