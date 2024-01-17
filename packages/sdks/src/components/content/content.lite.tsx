@@ -150,6 +150,7 @@ export default function ContentComponent(props: ContentProps) {
       builderContextSignal={builderContextSignal}
       contentWrapper={props.contentWrapper}
       contentWrapperProps={props.contentWrapperProps}
+      linkComponent={props.linkComponent}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },
@@ -174,6 +175,7 @@ export default function ContentComponent(props: ContentProps) {
         blocks={builderContextSignal.value.content?.data?.blocks}
         context={builderContextSignal}
         registeredComponents={state.registeredComponents}
+        linkComponent={props.linkComponent}
       />
     </EnableEditor>
   );

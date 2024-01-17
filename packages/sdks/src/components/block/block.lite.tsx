@@ -31,6 +31,7 @@ export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
+  linkComponent: any;
 };
 
 useMetadata({
@@ -76,6 +77,17 @@ export default function Block(props: BlockProps) {
           });
     },
     get Tag() {
+      const shouldUseLink =
+        props.block.tagName === 'a' ||
+        state.processedBlock.properties?.href ||
+        state.processedBlock.href;
+
+      if (shouldUseLink) {
+        if (props.linkComponent) return props.linkComponent;
+
+        return 'a';
+      }
+
       return useTarget({
         /**
          * `tagName` will always be an HTML element. In the future, we might't map those to the right React Native components
@@ -128,6 +140,7 @@ export default function Block(props: BlockProps) {
             : {}),
         },
         context: childrenContext,
+        linkComponent: props.linkComponent,
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
         includeBlockProps: state.blockComponent?.noWrap === true,
@@ -163,6 +176,7 @@ export default function Block(props: BlockProps) {
             blockChildren={state.componentRefProps.blockChildren}
             context={state.componentRefProps.context}
             registeredComponents={state.componentRefProps.registeredComponents}
+            linkComponent={state.componentRefProps.linkComponent}
             builderBlock={state.componentRefProps.builderBlock}
             includeBlockProps={state.componentRefProps.includeBlockProps}
             isInteractive={state.componentRefProps.isInteractive}
@@ -179,6 +193,7 @@ export default function Block(props: BlockProps) {
             block={state.processedBlock}
             context={props.context}
             hasChildren={false}
+            linkComponent={props.linkComponent}
           />
         </Show>
         <Show when={!isEmptyHtmlElement(state.Tag) && state.repeatItem}>
@@ -189,6 +204,7 @@ export default function Block(props: BlockProps) {
                 repeatContext={data.context}
                 block={data.block}
                 registeredComponents={props.registeredComponents}
+                linkComponent={props.linkComponent}
               />
             )}
           </For>
@@ -199,6 +215,7 @@ export default function Block(props: BlockProps) {
             block={state.processedBlock}
             context={props.context}
             hasChildren
+            linkComponent={props.linkComponent}
           >
             <ComponentRef
               componentRef={state.componentRefProps.componentRef}
@@ -208,6 +225,7 @@ export default function Block(props: BlockProps) {
               registeredComponents={
                 state.componentRefProps.registeredComponents
               }
+              linkComponent={state.componentRefProps.linkComponent}
               builderBlock={state.componentRefProps.builderBlock}
               includeBlockProps={state.componentRefProps.includeBlockProps}
               isInteractive={state.componentRefProps.isInteractive}
@@ -223,6 +241,7 @@ export default function Block(props: BlockProps) {
                   block={child}
                   context={childrenContext}
                   registeredComponents={props.registeredComponents}
+                  linkComponent={props.linkComponent}
                 />
               )}
             </For>

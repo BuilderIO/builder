@@ -21,6 +21,7 @@ export interface ComponentProps {
   blockChildren: BuilderBlock[];
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
+  linkComponent: any;
   builderBlock: BuilderBlock;
   includeBlockProps: boolean;
   isInteractive: boolean | undefined;

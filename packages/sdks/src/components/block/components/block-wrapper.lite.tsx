@@ -28,6 +28,7 @@ type BlockWrapperProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
   hasChildren: boolean;
+  linkComponent: any;
 };
 
 /**

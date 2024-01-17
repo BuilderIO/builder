@@ -22,6 +22,7 @@ export type BlocksProps = Partial<
 > & {
   context?: Signal<BuilderContextInterface>;
   registeredComponents?: RegisteredComponents;
+  linkComponent: any;
 };
 
 useMetadata({
@@ -63,6 +64,7 @@ export default function Blocks(props: BlocksProps) {
                   props.registeredComponents ||
                   componentsContext.registeredComponents,
               })}
+              linkComponent={props.linkComponent}
             />
           )}
         </For>

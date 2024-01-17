@@ -17,6 +17,7 @@ export interface ButtonProps {
   text?: string;
   link?: string;
   openLinkInNewTab?: boolean;
+  LinkComponent?: any;
 }
 
 export default function Button(props: ButtonProps) {
@@ -55,7 +56,7 @@ export default function Button(props: ButtonProps) {
         </button>
       }
     >
-      <a
+      <props.LinkComponent
         {...useTarget({
           vue2: filterAttrs(props.attributes, 'v-on:', false),
           vue3: filterAttrs(props.attributes, 'v-on:', false),
@@ -76,7 +77,7 @@ export default function Button(props: ButtonProps) {
         target={props.openLinkInNewTab ? '_blank' : undefined}
       >
         {props.text}
-      </a>
+      </props.LinkComponent>
     </Show>
   );
 }

@@ -14,6 +14,10 @@ export interface ContentVariantsPrps {
   apiKey: string;
   apiVersion?: ApiVersion;
   customComponents?: RegisteredComponent[];
+  /**
+   * The component to use for rendering links. Defaults to `a` ('Link' in React Native).
+   */
+  linkComponent?: any;
   canTrack?: boolean;
   locale?: string;
   /** @deprecated use `enrich` instead **/

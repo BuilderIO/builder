@@ -21,6 +21,7 @@ import type { Dictionary } from '../../types/typescript.js';
 type Column = {
   blocks: BuilderBlock[];
   width?: number;
+  link?: string;
 };
 
 type CSSVal = string | number;
@@ -147,6 +148,14 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
       return breakpointSizes[size].max;
     },
 
+    get columnsWithTags() {
+      return props.columns?.map((column) => ({
+        ...column,
+        Tag: column.link ? props.linkComponent || 'a' : 'div',
+        attributes: column.link ? { href: column.link } : {},
+      }));
+    },
+
     get columnsStyles(): string {
       return `
         @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
@@ -201,9 +210,9 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
         <InlinedStyles styles={state.columnsStyles} />
       </Show>
 
-      <For each={props.columns}>
+      <For each={state.columnsWithTags}>
         {(column, index) => (
-          <div
+          <column.Tag
             style={state.columnCssVars(index)}
             class="builder-column"
             {...useTarget({
@@ -217,6 +226,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               flexDirection: 'column',
               alignItems: 'stretch',
             }}
+            {...column.attributes}
             key={index}
           >
             <Blocks
@@ -232,8 +242,9 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               styleProp={{ flexGrow: '1' }}
               context={props.builderContext}
               registeredComponents={props.builderComponents}
+              linkComponent={props.linkComponent}
             />
-          </div>
+          </column.Tag>
         )}
       </For>
     </div>
