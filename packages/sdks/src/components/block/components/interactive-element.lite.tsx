@@ -1,15 +1,14 @@
 import { useMetadata, type Signal } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
-import { getBlockProperties } from '../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
-import type { PropsWithChildren } from '../../../types/typescript.js';
+import type { Dictionary, PropsWithChildren } from '../../../types/typescript.js';
 
 export type InteractiveElementProps = {
   Wrapper: any;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  wrapperProps: object;
+  wrapperProps: Dictionary<any>;
 };
 
 useMetadata({
@@ -34,10 +33,7 @@ export default function InteractiveElement(
     <props.Wrapper
       {...props.wrapperProps}
       attributes={{
-        ...getBlockProperties({
-          block: props.block,
-          context: props.context.value,
-        }),
+        ...props.wrapperProps.attributes,
         ...getBlockActions({
           block: props.block,
           rootState: props.context.value.rootState,
