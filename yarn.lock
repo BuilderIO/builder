@@ -2792,9 +2792,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/nuxt@workspace:packages/sdks/e2e/nuxt3":
+"@e2e/nuxt@workspace:packages/sdks/e2e/nuxt":
   version: 0.0.0-use.local
-  resolution: "@e2e/nuxt@workspace:packages/sdks/e2e/nuxt3"
+  resolution: "@e2e/nuxt@workspace:packages/sdks/e2e/nuxt"
   dependencies:
     "@builder.io/sdk-vue": "workspace:*"
     "@e2e/tests": "workspace:*"
@@ -2960,9 +2960,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/vue@workspace:packages/sdks/e2e/vue-3":
+"@e2e/vue@workspace:packages/sdks/e2e/vue":
   version: 0.0.0-use.local
-  resolution: "@e2e/vue@workspace:packages/sdks/e2e/vue-3"
+  resolution: "@e2e/vue@workspace:packages/sdks/e2e/vue"
   dependencies:
     "@builder.io/sdk-vue": "workspace:*"
     "@e2e/tests": "workspace:*"
