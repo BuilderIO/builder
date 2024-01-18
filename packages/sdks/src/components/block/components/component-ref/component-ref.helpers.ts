@@ -3,7 +3,6 @@ import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../../../context/types.js';
-import { getBlockActions } from '../../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../../types/builder-block.js';
 import type { PropsWithBuilderData } from '../../../../types/builder-props.js';
@@ -46,27 +45,20 @@ export const getWrapperProps = ({
      */
     ...(includeBlockProps
       ? {
-          attributes: {
-            ...getBlockProperties({
-              block: builderBlock,
-              context: contextValue,
-            }),
-            ...getBlockActions({
-              block: builderBlock,
-              rootState: contextValue.rootState,
-              rootSetState: contextValue.rootSetState,
-              localState: contextValue.localState,
-              context: contextValue.context,
-            }),
-          },
+          attributes: getBlockProperties({
+            block: builderBlock,
+            context: contextValue,
+          }),
         }
       : {}),
   };
+
   const interactiveElementProps: InteractiveElementProps = {
     Wrapper: componentRef,
     block: builderBlock,
     context,
-    wrapperProps: wrapperPropsWithAttributes,
+    wrapperProps: componentOptions,
+    includeBlockProps,
   };
 
   return isInteractive ? interactiveElementProps : wrapperPropsWithAttributes;
