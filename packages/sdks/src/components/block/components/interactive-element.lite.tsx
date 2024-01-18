@@ -37,21 +37,23 @@ export default function InteractiveElement(
   return (
     <props.Wrapper
       {...props.wrapperProps}
-      attributes={{
-        ...(props.includeBlockProps && {
-          ...getBlockProperties({
-            block: props.block,
-            context: props.context.value,
-          }),
-          ...getBlockActions({
-            block: props.block,
-            rootState: props.context.value.rootState,
-            rootSetState: props.context.value.rootSetState,
-            localState: props.context.value.localState,
-            context: props.context.value.context,
-          }),
-        }),
-      }}
+      attributes={
+        props.includeBlockProps
+          ? {
+              ...getBlockProperties({
+                block: props.block,
+                context: props.context.value,
+              }),
+              ...getBlockActions({
+                block: props.block,
+                rootState: props.context.value.rootState,
+                rootSetState: props.context.value.rootSetState,
+                localState: props.context.value.localState,
+                context: props.context.value.context,
+              }),
+            }
+          : {}
+      }
     >
       {props.children}
     </props.Wrapper>
