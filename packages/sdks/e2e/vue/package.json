@@ -1,0 +1,25 @@
+{
+  "name": "@e2e/vue",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vue-tsc --noEmit && vite build",
+    "dev": "vue-tsc --noEmit && vite",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@builder.io/sdk-vue": "workspace:*",
+    "@e2e/tests": "workspace:*",
+    "cross-fetch": "^4.0.0",
+    "vite-plugin-ssr": "^0.4.133",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.8",
+    "vue-tsc": "^1.8.24"
+  }
+}

@@ -66,8 +66,7 @@ function getStyleAttribute(
 ): string | Partial<CSSStyleDeclaration> {
   switch (TARGET) {
     case 'svelte':
-    case 'vue2':
-    case 'vue3':
+    case 'vue':
     case 'solid':
       return convertStyleMapToCSSArray(style).join(' ');
     case 'qwik':

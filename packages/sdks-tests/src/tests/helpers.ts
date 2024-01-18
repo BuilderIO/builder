@@ -74,7 +74,6 @@ export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
   const isNonSSR =
     packageName === 'solid' ||
     packageName === 'react' ||
-    packageName === 'vue2' ||
     packageName === 'svelte' ||
     packageName === 'react-native' ||
     packageName === 'gen1-react';
@@ -118,8 +117,7 @@ export const EXCLUDE_GEN_2 = excludeTestFor({
   rsc: true,
   solid: true,
   svelte: true,
-  vue2: true,
-  vue3: true,
+  vue: true,
 });
 
 export const EXCLUDE_RN = excludeTestFor({

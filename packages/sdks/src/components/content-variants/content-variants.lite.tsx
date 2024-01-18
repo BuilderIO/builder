@@ -42,10 +42,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
      * We unmount the non-winning variants post-hydration in Vue.
      */
     useTarget({
-      vue2: () => {
-        state.shouldRenderVariants = false;
-      },
-      vue3: () => {
+      vue: () => {
         state.shouldRenderVariants = false;
       },
       solid: () => {
@@ -127,12 +124,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
       </Show>
       <ContentComponent
         {...useTarget({
-          vue2: {
-            key: state.shouldRenderVariants.toString(),
-          },
-          vue3: {
-            key: state.shouldRenderVariants.toString(),
-          },
+          vue: { key: state.shouldRenderVariants.toString() },
           default: {},
         })}
         content={state.defaultContent}

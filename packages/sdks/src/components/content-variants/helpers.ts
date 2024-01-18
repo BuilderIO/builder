@@ -49,8 +49,7 @@ export const checkShouldRenderVariants = ({
    * NOTE: For Vue: after the app is hydrated, we strip the variants from the DOM (on mount) to reduce the amount of HTML in the DOM.
    * This isn't necessary, just a nice to have.
    */
-  if (TARGET === 'vue2' || TARGET === 'vue3' || TARGET === 'svelte')
-    return true;
+  if (TARGET === 'vue' || TARGET === 'svelte') return true;
 
   if (isBrowser()) return false;
 

@@ -11,16 +11,6 @@ const rng = seedrandom('vue-sdk-seed');
  * @typedef {import('@builder.io/mitosis').OnMountHook} OnMountHook
  */
 
-/**
- *
- * @param {MitosisNode} node
- */
-const filterEmptyTextNodes = (node) =>
-  !(
-    typeof node.properties._text === 'string' &&
-    !node.properties._text.trim().length
-  );
-
 const getSeededId = () => {
   const rngVal = rng();
   return Number(String(rngVal).split('.')[1]).toString(36);
@@ -43,74 +33,11 @@ const kebabCase = (string) =>
  */
 const getTargetPath = ({ target }) => {
   switch (target) {
-    // we have to workaround a name collision, where the folder can't have the name of the `exports` property in package.json.
-    // crazy, crazy stuff.
-    case 'vue2':
-      return 'vue/vue2';
-    case 'vue':
-    case 'vue3':
-      return 'vue/vue3';
     case 'rsc':
       return 'nextjs';
     default:
       return kebabCase(target);
   }
-};
-
-/**
- * @type {MitosisConfig['options']['vue']}
- */
-const vueConfig = {
-  typescript: true,
-  namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
-  cssNamespace: getSeededId,
-  plugins: [
-    () => ({
-      json: {
-        // This plugin handles binding our actions to the `v-on:` Vue syntax:
-        // - in our block components, the actions will come through `props.attributes` and need to be filtered
-        // - in Block, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
-        pre: (json) => {
-          traverse(json).forEach(function (item) {
-            if (!isMitosisNode(item)) return;
-
-            if (json.name === 'BlockWrapper') {
-              const key = Object.keys(item.bindings).find((x) =>
-                x.startsWith('getBlockActions')
-              );
-              if (key) {
-                const binding = item.bindings[key];
-                if (binding) {
-                  item.bindings[key] = {
-                    ...binding,
-                    type: 'spread',
-                    spreadType: 'event-handlers',
-                  };
-                }
-              }
-            }
-
-            const filterAttrKeys = Object.entries(item.bindings).filter(
-              ([_key, value]) =>
-                value?.code.includes('filterAttrs') &&
-                value.code.includes('true')
-            );
-
-            for (const [key, value] of filterAttrKeys) {
-              if (value) {
-                item.bindings[key] = {
-                  ...value,
-                  type: 'spread',
-                  spreadType: 'event-handlers',
-                };
-              }
-            }
-          });
-        },
-      },
-    }),
-  ],
-  api: 'options',
 };
 
 /**
@@ -156,7 +83,7 @@ const target = process.argv
 
 const targets = target
   ? [target]
-  : ['reactNative', 'vue2', 'rsc', 'vue3', 'solid', 'svelte', 'react', 'qwik'];
+  : ['reactNative', 'rsc', 'vue', 'solid', 'svelte', 'react', 'qwik'];
 
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
@@ -207,86 +134,59 @@ module.exports = {
       typescript: true,
       plugins: [INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN],
     },
-    vue2: {
-      ...vueConfig,
-      asyncComponentImports: true,
+    vue: {
+      typescript: true,
+      namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
+      cssNamespace: getSeededId,
       plugins: [
-        ...(vueConfig?.plugins || []),
         () => ({
           json: {
+            // This plugin handles binding our actions to the `v-on:` Vue syntax:
+            // - in our block components, the actions will come through `props.attributes` and need to be filtered
+            // - in Block, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
             pre: (json) => {
-              // TO-DO: should be able to remove this once vue2 fragment workaround is merged.
-              if (json.name === 'Image') {
-                json.children[0].name = 'div';
-              }
+              traverse(json).forEach(function (item) {
+                if (!isMitosisNode(item)) return;
 
-              if (json.name === 'Block') {
-                // drop the wrapper `Show`, move its condition to the root `<template>`
-                json.children = json.children[0].children;
-
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) return;
-
-                  const children = item.children.filter(filterEmptyTextNodes);
-
-                  // add back wrapper `Show`'s condition for Vue 2
-                  if (item.name === 'Show' && item.bindings.when) {
-                    item.bindings.when.code += '&& state.canShowBlock';
+                if (json.name === 'BlockWrapper') {
+                  const key = Object.keys(item.bindings).find((x) =>
+                    x.startsWith('getBlockActions')
+                  );
+                  if (key) {
+                    const binding = item.bindings[key];
+                    if (binding) {
+                      item.bindings[key] = {
+                        ...binding,
+                        type: 'spread',
+                        spreadType: 'event-handlers',
+                      };
+                    }
                   }
+                }
 
-                  /**
-                   * Hack to get around the fact that we can't have a v-for loop inside of a v-else in Vue 2.
-                   */
-                  if (
-                    item.name === 'Show' &&
-                    children.length === 1 &&
-                    children[0].name === 'For'
-                  ) {
-                    const forBlock = children[0];
+                const filterAttrKeys = Object.entries(item.bindings).filter(
+                  ([_key, value]) =>
+                    value?.code.includes('filterAttrs') &&
+                    value.code.includes('true')
+                );
 
-                    /**
-                     * @type {MitosisNode}
-                     */
-                    const divWorkaroundBlock = {
-                      '@type': '@builder.io/mitosis/node',
-                      name: 'div',
-                      meta: {},
-                      scope: {},
-                      children: [forBlock],
-                      bindings: {},
-                      properties: {
-                        class: 'vue2-root-element-workaround',
-                      },
+                for (const [key, value] of filterAttrKeys) {
+                  if (value) {
+                    item.bindings[key] = {
+                      ...value,
+                      type: 'spread',
+                      spreadType: 'event-handlers',
                     };
-                    const newItem = {
-                      ...item,
-                      children: [divWorkaroundBlock],
-                    };
-                    this.update(newItem);
-                    this.stop();
                   }
-                });
-              }
-            },
-          },
-          code: {
-            pre: (code) => {
-              if (code.includes("name: 'block'")) {
-                // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
-                return code
-                  .replace(
-                    '<block-wrapper v-else ',
-                    '<block-wrapper v-else-if="canShowBlock" '
-                  )
-                  .replace('&& canShowBlock)"', ') && canShowBlock"');
-              }
-              return code;
+                }
+              });
             },
           },
         }),
       ],
+      api: 'options',
+      asyncComponentImports: false,
     },
-    vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
       typescript: true,
       plugins: [SRCSET_PLUGIN],

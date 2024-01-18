@@ -48,8 +48,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     get className() {
       return [
         ...useTarget({
-          vue2: Object.keys(props.attributes.class),
-          vue3: Object.keys(props.attributes.class),
+          vue: Object.keys(props.attributes.class),
           react: [props.attributes.className],
           rsc: [props.attributes.className],
           reactNative: [],
@@ -106,14 +105,12 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   return (
     <div
       {...useTarget({
-        vue2: filterAttrs(props.attributes, 'v-on:', false),
-        vue3: filterAttrs(props.attributes, 'v-on:', false),
+        vue: filterAttrs(props.attributes, 'v-on:', false),
         svelte: filterAttrs(props.attributes, 'on:', false),
         default: {},
       })}
       {...useTarget({
-        vue2: filterAttrs(props.attributes, 'v-on:', true),
-        vue3: filterAttrs(props.attributes, 'v-on:', true),
+        vue: filterAttrs(props.attributes, 'v-on:', true),
         svelte: filterAttrs(props.attributes, 'on:', true),
         default: props.attributes,
       })}

@@ -11,8 +11,7 @@
     "build:svelte": "yarn build-mitosis --target=svelte && yarn run set-sdk-version svelte",
     "build:solid": "yarn build-mitosis --target=solid && yarn run set-sdk-version solid",
     "build:react-native": "yarn build-mitosis --target=reactNative && yarn run set-sdk-version react-native",
-    "build:vue2": "yarn build-mitosis --target=vue2 && yarn run set-sdk-version vue",
-    "build:vue3": "yarn build-mitosis --target=vue3 && yarn run set-sdk-version vue",
+    "build:vue": "yarn build-mitosis --target=vue && yarn run set-sdk-version vue",
     "build:nextjs": "yarn build-mitosis --target=rsc && yarn run set-sdk-version nextjs",
     "build:all": "yarn build-mitosis",
     "start": "watch 'yarn run build-mitosis' ./src ./overrides",
@@ -22,8 +21,7 @@
     "start:svelte": "SDK=svelte yarn _start",
     "start:solid": "SDK=solid yarn _start",
     "start:reactNative": "SDK=reactNative yarn _start",
-    "start:vue2": "SDK=vue2 yarn _start",
-    "start:vue3": "SDK=vue3 yarn _start",
+    "start:vue": "SDK=vue yarn _start",
     "start:rsc": "SDK=rsc yarn _start",
     "test": "yarn test:browser && yarn test:node && yarn test:edge",
     "test:browser": "SDK_ENV=browser vitest run",
@@ -49,9 +47,7 @@
     "e2e:build:qwik": "nx run-many -t build -p @e2e/qwik-city",
     "e2e:build:react": "nx run-many -t build -p @e2e/react @e2e/next-pages-dir --exclude @e2e/next-app-dir-client",
     "e2e:build:nextjs": "nx run-many -t build -p @e2e/next-app-dir",
-    "e2e:build:vue2": "nx run-many -t build -p @e2e/vue2 @e2e/nuxt2",
-    "e2e:build:vue3": "nx run-many -t build -p @e2e/vue3 @e2e/nuxt3",
-    "e2e:build:vue": "nx run-many -t build -p @e2e/vue2 @e2e/nuxt2 @e2e/vue3 @e2e/nuxt3",
+    "e2e:build:vue": "nx run-many -t build -p @e2e/vue @e2e/nuxt",
     "e2e:run": "nx test @e2e/tests",
     "e2e:run:svelte": "SDK=svelte yarn e2e:run",
     "e2e:run:react-native": "SDK=reactNative yarn e2e:run",
@@ -59,8 +55,7 @@
     "e2e:run:qwik": "SDK=qwik yarn e2e:run",
     "e2e:run:react": "SDK=react yarn e2e:run",
     "e2e:run:nextjs": "SDK=rsc yarn e2e:run",
-    "e2e:run:vue2": "SDK=vue2 yarn e2e:run",
-    "e2e:run:vue3": "SDK=vue3 yarn e2e:run",
+    "e2e:run:vue": "SDK=vue yarn e2e:run",
     "loop": "bash ./scripts/loop-command.sh",
     "version-sdks": "bash ./scripts/version-sdks.sh",
     "version:all:patch": "yarn version-sdks patch all",
@@ -153,20 +148,12 @@
           "{projectRoot}/output/react-native/src"
         ]
       },
-      "build:vue2": {
+      "build:vue": {
         "dependsOn": [
           "^build"
         ],
         "outputs": [
-          "{projectRoot}/output/vue/vue2/src"
-        ]
-      },
-      "build:vue3": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "{projectRoot}/output/vue/vue3/src"
+          "{projectRoot}/output/vue/src"
         ]
       },
       "build:nextjs": {
