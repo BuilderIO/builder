@@ -96,8 +96,9 @@ type SDK_EXCLUSION_DICT = {
  * We use the negative tense, so that the default behavior is to run the test, unless specifically omitted.
  *
  */
-export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT) => {
-  return sdks[sdk] || false;
+export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT | Array<Sdk>) => {
+  const sdkIsExcluded = Array.isArray(sdks) ? sdks.includes(sdk) : sdks[sdk];
+  return sdkIsExcluded || false;
 };
 
 /**

@@ -14,6 +14,7 @@ import { CONTENT as elementEvents } from './element-events.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as image } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
+import { JS_CODE_CONTENT } from './js-code.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import { CONTENT as reactiveState } from './reactive-state.js';
@@ -37,7 +38,7 @@ function isBrowser(): boolean {
 
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
-const pages = {
+const PAGES = {
   '/': homepage,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v2': CONTENT_WITHOUT_SYMBOLS,
@@ -47,6 +48,7 @@ const pages = {
   '/css-nesting': cssNesting,
   '/columns': columns,
   '/symbols': symbols,
+  '/js-code': JS_CODE_CONTENT,
   '/symbols-without-content': CONTENT_WITHOUT_SYMBOLS,
   '/symbol-bindings': symbolBindings,
   '/symbol-with-locale': symbolWithLocale,
@@ -81,13 +83,13 @@ const apiVersionPathToProp = {
   '/api-version-v3': { apiVersion: 'v3' },
 } as const;
 
-export type Path = keyof typeof pages;
+export type Path = keyof typeof PAGES;
 
 const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1'];
 const GEN2_ONLY_PATHNAMES: Path[] = ['/api-version-v2'];
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
-  return Object.keys(pages).filter(pathname => {
+  return Object.keys(PAGES).filter(pathname => {
     if (target === 'gen1') {
       return !GEN2_ONLY_PATHNAMES.includes(pathname as Path);
     } else {
@@ -97,7 +99,7 @@ export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
 };
 
 const getContentForPathname = (pathname: string): BuilderContent | null => {
-  return pages[pathname as keyof typeof pages] || null;
+  return PAGES[pathname as keyof typeof PAGES] || null;
 };
 
 // remove trailing slash from pathname if it exists
