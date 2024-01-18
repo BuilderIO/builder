@@ -37,28 +37,29 @@ export const getWrapperProps = ({
 }: Omit<ComponentProps, 'blockChildren' | 'registeredComponents'> & {
   contextValue: BuilderContextInterface;
 }) => {
+  const wrapperPropsWithAttributes = {
+    ...componentOptions,
+    /**
+     * If `noWrap` is set to `true`, then the block's props/attributes are provided to the
+     * component itself directly. Otherwise, they are provided to the wrapper element.
+     */
+    ...(includeBlockProps
+      ? {
+          attributes: getBlockProperties({
+            block: builderBlock,
+            context: contextValue,
+          }),
+        }
+      : {}),
+  };
+
   const interactiveElementProps: InteractiveElementProps = {
     Wrapper: componentRef,
     block: builderBlock,
     context,
     wrapperProps: componentOptions,
+    includeBlockProps,
   };
 
-  return isInteractive
-    ? interactiveElementProps
-    : {
-        ...componentOptions,
-        /**
-         * If `noWrap` is set to `true`, then the block's props/attributes are provided to the
-         * component itself directly. Otherwise, they are provided to the wrapper element.
-         */
-        ...(includeBlockProps
-          ? {
-              attributes: getBlockProperties({
-                block: builderBlock,
-                context: contextValue,
-              }),
-            }
-          : {}),
-      };
+  return isInteractive ? interactiveElementProps : wrapperPropsWithAttributes;
 };
