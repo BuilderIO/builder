@@ -42,10 +42,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
      * We unmount the non-winning variants post-hydration in Vue.
      */
     useTarget({
-      vue2: () => {
-        state.shouldRenderVariants = false;
-      },
-      vue3: () => {
+      vue: () => {
         state.shouldRenderVariants = false;
       },
       solid: () => {
@@ -117,18 +114,17 @@ export default function ContentVariants(props: VariantsProviderProps) {
               includeRefs={props.includeRefs}
               enrich={props.enrich}
               isSsrAbTest={state.shouldRenderVariants}
+              blocksWrapper={props.blocksWrapper}
+              blocksWrapperProps={props.blocksWrapperProps}
+              contentWrapper={props.contentWrapper}
+              contentWrapperProps={props.contentWrapperProps}
             />
           )}
         </For>
       </Show>
       <ContentComponent
         {...useTarget({
-          vue2: {
-            key: state.shouldRenderVariants.toString(),
-          },
-          vue3: {
-            key: state.shouldRenderVariants.toString(),
-          },
+          vue: { key: state.shouldRenderVariants.toString() },
           default: {},
         })}
         content={state.defaultContent}
@@ -144,6 +140,10 @@ export default function ContentVariants(props: VariantsProviderProps) {
         includeRefs={props.includeRefs}
         enrich={props.enrich}
         isSsrAbTest={state.shouldRenderVariants}
+        blocksWrapper={props.blocksWrapper}
+        blocksWrapperProps={props.blocksWrapperProps}
+        contentWrapper={props.contentWrapper}
+        contentWrapperProps={props.contentWrapperProps}
       />
     </>
   );

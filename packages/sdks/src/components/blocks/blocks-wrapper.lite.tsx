@@ -7,6 +7,7 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
+  elementTag: 'props.BlocksWrapper',
 });
 
 export type BlocksWrapperProps = {
@@ -14,6 +15,14 @@ export type BlocksWrapperProps = {
   parent: string | undefined;
   path: string | undefined;
   styleProp: Record<string, any> | undefined;
+  /**
+   * The element that wraps each list of blocks. Defaults to a `div` element ('ScrollView' in React Native).
+   */
+  BlocksWrapper: any;
+  /**
+   * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+   */
+  BlocksWrapperProps: any;
 };
 
 export default function BlocksWrapper(
@@ -54,7 +63,7 @@ export default function BlocksWrapper(
   });
 
   return (
-    <div
+    <props.BlocksWrapper
       class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
@@ -63,19 +72,28 @@ export default function BlocksWrapper(
         default: {},
       })}
       style={props.styleProp}
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-      }}
+      // eslint-disable-next-line @builder.io/mitosis/css-no-vars
+      css={useTarget({
+        // react native's ScrollView can't accept `alignItems` in styles.
+        reactNative: {
+          display: 'flex',
+          flexDirection: 'column',
+        },
+        default: {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+        },
+      })}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onClick={(event) => state.onClick()}
+      onClick={(event: any) => state.onClick()}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onMouseEnter={(event) => state.onMouseEnter()}
+      onMouseEnter={(event: any) => state.onMouseEnter()}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onKeyPress={(event) => state.onClick()}
+      onKeyPress={(event: any) => state.onClick()}
+      {...props.BlocksWrapperProps}
     >
       {props.children}
-    </div>
+    </props.BlocksWrapper>
   );
 }

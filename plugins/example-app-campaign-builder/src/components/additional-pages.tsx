@@ -104,7 +104,7 @@ function ContentPreviewCell(props: {
       // When authenticated you can skip the model name by using `_any` in it's place to find any content
       // by ID
       // See https://www.builder.io/c/docs/query-api
-      `https://cdn.builder.io/api/v2/content/_any/${props.contentId}?apiKey=${props.context.user.apiKey}&fields=name,id,screenshot,published`,
+      `https://cdn.builder.io/api/v3/content/_any/${props.contentId}?apiKey=${props.context.user.apiKey}&fields=name,id,screenshot,published`,
       { headers: props.context.user.authHeaders }
     )
 

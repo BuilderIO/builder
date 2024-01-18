@@ -75,7 +75,7 @@ function DocsSearchBrowser(props: DocsSearchProps) {
       'data.tags',
       'data.keywords',
     ];
-    const url = `https://cdn.builder.io/api/v2/content/docs-content?apiKey=YJIGb4i01jvw0SRdL5Bt&query.$or=${JSON.stringify(
+    const url = `https://cdn.builder.io/api/v3/content/docs-content?apiKey=YJIGb4i01jvw0SRdL5Bt&query.$or=${JSON.stringify(
       fields.map((field) => ({
         [field]: { $regex: text, $options: 'i' },
       })),

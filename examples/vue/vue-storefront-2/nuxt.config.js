@@ -153,9 +153,6 @@ export default {
     },
   },
 
-  // We need to import the CSS for the SDK in the Nuxt Config here
-  css: ['@builder.io/sdk-vue/vue2/css'],
-
   googleFonts: {
     families: {
       Raleway: {

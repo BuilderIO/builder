@@ -1,5 +1,79 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.11.1
+
+### Patch Changes
+
+- 9544220: Fix: duplicate attributes getting applied to both the block and its wrapper element.
+
+## 0.11.0
+
+### Minor Changes
+
+- 70fa50d: - 🧨 Breaking: removed Vue 2 SDK
+
+  - 🧨 Breaking: removed `@builder.io/sdk-vue/vue3` import. To import the SDK, you should now use:
+
+  ```ts
+  // BEFORE
+  import { Content } from '@builder.io/sdk-vue/vue3';
+
+  // AFTER
+  import { Content } from '@builder.io/sdk-vue';
+  ```
+
+## 0.10.0
+
+### Minor Changes
+
+- 39149d5: 🧨 Breaking: `fetchAllEntries`/`getAllContent` now returns the array of contents directly, instead of an object with a `results` property.
+
+## 0.9.0
+
+### Minor Changes
+
+- 435c5ee: Breaking: Now that Vue 2 has reached EOL, the Vue 2 SDK is no longer actively tested nor maintained.
+
+  See https://v2.vuejs.org/lts/ for EOL announcement.
+
+### Patch Changes
+
+- 435c5ee: Feature: add `contentWrapper`, `contentWrapperProps`, `blocksWrapper`, `blocksWrapperProps` props to Content:
+
+  ```ts
+  {
+   /**
+     * The element that wraps your content. Defaults to `div` ('ScrollView' in React Native).
+     */
+    contentWrapper?: any;
+    /**
+     * Additonal props to pass to `contentWrapper`. Defaults to `{}`.
+     */
+    contentWrapperProps?: any;
+    /**
+     * The element that wraps your blocks. Defaults to `div` ('ScrollView' in React Native).
+     */
+    blocksWrapper?: any;
+    /**
+     * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+     */
+    blocksWrapperProps?: any;
+  }
+  ```
+
+## 0.8.1
+
+## 0.8.0
+
+### Minor Changes
+
+- 792ffaf: Fix: remove the need for users to manually import CSS stylesheet.
+- 🧨 Breaking Changes: remove the CSS stylesheet exports:
+  - `import '@builder.io/sdk-vue/css'`
+  - `import '@builder.io/sdk-vue/vue2/css'`
+  - `import '@builder.io/sdk-vue/vue3/css'`
+    If you were using these, all you have to do is remove the import, since the import was moved to the SDK internals.
+
 ## 0.7.6
 
 ## 0.7.5

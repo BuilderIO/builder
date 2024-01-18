@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
       "source": "/build/(.*)",
@@ -9,5 +10,9 @@
         }
       ]
     }
-  ]
+  ],
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".vercel/output",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet ."
 }

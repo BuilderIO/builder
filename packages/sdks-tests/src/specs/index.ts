@@ -30,6 +30,7 @@ import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
+import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -73,6 +74,7 @@ const PAGES = {
   '/video': video,
   '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
   '/input-default-value': INPUT_DEFAULT_VALUE,
+  '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
 } as const;
 
 const apiVersionPathToProp = {
@@ -112,7 +114,7 @@ type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
   pathname?: string;
-  _processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+  _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
   getContent?: (opts: any) => Promise<BuilderContent | null>;
   options?: any;
   data?: 'real' | 'mock';
@@ -162,7 +164,7 @@ export const getProps = async (args: {
   };
 
   const content = _processContentResult
-    ? (await _processContentResult(props, { results: [_content] })).results[0]
+    ? (await _processContentResult(props, { results: [_content] }))[0]
     : _content;
 
   return { ...props, content } as any;

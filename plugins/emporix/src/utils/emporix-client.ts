@@ -13,6 +13,9 @@ export class AnonymousTokenHelper {
     if (!this._cache['access_token']) {
       await this.authenticate();
     }
+    if (this._cache['expires_at'] < Date.now()) {
+      await this.authenticate();
+    }
     return this._cache['access_token'];
   }
 
@@ -25,6 +28,7 @@ export class AnonymousTokenHelper {
       `https://api.emporix.io/customerlogin/auth/anonymous/login?client_id=${this._clientId}&tenant=${this._tenant}`
     );
     const data = await response.json();
+    data['expires_at'] = Date.now() + 1000 * data['expires_in'];
     this._cache = data;
   }
 }

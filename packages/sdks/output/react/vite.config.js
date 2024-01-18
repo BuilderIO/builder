@@ -7,6 +7,8 @@ const SERVER_ENTRY = 'server-entry';
 export default defineConfig({
   plugins: [viteOutputGenerator({ pointTo: 'input' }), react()],
   build: {
+    // This is to allow Webpack 4 to consume the output.
+    target: 'es2019',
     lib: {
       entry: {
         index: './src/index.ts',
@@ -17,7 +19,7 @@ export default defineConfig({
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['react', 'react/jsx-runtime', 'react-dom'],
+      external: ['react', 'react/jsx-runtime', 'react-dom', 'node:module'],
       output: {
         globals: {
           react: 'react',

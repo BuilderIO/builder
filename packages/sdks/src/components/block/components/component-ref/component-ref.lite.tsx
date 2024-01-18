@@ -31,8 +31,7 @@ export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
     Wrapper: props.isInteractive
       ? useTarget({
-          vue2: wrapComponentRef(InteractiveElement),
-          vue3: wrapComponentRef(InteractiveElement),
+          vue: wrapComponentRef(InteractiveElement),
           default: InteractiveElement,
         })
       : props.componentRef,

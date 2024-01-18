@@ -37,6 +37,7 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
+        'node:module',
         'next/navigation',
         'react',
         'react/jsx-runtime',

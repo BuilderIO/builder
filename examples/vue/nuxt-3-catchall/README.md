@@ -33,6 +33,20 @@ npm install
 pnpm install
 ```
 
+and transpile the SDK in `nuxt.config.js`:
+
+```js
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
+  build: {
+    /**
+     * You need to transpile the Builder.io Vue SDK for it to work correctly.
+     */
+    transpile: ['@builder.io/sdk-vue'],
+  },
+});
+```
+
 ## Development Server
 
 Start the development server on http://localhost:3000

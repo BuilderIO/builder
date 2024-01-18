@@ -6,9 +6,7 @@ test.describe('Repeat items bindings', () => {
   test('Updating state should display repeat collection', async ({ page }) => {
     test.fail(
       // NextJS fundamentally doesn't support state updates
-      sdk === 'rsc' ||
-        // not sure why vue2 fails
-        sdk === 'vue2'
+      sdk === 'rsc'
     );
     await page.goto('/repeat-items-bindings/');
     const buttonLocator = page.getByText('Click me');

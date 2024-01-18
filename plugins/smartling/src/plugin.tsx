@@ -85,7 +85,7 @@ registerPlugin(
           const projectId = content.meta?.translationBatch?.projectId;
           if (isPending && projectId && content.published === 'published') {
             const lastPublishedContent = await fetch(
-              `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
+              `https://cdn.builder.io/api/v3/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
             ).then(res => res.json());
             const res = await api.getProject(projectId);
             const sourceLocale = res.project?.sourceLocaleId;
@@ -292,7 +292,7 @@ registerPlugin(
       async onClick(content) {
         appState.globalState.showGlobalBlockingLoading('Contacting Smartling ....');
         const lastPublishedContent = await fetch(
-          `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
+          `https://cdn.builder.io/api/v3/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
         ).then(res => res.json());
         await api.updateTranslationFile({
           translationJobId: lastPublishedContent.meta.translationJobId,

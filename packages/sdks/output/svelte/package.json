@@ -1,13 +1,13 @@
 {
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
-  "version": "0.7.6",
+  "version": "0.11.1",
   "type": "module",
   "files": [
     "lib",
     "src"
   ],
-  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/svelte#readme",
+  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/svelte",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BuilderIO/builder.git",

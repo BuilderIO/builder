@@ -2,7 +2,6 @@ import { TARGET } from '../constants/target.js';
 import type { BuilderContextInterface } from '../context/types.js';
 import { convertStyleMapToCSSArray } from '../helpers/css.js';
 import type { BuilderBlock } from '../types/builder-block.js';
-import { getReactNativeBlockStyles } from './get-react-native-block-styles.js';
 import { transformBlockProperties } from './transform-block-properties.js';
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
@@ -55,15 +54,7 @@ export function getBlockProperties({
       .join(' '),
   };
 
-  if (TARGET === 'reactNative') {
-    properties.style = getReactNativeBlockStyles({
-      block,
-      context,
-      blockStyles: properties.style,
-    });
-  }
-
-  return transformBlockProperties(properties);
+  return transformBlockProperties({ properties, context, block });
 }
 /**
  * Svelte does not support style attribute as an object so we need to flatten it.
@@ -75,8 +66,7 @@ function getStyleAttribute(
 ): string | Partial<CSSStyleDeclaration> {
   switch (TARGET) {
     case 'svelte':
-    case 'vue2':
-    case 'vue3':
+    case 'vue':
     case 'solid':
       return convertStyleMapToCSSArray(style).join(' ');
     case 'qwik':

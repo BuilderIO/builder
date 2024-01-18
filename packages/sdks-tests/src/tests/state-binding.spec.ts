@@ -11,15 +11,13 @@ test.describe('State binding', () => {
       test.skip(
         isRNSDK ||
           packageName === 'react-native' ||
-          packageName === 'vue2' ||
-          packageName === 'nuxt2' ||
           packageName === 'solid' ||
           packageName === 'solid-start' ||
           packageName === 'svelte' ||
           packageName === 'sveltekit' ||
           packageName === 'next-app-dir' ||
-          packageName === 'vue3' ||
-          packageName === 'nuxt3'
+          packageName === 'vue' ||
+          packageName === 'nuxt'
       );
 
       await page.goto('/state-binding/', { waitUntil: 'networkidle' });

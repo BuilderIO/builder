@@ -1,5 +1,50 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.11.1
+
+### Patch Changes
+
+- 9544220: Fix: duplicate attributes getting applied to both the block and its wrapper element.
+
+## 0.11.0
+
+## 0.10.0
+
+### Minor Changes
+
+- 39149d5: 🧨 Breaking: `fetchAllEntries`/`getAllContent` now returns the array of contents directly, instead of an object with a `results` property.
+
+## 0.9.0
+
+### Patch Changes
+
+- 435c5ee: Feature: add `contentWrapper`, `contentWrapperProps`, `blocksWrapper`, `blocksWrapperProps` props to Content:
+
+  ```ts
+  {
+   /**
+     * The element that wraps your content. Defaults to `div` ('ScrollView' in React Native).
+     */
+    contentWrapper?: any;
+    /**
+     * Additonal props to pass to `contentWrapper`. Defaults to `{}`.
+     */
+    contentWrapperProps?: any;
+    /**
+     * The element that wraps your blocks. Defaults to `div` ('ScrollView' in React Native).
+     */
+    blocksWrapper?: any;
+    /**
+     * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+     */
+    blocksWrapperProps?: any;
+  }
+  ```
+
+## 0.8.1
+
+## 0.8.0
+
 ## 0.7.6
 
 ## 0.7.5

@@ -22,7 +22,7 @@ export const defaultOptions = {
   fieldName: `allBuilderModels`,
   typeName: `builder`,
   limit: 30,
-  baseURL: `https://cdn.builder.io/api/v1/graphql`,
+  baseURL: `https://cdn.builder.io/api/v3/graphql`,
   overrideDev404: true,
   useCache: false,
   batch: true,

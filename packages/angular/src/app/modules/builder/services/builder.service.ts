@@ -61,6 +61,7 @@ export class BuilderService extends Builder {
     }
 
     if (apiKey) {
+      this.apiVersion = 'v3';
       this.init(apiKey);
     }
 

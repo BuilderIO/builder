@@ -17,7 +17,9 @@ import BlockStyles from '../block/components/block-styles.lite.jsx';
 import type { BlocksWrapperProps } from './blocks-wrapper.lite.jsx';
 import BlocksWrapper from './blocks-wrapper.lite.jsx';
 
-export type BlocksProps = Partial<BlocksWrapperProps> & {
+export type BlocksProps = Partial<
+  Omit<BlocksWrapperProps, 'BlocksWrapper' | 'BlocksWrapperProps'>
+> & {
   context?: Signal<BuilderContextInterface>;
   registeredComponents?: RegisteredComponents;
 };
@@ -38,6 +40,8 @@ export default function Blocks(props: BlocksProps) {
       parent={props.parent}
       path={props.path}
       styleProp={props.styleProp}
+      BlocksWrapper={props.context?.value?.BlocksWrapper}
+      BlocksWrapperProps={props.context?.value?.BlocksWrapperProps}
     >
       {/**
        * We need to run two separate loops for content + styles to workaround the fact that Vue 2

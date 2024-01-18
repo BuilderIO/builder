@@ -10,7 +10,6 @@ e2e/qwik/server/
 e2e/qwik/lib-types/
 e2e/qwik-city/server/
 e2e/rsc/
-e2e/nuxt2/
 
 **/playwright-report/*
 **/test-results/*
