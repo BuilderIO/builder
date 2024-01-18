@@ -14,7 +14,7 @@ export type InteractiveElementProps = {
 
 useMetadata({
   options: {
-    vue: {
+    vue3: {
       asyncComponentImports: true,
     },
   },

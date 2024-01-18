@@ -33,9 +33,6 @@ const kebabCase = (string) =>
  */
 const getTargetPath = ({ target }) => {
   switch (target) {
-    case 'vue':
-    case 'vue3':
-      return 'vue';
     case 'rsc':
       return 'nextjs';
     default:
