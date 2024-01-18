@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.11.1
+
+### Patch Changes
+
+- 9544220: Fix: duplicate attributes getting applied to both the block and its wrapper element.
+
 ## 0.11.0
 
 ### Minor Changes
