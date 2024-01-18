@@ -1,5 +1,21 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.11.0
+
+### Minor Changes
+
+- 70fa50d: - 🧨 Breaking: removed Vue 2 SDK
+
+  - 🧨 Breaking: removed `@builder.io/sdk-vue/vue3` import. To import the SDK, you should now use:
+
+  ```ts
+  // BEFORE
+  import { Content } from '@builder.io/sdk-vue/vue3';
+
+  // AFTER
+  import { Content } from '@builder.io/sdk-vue';
+  ```
+
 ## 0.10.0
 
 ### Minor Changes
