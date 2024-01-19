@@ -1,8 +1,6 @@
-# Builder.io Vue 2.0 SDK (BETA)
+# Builder.io Vue SDK
 
-This is the 2.0 Vue SDK. It is currently in beta.
-
-NOTE: If you are looking for the stable 1.0 Vue SDK, you can find it [here](/packages/vue)
+This is the Builder Vue SDK. It is currently in beta.
 
 ## Getting Started
 
@@ -10,18 +8,23 @@ NOTE: If you are looking for the stable 1.0 Vue SDK, you can find it [here](/pac
 npm install @builder.io/sdk-vue
 ```
 
-NOTE: if you are using Nuxt, you will need to transpile the SDK:
+NOTE: if you are using Nuxt, you will need to add the SDK's Nuxt module in `nuxt.config.js`:
 
 ```js
-// nuxt.config.js
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  build: {
-    /**
-     * You need to transpile the Builder.io Vue SDK for it to work correctly.
-     */
-    transpile: ['@builder.io/sdk-vue'],
-  },
+  module: ['@builder.io/sdk-vue/nuxt'],
 });
+```
+
+## CSS
+
+If you are using a SSR framework _other_ than Nuxt, you will need to manually import the CSS by adding the following to your entrypoint, before rendering Builder Content:
+
+```html
+<script>
+  import '@builder.io/sdk-vue/css';
+</script>
 ```
 
 ## Mitosis
