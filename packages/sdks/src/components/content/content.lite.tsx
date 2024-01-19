@@ -138,7 +138,7 @@ export default function ContentComponent(props: ContentProps) {
 
   return (
     <EnableEditor
-      content={props.content}
+      content={builderContextSignal.value.content}
       model={props.model}
       context={props.context}
       apiKey={props.apiKey}
