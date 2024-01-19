@@ -1,4 +1,7 @@
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import {
+  getSdkEnv,
+  viteOutputGenerator,
+} from '@builder.io/sdks/output-generation/index.js';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
@@ -25,7 +28,12 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
-        intro: 'import "./style.css";',
+
+        /**
+         * Adding CSS imports to server bundles breaks Nuxt, since `.css` is an invalid extension.
+         * Instead, users should manually import the CSS file for SSR builds.
+         */
+        banner: getSdkEnv() === 'browser' ? 'import "./style.css";' : undefined,
       },
     },
   },
