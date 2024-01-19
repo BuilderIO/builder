@@ -29,7 +29,11 @@ export default defineConfig({
           vue: 'Vue',
         },
 
-        // we omit the banner in node because it breaks Nuxt, since `.css` is an invalid extension.
+        /**
+         * We only need the CSS import in the browser.
+         * Adding it to server bundles breaks Nuxt, since `.css` is an invalid extension. It also
+         * doesn't actually do anything useful there, so it is safe to remove.
+         */
         banner: getSdkEnv() === 'browser' ? 'import "./style.css";' : undefined,
       },
     },
