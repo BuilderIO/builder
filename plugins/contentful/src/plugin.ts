@@ -87,9 +87,9 @@ registerDataPlugin(
               {
                 name: 'limit',
                 defaultValue: 10,
-                // contentful api restricts limit to be between 0 and 100
+                // contentful api restricts limit to be between 0 and 200
                 min: 0,
-                max: 100,
+                max: 200,
                 type: 'number',
               },
               {
