@@ -1,5 +1,11 @@
 import type { Signal } from '@builder.io/mitosis';
-import { For, useContext, useMetadata, useTarget } from '@builder.io/mitosis';
+import {
+  For,
+  Show,
+  useContext,
+  useMetadata,
+  useTarget,
+} from '@builder.io/mitosis';
 import BuilderContext from '../../context/builder.context.lite.js';
 import ComponentsContext from '../../context/components.context.lite.js';
 import type {
@@ -36,24 +42,26 @@ export default function Blocks(props: BlocksProps) {
       BlocksWrapper={props.context?.value?.BlocksWrapper}
       BlocksWrapperProps={props.context?.value?.BlocksWrapperProps}
     >
-      <For each={props.blocks || []}>
-        {(block) => (
-          <Block
-            key={block.id}
-            block={block}
-            context={useTarget({
-              rsc: props.context,
-              default: props.context || builderContext,
-            })}
-            registeredComponents={useTarget({
-              rsc: props.registeredComponents,
-              default:
-                props.registeredComponents ||
-                componentsContext.registeredComponents,
-            })}
-          />
-        )}
-      </For>
+      <Show when={props.blocks}>
+        <For each={props.blocks}>
+          {(block) => (
+            <Block
+              key={block.id}
+              block={block}
+              context={useTarget({
+                rsc: props.context,
+                default: props.context || builderContext,
+              })}
+              registeredComponents={useTarget({
+                rsc: props.registeredComponents,
+                default:
+                  props.registeredComponents ||
+                  componentsContext.registeredComponents,
+              })}
+            />
+          )}
+        </For>
+      </Show>
     </BlocksWrapper>
   );
 }
