@@ -1,5 +1,7 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.11.2
+
 ## 0.11.1
 
 ### Patch Changes
