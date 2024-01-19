@@ -27,6 +27,7 @@ module.exports = {
       'error',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
+    '@typescript-eslint/no-explicit-any': 'off',
 
     // Note: you must disable the base rule as it can report incorrect errors
     'require-await': 'off',

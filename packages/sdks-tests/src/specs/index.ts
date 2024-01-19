@@ -116,9 +116,9 @@ type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
   pathname?: string;
-  _processContentResult?: (options: object, content: ContentResponse) => Promise<BuilderContent[]>;
-  getContent?: (opts: object) => Promise<BuilderContent | null>;
-  options?: object;
+  _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
+  getContent?: (opts: any) => Promise<BuilderContent | null>;
+  options?: any;
   data?: 'real' | 'mock';
 }) => {
   const {
@@ -169,6 +169,5 @@ export const getProps = async (args: {
     ? (await _processContentResult(props, { results: [_content] }))[0]
     : _content;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return { ...props, content } as any;
 };
