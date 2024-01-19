@@ -9,6 +9,7 @@ import {
 } from './custom-breakpoints.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
+import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { CONTENT as homepage } from './homepage.js';
@@ -30,7 +31,6 @@ import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
-import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -114,9 +114,9 @@ type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
   pathname?: string;
-  _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
-  getContent?: (opts: any) => Promise<BuilderContent | null>;
-  options?: any;
+  _processContentResult?: (options: object, content: ContentResponse) => Promise<BuilderContent[]>;
+  getContent?: (opts: object) => Promise<BuilderContent | null>;
+  options?: object;
   data?: 'real' | 'mock';
 }) => {
   const {
@@ -167,5 +167,6 @@ export const getProps = async (args: {
     ? (await _processContentResult(props, { results: [_content] }))[0]
     : _content;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return { ...props, content } as any;
 };
