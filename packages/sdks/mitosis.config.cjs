@@ -203,8 +203,6 @@ module.exports = {
               if (json.name === 'Symbol') {
                 delete json.state.setContent;
 
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 json.state.contentToUse.code =
                   json.state.contentToUse?.code.replace('async () => ', '');
               } else if (json.name === 'EnableEditor') {
