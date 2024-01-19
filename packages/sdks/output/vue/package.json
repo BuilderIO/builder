@@ -13,7 +13,7 @@
   },
   "files": [
     "lib",
-    "package.json"
+    "nuxt.js"
   ],
   "sideEffects": [
     "./lib/browser/style.css",
@@ -28,6 +28,7 @@
   ],
   "exports": {
     "./css": "./lib/browser/style.css",
+    "./nuxt": "./nuxt.js",
     ".": {
       "node": {
         "import": "./lib/node/index.js",
