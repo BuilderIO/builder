@@ -1,4 +1,7 @@
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import {
+  getSdkEnv,
+  viteOutputGenerator,
+} from '@builder.io/sdks/output-generation/index.js';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
@@ -25,7 +28,9 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
-        intro: 'import "./style.css";',
+
+        // we omit the banner in node because it breaks Nuxt, since `.css` is an invalid extension.
+        banner: getSdkEnv() === 'browser' ? 'import "./style.css";' : undefined,
       },
     },
   },
