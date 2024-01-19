@@ -1,6 +1,6 @@
+import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
 import { getProps } from '@e2e/tests';
 import { useEffect, useState } from 'react';
-import { RenderContent, _processContentResult } from './sdk-src';
 
 const DataComp = (props: {
   pathname: string;
