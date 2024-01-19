@@ -32,6 +32,7 @@ import {
 } from '../../../scripts/init-editing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
 import type { ComponentInfo } from '../../../types/components.js';
+import { getContextStateValue } from '../content.helpers.js';
 import type {
   BuilderComponentStateChange,
   ContentProps,
@@ -433,6 +434,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onUpdate(() => {
     state.emitStateUpdate();
   }, [props.builderContextSignal.value.rootState]);
+
+  onUpdate(() => {
+    const newState = getContextStateValue({
+      content: props.content,
+      data: props.data,
+      locale: props.locale,
+    });
+
+    props.builderContextSignal.value.rootState = newState;
+  }, [props.content, props.data, props.locale]);
 
   return (
     <Show when={props.builderContextSignal.value.content}>

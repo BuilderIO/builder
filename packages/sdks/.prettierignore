@@ -26,3 +26,6 @@ e2e/sveltekit/.svelte-kit
 
 **/evaluate/**/acorn*
 **/evaluate/**/interpreter*
+
+# Frequently used for debugging.
+e2e/**/src/sdk-src
