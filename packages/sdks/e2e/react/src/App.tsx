@@ -2,6 +2,25 @@ import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
 import { getProps } from '@e2e/tests';
 import { useEffect, useState } from 'react';
 
+const DataComp = (props: {
+  pathname: string;
+  children: (args: { data: string }) => React.ReactNode;
+}) => {
+  const [data, setData] = useState('foo');
+  if (props.pathname === '/external-data') {
+    return (
+      <div>
+        <button onClick={() => setData(data === 'foo' ? 'bar' : 'foo')}>
+          Change value
+        </button>
+        {props.children({ data })}
+      </div>
+    );
+  } else {
+    return props.children({ data });
+  }
+};
+
 function App() {
   const [props, setProps] = useState<any>(undefined);
 
@@ -11,7 +30,13 @@ function App() {
     });
   }, []);
 
-  return props ? <RenderContent {...props} /> : <div>Content Not Found</div>;
+  return props ? (
+    <DataComp pathname={window.location.pathname}>
+      {({ data }) => <RenderContent {...props} data={data} />}
+    </DataComp>
+  ) : (
+    <div>Content Not Found</div>
+  );
 }
 
 export default App;
