@@ -7,7 +7,6 @@ import {
 } from '@builder.io/mitosis';
 import { wrapComponentRef } from '../../../content/wrap-component-ref.js';
 import Block from '../../block.lite.jsx';
-import BlockStyles from '../block-styles.lite.jsx';
 import InteractiveElement from '../interactive-element.lite.jsx';
 import type { ComponentProps } from './component-ref.helpers.js';
 import { getWrapperProps } from './component-ref.helpers.js';
@@ -49,26 +48,13 @@ export default function ComponentRef(props: ComponentProps) {
           contextValue: props.context.value,
         })}
       >
-        {/**
-         * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-         * does not support multiple root elements.
-         */}
         <For each={props.blockChildren}>
           {(child) => (
             <Block
-              key={'block-' + child.id}
+              key={child.id}
               block={child}
               context={props.context}
               registeredComponents={props.registeredComponents}
-            />
-          )}
-        </For>
-        <For each={props.blockChildren}>
-          {(child) => (
-            <BlockStyles
-              key={'block-style-' + child.id}
-              block={child}
-              context={props.context.value}
             />
           )}
         </For>
