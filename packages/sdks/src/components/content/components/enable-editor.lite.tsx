@@ -47,7 +47,6 @@ useMetadata({
 type BuilderEditorProps = Omit<
   ContentProps,
   | 'customComponents'
-  | 'data'
   | 'apiVersion'
   | 'isSsrAbTest'
   | 'blocksWrapper'
@@ -71,7 +70,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         ...newContent,
         data: {
           ...props.builderContextSignal.value.content?.data,
-          ...newContent?.data,
+          ...props.data,
         },
         meta: {
           ...props.builderContextSignal.value.content?.meta,
@@ -250,7 +249,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         }
       },
     });
-  }, [props.content]);
+  }, [props.content, props.data]);
 
   onUpdate(() => {
     useTarget({
