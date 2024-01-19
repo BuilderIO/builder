@@ -30,9 +30,8 @@ export default defineConfig({
         },
 
         /**
-         * We only need the CSS import in the browser.
-         * Adding it to server bundles breaks Nuxt, since `.css` is an invalid extension. It also
-         * doesn't actually do anything useful there, so it is safe to remove.
+         * Adding CSS imports to server bundles breaks Nuxt, since `.css` is an invalid extension.
+         * Instead, users should manually import the CSS file for SSR builds.
          */
         banner: getSdkEnv() === 'browser' ? 'import "./style.css";' : undefined,
       },

@@ -15,7 +15,19 @@
     "lib",
     "package.json"
   ],
+  "sideEffects": [
+    "./lib/browser/style.css",
+    "./lib/node/style.css",
+    "./lib/edge/style.css",
+    "./lib/browser/index.js",
+    "./lib/node/index.js",
+    "./lib/edge/index.js",
+    "./lib/node/index.cjs",
+    "./lib/browser/index.cjs",
+    "./lib/edge/index.cjs"
+  ],
   "exports": {
+    "./css": "./lib/browser/style.css",
     ".": {
       "node": {
         "import": "./lib/node/index.js",
