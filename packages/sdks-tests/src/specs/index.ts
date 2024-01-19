@@ -31,6 +31,7 @@ import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
+import { JS_CONTENT } from './js-content.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -75,6 +76,7 @@ const PAGES = {
   '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
   '/input-default-value': INPUT_DEFAULT_VALUE,
   '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
+  '/js-content': JS_CONTENT,
 } as const;
 
 const apiVersionPathToProp = {
