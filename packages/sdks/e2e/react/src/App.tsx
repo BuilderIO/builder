@@ -26,8 +26,6 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     getProps({ _processContentResult }).then((resp) => {
       setProps(resp);
     });
