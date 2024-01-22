@@ -256,26 +256,8 @@ test.describe('Symbols', () => {
   test('works in nested symbols with inherit', async ({ packageName, page }) => {
     await page.goto('/nested-symbols');
 
-    // Skipping the test as v2 sdks currently don't support Slot
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    test.fail(
-      [
-        'react-native',
-        'solid',
-        'solid-start',
-        'qwik-city',
-        'next-pages-dir',
-        'next-app-dir-client',
-        'next-app-dir',
-        'react',
-        'vue',
-        'nuxt',
-        'svelte',
-        'sveltekit',
-        'gen1-remix',
-        'gen1-next',
-      ].includes(packageName)
-    );
+    test.fail(['gen1-remix', 'gen1-next'].includes(packageName));
 
     const symbols = page.locator('[builder-model="symbol"]');
     await expect(symbols).toHaveCount(2);
