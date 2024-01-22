@@ -443,10 +443,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
       locale: props.locale,
     });
 
-    props.builderContextSignal.value.rootState = {
+    const combinedState = {
       ...props.builderContextSignal.value.rootState,
       ...newState,
     };
+
+    if (props.builderContextSignal.value.rootSetState) {
+      props.builderContextSignal.value.rootSetState?.(combinedState);
+    } else {
+      props.builderContextSignal.value.rootState = combinedState;
+    }
   }, [props.content, props.data, props.locale]);
 
   return (
