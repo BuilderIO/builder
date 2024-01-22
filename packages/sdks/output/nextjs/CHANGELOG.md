@@ -1,5 +1,14 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.11.3
+
+### Patch Changes
+
+- 538d559: Fix: use correct export for ContentProps
+- 538d559: Improve "./edge" subpath export to automatically use the browser bundle for browser environments. This allows the usage of that subpath export without also manually toggling with the "./browser" bundle.
+- 538d559: Export prop types of all exported components in main index file.
+- 538d559: Improve documentation of `ContentProps` types.
+
 ## 0.11.2
 
 ## 0.11.1
