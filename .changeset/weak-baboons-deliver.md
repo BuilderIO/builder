@@ -8,4 +8,4 @@
 '@builder.io/sdk-svelte': patch
 ---
 
-Improve documentation of ContentProps types.
+Improve documentation of `ContentProps` types.
