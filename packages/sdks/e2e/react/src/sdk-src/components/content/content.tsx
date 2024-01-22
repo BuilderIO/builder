@@ -22,7 +22,7 @@ import EnableEditor from "./components/enable-editor";
 import ContentStyles from "./components/styles";
 import {
   getContentInitialValue,
-  getRootStateInitialValue,
+  getContextStateValue,
 } from "./content.helpers.js";
 import type { ContentProps } from "./content.types.js";
 import { wrapComponentRef } from "./wrap-component-ref.js";
@@ -72,11 +72,10 @@ function ContentComponent(props: ContentProps) {
       data: props.data,
     }),
     localState: undefined,
-    rootState: getRootStateInitialValue({
+    rootState: getContextStateValue({
       content: props.content,
       data: props.data,
       locale: props.locale,
-      setDefaultValues: true
     }),
     rootSetState: contentSetState,
     context: props.context || {},
