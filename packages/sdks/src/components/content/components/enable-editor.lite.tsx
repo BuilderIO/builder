@@ -84,7 +84,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
         ...newContent,
         data: {
           ...props.builderContextSignal.value.content?.data,
-          ...props.data,
           ...newContent?.data,
         },
         meta: {
