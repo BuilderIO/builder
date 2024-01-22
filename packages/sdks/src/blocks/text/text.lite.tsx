@@ -1,6 +1,4 @@
-export type TextProps = {
-  text?: string;
-};
+import type { TextProps } from './text.types';
 
 export default function Text(props: TextProps) {
   return (

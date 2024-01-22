@@ -1,4 +1,3 @@
-import type { Signal } from '@builder.io/mitosis';
 import {
   For,
   Show,
@@ -8,20 +7,9 @@ import {
 } from '@builder.io/mitosis';
 import BuilderContext from '../../context/builder.context.lite.js';
 import ComponentsContext from '../../context/components.context.lite.js';
-import type {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../context/types.js';
 import Block from '../block/block.lite.jsx';
-import type { BlocksWrapperProps } from './blocks-wrapper.lite.jsx';
 import BlocksWrapper from './blocks-wrapper.lite.jsx';
-
-export type BlocksProps = Partial<
-  Omit<BlocksWrapperProps, 'BlocksWrapper' | 'BlocksWrapperProps'>
-> & {
-  context?: Signal<BuilderContextInterface>;
-  registeredComponents?: RegisteredComponents;
-};
+import type { BlocksProps } from './blocks.types.js';
 
 useMetadata({
   rsc: {
