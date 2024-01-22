@@ -38,6 +38,9 @@ registerDataPlugin(
       space: spaceId,
       accessToken,
     });
+
+    client.content_types({limit: 200}); 
+
     return {
       async getResourceTypes() {
         const contentTypes = await client.getContentTypes();
@@ -87,9 +90,9 @@ registerDataPlugin(
               {
                 name: 'limit',
                 defaultValue: 10,
-                // contentful api restricts limit to be between 0 and 200
+                // contentful api restricts limit to be between 0 and 100
                 min: 0,
-                max: 200,
+                max: 100,
                 type: 'number',
               },
               {
