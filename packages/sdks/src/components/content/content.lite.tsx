@@ -27,7 +27,7 @@ import EnableEditor from './components/enable-editor.lite.jsx';
 import ContentStyles from './components/styles.lite.jsx';
 import {
   getContentInitialValue,
-  getContextStateInitialValue,
+  getRootStateInitialValue,
 } from './content.helpers.js';
 import type { ContentProps } from './content.types.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
@@ -91,7 +91,7 @@ export default function ContentComponent(props: ContentProps) {
           data: props.data,
         }),
         localState: undefined,
-        rootState: getContextStateInitialValue({
+        rootState: getRootStateInitialValue({
           content: props.content,
           data: props.data,
           locale: props.locale,
@@ -139,6 +139,7 @@ export default function ContentComponent(props: ContentProps) {
   return (
     <EnableEditor
       content={props.content}
+      data={props.data}
       model={props.model}
       context={props.context}
       apiKey={props.apiKey}

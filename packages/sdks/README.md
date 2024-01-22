@@ -14,9 +14,9 @@ All the individual SDKs live in the [output](./output/) folder. The source Mitos
 
 ## Development
 
-- To understand the overall architecture of the project, read our [ARCHITECTURE](./ARCHITECTURE.md) guide.
-- To contribute, read our [DEVELOP](./DEVELOP.md) guide.
-- To publish, read our [PUBLISHING](./PUBLISHING.md) guide.
+- To understand the overall architecture of the project, read our [ARCHITECTURE](./docs/ARCHITECTURE.md) guide.
+- To contribute, read our [DEVELOP](./docs/DEVELOP.md) guide.
+- To publish, read our [PUBLISHING](./docs/PUBLISHING.md) guide.
 
 ## Fetch
 

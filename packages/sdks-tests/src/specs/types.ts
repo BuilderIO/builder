@@ -6,8 +6,8 @@ export interface Breakpoints {
 export type Nullable<T> = T | null | undefined;
 export type BuilderContent = Partial<{
   id?: string;
-  data: { [index: string]: any };
-  meta?: { breakpoints?: Nullable<Breakpoints>; [index: string]: any };
+  data: { [index: string]: unknown };
+  meta?: { breakpoints?: Nullable<Breakpoints>; [index: string]: unknown };
 }>;
 
 type JSONValue = string | number | boolean | JSONObject | JSONArray;
@@ -38,7 +38,7 @@ export interface BuilderBlock {
   };
   component?: {
     name: string;
-    options?: any;
+    options?: unknown;
     tag?: string;
   };
   bindings?: {
@@ -65,7 +65,7 @@ export interface BuilderBlock {
     collection: string;
     itemName?: string;
   } | null;
-  animations?: any[]; // TODO: type the animation spec
+  animations?: unknown[]; // TODO: type the animation spec
   style?: Partial<CSSStyleDeclaration>;
 
   /**

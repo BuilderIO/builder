@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
+    "lint": "eslint --ext .ts,.tsx ./src/",
     "test": "playwright test",
     "run-embedder": "node embedder/index.js",
     "install-playwright": "playwright install chromium --with-deps"
@@ -35,6 +36,12 @@
   },
   "nx": {
     "targets": {
+      "build": {
+        "dependsOn": [
+          "^build",
+          "lint"
+        ]
+      },
       "test": {
         "dependsOn": [
           "install-playwright"

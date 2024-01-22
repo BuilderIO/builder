@@ -16,3 +16,6 @@ e2e/rsc/
 **/vite.config.ts.timestamp-*
 
 **/.solid
+
+# Frequently used for debugging.
+e2e/**/src/sdk-src/

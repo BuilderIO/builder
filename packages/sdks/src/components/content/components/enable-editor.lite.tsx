@@ -32,6 +32,7 @@ import {
 } from '../../../scripts/init-editing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
 import type { ComponentInfo } from '../../../types/components.js';
+import type { Dictionary } from '../../../types/typescript.js';
 import type {
   BuilderComponentStateChange,
   ContentProps,
@@ -47,7 +48,6 @@ useMetadata({
 type BuilderEditorProps = Omit<
   ContentProps,
   | 'customComponents'
-  | 'data'
   | 'apiVersion'
   | 'isSsrAbTest'
   | 'blocksWrapper'
@@ -65,6 +65,19 @@ export default function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
+    firstRender: true,
+    mergeNewRootState(newData: Dictionary<any>) {
+      const combinedState = {
+        ...props.builderContextSignal.value.rootState,
+        ...newData,
+      };
+
+      if (props.builderContextSignal.value.rootSetState) {
+        props.builderContextSignal.value.rootSetState?.(combinedState);
+      } else {
+        props.builderContextSignal.value.rootState = combinedState;
+      }
+    },
     mergeNewContent(newContent: BuilderContent) {
       const newContentValue = {
         ...props.builderContextSignal.value.content,
@@ -434,6 +447,18 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onUpdate(() => {
     state.emitStateUpdate();
   }, [props.builderContextSignal.value.rootState]);
+
+  onUpdate(() => {
+    if (props.data) {
+      state.mergeNewRootState(props.data);
+    }
+  }, [props.data]);
+
+  onUpdate(() => {
+    if (props.locale) {
+      state.mergeNewRootState({ locale: props.locale });
+    }
+  }, [props.locale]);
 
   return (
     <Show when={props.builderContextSignal.value.content}>

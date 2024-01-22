@@ -9,12 +9,15 @@ import {
 } from './custom-breakpoints.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
+import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
+import { EXTERNAL_DATA } from './external-data.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as image } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
+import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import { CONTENT as reactiveState } from './reactive-state.js';
@@ -30,8 +33,6 @@ import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
-import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
-import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -65,6 +66,7 @@ const PAGES = {
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': reactiveState,
   '/element-events': elementEvents,
+  '/external-data': EXTERNAL_DATA,
   '/show-hide-if': SHOW_HIDE_IF,
   '/show-hide-if-repeats': SHOW_HIDE_IF_REPEATS,
   '/custom-breakpoints-reset': customBreakpointsReset,
