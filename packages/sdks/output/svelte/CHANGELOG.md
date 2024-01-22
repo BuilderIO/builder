@@ -1,5 +1,13 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.11.3
+
+### Patch Changes
+
+- 538d559: Fix: use correct export for ContentProps
+- 538d559: Export prop types of all exported components in main index file.
+- 538d559: Improve documentation of `ContentProps` types.
+
 ## 0.11.2
 
 ## 0.11.1
