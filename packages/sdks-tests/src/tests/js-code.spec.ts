@@ -28,11 +28,11 @@ test.describe('JS Code', () => {
     await expect(menuLocator).toBeVisible();
   });
 
-  test('code inside Browser.isBrowser should work', async ({ page, packageName }) => {
+  test('code inside Browser.isBrowser should work', async ({ page }) => {
     // doesn't work for these as they are SSR and there is no hydration step
     // so the code is not run on the client (Builder.isBrowser) block isn't executed
     test.fail(excludeTestFor(['vue', 'qwik', 'rsc']));
     await page.goto('/js-content-is-browser');
-    await page.waitForSelector('text=2024'); // we are getting state.year from the code
+    await expect(page.locator('text=2024')).toBeVisible(); // we are getting state.year from the code
   });
 });
