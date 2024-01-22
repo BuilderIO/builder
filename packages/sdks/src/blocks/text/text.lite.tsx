@@ -1,4 +1,4 @@
-import type { TextProps } from './text.types';
+import type { TextProps } from './text.types.js';
 
 export default function Text(props: TextProps) {
   return (

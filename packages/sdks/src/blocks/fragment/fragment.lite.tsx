@@ -1,5 +1,5 @@
 import { useMetadata } from '@builder.io/mitosis';
-import type { FragmentProps } from './fragment.types';
+import type { FragmentProps } from './fragment.types.js';
 
 useMetadata({
   rsc: {

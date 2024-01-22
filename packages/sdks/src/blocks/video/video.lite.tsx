@@ -1,5 +1,5 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
-import type { VideoProps } from './video.types';
+import type { VideoProps } from './video.types.js';
 
 useMetadata({
   rsc: {
