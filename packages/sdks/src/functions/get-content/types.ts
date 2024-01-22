@@ -1,8 +1,8 @@
 export interface GetContentOptions {
-  /** The model to get content for */
+  /** The model to get content for (required) */
   model: string;
 
-  /** Your public API key */
+  /** Your public API key (required) */
   apiKey: string;
 
   /** Number of items to fetch. Default is 1 */
