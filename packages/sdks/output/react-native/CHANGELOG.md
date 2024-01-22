@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.11.4
+
+### Patch Changes
+
+- 80cf984: Fix: react to changes in `props.data`
+
 ## 0.11.3
 
 ### Patch Changes
