@@ -80,9 +80,66 @@
       }
     },
     "./edge": {
-      "types": "./types/index.d.ts",
-      "import": "./lib/edge/index.mjs",
-      "require": "./lib/edge/index.cjs"
+      "node": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "browser": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      },
+      "edge-routine": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "workerd": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "deno": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "lagon": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "netlify": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "edge-light": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "bun": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "react-native": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "electron": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "default": {
+        "types": "./types/index.d.ts",
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      }
     },
     "./node": {
       "types": "./types/index.d.ts",
