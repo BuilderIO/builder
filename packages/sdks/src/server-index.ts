@@ -22,7 +22,7 @@ export { getBuilderSearchParams } from './functions/get-builder-search-params/in
 
 export { track } from './functions/track/index.js';
 
-export type { ContentProps } from './components/content/content.types.js';
+export { ContentVariantsPrps as ContentProps } from './components/content-variants/content-variants.types.js';
 export type { RegisteredComponent } from './context/types.js';
 export type { ComponentInfo } from './types/components.js';
 

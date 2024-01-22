@@ -1,4 +1,8 @@
-export default function Text(props: { text?: string }) {
+export type TextProps = {
+  text?: string;
+};
+
+export default function Text(props: TextProps) {
   return (
     <div
       class={
