@@ -14,7 +14,7 @@ const checkContentHasResults = (
 ): content is ContentResults => 'results' in content;
 
 /**
- * Returns a the first entry that matches the given options.
+ * Returns the first content entry that matches the given options.
  */
 export async function fetchOneEntry(
   options: GetContentOptions

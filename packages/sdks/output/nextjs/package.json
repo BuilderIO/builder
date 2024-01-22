@@ -67,12 +67,104 @@
       }
     },
     "./edge": {
-      "import": "./lib/edge/index.mjs",
-      "require": "./lib/edge/index.cjs"
+      "node": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "browser": {
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      },
+      "edge-routine": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "workerd": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "deno": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "lagon": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "netlify": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "edge-light": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "bun": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "react-native": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "electron": {
+        "import": "./lib/edge/index.mjs",
+        "require": "./lib/edge/index.cjs"
+      },
+      "default": {
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      }
     },
     "./node": {
-      "import": "./lib/node/index.mjs",
-      "require": "./lib/node/index.cjs"
+      "node": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "browser": {
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      },
+      "edge-routine": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "workerd": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "deno": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "lagon": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "netlify": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "edge-light": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "bun": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "react-native": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "electron": {
+        "import": "./lib/node/index.mjs",
+        "require": "./lib/node/index.cjs"
+      },
+      "default": {
+        "import": "./lib/browser/index.mjs",
+        "require": "./lib/browser/index.cjs"
+      }
     },
     "./browser": {
       "import": "./lib/browser/index.mjs",

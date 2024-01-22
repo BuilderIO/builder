@@ -5,19 +5,13 @@ import { filterAttrs } from '../helpers.js';
  */
 
 import { setAttrs } from '../helpers.js';
+import type { ButtonProps } from './button.types.js';
 
 useMetadata({
   rsc: {
     componentType: 'client',
   },
 });
-
-export interface ButtonProps {
-  attributes?: any;
-  text?: string;
-  link?: string;
-  openLinkInNewTab?: boolean;
-}
 
 export default function Button(props: ButtonProps) {
   return (

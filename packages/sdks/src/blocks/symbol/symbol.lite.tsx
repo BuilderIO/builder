@@ -7,10 +7,7 @@ import {
 } from '@builder.io/mitosis';
 import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
 import type { BuilderContent } from '../../types/builder-content.js';
-import type {
-  BuilderComponentsProp,
-  PropsWithBuilderData,
-} from '../../types/builder-props.js';
+import type { PropsWithBuilderData } from '../../types/builder-props.js';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
@@ -19,29 +16,13 @@ import { filterAttrs } from '../helpers.js';
 import type { Nullable } from '../../types/typescript.js';
 import { setAttrs } from '../helpers.js';
 import { fetchSymbolContent } from './symbol.helpers.js';
+import type { SymbolProps } from './symbol.types.js';
 
 useMetadata({
   rsc: {
     componentType: 'server',
   },
 });
-
-export interface SymbolInfo {
-  model?: string;
-  entry?: string;
-  data?: any;
-  content?: BuilderContent;
-  inline?: boolean;
-  dynamic?: boolean;
-}
-
-export interface SymbolProps extends BuilderComponentsProp {
-  symbol?: SymbolInfo;
-  dataOnly?: boolean;
-  dynamic?: boolean;
-  attributes?: any;
-  inheritState?: boolean;
-}
 
 export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
   const state = useStore({

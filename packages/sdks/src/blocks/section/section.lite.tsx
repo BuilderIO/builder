@@ -1,9 +1,9 @@
 import { useMetadata, useTarget } from '@builder.io/mitosis';
 import { filterAttrs } from '../helpers.js';
+import type { SectionProps } from './section.types.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
-
 import { setAttrs } from '../helpers.js';
 
 useMetadata({
@@ -11,13 +11,6 @@ useMetadata({
     componentType: 'client',
   },
 });
-
-export interface SectionProps {
-  maxWidth?: number;
-  attributes?: any;
-  children?: any;
-  builderBlock?: any;
-}
 
 export default function SectionComponent(props: SectionProps) {
   return (

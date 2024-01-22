@@ -11,21 +11,11 @@ import type { SizeName } from '../../constants/device-sizes.js';
 import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
 import { deoptSignal } from '../../functions/deopt.js';
-import type { BuilderBlock } from '../../types/builder-block.js';
-import type {
-  BuilderComponentsProp,
-  PropsWithBuilderData,
-} from '../../types/builder-props.js';
+import type { PropsWithBuilderData } from '../../types/builder-props.js';
 import type { Dictionary } from '../../types/typescript.js';
-
-type Column = {
-  blocks: BuilderBlock[];
-  width?: number;
-};
+import type { ColumnProps } from './columns.types.js';
 
 type CSSVal = string | number;
-
-type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
 useMetadata({
   rsc: {
@@ -35,14 +25,6 @@ useMetadata({
     setUseStoreFirst: true,
   },
 });
-
-export interface ColumnProps extends BuilderComponentsProp {
-  columns?: Column[];
-  builderBlock: BuilderBlock;
-  space?: number;
-  stackColumnsAt?: StackColumnsAt;
-  reverseColumnsWhenStacked?: boolean;
-}
 
 export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
   const state = useStore({

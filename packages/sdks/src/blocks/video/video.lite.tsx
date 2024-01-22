@@ -1,41 +1,11 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block.js';
+import type { VideoProps } from './video.types.js';
 
 useMetadata({
   rsc: {
     componentType: 'client',
   },
 });
-
-export interface VideoProps {
-  attributes?: any;
-  video?: string;
-  autoPlay?: boolean;
-  controls?: boolean;
-  muted?: boolean;
-  loop?: boolean;
-  playsInline?: boolean;
-  aspectRatio?: number;
-  width?: number;
-  height?: number;
-  fit?: 'contain' | 'cover' | 'fill';
-  preload?: 'auto' | 'metadata' | 'none';
-  position?:
-    | 'center'
-    | 'top'
-    | 'left'
-    | 'right'
-    | 'bottom'
-    | 'top left'
-    | 'top right'
-    | 'bottom left'
-    | 'bottom right';
-  posterImage?: string;
-  lazyLoad?: boolean;
-  children?: any;
-  fitContent?: boolean;
-  builderBlock?: BuilderBlock;
-}
 
 export default function Video(props: VideoProps) {
   const state = useStore({
