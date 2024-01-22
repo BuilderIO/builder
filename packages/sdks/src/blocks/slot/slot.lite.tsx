@@ -1,4 +1,4 @@
-import { Blocks } from '../..';
+import Blocks from '../../components/blocks/blocks.lite.jsx';
 
 export interface DropzoneProps {
   name: string;
