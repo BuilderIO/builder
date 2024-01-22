@@ -443,7 +443,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
       locale: props.locale,
     });
 
-    props.builderContextSignal.value.rootState = newState;
+    props.builderContextSignal.value.rootState = {
+      ...props.builderContextSignal.value.rootState,
+      ...newState,
+    };
   }, [props.content, props.data, props.locale]);
 
   return (
