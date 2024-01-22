@@ -1,5 +1,5 @@
-import type { BuilderContent } from '../../types/builder-content';
-import type { BuilderComponentsProp } from '../../types/builder-props';
+import type { BuilderContent } from '../../types/builder-content.js';
+import type { BuilderComponentsProp } from '../../types/builder-props.js';
 
 interface SymbolInfo {
   model?: string;

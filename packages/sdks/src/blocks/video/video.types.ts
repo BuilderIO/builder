@@ -1,4 +1,4 @@
-import type { BuilderBlock } from '../../types/builder-block';
+import type { BuilderBlock } from '../../types/builder-block.js';
 
 export interface VideoProps {
   attributes?: any;
