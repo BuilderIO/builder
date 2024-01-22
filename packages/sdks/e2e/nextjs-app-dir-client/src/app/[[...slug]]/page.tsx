@@ -1,11 +1,10 @@
+import { RenderContent } from '@builder.io/sdk-react/edge';
 import {
   _processContentResult,
   getBuilderSearchParams,
   getContent,
 } from '@builder.io/sdk-react/server';
 import { getProps } from '@e2e/tests';
-
-import { RenderContent } from '@builder.io/sdk-react';
 
 interface PageProps {
   params: {
