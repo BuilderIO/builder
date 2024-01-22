@@ -319,7 +319,6 @@ export const CONTENT = {
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        bindings: { _newProperty: '' },
         id: 'builder-6e939e890c674a3b8562dcad05bbe806',
         component: {
           name: 'Image',

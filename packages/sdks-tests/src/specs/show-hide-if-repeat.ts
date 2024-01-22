@@ -20,13 +20,11 @@ export const SHOW_HIDE_IF_REPEATS = {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
             actions: { mouseEnter: 'state.btnHovered="1"' },
-            bindings: { _newProperty: '' },
             code: {
               actions: {
                 mouseEnter:
                   '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\n\nstate.btnHovered = "1";\n',
               },
-              bindings: { _newProperty: '' },
             },
             layerName: 'button1',
             id: 'builder-169c8edd283a472db00de6762d9b6945',

@@ -40,9 +40,6 @@ export const JS_CODE_CONTENT = {
         actions: {
           click: 'state.menu.expanded=!state.menu.expanded',
         },
-        bindings: {
-          _newProperty: '',
-        },
         id: 'builder-54da80f81b584020bd09a4bee2d12cbd',
         meta: {
           eventActions: {
