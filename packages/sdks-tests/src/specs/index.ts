@@ -17,6 +17,7 @@ import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as image } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
+import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import { CONTENT as reactiveState } from './reactive-state.js';
@@ -77,6 +78,7 @@ const PAGES = {
   '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
   '/input-default-value': INPUT_DEFAULT_VALUE,
   '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
+  '/js-content-is-browser': JS_CONTENT_IS_BROWSER,
 } as const;
 
 const apiVersionPathToProp = {

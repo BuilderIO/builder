@@ -1,32 +1,13 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
-import type { BuilderBlock } from '../../types/builder-block.js';
 import { getSrcSet } from './image.helpers.js';
+import type { ImageProps } from './image.types.js';
 
 useMetadata({
   rsc: {
     componentType: 'client',
   },
 });
-
-export interface ImageProps {
-  className?: string;
-  image: string;
-  sizes?: string;
-  lazy?: boolean;
-  height?: number;
-  width?: number;
-  altText?: string;
-  backgroundSize?: 'cover' | 'contain';
-  backgroundPosition?: string;
-  srcset?: string;
-  aspectRatio?: number;
-  children?: any;
-  fitContent?: boolean;
-  builderBlock?: BuilderBlock;
-  noWebp?: boolean;
-  src?: string;
-}
 
 export default function Image(props: ImageProps) {
   const state = useStore({
