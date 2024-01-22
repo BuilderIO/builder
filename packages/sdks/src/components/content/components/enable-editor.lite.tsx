@@ -264,7 +264,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         }
       },
     });
-  }, [props.content, props.data]);
+  }, [props.content]);
 
   onUpdate(() => {
     useTarget({
