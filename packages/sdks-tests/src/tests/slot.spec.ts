@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from './helpers.js';
 
-test.describe.only('Slot', () => {
+test.describe('Slot', () => {
   test('slot should render', async ({ page }) => {
     await page.goto('/slot');
     await expect(page.locator('text=Inside a slot!!')).toBeVisible();
