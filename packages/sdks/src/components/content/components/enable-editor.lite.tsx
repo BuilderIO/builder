@@ -71,6 +71,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         ...newContent,
         data: {
           ...props.builderContextSignal.value.content?.data,
+          ...newContent?.data,
           ...props.data,
         },
         meta: {
