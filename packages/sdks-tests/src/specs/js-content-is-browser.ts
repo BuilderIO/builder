@@ -1,4 +1,4 @@
-export const JS_CONTENT = {
+export const JS_CONTENT_IS_BROWSER = {
   ownerId: 'ad30f9a246614faaa6a03374f83554c9',
   lastUpdateBy: null,
   createdDate: 1705670644112,
