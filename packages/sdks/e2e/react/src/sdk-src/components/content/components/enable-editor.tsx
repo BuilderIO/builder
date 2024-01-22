@@ -35,7 +35,7 @@ import {
 } from "../../../scripts/init-editing.js";
 import type { BuilderContent } from "../../../types/builder-content.js";
 import type { ComponentInfo } from "../../../types/components.js";
-import { getContextStateValue } from "../content.helpers.js";
+import { getRootStateInitialValue } from "../content.helpers.js";
 import type {
   BuilderComponentStateChange,
   ContentProps,
@@ -363,12 +363,21 @@ function EnableEditor(props: BuilderEditorProps) {
   useEffect(() => {
     emitStateUpdate();
   }, [props.builderContextSignal.rootState]);
+  const [firstRender, setFirstRender] = useState(true);
   useEffect(() => {
-    const newState = getContextStateValue({
-      content: props.content,
-      data: props.data,
-      locale: props.locale,
-    });
+    if (firstRender) {
+      setFirstRender(false);
+      return;
+    }
+
+    const newState = {
+      ...props.data,
+      ...(props.locale
+        ? {
+            locale: props.locale,
+          }
+        : {}),
+    };
     const combinedState = {
       ...props.builderContextSignal.rootState,
       ...newState,
@@ -383,7 +392,7 @@ function EnableEditor(props: BuilderEditorProps) {
         rootState: combinedState,
       }));
     }
-  }, [props.content, props.data, props.locale]);
+  }, [props.data, props.locale]);
 
   useEffect(() => {
     return () => {

@@ -2,20 +2,24 @@ import type { BuilderRenderState } from '../../context/types.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
 import type { ContentProps } from './content.types.js';
-export const getContextStateValue = ({
+export const getRootStateInitialValue = ({
   content,
   data,
-  locale
-}: Pick<ContentProps, 'content' | 'data' | 'locale'>) => {
+  locale,
+  setDefaultValues
+}: (Pick<ContentProps, 'content' | 'data' | 'locale'>) & {setDefaultValues: boolean}) => {
   const defaultValues: BuilderRenderState = {};
   const initialState = content?.data?.state || {};
 
+  if (setDefaultValues) {
   // set default values for content state inputs
   content?.data?.inputs?.forEach(input => {
     if (input.name && input.defaultValue !== undefined) {
       defaultValues[input.name] = input.defaultValue;
     }
   });
+}
+
   return {
     ...defaultValues,
     ...initialState,
