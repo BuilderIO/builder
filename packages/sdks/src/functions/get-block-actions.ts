@@ -29,8 +29,7 @@ export function getBlockActions(
 
     if (options.stripPrefix) {
       switch (TARGET) {
-        case 'vue2':
-        case 'vue3':
+        case 'vue':
           eventHandlerName = eventHandlerName.replace('v-on:', '');
           break;
         case 'svelte':

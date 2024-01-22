@@ -8,17 +8,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@builder.io/sdk-react-nextjs": "^0.7.1-4",
+    "@builder.io/sdk-react-nextjs": "^0.10.0",
+    "next": "14.0.3",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.0.3"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.0.3"
+    "eslint-config-next": "14.0.3",
+    "typescript": "^5"
   }
 }

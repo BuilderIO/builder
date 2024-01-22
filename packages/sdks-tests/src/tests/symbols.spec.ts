@@ -1,10 +1,10 @@
-import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { test, isRNSDK, EXCLUDE_GEN_2, EXCLUDE_GEN_1, isOldReactSDK } from './helpers.js';
+import { EXCLUDE_GEN_1, EXCLUDE_GEN_2, isOldReactSDK, isRNSDK, test } from './helpers.js';
 import type { PackageName } from './sdk.js';
 import { sdk } from './sdk.js';
-import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 
 /**
  * These packages fetch symbol content on the server, so we cannot test them.
@@ -268,10 +268,8 @@ test.describe('Symbols', () => {
         'next-app-dir-client',
         'next-app-dir',
         'react',
-        'vue2',
-        'vue3',
-        'nuxt3',
-        'nuxt2',
+        'vue',
+        'nuxt',
         'svelte',
         'sveltekit',
         'gen1-remix',

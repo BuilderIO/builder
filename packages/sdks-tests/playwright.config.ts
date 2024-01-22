@@ -19,15 +19,8 @@ const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
   reactNative: ['react-native'],
   solid: ['solid', 'solid-start'],
   qwik: ['qwik-city'],
-  react: [
-    'next-pages-dir',
-    'react',
-    // TO-DO: Fix this when https://github.com/vercel/next.js/issues/60491 is
-    // fixed.
-    // 'next-app-dir-client'
-  ],
-  vue2: ['vue2', 'nuxt2'],
-  vue3: ['vue3', 'nuxt3'],
+  react: ['next-pages-dir', 'react', 'next-app-dir-client'],
+  vue: ['vue', 'nuxt'],
   svelte: ['svelte', 'sveltekit'],
   rsc: ['next-app-dir'],
   oldReact: ['gen1-react', 'gen1-next', 'gen1-remix'],

@@ -5,20 +5,13 @@ import { filterAttrs } from '../helpers.js';
  */
 
 import { setAttrs } from '../helpers.js';
+import type { ButtonProps } from './button.types.js';
 
 useMetadata({
   rsc: {
     componentType: 'client',
   },
 });
-
-export interface ButtonProps {
-  attributes?: any;
-  text?: string;
-  link?: string;
-  openLinkInNewTab?: boolean;
-  LinkComponent?: any;
-}
 
 export default function Button(props: ButtonProps) {
   return (
@@ -27,14 +20,12 @@ export default function Button(props: ButtonProps) {
       else={
         <button
           {...useTarget({
-            vue2: filterAttrs(props.attributes, 'v-on:', false),
-            vue3: filterAttrs(props.attributes, 'v-on:', false),
+            vue: filterAttrs(props.attributes, 'v-on:', false),
             svelte: filterAttrs(props.attributes, 'on:', false),
             default: {},
           })}
           {...useTarget({
-            vue2: filterAttrs(props.attributes, 'v-on:', true),
-            vue3: filterAttrs(props.attributes, 'v-on:', true),
+            vue: filterAttrs(props.attributes, 'v-on:', true),
             svelte: filterAttrs(props.attributes, 'on:', true),
             default: props.attributes,
           })}
@@ -58,14 +49,12 @@ export default function Button(props: ButtonProps) {
     >
       <props.LinkComponent
         {...useTarget({
-          vue2: filterAttrs(props.attributes, 'v-on:', false),
-          vue3: filterAttrs(props.attributes, 'v-on:', false),
+          vue: filterAttrs(props.attributes, 'v-on:', false),
           svelte: filterAttrs(props.attributes, 'on:', false),
           default: {},
         })}
         {...useTarget({
-          vue2: filterAttrs(props.attributes, 'v-on:', true),
-          vue3: filterAttrs(props.attributes, 'v-on:', true),
+          vue: filterAttrs(props.attributes, 'v-on:', true),
           svelte: filterAttrs(props.attributes, 'on:', true),
           default: props.attributes,
         })}

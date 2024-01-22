@@ -18,8 +18,6 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@builder.io/sdk-vue-2",
-    "@builder.io/sdk-vue-3",
     "@builder.io/sdk",
     "@builder.io/react",
     "@e2e/*",

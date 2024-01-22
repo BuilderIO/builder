@@ -1,5 +1,29 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.11.4
+
+### Patch Changes
+
+- 80cf984: Fix: react to changes in `props.data`
+
+## 0.11.3
+
+### Patch Changes
+
+- 538d559: Fix: use correct export for ContentProps
+- 538d559: Export prop types of all exported components in main index file.
+- 538d559: Improve documentation of `ContentProps` types.
+
+## 0.11.2
+
+## 0.11.1
+
+### Patch Changes
+
+- 9544220: Fix: duplicate attributes getting applied to both the block and its wrapper element.
+
+## 0.11.0
+
 ## 0.10.0
 
 ### Minor Changes

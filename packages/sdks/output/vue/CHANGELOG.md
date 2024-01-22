@@ -1,5 +1,61 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.11.4
+
+### Patch Changes
+
+- 80cf984: Fix: react to changes in `props.data`
+
+## 0.11.3
+
+### Patch Changes
+
+- 538d559: Add './edge' subpath export to work around isolated-vm issues in serverless environments.
+- 538d559: Fix: use correct export for ContentProps
+- 538d559: Export prop types of all exported components in main index file.
+- 538d559: Improve documentation of `ContentProps` types.
+
+## 0.11.2
+
+### Patch Changes
+
+- 2821f68: Fix CSS imports:
+
+  - add a `/nuxt` subpath export for a Nuxt module. Currently, it handles importing CSS, and is used like so:
+
+  ```ts
+  // nuxt.config.js
+  export default defineNuxtConfig({
+    modules: ['@builder.io/sdk-vue/nuxt'],
+  });
+  ```
+
+  - bring back `/css` subpath export. This is used internally by the Nuxt module, but also allows more flexibility for customers to import CSS as they see fit.
+  - remove CSS imports from server bundles, as they cause errors due to invalid extensions.
+  - add `sideEffects` array to package.json for webpack.
+
+## 0.11.1
+
+### Patch Changes
+
+- 9544220: Fix: duplicate attributes getting applied to both the block and its wrapper element.
+
+## 0.11.0
+
+### Minor Changes
+
+- 70fa50d: - 🧨 Breaking: removed Vue 2 SDK
+
+  - 🧨 Breaking: removed `@builder.io/sdk-vue/vue3` import. To import the SDK, you should now use:
+
+  ```ts
+  // BEFORE
+  import { Content } from '@builder.io/sdk-vue/vue3';
+
+  // AFTER
+  import { Content } from '@builder.io/sdk-vue';
+  ```
+
 ## 0.10.0
 
 ### Minor Changes

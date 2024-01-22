@@ -167,6 +167,7 @@ export default function Block(props: BlockProps) {
 
   return (
     <Show when={state.canShowBlock}>
+      <BlockStyles block={props.block} context={props.context.value} />
       <Show
         when={!state.blockComponent?.noWrap}
         else={
@@ -230,27 +231,14 @@ export default function Block(props: BlockProps) {
               includeBlockProps={state.componentRefProps.includeBlockProps}
               isInteractive={state.componentRefProps.isInteractive}
             />
-            {/**
-             * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-             * does not support multiple root elements.
-             */}
             <For each={state.childrenWithoutParentComponent}>
               {(child) => (
                 <Block
-                  key={'block-' + child.id}
+                  key={child.id}
                   block={child}
                   context={childrenContext}
                   registeredComponents={props.registeredComponents}
                   linkComponent={props.linkComponent}
-                />
-              )}
-            </For>
-            <For each={state.childrenWithoutParentComponent}>
-              {(child) => (
-                <BlockStyles
-                  key={'block-style-' + child.id}
-                  block={child}
-                  context={childrenContext.value}
                 />
               )}
             </For>

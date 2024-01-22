@@ -3,7 +3,7 @@ import type { BuilderContent } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
 import type { ContentProps } from './content.types.js';
 
-export const getContextStateInitialValue = ({
+export const getRootStateInitialValue = ({
   content,
   data,
   locale,

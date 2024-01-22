@@ -1,9 +1,9 @@
 import { useMetadata, useTarget } from '@builder.io/mitosis';
 import { filterAttrs } from '../helpers.js';
+import type { SectionProps } from './section.types.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
-
 import { setAttrs } from '../helpers.js';
 
 useMetadata({
@@ -12,25 +12,16 @@ useMetadata({
   },
 });
 
-export interface SectionProps {
-  maxWidth?: number;
-  attributes?: any;
-  children?: any;
-  builderBlock?: any;
-}
-
 export default function SectionComponent(props: SectionProps) {
   return (
     <section
       {...useTarget({
-        vue2: filterAttrs(props.attributes, 'v-on:', false),
-        vue3: filterAttrs(props.attributes, 'v-on:', false),
+        vue: filterAttrs(props.attributes, 'v-on:', false),
         svelte: filterAttrs(props.attributes, 'on:', false),
         default: {},
       })}
       {...useTarget({
-        vue2: filterAttrs(props.attributes, 'v-on:', true),
-        vue3: filterAttrs(props.attributes, 'v-on:', true),
+        vue: filterAttrs(props.attributes, 'v-on:', true),
         svelte: filterAttrs(props.attributes, 'on:', true),
         default: props.attributes,
       })}

@@ -108,13 +108,13 @@ test.describe('Blocks', () => {
       await page.route('**/*', route => {
         const request = route.request();
         if (request.url().includes(VIDEO_CDN_URL)) {
-          route.fulfill({
+          return route.fulfill({
             status: 200,
             contentType: 'video/mp4',
             body: mockVideoBuffer,
           });
         } else {
-          route.continue();
+          return route.continue();
         }
       });
 
@@ -174,13 +174,13 @@ test.describe('Blocks', () => {
       await page.route('**/*', route => {
         const request = route.request();
         if (request.url().includes(VIDEO_CDN_URL)) {
-          route.fulfill({
+          return route.fulfill({
             status: 200,
             contentType: 'video/mp4',
             body: mockVideoBuffer,
           });
         } else {
-          route.continue();
+          return route.continue();
         }
       });
 

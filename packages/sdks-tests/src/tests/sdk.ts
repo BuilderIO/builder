@@ -8,8 +8,7 @@ const SdkEnum = z.enum([
   'rsc',
   'solid',
   'svelte',
-  'vue2',
-  'vue3',
+  'vue',
   /**
    * Run all tests, including old React SDK.
    */
@@ -32,10 +31,8 @@ export type PackageName =
   | 'next-app-dir-client'
   | 'next-app-dir'
   | 'react'
-  | 'vue2'
-  | 'vue3'
-  | 'nuxt3'
-  | 'nuxt2'
+  | 'vue'
+  | 'nuxt'
   | 'svelte'
   | 'sveltekit'
   | 'gen1-react'

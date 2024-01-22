@@ -74,7 +74,6 @@ export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
   const isNonSSR =
     packageName === 'solid' ||
     packageName === 'react' ||
-    packageName === 'vue2' ||
     packageName === 'svelte' ||
     packageName === 'react-native' ||
     packageName === 'gen1-react';
@@ -97,8 +96,9 @@ type SDK_EXCLUSION_DICT = {
  * We use the negative tense, so that the default behavior is to run the test, unless specifically omitted.
  *
  */
-export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT) => {
-  return sdks[sdk] || false;
+export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT | Array<Sdk>) => {
+  const sdkIsExcluded = Array.isArray(sdks) ? sdks.includes(sdk) : sdks[sdk];
+  return sdkIsExcluded || false;
 };
 
 /**
@@ -118,8 +118,7 @@ export const EXCLUDE_GEN_2 = excludeTestFor({
   rsc: true,
   solid: true,
   svelte: true,
-  vue2: true,
-  vue3: true,
+  vue: true,
 });
 
 export const EXCLUDE_RN = excludeTestFor({

@@ -33,6 +33,15 @@ npm install
 pnpm install
 ```
 
+and add the SDK's Nuxt module in `nuxt.config.js`:
+
+```js
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
+  module: ['@builder.io/sdk-vue/nuxt'],
+});
+```
+
 ## Development Server
 
 Start the development server on http://localhost:3000

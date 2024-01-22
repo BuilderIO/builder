@@ -23,9 +23,9 @@ test.describe('Show If & Hide If', () => {
     test.skip(
       // TO-DO: flaky in remix
       packageName === 'gen1-remix' ||
-        // flaky in vue3: takes too long to hydrate, causing button click not to register...
-        packageName === 'vue3' ||
-        packageName === 'nuxt3'
+        // flaky in vue: takes too long to hydrate, causing button click not to register...
+        packageName === 'vue' ||
+        packageName === 'nuxt'
     );
 
     await page.goto('/show-hide-if');
@@ -49,8 +49,7 @@ test.describe('Show If & Hide If', () => {
       packageName === 'gen1-remix' ||
         packageName === 'gen1-next' ||
         // flaky in vue: takes too long to hydrate, causing button click not to register...
-        sdk === 'vue2' ||
-        sdk === 'vue3'
+        sdk === 'vue'
     );
 
     await page.goto('/show-hide-if-repeats');

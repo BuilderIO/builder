@@ -27,14 +27,12 @@ export default function FormInputComponent(props: FormInputProps) {
   return (
     <input
       {...useTarget({
-        vue2: filterAttrs(props.attributes, 'v-on:', false),
-        vue3: filterAttrs(props.attributes, 'v-on:', false),
+        vue: filterAttrs(props.attributes, 'v-on:', false),
         svelte: filterAttrs(props.attributes, 'on:', false),
         default: {},
       })}
       {...useTarget({
-        vue2: filterAttrs(props.attributes, 'v-on:', true),
-        vue3: filterAttrs(props.attributes, 'v-on:', true),
+        vue: filterAttrs(props.attributes, 'v-on:', true),
         svelte: filterAttrs(props.attributes, 'on:', true),
         default: props.attributes,
       })}

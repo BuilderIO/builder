@@ -14,8 +14,7 @@
           "build:svelte",
           "build:solid",
           "build:react-native",
-          "build:vue2",
-          "build:vue3",
+          "build:vue",
           "build:nextjs"
         ]
       }
