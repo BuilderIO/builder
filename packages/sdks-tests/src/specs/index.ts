@@ -33,6 +33,7 @@ import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
+import { SLOT } from './slot.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -79,6 +80,7 @@ const PAGES = {
   '/input-default-value': INPUT_DEFAULT_VALUE,
   '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
   '/js-content-is-browser': JS_CONTENT_IS_BROWSER,
+  '/slot': SLOT,
 } as const;
 
 const apiVersionPathToProp = {

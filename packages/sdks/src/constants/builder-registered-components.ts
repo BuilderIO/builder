@@ -14,6 +14,8 @@ import { componentInfo as imgComponentInfo } from '../blocks/img/component-info.
 import { default as Img } from '../blocks/img/img.lite.jsx';
 import { componentInfo as sectionComponentInfo } from '../blocks/section/component-info.js';
 import { default as Section } from '../blocks/section/section.lite.jsx';
+import { componentInfo as slotComponentInfo } from '../blocks/slot/component-info.js';
+import { default as Slot } from '../blocks/slot/slot.lite.jsx';
 import { componentInfo as symbolComponentInfo } from '../blocks/symbol/component-info.js';
 import { default as Symbol } from '../blocks/symbol/symbol.lite.jsx';
 import { componentInfo as textComponentInfo } from '../blocks/text/component-info.js';
@@ -39,4 +41,5 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Symbol, ...symbolComponentInfo },
     { component: Text, ...textComponentInfo },
     { component: Video, ...videoComponentInfo },
+    { component: Slot, ...slotComponentInfo },
   ];
