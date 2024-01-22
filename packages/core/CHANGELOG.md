@@ -1,4 +1,7 @@
 # @builder.io/sdk
+## 2.1.2
+
+- Fix secure cookie spacing.
 
 ## 2.1.1
 
