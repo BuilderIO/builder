@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const DataComp = (props: {
   pathname: string;
-  children: (args: { data: { x: string } }) => React.ReactNode;
+  children: (args: { data?: { x?: string } }) => React.ReactNode;
 }) => {
   const [data, setData] = useState('foo');
   if (props.pathname === '/external-data') {
@@ -18,7 +18,7 @@ const DataComp = (props: {
       </div>
     );
   } else {
-    return props.children({ data: { x: data } });
+    return props.children({});
   }
 };
 
