@@ -9,7 +9,6 @@ import type { PropsWithChildren } from '../../../types/typescript.js';
  * These imports are used by the Svelte SDK. Do not remove.
  */
 import { setAttrs } from '../../../blocks/helpers.js';
-// eslint-disable-next-line unused-imports/no-unused-imports
 import DynamicRenderer from '../../dynamic-renderer.lite.jsx';
 
 useMetadata({
