@@ -12,6 +12,7 @@ describe('Builder', () => {
   test('arbitrary builder.io subdomains', () => {
     expect(Builder.isTrustedHost('cdn.builder.io')).toBe(false);
     expect(Builder.isTrustedHost('foo.builder.io')).toBe(false);
+    expect(Builder.isTrustedHost('evildomainbeta.builder.io')).toBe(false);
   });
 
   test('add trusted host', () => {
