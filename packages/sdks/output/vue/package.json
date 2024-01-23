@@ -26,50 +26,16 @@
     "./css": "./lib/browser/style.css",
     "./nuxt": "./nuxt.js",
     "./edge": {
-      "node": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "browser": {
-        "import": "./lib/browser/index.js",
-        "require": "./lib/browser/index.cjs"
-      },
-      "edge-routine": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "workerd": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "deno": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "lagon": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "netlify": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "edge-light": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "bun": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "electron": {
-        "import": "./lib/edge/index.js",
-        "require": "./lib/edge/index.cjs"
-      },
-      "default": {
-        "import": "./lib/browser/index.js",
-        "require": "./lib/browser/index.cjs"
-      }
+      "import": "./lib/edge/index.js",
+      "require": "./lib/edge/index.cjs"
+    },
+    "./browser": {
+      "import": "./lib/browser/index.js",
+      "require": "./lib/browser/index.cjs"
+    },
+    "./node": {
+      "import": "./lib/node/index.js",
+      "require": "./lib/node/index.cjs"
     },
     ".": {
       "node": {
