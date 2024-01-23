@@ -370,7 +370,11 @@ module.exports = {
             pre: (json) => {
               // This plugin handles binding our actions to the `use:` Svelte syntax:
 
-              // handle case where we have a wrapper element, in which case the actions are assigned in `BlockWrapper`.
+              /**
+               * in the BlockWrapper, we use a special `DynamicRenderer` that will toggle between
+               * <svelte:element> and <svelte:component> depending on the type of the block, while
+               * handling empty HTML elements.
+               */
               if (json.name === 'BlockWrapper') {
                 const wrapper = json.children[0];
 
@@ -378,8 +382,6 @@ module.exports = {
                  * @type {MitosisNode['bindings']}
                  */
                 const newBindings = {};
-
-                console.log(wrapper.bindings);
 
                 Object.entries(wrapper.bindings).forEach(([key, value]) => {
                   if (key.startsWith('getBlockActions')) {
