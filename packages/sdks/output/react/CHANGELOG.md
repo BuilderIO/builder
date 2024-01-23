@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 0.12.0
+
+### Minor Changes
+
+- aee2b8a: Stricter checking of trusted hosts.
+
 ## 0.11.5
 
 ### Patch Changes
