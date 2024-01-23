@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.12.0
+
+### Minor Changes
+
+- aee2b8a: Stricter checking of trusted hosts.
+
 ## 0.11.5
 
 ## 0.11.4
