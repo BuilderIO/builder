@@ -1,10 +1,15 @@
-import { RenderContent } from '@builder.io/sdk-react/edge';
+import { Content as BrowserContent } from '@builder.io/sdk-react/browser';
+import { Content as EdgeContent } from '@builder.io/sdk-react/edge';
 import {
   _processContentResult,
   getBuilderSearchParams,
   getContent,
 } from '@builder.io/sdk-react/server';
 import { getProps } from '@e2e/tests';
+
+function isBrowser(): boolean {
+  return typeof window !== 'undefined' && typeof document !== 'undefined';
+}
 
 interface PageProps {
   params: {
@@ -32,7 +37,11 @@ export default async function Page(props: PageProps) {
       </>
     );
   }
-  return <RenderContent {...builderProps} />;
+  return isBrowser() ? (
+    <BrowserContent {...builderProps} />
+  ) : (
+    <EdgeContent {...builderProps} />
+  );
 }
 
 export const revalidate = 4;
