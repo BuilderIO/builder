@@ -882,7 +882,12 @@ export class Builder {
   static throttle = throttle;
 
   static editors: any[] = [];
-  static trustedHosts: string[] = ['*.beta.builder.io', 'builder.io', 'localhost'];
+  static trustedHosts: string[] = [
+    '*.beta.builder.io',
+    'beta.builder.io',
+    'builder.io',
+    'localhost',
+  ];
   static serverContext: any;
   static plugins: any[] = [];
 
