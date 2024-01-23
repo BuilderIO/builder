@@ -179,22 +179,6 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                // if (json.name === 'BlockWrapper') {
-                //   const key = Object.keys(item.bindings).find((x) =>
-                //     x.startsWith('getBlockActions')
-                //   );
-                //   if (key) {
-                //     const binding = item.bindings[key];
-                //     if (binding) {
-                //       item.bindings[key] = {
-                //         ...binding,
-                //         type: 'spread',
-                //         spreadType: 'event-handlers',
-                //       };
-                //     }
-                //   }
-                // }
-
                 const filterAttrKeys = Object.entries(item.bindings).filter(
                   ([_key, value]) =>
                     (value?.code.includes('filterAttrs') &&
@@ -419,17 +403,6 @@ module.exports = {
                     code: item.name,
                   };
                   item.name = `svelte:${item.properties.MAGIC}`;
-
-                  // if (item.properties.MAGIC === 'element') {
-                  //   const actionAttrsKey = 'props.actionAttributes';
-
-                  //   item.bindings['use:setAttrs'] = {
-                  //     ...item.bindings[actionAttrsKey],
-                  //     type: 'single',
-                  //   };
-
-                  //   delete item.bindings[actionAttrsKey];
-                  // }
                 });
               }
 
