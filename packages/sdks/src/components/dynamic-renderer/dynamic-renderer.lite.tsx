@@ -5,6 +5,7 @@ import { isEmptyElement } from './dynamic-renderer.helpers.js';
  * These imports are used by the Svelte SDK. Do not remove.
  */
 import { setAttrs } from '../../blocks/helpers.js';
+import type { PropsWithChildren } from '../../types/typescript.js';
 
 useMetadata({
   options: {
@@ -22,12 +23,13 @@ useMetadata({
  * - Svelte: picking between `svelte:component` and `svelte:element`
  * - Svelte and NextJS: not passing children to closed HTML tags.
  */
-export default function DynamicRenderer(props: {
-  TagName: any;
-  attributes: any;
-  actionAttributes: any;
-  children: any;
-}) {
+export default function DynamicRenderer(
+  props: PropsWithChildren<{
+    TagName: any;
+    attributes: any;
+    actionAttributes: any;
+  }>
+) {
   return (
     <Show
       when={!isEmptyElement(props.TagName)}
