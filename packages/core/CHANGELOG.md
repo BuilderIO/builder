@@ -1,4 +1,9 @@
 # @builder.io/sdk
+
+## 2.2.0
+
+- Stricter checking of trusted hosts.
+
 ## 2.1.2
 
 - Fix secure cookie spacing.
