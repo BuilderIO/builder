@@ -33,6 +33,7 @@ registerDataPlugin(
         required: false,
         min: 1,
         max: 1000,
+        default: 100,
         helperText:
           'Sets the limit of content types retrieved from Contentful https://www.contentful.com/developers/docs/references/content-management-api/',
       },
