@@ -10,4 +10,5 @@ export type BlocksProps = Partial<
 > & {
   context?: Signal<BuilderContextInterface>;
   registeredComponents?: RegisteredComponents;
+  linkComponent?: any;
 };

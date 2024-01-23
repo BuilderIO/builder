@@ -4,6 +4,7 @@ import type { BuilderComponentsProp } from '../../types/builder-props.js';
 type Column = {
   blocks: BuilderBlock[];
   width?: number;
+  link?: string;
 };
 
 type StackColumnsAt = 'tablet' | 'mobile' | 'never';
