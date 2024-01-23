@@ -1,3 +1,6 @@
-export default function DynamicRenderer(props: { children: any }) {
+/**
+ * Placeholder component for dynamic rendering in Svelte.
+ */
+export default function DynamicRenderer(props: any) {
   return props.children;
 }
