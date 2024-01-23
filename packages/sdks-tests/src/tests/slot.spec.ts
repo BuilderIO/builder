@@ -15,7 +15,9 @@ test.describe('Slot', () => {
     // rsc skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
     await page.goto('/slot');
-    const builderTextElements = isRNSDK ? page.locator('[data-testid="div"]') : page.locator('.builder-text');
+    const builderTextElements = isRNSDK
+      ? page.locator('[data-testid="div"]')
+      : page.locator('.builder-text');
     const count = await builderTextElements.count();
     expect(count).toBe(3);
     const slotElement = builderTextElements.nth(1);
