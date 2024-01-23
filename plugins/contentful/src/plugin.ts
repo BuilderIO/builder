@@ -32,7 +32,7 @@ registerDataPlugin(
         type: 'number',
         required: false,
         helperText:
-          'Sets the limit of entries retrieved from Contentful https://www.contentful.com/developers/docs/references/content-management-api/',
+          'Sets the limit of content types retrieved from Contentful https://www.contentful.com/developers/docs/references/content-management-api/',
       },
     ],
     ctaText: `Connect your Contentful space`,
@@ -41,7 +41,7 @@ registerDataPlugin(
   async settings => {
     const spaceId = settings.get('spaceId')?.trim();
     const accessToken = settings.get('accessToken')?.trim();
-    const entryLimit = settings.get('limit')?.trim();
+    const contentTypesLimit = settings.get('limit')?.trim() || 100;
     const client = await contentful.createClient({
       space: spaceId,
       accessToken,
@@ -49,7 +49,7 @@ registerDataPlugin(
 
     return {
       async getResourceTypes() {
-        const contentTypes = await client.getContentTypes({limit: 200});
+        const contentTypes = await client.getContentTypes({limit: contentTypesLimit});
         const buildUrl = (url: string, locale: string, single = false) => {
           return `${appState.config.apiRoot()}/api/v1/contentful-proxy?${
             locale ? `locale=${locale}&` : ''
@@ -193,7 +193,6 @@ registerDataPlugin(
         const entries = await client
           .getEntries({
             content_type: id,
-            limit: entryLimit || 100,
             ...params,
           })
           .then(res => res.items);
