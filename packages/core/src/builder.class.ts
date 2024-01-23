@@ -887,6 +887,7 @@ export class Builder {
     'beta.builder.io',
     'builder.io',
     'localhost',
+    'qa.builder.io',
   ];
   static serverContext: any;
   static plugins: any[] = [];
