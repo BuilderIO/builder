@@ -8,6 +8,8 @@ import { componentInfo as imageComponentInfo } from '../blocks/image/component-i
 import { default as Image } from '../blocks/image/image.lite';
 import { componentInfo as sectionComponentInfo } from '../blocks/section/component-info';
 import { default as Section } from '../blocks/section/section.lite';
+import { componentInfo as slotComponentInfo } from '../blocks/slot/component-info';
+import { default as Slot } from '../blocks/slot/slot.lite';
 import { componentInfo as symbolComponentInfo } from '../blocks/symbol/component-info';
 import { default as Symbol } from '../blocks/symbol/symbol.lite';
 import { componentInfo as textComponentInfo } from '../blocks/text/component-info';
@@ -33,4 +35,5 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Button, ...buttonComponentInfo },
     { component: Section, ...sectionComponentInfo },
     { component: Fragment, ...fragmentComponentInfo },
+    { component: Slot, ...slotComponentInfo },
   ];
