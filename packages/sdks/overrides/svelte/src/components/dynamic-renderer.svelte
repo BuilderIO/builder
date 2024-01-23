@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setAttrs } from '../../../../src/blocks/helpers';
+  import { setAttrs } from '../blocks/helpers';
 
   /**
    * https://developer.mozilla.org/en-US/docs/Glossary/Empty_element
