@@ -5,11 +5,7 @@ import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { PropsWithChildren } from '../../../types/typescript.js';
-/**
- * These imports are used by the Svelte SDK. Do not remove.
- */
-import { setAttrs } from '../../../blocks/helpers.js';
-import DynamicRenderer from '../../dynamic-renderer.lite.jsx';
+import DynamicRenderer from '../../dynamic-renderer/dynamic-renderer.lite.jsx';
 
 useMetadata({
   elementTag: 'props.Wrapper',
@@ -40,16 +36,13 @@ export default function BlockWrapper(
   props: PropsWithChildren<BlockWrapperProps>
 ) {
   return (
-    <props.Wrapper
-      {...getBlockProperties({
+    <DynamicRenderer
+      TagName={props.Wrapper}
+      attributes={getBlockProperties({
         block: props.block,
         context: props.context.value,
       })}
-      /**
-       * WARNING: this spread gets manipulated in `mitosis.config.js` for the Vue SDK, and must remain separate
-       * from the other spread.
-       */
-      {...getBlockActions({
+      actionAttributes={getBlockActions({
         block: props.block,
         rootState: props.context.value.rootState,
         rootSetState: props.context.value.rootSetState,
@@ -59,6 +52,6 @@ export default function BlockWrapper(
       })}
     >
       {props.children}
-    </props.Wrapper>
+    </DynamicRenderer>
   );
 }

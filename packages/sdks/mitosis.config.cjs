@@ -77,6 +77,34 @@ ${restOfCode.join('\n').replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
   },
 });
 
+const REMOVE_MAGIC_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      console.log('running remove magic plugin');
+
+      if (json.name !== 'DynamicRenderer') {
+        return;
+      }
+
+      // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
+      // builder blocks.
+      traverse(json).forEach(function (item) {
+        if (!isMitosisNode(item)) return;
+
+        for (const [key, _value] of Object.entries(item.properties)) {
+          console.log('key', key);
+
+          if (key === 'MAGIC') {
+            delete item.properties[key];
+          }
+        }
+      });
+
+      return json;
+    },
+  },
+});
+
 const target = process.argv
   .find((arg) => arg.startsWith('--target='))
   ?.split('=')[1];
@@ -129,6 +157,9 @@ module.exports = {
   exclude: ['src/**/*.test.ts'],
   targets,
   getTargetPath,
+  commonOptions: {
+    plugins: [REMOVE_MAGIC_PLUGIN],
+  },
   options: {
     solid: {
       typescript: true,
@@ -148,26 +179,27 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                if (json.name === 'BlockWrapper') {
-                  const key = Object.keys(item.bindings).find((x) =>
-                    x.startsWith('getBlockActions')
-                  );
-                  if (key) {
-                    const binding = item.bindings[key];
-                    if (binding) {
-                      item.bindings[key] = {
-                        ...binding,
-                        type: 'spread',
-                        spreadType: 'event-handlers',
-                      };
-                    }
-                  }
-                }
+                // if (json.name === 'BlockWrapper') {
+                //   const key = Object.keys(item.bindings).find((x) =>
+                //     x.startsWith('getBlockActions')
+                //   );
+                //   if (key) {
+                //     const binding = item.bindings[key];
+                //     if (binding) {
+                //       item.bindings[key] = {
+                //         ...binding,
+                //         type: 'spread',
+                //         spreadType: 'event-handlers',
+                //       };
+                //     }
+                //   }
+                // }
 
                 const filterAttrKeys = Object.entries(item.bindings).filter(
                   ([_key, value]) =>
-                    value?.code.includes('filterAttrs') &&
-                    value.code.includes('true')
+                    (value?.code.includes('filterAttrs') &&
+                      value.code.includes('true')) ||
+                    value?.code.includes('props.attributes')
                 );
 
                 for (const [key, value] of filterAttrKeys) {
@@ -371,43 +403,34 @@ module.exports = {
               // This plugin handles binding our actions to the `use:` Svelte syntax:
 
               /**
-               * in the BlockWrapper, we use a special `DynamicRenderer` that will toggle between
+               * `DynamicRenderer` will toggle between
                * <svelte:element> and <svelte:component> depending on the type of the block, while
                * handling empty HTML elements.
                */
-              if (json.name === 'BlockWrapper') {
-                const wrapper = json.children[0];
+              if (json.name === 'DynamicRenderer') {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) return;
 
-                /**
-                 * @type {MitosisNode['bindings']}
-                 */
-                const newBindings = {};
+                  if (!item.name.includes('TagName')) return;
 
-                Object.entries(wrapper.bindings).forEach(([key, value]) => {
-                  if (key.startsWith('getBlockActions')) {
-                    newBindings.attributes = {
-                      ...value,
-                      type: 'single',
-                    };
-                  } else if (key.startsWith('getBlockProperties')) {
-                    newBindings.actionAttributes = {
-                      ...value,
-                      type: 'single',
-                    };
-                  } else if (key === 'this') {
-                    newBindings.tagName = value;
-                  } else {
-                    throw new Error(`[Svelte]: Unexpected binding key: ${key}`);
-                  }
+                  item.bindings.this = {
+                    type: 'single',
+                    ...item.bindings.this,
+                    code: item.name,
+                  };
+                  item.name = `svelte:${item.properties.MAGIC}`;
+
+                  // if (item.properties.MAGIC === 'element') {
+                  //   const actionAttrsKey = 'props.actionAttributes';
+
+                  //   item.bindings['use:setAttrs'] = {
+                  //     ...item.bindings[actionAttrsKey],
+                  //     type: 'single',
+                  //   };
+
+                  //   delete item.bindings[actionAttrsKey];
+                  // }
                 });
-
-                json.children[0] = {
-                  ...wrapper,
-                  bindings: newBindings,
-                  name: 'DynamicRenderer',
-                };
-
-                return json;
               }
 
               // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
@@ -417,12 +440,13 @@ module.exports = {
 
                 const filterAttrKeys = Object.entries(item.bindings).filter(
                   ([_key, value]) =>
-                    value?.code.includes('filterAttrs') &&
-                    value.code.includes('true')
+                    (value?.code.includes('filterAttrs') &&
+                      value.code.includes('true')) ||
+                    value?.code.includes('props.actionAttributes')
                 );
 
                 for (const [key, value] of filterAttrKeys) {
-                  if (value) {
+                  if (value && item.name !== 'svelte:component') {
                     item.bindings['use:setAttrs'] = {
                       ...value,
                       type: 'single',

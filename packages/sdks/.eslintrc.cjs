@@ -31,7 +31,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'unused-imports/no-unused-imports': [
       'error',
-      { varsIgnorePattern: '(setAttrs|DynamicRenderer)' },
+      { varsIgnorePattern: '(setAttrs)' },
     ],
     'object-shorthand': 'error',
     '@typescript-eslint/consistent-type-imports': [
@@ -42,7 +42,7 @@ module.exports = {
       'error',
       {
         argsIgnorePattern: '^_',
-        varsIgnorePattern: '(^_|setAttrs|DynamicRenderer)',
+        varsIgnorePattern: '(^_|setAttrs)',
       },
     ],
 
