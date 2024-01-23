@@ -31,6 +31,8 @@ registerDataPlugin(
         name: 'limit',
         type: 'number',
         required: false,
+        min: 1,
+        max: 1000,
         helperText:
           'Sets the limit of content types retrieved from Contentful https://www.contentful.com/developers/docs/references/content-management-api/',
       },
@@ -41,7 +43,7 @@ registerDataPlugin(
   async settings => {
     const spaceId = settings.get('spaceId')?.trim();
     const accessToken = settings.get('accessToken')?.trim();
-    const contentTypesLimit = settings.get('limit')?.trim() || 100;
+    const contentTypesLimit = settings.get('limit') || 100;
     const client = await contentful.createClient({
       space: spaceId,
       accessToken,
