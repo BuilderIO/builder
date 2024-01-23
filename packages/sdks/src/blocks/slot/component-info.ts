@@ -2,6 +2,7 @@ import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
   name: 'Slot',
+  isRSC: true,
   description:
     'Allow child blocks to be inserted into this content when used as a Symbol',
   docsLink: 'https://www.builder.io/c/docs/symbols-with-blocks',

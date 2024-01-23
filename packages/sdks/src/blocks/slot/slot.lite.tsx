@@ -1,3 +1,4 @@
+import { useMetadata } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 
 export interface DropzoneProps {
@@ -6,6 +7,12 @@ export interface DropzoneProps {
   builderContext: any;
   attributes: any;
 }
+
+useMetadata({
+  rsc: {
+    componentType: 'server',
+  },
+});
 
 export default function Slot(props: DropzoneProps) {
   return (
