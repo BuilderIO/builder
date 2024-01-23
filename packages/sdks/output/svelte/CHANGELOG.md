@@ -1,5 +1,7 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.11.5
+
 ## 0.11.4
 
 ### Patch Changes
