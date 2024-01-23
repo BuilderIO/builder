@@ -8,6 +8,11 @@ describe('Builder', () => {
     expect(Builder.isTrustedHost('123-review-build.beta.builder.io')).toBe(true);
   });
 
+  test('arbitrary builder.io subdomains', () => {
+    expect(Builder.isTrustedHost('cdn.builder.io')).toBe(false);
+    expect(Builder.isTrustedHost('foo.builder.io')).toBe(false);
+  });
+
   test('add trusted host', () => {
     expect(Builder.isTrustedHost('example.com')).toBe(false);
     Builder.registerTrustedHost('example.com');
