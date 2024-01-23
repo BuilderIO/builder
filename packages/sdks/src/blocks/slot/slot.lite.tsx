@@ -1,10 +1,13 @@
-import { useMetadata } from '@builder.io/mitosis';
+import type { Signal } from '@builder.io/mitosis';
+import { useMetadata, useStore } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
+import type { BuilderContextInterface } from '../../context/types.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
 
 export interface DropzoneProps {
   name: string;
-  builderBlock: any;
-  builderContext: any;
+  builderBlock: BuilderBlock;
+  builderContext: Signal<BuilderContextInterface>;
   attributes: any;
 }
 
@@ -15,19 +18,30 @@ useMetadata({
 });
 
 export default function Slot(props: DropzoneProps) {
+  const state = useStore({
+    get symbolId() {
+      return props.builderContext.value.context?.symbolId as string | undefined;
+    },
+    get blocks() {
+      return (
+        (props.builderContext.value.rootState[props.name] as BuilderBlock[]) ||
+        []
+      );
+    },
+  });
   return (
     <div
       style={{
         pointerEvents: 'auto',
       }}
-      {...(!props.builderContext.context.symbolId && {
+      {...(!state.symbolId && {
         'builder-slot': props.name,
       })}
     >
       <Blocks
-        parent={props.builderContext.context.symbolId}
+        parent={state.symbolId}
         path={`symbol.data.${props.name}`}
-        blocks={props.builderContext.rootState[props.name] || []}
+        blocks={state.blocks}
         context={props.builderContext}
       />
     </div>
