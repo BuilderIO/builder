@@ -1,4 +1,4 @@
-import { setAttrs } from '../blocks/helpers';
+import { setAttrs } from '../blocks/helpers.js';
 
 /**
  * Placeholder component for dynamic rendering in Svelte.
