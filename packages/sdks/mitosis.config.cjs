@@ -372,23 +372,39 @@ module.exports = {
 
               // handle case where we have a wrapper element, in which case the actions are assigned in `BlockWrapper`.
               if (json.name === 'BlockWrapper') {
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) return;
+                const wrapper = json.children[0];
 
-                  const key = Object.keys(item.bindings).find((x) =>
-                    x.startsWith('getBlockActions')
-                  );
-                  if (key) {
-                    const binding = item.bindings[key];
-                    if (binding) {
-                      item.bindings['use:setAttrs'] = {
-                        ...binding,
-                        type: 'single',
-                      };
-                      delete item.bindings[key];
-                    }
+                /**
+                 * @type {MitosisNode['bindings']}
+                 */
+                const newBindings = {};
+
+                console.log(wrapper.bindings);
+
+                Object.entries(wrapper.bindings).forEach(([key, value]) => {
+                  if (key.startsWith('getBlockActions')) {
+                    newBindings.attributes = {
+                      ...value,
+                      type: 'single',
+                    };
+                  } else if (key.startsWith('getBlockProperties')) {
+                    newBindings.actionAttributes = {
+                      ...value,
+                      type: 'single',
+                    };
+                  } else if (key === 'this') {
+                    newBindings.tagName = value;
+                  } else {
+                    throw new Error(`[Svelte]: Unexpected binding key: ${key}`);
                   }
                 });
+
+                json.children[0] = {
+                  ...wrapper,
+                  bindings: newBindings,
+                  name: 'DynamicRenderer',
+                };
+
                 return json;
               }
 
