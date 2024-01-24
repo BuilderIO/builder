@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.1.52",
+  "version": "1.1.53",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "_unlink": "npm unlink *",
-    "_install": "npm install",
+    "_install": "npm install --legacy-peer-deps",
     "docs": "typedoc",
     "lint": "tslint -t codeFrame '../**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
@@ -35,12 +35,7 @@
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info≈ | coveralls",
     "commit": "git-cz",
-    "release": "npm run build && ALLOW_PUBLISH=true npm publish",
-    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
-    "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag nightly",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "release": "npm run build && ALLOW_PUBLISH=true npm publish --tag backport-v1.1.x",
     "precommit": "lint-staged",
     "ci:test": "npm run test",
     "ci:build": "npm run build"
