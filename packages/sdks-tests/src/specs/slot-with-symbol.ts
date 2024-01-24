@@ -332,6 +332,8 @@ const splitUpContent = () => {
       .content;
 
   delete CONTENT_CLONE.data.blocks[0].component.options.symbol.content;
+  delete CONTENT_CLONE.data.blocks[0].component.options.symbol.data.children[0].component.options
+    .symbol.content;
 
   return { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT, SLOT_WITHOUT_SYMBOL: CONTENT_CLONE };
 };
