@@ -9,7 +9,7 @@
 - Use correct types for `responsiveStyles`, fixes remix type checks.
 
 ### 1.1.30
-- Add support for threhold and repeat inputs on `ScrollInvView` animations.
+- Add support for threshold and repeat inputs on `ScrollInView` animations.
 
 ### 1.1.29
 
