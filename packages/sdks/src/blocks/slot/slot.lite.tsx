@@ -1,7 +1,8 @@
 import type { Signal } from '@builder.io/mitosis';
-import { useMetadata, useStore } from '@builder.io/mitosis';
+import { useMetadata, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import type { BuilderContextInterface } from '../../context/types.js';
+import { deoptSignal } from '../../functions/deopt.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 
 export interface DropzoneProps {
@@ -18,30 +19,29 @@ useMetadata({
 });
 
 export default function Slot(props: DropzoneProps) {
-  const state = useStore({
-    get symbolId() {
-      return props.builderContext.value.context?.symbolId as string | undefined;
-    },
-    get blocks() {
-      return (
-        (props.builderContext.value.rootState[props.name] as BuilderBlock[]) ||
-        []
-      );
-    },
-  });
   return (
     <div
       style={{
         pointerEvents: 'auto',
       }}
-      {...(!state.symbolId && {
+      {...(!props.builderContext.value.context?.symbolId && {
         'builder-slot': props.name,
       })}
     >
       <Blocks
-        parent={state.symbolId}
+        parent={props.builderContext.value.context?.symbolId as string}
         path={`symbol.data.${props.name}`}
-        blocks={state.blocks}
+        blocks={useTarget({
+          /**
+           * Workaround until https://github.com/BuilderIO/qwik/issues/5017 is fixed.
+           */
+          qwik: deoptSignal(
+            props.builderContext.value.rootState?.[props.name]
+          ) as BuilderBlock[],
+          default: props.builderContext.value.rootState?.[
+            props.name
+          ] as BuilderBlock[],
+        })}
         context={props.builderContext}
       />
     </div>
