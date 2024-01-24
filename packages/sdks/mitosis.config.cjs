@@ -80,20 +80,10 @@ ${restOfCode.join('\n').replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 const REMOVE_MAGIC_PLUGIN = () => ({
   json: {
     post: (json) => {
-      console.log('running remove magic plugin');
-
-      if (json.name !== 'DynamicRenderer') {
-        return;
-      }
-
-      // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
-      // builder blocks.
       traverse(json).forEach(function (item) {
         if (!isMitosisNode(item)) return;
 
         for (const [key, _value] of Object.entries(item.properties)) {
-          console.log('key', key);
-
           if (key === 'MAGIC') {
             delete item.properties[key];
           }
