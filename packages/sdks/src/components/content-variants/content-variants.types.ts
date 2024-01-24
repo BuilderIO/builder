@@ -78,4 +78,9 @@ export interface ContentVariantsPrps {
    * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
    */
   blocksWrapperProps?: any;
+
+  /**
+   * List of hosts to allow editing content from.
+   */
+  trustedHosts?: string[];
 }

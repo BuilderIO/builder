@@ -84,6 +84,8 @@ const PAGES = {
   '/slot': SLOT,
   '/slot-with-symbol': SLOT_WITH_SYMBOL,
   '/slot-without-symbol': SLOT_WITHOUT_SYMBOL,
+  '/no-trusted-hosts': homepage,
+  '/editing-styles-no-trusted-hosts': EDITING_STYLES,
 } as const;
 
 const apiVersionPathToProp = {
@@ -159,6 +161,10 @@ export const getProps = async (args: {
     pathname === '/can-track-false'
       ? {
           canTrack: false,
+        }
+      : pathname.includes('no-trusted-hosts')
+      ? {
+          trustedHosts: [],
         }
       : {};
 
