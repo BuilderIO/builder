@@ -52,7 +52,7 @@ registerDataPlugin(
 
     return {
       async getResourceTypes() {
-        const contentTypes = await client.getContentTypes({limit: contentTypesLimit});
+        const contentTypes = await client.getContentTypes({ limit: contentTypesLimit });
         const buildUrl = (url: string, locale: string, single = false) => {
           return `${appState.config.apiRoot()}/api/v1/contentful-proxy?${
             locale ? `locale=${locale}&` : ''
