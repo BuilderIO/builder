@@ -19,6 +19,7 @@ import { fetchOneEntry } from '../../../functions/get-content/index.js';
 import { fetch } from '../../../functions/get-fetch.js';
 import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
+import { isFromTrustedHost } from '../../../functions/is-from-trusted-host.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
 import { _track } from '../../../functions/track/index.js';
@@ -120,6 +121,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
       default: props.contentWrapper || 'div',
     }),
     processMessage(event: MessageEvent): void {
+      if (!isFromTrustedHost(props.trustedHosts, event)) {
+        return;
+      }
       const { data } = event;
 
       if (data) {
@@ -297,6 +301,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         ...(props.locale ? { locale: props.locale } : {}),
         ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
+        ...(props.trustedHosts ? { trustedHosts: props.trustedHosts } : {}),
       });
       Object.values<ComponentInfo>(
         props.builderContextSignal.value.componentInfos
