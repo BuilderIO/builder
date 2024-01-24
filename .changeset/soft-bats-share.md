@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-New: builder block slot component
+Feature: added support for the Builder `Slot` block
