@@ -342,7 +342,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   },
                 }),
               }}
-              loading={isPixel ? 'eager' : 'lazy'}
+              loading={isPixel || !this.useLazyLoading ? 'eager' : 'lazy'}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
               {...(!amp && {
