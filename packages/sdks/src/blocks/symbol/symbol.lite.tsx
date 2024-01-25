@@ -105,7 +105,10 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
         __isNestedRender
         apiVersion={props.builderContext.value.apiVersion}
         apiKey={props.builderContext.value.apiKey!}
-        context={props.builderContext.value.context}
+        context={{
+          ...props.builderContext.value.context,
+          symbolId: props.builderBlock?.id,
+        }}
         customComponents={Object.values(props.builderComponents)}
         data={{
           ...props.symbol?.data,
