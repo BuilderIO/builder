@@ -16,6 +16,13 @@ env:
 jobs:
   sdks-base:
     name: Gen 2 SDKs checks
+
+    strategy:
+      # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
+      fail-fast: false
+      matrix:
+        node-version: ['18.x', '20.x']
+
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +32,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: ${{ matrix.node-version }}
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -67,6 +74,8 @@ jobs:
           - sdk: vue
             sdk-name: vue
 
+        node-version: ['18.x', '20.x']
+
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -74,7 +83,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: ${{ matrix.node-version }}
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
