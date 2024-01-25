@@ -170,10 +170,16 @@ module.exports = {
                 if (!isMitosisNode(item)) return;
 
                 const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([_key, value]) =>
-                    (value?.code.includes('filterAttrs') &&
-                      value.code.includes('true')) ||
-                    value?.code.includes('props.attributes')
+                  ([_key, value]) => {
+                    const blocksAttrs =
+                      value?.code.includes('filterAttrs') &&
+                      value.code.includes('true');
+
+                    const dynamicRendererAttrs =
+                      json.name === 'DynamicRenderer' &&
+                      value?.code.includes('props.actionAttributes');
+                    return blocksAttrs || dynamicRendererAttrs;
+                  }
                 );
 
                 for (const [key, value] of filterAttrKeys) {
@@ -402,10 +408,16 @@ module.exports = {
                 if (!isMitosisNode(item)) return;
 
                 const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([_key, value]) =>
-                    (value?.code.includes('filterAttrs') &&
-                      value.code.includes('true')) ||
-                    value?.code.includes('props.actionAttributes')
+                  ([_key, value]) => {
+                    const blocksAttrs =
+                      value?.code.includes('filterAttrs') &&
+                      value.code.includes('true');
+
+                    const dynamicRendererAttrs =
+                      json.name === 'DynamicRenderer' &&
+                      value?.code.includes('props.actionAttributes');
+                    return blocksAttrs || dynamicRendererAttrs;
+                  }
                 );
 
                 for (const [key, value] of filterAttrKeys) {
