@@ -27,6 +27,16 @@ registerDataPlugin(
         helperText:
           'Get your access token, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
       },
+      {
+        name: 'limit',
+        type: 'number',
+        required: false,
+        min: 1,
+        max: 1000,
+        default: 100,
+        helperText:
+          'Sets the limit of content types retrieved from Contentful https://www.contentful.com/developers/docs/references/content-management-api/',
+      },
     ],
     ctaText: `Connect your Contentful space`,
   },
@@ -34,13 +44,15 @@ registerDataPlugin(
   async settings => {
     const spaceId = settings.get('spaceId')?.trim();
     const accessToken = settings.get('accessToken')?.trim();
+    const contentTypesLimit = settings.get('limit') || 100;
     const client = await contentful.createClient({
       space: spaceId,
       accessToken,
     });
+
     return {
       async getResourceTypes() {
-        const contentTypes = await client.getContentTypes();
+        const contentTypes = await client.getContentTypes({ limit: contentTypesLimit });
         const buildUrl = (url: string, locale: string, single = false) => {
           return `${appState.config.apiRoot()}/api/v1/contentful-proxy?${
             locale ? `locale=${locale}&` : ''
