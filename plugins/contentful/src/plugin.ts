@@ -53,7 +53,7 @@ registerDataPlugin(
     const spaceId = settings.get('spaceId')?.trim();
     const accessToken = settings.get('accessToken')?.trim();
     const contentTypesLimit = settings.get('limit') || 100;
-    const environment= settings.get('environment')?.trim() || 'master';
+    const environment = settings.get('environment')?.trim() || 'master';
     const client = await contentful.createClient({
       space: spaceId,
       accessToken,
