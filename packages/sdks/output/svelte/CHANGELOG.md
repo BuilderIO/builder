@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.12.1
+
+### Patch Changes
+
+- 9b71eab: Feature: added support for the Builder `Slot` block
+
 ## 0.12.0
 
 ### Minor Changes
