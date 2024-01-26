@@ -8,7 +8,7 @@ const DEFAULT_TRUSTED_HOSTS = [
 
 export function isFromTrustedHost(
   trustedHosts: string[] | undefined,
-  e: MessageEvent<unknown>
+  e: { origin: string }
 ): boolean {
   const url = new URL(e.origin),
     hostname = url.hostname;
