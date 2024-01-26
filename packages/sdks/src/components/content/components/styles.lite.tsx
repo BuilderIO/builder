@@ -21,6 +21,10 @@ export default function ContentStyles(props: Props) {
 ${getCss({ cssCode: props.cssCode, contentId: props.contentId })}
 ${getFontCss({ customFonts: props.customFonts })}
 
+.builder-button {
+  all: unset;
+}
+
 .builder-text > p:first-of-type, .builder-text > .builder-paragraph:first-of-type {
   margin: 0;
 }
