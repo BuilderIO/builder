@@ -1,16 +1,16 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.12.2
+
+### Patch Changes
+
+- fa616c9: Added a `trustedHosts` prop to `Content`. It is used to determine whether the SDK can enable editing/previewing mode within a host. Also added stricter default checking of trusted hosts.
+
 ## 0.12.1
 
 ### Patch Changes
 
 - 9b71eab: Feature: added support for the Builder `Slot` block
-
-## 0.12.0
-
-### Minor Changes
-
-- aee2b8a: Stricter checking of trusted hosts.
 
 ## 0.11.5
 

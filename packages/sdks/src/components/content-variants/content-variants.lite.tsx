@@ -118,6 +118,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
               blocksWrapperProps={props.blocksWrapperProps}
               contentWrapper={props.contentWrapper}
               contentWrapperProps={props.contentWrapperProps}
+              trustedHosts={props.trustedHosts}
             />
           )}
         </For>
@@ -144,6 +145,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         blocksWrapperProps={props.blocksWrapperProps}
         contentWrapper={props.contentWrapper}
         contentWrapperProps={props.contentWrapperProps}
+        trustedHosts={props.trustedHosts}
       />
     </>
   );
