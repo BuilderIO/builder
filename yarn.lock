@@ -1906,12 +1906,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.99":
-  version: 0.0.99
-  resolution: "@builder.io/mitosis-cli@npm:0.0.99"
+"@builder.io/mitosis-cli@npm:^0.0.143":
+  version: 0.0.143
+  resolution: "@builder.io/mitosis-cli@npm:0.0.143"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.0.140
+    "@builder.io/mitosis": 0.0.142
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1935,13 +1935,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 3b99c38c9ff679bd43ad5755e5fb4582b21f0e582553be4b612777fa3b3a19e4af6b3db136e6b4b5e5ad4f7c3436b049255b1e0ae799a7d28d5537fa0af67985
+  checksum: 36809ac27f38a42bf900876690521622ab91d431ac9992def999b94ef6ada08cf1279eedc23fea255cc908139594f5266eb59dd1a113a3eb65244bb5365f08bc
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.140, @builder.io/mitosis@npm:^0.0.140":
-  version: 0.0.140
-  resolution: "@builder.io/mitosis@npm:0.0.140"
+"@builder.io/mitosis@npm:0.0.142, @builder.io/mitosis@npm:^0.0.142":
+  version: 0.0.142
+  resolution: "@builder.io/mitosis@npm:0.0.142"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1968,7 +1968,7 @@ __metadata:
     ts-morph: ^19.0.0
     typescript: ^5.3.2
     vue: ~2.6
-  checksum: fc8a953afa878b392ca06b7a543b710efaca7ed5e5c74b2d034e2d1e29eb9d7093b492c1674c6629e01ab74dc8ed0255263e61aed31043b9b3d4e0e82b90e106
+  checksum: 9cae75e63406cbd55c6bca26e664de00492a9af0b5e04362b3fa5156d7594d72ace2947d22594e8ff8ff7aa194205a6a57f9907f94ee86fa81fa254bb7161bdc
   languageName: node
   linkType: hard
 
@@ -2321,8 +2321,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.15
-    "@builder.io/mitosis": ^0.0.140
-    "@builder.io/mitosis-cli": ^0.0.99
+    "@builder.io/mitosis": ^0.0.142
+    "@builder.io/mitosis-cli": ^0.0.143
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32

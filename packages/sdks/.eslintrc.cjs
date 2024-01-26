@@ -31,7 +31,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'unused-imports/no-unused-imports': [
       'error',
-      { varsIgnorePattern: 'setAttrs' },
+      { varsIgnorePattern: '(setAttrs)' },
     ],
     'object-shorthand': 'error',
     '@typescript-eslint/consistent-type-imports': [
@@ -40,7 +40,10 @@ module.exports = {
     ],
     '@typescript-eslint/no-unused-vars': [
       'error',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '(^_|setAttrs)' },
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '(^_|setAttrs)',
+      },
     ],
 
     // Note: you must disable the base rule as it can report incorrect errors

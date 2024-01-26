@@ -29,7 +29,6 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     get className() {
       return [
         ...useTarget({
-          vue: Object.keys(props.attributes.class),
           react: [props.attributes.className],
           rsc: [props.attributes.className],
           reactNative: [],
