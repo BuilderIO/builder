@@ -51,7 +51,7 @@ test.describe('Blocks', () => {
 
   test('Button', async ({ page }) => {
     await page.goto('/reactive-state');
-    const button = page.locator('button');
+    const button = page.getByRole('button', { name: 'Increment Number' });
     await expect(button).toHaveCSS('background-color', 'rgb(0, 0, 0)');
   });
   /**

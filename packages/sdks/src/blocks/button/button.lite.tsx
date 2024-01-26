@@ -19,6 +19,7 @@ export default function Button(props: ButtonProps) {
       when={props.link}
       else={
         <button
+          role="button"
           {...useTarget({
             vue: filterAttrs(props.attributes, 'v-on:', false),
             svelte: filterAttrs(props.attributes, 'on:', false),
