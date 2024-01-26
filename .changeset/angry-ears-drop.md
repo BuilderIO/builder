@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Stricter checking of trusted hosts.
+Added a `trustedHosts` prop to `Content`. It is used to determine whether the SDK can enable editing/previewing mode within a host. Also added stricter default checking of trusted hosts.
