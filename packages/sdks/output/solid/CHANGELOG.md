@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 0.12.3
+
+### Patch Changes
+
+- 8b970b4: Fix: issue with Button `all: 'unset'` overriding all other styles.
+
 ## 0.12.2
 
 ### Patch Changes
