@@ -29,8 +29,7 @@ export default function Button(props: ButtonProps) {
             svelte: filterAttrs(props.attributes, 'on:', true),
             default: props.attributes,
           })}
-          css={{ all: 'unset' }}
-          class={useTarget(
+          class={`builder-button ${useTarget(
             /**
              * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.
              */
@@ -40,7 +39,7 @@ export default function Button(props: ButtonProps) {
               rsc: props.attributes.className,
               default: props.attributes.class,
             }
-          )}
+          )}`}
           style={props.attributes.style}
         >
           {props.text}
