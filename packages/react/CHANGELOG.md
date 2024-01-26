@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 3.2.0
+
+- Stricter checking of trusted hosts.
+
+## 3.1.2
+
+- Use latest core sdk, to fix secure cookie spacing.
+
 ## 3.1.1
 
 - Use latest core sdk, to enable passing `authToken` to `getAll` on private models.
