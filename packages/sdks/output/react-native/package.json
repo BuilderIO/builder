@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react-native",
   "repository": {
     "type": "git",
