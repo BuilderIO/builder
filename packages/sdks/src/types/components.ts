@@ -7,18 +7,62 @@ export interface ComponentInfo {
    * by registering a component with the same name, e.g. 'Text', to replace the built-in text component
    */
   name: string;
+  /** @hidden @deprecated */
   description?: string;
   /**
    * Link to a documentation page for this component
    */
   docsLink?: string;
+  /**
+   * Link to an image to be used as an icon for this component in Builder's editor
+   *
+   * @example
+   * ```js
+   * image: 'https://some-cdn.com/my-icon-for-this-component.png'
+   * ```
+   */
   image?: string;
+
+  // TODO (murtaza): Implement 'screenshot' related stuff
+  /**
+   * Link to a screenshot shown when user hovers over the component in Builder's editor
+   * use https://builder.io/upload to upload your screeshot, for easier resizing by Builder.
+   */
+  screenshot?: string;
+
+  // TODO (murtaza): Implement 'override' related stuff
+  /**
+   * When overriding built-in components, if you don't want any special behavior that
+   * the original has, set this to `true` to skip the default behavior
+   *
+   * Default behaviors include special "virtual options", such as a custom
+   * aspect ratio editor for Images, or a special column editor for Columns
+   *
+   * Learn more about overriding built-in components here: https://www.builder.io/c/docs/custom-components-overriding
+   */
+  override?: boolean;
+
   /**
    * Input schema for your component for users to fill in the options
    */
   inputs?: Input[];
+  /** @hidden @deprecated */
   class?: any;
+  /** @hidden @deprecated */
   type?: 'angular' | 'webcomponent' | 'react' | 'vue';
+  /**
+   * Default styles to apply when dropped into the Builder.io editor
+   *
+   * @example
+   * ```js
+   * defaultStyles: {
+   *   // large (default) breakpoint
+   *   large: {
+   *     backgroundColor: 'black'
+   *   },
+   * }
+   * ```
+   */
   defaultStyles?: { [key: string]: string };
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
@@ -26,6 +70,7 @@ export interface ComponentInfo {
    * github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/HeroWithChildren/HeroWithChildren.builder.js#L5
    */
   canHaveChildren?: boolean;
+  /** @hidden */
   fragment?: boolean;
   /**
    * Do not wrap a component in a dom element. Be sure to use {...props.attributes} with this option
@@ -45,14 +90,16 @@ export interface ComponentInfo {
    */
   defaultChildren?: BuilderElement[];
   defaults?: Partial<BuilderElement>;
+  /** @hidden @deprecated */
   // eslint-disable-next-line @typescript-eslint/ban-types
   hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
    */
   hideFromInsertMenu?: boolean;
-  // For webcomponents
+  /** Custom tag name (for custom webcomponents only) */
   tag?: string;
+  /** @hidden @deprecated */
   static?: boolean;
   /**
    * Passing a list of model names will restrict using the component to only the models listed here, otherwise it'll be available for all models
