@@ -1,9 +1,10 @@
-import { Show, useMetadata, useTarget } from '@builder.io/mitosis';
+import { useMetadata, useTarget } from '@builder.io/mitosis';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 
+import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer.lite.jsx';
 import { setAttrs } from '../helpers.js';
 import type { ButtonProps } from './button.types.js';
 
@@ -15,58 +16,33 @@ useMetadata({
 
 export default function Button(props: ButtonProps) {
   return (
-    <Show
-      when={props.link}
-      else={
-        <button
-          role="button"
-          {...useTarget({
-            vue: filterAttrs(props.attributes, 'v-on:', false),
-            svelte: filterAttrs(props.attributes, 'on:', false),
-            default: {},
-          })}
-          {...useTarget({
-            vue: filterAttrs(props.attributes, 'v-on:', true),
-            svelte: filterAttrs(props.attributes, 'on:', true),
-            default: props.attributes,
-          })}
-          class={`builder-button ${useTarget(
-            /**
-             * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.
-             */
-            {
-              react: props.attributes.className,
-              reactNative: props.attributes.className,
-              rsc: props.attributes.className,
-              default: props.attributes.class,
+    <DynamicRenderer
+      TagName={props.link ? props.LinkComponent || 'a' : 'button'}
+      attributes={{
+        class: `${props.link ? '' : 'builder-button'} ${useTarget({
+          react: props.attributes.className,
+          reactNative: props.attributes.className,
+          rsc: props.attributes.className,
+          default: props.attributes.class,
+        })}`,
+        ...(props.link
+          ? {
+              href: props.link,
+              target: props.openLinkInNewTab ? '_blank' : undefined,
+              role: 'link',
             }
-          )}`}
-          style={props.attributes.style}
-        >
-          {props.text}
-        </button>
-      }
-    >
-      <props.LinkComponent
-        {...useTarget({
+          : { role: 'button' }),
+        ...useTarget({
           vue: filterAttrs(props.attributes, 'v-on:', false),
           svelte: filterAttrs(props.attributes, 'on:', false),
-          default: {},
-        })}
-        {...useTarget({
-          vue: filterAttrs(props.attributes, 'v-on:', true),
-          svelte: filterAttrs(props.attributes, 'on:', true),
           default: props.attributes,
-        })}
-        role={useTarget({
-          reactNative: 'link',
-          default: 'button',
-        })}
-        href={props.link}
-        target={props.openLinkInNewTab ? '_blank' : undefined}
-      >
-        {props.text}
-      </props.LinkComponent>
-    </Show>
+        }),
+      }}
+      actionAttributes={useTarget({
+        vue: filterAttrs(props.attributes, 'v-on:', true),
+        svelte: filterAttrs(props.attributes, 'on:', true),
+        default: {},
+      })}
+    />
   );
 }

@@ -190,6 +190,7 @@ export default function Block(props: BlockProps) {
                   repeatContext={data.context}
                   block={data.block}
                   registeredComponents={props.registeredComponents}
+                  linkComponent={props.linkComponent}
                 />
               )}
             </For>
