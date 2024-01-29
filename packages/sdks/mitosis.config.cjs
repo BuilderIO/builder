@@ -9,6 +9,7 @@ const rng = seedrandom('vue-sdk-seed');
  * @typedef {import('@builder.io/mitosis').MitosisConfig} MitosisConfig
  * @typedef {import('@builder.io/mitosis').Plugin} Plugin
  * @typedef {import('@builder.io/mitosis').OnMountHook} OnMountHook
+ * @typedef {import('./')} OnEventHook
  */
 
 const getSeededId = () => {
@@ -139,6 +140,27 @@ const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
     },
   },
 });
+
+/**
+ *
+ * Identifies all the bindings that are used to pass actions to our blocks.
+ * Used by Vue/Svelte plugins to convert the bindings to the appropriate binding syntax.
+ *
+ * @param {import('@builder.io/mitosis').MitosisComponent} json
+ * @param {MitosisNode} item
+ */
+const filterActionAttrBindings = (json, item) => {
+  return Object.entries(item.bindings).filter(([_key, value]) => {
+    const blocksAttrs =
+      value?.code.includes('filterAttrs') && value.code.includes('true');
+
+    const dynamicRendererAttrs =
+      json.name === 'DynamicRenderer' &&
+      value?.code.includes('props.actionAttributes');
+    return blocksAttrs || dynamicRendererAttrs;
+  });
+};
+
 /**
  * @type {MitosisConfig}
  */
@@ -169,18 +191,7 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([_key, value]) => {
-                    const blocksAttrs =
-                      value?.code.includes('filterAttrs') &&
-                      value.code.includes('true');
-
-                    const dynamicRendererAttrs =
-                      json.name === 'DynamicRenderer' &&
-                      value?.code.includes('props.actionAttributes');
-                    return blocksAttrs || dynamicRendererAttrs;
-                  }
-                );
+                const filterAttrKeys = filterActionAttrBindings(json, item);
 
                 for (const [key, value] of filterAttrKeys) {
                   if (value) {
@@ -407,18 +418,7 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([_key, value]) => {
-                    const blocksAttrs =
-                      value?.code.includes('filterAttrs') &&
-                      value.code.includes('true');
-
-                    const dynamicRendererAttrs =
-                      json.name === 'DynamicRenderer' &&
-                      value?.code.includes('props.actionAttributes');
-                    return blocksAttrs || dynamicRendererAttrs;
-                  }
-                );
+                const filterAttrKeys = filterActionAttrBindings(json, item);
 
                 for (const [key, value] of filterAttrKeys) {
                   if (value && item.name !== 'svelte:component') {
