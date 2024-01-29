@@ -79,9 +79,7 @@ export default function Block(props: BlockProps) {
         state.processedBlock.href;
 
       if (shouldUseLink) {
-        if (props.linkComponent) return props.linkComponent;
-
-        return 'a';
+        return props.linkComponent || 'a';
       }
 
       return useTarget({
