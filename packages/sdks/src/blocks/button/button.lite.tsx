@@ -38,6 +38,8 @@ export default function Button(props: ButtonProps) {
         svelte: filterAttrs(props.attributes, 'on:', true),
         default: {},
       })}
-    />
+    >
+      {props.text}
+    </DynamicRenderer>
   );
 }
