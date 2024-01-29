@@ -1,11 +1,6 @@
 import { useMetadata, useTarget } from '@builder.io/mitosis';
-import { filterAttrs } from '../helpers.js';
-/**
- * This import is used by the Svelte SDK. Do not remove.
- */
-
 import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer.lite.jsx';
-import { setAttrs } from '../helpers.js';
+import { filterAttrs } from '../helpers.js';
 import type { ButtonProps } from './button.types.js';
 
 useMetadata({

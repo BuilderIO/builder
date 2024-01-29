@@ -150,6 +150,13 @@ const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
  * @param {MitosisNode} item
  */
 const filterActionAttrBindings = (json, item) => {
+  /**
+   * Button component uses `filterAttrs` but calls `DynamicRender`.
+   * Special case, we don't want to filter the `filterAttrs` calls even though they are there.
+   */
+  const isButton = json.name === 'Button';
+  if (isButton) return [];
+
   return Object.entries(item.bindings).filter(([_key, value]) => {
     const blocksAttrs =
       value?.code.includes('filterAttrs') && value.code.includes('true');
@@ -157,6 +164,7 @@ const filterActionAttrBindings = (json, item) => {
     const dynamicRendererAttrs =
       json.name === 'DynamicRenderer' &&
       value?.code.includes('props.actionAttributes');
+
     return blocksAttrs || dynamicRendererAttrs;
   });
 };
