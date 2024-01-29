@@ -14,10 +14,6 @@ export default function Button(props: ButtonProps) {
     <DynamicRenderer
       TagName={props.link ? props.linkComponent || 'a' : 'button'}
       attributes={{
-        role: useTarget({
-          reactNative: 'link',
-          default: 'button',
-        }),
         class: `${props.link ? '' : 'builder-button'} ${useTarget({
           react: props.attributes.className,
           reactNative: props.attributes.className,
@@ -28,8 +24,9 @@ export default function Button(props: ButtonProps) {
           ? {
               href: props.link,
               target: props.openLinkInNewTab ? '_blank' : undefined,
+              role: 'link',
             }
-          : {}),
+          : { role: 'button' }),
         ...useTarget({
           vue: filterAttrs(props.attributes, 'v-on:', false),
           svelte: filterAttrs(props.attributes, 'on:', false),
