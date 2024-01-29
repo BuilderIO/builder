@@ -79,11 +79,11 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       basePort,
       page,
     });
-    const btn1 = page.frameLocator('iframe').getByRole('button');
+    const btn1 = page.frameLocator('iframe').getByRole('link');
     await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
 
     await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
-    const btn = page.frameLocator('iframe').getByRole('button');
+    const btn = page.frameLocator('iframe').getByRole('link');
     await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
   });
 };
