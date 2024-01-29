@@ -9,7 +9,6 @@ const rng = seedrandom('vue-sdk-seed');
  * @typedef {import('@builder.io/mitosis').MitosisConfig} MitosisConfig
  * @typedef {import('@builder.io/mitosis').Plugin} Plugin
  * @typedef {import('@builder.io/mitosis').OnMountHook} OnMountHook
- * @typedef {import('./')} OnEventHook
  */
 
 const getSeededId = () => {
