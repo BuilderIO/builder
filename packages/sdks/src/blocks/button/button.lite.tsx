@@ -12,7 +12,7 @@ useMetadata({
 export default function Button(props: ButtonProps) {
   return (
     <DynamicRenderer
-      TagName={props.link ? props.LinkComponent || 'a' : 'button'}
+      TagName={props.link ? props.linkComponent || 'a' : 'button'}
       attributes={{
         class: `${props.link ? '' : 'builder-button'} ${useTarget({
           react: props.attributes.className,

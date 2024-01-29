@@ -3,5 +3,5 @@ export interface ButtonProps {
   text?: string;
   link?: string;
   openLinkInNewTab?: boolean;
-  LinkComponent?: any;
+  linkComponent?: any;
 }
