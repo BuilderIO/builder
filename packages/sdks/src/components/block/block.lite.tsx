@@ -16,11 +16,7 @@ import { getBlockComponentOptions } from '../../functions/get-block-component-op
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import {
-  getComponent,
-  getRepeatItemData,
-  isEmptyHtmlElement,
-} from './block.helpers.js';
+import { getComponent, getRepeatItemData } from './block.helpers.js';
 import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
@@ -170,36 +166,25 @@ export default function Block(props: BlockProps) {
           />
         }
       >
-        {/*
-         * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
-         * _even_ if that logic ends up not rendering anything.
-         */}
-        <Show when={isEmptyHtmlElement(state.Tag)}>
+        <Show
+          when={!state.repeatItem}
+          else={
+            <For each={state.repeatItem}>
+              {(data, index) => (
+                <RepeatedBlock
+                  key={index}
+                  repeatContext={data.context}
+                  block={data.block}
+                  registeredComponents={props.registeredComponents}
+                />
+              )}
+            </For>
+          }
+        >
           <BlockWrapper
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
-            hasChildren={false}
-          />
-        </Show>
-        <Show when={!isEmptyHtmlElement(state.Tag) && state.repeatItem}>
-          <For each={state.repeatItem}>
-            {(data, index) => (
-              <RepeatedBlock
-                key={index}
-                repeatContext={data.context}
-                block={data.block}
-                registeredComponents={props.registeredComponents}
-              />
-            )}
-          </For>
-        </Show>
-        <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
-          <BlockWrapper
-            Wrapper={state.Tag}
-            block={state.processedBlock}
-            context={props.context}
-            hasChildren
           >
             <ComponentRef
               componentRef={state.componentRefProps.componentRef}

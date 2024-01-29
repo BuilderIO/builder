@@ -7,34 +7,6 @@ import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
-/**
- * https://developer.mozilla.org/en-US/docs/Glossary/Empty_element
- */
-const EMPTY_HTML_ELEMENTS = [
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'keygen',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr',
-];
-
-export const isEmptyHtmlElement = (tagName: unknown) => {
-  return (
-    typeof tagName === 'string' &&
-    EMPTY_HTML_ELEMENTS.includes(tagName.toLowerCase())
-  );
-};
-
 export const getComponent = ({
   block,
   context,

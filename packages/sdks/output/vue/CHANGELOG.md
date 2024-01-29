@@ -1,10 +1,23 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
-## 0.12.0
+## 0.12.3
 
-### Minor Changes
+### Patch Changes
 
-- aee2b8a: Stricter checking of trusted hosts.
+- 8b970b4: Fix: issue with Button `all: 'unset'` overriding all other styles.
+
+## 0.12.2
+
+### Patch Changes
+
+- fa616c9: Added a `trustedHosts` prop to `Content`. It is used to determine whether the SDK can enable editing/previewing mode within a host. Also added stricter default checking of trusted hosts.
+- 286f80d: Fix: class attributes now correctly being passed down
+
+## 0.12.1
+
+### Patch Changes
+
+- 9b71eab: Feature: added support for the Builder `Slot` block
 
 ## 0.11.5
 
