@@ -28,7 +28,7 @@ useMetadata({
 });
 
 /**
- * This component renders the block component itself (from the list of registered components).
+ * This component renders an interactive component (from the list of registered components).
  * We have to keep this logic in its own component so that it can become a client component in our RSC SDK.
  */
 export default function InteractiveElement(

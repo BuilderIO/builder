@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test.describe('Blocks', () => {
-  test('Text block', async ({ page }) => {
+  test('Text', async ({ page }) => {
     test.fail(EXCLUDE_RN);
     await page.goto('/text-block');
 
@@ -48,11 +48,17 @@ test.describe('Blocks', () => {
       await expect(child).toHaveCSS('margin-right', '0px');
     }
   });
+
+  test('Button', async ({ page }) => {
+    await page.goto('/reactive-state');
+    const button = isRNSDK ? page.locator('button') : page.getByRole('button');
+    await expect(button).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+  });
   /**
    * We are temporarily skipping this test because it relies on network requests.
    * TO-DO: re-enable it once we have a way to mock network requests.
    */
-  test.skip('image', async ({ page }) => {
+  test.skip('Image', async ({ page }) => {
     await page.goto('/image');
 
     const imageLocator = page.locator('img');
@@ -99,7 +105,7 @@ test.describe('Blocks', () => {
     }
   });
 
-  test.describe('video', () => {
+  test.describe('Video', () => {
     test('video render and styles', async ({ page }) => {
       test.skip(isRNSDK);
       const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');

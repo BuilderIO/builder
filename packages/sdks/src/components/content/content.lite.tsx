@@ -152,6 +152,7 @@ export default function ContentComponent(props: ContentProps) {
       contentWrapper={props.contentWrapper}
       contentWrapperProps={props.contentWrapperProps}
       linkComponent={props.linkComponent}
+      trustedHosts={props.trustedHosts}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },

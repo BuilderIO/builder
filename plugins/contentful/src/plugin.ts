@@ -27,6 +27,24 @@ registerDataPlugin(
         helperText:
           'Get your access token, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
       },
+      {
+        name: 'limit',
+        type: 'number',
+        required: false,
+        min: 1,
+        max: 1000,
+        default: 100,
+        helperText:
+          'Sets the limit of content types retrieved from Contentful https://www.contentful.com/developers/docs/references/content-management-api/',
+      },
+      {
+        name: 'environment',
+        type: 'string',
+        required: false,
+        defaultValue: 'master',
+        helperText:
+          'The environment you used when generating your access token. This defaults to "master." Learn more: https://www.contentful.com/developers/docs/references/authentication/',
+      },
     ],
     ctaText: `Connect your Contentful space`,
   },
@@ -34,13 +52,17 @@ registerDataPlugin(
   async settings => {
     const spaceId = settings.get('spaceId')?.trim();
     const accessToken = settings.get('accessToken')?.trim();
+    const contentTypesLimit = settings.get('limit') || 100;
+    const environment = settings.get('environment')?.trim() || 'master';
     const client = await contentful.createClient({
       space: spaceId,
       accessToken,
+      environment,
     });
+
     return {
       async getResourceTypes() {
-        const contentTypes = await client.getContentTypes();
+        const contentTypes = await client.getContentTypes({ limit: contentTypesLimit });
         const buildUrl = (url: string, locale: string, single = false) => {
           return `${appState.config.apiRoot()}/api/v1/contentful-proxy?${
             locale ? `locale=${locale}&` : ''
@@ -141,7 +163,7 @@ registerDataPlugin(
             if (options.entry) {
               // todo: maybe environment should be an input
               return buildUrl(
-                `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${type.sys.id}&sys.id=${options.entry}&include=10`,
+                `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/entries?access_token=${accessToken}&content_type=${type.sys.id}&sys.id=${options.entry}&include=10`,
                 locale,
                 true
               );
@@ -164,7 +186,7 @@ registerDataPlugin(
             );
             // by query
             return buildUrl(
-              `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?${params}`,
+              `https://cdn.contentful.com/spaces/${spaceId}/environments/${environment}/entries?${params}`,
               locale
             );
           },

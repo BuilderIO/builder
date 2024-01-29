@@ -24,6 +24,8 @@ import { CONTENT as reactiveState } from './reactive-state.js';
 import { REPEAT_ITEMS_BINDINGS } from './repeat-items-bindings.js';
 import { SHOW_HIDE_IF_REPEATS } from './show-hide-if-repeat.js';
 import { SHOW_HIDE_IF } from './show-hide-if.js';
+import { SLOT_WITHOUT_SYMBOL, SLOT_WITH_SYMBOL } from './slot-with-symbol.js';
+import { SLOT } from './slot.js';
 import { CONTENT as stateBinding } from './state-binding.js';
 import { CONTENT as symbolAbTest } from './symbol-ab-test.js';
 import { CONTENT as symbolBindings } from './symbol-bindings.js';
@@ -79,6 +81,11 @@ const PAGES = {
   '/input-default-value': INPUT_DEFAULT_VALUE,
   '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
   '/js-content-is-browser': JS_CONTENT_IS_BROWSER,
+  '/slot': SLOT,
+  '/slot-with-symbol': SLOT_WITH_SYMBOL,
+  '/slot-without-symbol': SLOT_WITHOUT_SYMBOL,
+  '/no-trusted-hosts': homepage,
+  '/editing-styles-no-trusted-hosts': EDITING_STYLES,
 } as const;
 
 const apiVersionPathToProp = {
@@ -154,6 +161,10 @@ export const getProps = async (args: {
     pathname === '/can-track-false'
       ? {
           canTrack: false,
+        }
+      : pathname.includes('no-trusted-hosts')
+      ? {
+          trustedHosts: [],
         }
       : {};
 

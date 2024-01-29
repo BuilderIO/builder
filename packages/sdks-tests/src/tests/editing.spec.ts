@@ -1,11 +1,11 @@
-import { test } from './helpers.js';
-import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
-import { MODIFIED_COLUMNS } from '../specs/columns.js';
-import type { BuilderContent } from '../specs/types.js';
 import { expect, type Page } from '@playwright/test';
-import { NEW_TEXT } from '../specs/helpers.js';
-import { EMBEDDER_PORT, SDK_LOADED_MSG } from './context.js';
+import { MODIFIED_COLUMNS } from '../specs/columns.js';
 import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
+import { NEW_TEXT } from '../specs/helpers.js';
+import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
+import type { BuilderContent } from '../specs/types.js';
+import { EMBEDDER_PORT, SDK_LOADED_MSG } from './context.js';
+import { test } from './helpers.js';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>
@@ -95,5 +95,44 @@ test.describe('Visual Editing', () => {
     await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
     const btn = page.frameLocator('iframe').getByRole('button');
     await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
+  });
+
+  test.describe('fails for empty trusted hosts', () => {
+    test.fail();
+    test('correctly updates Text block', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'react-native' ||
+          packageName === 'next-app-dir' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/no-trusted-hosts', basePort, page });
+      await sendContentUpdateMessage(page, MODIFIED_HOMEPAGE);
+      await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
+    });
+
+    test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
+      test.skip(
+        packageName === 'react-native' ||
+          packageName === 'next-app-dir' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({
+        path: '/editing-styles-no-trusted-hosts',
+        basePort,
+        page,
+      });
+      const btn1 = page.frameLocator('iframe').getByRole('button');
+      await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
+
+      await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
+      const btn = page.frameLocator('iframe').getByRole('button');
+      await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
+    });
   });
 });

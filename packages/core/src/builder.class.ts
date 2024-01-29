@@ -882,7 +882,13 @@ export class Builder {
   static throttle = throttle;
 
   static editors: any[] = [];
-  static trustedHosts: string[] = ['builder.io', 'localhost'];
+  static trustedHosts: string[] = [
+    '*.beta.builder.io',
+    'beta.builder.io',
+    'builder.io',
+    'localhost',
+    'qa.builder.io',
+  ];
   static serverContext: any;
   static plugins: any[] = [];
 
@@ -971,8 +977,10 @@ export class Builder {
 
   static isTrustedHost(hostname: string) {
     return (
-      this.trustedHosts.findIndex(
-        trustedHost => trustedHost === hostname || hostname.endsWith(`.${trustedHost}`)
+      this.trustedHosts.findIndex(trustedHost =>
+        trustedHost.startsWith('*.')
+          ? hostname.endsWith(trustedHost.slice(1))
+          : trustedHost === hostname
       ) > -1
     );
   }

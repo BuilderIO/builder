@@ -1,5 +1,23 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 0.12.3
+
+### Patch Changes
+
+- 8b970b4: Fix: issue with Button `all: 'unset'` overriding all other styles.
+
+## 0.12.2
+
+### Patch Changes
+
+- fa616c9: Added a `trustedHosts` prop to `Content`. It is used to determine whether the SDK can enable editing/previewing mode within a host. Also added stricter default checking of trusted hosts.
+
+## 0.12.1
+
+### Patch Changes
+
+- 9b71eab: Feature: added support for the Builder `Slot` block
+
 ## 0.11.5
 
 ## 0.11.4
