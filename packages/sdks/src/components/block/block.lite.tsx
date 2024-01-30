@@ -13,8 +13,8 @@ import type {
 } from '../../context/types.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
-import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { getComponent, getRepeatItemData } from './block.helpers.js';
 import BlockStyles from './components/block-styles.lite.jsx';
@@ -148,10 +148,10 @@ export default function Block(props: BlockProps) {
       reactNative: {
         ...props.context.value,
         inheritedStyles: extractTextStyles(
-          getBlockProperties({
+          getStyle({
             block: state.processedBlock,
             context: props.context.value,
-          }).style || {}
+          }) || {}
         ),
       },
       default: props.context.value,

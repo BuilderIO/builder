@@ -49,6 +49,7 @@ export const getWrapperProps = ({
           attributes: getBlockProperties({
             block: builderBlock,
             context: contextValue,
+            includeStyles: true,
           }),
         }
       : {}),

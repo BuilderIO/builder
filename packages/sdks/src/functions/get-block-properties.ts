@@ -1,7 +1,6 @@
-import { TARGET } from '../constants/target.js';
 import type { BuilderContextInterface } from '../context/types.js';
-import { convertStyleMapToCSSArray } from '../helpers/css.js';
 import type { BuilderBlock } from '../types/builder-block.js';
+import { getStyle } from './get-style.js';
 import { transformBlockProperties } from './transform-block-properties.js';
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
@@ -40,39 +39,24 @@ const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
 export function getBlockProperties({
   block,
   context,
+  includeStyles,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
+  includeStyles: boolean;
 }) {
-  const properties = {
+  const properties: any = {
     ...extractRelevantRootBlockProperties(block),
     ...block.properties,
     'builder-id': block.id,
-    style: block.style ? getStyleAttribute(block.style) : undefined,
     class: [block.id, 'builder-block', block.class, block.properties?.class]
       .filter(Boolean)
       .join(' '),
   };
 
-  return transformBlockProperties({ properties, context, block });
-}
-/**
- * Svelte does not support style attribute as an object so we need to flatten it.
- *
- * Additionally, Svelte, Vue and other frameworks use kebab-case styles, so we need to convert them.
- */
-function getStyleAttribute(
-  style: Partial<CSSStyleDeclaration>
-): string | Partial<CSSStyleDeclaration> {
-  switch (TARGET) {
-    case 'svelte':
-    case 'vue':
-    case 'solid':
-      return convertStyleMapToCSSArray(style).join(' ');
-    case 'qwik':
-    case 'reactNative':
-    case 'react':
-    case 'rsc':
-      return style;
+  if (includeStyles) {
+    properties.style = getStyle({ block, context });
   }
+
+  return transformBlockProperties({ properties, context, block });
 }

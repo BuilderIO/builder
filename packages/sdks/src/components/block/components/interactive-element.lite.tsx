@@ -43,6 +43,7 @@ export default function InteractiveElement(
               ...getBlockProperties({
                 block: props.block,
                 context: props.context.value,
+                includeStyles: true,
               }),
               ...getBlockActions({
                 block: props.block,

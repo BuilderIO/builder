@@ -207,8 +207,8 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               }),
               ...(column.link ? { href: column.link } : {}),
               class: 'builder-column',
-              style: state.columnCssVars(index),
             }}
+            style={state.columnCssVars(index)}
           >
             <Blocks
               blocks={useTarget({
