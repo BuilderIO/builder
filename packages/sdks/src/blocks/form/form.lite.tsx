@@ -66,7 +66,7 @@ export default function FormComponent(props: FormProps) {
     // TODO: separate response and error?
     responseData: null as any,
     formErrorMessage: '',
-    get submissionState(): FormState {
+    submissionState(): FormState {
       return (isEditing() && props.previewState) || state.formState;
     },
     onSubmit(event: any) {
@@ -314,7 +314,7 @@ export default function FormComponent(props: FormProps) {
         </For>
       </Show>
 
-      <Show when={state.submissionState === 'error'}>
+      <Show when={state.submissionState() === 'error'}>
         <Blocks
           path="errorMessage"
           blocks={props.errorMessage!}
@@ -322,7 +322,7 @@ export default function FormComponent(props: FormProps) {
         />
       </Show>
 
-      <Show when={state.submissionState === 'sending'}>
+      <Show when={state.submissionState() === 'sending'}>
         <Blocks
           path="sendingMessage"
           blocks={props.sendingMessage!}
@@ -330,7 +330,7 @@ export default function FormComponent(props: FormProps) {
         />
       </Show>
 
-      <Show when={state.submissionState === 'error' && state.responseData}>
+      <Show when={state.submissionState() === 'error' && state.responseData}>
         <pre
           class="builder-form-error-text"
           css={{ padding: '10px', color: 'red', textAlign: 'center' }}
@@ -339,7 +339,7 @@ export default function FormComponent(props: FormProps) {
         </pre>
       </Show>
 
-      <Show when={state.submissionState === 'success'}>
+      <Show when={state.submissionState() === 'success'}>
         <Blocks
           path="successMessage"
           blocks={props.successMessage!}
