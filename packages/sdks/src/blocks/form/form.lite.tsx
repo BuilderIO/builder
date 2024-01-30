@@ -67,7 +67,6 @@ export default function FormComponent(props: FormProps) {
     responseData: null as any,
     formErrorMessage: '',
     get submissionState(): FormState {
-      console.log('preview state', props);
       return (isEditing() && props.previewState) || state.formState;
     },
     onSubmit(event: any) {
