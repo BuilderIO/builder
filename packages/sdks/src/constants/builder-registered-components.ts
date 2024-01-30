@@ -6,16 +6,22 @@ import { componentInfo as customCodeInfo } from '../blocks/custom-code/component
 import { default as customCode } from '../blocks/custom-code/custom-code.lite.jsx';
 import { componentInfo as embedComponentInfo } from '../blocks/embed/component-info.js';
 import { default as embed } from '../blocks/embed/embed.lite.jsx';
+import { componentInfo as formComponentInfo } from '../blocks/form/component-info.js';
+import { default as Form } from '../blocks/form/form.lite.jsx';
 import { componentInfo as fragmentComponentInfo } from '../blocks/fragment/component-info.js';
 import { default as Fragment } from '../blocks/fragment/fragment.lite.jsx';
 import { componentInfo as imageComponentInfo } from '../blocks/image/component-info.js';
 import { default as Image } from '../blocks/image/image.lite.jsx';
 import { componentInfo as imgComponentInfo } from '../blocks/img/component-info.js';
 import { default as Img } from '../blocks/img/img.lite.jsx';
+import { componentInfo as formInputComponentInfo } from '../blocks/input/component-info.js';
+import { default as FormInput } from '../blocks/input/input.lite.jsx';
 import { componentInfo as sectionComponentInfo } from '../blocks/section/component-info.js';
 import { default as Section } from '../blocks/section/section.lite.jsx';
 import { componentInfo as slotComponentInfo } from '../blocks/slot/component-info.js';
 import { default as Slot } from '../blocks/slot/slot.lite.jsx';
+import { componentInfo as formSubmitButtonComponentInfo } from '../blocks/submit-button/component-info.js';
+import { default as FormSubmitButton } from '../blocks/submit-button/submit-button.lite.jsx';
 import { componentInfo as symbolComponentInfo } from '../blocks/symbol/component-info.js';
 import { default as Symbol } from '../blocks/symbol/symbol.lite.jsx';
 import { componentInfo as textComponentInfo } from '../blocks/text/component-info.js';
@@ -42,4 +48,7 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Text, ...textComponentInfo },
     { component: Video, ...videoComponentInfo },
     { component: Slot, ...slotComponentInfo },
+    { component: FormInput, ...formInputComponentInfo },
+    { component: FormSubmitButton, ...formSubmitButtonComponentInfo },
+    { component: Form, ...formComponentInfo },
   ];

@@ -136,7 +136,8 @@ export default function Block(props: BlockProps) {
             ? { builderLinkComponent: props.linkComponent }
             : {}),
           ...(state.blockComponent?.name === 'Symbol' ||
-          state.blockComponent?.name === 'Columns'
+          state.blockComponent?.name === 'Columns' ||
+          state.blockComponent?.name === 'Form:Form'
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
