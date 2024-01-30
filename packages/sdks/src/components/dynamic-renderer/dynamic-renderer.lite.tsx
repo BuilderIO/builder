@@ -37,6 +37,7 @@ export default function DynamicRenderer(
         <props.TagName
           {...props.attributes}
           {...props.actionAttributes}
+          style={props.attributes.style || {}}
           MAGIC={'element'}
         />
       }
@@ -56,6 +57,7 @@ export default function DynamicRenderer(
         <props.TagName
           {...props.attributes}
           {...props.actionAttributes}
+          style={props.attributes.style || {}}
           MAGIC={'element'}
         >
           {props.children}
