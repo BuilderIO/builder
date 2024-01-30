@@ -39,24 +39,19 @@ const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
 export function getBlockProperties({
   block,
   context,
-  includeStyles,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
-  includeStyles: boolean;
 }) {
   const properties: any = {
     ...extractRelevantRootBlockProperties(block),
     ...block.properties,
     'builder-id': block.id,
+    style: getStyle({ block, context }),
     class: [block.id, 'builder-block', block.class, block.properties?.class]
       .filter(Boolean)
       .join(' '),
   };
-
-  if (includeStyles) {
-    properties.style = getStyle({ block, context });
-  }
 
   return transformBlockProperties({ properties, context, block });
 }

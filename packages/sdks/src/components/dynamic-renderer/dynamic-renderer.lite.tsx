@@ -28,7 +28,6 @@ export default function DynamicRenderer(
     TagName: any;
     attributes: any;
     actionAttributes: any;
-    style: any;
   }>
 ) {
   return (
@@ -38,7 +37,7 @@ export default function DynamicRenderer(
         <props.TagName
           {...props.attributes}
           {...props.actionAttributes}
-          style={props.style}
+          style={props.attributes.style}
           MAGIC={'element'}
         />
       }
@@ -49,7 +48,6 @@ export default function DynamicRenderer(
           <props.TagName
             {...props.attributes}
             {...props.actionAttributes}
-            style={props.style}
             MAGIC={'component'}
           >
             {props.children}
@@ -59,7 +57,7 @@ export default function DynamicRenderer(
         <props.TagName
           {...props.attributes}
           {...props.actionAttributes}
-          style={props.style}
+          style={props.attributes.style}
           MAGIC={'element'}
         >
           {props.children}

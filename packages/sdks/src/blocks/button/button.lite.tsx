@@ -38,7 +38,6 @@ export default function Button(props: ButtonProps) {
         svelte: filterAttrs(props.attributes, 'on:', true),
         default: {},
       })}
-      style={{}}
     >
       {props.text}
     </DynamicRenderer>
