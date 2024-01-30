@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from './helpers.js';
 
-test.describe.only('Form', () => {
+test.describe('Form', () => {
   test('Form rendering correctly', async ({ page }) => {
     await page.goto('/form');
 

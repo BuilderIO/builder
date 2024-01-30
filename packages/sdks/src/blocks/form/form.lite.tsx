@@ -9,8 +9,8 @@ import {
 } from '@builder.io/mitosis';
 import Block from '../../components/block/block.lite.jsx';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
-import { isEditing } from '../../functions/is-editing';
-import { set } from '../../functions/set';
+import { isEditing } from '../../functions/is-editing.js';
+import { set } from '../../functions/set.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { filterAttrs } from '../helpers.js';
 /**
