@@ -11,12 +11,8 @@ export const getStyle = ({
   block: BuilderBlock;
   context: BuilderContextInterface;
 }) => {
-  if (!block.style) {
-    return undefined;
-  }
-
   return transformStyleProperty({
-    style: getStyleAttribute(block.style),
+    style: block.style ? getStyleAttribute(block.style) : {},
     context,
     block,
   });
