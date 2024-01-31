@@ -51,7 +51,7 @@ test.describe('Blocks', () => {
 
   test('Button', async ({ page }) => {
     await page.goto('/reactive-state');
-    const button = isRNSDK ? page.locator('button') : page.getByRole('button');
+    const button = page.getByRole('button');
     await expect(button).toHaveCSS('background-color', 'rgb(0, 0, 0)');
   });
   /**
