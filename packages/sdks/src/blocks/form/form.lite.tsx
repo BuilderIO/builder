@@ -9,6 +9,12 @@ import {
 } from '@builder.io/mitosis';
 import Block from '../../components/block/block.lite.jsx';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
+import type {
+  BuilderContextInterface,
+  RegisteredComponents,
+} from '../../context/types.js';
+import { getEnv } from '../../functions/get-env.js';
+import { get } from '../../functions/get.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { set } from '../../functions/set.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
@@ -16,13 +22,6 @@ import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
-
-import { builder } from '@builder.io/sdk';
-import type {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../context/types.js';
-import { get } from '../../functions/get.js';
 import { setAttrs } from '../helpers.js';
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
@@ -182,8 +181,10 @@ export default function FormComponent(props: FormProps) {
         state.formState = 'sending';
 
         const formUrl = `${
-          builder.env === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
-        }/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(
+          getEnv() === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
+        }/api/v1/form-submit?apiKey=${
+          props.builderContext.value.apiKey
+        }&to=${btoa(
           props.sendSubmissionsToEmail || ''
         )}&name=${encodeURIComponent(props.name || '')}`;
 
