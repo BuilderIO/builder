@@ -128,6 +128,11 @@ export default function Block(props: BlockProps) {
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
           builderContext: props.context,
+          ...(state.blockComponent?.name === 'Core:Button' ||
+          state.blockComponent?.name === 'Symbol' ||
+          state.blockComponent?.name === 'Columns'
+            ? { builderLinkComponent: props.linkComponent }
+            : {}),
           ...(state.blockComponent?.name === 'Symbol' ||
           state.blockComponent?.name === 'Columns'
             ? { builderComponents: props.registeredComponents }

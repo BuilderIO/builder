@@ -12,5 +12,8 @@ export type PropsWithBuilderData<T> = T & {
 
 export type BuilderComponentsProp = {
   builderComponents: RegisteredComponents;
-  linkComponent?: any;
+};
+
+export type BuilderLinkComponentProp = {
+  builderLinkComponent?: any;
 };

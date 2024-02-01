@@ -115,7 +115,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
         }}
         model={props.symbol?.model}
         content={state.contentToUse}
-        linkComponent={props.linkComponent}
+        linkComponent={props.builderLinkComponent}
       />
     </div>
   );

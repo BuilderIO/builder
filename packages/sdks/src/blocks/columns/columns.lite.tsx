@@ -198,7 +198,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
         {(column, index) => (
           <DynamicRenderer
             key={index}
-            TagName={column.link ? props.linkComponent || 'a' : 'div'}
+            TagName={column.link ? props.builderLinkComponent || 'a' : 'div'}
             actionAttributes={{}}
             attributes={{
               ...useTarget({
@@ -225,7 +225,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               styleProp={{ flexGrow: '1' }}
               context={props.builderContext}
               registeredComponents={props.builderComponents}
-              linkComponent={props.linkComponent}
+              linkComponent={props.builderLinkComponent}
             />
           </DynamicRenderer>
         )}

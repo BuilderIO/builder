@@ -13,7 +13,7 @@ useMetadata({
 export default function Button(props: ButtonProps) {
   return (
     <DynamicRenderer
-      TagName={props.link ? props.linkComponent || 'a' : 'button'}
+      TagName={props.link ? props.builderLinkComponent || 'a' : 'button'}
       attributes={{
         ...useTarget({
           vue: filterAttrs(props.attributes, 'v-on:', false),

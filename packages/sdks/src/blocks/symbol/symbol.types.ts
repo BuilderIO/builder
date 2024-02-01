@@ -1,5 +1,8 @@
 import type { BuilderContent } from '../../types/builder-content.js';
-import type { BuilderComponentsProp } from '../../types/builder-props.js';
+import type {
+  BuilderComponentsProp,
+  BuilderLinkComponentProp,
+} from '../../types/builder-props.js';
 
 interface SymbolInfo {
   model?: string;
@@ -10,7 +13,9 @@ interface SymbolInfo {
   dynamic?: boolean;
 }
 
-export interface SymbolProps extends BuilderComponentsProp {
+export interface SymbolProps
+  extends BuilderComponentsProp,
+    BuilderLinkComponentProp {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
   dynamic?: boolean;
