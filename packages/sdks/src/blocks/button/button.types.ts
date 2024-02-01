@@ -1,4 +1,4 @@
-import type { BuilderLinkComponentProp } from '../../types/builder-props';
+import type { BuilderLinkComponentProp } from '../../types/builder-props.js';
 
 export interface ButtonProps extends BuilderLinkComponentProp {
   attributes?: any;
