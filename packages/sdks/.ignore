@@ -1,0 +1,2 @@
+# used for one-off tests, undo .gitignore so that VSCode can search for files.
+!**/e2e/**/sdk-src/*
