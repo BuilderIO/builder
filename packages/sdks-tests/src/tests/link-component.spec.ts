@@ -1,10 +1,10 @@
 import { expect } from '@playwright/test';
 import { test } from './helpers.js';
 
-test.describe('Link Component', () => {
+const testLinkComponent = (path: string) => {
   test('renders regular anchor element by default', async ({ page, packageName }) => {
     test.fail(packageName !== 'react', 'test logic only exists in react e2e server.');
-    await page.goto('/');
+    await page.goto(path);
 
     const links = page.locator('a');
     const columnsLink = await links.filter({
@@ -15,7 +15,7 @@ test.describe('Link Component', () => {
   });
   test('renders custom link component when provided', async ({ page, packageName }) => {
     test.fail(packageName !== 'react', 'test logic only exists in react e2e server.');
-    await page.goto('/?link-component=true');
+    await page.goto(path + '?link-component=true');
 
     const links = page.locator('a');
     const columnsLink = await links.filter({
@@ -23,5 +23,19 @@ test.describe('Link Component', () => {
     });
 
     await expect(await columnsLink.count()).toEqual(await links.count());
+  });
+};
+
+test.describe('Link Component', () => {
+  test.describe('Button', () => {
+    testLinkComponent('/button');
+  });
+
+  test.describe('Columns', () => {
+    testLinkComponent('/columns');
+  });
+
+  test.describe('Link URL', () => {
+    testLinkComponent('/link-url');
   });
 });
