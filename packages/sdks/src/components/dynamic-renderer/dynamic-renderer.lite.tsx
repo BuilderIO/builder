@@ -5,6 +5,7 @@ import { isEmptyElement } from './dynamic-renderer.helpers.js';
  * These imports are used by the Svelte SDK. Do not remove.
  */
 import { setAttrs } from '../../blocks/helpers.js';
+import { omit } from '../../helpers/omit.js';
 import type { PropsWithChildren } from '../../types/typescript.js';
 
 useMetadata({
@@ -35,7 +36,7 @@ export default function DynamicRenderer(
       when={!isEmptyElement(props.TagName)}
       else={
         <props.TagName
-          {...props.attributes}
+          {...omit(props.attributes, 'style')}
           {...props.actionAttributes}
           style={props.attributes.style}
           MAGIC={'element'}
@@ -55,7 +56,7 @@ export default function DynamicRenderer(
         }
       >
         <props.TagName
-          {...props.attributes}
+          {...omit(props.attributes, 'style')}
           {...props.actionAttributes}
           style={props.attributes.style}
           MAGIC={'element'}
