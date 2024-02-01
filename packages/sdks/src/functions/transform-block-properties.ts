@@ -1,5 +1,5 @@
-import type { BuilderContextInterface } from '../context/types';
-import type { BuilderBlock } from '../types/builder-block';
+import type { BuilderContextInterface } from '../context/types.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 
 export function transformBlockProperties<T>({
   properties,
