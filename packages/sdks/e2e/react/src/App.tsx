@@ -23,7 +23,7 @@ const DataComp = (props: {
 };
 
 const CustomLinkComp = (props: any) => {
-  return <div {...props}>Custom Link: {props.children}</div>;
+  return <a {...props}>Custom Link: {props.children}</a>;
 };
 
 function App() {
