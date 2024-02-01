@@ -22,6 +22,10 @@ const DataComp = (props: {
   }
 };
 
+const CustomLinkComp = (props: any) => {
+  return <div {...props}>Custom Link: {props.children}</div>;
+};
+
 function App() {
   const [props, setProps] = useState<any>(undefined);
 
@@ -33,7 +37,17 @@ function App() {
 
   return props ? (
     <DataComp pathname={window.location.pathname}>
-      {({ data }) => <RenderContent {...props} data={data} />}
+      {({ data }) => (
+        <RenderContent
+          {...props}
+          data={data}
+          linkComponent={
+            window.location.search.includes('link-component')
+              ? CustomLinkComp
+              : undefined
+          }
+        />
+      )}
     </DataComp>
   ) : (
     <div>Content Not Found</div>
