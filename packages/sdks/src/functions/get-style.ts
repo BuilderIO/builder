@@ -11,11 +11,13 @@ export const getStyle = ({
   block: BuilderBlock;
   context: BuilderContextInterface;
 }) => {
-  return transformStyleProperty({
-    style: block.style ? getStyleAttribute(block.style) : {},
-    context,
-    block,
-  });
+  return mapStyleObjToStrIfNeeded(
+    transformStyleProperty({
+      style: block.style || {},
+      context,
+      block,
+    })
+  );
 };
 
 /**
@@ -23,7 +25,7 @@ export const getStyle = ({
  *
  * Additionally, Svelte, Vue and other frameworks use kebab-case styles, so we need to convert them.
  */
-function getStyleAttribute(
+export function mapStyleObjToStrIfNeeded(
   style: Partial<CSSStyleDeclaration>
 ): string | Partial<CSSStyleDeclaration> {
   switch (TARGET) {
