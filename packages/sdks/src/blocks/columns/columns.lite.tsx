@@ -12,6 +12,7 @@ import type { SizeName } from '../../constants/device-sizes.js';
 import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
 import { deoptSignal } from '../../functions/deopt.js';
+import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import type { PropsWithBuilderData } from '../../types/builder-props.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { ColumnProps } from './columns.types.js';
@@ -206,7 +207,7 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
                 default: {},
               }),
               ...(column.link ? { href: column.link } : {}),
-              class: 'builder-column',
+              [getClassPropName()]: 'builder-column',
               style: state.columnCssVars(index),
             }}
           >

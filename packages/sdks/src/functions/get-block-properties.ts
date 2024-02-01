@@ -1,5 +1,6 @@
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
+import { getClassPropName } from './get-class-prop-name.js';
 import { getStyle } from './get-style.js';
 import { transformBlockProperties } from './transform-block-properties.js';
 
@@ -48,7 +49,12 @@ export function getBlockProperties({
     ...block.properties,
     'builder-id': block.id,
     style: getStyle({ block, context }),
-    class: [block.id, 'builder-block', block.class, block.properties?.class]
+    [getClassPropName()]: [
+      block.id,
+      'builder-block',
+      block.class,
+      block.properties?.class,
+    ]
       .filter(Boolean)
       .join(' '),
   };

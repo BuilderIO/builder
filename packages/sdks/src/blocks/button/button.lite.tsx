@@ -1,5 +1,6 @@
 import { useMetadata, useTarget } from '@builder.io/mitosis';
 import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer.lite.jsx';
+import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import { filterAttrs } from '../helpers.js';
 import type { ButtonProps } from './button.types.js';
 
@@ -19,12 +20,9 @@ export default function Button(props: ButtonProps) {
           svelte: filterAttrs(props.attributes, 'on:', false),
           default: props.attributes,
         }),
-        class: `${props.link ? '' : 'builder-button'} ${useTarget({
-          react: props.attributes.className,
-          reactNative: props.attributes.className,
-          rsc: props.attributes.className,
-          default: props.attributes.class,
-        })}`,
+        [getClassPropName()]: `${props.link ? '' : 'builder-button'} ${
+          props.attributes[getClassPropName()] || ''
+        }`,
         ...(props.link
           ? {
               href: props.link,

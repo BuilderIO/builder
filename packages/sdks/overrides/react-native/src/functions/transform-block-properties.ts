@@ -10,9 +10,6 @@ export function transformBlockProperties({
   context: BuilderContextInterface;
   properties: any;
 }) {
-  properties.className = properties.class;
-  delete properties.class;
-
   const id = properties['builder-id'];
 
   if (!id && isEditing()) {
