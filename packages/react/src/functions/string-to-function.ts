@@ -1,6 +1,7 @@
 import { Builder, builder } from '@builder.io/sdk';
 import { safeDynamicRequire } from './safe-dynamic-require';
 import { isDebug } from './is-debug';
+import { shouldForceBrowserRuntimeInNode } from './should-force-browser-runtime-in-node';
 
 const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {};
 
@@ -108,7 +109,7 @@ export function stringToFunction(
 
   const final = (...args: any[]) => {
     try {
-      if (Builder.isBrowser) {
+      if (Builder.isBrowser || shouldForceBrowserRuntimeInNode()) {
         return fn(...args);
       } else {
         // TODO: memoize on server
