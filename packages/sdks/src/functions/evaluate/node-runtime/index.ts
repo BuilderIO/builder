@@ -14,8 +14,8 @@ const shouldForceBrowserRuntime = () => {
    * https://github.com/laverdet/isolated-vm/issues/424
    */
   if (isArm64 && isNode20 && !hasNoNodeSnapshotNodeOption) {
-    logger.log(`Skipping usage of \`isolated-vm\` because this SDK is running in Node v20 on an arm64 machine.
-    If you would like to use the \`isolated-vm\` package, please provide the \`NODE_OPTIONS=--no-node-snapshot\` config to your Node process.
+    logger.log(`Skipping usage of \`isolated-vm\` to avoid crashes in Node v20 on an arm64 machine.
+    If you would like to use the \`isolated-vm\` package on this machine, please provide the \`NODE_OPTIONS=--no-node-snapshot\` config to your Node process.
     See https://github.com/laverdet/isolated-vm/issues/424#issuecomment-1864629126 for more information.
     `);
 
