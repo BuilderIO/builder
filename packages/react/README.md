@@ -352,3 +352,11 @@ _Coming soon..._
 
 - Better support for localization: Some of the newer features of localization and querying based on it will be better supported in Query V3
 - Support multi-level nested references: Query V3 will allow you to query, resolve, and return content that has nested references of other contents and symbols.
+
+## Node v20 + M1 Macs (Apple Silicon) Support
+
+The SDKs rely on `isolated-vm`, a library to securely execute code on a Node server. There is a compatibility issue for that library when running on Node v20 and M1 Macs. To workaround this issue, you must provide `NODE_OPTIONS=--no-node-snapshot` to the command that runs your server.
+
+If you do not provide this flag, the SDK will skip using `isolated-vm`. This will only occur on Apple Silicon machines that are running Node v20.
+
+For more information, see [this issue](https://github.com/laverdet/isolated-vm/issues/424#issuecomment-1864629126).
