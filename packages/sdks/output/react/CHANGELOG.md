@@ -1,5 +1,17 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 0.12.4
+
+### Patch Changes
+
+- fdb6416: Feature: added `linkComponent` prop to provide a custom component for links.
+
+  This applies to:
+
+  - the Button component when provided a link
+  - the "Link URL" field for any block
+  - the "Link" field for a column within the Columns block.
+
 ## 0.12.3
 
 ### Patch Changes
