@@ -1,4 +1,4 @@
-import { checkIsDefined } from '../helpers/nullable';
+import { checkIsDefined } from '../helpers/nullable.js';
 
 /**
  * Identifies node runtime
