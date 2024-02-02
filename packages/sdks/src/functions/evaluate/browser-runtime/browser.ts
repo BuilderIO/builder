@@ -27,12 +27,10 @@ export function flattenState({
   rootState,
   localState,
   rootSetState,
-  isRoot = true,
 }: {
   rootState: Record<string | symbol, any>;
   localState: Record<string | symbol, any> | undefined;
   rootSetState: ((rootState: BuilderRenderState) => void) | undefined;
-  isRoot?: boolean;
 }): BuilderRenderState {
   return new Proxy(rootState, {
     get: (target, prop) => {
@@ -65,9 +63,7 @@ export function flattenState({
 
       target[prop] = value;
 
-      if (isRoot) {
-        rootSetState?.(target);
-      }
+      rootSetState?.(target);
       return true;
     },
   });
