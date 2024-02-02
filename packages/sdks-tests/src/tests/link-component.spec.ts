@@ -30,7 +30,7 @@ const testLinkComponent = (path: string) => {
 
 test.describe('Link Component', () => {
   test.describe('Button', () => {
-    testLinkComponent('/button');
+    testLinkComponent('/');
   });
 
   test.describe('Columns', () => {
