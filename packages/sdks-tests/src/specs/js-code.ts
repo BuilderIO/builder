@@ -2,7 +2,7 @@ export const JS_CODE_CONTENT = {
   lastUpdatedBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   folders: [],
   data: {
-    jsCode: 'state.menu={expanded:!0}',
+    jsCode: 'state.menu={a:{b:{expanded:!0}}}',
     inputs: [],
     newField3: 'testing',
     themeId: false,
@@ -12,7 +12,7 @@ export const JS_CODE_CONTENT = {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
         bindings: {
-          show: 'var _virtual_index=state.menu.expanded;return _virtual_index',
+          show: 'var _virtual_index=state.menu.a.b.expanded;return _virtual_index',
         },
         id: 'builder-165c8701ec8846ddbb2c992aac25ca43',
         component: {
@@ -38,7 +38,7 @@ export const JS_CODE_CONTENT = {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
         actions: {
-          click: 'state.menu.expanded=!state.menu.expanded',
+          click: 'state.menu.a.b.expanded=!state.menu.a.b.expanded',
         },
         id: 'builder-54da80f81b584020bd09a4bee2d12cbd',
         meta: {
@@ -48,7 +48,7 @@ export const JS_CODE_CONTENT = {
                 '@type': '@builder.io/core:Action',
                 action: '@builder.io:customCode',
                 options: {
-                  code: '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\n\nstate.menu.expanded = !state.menu.expanded',
+                  code: '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\n\nstate.menu.a.b.expanded = !state.menu.a.b.expanded',
                 },
               },
             ],
@@ -91,9 +91,7 @@ export const JS_CODE_CONTENT = {
         path: ['js-code'],
         query: {},
       },
-      menu: {
-        expanded: true,
-      },
+      menu: { a: { b: { expanded: true } } },
     },
   },
   modelId: '240a12053d674735ac2a384dcdc561b5',
