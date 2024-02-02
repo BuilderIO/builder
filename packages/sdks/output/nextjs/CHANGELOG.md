@@ -1,5 +1,23 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.12.5
+
+### Patch Changes
+
+- e7f6db6: Fix: sigfault crash when using SDK in Node v20 + M1 Macs. Skip usage of `isolated-vm` in those environments.
+
+## 0.12.4
+
+### Patch Changes
+
+- fdb6416: Feature: added `linkComponent` prop to provide a custom component for links.
+
+  This applies to:
+
+  - the Button component when provided a link
+  - the "Link URL" field for any block
+  - the "Link" field for a column within the Columns block.
+
 ## 0.12.3
 
 ### Patch Changes
