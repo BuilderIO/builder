@@ -29,6 +29,24 @@ test.describe('Reactive State', () => {
 
     await expect(locator.getByText('1', { exact: true })).toBeVisible();
   });
+
+  test('updates deeply nested state value correctly', async ({ page }) => {
+    test.fail(excludeTestFor(['svelte', 'rsc', 'solid', 'reactNative', 'react']));
+    await page.goto('/js-code/');
+    const menuLocator = page.locator('text=Content is expanded');
+    await expect(menuLocator).toBeVisible();
+
+    const btn = page.getByRole('button');
+    await expect(btn).toBeVisible();
+
+    // hide
+    await btn.click();
+    await expect(menuLocator).toBeHidden();
+
+    // show again
+    await btn.click();
+    await expect(menuLocator).toBeVisible();
+  });
 });
 test.describe('Element Events', () => {
   const filterConsoleMessages = (consoleMessage: ConsoleMessage) => {
