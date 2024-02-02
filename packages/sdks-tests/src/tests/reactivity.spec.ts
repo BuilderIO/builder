@@ -15,13 +15,11 @@ test.describe('Reactive State', () => {
 
     await page.goto('/reactive-state');
 
-    const locator = isRNSDK ? page.locator('[data-builder-text]') : page.locator('.builder-text');
-
-    await expect(locator.getByText('0', { exact: true })).toBeVisible();
+    await expect(page.getByText('0', { exact: true })).toBeVisible();
 
     await page.getByText('Increment Number').click();
 
-    await expect(locator.getByText('1', { exact: true })).toBeVisible();
+    await expect(page.getByText('1', { exact: true })).toBeVisible();
   });
 
   test('updates deeply nested state value correctly', async ({ page }) => {
