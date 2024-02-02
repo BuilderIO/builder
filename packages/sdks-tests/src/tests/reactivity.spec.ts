@@ -31,7 +31,12 @@ test.describe('Reactive State', () => {
   });
 
   test('updates deeply nested state value correctly', async ({ page }) => {
-    test.fail(excludeTestFor(['svelte', 'rsc', 'solid', 'reactNative', 'react']));
+    test.fail(
+      excludeTestFor({
+        reactNative: true,
+        rsc: true,
+      })
+    );
     await page.goto('/js-code/');
     const menuLocator = page.locator('text=Content is expanded');
     await expect(menuLocator).toBeVisible();
