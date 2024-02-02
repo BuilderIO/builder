@@ -22,6 +22,14 @@ All the individual SDKs live in the [output](./output/) folder. The source Mitos
 
 This package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.
 
+## Node v20 + M1 Macs (Apple Silicon) Support
+
+The SDKs rely on `isolated-vm`, a library to securely execute code on a Node server. There is a compatibility issue for that library when running on Node v20 and M1 Macs. To workaround this issue, you must provide `NODE_OPTIONS=--no-node-snapshot` to the command that runs your server.
+
+If you do not provide this flag, the SDK will skip using `isolated-vm`. This will only occur on Apple Silicon machines that are running Node v20.
+
+For more information, see [this issue](https://github.com/laverdet/isolated-vm/issues/424#issuecomment-1864629126).
+
 # Feature Implementation
 
 Legend:

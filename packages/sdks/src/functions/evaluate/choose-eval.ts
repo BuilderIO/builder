@@ -14,10 +14,13 @@ import type { ExecutorArgs } from './helpers.js';
  * types can be resolved correctly.
  */
 import { evaluator } from 'placeholder-runtime';
+import { shouldForceBrowserRuntimeInNode } from './should-force-browser-runtime-in-node.js';
 
 /**
  * Even though we have separate runtimes for browser/node/edge, sometimes frameworks will
  * end up sending the server runtime code to the browser (most notably in dev mode).
  */
 export const chooseBrowserOrServerEval = (args: ExecutorArgs) =>
-  isBrowser() ? runInBrowser(args) : evaluator(args);
+  isBrowser() || shouldForceBrowserRuntimeInNode()
+    ? runInBrowser(args)
+    : evaluator(args);
