@@ -98,7 +98,7 @@ export default function Text(props) {
         html: `<div style="${getCss(
           props.builderBlock,
           builderContext.inheritedStyles
-        )}">${props.text || ''}</div>`,
+        )}">${String(props.text) || ''}</div>`,
       }}
     />
   );

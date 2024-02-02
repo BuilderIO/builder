@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, findTextInPage, test } from './helpers.js';
+import { excludeTestFor, findTextInPage, isRNSDK, test } from './helpers.js';
 import { sdk } from './sdk.js';
 
 test.describe('Show If & Hide If', () => {
@@ -13,7 +13,6 @@ test.describe('Show If & Hide If', () => {
   test('works on reactive conditions', async ({ page, packageName }) => {
     test.fail(
       excludeTestFor({
-        reactNative: true,
         rsc: true,
         solid: true,
       })
@@ -33,7 +32,7 @@ test.describe('Show If & Hide If', () => {
     await expect(page.getByText('even clicks')).toBeVisible();
     await expect(page.locator('body')).not.toContainText('odd clicks');
 
-    const button = page.getByRole('button');
+    const button = isRNSDK ? page.locator('button') : page.getByRole('button');
     await expect(button).toBeVisible();
     await button.click();
 

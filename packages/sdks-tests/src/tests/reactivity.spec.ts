@@ -1,22 +1,16 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { EXCLUDE_RN, excludeTestFor, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, test } from './helpers.js';
 
 test.describe('Reactive State', () => {
   test('shows default value', async ({ page }) => {
-    test.fail(EXCLUDE_RN);
     await page.goto('/reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
   });
 
   test('increments value correctly', async ({ page, packageName }) => {
-    test.fail(
-      excludeTestFor({
-        reactNative: true,
-        rsc: true,
-      })
-    );
+    test.fail(excludeTestFor({ rsc: true }));
     test.fail(packageName === 'next-app-dir');
 
     await page.goto('/reactive-state');
@@ -31,17 +25,12 @@ test.describe('Reactive State', () => {
   });
 
   test('updates deeply nested state value correctly', async ({ page }) => {
-    test.fail(
-      excludeTestFor({
-        reactNative: true,
-        rsc: true,
-      })
-    );
+    test.fail(excludeTestFor({ rsc: true }));
     await page.goto('/js-code/');
     const menuLocator = page.locator('text=Content is expanded');
     await expect(menuLocator).toBeVisible();
 
-    const btn = page.getByRole('button');
+    const btn = isRNSDK ? page.locator('button') : page.getByRole('button');
     await expect(btn).toBeVisible();
 
     // hide
