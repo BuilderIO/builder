@@ -1,12 +1,12 @@
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 
-export function transformBlockProperties<T>({
-  properties,
+export function transformStyleProperty({
+  style,
 }: {
-  properties: T;
+  style: Partial<CSSStyleDeclaration>;
   context: BuilderContextInterface;
   block: BuilderBlock;
 }) {
-  return properties;
+  return style;
 }

@@ -13,3 +13,7 @@ export type PropsWithBuilderData<T> = T & {
 export type BuilderComponentsProp = {
   builderComponents: RegisteredComponents;
 };
+
+export type BuilderLinkComponentProp = {
+  builderLinkComponent?: any;
+};

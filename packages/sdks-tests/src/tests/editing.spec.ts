@@ -46,7 +46,7 @@ const launchEmbedderAndWaitForSdk = async ({
   await msgPromise;
 };
 
-test.describe('Visual Editing', () => {
+const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {
     test.skip(
       packageName === 'react-native' ||
@@ -56,11 +56,40 @@ test.describe('Visual Editing', () => {
         packageName === 'gen1-remix'
     );
 
-    await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
+    await launchEmbedderAndWaitForSdk({
+      path: noTrustedHosts ? '/no-trusted-hosts' : '/',
+      basePort,
+      page,
+    });
     await sendContentUpdateMessage(page, MODIFIED_HOMEPAGE);
     await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
   });
 
+  test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
+    test.skip(
+      packageName === 'react-native' ||
+        packageName === 'next-app-dir' ||
+        packageName === 'gen1-next' ||
+        packageName === 'gen1-react' ||
+        packageName === 'gen1-remix'
+    );
+
+    await launchEmbedderAndWaitForSdk({
+      path: noTrustedHosts ? '/editing-styles-no-trusted-hosts' : '/editing-styles',
+      basePort,
+      page,
+    });
+    const btn1 = page.frameLocator('iframe').getByRole('link');
+    await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
+
+    await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
+    const btn = page.frameLocator('iframe').getByRole('link');
+    await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
+  });
+};
+
+test.describe('Visual Editing', () => {
+  editorTests({ noTrustedHosts: false });
   test('correctly updates Text block in a Column block', async ({
     page,
     basePort,
@@ -78,61 +107,8 @@ test.describe('Visual Editing', () => {
     await sendContentUpdateMessage(page, MODIFIED_COLUMNS);
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
-
-  test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
-    test.skip(
-      packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
-        packageName === 'gen1-next' ||
-        packageName === 'gen1-react' ||
-        packageName === 'gen1-remix'
-    );
-
-    await launchEmbedderAndWaitForSdk({ path: '/editing-styles', basePort, page });
-    const btn1 = page.frameLocator('iframe').getByRole('button');
-    await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
-
-    await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
-    const btn = page.frameLocator('iframe').getByRole('button');
-    await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
-  });
-
   test.describe('fails for empty trusted hosts', () => {
     test.fail();
-    test('correctly updates Text block', async ({ page, basePort, packageName }) => {
-      test.skip(
-        packageName === 'react-native' ||
-          packageName === 'next-app-dir' ||
-          packageName === 'gen1-next' ||
-          packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
-      );
-
-      await launchEmbedderAndWaitForSdk({ path: '/no-trusted-hosts', basePort, page });
-      await sendContentUpdateMessage(page, MODIFIED_HOMEPAGE);
-      await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
-    });
-
-    test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
-      test.skip(
-        packageName === 'react-native' ||
-          packageName === 'next-app-dir' ||
-          packageName === 'gen1-next' ||
-          packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
-      );
-
-      await launchEmbedderAndWaitForSdk({
-        path: '/editing-styles-no-trusted-hosts',
-        basePort,
-        page,
-      });
-      const btn1 = page.frameLocator('iframe').getByRole('button');
-      await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
-
-      await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
-      const btn = page.frameLocator('iframe').getByRole('button');
-      await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
-    });
+    editorTests({ noTrustedHosts: true });
   });
 });

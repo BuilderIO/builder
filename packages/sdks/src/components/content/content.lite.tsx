@@ -151,6 +151,7 @@ export default function ContentComponent(props: ContentProps) {
       builderContextSignal={builderContextSignal}
       contentWrapper={props.contentWrapper}
       contentWrapperProps={props.contentWrapperProps}
+      linkComponent={props.linkComponent}
       trustedHosts={props.trustedHosts}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
@@ -176,6 +177,7 @@ export default function ContentComponent(props: ContentProps) {
         blocks={builderContextSignal.value.content?.data?.blocks}
         context={builderContextSignal}
         registeredComponents={state.registeredComponents}
+        linkComponent={props.linkComponent}
       />
     </EnableEditor>
   );

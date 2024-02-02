@@ -38,6 +38,10 @@ export interface ContentVariantsPrps {
    * An array of custom components to register (optional).
    */
   customComponents?: RegisteredComponent[];
+  /**
+   * The component to use for rendering links. Defaults to anchor element `<a>`.
+   */
+  linkComponent?: any;
 
   /**
    * A boolean to enable or disable tracking (optional). Defaults to `true`.
@@ -60,7 +64,7 @@ export interface ContentVariantsPrps {
   enrich?: boolean;
 
   /**
-   * The element that wraps your content. Defaults to `div` ('ScrollView' in React Native).
+   * The element that wraps your content. Defaults to `<div>` ('ScrollView' in React Native).
    */
   contentWrapper?: any;
 
@@ -70,7 +74,7 @@ export interface ContentVariantsPrps {
   contentWrapperProps?: any;
 
   /**
-   * The element that wraps your blocks. Defaults to `div` ('ScrollView' in React Native).
+   * The element that wraps your blocks. Defaults to `<div>` ('ScrollView' in React Native).
    */
   blocksWrapper?: any;
 

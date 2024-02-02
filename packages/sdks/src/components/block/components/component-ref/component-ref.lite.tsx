@@ -43,6 +43,7 @@ export default function ComponentRef(props: ComponentProps) {
           builderBlock: props.builderBlock,
           context: props.context,
           componentRef: props.componentRef,
+          linkComponent: props.linkComponent,
           includeBlockProps: props.includeBlockProps,
           isInteractive: props.isInteractive,
           contextValue: props.context.value,
@@ -55,6 +56,7 @@ export default function ComponentRef(props: ComponentProps) {
               block={child}
               context={props.context}
               registeredComponents={props.registeredComponents}
+              linkComponent={props.linkComponent}
             />
           )}
         </For>

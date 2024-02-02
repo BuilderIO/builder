@@ -46,6 +46,7 @@ export default function Blocks(props: BlocksProps) {
                   props.registeredComponents ||
                   componentsContext.registeredComponents,
               })}
+              linkComponent={props.linkComponent}
             />
           )}
         </For>

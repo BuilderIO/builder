@@ -1,16 +1,11 @@
 import { setContext, useMetadata, useState } from '@builder.io/mitosis';
 import BuilderContext from '../../../context/builder.context.lite.js';
-import type {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../../context/types.js';
-import type { BuilderBlock } from '../../../types/builder-block.js';
+import type { BuilderContextInterface } from '../../../context/types.js';
+import type { BlockProps } from '../block.lite.jsx';
 import Block from '../block.lite.jsx';
 
-type Props = {
-  block: BuilderBlock;
+type Props = Omit<BlockProps, 'context'> & {
   repeatContext: BuilderContextInterface;
-  registeredComponents: RegisteredComponents;
 };
 
 useMetadata({
@@ -43,6 +38,7 @@ export default function RepeatedBlock(props: Props) {
       block={props.block}
       context={store}
       registeredComponents={props.registeredComponents}
+      linkComponent={props.linkComponent}
     />
   );
 }

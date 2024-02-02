@@ -8,7 +8,6 @@ import type { PropsWithChildren } from '../../../types/typescript.js';
 import DynamicRenderer from '../../dynamic-renderer/dynamic-renderer.lite.jsx';
 
 useMetadata({
-  elementTag: 'props.Wrapper',
   options: {
     vue3: {
       asyncComponentImports: true,
@@ -23,6 +22,7 @@ type BlockWrapperProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
+  linkComponent: any;
 };
 
 /**

@@ -13,8 +13,8 @@ import type {
 } from '../../context/types.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
-import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { getComponent, getRepeatItemData } from './block.helpers.js';
 import BlockStyles from './components/block-styles.lite.jsx';
@@ -27,6 +27,7 @@ export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
+  linkComponent: any;
 };
 
 useMetadata({
@@ -72,6 +73,15 @@ export default function Block(props: BlockProps) {
           });
     },
     get Tag() {
+      const shouldUseLink =
+        props.block.tagName === 'a' ||
+        state.processedBlock.properties?.href ||
+        state.processedBlock.href;
+
+      if (shouldUseLink) {
+        return props.linkComponent || 'a';
+      }
+
       return useTarget({
         /**
          * `tagName` will always be an HTML element. In the future, we might't map those to the right React Native components
@@ -118,12 +128,18 @@ export default function Block(props: BlockProps) {
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
           builderContext: props.context,
+          ...(state.blockComponent?.name === 'Core:Button' ||
+          state.blockComponent?.name === 'Symbol' ||
+          state.blockComponent?.name === 'Columns'
+            ? { builderLinkComponent: props.linkComponent }
+            : {}),
           ...(state.blockComponent?.name === 'Symbol' ||
           state.blockComponent?.name === 'Columns'
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
         context: childrenContext,
+        linkComponent: props.linkComponent,
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
         includeBlockProps: state.blockComponent?.noWrap === true,
@@ -137,10 +153,10 @@ export default function Block(props: BlockProps) {
       reactNative: {
         ...props.context.value,
         inheritedStyles: extractTextStyles(
-          getBlockProperties({
+          getStyle({
             block: state.processedBlock,
             context: props.context.value,
-          }).style || {}
+          }) || {}
         ),
       },
       default: props.context.value,
@@ -160,6 +176,7 @@ export default function Block(props: BlockProps) {
             blockChildren={state.componentRefProps.blockChildren}
             context={state.componentRefProps.context}
             registeredComponents={state.componentRefProps.registeredComponents}
+            linkComponent={state.componentRefProps.linkComponent}
             builderBlock={state.componentRefProps.builderBlock}
             includeBlockProps={state.componentRefProps.includeBlockProps}
             isInteractive={state.componentRefProps.isInteractive}
@@ -176,6 +193,7 @@ export default function Block(props: BlockProps) {
                   repeatContext={data.context}
                   block={data.block}
                   registeredComponents={props.registeredComponents}
+                  linkComponent={props.linkComponent}
                 />
               )}
             </For>
@@ -185,6 +203,7 @@ export default function Block(props: BlockProps) {
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
+            linkComponent={props.linkComponent}
           >
             <ComponentRef
               componentRef={state.componentRefProps.componentRef}
@@ -194,6 +213,7 @@ export default function Block(props: BlockProps) {
               registeredComponents={
                 state.componentRefProps.registeredComponents
               }
+              linkComponent={state.componentRefProps.linkComponent}
               builderBlock={state.componentRefProps.builderBlock}
               includeBlockProps={state.componentRefProps.includeBlockProps}
               isInteractive={state.componentRefProps.isInteractive}
@@ -205,6 +225,7 @@ export default function Block(props: BlockProps) {
                   block={child}
                   context={childrenContext}
                   registeredComponents={props.registeredComponents}
+                  linkComponent={props.linkComponent}
                 />
               )}
             </For>

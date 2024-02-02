@@ -109,6 +109,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
               apiKey={props.apiKey}
               apiVersion={props.apiVersion}
               customComponents={props.customComponents}
+              linkComponent={props.linkComponent}
               canTrack={props.canTrack}
               locale={props.locale}
               includeRefs={props.includeRefs}
@@ -136,6 +137,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         apiKey={props.apiKey}
         apiVersion={props.apiVersion}
         customComponents={props.customComponents}
+        linkComponent={props.linkComponent}
         canTrack={props.canTrack}
         locale={props.locale}
         includeRefs={props.includeRefs}

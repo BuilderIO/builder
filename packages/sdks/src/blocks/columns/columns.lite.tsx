@@ -6,11 +6,14 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
+import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import type { SizeName } from '../../constants/device-sizes.js';
 import { getSizesForBreakpoints } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
 import { deoptSignal } from '../../functions/deopt.js';
+import { getClassPropName } from '../../functions/get-class-prop-name.js';
+import { mapStyleObjToStrIfNeeded } from '../../functions/get-style.js';
 import type { PropsWithBuilderData } from '../../types/builder-props.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { ColumnProps } from './columns.types.js';
@@ -94,11 +97,19 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
         default: 'margin-left',
       });
 
+      const sharedStyles = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+      };
+
       return useTarget({
         reactNative: {
+          ...sharedStyles,
           marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
         } as any as Dictionary<string>,
         default: {
+          ...sharedStyles,
           width,
           [marginLeftKey]: gutterPixels,
           '--column-width-mobile': state.getMobileStyle({
@@ -185,21 +196,21 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
 
       <For each={props.columns}>
         {(column, index) => (
-          <div
-            style={state.columnCssVars(index)}
-            class="builder-column"
-            {...useTarget({
-              reactNative: {
-                dataSet: { 'builder-block-name': 'builder-column' },
-              },
-              default: {},
-            })}
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'stretch',
-            }}
+          <DynamicRenderer
             key={index}
+            TagName={column.link ? props.builderLinkComponent || 'a' : 'div'}
+            actionAttributes={{}}
+            attributes={{
+              ...useTarget({
+                reactNative: {
+                  dataSet: { 'builder-block-name': 'builder-column' },
+                },
+                default: {},
+              }),
+              ...(column.link ? { href: column.link } : {}),
+              [getClassPropName()]: 'builder-column',
+              style: mapStyleObjToStrIfNeeded(state.columnCssVars(index)),
+            }}
           >
             <Blocks
               blocks={useTarget({
@@ -214,8 +225,9 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               styleProp={{ flexGrow: '1' }}
               context={props.builderContext}
               registeredComponents={props.builderComponents}
+              linkComponent={props.builderLinkComponent}
             />
-          </div>
+          </DynamicRenderer>
         )}
       </For>
     </div>
