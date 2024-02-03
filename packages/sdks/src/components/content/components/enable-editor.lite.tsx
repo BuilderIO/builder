@@ -439,13 +439,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
   );
 
   onUpdate(() => {
-    state.evaluateJsCode();
-  }, [
-    props.builderContextSignal.value.content?.data?.jsCode,
-    props.builderContextSignal.value.rootState,
-  ]);
-
-  onUpdate(() => {
     state.runHttpRequests();
   }, [props.builderContextSignal.value.content?.data?.httpRequests]);
 
