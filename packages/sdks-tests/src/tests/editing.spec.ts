@@ -11,7 +11,15 @@ const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>
   EMBEDDED_SERVER_URL + path + '?port=' + port;
 
-const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) => {
+const sendContentUpdateMessage = async ({
+  page,
+  newContent,
+  model,
+}: {
+  page: Page;
+  newContent: BuilderContent;
+  model: string;
+}) => {
   await page.evaluate(msgData => {
     const contentWindow = document.querySelector('iframe')?.contentWindow;
     if (!contentWindow) throw new Error('Could not find iframe');
@@ -20,7 +28,7 @@ const sendContentUpdateMessage = async (page: Page, newContent: BuilderContent) 
       {
         type: 'builder.contentUpdate',
         data: {
-          key: 'page',
+          key: model,
           data: {
             id: msgData.id,
             data: msgData.data,
@@ -61,7 +69,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       basePort,
       page,
     });
-    await sendContentUpdateMessage(page, MODIFIED_HOMEPAGE);
+    await sendContentUpdateMessage({ page, newContent: MODIFIED_HOMEPAGE, model: 'page' });
     await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
   });
 
@@ -82,7 +90,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
     const btn1 = page.frameLocator('iframe').getByRole('link');
     await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
 
-    await sendContentUpdateMessage(page, MODIFIED_EDITING_STYLES);
+    await sendContentUpdateMessage({ page, newContent: MODIFIED_EDITING_STYLES, model: 'page' });
     const btn = page.frameLocator('iframe').getByRole('link');
     await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
   });
@@ -104,7 +112,7 @@ test.describe('Visual Editing', () => {
     );
 
     await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
-    await sendContentUpdateMessage(page, MODIFIED_COLUMNS);
+    await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
   test.describe('fails for empty trusted hosts', () => {
@@ -120,8 +128,12 @@ test.describe('Visual Editing', () => {
 
       await page.frameLocator('iframe').getByText('coffee name: Epoch Chemistry').waitFor();
       await page.frameLocator('iframe').getByText('coffee info: Local coffee brand.').waitFor();
-      await sendContentUpdateMessage(page, {
-        data: { name: 'Anchored Coffee', info: 'Another coffee brand.' },
+      await sendContentUpdateMessage({
+        page,
+        newContent: {
+          data: { name: 'Anchored Coffee', info: 'Another coffee brand.' },
+        },
+        model: 'coffee',
       });
       await page.frameLocator('iframe').getByText('coffee name: Anchored Coffee').waitFor();
       await page.frameLocator('iframe').getByText('coffee info: Another coffee brand.').waitFor();
