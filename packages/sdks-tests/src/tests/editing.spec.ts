@@ -111,4 +111,20 @@ test.describe('Visual Editing', () => {
     test.fail();
     editorTests({ noTrustedHosts: true });
   });
+
+  test.describe('Data Models', () => {
+    test('correctly updates', async ({ page, packageName, basePort }) => {
+      test.skip(packageName !== 'react', 'This test is only implemented for React');
+
+      await launchEmbedderAndWaitForSdk({ path: '/data-preview', basePort, page });
+
+      await page.frameLocator('iframe').getByText('coffee name: Epoch Chemistry').waitFor();
+      await page.frameLocator('iframe').getByText('coffee info: Local coffee brand.').waitFor();
+      await sendContentUpdateMessage(page, {
+        data: { name: 'Anchored Coffee', info: 'Another coffee brand.' },
+      });
+      await page.frameLocator('iframe').getByText('coffee name: Anchored Coffee').waitFor();
+      await page.frameLocator('iframe').getByText('coffee info: Another coffee brand.').waitFor();
+    });
+  });
 });

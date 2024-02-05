@@ -10,6 +10,7 @@ import {
 } from './custom-breakpoints.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
+import { DATA_PREVIEW } from './data-preview.js';
 import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
@@ -88,6 +89,7 @@ const PAGES = {
   '/no-trusted-hosts': homepage,
   '/editing-styles-no-trusted-hosts': EDITING_STYLES,
   '/animations': ANIMATIONS,
+  '/data-preview': DATA_PREVIEW,
 } as const;
 
 const apiVersionPathToProp = {

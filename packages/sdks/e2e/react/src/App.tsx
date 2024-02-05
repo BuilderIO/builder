@@ -4,40 +4,8 @@ import {
   getContent,
   subscribeToEditor,
 } from '@builder.io/sdk-react';
-import type { BuilderContent } from '@builder.io/sdk-react/types/types/builder-content';
 import { getProps } from '@e2e/tests';
 import { useEffect, useState } from 'react';
-
-const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
-function DataPreview() {
-  const [coffee, setProps] = useState<BuilderContent | undefined | null>(
-    undefined
-  );
-
-  useEffect(() => {
-    getContent({ apiKey: REAL_API_KEY, model: 'coffee' }).then(setProps);
-
-    const unsubscribe = subscribeToEditor({ model: 'coffee' }, (x) => {
-      console.log('got new props', x);
-
-      setProps(x);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  if (!coffee) {
-    return <div>Loading...</div>;
-  }
-  return (
-    <>
-      <div>coffee name: {coffee?.data?.name}</div>
-      <div>coffee info: {coffee?.data?.info}</div>
-    </>
-  );
-}
 
 const DataComp = (props: {
   pathname: string;
@@ -67,13 +35,29 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps({ _processContentResult, data: 'real', getContent }).then(
-      setProps
-    );
+    getProps({ _processContentResult, getContent }).then(setProps);
+
+    if (window.location.pathname === '/data-preview') {
+      const unsubscribe = subscribeToEditor({ model: 'coffee' }, (x) =>
+        setProps(x)
+      );
+
+      return () => {
+        unsubscribe();
+      };
+    }
   }, []);
 
-  if (window.location.pathname === '/preview-coffee') {
-    return <DataPreview />;
+  if (window.location.pathname === '/data-preview') {
+    if (!props) {
+      return <div>Loading...</div>;
+    }
+    return (
+      <>
+        <div>coffee name: {props.content.data?.name}</div>
+        <div>coffee info: {props.content.data?.info}</div>
+      </>
+    );
   }
 
   return props ? (
