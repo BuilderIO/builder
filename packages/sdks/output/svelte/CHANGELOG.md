@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.12.7
+
+### Patch Changes
+
+- cbc49e4: Feature: add Animations support
+
 ## 0.12.6
 
 ### Patch Changes
