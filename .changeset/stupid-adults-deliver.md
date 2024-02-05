@@ -5,7 +5,6 @@
 '@builder.io/sdk-react-native': patch
 '@builder.io/sdk-solid': patch
 '@builder.io/sdk-svelte': patch
-'@builder.io/sdk-vue': patch
 ---
 
 Fix: updates to deeply nested Builder `state` value now propagate across content.
