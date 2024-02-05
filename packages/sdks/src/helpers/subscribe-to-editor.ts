@@ -1,6 +1,7 @@
 import type { ContentProps } from '../components/content/content.types.js';
 import { isBrowser } from '../functions/is-browser.js';
 import { isFromTrustedHost } from '../functions/is-from-trusted-host.js';
+import { setupBrowserForEditing } from '../scripts/init-editing.js';
 import type { BuilderAnimation } from '../types/builder-block.js';
 import type { BuilderContent } from '../types/builder-content.js';
 import { logger } from './logger.js';
@@ -75,6 +76,7 @@ export const subscribeToEditor = (
     );
     return;
   }
+  setupBrowserForEditing();
 
   const listener = createEditorListener({
     callbacks: {

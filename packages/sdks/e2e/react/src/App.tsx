@@ -38,8 +38,8 @@ function App() {
     getProps({ _processContentResult, getContent }).then(setProps);
 
     if (window.location.pathname === '/data-preview') {
-      const unsubscribe = subscribeToEditor({ model: 'coffee' }, (x) =>
-        setProps(x)
+      const unsubscribe = subscribeToEditor({ model: 'coffee' }, (content) =>
+        setProps({ content })
       );
 
       return () => {
@@ -49,7 +49,7 @@ function App() {
   }, []);
 
   if (window.location.pathname === '/data-preview') {
-    if (!props) {
+    if (!props?.content) {
       return <div>Loading...</div>;
     }
     return (

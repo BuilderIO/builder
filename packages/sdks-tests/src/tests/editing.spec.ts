@@ -20,24 +20,27 @@ const sendContentUpdateMessage = async ({
   newContent: BuilderContent;
   model: string;
 }) => {
-  await page.evaluate(msgData => {
-    const contentWindow = document.querySelector('iframe')?.contentWindow;
-    if (!contentWindow) throw new Error('Could not find iframe');
+  await page.evaluate(
+    msgData => {
+      const contentWindow = document.querySelector('iframe')?.contentWindow;
+      if (!contentWindow) throw new Error('Could not find iframe');
 
-    contentWindow.postMessage(
-      {
-        type: 'builder.contentUpdate',
-        data: {
-          key: model,
+      contentWindow.postMessage(
+        {
+          type: 'builder.contentUpdate',
           data: {
-            id: msgData.id,
-            data: msgData.data,
+            key: msgData.model,
+            data: {
+              id: msgData.id,
+              data: msgData.data,
+            },
           },
         },
-      },
-      '*'
-    );
-  }, newContent);
+        '*'
+      );
+    },
+    { ...newContent, model }
+  );
 };
 
 const launchEmbedderAndWaitForSdk = async ({
