@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.12.6
+
+### Patch Changes
+
+- 8cc0cb8: Fix: updates to deeply nested Builder `state` value now propagate across content.
+
 ## 0.12.5
 
 ### Patch Changes
