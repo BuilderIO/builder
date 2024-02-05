@@ -38,6 +38,8 @@ export type { Settings } from './functions/set-editor-settings.js';
 export { getBuilderSearchParams } from './functions/get-builder-search-params/index.js';
 export { track } from './functions/track/index.js';
 
+export { subscribeToEditor } from './helpers/subscribe-to-editor.js';
+
 /**
  * Content fetching
  */
