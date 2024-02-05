@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { isRNSDK, test } from './helpers.js';
 
-test.describe.only('Animations', () => {
+test.describe('Animations', () => {
   test.fail(isRNSDK, 'TO-DO: React Native Animation API not implemented.');
 
   test('renders animations', async ({ page }) => {
