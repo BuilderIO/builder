@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.12.6
+
+### Patch Changes
+
+- 8cc0cb8: Fix: rendering falsy strings in Text block (`false`, `0`, etc.)
+- 8cc0cb8: Fix: updates to deeply nested Builder `state` value now propagate across content.
+
 ## 0.12.5
 
 ### Patch Changes
