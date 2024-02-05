@@ -64,7 +64,7 @@ Legend:
 | TypeScript Types               | ✅   | ✅    | ✅                                       | 🏗   | 🏗                   | ✅     | 🏗     |         |
 | A/B Tests                      | ✅   | ✅    |                                          | ✅  | ✅                  | ✅     | ✅    |         |
 | A/B Tests with SSG/SSR Support | ✅   | ✅    |                                          | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
-| SSR                            | ✅   | ✅    |                                          | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
+| SSR                            | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
 | Children for Custom Components | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
 | Dynamic Data Bindings          | ✅   | ✅    | ✅ (cannot update bindings after SSR)    | ✅  | ✅                  | ✅     | ✅    |         |
 | View Current Draft             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
