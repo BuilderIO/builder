@@ -62,7 +62,11 @@ export const createEditorListener = ({
  * Sends the updated content to the callback function.
  */
 export const subscribeToEditor = (
-  { model, trustedHosts = [] }: Pick<ContentListener, 'model' | 'trustedHosts'>,
+  {
+    model,
+    trustedHosts = undefined,
+  }: Pick<ContentListener, 'model'> &
+    Partial<Pick<ContentListener, 'trustedHosts'>>,
   callback: ContentListener['callbacks']['contentUpdate']
 ) => {
   if (!isBrowser) {
