@@ -75,7 +75,7 @@ export interface BuilderBlock {
     collection: string;
     itemName?: string;
   } | null;
-  animations?: BuilderAnimation[]; // TODO: type the animation spec
+  animations?: BuilderAnimation[];
   style?: Partial<CSSStyleDeclaration>;
   href?: string;
 
