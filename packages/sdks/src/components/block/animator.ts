@@ -1,4 +1,4 @@
-import type { BuilderAnimation } from '../../types/builder-block';
+import type { BuilderAnimation } from '../../types/builder-block.js';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function throttle(func: Function, wait: number, options: any = {}) {
@@ -93,7 +93,7 @@ function augmentAnimation(animation: BuilderAnimation, element: HTMLElement) {
   for (const styles of bothStyles) {
     for (const style of stylesUsed) {
       if (!(style in styles)) {
-        styles[style] = computedStyle[style];
+        styles[style as any] = computedStyle[style];
       }
     }
   }
