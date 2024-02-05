@@ -15,7 +15,7 @@ export const runInBrowser = ({
     builder,
     context,
     event,
-    state: flattenState(rootState, localState, rootSetState),
+    state: flattenState({ rootState, localState, rootSetState }),
   });
 
   return new Function(...functionArgs.map(([name]) => name), code)(
@@ -23,30 +23,47 @@ export const runInBrowser = ({
   );
 };
 
-export function flattenState(
-  rootState: Record<string | symbol, any>,
-  localState: Record<string | symbol, any> | undefined,
-  rootSetState: ((rootState: BuilderRenderState) => void) | undefined
-): BuilderRenderState {
-  if (rootState === localState) {
-    throw new Error('rootState === localState');
-  }
-
+export function flattenState({
+  rootState,
+  localState,
+  rootSetState,
+}: {
+  rootState: Record<string | symbol, any>;
+  localState: Record<string | symbol, any> | undefined;
+  rootSetState: ((rootState: BuilderRenderState) => void) | undefined;
+}): BuilderRenderState {
   return new Proxy(rootState, {
-    get: (_, prop) => {
+    get: (target, prop) => {
       if (localState && prop in localState) {
         return localState[prop];
       }
-      return rootState[prop as string];
+
+      const val = target[prop];
+      if (typeof val === 'object') {
+        return flattenState({
+          rootState: val,
+          localState: undefined,
+          rootSetState: rootSetState
+            ? (subState) => {
+                target[prop] = subState;
+                rootSetState(target);
+              }
+            : undefined,
+        });
+      }
+
+      return val;
     },
-    set: (_, prop, value) => {
+    set: (target, prop, value) => {
       if (localState && prop in localState) {
         throw new Error(
           'Writing to local state is not allowed as it is read-only.'
         );
       }
-      rootState[prop as string] = value;
-      rootSetState?.(rootState);
+
+      target[prop] = value;
+
+      rootSetState?.(target);
       return true;
     },
   });

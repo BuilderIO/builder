@@ -10,24 +10,6 @@ test.describe('JS Code', () => {
     await expect(menuLocator).toBeVisible();
   });
 
-  test('toggles value ON/OFF', async ({ page }) => {
-    test.fail(excludeTestFor(['svelte', 'rsc', 'solid', 'reactNative', 'react']));
-    await page.goto('/js-code/');
-    const menuLocator = page.locator('text=Content is expanded');
-    await expect(menuLocator).toBeVisible();
-
-    const btn = page.getByRole('button');
-    await expect(btn).toBeVisible();
-
-    // hide
-    await btn.click();
-    await expect(menuLocator).toBeHidden();
-
-    // show again
-    await btn.click();
-    await expect(menuLocator).toBeVisible();
-  });
-
   test('code inside Browser.isBrowser should work', async ({ page }) => {
     // doesn't work for these as they are SSR and there is no hydration step
     // so the code is not run on the client (Builder.isBrowser) block isn't executed

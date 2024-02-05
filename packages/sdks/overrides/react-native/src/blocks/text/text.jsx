@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { RenderHTML } from 'react-native-render-html';
 import BuilderContext from '../../context/builder.context';
-
+import { checkIsDefined } from '../../helpers/nullable.js';
 /**
  * @typedef {{}} BuilderBlock
  */
@@ -98,7 +98,7 @@ export default function Text(props) {
         html: `<div style="${getCss(
           props.builderBlock,
           builderContext.inheritedStyles
-        )}">${props.text || ''}</div>`,
+        )}">${checkIsDefined(props.text) ? String(props.text) : ''}</div>`,
       }}
     />
   );

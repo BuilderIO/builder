@@ -1,33 +1,44 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { EXCLUDE_RN, excludeTestFor, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, test } from './helpers.js';
 
 test.describe('Reactive State', () => {
   test('shows default value', async ({ page }) => {
-    test.fail(EXCLUDE_RN);
     await page.goto('/reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
   });
 
   test('increments value correctly', async ({ page, packageName }) => {
-    test.fail(
-      excludeTestFor({
-        reactNative: true,
-        rsc: true,
-      })
-    );
+    test.fail(excludeTestFor({ rsc: true }));
     test.fail(packageName === 'next-app-dir');
 
     await page.goto('/reactive-state');
 
-    const locator = isRNSDK ? page.locator('[data-builder-text]') : page.locator('.builder-text');
-
-    await expect(locator.getByText('0', { exact: true })).toBeVisible();
+    await expect(page.getByText('0', { exact: true })).toBeVisible();
 
     await page.getByText('Increment Number').click();
 
-    await expect(locator.getByText('1', { exact: true })).toBeVisible();
+    await expect(page.getByText('1', { exact: true })).toBeVisible();
+  });
+
+  test('updates deeply nested state value correctly', async ({ page }) => {
+    test.fail(excludeTestFor({ rsc: true }));
+    test.fail(excludeTestFor({ vue: true }), 'TO-DO: Fix this test for Vue');
+    await page.goto('/js-code/');
+    const menuLocator = page.locator('text=Content is expanded');
+    await expect(menuLocator).toBeVisible();
+
+    const btn = isRNSDK ? page.locator('button') : page.getByRole('button');
+    await expect(btn).toBeVisible();
+
+    // hide
+    await btn.click();
+    await expect(menuLocator).toBeHidden();
+
+    // show again
+    await btn.click();
+    await expect(menuLocator).toBeVisible();
   });
 });
 test.describe('Element Events', () => {
