@@ -2,6 +2,7 @@ import type { Signal } from '@builder.io/mitosis';
 import {
   For,
   Show,
+  onMount,
   useMetadata,
   useState,
   useStore,
@@ -16,6 +17,7 @@ import { getBlockComponentOptions } from '../../functions/get-block-component-op
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import { bindAnimations } from './animator.js';
 import { getComponent, getRepeatItemData } from './block.helpers.js';
 import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
@@ -163,6 +165,21 @@ export default function Block(props: BlockProps) {
     }),
     { reactive: true }
   );
+
+  onMount(() => {
+    const blockId = state.processedBlock.id;
+    const animations = state.processedBlock.animations;
+    if (animations && blockId) {
+      bindAnimations(
+        animations
+          .filter((item) => item.trigger !== 'hover')
+          .map((animation) => ({
+            ...animation,
+            elementId: blockId,
+          }))
+      );
+    }
+  });
 
   return (
     <Show when={state.canShowBlock}>

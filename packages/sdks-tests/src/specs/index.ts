@@ -1,5 +1,6 @@
 import { AB_TEST_INTERACTIVE } from './ab-test-interactive.js';
 import { CONTENT as abTest } from './ab-test.js';
+import { ANIMATIONS } from './animations.js';
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
@@ -86,6 +87,7 @@ const PAGES = {
   '/slot-without-symbol': SLOT_WITHOUT_SYMBOL,
   '/no-trusted-hosts': homepage,
   '/editing-styles-no-trusted-hosts': EDITING_STYLES,
+  '/animations': ANIMATIONS,
 } as const;
 
 const apiVersionPathToProp = {

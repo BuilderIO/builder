@@ -34,6 +34,7 @@ import {
 import type { BuilderContent } from '../../../types/builder-content.js';
 import type { ComponentInfo } from '../../../types/components.js';
 import type { Dictionary } from '../../../types/typescript.js';
+import { triggerAnimation } from '../../block/animator.js';
 import type {
   BuilderComponentStateChange,
   ContentProps,
@@ -141,6 +142,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
               state.mergeNewContent({ meta: { breakpoints } });
             }
             state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
+            break;
+          }
+          case 'builder.triggerAnimation': {
+            triggerAnimation(data.data);
             break;
           }
           case 'builder.contentUpdate': {
