@@ -45,15 +45,16 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
-  test('generate content url with apiVersion as v2', () => {
-    const output = generateContentUrl({
-      apiKey: testKey,
-      model: testModel,
-      query: { id: testId },
-      options,
-      apiVersion: 'v2',
-    });
-    expect(output).toMatchSnapshot();
+  test('throw error when trying to generate content url with apiVersion as v1', () => {
+    expect(() => {
+      generateContentUrl({
+        apiKey: testKey,
+        model: testModel,
+        query: { id: testId },
+        options,
+        apiVersion: 'v2' as GetContentOptions['apiVersion'],
+      });
+    }).toThrow(`Invalid apiVersion: expected 'v3', received 'v2'`);
   });
 
   test('generate content url with apiVersion as v3', () => {
@@ -76,7 +77,7 @@ describe('Generate Content URL', () => {
         options,
         apiVersion: 'v1' as GetContentOptions['apiVersion'],
       });
-    }).toThrow(`Invalid apiVersion: expected 'v2' or 'v3', received 'v1'`);
+    }).toThrow(`Invalid apiVersion: expected 'v3', received 'v1'`);
   });
 
   test('throw error when trying to generate content url with an invalid apiVersion value', () => {
@@ -89,7 +90,7 @@ describe('Generate Content URL', () => {
         apiVersion: 'INVALID_API_VERSION' as GetContentOptions['apiVersion'],
       });
     }).toThrow(
-      `Invalid apiVersion: expected 'v2' or 'v3', received 'INVALID_API_VERSION'`
+      `Invalid apiVersion: expected 'v3', received 'INVALID_API_VERSION'`
     );
   });
 
