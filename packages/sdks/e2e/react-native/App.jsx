@@ -1,7 +1,4 @@
-import {
-  RenderContent,
-  _processContentResult,
-} from '@builder.io/sdk-react-native';
+import { Content, _processContentResult } from '@builder.io/sdk-react-native';
 import { getProps } from '@e2e/tests';
 import {
   NavigationContainer,
@@ -48,7 +45,7 @@ const BuilderContent = () => {
         flexDirection: 'column',
       }}
     >
-      {props ? <RenderContent {...props} /> : <Text>Not Found.</Text>}
+      {props ? <Content {...props} /> : <Text>Not Found.</Text>}
     </View>
   );
 };

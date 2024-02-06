@@ -1,7 +1,7 @@
-import logo from './logo.svg';
 import styles from './App.module.css';
+import logo from './logo.svg';
 
-import { getContent, RenderContent } from '@builder.io/sdk-solid';
+import { Content, fetchOneEntry } from '@builder.io/sdk-solid';
 import { createEffect, createSignal } from 'solid-js';
 import { createMutable } from 'solid-js/store';
 
@@ -40,7 +40,7 @@ function App() {
   const [content, setContent] = createSignal(null);
 
   createEffect(() => {
-    getContent({
+    fetchOneEntry({
       model: 'page',
       apiKey,
       userAttributes: {
@@ -58,7 +58,7 @@ function App() {
       </header>
       <div>
         {content() && (
-          <RenderContent
+          <Content
             model="page"
             content={content()}
             apiKey={apiKey}

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 
 import HelloWorldComponent from './components/HelloWorld.vue';
 
@@ -25,7 +25,7 @@ const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 export default {
   name: 'DynamicallyRenderBuilderPage',
   components: {
-    'builder-render-content': RenderContent,
+    'builder-render-content': Content,
   },
   data: () => ({
     canShowContent: false,
@@ -38,7 +38,7 @@ export default {
     },
   },
   mounted() {
-    getContent({
+    fetchOneEntry({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
       userAttributes: {

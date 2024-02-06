@@ -1,9 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { RenderContent, isPreviewing, getContent } from '@builder.io/sdk-react-native';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 // TO-DO: add your own public Builder API key here
 const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
@@ -42,7 +42,7 @@ const BuilderContent = ({ route }) => {
   const [content, setContent] = useState(undefined);
 
   useEffect(() => {
-    getContent({
+    fetchOneEntry({
       model: 'page',
       apiKey: BUILDER_API_KEY,
       options: route.params,
@@ -72,7 +72,7 @@ const BuilderContent = ({ route }) => {
             flexDirection: 'column',
           }}
         >
-          <RenderContent
+          <Content
             apiKey={BUILDER_API_KEY}
             model="page"
             content={content}

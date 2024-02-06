@@ -1,4 +1,4 @@
-import { RenderContent } from '@builder.io/sdk-solid';
+import { Content } from '@builder.io/sdk-solid';
 import { createMutable } from 'solid-js/store';
 
 function MyFunComponent({ text }) {
@@ -34,7 +34,7 @@ function App({ builderContent }) {
     <div>
       <header class="text-center p-5">Hello world!</header>
       <div>
-        <RenderContent
+        <Content
           content={builderContent}
           model="page"
           customComponents={CUSTOM_COMPONENTS}

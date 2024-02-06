@@ -1,5 +1,5 @@
 import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
-import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
+import { Content, _processContentResult } from '@builder.io/sdk-react';
 import { getAllPathnames, getProps } from '@e2e/tests';
 import type {
   GetStaticPathsResult,
@@ -36,7 +36,7 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Page(props: PageProps & { apiVersion: any }) {
   return (
     <HydrationOverlay>
-      {props ? <RenderContent {...props} /> : <div>Content Not Found</div>}
+      {props ? <Content {...props} /> : <div>Content Not Found</div>}
     </HydrationOverlay>
   );
 }
