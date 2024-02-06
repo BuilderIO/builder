@@ -90,7 +90,7 @@ describe('Generate Content URL', () => {
         apiVersion: 'INVALID_API_VERSION' as GetContentOptions['apiVersion'],
       });
     }).toThrow(
-      `Invalid apiVersion: expected 'v2' or 'v3', received 'INVALID_API_VERSION'`
+      `Invalid apiVersion: expected 'v3', received 'INVALID_API_VERSION'`
     );
   });
 
