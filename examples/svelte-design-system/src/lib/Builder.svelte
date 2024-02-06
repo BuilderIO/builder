@@ -16,7 +16,7 @@
 	let content: any = undefined;
 	let canShowContent = false;
 	const fetch = async () => {
-		content = await BuilderSDK.getContent({
+		content = await BuilderSDK.fetchOneEntry({
 			model: 'page',
 			apiKey: variables.builderKey,
 			options: BuilderSDK.getBuilderSearchParams(
@@ -37,7 +37,7 @@
 <h2>Below is Builder Content:</h2>
 
 {#if canShowContent}
-	<BuilderSDK.RenderContent
+	<BuilderSDK.Content
 		model="page"
 		{content}
 		apiKey={variables.builderKey}

@@ -130,7 +130,7 @@ type ContentResponse = { results: BuilderContent[] };
 export const getProps = async (args: {
   pathname?: string;
   _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
-  getContent?: (opts: any) => Promise<BuilderContent | null>;
+  fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
   options?: any;
   data?: 'real' | 'mock';
 }) => {
@@ -138,16 +138,16 @@ export const getProps = async (args: {
     pathname: _pathname = getPathnameFromWindow(),
     _processContentResult,
     data = 'mock',
-    getContent,
+    fetchOneEntry,
     options,
   } = args;
   const pathname = normalizePathname(_pathname);
 
-  if (data === 'real' && getContent) {
+  if (data === 'real' && fetchOneEntry) {
     return {
       model: 'page',
       apiKey: REAL_API_KEY,
-      content: await getContent({
+      content: await fetchOneEntry({
         model: 'page',
         apiKey: REAL_API_KEY,
         userAttributes: { urlPath: pathname },

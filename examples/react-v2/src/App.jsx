@@ -1,4 +1,4 @@
-import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-react';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
 
 // TODO: enter your public API key
@@ -8,7 +8,7 @@ function App() {
   const [content, setContent] = useState(undefined);
 
   useEffect(() => {
-    getContent({
+    fetchOneEntry({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
       userAttributes: {
@@ -28,7 +28,7 @@ function App() {
   const shouldRenderBuilderContent = content || isPreviewing();
 
   return shouldRenderBuilderContent ? (
-    <RenderContent content={content} model="page" apiKey={BUILDER_PUBLIC_API_KEY} />
+    <Content content={content} model="page" apiKey={BUILDER_PUBLIC_API_KEY} />
   ) : (
     <div>Content Not Found</div>
   );

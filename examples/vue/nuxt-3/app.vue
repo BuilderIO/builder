@@ -7,7 +7,7 @@
         page title:
         {{ content?.data?.title || 'Unpublished' }}
       </div>
-      <RenderContent
+      <Content
         model="page"
         :content="content"
         :api-key="BUILDER_PUBLIC_API_KEY"
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 
 import HelloWorldComponent from './components/HelloWorld.vue';
 
@@ -46,7 +46,7 @@ const route = useRoute();
 
 // fetch builder content data
 const { data: content } = await useAsyncData('builderData', () =>
-  getContent({
+  fetchOneEntry({
     model: 'page',
     apiKey: BUILDER_PUBLIC_API_KEY,
     userAttributes: {

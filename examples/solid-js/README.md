@@ -28,7 +28,7 @@ npm run dev
 
 7. Now, go to the content page ([https://builder.io/content](https://builder.io/content)) and choose "+ new" in the top right and create a new page with URL `/`
 
-You should now be able to use the Builder drag and drop editor in your solidjs app. Be sure to always have the `<RenderContent>` component be present anywhere
+You should now be able to use the Builder drag and drop editor in your solidjs app. Be sure to always have the `<Content>` component be present anywhere
 
 ![Builder editing Gif](https://user-images.githubusercontent.com/844291/165982920-e5138239-0fe4-4231-989d-838cf877cff6.gif)
 

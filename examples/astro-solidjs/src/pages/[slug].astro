@@ -1,12 +1,12 @@
 ---
 import Layout from '../components/Layout.astro';
 
-import { getAllContent, getContent } from '@builder.io/sdk-solid';
+import { getAllContent, fetchOneEntry } from '@builder.io/sdk-solid';
 import App from '../components/App'
 
 const API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
-const builderContent = await getContent({
+const builderContent = await fetchOneEntry({
   model: 'page',
   apiKey: API_KEY,
   userAttributes: {
