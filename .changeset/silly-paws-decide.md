@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': minor
 ---
 
-Deprecation: remove 'v2' as a viable `apiVersion`. Only 'v3' is allowed.
+🧨 Breaking Change: remove 'v2' as a viable `apiVersion`. Only 'v3' is now allowed.
