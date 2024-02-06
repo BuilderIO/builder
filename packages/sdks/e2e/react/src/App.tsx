@@ -38,7 +38,7 @@ function App() {
     getProps({ _processContentResult, getContent }).then(setProps);
 
     if (window.location.pathname === '/data-preview') {
-      const unsubscribe = subscribeToEditor({ model: 'coffee' }, (content) =>
+      const unsubscribe = subscribeToEditor('coffee', (content) =>
         setProps({ content })
       );
 
