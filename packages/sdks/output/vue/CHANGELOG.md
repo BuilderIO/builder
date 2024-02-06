@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.12.8
+
+### Patch Changes
+
+- 6b32014: Add `subscribeToEditor()` export that allows listening to content changes. Helpful for previewing data models.
+
 ## 0.12.7
 
 ### Patch Changes
