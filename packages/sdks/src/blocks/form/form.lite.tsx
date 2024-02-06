@@ -18,6 +18,7 @@ import { get } from '../../functions/get.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { set } from '../../functions/set.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type { Dictionary } from '../../types/typescript.js';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
@@ -49,6 +50,7 @@ export interface FormProps {
   errorMessagePath?: string;
   builderContext: Signal<BuilderContextInterface>;
   builderComponents: RegisteredComponents;
+  builderLinkComponent: any;
 }
 
 export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
@@ -65,6 +67,18 @@ export default function FormComponent(props: FormProps) {
     // TODO: separate response and error?
     responseData: null as any,
     formErrorMessage: '',
+    mergeNewRootState(newData: Dictionary<any>) {
+      const combinedState = {
+        ...props.builderContext.value.rootState,
+        ...newData,
+      };
+
+      if (props.builderContext.value.rootSetState) {
+        props.builderContext.value.rootSetState?.(combinedState);
+      } else {
+        props.builderContext.value.rootState = combinedState;
+      }
+    },
     submissionState(): FormState {
       return (isEditing() && props.previewState) || state.formState;
     },
@@ -218,6 +232,9 @@ export default function FormComponent(props: FormProps) {
                   message = JSON.stringify(message);
                 }
                 state.formErrorMessage = message;
+                state.mergeNewRootState({
+                  formErrorMessage: message,
+                });
               }
             }
 
@@ -310,6 +327,7 @@ export default function FormComponent(props: FormProps) {
               block={block}
               context={props.builderContext}
               registeredComponents={props.builderComponents}
+              linkComponent={props.builderLinkComponent}
             />
           )}
         </For>
