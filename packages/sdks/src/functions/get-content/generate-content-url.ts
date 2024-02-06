@@ -35,9 +35,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     throw new Error('Missing API key');
   }
 
-  if (!['v2', 'v3'].includes(apiVersion)) {
+  if (!['v3'].includes(apiVersion)) {
     throw new Error(
-      `Invalid apiVersion: expected 'v2' or 'v3', received '${apiVersion}'`
+      `Invalid apiVersion: expected 'v3', received '${apiVersion}'`
     );
   }
 
