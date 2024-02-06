@@ -19,7 +19,6 @@ import { fetchOneEntry } from '../../../functions/get-content/index.js';
 import { fetch } from '../../../functions/get-fetch.js';
 import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
-import { isFromTrustedHost } from '../../../functions/is-from-trusted-host.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
 import { _track } from '../../../functions/track/index.js';
@@ -27,6 +26,7 @@ import { getInteractionPropertiesForEvent } from '../../../functions/track/inter
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { logger } from '../../../helpers/logger.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
+import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
 import {
   registerInsertMenu,
   setupBrowserForEditing,
@@ -122,15 +122,11 @@ export default function EnableEditor(props: BuilderEditorProps) {
       default: props.contentWrapper || 'div',
     }),
     processMessage(event: MessageEvent): void {
-      if (!isFromTrustedHost(props.trustedHosts, event)) {
-        return;
-      }
-      const { data } = event;
-
-      if (data) {
-        switch (data.type) {
-          case 'builder.configureSdk': {
-            const messageContent = data.data;
+      return createEditorListener({
+        model: props.model,
+        trustedHosts: props.trustedHosts,
+        callbacks: {
+          configureSdk: (messageContent) => {
             const { breakpoints, contentId } = messageContent;
             if (
               !contentId ||
@@ -140,32 +136,18 @@ export default function EnableEditor(props: BuilderEditorProps) {
             }
             if (breakpoints) {
               state.mergeNewContent({ meta: { breakpoints } });
-            }
-            state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
-            break;
-          }
-          case 'builder.triggerAnimation': {
-            triggerAnimation(data.data);
-            break;
-          }
-          case 'builder.contentUpdate': {
-            const messageContent = data.data;
-            const key =
-              messageContent.key ||
-              messageContent.alias ||
-              messageContent.entry ||
-              messageContent.modelName;
-
-            const contentData = messageContent.data;
-
-            if (key === props.model) {
-              state.mergeNewContent(contentData);
               state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
-            break;
-          }
-        }
-      }
+          },
+          animation: (animation) => {
+            triggerAnimation(animation);
+          },
+          contentUpdate: (newContent) => {
+            state.mergeNewContent(newContent);
+            state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
+          },
+        },
+      })(event);
     },
     evaluateJsCode() {
       // run any dynamic JS code attached to content

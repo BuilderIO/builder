@@ -1,4 +1,9 @@
-import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
+import {
+  RenderContent,
+  _processContentResult,
+  getContent,
+  subscribeToEditor,
+} from '@builder.io/sdk-react';
 import { getProps } from '@e2e/tests';
 import { useEffect, useState } from 'react';
 
@@ -30,10 +35,30 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps({ _processContentResult }).then((resp) => {
-      setProps(resp);
-    });
+    getProps({ _processContentResult, getContent }).then(setProps);
+
+    if (window.location.pathname === '/data-preview') {
+      const unsubscribe = subscribeToEditor('coffee', (content) =>
+        setProps({ content })
+      );
+
+      return () => {
+        unsubscribe();
+      };
+    }
   }, []);
+
+  if (window.location.pathname === '/data-preview') {
+    if (!props?.content) {
+      return <div>Loading...</div>;
+    }
+    return (
+      <>
+        <div>coffee name: {props.content.data?.name}</div>
+        <div>coffee info: {props.content.data?.info}</div>
+      </>
+    );
+  }
 
   return props ? (
     <DataComp pathname={window.location.pathname}>
