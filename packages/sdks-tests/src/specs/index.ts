@@ -48,7 +48,6 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 const PAGES = {
   '/': homepage,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
-  '/api-version-v2': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
   '/can-track-false': homepage,
@@ -96,14 +95,13 @@ const PAGES = {
 
 const apiVersionPathToProp = {
   '/api-version-v1': { apiVersion: 'v1' },
-  '/api-version-v2': { apiVersion: 'v2' },
   '/api-version-v3': { apiVersion: 'v3' },
 } as const;
 
 export type Path = keyof typeof PAGES;
 
 const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1'];
-const GEN2_ONLY_PATHNAMES: Path[] = ['/api-version-v2'];
+const GEN2_ONLY_PATHNAMES: Path[] = [];
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
   return Object.keys(PAGES).filter(pathname => {
@@ -132,7 +130,7 @@ type ContentResponse = { results: BuilderContent[] };
 export const getProps = async (args: {
   pathname?: string;
   _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
-  getContent?: (opts: any) => Promise<BuilderContent | null>;
+  fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
   options?: any;
   data?: 'real' | 'mock';
 }) => {
@@ -140,16 +138,16 @@ export const getProps = async (args: {
     pathname: _pathname = getPathnameFromWindow(),
     _processContentResult,
     data = 'mock',
-    getContent,
+    fetchOneEntry,
     options,
   } = args;
   const pathname = normalizePathname(_pathname);
 
-  if (data === 'real' && getContent) {
+  if (data === 'real' && fetchOneEntry) {
     return {
       model: 'page',
       apiKey: REAL_API_KEY,
-      content: await getContent({
+      content: await fetchOneEntry({
         model: 'page',
         apiKey: REAL_API_KEY,
         userAttributes: { urlPath: pathname },

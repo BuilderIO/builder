@@ -1,9 +1,9 @@
 import CatFacts from '@/components/MyTextBox/CatFacts';
 import {
-  RenderContent,
+  Content,
   _processContentResult,
+  fetchOneEntry,
   getBuilderSearchParams,
-  getContent,
 } from '@builder.io/sdk-react-nextjs';
 import { getProps } from '@e2e/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
@@ -24,7 +24,7 @@ export default async function Page(props: MyPageProps) {
     pathname: urlPath,
     _processContentResult,
     options: getBuilderSearchParams(props.searchParams),
-    getContent,
+    fetchOneEntry,
   });
 
   if (!builderProps) {
@@ -37,7 +37,7 @@ export default async function Page(props: MyPageProps) {
   }
 
   return (
-    <RenderContent
+    <Content
       {...builderProps}
       customComponents={[
         {

@@ -1384,10 +1384,10 @@ export class BuilderComponent extends React.Component<
         state: Object.assign(this.rootState, {
           ...this.state.state,
           location: this.locationState,
-          deviceSize: this.deviceSizeState,
           device: this.device,
           ...data.state,
           ...this.externalState,
+          deviceSize: this.deviceSizeState,
         }),
       };
       if (this.mounted) {

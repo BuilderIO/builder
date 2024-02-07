@@ -7,7 +7,7 @@
     "noEmit": false,
     "lib": ["ESNext", "dom"],
     // Override: exclude jest types.
-    "types": ["react-native"],
+    "types": ["react-native", "node"],
     "noImplicitAny": false,
     "strict": false,
     "strictNullChecks": false,
@@ -21,5 +21,6 @@
     },
     "outDir": "./dist"
   },
-  "include": ["typings/*.d.ts", "src/**/*"]
+  // "include": ["typings/*.d.ts", "src/**/*"],
+  "files": ["typings/module.augmentations.d.ts", "src/index.ts"]
 }

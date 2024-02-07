@@ -1,6 +1,6 @@
 <script>
 	import Counter from '../../lib/Counter.svelte';
-	import { isPreviewing, RenderContent } from '@builder.io/sdk-svelte';
+	import { isPreviewing, Content } from '@builder.io/sdk-svelte';
 	import { BUILDER_PUBLIC_API_KEY } from '../../apiKey';
 
 	// Create an array of your custom components and their properties
@@ -40,7 +40,7 @@
 	<div>Below is your Builder Content:</div>
 	{#if canShowContent}
 		<div>page Title: {data.content?.data?.title || 'Unpublished'}</div>
-		<RenderContent
+		<Content
 			model="page"
 			content={data.content}
 			apiKey={BUILDER_PUBLIC_API_KEY}

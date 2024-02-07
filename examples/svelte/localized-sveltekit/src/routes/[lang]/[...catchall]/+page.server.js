@@ -1,4 +1,4 @@
-import { getContent, getBuilderSearchParams } from '@builder.io/sdk-svelte';
+import { fetchOneEntry, getBuilderSearchParams } from '@builder.io/sdk-svelte';
 import { BUILDER_PUBLIC_API_KEY } from '../../../apiKey';
 import { getLocaleFromPathname } from '../../../utils';
 
@@ -8,7 +8,7 @@ export async function load(event) {
 	// remove locale from the path to match multiple locales in same page if needed
 	const urlPath = event.url.pathname.replace(`/${locale}`, '') || '/';
 	// fetch your Builder content
-	const content = await getContent({
+	const content = await fetchOneEntry({
 		model: 'page',
 		apiKey: BUILDER_PUBLIC_API_KEY,
 		locale,

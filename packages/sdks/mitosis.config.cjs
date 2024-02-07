@@ -278,6 +278,7 @@ module.exports = {
       stylesType: 'style-tag',
     },
     reactNative: {
+      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
         BASE_TEXT_PLUGIN,
@@ -336,6 +337,13 @@ module.exports = {
                     },
                   },
                 };
+              }
+
+              /**
+               * Fix types
+               */
+              if (json.name === 'CustomCode') {
+                json.refs.elementRef.typeParameter = 'any';
               }
             },
           },

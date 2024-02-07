@@ -1,5 +1,18 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.13.1
+
+### Patch Changes
+
+- f1fa6c8: Feature: add TypeScript types.
+- f1fa6c8: Fix: Columns `flexGrow` type.
+
+## 0.13.0
+
+### Minor Changes
+
+- da5d871: 🧨 Breaking Change: remove 'v2' as a viable `apiVersion`. Only 'v3' is now allowed.
+
 ## 0.12.8
 
 ### Patch Changes

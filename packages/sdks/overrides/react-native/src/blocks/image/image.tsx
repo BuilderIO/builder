@@ -1,28 +1,13 @@
 import * as React from 'react';
+import type { StyleProp,ImageStyle } from 'react-native';
 import { Image as ReactImage, View } from 'react-native';
+import type { ImageProps } from './image.types.js';
 
-// Subset of Image props, many are irrelevant for native (such as altText, etc)
-/**
- * @typedef {{
- *   image: string;
- *   backgroundSize?: 'cover' | 'contain';
- *   backgroundPosition?: string;
- *   aspectRatio?: number;
- *   width?: number;
- *   height?: number;
- *   children?: any;
- * }} ImageProps
- */
-
-// TODO: support children by wrapping in a View
-/**
- * @param {ImageProps} props
- */
-export default function Image(props) {
+export default function Image(props: ImageProps) {
   const shouldRenderUnwrappedChildren =
     props.fitContent && props.builderBlock?.children?.length;
 
-  const imageStyle = props.aspectRatio
+  const imageStyle:StyleProp<ImageStyle> = (props.aspectRatio
     ? {
         position: 'absolute',
         top: 0,
@@ -34,7 +19,9 @@ export default function Image(props) {
         position: 'relative',
         ...(props.width ? { width: props.width } : {}),
         ...(props.height ? { height: props.height } : {}),
-      };
+      } ) ;
+
+  const paddingTop = `${props.aspectRatio * 100}%` as const;
 
   return (
     <>
@@ -48,7 +35,7 @@ export default function Image(props) {
           <View
             style={{
               width: '100%',
-              paddingTop: props.aspectRatio * 100 + '%',
+              paddingTop,
             }}
           />
         ) : null}
@@ -59,13 +46,13 @@ export default function Image(props) {
       {!props.fitContent && props.children && (
         // When `fitContent: false`, we wrap image children ssuch that they stretch across the entire image
         <View
-          css={{
+          style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'stretch',
             position: 'absolute',
-            top: '0',
-            left: '0',
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100%',
           }}

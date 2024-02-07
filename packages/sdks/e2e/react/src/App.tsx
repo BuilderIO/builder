@@ -1,7 +1,7 @@
 import {
-  RenderContent,
+  Content,
   _processContentResult,
-  getContent,
+  fetchOneEntry,
   subscribeToEditor,
 } from '@builder.io/sdk-react';
 import { getProps } from '@e2e/tests';
@@ -35,7 +35,7 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps({ _processContentResult, getContent }).then(setProps);
+    getProps({ _processContentResult, fetchOneEntry }).then(setProps);
 
     if (window.location.pathname === '/data-preview') {
       const unsubscribe = subscribeToEditor('coffee', (content) =>
@@ -63,7 +63,7 @@ function App() {
   return props ? (
     <DataComp pathname={window.location.pathname}>
       {({ data }) => (
-        <RenderContent
+        <Content
           {...props}
           data={data}
           linkComponent={
