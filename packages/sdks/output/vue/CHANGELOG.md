@@ -1,5 +1,7 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 0.13.1
+
 ## 0.13.0
 
 ### Minor Changes
