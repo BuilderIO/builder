@@ -1,7 +1,11 @@
 import { expect } from '@playwright/test';
-import { test } from './helpers.js';
+import { excludeTestFor, test } from './helpers.js';
 
 test.describe('Form', () => {
+  test.skip(
+    excludeTestFor({ reactNative: true, rsc: true }),
+    'Form not implemented in React Native and NextJS SDKs.'
+  );
   test('Form rendering correctly', async ({ page }) => {
     await page.goto('/form');
 

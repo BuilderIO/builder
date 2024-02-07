@@ -8,15 +8,29 @@ import { componentInfo as customCodeInfo } from '../blocks/custom-code/component
 import { default as customCode } from '../blocks/custom-code/custom-code.lite.jsx';
 import { componentInfo as embedComponentInfo } from '../blocks/embed/component-info.js';
 import { default as embed } from '../blocks/embed/embed.lite.jsx';
+import { componentInfo as formComponentInfo } from '../blocks/form/form/component-info.js';
+import { default as Form } from '../blocks/form/form/form.lite.jsx';
+import { componentInfo as formInputComponentInfo } from '../blocks/form/input/component-info.js';
+import { default as FormInput } from '../blocks/form/input/input.lite.jsx';
+import { componentInfo as formSubmitButtonComponentInfo } from '../blocks/form/submit-button/component-info.js';
+import { default as FormSubmitButton } from '../blocks/form/submit-button/submit-button.lite.jsx';
 import { componentInfo as imgComponentInfo } from '../blocks/img/component-info.js';
 import { default as Img } from '../blocks/img/img.lite.jsx';
 import { componentInfo as videoComponentInfo } from '../blocks/video/component-info.js';
 import { default as Video } from '../blocks/video/video.lite.jsx';
 import type { RegisteredComponent } from '../context/types.js';
+import { TARGET } from './target.js';
 
 export const getExtraComponents: () => RegisteredComponent[] = () => [
-  { component: Video, ...videoComponentInfo },
   { component: customCode, ...customCodeInfo },
   { component: embed, ...embedComponentInfo },
+  ...(TARGET === 'rsc'
+    ? []
+    : [
+        { component: Form, ...formComponentInfo },
+        { component: FormInput, ...formInputComponentInfo },
+        { component: FormSubmitButton, ...formSubmitButtonComponentInfo },
+      ]),
   { component: Img, ...imgComponentInfo },
+  { component: Video, ...videoComponentInfo },
 ];
