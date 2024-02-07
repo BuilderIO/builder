@@ -224,7 +224,12 @@ export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
               })}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
-              styleProp={{ flexGrow: '1' }}
+              styleProp={{
+                flexGrow: useTarget<string | number>({
+                  reactNative: 1,
+                  default: '1',
+                }),
+              }}
               context={props.builderContext}
               registeredComponents={props.builderComponents}
               linkComponent={props.builderLinkComponent}
