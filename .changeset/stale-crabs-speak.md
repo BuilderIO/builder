@@ -6,4 +6,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Feature: Add Form, FormSubmit and FormInput blocks.
+Feature: Add Form, FormSelect, FormSubmit and FormInput blocks.
