@@ -1,5 +1,7 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 0.13.1
+
 ## 0.13.0
 
 ### Minor Changes
