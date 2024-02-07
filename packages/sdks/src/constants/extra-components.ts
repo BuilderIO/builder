@@ -12,6 +12,8 @@ import { componentInfo as formComponentInfo } from '../blocks/form/form/componen
 import { default as Form } from '../blocks/form/form/form.lite.jsx';
 import { componentInfo as formInputComponentInfo } from '../blocks/form/input/component-info.js';
 import { default as FormInput } from '../blocks/form/input/input.lite.jsx';
+import { componentInfo as formSelectComponentInfo } from '../blocks/form/select/component-info.js';
+import { default as FormSelect } from '../blocks/form/select/select.lite.jsx';
 import { componentInfo as formSubmitButtonComponentInfo } from '../blocks/form/submit-button/component-info.js';
 import { default as FormSubmitButton } from '../blocks/form/submit-button/submit-button.lite.jsx';
 import { componentInfo as imgComponentInfo } from '../blocks/img/component-info.js';
@@ -30,6 +32,7 @@ export const getExtraComponents: () => RegisteredComponent[] = () => [
         { component: Form, ...formComponentInfo },
         { component: FormInput, ...formInputComponentInfo },
         { component: FormSubmitButton, ...formSubmitButtonComponentInfo },
+        { component: FormSelect, ...formSelectComponentInfo },
       ]),
   { component: Img, ...imgComponentInfo },
   { component: Video, ...videoComponentInfo },
