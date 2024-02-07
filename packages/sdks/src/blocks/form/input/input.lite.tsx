@@ -1,11 +1,11 @@
 import { useMetadata, useTarget } from '@builder.io/mitosis';
-import { isEditing } from '../../functions/is-editing.js';
-import { filterAttrs } from '../helpers.js';
+import { isEditing } from '../../../functions/is-editing.js';
+import { filterAttrs } from '../../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 
-import { setAttrs } from '../helpers.js';
+import { setAttrs } from '../../helpers.js';
 
 useMetadata({
   rsc: {

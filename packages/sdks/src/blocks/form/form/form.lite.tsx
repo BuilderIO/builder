@@ -6,25 +6,25 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import Block from '../../components/block/block.lite.jsx';
-import Blocks from '../../components/blocks/blocks.lite.jsx';
+import Block from '../../../components/block/block.lite.jsx';
+import Blocks from '../../../components/blocks/blocks.lite.jsx';
 
-import { getEnv } from '../../functions/get-env.js';
-import { get } from '../../functions/get.js';
-import { isEditing } from '../../functions/is-editing.js';
-import { set } from '../../functions/set.js';
-import type { BuilderBlock } from '../../types/builder-block.js';
+import { getEnv } from '../../../functions/get-env.js';
+import { get } from '../../../functions/get.js';
+import { isEditing } from '../../../functions/is-editing.js';
+import { set } from '../../../functions/set.js';
+import type { BuilderBlock } from '../../../types/builder-block.js';
 import type {
   BuilderComponentsProp,
   BuilderLinkComponentProp,
   PropsWithBuilderData,
-} from '../../types/builder-props.js';
-import type { Dictionary } from '../../types/typescript.js';
-import { filterAttrs } from '../helpers.js';
+} from '../../../types/builder-props.js';
+import type { Dictionary } from '../../../types/typescript.js';
+import { filterAttrs } from '../../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
-import { setAttrs } from '../helpers.js';
+import { setAttrs } from '../../helpers.js';
 
 export type FormProps = PropsWithBuilderData<
   BuilderComponentsProp &
