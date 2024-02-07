@@ -14,7 +14,6 @@ import { TARGET } from '../../constants/target.js';
 import { deoptSignal } from '../../functions/deopt.js';
 import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import { mapStyleObjToStrIfNeeded } from '../../functions/get-style.js';
-import type { PropsWithBuilderData } from '../../types/builder-props.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { ColumnProps } from './columns.types.js';
 
@@ -29,7 +28,7 @@ useMetadata({
   },
 });
 
-export default function Columns(props: PropsWithBuilderData<ColumnProps>) {
+export default function Columns(props: ColumnProps) {
   const state = useStore({
     gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
     cols: props.columns || [],

@@ -7,7 +7,6 @@ import {
 } from '@builder.io/mitosis';
 import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
 import type { BuilderContent } from '../../types/builder-content.js';
-import type { PropsWithBuilderData } from '../../types/builder-props.js';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
@@ -25,7 +24,7 @@ useMetadata({
   },
 });
 
-export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
+export default function Symbol(props: SymbolProps) {
   const state = useStore({
     get className() {
       return [

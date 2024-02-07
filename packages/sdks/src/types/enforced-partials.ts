@@ -1,5 +1,3 @@
-import type { Prettify } from './typescript.js';
-
 /**
  * Lol Typescript
  * https://stackoverflow.com/questions/49927523/disallow-call-with-any/49928360#49928360
@@ -32,6 +30,7 @@ type AndUndefined<T> = {
  * type Foo = { a: string, b?: number }
  * type Bar = EnforcePartials<Foo> // { a: string, b: number | undefined }
  */
-export type EnforcePartials<From> = Prettify<
-  AndUndefined<Enforced<OptionalFieldsOnly<From>>> & RequiredFieldsOnly<From>
->;
+export type EnforcePartials<From> = AndUndefined<
+  Enforced<OptionalFieldsOnly<From>>
+> &
+  RequiredFieldsOnly<From>;

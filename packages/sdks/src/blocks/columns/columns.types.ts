@@ -1,6 +1,7 @@
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type {
   BuilderComponentsProp,
+  BuilderDataProps,
   BuilderLinkComponentProp,
 } from '../../types/builder-props.js';
 
@@ -14,7 +15,8 @@ type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
 export interface ColumnProps
   extends BuilderComponentsProp,
-    BuilderLinkComponentProp {
+    BuilderLinkComponentProp,
+    BuilderDataProps {
   columns?: Column[];
   space?: number;
   stackColumnsAt?: StackColumnsAt;

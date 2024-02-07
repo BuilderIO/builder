@@ -5,7 +5,7 @@ import type {
 } from '../context/types.js';
 import type { BuilderBlock } from './builder-block.js';
 
-export type PropsWithBuilderData<T> = T & {
+export type BuilderDataProps = {
   builderBlock: BuilderBlock;
   builderContext: Signal<BuilderContextInterface>;
 };
