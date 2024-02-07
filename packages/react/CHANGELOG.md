@@ -1,5 +1,9 @@
 # @builder.io/react
 
+## 3.2.2
+
+- Fix: `deviceSize` state not getting set properly.
+
 ## 3.2.1
 
 - Fix: sigfault crash when using SDK in Node v20 + M1 Macs. Skips usage of `isolated-vm` in those environments.
