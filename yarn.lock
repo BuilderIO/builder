@@ -2141,6 +2141,7 @@ __metadata:
     "@builder.io/sdks": "workspace:*"
     "@react-native-async-storage/async-storage": ^1.17.10
     "@tsconfig/react-native": ^2.0.3
+    "@types/node": ^20.11.16
     "@types/react-native-video": ^5.0.9
     babel-plugin-module-resolver: ^5.0.0
     css-to-react-native: ^3.2.0
@@ -8468,6 +8469,15 @@ __metadata:
   dependencies:
     undici-types: ~5.26.4
   checksum: cf91c4dd7c219e101dee820c69dc5ad497acbcc0a44a7d5efb00fdea4bede247446ce5f4bbd3d115ca539dd21321d840ad42eaacce3321cde1f732b29a621fb8
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.11.16":
+  version: 20.11.16
+  resolution: "@types/node@npm:20.11.16"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 51f0831c1219bf4698e7430aeb9892237bd851deeb25ce23c5bb0ceefcc77c3b114e48f4e98d9fc26def5a87ba9d8079f0281dd37bee691140a93f133812c152
   languageName: node
   linkType: hard
 
