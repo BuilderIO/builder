@@ -1,4 +1,4 @@
-import { Content, _processContentResult } from '@builder.io/sdk-react-native';
+import { _processContentResult, Content } from '@builder.io/sdk-react-native';
 import { getProps } from '@e2e/tests';
 import {
   NavigationContainer,
@@ -24,13 +24,13 @@ const linking = {
 
 const BuilderContent = () => {
   const navigationContext = useContext(NavigationContext);
-  const [props, setProps] = useState(undefined);
+  const [props, setProps] = useState<any>(undefined);
   const currentRoute =
-    navigationContext.getState().routes[navigationContext.getState().index];
+    navigationContext?.getState().routes[navigationContext.getState().index];
 
   useEffect(() => {
     getProps({
-      pathname: currentRoute.path || '/',
+      pathname: currentRoute?.path || '/',
       _processContentResult,
     }).then((resp) => {
       setProps(resp);
