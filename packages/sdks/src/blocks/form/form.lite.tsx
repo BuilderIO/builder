@@ -1,4 +1,3 @@
-import type { Signal } from '@builder.io/mitosis';
 import {
   For,
   Show,
@@ -9,49 +8,46 @@ import {
 } from '@builder.io/mitosis';
 import Block from '../../components/block/block.lite.jsx';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
-import type {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../context/types.js';
+
 import { getEnv } from '../../functions/get-env.js';
 import { get } from '../../functions/get.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { set } from '../../functions/set.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type {
+  BuilderComponentsProp,
+  BuilderLinkComponentProp,
+  PropsWithBuilderData,
+} from '../../types/builder-props.js';
 import type { Dictionary } from '../../types/typescript.js';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 import { setAttrs } from '../helpers.js';
-/**
- * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
- * to be cleaned up before the component can actually be usable.
- */
 
-export interface FormProps {
-  attributes?: any;
-  name?: string;
-  action?: string;
-  validate?: boolean;
-  method?: string;
-  builderBlock?: BuilderBlock;
-  sendSubmissionsTo?: string;
-  sendSubmissionsToEmail?: string;
-  sendWithJs?: boolean;
-  contentType?: string;
-  customHeaders?: { [key: string]: string };
-  successUrl?: string;
-  previewState?: FormState;
-  successMessage?: BuilderBlock[];
-  errorMessage?: BuilderBlock[];
-  sendingMessage?: BuilderBlock[];
-  resetFormOnSubmit?: boolean;
-  errorMessagePath?: string;
-  builderContext: Signal<BuilderContextInterface>;
-  builderComponents: RegisteredComponents;
-  builderLinkComponent: any;
-}
+export type FormProps = PropsWithBuilderData<
+  BuilderComponentsProp &
+    BuilderLinkComponentProp & {
+      attributes?: any;
+      name?: string;
+      action?: string;
+      validate?: boolean;
+      method?: string;
+      sendSubmissionsTo?: string;
+      sendSubmissionsToEmail?: string;
+      sendWithJs?: boolean;
+      contentType?: string;
+      customHeaders?: { [key: string]: string };
+      successUrl?: string;
+      previewState?: FormState;
+      successMessage?: BuilderBlock[];
+      errorMessage?: BuilderBlock[];
+      sendingMessage?: BuilderBlock[];
+      resetFormOnSubmit?: boolean;
+      errorMessagePath?: string;
+    }
+>;
 
 export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
 
