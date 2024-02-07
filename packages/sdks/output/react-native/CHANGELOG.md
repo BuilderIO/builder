@@ -5,6 +5,7 @@
 ### Patch Changes
 
 - f1fa6c8: Feature: add TypeScript types.
+- f1fa6c8: Fix: Columns `flexGrow` type.
 
 ## 0.13.0
 
