@@ -1,5 +1,7 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 0.13.1
+
 ## 0.13.0
 
 ### Minor Changes
