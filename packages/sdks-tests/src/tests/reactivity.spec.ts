@@ -24,7 +24,7 @@ test.describe('Reactive State', () => {
 
   test('updates deeply nested state value correctly', async ({ page }) => {
     test.fail(excludeTestFor({ rsc: true }));
-    test.fail(excludeTestFor({ vue: true }), 'TO-DO: Fix this test for Vue');
+    test.skip(excludeTestFor({ vue: true }), 'TO-DO: Fix this test for Vue');
     await page.goto('/js-code/');
     const menuLocator = page.locator('text=Content is expanded');
     await expect(menuLocator).toBeVisible();
