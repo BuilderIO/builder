@@ -16,8 +16,8 @@ import { set } from '../../../functions/set.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type {
   BuilderComponentsProp,
+  BuilderDataProps,
   BuilderLinkComponentProp,
-  PropsWithBuilderData,
 } from '../../../types/builder-props.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import { filterAttrs } from '../../helpers.js';
@@ -26,28 +26,27 @@ import { filterAttrs } from '../../helpers.js';
  */
 import { setAttrs } from '../../helpers.js';
 
-export type FormProps = PropsWithBuilderData<
+export type FormProps = BuilderDataProps &
   BuilderComponentsProp &
-    BuilderLinkComponentProp & {
-      attributes?: any;
-      name?: string;
-      action?: string;
-      validate?: boolean;
-      method?: string;
-      sendSubmissionsTo?: string;
-      sendSubmissionsToEmail?: string;
-      sendWithJs?: boolean;
-      contentType?: string;
-      customHeaders?: { [key: string]: string };
-      successUrl?: string;
-      previewState?: FormState;
-      successMessage?: BuilderBlock[];
-      errorMessage?: BuilderBlock[];
-      sendingMessage?: BuilderBlock[];
-      resetFormOnSubmit?: boolean;
-      errorMessagePath?: string;
-    }
->;
+  BuilderLinkComponentProp & {
+    attributes?: any;
+    name?: string;
+    action?: string;
+    validate?: boolean;
+    method?: string;
+    sendSubmissionsTo?: string;
+    sendSubmissionsToEmail?: string;
+    sendWithJs?: boolean;
+    contentType?: string;
+    customHeaders?: { [key: string]: string };
+    successUrl?: string;
+    previewState?: FormState;
+    successMessage?: BuilderBlock[];
+    errorMessage?: BuilderBlock[];
+    sendingMessage?: BuilderBlock[];
+    resetFormOnSubmit?: boolean;
+    errorMessagePath?: string;
+  };
 
 export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
 
