@@ -231,7 +231,7 @@ module.exports = {
           },
         }),
       ],
-      api: 'composition',
+      api: 'options',
       asyncComponentImports: false,
     },
     react: {
