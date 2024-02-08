@@ -41,6 +41,7 @@
     "release:dev": "yarn build && yarn version prerelease && yarn npm publish --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "fix-core-version": "bash ./scripts/fix-core-version.sh",
     "precommit": "lint-staged",
     "ci:test": "yarn test",
     "ci:build": "yarn build"
