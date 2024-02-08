@@ -8,4 +8,8 @@
 '@builder.io/sdk-solid': minor
 ---
 
-Breaking change: remove deprecated `RenderBlocks` and `RenderContent` exports, in favor of `Blocks` and `Content`.
+- 🧨 Breaking change: remove deprecated exports and attributes:
+
+- `RenderBlocks` and `RenderContent` exports, in favor of `Blocks` and `Content`.
+- `Content`'s `includeRefs` prop, in favor of `enrich`.
+- `fetchOneEntry`'s `includeRefs` and `noTraverse` parameters, in favor of `enrich`.

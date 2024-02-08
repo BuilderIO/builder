@@ -53,25 +53,12 @@ export interface GetContentOptions {
   options?: Record<string, any> | URLSearchParams;
 
   /**
-   * If set to `true`, it will lazy load symbols/references.
-   * If set to `false`, it will render the entire content tree eagerly.
-   * @deprecated use `enrich` instead
-   */
-  noTraverse?: boolean;
-
-  /**
    * If set to `false`, it will not use cookies to target content. Therefore, A/B Testing will be disabled and
    * only the default variation will be returned to every user.
    *
    * Defaults to `true`.
    */
   canTrack?: boolean;
-
-  /**
-   * Include content of references in the response. Defaults to `true`.
-   * @deprecated use `enrich` instead
-   */
-  includeRefs?: boolean;
 
   /**
    * Include multilevel references in the response.
