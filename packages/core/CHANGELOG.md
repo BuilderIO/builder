@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 2.2.2
+
+### Patch Changes
+
+- f67242f: types: add `meta` property to Input
+
 ## 2.2.0
 
 - Stricter checking of trusted hosts.
