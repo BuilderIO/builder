@@ -23,6 +23,7 @@
     "start:reactNative": "SDK=reactNative yarn _start",
     "start:vue": "SDK=vue yarn _start",
     "start:rsc": "SDK=rsc yarn _start",
+    "test:update": "yarn test:browser --update && yarn test:node --update && yarn test:edge --update",
     "test": "yarn test:browser && yarn test:node && yarn test:edge",
     "test:browser": "SDK_ENV=browser vitest run",
     "test:node": "SDK_ENV=node vitest run",
