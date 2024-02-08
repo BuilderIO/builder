@@ -10,6 +10,17 @@ const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
+  const getNoTraverse = () => {
+    if (
+      (options.limit === undefined || options.limit > 1) &&
+      !('noTraverse' in options)
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   const {
     limit = 30,
     userAttributes,
@@ -44,7 +55,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
 
   url.searchParams.set('apiKey', apiKey);
   url.searchParams.set('limit', String(limit));
-  url.searchParams.set('noTraverse', 'true');
+  url.searchParams.set('noTraverse', String(getNoTraverse()));
   if (locale) url.searchParams.set('locale', locale);
   if (enrich) url.searchParams.set('enrich', String(enrich));
 

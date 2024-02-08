@@ -6,15 +6,13 @@ exports[`Generate Content URL > generate content url when given invalid values o
 
 exports[`Generate Content URL > generate content url with apiVersion as default 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&omit=meta.componentsUsed&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
-exports[`Generate Content URL > generate content url with apiVersion as v2 1`] = `"https://cdn.builder.io/api/v2/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
-
 exports[`Generate Content URL > generate content url with apiVersion as v3 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&omit=meta.componentsUsed&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
 exports[`Generate Content URL > generate content url with enrich option not present 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&omit=meta.componentsUsed"`;
 
 exports[`Generate Content URL > generate content url with enrich option true 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&enrich=true&omit=meta.componentsUsed"`;
 
-exports[`Generate Content URL > generate content url with limit set to 1 and check for noTraverse 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=true&omit=meta.componentsUsed"`;
+exports[`Generate Content URL > generate content url with limit set to 1 and check for noTraverse 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=false&omit=meta.componentsUsed"`;
 
 exports[`Generate Content URL > generate content url with limit set to 2 and check for noTraverse 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=2&noTraverse=true&omit=meta.componentsUsed"`;
 
@@ -22,13 +20,13 @@ exports[`Generate Content URL > generate content url with limit unset and check 
 
 exports[`Generate Content URL > generate content url with noTraverse option false 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&omit=meta.componentsUsed"`;
 
-exports[`Generate Content URL > generate content url with noTraverse option false and limit set to 1 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=true&omit=meta.componentsUsed"`;
+exports[`Generate Content URL > generate content url with noTraverse option false and limit set to 1 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=false&omit=meta.componentsUsed"`;
 
 exports[`Generate Content URL > generate content url with noTraverse option false and limit set to 2 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=2&noTraverse=true&omit=meta.componentsUsed"`;
 
 exports[`Generate Content URL > generate content url with noTraverse option true 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&omit=meta.componentsUsed"`;
 
-exports[`Generate Content URL > generate content url with noTraverse option true and limit set to 1 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=true&omit=meta.componentsUsed"`;
+exports[`Generate Content URL > generate content url with noTraverse option true and limit set to 1 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=1&noTraverse=false&omit=meta.componentsUsed"`;
 
 exports[`Generate Content URL > generate content url with noTraverse option true and limit set to 2 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=2&noTraverse=true&omit=meta.componentsUsed"`;
 
