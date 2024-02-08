@@ -11,5 +11,6 @@
 - 🧨 Breaking change: remove deprecated exports and attributes:
 
 - `RenderBlocks` and `RenderContent` exports, in favor of `Blocks` and `Content`.
+- `getContent` and `getAllContent` exports, in favor of `fetchOneEntry` and `fetchEntries`.
 - `Content`'s `includeRefs` prop, in favor of `enrich`.
 - `fetchOneEntry`'s `includeRefs` and `noTraverse` parameters, in favor of `enrich`.
