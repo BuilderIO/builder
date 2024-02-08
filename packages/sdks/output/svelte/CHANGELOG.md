@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 0.13.3
+
+### Patch Changes
+
+- f67242f: types: add `meta` property to Input
+
 ## 0.13.2
 
 ### Patch Changes
