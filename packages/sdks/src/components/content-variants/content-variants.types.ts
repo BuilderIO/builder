@@ -53,9 +53,6 @@ export interface ContentVariantsPrps {
    */
   locale?: string;
 
-  /** @deprecated use `enrich` instead */
-  includeRefs?: boolean;
-
   /**
    * A boolean to enable or disable enriching API content (optional).
    *
