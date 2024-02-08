@@ -6,5 +6,9 @@ interface InternalRenderProps {
   isSsrAbTest: boolean;
 }
 
+/**
+ * This is in a separate file so that we can override it (most notably in Vue,
+ * where prop types cannot be wrapped by generics like `EnforcePartials`).
+ */
 export type ContentProps = InternalRenderProps &
   EnforcePartials<ContentVariantsPrps>;
