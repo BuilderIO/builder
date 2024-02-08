@@ -39,7 +39,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
 
   // if we are fetching an array of content, we disable noTraverse for perf reasons.
-  const noTraverse = options.limit !== 1;
+  const noTraverse = limit !== 1;
 
   const url = new URL(
     `https://cdn.builder.io/api/${apiVersion}/content/${model}`
