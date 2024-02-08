@@ -6,6 +6,8 @@
 '@builder.io/sdk-solid': patch
 '@builder.io/sdk-svelte': patch
 '@builder.io/sdk-vue': patch
+'@builder.io/sdk': patch
+'@builder.io/react': patch
 ---
 
 types: add `meta` property to Input
