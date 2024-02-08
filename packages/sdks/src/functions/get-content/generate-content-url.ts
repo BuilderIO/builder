@@ -56,6 +56,8 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   url.searchParams.set('apiKey', apiKey);
   url.searchParams.set('limit', String(limit));
   url.searchParams.set('noTraverse', String(getNoTraverse()));
+  url.searchParams.set('includeRefs', String(true));
+
   if (locale) url.searchParams.set('locale', locale);
   if (enrich) url.searchParams.set('enrich', String(enrich));
 
