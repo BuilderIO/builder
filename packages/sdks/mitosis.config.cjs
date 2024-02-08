@@ -95,6 +95,20 @@ const REMOVE_MAGIC_PLUGIN = () => ({
   },
 });
 
+const REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM = () => ({
+  code: {
+    post: (code) => {
+      return code.replace(
+        `props.setBuilderContext((PREVIOUS_VALUE) => ({
+        ...PREVIOUS_VALUE,
+        rootState: combinedState,
+      }));`,
+        'props.builderContext.rootState = combinedState;'
+      );
+    },
+  },
+});
+
 const target = process.argv
   .find((arg) => arg.startsWith('--target='))
   ?.split('=')[1];
@@ -182,7 +196,10 @@ module.exports = {
   options: {
     solid: {
       typescript: true,
-      plugins: [INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN],
+      plugins: [
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
+      ],
     },
     vue: {
       typescript: true,
@@ -219,7 +236,7 @@ module.exports = {
     },
     react: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN],
+      plugins: [SRCSET_PLUGIN, REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM],
       stylesType: 'style-tag',
     },
     rsc: {
@@ -227,6 +244,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         () => ({
           json: {
             pre: (json) => {
@@ -265,6 +283,7 @@ module.exports = {
         SRCSET_PLUGIN,
         BASE_TEXT_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         () => ({
           json: {
             pre: (json) => {

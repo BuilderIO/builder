@@ -15,6 +15,7 @@ import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
+import { FORM } from './form.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as image } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
@@ -89,6 +90,7 @@ const PAGES = {
   '/editing-styles-no-trusted-hosts': EDITING_STYLES,
   '/animations': ANIMATIONS,
   '/data-preview': DATA_PREVIEW,
+  '/form': FORM,
 } as const;
 
 const apiVersionPathToProp = {

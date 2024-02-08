@@ -132,11 +132,13 @@ export default function Block(props: BlockProps) {
           builderContext: props.context,
           ...(state.blockComponent?.name === 'Core:Button' ||
           state.blockComponent?.name === 'Symbol' ||
-          state.blockComponent?.name === 'Columns'
+          state.blockComponent?.name === 'Columns' ||
+          state.blockComponent?.name === 'Form:Form'
             ? { builderLinkComponent: props.linkComponent }
             : {}),
           ...(state.blockComponent?.name === 'Symbol' ||
-          state.blockComponent?.name === 'Columns'
+          state.blockComponent?.name === 'Columns' ||
+          state.blockComponent?.name === 'Form:Form'
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
