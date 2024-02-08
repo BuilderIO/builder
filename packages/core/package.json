@@ -25,11 +25,9 @@
     "release:minor": "yarn run build && yarn version minor && yarn npm publish",
     "release:patch:nightly": "yarn run build && yarn version patch && yarn npm publish",
     "release:dev": "yarn run build && yarn version prerelease && yarn npm publish --tag dev",
-    "prepublishOnly": "block-publish",
     "test": "jest --color"
   },
   "devDependencies": {
-    "@builder.io/block-publish": "^1.1.2",
     "@medv/finder": "^1.1.1",
     "@types/axios": "^0.14.0",
     "@types/es6-promise": "^3.3.0",
