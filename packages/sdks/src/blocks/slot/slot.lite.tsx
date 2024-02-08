@@ -1,16 +1,13 @@
-import type { Signal } from '@builder.io/mitosis';
 import { useMetadata, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
-import type { BuilderContextInterface } from '../../context/types.js';
 import { deoptSignal } from '../../functions/deopt.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type { PropsWithBuilderData } from '../../types/builder-props.js';
 
-export interface DropzoneProps {
+export type DropzoneProps = PropsWithBuilderData<{
   name: string;
-  builderBlock: BuilderBlock;
-  builderContext: Signal<BuilderContextInterface>;
   attributes: any;
-}
+}>;
 
 useMetadata({
   rsc: {
