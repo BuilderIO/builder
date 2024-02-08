@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 0.13.3
+
+### Patch Changes
+
+- f67242f: types: add `meta` property to Input
+
 ## 0.13.2
 
 ## 0.13.1
