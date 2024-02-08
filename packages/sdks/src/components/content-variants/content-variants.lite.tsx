@@ -112,7 +112,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
               linkComponent={props.linkComponent}
               canTrack={props.canTrack}
               locale={props.locale}
-              includeRefs={props.includeRefs}
               enrich={props.enrich}
               isSsrAbTest={state.shouldRenderVariants}
               blocksWrapper={props.blocksWrapper}
@@ -140,7 +139,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
         linkComponent={props.linkComponent}
         canTrack={props.canTrack}
         locale={props.locale}
-        includeRefs={props.includeRefs}
         enrich={props.enrich}
         isSsrAbTest={state.shouldRenderVariants}
         blocksWrapper={props.blocksWrapper}

@@ -130,7 +130,6 @@ export default function ContentComponent(props: ContentProps) {
       apiKey={props.apiKey}
       canTrack={props.canTrack}
       locale={props.locale}
-      includeRefs={props.includeRefs}
       enrich={props.enrich}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}

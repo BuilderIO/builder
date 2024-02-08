@@ -48,6 +48,4 @@ export {
   _processContentResult,
   fetchEntries,
   fetchOneEntry,
-  getAllContent,
-  getContent,
 } from './functions/get-content/index.js';

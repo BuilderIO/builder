@@ -123,7 +123,6 @@ describe('Generate Content URL', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      noTraverse: true,
     });
     expect(output).toMatchSnapshot();
   });
@@ -132,7 +131,6 @@ describe('Generate Content URL', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      noTraverse: false,
     });
     expect(output).toMatchSnapshot();
   });
@@ -141,7 +139,6 @@ describe('Generate Content URL', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      noTraverse: true,
       limit: 2,
     });
     expect(output).toMatchSnapshot();
@@ -151,7 +148,6 @@ describe('Generate Content URL', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      noTraverse: false,
       limit: 2,
     });
     expect(output).toMatchSnapshot();
@@ -179,7 +175,6 @@ describe('Generate Content URL', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      noTraverse: true,
       limit: 1,
     });
     expect(output).toMatchSnapshot();
@@ -189,7 +184,6 @@ describe('Generate Content URL', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      noTraverse: false,
       limit: 1,
     });
     expect(output).toMatchSnapshot();
