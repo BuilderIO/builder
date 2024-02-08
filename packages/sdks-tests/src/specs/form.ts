@@ -188,6 +188,63 @@ export const FORM = {
           {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
+            id: 'builder-ee8acd5a7bd24feb81978781745c661f',
+            meta: {
+              previousId: 'builder-454fc2f8e57b478480f0ece900731be2',
+            },
+            component: {
+              name: 'Text',
+              options: {
+                text: '<span>Select an age group</span>',
+              },
+            },
+            responsiveStyles: {
+              large: {
+                marginTop: '10px',
+              },
+            },
+          },
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            id: 'builder-4c19ded4a5c54bfda145fddb2d271d1f',
+            component: {
+              name: 'Form:Select',
+              options: {
+                options: [
+                  {
+                    value: '<20',
+                    name: '<20',
+                  },
+                  {
+                    value: '20-30',
+                    name: '20-30',
+                  },
+                  {
+                    value: '30+',
+                    name: '30+',
+                  },
+                ],
+                required: false,
+                name: 'age',
+                defaultValue: '',
+              },
+            },
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                flexShrink: '0',
+                boxSizing: 'border-box',
+                marginTop: '20px',
+                alignSelf: 'flex-start',
+              },
+            },
+          },
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
             id: 'builder-a78f837ceb124794abd371d604703593',
             meta: {
               previousId: 'builder-38bed9469b4e4350ba23869003cf3988',
