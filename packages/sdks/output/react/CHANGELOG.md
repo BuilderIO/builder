@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 0.13.2
+
+### Patch Changes
+
+- cdc5ce8: Feature: Add Form, FormSelect, FormSubmit and FormInput blocks.
+
 ## 0.13.1
 
 ## 0.13.0
