@@ -10,17 +10,6 @@ const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
-  const getNoTraverse = () => {
-    if (
-      (options.limit === undefined || options.limit > 1) &&
-      !('noTraverse' in options)
-    ) {
-      return true;
-    }
-
-    return false;
-  };
-
   const {
     limit = 30,
     userAttributes,
@@ -49,13 +38,16 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     );
   }
 
+  // if we are fetching an array of content, we disable noTraverse for perf reasons.
+  const noTraverse = options.limit !== 1;
+
   const url = new URL(
     `https://cdn.builder.io/api/${apiVersion}/content/${model}`
   );
 
   url.searchParams.set('apiKey', apiKey);
   url.searchParams.set('limit', String(limit));
-  url.searchParams.set('noTraverse', String(getNoTraverse()));
+  url.searchParams.set('noTraverse', String(noTraverse));
   url.searchParams.set('includeRefs', String(true));
 
   if (locale) url.searchParams.set('locale', locale);
