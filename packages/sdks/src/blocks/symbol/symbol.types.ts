@@ -1,6 +1,7 @@
 import type { BuilderContent } from '../../types/builder-content.js';
 import type {
   BuilderComponentsProp,
+  BuilderDataProps,
   BuilderLinkComponentProp,
 } from '../../types/builder-props.js';
 
@@ -15,6 +16,7 @@ interface SymbolInfo {
 
 export interface SymbolProps
   extends BuilderComponentsProp,
+    BuilderDataProps,
     BuilderLinkComponentProp {
   symbol?: SymbolInfo;
   dataOnly?: boolean;

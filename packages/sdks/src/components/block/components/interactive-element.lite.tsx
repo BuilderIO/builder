@@ -3,10 +3,7 @@ import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
-import type {
-  Dictionary,
-  PropsWithChildren,
-} from '../../../types/typescript.js';
+import type { Dictionary } from '../../../types/typescript.js';
 
 export type InteractiveElementProps = {
   Wrapper: any;
@@ -14,6 +11,7 @@ export type InteractiveElementProps = {
   context: Signal<BuilderContextInterface>;
   wrapperProps: Dictionary<any>;
   includeBlockProps: boolean;
+  children?: any;
 };
 
 useMetadata({
@@ -31,9 +29,7 @@ useMetadata({
  * This component renders an interactive component (from the list of registered components).
  * We have to keep this logic in its own component so that it can become a client component in our RSC SDK.
  */
-export default function InteractiveElement(
-  props: PropsWithChildren<InteractiveElementProps>
-) {
+export default function InteractiveElement(props: InteractiveElementProps) {
   return (
     <props.Wrapper
       {...props.wrapperProps}
