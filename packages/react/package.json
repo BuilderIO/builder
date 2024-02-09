@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -41,6 +41,7 @@
     "release:dev": "yarn build && yarn version prerelease && yarn npm publish --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "fix-core-version": "bash ./scripts/fix-core-version.sh",
     "precommit": "lint-staged",
     "ci:test": "yarn test",
     "ci:build": "yarn build"
@@ -61,7 +62,6 @@
     }
   },
   "devDependencies": {
-    "@builder.io/block-publish": "^1.1.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^14.0.0",
     "@types/hash-sum": "^1.0.0",

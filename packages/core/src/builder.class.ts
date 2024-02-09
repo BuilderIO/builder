@@ -635,6 +635,8 @@ export interface Input {
    * Use optionally with inputs of type `reference`. Restricts the content entry picker to a specific model by name.
    */
   model?: string;
+
+  meta?: Record<string, any>;
 }
 
 /**

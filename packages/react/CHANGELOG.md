@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 3.2.3
+
+### Patch Changes
+
+- f67242f: types: add `meta` property to Input
+- Updated dependencies [f67242f]
+  - @builder.io/sdk@2.2.2
+
 ## 3.2.2
 
 - Fix: `deviceSize` state not getting set properly.
