@@ -1,5 +1,27 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.0.0
+
+### Major Changes
+
+- 388c152: - 🧨 Breaking changes: this release removes the following deprecations:
+
+  Exports:
+
+  - `RenderBlocks` -> `Blocks`
+  - `RenderContent` -> `Content`
+  - `getContent` -> `fetchOneEntry`
+  - `getAllContent` -> `fetchEntries`
+
+  Arguments/Props:
+
+  - `Content`'s `includeRefs` prop is removed in favor of `enrich`.
+  - `fetchOneEntry`'s `includeRefs` and `noTraverse` arguments are removed in favor of `enrich`.
+
+  Functionality:
+
+  - removed deprecated side-effect `registerComponent()`. Instead, use the `customComponents` prop of `Content`.
+
 ## 0.13.4
 
 ### Patch Changes
