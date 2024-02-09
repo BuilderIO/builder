@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 3.2.4
+
+### Patch Changes
+
+- 3764321: Fix: replace broken default value of Video Block with a working link.
+
 ## 3.2.3
 
 ### Patch Changes
