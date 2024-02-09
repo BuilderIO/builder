@@ -2,18 +2,16 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [
+  "linked": [
     [
       "@builder.io/sdk-react",
-      "@builder.io/sdk-react-nextjs",
       "@builder.io/sdk-vue",
-      "@builder.io/sdk-qwik",
-      "@builder.io/sdk-solid",
       "@builder.io/sdk-svelte",
       "@builder.io/sdk-react-native"
-    ]
+    ],
+    ["@builder.io/sdk-react-nextjs", "@builder.io/sdk-qwik", "@builder.io/sdk-solid"]
   ],
-  "linked": [],
+  "fixed": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
