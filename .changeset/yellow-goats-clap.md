@@ -8,9 +8,20 @@
 '@builder.io/sdk-solid': minor
 ---
 
-- 🧨 Breaking change: remove deprecated exports and attributes:
+- 🧨 Breaking changes: this release removes the following deprecations:
 
-- `RenderBlocks` and `RenderContent` exports, in favor of `Blocks` and `Content`.
-- `getContent` and `getAllContent` exports, in favor of `fetchOneEntry` and `fetchEntries`.
-- `Content`'s `includeRefs` prop, in favor of `enrich`.
-- `fetchOneEntry`'s `includeRefs` and `noTraverse` parameters, in favor of `enrich`.
+Exports:
+
+- `RenderBlocks` -> `Blocks`
+- `RenderContent` -> `Content`
+- `getContent` -> `fetchOneEntry`
+- `getAllContent` -> `fetchEntries`
+
+Arguments/Props:
+
+- `Content`'s `includeRefs` prop is removed in favor of `enrich`.
+- `fetchOneEntry`'s `includeRefs` and `noTraverse` arguments are removed in favor of `enrich`.
+
+Functionality:
+
+- removed deprecated side-effect `registerComponent()`. Instead, use the `customComponents` prop of `Content`.
