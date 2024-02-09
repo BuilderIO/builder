@@ -9,4 +9,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Fix: default value of video
+Fix: replace broken default value of Video Block with a working link.
