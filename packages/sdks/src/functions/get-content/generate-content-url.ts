@@ -10,15 +10,12 @@ const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
-  let { noTraverse = false } = options;
-
   const {
     limit = 30,
     userAttributes,
     query,
     model,
     apiKey,
-    includeRefs = true,
     enrich,
     locale,
     apiVersion = DEFAULT_API_VERSION,
@@ -41,19 +38,20 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     );
   }
 
-  // Set noTraverse=true if NOT already passed by user, for query performance
-  if (
-    (options.limit === undefined || options.limit > 1) &&
-    !('noTraverse' in options)
-  ) {
-    noTraverse = true;
-  }
+  // if we are fetching an array of content, we disable noTraverse for perf reasons.
+  const noTraverse = limit !== 1;
 
   const url = new URL(
-    `https://cdn.builder.io/api/${apiVersion}/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
-      locale ? `&locale=${locale}` : ''
-    }${enrich ? `&enrich=${enrich}` : ''}`
+    `https://cdn.builder.io/api/${apiVersion}/content/${model}`
   );
+
+  url.searchParams.set('apiKey', apiKey);
+  url.searchParams.set('limit', String(limit));
+  url.searchParams.set('noTraverse', String(noTraverse));
+  url.searchParams.set('includeRefs', String(true));
+
+  if (locale) url.searchParams.set('locale', locale);
+  if (enrich) url.searchParams.set('enrich', String(enrich));
 
   url.searchParams.set('omit', omit || 'meta.componentsUsed');
 

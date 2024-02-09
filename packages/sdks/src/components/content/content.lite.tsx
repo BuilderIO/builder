@@ -14,10 +14,7 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
-import {
-  components,
-  serializeComponentInfo,
-} from '../../functions/register-component.js';
+import { serializeComponentInfo } from '../../functions/register-component.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
@@ -55,12 +52,6 @@ export default function ContentComponent(props: ContentProps) {
 
     registeredComponents: [
       ...getDefaultRegisteredComponents(),
-      // While this `components` object is deprecated, we must maintain support for it.
-      // Since users are able to override our default components, we need to make sure that we do not break such
-      // existing usage.
-      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-      // which is the new standard way of providing custom components, and must therefore take precedence.
-      ...components,
       ...(props.customComponents || []),
     ].reduce<RegisteredComponents>(
       (acc, { component, ...info }) => ({
@@ -106,12 +97,6 @@ export default function ContentComponent(props: ContentProps) {
         apiVersion: props.apiVersion,
         componentInfos: [
           ...getDefaultRegisteredComponents(),
-          // While this `components` object is deprecated, we must maintain support for it.
-          // Since users are able to override our default components, we need to make sure that we do not break such
-          // existing usage.
-          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-          // which is the new standard way of providing custom components, and must therefore take precedence.
-          ...components,
           ...(props.customComponents || []),
         ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
@@ -145,7 +130,6 @@ export default function ContentComponent(props: ContentProps) {
       apiKey={props.apiKey}
       canTrack={props.canTrack}
       locale={props.locale}
-      includeRefs={props.includeRefs}
       enrich={props.enrich}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}

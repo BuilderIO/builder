@@ -11,12 +11,3 @@ import { default as Blocks } from '../components/blocks/blocks.lite.jsx';
 import { default as Content } from '../components/content-variants/content-variants.lite.jsx';
 
 export { Blocks, Content };
-
-/**
- * @deprecated Renamed to `Blocks`.
- */
-export const RenderBlocks = Blocks;
-/**
- * @deprecated Renamed to `Content`.
- */
-export const RenderContent = Content;

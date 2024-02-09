@@ -286,7 +286,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
       registerInsertMenu();
       setupBrowserForEditing({
         ...(props.locale ? { locale: props.locale } : {}),
-        ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
         ...(props.trustedHosts ? { trustedHosts: props.trustedHosts } : {}),
       });
