@@ -19,6 +19,11 @@ export function transformBlock(block: BuilderBlock): BuilderBlock {
           height: 1,
         },
       },
+      properties: {
+        ...block.properties,
+        width: 1 as any,
+        height: 1 as any,
+      },
     };
   }
   return block;

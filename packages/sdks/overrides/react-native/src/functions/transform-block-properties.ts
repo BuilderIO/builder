@@ -10,9 +10,13 @@ export function transformBlockProperties({
   context: BuilderContextInterface;
   properties: any;
 }) {
+  if (!isEditing()) {
+    return properties;
+  }
+
   const id = properties['builder-id'];
 
-  if (!id && isEditing()) {
+  if (!id) {
     console.warn('No builder-id found on properties', properties);
   }
 
