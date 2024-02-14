@@ -81,7 +81,15 @@ export default function Block(props: BlockProps) {
         state.processedBlock.href;
 
       if (shouldUseLink) {
-        return props.linkComponent || 'a';
+        return (
+          props.linkComponent ||
+          useTarget({
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            reactNative: BaseText,
+            default: 'a',
+          })
+        );
       }
 
       return useTarget({
