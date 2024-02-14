@@ -193,8 +193,6 @@ const processValue = (
     return value.replace(/["]/g, '').split(',')[0];
   }
 
-  if (value === '0') return '0px';
-
   const numericValue = parseFloat(value);
   const isNumeric = !isNaN(numericValue);
 
