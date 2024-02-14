@@ -1,5 +1,13 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.1
+
+### Patch Changes
+
+- 3a0f26f: fix: replace 'a', 'div' and 'button' with BaseText/View components.
+- 3a0f26f: fix: image width/height styles
+- 3a0f26f: Fix: crash due to undefined style values
+
 ## 1.0.0
 
 ### Major Changes
