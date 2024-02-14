@@ -199,7 +199,22 @@ export default function Columns(props: ColumnProps) {
         {(column, index) => (
           <DynamicRenderer
             key={index}
-            TagName={column.link ? props.builderLinkComponent || 'a' : 'div'}
+            TagName={
+              column.link
+                ? props.builderLinkComponent ||
+                  useTarget({
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    reactNative: BaseText,
+                    default: 'a',
+                  })
+                : useTarget({
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    reactNative: View,
+                    default: 'div',
+                  })
+            }
             actionAttributes={{}}
             attributes={{
               ...useTarget({

@@ -61,6 +61,13 @@ const SRCSET_PLUGIN = () => ({
 const BASE_TEXT_PLUGIN = () => ({
   code: {
     pre: (code) => {
+      if (code.includes('BaseText')) {
+        return `
+import BaseText from '../BaseText';
+${code}
+`;
+      }
+
       if (code.includes('<Text>') && !code.includes('InlinedStyles')) {
         const importStatement = `import BaseText from '../BaseText';`;
         // we put the import statement after the first line so the `use client` comment stays at the top.

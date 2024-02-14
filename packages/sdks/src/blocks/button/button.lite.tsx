@@ -13,7 +13,16 @@ useMetadata({
 export default function Button(props: ButtonProps) {
   return (
     <DynamicRenderer
-      TagName={props.link ? props.builderLinkComponent || 'a' : 'button'}
+      TagName={useTarget({
+        reactNative: props.link
+          ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            props.builderLinkComponent || BaseText
+          : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            BaseText,
+        default: props.link ? props.builderLinkComponent || 'a' : 'button',
+      })}
       attributes={{
         ...useTarget({
           vue: filterAttrs(props.attributes, 'v-on:', false),
