@@ -1,4 +1,8 @@
-import { _processContentResult, Content } from '@builder.io/sdk-react-native';
+import {
+  _processContentResult,
+  Content,
+  fetchOneEntry,
+} from '@builder.io/sdk-react-native';
 import { getProps } from '@e2e/tests';
 import {
   NavigationContainer,
@@ -32,6 +36,7 @@ const BuilderContent = () => {
     getProps({
       pathname: currentRoute?.path || '/',
       _processContentResult,
+      fetchOneEntry,
     }).then((resp) => {
       setProps(resp);
     });
