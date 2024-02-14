@@ -165,8 +165,9 @@ const inRange = (value: number, min: number, max: number) =>
 
 const processValue = (
   styles: { [key: string]: string },
-  [key, value]: [string, string]
+  [key, value]: [string, unknown]
 ): string | undefined => {
+  if (typeof value !== 'string' || value === '') return undefined;
   if (!ALLOWED_CSS_PROPERTIES.includes(key as any)) return undefined;
   if (value.includes('calc')) return undefined;
   if (value.includes('inherit')) return undefined;
