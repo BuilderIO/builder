@@ -7,7 +7,6 @@ import type {
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
 import { safeDynamicRequire } from './safeDynamicRequire.js';
-const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
 
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
 
@@ -77,6 +76,7 @@ const getIsolateContext = () => {
   //   return Builder.serverContext;
   // }
   // Builder.setServerContext(isolate.createContextSync());
+  const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
   const isolate = new ivm.Isolate({
     memoryLimit: 128,
   });
@@ -91,6 +91,8 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
+  const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
+
   const state = fastClone({
     ...rootState,
     ...localState,
