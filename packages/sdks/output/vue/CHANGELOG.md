@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.2
+
+### Patch Changes
+
+- a4bfcbc: Fix: move dynamicRequire of `isolated-vm` outside of global scope to reduce crashes/issues.
+
 ## 1.0.0
 
 ### Major Changes
