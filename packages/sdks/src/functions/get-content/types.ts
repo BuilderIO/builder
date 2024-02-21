@@ -26,7 +26,7 @@ export interface GetContentOptions {
    * }
    * ```
    */
-  userAttributes?: (Record<string, string> & { urlPath?: string }) | null;
+  userAttributes?: (Record<string, any> & { urlPath?: string }) | null;
 
   /**
    * Mongodb style query of your data. E.g.:
