@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.3
+
+### Patch Changes
+
+- a730741: fix `userAttributes` types in `GetContentOptions`
+
 ## 1.0.2
 
 ### Patch Changes

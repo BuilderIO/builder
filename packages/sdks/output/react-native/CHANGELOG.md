@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.3
+
+### Patch Changes
+
+- a730741: Fix: drop invalid `borderStyle` values
+- a730741: fix `userAttributes` types in `GetContentOptions`
+
 ## 1.0.2
 
 ### Patch Changes
