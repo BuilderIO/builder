@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.2
+
+### Patch Changes
+
+- a730741: fix `userAttributes` types in `GetContentOptions`
+
 ## 0.14.1
 
 ### Patch Changes

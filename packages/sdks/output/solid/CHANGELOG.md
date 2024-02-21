@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 0.14.2
+
+### Patch Changes
+
+- a730741: fix `userAttributes` types in `GetContentOptions`
+
 ## 0.14.1
 
 ### Patch Changes
