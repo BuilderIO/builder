@@ -1,8 +1,9 @@
-# Builder.io React SDK v2 (BETA)
+# Builder.io React SDK v2
 
-This is the React v2 SDK, `@builder.io/sdk-react`.
+This is the React v2 SDK, `@builder.io/sdk-react`. It is a complete rewrite of the React SDK, and has the following benefits:
 
-NOTE: it is still in Beta. For the stable React v1 SDK [go here](../../../react/), i.e. `builder.io/react`.
+- zero client-side dependencies
+- far smaller bundle size (25kb)
 
 ## API Reference
 
