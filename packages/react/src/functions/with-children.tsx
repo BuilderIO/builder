@@ -43,10 +43,10 @@ export const withChildren = <P extends object>(Component: React.ComponentType<P>
       if (!!componentOptions) {
         Object.keys(componentOptions).forEach(key => {
           const value = componentOptions[key];
-          if (isBuilderElement(value)) {
-            useProps[key] = <BuilderBlock block={value} />;
-          } else if (Array.isArray(value) && value.every(isBuilderElement)) {
+          if (Array.isArray(value) && value.every(isBuilderElement)) {
             useProps[key] = value.map(child => <BuilderBlock key={child.id} block={child} />);
+          } else if (isBuilderElement(value)) {
+            useProps[key] = <BuilderBlock block={value} />;
           }
         });
       }
