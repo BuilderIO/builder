@@ -4,7 +4,7 @@ import { BuilderElement } from '@builder.io/sdk';
 import { BuilderBlock } from '../components/builder-block.component';
 
 const isBuilderElement = (item: unknown): item is BuilderElement => {
-  return Boolean((item as any)?.['@type'] === '@builder.io/sdk:Element');
+  return Boolean(typeof item === 'object' && item && (item as any)?.['@type'] === '@builder.io/sdk:Element');
 };
 
 /**
