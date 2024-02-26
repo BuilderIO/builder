@@ -1,5 +1,4 @@
 ---
-'@builder.io/sdk-react-nextjs': patch
 '@builder.io/sdk-react': patch
 ---
 
