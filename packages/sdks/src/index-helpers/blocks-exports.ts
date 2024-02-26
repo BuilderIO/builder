@@ -6,8 +6,5 @@ export { default as Section } from '../blocks/section/section.lite.jsx';
 export { default as Symbol } from '../blocks/symbol/symbol.lite.jsx';
 export { default as Text } from '../blocks/text/text.lite.jsx';
 export { default as Video } from '../blocks/video/video.lite.jsx';
-
-import { default as Blocks } from '../components/blocks/blocks.lite.jsx';
-import { default as Content } from '../components/content-variants/content-variants.lite.jsx';
-
-export { Blocks, Content };
+export { default as Blocks } from '../components/blocks/blocks.lite.jsx';
+export { default as Content } from '../components/content-variants/content-variants.lite.jsx';
