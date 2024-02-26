@@ -10,6 +10,11 @@ import { getSdkEnv } from './index.js';
 const parse = (code) => recast.parse(code, { parser: typescriptParser });
 
 /**
+ *
+ * - Wraps all Block components and exported components (`Blocks`, `Content`) in a `React.lazy` import
+ * - For the Edge bundle, it emits a file that re-exports all of the above components by wrapping them in logic that
+ * toggles between the browser & edge versions.
+ *
  * @typedef {import('vite').Plugin} Plugin
  * @returns {Plugin}
  */
@@ -75,6 +80,10 @@ export const lazyifyReactComponentsVitePlugin = () => {
 
         const lazyfiedCode = recast.prettyPrint(ast);
 
+        const getComponent = (name) => {
+          `(props) => React.createElement(React.Suspense, null, isBrowser() ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) : React.createElement(EdgeSdk.${name}, Object.assign({}, props)))`;
+        };
+
         if (isBlocksExports && getSdkEnv() === 'edge') {
           const TOP_OF_FILE_MJS = `
 'use client';
@@ -88,11 +97,8 @@ import * as BrowserSdk from '../browser/index.mjs';
 import * as EdgeSdk from './index.mjs';
 
 ${importNames
-  .map(
-    (name) =>
-      `export const ${name} = (props) => isBrowser() ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) : React.createElement(EdgeSdk.${name}, Object.assign({}, props));`
-  )
-  .join('\n')}
+  .map((name) => `export const ${name} = ${getComponent(name)}`)
+  .join(';\n')}
         `;
 
           this.emitFile({
@@ -113,12 +119,7 @@ const BrowserSdk = require('../browser/index.cjs');
 const EdgeSdk = require('./index.cjs');
 
 module.exports = {
-${importNames
-  .map(
-    (name) =>
-      `${name}: (props) => isBrowser() ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) : React.createElement(EdgeSdk.${name}, Object.assign({}, props)),`
-  )
-  .join('\n')}
+${importNames.map((name) => `${name}: ${getComponent(name)}`).join(',\n')}
 };
         `;
 
