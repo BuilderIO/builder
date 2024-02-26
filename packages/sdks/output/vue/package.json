@@ -33,7 +33,7 @@
       "import": "./lib/browser/index.js",
       "require": "./lib/browser/index.cjs"
     },
-    "./node": {
+    "./bundle/node": {
       "import": "./lib/node/index.js",
       "require": "./lib/node/index.cjs"
     },

@@ -83,7 +83,7 @@
       "import": "./lib/edge/index.qwik.mjs",
       "require": "./lib/edge/index.qwik.cjs"
     },
-    "./node": {
+    "./bundle/node": {
       "types": "./types/src/index.d.ts",
       "import": "./lib/node/index.qwik.mjs",
       "require": "./lib/node/index.qwik.cjs"

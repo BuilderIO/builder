@@ -132,7 +132,7 @@
       "import": "./lib/edge/index.mjs",
       "require": "./lib/edge/index.cjs"
     },
-    "./node": {
+    "./bundle/node": {
       "import": "./lib/node/index.mjs",
       "require": "./lib/node/index.cjs"
     },
