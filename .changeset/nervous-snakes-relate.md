@@ -7,4 +7,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-move `/edge`, '/node' and `/browser` sub-path exports to `/bundle/edge`, '/bundle/node' and `/bundle/browser`
+move `/edge`, `/node` and `/browser` sub-path exports to `/bundle/edge`, `/bundle/node` and `/bundle/browser`
