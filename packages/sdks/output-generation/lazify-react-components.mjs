@@ -77,6 +77,7 @@ export const lazyifyReactComponentsVitePlugin = () => {
 
         if (isBlocksExports && getSdkEnv() === 'edge') {
           const TOP_OF_FILE_MJS = `
+'use client';
 import React from 'react';
 
 function isBrowser() {
@@ -101,14 +102,15 @@ ${importNames
           });
 
           const TOP_OF_FILE_CJS = `
+'use client';
 import React from 'react';
 
 function isBrowser() {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
 
-import * as BrowserSdk from '../browser/index.cjs';
-import * as EdgeSdk from './index.cjs';
+const BrowserSdk = require('../browser/index.cjs');
+const EdgeSdk = require('./index.cjs');
 
 module.exports = {
 ${importNames
