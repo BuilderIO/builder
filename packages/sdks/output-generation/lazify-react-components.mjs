@@ -10,7 +10,7 @@ const parse = (code) => recast.parse(code, { parser: typescriptParser });
 
 /**
  * @typedef {import('vite').Plugin} Plugin
- * @type {Plugin}
+ * @returns {Plugin}
  */
 export const lazyifyReactComponentsVitePlugin = () => {
   return {
