@@ -81,7 +81,13 @@ export const lazyifyReactComponentsVitePlugin = () => {
         const lazyfiedCode = recast.prettyPrint(ast);
 
         const getComponent = (name) => {
-          `(props) => React.createElement(React.Suspense, null, isBrowser() ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) : React.createElement(EdgeSdk.${name}, Object.assign({}, props)))`;
+          `(props) => React.createElement(BrowserSdk.ErrorBoundary, null,
+              React.createElement(React.Suspense, null, 
+                isBrowser() 
+                  ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) 
+                  : React.createElement(EdgeSdk.${name}, Object.assign({}, props))
+              )
+            )`;
         };
 
         if (isBlocksExports && getSdkEnv() === 'edge') {
