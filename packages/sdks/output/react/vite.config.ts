@@ -1,11 +1,16 @@
 import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import { lazyifyReactComponentsVitePlugin } from '@builder.io/sdks/output-generation/lazify-react-components.mjs';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 const SERVER_ENTRY = 'server-entry';
 
 export default defineConfig({
-  plugins: [viteOutputGenerator({ pointTo: 'input' }), react()],
+  plugins: [
+    viteOutputGenerator({ pointTo: 'input' }),
+    react(),
+    lazyifyReactComponentsVitePlugin(),
+  ],
   build: {
     // This is to allow Webpack 4 to consume the output.
     target: 'es2019',
@@ -29,7 +34,9 @@ export default defineConfig({
         manualChunks(id, { getModuleIds, getModuleInfo }) {
           const moduleInfo = getModuleInfo(id);
 
-          if (moduleInfo.importers.some((x) => x.includes('server-index.ts'))) {
+          if (
+            moduleInfo?.importers.some((x) => x.includes('server-index.ts'))
+          ) {
             return SERVER_ENTRY;
           }
         },
@@ -37,6 +44,8 @@ export default defineConfig({
           if (chunk.name !== SERVER_ENTRY) {
             return "'use client';";
           }
+
+          return '';
         },
       },
     },
