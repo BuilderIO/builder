@@ -1,6 +1,6 @@
 import recast from 'recast';
 import typescriptParser from 'recast/parsers/typescript.js';
-import { getSdkEnv } from '.';
+import { getSdkEnv } from './index.js';
 
 /**
  *
