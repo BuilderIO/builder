@@ -1,6 +1,7 @@
 import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import { lazyifyReactComponentsVitePlugin } from '../../output-generation/lazify-react-components.mjs';
 
 const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
 const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
@@ -27,7 +28,12 @@ const typeIndexGenerator = () => ({
 });
 
 export default defineConfig({
-  plugins: [viteOutputGenerator(), react(), typeIndexGenerator()],
+  plugins: [
+    viteOutputGenerator(),
+    react(),
+    typeIndexGenerator(),
+    lazyifyReactComponentsVitePlugin(),
+  ],
   build: {
     emptyOutDir: true,
     lib: {
