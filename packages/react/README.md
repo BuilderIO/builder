@@ -1,6 +1,8 @@
 # Builder.io React SDK
 
-NOTE: for Next v13 app directory support, you will need to use our beta version of the SDK. You can find more about it [here](../sdks/output/react).
+NOTE: If you want to register your React Server Components as custom components in Builder, you will need to use our experimental NextJS SDK [here](../sdks/output/nextjs).
+
+NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](../sdks/output/react).
 
 ## Integration
 
@@ -317,6 +319,8 @@ builder.setUserAttributes({
 ```
 
 #### Lite version
+
+NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](../sdks/output/react).
 
 This SDK has a lite version where it provides only the bare minimum of components needed to render your Builder content, it won't have any built-in components registered by default, this option should work with custom components. The main difference is that you need to specifically add any built-in components you want to use or they won’t show up.
 To use the lite package, you change all your imports from `@buidler/react` to `@builder/react/lite` and then import only the built-in components that you want to use:

@@ -1,5 +1,12 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.4
+
+### Patch Changes
+
+- 4528969: create conditional `/edge` export that alternates between edge and browser bundle depending on environment
+- 4528969: move `/edge`, `/node` and `/browser` sub-path exports to `/bundle/edge`, `/bundle/node` and `/bundle/browser`
+
 ## 1.0.3
 
 ### Patch Changes

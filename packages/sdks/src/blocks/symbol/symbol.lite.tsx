@@ -5,7 +5,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
+import ContentVariants from '../../components/content-variants/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { filterAttrs } from '../helpers.js';
 /**
@@ -115,6 +115,18 @@ export default function Symbol(props: SymbolProps) {
         model={props.symbol?.model}
         content={state.contentToUse}
         linkComponent={props.builderLinkComponent}
+        blocksWrapper={useTarget({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: View,
+          default: 'div',
+        })}
+        contentWrapper={useTarget({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: View,
+          default: 'div',
+        })}
       />
     </div>
   );

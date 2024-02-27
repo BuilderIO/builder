@@ -9,13 +9,12 @@ test.describe('Form', () => {
   test('Form rendering correctly', async ({ page }) => {
     await page.goto('/form');
 
-    expect(await page.locator('form').count()).toBe(1);
-    expect(await page.locator('form').first().locator('input').count()).toBe(2);
-    expect(await page.locator('form').first().locator('button').count()).toBe(1);
-    expect(await page.locator('form').first().locator('select').count()).toBe(1);
-    expect(
-      await page.locator('form').first().locator('select').first().locator('option').count()
-    ).toBe(3);
-    expect(await page.locator('form').first().locator('button').first().innerText()).toBe('Submit');
+    const form = page.locator('form');
+    await expect(form).toHaveCount(1);
+    await expect(form.locator('input')).toHaveCount(2);
+    await expect(form.locator('button')).toHaveCount(1);
+    await expect(form.locator('select')).toHaveCount(1);
+    await expect(form.locator('select').first().locator('option')).toHaveCount(3);
+    expect(await form.locator('button').first().innerText()).toBe('Submit');
   });
 });

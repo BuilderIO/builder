@@ -15,6 +15,7 @@
 </p>
 
 <p align="center">
+  <img alt="React SDK Size" src="https://deno.bundlejs.com/badge?q=@builder.io/sdk-react&treeshake=[*]">
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" /></a>
   <a href="https://github.com/builderio/builder/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
   <a href="https://github.com/BuilderIO/builder"><img alt="License" src="https://img.shields.io/github/license/BuilderIO/builder" /></a>
@@ -168,6 +169,15 @@ Learn more about <a href="https://www.builder.io/c/docs/how-builder-works-techni
 ## How is the performance?
 
 Performance is our top priority. All content is delivered from the edge, renderable server side or statically, we [optimize the heck out of it](https://www.builder.io/blog/high-performance-no-code) and our SDKs are small and mighty.
+
+Some example SDK sizes from Bundle.js:
+
+| SDK           | Size                                                                                                                                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| React (Gen 2) | ![React Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-react&treeshake=[*])                                                                                                                  |
+| Vue           | ![Vue Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-vue&treeshake=[*]&config={%22esbuild%22:{%22external%22:[%22@vue/runtime-dom%22,%22@vue/runtime-core%22,%22@vue/shared%22,%22vue%22]}}) |
+| Qwik          | ![Qwik Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-qwik&treeshake=[*]&config={"esbuild":{"external":["@builder.io/qwik"]}})                                                               |
+| Svelte        | ![Svelte Bundle Size](https://deno.bundlejs.com/badge?q=@builder.io/sdk-svelte)                                                                                                                              |
 
 Importantly, there are no hacks here - no iframes, no unneeded client side code or rendering, our rule of thumb is we produce content just like if you wrote it by hand. Assets are optimized, DOM is minimized, and it's all native to your framework (so all React components if you use React, Svelte for Svelte, etc)
 
