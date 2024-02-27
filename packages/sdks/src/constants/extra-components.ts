@@ -5,21 +5,21 @@
  */
 
 import { componentInfo as customCodeInfo } from '../blocks/custom-code/component-info.js';
-import { default as customCode } from '../blocks/custom-code/custom-code.lite.jsx';
+import { default as customCode } from '../blocks/custom-code/index.js';
 import { componentInfo as embedComponentInfo } from '../blocks/embed/component-info.js';
-import { default as embed } from '../blocks/embed/embed.lite.jsx';
+import { default as embed } from '../blocks/embed/index.js';
 import { componentInfo as formComponentInfo } from '../blocks/form/form/component-info.js';
-import { default as Form } from '../blocks/form/form/form.lite.jsx';
+import { default as Form } from '../blocks/form/form/index.js';
 import { componentInfo as formInputComponentInfo } from '../blocks/form/input/component-info.js';
-import { default as FormInput } from '../blocks/form/input/input.lite.jsx';
+import { default as FormInput } from '../blocks/form/input/index.js';
 import { componentInfo as formSelectComponentInfo } from '../blocks/form/select/component-info.js';
-import { default as FormSelect } from '../blocks/form/select/select.lite.jsx';
+import { default as FormSelect } from '../blocks/form/select/index.js';
 import { componentInfo as formSubmitButtonComponentInfo } from '../blocks/form/submit-button/component-info.js';
-import { default as FormSubmitButton } from '../blocks/form/submit-button/submit-button.lite.jsx';
+import { default as FormSubmitButton } from '../blocks/form/submit-button/index.js';
 import { componentInfo as imgComponentInfo } from '../blocks/img/component-info.js';
-import { default as Img } from '../blocks/img/img.lite.jsx';
+import { default as Img } from '../blocks/img/index.js';
 import { componentInfo as videoComponentInfo } from '../blocks/video/component-info.js';
-import { default as Video } from '../blocks/video/video.lite.jsx';
+import { default as Video } from '../blocks/video/index.js';
 import type { RegisteredComponent } from '../context/types.js';
 import { TARGET } from './target.js';
 
