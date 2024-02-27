@@ -78,17 +78,17 @@
         "require": "./lib/browser/index.qwik.cjs"
       }
     },
-    "./edge": {
+    "./bundle/edge": {
       "types": "./types/src/index.d.ts",
       "import": "./lib/edge/index.qwik.mjs",
       "require": "./lib/edge/index.qwik.cjs"
     },
-    "./node": {
+    "./bundle/node": {
       "types": "./types/src/index.d.ts",
       "import": "./lib/node/index.qwik.mjs",
       "require": "./lib/node/index.qwik.cjs"
     },
-    "./browser": {
+    "./bundle/browser": {
       "types": "./types/src/index.d.ts",
       "import": "./lib/browser/index.qwik.mjs",
       "require": "./lib/browser/index.qwik.cjs"

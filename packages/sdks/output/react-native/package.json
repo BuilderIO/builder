@@ -76,17 +76,17 @@
         "require": "./lib/browser/commonjs/index.js"
       }
     },
-    "./edge": {
+    "./bundle/edge": {
       "types": "./lib/edge/typescript/index.d.ts",
       "import": "./lib/edge/module/index.js",
       "require": "./lib/edge/commonjs/index.js"
     },
-    "./node": {
+    "./bundle/node": {
       "types": "./lib/node/typescript/index.d.ts",
       "import": "./lib/node/module/index.js",
       "require": "./lib/node/commonjs/index.js"
     },
-    "./browser": {
+    "./bundle/browser": {
       "types": "./lib/browser/typescript/index.d.ts",
       "import": "./lib/browser/module/index.js",
       "require": "./lib/browser/commonjs/index.js"

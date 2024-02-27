@@ -4,10 +4,8 @@ import { sdk } from './sdk.js';
 
 test.describe('Repeat items bindings', () => {
   test('Updating state should display repeat collection', async ({ page }) => {
-    test.fail(
-      // NextJS fundamentally doesn't support state updates
-      sdk === 'rsc'
-    );
+    test.fail(sdk === 'rsc', "NextJS SDK doesn't support state updates");
+
     await page.goto('/repeat-items-bindings/');
     const buttonLocator = page.getByText('Click me');
     await expect(buttonLocator).toBeVisible();

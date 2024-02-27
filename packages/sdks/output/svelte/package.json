@@ -31,9 +31,9 @@
       "electron": "./lib/node/index.js",
       "default": "./lib/browser/index.js"
     },
-    "./edge": "./lib/edge/index.js",
-    "./node": "./lib/node/index.js",
-    "./browser": "./lib/browser/index.js"
+    "./bundle/edge": "./lib/edge/index.js",
+    "./bundle/node": "./lib/node/index.js",
+    "./bundle/browser": "./lib/browser/index.js"
   },
   "types": "./lib/browser/index.d.ts",
   "scripts": {

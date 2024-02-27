@@ -25,15 +25,15 @@
   "exports": {
     "./css": "./lib/browser/style.css",
     "./nuxt": "./nuxt.js",
-    "./edge": {
+    "./bundle/edge": {
       "import": "./lib/edge/index.js",
       "require": "./lib/edge/index.cjs"
     },
-    "./browser": {
+    "./bundle/browser": {
       "import": "./lib/browser/index.js",
       "require": "./lib/browser/index.cjs"
     },
-    "./node": {
+    "./bundle/node": {
       "import": "./lib/node/index.js",
       "require": "./lib/node/index.cjs"
     },

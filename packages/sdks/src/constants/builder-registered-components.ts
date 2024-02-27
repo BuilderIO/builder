@@ -1,19 +1,19 @@
-import { default as Button } from '../blocks/button/button.lite.jsx';
 import { componentInfo as buttonComponentInfo } from '../blocks/button/component-info.js';
-import { default as Columns } from '../blocks/columns/columns.lite.jsx';
+import { default as Button } from '../blocks/button/index.js';
 import { componentInfo as columnsComponentInfo } from '../blocks/columns/component-info.js';
+import { default as Columns } from '../blocks/columns/index.js';
 import { componentInfo as fragmentComponentInfo } from '../blocks/fragment/component-info.js';
-import { default as Fragment } from '../blocks/fragment/fragment.lite.jsx';
+import { default as Fragment } from '../blocks/fragment/index.js';
 import { componentInfo as imageComponentInfo } from '../blocks/image/component-info.js';
-import { default as Image } from '../blocks/image/image.lite.jsx';
+import { default as Image } from '../blocks/image/index.js';
 import { componentInfo as sectionComponentInfo } from '../blocks/section/component-info.js';
-import { default as Section } from '../blocks/section/section.lite.jsx';
+import { default as Section } from '../blocks/section/index.js';
 import { componentInfo as slotComponentInfo } from '../blocks/slot/component-info.js';
-import { default as Slot } from '../blocks/slot/slot.lite.jsx';
+import { default as Slot } from '../blocks/slot/index.js';
 import { componentInfo as symbolComponentInfo } from '../blocks/symbol/component-info.js';
-import { default as Symbol } from '../blocks/symbol/symbol.lite.jsx';
+import { default as Symbol } from '../blocks/symbol/index.js';
 import { componentInfo as textComponentInfo } from '../blocks/text/component-info.js';
-import { default as Text } from '../blocks/text/text.lite.jsx';
+import { default as Text } from '../blocks/text/index.js';
 import type { RegisteredComponent } from '../context/types.js';
 import { getExtraComponents } from './extra-components.js';
 

@@ -1,43 +1,42 @@
 import { expect } from '@playwright/test';
 import { test } from './helpers.js';
 
-const testLinkComponent = (path: string) => {
+const testLinkComponent = (path: string, totalLinks: number) => {
   test('renders regular anchor element by default', async ({ page }) => {
     await page.goto(path);
 
     const links = page.locator('a');
-    const columnsLink = await links.filter({
+    const customLinks = await links.filter({
       hasText: 'Custom Link',
     });
 
-    await expect(columnsLink).toHaveCount(0);
+    await expect(links).toHaveCount(totalLinks);
+    await expect(customLinks).toHaveCount(0);
   });
   test('renders custom link component when provided', async ({ page, packageName }) => {
     test.fail(packageName !== 'react', 'test logic only exists in react e2e server.');
     await page.goto(path + '?link-component=true');
 
     const links = page.locator('a');
-    const columnsLink = await links.filter({
+    const customLinks = await links.filter({
       hasText: 'Custom Link',
     });
 
-    // make sure we have at least one custom link
-    await expect(await columnsLink.count()).toBeGreaterThanOrEqual(1);
-
-    await expect(await columnsLink.count()).toEqual(await links.count());
+    await expect(links).toHaveCount(totalLinks);
+    await expect(customLinks).toHaveCount(totalLinks);
   });
 };
 
 test.describe('Link Component', () => {
   test.describe('Button', () => {
-    testLinkComponent('/');
+    testLinkComponent('/', 8);
   });
 
   test.describe('Columns', () => {
-    testLinkComponent('/columns');
+    testLinkComponent('/columns', 2);
   });
 
   test.describe('Link URL', () => {
-    testLinkComponent('/link-url');
+    testLinkComponent('/link-url', 2);
   });
 });

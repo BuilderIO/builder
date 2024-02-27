@@ -5,7 +5,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
+import ContentVariants from '../../components/content-variants/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { filterAttrs } from '../helpers.js';
 /**
