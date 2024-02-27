@@ -8,6 +8,9 @@ import {
   test,
 } from './helpers.js';
 
+// RN SDK does not use ScrollView in Symbol
+const FIRST_BLOCK_SYMBOL_SELECTOR = `${getClassSelector('builder-blocks')} > div`;
+
 const FIRST_BLOCK_SELECTOR = isRNSDK
   ? // ScrollView adds an extra div wrapper
     `${getClassSelector('builder-blocks')} > div > div`
@@ -53,7 +56,7 @@ test.describe('Styles', () => {
         'border-bottom-right-radius': '40px',
       };
       const locator = page
-        .locator(FIRST_BLOCK_SELECTOR)
+        .locator(FIRST_BLOCK_SYMBOL_SELECTOR)
         .filter({ hasText: 'Enter some text...' })
         .last();
 
