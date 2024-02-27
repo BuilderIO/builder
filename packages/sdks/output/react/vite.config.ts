@@ -77,8 +77,11 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
           .map((name) => `${name} as ${getEdgeComponentName(name)}`)
           .join(',\n');
 
-        const SOURCE_CODE_MJS = `
-      'use client';
+        /**
+         * Client-code entry point with lazy-loaded components
+         */
+        const dynamicBlocksExportsCode = `
+      "use client";
       import React from 'react';
       
       function isBrowser() {
@@ -87,39 +90,69 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
       
       import * as BrowserSdk from '../browser/index.mjs';
       import {${exportsObject}} from './${BLOCKS_EXPORTS_ENTRY}.mjs';
-      export * from './server-entry.mjs';
       
       ${importNames
         .map((name) => `export const ${name} = ${getComponent(name)}`)
         .join(';\n')}
       `;
 
-        const transpiledMjsFile = esbuild.transformSync(SOURCE_CODE_MJS, {
-          format: 'esm',
-          loader: 'tsx',
-          target: 'es2019',
-        }).code;
+        const DYNAMIC_EXPORTS_FILE_NAME = 'dynamic-blocks-exports';
+        const EDGE_ENTRY = 'edge-entry';
 
-        this.emitFile({
-          type: 'prebuilt-chunk',
-          code: transpiledMjsFile,
-          fileName: 'dynamic-blocks-exports.mjs',
+        /**
+         * Edge-code entry point with re-exported components.
+         */
+        const edgeEntryCode = `
+      export * from './server-entry.mjs';
+      export * from './${DYNAMIC_EXPORTS_FILE_NAME}.mjs';
+`;
+
+        const viteContext = this;
+        const emitJsFile = ({
+          code,
+          fileName,
+          format,
+        }: {
+          code: string;
+          fileName: string;
+          format: 'esm' | 'cjs';
+        }) => {
+          viteContext.emitFile({
+            type: 'prebuilt-chunk',
+            code: esbuild.transformSync(
+              format === 'esm' ? code : code.replace(/\.mjs/g, '.cjs'),
+              {
+                format,
+                loader: 'tsx',
+                target: 'es2019',
+              }
+            ).code,
+            fileName: `${fileName}.${format === 'esm' ? 'mjs' : 'cjs'}`,
+          });
+        };
+
+        emitJsFile({
+          code: dynamicBlocksExportsCode,
+          fileName: DYNAMIC_EXPORTS_FILE_NAME,
+          format: 'esm',
         });
 
-        const TOP_OF_FILE_CJS = SOURCE_CODE_MJS.replace(/\.mjs/g, '.cjs');
+        emitJsFile({
+          code: edgeEntryCode,
+          format: 'esm',
+          fileName: EDGE_ENTRY,
+        });
 
-        const transpiledCjsFile = esbuild.transformSync(TOP_OF_FILE_CJS, {
+        emitJsFile({
+          code: dynamicBlocksExportsCode,
           format: 'cjs',
-          loader: 'tsx',
-          target: 'es2019',
-        }).code;
+          fileName: DYNAMIC_EXPORTS_FILE_NAME,
+        });
 
-        console.log('transpiledCjsFile', transpiledCjsFile);
-
-        this.emitFile({
-          type: 'prebuilt-chunk',
-          code: transpiledCjsFile,
-          fileName: 'dynamic-blocks-exports.cjs',
+        emitJsFile({
+          code: edgeEntryCode,
+          fileName: EDGE_ENTRY,
+          format: 'cjs',
         });
 
         return src;
@@ -197,6 +230,7 @@ export default defineConfig({
           'react-dom': 'ReactDOM',
           'react/jsx-runtime': 'react/jsx-runtime',
         },
+        minifyInternalExports: false,
         manualChunks(id, { getModuleIds, getModuleInfo }) {
           const moduleInfo = getModuleInfo(id);
 
