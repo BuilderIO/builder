@@ -1,1 +1,1 @@
-export { default } from './symbol.lite.jsx'
+export { default } from './symbol.lite.jsx';

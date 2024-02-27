@@ -1,1 +1,1 @@
-export { default } from './custom-code.lite.jsx'
+export { default } from './custom-code.lite.jsx';

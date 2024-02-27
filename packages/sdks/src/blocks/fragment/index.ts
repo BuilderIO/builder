@@ -1,1 +1,1 @@
-export { default } from './fragment.lite.jsx'
+export { default } from './fragment.lite.jsx';

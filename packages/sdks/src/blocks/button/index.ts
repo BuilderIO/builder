@@ -1,1 +1,1 @@
-export { default } from './button.lite.jsx'
+export { default } from './button.lite.jsx';

@@ -1,1 +1,1 @@
-export { default } from './submit-button.lite.jsx'
+export { default } from './submit-button.lite.jsx';

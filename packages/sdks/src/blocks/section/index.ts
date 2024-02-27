@@ -1,1 +1,1 @@
-export { default } from './section.lite.jsx'
+export { default } from './section.lite.jsx';

@@ -1,1 +1,1 @@
-export { default } from './embed.lite.jsx'
+export { default } from './embed.lite.jsx';

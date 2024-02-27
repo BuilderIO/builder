@@ -1,1 +1,1 @@
-export { default } from './form.lite.jsx'
+export { default } from './form.lite.jsx';

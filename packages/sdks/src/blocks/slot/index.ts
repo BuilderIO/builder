@@ -1,1 +1,1 @@
-export { default } from './slot.lite.jsx'
+export { default } from './slot.lite.jsx';
