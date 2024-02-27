@@ -32,7 +32,7 @@
       "default": "./lib/browser/index.js"
     },
     "./bundle/edge": "./lib/edge/index.js",
-    "./node": "./lib/node/index.js",
+    "./bundle/node": "./lib/node/index.js",
     "./bundle/browser": "./lib/browser/index.js"
   },
   "types": "./lib/browser/index.d.ts",
