@@ -57,6 +57,7 @@ const ALLOWED_CSS_PROPERTIES: Array<keyof StyleSheetProperties> = [
   'flexWrap',
   'gap',
   'height',
+  'width',
   'justifyContent',
   'left',
   'margin',
