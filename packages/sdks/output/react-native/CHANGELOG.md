@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.5
+
+### Patch Changes
+
+- 2bbe643: Fix: add missing 'width' prop to CSS whitelist
+- 2bbe643: Fix: use 'View' as default for Symbol `ContentWrapper` and `BlocksWrapper`
+
 ## 1.0.4
 
 ### Patch Changes
