@@ -5,6 +5,7 @@ import { isEmptyElement } from './dynamic-renderer.helpers.js';
  * These imports are used by the Svelte SDK. Do not remove.
  */
 import { setAttrs } from '../../blocks/helpers.js';
+import ErrorBoundary from '../error-boundary.lite.jsx';
 
 useMetadata({
   options: {
@@ -29,36 +30,38 @@ export default function DynamicRenderer(props: {
   actionAttributes: any;
 }) {
   return (
-    <Show
-      when={!isEmptyElement(props.TagName)}
-      else={
-        <props.TagName
-          {...props.attributes}
-          {...props.actionAttributes}
-          MAGIC={'element'}
-        />
-      }
-    >
+    <ErrorBoundary>
       <Show
-        when={typeof props.TagName === 'string'}
+        when={!isEmptyElement(props.TagName)}
         else={
           <props.TagName
             {...props.attributes}
             {...props.actionAttributes}
-            MAGIC={'component'}
+            MAGIC={'element'}
+          />
+        }
+      >
+        <Show
+          when={typeof props.TagName === 'string'}
+          else={
+            <props.TagName
+              {...props.attributes}
+              {...props.actionAttributes}
+              MAGIC={'component'}
+            >
+              {props.children}
+            </props.TagName>
+          }
+        >
+          <props.TagName
+            {...props.attributes}
+            {...props.actionAttributes}
+            MAGIC={'element'}
           >
             {props.children}
           </props.TagName>
-        }
-      >
-        <props.TagName
-          {...props.attributes}
-          {...props.actionAttributes}
-          MAGIC={'element'}
-        >
-          {props.children}
-        </props.TagName>
+        </Show>
       </Show>
-    </Show>
+    </ErrorBoundary>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { logger } from '../helpers/logger';
 
-export class ErrorBoundary extends React.Component<
+export default class ErrorBoundary extends React.Component<
   React.PropsWithChildren,
   { hasError: boolean }
 > {

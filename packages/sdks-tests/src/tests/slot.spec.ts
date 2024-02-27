@@ -20,8 +20,8 @@ test.describe('Slot', () => {
     const builderTextElements = isRNSDK
       ? page.locator('[data-testid="div"]')
       : page.locator('.builder-text');
-    const count = await builderTextElements.count();
-    expect(count).toBe(3);
+
+    await expect(builderTextElements).toHaveCount(3);
     const slotElement = builderTextElements.nth(1);
     await expect(slotElement).toHaveText('Inside a slot!!');
   });

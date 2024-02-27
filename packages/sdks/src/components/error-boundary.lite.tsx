@@ -1,3 +1,3 @@
-export default function ErrorBoundary() {
-  return <div></div>;
+export default function ErrorBoundary(props: { children: any }) {
+  return props.children;
 }

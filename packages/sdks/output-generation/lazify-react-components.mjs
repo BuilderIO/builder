@@ -10,8 +10,19 @@ import { getSdkEnv } from './index.js';
 const parse = (code) => recast.parse(code, { parser: typescriptParser });
 
 /**
+ * Ran into some issue with Suspense transitions when trying to lazy-load all of
+ * our blocks, specifically the "repeat-item-bindings" test failed.
+ * The issue was probably caused by the SDK swapping out components altogether,
+ * which didn't play nice with Suspense boundaries.
  *
- * - Wraps all Block components and exported components (`Blocks`, `Content`) in a `React.lazy` import
+ * For now, we only lazy load Content, which is what's needed to avoid downloading
+ * the edge eval runtime in the browser.
+ */
+const ALLOWED_LAZY_COMPONENTS = ['Content'];
+
+/**
+ *
+ * - Wraps components in a `React.lazy` import
  * - For the Edge bundle, it emits a file that re-exports all of the above components by wrapping them in logic that
  * toggles between the browser & edge versions.
  *
@@ -38,7 +49,11 @@ export const lazyifyReactComponentsVitePlugin = () => {
             const importName = path.node.specifiers?.[0]?.exported.name;
             const importPath = path.node.source?.value;
 
-            if (!importName || !importPath) {
+            if (
+              !importName ||
+              !importPath ||
+              !ALLOWED_LAZY_COMPONENTS.includes(importName)
+            ) {
               return false;
             }
 
@@ -60,7 +75,12 @@ export const lazyifyReactComponentsVitePlugin = () => {
 
             const importPath = path.node.source?.value;
 
-            if (!importName || !importPath || !isDefaultImport) {
+            if (
+              !importName ||
+              !importPath ||
+              !isDefaultImport ||
+              !ALLOWED_LAZY_COMPONENTS.includes(importName)
+            ) {
               return false;
             }
 
@@ -80,15 +100,11 @@ export const lazyifyReactComponentsVitePlugin = () => {
 
         const lazyfiedCode = recast.prettyPrint(ast);
 
-        const getComponent = (name) => {
-          `(props) => React.createElement(BrowserSdk.ErrorBoundary, null,
-              React.createElement(React.Suspense, null, 
+        const getComponent = (name) => `(props) => 
                 isBrowser() 
                   ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) 
                   : React.createElement(EdgeSdk.${name}, Object.assign({}, props))
-              )
-            )`;
-        };
+            `;
 
         if (isBlocksExports && getSdkEnv() === 'edge') {
           const TOP_OF_FILE_MJS = `
