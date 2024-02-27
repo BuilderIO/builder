@@ -10,8 +10,8 @@ import { getSdkEnv } from './index.js';
 const parse = (code) => recast.parse(code, { parser: typescriptParser });
 
 /**
- * Ran into some issue with Suspense transitions when trying to lazy-load all of
- * our blocks, specifically the "repeat-item-bindings" test failed.
+ * Ran into issues with Suspense transitions when trying to lazy-load all of
+ * our blocks.
  * The issue was probably caused by the SDK swapping out components altogether,
  * which didn't play nice with Suspense boundaries.
  *
@@ -82,8 +82,10 @@ ${importNames.map((name) => `${name}: ${getComponent(name)}`).join(',\n')}
 /**
  *
  * - Wraps components in a `React.lazy` import
- * - For the Edge bundle, it emits a file that re-exports all of the above components by wrapping them in logic that
- * toggles between the browser & edge versions.
+ * - For the Edge bundle, it emits a file that re-exports certain components
+ * by wrapping them in logic that toggles between the browser & edge versions.
+ *
+ * Currently only used for the `Content` component.
  *
  * @typedef {import('vite').Plugin} Plugin
  * @returns {Plugin}
@@ -97,6 +99,9 @@ export const lazyifyReactComponentsVitePlugin = () => {
       if (id.includes('blocks-exports.ts')) {
         const ast = parse(src);
 
+        /**
+         * Collect all the export names from the file
+         */
         let importNames = [];
         recast.visit(ast, {
           visitExportNamedDeclaration(path) {
@@ -110,6 +115,10 @@ export const lazyifyReactComponentsVitePlugin = () => {
           },
         });
 
+        /**
+         * Emit a file that re-exports all of the above components by wrapping
+         * some of them in `lazy` logic.
+         */
         emitDynamicExports(importNames, this.emitFile);
 
         return src;
