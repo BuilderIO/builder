@@ -3,6 +3,7 @@ import {
   viteOutputGenerator,
 } from '@builder.io/sdks/output-generation/index.js';
 import react from '@vitejs/plugin-react';
+import * as esbuild from 'esbuild';
 import recast from 'recast';
 import typescriptParser from 'recast/parsers/typescript.js';
 import { defineConfig } from 'vite';
@@ -67,19 +68,16 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
 
         const getComponent = (name) =>
           LAZY_COMPONENTS.includes(name)
-            ? `(props) => 
-              isBrowser() 
-                ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) 
-                : React.createElement(${getEdgeComponentName(
-                  name
-                )}, Object.assign({}, props))`
+            ? `(props) => isBrowser() 
+                ? <BrowserSdk.${name} {...props} /> 
+                : <${getEdgeComponentName(name)} {...props} />`
             : getEdgeComponentName(name);
 
         const exportsObject = importNames
           .map((name) => `${name} as ${getEdgeComponentName(name)}`)
           .join(',\n');
 
-        const TOP_OF_FILE_MJS = `
+        const SOURCE_CODE_MJS = `
       'use client';
       import React from 'react';
       
@@ -89,37 +87,38 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
       
       import * as BrowserSdk from '../browser/index.mjs';
       import {${exportsObject}} from './${BLOCKS_EXPORTS_ENTRY}.mjs';
+      export * from './server-entry.mjs';
       
       ${importNames
         .map((name) => `export const ${name} = ${getComponent(name)}`)
         .join(';\n')}
       `;
 
+        const transpiledMjsFile = esbuild.transformSync(SOURCE_CODE_MJS, {
+          format: 'esm',
+          loader: 'tsx',
+          target: 'es2019',
+        }).code;
+
         this.emitFile({
           type: 'prebuilt-chunk',
-          code: TOP_OF_FILE_MJS,
+          code: transpiledMjsFile,
           fileName: 'dynamic-blocks-exports.mjs',
         });
 
-        const TOP_OF_FILE_CJS = `
-      'use client';
-      import React from 'react';
-      
-      function isBrowser() {
-      return typeof window !== 'undefined' && typeof document !== 'undefined';
-      }
-      
-      const BrowserSdk = require('../browser/index.cjs');
-      const {${exportsObject}} = require('./${BLOCKS_EXPORTS_ENTRY}.cjs');
-      
-      module.exports = {
-      ${importNames.map((name) => `${name}: ${getComponent(name)}`).join(',\n')}
-      };
-      `;
+        const TOP_OF_FILE_CJS = SOURCE_CODE_MJS.replace(/\.mjs/g, '.cjs');
+
+        const transpiledCjsFile = esbuild.transformSync(TOP_OF_FILE_CJS, {
+          format: 'cjs',
+          loader: 'tsx',
+          target: 'es2019',
+        }).code;
+
+        console.log('transpiledCjsFile', transpiledCjsFile);
 
         this.emitFile({
           type: 'prebuilt-chunk',
-          code: TOP_OF_FILE_CJS,
+          code: transpiledCjsFile,
           fileName: 'dynamic-blocks-exports.cjs',
         });
 
