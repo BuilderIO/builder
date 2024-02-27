@@ -15,6 +15,7 @@ test.describe('Form', () => {
     await expect(form.locator('button')).toHaveCount(1);
     await expect(form.locator('select')).toHaveCount(1);
     await expect(form.locator('select').first().locator('option')).toHaveCount(3);
-    expect(await form.locator('button').first().innerText()).toBe('Submit');
+    await expect(form.locator('text-area').first()).toContainText('hello I am a bio');
+    await expect(form.locator('button').first()).toContainText('Submit');
   });
 });
