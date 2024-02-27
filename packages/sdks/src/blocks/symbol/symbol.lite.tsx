@@ -115,6 +115,18 @@ export default function Symbol(props: SymbolProps) {
         model={props.symbol?.model}
         content={state.contentToUse}
         linkComponent={props.builderLinkComponent}
+        blocksWrapper={useTarget({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: View,
+          default: 'div',
+        })}
+        contentWrapper={useTarget({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          reactNative: View,
+          default: 'div',
+        })}
       />
     </div>
   );
