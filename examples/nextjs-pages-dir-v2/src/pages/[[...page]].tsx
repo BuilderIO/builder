@@ -1,13 +1,14 @@
-import { Content } from '@builder.io/sdk-react';
 import {
   BuilderContent,
+  Content,
   fetchEntries,
   fetchOneEntry,
+  isEditing,
   isPreviewing,
-} from '@builder.io/sdk-react/server';
+} from '@builder.io/sdk-react/edge';
 import { GetStaticProps } from 'next';
-import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 // Replace with your Public API Key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
@@ -52,22 +53,36 @@ export async function getStaticPaths() {
 }
 
 // Define the Page component
-export default function Page({ page }: { page: BuilderContent | null }) {
+export default function Page(props: { page: BuilderContent | null }) {
+  const router = useRouter();
+
+  // console.log('page', router.asPath);
+
+  const prev = isPreviewing(router.asPath);
+  const edit = isEditing(router.asPath);
+  // console.log({ prev, edit });
+
+  const canShowContent = props.page || prev || edit;
+
   // If the page content is not available
   // and not in preview mode, show a 404 error page
-  if (!page && !isPreviewing()) {
-    return <DefaultErrorPage statusCode={404} />;
+  if (!canShowContent) {
+    console.log('rendering 404', { canShowContent, prev, edit, page: props.page });
+
+    // return <DefaultErrorPage statusCode={404} />;
   }
+
+  console.log('rendering content');
 
   // If the page content is available, render
   // the BuilderComponent with the page content
   return (
     <>
       <Head>
-        <title>{page?.data?.title}</title>
+        <title>{props.page?.data?.title}</title>
       </Head>
       {/* Render the Builder page */}
-      <Content model="page" content={page} apiKey={BUILDER_PUBLIC_API_KEY} />
+      <Content model="page" content={props.page} apiKey={BUILDER_PUBLIC_API_KEY} />
     </>
   );
 }
