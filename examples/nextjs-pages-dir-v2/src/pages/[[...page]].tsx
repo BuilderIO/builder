@@ -7,26 +7,26 @@ import {
   isPreviewing,
 } from '@builder.io/sdk-react/edge';
 import { GetStaticProps } from 'next';
+import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Replace with your Public API Key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
-// Define a function that fetches the Builder
-// content for a given page
+// Define a function that fetches the Builder content for a given page
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // Fetch the builder content for the given page
-  const urlPath = '/' + (params?.page?.join('/') || '');
+  const urlPath = '/' + (Array.isArray(params?.page) ? params.page.join('/') : params?.page || '');
 
+  // Fetch the builder content for the given page
   const page = await fetchOneEntry({
     apiKey: BUILDER_PUBLIC_API_KEY,
     model: 'page',
     userAttributes: { urlPath },
   });
 
-  // Return the page content as props
   return {
+    // Return the page content as props
     props: { page },
     // Revalidate the content every 5 seconds
     revalidate: 5,
@@ -56,23 +56,13 @@ export async function getStaticPaths() {
 export default function Page(props: { page: BuilderContent | null }) {
   const router = useRouter();
 
-  // console.log('page', router.asPath);
-
-  const prev = isPreviewing(router.asPath);
-  const edit = isEditing(router.asPath);
-  // console.log({ prev, edit });
-
-  const canShowContent = props.page || prev || edit;
+  const canShowContent = props.page || isPreviewing(router.asPath) || isEditing(router.asPath);
 
   // If the page content is not available
-  // and not in preview mode, show a 404 error page
+  // and not in preview/editing mode, show a 404 error page
   if (!canShowContent) {
-    console.log('rendering 404', { canShowContent, prev, edit, page: props.page });
-
-    // return <DefaultErrorPage statusCode={404} />;
+    return <DefaultErrorPage statusCode={404} />;
   }
-
-  console.log('rendering content');
 
   // If the page content is available, render
   // the BuilderComponent with the page content

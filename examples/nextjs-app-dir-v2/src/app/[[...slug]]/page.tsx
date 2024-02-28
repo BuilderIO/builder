@@ -9,7 +9,6 @@ interface PageProps {
   searchParams: Record<string, string>;
 }
 
-// Pages are Server Components by default
 export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
@@ -20,7 +19,10 @@ export default async function Page(props: PageProps) {
     userAttributes: { urlPath },
   });
 
-  if (!content && !isPreviewing(props.searchParams) && !isEditing(props.searchParams)) {
+  const canShowContent =
+    content || isPreviewing(props.searchParams) || isEditing(props.searchParams);
+
+  if (!canShowContent) {
     return (
       <>
         <h1>404</h1>
