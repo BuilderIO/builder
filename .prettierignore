@@ -20,3 +20,7 @@ packages/sdks/overrides/react-native/src/blocks/**/*
 **/.svelte-kit
 **/.solid
 **/.output
+
+.nx-cache
+.vercel
+playwright-report
