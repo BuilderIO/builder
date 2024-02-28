@@ -243,7 +243,11 @@ module.exports = {
     },
     react: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN, REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM],
+      plugins: [
+        SRCSET_PLUGIN,
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
+      ],
       stylesType: 'style-tag',
     },
     rsc: {
