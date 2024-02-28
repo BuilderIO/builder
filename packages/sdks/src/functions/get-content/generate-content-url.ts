@@ -1,9 +1,7 @@
 import { flatten } from '../../helpers/flatten.js';
+import { normalizeSearchParams } from '../../helpers/search/search.js';
 import { DEFAULT_API_VERSION } from '../../types/api-version.js';
-import {
-  getBuilderSearchParamsFromWindow,
-  normalizeSearchParams,
-} from '../get-builder-search-params/index.js';
+import { getBuilderSearchParamsFromWindow } from '../get-builder-search-params/index.js';
 import type { GetContentOptions } from './types.js';
 
 const isPositiveNumber = (thing: unknown) =>

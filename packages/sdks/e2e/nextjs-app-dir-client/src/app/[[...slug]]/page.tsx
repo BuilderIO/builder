@@ -1,9 +1,9 @@
-import { Content } from '@builder.io/sdk-react/edge';
 import {
+  Content,
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
-} from '@builder.io/sdk-react/server';
+} from '@builder.io/sdk-react/edge';
 import { getProps } from '@e2e/tests';
 
 interface PageProps {
