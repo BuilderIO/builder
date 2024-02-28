@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react",
   "type": "module",
   "repository": {
@@ -81,8 +81,8 @@
     },
     "./edge": {
       "types": "./types/index.d.ts",
-      "import": "./lib/edge/dynamic-blocks-exports.mjs",
-      "require": "./lib/edge/dynamic-blocks-exports.cjs"
+      "import": "./lib/edge/edge-entry.mjs",
+      "require": "./lib/edge/edge-entry.cjs"
     },
     "./bundle/edge": {
       "types": "./types/index.d.ts",
@@ -98,11 +98,6 @@
       "types": "./types/index.d.ts",
       "import": "./lib/browser/index.mjs",
       "require": "./lib/browser/index.cjs"
-    },
-    "./server": {
-      "types": "./types/server-index.d.ts",
-      "import": "./lib/node/server-entry.mjs",
-      "require": "./lib/node/server-entry.cjs"
     }
   },
   "scripts": {

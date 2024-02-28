@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`convertSearchParamsToQueryObject > correctly converts URLSearchParams to object 1`] = `
+{
+  "__builder_editing__": "true",
+  "abc": "klfdjklgfds",
+  "builder.cachebust": "true",
+  "builder.noCache": "true",
+  "builder.overrides.037948e52eaf4743afed464f02c70da4": "037948e52eaf4743afed464f02c70da4",
+  "builder.overrides.page": "037948e52eaf4743afed464f02c70da4",
+  "builder.overrides.page:/": "037948e52eaf4743afed464f02c70da4",
+  "builder.preview": "page",
+  "preview_theme_id": "128854393017",
+  "someotherValue": "jklsjfdal",
+}
+`;

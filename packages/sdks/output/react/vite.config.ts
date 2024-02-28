@@ -3,6 +3,7 @@ import {
   viteOutputGenerator,
 } from '@builder.io/sdks/output-generation/index.js';
 import react from '@vitejs/plugin-react';
+import * as esbuild from 'esbuild';
 import recast from 'recast';
 import typescriptParser from 'recast/parsers/typescript.js';
 import { defineConfig } from 'vite';
@@ -67,20 +68,20 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
 
         const getComponent = (name) =>
           LAZY_COMPONENTS.includes(name)
-            ? `(props) => 
-              isBrowser() 
-                ? React.createElement(BrowserSdk.${name}, Object.assign({}, props)) 
-                : React.createElement(${getEdgeComponentName(
-                  name
-                )}, Object.assign({}, props))`
+            ? `(props) => isBrowser() 
+                ? <BrowserSdk.${name} {...props} /> 
+                : <${getEdgeComponentName(name)} {...props} />`
             : getEdgeComponentName(name);
 
         const exportsObject = importNames
           .map((name) => `${name} as ${getEdgeComponentName(name)}`)
           .join(',\n');
 
-        const TOP_OF_FILE_MJS = `
-      'use client';
+        /**
+         * Client-code entry point with lazy-loaded components
+         */
+        const dynamicBlocksExportsCode = `
+      "use client";
       import React from 'react';
       
       function isBrowser() {
@@ -95,32 +96,63 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
         .join(';\n')}
       `;
 
-        this.emitFile({
-          type: 'prebuilt-chunk',
-          code: TOP_OF_FILE_MJS,
-          fileName: 'dynamic-blocks-exports.mjs',
+        const DYNAMIC_EXPORTS_FILE_NAME = 'dynamic-blocks-exports';
+        const EDGE_ENTRY = 'edge-entry';
+
+        /**
+         * Edge-code entry point with re-exported components.
+         */
+        const edgeEntryCode = `
+      export * from './${SERVER_ENTRY}.mjs';
+      export * from './${DYNAMIC_EXPORTS_FILE_NAME}.mjs';
+`;
+
+        const viteContext = this;
+        const emitJsFile = ({
+          code,
+          fileName,
+          format,
+        }: {
+          code: string;
+          fileName: string;
+          format: 'esm' | 'cjs';
+        }) => {
+          viteContext.emitFile({
+            type: 'prebuilt-chunk',
+            code: esbuild.transformSync(
+              format === 'esm' ? code : code.replace(/\.mjs/g, '.cjs'),
+              {
+                format,
+                loader: 'tsx',
+                target: 'es2019',
+              }
+            ).code,
+            fileName: `${fileName}.${format === 'esm' ? 'mjs' : 'cjs'}`,
+          });
+        };
+
+        emitJsFile({
+          code: dynamicBlocksExportsCode,
+          fileName: DYNAMIC_EXPORTS_FILE_NAME,
+          format: 'esm',
         });
 
-        const TOP_OF_FILE_CJS = `
-      'use client';
-      import React from 'react';
-      
-      function isBrowser() {
-      return typeof window !== 'undefined' && typeof document !== 'undefined';
-      }
-      
-      const BrowserSdk = require('../browser/index.cjs');
-      const {${exportsObject}} = require('./${BLOCKS_EXPORTS_ENTRY}.cjs');
-      
-      module.exports = {
-      ${importNames.map((name) => `${name}: ${getComponent(name)}`).join(',\n')}
-      };
-      `;
+        emitJsFile({
+          code: edgeEntryCode,
+          format: 'esm',
+          fileName: EDGE_ENTRY,
+        });
 
-        this.emitFile({
-          type: 'prebuilt-chunk',
-          code: TOP_OF_FILE_CJS,
-          fileName: 'dynamic-blocks-exports.cjs',
+        emitJsFile({
+          code: dynamicBlocksExportsCode,
+          format: 'cjs',
+          fileName: DYNAMIC_EXPORTS_FILE_NAME,
+        });
+
+        emitJsFile({
+          code: edgeEntryCode,
+          fileName: EDGE_ENTRY,
+          format: 'cjs',
         });
 
         return src;
@@ -198,9 +230,14 @@ export default defineConfig({
           'react-dom': 'ReactDOM',
           'react/jsx-runtime': 'react/jsx-runtime',
         },
+        minifyInternalExports: false,
         manualChunks(id, { getModuleIds, getModuleInfo }) {
           const moduleInfo = getModuleInfo(id);
 
+          /**
+           * We make sure any code used by the server entry is bundled into it,
+           * so that it doesn't get marked with `use client`.
+           */
           if (
             moduleInfo?.importers.some((x) => x.includes('server-index.ts'))
           ) {
@@ -208,7 +245,7 @@ export default defineConfig({
           }
         },
         banner(chunk) {
-          if (chunk.name !== SERVER_ENTRY) {
+          if (chunk.name === BLOCKS_EXPORTS_ENTRY) {
             return "'use client';";
           }
 
