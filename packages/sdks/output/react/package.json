@@ -98,11 +98,6 @@
       "types": "./types/index.d.ts",
       "import": "./lib/browser/index.mjs",
       "require": "./lib/browser/index.cjs"
-    },
-    "./server": {
-      "types": "./types/server-index.d.ts",
-      "import": "./lib/node/server-entry.mjs",
-      "require": "./lib/node/server-entry.cjs"
     }
   },
   "scripts": {

@@ -103,7 +103,7 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
          * Edge-code entry point with re-exported components.
          */
         const edgeEntryCode = `
-      export * from './server-entry.mjs';
+      export * from './${SERVER_ENTRY}.mjs';
       export * from './${DYNAMIC_EXPORTS_FILE_NAME}.mjs';
 `;
 
@@ -234,6 +234,10 @@ export default defineConfig({
         manualChunks(id, { getModuleIds, getModuleInfo }) {
           const moduleInfo = getModuleInfo(id);
 
+          /**
+           * We make sure any code used by the server entry is bundled into it,
+           * so that it doesn't get marked with `use client`.
+           */
           if (
             moduleInfo?.importers.some((x) => x.includes('server-index.ts'))
           ) {
@@ -241,7 +245,7 @@ export default defineConfig({
           }
         },
         banner(chunk) {
-          if (chunk.name !== SERVER_ENTRY) {
+          if (chunk.name === BLOCKS_EXPORTS_ENTRY) {
             return "'use client';";
           }
 
