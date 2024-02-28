@@ -22,7 +22,7 @@ export default async function Page({ params }: PageProps) {
   // Fetch the builder content for the given page
   const announcement = await fetchOneEntry({
     apiKey: YOUR_API_KEY,
-    model: 'page',
+    model: 'announcement-bar',
     userAttributes: { urlPath },
   });
 
