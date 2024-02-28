@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.7
+
+### Patch Changes
+
+- 3e67634: Fix: editing unpublished content
+
 ## 1.0.6
 
 ### Patch Changes
