@@ -346,7 +346,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onMount(() => {
     if (isBrowser()) {
-      if (isEditing() && elementRef) {
+      if (isEditing()) {
         useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -354,8 +354,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           reactNative: () => INJECT_EDITING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          react: () => INJECT_EDITING_HOOK_HERE,
           default: () => {
-            elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
+            if (elementRef) {
+              elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
+            }
           },
         });
       }
@@ -392,7 +397,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
       }
 
       // override normal content in preview mode
-      if (isPreviewing() && elementRef) {
+      if (isPreviewing()) {
         useTarget({
           rsc: () => {},
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -401,8 +406,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           reactNative: () => INJECT_PREVIEWING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          react: () => INJECT_PREVIEWING_HOOK_HERE,
           default: () => {
-            elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
+            if (elementRef) {
+              elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
+            }
           },
         });
       }
