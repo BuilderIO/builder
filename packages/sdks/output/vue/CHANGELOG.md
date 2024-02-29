@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.8
+
+### Patch Changes
+
+- b659b6f: Fix: usage of `Blocks` in custom components not setting `BlocksWrapper` correctly.
+
 ## 1.0.6
 
 ### Patch Changes

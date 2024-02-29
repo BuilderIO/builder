@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 0.14.5
+
+### Patch Changes
+
+- b659b6f: Fix: usage of `Blocks` in custom components not setting `BlocksWrapper` correctly.
+
 ## 0.14.4
 
 ### Patch Changes
