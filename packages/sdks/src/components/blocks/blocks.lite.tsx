@@ -27,8 +27,14 @@ export default function Blocks(props: BlocksProps) {
       parent={props.parent}
       path={props.path}
       styleProp={props.styleProp}
-      BlocksWrapper={props.context?.value?.BlocksWrapper}
-      BlocksWrapperProps={props.context?.value?.BlocksWrapperProps}
+      BlocksWrapper={
+        props.context?.value?.BlocksWrapper ||
+        builderContext.value.BlocksWrapper
+      }
+      BlocksWrapperProps={
+        props.context?.value?.BlocksWrapperProps ||
+        builderContext.value.BlocksWrapperProps
+      }
     >
       <Show when={props.blocks}>
         <For each={props.blocks}>
