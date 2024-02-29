@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.8
+
+### Patch Changes
+
+- b659b6f: Fix: usage of `Blocks` in custom components not setting `BlocksWrapper` correctly.
+
 ## 1.0.6
 
 ### Patch Changes
