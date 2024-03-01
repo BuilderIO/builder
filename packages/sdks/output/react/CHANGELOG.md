@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.9
+
+### Patch Changes
+
+- d9668eb: Fix: use `eval("require")` in favor of `node:module` when importing `isolated-vm` to avoid issues when bundling in Nextjs
+
 ## 1.0.8
 
 ### Patch Changes
