@@ -64,7 +64,7 @@ const content = await builder
 
 The builder content is simply json that you pass to a `<BuilderComponent />` to render. [Learn more about it here](https://www.builder.io/c/docs/how-builder-works-technical)
 
-You can view all of the options for `builder.get` for fetching content [in our full reference here](https://github.com/BuilderIO/builder/blob/main/packages/core/docs/interfaces/GetContentOptions.md)
+You can view all of the options for `builder.get` for fetching content [in our full reference here](main/packages/core/docs/interfaces/GetContentOptions.md)
 
 For example, with Next.js, to render Builder as your homepage:
 
@@ -205,7 +205,7 @@ Builder.registerComponent(CodeBlockComponent, {
 
 See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components).
 
-See the [full reference docs for registerComponent options here](https://github.com/BuilderIO/builder/blob/main/packages/core/docs/interfaces/Component.md).
+See the [full reference docs for registerComponent options here](main/packages/core/docs/interfaces/Component.md).
 
 ### BuilderContent
 
@@ -303,7 +303,7 @@ export default () => <div>
 
 ### builder
 
-The React SDK exports the core SDK's [builder object](https://github.com/BuilderIO/builder/tree/main/packages/core), which can be used for setting things like
+The React SDK exports the core SDK's [builder object](main/packages/core), which can be used for setting things like
 your API key and user attributes
 
 ```tsx
