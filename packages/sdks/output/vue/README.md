@@ -47,4 +47,6 @@ This SDK supports standalone Vue 3, or using Nuxt 3.
 
 You can see examples of using Builder.io:
 
-- with Vue 3 [here](/examples/vue/vue-3/)
+- with Vue 3 [here](https://github.com/BuilderIO/builder/tree/main/examples/vue/vue-3)
+- with Nuxt 3 [here](https://github.com/BuilderIO/builder/tree/main/examples/vue/nuxt-3)
+- with Nuxt 3 (using a catch-all route) [here](https://github.com/BuilderIO/builder/tree/main/examples/vue/nuxt-3-catchall)
