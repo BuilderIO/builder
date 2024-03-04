@@ -6,7 +6,7 @@ NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we 
 
 ## Integration
 
-See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
+See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page building as your initial integration:
 
 <table>
   <tr>
@@ -17,12 +17,12 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
   <tr>
     <td align="center">
       <a href="https://www.builder.io/c/docs/integrating-builder-pages">
-        <img alt="CTA to integrate page buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
+        <img alt="CTA to integrate page building" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
       </a>
     </td>
     <td align="center">
       <a href="https://www.builder.io/c/docs/integrate-section-building">
-        <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
+        <img alt="CTA to integrate section building" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
       </a>
     </td>    
     <td align="center">
@@ -323,7 +323,7 @@ builder.setUserAttributes({
 NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](main/packages/sdks/output/react).
 
 This SDK has a lite version where it provides only the bare minimum of components needed to render your Builder content, it won't have any built-in components registered by default, this option should work with custom components. The main difference is that you need to specifically add any built-in components you want to use or they won’t show up.
-To use the lite package, you change all your imports from `@buidler/react` to `@builder/react/lite` and then import only the built-in components that you want to use:
+To use the lite package, you change all your imports from `@builder/react` to `@builder/react/lite` and then import only the built-in components that you want to use:
 
 ```ts
 // Change all imports from '@builder.io/react' to '@builder.io/react/lite'
