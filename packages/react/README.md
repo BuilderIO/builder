@@ -1,8 +1,8 @@
 # Builder.io React SDK
 
-NOTE: If you want to register your React Server Components as custom components in Builder, you will need to use our experimental NextJS SDK [here](packages/sdks/output/nextjs).
+NOTE: If you want to register your React Server Components as custom components in Builder, you will need to use our experimental NextJS SDK [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/nextjs).
 
-NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](packages/sdks/output/react).
+NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react).
 
 ## Integration
 
@@ -64,7 +64,7 @@ const content = await builder
 
 The builder content is simply json that you pass to a `<BuilderComponent />` to render. [Learn more about it here](https://www.builder.io/c/docs/how-builder-works-technical)
 
-You can view all of the options for `builder.get` for fetching content [in our full reference here](packages/core/docs/interfaces/GetContentOptions.md)
+You can view all of the options for `builder.get` for fetching content [in our full reference here](https://github.com/BuilderIO/builder/blob/main/packages/core/docs/interfaces/GetContentOptions.md)
 
 For example, with Next.js, to render Builder as your homepage:
 
@@ -205,7 +205,7 @@ Builder.registerComponent(CodeBlockComponent, {
 
 See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components).
 
-See the [full reference docs for registerComponent options here](packages/core/docs/interfaces/Component.md).
+See the [full reference docs for registerComponent options here](https://github.com/BuilderIO/builder/blob/main/packages/core/docs/interfaces/Component.md).
 
 ### BuilderContent
 
@@ -303,7 +303,7 @@ export default () => <div>
 
 ### builder
 
-The React SDK exports the core SDK's [builder object](packages/core), which can be used for setting things like
+The React SDK exports the core SDK's [builder object](https://github.com/BuilderIO/builder/tree/main/packages/core), which can be used for setting things like
 your API key and user attributes
 
 ```tsx
@@ -320,7 +320,7 @@ builder.setUserAttributes({
 
 #### Lite version
 
-NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](packages/sdks/output/react).
+NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react).
 
 This SDK has a lite version where it provides only the bare minimum of components needed to render your Builder content, it won't have any built-in components registered by default, this option should work with custom components. The main difference is that you need to specifically add any built-in components you want to use or they won’t show up.
 To use the lite package, you change all your imports from `@builder/react` to `@builder/react/lite` and then import only the built-in components that you want to use:
