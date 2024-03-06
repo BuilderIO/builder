@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.10
+
+### Patch Changes
+
+- 6dd554f: Update readme with absolute URLs
+
 ## 1.0.8
 
 ### Patch Changes
