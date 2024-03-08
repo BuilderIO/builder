@@ -67,7 +67,7 @@ export default function Image(props: ImageProps) {
         <img
           loading="lazy"
           alt={props.altText}
-          role={props.altText ? 'presentation' : undefined}
+          role={props.altText ? undefined : 'presentation'}
           css={{
             opacity: '1',
             transition: 'opacity 0.2s ease-in-out',
