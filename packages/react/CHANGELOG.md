@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 3.2.6
+
+### Patch Changes
+
+- 6dd554f: Update readme with absolute URLs
+
 ## 3.2.5
 
 ### Patch Changes
