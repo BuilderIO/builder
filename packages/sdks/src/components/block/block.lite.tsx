@@ -150,7 +150,7 @@ export default function Block(props: BlockProps) {
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
-        context: childrenContext,
+        context: props.context,
         linkComponent: props.linkComponent,
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
@@ -160,21 +160,6 @@ export default function Block(props: BlockProps) {
     },
   });
 
-  const [childrenContext] = useState(
-    useTarget({
-      reactNative: {
-        ...props.context.value,
-        inheritedStyles: extractTextStyles(
-          getStyle({
-            block: state.processedBlock,
-            context: props.context.value,
-          }) || {}
-        ),
-      },
-      default: props.context.value,
-    }),
-    { reactive: true }
-  );
 
   onMount(() => {
     const blockId = state.processedBlock.id;
@@ -250,7 +235,7 @@ export default function Block(props: BlockProps) {
                 <Block
                   key={child.id}
                   block={child}
-                  context={childrenContext}
+                  context={props.context}
                   registeredComponents={props.registeredComponents}
                   linkComponent={props.linkComponent}
                 />
