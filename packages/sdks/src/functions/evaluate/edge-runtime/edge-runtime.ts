@@ -46,6 +46,7 @@ export const runInEdge = ({
     state,
   });
 
+
   /**
    * Deserialize all properties from JSON strings to JS objects
    */
@@ -62,14 +63,7 @@ export const runInEdge = ({
     return;
   }
 
-  const transformed = `
-function theFunction() {
-  ${prependedCode}
-
-  ${cleanedCode}
-}
-theFunction();
-`;
+  const transformed = `${prependedCode}`;
   const setRootState = (prop: string, value: any) => {
     const newState = set(state, prop, value);
     rootSetState?.(newState);
@@ -94,7 +88,8 @@ theFunction();
     );
   };
   try {
-    const myInterpreter = new Interpreter(transformed, initFunc);
+    const myInterpreter = Interpreter.getCachedInstance(JSON.stringify(properties),transformed, initFunc);
+    myInterpreter.appendCode(`((function() { ${cleanedCode} })());`);
     myInterpreter.run();
     const output = myInterpreter.pseudoToNative(myInterpreter.value);
 
