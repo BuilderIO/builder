@@ -65,6 +65,7 @@ export const runInEdge = ({
   const transformed = `
 function theFunction() {
   ${prependedCode}
+
   ${cleanedCode}
 }
 theFunction();
