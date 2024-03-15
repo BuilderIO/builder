@@ -67,6 +67,7 @@ export const getRepeatItemData = ({
     rootState: context.rootState,
     rootSetState: context.rootSetState,
     context: context.context,
+    enableCache: true,
   });
 
   if (!Array.isArray(itemsArray)) {
