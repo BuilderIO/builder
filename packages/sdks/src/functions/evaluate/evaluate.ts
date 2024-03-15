@@ -9,17 +9,21 @@ class EvalCache {
   static cacheLimit = 20;
   static cache = new Map<string, CacheValue | undefined>();
 
-  static getCachedValue(key: string) {
-    const cachedVal = EvalCache.cache.get(key);
+  static getCacheKey(args: ExecutorArgs) {
+    return JSON.stringify(args);
+  }
+
+  static getCachedValue(args: ExecutorArgs) {
+    const cachedVal = EvalCache.cache.get(EvalCache.getCacheKey(args));
 
     return cachedVal;
   }
 
-  static setCachedValue(key: string, value: CacheValue) {
+  static setCachedValue(args: ExecutorArgs, value: CacheValue) {
     if (EvalCache.cache.size > 20) {
       EvalCache.cache.delete(EvalCache.cache.keys().next().value);
     }
-    EvalCache.cache.set(key, value);
+    EvalCache.cache.set(EvalCache.getCacheKey(args), value);
   }
 }
 
@@ -47,14 +51,14 @@ export function evaluate({
     localState,
   };
 
-  const cachedValue = EvalCache.getCachedValue(code);
+  const cachedValue = EvalCache.getCachedValue(args);
   if (cachedValue) {
     return cachedValue;
   }
 
   try {
     const newEval = chooseBrowserOrServerEval(args);
-    EvalCache.setCachedValue(code, newEval);
+    EvalCache.setCachedValue(args, newEval);
     return newEval;
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });
