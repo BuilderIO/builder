@@ -36,5 +36,5 @@ describe('flatten state', () => {
       rootSetState: undefined,
     });
     expect(flattened.foo).toEqual(null);
-  })
+  });
 });
