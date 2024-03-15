@@ -62,6 +62,13 @@ export const runInEdge = ({
     return;
   }
 
+  const transformed = `
+function theFunction() {
+  ${prependedCode}
+  ${cleanedCode}
+}
+theFunction();
+`;
   const setRootState = (prop: string, value: any) => {
     const newState = set(state, prop, value);
     rootSetState?.(newState);
@@ -86,12 +93,7 @@ export const runInEdge = ({
     );
   };
   try {
-    const myInterpreter = Interpreter.getCachedInstance(
-      JSON.stringify(properties),
-      prependedCode,
-      initFunc
-    );
-    myInterpreter.appendCode(`((function() { ${cleanedCode} })());`);
+    const myInterpreter = new Interpreter(transformed, initFunc);
     myInterpreter.run();
     const output = myInterpreter.pseudoToNative(myInterpreter.value);
 

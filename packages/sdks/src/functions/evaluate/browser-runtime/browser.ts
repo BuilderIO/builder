@@ -2,24 +2,6 @@ import type { BuilderRenderState } from '../../../context/types.js';
 import type { ExecutorArgs } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
 
-class FunctionCache {
-  static cacheLimit = 20;
-  static cache = new Map<string, (...args: any) => any>();
-
-  static getCachedFunction(key: string, params: [string, any][], code: string): (...args: any) => any {
-    const cachedFn = FunctionCache.cache.get(key);
-    if (cachedFn) {
-      return cachedFn;
-    }
-    const newFn = new Function(...params.map(([name]) => name), code);
-    if (FunctionCache.cache.size > 20) {
-      FunctionCache.cache.delete(FunctionCache.cache.keys().next().value);
-    }
-    FunctionCache.cache.set(key, newFn as any);
-    return newFn as any;
-  }
-}
-
 export const runInBrowser = ({
   code,
   builder,
@@ -36,10 +18,9 @@ export const runInBrowser = ({
     state: flattenState({ rootState, localState, rootSetState }),
   });
 
-  return FunctionCache.getCachedFunction(JSON.stringify([...functionArgs, code]),
-    functionArgs,
-    code
-  )(...functionArgs.map(([, value]) => value));
+  return new Function(...functionArgs.map(([name]) => name), code)(
+    ...functionArgs.map(([, value]) => value)
+  );
 };
 
 export function flattenState({

@@ -3,7 +3,9 @@ import type {
   RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/index.js';
+import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -90,4 +92,18 @@ export const getRepeatItemData = ({
   }));
 
   return repeatArray;
+};
+
+export const getInheritedStyles = ({
+  block,
+  context,
+}: {
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+}) => {
+  const style = getStyle({ block, context });
+  if (!style) {
+    return {};
+  }
+  return extractTextStyles(style);
 };

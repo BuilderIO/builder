@@ -178,19 +178,4 @@ t.prototype.setStateStack=t.prototype.ec;t.VALUE_IN_DESCRIPTOR=Ia;
 
 
 // BUILDER.IO: export Interpreter
-t.instanceCache = new Map();
-t.getCachedInstance = function(key, transformed, initFunction) {
-    const cached = t.instanceCache.get(key);
-    if (cached) {
-        return cached;
-    } else {
-        if (t.instanceCache.size > 10) {
-            t.instanceCache.delete((t.instanceCache.keys().next().value));
-        }
-        const newInstance = new t(transformed, initFunction);
-        t.instanceCache.set(key, newInstance);
-        newInstance.run();
-        return newInstance;
-    }
-}
 export default t as Class;
