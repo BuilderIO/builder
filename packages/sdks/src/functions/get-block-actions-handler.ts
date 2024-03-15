@@ -22,5 +22,5 @@ export const createEventHandler =
       rootSetState: options.rootSetState,
       event,
       isExpression: false,
-      enableCache: false,
+      enableCache: true,
     });

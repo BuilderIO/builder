@@ -18,7 +18,7 @@ export function createEventHandler(
       rootState: options.rootState,
       rootSetState: options.rootSetState,
       event,
-      enableCache: false,
+      enableCache: true,
     })
   );
 }

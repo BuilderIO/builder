@@ -159,6 +159,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           localState: undefined,
           rootState: props.builderContextSignal.value.rootState,
           rootSetState: props.builderContextSignal.value.rootSetState,
+          /**
+           * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
+           */
           enableCache: false,
         });
       }
