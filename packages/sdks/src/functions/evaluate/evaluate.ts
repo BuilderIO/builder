@@ -40,7 +40,6 @@ export function evaluate({
   rootSetState,
   event,
   isExpression = true,
-  enableCache,
 }: EvaluatorArgs): EvalValue {
   if (code === '') {
     logger.warn('Skipping evaluation of empty code block.');
@@ -57,24 +56,17 @@ export function evaluate({
     localState,
   };
 
-  if (enableCache) {
-    const cacheKey = EvalCache.getCacheKey(args);
-    const cachedValue = EvalCache.getCachedValue(cacheKey);
+  const cacheKey = EvalCache.getCacheKey(args);
+  const cachedValue = EvalCache.getCachedValue(cacheKey);
 
-    if (cachedValue) {
-      console.log('cachedValue', cachedValue.value);
-      return cachedValue.value;
-    }
+  if (cachedValue) {
+    return cachedValue.value;
   }
 
   try {
     const newEval = chooseBrowserOrServerEval(args);
 
-    if (enableCache) {
-      const cacheKey = EvalCache.getCacheKey(args);
-      EvalCache.setCachedValue(cacheKey, newEval);
-    }
-    console.log('newEval', newEval);
+    EvalCache.setCachedValue(cacheKey, newEval);
     return newEval;
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });
