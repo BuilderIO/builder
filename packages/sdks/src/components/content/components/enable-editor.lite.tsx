@@ -189,13 +189,15 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
     evalExpression(expression: string) {
       return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
-        evaluate({
-          code: group,
-          context: props.context || {},
-          localState: undefined,
-          rootState: props.builderContextSignal.value.rootState,
-          rootSetState: props.builderContextSignal.value.rootSetState,
-        })
+        String(
+          evaluate({
+            code: group,
+            context: props.context || {},
+            localState: undefined,
+            rootState: props.builderContextSignal.value.rootState,
+            rootSetState: props.builderContextSignal.value.rootSetState,
+          })
+        )
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
