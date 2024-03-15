@@ -11,12 +11,7 @@ test.describe('Show If & Hide If', () => {
   });
 
   test('works on reactive conditions', async ({ page, packageName }) => {
-    test.fail(
-      excludeTestFor({
-        rsc: true,
-        solid: true,
-      })
-    );
+    test.fail(excludeTestFor({ rsc: true }));
 
     // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
     test.skip(
