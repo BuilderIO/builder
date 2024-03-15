@@ -10,7 +10,12 @@ class EvalCache {
   static cache = new Map<string, { value: EvalValue } | undefined>();
 
   static getCacheKey(args: ExecutorArgs) {
-    return JSON.stringify(args);
+    return JSON.stringify({
+      ...args,
+      // replace the event with a random number to break cache
+      // thats because we can't serialize the event object due to circular refs in DOM node refs.
+      event: args.event ? Math.random() : undefined,
+    });
   }
 
   static getCachedValue(key: string) {
