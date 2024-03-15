@@ -176,7 +176,5 @@ t.prototype.run=t.prototype.Eb;t.prototype.appendCode=t.prototype.Jb;t.prototype
 t.prototype.setStateStack=t.prototype.ec;t.VALUE_IN_DESCRIPTOR=Ia;
 
 
-
-
 // BUILDER.IO: export Interpreter
 export default t as Class;
