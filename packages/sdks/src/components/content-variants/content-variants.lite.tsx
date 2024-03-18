@@ -100,6 +100,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         <For each={getVariants(props.content)}>
           {(variant) => (
             <ContentComponent
+              __isNestedRender={props.__isNestedRender}
               key={variant.testVariationId}
               content={variant}
               showContent={false}
@@ -124,6 +125,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <ContentComponent
+        __isNestedRender={props.__isNestedRender}
         {...useTarget({
           vue: { key: state.shouldRenderVariants.toString() },
           default: {},

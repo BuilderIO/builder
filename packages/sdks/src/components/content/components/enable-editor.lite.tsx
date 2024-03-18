@@ -54,6 +54,7 @@ type BuilderEditorProps = Omit<
   | 'isSsrAbTest'
   | 'blocksWrapper'
   | 'blocksWrapperProps'
+  | '__isNestedRender'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
   setBuilderContextSignal?: (signal: any) => any;
