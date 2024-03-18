@@ -62,7 +62,6 @@ export function evaluate({
     const cachedValue = EvalCache.getCachedValue(cacheKey);
 
     if (cachedValue) {
-      console.log('cachedValue', cachedValue.value);
       return cachedValue.value;
     }
   }
@@ -74,7 +73,6 @@ export function evaluate({
       const cacheKey = EvalCache.getCacheKey(args);
       EvalCache.setCachedValue(cacheKey, newEval);
     }
-    console.log('newEval', newEval);
     return newEval;
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });
