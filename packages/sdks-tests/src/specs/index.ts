@@ -92,7 +92,7 @@ const PAGES = {
   '/animations': ANIMATIONS,
   '/data-preview': DATA_PREVIEW,
   '/form': FORM,
-  '/default-styles': DEFAULT_STYLES
+  '/default-styles': DEFAULT_STYLES,
 } as const;
 
 const apiVersionPathToProp = {
