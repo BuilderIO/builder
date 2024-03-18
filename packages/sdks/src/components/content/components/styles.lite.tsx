@@ -3,12 +3,12 @@ import InlinedStyles from '../../inlined-styles.lite.jsx';
 import type { CustomFont } from './styles.helpers.js';
 import { getCss, getDefaultStyles, getFontCss } from './styles.helpers.js';
 
-type Props = {
+interface Props {
   cssCode?: string;
   customFonts?: CustomFont[];
   contentId?: string;
   __isNestedRender?: boolean;
-};
+}
 
 useMetadata({
   rsc: {
