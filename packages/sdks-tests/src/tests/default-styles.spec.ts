@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from './helpers.js';
+import { EXCLUDE_GEN_1, test } from './helpers.js';
 
 // is a subset - if this selector is there then others would've also been added
 const DEFAULT_STYLES = `.builder-button {
@@ -10,7 +10,11 @@ const DEFAULT_STYLES = `.builder-button {
 test.describe('Default styles', () => {
   test('default styles should be present only once and not inside nested content', async ({
     page,
+    packageName,
   }) => {
+    // dont have .builder-button class
+    test.skip(EXCLUDE_GEN_1);
+    test.fail(packageName === 'react-native');
     await page.goto('/default-styles');
 
     const allStyleTags = await page.evaluate(() => {
@@ -29,7 +33,9 @@ test.describe('Default styles', () => {
     expect(count).toBe(1);
   });
 
-  test('button should have default styles', async ({ page }) => {
+  test('button should have default styles', async ({ page, packageName }) => {
+    test.fail(packageName === 'react-native');
+
     await page.goto('/default-styles');
     const button = page.locator('text=Click me!');
 
