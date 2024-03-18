@@ -8,7 +8,7 @@ import { setAttrs } from '../../blocks/helpers.js';
 
 useMetadata({
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },

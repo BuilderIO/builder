@@ -10,7 +10,7 @@ type Props = Omit<BlockProps, 'context'> & {
 
 useMetadata({
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },

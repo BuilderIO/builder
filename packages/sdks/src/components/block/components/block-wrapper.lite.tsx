@@ -8,7 +8,7 @@ import DynamicRenderer from '../../dynamic-renderer/dynamic-renderer.lite.jsx';
 
 useMetadata({
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },
