@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.11
+
+### Patch Changes
+
+- b81e35a: fix: Image block `role='presentation'` set when altText prop is not provided.
+
 ## 1.0.8
 
 ### Patch Changes

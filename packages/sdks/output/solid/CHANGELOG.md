@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 0.14.6
+
+### Patch Changes
+
+- b81e35a: fix: Image block `role='presentation'` set when altText prop is not provided.
+
 ## 0.14.5
 
 ### Patch Changes
