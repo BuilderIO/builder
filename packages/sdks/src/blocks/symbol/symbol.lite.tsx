@@ -73,6 +73,7 @@ export default function Symbol(props: SymbolProps) {
     useTarget({
       react: () => {},
       reactNative: () => {},
+      solid: () => {},
 
       default: () => {
         state.setContent();
