@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.12
+
+### Patch Changes
+
+- c880ef5: Fix: data state reactivity for nested components
+- c880ef5: Feature: add Cache layer for dynamic binding evaluator
+
 ## 1.0.11
 
 ### Patch Changes

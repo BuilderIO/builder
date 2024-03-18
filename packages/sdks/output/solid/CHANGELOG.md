@@ -1,5 +1,13 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.12
+
+### Patch Changes
+
+- c880ef5: Fix: data state reactivity for nested components
+- c880ef5: Feature: add Cache layer for dynamic binding evaluator
+- c880ef5: fix: reactivity
+
 ## 0.14.6
 
 ### Patch Changes
