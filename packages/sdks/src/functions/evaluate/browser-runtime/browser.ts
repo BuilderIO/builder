@@ -39,7 +39,7 @@ export function flattenState({
       }
 
       const val = target[prop];
-      if (typeof val === 'object') {
+      if (typeof val === 'object' && val !== null) {
         return flattenState({
           rootState: val,
           localState: undefined,

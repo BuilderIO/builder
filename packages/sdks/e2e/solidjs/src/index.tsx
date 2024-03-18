@@ -1,3 +1,4 @@
+import 'solid-devtools';
 /* @refresh reload */
 import { render } from 'solid-js/web';
 

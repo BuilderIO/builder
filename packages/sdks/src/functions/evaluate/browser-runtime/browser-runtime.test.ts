@@ -26,4 +26,15 @@ describe('flatten state', () => {
       'Writing to local state is not allowed as it is read-only.'
     );
   });
+
+  it('should correctly handle null state values', () => {
+    const localState = {};
+    const rootState = { foo: null };
+    const flattened = flattenState({
+      rootState,
+      localState,
+      rootSetState: undefined,
+    });
+    expect(flattened.foo).toEqual(null);
+  });
 });

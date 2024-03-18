@@ -2,10 +2,7 @@ import { expect } from '@playwright/test';
 import { findTextInPage, test } from './helpers.js';
 
 test.describe('Dynamic Content', () => {
-  test('Data Bindings', async ({ page, packageName }) => {
-    // Max call stack exceeded crash.
-    test.fail(packageName === 'solid' || packageName === 'solid-start');
-
+  test('Data Bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
     await expect(page.locator(`text="1234"`).first()).toBeVisible();

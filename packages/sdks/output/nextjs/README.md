@@ -4,9 +4,9 @@ This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended t
 
 ## Note
 
-you can use _any_ Builder React SDK with Next.js. Our [Gen1](../../../react/) and [Gen2](../react/) SDKs both work with Next.js (pages router or app router). 
+You can use _any_ Builder React SDK with Next.js. Our [Gen1](../../../react/) and [Gen2](../react/) SDKs both work with Next.js (pages router or app router).
 
-This SDK, though, is the only one that supports [registering](https://www.builder.io/c/docs/custom-components-setup) RSCs (react server components) as custom components in Builder, and also includes nearly 0 client side JS runtime. Our other SDKs only support registering React client components in Builder, due to how RSC's runtime works. 
+This NextJS SDK, though, is the only one that supports [registering](https://www.builder.io/c/docs/custom-components-setup) RSCs (react server components) as custom components in Builder, and also includes nearly 0 client side JS runtime. Our other SDKs only support registering React client components in Builder, due to how RSC's runtime works.
 
 To allow registering RSCS, this SDK makes compromises on Builder features: most notably, it does not support interactivity within the rendered content. See the [features grid](https://github.com/BuilderIO/builder/tree/main/packages/sdks#features) for more information.
 
