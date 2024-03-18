@@ -99,4 +99,4 @@ const DEFAULT_STYLES = `
 
 export const getDefaultStyles = (isNested: boolean | undefined) => {
   return !isNested ? DEFAULT_STYLES : '';
-}
+};
