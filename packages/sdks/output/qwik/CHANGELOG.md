@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.8
+
+### Patch Changes
+
+- 2c93c95: Fix: Symbol styles overriding subsequent content styles.
+
 ## 0.14.7
 
 ### Patch Changes
