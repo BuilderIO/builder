@@ -15,5 +15,5 @@ export type ContentProps = InternalRenderProps &
     /**
      * For internal use only. Do not provide this prop.
      */
-    __isNestedRender?: boolean;
+    isNestedRender?: boolean;
   };

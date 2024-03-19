@@ -7,7 +7,7 @@ interface Props {
   cssCode?: string;
   customFonts?: CustomFont[];
   contentId?: string;
-  __isNestedRender?: boolean;
+  isNestedRender?: boolean;
 }
 
 useMetadata({
@@ -21,7 +21,7 @@ export default function ContentStyles(props: Props) {
     injectedStyles: `
 ${getCss({ cssCode: props.cssCode, contentId: props.contentId })}
 ${getFontCss({ customFonts: props.customFonts })}
-${getDefaultStyles(props.__isNestedRender)}
+${getDefaultStyles(props.isNestedRender)}
 `.trim(),
   });
 
