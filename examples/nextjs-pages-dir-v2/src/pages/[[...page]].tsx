@@ -5,7 +5,7 @@ import {
   fetchOneEntry,
   isEditing,
   isPreviewing,
-} from '@builder.io/sdk-react/edge';
+} from '@builder.io/sdk-react';
 import { GetStaticProps } from 'next';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
@@ -42,7 +42,9 @@ export async function getStaticPaths() {
     model: 'page',
     // We only need the URL field
     fields: 'data.url',
-    options: { noTargeting: true },
+    options: {
+      noTargeting: true,
+    },
   });
 
   // Generate the static paths for all pages in Builder
