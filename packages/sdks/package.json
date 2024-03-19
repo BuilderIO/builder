@@ -6,6 +6,7 @@
     "cz": "cz",
     "g:build-inline-fns": "node ./output-generation/build-inline-fns.mjs",
     "build-mitosis": "../../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build:angular": "yarn build-mitosis --target=angular && yarn run set-sdk-version angular",
     "build:react": "yarn build-mitosis --target=react && yarn run set-sdk-version react",
     "build:qwik": "yarn build-mitosis --target=qwik && yarn run set-sdk-version qwik",
     "build:svelte": "yarn build-mitosis --target=svelte && yarn run set-sdk-version svelte",
@@ -16,6 +17,7 @@
     "build:all": "yarn build-mitosis",
     "start": "watch 'yarn run build-mitosis' ./src ./overrides",
     "_start": "watch 'yarn run build-mitosis --target=$SDK' ./src ./overrides",
+    "start:angular": "SDK=angular yarn _start",
     "start:react": "SDK=react yarn _start",
     "start:qwik": "SDK=qwik yarn _start",
     "start:svelte": "SDK=svelte yarn _start",
@@ -164,6 +166,14 @@
         ],
         "outputs": [
           "{projectRoot}/output/nextjs/src"
+        ]
+      },
+      "build:angular": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/output/angular/src"
         ]
       }
     },
