@@ -3,9 +3,7 @@ import { Content, fetchOneEntry, isEditing, isPreviewing } from '@builder.io/sdk
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 interface PageProps {
-  params: {
-    slug: string[];
-  };
+  params: { slug: string[] };
   searchParams: Record<string, string>;
 }
 

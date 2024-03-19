@@ -42,7 +42,9 @@ export async function getStaticPaths() {
     model: 'page',
     // We only need the URL field
     fields: 'data.url',
-    options: { noTargeting: true },
+    options: {
+      noTargeting: true,
+    },
   });
 
   // Generate the static paths for all pages in Builder
