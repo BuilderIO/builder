@@ -2,4 +2,4 @@
 **/src
 **/lib
 
-!angular/projects/sdk-angular/src
+!angular/src
