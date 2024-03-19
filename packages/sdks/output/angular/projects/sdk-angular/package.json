@@ -8,8 +8,7 @@
   "scripts": {
     "release": "npm publish",
     "build-inline-fns": "yarn g:build-inline-fns",
-    "types": "tsc",
-    "build": "nx run-many -p @builder.io/sdk-angular -t types build:node build:edge build:browser",
+    "build": "nx run-many -p @builder.io/sdk-angular -t build:node build:edge build:browser",
     "build:node": "SDK_ENV=node ng build",
     "build:edge": "SDK_ENV=edge ng build",
     "build:browser": "SDK_ENV=browser ng build"
