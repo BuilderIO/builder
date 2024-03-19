@@ -166,13 +166,13 @@ export const getProps = async (args: {
   const extraProps =
     pathname === '/can-track-false'
       ? {
-          canTrack: false,
-        }
+        canTrack: false,
+      }
       : pathname.includes('no-trusted-hosts')
-      ? {
+        ? {
           trustedHosts: [],
         }
-      : {};
+        : {};
 
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
