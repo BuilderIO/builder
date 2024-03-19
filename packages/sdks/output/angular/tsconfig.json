@@ -17,17 +17,12 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
-      "sdk-angular": [
-        "projects/sdk-angular/lib"
-      ]
+      "sdk-angular": ["projects/sdk-angular/lib"]
     },
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

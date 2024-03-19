@@ -122,7 +122,16 @@ const target = process.argv
 
 const targets = target
   ? [target]
-  : ['reactNative', 'rsc', 'vue', 'solid', 'svelte', 'react', 'qwik', 'angular'];
+  : [
+      'reactNative',
+      'rsc',
+      'vue',
+      'solid',
+      'svelte',
+      'react',
+      'qwik',
+      'angular',
+    ];
 
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
