@@ -33,7 +33,7 @@ type VariantsProviderProps = ContentVariantsPrps & {
   /**
    * For internal use only. Do not provide this prop.
    */
-  __isNestedRender?: boolean;
+  isNestedRender?: boolean;
 };
 
 export default function ContentVariants(props: VariantsProviderProps) {
@@ -86,7 +86,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
+      <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
         <InlinedScript scriptStr={getScriptString()} />
       </Show>
       <Show when={state.shouldRenderVariants}>
@@ -100,6 +100,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         <For each={getVariants(props.content)}>
           {(variant) => (
             <ContentComponent
+              isNestedRender={props.isNestedRender}
               key={variant.testVariationId}
               content={variant}
               showContent={false}
@@ -124,6 +125,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <ContentComponent
+        isNestedRender={props.isNestedRender}
         {...useTarget({
           vue: { key: state.shouldRenderVariants.toString() },
           default: {},

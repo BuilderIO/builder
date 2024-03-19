@@ -11,6 +11,7 @@ import {
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { DATA_PREVIEW } from './data-preview.js';
+import { DEFAULT_STYLES } from './default-styles.js';
 import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
@@ -91,6 +92,7 @@ const PAGES = {
   '/animations': ANIMATIONS,
   '/data-preview': DATA_PREVIEW,
   '/form': FORM,
+  '/default-styles': DEFAULT_STYLES,
 } as const;
 
 const apiVersionPathToProp = {

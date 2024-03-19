@@ -152,6 +152,7 @@ export default function ContentComponent(props: ContentProps) {
       </Show>
       <Show when={TARGET !== 'reactNative'}>
         <ContentStyles
+          isNestedRender={props.isNestedRender}
           contentId={builderContextSignal.value.content?.id}
           cssCode={builderContextSignal.value.content?.data?.cssCode}
           customFonts={builderContextSignal.value.content?.data?.customFonts}
