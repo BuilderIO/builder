@@ -35,8 +35,6 @@ const getTargetPath = ({ target }) => {
   switch (target) {
     case 'rsc':
       return 'nextjs';
-    case 'angular':
-      return 'angular/projects/sdk-angular';
     default:
       return kebabCase(target);
   }
