@@ -2,8 +2,7 @@
   "name": "@builder.io/sdk-angular",
   "version": "0.0.1",
   "files": [
-    "lib",
-    "types"
+    "*"
   ],
   "scripts": {
     "release": "npm publish",
