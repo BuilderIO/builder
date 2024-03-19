@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-fix: default styles only when content is not a nested render
+Fix: Symbol styles overriding subsequent content styles.
