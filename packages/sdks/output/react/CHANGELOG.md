@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.13
+
+### Patch Changes
+
+- 2c93c95: Fix: Symbol styles overriding subsequent content styles.
+
 ## 1.0.12
 
 ### Patch Changes
