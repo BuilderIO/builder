@@ -18,7 +18,7 @@
     "importHelpers": true,
     "paths": {
       "sdk-angular": [
-        "dist/sdk-angular"
+        "projects/sdk-angular/lib"
       ]
     },
     "target": "ES2022",
