@@ -67,7 +67,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
    */
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
-    firstRender: true,
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
@@ -113,8 +112,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       });
     },
-    lastUpdated: 0,
-    shouldSendResetCookie: false,
     ContentWrapper: useTarget({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -260,17 +257,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
       },
     });
   }, [props.content]);
-
-  onUpdate(() => {
-    useTarget({
-      rsc: () => {
-        if (isBrowser()) {
-          window.removeEventListener('message', state.processMessage);
-          window.addEventListener('message', state.processMessage);
-        }
-      },
-    });
-  }, [state.shouldSendResetCookie]);
 
   onUnMount(() => {
     if (isBrowser()) {
