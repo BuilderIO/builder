@@ -22,7 +22,7 @@ Now that you have the plugin set up, you can start syncing your model content. F
 
 Click the More Options button above the model fields, then you'll see a button at the bottom of the Show More Options section, click this button and your existing content will automatically be sent to Algolia with the index name `builder-modelName`.
 
-![Builder Model Sync to Algolia](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F84665735c1c3430696f3d382f23bec40)
+![Builder Model Sync to Algolia](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F84665735c1c3430696f3d382f23bec40)
 
 ## Adding Algolia Search Inputs via Builder
 

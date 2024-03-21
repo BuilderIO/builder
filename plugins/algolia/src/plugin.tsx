@@ -53,7 +53,7 @@ Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => 
 Builder.register('model.action', {
   name: 'Sync to Algolia',
   showIf() {
-    return appState.user.can('admin');
+    return appState.user.can('admin') && !appState.user.organization.value.isEnvironment;
   },
   async onClick(model: any) {
     if (
