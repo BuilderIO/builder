@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.14
+
+### Patch Changes
+
+- 2d5a016: Fix: remove forced re-render of `Content` internals.
+
 ## 1.0.13
 
 ### Patch Changes

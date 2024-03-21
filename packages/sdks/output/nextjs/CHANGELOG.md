@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.9
+
+### Patch Changes
+
+- 2d5a016: Fix: remove forced re-render of `Content` internals.
+
 ## 0.14.8
 
 ### Patch Changes
