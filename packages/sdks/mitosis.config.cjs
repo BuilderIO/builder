@@ -377,7 +377,6 @@ module.exports = {
     qwik: {
       typescript: true,
       plugins: [
-        SRCSET_PLUGIN,
         /**
          * cleanup `onMount` hooks
          * - rmv unnecessary ones
