@@ -142,7 +142,12 @@ export interface GetContentOptions {
   includeUnpublished?: boolean;
 
   /**
-   * Optional override of the fetch function. (Defaults to global fetch)
+   * Optional override of the `fetch` function. (Defaults to global `fetch`)
    */
-  fetch?: typeof global.fetch
+  fetch?: typeof global.fetch;
+
+  /**
+   * Optional fetch options to be passed to the `fetch` function.
+   */
+  fetchOptions?: RequestInit;
 }

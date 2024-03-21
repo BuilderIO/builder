@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Feature: add fetch override option in fetchEntries and fetchOneEntry
+Feature: add `fetch` and `fetchOptions` arguments to `fetchEntries` and `fetchOneEntry`.
