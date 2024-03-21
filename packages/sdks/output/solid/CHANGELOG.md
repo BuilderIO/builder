@@ -1,5 +1,17 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.14
+
+### Patch Changes
+
+- 2d5a016: Fix: remove forced re-render of `Content` internals.
+
+## 1.0.13
+
+### Patch Changes
+
+- 2c93c95: Fix: Symbol styles overriding subsequent content styles.
+
 ## 1.0.12
 
 ### Patch Changes
