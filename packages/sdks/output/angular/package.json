@@ -1,5 +1,5 @@
 {
-  "name": "@builer.io/sdk-angular",
+  "name": "@builder.io/sdk-angular",
   "version": "0.0.0",
   "scripts": {
     "release": "npm publish",
