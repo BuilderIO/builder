@@ -67,8 +67,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
    */
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
-    forceReRenderCount: 0,
-    firstRender: true,
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
@@ -114,8 +112,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       });
     },
-    lastUpdated: 0,
-    shouldSendResetCookie: false,
     ContentWrapper: useTarget({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -137,7 +133,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
             }
             if (breakpoints) {
               state.mergeNewContent({ meta: { breakpoints } });
-              state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
           },
           animation: (animation) => {
@@ -145,7 +140,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           contentUpdate: (newContent) => {
             state.mergeNewContent(newContent);
-            state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
           },
         },
       })(event);
@@ -264,17 +258,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     });
   }, [props.content]);
 
-  onUpdate(() => {
-    useTarget({
-      rsc: () => {
-        if (isBrowser()) {
-          window.removeEventListener('message', state.processMessage);
-          window.addEventListener('message', state.processMessage);
-        }
-      },
-    });
-  }, [state.shouldSendResetCookie]);
-
   onUnMount(() => {
     if (isBrowser()) {
       window.removeEventListener('message', state.processMessage);
@@ -288,7 +271,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onEvent(
     'initeditingbldr',
     () => {
-      state.forceReRenderCount = state.forceReRenderCount + 1;
       window.addEventListener('message', state.processMessage);
 
       registerInsertMenu();
@@ -482,7 +464,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           default: {},
         })}
-        key={state.forceReRenderCount}
         ref={elementRef}
         onClick={(event: any) => state.onClick(event)}
         builder-content-id={props.builderContextSignal.value.content?.id}
