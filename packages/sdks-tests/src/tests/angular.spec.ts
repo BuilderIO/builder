@@ -6,5 +6,5 @@ test.describe('Angular app loads', () => {
     test.skip(packageName !== 'angular');
     await page.goto('/');
     await expect(page.getByText('Hello world!', { exact: true })).toBeVisible();
-  })
-})
+  });
+});
