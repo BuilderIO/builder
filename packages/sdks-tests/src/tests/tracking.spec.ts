@@ -1,5 +1,12 @@
 import { expect } from '@playwright/test';
-import { EXCLUDE_GEN_1, EXCLUDE_RN, excludeTestFor, getBuilderSessionIdCookie, isRNSDK, test } from './helpers.js';
+import {
+  EXCLUDE_GEN_1,
+  EXCLUDE_RN,
+  excludeTestFor,
+  getBuilderSessionIdCookie,
+  isRNSDK,
+  test,
+} from './helpers.js';
 
 test.describe('Tracking', () => {
   test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
