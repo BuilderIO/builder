@@ -1,7 +1,8 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test } from './helpers.js';
+import { excludeTestFor, findTextInPage, test } from './helpers.js';
 
 test.describe('Dynamic Content', () => {
+  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('Data Bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 

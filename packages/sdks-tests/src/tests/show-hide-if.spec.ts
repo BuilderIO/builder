@@ -3,6 +3,7 @@ import { excludeTestFor, findTextInPage, isRNSDK, test } from './helpers.js';
 import { sdk } from './sdk.js';
 
 test.describe('Show If & Hide If', () => {
+  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('works on static conditions', async ({ page }) => {
     await page.goto('/show-hide-if');
 

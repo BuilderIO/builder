@@ -119,6 +119,7 @@ export const EXCLUDE_GEN_2 = excludeTestFor({
   solid: true,
   svelte: true,
   vue: true,
+  angular: true,
 });
 
 export const EXCLUDE_RN = excludeTestFor({
