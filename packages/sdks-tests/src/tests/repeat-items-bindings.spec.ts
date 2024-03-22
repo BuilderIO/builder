@@ -3,7 +3,7 @@ import { excludeTestFor, test } from './helpers.js';
 import { sdk } from './sdk.js';
 
 test.describe('Repeat items bindings', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('Updating state should display repeat collection', async ({ page }) => {
     test.fail(sdk === 'rsc', "NextJS SDK doesn't support state updates");
 

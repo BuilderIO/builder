@@ -4,7 +4,7 @@ import { excludeTestFor, isRNSDK, test } from './helpers.js';
 import { sdk } from './sdk.js';
 
 test.describe('Slot', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('slot should render', async ({ page, packageName }) => {
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server

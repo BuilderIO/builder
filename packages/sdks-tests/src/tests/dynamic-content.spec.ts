@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, findTextInPage, test } from './helpers.js';
 
 test.describe('Dynamic Content', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('Data Bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
@@ -21,12 +21,12 @@ test.describe('Dynamic Content', () => {
     test('static value', async ({ page }) => {
       await page.goto('/link-url');
 
-      await page.locator(`a[href="/static-url"]`).waitFor();
+      await page.locator(`a[href="/static-url"]`).waitFor({ timeout: 10000 });
     });
     test('dynamic value', async ({ page }) => {
       await page.goto('/link-url');
 
-      await page.locator(`a[href="/dynamic-url"]`).waitFor();
+      await page.locator(`a[href="/dynamic-url"]`).waitFor({ timeout: 10000 });
     });
   });
 });

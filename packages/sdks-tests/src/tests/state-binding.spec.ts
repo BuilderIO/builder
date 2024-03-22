@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, isRNSDK, test } from './helpers.js';
 
 test.describe('State binding', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test.describe('inside repeater', () => {
     test('writing to state should update binding', async ({ page, packageName }) => {
       // hydration errors

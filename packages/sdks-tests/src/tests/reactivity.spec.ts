@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, isRNSDK, test } from './helpers.js';
 
 test.describe('Reactive State', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('shows default value', async ({ page }) => {
     await page.goto('/reactive-state');
 

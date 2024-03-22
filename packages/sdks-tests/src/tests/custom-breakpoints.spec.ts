@@ -8,7 +8,7 @@ breakpoints: {
   medium: 800,
 },
 */
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test.describe('when applied', () => {
     test('large desktop size', async ({ page }) => {
       await page.setViewportSize({ width: 801, height: 1000 });

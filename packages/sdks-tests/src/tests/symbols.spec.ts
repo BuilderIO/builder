@@ -55,7 +55,7 @@ const testSymbols = async (page: Page) => {
 };
 
 test.describe('Symbols', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('render correctly', async ({ page }) => {
     await page.goto('/symbols');
 

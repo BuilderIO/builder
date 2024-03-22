@@ -9,7 +9,7 @@ import { excludeTestFor, findTextInPage, test } from './helpers.js';
  * to throw an error if there is a hydration mismatch.
  */
 test.describe('Hydration', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('No mismatch on regular content', async ({ page }) => {
     await page.goto('/');
 
@@ -19,13 +19,13 @@ test.describe('Hydration', () => {
       hasText: 'Columns (with images) ',
     });
 
-    await columnsLink.click();
+    await columnsLink.click({ timeout: 10000 });
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 
   test('No mismatch on A/B test content', async ({ page }) => {
     await page.goto('/ab-test-interactive');
-    await page.locator('a').locator('visible=true').first().click();
+    await page.locator('a').locator('visible=true').first().click({ timeout: 10000 });
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 });
