@@ -47,7 +47,7 @@ test.describe('Tracking', () => {
       const trackingRequestPromise = page.waitForRequest(
         request =>
           request.url().includes('cdn.builder.io/api/v1/track') && request.method() === 'POST',
-          { timeout: 10000 }
+        { timeout: 10000 }
       );
 
       await navigate;
@@ -95,7 +95,7 @@ test.describe('Tracking', () => {
           request.url().includes('cdn.builder.io/api/v1/track') &&
           request.method() === 'POST' &&
           request.postDataJSON().events[0].type === 'click',
-          { timeout: 10000 }
+        { timeout: 10000 }
       );
 
       // click on an element
