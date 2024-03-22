@@ -21,6 +21,7 @@
     "@e2e/gen1-next",
     "@e2e/gen1-remix",
     "@e2e/gen1-react",
-    "@builder.io/sdk-angular"
+    "@builder.io/sdk-angular",
+    "@e2e/angular"
   ]
 }
