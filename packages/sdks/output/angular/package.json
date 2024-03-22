@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "release": "npm publish",
-    "build-inline-fns": "yarn g:build-inline-fns",
+    "build-inline-fns": "echo 'not implemented yet'",
     "build": "ng build --project sdk-angular && rm -rf lib/package.json",
     "build:node": "ng build --project sdk-angular --configuration node",
     "build:edge": "ng build --project sdk-angular --configuration edge",

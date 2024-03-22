@@ -24,6 +24,7 @@ const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
   svelte: ['svelte', 'sveltekit'],
   rsc: ['next-app-dir'],
   oldReact: ['gen1-react', 'gen1-next', 'gen1-remix'],
+  angular: ['angular'],
 };
 
 targetContext.name = sdk;
