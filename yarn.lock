@@ -2870,7 +2870,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-angular@workspace:packages/sdks/output/angular":
+"@builder.io/sdk-angular@workspace:*, @builder.io/sdk-angular@workspace:packages/sdks/output/angular":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-angular@workspace:packages/sdks/output/angular"
   dependencies:
@@ -3482,6 +3482,36 @@ __metadata:
   checksum: 2176d301cc258ea5c2324402997cf8134ebb212469c0d397591636cea8d3c02f2b3cf9fd58dcb748c7a0dade77ebdc1b10284fa63e608c033a1db52fddc69918
   languageName: node
   linkType: hard
+
+"@e2e/angular@workspace:packages/sdks/e2e/angular":
+  version: 0.0.0-use.local
+  resolution: "@e2e/angular@workspace:packages/sdks/e2e/angular"
+  dependencies:
+    "@angular-devkit/build-angular": ^16.2.12
+    "@angular/animations": ^16.2.0
+    "@angular/cli": ^16.2.12
+    "@angular/common": ^16.2.0
+    "@angular/compiler": ^16.2.0
+    "@angular/compiler-cli": ^16.2.0
+    "@angular/core": ^16.2.0
+    "@angular/forms": ^16.2.0
+    "@angular/platform-browser": ^16.2.0
+    "@angular/platform-browser-dynamic": ^16.2.0
+    "@angular/router": ^16.2.0
+    "@builder.io/sdk-angular": "workspace:*"
+    "@types/jasmine": ~4.3.0
+    jasmine-core: ~4.6.0
+    karma: ~6.4.0
+    karma-chrome-launcher: ~3.2.0
+    karma-coverage: ~2.2.0
+    karma-jasmine: ~5.1.0
+    karma-jasmine-html-reporter: ~2.1.0
+    rxjs: ~7.8.0
+    tslib: ^2.3.0
+    typescript: ~5.1.3
+    zone.js: ~0.13.0
+  languageName: unknown
+  linkType: soft
 
 "@e2e/gen1-next@workspace:packages/react-tests/nextjs":
   version: 0.0.0-use.local

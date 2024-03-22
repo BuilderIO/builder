@@ -3,6 +3,7 @@ import { excludeTestFor, findTextInPage, isRNSDK, test } from './helpers.js';
 import { sdk } from './sdk.js';
 
 test.describe('Show If & Hide If', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('works on static conditions', async ({ page }) => {
     await page.goto('/show-hide-if');
 
@@ -53,21 +54,21 @@ test.describe('Show If & Hide If', () => {
     await expect(page.locator('body')).not.toContainText('two');
     await expect(page.locator('body')).not.toContainText('three');
 
-    await page.hover('text=button1');
+    await page.hover('text=button1', { timeout: 10000 });
 
     await expect(page.locator('body')).not.toContainText('zero');
     await expect(page.locator('body')).not.toContainText('one');
     await expect(page.locator('body')).not.toContainText('two');
     await expect(page.locator('body')).not.toContainText('three');
 
-    await page.hover('text=button2');
+    await page.hover('text=button2', { timeout: 10000 });
 
     await expect(page.locator('body')).not.toContainText('zero');
     await expect(page.locator('body')).not.toContainText('one');
     await expect(page.locator('body')).toContainText('two');
     await expect(page.locator('body')).not.toContainText('three');
 
-    await page.hover('text=button3');
+    await page.hover('text=button3', { timeout: 10000 });
 
     await expect(page.locator('body')).not.toContainText('zero');
     await expect(page.locator('body')).not.toContainText('one');

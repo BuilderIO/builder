@@ -1,9 +1,13 @@
 {
   "name": "@builder.io/sdk-angular",
   "version": "0.0.0",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "release": "npm publish",
-    "build": "ng build --project sdk-angular",
+    "build-inline-fns": "echo 'not implemented yet'",
+    "build": "ng build --project sdk-angular && rm -rf lib/package.json",
     "build:node": "ng build --project sdk-angular --configuration node",
     "build:edge": "ng build --project sdk-angular --configuration edge",
     "build:browser": "ng build --project sdk-angular --configuration browser"
@@ -66,5 +70,18 @@
         ]
       }
     }
-  }
+  },
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./lib/index.d.ts",
+      "esm2022": "./lib/esm2022/builder.io-sdk-angular.mjs",
+      "esm": "./lib/esm2022/builder.io-sdk-angular.mjs",
+      "default": "./lib/fesm2022/builder.io-sdk-angular.mjs"
+    }
+  },
+  "module": "lib/fesm2022/builder.io-sdk-angular.mjs",
+  "typings": "lib/index.d.ts"
 }

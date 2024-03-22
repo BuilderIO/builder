@@ -4,12 +4,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from './helpers.js';
-import { EXCLUDE_RN, isRNSDK, test } from './helpers.js';
+import { EXCLUDE_RN, excludeTestFor, isRNSDK, test } from './helpers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test.describe('Blocks', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('Text', async ({ page }) => {
     test.fail(EXCLUDE_RN);
     await page.goto('/text-block');
@@ -198,6 +199,7 @@ test.describe('Blocks', () => {
       const videoContainers = page.locator('.some-class');
       const noOfVideos = await page.locator('.builder-video').count();
 
+      await expect(noOfVideos).toBeGreaterThanOrEqual(1);
       await expect(videoContainers).toHaveCount(noOfVideos);
 
       for (let i = 0; i < noOfVideos; i++) {

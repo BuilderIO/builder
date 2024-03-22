@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { test } from './helpers.js';
+import { excludeTestFor, test } from './helpers.js';
 const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
@@ -50,6 +50,7 @@ const initializeAbTest = async (
   // RN can't have SSR, we don't support/export it.
   test.skip(packageName === 'react-native');
 
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   /**
    * This test is flaky on `next-app-dir` and `qwik-city`. Most likely because it is the very first test that runs.
    */

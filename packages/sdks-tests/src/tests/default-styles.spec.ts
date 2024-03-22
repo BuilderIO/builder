@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { EXCLUDE_GEN_1, test } from './helpers.js';
+import { EXCLUDE_GEN_1, excludeTestFor, test } from './helpers.js';
 
 // is a subset - if this selector is there then others would've also been added
 const DEFAULT_STYLES = `.builder-button {
@@ -8,6 +8,7 @@ const DEFAULT_STYLES = `.builder-button {
 `;
 
 test.describe('Default styles', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('default styles should be present only once and not inside nested content', async ({
     page,
     packageName,
@@ -40,16 +41,24 @@ test.describe('Default styles', () => {
     const button = page.locator('text=Click me!');
 
     const buttonPaddingTop = await button?.evaluate(
-      element => getComputedStyle(element).paddingTop
+      element => getComputedStyle(element).paddingTop,
+      null,
+      { timeout: 10000 }
     );
     const buttonPaddingRight = await button?.evaluate(
-      element => getComputedStyle(element).paddingRight
+      element => getComputedStyle(element).paddingRight,
+      null,
+      { timeout: 10000 }
     );
     const buttonPaddingBottom = await button?.evaluate(
-      element => getComputedStyle(element).paddingBottom
+      element => getComputedStyle(element).paddingBottom,
+      null,
+      { timeout: 10000 }
     );
     const buttonPaddingLeft = await button?.evaluate(
-      element => getComputedStyle(element).paddingLeft
+      element => getComputedStyle(element).paddingLeft,
+      null,
+      { timeout: 10000 }
     );
 
     expect(buttonPaddingTop).toBe('15px');

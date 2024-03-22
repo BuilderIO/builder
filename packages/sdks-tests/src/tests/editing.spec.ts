@@ -5,7 +5,7 @@ import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import type { BuilderContent } from '../specs/types.js';
 import { EMBEDDER_PORT, SDK_LOADED_MSG } from './context.js';
-import { test } from './helpers.js';
+import { excludeTestFor, test } from './helpers.js';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>
@@ -100,6 +100,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 };
 
 test.describe('Visual Editing', () => {
+  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   editorTests({ noTrustedHosts: false });
   test('correctly updates Text block in a Column block', async ({
     page,
