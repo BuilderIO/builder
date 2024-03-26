@@ -5,6 +5,7 @@
     "module": "CommonJS",
     "target": "es6",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "strict": true,
     "declaration": true
   },
