@@ -16,6 +16,7 @@ import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import { mapStyleObjToStrIfNeeded } from '../../functions/get-style.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { ColumnProps } from './columns.types.js';
+import { getColumnsClass } from './helpers.js';
 
 type CSSVal = string | number;
 
@@ -172,7 +173,7 @@ export default function Columns(props: ColumnProps) {
 
   return (
     <div
-      class={`builder-columns ${props.builderBlock.id}-breakpoints`}
+      class={getColumnsClass(props.builderBlock?.id)}
       css={{
         display: 'flex',
         lineHeight: 'normal',
