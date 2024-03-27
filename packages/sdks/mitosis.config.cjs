@@ -198,6 +198,49 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
+const ANGULAR_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      const pathValue = code.match(/\[path\]="(.*?)"/);
+      if (pathValue) {
+        code = code.replace(
+          pathValue[0],
+          `[path]="${pathValue[1].replaceAll('`', "'").replaceAll('\\', '').replaceAll('.${', ".'+").replaceAll('}', "+'")}"`
+        );
+      }
+      return code;
+    },
+  },
+});
+
+
+const ANGULAR_PLUGIN2 = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('inputs: { getWrapperProps')) {
+        const wrapperObj = code.match(/inputs: {.*?}/s)[0].replace('inputs: {', '').replaceAll('props.', '') + ')';
+        const inputsObj = code.match(/inputs: {.*?;/s)[0].replace('inputs: ', '');
+        code = code.replace(inputsObj, wrapperObj);
+      }
+      return code;
+    }
+  }
+});
+
+const ANGULAR_PLUGIN3 = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('<enable-editor')) {
+        code = code.replace('[linkComponent]="linkComponent"', '');
+      }
+      if (code.includes('<block-wrapper')) {
+        code = code.replace('[linkComponent]="linkComponent"', '');
+      }
+      return code;
+    }
+  }
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -213,7 +256,7 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
-      plugins: [],
+      plugins: [ANGULAR_PLUGIN, ANGULAR_PLUGIN2, ANGULAR_PLUGIN3],
     },
     solid: {
       typescript: true,
