@@ -49,7 +49,7 @@ export function setCookie(
     document.cookie = `${cname}=${cvalue};${expires};path=/${otherInfo}`;
   } catch (err) {
     // Not a huge deal, could be sandboxed iframe
-    console.warn('Could not s√et cookie', err);
+    console.warn('Could not set cookie', err);
   }
 }
 
