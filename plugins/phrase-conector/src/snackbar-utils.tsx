@@ -44,7 +44,7 @@ export function showJobNotification(projectUid: string) {
 
 export function showOutdatedNotifications(callback: () => void) {
   appState.snackBar.show(
-    <div css={{ display: 'flex', alignItems: 'center' }}>Contant has new strings!</div>,
+    <div css={{ display: 'flex', alignItems: 'center' }}>Content has new strings!</div>,
     6000,
     <Button
       color="primary"
