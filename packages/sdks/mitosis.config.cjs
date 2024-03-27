@@ -211,6 +211,7 @@ module.exports = {
   },
   options: {
     angular: {
+      standalone: true,
       typescript: true,
       plugins: [],
     },
