@@ -2,7 +2,7 @@
 
 ## Installation
 
-From the integrations tab, pick `Phrase`, it'll ask you for your phrase user name and password, make sure the user has a `Project Manager` role.
+From the plugins tab, pick `Phrase`, it'll ask you for your phrase user name and password, make sure the user has a `Project Manager` role.
 ![Phrase connector configuration screen](https://cdn.builder.io/api/v1/image/assets%2F1f098a44b17d4df688d2afdc8a10ac7d%2F92e44f756ac848bca5bdc6d9459d2bfc)
 
 ## Translating content

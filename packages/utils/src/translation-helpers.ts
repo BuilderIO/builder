@@ -86,6 +86,26 @@ export function getTranslateableFields(
           instructions: el.meta?.instructions || defaultInstructions,
         };
       }
+
+      if (el && el.id && el.component?.name === 'Symbol') {
+        const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
+        if (symbolInputs.length) {
+          symbolInputs.forEach(
+            ([symbolInputName, symbolInputValue]: [
+              symbolInputName: string,
+              symbolInputValue: any
+            ]) => {
+              results[`blocks.${el.id}.symbolInput#${symbolInputName}`] = {
+                value:
+                  typeof symbolInputValue === 'string'
+                    ? symbolInputValue
+                    : symbolInputValue?.[sourceLocaleId] || symbolInputValue?.Default,
+                instructions: el.meta?.instructions || defaultInstructions,
+              };
+            }
+          );
+        }
+      }
     });
   }
 
@@ -115,6 +135,60 @@ export function applyTranslation(
 
   if (blocks) {
     traverse(blocks).forEach(function (el) {
+      if (el && el.id && el.component?.name === 'Symbol') {
+        const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
+        if (symbolInputs.length) {
+          symbolInputs.forEach(
+            ([symbolInputName, symbolInputValue]: [
+              symbolInputName: string,
+              symbolInputValue: any
+            ]) => {
+              const translatedSymbolInput =
+                translation[`blocks.${el.id}.symbolInput#${symbolInputName}`];
+
+              if (!translatedSymbolInput?.value) {
+                return;
+              }
+
+              const localizedValues =
+                typeof symbolInputValue === 'string'
+                  ? {
+                      Default: symbolInputValue,
+                    }
+                  : symbolInputValue;
+
+              this.update({
+                ...el,
+                meta: {
+                  ...el.meta,
+                  translated: true,
+                  // this tells the editor that this is a forced localized input similar to clicking the globe icon
+                  [`transformed.symbol.data.${symbolInputName}`]: 'localized',
+                },
+                component: {
+                  ...el.component,
+                  options: {
+                    ...(el.component.options || {}),
+                    symbol: {
+                      ...(el.component.options.symbol || {}),
+                      data: {
+                        ...(el.component.options.symbol?.data || {}),
+
+                        [symbolInputName]: {
+                          '@type': localizedType,
+                          ...localizedValues,
+                          [locale]: unescapeStringOrObject(translatedSymbolInput.value),
+                        },
+                      },
+                    },
+                  },
+                },
+              });
+            }
+          );
+        }
+      }
+
       if (
         el &&
         el.id &&
