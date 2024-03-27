@@ -30,6 +30,10 @@ registerPlugin(
         type: 'password',
         required: true,
       },
+      {
+        name: 'isUSDataCenterAccount',
+        type: 'boolean',
+      },
       // allow developer to override callback host , e.g ngrok for local development
       ...(appState.user.isBuilderAdmin
         ? [
