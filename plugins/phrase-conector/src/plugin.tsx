@@ -160,7 +160,7 @@ registerPlugin(
             settings.get('callbackHost')
           );
           appState.globalState.hideGlobalBlockingLoading();
-          showJobNotification(project.uid);
+          showJobNotification(project.uid, settings.get('isUSDataCenterAccount'));
         }
       },
     });
