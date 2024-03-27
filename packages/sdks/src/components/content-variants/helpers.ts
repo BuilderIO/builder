@@ -90,3 +90,7 @@ export const getUpdateVariantVisibilityScript = ({
   `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(
     "${variationId}", "${contentId}", ${isHydrationTarget}
   )`;
+
+export const getInlineVariantStylesId = (contentId?: string) => {
+  return `variants-styles-${contentId}`;
+}

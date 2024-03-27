@@ -39,6 +39,7 @@ import type {
   BuilderComponentStateChange,
   ContentProps,
 } from '../content.types.js';
+import { getWrapperClassName } from './styles.helpers.js';
 
 useMetadata({
   qwik: {
@@ -473,9 +474,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         onClick={(event: any) => state.onClick(event)}
         builder-content-id={props.builderContextSignal.value.content?.id}
         builder-model={props.model}
-        className={`variant-${
-          props.content?.testVariationId || props.content?.id
-        }`}
+        className={getWrapperClassName(props.content?.testVariationId || props.content?.id)}
         {...useTarget({
           reactNative: {
             // currently, we can't set the actual ID here.
