@@ -135,7 +135,6 @@ export function applyTranslation(
 
   if (blocks) {
     traverse(blocks).forEach(function (el) {
-      // if (el && el.id && el.component?.name === 'Symbol' && translation[`blocks.${el.id}#text`]) {
       if (el && el.id && el.component?.name === 'Symbol') {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
