@@ -220,7 +220,7 @@ const ANGULAR_PLUGIN2 = () => ({
       if (code.includes('inputs: { getWrapperProps')) {
         const wrapperObj = code.match(/inputs: {.*?}/s)[0].replace('inputs: {', '').replaceAll('props.', '') + ')';
         const inputsObj = code.match(/inputs: {.*?;/s)[0].replace('inputs: ', '');
-        code = code.replace(inputsObj, wrapperObj.replace('content.value', 'context'));
+        code = code.replace(inputsObj, wrapperObj.replace('context.value', 'context'));
       }
       return code;
     }
