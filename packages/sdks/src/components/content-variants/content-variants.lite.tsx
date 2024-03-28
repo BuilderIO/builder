@@ -15,6 +15,7 @@ import InlinedStyles from '../inlined-styles.lite.jsx';
 import type { ContentVariantsPrps } from './content-variants.types.js';
 import {
   checkShouldRenderVariants,
+  getInlineVariantStylesId,
   getScriptString,
   getUpdateCookieAndStylesScript,
   getVariants,
@@ -91,7 +92,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
-          id={`variants-styles-${props.content?.id}`}
+          id={getInlineVariantStylesId(props.content?.id)}
           styles={state.hideVariantsStyleString}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}

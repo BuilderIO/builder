@@ -1,5 +1,3 @@
 # We ignore all Mitosis-outputted files.
 **/src
 **/lib
-
-!angular/src
