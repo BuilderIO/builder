@@ -1,71 +1,16 @@
-# Builder.io React NextJS SDK (EXPERIMENTAL)
+⚠️: Please read the below carefully.
+
+- you should ONLY use this SDK if you are trying to [register](https://www.builder.io/c/docs/custom-components-setup) your RSCs (react server components) in Builder. That is its only advantage over our standard React SDKs.
+- our [Gen1](../../../react/) and [Gen2](../react/) React SDKs work perfectly well with all versions of Next.js. The only feature they do not support is registration of RSCs.
+- to allow registering RSCs, this SDK must make compromises. Most notably, it does not support interactivity within the rendered content. See the [features grid](https://github.com/BuilderIO/builder/tree/main/packages/sdks#features) for more information.
+- this SDK only works in the NextJS App Directory.
+- this SDK is marked as "Beta" due to the missing features mentioned above. As of this time, there are no solutions to acheiving interactivity in this SDK. It is however actively maintained and developed alongside all other SDKs.
+
+# Builder.io React NextJS SDK (BETA)
 
 This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory.
 
-## Note
-
-You can use _any_ Builder React SDK with Next.js. Our [Gen1](../../../react/) and [Gen2](../react/) SDKs both work with Next.js (pages router or app router).
-
-This NextJS SDK, though, is the only one that supports [registering](https://www.builder.io/c/docs/custom-components-setup) RSCs (react server components) as custom components in Builder, and also includes nearly 0 client side JS runtime. Our other SDKs only support registering React client components in Builder, due to how RSC's runtime works.
-
-To allow registering RSCS, this SDK makes compromises on Builder features: most notably, it does not support interactivity within the rendered content. See the [features grid](https://github.com/BuilderIO/builder/tree/main/packages/sdks#features) for more information.
-
-## API Reference
-
-To use the SDK, you need to:
-
-- fetch the builder data using `getContent`: you can see how to use it here https://www.builder.io/c/docs/content-api, and how it differs from the React V1 SDK's `builder.get()` function.
-
-- pass that data to the `RenderContent` component, along with the following properties:
-
-```ts
-type RenderContentProps = {
-  content?: Nullable<BuilderContent>;
-  model?: string;
-  data?: { [key: string]: any };
-  context?: BuilderRenderContext;
-  apiKey: string;
-  apiVersion?: ApiVersion;
-  customComponents?: RegisteredComponent[];
-  canTrack?: boolean;
-  locale?: string;
-  includeRefs?: boolean;
-};
-```
-
-Here is a simplified example showing how you would use both. This needs to be created created with the name `app/[[...slug]]/page.tsx`, so it catches all routes:
-
-```tsx
-import {
-  RenderContent,
-  getBuilderSearchParams,
-  getContent,
-} from '@builder.io/sdk-react-nextjs';
-
-interface MyPageProps {
-  params: {
-    slug: string[];
-  };
-  searchParams: Record<string, string>;
-}
-
-const apiKey = 'YOUR_API_KEY_HERE';
-
-export default async function Page(props: MyPageProps) {
-  const urlPath = '/' + (props.params?.slug?.join('/') || '');
-
-  const content = await getContent({
-    model: 'page',
-    apiKey,
-    options: getBuilderSearchParams(props.searchParams),
-    userAttributes: { urlPath },
-  });
-
-  return <RenderContent content={content} model="page" apiKey={apiKey} />;
-}
-```
-
-Look at the [examples](#examples) for more information.
+For usage information, look at the [examples](#examples).
 
 ## Mitosis
 
