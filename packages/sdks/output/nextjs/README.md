@@ -2,9 +2,14 @@
 
 - you should ONLY use this SDK if you are trying to [register](https://www.builder.io/c/docs/custom-components-setup) your RSCs (react server components) in Builder. That is its only advantage over our standard React SDKs.
 - our [Gen1](../../../react/) and [Gen2](../react/) React SDKs work perfectly well with all versions of Next.js. The only feature they do not support is registration of RSCs.
-- to allow registering RSCs, this SDK must make compromises. Most notably, it does not support interactivity within the rendered content. See the [features grid](https://github.com/BuilderIO/builder/tree/main/packages/sdks#features) for more information.
 - this SDK only works in the NextJS App Directory.
-- this SDK is marked as "Beta" due to the missing features mentioned above. As of this time, there are no solutions to acheiving interactivity in this SDK. It is however actively maintained and developed alongside all other SDKs.
+
+To allow registering RSCs, this SDK must make compromises. Most notably:
+
+- it does not support interactive Builder features within the rendered content (such as updating dynamic bindings, state, actions etc.). As of today, there are no workarounds around these limitations, due to how RSCs work. See the [features grid](https://github.com/BuilderIO/builder/tree/main/packages/sdks#features) for more information.
+- the visual editor experience is laggy, as it requires network roundtrips to the customer's servers for each edit. We are working on improving this.
+
+this SDK is marked as "Beta" due to the missing features mentioned above. It is however actively maintained and developed alongside all other SDKs.
 
 # Builder.io React NextJS SDK (BETA)
 
