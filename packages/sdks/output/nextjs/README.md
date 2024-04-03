@@ -1,4 +1,4 @@
-⚠️: Please read the below carefully.
+## When should I use this SDK (please read carefully)
 
 - you should ONLY use this SDK if you are trying to [register](https://www.builder.io/c/docs/custom-components-setup) your RSCs (react server components) in Builder. That is its only advantage over our standard React SDKs.
 - our [Gen1](../../../react/) and [Gen2](../react/) React SDKs work perfectly well with all versions of Next.js. The only feature they do not support is registration of RSCs.
