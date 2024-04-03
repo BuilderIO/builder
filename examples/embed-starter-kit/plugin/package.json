@@ -86,7 +86,7 @@
     "commitizen": "^4.3.0",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
-    "css-loader": "^3.5.3",
+    "css-loader": "^6.8.1",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.0.1",
     "jest": "^23.6.0",
