@@ -1,6 +1,6 @@
 interface Props {
   styles: string;
-  id?: string;
+  id: string;
 }
 
 export default function InlinedStyles(props: Props) {

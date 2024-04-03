@@ -87,7 +87,10 @@ export default function ContentVariants(props: VariantsProviderProps) {
   return (
     <>
       <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
-        <InlinedScript scriptStr={getScriptString()} />
+        <InlinedScript
+          scriptStr={getScriptString()}
+          id="builderio-content-variants-initialize-fns-script"
+        />
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
@@ -95,7 +98,10 @@ export default function ContentVariants(props: VariantsProviderProps) {
           styles={state.hideVariantsStyleString}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
-        <InlinedScript scriptStr={state.updateCookieAndStylesScriptStr} />
+        <InlinedScript
+          id="builderio-content-variants-update-cookie-and-styles-script"
+          scriptStr={state.updateCookieAndStylesScriptStr}
+        />
 
         <For each={getVariants(props.content)}>
           {(variant) => (

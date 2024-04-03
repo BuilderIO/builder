@@ -25,5 +25,10 @@ ${getDefaultStyles(props.isNestedRender)}
 `.trim(),
   });
 
-  return <InlinedStyles styles={state.injectedStyles} />;
+  return (
+    <InlinedStyles
+      styles={state.injectedStyles}
+      id="builderio-content-styles"
+    />
+  );
 }
