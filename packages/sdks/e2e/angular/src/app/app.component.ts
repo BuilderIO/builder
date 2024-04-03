@@ -18,14 +18,13 @@ interface BuilderProps {
 @Component({
   selector: 'app-root',
   template: `
-    <content
+    <content-variants
       [model]="model"
       [content]="content"
       [apiKey]="apiKey"
       [trustedHosts]="trustedHosts"
       [canTrack]="canTrack"
-      [apiVersion]="apiVersion"
-    ></content>
+    ></content-variants>
   `,
 })
 export class AppComponent {
