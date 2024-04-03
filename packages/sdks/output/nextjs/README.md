@@ -10,7 +10,69 @@
 
 This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory.
 
-For usage information, look at the [examples](#examples).
+## Usage
+
+When registering a custom component, you will need to add the `isRSC: true` option to the component. For example:
+
+```tsx
+// CatFacts.tsx
+async function CatFacts() {
+  const catFacts = await fetch('https://cat-fact.herokuapp.com/facts').then(
+    (x) => x.json()
+  );
+  return (
+    <div>
+      Here are some cat facts from an RSC:
+      <ul>
+        {catFacts.slice(3).map((fact) => (
+          <li key={fact._id}>{fact.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export const CatFactsInfo = {
+  name: 'CatFacts',
+  component: CatFacts,
+  // You must add the below option or the SDK will fail to render.
+  isRSC: true,
+};
+```
+
+And in your `page.tsx`, you can use the custom component like this:
+
+```tsx
+// page.tsx
+import {
+  Content,
+  fetchOneEntry,
+  getBuilderSearchParams,
+} from '@builder.io/sdk-react-nextjs';
+import { CatFactsInfo } from './CatFacts';
+
+export default async function Page(props) {
+  const urlPath = '/' + (props.params?.slug?.join('/') || '');
+
+  const content = await fetchOneEntry({
+    model: 'page',
+    apiKey,
+    options: getBuilderSearchParams(props.searchParams),
+    userAttributes: { urlPath },
+  });
+
+  return (
+    <Content
+      content={content}
+      model="page"
+      apiKey={apiKey}
+      customComponents={[CatFactsInfo]}
+    />
+  );
+}
+```
+
+For more usage information, look at the [examples](#examples).
 
 ## Mitosis
 
