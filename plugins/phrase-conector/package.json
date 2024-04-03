@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-phrase-connector",
-  "version": "0.0.5",
+  "version": "0.0.8",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -126,7 +126,7 @@
   },
   "dependencies": {
     "@builder.io/commerce-plugin-tools": "^0.3.0",
-    "@builder.io/utils": "^1.1.15",
+    "@builder.io/utils": "^1.1.20",
     "fast-json-stable-stringify": "^2.1.0",
     "lodash": "^4.17.21",
     "object-hash": "^3.0.0",
