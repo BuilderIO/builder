@@ -17,6 +17,16 @@ test.describe('HTTP Requests', () => {
       return route.fulfill({ status: 200, json: { foo: 'bar' } });
     });
 
-    await launchEmbedderAndWaitForSdk({ page, basePort, path: '/http-requests' });
+    await launchEmbedderAndWaitForSdk({
+      page,
+      basePort,
+      path: '/http-requests',
+      gotoOptions: { waitUntil: 'networkidle' },
+    });
+
+    expect(x).toBeGreaterThanOrEqual(1);
+
+    // eventually this should be exactly 1
+    expect(x).toBeLessThan(10);
   });
 });

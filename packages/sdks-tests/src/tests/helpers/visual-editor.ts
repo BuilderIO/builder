@@ -9,12 +9,14 @@ export const launchEmbedderAndWaitForSdk = async ({
   page,
   basePort,
   path,
+  gotoOptions,
 }: {
   page: Page;
   basePort: number;
   path: string;
+  gotoOptions?: Parameters<Page['goto']>[1];
 }) => {
   const msgPromise = page.waitForEvent('console', msg => msg.text() === SDK_LOADED_MSG);
-  await page.goto(getEmbeddedServerURL(path, basePort));
+  await page.goto(getEmbeddedServerURL(path, basePort), gotoOptions);
   await msgPromise;
 };
