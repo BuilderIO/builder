@@ -25,13 +25,7 @@ test.describe('HTTP Requests', () => {
 
       return route.fulfill({
         status: 200,
-        json: {
-          state: {
-            article: {
-              entries: [{ seo_title: 'foo' }],
-            },
-          },
-        },
+        json: { entries: [{ seo_title: 'foo' }] },
       });
     });
 
@@ -42,7 +36,7 @@ test.describe('HTTP Requests', () => {
       gotoOptions: { waitUntil: 'networkidle' },
     });
 
-    await expect(page.locator('body')).toContainText('foo');
+    await expect(page.frameLocator('iframe').getByText('foo')).toBeVisible();
 
     expect(x).toBeGreaterThanOrEqual(1);
 
