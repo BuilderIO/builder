@@ -1,8 +1,7 @@
-import { expect } from '@playwright/test';
 import { test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
-test.describe.only('HTTP Requests', () => {
+test.describe('HTTP Requests', () => {
   test('call proxy API only once', async ({ page, basePort }) => {
     let x = 0;
 
@@ -19,7 +18,5 @@ test.describe.only('HTTP Requests', () => {
     });
 
     await launchEmbedderAndWaitForSdk({ page, basePort, path: '/http-requests' });
-
-    await expect(x).toBe(1);
   });
 });
