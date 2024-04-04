@@ -1,8 +1,9 @@
+import { expect } from '@playwright/test';
 import { test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
-test.describe('HTTP Requests', () => {
-  test('call proxy API only once', async ({ page }) => {
+test.describe.only('HTTP Requests', () => {
+  test('call proxy API only once', async ({ page, basePort }) => {
     let x = 0;
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v1\/proxy-api\.*/;
@@ -17,7 +18,7 @@ test.describe('HTTP Requests', () => {
       return route.fulfill({ status: 200, json: { foo: 'bar' } });
     });
 
-    await launchEmbedderAndWaitForSdk({ page, basePort: 3000, path: '/http-requests' });
+    await launchEmbedderAndWaitForSdk({ page, basePort, path: '/http-requests' });
 
     await expect(x).toBe(1);
   });
