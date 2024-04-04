@@ -38,9 +38,9 @@ test.describe('HTTP Requests', () => {
 
     await expect(page.frameLocator('iframe').getByText('foo')).toBeVisible();
 
-    expect(x).toBeGreaterThanOrEqual(1);
-
+    // expect(x).toBeGreaterThanOrEqual(1);
     // eventually this should be exactly 1
-    expect(x).toBeLessThan(10);
+    // expect(x).toBeLessThan(10);
+    expect(x).toBe(1);
   });
 });
