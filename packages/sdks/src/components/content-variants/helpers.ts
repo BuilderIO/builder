@@ -66,7 +66,7 @@ const getIsHydrationTarget = (target: Target) =>
 
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
-export const getScriptString = () => `
+export const getInitVariantsFnsScriptString = () => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
   window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
   `;
