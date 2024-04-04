@@ -101,7 +101,7 @@ export default function BlockStyles(props: BlockStylesProps) {
   });
   return (
     <Show when={TARGET !== 'reactNative' && state.css && state.canShowBlock}>
-      <InlinedStyles styles={state.css} />
+      <InlinedStyles styles={state.css} id="builderio-block" />
     </Show>
   );
 }

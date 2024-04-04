@@ -15,7 +15,7 @@ import InlinedStyles from '../inlined-styles.lite.jsx';
 import type { ContentVariantsPrps } from './content-variants.types.js';
 import {
   checkShouldRenderVariants,
-  getScriptString,
+  getInitVariantsFnsScriptString,
   getUpdateCookieAndStylesScript,
   getVariants,
 } from './helpers.js';
@@ -87,15 +87,21 @@ export default function ContentVariants(props: VariantsProviderProps) {
   return (
     <>
       <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
-        <InlinedScript scriptStr={getScriptString()} />
+        <InlinedScript
+          scriptStr={getInitVariantsFnsScriptString()}
+          id="builderio-init-variants-fns"
+        />
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
-          id={`variants-styles-${props.content?.id}`}
+          id="builderio-variants"
           styles={state.hideVariantsStyleString}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
-        <InlinedScript scriptStr={state.updateCookieAndStylesScriptStr} />
+        <InlinedScript
+          id="builderio-variants-visibility"
+          scriptStr={state.updateCookieAndStylesScriptStr}
+        />
 
         <For each={getVariants(props.content)}>
           {(variant) => (

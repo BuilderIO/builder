@@ -143,7 +143,13 @@ export default class CloudinaryImageEditor extends React.Component<
     const selectedPublicIdMessage = this.buildSelectedIdMessage();
     const chooseImageButtonText = this.buildChooseImageText();
     const setCredentialsButtonText = this.setCredentialsButtonText();
-    const buttonContainerStyle = { display: 'grid', gap: '10px', gridTemplateColumns: '1fr max-content', marginTop: '5px', marginBottom: '5px' };
+    const buttonContainerStyle = {
+      display: 'grid',
+      gap: '10px',
+      gridTemplateColumns: '1fr max-content',
+      marginTop: '5px',
+      marginBottom: '5px',
+    };
     return (
       <div css={{ padding: '15px 0' }}>
         <Typography variant="caption">Cloudinary image picker</Typography>
