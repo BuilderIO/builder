@@ -11,6 +11,7 @@ test.describe('HTTP Requests', () => {
       excludeTestFor({ qwik: true }),
       'error setting httpRequest response or making API call altogether.'
     );
+    test.skip(excludeTestFor({ vue: true }), 'Vue flakiness issues');
 
     let x = 0;
 
@@ -43,6 +44,7 @@ test.describe('HTTP Requests', () => {
       excludeTestFor({ qwik: true }),
       'error setting httpRequest response or making API call altogether.'
     );
+    test.skip(excludeTestFor({ vue: true }), 'Vue flakiness issues');
 
     let x = 0;
 
