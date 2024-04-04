@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers.js';
+import { excludeTestFor, test } from './helpers/index.js';
 const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({

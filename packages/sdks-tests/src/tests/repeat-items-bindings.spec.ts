@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers.js';
+import { excludeTestFor, test } from './helpers/index.js';
 import { sdk } from './sdk.js';
 
 test.describe('Repeat items bindings', () => {

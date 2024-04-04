@@ -6,7 +6,7 @@ import {
   getClassSelector,
   isRNSDK,
   test,
-} from './helpers.js';
+} from './helpers/index.js';
 
 // RN SDK does not use ScrollView in Symbol
 const FIRST_BLOCK_SYMBOL_SELECTOR = `${getClassSelector('builder-blocks')} > div`;

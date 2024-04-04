@@ -7,8 +7,8 @@ import type {
   TestInfo,
 } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
-import type { PackageName, Sdk } from './sdk.js';
-import { sdk } from './sdk.js';
+import type { PackageName, Sdk } from '../sdk.js';
+import { sdk } from '../sdk.js';
 
 type TestOptions = {
   packageName: PackageName | 'DEFAULT';

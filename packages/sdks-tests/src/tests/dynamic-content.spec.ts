@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, findTextInPage, test } from './helpers.js';
+import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
 
 test.describe('Dynamic Content', () => {
   test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');

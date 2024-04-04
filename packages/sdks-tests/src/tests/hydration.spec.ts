@@ -1,4 +1,4 @@
-import { excludeTestFor, findTextInPage, test } from './helpers.js';
+import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
 
 /**
  * The only way to guarantee that hydration has completed is to interact with

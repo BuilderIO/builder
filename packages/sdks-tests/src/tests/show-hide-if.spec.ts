@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, findTextInPage, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, findTextInPage, isRNSDK, test } from './helpers/index.js';
 import { sdk } from './sdk.js';
 
 test.describe('Show If & Hide If', () => {
