@@ -7,6 +7,10 @@ test.describe('HTTP Requests', () => {
     test.skip(EXCLUDE_GEN_1);
     test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
     test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+    test.fail(
+      excludeTestFor({ qwik: true }),
+      'error setting httpRequest response or making API call altogether.'
+    );
 
     let x = 0;
 
@@ -24,11 +28,7 @@ test.describe('HTTP Requests', () => {
         json: {
           state: {
             article: {
-              entries: [
-                {
-                  seo_title: 'foo',
-                },
-              ],
+              entries: [{ seo_title: 'foo' }],
             },
           },
         },
@@ -46,7 +46,7 @@ test.describe('HTTP Requests', () => {
 
     await expect(textBlocks).toHaveText('foo');
 
-    expect(x).toBeGreaterThanOrEqual(0);
+    expect(x).toBeGreaterThanOrEqual(1);
 
     // eventually this should be exactly 1
     expect(x).toBeLessThan(10);
