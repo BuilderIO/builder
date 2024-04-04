@@ -6,6 +6,7 @@ test.describe('HTTP Requests', () => {
   test('call proxy API only once', async ({ page, basePort, packageName }) => {
     test.skip(EXCLUDE_GEN_1);
     test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
+    test.skip(packageName === 'next-app-dir', 'editor tests not supported in next-app-dir');
     test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
     test.fail(
       excludeTestFor({ qwik: true }),
