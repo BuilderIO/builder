@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Fix: add IDs to inline `script` and `style` tags
+Fix: add `data-id` attributes to all inline `script` and `style` tags
