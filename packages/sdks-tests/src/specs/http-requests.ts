@@ -8,7 +8,20 @@ export const HTTP_REQUESTS = {
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        id: 'builder-3f3b9d9f81964ab68a60ea158b2a03f3',
+        bindings: {
+          'component.options.text':
+            'var _virtual_index=state.article.entries[0].seo_title;return _virtual_index',
+        },
+        code: {
+          bindings: {
+            'component.options.text': 'state.article.entries[0].seo_title',
+          },
+        },
+        id: 'builder-ae1475bc1a1941ce839d210f20b96192',
+        component: {
+          name: 'Text',
+          options: { text: 'Enter some text...' },
+        },
         responsiveStyles: {
           large: {
             display: 'flex',
@@ -17,9 +30,8 @@ export const HTTP_REQUESTS = {
             flexShrink: '0',
             boxSizing: 'border-box',
             marginTop: '20px',
-            marginLeft: '20px',
-            marginRight: '20px',
-            marginBottom: '20px',
+            lineHeight: 'normal',
+            height: 'auto',
           },
         },
       },

@@ -3,8 +3,9 @@ import { EXCLUDE_GEN_1, test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
 test.describe('HTTP Requests', () => {
-  test('call proxy API only once', async ({ page, basePort }) => {
+  test('call proxy API only once', async ({ page, basePort, packageName }) => {
     test.skip(EXCLUDE_GEN_1);
+    test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
 
     let x = 0;
 
@@ -17,7 +18,20 @@ test.describe('HTTP Requests', () => {
         throw new Error('Too many proxy API requests.');
       }
 
-      return route.fulfill({ status: 200, json: { foo: 'bar' } });
+      return route.fulfill({
+        status: 200,
+        json: {
+          state: {
+            article: {
+              entries: [
+                {
+                  seo_title: 'foo',
+                },
+              ],
+            },
+          },
+        },
+      });
     });
 
     await launchEmbedderAndWaitForSdk({
@@ -27,7 +41,11 @@ test.describe('HTTP Requests', () => {
       gotoOptions: { waitUntil: 'networkidle' },
     });
 
-    expect(x).toBeGreaterThanOrEqual(1);
+    const textBlocks = page.locator('.builder-text');
+
+    await expect(textBlocks).toHaveText('foo');
+
+    expect(x).toBeGreaterThanOrEqual(0);
 
     // eventually this should be exactly 1
     expect(x).toBeLessThan(10);
