@@ -162,6 +162,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
       }
     },
     httpReqsData: {} as { [key: string]: boolean },
+    httpReqsPending: {} as { [key: string]: boolean },
 
     clicked: false,
 
@@ -210,6 +211,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           };
           props.builderContextSignal.value.rootSetState?.(newState);
           state.httpReqsData[key] = true;
+          state.httpReqsPending[key] = false;
         })
         .catch((err) => {
           console.error('error fetching dynamic data', url, err);
@@ -220,10 +222,17 @@ export default function EnableEditor(props: BuilderEditorProps) {
         props.builderContextSignal.value.content?.data?.httpRequests ?? {};
 
       Object.entries(requests).forEach(([key, url]) => {
-        if (url && (!state.httpReqsData[key] || isEditing())) {
-          const evaluatedUrl = state.evalExpression(url);
-          state.handleRequest({ url: evaluatedUrl, key });
-        }
+        if (!url) return;
+
+        // request already in progress
+        if (state.httpReqsPending[key]) return;
+
+        // request already completed, and not in edit mode
+        if (state.httpReqsData[key] && !isEditing()) return;
+
+        state.httpReqsPending[key] = true;
+        const evaluatedUrl = state.evalExpression(url);
+        state.handleRequest({ url: evaluatedUrl, key });
       });
     },
     emitStateUpdate() {
