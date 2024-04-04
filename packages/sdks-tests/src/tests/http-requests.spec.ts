@@ -1,8 +1,11 @@
-import { test } from './helpers/index.js';
+import { expect } from '@playwright/test';
+import { EXCLUDE_GEN_1, test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
 test.describe('HTTP Requests', () => {
   test('call proxy API only once', async ({ page, basePort }) => {
+    test.skip(EXCLUDE_GEN_1);
+
     let x = 0;
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v1\/proxy-api\.*/;
