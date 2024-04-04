@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.16
+
+### Patch Changes
+
+- 35fc152: Fix: add `data-id` attributes to all inline `script` and `style` tags
+
 ## 1.0.15
 
 ### Patch Changes
