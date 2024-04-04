@@ -4,13 +4,12 @@ import { defineComponent, h } from 'vue';
 export default defineComponent({
   render() {
     return h('script', {
-      id: this.id,
       innerHTML: this.scriptStr,
-      'data-id': this.dataId,
+      'data-id': this.id,
     });
   },
   name: 'inlined-script',
 
-  props: ['scriptStr', 'id', 'dataId'],
+  props: ['scriptStr', 'id'],
 });
 </script>

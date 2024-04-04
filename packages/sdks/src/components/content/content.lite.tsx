@@ -150,8 +150,7 @@ export default function ContentComponent(props: ContentProps) {
       <Show when={props.isSsrAbTest}>
         <InlinedScript
           scriptStr={state.scriptStr}
-          id={`builderio-variant-visibility-${props.content?.testVariationId}`}
-          dataId={`builderio-variant-visibility`}
+          id="builderio-variant-visibility"
         />
       </Show>
       <Show when={TARGET !== 'reactNative'}>
