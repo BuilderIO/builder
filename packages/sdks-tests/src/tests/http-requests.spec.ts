@@ -1,11 +1,12 @@
 import { expect } from '@playwright/test';
-import { EXCLUDE_GEN_1, test } from './helpers/index.js';
+import { EXCLUDE_GEN_1, excludeTestFor, test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
 test.describe('HTTP Requests', () => {
   test('call proxy API only once', async ({ page, basePort, packageName }) => {
     test.skip(EXCLUDE_GEN_1);
     test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
+    test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
 
     let x = 0;
 
