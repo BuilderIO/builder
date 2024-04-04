@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.11
+
+### Patch Changes
+
+- 35fc152: Fix: add `data-id` attributes to all inline `script` and `style` tags
+
 ## 0.14.10
 
 ### Patch Changes
