@@ -42,7 +42,7 @@ test.describe('HTTP Requests', () => {
       gotoOptions: { waitUntil: 'networkidle' },
     });
 
-    await expect(page.locator('body')).not.toContainText('foo');
+    await expect(page.locator('body')).toContainText('foo');
 
     expect(x).toBeGreaterThanOrEqual(1);
 
