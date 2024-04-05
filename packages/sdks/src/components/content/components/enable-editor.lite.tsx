@@ -211,10 +211,12 @@ export default function EnableEditor(props: BuilderEditorProps) {
           };
           props.builderContextSignal.value.rootSetState?.(newState);
           state.httpReqsData[key] = true;
-          state.httpReqsPending[key] = false;
         })
         .catch((err) => {
           console.error('error fetching dynamic data', url, err);
+        })
+        .finally(() => {
+          state.httpReqsPending[key] = false;
         });
     },
     runHttpRequests() {
