@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/slot-with-symbol.js';
-import { excludeTestFor, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
 import { sdk } from './sdk.js';
 
 test.describe('Slot', () => {

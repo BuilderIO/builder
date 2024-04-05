@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, expectStylesForElement, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, expectStylesForElement, isRNSDK, test } from './helpers/index.js';
 
 test.describe('Custom Breakpoints', () => {
   /* set breakpoint config in content -

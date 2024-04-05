@@ -6,7 +6,7 @@ import {
   getBuilderSessionIdCookie,
   isRNSDK,
   test,
-} from './helpers.js';
+} from './helpers/index.js';
 
 test.describe('Tracking', () => {
   test.describe('cookies', () => {

@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers.js';
+import { excludeTestFor, test } from './helpers/index.js';
 
 test.describe('JS Code', () => {
   test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');

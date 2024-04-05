@@ -1,6 +1,6 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeTestFor, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
 
 test.describe('Reactive State', () => {
   test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');

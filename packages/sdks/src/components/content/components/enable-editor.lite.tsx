@@ -162,6 +162,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
       }
     },
     httpReqsData: {} as { [key: string]: boolean },
+    httpReqsPending: {} as { [key: string]: boolean },
 
     clicked: false,
 
@@ -186,44 +187,45 @@ export default function EnableEditor(props: BuilderEditorProps) {
       }
     },
 
-    evalExpression(expression: string) {
-      return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
-        String(
-          evaluate({
-            code: group,
-            context: props.context || {},
-            localState: undefined,
-            rootState: props.builderContextSignal.value.rootState,
-            rootSetState: props.builderContextSignal.value.rootSetState,
-            enableCache: true,
-          })
-        )
-      );
-    },
-    handleRequest({ url, key }: { key: string; url: string }) {
-      fetch(url)
-        .then((response) => response.json())
-        .then((json) => {
-          const newState = {
-            ...props.builderContextSignal.value.rootState,
-            [key]: json,
-          };
-          props.builderContextSignal.value.rootSetState?.(newState);
-          state.httpReqsData[key] = true;
-        })
-        .catch((err) => {
-          console.error('error fetching dynamic data', url, err);
-        });
-    },
     runHttpRequests() {
       const requests: { [key: string]: string } =
         props.builderContextSignal.value.content?.data?.httpRequests ?? {};
 
       Object.entries(requests).forEach(([key, url]) => {
-        if (url && (!state.httpReqsData[key] || isEditing())) {
-          const evaluatedUrl = state.evalExpression(url);
-          state.handleRequest({ url: evaluatedUrl, key });
-        }
+        if (!url) return;
+
+        // request already in progress
+        if (state.httpReqsPending[key]) return;
+
+        // request already completed, and not in edit mode
+        if (state.httpReqsData[key] && !isEditing()) return;
+
+        state.httpReqsPending[key] = true;
+        const evaluatedUrl = url.replace(/{{([^}]+)}}/g, (_match, group) =>
+          String(
+            evaluate({
+              code: group,
+              context: props.context || {},
+              localState: undefined,
+              rootState: props.builderContextSignal.value.rootState,
+              rootSetState: props.builderContextSignal.value.rootSetState,
+              enableCache: true,
+            })
+          )
+        );
+
+        fetch(evaluatedUrl)
+          .then((response) => response.json())
+          .then((json) => {
+            state.mergeNewRootState({ [key]: json });
+            state.httpReqsData[key] = true;
+          })
+          .catch((err) => {
+            console.error('error fetching dynamic data', url, err);
+          })
+          .finally(() => {
+            state.httpReqsPending[key] = false;
+          });
       });
     },
     emitStateUpdate() {
