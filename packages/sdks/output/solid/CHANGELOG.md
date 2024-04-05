@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.17
+
+### Patch Changes
+
+- 2ed2cb8: Fix: data connections making multiple unnecessary API calls
+
 ## 1.0.16
 
 ### Patch Changes

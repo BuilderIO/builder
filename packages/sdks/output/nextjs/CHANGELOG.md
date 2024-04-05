@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.12
+
+### Patch Changes
+
+- 2ed2cb8: Fix: data connections making multiple unnecessary API calls
+
 ## 0.14.11
 
 ### Patch Changes

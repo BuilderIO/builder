@@ -1,5 +1,12 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.0.17
+
+### Patch Changes
+
+- 2ed2cb8: Fix: data connections making multiple unnecessary API calls
+- 2ed2cb8: Fix: infinite loop in Visual Editor when data connections are present.
+
 ## 1.0.16
 
 ### Patch Changes
