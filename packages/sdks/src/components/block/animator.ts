@@ -168,7 +168,6 @@ export function bindHoverAnimation(animation: BuilderAnimation) {
     return;
   }
 
-  console.log('what', elements, animation);
   Array.from(elements).forEach((element) => {
     augmentAnimation(animation, element);
 
