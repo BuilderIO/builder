@@ -56,7 +56,7 @@ function assign(target: object, ..._args: any[]) {
   return to;
 }
 
-const camelCaseToKebabCase = (str?: string) =>
+export const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`) : '';
 
 export function bindAnimations(animations: BuilderAnimation[]) {
@@ -168,6 +168,7 @@ export function bindHoverAnimation(animation: BuilderAnimation) {
     return;
   }
 
+  console.log('what', elements, animation);
   Array.from(elements).forEach((element) => {
     augmentAnimation(animation, element);
 
