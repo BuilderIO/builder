@@ -1,7 +1,8 @@
 import { expect } from '@playwright/test';
-import { test } from './helpers.js';
+import { excludeTestFor, test } from './helpers/index.js';
 
 test.describe('External Data', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('renders initial value', async ({ page, packageName }) => {
     test.skip(packageName !== 'react');
     await page.goto('/external-data');

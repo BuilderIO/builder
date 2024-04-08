@@ -1,5 +1,12 @@
 import { expect } from '@playwright/test';
-import { EXCLUDE_GEN_1, EXCLUDE_RN, getBuilderSessionIdCookie, isRNSDK, test } from './helpers.js';
+import {
+  EXCLUDE_GEN_1,
+  EXCLUDE_RN,
+  excludeTestFor,
+  getBuilderSessionIdCookie,
+  isRNSDK,
+  test,
+} from './helpers/index.js';
 
 test.describe('Tracking', () => {
   test.describe('cookies', () => {
@@ -16,10 +23,12 @@ test.describe('Tracking', () => {
       expect(builderSessionCookie).toBeUndefined();
     });
     test('appear by default', async ({ page, context }) => {
+      test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
       test.fail(EXCLUDE_RN);
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
-        req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST'
+        req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST',
+        { timeout: 10000 }
       );
 
       await navigate;
@@ -32,11 +41,13 @@ test.describe('Tracking', () => {
     });
   });
   test.describe('POST data', () => {
+    test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
     test('POSTs correct impression data', async ({ page }) => {
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         request =>
-          request.url().includes('cdn.builder.io/api/v1/track') && request.method() === 'POST'
+          request.url().includes('cdn.builder.io/api/v1/track') && request.method() === 'POST',
+        { timeout: 10000 }
       );
 
       await navigate;
@@ -83,7 +94,8 @@ test.describe('Tracking', () => {
         request =>
           request.url().includes('cdn.builder.io/api/v1/track') &&
           request.method() === 'POST' &&
-          request.postDataJSON().events[0].type === 'click'
+          request.postDataJSON().events[0].type === 'click',
+        { timeout: 10000 }
       );
 
       // click on an element

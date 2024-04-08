@@ -11,4 +11,9 @@ interface InternalRenderProps {
  * where prop types cannot be wrapped by generics like `EnforcePartials`).
  */
 export type ContentProps = InternalRenderProps &
-  EnforcePartials<ContentVariantsPrps>;
+  EnforcePartials<ContentVariantsPrps> & {
+    /**
+     * For internal use only. Do not provide this prop.
+     */
+    isNestedRender?: boolean;
+  };

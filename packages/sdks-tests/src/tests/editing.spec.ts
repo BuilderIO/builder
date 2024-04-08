@@ -4,12 +4,8 @@ import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import type { BuilderContent } from '../specs/types.js';
-import { EMBEDDER_PORT, SDK_LOADED_MSG } from './context.js';
-import { test } from './helpers.js';
-
-const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
-const getEmbeddedServerURL = (path: string, port: number) =>
-  EMBEDDED_SERVER_URL + path + '?port=' + port;
+import { excludeTestFor, test } from './helpers/index.js';
+import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
 const sendContentUpdateMessage = async ({
   page,
@@ -41,20 +37,6 @@ const sendContentUpdateMessage = async ({
     },
     { ...newContent, model }
   );
-};
-
-const launchEmbedderAndWaitForSdk = async ({
-  page,
-  basePort,
-  path,
-}: {
-  page: Page;
-  basePort: number;
-  path: string;
-}) => {
-  const msgPromise = page.waitForEvent('console', msg => msg.text() === SDK_LOADED_MSG);
-  await page.goto(getEmbeddedServerURL(path, basePort));
-  await msgPromise;
 };
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
@@ -100,6 +82,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 };
 
 test.describe('Visual Editing', () => {
+  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   editorTests({ noTrustedHosts: false });
   test('correctly updates Text block in a Column block', async ({
     page,

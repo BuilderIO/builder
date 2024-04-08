@@ -122,7 +122,16 @@ const target = process.argv
 
 const targets = target
   ? [target]
-  : ['reactNative', 'rsc', 'vue', 'solid', 'svelte', 'react', 'qwik'];
+  : [
+      'reactNative',
+      'rsc',
+      'vue',
+      'solid',
+      'svelte',
+      'react',
+      'qwik',
+      'angular',
+    ];
 
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
@@ -201,6 +210,10 @@ module.exports = {
     plugins: [REMOVE_MAGIC_PLUGIN],
   },
   options: {
+    angular: {
+      typescript: true,
+      plugins: [],
+    },
     solid: {
       typescript: true,
       plugins: [
@@ -364,7 +377,6 @@ module.exports = {
     qwik: {
       typescript: true,
       plugins: [
-        SRCSET_PLUGIN,
         /**
          * cleanup `onMount` hooks
          * - rmv unnecessary ones

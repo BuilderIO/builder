@@ -1,5 +1,35 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.12
+
+### Patch Changes
+
+- 2ed2cb8: Fix: data connections making multiple unnecessary API calls
+
+## 0.14.11
+
+### Patch Changes
+
+- 35fc152: Fix: add `data-id` attributes to all inline `script` and `style` tags
+
+## 0.14.10
+
+### Patch Changes
+
+- 0ffbc58: Feature: add `fetch` and `fetchOptions` arguments to `fetchEntries` and `fetchOneEntry`.
+
+## 0.14.9
+
+### Patch Changes
+
+- 2d5a016: Fix: remove forced re-render of `Content` internals.
+
+## 0.14.8
+
+### Patch Changes
+
+- 2c93c95: Fix: Symbol styles overriding subsequent content styles.
+
 ## 0.14.7
 
 ### Patch Changes

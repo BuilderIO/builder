@@ -7,8 +7,8 @@ import type {
   TestInfo,
 } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
-import type { PackageName, Sdk } from './sdk.js';
-import { sdk } from './sdk.js';
+import type { PackageName, Sdk } from '../sdk.js';
+import { sdk } from '../sdk.js';
 
 type TestOptions = {
   packageName: PackageName | 'DEFAULT';
@@ -81,7 +81,7 @@ export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
 };
 
 export const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
-  await page.locator(`text=${text}`).waitFor();
+  await page.locator(`text=${text}`).waitFor({ timeout: 10000 });
 };
 
 export const isRNSDK = sdk === 'reactNative';
@@ -119,6 +119,7 @@ export const EXCLUDE_GEN_2 = excludeTestFor({
   solid: true,
   svelte: true,
   vue: true,
+  angular: true,
 });
 
 export const EXCLUDE_RN = excludeTestFor({

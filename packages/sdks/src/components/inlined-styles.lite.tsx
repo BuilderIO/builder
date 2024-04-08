@@ -1,8 +1,8 @@
 interface Props {
   styles: string;
-  id?: string;
+  id: string;
 }
 
 export default function InlinedStyles(props: Props) {
-  return <style innerHTML={props.styles} id={props.id} />;
+  return <style innerHTML={props.styles} data-id={props.id} />;
 }

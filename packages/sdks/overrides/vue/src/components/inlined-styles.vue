@@ -3,7 +3,10 @@ import { defineComponent, h } from 'vue';
 
 export default defineComponent({
   render() {
-    return h('style', { id: this.id, innerHTML: this.styles });
+    return h('style', {
+      innerHTML: this.styles,
+      'data-id': this.id,
+    });
   },
   name: 'inlined-styles',
 

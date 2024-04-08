@@ -129,6 +129,10 @@ export default class CloudinaryImageEditor extends React.Component<
     return 'CHOOSE IMAGE';
   }
 
+  setCredentialsButtonText(): string {
+    return this.areCloudinaryCredentialsNotSet() ? 'Set credentials' : '...';
+  }
+
   componentDidMount() {
     this.appendMediaLibraryScriptToPlugin();
   }
@@ -138,7 +142,14 @@ export default class CloudinaryImageEditor extends React.Component<
     const setCredentialsButtonVariant = this.calculateChooseImageButtonVariant();
     const selectedPublicIdMessage = this.buildSelectedIdMessage();
     const chooseImageButtonText = this.buildChooseImageText();
-    const buttonStyle = { width: '45%', margin: '5px' };
+    const setCredentialsButtonText = this.setCredentialsButtonText();
+    const buttonContainerStyle = {
+      display: 'grid',
+      gap: '10px',
+      gridTemplateColumns: '1fr max-content',
+      marginTop: '5px',
+      marginBottom: '5px',
+    };
     return (
       <div css={{ padding: '15px 0' }}>
         <Typography variant="caption">Cloudinary image picker</Typography>
@@ -161,10 +172,9 @@ export default class CloudinaryImageEditor extends React.Component<
           />
         )}
 
-        <div>
+        <div css={buttonContainerStyle}>
           <Button
             disabled={this.areCloudinaryCredentialsNotSet()}
-            css={buttonStyle}
             color="primary"
             variant="contained"
             onClick={() => {
@@ -179,7 +189,6 @@ export default class CloudinaryImageEditor extends React.Component<
           <Button
             variant={setCredentialsButtonVariant}
             color="primary"
-            css={buttonStyle}
             onClick={() => {
               this.setState({
                 requestCredentials: true,
@@ -187,7 +196,7 @@ export default class CloudinaryImageEditor extends React.Component<
               });
             }}
           >
-            Set credentials
+            {setCredentialsButtonText}
           </Button>
         </div>
         <div>

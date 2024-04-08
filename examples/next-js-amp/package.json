@@ -12,7 +12,7 @@
     "@builder.io/react": "^2.0.4",
     "@next/bundle-analyzer": "^10.2.3",
     "cheerio": "^1.0.0-rc.10",
-    "next": "^13.1.6",
+    "next": "^14.1.4",
     "next-seo": "^4.29.0",
     "prettier": "^2.0.5",
     "react": "^16.13.0",

@@ -50,7 +50,7 @@ jobs:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
       fail-fast: false
       matrix:
-        sdk: ['svelte', 'qwik', 'react-native', 'react', 'nextjs', 'solid', 'vue']
+        sdk: ['svelte', 'qwik', 'react-native', 'react', 'nextjs', 'solid', 'vue', 'angular']
         include:
           - sdk: svelte
             sdk-name: svelte
@@ -66,6 +66,8 @@ jobs:
             sdk-name: solid
           - sdk: vue
             sdk-name: vue
+          - sdk: angular
+            sdk-name: angular
 
     steps:
       - name: Setup

@@ -1,9 +1,10 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
 
 test.describe('Animations', () => {
   test.fail(isRNSDK, 'TO-DO: React Native Animation API not implemented.');
   test.fail(excludeTestFor({ rsc: true }), 'Interactivity failure.');
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
 
   test('renders animations', async ({ page }) => {
     await page.goto('/animations');

@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@builder.io/sdk-react-nextjs": "^0.14.1",
+    "@builder.io/sdk-react-nextjs": "^0.14.9",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18"

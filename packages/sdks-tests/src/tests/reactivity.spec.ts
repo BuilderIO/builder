@@ -1,8 +1,9 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeTestFor, isRNSDK, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
 
 test.describe('Reactive State', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('shows default value', async ({ page }) => {
     await page.goto('/reactive-state');
 
@@ -42,6 +43,7 @@ test.describe('Reactive State', () => {
   });
 });
 test.describe('Element Events', () => {
+  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   const filterConsoleMessages = (consoleMessage: ConsoleMessage) => {
     const text = consoleMessage.text();
     return text.startsWith('clicked');

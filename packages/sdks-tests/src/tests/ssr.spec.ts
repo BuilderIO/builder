@@ -1,7 +1,8 @@
 import { expect } from '@playwright/test';
-import { isRNSDK, isSSRFramework, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, isSSRFramework, test } from './helpers/index.js';
 
 test.describe('SSR', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('js enabled', async ({ page }) => {
     await page.goto('/');
 

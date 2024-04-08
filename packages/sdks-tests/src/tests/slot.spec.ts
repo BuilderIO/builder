@@ -1,9 +1,10 @@
 import { expect } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/slot-with-symbol.js';
-import { isRNSDK, test } from './helpers.js';
+import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
 import { sdk } from './sdk.js';
 
 test.describe('Slot', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('slot should render', async ({ page, packageName }) => {
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server

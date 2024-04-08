@@ -11,12 +11,14 @@ import {
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { DATA_PREVIEW } from './data-preview.js';
+import { DEFAULT_STYLES } from './default-styles.js';
 import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
 import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
 import { FORM } from './form.js';
 import { CONTENT as homepage } from './homepage.js';
+import { HTTP_REQUESTS } from './http-requests.js';
 import { CONTENT as image } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
@@ -66,6 +68,7 @@ const PAGES = {
   '/data-binding-styles': dataBindingStyles,
   '/ab-test': abTest,
   '/ab-test-interactive': AB_TEST_INTERACTIVE,
+  '/http-requests': HTTP_REQUESTS,
   '/symbol-ab-test': symbolAbTest,
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': reactiveState,
@@ -91,6 +94,7 @@ const PAGES = {
   '/animations': ANIMATIONS,
   '/data-preview': DATA_PREVIEW,
   '/form': FORM,
+  '/default-styles': DEFAULT_STYLES,
 } as const;
 
 const apiVersionPathToProp = {

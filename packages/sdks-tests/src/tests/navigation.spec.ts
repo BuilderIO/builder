@@ -1,7 +1,8 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test } from './helpers.js';
+import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
 
 test('Client-side navigation', async ({ page }) => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   await page.goto('/');
 
   const links = page.locator('a');

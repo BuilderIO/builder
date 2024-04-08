@@ -1,12 +1,13 @@
 import { useMetadata, useStore } from '@builder.io/mitosis';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
 import type { CustomFont } from './styles.helpers.js';
-import { getCss, getFontCss } from './styles.helpers.js';
+import { getCss, getDefaultStyles, getFontCss } from './styles.helpers.js';
 
 interface Props {
   cssCode?: string;
   customFonts?: CustomFont[];
   contentId?: string;
+  isNestedRender?: boolean;
 }
 
 useMetadata({
@@ -20,25 +21,9 @@ export default function ContentStyles(props: Props) {
     injectedStyles: `
 ${getCss({ cssCode: props.cssCode, contentId: props.contentId })}
 ${getFontCss({ customFonts: props.customFonts })}
-
-.builder-button {
-  all: unset;
-}
-
-.builder-text > p:first-of-type, .builder-text > .builder-paragraph:first-of-type {
-  margin: 0;
-}
-.builder-text > p, .builder-text > .builder-paragraph {
-  color: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  font-weight: inherit;
-  font-size: inherit;
-  text-align: inherit;
-  font-family: inherit;
-}
+${getDefaultStyles(props.isNestedRender)}
 `.trim(),
   });
 
-  return <InlinedStyles styles={state.injectedStyles} />;
+  return <InlinedStyles styles={state.injectedStyles} id="builderio-content" />;
 }

@@ -535,7 +535,7 @@ export interface Input {
   /**
    * The type of input to use, such as 'text'
    *
-   * See all available inputs [here](https://www.builder.io/c/docs/custom-react-components#input-types)
+   * See all available inputs [here](https://www.builder.io/c/docs/custom-components-input-types)
    * and you can create your own custom input types and associated editor UIs with [plugins](https://www.builder.io/c/docs/extending/plugins)
    */
   type: string;

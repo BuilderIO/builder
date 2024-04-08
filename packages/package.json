@@ -7,7 +7,7 @@
     "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run",
     "ci:changeset": "changeset status --since=main",
     "fix-core-version": "yarn workspace @builder.io/react fix-core-version",
-    "build:sdks": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\*,@builder.io/react",
+    "build:sdks": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\*,@builder.io/react --exclude=@builder.io/sdk-angular",
     "ci:release": "yarn build:sdks && yarn run fix-core-version && yarn g:changeset publish"
   },
   "devDependencies": {

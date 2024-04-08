@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { EXCLUDE_GEN_2, isOldReactSDK, isRNSDK, test } from './helpers.js';
+import { EXCLUDE_GEN_2, excludeTestFor, isOldReactSDK, isRNSDK, test } from './helpers/index.js';
 import type { PackageName } from './sdk.js';
 import { sdk } from './sdk.js';
 
@@ -55,6 +55,7 @@ const testSymbols = async (page: Page) => {
 };
 
 test.describe('Symbols', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('render correctly', async ({ page }) => {
     await page.goto('/symbols');
 

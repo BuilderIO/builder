@@ -16,7 +16,7 @@
     "serve": "yarn run dev"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.2.19",
+    "@builder.io/qwik": "^1.5.1",
     "@builder.io/qwik-city": "^1.2.19",
     "@types/node": "^18.11.18",
     "node-fetch": "3.3.0",

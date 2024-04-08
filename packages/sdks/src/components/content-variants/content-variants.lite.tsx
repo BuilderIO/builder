@@ -15,7 +15,7 @@ import InlinedStyles from '../inlined-styles.lite.jsx';
 import type { ContentVariantsPrps } from './content-variants.types.js';
 import {
   checkShouldRenderVariants,
-  getScriptString,
+  getInitVariantsFnsScriptString,
   getUpdateCookieAndStylesScript,
   getVariants,
 } from './helpers.js';
@@ -33,7 +33,7 @@ type VariantsProviderProps = ContentVariantsPrps & {
   /**
    * For internal use only. Do not provide this prop.
    */
-  __isNestedRender?: boolean;
+  isNestedRender?: boolean;
 };
 
 export default function ContentVariants(props: VariantsProviderProps) {
@@ -86,20 +86,27 @@ export default function ContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
-        <InlinedScript scriptStr={getScriptString()} />
+      <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
+        <InlinedScript
+          scriptStr={getInitVariantsFnsScriptString()}
+          id="builderio-init-variants-fns"
+        />
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
-          id={`variants-styles-${props.content?.id}`}
+          id="builderio-variants"
           styles={state.hideVariantsStyleString}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
-        <InlinedScript scriptStr={state.updateCookieAndStylesScriptStr} />
+        <InlinedScript
+          id="builderio-variants-visibility"
+          scriptStr={state.updateCookieAndStylesScriptStr}
+        />
 
         <For each={getVariants(props.content)}>
           {(variant) => (
             <ContentComponent
+              isNestedRender={props.isNestedRender}
               key={variant.testVariationId}
               content={variant}
               showContent={false}
@@ -124,6 +131,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <ContentComponent
+        isNestedRender={props.isNestedRender}
         {...useTarget({
           vue: { key: state.shouldRenderVariants.toString() },
           default: {},

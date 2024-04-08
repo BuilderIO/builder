@@ -13,7 +13,7 @@
     "add-symlinks": "./scripts/add-resolutions.sh && yarn"
   },
   "dependencies": {
-    "@builder.io/sdk-react-native": "^1.0.0",
+    "@builder.io/sdk-react-native": "^1.0.14",
     "@expo/webpack-config": "^19.0.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",

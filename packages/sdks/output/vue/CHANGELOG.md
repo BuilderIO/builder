@@ -1,5 +1,35 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.17
+
+### Patch Changes
+
+- 2ed2cb8: Fix: data connections making multiple unnecessary API calls
+
+## 1.0.16
+
+### Patch Changes
+
+- 35fc152: Fix: add `data-id` attributes to all inline `script` and `style` tags
+
+## 1.0.15
+
+### Patch Changes
+
+- 0ffbc58: Feature: add `fetch` and `fetchOptions` arguments to `fetchEntries` and `fetchOneEntry`.
+
+## 1.0.14
+
+### Patch Changes
+
+- 2d5a016: Fix: remove forced re-render of `Content` internals.
+
+## 1.0.13
+
+### Patch Changes
+
+- 2c93c95: Fix: Symbol styles overriding subsequent content styles.
+
 ## 1.0.12
 
 ### Patch Changes

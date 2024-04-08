@@ -1,7 +1,8 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers.js';
+import { excludeTestFor, test } from './helpers/index.js';
 
 test.describe('Form', () => {
+  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test.skip(
     excludeTestFor({ reactNative: true, rsc: true }),
     'Form not implemented in React Native and NextJS SDKs.'

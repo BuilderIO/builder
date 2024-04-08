@@ -45,9 +45,9 @@
   },
   "dependencies": {
     "@builder.io/react": "^2.0.4",
-    "@builder.io/widgets": "^1.2.23",
+    "@builder.io/widgets": "^1.2.24",
     "cors": "^2.8.5",
-    "next": "^12.2.2",
+    "next": "^14.0.0",
     "next-seo": "^5.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
