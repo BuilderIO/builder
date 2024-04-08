@@ -9,12 +9,16 @@ test.describe('Hover animations', () => {
 
     const button = isOldReactSDK ? page.locator('span') : page.locator('button');
 
-    const initialColor = await button.evaluate(el => getComputedStyle(el).backgroundColor);
+    const initialColor = await button.evaluate(el => getComputedStyle(el).backgroundColor, null, {
+      timeout: 10000,
+    });
 
     await button.hover();
     await page.waitForTimeout(1000);
 
-    const hoveredColor = await button.evaluate(el => getComputedStyle(el).backgroundColor);
+    const hoveredColor = await button.evaluate(el => getComputedStyle(el).backgroundColor, null, {
+      timeout: 10000,
+    });
 
     expect(initialColor).toContain('rgb(0, 0, 0)');
     expect(hoveredColor).not.toContain(initialColor);
