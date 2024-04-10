@@ -39,12 +39,9 @@ type VariantsProviderProps = ContentVariantsPrps & {
 export default function ContentVariants(props: VariantsProviderProps) {
   onMount(() => {
     /**
-     * We unmount the non-winning variants post-hydration in Vue.
+     * For Solid/Svelte: we unmount the non-winning variants post-hydration.
      */
     useTarget({
-      vue: () => {
-        state.shouldRenderVariants = false;
-      },
       solid: () => {
         state.shouldRenderVariants = false;
       },
