@@ -42,9 +42,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
      * We unmount the non-winning variants post-hydration in Vue.
      */
     useTarget({
-      vue2: () => {
-        state.shouldRenderVariants = false;
-      },
       vue3: () => {
         state.shouldRenderVariants = false;
       },
