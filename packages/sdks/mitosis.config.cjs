@@ -241,6 +241,19 @@ const ANGULAR_PLUGIN3 = () => ({
   }
 });
 
+// for fixing circular dependencies
+const ANGULAR_PLUGIN4 = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('component-ref, ComponentRef') || code.includes('repeated-block, RepeatedBlock')) {
+        code = code.replace('imports: [CommonModule, Block]', 'imports: [CommonModule, forwardRef(() => Block)]');
+        code = code.replace('} from "@angular/core";', `${code.includes('repeated-block') ? ',': ''}forwardRef } from "@angular/core";`);
+      }
+      return code;
+    }
+  }
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -256,7 +269,7 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
-      plugins: [ANGULAR_PLUGIN, ANGULAR_PLUGIN2, ANGULAR_PLUGIN3],
+      plugins: [ANGULAR_PLUGIN, ANGULAR_PLUGIN2, ANGULAR_PLUGIN3,ANGULAR_PLUGIN4],
     },
     solid: {
       typescript: true,

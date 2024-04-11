@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import {
   _processContentResult,
   fetchOneEntry,
@@ -36,8 +36,10 @@ export class AppComponent {
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
 
+  constructor(private cdr: ChangeDetectorRef) { }
+
   async ngOnInit() {
-    const urlPath = '/' + (window.location.pathname || '');
+    const urlPath = (window.location.pathname || '');
 
     const builderProps = await getProps({
       pathname: urlPath,
@@ -58,5 +60,7 @@ export class AppComponent {
     this.apiKey = builderProps.apiKey;
     this.model = builderProps.model;
     this.apiVersion = builderProps.apiVersion;
+
+    this.cdr.detectChanges();
   }
 }
