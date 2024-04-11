@@ -1,4 +1,4 @@
-# Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
+# Builder.io Vue 2 SDK (LONG-TERM-SUPPORT) Changelog (@builder.io/sdk-vue)
 
 ## 0.8.1
 

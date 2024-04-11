@@ -2,29 +2,36 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [
-    [
-      "@builder.io/sdk-react",
-      "@builder.io/sdk-react-nextjs",
-      "@builder.io/sdk-vue",
-      "@builder.io/sdk-qwik",
-      "@builder.io/sdk-solid",
-      "@builder.io/sdk-svelte",
-      "@builder.io/sdk-react-native"
-    ]
-  ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
+    "@builder.io/sdk-react-nextjs",
+    "@builder.io/sdk-qwik",
+    "@builder.io/sdk-react",
+    "@builder.io/sdk-react-native",
+    "@builder.io/sdk-solid",
+    "@builder.io/sdk-svelte",
     "@builder.io/sdk-vue-2",
     "@builder.io/sdk-vue-3",
     "@builder.io/sdk",
     "@builder.io/react",
     "@e2e/*",
-    "@e2e/gen1-next",
+    "@e2e/next-app-dir-client",
+    "@e2e/next-pages-dir",
     "@e2e/gen1-remix",
-    "@e2e/gen1-react"
+    "@e2e/next-app-dir",
+    "@e2e/gen1-react",
+    "@e2e/react-native",
+    "@e2e/solid-start",
+    "@e2e/gen1-next",
+    "@e2e/sveltekit",
+    "@e2e/qwik-city",
+    "@e2e/solid",
+    "@e2e/svelte",
+    "@e2e/react",
+    "@e2e/nuxt2",
+    "@e2e/nuxt3"
   ]
 }
