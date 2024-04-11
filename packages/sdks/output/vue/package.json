@@ -170,8 +170,9 @@
     "add-debug": "bash ./scripts/add-debug.sh",
     "remove-debug": "bash ./scripts/remove-debug.sh",
     "bump-version": "node ./scripts/bump-version.js",
-    "build": "nx run-many --skip-nx-cache -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3",
-    "release-lts": "yarn g:changeset version && yarn bump-version && yarn build && yarn release"
+    "build": "nx run-many -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3",
+    "build:release": "nx run-many --skip-nx-cache -t build -p @builder.io/sdk-vue-2 @builder.io/sdk-vue-3",
+    "release-lts": "yarn g:changeset version && yarn bump-version && yarn build:release && yarn release"
   },
   "peerDependencies": {
     "vue": ">= 2"
