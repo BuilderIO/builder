@@ -259,8 +259,6 @@ const ANGULAR_PLUGIN5 = () => ({
     post: (code) => {
       if (code.includes('component-ref, ComponentRef')) {
         code = code.replace('ngOnInit() {\n', `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`)
-        // this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;
-        console.log(code);
       }
       return code;
     }
