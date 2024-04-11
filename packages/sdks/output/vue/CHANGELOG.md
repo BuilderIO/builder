@@ -1,5 +1,12 @@
 # Builder.io Vue 2 SDK (LONG-TERM-SUPPORT) Changelog (@builder.io/sdk-vue)
 
+## 0.8.2
+
+### Patch Changes
+
+- be35236: Fix: SSR Content flicker.
+- 8a1016d: Fix: remove redundant re-renders of Content block.
+
 ## 0.8.1
 
 ## 0.8.0
