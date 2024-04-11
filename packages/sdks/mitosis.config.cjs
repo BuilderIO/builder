@@ -254,6 +254,19 @@ const ANGULAR_PLUGIN4 = () => ({
   }
 });
 
+const ANGULAR_PLUGIN5 = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('component-ref, ComponentRef')) {
+        code = code.replace('ngOnInit() {\n', `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`)
+        // this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;
+        console.log(code);
+      }
+      return code;
+    }
+  }
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -269,7 +282,7 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
-      plugins: [ANGULAR_PLUGIN, ANGULAR_PLUGIN2, ANGULAR_PLUGIN3,ANGULAR_PLUGIN4],
+      plugins: [ANGULAR_PLUGIN, ANGULAR_PLUGIN2, ANGULAR_PLUGIN3,ANGULAR_PLUGIN4,ANGULAR_PLUGIN5],
     },
     solid: {
       typescript: true,
