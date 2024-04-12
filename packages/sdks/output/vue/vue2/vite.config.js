@@ -1,4 +1,7 @@
-import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
+import {
+  getSdkEnv,
+  viteOutputGenerator,
+} from '@builder.io/sdks/output-generation/index.js';
 import vue2 from '@vitejs/plugin-vue2';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
