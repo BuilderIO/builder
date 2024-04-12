@@ -67,6 +67,8 @@ const initializeAbTest = async (
 };
 
 test.describe('A/B tests', () => {
+  test.fail(true, 'A/B tests are not supported in Vue 2.');
+
   test.describe('entire page', () => {
     const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
     const VARIANT_ID = '661775df8c2c41d6afc0aa1b5fd1dd61';

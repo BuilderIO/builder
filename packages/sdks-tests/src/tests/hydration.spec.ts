@@ -23,6 +23,8 @@ test.describe('Hydration', () => {
   });
 
   test('No mismatch on A/B test content', async ({ page }) => {
+    test.fail(true, 'A/B tests are not supported in Vue 2.');
+
     await page.goto('/ab-test-interactive');
     await page.locator('a').locator('visible=true').first().click();
     await findTextInPage({ page, text: 'Stack at tablet' });
