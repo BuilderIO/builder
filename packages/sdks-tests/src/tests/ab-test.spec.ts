@@ -115,6 +115,7 @@ test.describe('A/B tests', () => {
         packageName,
         browser,
       }) => {
+        test.fail(true, 'A/B tests are not supported in Vue 2.');
         const { page } = await initializeAbTest(
           {
             page: _page,
@@ -187,6 +188,7 @@ test.describe('A/B tests', () => {
         packageName,
         browser,
       }) => {
+        test.fail(true, 'A/B tests are not supported in Vue 2.');
         const { page } = await initializeAbTest(
           {
             page: _page,
