@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- be35236: Fix: SSR Content flicker.
+- be35236: Fix: SSR Content flicker. ⚠️ WARNING: this removes support for SSR A/B testing.
 - 8a1016d: Fix: remove redundant re-renders of Content block.
 
 ## 0.8.1
