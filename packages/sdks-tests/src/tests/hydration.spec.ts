@@ -24,7 +24,7 @@ test.describe('Hydration', () => {
   });
 
   test('No mismatch on A/B test content', async ({ page }) => {
-    test.fail(true, 'A/B tests are not supported in Vue 2.');
+    test.skip(true, 'A/B tests are not supported in Vue 2.');
 
     await page.goto('/ab-test-interactive');
     await expect(page.locator('a').locator('visible=true').first()).toBeVisible();
