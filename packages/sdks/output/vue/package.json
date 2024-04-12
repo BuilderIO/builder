@@ -67,6 +67,52 @@
         "import": "./vue2/lib/browser/index.js",
         "require": "./vue2/lib/browser/index.cjs"
       }
+    },
+    "./vue2": {
+      "node": {
+        "import": "./vue2/lib/node/index.js",
+        "require": "./vue2/lib/node/index.cjs"
+      },
+      "browser": {
+        "import": "./vue2/lib/browser/index.js",
+        "require": "./vue2/lib/browser/index.cjs"
+      },
+      "edge-routine": {
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
+      },
+      "workerd": {
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
+      },
+      "deno": {
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
+      },
+      "lagon": {
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
+      },
+      "netlify": {
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
+      },
+      "edge-light": {
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
+      },
+      "bun": {
+        "import": "./vue2/lib/edge/index.js",
+        "require": "./vue2/lib/edge/index.cjs"
+      },
+      "electron": {
+        "import": "./vue2/lib/node/index.js",
+        "require": "./vue2/lib/node/index.cjs"
+      },
+      "default": {
+        "import": "./vue2/lib/browser/index.js",
+        "require": "./vue2/lib/browser/index.cjs"
+      }
     }
   },
   "scripts": {
