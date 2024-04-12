@@ -1,10 +1,39 @@
 # Builder.io Vue 2 SDK (LONG-TERM-SUPPORT) Changelog (@builder.io/sdk-vue)
 
+## 0.9.0
+
+### Minor Changes
+
+- 0e05eb8: Fix: add `/nuxt` and `/css` module exports:
+
+  - you can `import '@builder.io/sdk-vue/css'` in your Vue app to include the SDK's stylesheet:
+
+  ```vue
+  <!-- App.vue -->
+  <script lang="ts">
+  import '@builder.io/sdk-vue/css';
+  import { RenderContent, _processContentResult } from '@builder.io/sdk-vue/vue2';
+
+  //...
+  </script>
+  ```
+
+  - Alternatively, can add the `'@builder.io/sdk-vue/nuxt'` module in your nuxt config, which will automatically add the SDK's stylesheet:
+
+  ```js
+  // nuxt.config.js
+  {
+    buildModules: [
+      '@builder.io/sdk-vue/nuxt',
+    ],
+  }
+  ```
+
 ## 0.8.2
 
 ### Patch Changes
 
-- be35236: Fix: SSR Content flicker.
+- be35236: Fix: SSR Content flicker. ⚠️ WARNING: this removes support for SSR A/B testing.
 - 8a1016d: Fix: remove redundant re-renders of Content block.
 
 ## 0.8.1
