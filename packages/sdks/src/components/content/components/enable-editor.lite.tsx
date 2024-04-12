@@ -63,7 +63,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
    */
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
-    forceReRenderCount: 0,
     mergeNewContent(newContent: BuilderContent) {
       const newContentValue = {
         ...props.builderContextSignal.value.content,
@@ -116,7 +115,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
             if (breakpoints) {
               state.mergeNewContent({ meta: { breakpoints } });
             }
-            state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;
           }
           case 'builder.contentUpdate': {
@@ -131,7 +129,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
             if (key === props.model) {
               state.mergeNewContent(contentData);
-              state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
             break;
           }
@@ -269,7 +266,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onEvent(
     'initeditingbldr',
     () => {
-      state.forceReRenderCount = state.forceReRenderCount + 1;
       window.addEventListener('message', state.processMessage);
 
       registerInsertMenu();
@@ -438,7 +434,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           default: {},
         })}
-        key={state.forceReRenderCount}
         ref={elementRef}
         onClick={(event) => state.onClick(event)}
         builder-content-id={props.builderContextSignal.value.content?.id}

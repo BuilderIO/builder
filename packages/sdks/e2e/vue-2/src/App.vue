@@ -5,6 +5,7 @@
   <div v-else>Content not Found</div>
 </template>
 <script lang="ts">
+import '@builder.io/sdk-vue/css';
 import { RenderContent, _processContentResult } from '@builder.io/sdk-vue/vue2';
 import { getProps } from '@e2e/tests';
 import { defineComponent } from 'vue';
