@@ -36,10 +36,10 @@ export class AppComponent {
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   async ngOnInit() {
-    const urlPath = (window.location.pathname || '');
+    const urlPath = window.location.pathname || '';
 
     const builderProps = await getProps({
       pathname: urlPath,

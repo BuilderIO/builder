@@ -93,4 +93,4 @@ export const getUpdateVariantVisibilityScript = ({
 
 export const getInlineVariantStylesId = (contentId?: string) => {
   return `variants-styles-${contentId}`;
-}
+};
