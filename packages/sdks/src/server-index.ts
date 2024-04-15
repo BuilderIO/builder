@@ -49,3 +49,8 @@ export {
   fetchEntries,
   fetchOneEntry,
 } from './functions/get-content/index.js';
+
+/**
+ * Builder Context
+ */
+export { BuilderContext } from './context/index.js';
