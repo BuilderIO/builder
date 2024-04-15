@@ -1,21 +1,10 @@
-import {
-  For,
-  Show,
-  onMount,
-  useMetadata,
-  useStore,
-  useTarget,
-} from '@builder.io/mitosis';
-import { TARGET } from '../../constants/target.js';
+import { onMount, useMetadata, useStore, useTarget } from '@builder.io/mitosis';
 import { handleABTestingSync } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import ContentComponent from '../content/content.lite.jsx';
-import InlinedScript from '../inlined-script.lite.jsx';
-import InlinedStyles from '../inlined-styles.lite.jsx';
 import type { ContentVariantsPrps } from './content-variants.types.js';
 import {
   checkShouldRenderVariants,
-  getScriptString,
   getUpdateCookieAndStylesScript,
   getVariants,
 } from './helpers.js';
@@ -86,7 +75,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
+      {/* <Show when={!props.__isNestedRender && TARGET !== 'reactNative'}>
         <InlinedScript scriptStr={getScriptString()} />
       </Show>
       <Show when={state.shouldRenderVariants}>
@@ -94,7 +83,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
           id={`variants-styles-${props.content?.id}`}
           styles={state.hideVariantsStyleString}
         />
-        {/* Sets A/B test cookie for all `RenderContent` to read */}
+        // Sets A/B test cookie for all `RenderContent` to read
         <InlinedScript scriptStr={state.updateCookieAndStylesScriptStr} />
 
         <For each={getVariants(props.content)}>
@@ -117,7 +106,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
             />
           )}
         </For>
-      </Show>
+      </Show> */}
       <ContentComponent
         content={state.defaultContent}
         showContent
