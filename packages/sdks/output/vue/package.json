@@ -122,7 +122,7 @@
     "append-lts-version": "node ./scripts/append-lts-version.js",
     "build": "nx run-many -t build -p @builder.io/sdk-vue-2",
     "build:release": "nx run-many --skip-nx-cache -t build -p @builder.io/sdk-vue-2",
-    "release-lts": "npm version minor && yarn g:changeset version && yarn append-lts-version && yarn build:release && yarn release"
+    "release-lts": "yarn version minor && yarn g:changeset version && yarn append-lts-version && yarn build:release && yarn release"
   },
   "peerDependencies": {
     "vue": ">= 2"
