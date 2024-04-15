@@ -18,7 +18,7 @@
   <!-- App.vue -->
   <script lang="ts">
   import '@builder.io/sdk-vue/css';
-  import { RenderContent, _processContentResult } from '@builder.io/sdk-vue/vue2';
+  import { RenderContent, fetchOneEntry } from '@builder.io/sdk-vue/vue2';
 
   //...
   </script>
