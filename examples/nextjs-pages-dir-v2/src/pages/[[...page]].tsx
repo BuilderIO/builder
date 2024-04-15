@@ -16,11 +16,6 @@ const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 // Define a function that fetches the Builder content for a given page
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const ivm = await import('isolated-vm');
-  const isolate = new ivm.Isolate();
-  const context = isolate.createContextSync();
-  console.log({ context });
-
   const urlPath = '/' + (Array.isArray(params?.page) ? params.page.join('/') : params?.page || '');
 
   // Fetch the builder content for the given page
@@ -41,11 +36,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 // Define a function that generates the
 // static paths for all pages in Builder
 export async function getStaticPaths() {
-  const ivm = await import('isolated-vm');
-  const isolate = new ivm.Isolate();
-  const context = isolate.createContextSync();
-  console.log({ context });
-
   // Get a list of all pages in Builder
   const pages = await fetchEntries({
     apiKey: BUILDER_PUBLIC_API_KEY,
@@ -55,12 +45,11 @@ export async function getStaticPaths() {
     options: {
       noTargeting: true,
     },
-    includeUnpublished: false,
   });
 
   // Generate the static paths for all pages in Builder
   return {
-    paths: pages?.map(page => `${page.data?.url}`).filter(url => url !== '/'),
+    paths: pages.map(page => `${page.data?.url}`).filter(url => url !== '/'),
     fallback: 'blocking',
   };
 }

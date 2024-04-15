@@ -3,7 +3,7 @@ import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
-} from '@builder.io/sdk-react';
+} from '@builder.io/sdk-react/edge';
 import { getProps } from '@e2e/tests';
 
 interface PageProps {
