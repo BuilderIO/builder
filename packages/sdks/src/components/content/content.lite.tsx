@@ -21,8 +21,6 @@ import {
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
-import { getUpdateVariantVisibilityScript } from '../content-variants/helpers.js';
-import InlinedScript from '../inlined-script.lite.jsx';
 import EnableEditor from './components/enable-editor.lite.jsx';
 import ContentStyles from './components/styles.lite.jsx';
 import {
@@ -43,12 +41,12 @@ useMetadata({
 
 export default function ContentComponent(props: ContentProps) {
   const state = useStore({
-    scriptStr: getUpdateVariantVisibilityScript({
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-      variationId: props.content?.testVariationId!,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
-      contentId: props.content?.id!,
-    }),
+    // scriptStr: getUpdateVariantVisibilityScript({
+    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+    //   variationId: props.content?.testVariationId!,
+    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+    //   contentId: props.content?.id!,
+    // }),
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
     },
@@ -151,9 +149,9 @@ export default function ContentComponent(props: ContentProps) {
         default: {},
       })}
     >
-      <Show when={props.isSsrAbTest}>
+      {/* <Show when={props.isSsrAbTest}>
         <InlinedScript scriptStr={state.scriptStr} />
-      </Show>
+      </Show> */}
       <Show when={TARGET !== 'reactNative'}>
         <ContentStyles
           contentId={builderContextSignal.value.content?.id}
