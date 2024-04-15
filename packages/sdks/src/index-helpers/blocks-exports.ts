@@ -8,3 +8,8 @@ export { default as Text } from '../blocks/text/index.js';
 export { default as Video } from '../blocks/video/index.js';
 export { default as Blocks } from '../components/blocks/index.js';
 export { default as Content } from '../components/content-variants/index.js';
+
+/**
+ * Builder Context
+ */
+export { BuilderContext } from '../context/index.js';
