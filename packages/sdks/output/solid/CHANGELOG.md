@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.19
+
+### Patch Changes
+
+- cde7c61: feat: export `BuilderContext` from sdks
+
 ## 1.0.17
 
 ### Patch Changes

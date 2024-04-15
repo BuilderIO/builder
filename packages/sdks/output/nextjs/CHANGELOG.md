@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.13
+
+### Patch Changes
+
+- cde7c61: feat: export `BuilderContext` from sdks
+
 ## 0.14.12
 
 ### Patch Changes
