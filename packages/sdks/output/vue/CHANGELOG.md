@@ -1,5 +1,11 @@
 # Builder.io Vue 2 SDK (LONG-TERM-SUPPORT) Changelog (@builder.io/sdk-vue)
 
+## 0.10.0
+
+### Minor Changes
+
+- e5d9c0a: Fix: Remove all SSR A/B testing code to fix Hydration errors.
+
 ## 0.9.0
 
 ### Minor Changes
@@ -12,10 +18,7 @@
   <!-- App.vue -->
   <script lang="ts">
   import '@builder.io/sdk-vue/css';
-  import {
-    RenderContent,
-    _processContentResult,
-  } from '@builder.io/sdk-vue/vue2';
+  import { RenderContent, fetchOneEntry } from '@builder.io/sdk-vue/vue2';
 
   //...
   </script>

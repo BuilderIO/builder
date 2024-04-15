@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "0.9.0-vue2-lts-0",
+  "version": "0.10.0-vue2-lts-0",
   "main": "./vue2/lib/node/index.cjs",
   "module": "./vue2/lib/node/index.js",
   "type": "module",
@@ -119,10 +119,10 @@
     "release": "npm publish --tag vue2-lts",
     "add-debug": "bash ./scripts/add-debug.sh",
     "remove-debug": "bash ./scripts/remove-debug.sh",
-    "bump-version": "node ./scripts/bump-version.js",
+    "append-lts-version": "node ./scripts/append-lts-version.js",
     "build": "nx run-many -t build -p @builder.io/sdk-vue-2",
     "build:release": "nx run-many --skip-nx-cache -t build -p @builder.io/sdk-vue-2",
-    "release-lts": "yarn g:changeset version && yarn bump-version && yarn build:release && yarn release"
+    "release-lts": "yarn version minor && yarn g:changeset version && yarn append-lts-version && yarn build:release && yarn release"
   },
   "peerDependencies": {
     "vue": ">= 2"
