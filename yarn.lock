@@ -2664,12 +2664,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@builder.io/mitosis-cli@npm:0.1.7"
+"@builder.io/mitosis-cli@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@builder.io/mitosis-cli@npm:0.2.2"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.1.7
+    "@builder.io/mitosis": 0.2.2
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -2693,13 +2693,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 0c78275626339c4a6a16f05068a64625a0fa01160f06b698510df8b90898d05ede3b430a32f5c0783d2bcf7944c537a3b07a4ca25a07cdb8d7c83cbee8db161c
+  checksum: 6fbb4915f8a903317b038c4eea3cb2198387c27256eab84171199a10eff858df240e6e7060fa0b506c109df1a23f982ed4a0e46b0f99af02b584f4b405906668
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.1.7, @builder.io/mitosis@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@builder.io/mitosis@npm:0.1.7"
+"@builder.io/mitosis@npm:0.2.2, @builder.io/mitosis@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@builder.io/mitosis@npm:0.2.2"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2726,7 +2726,7 @@ __metadata:
     ts-morph: ^19.0.0
     typescript: ^5.3.2
     vue: ~2.6
-  checksum: 346ef79ed6147292b17e082550b75e23ad28a4807559b8c81846ac253e6aff0e9199a40c27375cb61d62b33a219002084410755e5d00e5e65c73ebd1927af616
+  checksum: 78f04fc8f820841e678fefb409dccfc9037d84e86091a5c70605e6667cc4e43f1d2dd4b247b91658c28a1265acd338dc39d15cca399cadddbd94c06f43fe25c4
   languageName: node
   linkType: hard
 
@@ -3118,8 +3118,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.15
-    "@builder.io/mitosis": ^0.1.7
-    "@builder.io/mitosis-cli": ^0.1.7
+    "@builder.io/mitosis": ^0.2.2
+    "@builder.io/mitosis-cli": ^0.2.2
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
