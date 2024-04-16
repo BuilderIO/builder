@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from './helpers/index.js';
 
-test.describe.only('CSS Properties from Builder Content', () => {
+test.describe('CSS Properties from Builder Content', () => {
   test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('set image width CSS properties correctly', async ({ page, packageName }) => {
     test.skip(packageName === 'react-native');
