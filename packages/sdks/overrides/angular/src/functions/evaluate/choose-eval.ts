@@ -1,5 +1,3 @@
-// we need to use isServer for tree-shaking to work, hence overriding this file for Qwik.
-import { isBrowser } from '@builder.io/qwik/build';
 import { runInBrowser } from './browser-runtime/browser.js';
 import type { ExecutorArgs } from './helpers.js';
 
@@ -16,6 +14,8 @@ import type { ExecutorArgs } from './helpers.js';
  */
 import { evaluator } from './browser-runtime.js';
 import { shouldForceBrowserRuntimeInNode } from './should-force-browser-runtime-in-node.js';
+
+const isBrowser = typeof window !== 'undefined';
 
 /**
  * Even though we have separate runtimes for browser/node/edge, sometimes frameworks will
