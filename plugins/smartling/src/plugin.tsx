@@ -360,7 +360,9 @@ registerPlugin(
       label: 'Remove from translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
-        return model.name !== translationModel.name && Boolean(content.meta.translationJobId);
+        return (
+          model.name !== translationModel.name && Boolean(content.meta.get('translationJobId'))
+        );
       },
       async onClick(content) {
         appState.globalState.showGlobalBlockingLoading();
@@ -368,7 +370,7 @@ registerPlugin(
         await api.removeContentFromTranslationJob({
           contentId: content.id,
           contentModel: appState.designerState.editingModel.name,
-          translationJobId: content.meta.translationJobId,
+          translationJobId: content.meta.get('translationJobId'),
           translationModel: translationModelName,
         });
 
