@@ -3606,6 +3606,7 @@ __metadata:
     "@angular/platform-browser-dynamic": ^16.2.0
     "@angular/router": ^16.2.0
     "@builder.io/sdk-angular": "workspace:*"
+    "@e2e/tests": "workspace:*"
     "@types/jasmine": ~4.3.0
     jasmine-core: ~4.6.0
     karma: ~6.4.0
