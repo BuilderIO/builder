@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-smartling",
-  "version": "0.0.11",
+  "version": "0.0.14",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
