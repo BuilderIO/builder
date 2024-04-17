@@ -1,5 +1,12 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.0.20
+
+### Patch Changes
+
+- a309a4f: Fix: add missing `key` prop to `Select` block's `option`
+- b668eae: Fix: Blocks styles not applying during SSR.
+
 ## 1.0.19
 
 ### Patch Changes

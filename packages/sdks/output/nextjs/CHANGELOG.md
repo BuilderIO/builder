@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.14
+
+### Patch Changes
+
+- a309a4f: Fix: add missing `key` prop to `Select` block's `option`
+
 ## 0.14.13
 
 ### Patch Changes

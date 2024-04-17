@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.20
+
+### Patch Changes
+
+- a309a4f: Fix: add missing `key` prop to `Select` block's `option`
+
 ## 1.0.19
 
 ### Patch Changes
