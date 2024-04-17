@@ -175,12 +175,10 @@ export default function Block(props: BlockProps) {
     const animations = state.processedBlock.animations;
     if (animations && blockId) {
       bindAnimations(
-        animations
-          .filter((item) => item.trigger !== 'hover')
-          .map((animation) => ({
-            ...animation,
-            elementId: blockId,
-          }))
+        animations.map((animation) => ({
+          ...animation,
+          elementId: blockId,
+        }))
       );
     }
   });
