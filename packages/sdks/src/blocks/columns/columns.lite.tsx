@@ -169,6 +169,20 @@ export default function Columns(props: ColumnProps) {
         },
       `;
     },
+
+    getAttributes(column: any, index: number) {
+      return {
+        ...useTarget({
+          reactNative: {
+            dataSet: { 'builder-block-name': 'builder-column' },
+          },
+          default: {},
+        }),
+        ...(column.link ? { href: column.link } : {}),
+        [getClassPropName()]: 'builder-column',
+        style: mapStyleObjToStrIfNeeded(state.columnCssVars(index)),
+      };
+    },
   });
 
   return (
@@ -217,17 +231,7 @@ export default function Columns(props: ColumnProps) {
                   })
             }
             actionAttributes={{}}
-            attributes={{
-              ...useTarget({
-                reactNative: {
-                  dataSet: { 'builder-block-name': 'builder-column' },
-                },
-                default: {},
-              }),
-              ...(column.link ? { href: column.link } : {}),
-              [getClassPropName()]: 'builder-column',
-              style: mapStyleObjToStrIfNeeded(state.columnCssVars(index)),
-            }}
+            attributes={state.getAttributes(column, index)}
           >
             <Blocks
               blocks={useTarget({

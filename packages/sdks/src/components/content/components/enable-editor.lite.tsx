@@ -114,6 +114,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       });
     },
+    get showContentProps() {
+      return props.showContent ? {} : { hidden: true, 'aria-hidden': true };
+    },
     ContentWrapper: useTarget({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -486,7 +489,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           default: {},
         })}
-        {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
+        {...state.showContentProps}
         {...props.contentWrapperProps}
       >
         {props.children}
