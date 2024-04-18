@@ -96,7 +96,7 @@ const getIvm = (): typeof import('isolated-vm') => {
       importing and calling \`initializeNodeRuntime()\` from "@builder.io/sdk-react/node/init". This must be done in
       a server-only execution path within your application.
 
-      Please see the documentation for more information: https://www.builder.io/c/docs/node-isolated-vm-initialization
+      Please see the documentation for more information: https://builder.io/c/docs/integration-tips
       `
     );
   }
