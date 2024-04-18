@@ -22,6 +22,6 @@ import { setIvm } from './node-runtime.js';
  * - The NextJS Pages router's `_document.tsx`
  * - Your Remix route's `loader`
  */
-export const initializeNodeRuntime = async () => {
+export const initializeNodeRuntime = () => {
   setIvm(ivm);
 };
