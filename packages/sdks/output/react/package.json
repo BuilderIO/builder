@@ -79,6 +79,11 @@
         "require": "./lib/browser/index.cjs"
       }
     },
+    "./node/init": {
+      "types": "./types/functions/evaluate/node-runtime/init.d.ts",
+      "import": "./lib/node/init.mjs",
+      "require": "./lib/node/init.cjs"
+    },
     "./edge": {
       "types": "./types/index.d.ts",
       "import": "./lib/edge/edge-entry.mjs",

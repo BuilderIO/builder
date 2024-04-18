@@ -1,3 +1,4 @@
+import { MSG_PREFIX } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
 import { set } from '../../set.js';
 import type {
@@ -71,12 +72,40 @@ if (typeof output === 'object' && output !== null) {
 output;
 `;
 };
+
+let IVM_INSTANCE: typeof import('isolated-vm') | null = null;
+
+/**
+ * Set the `isolated-vm` instance to be used by the node runtime.
+ * This is useful for environments that are not able to rely on our
+ * `safeDynamicRequire` trick to import the `isolated-vm` package.
+ */
+export const setIvm = (ivm: typeof import('isolated-vm')) => {
+  IVM_INSTANCE = ivm;
+};
+
+const getIvm = (): typeof import('isolated-vm') => {
+  if (IVM_INSTANCE) return IVM_INSTANCE;
+  const dynRequiredIvm = safeDynamicRequire('isolated-vm');
+
+  if (!dynRequiredIvm) {
+    throw new Error(
+      `${MSG_PREFIX}could not import \`isolated-vm\` module for safe script execution on Node server.
+      
+      In certain Node environments, the SDK requires additional initialization steps. This can be achieved by 
+      importing and calling \`initializeNodeRuntime()\` from "@builder.io/sdk-react/node/init". This must be done in
+      a server-only execution path within your application.
+
+      Please see the documentation for more information: https://www.builder.io/c/docs/node-isolated-vm-initialization
+      `
+    );
+  }
+
+  return dynRequiredIvm;
+};
+
 const getIsolateContext = () => {
-  // if (Builder.serverContext) {
-  //   return Builder.serverContext;
-  // }
-  // Builder.setServerContext(isolate.createContextSync());
-  const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
+  const ivm = getIvm();
   const isolate = new ivm.Isolate({
     memoryLimit: 128,
   });
@@ -91,7 +120,7 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
+  const ivm = getIvm();
 
   const state = fastClone({
     ...rootState,
