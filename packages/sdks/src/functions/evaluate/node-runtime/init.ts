@@ -10,9 +10,19 @@
  * The `isolated-vm` import must exist in this separate file, or it will end up
  * in the SDK's main entry point, causing errors for users.
  */
-import ivm from 'isolated-vm';
 import { setIvm } from './node-runtime.js';
 
-export const initializeNodeRuntime = () => {
+/**
+ * This function initializes the SDK on a Node server. It handles importing the
+ * `isolated-vm` package which is needed for dynamic bindings.
+ *
+ * NOTE: this function cannot be called on the client. You must call this function
+ * from a server-only location, such as:
+ * - The NextJS Pages router's `_document.tsx`
+ * - Your Remix route's `loader`
+ */
+export const initializeNodeRuntime = async () => {
+  const ivm = await import('isolated-vm');
+
   setIvm(ivm);
 };
