@@ -71,12 +71,25 @@ if (typeof output === 'object' && output !== null) {
 output;
 `;
 };
+
+let IVM_INSTANCE: typeof import('isolated-vm') | null = null;
+
+/**
+ * Set the `isolated-vm` instance to be used by the node runtime.
+ * This is useful for environments that are not able to rely on our
+ * `safeDynamicRequire` trick to import the `isolated-vm` package.
+ */
+export const setIvm = (ivm: typeof import('isolated-vm')) => {
+  IVM_INSTANCE = ivm;
+};
+
+const getIvm = (): typeof import('isolated-vm') => {
+  if (IVM_INSTANCE) return IVM_INSTANCE;
+  return safeDynamicRequire('isolated-vm');
+};
+
 const getIsolateContext = () => {
-  // if (Builder.serverContext) {
-  //   return Builder.serverContext;
-  // }
-  // Builder.setServerContext(isolate.createContextSync());
-  const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
+  const ivm = getIvm();
   const isolate = new ivm.Isolate({
     memoryLimit: 128,
   });
@@ -91,7 +104,7 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const ivm: typeof import('isolated-vm') = safeDynamicRequire('isolated-vm');
+  const ivm = getIvm();
 
   const state = fastClone({
     ...rootState,
