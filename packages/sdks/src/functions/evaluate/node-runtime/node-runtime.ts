@@ -1,3 +1,4 @@
+import { MSG_PREFIX } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
 import { set } from '../../set.js';
 import type {
@@ -88,8 +89,16 @@ const getIvm = (): typeof import('isolated-vm') => {
   const dynRequiredIvm = safeDynamicRequire('isolated-vm');
 
   if (!dynRequiredIvm) {
-    // TO-DO: cleanup this error. link to docs.
-    throw new Error('isolated-vm is not available');
+    throw new Error(
+      `${MSG_PREFIX}could not import \`isolated-vm\` module for safe script execution on Node server.
+      
+      In certain Node environments, the SDK requires additional initialization steps. This can be achieved by 
+      importing and calling \`initializeNodeRuntime()\` from "@builder.io/sdk-react/node/init". This must be done in
+      a server-only execution path within your application.
+
+      Please see the documentation for more information: https://www.builder.io/c/docs/node-isolated-vm-initialization
+      `
+    );
   }
 
   return dynRequiredIvm;
