@@ -1,5 +1,12 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.21
+
+### Patch Changes
+
+- 7bad8d9: Fix: better error-logging for `isolated-vm` import.
+- d8e08ae: Fix: `fetchOneEntry` prop types of `fetch` and `fetchOptions`
+
 ## 1.0.20
 
 ### Patch Changes

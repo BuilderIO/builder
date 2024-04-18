@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.21
+
+### Patch Changes
+
+- 7bad8d9: Fix: better error-logging for `isolated-vm` import.
+- d8e08ae: Fix: `fetchOneEntry` prop types of `fetch` and `fetchOptions`
+
 ## 1.0.19
 
 ### Patch Changes

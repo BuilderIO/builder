@@ -1,5 +1,12 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.21
+
+### Patch Changes
+
+- 7bad8d9: Fix: better error-logging for `isolated-vm` import.
+- d8e08ae: Fix: `fetchOneEntry` prop types of `fetch` and `fetchOptions`
+
 ## 1.0.20
 
 ### Patch Changes
