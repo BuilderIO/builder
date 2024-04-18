@@ -85,7 +85,16 @@ export const setIvm = (ivm: typeof import('isolated-vm')) => {
 };
 
 const getIvm = (): typeof import('isolated-vm') => {
-  const importError = new Error(
+  try {
+    if (IVM_INSTANCE) return IVM_INSTANCE;
+    const dynRequiredIvm = safeDynamicRequire('isolated-vm');
+
+    if (dynRequiredIvm) return dynRequiredIvm;
+  } catch (error) {
+    logger.error('isolated-vm import error.', error);
+  }
+
+  throw new Error(
     `${MSG_PREFIX}could not import \`isolated-vm\` module for safe script execution on Node server.
     
     In certain Node environments, the SDK requires additional initialization steps. This can be achieved by 
@@ -95,19 +104,6 @@ const getIvm = (): typeof import('isolated-vm') => {
     Please see the documentation for more information: https://builder.io/c/docs/integration-tips
     `
   );
-
-  try {
-    if (IVM_INSTANCE) return IVM_INSTANCE;
-    const dynRequiredIvm = safeDynamicRequire('isolated-vm');
-    if (!dynRequiredIvm) {
-      throw importError;
-    }
-
-    return dynRequiredIvm;
-  } catch (error) {
-    logger.error('isolated-vm import error.', error);
-    throw importError;
-  }
 };
 
 const getIsolateContext = () => {
