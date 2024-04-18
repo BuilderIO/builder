@@ -10,6 +10,7 @@
  * The `isolated-vm` import must exist in this separate file, or it will end up
  * in the SDK's main entry point, causing errors for users.
  */
+import ivm from 'isolated-vm';
 import { setIvm } from './node-runtime.js';
 
 /**
@@ -22,7 +23,5 @@ import { setIvm } from './node-runtime.js';
  * - Your Remix route's `loader`
  */
 export const initializeNodeRuntime = async () => {
-  const ivm = await import('isolated-vm');
-
   setIvm(ivm);
 };
