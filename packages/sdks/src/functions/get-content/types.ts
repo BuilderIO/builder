@@ -144,10 +144,10 @@ export interface GetContentOptions {
   /**
    * Optional override of the `fetch` function. (Defaults to global `fetch`)
    */
-  fetch?: typeof global.fetch;
+  fetch?: (input: string, init?: object) => Promise<any>;
 
   /**
-   * Optional fetch options to be passed to the `fetch` function.
+   * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
-  fetchOptions?: RequestInit;
+  fetchOptions?: object;
 }
