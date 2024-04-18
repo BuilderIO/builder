@@ -4,6 +4,7 @@ import { ANIMATIONS } from './animations.js';
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
+import { CSS_PROPERTIES } from './css-properties.js';
 import {
   CONTENT as customBreakpoints,
   CONTENT_RESET as customBreakpointsReset,
@@ -95,6 +96,7 @@ const PAGES = {
   '/data-preview': DATA_PREVIEW,
   '/form': FORM,
   '/default-styles': DEFAULT_STYLES,
+  '/css-properties': CSS_PROPERTIES,
 } as const;
 
 const apiVersionPathToProp = {

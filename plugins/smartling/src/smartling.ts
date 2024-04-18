@@ -95,6 +95,28 @@ export class SmartlingApi {
     });
   }
 
+  removeContentFromTranslationJob({
+    contentId,
+    contentModel,
+    translationJobId,
+    translationModel,
+  }: {
+    contentId: string;
+    contentModel: string;
+    translationJobId: string;
+    translationModel: string;
+  }) {
+    return this.request('remove-content-from-job', {
+      method: 'POST',
+      body: JSON.stringify({
+        contentId,
+        contentModel,
+        translationJobId,
+        translationModel,
+      }),
+    });
+  }
+
   updateTranslationFile(options: {
     translationJobId: string;
     translationModel: string;
