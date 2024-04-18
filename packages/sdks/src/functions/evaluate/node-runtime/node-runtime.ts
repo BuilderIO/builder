@@ -85,7 +85,14 @@ export const setIvm = (ivm: typeof import('isolated-vm')) => {
 
 const getIvm = (): typeof import('isolated-vm') => {
   if (IVM_INSTANCE) return IVM_INSTANCE;
-  return safeDynamicRequire('isolated-vm');
+  const dynRequiredIvm = safeDynamicRequire('isolated-vm');
+
+  if (!dynRequiredIvm) {
+    // TO-DO: cleanup this error. link to docs.
+    throw new Error('isolated-vm is not available');
+  }
+
+  return dynRequiredIvm;
 };
 
 const getIsolateContext = () => {
