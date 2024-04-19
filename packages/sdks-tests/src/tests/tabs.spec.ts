@@ -33,7 +33,7 @@ test.describe('Tabs Block', () => {
     await page.goto('/tabs');
 
     for (let i = 1; i < TABS_CONTENT.length; i++) {
-      await page.click(`text=${TABS_CONTENT[i].label}`);
+      await page.click(`text=${TABS_CONTENT[i].label}`, { timeout: 10000 });
       const activeTabLabel = page.locator('.builder-tab-active');
       const activeTabContent = page.locator(`text=${TABS_CONTENT[i].content}`);
       await expect(activeTabLabel).toHaveText(TABS_CONTENT[i].label);

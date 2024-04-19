@@ -1,5 +1,5 @@
-import { For, useStore } from '@builder.io/mitosis';
-import Blocks from '../../components/blocks';
+import { For, useStore, useTarget } from '@builder.io/mitosis';
+import Blocks from '../../components/blocks/index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 
 export interface TabsProps {
@@ -7,15 +7,27 @@ export interface TabsProps {
     label: BuilderBlock[];
     content: BuilderBlock[];
   }[];
-  builderBlock: any;
+  builderBlock: BuilderBlock;
   defaultActiveTab?: number;
   collapsible?: boolean;
-  tabHeaderLayout?: string;
+  tabHeaderLayout?:
+    | 'center'
+    | 'flex-start'
+    | 'flex-end'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
   activeTabStyle?: any;
 }
 
 export default function Tabs(props: TabsProps) {
   const state = useStore({
+    Tag: useTarget({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      reactNative: TouchableOpacity,
+      default: 'span',
+    }),
     activeTab: props.defaultActiveTab ? props.defaultActiveTab - 1 : 0,
     get activeTabContent(): BuilderBlock[] | undefined {
       return props.tabs && props.tabs[state.activeTab].content;
@@ -28,15 +40,20 @@ export default function Tabs(props: TabsProps) {
         class="builder-tabs-wrap"
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: useTarget({
+            reactNative: 'row' as 'row' | 'column' | 'column-reverse',
+            default: 'row',
+          }),
           justifyContent: props.tabHeaderLayout || 'flex-start',
-          overflow: 'auto',
-          WebkitOverflowScrolling: 'touch',
+          overflow: useTarget({
+            reactNative: 'scroll' as 'scroll' | 'visible' | 'hidden',
+            default: 'auto',
+          }),
         }}
       >
         <For each={props.tabs}>
           {(tab, index) => (
-            <span
+            <state.Tag
               key={index}
               class={`builder-tab-wrap ${
                 state.activeTab === index ? 'builder-tab-active' : ''
@@ -57,7 +74,7 @@ export default function Tabs(props: TabsProps) {
                 path={`component.options.tabs.${index}.label`}
                 blocks={tab.label}
               />
-            </span>
+            </state.Tag>
           )}
         </For>
       </div>
