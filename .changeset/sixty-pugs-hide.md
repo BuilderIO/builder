@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Fix: hover animations
+Feature: add support for hover animations.
