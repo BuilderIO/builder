@@ -10,5 +10,5 @@ export default function DynamicDiv(props: {
   builderModel: any;
   ref: any;
 }) {
-  return <>{props.children}</>;
+  return <div>{props.children}</div>;
 }
