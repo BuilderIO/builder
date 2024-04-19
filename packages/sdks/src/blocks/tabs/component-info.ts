@@ -44,6 +44,8 @@ const defaultElement = {
 
 export const componentInfo: ComponentInfo = {
   name: 'Builder: Tabs',
+  isRSC: true,
+
   inputs: [
     {
       name: 'tabs',

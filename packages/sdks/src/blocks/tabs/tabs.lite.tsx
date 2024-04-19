@@ -1,7 +1,13 @@
-import { For, useStore, useTarget } from '@builder.io/mitosis';
+import { For, useMetadata, useStore, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { TabsProps } from './tabs.types.js';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export default function Tabs(props: TabsProps) {
   const state = useStore({
