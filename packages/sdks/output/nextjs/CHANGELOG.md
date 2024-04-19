@@ -1,5 +1,12 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.16
+
+### Patch Changes
+
+- f3c5ff3: Fix: `isPreviewing` logic on the server, and make usage of `isEditing` unnecessary.
+- 46bd611: Feature: add support for hover animations.
+
 ## 0.14.15
 
 ### Patch Changes
