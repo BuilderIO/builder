@@ -18,7 +18,7 @@ const TABS_CONTENT = [
 
 const DEFAULT_ACTIVE_TAB = TABS_CONTENT[0];
 
-test.describe.only('Tabs Block', () => {
+test.describe('Tabs Block', () => {
   test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
 
   test('should display the default active tab content', async ({ page, packageName }) => {

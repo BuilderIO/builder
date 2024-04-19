@@ -1,6 +1,6 @@
+import { For, useStore } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import { For, useStore } from '@builder.io/mitosis';
 
 export interface TabsProps {
   tabs: {
