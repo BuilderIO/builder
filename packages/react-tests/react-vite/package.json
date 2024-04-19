@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
+    "@builder.io/widgets": "^1.2.24",
     "@e2e/tests": "workspace:*",
     "nx": "^16.6.0",
     "nx-cloud": "^16.2.0",

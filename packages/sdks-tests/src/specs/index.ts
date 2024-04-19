@@ -19,6 +19,7 @@ import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
 import { FORM } from './form.js';
 import { CONTENT as homepage } from './homepage.js';
+import { HOVER_ANIMATION } from './hover-animation.js';
 import { HTTP_REQUESTS } from './http-requests.js';
 import { CONTENT as image } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
@@ -38,10 +39,10 @@ import { CONTENT as symbolBindings } from './symbol-bindings.js';
 import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.js';
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
+import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
-import { HOVER_ANIMATION } from './hover-animation.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -99,6 +100,7 @@ const PAGES = {
   '/default-styles': DEFAULT_STYLES,
   '/css-properties': CSS_PROPERTIES,
   '/hover-animation': HOVER_ANIMATION,
+  '/tabs': TABS,
 } as const;
 
 const apiVersionPathToProp = {
