@@ -56,7 +56,7 @@ function assign(target: object, ..._args: any[]) {
   return to;
 }
 
-const camelCaseToKebabCase = (str?: string) =>
+export const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`) : '';
 
 export function bindAnimations(animations: BuilderAnimation[]) {
@@ -64,9 +64,6 @@ export function bindAnimations(animations: BuilderAnimation[]) {
     switch (animation.trigger) {
       case 'pageLoad':
         triggerAnimation(animation);
-        break;
-      case 'hover':
-        bindHoverAnimation(animation);
         break;
       case 'scrollInView':
         bindScrollInViewAnimation(animation);
@@ -152,44 +149,6 @@ export function triggerAnimation(animation: BuilderAnimation) {
         element.style.transition = '';
         element.style.transitionDelay = '';
       }, (animation.delay || 0) * 1000 + animation.duration * 1000 + 100);
-    });
-  });
-}
-
-export function bindHoverAnimation(animation: BuilderAnimation) {
-  // TODO: is it multiple binding when editing...?
-  // TODO: unbind on element remove
-  // TODO: apply to ALL elements
-  const elements = Array.prototype.slice.call(
-    document.getElementsByClassName(animation.elementId || animation.id || '')
-  ) as HTMLElement[];
-  if (!elements.length) {
-    warnElementNotPresent(animation.elementId || animation.id || '');
-    return;
-  }
-
-  Array.from(elements).forEach((element) => {
-    augmentAnimation(animation, element);
-
-    const defaultState = animation.steps[0].styles;
-    const hoverState = animation.steps[1].styles;
-    function attachDefaultState() {
-      assign(element!.style, defaultState);
-    }
-    function attachHoverState() {
-      assign(element!.style, hoverState);
-    }
-    attachDefaultState();
-    element.addEventListener('mouseenter', attachHoverState);
-    element.addEventListener('mouseleave', attachDefaultState);
-    // TODO: queue/batch these timeouts
-    setTimeout(() => {
-      element.style.transition = `all ${
-        animation.duration
-      }s ${camelCaseToKebabCase(animation.easing)}`;
-      if (animation.delay) {
-        element.style.transitionDelay = animation.delay + 's';
-      }
     });
   });
 }

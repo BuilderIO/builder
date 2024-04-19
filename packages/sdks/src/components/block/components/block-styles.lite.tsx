@@ -10,6 +10,7 @@ import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
+import { camelCaseToKebabCase } from '../animator.js';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
@@ -96,7 +97,34 @@ export default function BlockStyles(props: BlockStylesProps) {
           })
         : '';
 
-      return [largeStylesClass, mediumStylesClass, smallStylesClass].join(' ');
+      const hoverAnimation =
+        processedBlock.animations &&
+        processedBlock.animations.find((item) => item.trigger === 'hover');
+
+      let hoverStylesClass = '';
+      if (hoverAnimation) {
+        const hoverStyles = hoverAnimation.steps?.[1]?.styles || {};
+        hoverStylesClass =
+          createCssClass({
+            className: `${className}:hover`,
+            styles: {
+              ...hoverStyles,
+              transition: `all ${
+                hoverAnimation.duration
+              }s ${camelCaseToKebabCase(hoverAnimation.easing)}`,
+              transitionDelay: hoverAnimation.delay
+                ? `${hoverAnimation.delay}s`
+                : '0s',
+            },
+          }) || '';
+      }
+
+      return [
+        largeStylesClass,
+        mediumStylesClass,
+        smallStylesClass,
+        hoverStylesClass,
+      ].join(' ');
     },
   });
   return (

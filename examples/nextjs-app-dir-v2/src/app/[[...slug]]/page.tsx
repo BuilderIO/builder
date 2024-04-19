@@ -8,6 +8,10 @@ interface PageProps {
 }
 
 export default async function Page(props: PageProps) {
+  // NOTE: the import must be inside the Page component itself.
+  const { initializeNodeRuntime } = await import('@builder.io/sdk-react/node/init');
+  initializeNodeRuntime();
+
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
   const content = await fetchOneEntry({
