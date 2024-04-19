@@ -108,3 +108,12 @@ export const getInheritedStyles = ({
   }
   return extractTextStyles(style);
 };
+
+export const shouldPassBuilderData = (blockName: string | undefined) => {
+  return (
+    blockName &&
+    ['Core:Button', 'Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(
+      blockName
+    )
+  );
+};

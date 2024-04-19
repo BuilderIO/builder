@@ -1,6 +1,14 @@
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type {
+  BuilderComponentsProp,
+  BuilderDataProps,
+  BuilderLinkComponentProp,
+} from '../../types/builder-props.js';
 
-export interface TabsProps {
+export interface TabsProps
+  extends BuilderComponentsProp,
+    BuilderLinkComponentProp,
+    BuilderDataProps {
   tabs: {
     label: BuilderBlock[];
     content: BuilderBlock[];
