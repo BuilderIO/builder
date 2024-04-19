@@ -6,8 +6,8 @@ import type { TabsProps } from './tabs.types.js';
 export default function Tabs(props: TabsProps) {
   const state = useStore({
     activeTab: props.defaultActiveTab ? props.defaultActiveTab - 1 : 0,
-    activeTabContent(): BuilderBlock[] | undefined {
-      return props.tabs && props.tabs[state.activeTab].content;
+    activeTabContent(active: number): BuilderBlock[] | undefined {
+      return props.tabs && props.tabs[active].content;
     },
     getActiveTabStyle(index: number) {
       return state.activeTab === index ? props.activeTabStyle : {};
@@ -60,12 +60,12 @@ export default function Tabs(props: TabsProps) {
         </For>
       </div>
       {/* Display blocks for the active tab's content */}
-      <Show when={state.activeTabContent()}>
+      <Show when={state.activeTabContent(state.activeTab)}>
         <div>
           <Blocks
             parent={props.builderBlock.id}
             path={`component.options.tabs.${state.activeTab}.content`}
-            blocks={state.activeTabContent()}
+            blocks={state.activeTabContent(state.activeTab)}
             context={props.builderContext}
             registeredComponents={props.builderComponents}
             linkComponent={props.builderLinkComponent}
