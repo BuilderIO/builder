@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Fix: `isPreviewing` logic
+Fix: `isPreviewing` logic on the server, and make usage of `isEditing` unnecessary.
