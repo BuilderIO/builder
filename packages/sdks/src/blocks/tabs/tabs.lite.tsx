@@ -1,33 +1,10 @@
 import { For, useStore, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-
-export interface TabsProps {
-  tabs: {
-    label: BuilderBlock[];
-    content: BuilderBlock[];
-  }[];
-  builderBlock: BuilderBlock;
-  defaultActiveTab?: number;
-  collapsible?: boolean;
-  tabHeaderLayout?:
-    | 'center'
-    | 'flex-start'
-    | 'flex-end'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly';
-  activeTabStyle?: any;
-}
+import type { TabsProps } from './tabs.types.js';
 
 export default function Tabs(props: TabsProps) {
   const state = useStore({
-    Tag: useTarget({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      reactNative: TouchableOpacity,
-      default: 'span',
-    }),
     activeTab: props.defaultActiveTab ? props.defaultActiveTab - 1 : 0,
     get activeTabContent(): BuilderBlock[] | undefined {
       return props.tabs && props.tabs[state.activeTab].content;
@@ -53,7 +30,7 @@ export default function Tabs(props: TabsProps) {
       >
         <For each={props.tabs}>
           {(tab, index) => (
-            <state.Tag
+            <span
               key={index}
               class={`builder-tab-wrap ${
                 state.activeTab === index ? 'builder-tab-active' : ''
@@ -74,7 +51,7 @@ export default function Tabs(props: TabsProps) {
                 path={`component.options.tabs.${index}.label`}
                 blocks={tab.label}
               />
-            </state.Tag>
+            </span>
           )}
         </For>
       </div>

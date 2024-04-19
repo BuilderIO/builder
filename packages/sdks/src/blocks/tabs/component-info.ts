@@ -1,3 +1,5 @@
+import type { ComponentInfo } from '../../types/components.js';
+
 const defaultTab = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
@@ -40,7 +42,7 @@ const defaultElement = {
   },
 };
 
-export const componentInfo: any = {
+export const componentInfo: ComponentInfo = {
   name: 'Builder: Tabs',
   inputs: [
     {
