@@ -16,7 +16,7 @@ export interface TabsProps {
 
 export default function Tabs(props: TabsProps) {
   const state = useStore({
-    activeTab: props.defaultActiveTab || 0,
+    activeTab: props.defaultActiveTab ? props.defaultActiveTab - 1 : 0,
     get activeTabContent(): BuilderBlock[] | undefined {
       return props.tabs && props.tabs[state.activeTab].content;
     },

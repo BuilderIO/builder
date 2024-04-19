@@ -12,6 +12,8 @@ import { componentInfo as slotComponentInfo } from '../blocks/slot/component-inf
 import { default as Slot } from '../blocks/slot/index.js';
 import { componentInfo as symbolComponentInfo } from '../blocks/symbol/component-info.js';
 import { default as Symbol } from '../blocks/symbol/index.js';
+import { componentInfo as tabsComponentInfo } from '../blocks/tabs/component-info.js';
+import Tabs from '../blocks/tabs/index.js';
 import { componentInfo as textComponentInfo } from '../blocks/text/component-info.js';
 import { default as Text } from '../blocks/text/index.js';
 import type { RegisteredComponent } from '../context/types.js';
@@ -31,5 +33,6 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Slot, ...slotComponentInfo },
     { component: Symbol, ...symbolComponentInfo },
     { component: Text, ...textComponentInfo },
+    { component: Tabs, ...tabsComponentInfo },
     ...getExtraComponents(),
   ];

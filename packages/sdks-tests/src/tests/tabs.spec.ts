@@ -21,8 +21,7 @@ const DEFAULT_ACTIVE_TAB = TABS_CONTENT[0];
 test.describe('Tabs Block', () => {
   test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
 
-  test('should display the default active tab content', async ({ page, packageName }) => {
-    test.skip(packageName === 'react-native');
+  test('should display the default active tab content', async ({ page }) => {
     await page.goto('/tabs');
     const activeTabLabel = page.locator('.builder-tab-active');
     const activeTabContent = page.locator(`text=${DEFAULT_ACTIVE_TAB.content}`);
@@ -30,8 +29,7 @@ test.describe('Tabs Block', () => {
     await expect(activeTabContent).toBeVisible();
   });
 
-  test('clicking on another tab updates content', async ({ page, packageName }) => {
-    test.skip(packageName === 'react-native');
+  test('clicking on another tab updates content', async ({ page }) => {
     await page.goto('/tabs');
 
     for (let i = 1; i < TABS_CONTENT.length; i++) {
