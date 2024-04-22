@@ -36,7 +36,9 @@ export default function Columns(props: ColumnProps) {
     get cols() {
       return props.columns || [];
     },
-    stackAt: props.stackColumnsAt || 'tablet',
+    get stackAt() {
+      return props.stackColumnsAt || 'tablet';
+    },
     getWidth(index: number) {
       return state.cols[index]?.width || 100 / state.cols.length;
     },
@@ -66,12 +68,13 @@ export default function Columns(props: ColumnProps) {
       return state.stackAt === 'never' ? desktopStyle : stackedStyle;
     },
 
-    flexDir:
-      props.stackColumnsAt === 'never'
+    get flexDir() {
+      return props.stackColumnsAt === 'never'
         ? 'row'
         : props.reverseColumnsWhenStacked
         ? 'column-reverse'
-        : 'column',
+        : 'column';
+    },
 
     get columnsCssVars(): Dictionary<string> {
       return useTarget({
