@@ -9,6 +9,8 @@ import { CUSTOM_COMPONENTS } from '../../components/builder-registry';
 
 export const Content = isBrowser ? BrowserContent : EdgeContent;
 
+const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+
 // This page is a catch-all for all routes that don't have a pre-defined route.
 // Using a catch-all route allows you to dynamically create new pages in Builder.
 
@@ -23,7 +25,7 @@ export const useBuilderContent = routeLoader$(async ({ url, error }) => {
   // https://www.builder.io/c/docs/using-your-api-key
   const builderContent = await fetchOneEntry({
     model: 'page',
-    apiKey: import.meta.env.PUBLIC_BUILDER_API_KEY,
+    apiKey: BUILDER_API_KEY,
     options: getBuilderSearchParams(url.searchParams),
     userAttributes: {
       urlPath: url.pathname,
@@ -49,7 +51,7 @@ export default component$(() => {
     <Content
       model="page"
       content={builderContent.value}
-      apiKey={import.meta.env.PUBLIC_BUILDER_API_KEY}
+      apiKey={BUILDER_API_KEY}
       customComponents={CUSTOM_COMPONENTS}
     />
   );
