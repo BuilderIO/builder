@@ -1,7 +1,12 @@
 import { AB_TEST_INTERACTIVE } from './ab-test-interactive.js';
 import { CONTENT as abTest } from './ab-test.js';
 import { ANIMATIONS } from './animations.js';
-import { CONTENT as columns } from './columns.js';
+import {
+  COLUMNS,
+  COLUMNS_WITH_NEW_SPACE,
+  COLUMNS_WITH_NEW_TEXT,
+  COLUMNS_WITH_NEW_WIDTHS,
+} from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
 import { CSS_PROPERTIES } from './css-properties.js';
@@ -19,6 +24,7 @@ import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
 import { FORM } from './form.js';
 import { CONTENT as homepage } from './homepage.js';
+import { HOVER_ANIMATION } from './hover-animation.js';
 import { HTTP_REQUESTS } from './http-requests.js';
 import { CONTENT as image } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
@@ -41,7 +47,6 @@ import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
-import { HOVER_ANIMATION } from './hover-animation.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -56,7 +61,10 @@ const PAGES = {
   '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
   '/can-track-false': homepage,
   '/css-nesting': cssNesting,
-  '/columns': columns,
+  '/columns': COLUMNS,
+  '/columns-with-new-text': COLUMNS_WITH_NEW_TEXT,
+  '/columns-with-new-space': COLUMNS_WITH_NEW_SPACE,
+  '/columns-with-new-widths': COLUMNS_WITH_NEW_WIDTHS,
   '/symbols': symbols,
   '/js-code': JS_CODE_CONTENT,
   '/symbols-without-content': CONTENT_WITHOUT_SYMBOLS,

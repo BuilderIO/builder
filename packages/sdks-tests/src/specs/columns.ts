@@ -1,6 +1,6 @@
 import { NEW_TEXT } from './helpers.js';
 
-export const CONTENT = {
+export const COLUMNS = {
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   createdDate: 1644861548711,
   data: {
@@ -1187,6 +1187,13 @@ export const CONTENT = {
   rev: 'zxiskiseoj',
 };
 
-export const MODIFIED_COLUMNS = JSON.parse(JSON.stringify(CONTENT));
-MODIFIED_COLUMNS.data.blocks[2].children![1]!.component.options.columns![0].blocks[1].component.options.text =
+export const COLUMNS_WITH_NEW_TEXT = JSON.parse(JSON.stringify(COLUMNS));
+COLUMNS_WITH_NEW_TEXT.data.blocks[2].children![1]!.component.options.columns![0].blocks[1].component.options.text =
   NEW_TEXT;
+
+export const COLUMNS_WITH_NEW_SPACE = JSON.parse(JSON.stringify(COLUMNS));
+COLUMNS_WITH_NEW_SPACE.data.blocks[2].children![1]!.component.options.space = 10;
+
+export const COLUMNS_WITH_NEW_WIDTHS = JSON.parse(JSON.stringify(COLUMNS));
+COLUMNS_WITH_NEW_WIDTHS.data.blocks[2].children![1]!.component.options.columns![0].width = 30;
+COLUMNS_WITH_NEW_WIDTHS.data.blocks[2].children![1]!.component.options.columns![1].width = 70;

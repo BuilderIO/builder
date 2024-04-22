@@ -1,5 +1,9 @@
 import { expect, type Page } from '@playwright/test';
-import { MODIFIED_COLUMNS } from '../specs/columns.js';
+import {
+  COLUMNS_WITH_NEW_SPACE,
+  COLUMNS_WITH_NEW_TEXT,
+  COLUMNS_WITH_NEW_WIDTHS,
+} from '../specs/columns.js';
 import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
@@ -84,22 +88,60 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 test.describe('Visual Editing', () => {
   test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   editorTests({ noTrustedHosts: false });
-  test('correctly updates Text block in a Column block', async ({
-    page,
-    basePort,
-    packageName,
-  }) => {
-    test.skip(
-      packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
-        packageName === 'gen1-next' ||
-        packageName === 'gen1-react' ||
-        packageName === 'gen1-remix'
-    );
+  test.describe('Column block', () => {
+    test('correctly updates nested Text block', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'react-native' ||
+          packageName === 'next-app-dir' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
 
-    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
-    await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
-    await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
+      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_TEXT, model: 'page' });
+      await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
+    });
+    test('correctly updates space prop', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'react-native' ||
+          packageName === 'next-app-dir' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+      const secondColumn = page.frameLocator('iframe').getByText(NEW_TEXT);
+
+      await expect(secondColumn).toHaveCSS('margin-left', '20px');
+      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_SPACE, model: 'page' });
+      await expect(secondColumn).toHaveCSS('margin-left', '10px');
+    });
+    test('correctly updates width props', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'react-native' ||
+          packageName === 'next-app-dir' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+      const secondColumn = page.frameLocator('iframe').getByText(NEW_TEXT);
+
+      const initialWidth = await (
+        await secondColumn.evaluateHandle(el => Number(getComputedStyle(el).width))
+      ).jsonValue();
+
+      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_WIDTHS, model: 'page' });
+
+      const finalWidth = await (
+        await secondColumn.evaluateHandle(el => Number(getComputedStyle(el).width))
+      ).jsonValue();
+
+      expect(finalWidth).toBeGreaterThan(initialWidth);
+    });
   });
   test.describe('fails for empty trusted hosts', () => {
     test.fail();
