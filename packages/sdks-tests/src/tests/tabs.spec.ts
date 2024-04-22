@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers/index.js';
+import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
 
 const TABS_CONTENT = [
   {
@@ -23,7 +23,9 @@ test.describe('Tabs Block', () => {
 
   test('should display the default active tab content', async ({ page }) => {
     await page.goto('/tabs');
-    const activeTabLabel = page.locator('.builder-tab-active');
+    const activeTabLabel = isRNSDK
+      ? page.locator(`[style*="rgba(0, 0, 0, 0.1)"]`)
+      : page.locator('.builder-tab-active');
     const activeTabContent = page.locator(`text=${DEFAULT_ACTIVE_TAB.content}`);
     await expect(activeTabLabel).toHaveText(DEFAULT_ACTIVE_TAB.label);
     await expect(activeTabContent).toBeVisible();
@@ -34,7 +36,9 @@ test.describe('Tabs Block', () => {
 
     for (let i = 1; i < TABS_CONTENT.length; i++) {
       await page.click(`text=${TABS_CONTENT[i].label}`, { timeout: 10000 });
-      const activeTabLabel = page.locator('.builder-tab-active');
+      const activeTabLabel = isRNSDK
+        ? page.locator(`[style*="rgba(0, 0, 0, 0.1)"]`)
+        : page.locator('.builder-tab-active');
       const activeTabContent = page.locator(`text=${TABS_CONTENT[i].content}`);
       await expect(activeTabLabel).toHaveText(TABS_CONTENT[i].label);
       await expect(activeTabContent).toBeVisible();
