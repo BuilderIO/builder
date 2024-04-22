@@ -1,11 +1,4 @@
-import {
-  BuilderContent,
-  Content,
-  fetchEntries,
-  fetchOneEntry,
-  isEditing,
-  isPreviewing,
-} from '@builder.io/sdk-react';
+import { BuilderContent, Content, fetchEntries, fetchOneEntry } from '@builder.io/sdk-react';
 import { GetStaticProps } from 'next';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
@@ -58,7 +51,10 @@ export async function getStaticPaths() {
 export default function Page(props: { page: BuilderContent | null }) {
   const router = useRouter();
 
-  const canShowContent = props.page || isPreviewing(router.asPath) || isEditing(router.asPath);
+  const canShowContent =
+    props.page ||
+    router.asPath.includes('builder.preview') ||
+    router.asPath.includes('builder.frameEditing');
 
   // If the page content is not available
   // and not in preview/editing mode, show a 404 error page

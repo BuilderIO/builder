@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 auto;
+  padding: 30px 40px;
 }
 
 .logo {
@@ -9,6 +11,10 @@
 }
 .logo a {
   display: block;
+}
+
+.header {
+  background-color: var(--header-background);
 }
 
 .header ul {
@@ -23,7 +29,7 @@
   display: none;
   margin: 0;
   padding: 0;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .header li a {
