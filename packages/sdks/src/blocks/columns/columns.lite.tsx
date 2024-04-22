@@ -30,12 +30,8 @@ useMetadata({
 
 export default function Columns(props: ColumnProps) {
   const state = useStore({
-    get gutterSize() {
-      return typeof props.space === 'number' ? props.space || 0 : 20;
-    },
-    get cols() {
-      return props.columns || [];
-    },
+    gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
+    cols: props.columns || [],
     stackAt: props.stackColumnsAt || 'tablet',
     getWidth(index: number) {
       return state.cols[index]?.width || 100 / state.cols.length;
