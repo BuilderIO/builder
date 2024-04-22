@@ -5,6 +5,7 @@ import {
   Input,
   ViewContainerRef,
   TemplateRef,
+  Renderer2,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -91,6 +92,9 @@ export default class DynamicRenderer {
         case 'button':
           this.TagName = DynamicButton;
           break;
+        case 'a':
+          this.TagName = DynamicLink;
+          break;
         default:
           break;
       }
@@ -114,14 +118,16 @@ export class DynamicImage {
   @Input() attributes!: any;
 
   @ViewChild('v', { read: ElementRef })
-  v: ElementRef;
+  v!: ElementRef;
+
+  constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
     const el = this.v.nativeElement;
     if (this.attributes) {
-      Object.keys(this.attributes).forEach(
-        (key) => (el[key] = this.attributes[key])
-      );
+      Object.keys(this.attributes).forEach((key) => {
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+      });
     }
   }
 }
@@ -135,14 +141,39 @@ export class DynamicButton {
   @Input() attributes!: any;
 
   @ViewChild('v', { read: ElementRef })
-  v: ElementRef;
+  v!: ElementRef;
+
+  constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
     const el = this.v.nativeElement;
     if (this.attributes) {
-      Object.keys(this.attributes).forEach(
-        (key) => (el[key] = this.attributes[key])
-      );
+      Object.keys(this.attributes).forEach((key) => {
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+      });
+    }
+  }
+}
+
+@Component({
+  selector: 'dynamic-link, DynamicLink',
+  template: ` <a #v><ng-content></ng-content></a>`,
+  standalone: true,
+})
+export class DynamicLink {
+  @Input() attributes!: any;
+
+  @ViewChild('v', { read: ElementRef })
+  v!: ElementRef;
+
+  constructor(private renderer: Renderer2) {}
+
+  ngAfterViewInit() {
+    const el = this.v.nativeElement;
+    if (this.attributes) {
+      Object.keys(this.attributes).forEach((key) => {
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+      });
     }
   }
 }
