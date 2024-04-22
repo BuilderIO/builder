@@ -1,17 +1,22 @@
 {
-  "name": "my-qwik-basic-starter",
-  "description": "Demo App with Routing built-in (recommended)",
+  "name": "my-qwik-empty-starter",
+  "description": "App with Routing built-in ready to create your app",
   "engines": {
-    "node": ">=18.0.0"
+    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
   },
+  "engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
   "private": true,
+  "trustedDependencies": [
+    "sharp"
+  ],
+  "trustedDependencies-annotation": "Needed for bun to allow running install scripts",
+  "type": "module",
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
-    "build.server": "vite build -c adapters/vercel-edge/vite.config.ts",
     "build.types": "tsc --incremental --noEmit",
-    "deploy": "vercel deploy",
+    "deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
     "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "fmt": "prettier --write .",
@@ -26,19 +31,18 @@
     "@builder.io/sdk-qwik": "^0.14.16"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.2.10",
-    "@builder.io/qwik-city": "^1.2.10",
-    "@types/eslint": "8.44.1",
-    "@types/node": "^20.4.5",
-    "@typescript-eslint/eslint-plugin": "6.2.0",
-    "@typescript-eslint/parser": "6.2.0",
-    "eslint": "8.45.0",
-    "eslint-plugin-qwik": "^1.2.10",
-    "prettier": "3.0.0",
-    "typescript": "5.1.6",
-    "undici": "5.28.4",
-    "vercel": "^29.1.1",
-    "vite": "4.5.3",
-    "vite-tsconfig-paths": "4.2.0"
+    "@builder.io/qwik": "^1.5.2",
+    "@builder.io/qwik-city": "^1.5.2",
+    "@types/eslint": "^8.56.6",
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-qwik": "^1.5.2",
+    "prettier": "^3.2.5",
+    "typescript": "5.3.3",
+    "undici": "*",
+    "vite": "^5.1.6",
+    "vite-tsconfig-paths": "^4.2.1"
   }
 }
