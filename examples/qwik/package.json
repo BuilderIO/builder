@@ -1,6 +1,6 @@
 {
-  "name": "my-qwik-empty-starter",
-  "description": "App with Routing built-in ready to create your app",
+  "name": "my-qwik-site-with-visual-cms",
+  "description": "Site integrated with Builder.io for visual editing",
   "engines": {
     "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
   },
@@ -27,13 +27,11 @@
     "start": "vite --open --mode ssr",
     "qwik": "qwik"
   },
-  "dependencies": {
-    "@builder.io/dev-tools": "^0.1.14",
-    "@builder.io/sdk-qwik": "^0.14.16"
-  },
   "devDependencies": {
+    "@builder.io/dev-tools": "^0.0.7",
     "@builder.io/qwik": "^1.5.2",
     "@builder.io/qwik-city": "^1.5.2",
+    "@builder.io/sdk-qwik": "^0.4.1",
     "@types/eslint": "^8.56.6",
     "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^7.3.1",

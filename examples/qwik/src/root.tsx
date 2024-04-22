@@ -22,10 +22,10 @@ export default component$(() => {
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
+        <ServiceWorkerRegister />
       </head>
       <body lang="en">
         <RouterOutlet />
-        <ServiceWorkerRegister />
       </body>
     </QwikCityProvider>
   );
