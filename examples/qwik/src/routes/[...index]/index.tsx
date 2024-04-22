@@ -1,8 +1,13 @@
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import { fetchOneEntry, Content, getBuilderSearchParams } from '@builder.io/sdk-qwik';
+import { isBrowser } from '@builder.io/qwik/build';
+import { fetchOneEntry, getBuilderSearchParams } from '@builder.io/sdk-qwik';
+import { Content as EdgeContent } from '@builder.io/sdk-qwik/bundle/edge';
+import { Content as BrowserContent } from '@builder.io/sdk-qwik/bundle/browser';
 import { CUSTOM_COMPONENTS } from '../../components/builder-registry';
+
+export const Content = isBrowser ? BrowserContent : EdgeContent;
 
 // This page is a catch-all for all routes that don't have a pre-defined route.
 // Using a catch-all route allows you to dynamically create new pages in Builder.
