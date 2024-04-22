@@ -112,7 +112,7 @@ test.describe('Visual Editing', () => {
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
-      const secondColumn = page.frameLocator('iframe').getByText(NEW_TEXT);
+      const secondColumn = page.frameLocator('iframe').locator('.builder-column').nth(1);
 
       await expect(secondColumn).toHaveCSS('margin-left', '20px');
       await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_SPACE, model: 'page' });
@@ -128,7 +128,7 @@ test.describe('Visual Editing', () => {
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
-      const secondColumn = page.frameLocator('iframe').getByText(NEW_TEXT);
+      const secondColumn = page.frameLocator('iframe').locator('.builder-column').nth(1);
 
       const initialWidth = await (
         await secondColumn.evaluateHandle(el => Number(getComputedStyle(el).width))
