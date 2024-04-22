@@ -205,7 +205,11 @@ const ANGULAR_PLUGIN = () => ({
       if (pathValue) {
         code = code.replace(
           pathValue[0],
-          `[path]="${pathValue[1].replaceAll('`', "'").replaceAll('\\', '').replaceAll('.${', ".'+").replaceAll('}', "+'")}"`
+          `[path]="${pathValue[1]
+            .replaceAll('`', "'")
+            .replaceAll('\\', '')
+            .replaceAll('.${', ".'+")
+            .replaceAll('}', "+'")}"`
         );
       }
       return code;
@@ -213,18 +217,26 @@ const ANGULAR_PLUGIN = () => ({
   },
 });
 
-
 const ANGULAR_PLUGIN2 = () => ({
   code: {
     post: (code) => {
       if (code.includes('inputs: { getWrapperProps')) {
-        const wrapperObj = code.match(/inputs: {.*?}/s)[0].replace('inputs: {', '').replaceAll('props.', '') + ')';
-        const inputsObj = code.match(/inputs: {.*?;/s)[0].replace('inputs: ', '');
-        code = code.replace(inputsObj, wrapperObj.replace('context.value', 'context'));
+        const wrapperObj =
+          code
+            .match(/inputs: {.*?}/s)[0]
+            .replace('inputs: {', '')
+            .replaceAll('props.', '') + ')';
+        const inputsObj = code
+          .match(/inputs: {.*?;/s)[0]
+          .replace('inputs: ', '');
+        code = code.replace(
+          inputsObj,
+          wrapperObj.replace('context.value', 'context')
+        );
       }
       return code;
-    }
-  }
+    },
+  },
 });
 
 const ANGULAR_PLUGIN3 = () => ({
@@ -237,32 +249,54 @@ const ANGULAR_PLUGIN3 = () => ({
         code = code.replace('[linkComponent]="linkComponent"', '');
       }
       return code;
-    }
-  }
+    },
+  },
 });
 
 // for fixing circular dependencies
 const ANGULAR_PLUGIN4 = () => ({
   code: {
     post: (code) => {
-      if (code.includes('component-ref, ComponentRef') || code.includes('repeated-block, RepeatedBlock')) {
-        code = code.replace('imports: [CommonModule, Block]', 'imports: [CommonModule, forwardRef(() => Block)]');
-        code = code.replace('} from "@angular/core";', `${code.includes('repeated-block') ? ',': ''}forwardRef } from "@angular/core";`);
+      if (
+        code.includes('component-ref, ComponentRef') ||
+        code.includes('repeated-block, RepeatedBlock')
+      ) {
+        code = code.replace(
+          'imports: [CommonModule, Block]',
+          'imports: [CommonModule, forwardRef(() => Block)]'
+        );
+        code = code.replace(
+          '} from "@angular/core";',
+          `${
+            code.includes('repeated-block') ? ',' : ''
+          }forwardRef } from "@angular/core";`
+        );
       }
       return code;
-    }
-  }
+    },
+  },
 });
 
 const ANGULAR_PLUGIN5 = () => ({
   code: {
     post: (code) => {
       if (code.includes('component-ref, ComponentRef')) {
-        code = code.replace('ngOnInit() {\n', `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`)
+        code = code.replace(
+          'ngOnInit() {\n',
+          `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`
+        );
+        code = code.replace(
+          '<ng-container *ngFor="let child of blockChildren">',
+          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren">'
+        );
+        code = code.replace(
+          '</ng-container>',
+          '</ng-container>\n</ng-container>'
+        );
       }
       return code;
-    }
-  }
+    },
+  },
 });
 
 /**
@@ -280,7 +314,13 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
-      plugins: [ANGULAR_PLUGIN, ANGULAR_PLUGIN2, ANGULAR_PLUGIN3,ANGULAR_PLUGIN4,ANGULAR_PLUGIN5],
+      plugins: [
+        ANGULAR_PLUGIN,
+        ANGULAR_PLUGIN2,
+        ANGULAR_PLUGIN3,
+        ANGULAR_PLUGIN4,
+        ANGULAR_PLUGIN5,
+      ],
     },
     solid: {
       typescript: true,
