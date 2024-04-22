@@ -388,8 +388,11 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
       }
 
-      // override normal content in preview mode
-      if (isPreviewing()) {
+      /**
+       * Override normal content in preview mode.
+       * We ignore this when editing, since the edited content is already being sent from the editor via post messages.
+       */
+      if (isPreviewing() && !isEditing()) {
         useTarget({
           rsc: () => {},
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

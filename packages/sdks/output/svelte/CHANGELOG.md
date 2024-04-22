@@ -1,5 +1,12 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.0.22
+
+### Patch Changes
+
+- f3c5ff3: Fix: `isPreviewing` logic on the server, and make usage of `isEditing` unnecessary.
+- 46bd611: Feature: add support for hover animations.
+
 ## 1.0.21
 
 ### Patch Changes

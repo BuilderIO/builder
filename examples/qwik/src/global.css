@@ -12,45 +12,117 @@
   --qwik-light-purple: #ac7ff4;
   --qwik-dark-purple: #713fc2;
   --qwik-dirty-black: #1d2033;
-  --qwik-dark-background: #151934;
-  --qwik-dark-text: #ffffff;
+
+  --text-color: #ffffff;
+  --main-background: #1c224a;
+  --header-background: var(--main-background);
+  --footer-background: #0d0c25;
 }
 
+/* SHELL ---------------------------------------- */
 html {
-  line-height: 1;
-  -webkit-text-size-adjust: 100%;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    'Noto Sans',
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji';
+  background: var(--footer-background);
 }
 
 body {
   padding: 0;
   margin: 0;
+  color: var(--text-color);
   line-height: inherit;
 }
 
-/**
- * WHAT IS THIS FILE?
- *
- * Globally applied styles. No matter which components are in the page or matching route,
- * the styles in here will be applied to the Document, without any sort of CSS scoping.
- *
- */
-html {
-  -webkit-text-size-adjust: 100%;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+main {
+  background: var(--main-background);
 }
 
-body {
-  padding: 0;
-  line-height: inherit;
+/* HEADINGS ------------------------------------- */
+h1,
+h2,
+h3 {
+  color: white;
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.2rem;
+  text-align: center;
+}
+h1 .highlight,
+h3 .highlight {
+  color: var(--qwik-light-blue);
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 2.4rem;
+}
+h2 .highlight {
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+@media screen and (min-width: 768px) {
+  h1 {
+    font-size: 5rem;
+  }
+  h2 {
+    font-size: 3.4rem;
+  }
+  h3 {
+    font-size: 3rem;
+  }
+}
+
+/* TAGS ----------------------------------------- */
+a {
+  text-decoration: none;
+  color: var(--qwik-light-blue);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--qwik-light-blue);
+}
+
+code {
+  background: rgba(230, 230, 230, 0.3);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* Custom Builder CSS Class ----------------------------------------- 
+  This is just an example of setting a custom CSS class on a Builder component,
+  then applying styles to it here in the global CSS file.
+*/
+.builder-footer a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.builder-footer a:hover {
+  color: var(--qwik-light-blue);
+  text-decoration: underline;
 }
