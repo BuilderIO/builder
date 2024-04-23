@@ -1,5 +1,14 @@
-import type { ViewContainerRef, TemplateRef, Renderer2 } from '@angular/core';
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+// fails because type imports cannot be injected
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  Input,
+  ViewContainerRef,
+  TemplateRef,
+  Renderer2,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface DynamicRendererProps {
@@ -10,7 +19,6 @@ export interface DynamicRendererProps {
 }
 
 import { isEmptyElement } from './dynamic-renderer.helpers';
-import { setAttrs } from '../../blocks/helpers';
 
 @Component({
   selector: 'dynamic-renderer, DynamicRenderer',

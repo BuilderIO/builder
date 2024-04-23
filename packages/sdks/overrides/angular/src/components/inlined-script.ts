@@ -4,26 +4,26 @@ import { Component, Input, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Props {
-  styles: string;
+  scriptStr: string;
   id: string;
 }
 
 @Component({
-  selector: 'inlined-styles, InlinedStyles',
+  selector: 'inlined-script, InlinedScript',
   template: ``,
   standalone: true,
   imports: [CommonModule],
 })
-export default class InlinedStyles {
-  @Input() styles!: Props['styles'];
+export default class InlinedScript {
+  @Input() scriptStr!: Props['scriptStr'];
   @Input() id!: Props['id'];
 
   constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
-    const style = this.renderer.createElement('style');
-    this.renderer.setAttribute(style, 'data-id', this.id);
-    this.renderer.appendChild(style, this.renderer.createText(this.styles));
-    this.renderer.appendChild(document.head, style);
+    const script = this.renderer.createElement('script');
+    script.innerHTML = this.scriptStr;
+    this.renderer.setAttribute(script, 'data-id', this.id);
+    this.renderer.appendChild(document.body, script);
   }
 }
