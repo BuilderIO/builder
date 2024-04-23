@@ -43,7 +43,6 @@ export function evaluate({
   enableCache,
 }: EvaluatorArgs): EvalValue {
   if (code === '') {
-    logger.warn('Skipping evaluation of empty code block.');
     return undefined;
   }
 
