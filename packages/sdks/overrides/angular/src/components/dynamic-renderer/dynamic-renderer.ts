@@ -1,13 +1,5 @@
-import type {
-  ViewContainerRef,
-  TemplateRef,
-  Renderer2} from '@angular/core';
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  Input
-} from '@angular/core';
+import type { ViewContainerRef, TemplateRef, Renderer2 } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface DynamicRendererProps {
