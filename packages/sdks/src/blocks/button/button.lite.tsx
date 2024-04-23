@@ -12,7 +12,7 @@ useMetadata({
 
 export default function Button(props: ButtonProps) {
   const state = useStore({
-    get attrs() {
+    attrs() {
       return {
         ...useTarget({
           vue: filterAttrs(props.attributes, 'v-on:', false),
@@ -44,7 +44,7 @@ export default function Button(props: ButtonProps) {
             BaseText,
         default: props.link ? props.builderLinkComponent || 'a' : 'button',
       })}
-      attributes={state.attrs}
+      attributes={state.attrs()}
       actionAttributes={useTarget({
         vue: filterAttrs(props.attributes, 'v-on:', true),
         svelte: filterAttrs(props.attributes, 'on:', true),

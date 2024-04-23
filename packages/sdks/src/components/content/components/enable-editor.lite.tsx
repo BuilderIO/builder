@@ -40,7 +40,6 @@ import type {
   ContentProps,
 } from '../content.types.js';
 import { getWrapperClassName } from './styles.helpers.js';
-import DynamicDiv from '../../dynamic-div.lite.jsx';
 
 useMetadata({
   qwik: {
@@ -121,7 +120,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       reactNative: props.contentWrapper || ScrollView,
-      default: props.contentWrapper || DynamicDiv,
+      default: props.contentWrapper || 'div',
     }),
     processMessage(event: MessageEvent): void {
       return createEditorListener({

@@ -28,7 +28,6 @@ import {
 } from './content.helpers.js';
 import type { ContentProps } from './content.types.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
-import DynamicDiv from '../dynamic-div.lite.jsx';
 
 useMetadata({
   qwik: {
@@ -111,7 +110,7 @@ export default function ContentComponent(props: ContentProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           reactNative: props.blocksWrapper || ScrollView,
-          default: props.blocksWrapper || DynamicDiv,
+          default: props.blocksWrapper || 'div',
         }),
         BlocksWrapperProps: props.blocksWrapperProps || {},
       },
