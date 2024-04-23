@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/platform-server": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@builder.io/sdk-angular": "workspace:*",
+    "@e2e/tests": "workspace:*",
     "@nguniversal/express-engine": "^16.2.0",
     "domhandler": "^5.0.3",
     "express": "^4.15.2",
