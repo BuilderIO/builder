@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.17
+
+### Patch Changes
+
+- 78dee25: Fix: remove redundant warning for evaluation of empty code blocks.
+
 ## 0.14.16
 
 ### Patch Changes
