@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.23
+
+### Patch Changes
+
+- 78dee25: Fix: remove redundant warning for evaluation of empty code blocks.
+
 ## 1.0.22
 
 ### Patch Changes
