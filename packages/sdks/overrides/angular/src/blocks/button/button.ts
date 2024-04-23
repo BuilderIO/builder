@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer';
 import { getClassPropName } from '../../functions/get-class-prop-name';
-import { filterAttrs } from '../helpers';
 import type { ButtonProps } from './button.types';
 
 @Component({

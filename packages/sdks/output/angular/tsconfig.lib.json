@@ -7,7 +7,7 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": ["node"],
+    "types": ["node"]
   },
   "exclude": ["**/*.spec.ts"]
 }

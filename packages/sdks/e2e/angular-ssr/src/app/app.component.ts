@@ -1,4 +1,5 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import type { ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   _processContentResult,
   fetchOneEntry,

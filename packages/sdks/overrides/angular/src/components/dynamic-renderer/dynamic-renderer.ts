@@ -1,11 +1,12 @@
+import type {
+  ViewContainerRef,
+  TemplateRef,
+  Renderer2} from '@angular/core';
 import {
   Component,
   ViewChild,
   ElementRef,
-  Input,
-  ViewContainerRef,
-  TemplateRef,
-  Renderer2,
+  Input
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
