@@ -20,6 +20,7 @@ const DEFAULT_ACTIVE_TAB = TABS_CONTENT[0];
 
 test.describe('Tabs Block', () => {
   test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+  test.fail(excludeTestFor({ rsc: true }), 'Not handled in RSC.');
 
   test('should display the default active tab content', async ({ page }) => {
     await page.goto('/tabs');

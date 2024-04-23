@@ -22,6 +22,8 @@ import { componentInfo as videoComponentInfo } from '../blocks/video/component-i
 import { default as Video } from '../blocks/video/index.js';
 import type { RegisteredComponent } from '../context/types.js';
 import { TARGET } from './target.js';
+import Tabs from '../blocks/tabs/index.js';
+import { componentInfo as tabsComponentInfo } from '../blocks/tabs/component-info.js';
 
 export const getExtraComponents: () => RegisteredComponent[] = () => [
   { component: customCode, ...customCodeInfo },
@@ -33,6 +35,7 @@ export const getExtraComponents: () => RegisteredComponent[] = () => [
         { component: FormInput, ...formInputComponentInfo },
         { component: FormSubmitButton, ...formSubmitButtonComponentInfo },
         { component: FormSelect, ...formSelectComponentInfo },
+        { component: Tabs, ...tabsComponentInfo },
       ]),
   { component: Img, ...imgComponentInfo },
   { component: Video, ...videoComponentInfo },
