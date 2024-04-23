@@ -1,6 +1,6 @@
-# Builder.io Svelte SDK (BETA)
+# Builder.io Svelte SDK
 
-This is the Svelte SDK. It is currently in beta.
+This is Builder's Svelte SDK.
 
 ## Mitosis
 
