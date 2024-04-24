@@ -50,7 +50,9 @@
 
   export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     // the import must be inside the loader itself.
-    const { initializeNodeRuntime } = await import('@builder.io/sdk-react/node/init');
+    const { initializeNodeRuntime } = await import(
+      '@builder.io/sdk-react/node/init'
+    );
     await initializeNodeRuntime();
 
     const page = await fetchOneEntry({

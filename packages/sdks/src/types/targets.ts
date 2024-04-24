@@ -5,4 +5,5 @@ export type Target =
   | 'qwik'
   | 'react'
   | 'solid'
-  | 'rsc';
+  | 'rsc'
+  | 'angular';

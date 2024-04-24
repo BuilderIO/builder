@@ -6,7 +6,7 @@
     "cz": "cz",
     "g:build-inline-fns": "node ./output-generation/build-inline-fns.mjs",
     "build-mitosis": "../../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
-    "build:angular": "echo 'use after mitosis generator is fixed'",
+    "build:angular": "yarn build-mitosis --target=angular && yarn run set-sdk-version angular",
     "build:react": "yarn build-mitosis --target=react && yarn run set-sdk-version react",
     "build:qwik": "yarn build-mitosis --target=qwik && yarn run set-sdk-version qwik",
     "build:svelte": "yarn build-mitosis --target=svelte && yarn run set-sdk-version svelte",
@@ -71,8 +71,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.2.2",
-    "@builder.io/mitosis-cli": "^0.2.2",
+    "@builder.io/mitosis": "^0.2.6",
+    "@builder.io/mitosis-cli": "^0.2.6",
     "isolated-vm": "^4.6.0",
     "node-fetch": "^2.6.1",
     "nx": "^16.6.0",

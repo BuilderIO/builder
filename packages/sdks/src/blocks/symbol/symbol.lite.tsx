@@ -17,6 +17,7 @@ import type { Nullable } from '../../types/typescript.js';
 import { setAttrs } from '../helpers.js';
 import { fetchSymbolContent } from './symbol.helpers.js';
 import type { SymbolProps } from './symbol.types.js';
+import DynamicDiv from '../../components/dynamic-div.lite.jsx';
 
 useMetadata({
   rsc: {
@@ -26,6 +27,24 @@ useMetadata({
 
 export default function Symbol(props: SymbolProps) {
   const state = useStore({
+    get blocksWrapper() {
+      return useTarget({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        reactNative: View,
+        angular: DynamicDiv,
+        default: 'div',
+      });
+    },
+    get contentWrapper() {
+      return useTarget({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        reactNative: View,
+        angular: DynamicDiv,
+        default: 'div',
+      });
+    },
     get className() {
       return [
         ...useTarget({
@@ -116,18 +135,8 @@ export default function Symbol(props: SymbolProps) {
         model={props.symbol?.model}
         content={state.contentToUse}
         linkComponent={props.builderLinkComponent}
-        blocksWrapper={useTarget({
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          reactNative: View,
-          default: 'div',
-        })}
-        contentWrapper={useTarget({
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          reactNative: View,
-          default: 'div',
-        })}
+        blocksWrapper={state.blocksWrapper}
+        contentWrapper={state.contentWrapper}
       />
     </div>
   );

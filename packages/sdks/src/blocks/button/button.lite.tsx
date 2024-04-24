@@ -1,4 +1,4 @@
-import { useMetadata, useTarget } from '@builder.io/mitosis';
+import { useMetadata, useStore, useTarget } from '@builder.io/mitosis';
 import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer.lite.jsx';
 import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import { filterAttrs } from '../helpers.js';
@@ -11,19 +11,9 @@ useMetadata({
 });
 
 export default function Button(props: ButtonProps) {
-  return (
-    <DynamicRenderer
-      TagName={useTarget({
-        reactNative: props.link
-          ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            props.builderLinkComponent || BaseText
-          : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            BaseText,
-        default: props.link ? props.builderLinkComponent || 'a' : 'button',
-      })}
-      attributes={{
+  const state = useStore({
+    attrs() {
+      return {
         ...useTarget({
           vue: filterAttrs(props.attributes, 'v-on:', false),
           svelte: filterAttrs(props.attributes, 'on:', false),
@@ -39,7 +29,22 @@ export default function Button(props: ButtonProps) {
               role: 'link',
             }
           : { role: 'button' }),
-      }}
+      };
+    },
+  });
+  return (
+    <DynamicRenderer
+      TagName={useTarget({
+        reactNative: props.link
+          ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            props.builderLinkComponent || BaseText
+          : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            BaseText,
+        default: props.link ? props.builderLinkComponent || 'a' : 'button',
+      })}
+      attributes={state.attrs()}
       actionAttributes={useTarget({
         vue: filterAttrs(props.attributes, 'v-on:', true),
         svelte: filterAttrs(props.attributes, 'on:', true),

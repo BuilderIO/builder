@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { ContentVariantsComponent } from '@builder.io/sdk-angular';
+import { Content } from '@builder.io/sdk-angular';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [ContentVariantsComponent, BrowserModule],
+  imports: [Content, BrowserModule],
   providers: [],
   bootstrap: [AppComponent],
 })

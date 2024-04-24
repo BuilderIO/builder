@@ -50,7 +50,6 @@ const initializeAbTest = async (
   // RN can't have SSR, we don't support/export it.
   test.skip(packageName === 'react-native');
 
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   /**
    * This test is flaky on `next-app-dir` and `qwik-city`. Most likely because it is the very first test that runs.
    */
@@ -138,6 +137,7 @@ test.describe('A/B tests', () => {
     }
   });
   test.describe('nested symbol', () => {
+    test.fail(excludeTestFor({ angular: true }), 'Nested symbols are not supported in Angular');
     const CONTENT_ID = 'd5580c8ba90443638ed240723abf67f0';
     const VARIANT_1_ID = 'f7c6d013fa844a75aefe0f629723fb3b';
 

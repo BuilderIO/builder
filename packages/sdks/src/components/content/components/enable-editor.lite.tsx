@@ -39,6 +39,8 @@ import type {
   BuilderComponentStateChange,
   ContentProps,
 } from '../content.types.js';
+import { getWrapperClassName } from './styles.helpers.js';
+import DynamicDiv from '../../dynamic-div.lite.jsx';
 
 useMetadata({
   qwik: {
@@ -112,10 +114,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       });
     },
+    get showContentProps() {
+      return props.showContent ? {} : { hidden: true, 'aria-hidden': true };
+    },
     ContentWrapper: useTarget({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       reactNative: props.contentWrapper || ScrollView,
+      angular: props.contentWrapper || DynamicDiv,
       default: props.contentWrapper || 'div',
     }),
     processMessage(event: MessageEvent): void {
@@ -473,9 +479,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
         onClick={(event: any) => state.onClick(event)}
         builder-content-id={props.builderContextSignal.value.content?.id}
         builder-model={props.model}
-        className={`variant-${
+        className={getWrapperClassName(
           props.content?.testVariationId || props.content?.id
-        }`}
+        )}
         {...useTarget({
           reactNative: {
             // currently, we can't set the actual ID here.
@@ -484,7 +490,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           default: {},
         })}
-        {...(props.showContent ? {} : { hidden: true, 'aria-hidden': true })}
+        {...state.showContentProps}
         {...props.contentWrapperProps}
       >
         {props.children}
