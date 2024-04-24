@@ -3,7 +3,6 @@ import {
   Content,
   fetchOneEntry,
   getBuilderSearchParams,
-  isEditing,
   isPreviewing,
 } from '@builder.io/sdk-react';
 import type { LoaderFunctionArgs } from '@remix-run/node';
@@ -27,9 +26,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     fetch: webFetch,
   });
 
-  const isEditingOrPreviewing = isEditing() || isPreviewing();
-
-  if (!page && !isEditingOrPreviewing) {
+  if (!page && !isPreviewing(url.search)) {
     throw new Response('Page Not Found', {
       status: 404,
       statusText: 'Page not found in Builder.io',
