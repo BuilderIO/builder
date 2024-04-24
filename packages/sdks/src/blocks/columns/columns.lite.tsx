@@ -88,7 +88,7 @@ export default function Columns(props: ColumnProps) {
         ? 'column-reverse'
         : 'column',
 
-    get columnsCssVars(): Dictionary<string> {
+    columnsCssVars(): Dictionary<string> {
       return useTarget({
         reactNative: {
           flexDirection: state.flexDir as 'row' | 'column' | 'column-reverse',
@@ -160,7 +160,7 @@ export default function Columns(props: ColumnProps) {
       return breakpointSizes[size].max;
     },
 
-    get columnsStyles(): string {
+    columnsStyles(): string {
       return `
         @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
           .${props.builderBlock.id}-breakpoints {
@@ -210,7 +210,7 @@ export default function Columns(props: ColumnProps) {
         display: 'flex',
         lineHeight: 'normal',
       }}
-      style={state.columnsCssVars}
+      style={state.columnsCssVars()}
       {...useTarget({
         reactNative: {
           dataSet: { 'builder-block-name': 'builder-columns' },
@@ -225,7 +225,7 @@ export default function Columns(props: ColumnProps) {
          * "dynamic" media query values based on custom breakpoints.
          * Adding them directly otherwise leads to Mitosis and TS errors.
          */}
-        <InlinedStyles styles={state.columnsStyles} id="builderio-columns" />
+        <InlinedStyles styles={state.columnsStyles()} id="builderio-columns" />
       </Show>
 
       <For each={props.columns}>
