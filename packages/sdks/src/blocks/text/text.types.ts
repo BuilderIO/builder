@@ -1,5 +1,5 @@
+import type { BuilderDataProps } from '../../types/builder-props';
+
 export type TextProps = {
   text?: string;
-  builderBlock?: any;
-  builderContext?: any;
-};
+} & BuilderDataProps;
