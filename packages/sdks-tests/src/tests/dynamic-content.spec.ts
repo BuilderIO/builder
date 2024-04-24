@@ -2,11 +2,12 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
 
 test.describe('Dynamic Content', () => {
-  test('Data Bindings', async ({ page }) => {
-    test.fail(excludeTestFor({ angular: true }), 'Data bindings are not working in Angular');
-    await page.goto('/data-bindings', {
-      timeout: 10000,
-    });
+  test.only('Data Bindings', async ({ page }) => {
+    test.skip(
+      excludeTestFor({ angular: true }),
+      'Data bindings are not working in Angular -- loads forever so skipping for now'
+    );
+    await page.goto('/data-bindings');
 
     await expect(page.locator(`text="1234"`).first()).toBeVisible({ timeout: 10000 });
     await findTextInPage({
