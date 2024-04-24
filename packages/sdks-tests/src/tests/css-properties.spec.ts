@@ -4,7 +4,6 @@ import { isSSRFramework, test } from './helpers/index.js';
 test.describe('CSS Properties from Builder Content (js enabled)', () => {
   test('set image width CSS properties correctly', async ({ page, packageName }) => {
     test.skip(packageName === 'react-native');
-    test.fail(packageName === 'angular', 'Image block is not working in Angular');
     await page.goto('/css-properties');
 
     const image = page.locator('.builder-image');

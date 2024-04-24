@@ -495,6 +495,72 @@ const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
   },
 });
 
+const BLOCKS = [
+  'builder-button',
+  'builder-image',
+  'columns',
+  'custom-code',
+  'builder-embed',
+  'img-component',
+  'raw-text',
+  'section-component',
+  'builder-slot',
+  'builder-symbol',
+  'builder-textarea',
+  'builder-video',
+];
+
+const ANGULAR_BLOCKS_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (BLOCKS.some((block) => code.includes(block))) {
+        const inputNames = code.match(/@Input\(\) (.*)!:/g);
+        const inputs = inputNames.map((input) => {
+          return input.replace('@Input() ', '').replace('!:', '');
+        });
+
+        const inputsTillEnd = code.match(/@Input\(\) (.*);/g);
+        code = code.replace(
+          inputsTillEnd[inputsTillEnd.length - 1],
+          `${
+            inputsTillEnd[inputsTillEnd.length - 1]
+          }\n  @Input() wrapperProps: any;`
+        );
+
+        if (code.includes('ngOnInit')) {
+          code = code.replace(
+            'ngOnInit() {',
+            `ngOnInit() {\n
+              const properties = [${inputs
+                .map((input) => `'${input}'`)
+                .join(', ')}];
+              properties.forEach(prop => {
+                if (this.wrapperProps && Object.prototype.hasOwnProperty.call(this.wrapperProps, prop)) {
+                  this[prop] = this.wrapperProps[prop];
+                }
+              });
+            `
+          );
+        } else {
+          const lastEndIndex = code.lastIndexOf('}');
+          code = `${code.slice(0, lastEndIndex)}ngOnInit() {
+            const properties = [${inputs
+              .map((input) => `'${input}'`)
+              .join(', ')}];
+            properties.forEach(prop => {
+              if (this.wrapperProps && Object.prototype.hasOwnProperty.call(this.wrapperProps, prop)) {
+                this[prop] = this.wrapperProps[prop];
+              }
+            });
+          }
+          ${code.slice(lastEndIndex)}`;
+        }
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -517,6 +583,7 @@ module.exports = {
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
+        ANGULAR_BLOCKS_PLUGIN,
       ],
     },
     solid: {
