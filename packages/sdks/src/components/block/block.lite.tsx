@@ -19,7 +19,8 @@ import {
   getComponent,
   getInheritedStyles,
   getRepeatItemData,
-  shouldPassBuilderData,
+  shouldPassLinkComponent,
+  shouldPassRegisteredComponents,
 } from './block.helpers.js';
 import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
@@ -142,10 +143,10 @@ export default function Block(props: BlockProps) {
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
           builderContext: props.context,
-          ...(shouldPassBuilderData(state.blockComponent?.name)
+          ...(shouldPassLinkComponent(state.blockComponent?.name)
             ? { builderLinkComponent: props.linkComponent }
             : {}),
-          ...(shouldPassBuilderData(state.blockComponent?.name)
+          ...(shouldPassRegisteredComponents(state.blockComponent?.name)
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
