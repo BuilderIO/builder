@@ -489,46 +489,6 @@ const ANGULAR_PLUGIN6 = () => ({
   },
 });
 
-const ANGULAR_PLUGIN7 = () => ({
-  json: {
-    pre: (json) => {
-      if (json.name === 'Columns' || json.name === 'Symbol') {
-        json.imports.push({
-          path: '../../components/dynamic-div',
-          imports: {
-            DynamicDiv: 'default',
-          },
-        });
-      }
-      if (json.name === 'ContentComponent' || json.name === 'Block') {
-        json.imports.push({
-          path: '../dynamic-div',
-          imports: {
-            DynamicDiv: 'default',
-          },
-        });
-      }
-      if (json.name === 'EnableEditor') {
-        json.imports.push({
-          path: '../../dynamic-div',
-          imports: {
-            DynamicDiv: 'default',
-          },
-        });
-      }
-    },
-  },
-});
-
-const ANGULAR_PLUGIN8 = () => ({
-  code: {
-    post: (code) => {
-      code = code.replace('"div"', 'DynamicDiv');
-      return code;
-    },
-  },
-});
-
 /**
  * @type {MitosisConfig}
  */
@@ -551,8 +511,6 @@ module.exports = {
         ANGULAR_PLUGIN4,
         ANGULAR_PLUGIN5,
         ANGULAR_PLUGIN6,
-        ANGULAR_PLUGIN7,
-        ANGULAR_PLUGIN8,
       ],
     },
     solid: {
