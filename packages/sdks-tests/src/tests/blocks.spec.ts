@@ -10,7 +10,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test.describe('Blocks', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('Text', async ({ page }) => {
     test.fail(EXCLUDE_RN);
     await page.goto('/text-block');
@@ -63,6 +62,7 @@ test.describe('Blocks', () => {
    * TO-DO: re-enable it once we have a way to mock network requests.
    */
   test.skip('Image', async ({ page }) => {
+    test.fail(excludeTestFor({ angular: true }));
     await page.goto('/image');
 
     const imageLocator = page.locator('img');
@@ -111,6 +111,7 @@ test.describe('Blocks', () => {
 
   test.describe('Video', () => {
     test('video render and styles', async ({ page }) => {
+      test.fail(excludeTestFor({ angular: true }), 'Attributes are not spread out in Video');
       test.skip(isRNSDK);
       const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);
@@ -287,6 +288,9 @@ test.describe('Blocks', () => {
       test.skip(isRNSDK && sizeName !== 'mobile');
 
       test.describe(sizeName, () => {
+        if (sizeName === 'mobile' || sizeName === 'tablet') {
+          test.fail(excludeTestFor({ angular: true }));
+        }
         for (const [columnType, styles] of Object.entries(expected)) {
           test(columnType, async ({ page }) => {
             await page.setViewportSize(size);

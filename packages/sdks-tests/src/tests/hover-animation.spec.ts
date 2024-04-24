@@ -1,8 +1,7 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test, isOldReactSDK, isRNSDK } from './helpers/index.js';
+import { test, isOldReactSDK, isRNSDK } from './helpers/index.js';
 
 test.describe('Hover animations', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test.fail(isRNSDK); // hover animation is not handled in react native SDK
   test('Button should change color when hovered', async ({ page }) => {
     await page.goto('/hover-animation');
