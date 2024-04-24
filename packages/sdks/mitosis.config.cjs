@@ -198,7 +198,7 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
-const ANGULAR_PLUGIN = () => ({
+const ANGULAR_HANDLE_TEMPLATE_STRS = () => ({
   code: {
     post: (code) => {
       const pathValue = code.match(/\[path\]="(.*?)"/);
@@ -217,7 +217,10 @@ const ANGULAR_PLUGIN = () => ({
   },
 });
 
-const ANGULAR_PLUGIN2 = () => ({
+// Target Component: "ComponentRef"
+// in mitosis we pass props as inputs: { prop1, prop2, etc }
+// in this we call inputs: getWrapperProps() directly inside ngComponentOutlet as we don't need to spread the props
+const ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD = () => ({
   code: {
     post: (code) => {
       if (code.includes('inputs: { getWrapperProps')) {
@@ -239,7 +242,7 @@ const ANGULAR_PLUGIN2 = () => ({
   },
 });
 
-const ANGULAR_PLUGIN3 = () => ({
+const ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN = () => ({
   code: {
     post: (code) => {
       if (code.includes('<enable-editor')) {
@@ -254,7 +257,7 @@ const ANGULAR_PLUGIN3 = () => ({
 });
 
 // for fixing circular dependencies
-const ANGULAR_PLUGIN4 = () => ({
+const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
       if (
@@ -277,14 +280,17 @@ const ANGULAR_PLUGIN4 = () => ({
   },
 });
 
-const ANGULAR_PLUGIN5 = () => ({
+const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   code: {
     post: (code) => {
       if (code.includes('component-ref, ComponentRef')) {
+        // onInit we check for this.isInteractive as its available at that time
+        // and set the Wrapper to InteractiveElement or componentRef
         code = code.replace(
           'ngOnInit() {\n',
           `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`
         );
+        // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
         code = code.replace(
           '<ng-container *ngFor="let child of blockChildren">',
           '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren">'
@@ -479,7 +485,7 @@ const VALID_HTML_TAGS = [
   'view',
 ];
 
-const ANGULAR_PLUGIN6 = () => ({
+const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
   json: {
     pre: (json) => {
       if (VALID_HTML_TAGS.includes(json.name.toLowerCase())) {
@@ -505,12 +511,12 @@ module.exports = {
       standalone: true,
       typescript: true,
       plugins: [
-        ANGULAR_PLUGIN,
-        ANGULAR_PLUGIN2,
-        ANGULAR_PLUGIN3,
-        ANGULAR_PLUGIN4,
-        ANGULAR_PLUGIN5,
-        ANGULAR_PLUGIN6,
+        ANGULAR_HANDLE_TEMPLATE_STRS,
+        ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD,
+        ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN,
+        ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
+        ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
+        ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
       ],
     },
     solid: {
