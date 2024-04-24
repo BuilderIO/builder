@@ -1,6 +1,6 @@
-# Builder.io React-native SDK (BETA)
+# Builder.io React-native SDK
 
-This is the React-Native SDK. It is currently in beta.
+This is Builder's React-Native SDK.
 
 ## Mitosis
 
