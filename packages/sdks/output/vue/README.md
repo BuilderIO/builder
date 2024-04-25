@@ -1,6 +1,6 @@
 # Builder.io Vue SDK
 
-This is the Builder Vue SDK. It is currently in beta.
+This is Builder's Gen2 Vue SDK.
 
 ## Getting Started
 

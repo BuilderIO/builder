@@ -1,10 +1,10 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, isSSRFramework, test } from './helpers/index.js';
+import { isSSRFramework, test } from './helpers/index.js';
 
 test.describe('CSS Properties from Builder Content (js enabled)', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('set image width CSS properties correctly', async ({ page, packageName }) => {
     test.skip(packageName === 'react-native');
+    test.fail(packageName === 'angular', 'Image block is not working in Angular');
     await page.goto('/css-properties');
 
     const image = page.locator('.builder-image');
@@ -24,7 +24,6 @@ test.describe('CSS Properties from Builder Content (js enabled)', () => {
 });
 
 test.describe('CSS Properties from Builder Content (js disabled)', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('set image width CSS properties correctly', async ({ browser, packageName }) => {
     test.skip(packageName === 'react-native');
     test.fail(!isSSRFramework(packageName));

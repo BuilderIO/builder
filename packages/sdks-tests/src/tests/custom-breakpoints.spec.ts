@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, expectStylesForElement, isRNSDK, test } from './helpers/index.js';
+import { expectStylesForElement, isRNSDK, test } from './helpers/index.js';
 
 test.describe('Custom Breakpoints', () => {
   /* set breakpoint config in content -
@@ -8,7 +8,6 @@ breakpoints: {
   medium: 800,
 },
 */
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test.describe('when applied', () => {
     test('large desktop size', async ({ page }) => {
       await page.setViewportSize({ width: 801, height: 1000 });

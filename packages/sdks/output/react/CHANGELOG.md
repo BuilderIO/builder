@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.23
+
+### Patch Changes
+
+- 78dee25: Fix: remove redundant warning for evaluation of empty code blocks.
+
 ## 1.0.22
 
 ### Patch Changes
@@ -44,7 +50,9 @@
 
   export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     // the import must be inside the loader itself.
-    const { initializeNodeRuntime } = await import('@builder.io/sdk-react/node/init');
+    const { initializeNodeRuntime } = await import(
+      '@builder.io/sdk-react/node/init'
+    );
     await initializeNodeRuntime();
 
     const page = await fetchOneEntry({

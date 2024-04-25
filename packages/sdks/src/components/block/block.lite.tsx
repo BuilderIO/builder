@@ -25,6 +25,7 @@ import BlockWrapper from './components/block-wrapper.lite.jsx';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
 import ComponentRef from './components/component-ref/component-ref.lite.jsx';
 import RepeatedBlock from './components/repeated-block.lite.jsx';
+import DynamicDiv from '../dynamic-div.lite.jsx';
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -100,6 +101,7 @@ export default function Block(props: BlockProps) {
          * eslint-disable-next-line @typescript-eslint/ban-ts-comment
          * @ts-ignore */
         reactNative: View,
+        angular: DynamicDiv,
         default: props.block.tagName || 'div',
       });
     },

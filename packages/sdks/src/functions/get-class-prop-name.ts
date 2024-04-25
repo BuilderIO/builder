@@ -10,6 +10,7 @@ export const getClassPropName = () => {
     case 'vue':
     case 'solid':
     case 'qwik':
+    case 'angular':
       return 'class';
   }
 };

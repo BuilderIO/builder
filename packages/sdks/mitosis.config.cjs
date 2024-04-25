@@ -198,6 +198,303 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
+const ANGULAR_HANDLE_TEMPLATE_STRS = () => ({
+  code: {
+    post: (code) => {
+      const pathValue = code.match(/\[path\]="(.*?)"/);
+      if (pathValue) {
+        code = code.replace(
+          pathValue[0],
+          `[path]="${pathValue[1]
+            .replaceAll('`', "'")
+            .replaceAll('\\', '')
+            .replaceAll('.${', ".'+")
+            .replaceAll('}', "+'")}"`
+        );
+      }
+      return code;
+    },
+  },
+});
+
+// Target Component: "ComponentRef"
+// in mitosis we pass props as inputs: { prop1, prop2, etc }
+// in this we call inputs: getWrapperProps() directly inside ngComponentOutlet as we don't need to spread the props
+const ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('inputs: { getWrapperProps')) {
+        const wrapperObj =
+          code
+            .match(/inputs: {.*?}/s)[0]
+            .replace('inputs: {', '')
+            .replaceAll('props.', '') + ')';
+        const inputsObj = code
+          .match(/inputs: {.*?;/s)[0]
+          .replace('inputs: ', '');
+        code = code.replace(
+          inputsObj,
+          wrapperObj.replace('context.value', 'context')
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('<enable-editor')) {
+        code = code.replace('[linkComponent]="linkComponent"', '');
+      }
+      if (code.includes('<block-wrapper')) {
+        code = code.replace('[linkComponent]="linkComponent"', '');
+      }
+      return code;
+    },
+  },
+});
+
+// for fixing circular dependencies
+const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
+  code: {
+    post: (code) => {
+      if (
+        code.includes('component-ref, ComponentRef') ||
+        code.includes('repeated-block, RepeatedBlock')
+      ) {
+        code = code.replace(
+          'imports: [CommonModule, Block]',
+          'imports: [CommonModule, forwardRef(() => Block)]'
+        );
+        code = code.replace(
+          '} from "@angular/core";',
+          `${
+            code.includes('repeated-block') ? ',' : ''
+          }forwardRef } from "@angular/core";`
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('component-ref, ComponentRef')) {
+        // onInit we check for this.isInteractive as its available at that time
+        // and set the Wrapper to InteractiveElement or componentRef
+        code = code.replace(
+          'ngOnInit() {\n',
+          `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`
+        );
+        // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
+        code = code.replace(
+          '<ng-container *ngFor="let child of blockChildren">',
+          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren">'
+        );
+        code = code.replace(
+          '</ng-container>',
+          '</ng-container>\n</ng-container>'
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const VALID_HTML_TAGS = [
+  'html',
+  'base',
+  'head',
+  'link',
+  'meta',
+  'style',
+  'title',
+  'body',
+  'address',
+  'article',
+  'aside',
+  'footer',
+  'header',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'main',
+  'nav',
+  'section',
+  'blockquote',
+  'dd',
+  'div',
+  'dl',
+  'dt',
+  'figcaption',
+  'figure',
+  'hr',
+  'li',
+  'menu',
+  'ol',
+  'p',
+  'pre',
+  'ul',
+  'a',
+  'abbr',
+  'b',
+  'bdi',
+  'bdo',
+  'br',
+  'cite',
+  'code',
+  'data',
+  'dfn',
+  'em',
+  'i',
+  'kbd',
+  'mark',
+  'q',
+  'rp',
+  'rt',
+  'ruby',
+  's',
+  'samp',
+  'small',
+  'span',
+  'strong',
+  'sub',
+  'sup',
+  'time',
+  'u',
+  'var',
+  'wbr',
+  'area',
+  'audio',
+  'img',
+  'map',
+  'track',
+  'video',
+  'embed',
+  'iframe',
+  'object',
+  'param',
+  'picture',
+  'portal',
+  'source',
+  'svg',
+  'math',
+  'canvas',
+  'noscript',
+  'script',
+  'del',
+  'ins',
+  'caption',
+  'col',
+  'colgroup',
+  'table',
+  'tbody',
+  'td',
+  'tfoot',
+  'th',
+  'thead',
+  'tr',
+  'button',
+  'datalist',
+  'fieldset',
+  'form',
+  'input',
+  'label',
+  'legend',
+  'meter',
+  'optgroup',
+  'option',
+  'output',
+  'progress',
+  'select',
+  'textarea',
+  'details',
+  'dialog',
+  'summary',
+  'slot',
+  'template',
+  // tags below are SVG tags. See the below article for list of SVG tags
+  // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+  'animate',
+  'animateMotion',
+  'animateTransform',
+  'circle',
+  'clipPath',
+  'defs',
+  'desc',
+  'discard',
+  'ellipse',
+  'feBlend',
+  'feColorMatrix',
+  'feComponentTransfer',
+  'feComposite',
+  'feConvolveMatrix',
+  'feDiffuseLighting',
+  'feDisplacementMap',
+  'feDistantLight',
+  'feDropShadow',
+  'feFlood',
+  'feFuncA',
+  'feFuncB',
+  'feFuncG',
+  'feFuncR',
+  'feGaussianBlur',
+  'feImage',
+  'feMerge',
+  'feMergeNode',
+  'feMorphology',
+  'feOffset',
+  'fePointLight',
+  'feSpecularLighting',
+  'feSpotLight',
+  'feTile',
+  'feTurbulence',
+  'filter',
+  'foreignObject',
+  'g',
+  'hatch',
+  'hatchpath',
+  'image',
+  'line',
+  'linearGradient',
+  'marker',
+  'mask',
+  'metadata',
+  'mpath',
+  'path',
+  'pattern',
+  'polygon',
+  'polyline',
+  'radialGradient',
+  'rect',
+  'set',
+  'stop',
+  'switch',
+  'symbol',
+  'text',
+  'textPath',
+  'tspan',
+  'use',
+  'view',
+];
+
+const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
+  json: {
+    pre: (json) => {
+      if (VALID_HTML_TAGS.includes(json.name.toLowerCase())) {
+        json.name = `Builder${json.name}`;
+      }
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -211,8 +508,16 @@ module.exports = {
   },
   options: {
     angular: {
+      standalone: true,
       typescript: true,
-      plugins: [],
+      plugins: [
+        ANGULAR_HANDLE_TEMPLATE_STRS,
+        ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD,
+        ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN,
+        ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
+        ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
+        ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
+      ],
     },
     solid: {
       typescript: true,

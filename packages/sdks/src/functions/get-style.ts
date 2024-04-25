@@ -32,6 +32,7 @@ export function mapStyleObjToStrIfNeeded(
     case 'svelte':
     case 'vue':
     case 'solid':
+    case 'angular':
       return convertStyleMapToCSSArray(style).join(' ');
     case 'qwik':
     case 'reactNative':

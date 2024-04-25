@@ -9,7 +9,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@builder.io/sdk-react": "^1.0.21",
+    "@builder.io/sdk-react": "^1.0.23",
     "@remix-run/node": "^2.8.0",
     "@remix-run/react": "^2.8.0",
     "@remix-run/server-runtime": "^2.8.0",

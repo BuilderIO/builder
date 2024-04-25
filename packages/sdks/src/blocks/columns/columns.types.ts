@@ -5,7 +5,7 @@ import type {
   BuilderLinkComponentProp,
 } from '../../types/builder-props.js';
 
-type Column = {
+export type Column = {
   blocks: BuilderBlock[];
   width?: number;
   link?: string;
