@@ -8,4 +8,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-feat: add Builder tabs block
+feature: add the Builder Tabs block (ported from gen1 widgets).
