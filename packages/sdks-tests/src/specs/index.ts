@@ -44,6 +44,7 @@ import { CONTENT as symbolBindings } from './symbol-bindings.js';
 import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.js';
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
+import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
@@ -107,6 +108,7 @@ const PAGES = {
   '/default-styles': DEFAULT_STYLES,
   '/css-properties': CSS_PROPERTIES,
   '/hover-animation': HOVER_ANIMATION,
+  '/tabs': TABS,
 } as const;
 
 const apiVersionPathToProp = {

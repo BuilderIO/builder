@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
+    "@builder.io/widgets": "^1.2.24",
     "@e2e/tests": "workspace:*",
     "@remix-run/node": "^1.14.3",
     "@remix-run/react": "^1.14.3",

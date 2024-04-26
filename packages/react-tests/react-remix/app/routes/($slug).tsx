@@ -4,6 +4,8 @@ import { BuilderComponent, builder } from '@builder.io/react';
 import { getAPIKey, getProps } from '@e2e/tests';
 import { useEffect } from 'react';
 
+import '@builder.io/widgets';
+
 builder.init(getAPIKey());
 
 export const loader: LoaderFunction = async ({ params }) =>

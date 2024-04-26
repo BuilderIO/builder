@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.18
+
+### Patch Changes
+
+- 84cd444: feature: add the Builder Tabs block (ported from gen1 widgets).
+
 ## 0.14.17
 
 ### Patch Changes

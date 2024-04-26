@@ -108,3 +108,21 @@ export const getInheritedStyles = ({
   }
   return extractTextStyles(style);
 };
+
+export const shouldPassLinkComponent = (blockName: string | undefined) => {
+  return (
+    blockName &&
+    ['Core:Button', 'Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(
+      blockName
+    )
+  );
+};
+
+export const shouldPassRegisteredComponents = (
+  blockName: string | undefined
+) => {
+  return (
+    blockName &&
+    ['Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(blockName)
+  );
+};

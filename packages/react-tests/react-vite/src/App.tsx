@@ -1,6 +1,8 @@
-import { getAPIKey, getProps } from '@e2e/tests';
 import { BuilderComponent, builder } from '@builder.io/react';
+import { getAPIKey, getProps } from '@e2e/tests';
 import { useEffect, useState } from 'react';
+
+import '@builder.io/widgets';
 
 builder.init(getAPIKey());
 // default to not tracking, and re-enable when appropriate

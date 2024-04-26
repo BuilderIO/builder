@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
+    "@builder.io/widgets": "^1.2.24",
     "@e2e/tests": "workspace:*",
     "next": "14.0.4",
     "react": "^18",
