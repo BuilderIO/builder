@@ -3,13 +3,17 @@ import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
-import type { PropsWithChildren } from '../../../types/typescript.js';
+import type {
+  Dictionary,
+  PropsWithChildren,
+} from '../../../types/typescript.js';
 
 export type InteractiveElementProps = {
   Wrapper: any;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  wrapperProps: object;
+  wrapperProps: Dictionary<any>;
+  includeBlockProps: boolean;
 };
 
 useMetadata({
@@ -33,19 +37,23 @@ export default function InteractiveElement(
   return (
     <props.Wrapper
       {...props.wrapperProps}
-      attributes={{
-        ...getBlockProperties({
-          block: props.block,
-          context: props.context.value,
-        }),
-        ...getBlockActions({
-          block: props.block,
-          rootState: props.context.value.rootState,
-          rootSetState: props.context.value.rootSetState,
-          localState: props.context.value.localState,
-          context: props.context.value.context,
-        }),
-      }}
+      attributes={
+        props.includeBlockProps
+          ? {
+              ...getBlockProperties({
+                block: props.block,
+                context: props.context.value,
+              }),
+              ...getBlockActions({
+                block: props.block,
+                rootState: props.context.value.rootState,
+                rootSetState: props.context.value.rootSetState,
+                localState: props.context.value.localState,
+                context: props.context.value.context,
+              }),
+            }
+          : {}
+      }
     >
       {props.children}
     </props.Wrapper>
