@@ -82,7 +82,6 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 };
 
 test.describe('Visual Editing', () => {
-  test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   editorTests({ noTrustedHosts: false });
   test('correctly updates Text block in a Column block', async ({
     page,
@@ -96,6 +95,7 @@ test.describe('Visual Editing', () => {
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
     );
+    test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
 
     await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
     await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
