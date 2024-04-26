@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.24
+
+### Patch Changes
+
+- 84cd444: feature: add the Builder Tabs block (ported from gen1 widgets).
+
 ## 1.0.23
 
 ### Patch Changes
