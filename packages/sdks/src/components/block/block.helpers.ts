@@ -1,5 +1,6 @@
 import type {
   BuilderContextInterface,
+  RegisteredComponent,
   RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/index.js';
@@ -109,20 +110,28 @@ export const getInheritedStyles = ({
   return extractTextStyles(style);
 };
 
-export const shouldPassLinkComponent = (blockName: string | undefined) => {
+export const shouldPassLinkComponent = (
+  block: RegisteredComponent | null | undefined
+) => {
   return (
-    blockName &&
-    ['Core:Button', 'Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(
-      blockName
-    )
+    block &&
+    (block.isRSC ||
+      [
+        'Core:Button',
+        'Symbol',
+        'Columns',
+        'Form:Form',
+        'Builder: Tabs',
+      ].includes(block.name))
   );
 };
 
 export const shouldPassRegisteredComponents = (
-  blockName: string | undefined
+  block: RegisteredComponent | null | undefined
 ) => {
   return (
-    blockName &&
-    ['Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(blockName)
+    block &&
+    (block.isRSC ||
+      ['Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(block.name))
   );
 };

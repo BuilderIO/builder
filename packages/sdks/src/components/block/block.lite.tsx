@@ -143,10 +143,10 @@ export default function Block(props: BlockProps) {
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
           builderContext: props.context,
-          ...(shouldPassLinkComponent(state.blockComponent?.name)
+          ...(shouldPassLinkComponent(state.blockComponent)
             ? { builderLinkComponent: props.linkComponent }
             : {}),
-          ...(shouldPassRegisteredComponents(state.blockComponent?.name)
+          ...(shouldPassRegisteredComponents(state.blockComponent)
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
