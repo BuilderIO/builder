@@ -26,6 +26,7 @@ test.describe('CSS Properties from Builder Content (js disabled)', () => {
   test('set image width CSS properties correctly', async ({ browser, packageName }) => {
     test.skip(packageName === 'react-native');
     test.fail(!isSSRFramework(packageName));
+    test.fail(packageName === 'angular-ssr', 'We are attaching props on `ngOnInit` so it fails');
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
@@ -41,6 +42,7 @@ test.describe('CSS Properties from Builder Content (js disabled)', () => {
   test('set var(--red-color) bg color in Box properly', async ({ browser, packageName }) => {
     test.skip(packageName === 'react-native');
     test.fail(!isSSRFramework(packageName));
+    test.fail(packageName === 'angular-ssr', 'We are attaching props on `ngOnInit` so it fails');
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
