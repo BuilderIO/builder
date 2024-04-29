@@ -116,7 +116,9 @@ export const shouldPassLinkComponent = (
   return (
     block &&
     (block.isRSC ||
-      ['Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(block.name))
+    ['Core:Button', 'Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(
+      block.name
+    )
   );
 };
 
