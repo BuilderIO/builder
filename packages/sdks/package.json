@@ -30,6 +30,7 @@
     "test:browser": "SDK_ENV=browser vitest run",
     "test:node": "SDK_ENV=node vitest run",
     "test:edge": "SDK_ENV=edge vitest run",
+    "test:node:watch": "SDK_ENV=node vitest",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
     "add-symlinks": "./scripts/add-resolutions.sh && yarn",
     "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",

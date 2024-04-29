@@ -64,19 +64,19 @@ function theFunction() {
   ${code}
 }
 
-let output = theFunction()
+const output = theFunction()
 
 if (typeof output === 'object' && output !== null) {
-  output = JSON.stringify(output.copySync ? output.copySync() : output);
+  return JSON.stringify(output.copySync ? output.copySync() : output);
+} else {
+  return output;
 }
-
-output;
 `;
 };
 
-type IsolatedVM = typeof import('isolated-vm');
+type IsolatedVMImport = typeof import('isolated-vm');
 
-let IVM_INSTANCE: IsolatedVM | null = null;
+let IVM_INSTANCE: IsolatedVMImport | null = null;
 let IVM_CONTEXT: Context | null = null;
 
 /**
@@ -84,13 +84,13 @@ let IVM_CONTEXT: Context | null = null;
  * This is useful for environments that are not able to rely on our
  * `safeDynamicRequire` trick to import the `isolated-vm` package.
  */
-export const setIvm = (ivm: IsolatedVM, options: IsolateOptions = {}) => {
+export const setIvm = (ivm: IsolatedVMImport, options: IsolateOptions = {}) => {
   IVM_INSTANCE = ivm;
 
   setIsolateContext(options);
 };
 
-const getIvm = (): IsolatedVM => {
+const getIvm = (): IsolatedVMImport => {
   try {
     if (IVM_INSTANCE) return IVM_INSTANCE;
     const dynRequiredIvm = safeDynamicRequire('isolated-vm');
@@ -152,6 +152,7 @@ export const runInNode = ({
   });
   const isolateContext = getIsolateContext();
   const jail = isolateContext.global;
+
   // This makes the global object available in the context as `global`. We use `derefInto()` here
   // because otherwise `global` would actually be a Reference{} object in the new isolate.
   jail.setSync('global', jail.derefInto());
@@ -194,7 +195,8 @@ export const runInNode = ({
     code,
     args,
   });
-  const resultStr = isolateContext.evalSync(evalStr);
+  const resultStr = isolateContext.evalClosureSync(evalStr);
+
   try {
     // returning objects throw errors in isolated vm, so we stringify it and parse it back
     const res = JSON.parse(resultStr);
