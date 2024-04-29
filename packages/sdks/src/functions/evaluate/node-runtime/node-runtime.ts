@@ -1,3 +1,4 @@
+import type { Context } from 'isolated-vm';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
 import { set } from '../../set.js';
@@ -73,18 +74,25 @@ output;
 `;
 };
 
-let IVM_INSTANCE: typeof import('isolated-vm') | null = null;
+type IsolatedVM = typeof import('isolated-vm');
+
+let IVM_INSTANCE: IsolatedVM | null = null;
+let IVM_CONTEXT: Context | null = null;
 
 /**
  * Set the `isolated-vm` instance to be used by the node runtime.
  * This is useful for environments that are not able to rely on our
  * `safeDynamicRequire` trick to import the `isolated-vm` package.
  */
-export const setIvm = (ivm: typeof import('isolated-vm')) => {
+export const setIvm = (ivm: IsolatedVM) => {
   IVM_INSTANCE = ivm;
 };
 
-const getIvm = (): typeof import('isolated-vm') => {
+export const initializeContext = () => {
+  IVM_CONTEXT = getIsolateContext();
+};
+
+const getIvm = (): IsolatedVM => {
   try {
     if (IVM_INSTANCE) return IVM_INSTANCE;
     const dynRequiredIvm = safeDynamicRequire('isolated-vm');
@@ -107,12 +115,17 @@ const getIvm = (): typeof import('isolated-vm') => {
 };
 
 const getIsolateContext = () => {
+  if (IVM_CONTEXT) return IVM_CONTEXT;
+
   const ivm = getIvm();
-  const isolate = new ivm.Isolate({
-    memoryLimit: 128,
-  });
-  return isolate.createContextSync();
+  const isolate = new ivm.Isolate({ memoryLimit: 128 });
+  const context = isolate.createContextSync();
+
+  IVM_CONTEXT = context;
+
+  return context;
 };
+
 export const runInNode = ({
   code,
   builder,
