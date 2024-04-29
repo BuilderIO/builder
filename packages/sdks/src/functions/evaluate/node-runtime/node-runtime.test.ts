@@ -10,16 +10,16 @@ const DEFAULTS = {
   rootState: {},
 };
 
-describe('node-runtime', () => {
-  test('does simple math', async () => {
+const TESTS = {
+  'does simple math': () => {
     const output = runInNode({
       ...DEFAULTS,
       code: parseCode('1 + 1', { isExpression: true }),
     });
 
     expect(output).toBe(2);
-  });
-  test('returns state value', async () => {
+  },
+  'returns state value': () => {
     const output = runInNode({
       ...DEFAULTS,
       code: parseCode('state.foo', { isExpression: true }),
@@ -29,8 +29,8 @@ describe('node-runtime', () => {
     });
 
     expect(output).toBe('bar');
-  });
-  test('returns nested state value', async () => {
+  },
+  'returns nested state value': () => {
     const output = runInNode({
       ...DEFAULTS,
       code: parseCode('state.foo.bar.baz', { isExpression: true }),
@@ -44,8 +44,8 @@ describe('node-runtime', () => {
     });
 
     expect(output).toBe('qux');
-  });
-  test('returns nested local state value', async () => {
+  },
+  'returns nested local state value': () => {
     const output = runInNode({
       ...DEFAULTS,
       code: parseCode('state.foo[0].bar.baz', { isExpression: true }),
@@ -61,8 +61,8 @@ describe('node-runtime', () => {
     });
 
     expect(output).toBe('qux');
-  });
-  test('sets simple state value (using `rootSetState`)', async () => {
+  },
+  'sets simple state value (using `rootSetState`)': () => {
     const rootState = {
       foo: 'bar',
     };
@@ -77,8 +77,8 @@ describe('node-runtime', () => {
     });
 
     expect(rootState.foo).toBe('baz');
-  });
-  test('sets simple state value (if `rootState` is mutable)', async () => {
+  },
+  'sets simple state value (if `rootState` is mutable)': () => {
     const rootState = {
       foo: 'bar',
     };
@@ -91,8 +91,8 @@ describe('node-runtime', () => {
     });
 
     expect(rootState.foo).toBe('baz');
-  });
-  test('set & read simple state value (if `rootState` is mutable)', async () => {
+  },
+  'set & read simple state value (if `rootState` is mutable)': () => {
     const rootState: {
       a?: number;
       b?: number;
@@ -117,8 +117,8 @@ describe('node-runtime', () => {
     expect(rootState.a).toBe(10);
     expect(rootState.b).toBe(14);
     expect(output).toBe(14);
-  });
-  test('set & read simple state value (with `rootSetState`)', async () => {
+  },
+  'set & read simple state value (with `rootSetState`)': () => {
     const rootState: {
       a?: number;
       b?: number;
@@ -145,8 +145,8 @@ describe('node-runtime', () => {
     expect(rootState.a).toBe(10);
     expect(rootState.b).toBe(14);
     expect(output).toBe(14);
-  });
-  test('set Array state value (if `rootState` is mutable)', async () => {
+  },
+  'set Array state value (if `rootState` is mutable)': () => {
     const rootState: { a?: number[] } = {};
 
     runInNode({
@@ -159,5 +159,23 @@ describe('node-runtime', () => {
     expect(rootState.a).toHaveLength(2);
     expect(rootState.a?.[0]).toBe(10);
     expect(rootState.a?.[1]).toBe(43);
+  },
+};
+
+describe('node-runtime', () => {
+  describe('individual evaluations', () => {
+    Object.keys(TESTS).forEach((key) => {
+      test(key, () => {
+        TESTS[key as keyof typeof TESTS]();
+      });
+    });
+  });
+  test('successfully runs multiple evaluations in random order', () => {
+    const keys = Object.keys(TESTS);
+    const randomKeys = keys.sort(() => Math.random() - 0.5);
+
+    randomKeys.forEach((key) => {
+      TESTS[key as keyof typeof TESTS]();
+    });
   });
 });
