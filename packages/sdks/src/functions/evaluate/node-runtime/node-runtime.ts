@@ -117,6 +117,19 @@ function setIsolateContext(options: IsolateOptions = { memoryLimit: 128 }) {
   const isolate = new ivm.Isolate(options);
   const context = isolate.createContextSync();
 
+  const jail = context.global;
+
+  // This makes the global object available in the context as `global`. We use `derefInto()` here
+  // because otherwise `global` would actually be a Reference{} object in the new isolate.
+  jail.setSync('global', jail.derefInto());
+
+  // We will create a basic `log` function for the new isolate to use.
+  jail.setSync('log', function (...logArgs: any[]) {
+    console.log(...logArgs);
+  });
+
+  jail.setSync(INJECTED_IVM_GLOBAL, ivm);
+
   IVM_CONTEXT = context;
   return context;
 }
@@ -153,15 +166,6 @@ export const runInNode = ({
   const isolateContext = getIsolateContext();
   const jail = isolateContext.global;
 
-  // This makes the global object available in the context as `global`. We use `derefInto()` here
-  // because otherwise `global` would actually be a Reference{} object in the new isolate.
-  jail.setSync('global', jail.derefInto());
-
-  // We will create a basic `log` function for the new isolate to use.
-  jail.setSync('log', function (...logArgs: any[]) {
-    console.log(...logArgs);
-  });
-
   /**
    * Propagate state changes back to the reactive root state.
    */
@@ -172,6 +176,7 @@ export const runInNode = ({
     // call the `rootSetState` function if it exists
     rootSetState?.(rootState);
   });
+
   args.forEach(([key, arg]) => {
     const val =
       typeof arg === 'object'
@@ -189,12 +194,8 @@ export const runInNode = ({
     jail.setSync(getSyncValName(key), val);
   });
 
-  jail.setSync(INJECTED_IVM_GLOBAL, ivm);
+  const evalStr = processCode({ code, args });
 
-  const evalStr = processCode({
-    code,
-    args,
-  });
   const resultStr = isolateContext.evalClosureSync(evalStr);
 
   try {
