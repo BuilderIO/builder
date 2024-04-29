@@ -13,6 +13,8 @@
 import ivm from 'isolated-vm';
 import { setIvm } from './node-runtime.js';
 
+import type { IsolateOptions } from 'isolated-vm';
+
 /**
  * This function initializes the SDK on a Node server. It handles importing the
  * `isolated-vm` package which is needed for dynamic bindings.
@@ -22,6 +24,10 @@ import { setIvm } from './node-runtime.js';
  * - The NextJS Pages router's `_document.tsx`
  * - Your Remix route's `loader`
  */
-export const initializeNodeRuntime = () => {
-  setIvm(ivm);
+export const initializeNodeRuntime = ({
+  ivmIsolateOptions,
+}: {
+  ivmIsolateOptions?: IsolateOptions;
+}) => {
+  setIvm(ivm, ivmIsolateOptions);
 };

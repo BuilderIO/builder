@@ -1,4 +1,4 @@
-import type { Context } from 'isolated-vm';
+import type { Context, IsolateOptions } from 'isolated-vm';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
 import { set } from '../../set.js';
@@ -84,12 +84,10 @@ let IVM_CONTEXT: Context | null = null;
  * This is useful for environments that are not able to rely on our
  * `safeDynamicRequire` trick to import the `isolated-vm` package.
  */
-export const setIvm = (ivm: IsolatedVM) => {
+export const setIvm = (ivm: IsolatedVM, options: IsolateOptions = {}) => {
   IVM_INSTANCE = ivm;
-};
 
-export const initializeContext = () => {
-  IVM_CONTEXT = getIsolateContext();
+  setIsolateContext(options);
 };
 
 const getIvm = (): IsolatedVM => {
@@ -114,14 +112,19 @@ const getIvm = (): IsolatedVM => {
   );
 };
 
-const getIsolateContext = () => {
-  if (IVM_CONTEXT) return IVM_CONTEXT;
-
+function setIsolateContext(options: IsolateOptions = { memoryLimit: 128 }) {
   const ivm = getIvm();
-  const isolate = new ivm.Isolate({ memoryLimit: 128 });
+  const isolate = new ivm.Isolate(options);
   const context = isolate.createContextSync();
 
   IVM_CONTEXT = context;
+  return context;
+}
+
+const getIsolateContext = () => {
+  if (IVM_CONTEXT) return IVM_CONTEXT;
+
+  const context = setIsolateContext();
 
   return context;
 };
