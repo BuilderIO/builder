@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-solid",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "",
   "files": [
     "dist",

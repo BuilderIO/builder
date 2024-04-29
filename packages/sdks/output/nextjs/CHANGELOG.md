@@ -1,5 +1,12 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.19
+
+### Patch Changes
+
+- bd21dcf: Fix: improve NodeJS runtime performance by reusing the same IsolatedVM Isolate instance for all data bindings. Add the ability to provide arguments to configure the isolate in `initializeNodeRuntime` via an `ivmIsolateOptions` parameter.
+- c4c8cc1: Feature: added `builderLinkComponent` and `builderComponents` props to RSC blocks.
+
 ## 0.14.17
 
 ### Patch Changes
