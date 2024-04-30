@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.26
+
+### Patch Changes
+
+- af84d1e: Fix: make `initializeNodeRuntime` argument optional
+
 ## 1.0.25
 
 ### Patch Changes

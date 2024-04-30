@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.26
+
+### Patch Changes
+
+- af84d1e: Fix: make `initializeNodeRuntime` argument optional
+
 ## 1.0.25
 
 ### Patch Changes
