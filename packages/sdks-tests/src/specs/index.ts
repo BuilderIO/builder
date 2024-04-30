@@ -143,6 +143,7 @@ export const getProps = async (args: {
   fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
   options?: any;
   data?: 'real' | 'mock';
+  apiKey?: string;
 }) => {
   const {
     pathname: _pathname = getPathnameFromWindow(),
@@ -150,16 +151,17 @@ export const getProps = async (args: {
     data = 'mock',
     fetchOneEntry,
     options,
+    apiKey,
   } = args;
   const pathname = normalizePathname(_pathname);
 
   if (data === 'real' && fetchOneEntry) {
     return {
       model: 'page',
-      apiKey: REAL_API_KEY,
+      apiKey: apiKey || REAL_API_KEY,
       content: await fetchOneEntry({
         model: 'page',
-        apiKey: REAL_API_KEY,
+        apiKey: apiKey || REAL_API_KEY,
         userAttributes: { urlPath: pathname },
         options,
       }),
