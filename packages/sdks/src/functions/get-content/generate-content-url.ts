@@ -1,4 +1,4 @@
-import { flatten } from '../../helpers/flatten.js';
+import { flatten, flattenMongoQuery } from '../../helpers/flatten.js';
 import { normalizeSearchParams } from '../../helpers/search/search.js';
 import { DEFAULT_API_VERSION } from '../../types/api-version.js';
 import { getBuilderSearchParamsFromWindow } from '../get-builder-search-params/index.js';
@@ -96,11 +96,10 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
   }
   if (query) {
-    const flattened = flatten({ query });
+    const flattened = flattenMongoQuery({ query });
     for (const key in flattened) {
-      url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
+      url.searchParams.set(key, JSON.stringify(flattened[key]));
     }
   }
-
   return url;
 };
