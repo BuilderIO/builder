@@ -201,16 +201,20 @@ const filterActionAttrBindings = (json, item) => {
 const ANGULAR_HANDLE_TEMPLATE_STRS = () => ({
   code: {
     post: (code) => {
-      const pathValue = code.match(/\[path\]="(.*?)"/);
-      if (pathValue) {
-        code = code.replace(
-          pathValue[0],
-          `[path]="${pathValue[1]
+      const pathValues = code.matchAll(/\[path\]="(.*?)"/g);
+      if (pathValues) {
+        for (const match of pathValues) {
+          const pathValue = match[1];
+          const replacedPath = pathValue
             .replaceAll('`', "'")
             .replaceAll('\\', '')
             .replaceAll('.${', ".'+")
-            .replaceAll('}', "+'")}"`
-        );
+            .replaceAll('}', "+'");
+          code = code.replace(
+            `[path]="${pathValue}"`,
+            `[path]="${replacedPath}"`
+          );
+        }
       }
       return code;
     },
@@ -527,31 +531,26 @@ const ANGULAR_BLOCKS_PLUGIN = () => ({
           }\n  @Input() wrapperProps: any;`
         );
 
+        const propInitStr = `
+        const properties = [${inputs.map((input) => `'${input}'`).join(', ')}];
+        properties.forEach(prop => {
+          if (this.wrapperProps && Object.prototype.hasOwnProperty.call(this.wrapperProps, prop)) {
+            this[prop] = this.wrapperProps[prop];
+          }
+        });
+        `;
+
         if (code.includes('ngOnInit')) {
           code = code.replace(
             'ngOnInit() {',
             `ngOnInit() {\n
-              const properties = [${inputs
-                .map((input) => `'${input}'`)
-                .join(', ')}];
-              properties.forEach(prop => {
-                if (this.wrapperProps && Object.prototype.hasOwnProperty.call(this.wrapperProps, prop)) {
-                  this[prop] = this.wrapperProps[prop];
-                }
-              });
+              ${propInitStr}
             `
           );
         } else {
           const lastEndIndex = code.lastIndexOf('}');
           code = `${code.slice(0, lastEndIndex)}ngOnInit() {
-            const properties = [${inputs
-              .map((input) => `'${input}'`)
-              .join(', ')}];
-            properties.forEach(prop => {
-              if (this.wrapperProps && Object.prototype.hasOwnProperty.call(this.wrapperProps, prop)) {
-                this[prop] = this.wrapperProps[prop];
-              }
-            });
+            ${propInitStr}
           }
           ${code.slice(lastEndIndex)}`;
         }
