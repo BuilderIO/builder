@@ -49,7 +49,8 @@ export default function Tabs(props: TabsProps) {
               key={index}
               class={state.getTabClass(index)}
               style={state.getActiveTabStyle(index)}
-              onClick={() => state.onClick(index)}
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              onClick={(event: any) => state.onClick(index)}
             >
               <Blocks
                 parent={props.builderBlock.id}
