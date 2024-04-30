@@ -24,10 +24,9 @@ import type { IsolateOptions } from 'isolated-vm';
  * - The NextJS Pages router's `_document.tsx`
  * - Your Remix route's `loader`
  */
-export const initializeNodeRuntime = ({
-  ivmIsolateOptions,
-}: {
+export const initializeNodeRuntime = (args?: {
   ivmIsolateOptions?: IsolateOptions;
 }) => {
+  const { ivmIsolateOptions } = args || {};
   setIvm(ivm, ivmIsolateOptions);
 };
