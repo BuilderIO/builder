@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.26
+
+### Patch Changes
+
+- af84d1e: Fix: make `initializeNodeRuntime` argument optional
+
 ## 1.0.25
 
 ### Patch Changes
