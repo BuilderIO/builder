@@ -11,7 +11,15 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'dynamic-div, DynamicDiv',
-  template: ` <div #v><ng-content></ng-content></div> `,
+  template: `
+    <div
+      #v
+      (click)="onClick && onClick($event)"
+      (mouseenter)="onMouseEnter && onMouseEnter($event)"
+    >
+      <ng-content></ng-content>
+    </div>
+  `,
   standalone: true,
   imports: [CommonModule],
 })
@@ -29,6 +37,9 @@ export default class DynamicDiv {
   @Input('class') classProp: any;
   @Input() style: any;
   @Input() showContentProps: any;
+  @Input() onClick: any;
+  @Input() onMouseEnter: any;
+  @Input() onKeyPress: any;
 
   @ViewChild('v', { read: ElementRef })
   v!: ElementRef;

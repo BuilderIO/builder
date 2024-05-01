@@ -567,6 +567,32 @@ const ANGULAR_BLOCKS_PLUGIN = () => ({
   },
 });
 
+const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('enable-editor')) {
+        code = code.replace(
+          'window.addEventListener("message", this.processMessage);',
+          'window.addEventListener("message", this.processMessage.bind(this));'
+        );
+        code = code.replace(
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate
+          );`,
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate.bind(this)
+          );`
+        );
+        code = code.replace('onClick: onClick', 'onClick: onClick.bind(this)');
+        code = code.replace('ngAfterContentChecked', 'ngOnChanges');
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -591,6 +617,7 @@ module.exports = {
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
         ANGULAR_BLOCKS_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
       ],
     },
     solid: {
