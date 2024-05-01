@@ -588,6 +588,14 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
         code = code.replace('onClick: onClick', 'onClick: onClick.bind(this)');
         code = code.replace('ngAfterContentChecked', 'ngOnChanges');
       }
+
+      if (code.includes('blocks-wrapper')) {
+        code = code.replace(
+          'onClick: onClick, onMouseEnter: onMouseEnter, onKeyPress: onClick',
+          'onClick: onClick.bind(this), onMouseEnter: onMouseEnter.bind(this), onKeyPress: onClick.bind(this)'
+        );
+      }
+
       return code;
     },
   },

@@ -41,7 +41,6 @@ test.describe('Tracking', () => {
     });
   });
   test.describe('POST data', () => {
-    test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
     test('POSTs correct impression data', async ({ page }) => {
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(

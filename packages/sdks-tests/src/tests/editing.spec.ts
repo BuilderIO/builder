@@ -4,7 +4,7 @@ import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import type { BuilderContent } from '../specs/types.js';
-import { excludeTestFor, test } from './helpers/index.js';
+import { test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
 const sendContentUpdateMessage = async ({
@@ -82,7 +82,6 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 };
 
 test.describe('Visual Editing', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular SDK does not support visual editing (yet)');
   editorTests({ noTrustedHosts: false });
   test('correctly updates Text block in a Column block', async ({
     page,

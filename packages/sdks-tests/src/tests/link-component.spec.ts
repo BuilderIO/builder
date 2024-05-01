@@ -1,8 +1,7 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers/index.js';
+import { test } from './helpers/index.js';
 
 const testLinkComponent = (path: string, totalLinks: number) => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('renders regular anchor element by default', async ({ page }) => {
     await page.goto(path);
 
