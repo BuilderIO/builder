@@ -514,6 +514,13 @@ const BLOCKS = [
   'builder-video',
 ];
 
+/**
+ * As in Angular we can't spread arbitrary props in a component,
+ * template: `<component2 {...attributes} />` will not work.
+ * So, in our current mitosis implementation we send it as an object
+ * template: `<component2 [wrapperProps]="{...attributes}" />`
+ * Here we spread them to respective props/inputs in the component.
+ */
 const ANGULAR_BLOCKS_PLUGIN = () => ({
   code: {
     post: (code) => {
