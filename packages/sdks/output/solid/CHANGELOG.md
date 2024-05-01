@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.27
+
+### Patch Changes
+
+- 70fccea: Fix: `query` option correctly flattens mongodb queries
+
 ## 1.0.26
 
 ### Patch Changes

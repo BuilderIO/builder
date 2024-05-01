@@ -8,6 +8,10 @@ exports[`Generate Content URL > generate content url with apiVersion as default 
 
 exports[`Generate Content URL > generate content url with apiVersion as v3 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
+exports[`Generate Content URL > generate content url with correct mongoQuery with $ in child key 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&query.some.key=%7B%22%24elemMatch%22%3A%7B%22some.nested.key%22%3A%7B%22%24in%22%3A%5B%22value1%22%2C%22value2%22%5D%7D%7D%7D"`;
+
+exports[`Generate Content URL > generate content url with correct mongoQuery with $and as the root key 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&query=%7B%22%24and%22%3A%5B%7B%22some.key%22%3A%7B%22%24elemMatch%22%3A%7B%22some.nested.key%22%3A%7B%22%24in%22%3A%5B%22value1%22%2C%22value2%22%5D%7D%7D%7D%7D%2C%7B%22some.other.key%22%3A%7B%22%24eq%22%3A%22value3%22%7D%7D%5D%7D"`;
+
 exports[`Generate Content URL > generate content url with enrich option not present 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed"`;
 
 exports[`Generate Content URL > generate content url with enrich option true 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&enrich=true&omit=meta.componentsUsed"`;

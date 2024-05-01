@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.21
+
+### Patch Changes
+
+- 70fccea: Fix: `query` option correctly flattens mongodb queries
+
 ## 0.14.20
 
 ### Patch Changes

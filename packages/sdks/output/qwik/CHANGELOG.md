@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.21
+
+### Patch Changes
+
+- 70fccea: Fix: `query` option correctly flattens mongodb queries
+
 ## 0.14.20
 
 ### Patch Changes
