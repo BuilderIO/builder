@@ -26,6 +26,9 @@ export function flatten<T extends Record<string, any>>(
 /**
  * Flatten a nested MongoDB query object into a flat object with dot-separated keys.
  * $ keys are not flattened and are left as is.
+ *
+ * { foo: { bar: { $gt: 5 }}} -> { 'foo.bar': { '$gt': 5 }}
+ * { foo: {'bar.id': { $elemMatch: { 'baz.id': { $in: ['abc', 'bcd'] }}}}} -> { 'foo.bar.id': { '$elemMatch': { 'baz.id': { '$in': ['abc', 'bcd'] }}}}
  */
 export function flattenMongoQuery(
   obj: any,
