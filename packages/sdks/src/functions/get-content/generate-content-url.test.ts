@@ -166,4 +166,47 @@ describe('Generate Content URL', () => {
     });
     expect(output).toMatchSnapshot();
   });
+
+  test('generate content url with correct mongoQuery with $and as the root key', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      query: {
+        $and: [
+          {
+            'some.key': {
+              $elemMatch: {
+                'some.nested.key': {
+                  $in: ['value1', 'value2'],
+                },
+              },
+            },
+          },
+          {
+            'some.other.key': {
+              $eq: 'value3',
+            },
+          },
+        ],
+      },
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('generate content url with correct mongoQuery with $ in child key', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      query: {
+        'some.key': {
+          $elemMatch: {
+            'some.nested.key': {
+              $in: ['value1', 'value2'],
+            },
+          },
+        },
+      },
+    });
+    expect(output).toMatchSnapshot();
+  });
 });
