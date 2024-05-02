@@ -59,19 +59,19 @@ export function evaluate({
     rootState,
     localState,
   };
-  if (enableCache) {
-    const cacheKey = EvalCache.getCacheKey(args);
-    const cachedValue = EvalCache.getCachedValue(cacheKey);
-    if (cachedValue) {
-      return cachedValue.value;
-    }
-  }
+  // if (enableCache) {
+  //   const cacheKey = EvalCache.getCacheKey(args);
+  //   const cachedValue = EvalCache.getCachedValue(cacheKey);
+  //   if (cachedValue) {
+  //     return cachedValue.value;
+  //   }
+  // }
   try {
     const newEval = chooseBrowserOrServerEval(args);
-    if (enableCache) {
-      const cacheKey = EvalCache.getCacheKey(args);
-      EvalCache.setCachedValue(cacheKey, newEval);
-    }
+    // if (enableCache) {
+    //   const cacheKey = EvalCache.getCacheKey(args);
+    //   EvalCache.setCachedValue(cacheKey, newEval);
+    // }
     return newEval;
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, {

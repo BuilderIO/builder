@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react';
+import { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
 import './index.css';
 
 // Put your API key here
-builder.init('YOUR_API_KEY');
+builder.init('f1a790f8c3204b3b8c5c1795aeac4660');
 
 function App() {
   const [allPages, setAllPages] = useState([]);

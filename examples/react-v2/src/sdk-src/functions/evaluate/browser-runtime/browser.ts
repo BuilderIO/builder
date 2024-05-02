@@ -8,24 +8,33 @@ export const runInBrowser = ({
   event,
   localState,
   rootSetState,
-  rootState
+  rootState,
 }: ExecutorArgs) => {
+  const state = flattenState({
+    rootState,
+    localState,
+    rootSetState,
+  });
   const functionArgs = getFunctionArguments({
     builder,
     context,
     event,
-    state: flattenState({
-      rootState,
-      localState,
-      rootSetState
-    })
+    state: state,
   });
-  return new Function(...functionArgs.map(([name]) => name), code)(...functionArgs.map(([, value]) => value));
+  // if (code.includes('state.blogArticle')) {
+  //   console.log('state available is', {
+  //     rootState,
+  //     state,
+  //   });
+  // }
+  return new Function(...functionArgs.map(([name]) => name), code)(
+    ...functionArgs.map(([, value]) => value)
+  );
 };
 export function flattenState({
   rootState,
   localState,
-  rootSetState
+  rootSetState,
 }: {
   rootState: Record<string | symbol, any>;
   localState: Record<string | symbol, any> | undefined;
@@ -41,10 +50,12 @@ export function flattenState({
         return flattenState({
           rootState: val,
           localState: undefined,
-          rootSetState: rootSetState ? subState => {
-            target[prop] = subState;
-            rootSetState(target);
-          } : undefined
+          rootSetState: rootSetState
+            ? subState => {
+                target[prop] = subState;
+                rootSetState(target);
+              }
+            : undefined,
         });
       }
       return val;
@@ -56,6 +67,6 @@ export function flattenState({
       target[prop] = value;
       rootSetState?.(target);
       return true;
-    }
+    },
   });
 }

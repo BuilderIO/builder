@@ -62,7 +62,7 @@ export function getProcessedBlock({
   'localState' | 'context' | 'rootState' | 'rootSetState'
 >): BuilderBlock {
   const transformedBlock = transformBlock(block);
-  console.log('processing block: ', block.id);
+  // console.log('processing block: ', block.id);
 
   if (shouldEvaluateBindings) {
     return evaluateBindings({

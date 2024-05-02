@@ -1,50 +1,42 @@
-"use client";
-import * as React from "react";
-import { useState, useContext, useRef, useEffect } from "react";
+'use client';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import builderContext from '../../../context/builder.context.js';
+import type { BuilderContextInterface } from '../../../context/types.js';
+import { evaluate } from '../../../functions/evaluate/index.js';
+import { fastClone } from '../../../functions/fast-clone.js';
+import { fetchOneEntry } from '../../../functions/get-content/index.js';
+import { fetch } from '../../../functions/get-fetch.js';
+import { isBrowser } from '../../../functions/is-browser.js';
+import { isEditing } from '../../../functions/is-editing.js';
+import { isPreviewing } from '../../../functions/is-previewing.js';
+import { createRegisterComponentMessage } from '../../../functions/register-component.js';
+import { _track } from '../../../functions/track/index.js';
+import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
+import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
+import { logger } from '../../../helpers/logger.js';
+import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
+import { registerInsertMenu, setupBrowserForEditing } from '../../../scripts/init-editing.js';
+import type { BuilderContent } from '../../../types/builder-content.js';
+import type { ComponentInfo } from '../../../types/components.js';
+import type { Dictionary } from '../../../types/typescript.js';
+import { triggerAnimation } from '../../block/animator.js';
+import type { BuilderComponentStateChange, ContentProps } from '../content.types.js';
+import { getWrapperClassName } from './styles.helpers.js';
 
 type BuilderEditorProps = Omit<
   ContentProps,
-  | "customComponents"
-  | "apiVersion"
-  | "isSsrAbTest"
-  | "blocksWrapper"
-  | "blocksWrapperProps"
-  | "isNestedRender"
+  | 'customComponents'
+  | 'apiVersion'
+  | 'isSsrAbTest'
+  | 'blocksWrapper'
+  | 'blocksWrapperProps'
+  | 'isNestedRender'
 > & {
   builderContextSignal: BuilderContextInterface;
   setBuilderContextSignal?: (signal: any) => any;
   children?: any;
 };
-import builderContext from "../../../context/builder.context.js";
-import type { BuilderContextInterface } from "../../../context/types.js";
-import { evaluate } from "../../../functions/evaluate/index.js";
-import { fastClone } from "../../../functions/fast-clone.js";
-import { fetchOneEntry } from "../../../functions/get-content/index.js";
-import { fetch } from "../../../functions/get-fetch.js";
-import { isBrowser } from "../../../functions/is-browser.js";
-import { isEditing } from "../../../functions/is-editing.js";
-import { isPreviewing } from "../../../functions/is-previewing.js";
-import { createRegisterComponentMessage } from "../../../functions/register-component.js";
-import { _track } from "../../../functions/track/index.js";
-import { getInteractionPropertiesForEvent } from "../../../functions/track/interaction.js";
-import { getDefaultCanTrack } from "../../../helpers/canTrack.js";
-import { logger } from "../../../helpers/logger.js";
-import { postPreviewContent } from "../../../helpers/preview-lru-cache/set.js";
-import { createEditorListener } from "../../../helpers/subscribe-to-editor.js";
-import {
-  registerInsertMenu,
-  setupBrowserForEditing,
-} from "../../../scripts/init-editing.js";
-import type { BuilderContent } from "../../../types/builder-content.js";
-import type { ComponentInfo } from "../../../types/components.js";
-import type { Dictionary } from "../../../types/typescript.js";
-import { triggerAnimation } from "../../block/animator.js";
-import type {
-  BuilderComponentStateChange,
-  ContentProps,
-} from "../content.types.js";
-import { getWrapperClassName } from "./styles.helpers.js";
-import DynamicDiv from "../../dynamic-div";
 
 function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -53,10 +45,16 @@ function EnableEditor(props: BuilderEditorProps) {
       ...props.builderContextSignal.rootState,
       ...newData,
     };
+
+    console.log('combinedRootState:', combinedState, {
+      rootState: props.builderContextSignal.rootState,
+      newData,
+    });
+
     if (props.builderContextSignal.rootSetState) {
       props.builderContextSignal.rootSetState?.(combinedState);
     } else {
-      props.setBuilderContextSignal((PREVIOUS_VALUE) => ({
+      props.setBuilderContextSignal?.(PREVIOUS_VALUE => ({
         ...PREVIOUS_VALUE,
         rootState: combinedState,
       }));
@@ -75,14 +73,22 @@ function EnableEditor(props: BuilderEditorProps) {
         ...props.builderContextSignal.content?.meta,
         ...newContent?.meta,
         breakpoints:
-          newContent?.meta?.breakpoints ||
-          props.builderContextSignal.content?.meta?.breakpoints,
+          newContent?.meta?.breakpoints || props.builderContextSignal.content?.meta?.breakpoints,
       },
     };
-    props.setBuilderContextSignal((PREVIOUS_VALUE) => ({
+
+    console.log('newContentValue:', {
+      old: props.builderContextSignal.content?.data?.state?.blogArticle,
+      new: newContent.data?.state?.blogArticle,
+      final: newContentValue.data.state?.blogArticle,
+    });
+
+    props.setBuilderContextSignal?.(PREVIOUS_VALUE => ({
       ...PREVIOUS_VALUE,
       content: newContentValue,
     }));
+
+    mergeNewRootState(newContentValue.data.state);
   }
 
   function showContentProps() {
@@ -90,25 +96,20 @@ function EnableEditor(props: BuilderEditorProps) {
       ? {}
       : {
           hidden: true,
-          "aria-hidden": true,
+          'aria-hidden': true,
         };
   }
 
-  const [ContentWrapper, setContentWrapper] = useState(
-    () => props.contentWrapper || "div"
-  );
+  const [ContentWrapper, setContentWrapper] = useState(() => props.contentWrapper || 'div');
 
   function processMessage(event: MessageEvent) {
     return createEditorListener({
       model: props.model,
       trustedHosts: props.trustedHosts,
       callbacks: {
-        configureSdk: (messageContent) => {
+        configureSdk: messageContent => {
           const { breakpoints, contentId } = messageContent;
-          if (
-            !contentId ||
-            contentId !== props.builderContextSignal.content?.id
-          ) {
+          if (!contentId || contentId !== props.builderContextSignal.content?.id) {
             return;
           }
           if (breakpoints) {
@@ -119,10 +120,10 @@ function EnableEditor(props: BuilderEditorProps) {
             });
           }
         },
-        animation: (animation) => {
+        animation: animation => {
           triggerAnimation(animation);
         },
-        contentUpdate: (newContent) => {
+        contentUpdate: newContent => {
           mergeNewContent(newContent);
         },
       },
@@ -158,7 +159,7 @@ function EnableEditor(props: BuilderEditorProps) {
       const variationId = props.builderContextSignal.content?.testVariationId;
       const contentId = props.builderContextSignal.content?.id;
       _track({
-        type: "click",
+        type: 'click',
         canTrack: getDefaultCanTrack(props.canTrack),
         contentId,
         apiKey: props.apiKey,
@@ -176,6 +177,9 @@ function EnableEditor(props: BuilderEditorProps) {
     const requests: {
       [key: string]: string;
     } = props.builderContextSignal.content?.data?.httpRequests ?? {};
+
+    // console.log('requests', requests);
+
     Object.entries(requests).forEach(([key, url]) => {
       if (!url) return;
 
@@ -198,15 +202,15 @@ function EnableEditor(props: BuilderEditorProps) {
         )
       );
       fetch(evaluatedUrl)
-        .then((response) => response.json())
-        .then((json) => {
+        .then(response => response.json())
+        .then(json => {
           mergeNewRootState({
             [key]: json,
           });
           httpReqsData[key] = true;
         })
-        .catch((err) => {
-          console.error("error fetching dynamic data", url, err);
+        .catch(err => {
+          console.error('error fetching dynamic data', url, err);
         })
         .finally(() => {
           httpReqsPending[key] = false;
@@ -217,23 +221,20 @@ function EnableEditor(props: BuilderEditorProps) {
   function emitStateUpdate() {
     if (isEditing()) {
       window.dispatchEvent(
-        new CustomEvent<BuilderComponentStateChange>(
-          "builder:component:stateChange",
-          {
-            detail: {
-              state: fastClone(props.builderContextSignal.rootState),
-              ref: {
-                name: props.model,
-              },
+        new CustomEvent<BuilderComponentStateChange>('builder:component:stateChange', {
+          detail: {
+            state: fastClone(props.builderContextSignal.rootState),
+            ref: {
+              name: props.model,
             },
-          }
-        )
+          },
+        })
       );
     }
   }
 
   function elementRef_onIniteditingbldr(event) {
-    window.addEventListener("message", processMessage);
+    window.addEventListener('message', processMessage);
     registerInsertMenu();
     setupBrowserForEditing({
       ...(props.locale
@@ -252,55 +253,19 @@ function EnableEditor(props: BuilderEditorProps) {
           }
         : {}),
     });
-    Object.values<ComponentInfo>(
-      props.builderContextSignal.componentInfos
-    ).forEach((registeredComponent) => {
-      const message = createRegisterComponentMessage(registeredComponent);
-      window.parent?.postMessage(message, "*");
-    });
-    window.addEventListener(
-      "builder:component:stateChangeListenerActivated",
-      emitStateUpdate
+    Object.values<ComponentInfo>(props.builderContextSignal.componentInfos).forEach(
+      registeredComponent => {
+        const message = createRegisterComponentMessage(registeredComponent);
+        window.parent?.postMessage(message, '*');
+      }
     );
-  }
-
-  function elementRef_onInitpreviewingbldr(event) {
-    const searchParams = new URL(location.href).searchParams;
-    const searchParamPreviewModel = searchParams.get("builder.preview");
-    const searchParamPreviewId = searchParams.get(
-      `builder.preview.${searchParamPreviewModel}`
-    );
-    const previewApiKey =
-      searchParams.get("apiKey") || searchParams.get("builder.space");
-
-    /**
-     * Make sure that:
-     * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered *  at the same time, e.g. header/page/footer. * - the API key is the same, since we don't want to preview content from other organizations.
-     * - if there is content, that the preview ID is the same as that of the one we receive.
-     *
-     * TO-DO: should we only update the state when there is a change?
-     **/
-    if (
-      searchParamPreviewModel === props.model &&
-      previewApiKey === props.apiKey &&
-      (!props.content || searchParamPreviewId === props.content.id)
-    ) {
-      fetchOneEntry({
-        model: props.model,
-        apiKey: props.apiKey,
-        apiVersion: props.builderContextSignal.apiVersion,
-      }).then((content) => {
-        if (content) {
-          mergeNewContent(content);
-        }
-      });
-    }
+    window.addEventListener('builder:component:stateChangeListenerActivated', emitStateUpdate);
   }
 
   useEffect(() => {
     if (isBrowser()) {
       if (isEditing()) {
-        window.addEventListener("message", processMessage);
+        window.addEventListener('message', processMessage);
         registerInsertMenu();
         setupBrowserForEditing({
           ...(props.locale
@@ -319,26 +284,22 @@ function EnableEditor(props: BuilderEditorProps) {
               }
             : {}),
         });
-        Object.values<ComponentInfo>(
-          props.builderContextSignal.componentInfos
-        ).forEach((registeredComponent) => {
-          const message = createRegisterComponentMessage(registeredComponent);
-          window.parent?.postMessage(message, "*");
-        });
-        window.addEventListener(
-          "builder:component:stateChangeListenerActivated",
-          emitStateUpdate
+        Object.values<ComponentInfo>(props.builderContextSignal.componentInfos).forEach(
+          registeredComponent => {
+            const message = createRegisterComponentMessage(registeredComponent);
+            window.parent?.postMessage(message, '*');
+          }
         );
+        window.addEventListener('builder:component:stateChangeListenerActivated', emitStateUpdate);
       }
       const shouldTrackImpression =
-        props.builderContextSignal.content &&
-        getDefaultCanTrack(props.canTrack);
+        props.builderContextSignal.content && getDefaultCanTrack(props.canTrack);
       if (shouldTrackImpression) {
         const variationId = props.builderContextSignal.content?.testVariationId;
         const contentId = props.builderContextSignal.content?.id;
         const apiKeyProp = props.apiKey;
         _track({
-          type: "impression",
+          type: 'impression',
           canTrack: true,
           contentId,
           apiKey: apiKeyProp!,
@@ -352,12 +313,9 @@ function EnableEditor(props: BuilderEditorProps) {
        */
       if (isPreviewing() && !isEditing()) {
         const searchParams = new URL(location.href).searchParams;
-        const searchParamPreviewModel = searchParams.get("builder.preview");
-        const searchParamPreviewId = searchParams.get(
-          `builder.preview.${searchParamPreviewModel}`
-        );
-        const previewApiKey =
-          searchParams.get("apiKey") || searchParams.get("builder.space");
+        const searchParamPreviewModel = searchParams.get('builder.preview');
+        const searchParamPreviewId = searchParams.get(`builder.preview.${searchParamPreviewModel}`);
+        const previewApiKey = searchParams.get('apiKey') || searchParams.get('builder.space');
 
         /**
          * Make sure that:
@@ -375,8 +333,9 @@ function EnableEditor(props: BuilderEditorProps) {
             model: props.model,
             apiKey: props.apiKey,
             apiVersion: props.builderContextSignal.apiVersion,
-          }).then((content) => {
+          }).then(content => {
             if (content) {
+              console.log('fetched preview content:', content.data?.state?.blogArticle);
               mergeNewContent(content);
             }
           });
@@ -387,7 +346,7 @@ function EnableEditor(props: BuilderEditorProps) {
   useEffect(() => {
     if (!props.apiKey) {
       logger.error(
-        "No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop."
+        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
     evaluateJsCode();
@@ -425,9 +384,9 @@ function EnableEditor(props: BuilderEditorProps) {
   useEffect(() => {
     return () => {
       if (isBrowser()) {
-        window.removeEventListener("message", processMessage);
+        window.removeEventListener('message', processMessage);
         window.removeEventListener(
-          "builder:component:stateChangeListenerActivated",
+          'builder:component:stateChangeListenerActivated',
           emitStateUpdate
         );
       }
@@ -436,20 +395,32 @@ function EnableEditor(props: BuilderEditorProps) {
 
   return (
     <builderContext.Provider value={props.builderContextSignal}>
+      <div>
+        number of articles:{' '}
+        {JSON.stringify(
+          props.builderContextSignal.content?.data?.state?.blogArticle?.results.length
+        )}
+        , {JSON.stringify(props.builderContextSignal.rootState?.blogArticle?.results.length)}.
+      </div>
+      <div>
+        number of categories:{' '}
+        {JSON.stringify(
+          props.builderContextSignal.content?.data?.state?.blogCategory?.results.length
+        )}
+        , {JSON.stringify(props.builderContextSignal.rootState?.blogCategory?.results.length)}.
+      </div>
       {props.builderContextSignal.content ? (
         <>
           <ContentWrapper
             {...{}}
             ref={elementRef}
-            onClick={(event) => onClick(event)}
+            onClick={event => onClick(event)}
             builder-content-id={props.builderContextSignal.content?.id}
             builder-model={props.model}
             {...{}}
             {...showContentProps()}
             {...props.contentWrapperProps}
-            className={getWrapperClassName(
-              props.content?.testVariationId || props.content?.id
-            )}
+            className={getWrapperClassName(props.content?.testVariationId || props.content?.id)}
           >
             {props.children}
           </ContentWrapper>

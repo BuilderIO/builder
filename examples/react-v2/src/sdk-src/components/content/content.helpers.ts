@@ -5,7 +5,7 @@ import type { ContentProps } from './content.types.js';
 export const getRootStateInitialValue = ({
   content,
   data,
-  locale
+  locale,
 }: Pick<ContentProps, 'content' | 'data' | 'locale'>) => {
   const defaultValues: BuilderRenderState = {};
   const initialState = content?.data?.state || {};
@@ -16,25 +16,34 @@ export const getRootStateInitialValue = ({
       defaultValues[input.name] = input.defaultValue;
     }
   });
-  return {
+
+  const newLocal = {
     ...defaultValues,
     ...initialState,
     ...data,
-    ...(locale ? {
-      locale
-    } : {})
+    ...(locale
+      ? {
+          locale,
+        }
+      : {}),
   };
+
+  console.log('initial content state', newLocal);
+
+  return newLocal;
 };
 export const getContentInitialValue = ({
   content,
-  data
+  data,
 }: Pick<ContentProps, 'content' | 'data'>): Nullable<BuilderContent> => {
-  return !content ? undefined : {
-    ...content,
-    data: {
-      ...content?.data,
-      ...data
-    },
-    meta: content?.meta
-  };
-}
+  return !content
+    ? undefined
+    : {
+        ...content,
+        data: {
+          ...content?.data,
+          ...data,
+        },
+        meta: content?.meta,
+      };
+};

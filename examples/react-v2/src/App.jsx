@@ -17,6 +17,7 @@ function App() {
     })
       .then(content => {
         if (content) {
+          console.log('fetched content:', content.data?.state?.blogArticle);
           setContent(content);
         }
       })

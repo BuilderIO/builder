@@ -34,10 +34,12 @@ function Block(props: BlockProps) {
   }, [props.block, props.context, props.registeredComponents]);
 
   const repeatItem = React.useMemo(() => {
-    return getRepeatItemData({
+    const newLocal = getRepeatItemData({
       block: props.block,
       context: props.context,
     });
+    // console.log('repeatItem', newLocal);
+    return newLocal;
   }, [props.block, props.context]);
 
   const processedBlock = React.useMemo(() => {
@@ -131,6 +133,18 @@ function Block(props: BlockProps) {
 
   return (
     <>
+      {/* <div>
+        {' '}
+        in block:
+        <div>
+          number of articles:{' '}
+          {JSON.stringify(props.context.rootState?.blogArticle?.results?.length)}
+        </div>
+        <div>
+          number of categories:{' '}
+          {JSON.stringify(props.context.rootState?.blogCategory?.results?.length)}
+        </div>
+      </div> */}
       {canShowBlock() ? (
         <>
           <BlockStyles block={props.block} context={props.context} />
