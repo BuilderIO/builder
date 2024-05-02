@@ -216,6 +216,21 @@ const ANGULAR_HANDLE_TEMPLATE_STRS = () => ({
           );
         }
       }
+      if (code.includes('tabs, Tabs')) {
+        const classValues = code.matchAll(/\[class\]="(.*?)"/g);
+        if (classValues) {
+          for (const match of classValues) {
+            const classValue = match[1];
+            if (classValue.includes('`')) {
+              // nasty hack to replace template strings inside tabs component class
+              code = code.replace(
+                `[class]="${classValue}"`,
+                `[class]="'builder-tab-wrap ' + (activeTab === index ? 'builder-tab-active' : '')"`
+              );
+            }
+          }
+        }
+      }
       return code;
     },
   },
