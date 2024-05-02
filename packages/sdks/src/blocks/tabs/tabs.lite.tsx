@@ -43,11 +43,7 @@ export default function Tabs(props: TabsProps) {
                 state.activeTab === index ? 'builder-tab-active' : ''
               }`}
               style={{
-                ...(state.activeTab === index
-                  ? {
-                      ...props.activeTabStyle,
-                    }
-                  : {}),
+                ...(state.activeTab === index ? props.activeTabStyle : {}),
               }}
               onClick={() => state.onClick(index)}
             >
