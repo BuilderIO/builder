@@ -58,6 +58,15 @@ Legend:
 | Select         | ✅  | 🏗            | ✅     | ✅    | ✅   | ✅    | 🏗️     |
 | SubmitButton   | ✅  | 🏗            | ✅     | ✅    | ✅   | ✅    | 🏗️     |
 
+## Builder Widgets
+
+| Builder Widgets | Vue | React-Native | Svelte | Solid | Qwik | React | NextJS |
+| --------------- | --- | ------------ | ------ | ----- | ---- | ----- | ------ |
+| Tabs            | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | 🏗      |
+| Accordion       | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     | 🏗️     |
+| Carousel        | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     | 🏗️     |
+| Masonry         | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     | 🏗️     |
+
 ## Features
 
 | Features                       | Qwik | React | NextJS                                   | Vue | React-Native        | Svelte | Solid | Details |
