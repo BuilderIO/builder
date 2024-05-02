@@ -42,7 +42,13 @@ export default function Tabs(props: TabsProps) {
               class={`builder-tab-wrap ${
                 state.activeTab === index ? 'builder-tab-active' : ''
               }`}
-              style={state.activeTab === index ? props.activeTabStyle : {}}
+              style={{
+                ...(state.activeTab === index
+                  ? {
+                      ...props.activeTabStyle,
+                    }
+                  : {}),
+              }}
               onClick={() => state.onClick(index)}
             >
               <Blocks
