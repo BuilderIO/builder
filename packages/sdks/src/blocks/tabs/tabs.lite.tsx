@@ -9,14 +9,6 @@ export default function Tabs(props: TabsProps) {
     activeTabContent(active: number): BuilderBlock[] | undefined {
       return props.tabs && props.tabs[active].content;
     },
-    getActiveTabStyle(index: number) {
-      return state.activeTab === index ? props.activeTabStyle : {};
-    },
-    getTabClass(index: number) {
-      return `builder-tab-wrap ${
-        state.activeTab === index ? 'builder-tab-active' : ''
-      }`;
-    },
     onClick(index: number) {
       if (index === state.activeTab && props.collapsible) {
         state.activeTab = -1;
@@ -47,10 +39,11 @@ export default function Tabs(props: TabsProps) {
           {(tab, index) => (
             <span
               key={index}
-              class={state.getTabClass(index)}
-              style={state.getActiveTabStyle(index)}
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              onClick={(event: any) => state.onClick(index)}
+              class={`builder-tab-wrap ${
+                state.activeTab === index ? 'builder-tab-active' : ''
+              }`}
+              style={state.activeTab === index ? props.activeTabStyle : {}}
+              onClick={() => state.onClick(index)}
             >
               <Blocks
                 parent={props.builderBlock.id}
