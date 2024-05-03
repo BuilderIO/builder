@@ -133,6 +133,10 @@ const targets = target
       'angular',
     ];
 
+/**
+ *
+ * @type {Plugin}
+ */
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -166,6 +170,16 @@ const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
       });
 
       json.hooks.onEvent = [];
+
+      /**
+       * This plugin runs after the onEvent Mitosis plugin, so it doesn't remove the generated bindings.
+       * We have to manually remove them.
+       */
+      for (const key of Object.keys(json.state)) {
+        if (key.startsWith('elementRef_on')) {
+          delete json.state[key];
+        }
+      }
     },
   },
 });
