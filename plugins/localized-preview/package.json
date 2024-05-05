@@ -82,7 +82,7 @@
     "@builder.io/sdk": "^1.1.29"
   },
   "devDependencies": {
-    "@commitlint/cli": "^7.1.2",
+    "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^7.1.2",
     "@material-ui/core": "^4.12.3",
     "@types/jest": "^23.3.2",
