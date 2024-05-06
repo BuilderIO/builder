@@ -64,7 +64,9 @@ export default class DynamicDiv {
   private setAttributes(el: HTMLElement, attributes: any) {
     if (attributes) {
       Object.keys(attributes).forEach((key) => {
-        this.renderer.setAttribute(el, key, attributes[key]);
+        if (attributes[key] !== undefined) {
+          this.renderer.setAttribute(el, key, attributes[key]);
+        }
       });
     }
   }
