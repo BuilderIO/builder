@@ -62,7 +62,6 @@ test.describe('Blocks', () => {
    * TO-DO: re-enable it once we have a way to mock network requests.
    */
   test.skip('Image', async ({ page }) => {
-    test.fail(excludeTestFor({ angular: true }));
     await page.goto('/image');
 
     const imageLocator = page.locator('img');
@@ -111,7 +110,6 @@ test.describe('Blocks', () => {
 
   test.describe('Video', () => {
     test('video render and styles', async ({ page }) => {
-      test.fail(excludeTestFor({ angular: true }), 'Attributes are not spread out in Video');
       test.skip(isRNSDK);
       const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);

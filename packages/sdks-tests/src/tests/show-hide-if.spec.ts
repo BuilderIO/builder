@@ -3,7 +3,6 @@ import { excludeTestFor, findTextInPage, isRNSDK, test } from './helpers/index.j
 import { sdk } from './sdk.js';
 
 test.describe('Show If & Hide If', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('works on static conditions', async ({ page }) => {
     await page.goto('/show-hide-if');
 
@@ -13,6 +12,7 @@ test.describe('Show If & Hide If', () => {
 
   test('works on reactive conditions', async ({ page, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }));
+    test.fail(excludeTestFor({ angular: true }), 'Angular SDK does not support this yet');
 
     // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
     test.skip(
@@ -37,6 +37,7 @@ test.describe('Show If & Hide If', () => {
   });
   test('works with repeat elements', async ({ page, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }), 'RSC SDK has no interactivity');
+    test.fail(excludeTestFor({ angular: true }), 'Angular SDK does not support this yet');
 
     // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
     test.skip(

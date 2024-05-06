@@ -9,8 +9,12 @@ export default function Tabs(props: TabsProps) {
     activeTabContent(active: number): BuilderBlock[] | undefined {
       return props.tabs && props.tabs[active].content;
     },
-    getActiveTabStyle(index: number) {
-      return state.activeTab === index ? props.activeTabStyle : {};
+    onClick(index: number) {
+      if (index === state.activeTab && props.collapsible) {
+        state.activeTab = -1;
+      } else {
+        state.activeTab = index;
+      }
     },
   });
 
@@ -38,14 +42,10 @@ export default function Tabs(props: TabsProps) {
               class={`builder-tab-wrap ${
                 state.activeTab === index ? 'builder-tab-active' : ''
               }`}
-              style={state.getActiveTabStyle(index)}
-              onClick={() => {
-                if (index === state.activeTab && props.collapsible) {
-                  state.activeTab = -1;
-                } else {
-                  state.activeTab = index;
-                }
+              style={{
+                ...(state.activeTab === index ? props.activeTabStyle : {}),
               }}
+              onClick={() => state.onClick(index)}
             >
               <Blocks
                 parent={props.builderBlock.id}

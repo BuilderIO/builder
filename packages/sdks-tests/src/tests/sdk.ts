@@ -37,6 +37,7 @@ export type PackageName =
   | 'svelte'
   | 'sveltekit'
   | 'angular'
+  | 'angular-ssr'
   | 'gen1-react'
   | 'gen1-remix'
   | 'gen1-next';

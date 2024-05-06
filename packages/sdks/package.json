@@ -52,7 +52,7 @@
     "e2e:build:react": "nx run-many -t build -p @e2e/react @e2e/next-pages-dir @e2e/next-app-dir-client",
     "e2e:build:nextjs": "nx run-many -t build -p @e2e/next-app-dir",
     "e2e:build:vue": "nx run-many -t build -p @e2e/vue @e2e/nuxt",
-    "e2e:build:angular": "nx run-many -t build -p @e2e/angular",
+    "e2e:build:angular": "nx run-many -t build -p @e2e/angular @e2e/angular-ssr",
     "e2e:run": "nx test @e2e/tests",
     "e2e:run:svelte": "SDK=svelte yarn e2e:run",
     "e2e:run:react-native": "SDK=reactNative yarn e2e:run",
@@ -72,8 +72,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.2.6",
-    "@builder.io/mitosis-cli": "^0.2.6",
+    "@builder.io/mitosis": "^0.2.9",
+    "@builder.io/mitosis-cli": "^0.2.9",
     "isolated-vm": "^4.6.0",
     "node-fetch": "^2.6.1",
     "nx": "^16.6.0",

@@ -17,8 +17,8 @@ const FIRST_BLOCK_SELECTOR = isRNSDK
   : `${getClassSelector('builder-blocks')} > div`;
 
 test.describe('Styles', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('data-binding-styles', async ({ page }) => {
+    test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
     await page.goto('/data-binding-styles');
     await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
       'color',
@@ -28,6 +28,7 @@ test.describe('Styles', () => {
 
   test.describe('Style Bindings', () => {
     test('Content', async ({ page }) => {
+      test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
       await page.goto('/content-bindings');
 
       const expected = {
@@ -48,6 +49,7 @@ test.describe('Styles', () => {
       // title: 'some special title'
     });
     test('Symbol', async ({ page }) => {
+      test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
       await page.goto('/symbol-bindings');
 
       const expected = {
@@ -86,6 +88,7 @@ test.describe('Styles', () => {
   });
 
   test('Should apply CSS nesting', async ({ page }) => {
+    test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
     test.fail(
       excludeTestFor({
         // we don't support CSS nesting in RN.

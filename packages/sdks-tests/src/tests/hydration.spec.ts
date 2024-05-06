@@ -1,4 +1,4 @@
-import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
+import { findTextInPage, test } from './helpers/index.js';
 
 /**
  * The only way to guarantee that hydration has completed is to interact with
@@ -9,7 +9,6 @@ import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
  * to throw an error if there is a hydration mismatch.
  */
 test.describe('Hydration', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('No mismatch on regular content', async ({ page }) => {
     await page.goto('/');
 

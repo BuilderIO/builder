@@ -201,16 +201,35 @@ const filterActionAttrBindings = (json, item) => {
 const ANGULAR_HANDLE_TEMPLATE_STRS = () => ({
   code: {
     post: (code) => {
-      const pathValue = code.match(/\[path\]="(.*?)"/);
-      if (pathValue) {
-        code = code.replace(
-          pathValue[0],
-          `[path]="${pathValue[1]
+      const pathValues = code.matchAll(/\[path\]="(.*?)"/g);
+      if (pathValues) {
+        for (const match of pathValues) {
+          const pathValue = match[1];
+          const replacedPath = pathValue
             .replaceAll('`', "'")
             .replaceAll('\\', '')
             .replaceAll('.${', ".'+")
-            .replaceAll('}', "+'")}"`
-        );
+            .replaceAll('}', "+'");
+          code = code.replace(
+            `[path]="${pathValue}"`,
+            `[path]="${replacedPath}"`
+          );
+        }
+      }
+      if (code.includes('tabs, Tabs')) {
+        const classValues = code.matchAll(/\[class\]="(.*?)"/g);
+        if (classValues) {
+          for (const match of classValues) {
+            const classValue = match[1];
+            if (classValue.includes('`')) {
+              // nasty hack to replace template strings inside tabs component class
+              code = code.replace(
+                `[class]="${classValue}"`,
+                `[class]="'builder-tab-wrap ' + (activeTab === index ? 'builder-tab-active' : '')"`
+              );
+            }
+          }
+        }
       }
       return code;
     },
@@ -495,6 +514,108 @@ const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
   },
 });
 
+const BLOCKS = [
+  'builder-button',
+  'builder-image',
+  'columns',
+  'custom-code',
+  'builder-embed',
+  'img-component',
+  'raw-text',
+  'section-component',
+  'builder-slot',
+  'builder-symbol',
+  'builder-textarea',
+  'builder-video',
+];
+
+/**
+ * As in Angular we can't spread arbitrary props in a component,
+ * template: `<component2 {...attributes} />` will not work.
+ * So, in our current mitosis implementation we send it as an object
+ * template: `<component2 [wrapperProps]="{...attributes}" />`
+ * Here we spread them to respective props/inputs in the component.
+ */
+const ANGULAR_BLOCKS_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (BLOCKS.some((block) => code.includes(block))) {
+        const inputNames = code.match(/@Input\(\) (.*)!:/g);
+        const inputs = inputNames.map((input) => {
+          return input.replace('@Input() ', '').replace('!:', '');
+        });
+
+        const inputsTillEnd = code.match(/@Input\(\) (.*);/g);
+        code = code.replace(
+          inputsTillEnd[inputsTillEnd.length - 1],
+          `${
+            inputsTillEnd[inputsTillEnd.length - 1]
+          }\n  @Input() wrapperProps: any;`
+        );
+
+        const propInitStr = `
+        const properties = [${inputs.map((input) => `'${input}'`).join(', ')}];
+        properties.forEach(prop => {
+          if (this.wrapperProps && Object.prototype.hasOwnProperty.call(this.wrapperProps, prop)) {
+            this[prop] = this.wrapperProps[prop];
+          }
+        });
+        `;
+
+        if (code.includes('ngOnInit')) {
+          code = code.replace(
+            'ngOnInit() {',
+            `ngOnInit() {\n
+              ${propInitStr}
+            `
+          );
+        } else {
+          const lastEndIndex = code.lastIndexOf('}');
+          code = `${code.slice(0, lastEndIndex)}ngOnInit() {
+            ${propInitStr}
+          }
+          ${code.slice(lastEndIndex)}`;
+        }
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('enable-editor')) {
+        code = code.replace(
+          'window.addEventListener("message", this.processMessage);',
+          'window.addEventListener("message", this.processMessage.bind(this));'
+        );
+        code = code.replace(
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate
+          );`,
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate.bind(this)
+          );`
+        );
+        code = code.replace('onClick: onClick', 'onClick: onClick.bind(this)');
+        code = code.replace('ngAfterContentChecked', 'ngOnChanges');
+      }
+
+      if (code.includes('blocks-wrapper')) {
+        code = code.replace(
+          'onClick: onClick, onMouseEnter: onMouseEnter, onKeyPress: onClick',
+          'onClick: onClick.bind(this), onMouseEnter: onMouseEnter.bind(this), onKeyPress: onClick.bind(this)'
+        );
+      }
+
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -517,6 +638,9 @@ module.exports = {
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
+        ANGULAR_BLOCKS_PLUGIN,
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
       ],
     },
     solid: {

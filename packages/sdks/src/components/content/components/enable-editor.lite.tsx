@@ -355,6 +355,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           react: () => INJECT_EDITING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          angular: () => INJECT_EDITING_HOOK_HERE,
           default: () => {
             if (elementRef) {
               elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
@@ -410,6 +413,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           react: () => INJECT_PREVIEWING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+
+          angular: () => INJECT_PREVIEWING_HOOK_HERE,
           default: () => {
             if (elementRef) {
               elementRef.dispatchEvent(new CustomEvent('initpreviewingbldr'));
@@ -424,7 +431,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     () => {
       if (!props.apiKey) {
         logger.error(
-          'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+          'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
         );
       }
 

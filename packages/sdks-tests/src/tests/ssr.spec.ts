@@ -1,8 +1,7 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, isRNSDK, isSSRFramework, test } from './helpers/index.js';
+import { isRNSDK, isSSRFramework, test } from './helpers/index.js';
 
 test.describe('SSR', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test('js enabled', async ({ page }) => {
     await page.goto('/');
 
@@ -15,6 +14,10 @@ test.describe('SSR', () => {
 
   test('js disabled', async ({ browser, packageName }) => {
     test.fail(!isSSRFramework(packageName));
+    test.fail(
+      packageName === 'angular-ssr',
+      'We are using ngOnInit to set props so we need JS enabled.'
+    );
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
