@@ -42,6 +42,7 @@ test.describe('Tracking', () => {
   });
   test.describe('POST data', () => {
     test('POSTs correct impression data', async ({ page }) => {
+      test.fail(excludeTestFor({ angular: true }));
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         request =>

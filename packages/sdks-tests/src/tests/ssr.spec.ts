@@ -14,6 +14,10 @@ test.describe('SSR', () => {
 
   test('js disabled', async ({ browser, packageName }) => {
     test.fail(!isSSRFramework(packageName));
+    test.fail(
+      packageName === 'angular-ssr',
+      'We are using ngOnInit to set props so we need JS enabled.'
+    );
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
