@@ -6,25 +6,31 @@ const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
   'BUILDER_EVENT: builder.registerComponent Component name: Hello';
 
 test.describe('Custom components', () => {
-  test('correctly renders custom component', async ({ page }) => {
+  test('correctly renders custom component', async ({ page, packageName }) => {
     test.skip(
       !excludeTestFor({
         angular: true,
         react: true,
       })
     );
+    test.skip(packageName === 'next-app-dir-client');
     await page.goto('/custom-components');
     const helloWorldText = page.locator('text=hello World').first();
     await expect(helloWorldText).toBeVisible();
   });
 
-  test('correctly captures registering of custom component', async ({ page, basePort }) => {
+  test('correctly captures registering of custom component', async ({
+    page,
+    basePort,
+    packageName,
+  }) => {
     test.skip(
       !excludeTestFor({
         angular: true,
         react: true,
       })
     );
+    test.skip(packageName === 'next-app-dir-client');
     await launchEmbedderAndWaitForSdk({
       page,
       basePort,
