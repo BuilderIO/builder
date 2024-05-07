@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from './helpers/index.js';
 
-test.describe('Custom components', () => {
+test.describe.only('Custom components', () => {
   test('correctly renders custom component', async ({ page }) => {
     test.skip(
       !excludeTestFor({
