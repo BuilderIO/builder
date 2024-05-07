@@ -6,6 +6,7 @@ import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import type { BuilderContent } from '../specs/types.js';
 import { test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
+import { SDK_LOADED_MSG } from './context.js';
 
 const sendContentUpdateMessage = async ({
   page,
@@ -53,6 +54,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       path: noTrustedHosts ? '/no-trusted-hosts' : '/',
       basePort,
       page,
+      messageCondition: msg => msg.text().includes(SDK_LOADED_MSG),
     });
     await sendContentUpdateMessage({ page, newContent: MODIFIED_HOMEPAGE, model: 'page' });
     await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
@@ -71,6 +73,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       path: noTrustedHosts ? '/editing-styles-no-trusted-hosts' : '/editing-styles',
       basePort,
       page,
+      messageCondition: msg => msg.text().includes(SDK_LOADED_MSG),
     });
     const btn1 = page.frameLocator('iframe').getByRole('link');
     await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
@@ -96,7 +99,12 @@ test.describe('Visual Editing', () => {
         packageName === 'gen1-remix'
     );
 
-    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+    await launchEmbedderAndWaitForSdk({
+      path: '/columns',
+      basePort,
+      page,
+      messageCondition: msg => msg.text().includes(SDK_LOADED_MSG),
+    });
     await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
@@ -109,7 +117,12 @@ test.describe('Visual Editing', () => {
     test('correctly updates', async ({ page, packageName, basePort }) => {
       test.skip(packageName !== 'react', 'This test is only implemented for React');
 
-      await launchEmbedderAndWaitForSdk({ path: '/data-preview', basePort, page });
+      await launchEmbedderAndWaitForSdk({
+        path: '/data-preview',
+        basePort,
+        page,
+        messageCondition: msg => msg.text().includes(SDK_LOADED_MSG),
+      });
 
       await page.frameLocator('iframe').getByText('coffee name: Epoch Chemistry').waitFor();
       await page.frameLocator('iframe').getByText('coffee info: Local coffee brand.').waitFor();

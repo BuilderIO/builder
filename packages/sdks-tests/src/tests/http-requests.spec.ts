@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import { EXCLUDE_GEN_1, excludeTestFor, test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
+import { SDK_LOADED_MSG } from './context.js';
 
 test.describe('HTTP Requests', () => {
   test('call proxy API only once - in page', async ({ page, packageName }) => {
@@ -68,6 +69,7 @@ test.describe('HTTP Requests', () => {
       basePort,
       path: '/http-requests',
       gotoOptions: { waitUntil: 'networkidle' },
+      messageCondition: msg => msg.text().includes(SDK_LOADED_MSG),
     });
 
     await expect(page.frameLocator('iframe').getByText('foo')).toBeVisible();
