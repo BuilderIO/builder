@@ -8,6 +8,7 @@ import {
 import { getProps } from '@e2e/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
+import Hello from '@/components/Hello';
 
 interface MyPageProps {
   params: {
@@ -40,6 +41,11 @@ export default async function Page(props: MyPageProps) {
     <Content
       {...builderProps}
       customComponents={[
+        {
+          component: Hello,
+          name: 'Hello',
+          inputs: [],
+        },
         {
           ...componentInfo,
           component: MyTextBox,

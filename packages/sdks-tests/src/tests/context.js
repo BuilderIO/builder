@@ -3,4 +3,4 @@ export const targetContext = {
 };
 
 export const EMBEDDER_PORT = 9999;
-export const SDK_LOADED_MSG = 'EMBEDDER MESSAGE: SDK IS LOADED.';
+export const SDK_LOADED_MSG = 'BUILDER_EVENT: builder.sdkInfo';
