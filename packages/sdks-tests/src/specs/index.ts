@@ -43,6 +43,7 @@ import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
+import { CUSTOM_COMPONENTS } from './custom-components.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -101,6 +102,7 @@ const PAGES = {
   '/css-properties': CSS_PROPERTIES,
   '/hover-animation': HOVER_ANIMATION,
   '/tabs': TABS,
+  '/custom-components': CUSTOM_COMPONENTS,
 } as const;
 
 const apiVersionPathToProp = {

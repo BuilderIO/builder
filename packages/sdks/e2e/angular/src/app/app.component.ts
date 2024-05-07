@@ -7,6 +7,7 @@ import {
   getBuilderSearchParams,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@e2e/tests';
+import { HelloComponent } from './hello.component';
 
 interface BuilderProps {
   apiVersion: string;
@@ -26,6 +27,7 @@ interface BuilderProps {
       [apiKey]="apiKey"
       [trustedHosts]="trustedHosts"
       [canTrack]="canTrack"
+      [customComponents]="customComponents"
     ></content-variants>
   `,
 })
@@ -37,6 +39,14 @@ export class AppComponent {
   apiKey: BuilderProps['apiKey'] = 'abcd';
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
+
+  customComponents = [
+    {
+      component: HelloComponent,
+      name: 'Hello',
+      inputs: [],
+    },
+  ];
 
   constructor(private cdr: ChangeDetectorRef) {}
 

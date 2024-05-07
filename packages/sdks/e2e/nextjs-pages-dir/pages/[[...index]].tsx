@@ -7,6 +7,7 @@ import type {
   InferGetStaticPropsType,
 } from 'next';
 import React from 'react';
+import Hello from '../components/Hello';
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
   return {
@@ -36,7 +37,20 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Page(props: PageProps & { apiVersion: any }) {
   return (
     <HydrationOverlay>
-      {props ? <Content {...props} /> : <div>Content Not Found</div>}
+      {props ? (
+        <Content
+          {...props}
+          customComponents={[
+            {
+              name: 'Hello',
+              component: Hello,
+              inputs: [],
+            },
+          ]}
+        />
+      ) : (
+        <div>Content Not Found</div>
+      )}
     </HydrationOverlay>
   );
 }
