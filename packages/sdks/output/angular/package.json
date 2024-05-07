@@ -4,7 +4,6 @@
   "files": [
     "lib"
   ],
-  "private": true,
   "scripts": {
     "release": "npm publish",
     "build-inline-fns": "echo 'not implemented yet'",
