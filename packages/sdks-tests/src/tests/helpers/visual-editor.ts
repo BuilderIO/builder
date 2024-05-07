@@ -1,5 +1,5 @@
-import type { ConsoleMessage, Page } from '@playwright/test';
-import { EMBEDDER_PORT } from '../context.js';
+import type { Page } from '@playwright/test';
+import { EMBEDDER_PORT, SDK_LOADED_MSG } from '../context.js';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>
@@ -10,15 +10,13 @@ export const launchEmbedderAndWaitForSdk = async ({
   basePort,
   path,
   gotoOptions,
-  messageCondition,
 }: {
   page: Page;
   basePort: number;
   path: string;
   gotoOptions?: Parameters<Page['goto']>[1];
-  messageCondition: (msg: ConsoleMessage) => any;
 }) => {
-  const msgPromise = page.waitForEvent('console', msg => messageCondition(msg));
+  const msgPromise = page.waitForEvent('console', msg => msg.text().includes(SDK_LOADED_MSG));
   await page.goto(getEmbeddedServerURL(path, basePort), gotoOptions);
-  return await msgPromise;
+  await msgPromise;
 };

@@ -31,11 +31,14 @@ test.describe('Custom components', () => {
       })
     );
     test.skip(packageName === 'next-app-dir-client');
+    const customComponentMsgPromise = page.waitForEvent('console', msg =>
+      msg.text().includes(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE)
+    );
     await launchEmbedderAndWaitForSdk({
       page,
       basePort,
       path: '/custom-components',
-      messageCondition: msg => msg.text().includes(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE),
     });
+    await customComponentMsgPromise;
   });
 });
