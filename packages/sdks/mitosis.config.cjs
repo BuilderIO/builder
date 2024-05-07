@@ -616,6 +616,36 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   },
 });
 
+// required for registering custom components properly
+const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('content-component, ContentComponent')) {
+        const registeredComponentsCode = code.match(
+          /registeredComponents = \[.*\);/s
+        );
+        const builderContextSignalCode = code.match(
+          /builderContextSignal = \{.*\};/s
+        );
+
+        // add them to ngOnInit
+        code = code.replace(
+          // last } before the end of the class
+          /}\n\s*$/,
+          `
+            ngOnInit() {
+              this.${registeredComponentsCode}
+              this.${builderContextSignalCode}
+            }
+          }
+          `
+        );
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -641,6 +671,7 @@ module.exports = {
         ANGULAR_BLOCKS_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
+        ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
       ],
     },
     solid: {
