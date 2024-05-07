@@ -96,11 +96,7 @@ test.describe('Visual Editing', () => {
         packageName === 'gen1-remix'
     );
 
-    await launchEmbedderAndWaitForSdk({
-      path: '/columns',
-      basePort,
-      page,
-    });
+    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
     await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
@@ -113,11 +109,7 @@ test.describe('Visual Editing', () => {
     test('correctly updates', async ({ page, packageName, basePort }) => {
       test.skip(packageName !== 'react', 'This test is only implemented for React');
 
-      await launchEmbedderAndWaitForSdk({
-        path: '/data-preview',
-        basePort,
-        page,
-      });
+      await launchEmbedderAndWaitForSdk({ path: '/data-preview', basePort, page });
 
       await page.frameLocator('iframe').getByText('coffee name: Epoch Chemistry').waitFor();
       await page.frameLocator('iframe').getByText('coffee info: Local coffee brand.').waitFor();
