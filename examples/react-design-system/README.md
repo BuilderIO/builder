@@ -28,6 +28,12 @@ cd examples/react-design-system
 npm install
 ```
 
+### Install the Builder CLI
+
+```
+npm install @builder.io/cli -g
+```
+
 ### Generate your Builder.io space
 
 <!-- TODO: link "private key" to a forum post or doc showing how to create that -->
