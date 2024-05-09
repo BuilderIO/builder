@@ -22,6 +22,10 @@ import { CommonModule } from '@angular/common';
   `,
   standalone: true,
   imports: [CommonModule],
+  styles: [
+    ':host { display: contents; }',
+    '.props-blocks-wrapper { display: flex; flex-direction: column; align-items: stretch; }',
+  ],
 })
 export default class DynamicDiv {
   @Input() attributes: any;
