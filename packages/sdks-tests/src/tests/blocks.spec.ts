@@ -58,6 +58,7 @@ test.describe('Blocks', () => {
    * TO-DO: re-enable it once we have a way to mock network requests.
    */
   test('Image', async ({ page, sdk }) => {
+    test.skip(checkIsRN(sdk));
     const mockImgPath = path.join(__dirname, '..', '..', 'mocks', 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
     await page.goto('/image');
