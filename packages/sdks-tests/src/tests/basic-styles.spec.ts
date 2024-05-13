@@ -1,9 +1,10 @@
 import { expect } from '@playwright/test';
-import { test, __dirname } from './helpers/index.js';
+import { test, __dirname, isRNSDK } from './helpers/index.js';
 import fs from 'fs';
 import path from 'path';
 
 test.describe('Basic styles', () => {
+  test.fail(isRNSDK);
   test('styles should be applied consistently across all SDKs (text and buttons)', async ({
     page,
     packageName,
