@@ -72,7 +72,6 @@ test.describe('Blocks', () => {
     );
     const mockImgPath = path.join(__dirname, '..', '..', 'mocks', 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
-    await page.goto('/image');
 
     await page.route('**/*', route => {
       const request = route.request();
@@ -86,6 +85,8 @@ test.describe('Blocks', () => {
         return route.continue();
       }
     });
+
+    await page.goto('/image');
 
     const imageLocator = page.locator('.builder-image');
 
