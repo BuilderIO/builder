@@ -12,7 +12,7 @@ test.describe('Basic styles', () => {
     test.skip(packageName === 'react-native');
     await page.goto('/basic-styles');
 
-    const button = await page.waitForSelector('button', { timeout: 10000 });
+    const button = page.getByRole('button', { name: 'Click Me!' });
 
     const buttonWidth = await button.evaluate(el => el.getBoundingClientRect().width);
     expect(buttonWidth).toBe(1264);
