@@ -47,7 +47,8 @@ test.describe('Basic styles', () => {
     await page.goto('/basic-styles');
 
     const builderBox = await page.waitForSelector(
-      '[builder-id="builder-258a89336ec44f37a38a146e698a858a"]'
+      '[builder-id="builder-258a89336ec44f37a38a146e698a858a"]',
+      { timeout: 10000 }
     );
 
     await page.route('**/*', route => {
