@@ -3,7 +3,14 @@ import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from './helpers/index.js';
-import { excludeRn, excludeTestFor, checkIsRN, test, __dirname } from './helpers/index.js';
+import {
+  excludeRn,
+  excludeTestFor,
+  checkIsRN,
+  test,
+  __dirname,
+  isSSRFramework,
+} from './helpers/index.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk }) => {
@@ -57,8 +64,12 @@ test.describe('Blocks', () => {
    * We are temporarily skipping this test because it relies on network requests.
    * TO-DO: re-enable it once we have a way to mock network requests.
    */
-  test('Image', async ({ page, sdk }) => {
+  test('Image', async ({ page, sdk, packageName }) => {
     test.skip(checkIsRN(sdk));
+    test.skip(
+      isSSRFramework(packageName),
+      'SSR frameworks get the images from the server so page.route intercept does not work'
+    );
     const mockImgPath = path.join(__dirname, '..', '..', 'mocks', 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
     await page.goto('/image');
@@ -76,7 +87,7 @@ test.describe('Blocks', () => {
       }
     });
 
-    const imageLocator = page.locator('img');
+    const imageLocator = page.locator('.builder-image');
 
     const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.
@@ -102,8 +113,8 @@ test.describe('Blocks', () => {
         'object-fit': checkIsRN(sdk) ? 'fill' : 'contain',
       },
       {
-        width: '1880px',
-        height: '1245px',
+        width: '600px',
+        height: '400px',
       },
     ];
 
