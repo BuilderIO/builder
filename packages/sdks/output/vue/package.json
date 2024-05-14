@@ -3,7 +3,7 @@
   "description": "Builder.io SDK for Vue",
   "version": "1.0.27",
   "main": "./lib/node/index.cjs",
-  "module": "./lib/node/index.js",
+  "module": "./lib/node/index.mjs",
   "type": "module",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/vue",
   "repository": {
@@ -19,67 +19,67 @@
     "./lib/browser/style.css",
     "./lib/node/style.css",
     "./lib/edge/style.css",
-    "./lib/browser/index.js",
+    "./lib/browser/index.mjs",
     "./lib/browser/index.cjs"
   ],
   "exports": {
     "./css": "./lib/browser/style.css",
     "./nuxt": "./nuxt.js",
     "./bundle/edge": {
-      "import": "./lib/edge/index.js",
+      "import": "./lib/edge/index.mjs",
       "require": "./lib/edge/index.cjs"
     },
     "./bundle/browser": {
-      "import": "./lib/browser/index.js",
+      "import": "./lib/browser/index.mjs",
       "require": "./lib/browser/index.cjs"
     },
     "./bundle/node": {
-      "import": "./lib/node/index.js",
+      "import": "./lib/node/index.mjs",
       "require": "./lib/node/index.cjs"
     },
     ".": {
       "node": {
-        "import": "./lib/node/index.js",
+        "import": "./lib/node/index.mjs",
         "require": "./lib/node/index.cjs"
       },
       "browser": {
-        "import": "./lib/browser/index.js",
+        "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
       },
       "edge-routine": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "workerd": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "deno": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "lagon": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "netlify": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "edge-light": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "bun": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "electron": {
-        "import": "./lib/node/index.js",
+        "import": "./lib/node/index.mjs",
         "require": "./lib/node/index.cjs"
       },
       "default": {
-        "import": "./lib/browser/index.js",
+        "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
       }
     }
