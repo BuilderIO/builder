@@ -9,6 +9,7 @@
     "packages/core",
     "packages/react-tests/*",
     "packages/sdks/e2e/*",
+    "packages/sdks/snippets/*",
     "packages/sdks/output/*"
   ],
   "devDependencies": {
