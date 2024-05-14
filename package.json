@@ -9,7 +9,8 @@
     "packages/core",
     "packages/react-tests/*",
     "packages/sdks/e2e/*",
-    "packages/sdks/output/*"
+    "packages/sdks/output/*",
+    "packages/sdks/examples/*"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
