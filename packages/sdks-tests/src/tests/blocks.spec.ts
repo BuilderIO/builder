@@ -60,10 +60,7 @@ test.describe('Blocks', () => {
 
     await expect(button).toHaveCSS('background-color', 'rgb(0, 0, 0)');
   });
-  /**
-   * We are temporarily skipping this test because it relies on network requests.
-   * TO-DO: re-enable it once we have a way to mock network requests.
-   */
+
   test('Image', async ({ page, sdk, packageName }) => {
     test.skip(checkIsRN(sdk));
     test.skip(

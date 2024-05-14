@@ -44,12 +44,6 @@ test.describe('Basic styles', () => {
   }) => {
     const mockImgPath = path.join(__dirname, '..', '..', 'mocks', 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
-    await page.goto('/basic-styles');
-
-    const builderBox = await page.waitForSelector(
-      '[builder-id="builder-258a89336ec44f37a38a146e698a858a"]',
-      { timeout: 10000 }
-    );
 
     await page.route('**/*', route => {
       const request = route.request();
@@ -63,6 +57,16 @@ test.describe('Basic styles', () => {
         return route.continue();
       }
     });
+
+    await page.goto('/basic-styles');
+
+    const builderBox = await page
+      .locator('[builder-id="builder-258a89336ec44f37a38a146e698a858a"]')
+      .elementHandle();
+
+    if (!builderBox) {
+      throw new Error('Builder box not found');
+    }
 
     const children = await builderBox.$$('div[builder-id]');
 
