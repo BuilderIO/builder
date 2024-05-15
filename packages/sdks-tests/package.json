@@ -14,10 +14,7 @@
   "main": "./dist/src/index.js",
   "module": "./dist/src/index.js",
   "exports": {
-    "./shared.config": "./dist/shared.config.js",
-    "./shared.config.js": "./dist/shared.config.js",
-    ".": "./dist/src/index.js",
-    "./*": "./dist/src/*.js"
+    ".": "./dist/src/index.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.37.1",
