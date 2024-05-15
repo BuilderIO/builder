@@ -40,7 +40,7 @@ export default function Accordion(props: AccordionProps) {
             bubbles: true,
             cancelable: false,
             detail: {
-              ref: Accordion,
+              ref: divRef,
             },
           })
         );
