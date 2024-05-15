@@ -189,5 +189,5 @@ export const getClassSelector = (className: string, sdk: Sdk) => {
   return checkIsRN(sdk) ? `[data-class*=${className}]` : `.${className}`;
 };
 
-const __filename = fileURLToPath(import.meta.url);
-export const __dirname = path.dirname(__filename);
+const currentFilename = fileURLToPath(import.meta.url);
+export const currentDirname = path.dirname(currentFilename);

@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test, __dirname, isRNSDK } from './helpers/index.js';
+import { test, currentDirname, isRNSDK } from './helpers/index.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -42,7 +42,7 @@ test.describe('Basic styles', () => {
   test('Box with flex-direction row should have children aligned horizontally', async ({
     page,
   }) => {
-    const mockImgPath = path.join(__dirname, '..', '..', 'mocks', 'placeholder-img.png');
+    const mockImgPath = path.join(currentDirname, '..', '..', 'mocks', 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
 
     await page.route('**/*', route => {
@@ -60,21 +60,15 @@ test.describe('Basic styles', () => {
 
     await page.goto('/basic-styles');
 
-    const builderBox = await page
+    const builderBoxChildren = page
       .locator('[builder-id="builder-258a89336ec44f37a38a146e698a858a"]')
-      .elementHandle();
+      .locator('div[builder-id]');
 
-    if (!builderBox) {
-      throw new Error('Builder box not found');
-    }
+    expect(await builderBoxChildren.count()).toBe(3);
 
-    const children = await builderBox.$$('div[builder-id]');
-
-    expect(children.length).toBe(3);
-
-    const firstChild = children[0];
-    const secondChild = children[1];
-    const thirdChild = children[2];
+    const firstChild = builderBoxChildren.nth(0);
+    const secondChild = builderBoxChildren.nth(1);
+    const thirdChild = builderBoxChildren.nth(2);
 
     const firstChildRight = await firstChild.evaluate(el => el.getBoundingClientRect().right);
     const secondChildLeft = await secondChild.evaluate(el => el.getBoundingClientRect().left);
