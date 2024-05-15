@@ -1,3 +1,5 @@
+<!-- Quickstart snippet -->
+
 <script setup lang="ts">
 import type { BuilderContent } from '@builder.io/sdk-vue';
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
