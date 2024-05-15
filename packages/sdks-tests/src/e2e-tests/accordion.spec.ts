@@ -12,14 +12,14 @@ test.describe('Accordion', () => {
     await page.goto('/accordion');
 
     for (let i = 1; i <= 3; i++) {
-      await page.locator(`text=Item ${i}`).click();
+      await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
     }
   });
   test('Accordion opens', async ({ page }) => {
     await page.goto('/accordion');
 
     for (let i = 1; i <= 3; i++) {
-      await page.locator(`text=Item ${i}`).click();
+      await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
       expect(await page.locator(`text=Inside Item ${i}`).isVisible()).toBeTruthy();
     }
   });
@@ -27,9 +27,9 @@ test.describe('Accordion', () => {
     await page.goto('/accordion');
 
     for (let i = 1; i <= 3; i++) {
-      await page.locator(`text=Item ${i}`).click();
+      await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
       expect(await page.locator(`text=Inside Item ${i}`).isVisible()).toBeTruthy();
-      await page.getByText(`Item ${i}`, { exact: true }).click();
+      await page.getByText(`Item ${i}`, { exact: true }).click({ timeout: 10000 });
       expect(await page.locator(`text=Inside Item ${i}`).isVisible()).toBeFalsy();
     }
   });
