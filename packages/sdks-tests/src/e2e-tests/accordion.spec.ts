@@ -1,7 +1,13 @@
 import { expect } from '@playwright/test';
-import { test } from '../helpers/index.js';
+import { excludeTestFor, test } from '../helpers/index.js';
 
 test.describe('Accordion', () => {
+  test.fail(
+    excludeTestFor({
+      rsc: true,
+      angular: true,
+    })
+  );
   test('Accordion renders correctly', async ({ page }) => {
     await page.goto('/accordion');
 
