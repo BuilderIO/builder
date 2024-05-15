@@ -4,11 +4,12 @@ import { test } from '../helpers/index.js';
 test.describe('Accordion', () => {
   test('Accordion renders correctly', async ({ page }) => {
     await page.goto('/accordion');
-    expect(await page.locator('text=Item 1').isVisible()).toBeTruthy();
-    expect(await page.locator('text=Item 2').isVisible()).toBeTruthy();
-    expect(await page.locator('text=Item 3').isVisible()).toBeTruthy();
+
+    for (let i = 1; i <= 3; i++) {
+      await page.locator(`text=Item ${i}`).click();
+    }
   });
-  test('Accordion opens and closes', async ({ page }) => {
+  test('Accordion opens', async ({ page }) => {
     await page.goto('/accordion');
 
     for (let i = 1; i <= 3; i++) {
