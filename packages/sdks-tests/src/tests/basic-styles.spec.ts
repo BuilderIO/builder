@@ -64,7 +64,7 @@ test.describe('Basic styles', () => {
       .locator('[builder-id="builder-258a89336ec44f37a38a146e698a858a"]')
       .locator('div[builder-id]');
 
-    expect(await builderBoxChildren.count()).toBe(3);
+    await expect(builderBoxChildren).toHaveCount(3);
 
     const firstChild = builderBoxChildren.nth(0);
     const secondChild = builderBoxChildren.nth(1);
