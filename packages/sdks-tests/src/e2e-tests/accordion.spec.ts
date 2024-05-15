@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
-test.describe.only('Accordion', () => {
+test.describe('Accordion', () => {
   test('Accordion renders correctly', async ({ page }) => {
     await page.goto('/accordion');
     expect(await page.locator('text=Item 1').isVisible()).toBeTruthy();
