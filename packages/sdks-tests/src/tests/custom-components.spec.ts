@@ -6,12 +6,15 @@ const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
   'BUILDER_EVENT: builder.registerComponent Component name: Hello';
 
 test.describe('Custom components', () => {
-  test('correctly renders custom component', async ({ page, packageName }) => {
+  test('correctly renders custom component', async ({ page, packageName, sdk }) => {
     test.skip(
-      !excludeTestFor({
-        angular: true,
-        react: true,
-      })
+      !excludeTestFor(
+        {
+          angular: true,
+          react: true,
+        },
+        sdk
+      )
     );
     test.skip(packageName === 'next-app-dir-client');
     await page.goto('/custom-components');
@@ -23,12 +26,16 @@ test.describe('Custom components', () => {
     page,
     basePort,
     packageName,
+    sdk,
   }) => {
     test.skip(
-      !excludeTestFor({
-        angular: true,
-        react: true,
-      })
+      !excludeTestFor(
+        {
+          angular: true,
+          react: true,
+        },
+        sdk
+      )
     );
     test.skip(packageName === 'next-app-dir-client');
     const customComponentMsgPromise = page.waitForEvent('console', msg =>

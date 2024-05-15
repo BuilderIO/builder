@@ -3786,9 +3786,9 @@ __metadata:
     "@angular/platform-server": ^16.2.0
     "@angular/router": ^16.2.0
     "@builder.io/sdk-angular": "workspace:*"
-    "@sdk/tests": "workspace:*"
     "@nguniversal/builders": ^16.2.0
     "@nguniversal/express-engine": ^16.2.0
+    "@sdk/tests": "workspace:*"
     "@types/express": ^4.17.0
     "@types/jasmine": ~4.3.0
     "@types/node": ^16.11.7
@@ -3884,12 +3884,12 @@ __metadata:
   dependencies:
     "@builder.io/react": "workspace:*"
     "@builder.io/widgets": ^1.2.24
-    "@sdk/tests": "workspace:*"
     "@remix-run/dev": ^1.14.3
     "@remix-run/eslint-config": ^1.19.1
     "@remix-run/node": ^1.14.3
     "@remix-run/react": ^1.14.3
     "@remix-run/serve": ^1.14.3
+    "@sdk/tests": "workspace:*"
     "@types/react": ^18.0.25
     "@types/react-dom": ^18.0.8
     eslint: ^8.27.0
@@ -4004,10 +4004,10 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.0
     "@builder.io/sdk-react-native": "workspace:*"
-    "@sdk/tests": "workspace:*"
     "@expo/webpack-config": ^19.0.0
     "@react-navigation/native": ^6.1.9
     "@react-navigation/native-stack": ^6.9.17
+    "@sdk/tests": "workspace:*"
     "@types/react": ~18.2.14
     expo: ~49.0.15
     expo-status-bar: ~1.6.0
@@ -4114,24 +4114,6 @@ __metadata:
     tslib: ^2.4.1
     typescript: ^5.1.6
     vite: ^4.0.0
-  languageName: unknown
-  linkType: soft
-
-"@sdk/tests@workspace:*, @sdk/tests@workspace:packages/sdks-tests":
-  version: 0.0.0-use.local
-  resolution: "@sdk/tests@workspace:packages/sdks-tests"
-  dependencies:
-    "@playwright/test": ^1.37.1
-    "@types/traverse": ^0.6.32
-    "@typescript-eslint/eslint-plugin": latest
-    "@typescript-eslint/parser": latest
-    eslint: ^8.12.0
-    eslint-plugin-unused-imports: ^2.0.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
-    traverse: ^0.6.7
-    typescript: ^5.1.6
-    zod: ^3.20.2
   languageName: unknown
   linkType: soft
 
@@ -10193,6 +10175,24 @@ __metadata:
   checksum: 905285d66df42a660e37d88f26c35a962988d6489c46209ce1c47064cd740b700161fc68588447a1fa5552015ea37c0771ff552795f1bf51aec6bc94860d6beb
   languageName: node
   linkType: hard
+
+"@sdk/tests@workspace:*, @sdk/tests@workspace:packages/sdks-tests":
+  version: 0.0.0-use.local
+  resolution: "@sdk/tests@workspace:packages/sdks-tests"
+  dependencies:
+    "@playwright/test": ^1.37.1
+    "@types/traverse": ^0.6.32
+    "@typescript-eslint/eslint-plugin": latest
+    "@typescript-eslint/parser": latest
+    eslint: ^8.12.0
+    eslint-plugin-unused-imports: ^2.0.0
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
+    traverse: ^0.6.7
+    typescript: ^5.1.6
+    zod: ^3.20.2
+  languageName: unknown
+  linkType: soft
 
 "@segment/loosely-validate-event@npm:^2.0.0":
   version: 2.0.0

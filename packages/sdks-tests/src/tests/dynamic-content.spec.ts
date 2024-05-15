@@ -2,9 +2,9 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
 
 test.describe('Dynamic Content', () => {
-  test('Data Bindings', async ({ page }) => {
+  test('Data Bindings', async ({ page, sdk }) => {
     test.skip(
-      excludeTestFor({ angular: true }),
+      excludeTestFor({ angular: true }, sdk),
       'Data bindings are not working in Angular -- loads forever so skipping for now'
     );
     await page.goto('/data-bindings');

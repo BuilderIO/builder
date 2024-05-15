@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
+import { excludeTestFor, checkIsRN, test } from './helpers/index.js';
 
 const TABS_CONTENT = [
   {
@@ -19,12 +19,11 @@ const TABS_CONTENT = [
 const DEFAULT_ACTIVE_TAB = TABS_CONTENT[0];
 
 test.describe('Tabs Block', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
-  test.fail(excludeTestFor({ rsc: true }), 'Not handled in RSC.');
-
-  test('should display the default active tab content', async ({ page }) => {
+  test('should display the default active tab content', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+    test.fail(excludeTestFor({ rsc: true }, sdk), 'Not handled in RSC.');
     await page.goto('/tabs');
-    const activeTabLabel = isRNSDK
+    const activeTabLabel = checkIsRN(sdk)
       ? page.locator(`[style*="rgba(0, 0, 0, 0.1)"]`)
       : page.locator('.builder-tab-active');
     const activeTabContent = page.locator(`text=${DEFAULT_ACTIVE_TAB.content}`);
@@ -32,12 +31,15 @@ test.describe('Tabs Block', () => {
     await expect(activeTabContent).toBeVisible();
   });
 
-  test('clicking on another tab updates content', async ({ page }) => {
+  test('clicking on another tab updates content', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+    test.fail(excludeTestFor({ rsc: true }, sdk), 'Not handled in RSC.');
+
     await page.goto('/tabs');
 
     for (let i = 1; i < TABS_CONTENT.length; i++) {
       await page.click(`text=${TABS_CONTENT[i].label}`, { timeout: 10000 });
-      const activeTabLabel = isRNSDK
+      const activeTabLabel = checkIsRN(sdk)
         ? page.locator(`[style*="rgba(0, 0, 0, 0.1)"]`)
         : page.locator('.builder-tab-active');
       const activeTabContent = page.locator(`text=${TABS_CONTENT[i].content}`);

@@ -6,7 +6,8 @@
     "dev": "vite dev",
     "build": "vite build",
     "check": "NODE_ENV=browser svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "e2e": "SERVER_NAME=sveltekit yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-svelte": "workspace:*",

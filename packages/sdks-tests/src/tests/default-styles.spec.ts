@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { EXCLUDE_GEN_1, test } from './helpers/index.js';
+import { excludeGen1, test } from './helpers/index.js';
 
 // is a subset - if this selector is there then others would've also been added
 const DEFAULT_STYLES = `.builder-button {
@@ -11,9 +11,10 @@ test.describe('Default styles', () => {
   test('default styles should be present only once and not inside nested content', async ({
     page,
     packageName,
+    sdk,
   }) => {
     // dont have .builder-button class
-    test.skip(EXCLUDE_GEN_1);
+    test.skip(excludeGen1(sdk));
     test.fail(packageName === 'react-native');
     await page.goto('/default-styles');
 

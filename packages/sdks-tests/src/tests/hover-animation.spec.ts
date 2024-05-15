@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
-import { test, isOldReactSDK, isRNSDK } from './helpers/index.js';
+import { test, checkIsGen1React, checkIsRN } from './helpers/index.js';
 
 test.describe('Hover animations', () => {
-  test.fail(isRNSDK); // hover animation is not handled in react native SDK
-  test('Button should change color when hovered', async ({ page }) => {
+  test('Button should change color when hovered', async ({ page, sdk }) => {
+    test.fail(checkIsRN(sdk), 'hover animation is not handled in react native SDK');
     await page.goto('/hover-animation');
 
-    const button = isOldReactSDK ? page.locator('span') : page.locator('button');
+    const button = checkIsGen1React(sdk) ? page.locator('span') : page.locator('button');
 
     await expect(button).toHaveCSS('background-color', 'rgb(0, 0, 0)');
 

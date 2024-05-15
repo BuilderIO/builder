@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "solid-start dev",
     "build": "solid-start build",
-    "serve": "solid-start start"
+    "serve": "solid-start start",
+    "e2e": "SERVER_NAME=solid-start yarn nx test:e2e @sdk/tests"
   },
   "type": "module",
   "devDependencies": {

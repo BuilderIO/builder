@@ -1,11 +1,10 @@
 import { expect } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/slot-with-symbol.js';
-import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
-import { sdk } from './sdk.js';
+import { excludeTestFor, checkIsRN, test } from './helpers/index.js';
 
 test.describe('Slot', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Slot not working in Angular SDK');
-  test('slot should render', async ({ page, packageName }) => {
+  test('slot should render', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
@@ -13,12 +12,13 @@ test.describe('Slot', () => {
     await expect(page.locator('text=Inside a slot!!')).toBeVisible();
   });
 
-  test('slot should render in the correct place', async ({ page, packageName }) => {
+  test('slot should render in the correct place', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
     await page.goto('/slot');
-    const builderTextElements = isRNSDK
+    const builderTextElements = checkIsRN(sdk)
       ? page.locator('[data-testid="div"]')
       : page.locator('.builder-text');
 
@@ -27,7 +27,8 @@ test.describe('Slot', () => {
     await expect(slotElement).toHaveText('Inside a slot!!');
   });
 
-  test('slot should render with symbol (with content)', async ({ page, packageName }) => {
+  test('slot should render with symbol (with content)', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
@@ -36,7 +37,8 @@ test.describe('Slot', () => {
     await expect(page.locator('text=This is called recursion!')).toBeVisible();
   });
 
-  test('slot should render with symbol (without content)', async ({ page, packageName }) => {
+  test('slot should render with symbol (without content)', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // ssr packages skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'next-app-dir', 'qwik-city'].includes(packageName));

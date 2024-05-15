@@ -1,6 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, findTextInPage, isRNSDK, test } from './helpers/index.js';
-import { sdk } from './sdk.js';
+import { excludeTestFor, findTextInPage, checkIsRN, test } from './helpers/index.js';
 
 test.describe('Show If & Hide If', () => {
   test('works on static conditions', async ({ page }) => {
@@ -10,9 +9,9 @@ test.describe('Show If & Hide If', () => {
     await expect(page.locator('body')).not.toContainText('this never appears');
   });
 
-  test('works on reactive conditions', async ({ page, packageName }) => {
-    test.fail(excludeTestFor({ rsc: true }));
-    test.fail(excludeTestFor({ angular: true }), 'Angular SDK does not support this yet');
+  test('works on reactive conditions', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ rsc: true }, sdk), 'RSC SDK has no interactivity');
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular SDK does not support this yet');
 
     // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
     test.skip(
@@ -28,16 +27,16 @@ test.describe('Show If & Hide If', () => {
     await expect(page.getByText('even clicks')).toBeVisible();
     await expect(page.locator('body')).not.toContainText('odd clicks');
 
-    const button = isRNSDK ? page.locator('button') : page.getByRole('button');
+    const button = checkIsRN(sdk) ? page.locator('button') : page.getByRole('button');
     await expect(button).toBeVisible();
     await button.click();
 
     await expect(page.getByText('odd clicks')).toBeVisible();
     await expect(page.locator('body')).not.toContainText('even clicks');
   });
-  test('works with repeat elements', async ({ page, packageName }) => {
-    test.fail(excludeTestFor({ rsc: true }), 'RSC SDK has no interactivity');
-    test.fail(excludeTestFor({ angular: true }), 'Angular SDK does not support this yet');
+  test('works with repeat elements', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ rsc: true }, sdk), 'RSC SDK has no interactivity');
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular SDK does not support this yet');
 
     // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
     test.skip(

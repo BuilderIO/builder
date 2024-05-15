@@ -7,11 +7,11 @@ import type {
   TestInfo,
 } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
-import type { PackageName, Sdk } from '../sdk.js';
-import { sdk } from '../sdk.js';
+import type { ServerName, Sdk } from '../sdk.js';
 
 type TestOptions = {
-  packageName: PackageName | 'DEFAULT';
+  packageName: ServerName;
+  sdk: Sdk;
   basePort: number;
 };
 
@@ -36,9 +36,17 @@ async function screenshotOnFailure(
 
 const test = base.extend<TestOptions>({
   // this is provided by `playwright.config.ts`
-  packageName: ['DEFAULT', { option: true }],
+  packageName: ['DEFAULT' as any, { option: true }],
+  sdk: ['DEFAULT' as any, { option: true }],
   basePort: [0, { option: true }],
-  page: async ({ context, page }, use) => {
+  page: async ({ context, page, packageName, sdk }, use) => {
+    if (packageName === ('DEFAULT' as any)) {
+      throw new Error('packageName is required');
+    }
+    if (sdk === ('DEFAULT' as any)) {
+      throw new Error('sdk is required');
+    }
+
     context.on('weberror', err => {
       console.error(err.error());
       throw new Error('Failing test due to error in browser: ' + err.error());
@@ -69,7 +77,7 @@ test.afterEach(screenshotOnFailure);
 
 export { test };
 
-export const isSSRFramework = (packageName: PackageName | 'DEFAULT') => {
+export const isSSRFramework = (packageName: ServerName | 'DEFAULT') => {
   // Easier to list non-ssr than other way around.
   const isNonSSR =
     packageName === 'solid' ||
@@ -85,8 +93,8 @@ export const findTextInPage = async ({ page, text }: { page: Page; text: string 
   await page.locator(`text=${text}`).waitFor({ timeout: 10000 });
 };
 
-export const isRNSDK = sdk === 'reactNative';
-export const isOldReactSDK = sdk === 'oldReact';
+export const checkIsRN = (sdk: Sdk) => sdk === 'reactNative';
+export const checkIsGen1React = (sdk: Sdk) => sdk === 'oldReact';
 
 type SDK_EXCLUSION_DICT = {
   [X in Sdk]?: boolean;
@@ -97,7 +105,7 @@ type SDK_EXCLUSION_DICT = {
  * We use the negative tense, so that the default behavior is to run the test, unless specifically omitted.
  *
  */
-export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT | Array<Sdk>) => {
+export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT | Array<Sdk>, sdk: Sdk) => {
   const sdkIsExcluded = Array.isArray(sdks) ? sdks.includes(sdk) : sdks[sdk];
   return sdkIsExcluded || false;
 };
@@ -105,27 +113,27 @@ export const excludeTestFor = (sdks: SDK_EXCLUSION_DICT | Array<Sdk>) => {
 /**
  * We exclude some new tests from old React until we fix them.
  */
-export const EXCLUDE_GEN_1 = excludeTestFor({
-  oldReact: true,
-});
+export const excludeGen1 = (sdk: Sdk) => excludeTestFor({ oldReact: true }, sdk);
 
 /**
  * We exclude some tests from SDKs which are not from old React.
  */
-export const EXCLUDE_GEN_2 = excludeTestFor({
-  qwik: true,
-  react: true,
-  reactNative: true,
-  rsc: true,
-  solid: true,
-  svelte: true,
-  vue: true,
-  angular: true,
-});
+export const excludeGen2 = (sdk: Sdk) =>
+  excludeTestFor(
+    {
+      qwik: true,
+      react: true,
+      reactNative: true,
+      rsc: true,
+      solid: true,
+      svelte: true,
+      vue: true,
+      angular: true,
+    },
+    sdk
+  );
 
-export const EXCLUDE_RN = excludeTestFor({
-  reactNative: true,
-});
+export const excludeRn = (sdk: Sdk) => excludeTestFor({ reactNative: true }, sdk);
 
 export const getElementStyleValue = async ({
   locator,
@@ -175,6 +183,6 @@ export const checkIfIsHydrationErrorMessage = (_text: string) => {
   return filterHydrationmismatchMessages;
 };
 
-export const getClassSelector = (className: string) => {
-  return isRNSDK ? `[data-class*=${className}]` : `.${className}`;
+export const getClassSelector = (className: string, sdk: Sdk) => {
+  return checkIsRN(sdk) ? `[data-class*=${className}]` : `.${className}`;
 };

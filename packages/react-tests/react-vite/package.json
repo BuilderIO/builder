@@ -6,7 +6,8 @@
     "dev": "vite",
     "tsc": "tsc",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "e2e": "SERVER_NAME=gen1-react yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
