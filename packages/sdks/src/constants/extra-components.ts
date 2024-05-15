@@ -16,6 +16,8 @@ import { componentInfo as formSelectComponentInfo } from '../blocks/form/select/
 import { default as FormSelect } from '../blocks/form/select/index.js';
 import { componentInfo as formSubmitButtonComponentInfo } from '../blocks/form/submit-button/component-info.js';
 import { default as FormSubmitButton } from '../blocks/form/submit-button/index.js';
+import { textAreaComponentInfo } from '../blocks/form/text-area/component-info.js';
+import { default as TextArea } from '../blocks/form/text-area/index.js';
 import { componentInfo as imgComponentInfo } from '../blocks/img/component-info.js';
 import { default as Img } from '../blocks/img/index.js';
 import { componentInfo as videoComponentInfo } from '../blocks/video/component-info.js';
@@ -33,6 +35,7 @@ export const getExtraComponents: () => RegisteredComponent[] = () => [
         { component: FormInput, ...formInputComponentInfo },
         { component: FormSubmitButton, ...formSubmitButtonComponentInfo },
         { component: FormSelect, ...formSelectComponentInfo },
+        { component: TextArea, ...textAreaComponentInfo },
       ]),
   { component: Img, ...imgComponentInfo },
   { component: Video, ...videoComponentInfo },
