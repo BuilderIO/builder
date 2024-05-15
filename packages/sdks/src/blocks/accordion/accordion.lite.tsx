@@ -1,20 +1,8 @@
-import { For, Show, onMount, useRef, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block.js';
+import { For, Show, useStore, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/index.js';
-
-interface AccordionProps {
-  items: {
-    title: BuilderBlock[];
-    detail: BuilderBlock[];
-  }[];
-  oneAtATime?: boolean;
-  grid?: boolean;
-  gridRowWidth?: number;
-  useChildrenForItems?: boolean;
-}
+import type { AccordionProps } from './accordion.types.js';
 
 export default function Accordion(props: AccordionProps) {
-  const divRef = useRef<HTMLDivElement>(null);
   const state = useStore({
     open: [] as number[],
     onClick: (index: number) => {
@@ -30,27 +18,27 @@ export default function Accordion(props: AccordionProps) {
     isOpen(index: number) {
       return state.open.includes(index);
     },
-  });
-
-  onMount(() => {
-    setTimeout(() => {
-      if (divRef) {
-        divRef.dispatchEvent(
-          new CustomEvent('builder:accordion:load', {
-            bubbles: true,
-            cancelable: false,
-            detail: {
-              ref: divRef,
-            },
-          })
-        );
-      }
-    });
+    get accordionStyles() {
+      const styles = useTarget({
+        reactNative: {
+          display: 'flex' as 'flex' | 'none',
+          flexDirection: 'column' as 'row' | 'column' | 'column-reverse',
+        },
+        default: {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          cursor: 'pointer',
+        },
+      });
+      return Object.fromEntries(
+        Object.entries(styles).filter(([_, value]) => value !== undefined)
+      );
+    },
   });
 
   return (
     <div
-      ref={divRef}
       class="builder-accordion"
       style={{
         display: 'flex',
@@ -66,32 +54,39 @@ export default function Accordion(props: AccordionProps) {
       <For each={props.items}>
         {(item, index) => (
           <div key={index}>
-            <div>
+            <div
+              class={`builder-accordion-title builder-accordion-title-${
+                state.isOpen(index) ? 'open' : 'closed'
+              }`}
+              style={state.accordionStyles}
+              data-index={index}
+              onClick={() => state.onClick(index)}
+            >
+              <Blocks
+                blocks={item.title}
+                path={`items.${index}.title`}
+                parent={props.builderBlock.id}
+                context={props.builderContext}
+                registeredComponents={props.builderComponents}
+                linkComponent={props.builderLinkComponent}
+              />
+            </div>
+            <Show when={state.isOpen(index)}>
               <div
-                class={`builder-accordion-title builder-accordion-title-${
+                class={`builder-accordion-detail builder-accordion-detail-${
                   state.isOpen(index) ? 'open' : 'closed'
                 }`}
-                style={{
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'stretch',
-                }}
-                data-index={index}
-                onClick={() => state.onClick(index)}
               >
-                <Blocks blocks={item.title} path={`items.${index}.title`} />
+                <Blocks
+                  blocks={item.detail}
+                  path={`items.${index}.detail`}
+                  parent={props.builderBlock.id}
+                  context={props.builderContext}
+                  registeredComponents={props.builderComponents}
+                  linkComponent={props.builderLinkComponent}
+                />
               </div>
-              <Show when={state.isOpen(index)}>
-                <div
-                  class={`builder-accordion-detail builder-accordion-detail-${
-                    state.isOpen(index) ? 'open' : 'closed'
-                  }`}
-                >
-                  <Blocks blocks={item.detail} path={`items.${index}.detail`} />
-                </div>
-              </Show>
-            </div>
+            </Show>
           </div>
         )}
       </For>

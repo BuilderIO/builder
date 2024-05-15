@@ -1,6 +1,14 @@
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type {
+  BuilderComponentsProp,
+  BuilderDataProps,
+  BuilderLinkComponentProp,
+} from '../../types/builder-props.js';
 
-export interface AccordionProps {
+export interface AccordionProps
+  extends BuilderComponentsProp,
+    BuilderLinkComponentProp,
+    BuilderDataProps {
   items: {
     title: BuilderBlock[];
     detail: BuilderBlock[];
@@ -8,7 +16,6 @@ export interface AccordionProps {
   oneAtATime?: boolean;
   grid?: boolean;
   defaultOpen?: number;
-  builderBlock?: BuilderBlock;
   gridRowWidth?: number;
   useChildrenForItems?: boolean;
 }
