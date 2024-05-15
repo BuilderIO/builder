@@ -20,7 +20,7 @@ test.describe('Accordion', () => {
 
     for (let i = 1; i <= 3; i++) {
       await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
-      expect(await page.locator(`text=Inside Item ${i}`).isVisible()).toBeTruthy();
+      await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible();
     }
   });
   test('Content is hidden when accordion is closed', async ({ page }) => {
@@ -28,9 +28,9 @@ test.describe('Accordion', () => {
 
     for (let i = 1; i <= 3; i++) {
       await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
-      expect(await page.locator(`text=Inside Item ${i}`).isVisible()).toBeTruthy();
+      await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible();
       await page.getByText(`Item ${i}`, { exact: true }).click({ timeout: 10000 });
-      expect(await page.locator(`text=Inside Item ${i}`).isVisible()).toBeFalsy();
+      await expect(page.locator(`text=Inside Item ${i}`)).not.toBeVisible();
     }
   });
 });
