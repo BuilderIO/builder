@@ -99,6 +99,46 @@ jobs:
           path: packages/sdks-tests/playwright-report/
           retention-days: 30
 
+  sdks-snippets:
+    name: Gen 2 SDK Snippets
+    runs-on: ubuntu-latest
+
+    strategy:
+      # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
+      fail-fast: false
+      matrix:
+        snippet: ['vue', 'nuxt']
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
+
+      - name: Build Snippet
+        run: yarn nx build @snippet/${{ matrix.snippet }}
+
+      - name: Run E2E tests
+        run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.snippet }}
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v3
+        # Only upload the report if the tests failed
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.snippet }}-snippet-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
+
   gen1-sdk-core:
     name: Gen 1 SDK Core
     runs-on: ubuntu-latest
