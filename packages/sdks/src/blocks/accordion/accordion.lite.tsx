@@ -1,6 +1,6 @@
 import { For, Show, onMount, useRef, useStore } from '@builder.io/mitosis';
-import type { BuilderBlock } from '../../types/builder-block';
-import Blocks from '../../components/blocks';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import Blocks from '../../components/blocks/index.js';
 
 interface AccordionProps {
   items: {
