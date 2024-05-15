@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-svelte": "workspace:*",
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.3",

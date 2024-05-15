@@ -1,6 +1,6 @@
 import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
 import { Content, _processContentResult } from '@builder.io/sdk-react';
-import { getAllPathnames, getProps } from '@e2e/tests';
+import { getAllPathnames, getProps } from '@sdk/tests';
 import type {
   GetStaticPathsResult,
   GetStaticPropsContext,

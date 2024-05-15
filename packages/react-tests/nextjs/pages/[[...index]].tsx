@@ -1,5 +1,5 @@
 import { BuilderComponent, builder } from '@builder.io/react';
-import { getAPIKey, getAllPathnames, getProps } from '@e2e/tests';
+import { getAPIKey, getAllPathnames, getProps } from '@sdk/tests';
 import type { GetStaticPathsResult, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';

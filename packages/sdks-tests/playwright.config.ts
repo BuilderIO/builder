@@ -97,7 +97,7 @@ export default defineConfig({
     })
     .concat([
       {
-        command: `PORT=${EMBEDDER_PORT} yarn workspace @e2e/tests run-embedder`,
+        command: `PORT=${EMBEDDER_PORT} yarn workspace @sdk/tests run-embedder`,
         port: EMBEDDER_PORT,
         reuseExistingServer: false,
       },

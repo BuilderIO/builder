@@ -125,10 +125,7 @@ jobs:
           cache-install-state: true
 
       - name: Build Snippet
-        run: yarn nx build @snippet/${{ matrix.snippet }}
-
-      - name: Run E2E tests
-        run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.snippet }}
+        run: yarn nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3

@@ -1,5 +1,5 @@
 {
-  "name": "@e2e/tests",
+  "name": "@sdk/tests",
   "description": "Workspace containing e2e tests for SDKs",
   "private": true,
   "scripts": {
@@ -7,6 +7,8 @@
     "dev": "tsc -w",
     "lint": "eslint --ext .ts,.tsx ./src/",
     "test": "playwright test",
+    "test:e2e": "TYPE=e2e yarn test",
+    "test:snippet": "TYPE=snippet yarn test",
     "run-embedder": "node embedder/index.js",
     "install-playwright": "playwright install chromium --with-deps"
   },

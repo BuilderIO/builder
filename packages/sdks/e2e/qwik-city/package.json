@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "@builder.io/sdk-qwik": "workspace:*",
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 import { _processContentResult } from '@builder.io/sdk-svelte';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ url }) {

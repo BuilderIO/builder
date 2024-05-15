@@ -1,5 +1,5 @@
 import { BuilderComponent, builder } from '@builder.io/react';
-import { getAPIKey, getProps } from '@e2e/tests';
+import { getAPIKey, getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';

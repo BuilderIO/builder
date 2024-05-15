@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "@solidjs/meta": "^0.29.1",
     "@solidjs/router": "^0.8.3",
     "solid-js": "^1.8.5",

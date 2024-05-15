@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "SNIPPET=vue yarn nx test:snippet @sdk/tests",
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
@@ -23,5 +24,14 @@
     "typescript": "~5.4.0",
     "vite": "^5.2.8",
     "vue-tsc": "^2.0.11"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
+    }
   }
 }

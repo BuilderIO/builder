@@ -4,7 +4,7 @@ import {
   fetchOneEntry,
   getBuilderSearchParams,
 } from '@builder.io/sdk-react/edge';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 
 interface PageProps {
   params: {

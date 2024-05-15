@@ -4,7 +4,7 @@ import {
   fetchOneEntry,
   subscribeToEditor,
 } from '@builder.io/sdk-react';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 import Hello from './components/Hello';
 
