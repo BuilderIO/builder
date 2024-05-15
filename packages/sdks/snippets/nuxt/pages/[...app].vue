@@ -1,9 +1,8 @@
+<!-- Quickstart snippet -->
+<!-- snippet/nuxt/pages/[...app].vue -->
+
 <script setup>
-import {
-  Content,
-  _processContentResult,
-  fetchOneEntry,
-} from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import { ref } from 'vue';
 
 const route = useRoute();
@@ -22,7 +21,7 @@ const { data: content } = await useAsyncData('builderData', () =>
   })
 );
 
-canShowContent.value = content.value ? true : isPreviewing();
+canShowContent.value = content.value ? true : isPreviewing(route.path);
 </script>
 
 <template>
