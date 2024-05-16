@@ -190,4 +190,5 @@ export const getClassSelector = (className: string, sdk: Sdk) => {
 };
 
 const currentFilename = fileURLToPath(import.meta.url);
-export const currentDirname = path.dirname(currentFilename);
+const currentDirname = path.dirname(currentFilename);
+export const mockFolderPath = path.join(currentDirname, '..', 'mocks');

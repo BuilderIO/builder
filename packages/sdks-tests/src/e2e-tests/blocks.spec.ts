@@ -8,8 +8,8 @@ import {
   excludeTestFor,
   checkIsRN,
   test,
-  currentDirname,
   isSSRFramework,
+  mockFolderPath,
 } from '../helpers/index.js';
 
 test.describe('Blocks', () => {
@@ -67,7 +67,7 @@ test.describe('Blocks', () => {
       isSSRFramework(packageName),
       'SSR frameworks get the images from the server so page.route intercept does not work'
     );
-    const mockImgPath = path.join(currentDirname, '..', '..', 'mocks', 'placeholder-img.png');
+    const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
 
     await page.route('**/*', route => {
@@ -132,7 +132,7 @@ test.describe('Blocks', () => {
   test.describe('Video', () => {
     test('video render and styles', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      const mockVideoPath = path.join(currentDirname, '..', '..', 'mocks', 'video.mp4');
+      const mockVideoPath = path.join(mockFolderPath, 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
       await page.route('**/*', route => {
@@ -198,7 +198,7 @@ test.describe('Blocks', () => {
 
     test('video children', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      const mockVideoPath = path.join(currentDirname, '..', '..', 'mocks', 'video.mp4');
+      const mockVideoPath = path.join(mockFolderPath, 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
       await page.route('**/*', route => {

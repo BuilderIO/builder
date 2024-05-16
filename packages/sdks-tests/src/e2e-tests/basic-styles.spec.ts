@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test, currentDirname, checkIsRN } from '../helpers/index.js';
+import { test, checkIsRN, mockFolderPath } from '../helpers/index.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -43,7 +43,7 @@ test.describe('Basic styles', () => {
     sdk,
   }) => {
     test.fail(checkIsRN(sdk));
-    const mockImgPath = path.join(currentDirname, '..', '..', 'mocks', 'placeholder-img.png');
+    const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
 
     await page.route('**/*', route => {
