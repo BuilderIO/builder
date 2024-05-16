@@ -6,11 +6,9 @@ import path from 'path';
 test.describe('Basic styles', () => {
   test('styles should be applied consistently across all SDKs (text and buttons)', async ({
     page,
-    packageName,
     sdk,
   }) => {
     test.fail(checkIsRN(sdk));
-    test.skip(packageName === 'react-native');
     await page.goto('/basic-styles');
 
     const button = page.getByRole('button', { name: 'Click Me!' });
