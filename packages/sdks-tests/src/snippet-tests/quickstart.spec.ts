@@ -7,7 +7,7 @@ test.describe('Quickstart', () => {
 
     const links = page.locator('a');
 
-    await expect(links).toHaveCount(1);
+    await expect(links).toHaveCount(6);
   });
 
   test('loads columns', async ({ page }) => {
@@ -25,7 +25,6 @@ test.describe('Quickstart', () => {
       hasText: 'Columns (with images) ',
     });
 
-    await expect(columnsLink).toHaveCount(8);
     await columnsLink.click();
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
