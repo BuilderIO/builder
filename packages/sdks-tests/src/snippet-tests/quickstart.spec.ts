@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { findTextInPage, test } from '../helpers/index.js';
 
 test.describe('Quickstart', () => {
-  test('Loads content', async ({ page }) => {
+  test('loads homepage', async ({ page }) => {
     await page.goto('/');
 
     const links = page.locator('a');
@@ -10,7 +10,13 @@ test.describe('Quickstart', () => {
     await expect(links).toHaveCount(1);
   });
 
-  test('navigates to columns', async ({ page }) => {
+  test('loads columns', async ({ page }) => {
+    await page.goto('/columns');
+
+    await findTextInPage({ page, text: 'Stack at tablet' });
+  });
+
+  test('loads homepage and navigates to columns', async ({ page }) => {
     await page.goto('/');
 
     const links = page.locator('a');
