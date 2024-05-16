@@ -44,6 +44,7 @@ import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
+import { BASIC_STYLES } from './basic-styles.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -103,6 +104,7 @@ const PAGES = {
   '/hover-animation': HOVER_ANIMATION,
   '/tabs': TABS,
   '/custom-components': CUSTOM_COMPONENTS,
+  '/basic-styles': BASIC_STYLES,
 } as const;
 
 const apiVersionPathToProp = {

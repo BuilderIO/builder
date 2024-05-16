@@ -8,6 +8,8 @@ import type {
 } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
 import type { ServerName, Sdk } from '../sdk.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 type TestOptions = {
   packageName: ServerName;
@@ -186,3 +188,6 @@ export const checkIfIsHydrationErrorMessage = (_text: string) => {
 export const getClassSelector = (className: string, sdk: Sdk) => {
   return checkIsRN(sdk) ? `[data-class*=${className}]` : `.${className}`;
 };
+
+const currentFilename = fileURLToPath(import.meta.url);
+export const currentDirname = path.dirname(currentFilename);
