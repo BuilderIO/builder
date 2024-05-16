@@ -2,12 +2,12 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, test } from './helpers/index.js';
 
 test.describe('Form', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
-  test.skip(
-    excludeTestFor({ reactNative: true, rsc: true }),
-    'Form not implemented in React Native and NextJS SDKs.'
-  );
-  test('Form rendering correctly', async ({ page }) => {
+  test('Form rendering correctly', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+    test.skip(
+      excludeTestFor({ reactNative: true, rsc: true }, sdk),
+      'Form not implemented in React Native and NextJS SDKs.'
+    );
     await page.goto('/form');
 
     const form = page.locator('form');

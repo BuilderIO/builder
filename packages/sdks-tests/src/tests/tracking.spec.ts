@@ -1,10 +1,10 @@
 import { expect } from '@playwright/test';
 import {
-  EXCLUDE_GEN_1,
-  EXCLUDE_RN,
+  excludeGen1,
+  excludeRn,
   excludeTestFor,
   getBuilderSessionIdCookie,
-  isRNSDK,
+  checkIsRN,
   test,
 } from './helpers/index.js';
 
@@ -22,9 +22,9 @@ test.describe('Tracking', () => {
       const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
-    test('appear by default', async ({ page, context }) => {
-      test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
-      test.fail(EXCLUDE_RN);
+    test('appear by default', async ({ page, context, sdk }) => {
+      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+      test.fail(excludeRn(sdk));
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST',
@@ -41,8 +41,8 @@ test.describe('Tracking', () => {
     });
   });
   test.describe('POST data', () => {
-    test('POSTs correct impression data', async ({ page }) => {
-      test.fail(excludeTestFor({ angular: true }));
+    test('POSTs correct impression data', async ({ page, sdk }) => {
+      test.fail(excludeTestFor({ angular: true }, sdk));
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         request =>
@@ -69,7 +69,7 @@ test.describe('Tracking', () => {
         ],
       };
 
-      if (isRNSDK) {
+      if (checkIsRN(sdk)) {
         expected.events[0].data.userAttributes.device = 'mobile';
       }
 
@@ -80,15 +80,15 @@ test.describe('Tracking', () => {
       expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
       expect(data.events[0].data.ownerId).toMatch(/abcd/);
 
-      if (!isRNSDK) {
+      if (!checkIsRN(sdk)) {
         expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
         expect(data.events[0].data.userAttributes.urlPath).toBe('/');
         expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
       }
     });
 
-    test('POSTs correct click data', async ({ page }) => {
-      test.skip(EXCLUDE_GEN_1);
+    test('POSTs correct click data', async ({ page, sdk }) => {
+      test.skip(excludeGen1(sdk));
       await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
@@ -120,7 +120,7 @@ test.describe('Tracking', () => {
         ],
       };
 
-      if (isRNSDK) {
+      if (checkIsRN(sdk)) {
         expected.events[0].data.userAttributes.device = 'mobile';
       }
 
@@ -128,7 +128,7 @@ test.describe('Tracking', () => {
 
       expect(data).toMatchObject(expected);
 
-      if (!isRNSDK) {
+      if (!checkIsRN(sdk)) {
         // check that all the heatmap metadata is present
 
         expect(!isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))).toBeTruthy();
@@ -143,7 +143,7 @@ test.describe('Tracking', () => {
       expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
       expect(data.events[0].data.ownerId).toMatch(/abcd/);
 
-      if (!isRNSDK) {
+      if (!checkIsRN(sdk)) {
         expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
         expect(data.events[0].data.userAttributes.urlPath).toBe('/');
         expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);

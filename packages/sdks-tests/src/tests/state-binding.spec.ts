@@ -1,17 +1,16 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, isRNSDK, test } from './helpers/index.js';
+import { excludeTestFor, test } from './helpers/index.js';
 
 test.describe('State binding', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
   test.describe('inside repeater', () => {
-    test('writing to state should update binding', async ({ page, packageName }) => {
+    test('writing to state should update binding', async ({ page, packageName, sdk }) => {
+      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       // hydration errors
       test.fail(packageName === 'gen1-next' || packageName === 'gen1-remix');
 
       // flaky, can't `test.fail()`
       test.skip(
-        isRNSDK ||
-          packageName === 'react-native' ||
+        packageName === 'react-native' ||
           packageName === 'solid' ||
           packageName === 'solid-start' ||
           packageName === 'svelte' ||

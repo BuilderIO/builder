@@ -6,7 +6,8 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "e2e": "SERVER_NAME=solid yarn nx test:e2e @sdk/tests"
   },
   "license": "MIT",
   "devDependencies": {
@@ -19,7 +20,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "solid-js": "^1.5.7"
   }
 }

@@ -5,7 +5,7 @@ import {
   fetchOneEntry,
   getBuilderSearchParams,
 } from '@builder.io/sdk-react-nextjs';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 import Hello from '@/components/Hello';

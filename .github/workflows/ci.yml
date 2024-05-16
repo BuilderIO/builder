@@ -50,24 +50,23 @@ jobs:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
       fail-fast: false
       matrix:
-        sdk: ['svelte', 'qwik', 'react-native', 'react', 'nextjs', 'solid', 'vue', 'angular']
-        include:
-          - sdk: svelte
-            sdk-name: svelte
-          - sdk: qwik
-            sdk-name: qwik
-          - sdk: react-native
-            sdk-name: react-native
-          - sdk: react
-            sdk-name: react
-          - sdk: nextjs
-            sdk-name: react-nextjs
-          - sdk: solid
-            sdk-name: solid
-          - sdk: vue
-            sdk-name: vue
-          - sdk: angular
-            sdk-name: angular
+        e2e-server:
+          [
+            'svelte',
+            'sveltekit',
+            'react-native',
+            'solid',
+            'solid-start',
+            'qwik-city',
+            'react',
+            'next-pages-dir',
+            'next-app-dir-client',
+            'next-app-dir',
+            'vue',
+            'nuxt',
+            'angular',
+            'angular-ssr',
+          ]
 
     steps:
       - name: Setup
@@ -84,11 +83,8 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Build E2E apps
-        run: yarn workspace @builder.io/sdks e2e:build:${{ matrix.sdk }}
-
       - name: Run E2E tests
-        run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.sdk }}
+        run: yarn nx e2e @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
@@ -125,6 +121,11 @@ jobs:
     name: Gen 1 React SDK
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        e2e-server: ['gen1-react', 'gen1-next', 'gen1-remix']
+
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -140,11 +141,8 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Build E2E apps
-        run: yarn workspace @builder.io/packages e2e:build:old-react
-
       - name: Run E2E tests
-        run: yarn workspace @builder.io/packages e2e:run:old-react
+        run: yarn nx e2e @e2e/${{ matrix.e2e-server }}
 
   lint:
     runs-on: ubuntu-latest

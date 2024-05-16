@@ -4,14 +4,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from './helpers/index.js';
-import { EXCLUDE_RN, excludeTestFor, isRNSDK, test } from './helpers/index.js';
+import { excludeRn, excludeTestFor, checkIsRN, test } from './helpers/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test.describe('Blocks', () => {
-  test('Text', async ({ page }) => {
-    test.fail(EXCLUDE_RN);
+  test('Text', async ({ page, sdk }) => {
+    test.fail(excludeRn(sdk));
     await page.goto('/text-block');
 
     const textBlocks = page.locator('.builder-text');
@@ -49,9 +49,9 @@ test.describe('Blocks', () => {
     }
   });
 
-  test('Button', async ({ page }) => {
+  test('Button', async ({ page, sdk }) => {
     await page.goto('/reactive-state');
-    const button = isRNSDK
+    const button = checkIsRN(sdk)
       ? page.locator('button')
       : page.getByRole('button', { name: 'Increment Number' });
 
@@ -61,14 +61,14 @@ test.describe('Blocks', () => {
    * We are temporarily skipping this test because it relies on network requests.
    * TO-DO: re-enable it once we have a way to mock network requests.
    */
-  test.skip('Image', async ({ page }) => {
+  test.skip('Image', async ({ page, sdk }) => {
     await page.goto('/image');
 
     const imageLocator = page.locator('img');
 
     const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.
-      ...(isRNSDK
+      ...(checkIsRN(sdk)
         ? []
         : [
             {
@@ -81,13 +81,13 @@ test.describe('Blocks', () => {
         width: '1264px',
         height: '240.156px',
         // RN SDK does not support object-fit
-        'object-fit': isRNSDK ? 'fill' : 'cover',
+        'object-fit': checkIsRN(sdk) ? 'fill' : 'cover',
       },
       {
         width: '604px',
         height: '120.797px',
         // RN SDK does not support object-fit
-        'object-fit': isRNSDK ? 'fill' : 'contain',
+        'object-fit': checkIsRN(sdk) ? 'fill' : 'contain',
       },
       {
         width: '1880px',
@@ -109,8 +109,8 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Video', () => {
-    test('video render and styles', async ({ page }) => {
-      test.skip(isRNSDK);
+    test('video render and styles', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
       const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
@@ -175,8 +175,8 @@ test.describe('Blocks', () => {
       }
     });
 
-    test('video children', async ({ page }) => {
-      test.skip(isRNSDK);
+    test('video children', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
       const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
@@ -282,18 +282,21 @@ test.describe('Blocks', () => {
     for (const entry of Object.entries(sizes)) {
       const [sizeName, size] = entry as [SizeName, Size];
 
-      // intermittent success, can't use test.fail()
-      test.skip(isRNSDK && sizeName !== 'mobile');
-
       test.describe(sizeName, () => {
-        if (sizeName === 'mobile' || sizeName === 'tablet') {
-          test.fail(excludeTestFor({ angular: true }));
-        }
         for (const [columnType, styles] of Object.entries(expected)) {
-          test(columnType, async ({ page }) => {
+          test(columnType, async ({ page, sdk }) => {
+            test.skip(
+              checkIsRN(sdk) && sizeName !== 'mobile',
+              "intermittent success, can't use test.fail()"
+            );
+
+            test.fail(
+              (sizeName === 'mobile' || sizeName === 'tablet') &&
+                excludeTestFor({ angular: true }, sdk)
+            );
             await page.setViewportSize(size);
             await page.goto('/columns');
-            const columns = isRNSDK
+            const columns = checkIsRN(sdk)
               ? page.locator('[data-builder-block-name=builder-columns]')
               : page.locator('.builder-columns');
 
@@ -305,7 +308,7 @@ test.describe('Blocks', () => {
               );
             }
 
-            const columnLocator = isRNSDK
+            const columnLocator = checkIsRN(sdk)
               ? columns.nth(styles.index).locator('[data-builder-block-name=builder-column]')
               : columns.nth(styles.index).locator('.builder-column');
 

@@ -2,14 +2,13 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { EXCLUDE_GEN_2, excludeTestFor, isOldReactSDK, isRNSDK, test } from './helpers/index.js';
-import type { PackageName } from './sdk.js';
-import { sdk } from './sdk.js';
+import { excludeGen2, excludeTestFor, checkIsGen1React, checkIsRN, test } from './helpers/index.js';
+import type { ServerName } from './sdk.js';
 
 /**
  * These packages fetch symbol content on the server, so we cannot test them.
  */
-const SSR_FETCHING_PACKAGES: (PackageName | 'DEFAULT')[] = ['next-app-dir', 'qwik-city'];
+const SSR_FETCHING_PACKAGES: (ServerName | 'DEFAULT')[] = ['next-app-dir', 'qwik-city'];
 
 const testSymbols = async (page: Page) => {
   await expect(page.getByText('special test description').locator('visible=true')).toBeVisible();
@@ -35,7 +34,7 @@ const testSymbols = async (page: Page) => {
   const firstSymbolText = await page.locator('text="Description of image:"').first();
 
   // these are desktop and tablet styles, and will never show up in react native
-  if (!isRNSDK) {
+  if (!checkIsRN) {
     // check desktop styles
     await expect(firstSymbolText).toHaveCSS('color', 'rgb(255, 0, 0)');
 
@@ -48,20 +47,21 @@ const testSymbols = async (page: Page) => {
   }
 
   // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
-  if (!isRNSDK) {
+  if (!checkIsRN) {
     // check mobile styles
     await expect(firstSymbolText).toHaveCSS('color', 'rgb(0, 255, 255)');
   }
 };
 
 test.describe('Symbols', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
-  test('render correctly', async ({ page }) => {
+  test('render correctly', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     await page.goto('/symbols');
 
     await testSymbols(page);
   });
-  test('fetch content if not provided', async ({ page, packageName }) => {
+  test('fetch content if not provided', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
@@ -94,9 +94,10 @@ test.describe('Symbols', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test('refresh on locale change', async ({ page }) => {
+  test('refresh on locale change', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     // have to use `.skip()` because this test sometimes works in gen2 but flaky
-    test.skip(EXCLUDE_GEN_2);
+    test.skip(excludeGen2(sdk));
 
     let x = 0;
 
@@ -133,12 +134,13 @@ test.describe('Symbols', () => {
   });
 
   test.describe('apiVersion', () => {
-    test('apiVersion is not set', async ({ page, packageName }) => {
+    test('apiVersion is not set', async ({ page, packageName, sdk }) => {
+      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
 
-      const urlMatch = isOldReactSDK
+      const urlMatch = checkIsGen1React(sdk)
         ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
         : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
@@ -147,7 +149,7 @@ test.describe('Symbols', () => {
 
         const url = new URL(route.request().url());
 
-        const keyName = isOldReactSDK
+        const keyName = checkIsGen1React(sdk)
           ? decodeURIComponent(url.pathname).split('/').reverse()[0]
           : 'results';
 
@@ -166,11 +168,12 @@ test.describe('Symbols', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    test('apiVersion is set to v3', async ({ page, packageName }) => {
+    test('apiVersion is set to v3', async ({ page, packageName, sdk }) => {
+      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 
-      const urlMatch = isOldReactSDK
+      const urlMatch = checkIsGen1React(sdk)
         ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
         : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
@@ -179,7 +182,7 @@ test.describe('Symbols', () => {
 
         const url = new URL(route.request().url());
 
-        const keyName = isOldReactSDK
+        const keyName = checkIsGen1React(sdk)
           ? decodeURIComponent(url.pathname).split('/').reverse()[0]
           : 'results';
 
@@ -198,8 +201,9 @@ test.describe('Symbols', () => {
       await expect(x).toBeGreaterThanOrEqual(2);
     });
 
-    test('apiVersion is set to v1', async ({ page }) => {
-      test.fail(EXCLUDE_GEN_2);
+    test('apiVersion is set to v1', async ({ page, sdk }) => {
+      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+      test.fail(excludeGen2(sdk));
       let x = 0;
 
       const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
@@ -227,7 +231,8 @@ test.describe('Symbols', () => {
     });
   });
 
-  test('works in nested symbols with inherit', async ({ packageName, page }) => {
+  test('works in nested symbols with inherit', async ({ packageName, page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     await page.goto('/nested-symbols');
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized

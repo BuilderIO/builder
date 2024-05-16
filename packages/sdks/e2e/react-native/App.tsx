@@ -3,7 +3,7 @@ import {
   Content,
   fetchOneEntry,
 } from '@builder.io/sdk-react-native';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import {
   NavigationContainer,
   NavigationContext,

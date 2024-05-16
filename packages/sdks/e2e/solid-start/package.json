@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "solid-start dev",
     "build": "solid-start build",
-    "serve": "solid-start start"
+    "serve": "solid-start start",
+    "e2e": "SERVER_NAME=solid-start yarn nx test:e2e @sdk/tests"
   },
   "type": "module",
   "devDependencies": {
@@ -19,7 +20,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "@solidjs/meta": "^0.29.1",
     "@solidjs/router": "^0.8.3",
     "solid-js": "^1.8.5",

@@ -1,6 +1,6 @@
 <script setup>
 import { Content, _processContentResult } from '@builder.io/sdk-vue';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 
 const route = useRoute();
 

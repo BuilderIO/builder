@@ -5,11 +5,12 @@
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "dev": "tsc --noEmit && vite",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "e2e": "SERVER_NAME=react yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

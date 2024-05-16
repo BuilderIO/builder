@@ -1,17 +1,17 @@
 import { expect } from '@playwright/test';
-import { EXCLUDE_GEN_1, excludeTestFor, test } from './helpers/index.js';
+import { excludeGen1, excludeTestFor, test } from './helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
 
 test.describe('HTTP Requests', () => {
-  test('call proxy API only once - in page', async ({ page, packageName }) => {
-    test.skip(EXCLUDE_GEN_1);
+  test('call proxy API only once - in page', async ({ page, packageName, sdk }) => {
+    test.skip(excludeGen1(sdk));
     test.fail(packageName === 'next-app-dir', 'editor tests not supported in next-app-dir');
-    test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(
-      excludeTestFor({ qwik: true }),
+      excludeTestFor({ qwik: true }, sdk),
       'error setting httpRequest response or making API call altogether.'
     );
-    test.skip(excludeTestFor({ vue: true }), 'Vue flakiness issues');
+    test.skip(excludeTestFor({ vue: true }, sdk), 'Vue flakiness issues');
 
     let x = 0;
 
@@ -35,16 +35,16 @@ test.describe('HTTP Requests', () => {
     expect(x).toBe(1);
   });
 
-  test('call proxy API only once - in editor', async ({ page, basePort, packageName }) => {
-    test.skip(EXCLUDE_GEN_1);
+  test('call proxy API only once - in editor', async ({ page, basePort, packageName, sdk }) => {
+    test.skip(excludeGen1(sdk));
     test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
     test.skip(packageName === 'next-app-dir', 'editor tests not supported in next-app-dir');
-    test.skip(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
+    test.skip(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(
-      excludeTestFor({ qwik: true }),
+      excludeTestFor({ qwik: true }, sdk),
       'error setting httpRequest response or making API call altogether.'
     );
-    test.skip(excludeTestFor({ vue: true }), 'Vue flakiness issues');
+    test.skip(excludeTestFor({ vue: true }, sdk), 'Vue flakiness issues');
 
     let x = 0;
 

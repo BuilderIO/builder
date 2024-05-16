@@ -1,5 +1,5 @@
 {
-  "name": "@e2e/tests",
+  "name": "@sdk/tests",
   "description": "Workspace containing e2e tests for SDKs",
   "private": true,
   "scripts": {
@@ -7,6 +7,8 @@
     "dev": "tsc -w",
     "lint": "eslint --ext .ts,.tsx ./src/",
     "test": "playwright test",
+    "test:e2e": "TYPE=e2e yarn nx test",
+    "test:snippet": "TYPE=snippet yarn nx test",
     "run-embedder": "node embedder/index.js",
     "install-playwright": "playwright install chromium --with-deps"
   },
@@ -14,10 +16,7 @@
   "main": "./dist/src/index.js",
   "module": "./dist/src/index.js",
   "exports": {
-    "./shared.config": "./dist/shared.config.js",
-    "./shared.config.js": "./dist/shared.config.js",
-    ".": "./dist/src/index.js",
-    "./*": "./dist/src/*.js"
+    ".": "./dist/src/index.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.37.1",

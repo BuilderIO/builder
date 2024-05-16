@@ -2,8 +2,8 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, test } from './helpers/index.js';
 
 test.describe('Duplicate Attributes', () => {
-  test.fail(excludeTestFor({ angular: true }), 'Angular Gen2 SDK not implemented.');
-  test('wrapped block has no duplicate attributes', async ({ page, packageName }) => {
+  test('wrapped block has no duplicate attributes', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.skip(packageName === 'react-native');
     await page.goto('/duplicate-attributes');
 

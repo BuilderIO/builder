@@ -4,21 +4,13 @@ import {
   expectStylesForElement,
   findTextInPage,
   getClassSelector,
-  isRNSDK,
+  checkIsRN,
   test,
 } from './helpers/index.js';
 
-// RN SDK does not use ScrollView in Symbol
-const FIRST_BLOCK_SYMBOL_SELECTOR = `${getClassSelector('builder-blocks')} > div`;
-
-const FIRST_BLOCK_SELECTOR = isRNSDK
-  ? // ScrollView adds an extra div wrapper
-    `${getClassSelector('builder-blocks')} > div > div`
-  : `${getClassSelector('builder-blocks')} > div`;
-
 test.describe('Styles', () => {
-  test('data-binding-styles', async ({ page }) => {
-    test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
+  test('data-binding-styles', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Styles not working properly in Angular SDK');
     await page.goto('/data-binding-styles');
     await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
       'color',
@@ -27,8 +19,11 @@ test.describe('Styles', () => {
   });
 
   test.describe('Style Bindings', () => {
-    test('Content', async ({ page }) => {
-      test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
+    test('Content', async ({ page, sdk }) => {
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        'Styles not working properly in Angular SDK'
+      );
       await page.goto('/content-bindings');
 
       const expected = {
@@ -37,6 +32,11 @@ test.describe('Styles', () => {
         'border-bottom-left-radius': '40px',
         'border-bottom-right-radius': '30px',
       };
+
+      const FIRST_BLOCK_SELECTOR = checkIsRN(sdk)
+        ? // ScrollView adds an extra div wrapper
+          `${getClassSelector('builder-blocks', sdk)} > div > div`
+        : `${getClassSelector('builder-blocks', sdk)} > div`;
 
       const locator = page
         .locator(FIRST_BLOCK_SELECTOR)
@@ -48,8 +48,11 @@ test.describe('Styles', () => {
       // check the title is correct
       // title: 'some special title'
     });
-    test('Symbol', async ({ page }) => {
-      test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
+    test('Symbol', async ({ page, sdk }) => {
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        'Styles not working properly in Angular SDK'
+      );
       await page.goto('/symbol-bindings');
 
       const expected = {
@@ -58,6 +61,10 @@ test.describe('Styles', () => {
         'border-bottom-left-radius': '30px',
         'border-bottom-right-radius': '40px',
       };
+
+      // RN SDK does not use ScrollView in Symbol
+      const FIRST_BLOCK_SYMBOL_SELECTOR = `${getClassSelector('builder-blocks', sdk)} > div`;
+
       const locator = page
         .locator(FIRST_BLOCK_SYMBOL_SELECTOR)
         .filter({ hasText: 'Enter some text...' })
@@ -70,7 +77,7 @@ test.describe('Styles', () => {
     });
   });
 
-  test('Should apply responsive styles correctly on tablet/mobile', async ({ page }) => {
+  test('Should apply responsive styles correctly on tablet/mobile', async ({ page, sdk }) => {
     await page.goto('/columns');
 
     await findTextInPage({ page, text: 'Stack at tablet' });
@@ -80,22 +87,25 @@ test.describe('Styles', () => {
 
     // check that the 2nd photo has a margin-left of 0px
     // the desktop margin would typically be on its 3rd parent, except for React Native (4th)
-    const locator = isRNSDK
+    const locator = checkIsRN(sdk)
       ? page.locator('img').nth(1).locator('..').locator('..').locator('..').locator('..')
       : page.locator('picture').nth(1).locator('..').locator('..').locator('..');
 
     await expect(locator).toHaveCSS('margin-left', '0px');
   });
 
-  test('Should apply CSS nesting', async ({ page }) => {
-    test.fail(excludeTestFor({ angular: true }), 'Styles not working properly in Angular SDK');
+  test('Should apply CSS nesting', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ angular: true }, sdk), 'Styles not working properly in Angular SDK');
     test.fail(
-      excludeTestFor({
-        // we don't support CSS nesting in RN.
-        reactNative: true,
-        // old React SDK should support CSS nesting, but it seems to not be implemented properly.
-        oldReact: true,
-      })
+      excludeTestFor(
+        {
+          // we don't support CSS nesting in RN.
+          reactNative: true,
+          // old React SDK should support CSS nesting, but it seems to not be implemented properly.
+          oldReact: true,
+        },
+        sdk
+      )
     );
     await page.goto('./css-nesting');
 

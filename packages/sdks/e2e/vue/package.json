@@ -5,11 +5,12 @@
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vue-tsc --noEmit && vite",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "e2e": "SERVER_NAME=vue yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "cross-fetch": "^4.0.0",
     "vite-plugin-ssr": "^0.4.133",
     "vue": "^3.2.37"

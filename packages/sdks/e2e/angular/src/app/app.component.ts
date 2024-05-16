@@ -6,7 +6,7 @@ import {
   fetchOneEntry,
   getBuilderSearchParams,
 } from '@builder.io/sdk-angular';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import { HelloComponent } from './hello.component';
 
 interface BuilderProps {

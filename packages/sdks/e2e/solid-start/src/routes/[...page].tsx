@@ -1,5 +1,5 @@
 import { Content, _processContentResult } from '@builder.io/sdk-solid';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import { Show, createResource } from 'solid-js';
 import { Title, useLocation, useRouteData } from 'solid-start';
 

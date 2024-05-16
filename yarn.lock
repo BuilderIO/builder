@@ -3763,9 +3763,9 @@ __metadata:
     "@angular/platform-server": ^16.2.0
     "@angular/router": ^16.2.0
     "@builder.io/sdk-angular": "workspace:*"
-    "@e2e/tests": "workspace:*"
     "@nguniversal/builders": ^16.2.0
     "@nguniversal/express-engine": ^16.2.0
+    "@sdk/tests": "workspace:*"
     "@types/express": ^4.17.0
     "@types/jasmine": ~4.3.0
     "@types/node": ^16.11.7
@@ -3777,6 +3777,8 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -3800,7 +3802,7 @@ __metadata:
     "@angular/platform-browser-dynamic": ^16.2.0
     "@angular/router": ^16.2.0
     "@builder.io/sdk-angular": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/jasmine": ~4.3.0
     jasmine-core: ~4.6.0
     karma: ~6.4.0
@@ -3808,6 +3810,8 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -3821,7 +3825,7 @@ __metadata:
   dependencies:
     "@builder.io/react": "workspace:*"
     "@builder.io/widgets": ^1.2.24
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -3842,7 +3846,7 @@ __metadata:
   dependencies:
     "@builder.io/react": "workspace:*"
     "@builder.io/widgets": ^1.2.24
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/react": ^18.2.39
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
@@ -3861,12 +3865,12 @@ __metadata:
   dependencies:
     "@builder.io/react": "workspace:*"
     "@builder.io/widgets": ^1.2.24
-    "@e2e/tests": "workspace:*"
     "@remix-run/dev": ^1.14.3
     "@remix-run/eslint-config": ^1.19.1
     "@remix-run/node": ^1.14.3
     "@remix-run/react": ^1.14.3
     "@remix-run/serve": ^1.14.3
+    "@sdk/tests": "workspace:*"
     "@types/react": ^18.0.25
     "@types/react-dom": ^18.0.8
     eslint: ^8.27.0
@@ -3884,7 +3888,7 @@ __metadata:
   resolution: "@e2e/next-app-dir-client@workspace:packages/sdks/e2e/nextjs-app-dir-client"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -3904,7 +3908,7 @@ __metadata:
   resolution: "@e2e/next-app-dir@workspace:packages/sdks/e2e/nextjs-app-dir"
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/node": ^20
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -3925,7 +3929,7 @@ __metadata:
   dependencies:
     "@builder.io/react-hydration-overlay": ^0.0.4
     "@builder.io/sdk-react": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/diff": ^5.0.9
     "@types/node": ^20
     "@types/react": ^18
@@ -3947,7 +3951,7 @@ __metadata:
   resolution: "@e2e/nuxt@workspace:packages/sdks/e2e/nuxt"
   dependencies:
     "@builder.io/sdk-vue": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/node": ^18
     nuxt: ^3.8.1
     nx: ^16.6.0
@@ -3964,7 +3968,7 @@ __metadata:
     "@builder.io/qwik": ^1.5.1
     "@builder.io/qwik-city": ^1.2.19
     "@builder.io/sdk-qwik": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
     nx: ^16.6.0
@@ -3981,10 +3985,10 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.0
     "@builder.io/sdk-react-native": "workspace:*"
-    "@e2e/tests": "workspace:*"
     "@expo/webpack-config": ^19.0.0
     "@react-navigation/native": ^6.1.9
     "@react-navigation/native-stack": ^6.9.17
+    "@sdk/tests": "workspace:*"
     "@types/react": ~18.2.14
     expo: ~49.0.15
     expo-status-bar: ~1.6.0
@@ -4008,7 +4012,7 @@ __metadata:
   resolution: "@e2e/react@workspace:packages/sdks/e2e/react"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@types/react": ^18.2.39
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
@@ -4026,7 +4030,7 @@ __metadata:
   resolution: "@e2e/solid-start@workspace:packages/sdks/e2e/solid-start"
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@solidjs/meta": ^0.29.1
     "@solidjs/router": ^0.8.3
     "@types/node": ^18.17.5
@@ -4047,7 +4051,7 @@ __metadata:
   resolution: "@e2e/solid@workspace:packages/sdks/e2e/solidjs"
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     nx: ^16.6.0
     nx-cloud: ^16.2.0
     solid-devtools: ^0.29.3
@@ -4063,7 +4067,7 @@ __metadata:
   resolution: "@e2e/svelte@workspace:packages/sdks/e2e/svelte"
   dependencies:
     "@builder.io/sdk-svelte": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^2.0.3
     "@tsconfig/svelte": ^4.0.1
     nx: ^16.6.0
@@ -4081,7 +4085,7 @@ __metadata:
   resolution: "@e2e/sveltekit@workspace:packages/sdks/e2e/sveltekit"
   dependencies:
     "@builder.io/sdk-svelte": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
     "@sveltejs/kit": ^1.27.7
     nx: ^16.6.0
@@ -4094,30 +4098,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/tests@workspace:*, @e2e/tests@workspace:packages/sdks-tests":
-  version: 0.0.0-use.local
-  resolution: "@e2e/tests@workspace:packages/sdks-tests"
-  dependencies:
-    "@playwright/test": ^1.37.1
-    "@types/traverse": ^0.6.32
-    "@typescript-eslint/eslint-plugin": latest
-    "@typescript-eslint/parser": latest
-    eslint: ^8.12.0
-    eslint-plugin-unused-imports: ^2.0.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
-    traverse: ^0.6.7
-    typescript: ^5.1.6
-    zod: ^3.20.2
-  languageName: unknown
-  linkType: soft
-
 "@e2e/vue@workspace:packages/sdks/e2e/vue":
   version: 0.0.0-use.local
   resolution: "@e2e/vue@workspace:packages/sdks/e2e/vue"
   dependencies:
     "@builder.io/sdk-vue": "workspace:*"
-    "@e2e/tests": "workspace:*"
+    "@sdk/tests": "workspace:*"
     "@vitejs/plugin-vue": ^4.2.3
     cross-fetch: ^4.0.0
     nx: ^16.6.0
@@ -9441,6 +9427,24 @@ __metadata:
   checksum: 905285d66df42a660e37d88f26c35a962988d6489c46209ce1c47064cd740b700161fc68588447a1fa5552015ea37c0771ff552795f1bf51aec6bc94860d6beb
   languageName: node
   linkType: hard
+
+"@sdk/tests@workspace:*, @sdk/tests@workspace:packages/sdks-tests":
+  version: 0.0.0-use.local
+  resolution: "@sdk/tests@workspace:packages/sdks-tests"
+  dependencies:
+    "@playwright/test": ^1.37.1
+    "@types/traverse": ^0.6.32
+    "@typescript-eslint/eslint-plugin": latest
+    "@typescript-eslint/parser": latest
+    eslint: ^8.12.0
+    eslint-plugin-unused-imports: ^2.0.0
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
+    traverse: ^0.6.7
+    typescript: ^5.1.6
+    zod: ^3.20.2
+  languageName: unknown
+  linkType: soft
 
 "@segment/loosely-validate-event@npm:^2.0.0":
   version: 2.0.0

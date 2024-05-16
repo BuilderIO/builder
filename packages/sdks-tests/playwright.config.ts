@@ -1,9 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { EMBEDDER_PORT, targetContext } from './src/tests/context.js';
-import type { PackageName, Sdk } from './src/tests/sdk.js';
-import { sdk } from './src/tests/sdk.js';
+import { EMBEDDER_PORT } from './src/tests/context.js';
+import { SDK_MAP, serverNames } from './src/tests/sdk.js';
 
 const getDirName = () => {
   try {
@@ -15,31 +14,7 @@ const getDirName = () => {
   }
 };
 
-const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
-  reactNative: ['react-native'],
-  solid: ['solid', 'solid-start'],
-  qwik: ['qwik-city'],
-  react: ['next-pages-dir', 'react', 'next-app-dir-client'],
-  vue: ['vue', 'nuxt'],
-  svelte: ['svelte', 'sveltekit'],
-  rsc: ['next-app-dir'],
-  oldReact: ['gen1-react', 'gen1-next', 'gen1-remix'],
-  angular: ['angular', 'angular-ssr'],
-};
-
-targetContext.name = sdk;
-
-const packagesToRun =
-  sdk === 'all'
-    ? Object.values(WEB_SERVERS).flat()
-    : sdk === 'allNew'
-    ? Object.entries(WEB_SERVERS)
-        .filter(([k]) => k !== 'oldReact')
-        .map(([, v]) => v)
-        .flat()
-    : WEB_SERVERS[sdk];
-
-const things = packagesToRun.map((packageName, i) => {
+const things = serverNames.map((packageName, i) => {
   const isReactNative = packageName === 'react-native';
   const port = isReactNative ? 19006 : 1111 + i;
   const portFlag = isReactNative ? '' : `--port=${port}`;
@@ -78,26 +53,23 @@ export default defineConfig({
       baseURL: `http://localhost:${port}`,
       basePort: port,
       /**
-       * This provides the package name to the test as a variable to check which exact server the test is running.
+       * This provides the package and SDK names to the test as variables to check which exact server the test is running.
        */
       packageName,
+      sdk: SDK_MAP[packageName],
     },
   })),
 
   webServer: things
-    .map(({ packageName, port, portFlag }) => {
-      const webServers = {
-        command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
-        port,
-        reuseExistingServer: false,
-        ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
-      };
-
-      return webServers;
-    })
+    .map(({ packageName, port, portFlag }) => ({
+      command: `PORT=${port} yarn workspace @e2e/${packageName} serve ${portFlag}`,
+      port,
+      reuseExistingServer: false,
+      ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
+    }))
     .concat([
       {
-        command: `PORT=${EMBEDDER_PORT} yarn workspace @e2e/tests run-embedder`,
+        command: `PORT=${EMBEDDER_PORT} yarn workspace @sdk/tests run-embedder`,
         port: EMBEDDER_PORT,
         reuseExistingServer: false,
       },
