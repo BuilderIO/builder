@@ -301,3 +301,20 @@ export const ACCORDION_ONE_AT_A_TIME = {
     })),
   },
 };
+
+export const ACCORDION_GRID = {
+  ...ACCORDION,
+  data: {
+    ...ACCORDION.data,
+    blocks: ACCORDION.data.blocks.map(block => ({
+      ...block,
+      component: {
+        ...block.component,
+        options: {
+          ...block.component.options,
+          grid: true,
+        },
+      },
+    })),
+  },
+};
