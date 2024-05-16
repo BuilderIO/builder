@@ -56,7 +56,7 @@ export const SDK_MAP: Record<ServerName, Sdk> = {
   nuxt: 'vue',
   svelte: 'svelte',
   sveltekit: 'svelte',
-  'next-app-dir': 'react',
+  'next-app-dir': 'rsc',
   'gen1-react': 'oldReact',
   'gen1-next': 'oldReact',
   'gen1-remix': 'oldReact',

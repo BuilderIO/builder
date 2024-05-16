@@ -7,8 +7,8 @@
     "dev": "tsc -w",
     "lint": "eslint --ext .ts,.tsx ./src/",
     "test": "playwright test",
-    "test:e2e": "TYPE=e2e yarn test",
-    "test:snippet": "TYPE=snippet yarn test",
+    "test:e2e": "TYPE=e2e yarn nx test",
+    "test:snippet": "TYPE=snippet yarn nx test",
     "run-embedder": "node embedder/index.js",
     "install-playwright": "playwright install chromium --with-deps"
   },
