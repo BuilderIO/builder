@@ -1,5 +1,4 @@
 import http from 'http';
-import { SDK_LOADED_MSG } from '../src/tests/context.js';
 
 /**
  * Very simple HTTP server that returns SDK content in an iframe to mimic the visual editor.
