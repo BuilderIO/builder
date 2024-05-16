@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { EMBEDDER_PORT } from './src/tests/context.js';
-import { SDK_MAP, serverNames } from './src/tests/sdk.js';
+import { EMBEDDER_PORT } from './src/helpers/context.js';
+import { SDK_MAP, serverNames } from './src/helpers/sdk.js';
 
 const getDirName = () => {
   try {
