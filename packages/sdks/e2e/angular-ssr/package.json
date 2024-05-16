@@ -4,7 +4,6 @@
     "ng": "ng",
     "start": "ng serve",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
     "dev": "ng run angular-app:serve-ssr",
     "serve": "node dist/angular-app/server/main.js",
     "build": "ng build && ng run angular-app:server",

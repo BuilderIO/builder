@@ -10543,6 +10543,8 @@ __metadata:
   dependencies:
     "@builder.io/sdk-vue": "workspace:*"
     nuxt: ^3.11.2
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     vue: ^3.4.27
     vue-router: ^4.3.2
   languageName: unknown
@@ -10558,6 +10560,8 @@ __metadata:
     "@vitejs/plugin-vue": ^5.0.4
     "@vue/tsconfig": ^0.5.1
     npm-run-all2: ^6.1.2
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
     typescript: ~5.4.0
     vite: ^5.2.8
     vue: ^3.4.21
