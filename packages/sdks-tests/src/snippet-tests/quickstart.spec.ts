@@ -19,7 +19,7 @@ test.describe('Quickstart', () => {
       hasText: 'Columns (with images) ',
     });
 
-    await expect(columnsLink).toHaveCount(1);
+    await expect(columnsLink).toHaveCount(8);
     await columnsLink.click();
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
