@@ -7,7 +7,7 @@
     "dev": "tsc -w",
     "lint": "eslint --ext .ts,.tsx ./src/",
     "prepare-e2e": "echo $SERVER_NAME | tr ',' '\n' | xargs -I _ echo @e2e/_ | tr '\n' ',' | xargs -I _ yarn nx run-many -p _ -t build --graph",
-    "test": "yarn prepare-e2e && echo $SERVER_NAME && playwright test",
+    "test": "yarn prepare-e2e && playwright test",
     "test:e2e": "TYPE=e2e yarn nx test",
     "test:snippet": "TYPE=snippet yarn nx test",
     "run-embedder": "node embedder/index.js",
