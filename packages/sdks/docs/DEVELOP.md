@@ -32,6 +32,12 @@ If you want to run the integration tests locally, you can do so by doing the fol
 
 Alternatively, you can call `yarn nx e2e @e2e/svelte` from anywhere in the mono-repo (replace `@e2e/svelte` with the name of the server you want to run).
 
+NOTE: if you want to run multiple tests, you can call the underlying test command and provide it a comma-separated list of servers to test:
+
+```bash
+SERVER_NAME=svelte,react,nuxt yarn nx test:e2e @sdk/tests
+```
+
 ### Debug tests
 
 By adding the `--debug` flag (e.g. `yarn nx e2e @e2e/svelte --debug`), you can run the tests in a browser window with an interactive Playwright. This is useful for debugging.
