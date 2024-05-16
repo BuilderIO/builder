@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -26,8 +27,11 @@ const things = serverNames.map((packageName, i) => {
   };
 });
 
+const TestTypeEnum = z.enum(['e2e', 'snippet']);
+const testType = TestTypeEnum.parse(process.env.TEST_TYPE);
+
 export default defineConfig({
-  testDir: getDirName() + '/src/tests',
+  testDir: getDirName() + '/src/' + (testType === 'e2e' ? 'e2e-tests' : 'snippet-tests'),
   // testMatch: '**/*.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,

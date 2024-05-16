@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "SNIPPET=nuxt yarn nx test:snippet @sdk/tests",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
