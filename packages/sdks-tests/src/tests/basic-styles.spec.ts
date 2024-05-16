@@ -1,14 +1,15 @@
 import { expect } from '@playwright/test';
-import { test, currentDirname, isRNSDK } from './helpers/index.js';
+import { test, currentDirname, checkIsRN } from './helpers/index.js';
 import fs from 'fs';
 import path from 'path';
 
 test.describe('Basic styles', () => {
-  test.fail(isRNSDK);
   test('styles should be applied consistently across all SDKs (text and buttons)', async ({
     page,
     packageName,
+    sdk,
   }) => {
+    test.fail(checkIsRN(sdk));
     test.skip(packageName === 'react-native');
     await page.goto('/basic-styles');
 
@@ -41,7 +42,9 @@ test.describe('Basic styles', () => {
 
   test('Box with flex-direction row should have children aligned horizontally', async ({
     page,
+    sdk,
   }) => {
+    test.fail(checkIsRN(sdk));
     const mockImgPath = path.join(currentDirname, '..', '..', 'mocks', 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
 
