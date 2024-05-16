@@ -6,8 +6,7 @@
     "serve": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "e2e": "SERVER_NAME=angular yarn nx test:e2e @sdk/tests",
-    "test": "ng test"
+    "test": "SERVER_NAME=angular yarn nx test:e2e @sdk/tests"
   },
   "private": true,
   "dependencies": {

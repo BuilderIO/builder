@@ -9,7 +9,7 @@
     "build": "echo 'no need to build react-native.'",
     "dev": "yarn run web",
     "serve": "yarn run web",
-    "e2e": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",

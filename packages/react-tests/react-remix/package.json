@@ -5,7 +5,7 @@
     "build": "remix build",
     "dev": "remix dev",
     "serve": "remix-serve build",
-    "e2e": "SERVER_NAME=gen1-remix yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=gen1-remix yarn nx test:e2e @sdk/tests",
     "typecheck": "tsc"
   },
   "dependencies": {

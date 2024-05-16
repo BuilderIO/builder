@@ -84,14 +84,51 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
-        run: yarn nx e2e @e2e/${{ matrix.e2e-server }}
+        run: yarn nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
-          name: ${{ matrix.sdk }}-playwright-report
+          name: ${{ matrix.e2e-server }}-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
+
+  sdks-snippets:
+    name: Gen 2 SDK Snippets
+    runs-on: ubuntu-latest
+
+    strategy:
+      # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
+      fail-fast: false
+      matrix:
+        snippet: ['vue', 'nuxt']
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
+
+      - name: Build Snippet
+        run: yarn nx test @snippet/${{ matrix.snippet }}
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v3
+        # Only upload the report if the tests failed
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.snippet }}-snippet-playwright-report
           path: packages/sdks-tests/playwright-report/
           retention-days: 30
 
@@ -142,7 +179,7 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
-        run: yarn nx e2e @e2e/${{ matrix.e2e-server }}
+        run: yarn nx test @e2e/${{ matrix.e2e-server }}
 
   lint:
     runs-on: ubuntu-latest

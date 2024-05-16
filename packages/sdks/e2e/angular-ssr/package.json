@@ -4,11 +4,10 @@
     "ng": "ng",
     "start": "ng serve",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
     "dev": "ng run angular-app:serve-ssr",
     "serve": "node dist/angular-app/server/main.js",
     "build": "ng build && ng run angular-app:server",
-    "e2e": "SERVER_NAME=angular-ssr yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=angular-ssr yarn nx test:e2e @sdk/tests",
     "prerender": "ng run angular-app:prerender"
   },
   "private": true,

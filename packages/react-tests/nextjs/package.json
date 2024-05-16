@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "e2e": "SERVER_NAME=gen1-next yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=gen1-next yarn nx test:e2e @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {

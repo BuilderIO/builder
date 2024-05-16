@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "e2e": "SERVER_NAME=svelte yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=svelte yarn nx test:e2e @sdk/tests",
     "check": "SDK_ENV=browser svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
