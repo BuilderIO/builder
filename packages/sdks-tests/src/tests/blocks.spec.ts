@@ -1,13 +1,16 @@
 import { expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from './helpers/index.js';
-import { excludeRn, excludeTestFor, checkIsRN, test } from './helpers/index.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import {
+  excludeRn,
+  excludeTestFor,
+  checkIsRN,
+  test,
+  currentDirname,
+  isSSRFramework,
+} from './helpers/index.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk }) => {
@@ -57,14 +60,32 @@ test.describe('Blocks', () => {
 
     await expect(button).toHaveCSS('background-color', 'rgb(0, 0, 0)');
   });
-  /**
-   * We are temporarily skipping this test because it relies on network requests.
-   * TO-DO: re-enable it once we have a way to mock network requests.
-   */
-  test.skip('Image', async ({ page, sdk }) => {
+
+  test('Image', async ({ page, sdk, packageName }) => {
+    test.skip(checkIsRN(sdk));
+    test.skip(
+      isSSRFramework(packageName),
+      'SSR frameworks get the images from the server so page.route intercept does not work'
+    );
+    const mockImgPath = path.join(currentDirname, '..', '..', 'mocks', 'placeholder-img.png');
+    const mockImgBuffer = fs.readFileSync(mockImgPath);
+
+    await page.route('**/*', route => {
+      const request = route.request();
+      if (request.url().includes('cdn.builder.io/api/v1/image')) {
+        return route.fulfill({
+          status: 200,
+          contentType: 'image/png',
+          body: mockImgBuffer,
+        });
+      } else {
+        return route.continue();
+      }
+    });
+
     await page.goto('/image');
 
-    const imageLocator = page.locator('img');
+    const imageLocator = page.locator('.builder-image');
 
     const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.
@@ -90,8 +111,8 @@ test.describe('Blocks', () => {
         'object-fit': checkIsRN(sdk) ? 'fill' : 'contain',
       },
       {
-        width: '1880px',
-        height: '1245px',
+        width: '600px',
+        height: '400px',
       },
     ];
 
@@ -111,7 +132,7 @@ test.describe('Blocks', () => {
   test.describe('Video', () => {
     test('video render and styles', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
+      const mockVideoPath = path.join(currentDirname, '..', '..', 'mocks', 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
       await page.route('**/*', route => {
@@ -177,7 +198,7 @@ test.describe('Blocks', () => {
 
     test('video children', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      const mockVideoPath = path.join(__dirname, '..', 'mocks', 'video.mp4');
+      const mockVideoPath = path.join(currentDirname, '..', '..', 'mocks', 'video.mp4');
       const mockVideoBuffer = fs.readFileSync(mockVideoPath);
 
       await page.route('**/*', route => {

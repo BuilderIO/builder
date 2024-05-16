@@ -65,6 +65,7 @@ import { isEmptyElement } from './dynamic-renderer.helpers';
   `,
   standalone: true,
   imports: [CommonModule],
+  styles: [':host { display: contents; }'],
 })
 export default class DynamicRenderer {
   isEmptyElement = isEmptyElement;
@@ -114,6 +115,7 @@ export default class DynamicRenderer {
   selector: 'dynamic-image, DynamicImage',
   template: ` <img #v /> `,
   standalone: true,
+  styles: [':host { display: contents; }'],
 })
 export class DynamicImage {
   @Input() attributes!: any;
@@ -123,9 +125,9 @@ export class DynamicImage {
 
   constructor(private renderer: Renderer2) {}
 
-  ngAfterViewInit() {
-    const el = this.v.nativeElement;
-    if (this.attributes) {
+  ngOnChanges() {
+    const el = this.v && this.v.nativeElement;
+    if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
         this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
       });
@@ -137,6 +139,7 @@ export class DynamicImage {
   selector: 'dynamic-button, DynamicButton',
   template: ` <button #v><ng-content></ng-content></button>`,
   standalone: true,
+  styles: [':host { display: contents; }'],
 })
 export class DynamicButton {
   @Input() attributes!: any;
@@ -146,9 +149,9 @@ export class DynamicButton {
 
   constructor(private renderer: Renderer2) {}
 
-  ngAfterViewInit() {
-    const el = this.v.nativeElement;
-    if (this.attributes) {
+  ngOnChanges() {
+    const el = this.v && this.v.nativeElement;
+    if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
         this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
       });
@@ -160,6 +163,7 @@ export class DynamicButton {
   selector: 'dynamic-link, DynamicLink',
   template: ` <a #v><ng-content></ng-content></a>`,
   standalone: true,
+  styles: [':host { display: contents; }'],
 })
 export class DynamicLink {
   @Input() attributes!: any;
@@ -169,9 +173,9 @@ export class DynamicLink {
 
   constructor(private renderer: Renderer2) {}
 
-  ngAfterViewInit() {
-    const el = this.v.nativeElement;
-    if (this.attributes) {
+  ngOnChanges() {
+    const el = this.v && this.v.nativeElement;
+    if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
         this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
       });
