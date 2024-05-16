@@ -38,6 +38,8 @@ NOTE: if you want to run multiple tests, you can call the underlying test comman
 SERVER_NAME=svelte,react,nuxt yarn nx test:e2e @sdk/tests
 ```
 
+For convenience, there are `yarn nx e2e:run:*` commands that you can use to build and run the tests for a specific SDK.
+
 ### Debug tests
 
 By adding the `--debug` flag (e.g. `yarn nx e2e @e2e/svelte --debug`), you can run the tests in a browser window with an interactive Playwright. This is useful for debugging.

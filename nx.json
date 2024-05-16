@@ -41,9 +41,6 @@
         "script": "build"
       }
     },
-    "e2e": {
-      "dependsOn": ["build"]
-    },
     "typecheck": {
       "dependsOn": ["^build"]
     },
