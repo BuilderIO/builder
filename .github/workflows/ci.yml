@@ -91,7 +91,7 @@ jobs:
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
-          name: ${{ matrix.sdk }}-playwright-report
+          name: ${{ matrix.e2e-server }}-playwright-report
           path: packages/sdks-tests/playwright-report/
           retention-days: 30
 
