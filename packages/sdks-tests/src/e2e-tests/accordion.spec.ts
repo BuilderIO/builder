@@ -54,4 +54,26 @@ test.describe('Accordion', () => {
       await expect(page.locator(`text=Inside Item ${i}`)).not.toBeVisible();
     }
   });
+  test('Only one item opens at a time', async ({ page, sdk }) => {
+    test.fail(
+      excludeTestFor(
+        {
+          rsc: true,
+          angular: true,
+        },
+        sdk
+      )
+    );
+    await page.goto('/accordion-one-at-a-time');
+
+    for (let i = 1; i <= 3; i++) {
+      await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
+      await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible();
+      for (let j = 1; j <= 3; j++) {
+        if (j !== i) {
+          await expect(page.locator(`text=Inside Item ${j}`)).not.toBeVisible();
+        }
+      }
+    }
+  });
 });

@@ -284,3 +284,20 @@ export const ACCORDION = {
   lastUpdatedBy: 'RuGeCLr9ryVt1xRazFYc72uWwIK2',
   folders: [],
 };
+
+export const ACCORDION_ONE_AT_A_TIME = {
+  ...ACCORDION,
+  data: {
+    ...ACCORDION.data,
+    blocks: ACCORDION.data.blocks.map(block => ({
+      ...block,
+      component: {
+        ...block.component,
+        options: {
+          ...block.component.options,
+          oneAtATime: true,
+        },
+      },
+    })),
+  },
+};
