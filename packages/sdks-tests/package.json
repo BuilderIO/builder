@@ -42,7 +42,12 @@
           "lint"
         ]
       },
-      "test": {
+      "test:e2e": {
+        "dependsOn": [
+          "install-playwright"
+        ]
+      },
+      "test:snippet": {
         "dependsOn": [
           "install-playwright"
         ]
