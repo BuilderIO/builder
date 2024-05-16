@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test, checkIsGen1React, checkIsRN } from './helpers/index.js';
+import { test, checkIsGen1React, checkIsRN } from '../helpers/index.js';
 
 test.describe('Hover animations', () => {
   test('Button should change color when hovered', async ({ page, sdk }) => {

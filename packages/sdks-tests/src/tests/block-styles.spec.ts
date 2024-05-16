@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { getClassSelector, test } from './helpers/index.js';
+import { getClassSelector, test } from '../helpers/index.js';
 
 test.describe('Block Styles', () => {
   test('check that block styles load', async ({ page, sdk }) => {

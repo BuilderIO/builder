@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, checkIsRN, test } from './helpers/index.js';
+import { excludeTestFor, checkIsRN, test } from '../helpers/index.js';
 
 const TABS_CONTENT = [
   {

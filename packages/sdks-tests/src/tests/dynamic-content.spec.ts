@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, findTextInPage, test } from './helpers/index.js';
+import { excludeTestFor, findTextInPage, test } from '../helpers/index.js';
 
 test.describe('Dynamic Content', () => {
   test('Data Bindings', async ({ page, sdk }) => {

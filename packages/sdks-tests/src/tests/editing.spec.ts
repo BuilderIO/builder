@@ -4,8 +4,8 @@ import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import type { BuilderContent } from '../specs/types.js';
-import { test } from './helpers/index.js';
-import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
+import { test } from '../helpers/index.js';
+import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 const sendContentUpdateMessage = async ({
   page,

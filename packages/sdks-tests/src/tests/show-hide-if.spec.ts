@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, findTextInPage, checkIsRN, test } from './helpers/index.js';
+import { excludeTestFor, findTextInPage, checkIsRN, test } from '../helpers/index.js';
 
 test.describe('Show If & Hide If', () => {
   test('works on static conditions', async ({ page }) => {

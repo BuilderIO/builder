@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers/index.js';
+import { excludeTestFor, test } from '../helpers/index.js';
 
 test.describe('External Data', () => {
   test('renders initial value', async ({ page, packageName, sdk }) => {

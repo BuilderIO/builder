@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test, currentDirname, checkIsRN } from './helpers/index.js';
+import { test, currentDirname, checkIsRN } from '../helpers/index.js';
 import fs from 'fs';
 import path from 'path';
 

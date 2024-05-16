@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers/index.js';
-import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
+import { excludeTestFor, test } from '../helpers/index.js';
+import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
   'BUILDER_EVENT: builder.registerComponent Component name: Hello';

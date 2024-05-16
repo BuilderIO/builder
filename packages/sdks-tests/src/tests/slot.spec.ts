@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/slot-with-symbol.js';
-import { excludeTestFor, checkIsRN, test } from './helpers/index.js';
+import { excludeTestFor, checkIsRN, test } from '../helpers/index.js';
 
 test.describe('Slot', () => {
   test('slot should render', async ({ page, packageName, sdk }) => {

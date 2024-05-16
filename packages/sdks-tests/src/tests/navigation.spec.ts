@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test } from './helpers/index.js';
+import { findTextInPage, test } from '../helpers/index.js';
 
 test('Client-side navigation', async ({ page }) => {
   await page.goto('/');

@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from './helpers/index.js';
+import { excludeTestFor, test } from '../helpers/index.js';
 
 test.describe('JS Code', () => {
   test('initializes correct value from JS Code block', async ({ page, sdk }) => {

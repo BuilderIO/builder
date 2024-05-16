@@ -6,7 +6,7 @@ import {
   getClassSelector,
   checkIsRN,
   test,
-} from './helpers/index.js';
+} from '../helpers/index.js';
 
 test.describe('Styles', () => {
   test('data-binding-styles', async ({ page, sdk }) => {

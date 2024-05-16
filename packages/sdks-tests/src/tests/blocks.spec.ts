@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
-import type { ExpectedStyles } from './helpers/index.js';
+import type { ExpectedStyles } from '../helpers/index.js';
 import {
   excludeRn,
   excludeTestFor,
@@ -10,7 +10,7 @@ import {
   test,
   currentDirname,
   isSSRFramework,
-} from './helpers/index.js';
+} from '../helpers/index.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk }) => {

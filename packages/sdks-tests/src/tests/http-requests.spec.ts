@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { excludeGen1, excludeTestFor, test } from './helpers/index.js';
-import { launchEmbedderAndWaitForSdk } from './helpers/visual-editor.js';
+import { excludeGen1, excludeTestFor, test } from '../helpers/index.js';
+import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 test.describe('HTTP Requests', () => {
   test('call proxy API only once - in page', async ({ page, packageName, sdk }) => {

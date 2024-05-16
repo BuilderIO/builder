@@ -2,8 +2,14 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { excludeGen2, excludeTestFor, checkIsGen1React, checkIsRN, test } from './helpers/index.js';
-import type { ServerName } from './sdk.js';
+import {
+  excludeGen2,
+  excludeTestFor,
+  checkIsGen1React,
+  checkIsRN,
+  test,
+} from '../helpers/index.js';
+import type { ServerName } from '../helpers/sdk.js';
 
 /**
  * These packages fetch symbol content on the server, so we cannot test them.

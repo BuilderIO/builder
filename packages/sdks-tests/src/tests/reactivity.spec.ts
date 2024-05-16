@@ -1,6 +1,6 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeTestFor, checkIsRN, test } from './helpers/index.js';
+import { excludeTestFor, checkIsRN, test } from '../helpers/index.js';
 
 test.describe('Reactive State', () => {
   test('shows default value', async ({ page, sdk }) => {

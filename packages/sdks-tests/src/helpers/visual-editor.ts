@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { EMBEDDER_PORT, SDK_LOADED_MSG } from '../context.js';
+import { EMBEDDER_PORT, SDK_LOADED_MSG } from './context.js';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
 const getEmbeddedServerURL = (path: string, port: number) =>

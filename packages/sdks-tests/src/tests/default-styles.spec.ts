@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeGen1, test } from './helpers/index.js';
+import { excludeGen1, test } from '../helpers/index.js';
 
 // is a subset - if this selector is there then others would've also been added
 const DEFAULT_STYLES = `.builder-button {

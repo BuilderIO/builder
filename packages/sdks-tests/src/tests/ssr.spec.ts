@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { checkIsRN, isSSRFramework, test } from './helpers/index.js';
+import { checkIsRN, isSSRFramework, test } from '../helpers/index.js';
 
 test.describe('SSR', () => {
   test('js enabled', async ({ page, sdk }) => {

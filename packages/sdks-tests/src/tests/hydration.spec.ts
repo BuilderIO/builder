@@ -1,4 +1,4 @@
-import { findTextInPage, test } from './helpers/index.js';
+import { findTextInPage, test } from '../helpers/index.js';
 
 /**
  * The only way to guarantee that hydration has completed is to interact with

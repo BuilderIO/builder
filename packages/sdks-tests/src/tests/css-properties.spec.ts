@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { isSSRFramework, test } from './helpers/index.js';
+import { isSSRFramework, test } from '../helpers/index.js';
 
 test.describe('CSS Properties from Builder Content (js enabled)', () => {
   test('set image width CSS properties correctly', async ({ page, packageName }) => {
