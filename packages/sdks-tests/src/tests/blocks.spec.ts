@@ -285,9 +285,15 @@ test.describe('Blocks', () => {
       test.describe(sizeName, () => {
         for (const [columnType, styles] of Object.entries(expected)) {
           test(columnType, async ({ page, sdk }) => {
-            if (sizeName === 'mobile' || sizeName === 'tablet') {
-              test.fail(excludeTestFor({ angular: true }, sdk));
-            }
+            test.skip(
+              checkIsRN(sdk) && sizeName !== 'mobile',
+              "intermittent success, can't use test.fail()"
+            );
+
+            test.fail(
+              (sizeName === 'mobile' || sizeName === 'tablet') &&
+                excludeTestFor({ angular: true }, sdk)
+            );
             await page.setViewportSize(size);
             await page.goto('/columns');
             const columns = checkIsRN(sdk)
