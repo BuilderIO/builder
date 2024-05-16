@@ -6,7 +6,7 @@
     "test": "SERVER_NAME=vue yarn nx test:snippet @sdk/tests",
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "serve": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force"
   },

@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "serve": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
