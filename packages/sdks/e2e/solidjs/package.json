@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "e2e": "SERVER_NAME=solid yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=solid yarn nx test:e2e @sdk/tests"
   },
   "license": "MIT",
   "devDependencies": {

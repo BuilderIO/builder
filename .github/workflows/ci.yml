@@ -84,7 +84,7 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
-        run: yarn nx e2e @e2e/${{ matrix.e2e-server }}
+        run: yarn nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3

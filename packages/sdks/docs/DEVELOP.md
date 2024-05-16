@@ -28,9 +28,9 @@ This new test will run against every SDK & framework combination.
 If you want to run the integration tests locally, you can do so by doing the following:
 
 - Go to the server of your choice in `cd packages/sdks/e2e/*` (or `packages/react-tests/*` for gen1 react sdk)
-- Run the Playwright tests: `yarn nx e2e`
+- Run the Playwright tests: `yarn nx test`
 
-Alternatively, you can call `yarn nx e2e @e2e/svelte` from anywhere in the mono-repo (replace `@e2e/svelte` with the name of the server you want to run).
+Alternatively, you can call `yarn nx test @e2e/svelte` from anywhere in the mono-repo (replace `@e2e/svelte` with the name of the server you want to run).
 
 NOTE: if you want to run multiple tests, you can call the underlying test command and provide it a comma-separated list of servers to test:
 

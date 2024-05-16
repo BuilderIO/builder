@@ -6,7 +6,7 @@
     "build": "tsc --noEmit && vite build",
     "dev": "tsc --noEmit && vite",
     "serve": "vite preview",
-    "e2e": "SERVER_NAME=react yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=react yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",

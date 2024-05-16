@@ -13,7 +13,7 @@
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
     "qwik": "qwik",
-    "e2e": "SERVER_NAME=qwik-city yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=qwik-city yarn nx test:e2e @sdk/tests",
     "serve": "yarn run dev"
   },
   "devDependencies": {
