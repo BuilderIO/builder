@@ -1,4 +1,4 @@
-import { For, Show, useStore, useTarget } from '@builder.io/mitosis';
+import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/index.js';
 import type { AccordionProps } from './accordion.types.js';
 
@@ -25,10 +25,71 @@ export default function Accordion(props: AccordionProps) {
         Object.entries(styles).filter(([_, value]) => value !== undefined)
       );
     },
+    gridStyles(index: number) {
+      if (!props.grid) {
+        return {};
+      }
+      const gridItemOrder = state.openGridItemOrder();
+      return {
+        width: props.gridRowWidth,
+        ...(typeof gridItemOrder === 'number' && {
+          order: index < gridItemOrder ? index : index + 1,
+        }),
+      };
+    },
+    openGridItemOrder(): number | null {
+      let itemOrder: number | null = null;
+      const getOpenGridItemPosition = props.grid && state.open.length;
+      if (getOpenGridItemPosition && divRef) {
+        const openItemIndex = state.open[0];
+        const openItem = divRef.querySelector(
+          `.builder-accordion-title[data-index="${openItemIndex}"]`
+        );
+
+        let subjectItem = openItem;
+        itemOrder = openItemIndex;
+
+        if (subjectItem) {
+          let prevItemRect = subjectItem.getBoundingClientRect();
+
+          while (
+            (subjectItem = subjectItem && subjectItem.nextElementSibling)
+          ) {
+            if (subjectItem) {
+              if (subjectItem.classList.contains('builder-accordion-detail')) {
+                continue;
+              }
+              const subjectItemRect = subjectItem.getBoundingClientRect();
+              if (subjectItemRect.left > prevItemRect.left) {
+                const index = parseInt(
+                  subjectItem.getAttribute('data-index') || '',
+                  10
+                );
+                if (!isNaN(index)) {
+                  prevItemRect = subjectItemRect;
+                  itemOrder = index;
+                }
+              } else {
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      if (typeof itemOrder === 'number') {
+        itemOrder = itemOrder + 1;
+      }
+
+      return itemOrder;
+    },
   });
+
+  const divRef = useRef<any>();
 
   return (
     <div
+      ref={divRef}
       class="builder-accordion"
       style={{
         display: 'flex',
@@ -43,12 +104,15 @@ export default function Accordion(props: AccordionProps) {
     >
       <For each={props.items}>
         {(item, index) => (
-          <div key={index}>
+          <>
             <div
               class={`builder-accordion-title builder-accordion-title-${
                 state.open.includes(index) ? 'open' : 'closed'
               }`}
-              style={state.accordionStyles}
+              style={{
+                ...state.accordionStyles,
+                ...state.gridStyles(index),
+              }}
               data-index={index}
               onClick={() => {
                 if (state.open.includes(index)) {
@@ -76,6 +140,15 @@ export default function Accordion(props: AccordionProps) {
                 class={`builder-accordion-detail builder-accordion-detail-${
                   state.open.includes(index) ? 'open' : 'closed'
                 }`}
+                style={{
+                  order:
+                    typeof state.openGridItemOrder() === 'number'
+                      ? (state.openGridItemOrder() as any)
+                      : undefined,
+                  ...(props.grid && {
+                    width: '100%',
+                  }),
+                }}
               >
                 <Blocks
                   blocks={item.detail}
@@ -87,7 +160,7 @@ export default function Accordion(props: AccordionProps) {
                 />
               </div>
             </Show>
-          </div>
+          </>
         )}
       </For>
     </div>
