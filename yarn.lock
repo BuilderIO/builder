@@ -10981,7 +10981,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snippet/next-app-dir-client@workspace:packages/sdks/snippets/nextjs-app-dir-client"
   dependencies:
-    "@builder.io/sdk-react": "workspace:*"
+    "@builder.io/sdk-react-nextjs": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/node": ^20
     "@types/react": ^18
