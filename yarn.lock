@@ -10977,6 +10977,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snippet/next-app-dir-client@workspace:packages/sdks/snippets/nextjs-app-dir-client":
+  version: 0.0.0-use.local
+  resolution: "@snippet/next-app-dir-client@workspace:packages/sdks/snippets/nextjs-app-dir-client"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@sdk/tests": "workspace:*"
+    "@types/node": ^20
+    "@types/react": ^18
+    "@types/react-dom": ^18
+    eslint: ^8
+    eslint-config-next: 14.2.3
+    next: 14.2.3
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
+  languageName: unknown
+  linkType: soft
+
 "@snippet/next-app-dir@workspace:packages/sdks/snippets/nextjs-app-dir":
   version: 0.0.0-use.local
   resolution: "@snippet/next-app-dir@workspace:packages/sdks/snippets/nextjs-app-dir"

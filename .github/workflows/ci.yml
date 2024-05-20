@@ -103,7 +103,17 @@ jobs:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
       fail-fast: false
       matrix:
-        snippet: ['vue', 'nuxt', 'react', 'angular', 'angular-ssr', 'qwik-city', 'next-app-dir']
+        snippet:
+          [
+            'vue',
+            'nuxt',
+            'react',
+            'angular',
+            'angular-ssr',
+            'qwik-city',
+            'next-app-dir',
+            'next-app-dir-client',
+          ]
 
     steps:
       - name: Setup
