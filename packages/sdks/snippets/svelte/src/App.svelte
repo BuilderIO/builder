@@ -1,26 +1,22 @@
 <script lang="ts">
-  import { Content, _processContentResult, fetchOneEntry } from '@builder.io/sdk-svelte';
+  import { Content, fetchOneEntry } from '@builder.io/sdk-svelte';
 
-  let props = null;
   let apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660';
   let model = 'page';
 
-  const fetch = async () => {
-    const content = await fetchOneEntry({
+  let content = null;
+
+  async function fetchContent() {
+    content = await fetchOneEntry({
       apiKey,
       model,
       userAttributes: {
-        url: location.pathname
+        urlPath: window.location.pathname
       }
     });
-    props = {
-      content,
-      model,
-      apiKey
-    }
-  };
+  }
 
-  fetch();
+  fetchContent();
 </script>
 
 <svelte:head>
@@ -28,8 +24,8 @@
 </svelte:head>
 
 <main>
-  {#if props}
-    <Content {...props} />
+  {#if content}
+    <Content content={content} apiKey={apiKey} model={model}  />
   {:else}
     Content Not Found
   {/if}

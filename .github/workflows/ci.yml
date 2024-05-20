@@ -115,6 +115,7 @@ jobs:
             'next-app-dir-client',
             'next-pages-dir',
             'svetle',
+            'sveltekit',
           ]
 
     steps:
