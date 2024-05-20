@@ -11111,6 +11111,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snippet/sveltekit@workspace:packages/sdks/snippets/sveltekit"
   dependencies:
+    "@builder.io/sdk-svelte": "workspace:*"
     "@sveltejs/adapter-auto": ^3.0.0
     "@sveltejs/kit": ^2.0.0
     "@sveltejs/vite-plugin-svelte": ^3.0.0
