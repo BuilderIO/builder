@@ -11017,6 +11017,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snippet/next-pages-dir@workspace:packages/sdks/snippets/nextjs-pages-dir":
+  version: 0.0.0-use.local
+  resolution: "@snippet/next-pages-dir@workspace:packages/sdks/snippets/nextjs-pages-dir"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@sdk/tests": "workspace:*"
+    "@types/node": ^20
+    "@types/react": ^18
+    "@types/react-dom": ^18
+    eslint: ^8
+    eslint-config-next: 14.2.3
+    next: 14.2.3
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
+  languageName: unknown
+  linkType: soft
+
 "@snippet/nuxt@workspace:packages/sdks/snippets/nuxt":
   version: 0.0.0-use.local
   resolution: "@snippet/nuxt@workspace:packages/sdks/snippets/nuxt"
