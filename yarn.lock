@@ -11090,6 +11090,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snippet/solid@workspace:packages/sdks/snippets/solidjs":
+  version: 0.0.0-use.local
+  resolution: "@snippet/solid@workspace:packages/sdks/snippets/solidjs"
+  dependencies:
+    "@builder.io/sdk-solid": "workspace:*"
+    nx: ^16.6.0
+    nx-cloud: ^16.2.0
+    solid-js: ^1.8.15
+    typescript: ^5.2.2
+    vite: ^5.2.0
+    vite-plugin-solid: ^2.10.2
+  languageName: unknown
+  linkType: soft
+
 "@snippet/svelte@workspace:packages/sdks/snippets/svelte":
   version: 0.0.0-use.local
   resolution: "@snippet/svelte@workspace:packages/sdks/snippets/svelte"
@@ -16276,7 +16290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-solid@npm:^1.3.13":
+"babel-preset-solid@npm:^1.3.13, babel-preset-solid@npm:^1.8.4":
   version: 1.8.17
   resolution: "babel-preset-solid@npm:1.8.17"
   dependencies:
@@ -41446,10 +41460,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"seroval-plugins@npm:^1.0.3":
+  version: 1.0.7
+  resolution: "seroval-plugins@npm:1.0.7"
+  peerDependencies:
+    seroval: ^1.0
+  checksum: 4fe5daee7aa9f6a6eb24fd57d1ab835826c630202f5f34bd9301151b5683b94e36acee99e9a5a47162aff4f5ec3bf9a274ac4c69235d1408201770022fc50c4a
+  languageName: node
+  linkType: hard
+
 "seroval@npm:^0.14.1":
   version: 0.14.1
   resolution: "seroval@npm:0.14.1"
   checksum: 58f4ceabb6b1a56d4703ba081cc62950c6224e4dbcb336996eb31184e9ce0955889eab144803a651aefcd1af35c0d25d9c0cde100b66b8373268fdba60b7327b
+  languageName: node
+  linkType: hard
+
+"seroval@npm:^1.0.4":
+  version: 1.0.7
+  resolution: "seroval@npm:1.0.7"
+  checksum: 4b81e273c5fd6565302cd8a58aad306d4c0bd0e33edeedd287234a4c4b7c75e89ce34d654d201a4a2758dab720d31832dac171d0705fe2a1c0e4a42d2f614ad6
   languageName: node
   linkType: hard
 
@@ -42170,6 +42200,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"solid-js@npm:^1.8.15":
+  version: 1.8.17
+  resolution: "solid-js@npm:1.8.17"
+  dependencies:
+    csstype: ^3.1.0
+    seroval: ^1.0.4
+    seroval-plugins: ^1.0.3
+  checksum: 05d34ac9d21e078cf137540e43234cb25d8a7a0932195d173bda5f21f1026a27aca3a65f7e3a847e3d8b1be1723fb06e67d2ff4ebe51f5b8fa3b52d6f27bd872
+  languageName: node
+  linkType: hard
+
 "solid-refresh@npm:^0.5.3":
   version: 0.5.3
   resolution: "solid-refresh@npm:0.5.3"
@@ -42180,6 +42221,19 @@ __metadata:
   peerDependencies:
     solid-js: ^1.3
   checksum: bd75ed56ad86f70476fc57e44a046dc9937eaf1a1a5f45a2a70a85ef444796ffe39f46400a0d59b617e3e10ff60ab3e6a11592a665aeb75a06ecebf87c1b4bff
+  languageName: node
+  linkType: hard
+
+"solid-refresh@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "solid-refresh@npm:0.6.3"
+  dependencies:
+    "@babel/generator": ^7.23.6
+    "@babel/helper-module-imports": ^7.22.15
+    "@babel/types": ^7.23.6
+  peerDependencies:
+    solid-js: ^1.3
+  checksum: a83dac3b4bff076126602458178a17f3ce973482628586372c1168021e9c0f8d5b63403d602d4b86abd9e04ea97c01d0a6614abbcddaaf836df28eeb1c8a5bc1
   languageName: node
   linkType: hard
 
@@ -46545,6 +46599,27 @@ __metadata:
     "@nuxt/kit":
       optional: true
   checksum: ba1a828ed13da03763f858452b7d514d5804c81abd97ba63366c85265dcdf148b3c93f92ddc6439ccef135768a5c7d74a89a4f2c5cc73bf2373135c151326562
+  languageName: node
+  linkType: hard
+
+"vite-plugin-solid@npm:^2.10.2":
+  version: 2.10.2
+  resolution: "vite-plugin-solid@npm:2.10.2"
+  dependencies:
+    "@babel/core": ^7.23.3
+    "@types/babel__core": ^7.20.4
+    babel-preset-solid: ^1.8.4
+    merge-anything: ^5.1.7
+    solid-refresh: ^0.6.3
+    vitefu: ^0.2.5
+  peerDependencies:
+    "@testing-library/jest-dom": ^5.16.6 || ^5.17.0 || ^6.*
+    solid-js: ^1.7.2
+    vite: ^3.0.0 || ^4.0.0 || ^5.0.0
+  peerDependenciesMeta:
+    "@testing-library/jest-dom":
+      optional: true
+  checksum: a85fe2c1b2750468784681c4f53616f6d0cb3aac563e4854b52fd64bfaddb8a1aed664b439113999700e90c9e0756ed661fb58e84669be72c7814cb840e3a2d7
   languageName: node
   linkType: hard
 

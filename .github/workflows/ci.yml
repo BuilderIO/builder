@@ -116,6 +116,7 @@ jobs:
             'next-pages-dir',
             'svelte',
             'sveltekit',
+            'solid',
           ]
 
     steps:
