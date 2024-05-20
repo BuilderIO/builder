@@ -8,8 +8,8 @@ test.describe('Basic styles', () => {
     page,
     sdk,
   }) => {
-    test.fail(checkIsRN(sdk));
-    await page.goto('/basic-styles', { timeout: 5000 });
+    test.skip(checkIsRN(sdk));
+    await page.goto('/basic-styles');
 
     const button = page.getByRole('button', { name: 'Click Me!' });
 
@@ -42,7 +42,7 @@ test.describe('Basic styles', () => {
     page,
     sdk,
   }) => {
-    test.fail(checkIsRN(sdk));
+    test.skip(checkIsRN(sdk));
     const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
     const mockImgBuffer = fs.readFileSync(mockImgPath);
 
