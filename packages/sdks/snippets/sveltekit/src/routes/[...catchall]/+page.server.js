@@ -6,7 +6,7 @@ export async function load(event) {
   // fetch your Builder content
   const content = await fetchOneEntry({
     model: 'page',
-    apiKey: '75515d9050724317bfaeb81ca89328c9', // TO DO: Add your Public API Key
+    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660', // TO DO: Add your Public API Key
     options: getBuilderSearchParams(event.url.searchParams),
     userAttributes: {
       urlPath: event.url.pathname || '/',
