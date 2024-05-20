@@ -28,8 +28,7 @@
     "test": "SERVER_NAME=qwik-city yarn nx test:snippet @sdk/tests"
   },
   "dependencies": {
-    "@builder.io/sdk-qwik": "workspace:*",
-    "@sdk/tests": "workspace:*"
+    "@builder.io/sdk-qwik": "workspace:*"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.5.4",
