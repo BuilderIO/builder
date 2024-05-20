@@ -3,7 +3,7 @@ import {
   fetchOneEntry,
   isPreviewing,
   getBuilderSearchParams,
-} from '@builder.io/sdk-react-nextjs';
+} from '@builder.io/sdk-react/edge';
 
 interface PageProps {
   params: {
