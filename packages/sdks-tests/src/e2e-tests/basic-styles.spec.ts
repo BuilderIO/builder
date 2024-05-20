@@ -9,7 +9,7 @@ test.describe('Basic styles', () => {
     sdk,
   }) => {
     test.fail(checkIsRN(sdk));
-    await page.goto('/basic-styles');
+    await page.goto('/basic-styles', { timeout: 5000 });
 
     const button = page.getByRole('button', { name: 'Click Me!' });
 
