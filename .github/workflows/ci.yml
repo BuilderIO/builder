@@ -114,6 +114,7 @@ jobs:
             'next-app-dir',
             'next-app-dir-client',
             'next-pages-dir',
+            'svetle',
           ]
 
     steps:
