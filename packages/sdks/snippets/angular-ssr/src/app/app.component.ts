@@ -1,3 +1,8 @@
+/**
+ * Quickstart snippet
+ * snippets/angular-ssr/src/app/app.component.ts
+ */
+
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { Component, ChangeDetectorRef } from '@angular/core';

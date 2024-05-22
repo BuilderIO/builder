@@ -1,3 +1,7 @@
+/**
+ * Quickstart snippet
+ * snippets/solidjs/src/App.tsx
+ */
 import { createEffect, createSignal } from 'solid-js';
 import {
   fetchOneEntry,

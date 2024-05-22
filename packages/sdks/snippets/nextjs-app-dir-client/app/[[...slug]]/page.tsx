@@ -1,9 +1,14 @@
+/**
+ * Quickstart snippet
+ * snippets/nextjs-app-dir-client/app/[[...slug]].tsx
+ * Uses @builder.io/sdk-react
+ */
 import {
   Content,
   fetchOneEntry,
   isPreviewing,
   getBuilderSearchParams,
-} from '@builder.io/sdk-react-nextjs';
+} from '@builder.io/sdk-react/edge';
 
 interface PageProps {
   params: {

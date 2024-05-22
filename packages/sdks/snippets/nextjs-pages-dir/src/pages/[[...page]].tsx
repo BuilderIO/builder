@@ -1,6 +1,15 @@
-// pages/index.tsx
+/**
+ * Quickstart snippet
+ * snippets/nextjs-pages-dir/src/pages/[[...page.tsx]]
+ * Catch all route to build and render content from Builder.io in SSG mode
+ */
 import type { BuilderContent } from '@builder.io/sdk-react';
-import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
+import {
+  Content,
+  fetchEntries,
+  fetchOneEntry,
+  isPreviewing,
+} from '@builder.io/sdk-react';
 import type { GetStaticProps } from 'next';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
@@ -8,9 +17,11 @@ import { useRouter } from 'next/router';
 
 const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
-// Define a function that fetches the Builder content for the single page
-export const getStaticProps: GetStaticProps = async () => {
-  const urlPath = '/'; // Replace with your specific path if needed
+// Define a function that fetches the Builder content for a given page
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const urlPath =
+    '/' +
+    (Array.isArray(params?.page) ? params.page.join('/') : params?.page || '');
 
   // Fetch the builder content for the given page
   const page = await fetchOneEntry({
@@ -26,6 +37,25 @@ export const getStaticProps: GetStaticProps = async () => {
     revalidate: 5,
   };
 };
+
+// Define a function that generates the
+// static paths for all pages in Builder
+export async function getStaticPaths() {
+  // Get a list of all pages in Builder
+  const pages = await fetchEntries({
+    apiKey: BUILDER_API_KEY,
+    model: 'page',
+    // We only need the URL field
+    fields: 'data.url',
+    options: { noTargeting: true },
+  });
+
+  // Generate the static paths for all pages in Builder
+  return {
+    paths: pages.map((page) => `${page.data?.url}`),
+    fallback: 'blocking',
+  };
+}
 
 // Define the Page component
 export default function Page(props: { page: BuilderContent | null }) {

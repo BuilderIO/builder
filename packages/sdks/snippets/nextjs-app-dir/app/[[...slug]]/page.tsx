@@ -1,9 +1,14 @@
+/**
+ * Quickstart snippet
+ * snippets/nextjs-app-dir/app/[[...slug]].tsx
+ * Uses @builder.io/sdk-react-nextjs
+ */
 import {
   Content,
   fetchOneEntry,
   isPreviewing,
   getBuilderSearchParams,
-} from '@builder.io/sdk-react/edge';
+} from '@builder.io/sdk-react-nextjs';
 
 interface PageProps {
   params: {
@@ -15,11 +20,13 @@ interface PageProps {
 const PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 export default async function Page(props: PageProps) {
+  const urlPath = '/' + (props.params?.slug?.join('/') || '');
+
   const content = await fetchOneEntry({
     options: getBuilderSearchParams(props.searchParams),
     apiKey: PUBLIC_API_KEY,
     model: 'page',
-    userAttributes: { urlPath: '/' },
+    userAttributes: { urlPath },
   });
 
   const canShowContent = content || isPreviewing(props.searchParams);

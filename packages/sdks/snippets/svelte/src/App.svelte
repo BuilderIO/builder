@@ -1,10 +1,13 @@
+<!-- Quickstart snippet -->
+<!-- snippets/svelte/src/App.svelte -->
+
 <script lang="ts">
-  import { Content, fetchOneEntry } from '@builder.io/sdk-svelte';
+  import { Content, fetchOneEntry, type BuilderContent } from '@builder.io/sdk-svelte';
 
   let apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660';
   let model = 'page';
 
-  let content = null;
+  let content: BuilderContent | null = null;
 
   async function fetchContent() {
     content = await fetchOneEntry({

@@ -1,4 +1,7 @@
-// src/routes/[...catchall]/+page.server.js
+/**
+ * Quickstart snippet
+ * snippets/sveltekit/src/routes/[...catchall]/+page.server.js
+ */
 import { fetchOneEntry, getBuilderSearchParams } from '@builder.io/sdk-svelte';
 
 /** @type {import('../$types').PageServerLoad} */

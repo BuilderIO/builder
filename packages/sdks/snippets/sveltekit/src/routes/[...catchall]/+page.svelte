@@ -1,4 +1,5 @@
-<!-- src/routes/[...catchall]/+page.svelte -->
+<!-- Quickstart snippet -->
+<!-- snippets/sveltekit/src/routes/[...catchall]/+page.svelte -->
 <script>
     import { isPreviewing, Content } from "@builder.io/sdk-svelte";
   

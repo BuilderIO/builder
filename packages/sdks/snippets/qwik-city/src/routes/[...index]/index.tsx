@@ -1,3 +1,7 @@
+/**
+ * Quickstart snippet
+ * snippets/qwik-city/src/routes/[...index]/index.tsx
+ */
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import {

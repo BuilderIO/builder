@@ -1,3 +1,7 @@
+/**
+ * Quickstart snippet
+ * snippets/react/App.tsx
+ */
 import {
   Content,
   fetchOneEntry,
