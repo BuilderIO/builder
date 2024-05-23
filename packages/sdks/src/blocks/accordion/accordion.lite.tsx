@@ -114,7 +114,7 @@ export default function Accordion(props: AccordionProps) {
 
       return itemOrder;
     },
-    gridStyles(index: number) {
+    gridStyles(index: number, order: number | null) {
       if (!props.grid) {
         return {};
       }
@@ -122,22 +122,18 @@ export default function Accordion(props: AccordionProps) {
         reactNative: {},
         default: {
           width: props.gridRowWidth,
-          ...(typeof state.openGridItemOrder() === 'number' && {
-            order:
-              index < (state.openGridItemOrder() as number) ? index : index + 1,
+          ...(typeof order === 'number' && {
+            order: index < (order as number) ? index : index + 1,
           }),
         },
       });
     },
-    getAccordionDetailStyles() {
+    getAccordionDetailStyles(order: number | null) {
       const styles = {
         ...useTarget({
           reactNative: {},
           default: {
-            order:
-              typeof state.openGridItemOrder() === 'number'
-                ? (state.openGridItemOrder() as number)
-                : undefined,
+            order: typeof order === 'number' ? (order as number) : undefined,
           },
         }),
         ...(props.grid && {
@@ -170,7 +166,7 @@ export default function Accordion(props: AccordionProps) {
               class={state.getAccordionTitleClassName(index)}
               style={{
                 ...state.accordionTitleStyles,
-                ...state.gridStyles(index),
+                ...state.gridStyles(index, state.openGridItemOrder()),
               }}
               data-index={index}
               onClick={() => state.onClick(index)}
@@ -187,7 +183,9 @@ export default function Accordion(props: AccordionProps) {
             <Show when={state.open.includes(index)}>
               <div
                 class={state.getAccordionDetailClassName(index)}
-                style={state.getAccordionDetailStyles()}
+                style={state.getAccordionDetailStyles(
+                  state.openGridItemOrder()
+                )}
               >
                 <Blocks
                   blocks={item.detail}
