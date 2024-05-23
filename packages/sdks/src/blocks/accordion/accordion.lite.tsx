@@ -2,6 +2,9 @@ import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/index.js';
 import type { AccordionProps } from './accordion.types.js';
 
+type FlexDirection = 'row' | 'column' | 'column-reverse';
+type FlexWrap = 'wrap' | 'nowrap';
+
 export default function Accordion(props: AccordionProps) {
   const state = useStore({
     open: [] as number[],
@@ -9,14 +12,26 @@ export default function Accordion(props: AccordionProps) {
       return Boolean(props.grid || props.oneAtATime);
     },
     get accordionStyles() {
+      return {
+        display: 'flex',
+        alignItems: 'stretch',
+        flexDirection: 'column' as FlexDirection,
+        ...(props.grid && {
+          flexDirection: 'row' as FlexDirection,
+          alignItems: 'flex-start',
+          flexWrap: 'wrap' as FlexWrap,
+        }),
+      };
+    },
+    get accordionTitleStyles() {
       const styles = useTarget({
         reactNative: {
           display: 'flex' as 'flex' | 'none',
-          flexDirection: 'column' as 'row' | 'column' | 'column-reverse',
+          flexDirection: 'column' as FlexDirection,
         },
         default: {
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'column' as FlexDirection,
           alignItems: 'stretch',
           cursor: 'pointer',
         },
@@ -25,6 +40,16 @@ export default function Accordion(props: AccordionProps) {
         Object.entries(styles).filter(([_, value]) => value !== undefined)
       );
     },
+    getAccordionTitleClassName(index: number) {
+      return `builder-accordion-title builder-accordion-title-${
+        state.open.includes(index) ? 'open' : 'closed'
+      }`;
+    },
+    getAccordionDetailClassName(index: number) {
+      return `builder-accordion-detail builder-accordion-detail-${
+        state.open.includes(index) ? 'open' : 'closed'
+      }`;
+    },
     gridStyles(index: number) {
       if (!props.grid) {
         return {};
@@ -32,8 +57,16 @@ export default function Accordion(props: AccordionProps) {
       const gridItemOrder = state.openGridItemOrder();
       return {
         width: props.gridRowWidth,
-        ...(typeof gridItemOrder === 'number' && {
-          order: index < gridItemOrder ? index : index + 1,
+        ...useTarget({
+          reactNative: {},
+          default: {
+            order:
+              typeof gridItemOrder === 'number'
+                ? index < gridItemOrder
+                  ? index
+                  : index + 1
+                : undefined,
+          },
         }),
       };
     },
@@ -83,48 +116,51 @@ export default function Accordion(props: AccordionProps) {
 
       return itemOrder;
     },
+    getAccordionDetailStyles() {
+      const styles = {
+        ...useTarget({
+          reactNative: {},
+          default: {
+            order:
+              typeof state.openGridItemOrder() === 'number'
+                ? (state.openGridItemOrder() as any)
+                : undefined,
+          },
+        }),
+        ...(props.grid && {
+          width: '100%',
+        }),
+      };
+      return Object.fromEntries(
+        Object.entries(styles).filter(([_, value]) => value !== undefined)
+      );
+    },
+    onClick(index: number) {
+      if (state.open.includes(index)) {
+        state.open = state.onlyOneAtATime
+          ? []
+          : state.open.filter((item) => item !== index);
+      } else {
+        state.open = state.onlyOneAtATime ? [index] : state.open.concat(index);
+      }
+    },
   });
 
   const divRef = useRef<any>();
 
   return (
-    <div
-      ref={divRef}
-      class="builder-accordion"
-      style={{
-        display: 'flex',
-        alignItems: 'stretch',
-        flexDirection: 'column',
-        ...(props.grid && {
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          flexWrap: 'wrap',
-        }),
-      }}
-    >
+    <div ref={divRef} class="builder-accordion" style={state.accordionStyles}>
       <For each={props.items}>
         {(item, index) => (
           <>
             <div
-              class={`builder-accordion-title builder-accordion-title-${
-                state.open.includes(index) ? 'open' : 'closed'
-              }`}
+              class={state.getAccordionTitleClassName(index)}
               style={{
-                ...state.accordionStyles,
+                ...state.accordionTitleStyles,
                 ...state.gridStyles(index),
               }}
               data-index={index}
-              onClick={() => {
-                if (state.open.includes(index)) {
-                  state.open = state.onlyOneAtATime
-                    ? []
-                    : state.open.filter((item) => item !== index);
-                } else {
-                  state.open = state.onlyOneAtATime
-                    ? [index]
-                    : state.open.concat(index);
-                }
-              }}
+              onClick={() => state.onClick(index)}
             >
               <Blocks
                 blocks={item.title}
@@ -137,18 +173,8 @@ export default function Accordion(props: AccordionProps) {
             </div>
             <Show when={state.open.includes(index)}>
               <div
-                class={`builder-accordion-detail builder-accordion-detail-${
-                  state.open.includes(index) ? 'open' : 'closed'
-                }`}
-                style={{
-                  order:
-                    typeof state.openGridItemOrder() === 'number'
-                      ? (state.openGridItemOrder() as any)
-                      : undefined,
-                  ...(props.grid && {
-                    width: '100%',
-                  }),
-                }}
+                class={state.getAccordionDetailClassName(index)}
+                style={state.getAccordionDetailStyles()}
               >
                 <Blocks
                   blocks={item.detail}

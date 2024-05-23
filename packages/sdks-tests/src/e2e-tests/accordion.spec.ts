@@ -87,10 +87,16 @@ test.describe('Accordion', () => {
       )
     );
     await page.goto('/accordion-grid');
-    // TODO: Add test logic
-    // checks default 25% width
+
+    expect(await page.locator('.builder-accordion-title').count()).toBe(3);
+
+    const accordionTitles = await page.locator('.builder-accordion-title').all();
+    for (const accordionTitle of accordionTitles) {
+      const styleAttribute = (await accordionTitle.getAttribute('style')) || '';
+      expect(styleAttribute).toContain('25%');
+    }
   });
-  test('grid - Check if Accordion detail takes the entire space below', async ({ page, sdk }) => {
+  test('grid - Check `order` of Accordion elements', async ({ page, sdk }) => {
     test.fail(
       excludeTestFor(
         {
@@ -101,7 +107,21 @@ test.describe('Accordion', () => {
       )
     );
     await page.goto('/accordion-grid');
-    // TODO: Add test logic
+
+    await page.locator('text=Item 1').click({ timeout: 10000 });
+
+    await expect(page.locator('text=Inside Item 1')).toBeVisible();
+
+    const accordionTitles = await page.locator('.builder-accordion-title').all();
+    for (let i = 0; i < accordionTitles.length; i++) {
+      const accordionTitle = accordionTitles[i];
+      const styleAttribute = await accordionTitle.getAttribute('style');
+      expect(styleAttribute).toContain(`order: ${i};`);
+    }
+
+    const openAccordionDetail = page.locator('.builder-accordion-detail-open');
+    await expect(openAccordionDetail).toBeVisible();
+    expect(await openAccordionDetail.getAttribute('style')).toContain('order: 3;');
   });
   test('grid - Only one item is displayed regardless of oneAtATime', async ({ page, sdk }) => {
     test.fail(
