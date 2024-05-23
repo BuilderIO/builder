@@ -38,21 +38,17 @@ export default function Accordion(props: AccordionProps) {
       const shared = {
         display: 'flex',
         flexDirection: 'column' as FlexDirection,
-        alignItems: 'stretch',
-        cursor: 'pointer',
       };
       const styles = useTarget({
-        reactNative: {
-          display: 'flex' as 'flex' | 'none',
-          flexDirection: 'column' as FlexDirection,
-        },
+        reactNative: shared,
         solid: Object.fromEntries(
-          Object.entries(shared).map(([key, value]) => [
-            camelCaseToKebabCase(key),
-            value,
-          ])
+          Object.entries({
+            ...shared,
+            alignItems: 'stretch',
+            cursor: 'pointer',
+          }).map(([key, value]) => [camelCaseToKebabCase(key), value])
         ),
-        default: shared,
+        default: { ...shared, alignItems: 'stretch', cursor: 'pointer' },
       });
       return Object.fromEntries(
         Object.entries(styles).filter(([_, value]) => value !== undefined)
@@ -114,10 +110,11 @@ export default function Accordion(props: AccordionProps) {
 
       return itemOrder;
     },
-    gridStyles(index: number, order: number | null) {
+    gridStyles(index: number) {
       if (!props.grid) {
         return {};
       }
+      const order = state.openGridItemOrder();
       return useTarget({
         reactNative: {},
         default: {
@@ -128,7 +125,8 @@ export default function Accordion(props: AccordionProps) {
         },
       });
     },
-    getAccordionDetailStyles(order: number | null) {
+    getAccordionDetailStyles() {
+      const order = state.openGridItemOrder();
       const styles = {
         ...useTarget({
           reactNative: {},
@@ -166,7 +164,7 @@ export default function Accordion(props: AccordionProps) {
               class={state.getAccordionTitleClassName(index)}
               style={{
                 ...state.accordionTitleStyles,
-                ...state.gridStyles(index, state.openGridItemOrder()),
+                ...state.gridStyles(index),
               }}
               data-index={index}
               onClick={() => state.onClick(index)}
@@ -183,9 +181,7 @@ export default function Accordion(props: AccordionProps) {
             <Show when={state.open.includes(index)}>
               <div
                 class={state.getAccordionDetailClassName(index)}
-                style={state.getAccordionDetailStyles(
-                  state.openGridItemOrder()
-                )}
+                style={state.getAccordionDetailStyles()}
               >
                 <Blocks
                   blocks={item.detail}
