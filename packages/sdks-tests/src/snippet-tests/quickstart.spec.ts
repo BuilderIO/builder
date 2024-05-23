@@ -18,10 +18,13 @@ test.describe('Quickstart', () => {
   test('loads homepage and navigates to columns', async ({ page }) => {
     await page.goto('/');
 
-    const link = page.locator('a', { hasText: 'Columns (with images) ' });
+    const links = page.locator('a');
 
-    await link.click();
+    const columnsLink = await links.filter({
+      hasText: 'Columns (with images) ',
+    });
 
+    await columnsLink.click();
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 });
