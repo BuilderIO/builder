@@ -1,50 +1,33 @@
 {
   "name": "@snippet/qwik-city",
-  "description": "App with Routing built-in ready to create your app",
-  "engines": {
-    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
-  },
-  "engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
   "private": true,
-  "trustedDependencies": [
-    "sharp"
-  ],
-  "trustedDependencies-annotation": "Needed for bun to allow running install scripts",
   "type": "module",
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.types": "tsc --incremental --noEmit",
-    "deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
+    "deploy": "echo 'Run \"npm run qwik add\" to install a server adaptor'",
     "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
-    "fmt": "prettier --write .",
-    "fmt.check": "prettier --check .",
-    "lint": "eslint \"src/**/*.ts*\"",
-    "serve": "qwik build preview && vite preview --open",
+    "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
     "qwik": "qwik",
-    "test": "SERVER_NAME=qwik-city yarn nx test:snippet @sdk/tests"
+    "test": "SERVER_NAME=qwik-city yarn nx test:snippet @sdk/tests",
+    "serve": "yarn run dev"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "^1.5.1",
+    "@builder.io/qwik-city": "^1.2.19",
+    "@types/node": "^18.11.18",
+    "node-fetch": "3.3.0",
+    "nx": "^16.6.0",
+    "nx-cloud": "^16.2.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.0.3",
+    "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
     "@builder.io/sdk-qwik": "workspace:*"
-  },
-  "devDependencies": {
-    "@builder.io/qwik": "^1.5.4",
-    "@builder.io/qwik-city": "^1.5.4",
-    "@types/eslint": "^8.56.10",
-    "@types/node": "^20.12.7",
-    "@typescript-eslint/eslint-plugin": "^7.7.1",
-    "@typescript-eslint/parser": "^7.7.1",
-    "eslint": "^8.57.0",
-    "eslint-plugin-qwik": "^1.5.4",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
-    "prettier": "^3.2.5",
-    "typescript": "5.4.5",
-    "undici": "*",
-    "vite": "^5.2.10",
-    "vite-tsconfig-paths": "^4.2.1"
   }
 }
