@@ -10,7 +10,6 @@ type FlexWrap = 'wrap' | 'nowrap';
 export default function Accordion(props: AccordionProps) {
   const state = useStore({
     open: [] as number[],
-    openItemOrder: null as number | null,
     get onlyOneAtATime() {
       return Boolean(props.grid || props.oneAtATime);
     },
@@ -115,7 +114,7 @@ export default function Accordion(props: AccordionProps) {
 
       return itemOrder;
     },
-    gridStyles(index: number, order: number | null) {
+    gridStyles(index: number) {
       if (!props.grid) {
         return {};
       }
@@ -123,18 +122,22 @@ export default function Accordion(props: AccordionProps) {
         reactNative: {},
         default: {
           width: props.gridRowWidth,
-          ...(typeof order === 'number' && {
-            order: index < (order as number) ? index : index + 1,
+          ...(typeof state.openGridItemOrder() === 'number' && {
+            order:
+              index < (state.openGridItemOrder() as number) ? index : index + 1,
           }),
         },
       });
     },
-    getAccordionDetailStyles(order: number | null) {
+    getAccordionDetailStyles() {
       const styles = {
         ...useTarget({
           reactNative: {},
           default: {
-            order: typeof order === 'number' ? (order as number) : undefined,
+            order:
+              typeof state.openGridItemOrder() === 'number'
+                ? (state.openGridItemOrder() as number)
+                : undefined,
           },
         }),
         ...(props.grid && {
@@ -153,7 +156,6 @@ export default function Accordion(props: AccordionProps) {
       } else {
         state.open = state.onlyOneAtATime ? [index] : state.open.concat(index);
       }
-      state.openItemOrder = state.openGridItemOrder();
     },
   });
 
@@ -168,7 +170,7 @@ export default function Accordion(props: AccordionProps) {
               class={state.getAccordionTitleClassName(index)}
               style={{
                 ...state.accordionTitleStyles,
-                ...state.gridStyles(index, state.openItemOrder),
+                ...state.gridStyles(index),
               }}
               data-index={index}
               onClick={() => state.onClick(index)}
@@ -185,7 +187,7 @@ export default function Accordion(props: AccordionProps) {
             <Show when={state.open.includes(index)}>
               <div
                 class={state.getAccordionDetailClassName(index)}
-                style={state.getAccordionDetailStyles(state.openItemOrder)}
+                style={state.getAccordionDetailStyles()}
               >
                 <Blocks
                   blocks={item.detail}
