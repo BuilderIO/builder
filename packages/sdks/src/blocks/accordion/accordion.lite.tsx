@@ -64,7 +64,7 @@ export default function Accordion(props: AccordionProps) {
         state.open.includes(index) ? 'open' : 'closed'
       }`;
     },
-    openGridItemOrder(): number | null {
+    get openGridItemOrder(): number | null {
       let itemOrder: number | null = null;
       const getOpenGridItemPosition = props.grid && state.open.length;
       if (getOpenGridItemPosition && divRef) {
@@ -114,7 +114,7 @@ export default function Accordion(props: AccordionProps) {
       if (!props.grid) {
         return {};
       }
-      const order = state.openGridItemOrder();
+      const order = state.openGridItemOrder;
       return useTarget({
         reactNative: {},
         default: {
@@ -125,13 +125,15 @@ export default function Accordion(props: AccordionProps) {
         },
       });
     },
-    getAccordionDetailStyles() {
-      const order = state.openGridItemOrder();
+    get accordionDetailStyles(): Dictionary<string> {
       const styles = {
         ...useTarget({
           reactNative: {},
           default: {
-            order: typeof order === 'number' ? (order as number) : undefined,
+            order:
+              typeof state.openGridItemOrder === 'number'
+                ? (state.openGridItemOrder as number)
+                : undefined,
           },
         }),
         ...(props.grid && {
@@ -181,7 +183,7 @@ export default function Accordion(props: AccordionProps) {
             <Show when={state.open.includes(index)}>
               <div
                 class={state.getAccordionDetailClassName(index)}
-                style={state.getAccordionDetailStyles()}
+                style={state.accordionDetailStyles}
               >
                 <Blocks
                   blocks={item.detail}
