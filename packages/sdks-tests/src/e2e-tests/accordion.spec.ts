@@ -82,6 +82,7 @@ test.describe('Accordion', () => {
         {
           rsc: true,
           angular: true,
+          reactNative: true, // React Native does not support `order`
         },
         sdk
       )
@@ -102,6 +103,7 @@ test.describe('Accordion', () => {
         {
           rsc: true,
           angular: true,
+          reactNative: true, // React Native does not support `order`
         },
         sdk
       )

@@ -4,24 +4,39 @@ import type { AccordionProps } from './accordion.types.js';
 import type { Dictionary } from '../../types/typescript.js';
 import { camelCaseToKebabCase } from '../../components/block/animator.js';
 
-type FlexDirection = 'row' | 'column' | 'column-reverse';
-type FlexWrap = 'wrap' | 'nowrap';
-
 export default function Accordion(props: AccordionProps) {
   const state = useStore({
     open: [] as number[],
     get onlyOneAtATime() {
       return Boolean(props.grid || props.oneAtATime);
     },
-    get accordionStyles() {
+    get accordionStyles(): Dictionary<string> {
       const styles = {
-        display: 'flex',
-        alignItems: 'stretch',
-        flexDirection: 'column' as FlexDirection,
+        display: 'flex' as 'flex' | 'none',
+        alignItems: 'stretch' as
+          | 'stretch'
+          | 'flex-start'
+          | 'flex-end'
+          | 'center'
+          | 'baseline',
+        flexDirection: 'column' as
+          | 'column'
+          | 'row'
+          | 'column-reverse'
+          | 'row-reverse',
         ...(props.grid && {
-          flexDirection: 'row' as FlexDirection,
-          alignItems: 'flex-start',
-          flexWrap: 'wrap' as FlexWrap,
+          flexDirection: 'row' as
+            | 'column'
+            | 'row'
+            | 'column-reverse'
+            | 'row-reverse',
+          alignItems: 'flex-start' as
+            | 'stretch'
+            | 'flex-start'
+            | 'flex-end'
+            | 'center'
+            | 'baseline',
+          flexWrap: 'wrap' as 'nowrap' | 'wrap',
         }),
       };
       return useTarget({
@@ -34,10 +49,10 @@ export default function Accordion(props: AccordionProps) {
         default: styles,
       });
     },
-    get accordionTitleStyles() {
+    get accordionTitleStyles(): Dictionary<string> {
       const shared = {
         display: 'flex',
-        flexDirection: 'column' as FlexDirection,
+        flexDirection: 'column',
       };
       const styles = useTarget({
         reactNative: shared,
@@ -116,7 +131,9 @@ export default function Accordion(props: AccordionProps) {
       }
       const order = state.openGridItemOrder;
       return useTarget({
-        reactNative: {},
+        reactNative: {
+          width: props.gridRowWidth,
+        },
         default: {
           width: props.gridRowWidth,
           ...(typeof order === 'number' && {
