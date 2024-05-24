@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Avatar from '../components/avatar';
 import CoverImage from '../components/cover-image';
 import Link from 'next/link';
@@ -14,7 +15,18 @@ export default function PostCard({ title, coverImage, author, slug, intro }) {
         </Link>
       </h3>
       <p className="text-lg leading-relaxed mb-4">{intro}</p>
-      {author && <Avatar name={author.name} picture={author.image} />}
+      {author && <Avatar name={author?.name} picture={author?.image} />}
     </div>
   );
 }
+
+PostCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  coverImage: PropTypes.string.isRequired,
+  author: PropTypes.shape({
+    name: PropTypes.string,
+    image: PropTypes.string,
+  }),
+  slug: PropTypes.string.isRequired,
+  intro: PropTypes.string.isRequired,
+};
