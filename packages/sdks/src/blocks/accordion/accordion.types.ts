@@ -15,7 +15,6 @@ export interface AccordionProps
   }[];
   oneAtATime?: boolean;
   grid?: boolean;
-  defaultOpen?: number;
-  gridRowWidth?: number;
+  gridRowWidth?: string;
   useChildrenForItems?: boolean;
 }

@@ -9,6 +9,7 @@ import Blocks from '../../components/blocks/index.js';
 import type { AccordionProps } from './accordion.types.js';
 import type { Dictionary } from '../../types/typescript.js';
 import { camelCaseToKebabCase } from '../../components/block/animator.js';
+import { convertOrderNumberToString } from './helpers.js';
 
 useMetadata({
   qwik: {
@@ -137,22 +138,6 @@ export default function Accordion(props: AccordionProps) {
 
       return itemOrder;
     },
-    gridStyles(index: number, order: number | null) {
-      if (!props.grid) {
-        return {};
-      }
-      return useTarget({
-        reactNative: {
-          width: props.gridRowWidth,
-        },
-        default: {
-          width: props.gridRowWidth,
-          ...(typeof order === 'number' && {
-            order: index < (order as number) ? index : index + 1,
-          }),
-        },
-      });
-    },
     get accordionDetailStyles(): Dictionary<string> {
       const styles = {
         ...useTarget({
@@ -192,7 +177,16 @@ export default function Accordion(props: AccordionProps) {
               class={state.getAccordionTitleClassName(index)}
               style={{
                 ...state.accordionTitleStyles,
-                ...state.gridStyles(index, state.openGridItemOrder),
+                width: props.grid ? props.gridRowWidth : undefined,
+                ...(useTarget({
+                  reactNative: {},
+                  default: {
+                    order:
+                      state.openGridItemOrder !== null
+                        ? convertOrderNumberToString(index)
+                        : convertOrderNumberToString(index + 1),
+                  },
+                }) as any),
               }}
               data-index={index}
               onClick={() => state.onClick(index)}
