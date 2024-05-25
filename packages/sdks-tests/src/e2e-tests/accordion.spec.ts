@@ -108,6 +108,7 @@ test.describe('Accordion', () => {
         sdk
       )
     );
+    const orderStr = (index: number) => (sdk === 'svelte' ? `order:${index};` : `order: ${index};`);
     await page.goto('/accordion-grid');
 
     await page.locator('text=Item 1').click({ timeout: 10000 });
@@ -118,12 +119,12 @@ test.describe('Accordion', () => {
     for (let i = 0; i < accordionTitles.length; i++) {
       const accordionTitle = accordionTitles[i];
       const styleAttribute = await accordionTitle.getAttribute('style');
-      expect(styleAttribute).toContain(`order: ${i};`);
+      expect(styleAttribute).toContain(orderStr(i));
     }
 
     const openAccordionDetail = page.locator('.builder-accordion-detail-open');
     await expect(openAccordionDetail).toBeVisible();
-    expect(await openAccordionDetail.getAttribute('style')).toContain('order: 3;');
+    expect(await openAccordionDetail.getAttribute('style')).toContain(orderStr(3));
   });
   test('grid - Only one item is displayed regardless of oneAtATime', async ({ page, sdk }) => {
     test.fail(

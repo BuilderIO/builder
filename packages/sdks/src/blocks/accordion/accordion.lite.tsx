@@ -1,6 +1,5 @@
 import {
   For,
-  Fragment,
   Show,
   useMetadata,
   useStore,
@@ -188,7 +187,7 @@ export default function Accordion(props: AccordionProps) {
     <div class="builder-accordion" style={state.accordionStyles}>
       <For each={props.items}>
         {(item, index) => (
-          <Fragment key={index}>
+          <>
             <div
               class={state.getAccordionTitleClassName(index)}
               style={{
@@ -222,7 +221,7 @@ export default function Accordion(props: AccordionProps) {
                 />
               </div>
             </Show>
-          </Fragment>
+          </>
         )}
       </For>
     </div>
