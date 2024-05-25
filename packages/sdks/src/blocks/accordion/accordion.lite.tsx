@@ -1,8 +1,21 @@
-import { For, Show, useRef, useStore, useTarget } from '@builder.io/mitosis';
+import {
+  For,
+  Fragment,
+  Show,
+  useMetadata,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/index.js';
 import type { AccordionProps } from './accordion.types.js';
 import type { Dictionary } from '../../types/typescript.js';
 import { camelCaseToKebabCase } from '../../components/block/animator.js';
+
+useMetadata({
+  qwik: {
+    setUseStoreFirst: true,
+  },
+});
 
 export default function Accordion(props: AccordionProps) {
   const state = useStore({
@@ -82,9 +95,9 @@ export default function Accordion(props: AccordionProps) {
     get openGridItemOrder(): number | null {
       let itemOrder: number | null = null;
       const getOpenGridItemPosition = props.grid && state.open.length;
-      if (getOpenGridItemPosition && divRef) {
+      if (getOpenGridItemPosition && document) {
         const openItemIndex = state.open[0];
-        const openItem = divRef.querySelector(
+        const openItem = document.querySelector(
           `.builder-accordion-title[data-index="${openItemIndex}"]`
         );
 
@@ -125,11 +138,10 @@ export default function Accordion(props: AccordionProps) {
 
       return itemOrder;
     },
-    gridStyles(index: number) {
+    gridStyles(index: number, order: number | null) {
       if (!props.grid) {
         return {};
       }
-      const order = state.openGridItemOrder;
       return useTarget({
         reactNative: {
           width: props.gridRowWidth,
@@ -172,18 +184,16 @@ export default function Accordion(props: AccordionProps) {
     },
   });
 
-  const divRef = useRef<any>();
-
   return (
-    <div ref={divRef} class="builder-accordion" style={state.accordionStyles}>
+    <div class="builder-accordion" style={state.accordionStyles}>
       <For each={props.items}>
         {(item, index) => (
-          <>
+          <Fragment key={index}>
             <div
               class={state.getAccordionTitleClassName(index)}
               style={{
                 ...state.accordionTitleStyles,
-                ...state.gridStyles(index),
+                ...state.gridStyles(index, state.openGridItemOrder),
               }}
               data-index={index}
               onClick={() => state.onClick(index)}
@@ -212,7 +222,7 @@ export default function Accordion(props: AccordionProps) {
                 />
               </div>
             </Show>
-          </>
+          </Fragment>
         )}
       </For>
     </div>
