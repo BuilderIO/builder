@@ -15,7 +15,6 @@ test.describe('Quickstart', () => {
 
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
-
   test('loads homepage and navigates to columns', async ({ page }) => {
     await page.goto('/');
 

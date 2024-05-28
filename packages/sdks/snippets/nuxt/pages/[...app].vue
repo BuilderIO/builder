@@ -1,5 +1,5 @@
 <!-- Quickstart snippet -->
-<!-- snippet/nuxt/pages/[...app].vue -->
+<!-- snippets/nuxt/pages/[...app].vue -->
 
 <script setup>
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
