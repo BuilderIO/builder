@@ -10,7 +10,7 @@ import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
-import { camelCaseToKebabCase } from '../animator.js';
+import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
@@ -109,9 +109,9 @@ export default function BlockStyles(props: BlockStylesProps) {
             className: `${className}:hover`,
             styles: {
               ...hoverStyles,
-              transition: `all ${
-                hoverAnimation.duration
-              }s ${camelCaseToKebabCase(hoverAnimation.easing)}`,
+              transition: `all ${hoverAnimation.duration}s ${camelToKebabCase(
+                hoverAnimation.easing
+              )}`,
               transitionDelay: hoverAnimation.delay
                 ? `${hoverAnimation.delay}s`
                 : '0s',

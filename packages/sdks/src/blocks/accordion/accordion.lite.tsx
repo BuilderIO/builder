@@ -8,8 +8,8 @@ import {
 import Blocks from '../../components/blocks/index.js';
 import type { AccordionProps } from './accordion.types.js';
 import type { Dictionary } from '../../types/typescript.js';
-import { camelCaseToKebabCase } from '../../components/block/animator.js';
 import { convertOrderNumberToString } from './helpers.js';
+import { camelToKebabCase } from '../../functions/camel-to-kebab-case.js';
 
 useMetadata({
   qwik: {
@@ -55,7 +55,7 @@ export default function Accordion(props: AccordionProps) {
       return useTarget({
         solid: Object.fromEntries(
           Object.entries(styles).map(([key, value]) => [
-            camelCaseToKebabCase(key),
+            camelToKebabCase(key),
             value,
           ])
         ),
@@ -74,7 +74,7 @@ export default function Accordion(props: AccordionProps) {
             ...shared,
             alignItems: 'stretch',
             cursor: 'pointer',
-          }).map(([key, value]) => [camelCaseToKebabCase(key), value])
+          }).map(([key, value]) => [camelToKebabCase(key), value])
         ),
         default: { ...shared, alignItems: 'stretch', cursor: 'pointer' },
       });
