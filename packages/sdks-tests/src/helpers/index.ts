@@ -92,7 +92,7 @@ export const isSSRFramework = (packageName: ServerName | 'DEFAULT') => {
 };
 
 export const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
-  await page.locator(`text=${text}`).waitFor({ timeout: 10000 });
+  await page.locator(`text=${text}`).waitFor({ state: 'visible' });
 };
 
 export const checkIsRN = (sdk: Sdk) => sdk === 'reactNative';
