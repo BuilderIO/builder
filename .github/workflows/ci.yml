@@ -199,12 +199,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Setup
+        uses: actions/checkout@v4
 
-      - name: Use node version 18
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
 
       - run: yarn ci:lint
 
