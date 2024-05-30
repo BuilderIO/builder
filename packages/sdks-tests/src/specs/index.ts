@@ -45,6 +45,7 @@ import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
 import { BASIC_STYLES } from './basic-styles.js';
+import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -105,6 +106,9 @@ const PAGES = {
   '/tabs': TABS,
   '/custom-components': CUSTOM_COMPONENTS,
   '/basic-styles': BASIC_STYLES,
+  '/accordion': ACCORDION,
+  '/accordion-one-at-a-time': ACCORDION_ONE_AT_A_TIME,
+  '/accordion-grid': ACCORDION_GRID,
 } as const;
 
 const apiVersionPathToProp = {
