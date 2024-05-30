@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.28
+
+### Patch Changes
+
+- f3aab34: Feat: Accordion widget for gen2 sdks
+
 ## 1.0.27
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 2.2.3
+
+### Patch Changes
+
+- 46c38b8: Fix: Mark component types as `readonly`.
+
 ## 2.2.2
 
 ### Patch Changes

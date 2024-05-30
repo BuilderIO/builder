@@ -1,5 +1,12 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.28
+
+### Patch Changes
+
+- f3aab34: Feat: Accordion widget for gen2 sdks
+- 3f98355: Fix: types for ESM build
+
 ## 1.0.27
 
 ### Patch Changes
