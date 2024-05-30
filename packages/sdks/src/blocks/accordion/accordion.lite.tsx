@@ -6,10 +6,10 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/index.js';
-import type { AccordionProps } from './accordion.types.js';
-import type { Dictionary } from '../../types/typescript.js';
-import { convertOrderNumberToString } from './helpers.js';
 import { camelToKebabCase } from '../../functions/camel-to-kebab-case.js';
+import type { Dictionary } from '../../types/typescript.js';
+import type { AccordionProps } from './accordion.types.js';
+import { convertOrderNumberToString } from './helpers.js';
 
 useMetadata({
   qwik: {

@@ -5,12 +5,12 @@ import {
 } from '../../../constants/device-sizes.js';
 import { TARGET } from '../../../constants/target.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
+import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
 import { getProcessedBlock } from '../../../functions/get-processed-block.js';
 import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
-import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
