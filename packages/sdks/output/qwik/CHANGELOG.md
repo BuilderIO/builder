@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.22
+
+### Patch Changes
+
+- f3aab34: Feat: Accordion widget for gen2 sdks
+
 ## 0.14.21
 
 ### Patch Changes

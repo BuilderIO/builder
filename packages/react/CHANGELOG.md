@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies [46c38b8]
+  - @builder.io/sdk@2.2.3
+
 ## 3.2.6
 
 ### Patch Changes
