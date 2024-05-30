@@ -196,6 +196,18 @@ jobs:
       - name: Run E2E tests
         run: yarn nx test @e2e/${{ matrix.e2e-server }}
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use node version 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - run: yarn ci:lint
+
   build:
     runs-on: ubuntu-latest
 
