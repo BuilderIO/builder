@@ -99,8 +99,8 @@ const urlParser = {
 const parse: (url: string) => UrlLike = isReactNative
   ? () => emptyUrl()
   : typeof window === 'object'
-  ? urlParser.parse
-  : urlParse;
+    ? urlParser.parse
+    : urlParse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   try {
@@ -808,8 +808,8 @@ type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<DeepPartial<U>>
     : T[P] extends ReadonlyArray<infer U>
-    ? ReadonlyArray<DeepPartial<U>>
-    : DeepPartial<T[P]>;
+      ? ReadonlyArray<DeepPartial<U>>
+      : DeepPartial<T[P]>;
 };
 
 export interface InsertMenuItem {
@@ -1100,18 +1100,21 @@ export class Builder {
           return input;
         }),
       }),
-      hooks: Object.keys(spec.hooks || {}).reduce((memo, key) => {
-        const value = spec.hooks && spec.hooks[key];
-        if (!value) {
+      hooks: Object.keys(spec.hooks || {}).reduce(
+        (memo, key) => {
+          const value = spec.hooks && spec.hooks[key];
+          if (!value) {
+            return memo;
+          }
+          if (typeof value === 'string') {
+            memo[key] = value;
+          } else {
+            memo[key] = `return (${value.toString()}).apply(this, arguments)`;
+          }
           return memo;
-        }
-        if (typeof value === 'string') {
-          memo[key] = value;
-        } else {
-          memo[key] = `return (${value.toString()}).apply(this, arguments)`;
-        }
-        return memo;
-      }, {} as { [key: string]: string }),
+        },
+        {} as { [key: string]: string }
+      ),
       class: undefined,
     };
   }
@@ -2404,10 +2407,10 @@ export class Builder {
       queue && queue[0].userAttributes
         ? queue[0].userAttributes
         : this.targetContent
-        ? this.getUserAttributes()
-        : {
-            urlPath: this.getLocation().pathname,
-          };
+          ? this.getUserAttributes()
+          : {
+              urlPath: this.getLocation().pathname,
+            };
 
     const fullUrlQueueItem = queue.find(item => !!item.includeUrl);
     if (fullUrlQueueItem) {

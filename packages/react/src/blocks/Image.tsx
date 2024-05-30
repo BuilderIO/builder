@@ -165,8 +165,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     return Builder.isBrowser && location.search.includes('builder.lazyLoadImages=false')
       ? false
       : Builder.isBrowser && location.href.includes('builder.lazyLoadImages=true')
-      ? true
-      : this.props.lazy;
+        ? true
+        : this.props.lazy;
   }
 
   // TODO: setting to always fade in the images (?)

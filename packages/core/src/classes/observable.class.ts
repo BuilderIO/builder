@@ -1,7 +1,10 @@
 export type Listener<T> = (value: T) => void;
 
 export class Subscription<FunctionType = Function> {
-  constructor(private listeners?: FunctionType[], private listener?: FunctionType) {}
+  constructor(
+    private listeners?: FunctionType[],
+    private listener?: FunctionType
+  ) {}
 
   unsubscribed = false;
 
