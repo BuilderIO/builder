@@ -3381,6 +3381,7 @@ __metadata:
     nx-cloud: ^16.2.0
     pinst: ^3.0.0
     prettier: ^2.5.0
+    prettier-plugin-organize-imports: ^3.2.4
     publint: ^0.2.6
     recast: ^0.23.4
     seedrandom: ^3.0.5
@@ -37184,7 +37185,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-organize-imports@npm:^3.2.3":
+"prettier-plugin-organize-imports@npm:^3.2.3, prettier-plugin-organize-imports@npm:^3.2.4":
   version: 3.2.4
   resolution: "prettier-plugin-organize-imports@npm:3.2.4"
   peerDependencies:

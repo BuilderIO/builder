@@ -5,8 +5,8 @@
 import {
   Content,
   fetchOneEntry,
-  isPreviewing,
   getBuilderSearchParams,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';

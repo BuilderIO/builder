@@ -2,12 +2,12 @@
  * Quickstart snippet
  * snippets/solidjs/src/App.tsx
  */
-import { createEffect, createSignal } from 'solid-js';
 import {
-  fetchOneEntry,
   Content,
+  fetchOneEntry,
   type BuilderContent,
 } from '@builder.io/sdk-solid';
+import { createEffect, createSignal } from 'solid-js';
 
 const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
