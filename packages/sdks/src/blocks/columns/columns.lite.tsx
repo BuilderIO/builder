@@ -85,8 +85,8 @@ export default function Columns(props: ColumnProps) {
       props.stackColumnsAt === 'never'
         ? 'row'
         : props.reverseColumnsWhenStacked
-        ? 'column-reverse'
-        : 'column',
+          ? 'column-reverse'
+          : 'column',
 
     columnsCssVars(): Dictionary<string> {
       return useTarget({

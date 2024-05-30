@@ -39,9 +39,7 @@ export default function Tabs(props: TabsProps) {
           {(tab, index) => (
             <span
               key={index}
-              class={`builder-tab-wrap ${
-                state.activeTab === index ? 'builder-tab-active' : ''
-              }`}
+              class={`builder-tab-wrap ${state.activeTab === index ? 'builder-tab-active' : ''}`}
               style={{
                 ...(state.activeTab === index ? props.activeTabStyle : {}),
               }}

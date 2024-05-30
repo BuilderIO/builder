@@ -1,16 +1,8 @@
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommonModule } from '@angular/common';
-import type {
-  Renderer2,
-  TemplateRef,
-  ViewContainerRef} from '@angular/core';
-import {
-  Component,
-  ElementRef,
-  Input,
-  ViewChild
-} from '@angular/core';
+import type { Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 export interface DynamicRendererProps {
   children?: any;
