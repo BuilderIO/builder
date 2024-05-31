@@ -12,7 +12,7 @@ import {
 
 // Define Builder's public API key and content model.
 // TO DO: Replace with your Public API Key
-export const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+export const BUILDER_PUBLIC_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 export const BUILDER_MODEL = 'page';
 
 // Define a route loader function that loads

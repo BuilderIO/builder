@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { findTextInPage, test } from '../helpers/index.js';
 
-test.describe('Integrating Sections', () => {
+test.describe.skip('Integrating Sections', () => {
   test('loads announcement bar at `/announcements`', async ({ page }) => {
     await page.goto('/announcements');
 

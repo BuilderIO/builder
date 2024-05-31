@@ -1,43 +1,10 @@
-import { expect, type Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { MODIFIED_COLUMNS } from '../specs/columns.js';
 import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
-import type { BuilderContent } from '../specs/types.js';
 import { test } from '../helpers/index.js';
-import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
-
-const sendContentUpdateMessage = async ({
-  page,
-  newContent,
-  model,
-}: {
-  page: Page;
-  newContent: BuilderContent;
-  model: string;
-}) => {
-  await page.evaluate(
-    msgData => {
-      const contentWindow = document.querySelector('iframe')?.contentWindow;
-      if (!contentWindow) throw new Error('Could not find iframe');
-
-      contentWindow.postMessage(
-        {
-          type: 'builder.contentUpdate',
-          data: {
-            key: msgData.model,
-            data: {
-              id: msgData.id,
-              data: msgData.data,
-            },
-          },
-        },
-        '*'
-      );
-    },
-    { ...newContent, model }
-  );
-};
+import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {

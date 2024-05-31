@@ -2,24 +2,30 @@
 <!-- pages/[...app].vue -->
 
 <script setup>
-import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
+import {
+  Content,
+  fetchOneEntry,
+  getBuilderSearchParams,
+  isPreviewing,
+} from '@builder.io/sdk-vue';
 import { ref } from 'vue';
 
 const route = useRoute();
 
-const apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660';
-const canShowContent = ref(false);
 const model = 'page';
+const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
+const canShowContent = ref(false);
 
 const { data: content } = await useAsyncData('builderData', () =>
   fetchOneEntry({
     model,
     apiKey,
+    options: getBuilderSearchParams(route.query),
     userAttributes: { urlPath: route.path },
   }),
 );
 
-canShowContent.value = content.value ? true : isPreviewing(route.path);
+canShowContent.value = content.value ? true : isPreviewing(route.query);
 </script>
 
 <template>
