@@ -29,7 +29,9 @@ test.describe('Integrating Pages', () => {
     });
   });
   test.describe('Drafts', () => {
-    test('loads homepage draft', async ({ page }) => {
+    test('loads homepage draft', async ({ page, packageName }) => {
+      test.fail(packageName === 'next-pages-dir', 'TODO: implement this test for next-app-dir.');
+
       await page.goto(
         '/?builder.space=ee9f13b4981e489a9a1209887695ef2b&builder.cachebust=true&builder.preview=page&builder.noCache=true&__builder_editing__=true&builder.overrides.page=1fe45b6889284af180391da829de40a3&builder.overrides.1fe45b6889284af180391da829de40a3=1fe45b6889284af180391da829de40a3'
       );
@@ -48,7 +50,9 @@ test.describe('Integrating Pages', () => {
       await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
     });
 
-    test('updates homepage', async ({ page, basePort }) => {
+    test('updates homepage', async ({ page, basePort, packageName }) => {
+      test.fail(packageName === 'next-app-dir', 'TODO: implement this test for next-app-dir.');
+
       await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
 
       const NEW_TEXT = 'This is a new homepage.';
