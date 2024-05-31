@@ -50,6 +50,13 @@ export default defineConfig({
     trace: 'on',
   },
 
+  expect: {
+    /**
+     * Increase the default timeout for snippet tests because they're not deterministic.
+     */
+    timeout: testType === 'snippet' ? 30000 : 5000,
+  },
+
   /* Configure projects for major browsers */
   projects: things.map(({ packageName, port }) => ({
     name: packageName,
