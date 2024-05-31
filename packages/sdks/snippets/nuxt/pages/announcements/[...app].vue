@@ -1,5 +1,6 @@
-<!-- Quickstart snippet -->
-<!-- pages/[...app].vue -->
+<!-- https://www.builder.io/c/docs/integrate-section-building -->
+<!-- https://www.builder.io/c/blueprints/announcement-bar -->
+<!-- pages/announcements/[...app].vue -->
 
 <script setup>
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';

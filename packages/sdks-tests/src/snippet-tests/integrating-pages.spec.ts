@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { findTextInPage, test } from '../helpers/index.js';
 
-test.describe('Quickstart', () => {
+test.describe('Integrating Pages', () => {
   test('loads homepage', async ({ page }) => {
     await page.goto('/');
 
