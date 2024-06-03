@@ -8,12 +8,15 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
+    "test": "SERVER_NAME=gen1-remix yarn nx test:e2e @sdk/tests",
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@builder.io/sdk-react": "workspace:*",
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
+    "@sdk/tests": "workspace:*",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
