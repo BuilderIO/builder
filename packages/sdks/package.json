@@ -67,8 +67,8 @@
     "@builder.io/mitosis-cli": "^0.3.0",
     "isolated-vm": "^4.6.0",
     "node-fetch": "^2.6.1",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
   },

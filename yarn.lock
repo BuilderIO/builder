@@ -3417,8 +3417,8 @@ __metadata:
   resolution: "@builder.io/packages@workspace:packages"
   dependencies:
     "@changesets/cli": ^2.27.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
   languageName: unknown
   linkType: soft
 
@@ -3496,8 +3496,8 @@ __metadata:
     jest-environment-jsdom: ^28.1.3
     lint-staged: ^7.0.0
     node-fetch: ^2.6.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     preact: ^10.1.0
     prettier: ^3.2.5
     prompt: ^1.0.0
@@ -3545,8 +3545,8 @@ __metadata:
   dependencies:
     "@changesets/cli": ^2.27.1
     dotenv: ^16.0.3
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     octokit: ^2.0.14
     prettier: ^3.2.5
     zx: 7.2.1
@@ -3579,8 +3579,8 @@ __metadata:
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
     ng-packagr: ^16.2.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     recast: ^0.23.4
     rimraf: ^3.0.2
     rxjs: ~7.8.0
@@ -3601,8 +3601,8 @@ __metadata:
     "@builder.io/sdks": "workspace:*"
     "@types/node": latest
     isolated-vm: ^4.6.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     typescript: ^5.1.6
     vite: ^4.3.2
   peerDependencies:
@@ -3626,8 +3626,8 @@ __metadata:
     babel-plugin-module-resolver: ^5.0.0
     css-to-react-native: ^3.2.0
     isolated-vm: ^4.6.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react-native-builder-bob: ^0.21.3
     react-native-render-html: ^6.3.4
     react-native-storage: ^1.0.1
@@ -3653,8 +3653,8 @@ __metadata:
     isolated-vm: ^4.6.0
     lru-cache: ^10.0.0
     next: ">=13.4.20"
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18.2.0
     rimraf: ^3.0.2
     typescript: ^5.1.6
@@ -3674,8 +3674,8 @@ __metadata:
     "@builder.io/sdks": "workspace:*"
     "@vitejs/plugin-react": ^4.0.4
     isolated-vm: ^4.6.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18.2.0
     recast: ^0.23.4
     rimraf: ^3.0.2
@@ -3694,8 +3694,8 @@ __metadata:
     esbuild: ^0.18.15
     esbuild-plugin-solid: ^0.5.0
     isolated-vm: ^4.6.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     solid-js: ^1.7.8
     solid-styled-components: ^0.27.6
     tsup: ^7.1.0
@@ -3715,8 +3715,8 @@ __metadata:
     "@sveltejs/kit": ^1.22.4
     "@sveltejs/package": ^2.2.0
     isolated-vm: ^4.6.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     svelte: ^4.1.2
     svelte-check: ^3.4.6
     svelte-preprocess: ^5.0.4
@@ -3738,8 +3738,8 @@ __metadata:
     "@vue/tsconfig": ^0.1.3
     isolated-vm: ^4.6.0
     npm-run-all: ^4.1.5
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     typescript: ^5.1.6
     vite: ^5.0.12
     vite-plugin-dts: ^3.5.2
@@ -3773,8 +3773,8 @@ __metadata:
     hash-sum: ^2.0.0
     jest: 27.4.7
     node-fetch: ^2.3.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     rollup: ^2.38.5
     rollup-plugin-alias: ^1.5.1
     rollup-plugin-commonjs: ^10.1.0
@@ -3819,8 +3819,8 @@ __metadata:
     isolated-vm: ^4.6.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     pinst: ^3.0.0
     prettier: ^3.2.5
     prettier-plugin-organize-imports: ^3.2.4
@@ -4278,8 +4278,8 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -4311,8 +4311,8 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -4333,8 +4333,8 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4351,8 +4351,8 @@ __metadata:
     "@types/react": ^18.2.39
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4376,8 +4376,8 @@ __metadata:
     "@types/react-dom": ^18.0.8
     eslint: ^8.27.0
     isbot: ^3.6.5
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4397,7 +4397,7 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@shopify/cli": 3.59.2
     "@shopify/cli-hydrogen": ^8.0.4
-    "@shopify/hydrogen": 2024.4.2
+    "@shopify/hydrogen": ^2024.4.2
     "@shopify/hydrogen-codegen": ^0.3.1
     "@shopify/mini-oxygen": ^3.0.2
     "@shopify/oxygen-workers-types": ^4.0.0
@@ -4412,8 +4412,8 @@ __metadata:
     graphql: ^16.6.0
     graphql-tag: ^2.12.6
     isbot: ^3.8.0
-    nx: ^19.1.2
-    nx-cloud: ^19.0.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     prettier: ^2.8.4
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -4435,8 +4435,8 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4455,8 +4455,8 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4478,8 +4478,8 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4494,8 +4494,8 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@types/node": ^18
     nuxt: ^3.8.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     vue: ^3.3.8
     vue-router: ^4.2.5
   languageName: unknown
@@ -4511,8 +4511,8 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     typescript: ^5.1.6
     vite: ^4.0.3
     vite-tsconfig-paths: 3.5.0
@@ -4532,8 +4532,8 @@ __metadata:
     "@types/react": ~18.2.14
     expo: ~49.0.15
     expo-status-bar: ~1.6.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.72.6
@@ -4556,8 +4556,8 @@ __metadata:
     "@types/react": ^18.2.39
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4586,8 +4586,8 @@ __metadata:
     eslint-plugin-react: ^7.33.2
     eslint-plugin-react-hooks: ^4.6.0
     isbot: ^4.1.0
-    nx: ^19.1.2
-    nx-cloud: ^19.0.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4606,8 +4606,8 @@ __metadata:
     "@solidjs/router": ^0.8.3
     "@types/node": ^18.17.5
     esbuild: ^0.14.54
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     postcss: ^8.4.28
     solid-js: ^1.8.5
     solid-start: ^0.3.10
@@ -4623,8 +4623,8 @@ __metadata:
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
     "@sdk/tests": "workspace:*"
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     solid-devtools: ^0.29.3
     solid-js: ^1.5.7
     typescript: ^5.1.6
@@ -4641,8 +4641,8 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^2.0.3
     "@tsconfig/svelte": ^4.0.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     svelte: ^3.57.0
     svelte-check: ^3.4.6
     tslib: ^2.5.0
@@ -4659,8 +4659,8 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
     "@sveltejs/kit": ^1.27.7
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     svelte: ^4.2.8
     svelte-check: ^3.6.2
     tslib: ^2.4.1
@@ -4677,8 +4677,8 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@vitejs/plugin-vue": ^4.2.3
     cross-fetch: ^4.0.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     typescript: ^5.1.6
     vite: ^4.4.8
     vite-plugin-ssr: ^0.4.133
@@ -8951,15 +8951,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/nx-cloud@npm:19.0.0":
-  version: 19.0.0
-  resolution: "@nrwl/nx-cloud@npm:19.0.0"
-  dependencies:
-    nx-cloud: 19.0.0
-  checksum: ed4ac11936f507535b4f79ef8f27e2832445509da0895f43fb76696d92f5fa18aa81e4c309e1d2f8ecda2b85e3c0393e2bc4ce31107231b2024475d5596033a8
-  languageName: node
-  linkType: hard
-
 "@nrwl/tao@npm:16.10.0":
   version: 16.10.0
   resolution: "@nrwl/tao@npm:16.10.0"
@@ -8969,18 +8960,6 @@ __metadata:
   bin:
     tao: index.js
   checksum: a973a9fbed8fea33bfcb1b39b4bb29371ea00d116bbe7e39f2e7c8a9448b86e7c499d0aef79f262d9a993d103b4451d6749889e307212421b10838d49454a35c
-  languageName: node
-  linkType: hard
-
-"@nrwl/tao@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nrwl/tao@npm:19.1.2"
-  dependencies:
-    nx: 19.1.2
-    tslib: ^2.3.0
-  bin:
-    tao: index.js
-  checksum: 0ceac55b9f2478235e88dda23227a944b762c95fbf54779c8af9e97c6acf61a8c0ce1911d5814bcb370eebfbe86ee9ad0ef6c790780960c9fb31aeaf4c7a116f
   languageName: node
   linkType: hard
 
@@ -9412,23 +9391,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-darwin-arm64@npm:19.1.2"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@nx/nx-darwin-x64@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-darwin-x64@npm:16.10.0"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@nx/nx-darwin-x64@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-darwin-x64@npm:19.1.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -9440,23 +9405,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-freebsd-x64@npm:19.1.2"
-  conditions: os=freebsd & cpu=x64
-  languageName: node
-  linkType: hard
-
 "@nx/nx-linux-arm-gnueabihf@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-linux-arm-gnueabihf@npm:16.10.0"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-arm-gnueabihf@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:19.1.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -9468,23 +9419,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-linux-arm64-gnu@npm:19.1.2"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@nx/nx-linux-arm64-musl@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-linux-arm64-musl@npm:16.10.0"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-arm64-musl@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-linux-arm64-musl@npm:19.1.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
@@ -9496,23 +9433,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-linux-x64-gnu@npm:19.1.2"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@nx/nx-linux-x64-musl@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-linux-x64-musl@npm:16.10.0"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-x64-musl@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-linux-x64-musl@npm:19.1.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
@@ -9524,23 +9447,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-win32-arm64-msvc@npm:19.1.2"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@nx/nx-win32-x64-msvc@npm:16.10.0":
   version: 16.10.0
   resolution: "@nx/nx-win32-x64-msvc@npm:16.10.0"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@nx/nx-win32-x64-msvc@npm:19.1.2":
-  version: 19.1.2
-  resolution: "@nx/nx-win32-x64-msvc@npm:19.1.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -12074,8 +11983,8 @@ __metadata:
     "@typescript-eslint/parser": latest
     eslint: ^8.12.0
     eslint-plugin-unused-imports: ^2.0.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     traverse: ^0.6.7
     typescript: ^5.1.6
     zod: ^3.20.2
@@ -12363,7 +12272,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/hydrogen@npm:2024.4.2":
+"@shopify/hydrogen@npm:^2024.4.2":
   version: 2024.4.2
   resolution: "@shopify/hydrogen@npm:2024.4.2"
   dependencies:
@@ -12732,8 +12641,8 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -12764,8 +12673,8 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -12784,8 +12693,8 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -12803,8 +12712,8 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -12822,8 +12731,8 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -12836,8 +12745,8 @@ __metadata:
   dependencies:
     "@builder.io/sdk-vue": "workspace:*"
     nuxt: ^3.11.2
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     vue: ^3.4.27
     vue-router: ^4.3.2
   languageName: unknown
@@ -12852,8 +12761,8 @@ __metadata:
     "@builder.io/sdk-qwik": "workspace:*"
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     typescript: ^5.1.6
     vite: ^4.0.3
     vite-tsconfig-paths: 3.5.0
@@ -12872,8 +12781,8 @@ __metadata:
     "@types/react": ~18.2.14
     expo: ~49.0.15
     expo-status-bar: ~1.6.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.72.6
@@ -12900,8 +12809,8 @@ __metadata:
     eslint: ^8.57.0
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.6
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.2.2
@@ -12914,8 +12823,8 @@ __metadata:
   resolution: "@snippet/solid@workspace:packages/sdks/snippets/solidjs"
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     solid-js: ^1.8.15
     typescript: ^5.2.2
     vite: ^5.2.0
@@ -12930,8 +12839,8 @@ __metadata:
     "@builder.io/sdk-svelte": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^3.0.2
     "@tsconfig/svelte": ^5.0.2
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     svelte: ^4.2.12
     svelte-check: ^3.6.7
     tslib: ^2.6.2
@@ -12948,8 +12857,8 @@ __metadata:
     "@sveltejs/adapter-auto": ^3.0.0
     "@sveltejs/kit": ^2.0.0
     "@sveltejs/vite-plugin-svelte": ^3.0.0
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     svelte: ^4.2.7
     svelte-check: ^3.6.0
     tslib: ^2.4.1
@@ -12968,8 +12877,8 @@ __metadata:
     "@vitejs/plugin-vue": ^5.0.4
     "@vue/tsconfig": ^0.5.1
     npm-run-all2: ^6.1.2
-    nx: ^16.6.0
-    nx-cloud: ^16.2.0
+    nx: 16.10.0
+    nx-cloud: 16.5.2
     typescript: ~5.4.0
     vite: ^5.2.8
     vue: ^3.4.21
@@ -16745,17 +16654,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zkochan/js-yaml@npm:0.0.7":
-  version: 0.0.7
-  resolution: "@zkochan/js-yaml@npm:0.0.7"
-  dependencies:
-    argparse: ^2.0.1
-  bin:
-    js-yaml: bin/js-yaml.js
-  checksum: fc53174afc1373c834ba56108e625bf5c98f430fb0a52d3da8e868156e21c2f6a7cd5e649d126db84bba6280bbc82d4f314457846aaf2107022d043100256dd7
-  languageName: node
-  linkType: hard
-
 "@zxing/text-encoding@npm:0.9.0":
   version: 0.9.0
   resolution: "@zxing/text-encoding@npm:0.9.0"
@@ -18142,17 +18040,6 @@ __metadata:
   dependencies:
     follow-redirects: ^1.14.7
   checksum: 2a8a3787c05f2a0c9c3878f49782357e2a9f38945b93018fb0c4fd788171c43dceefbb577988628e09fea53952744d1ecebde234b561f1e703aa43e0a598a3ad
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.6.0":
-  version: 1.7.2
-  resolution: "axios@npm:1.7.2"
-  dependencies:
-    follow-redirects: ^1.15.6
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: e457e2b0ab748504621f6fa6609074ac08c824bf0881592209dfa15098ece7e88495300e02cd22ba50b3468fd712fe687e629dcb03d6a3f6a51989727405aedf
   languageName: node
   linkType: hard
 
@@ -27245,7 +27132,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.6":
+"follow-redirects@npm:^1.14.0":
   version: 1.15.6
   resolution: "follow-redirects@npm:1.15.6"
   peerDependenciesMeta:
@@ -38397,7 +38284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx-cloud@npm:16.5.2, nx-cloud@npm:^16.2.0":
+"nx-cloud@npm:16.5.2":
   version: 16.5.2
   resolution: "nx-cloud@npm:16.5.2"
   dependencies:
@@ -38417,27 +38304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx-cloud@npm:19.0.0, nx-cloud@npm:^19.0.0":
-  version: 19.0.0
-  resolution: "nx-cloud@npm:19.0.0"
-  dependencies:
-    "@nrwl/nx-cloud": 19.0.0
-    axios: ^1.6.0
-    chalk: ^4.1.0
-    dotenv: ~10.0.0
-    fs-extra: ^11.1.0
-    node-machine-id: ^1.1.12
-    open: ~8.4.0
-    strip-json-comments: ^3.1.1
-    tar: 6.2.1
-    yargs-parser: ">=21.1.1"
-  bin:
-    nx-cloud: bin/nx-cloud.js
-  checksum: 856ba8126e387395cb1996a273827e218a8d9be350fd1db471f6373afc59f329300421a6530941eda4e4da7a72aea12edd37dc65741f29028ace9eed57988396
-  languageName: node
-  linkType: hard
-
-"nx@npm:16.10.0, nx@npm:^16.6.0":
+"nx@npm:16.10.0":
   version: 16.10.0
   resolution: "nx@npm:16.10.0"
   dependencies:
@@ -38519,89 +38386,6 @@ __metadata:
   bin:
     nx: bin/nx.js
   checksum: 961b290f65dba76cf6cda62377930ac70fb5546d2992fde19ab028c7b4c37b76fc14eaa89f1d071b95e6d701932a2fd77678849172115045fd835ef9758e93bb
-  languageName: node
-  linkType: hard
-
-"nx@npm:19.1.2, nx@npm:^19.1.2":
-  version: 19.1.2
-  resolution: "nx@npm:19.1.2"
-  dependencies:
-    "@nrwl/tao": 19.1.2
-    "@nx/nx-darwin-arm64": 19.1.2
-    "@nx/nx-darwin-x64": 19.1.2
-    "@nx/nx-freebsd-x64": 19.1.2
-    "@nx/nx-linux-arm-gnueabihf": 19.1.2
-    "@nx/nx-linux-arm64-gnu": 19.1.2
-    "@nx/nx-linux-arm64-musl": 19.1.2
-    "@nx/nx-linux-x64-gnu": 19.1.2
-    "@nx/nx-linux-x64-musl": 19.1.2
-    "@nx/nx-win32-arm64-msvc": 19.1.2
-    "@nx/nx-win32-x64-msvc": 19.1.2
-    "@yarnpkg/lockfile": ^1.1.0
-    "@yarnpkg/parsers": 3.0.0-rc.46
-    "@zkochan/js-yaml": 0.0.7
-    axios: ^1.6.0
-    chalk: ^4.1.0
-    cli-cursor: 3.1.0
-    cli-spinners: 2.6.1
-    cliui: ^8.0.1
-    dotenv: ~16.3.1
-    dotenv-expand: ~10.0.0
-    enquirer: ~2.3.6
-    figures: 3.2.0
-    flat: ^5.0.2
-    fs-extra: ^11.1.0
-    ignore: ^5.0.4
-    jest-diff: ^29.4.1
-    jsonc-parser: 3.2.0
-    lines-and-columns: ~2.0.3
-    minimatch: 9.0.3
-    node-machine-id: 1.1.12
-    npm-run-path: ^4.0.1
-    open: ^8.4.0
-    ora: 5.3.0
-    semver: ^7.5.3
-    string-width: ^4.2.3
-    strong-log-transformer: ^2.1.0
-    tar-stream: ~2.2.0
-    tmp: ~0.2.1
-    tsconfig-paths: ^4.1.2
-    tslib: ^2.3.0
-    yargs: ^17.6.2
-    yargs-parser: 21.1.1
-  peerDependencies:
-    "@swc-node/register": ^1.8.0
-    "@swc/core": ^1.3.85
-  dependenciesMeta:
-    "@nx/nx-darwin-arm64":
-      optional: true
-    "@nx/nx-darwin-x64":
-      optional: true
-    "@nx/nx-freebsd-x64":
-      optional: true
-    "@nx/nx-linux-arm-gnueabihf":
-      optional: true
-    "@nx/nx-linux-arm64-gnu":
-      optional: true
-    "@nx/nx-linux-arm64-musl":
-      optional: true
-    "@nx/nx-linux-x64-gnu":
-      optional: true
-    "@nx/nx-linux-x64-musl":
-      optional: true
-    "@nx/nx-win32-arm64-msvc":
-      optional: true
-    "@nx/nx-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@swc-node/register":
-      optional: true
-    "@swc/core":
-      optional: true
-  bin:
-    nx: bin/nx.js
-    nx-cloud: bin/nx-cloud.js
-  checksum: 913b2586e8ab298366a9a01fd60325018f9e58cdf09e5b7abbd26abc165632f5b0b73adca04c5df70afaeef3a02cafd6c1f666baa0ab2708c864371b572de0a5
   languageName: node
   linkType: hard
 
@@ -39169,22 +38953,6 @@ __metadata:
     strip-ansi: ^5.2.0
     wcwidth: ^1.0.1
   checksum: b7c4b38517a95f25ad353deb12e025eb37b0afa69e315b80a892852db5fd47309b21f515c808e19e453364ad0d7153d07424a06f5964e775b09438a524a397b5
-  languageName: node
-  linkType: hard
-
-"ora@npm:5.3.0":
-  version: 5.3.0
-  resolution: "ora@npm:5.3.0"
-  dependencies:
-    bl: ^4.0.3
-    chalk: ^4.1.0
-    cli-cursor: ^3.1.0
-    cli-spinners: ^2.5.0
-    is-interactive: ^1.0.0
-    log-symbols: ^4.0.0
-    strip-ansi: ^6.0.0
-    wcwidth: ^1.0.1
-  checksum: 60ec956843def482e2a9a78e98b6bfb19129cbf683fa4e4daca41423f9a098332a8a33b4ca335151b1e6836ff746e3b96e09441f3aea72151e4060990966daad
   languageName: node
   linkType: hard
 
@@ -47505,20 +47273,6 @@ __metadata:
     mkdirp: ^1.0.3
     yallist: ^4.0.0
   checksum: a04c07bb9e2d8f46776517d4618f2406fb977a74d914ad98b264fc3db0fe8224da5bec11e5f8902c5b9bcb8ace22d95fbe3c7b36b8593b7dfc8391a25898f32f
-  languageName: node
-  linkType: hard
-
-"tar@npm:6.2.1":
-  version: 6.2.1
-  resolution: "tar@npm:6.2.1"
-  dependencies:
-    chownr: ^2.0.0
-    fs-minipass: ^2.0.0
-    minipass: ^5.0.0
-    minizlib: ^2.1.1
-    mkdirp: ^1.0.3
-    yallist: ^4.0.0
-  checksum: f1322768c9741a25356c11373bce918483f40fa9a25c69c59410c8a1247632487edef5fe76c5f12ac51a6356d2f1829e96d2bc34098668a2fc34d76050ac2b6c
   languageName: node
   linkType: hard
 
