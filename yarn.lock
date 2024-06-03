@@ -4412,6 +4412,8 @@ __metadata:
     graphql: ^16.6.0
     graphql-tag: ^2.12.6
     isbot: ^3.8.0
+    nx: ^19.1.2
+    nx-cloud: ^19.0.0
     prettier: ^2.8.4
     react: ^18.2.0
     react-dom: ^18.2.0
