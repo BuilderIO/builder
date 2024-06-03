@@ -9,6 +9,7 @@
     "preview": "npm run build && shopify hydrogen preview",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .js,.ts,.jsx,.tsx .",
     "typecheck": "tsc --noEmit",
+    "test": "SERVER_NAME=hydrogen yarn nx test:e2e @sdk/tests",
     "codegen": "shopify hydrogen codegen"
   },
   "prettier": "@shopify/prettier-config",
