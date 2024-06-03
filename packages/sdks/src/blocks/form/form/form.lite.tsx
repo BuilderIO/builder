@@ -191,9 +191,7 @@ export default function FormComponent(props: FormProps) {
 
         const formUrl = `${
           getEnv() === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
-        }/api/v1/form-submit?apiKey=${
-          props.builderContext.value.apiKey
-        }&to=${btoa(
+        }/api/v1/form-submit?apiKey=${props.builderContext.value.apiKey}&to=${btoa(
           props.sendSubmissionsToEmail || ''
         )}&name=${encodeURIComponent(props.name || '')}`;
 

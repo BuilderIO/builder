@@ -5,7 +5,7 @@
 
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({

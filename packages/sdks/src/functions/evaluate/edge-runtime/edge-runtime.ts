@@ -102,7 +102,9 @@ theFunction();
   } catch (e) {
     logger.warn(
       'Custom code error in edge runtime. NOTE: your code must be ES5 JavaScript.',
-      { e }
+      {
+        e,
+      }
     );
     return;
   }

@@ -9,6 +9,8 @@ output/**/CHANGELOG.md
 **/vite.config.ts.timestamp-*
 
 **/dist
+**/.cache
+**/.angular
 
 overrides/react-native/src/blocks/**/*
 

@@ -1,3 +1,4 @@
+import Hello from '@/components/Hello';
 import CatFacts from '@/components/MyTextBox/CatFacts';
 import {
   Content,
@@ -8,7 +9,6 @@ import {
 import { getProps } from '@sdk/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
-import Hello from '@/components/Hello';
 
 interface MyPageProps {
   params: {

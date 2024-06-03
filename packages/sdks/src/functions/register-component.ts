@@ -18,9 +18,7 @@ const serializeFn = (fnValue: Function) => {
   const appendFunction =
     !fnStr.startsWith('function') && !fnStr.startsWith('(');
 
-  return `return (${
-    appendFunction ? 'function ' : ''
-  }${fnStr}).apply(this, arguments)`;
+  return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
 };
 
 const serializeValue = (value: object): any =>

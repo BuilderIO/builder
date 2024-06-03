@@ -19,9 +19,7 @@ const typeIndexGenerator = () => ({
     this.emitFile({
       type: 'asset',
       fileName: `index.d.${isESM ? 'mts' : 'cts'}`,
-      source: `export * from '../../types/${
-        isESM ? 'esm' : 'cjs'
-      }/index.d.ts';`,
+      source: `export * from '../../types/${isESM ? 'esm' : 'cjs'}/index.d.ts';`,
     });
   },
 });

@@ -289,9 +289,7 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
         );
         code = code.replace(
           '} from "@angular/core";',
-          `${
-            code.includes('repeated-block') ? ',' : ''
-          }forwardRef } from "@angular/core";`
+          `${code.includes('repeated-block') ? ',' : ''}forwardRef } from "@angular/core";`
         );
       }
       return code;
@@ -548,9 +546,7 @@ const ANGULAR_BLOCKS_PLUGIN = () => ({
         const inputsTillEnd = code.match(/@Input\(\) (.*);/g);
         code = code.replace(
           inputsTillEnd[inputsTillEnd.length - 1],
-          `${
-            inputsTillEnd[inputsTillEnd.length - 1]
-          }\n  @Input() wrapperProps: any;`
+          `${inputsTillEnd[inputsTillEnd.length - 1]}\n  @Input() wrapperProps: any;`
         );
 
         const propInitStr = `

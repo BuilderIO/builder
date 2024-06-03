@@ -30,6 +30,11 @@ const things = serverNames.map((packageName, i) => {
 const TestTypeEnum = z.enum(['e2e', 'snippet']);
 const testType = TestTypeEnum.parse(process.env.TEST_TYPE);
 
+/**
+ * used to run the dev command when testing locally
+ */
+const IS_DEV_MODE = process.env.TEST_ENV === 'dev';
+
 export default defineConfig({
   testDir: getDirName() + `/src/${testType}-tests`,
   // testMatch: '**/*.ts',
@@ -66,7 +71,7 @@ export default defineConfig({
 
   webServer: things
     .map(({ packageName, port, portFlag }) => ({
-      command: `PORT=${port} yarn workspace @${testType}/${packageName} serve ${portFlag}`,
+      command: `PORT=${port} yarn workspace @${testType}/${packageName} ${IS_DEV_MODE ? 'dev' : 'serve'} ${portFlag}`,
       port,
       reuseExistingServer: false,
       ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),

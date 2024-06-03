@@ -66,8 +66,7 @@
           "^build"
         ],
         "outputs": [
-          "{projectRoot}/lib",
-          "{projectRoot}/types"
+          "{projectRoot}/lib"
         ]
       }
     }

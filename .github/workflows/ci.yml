@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -70,10 +70,10 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -122,10 +122,10 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -153,10 +153,10 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -180,10 +180,10 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -199,14 +199,21 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Setup
+        uses: actions/checkout@v4
 
-      - name: Use node version 18
-        uses: actions/setup-node@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
-      - run: npm run ci:lint
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
+
+      - run: yarn ci:lint
 
   build:
     runs-on: ubuntu-latest
@@ -217,10 +224,10 @@ jobs:
         package: ['webcomponents', 'widgets']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use node version 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -229,7 +236,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
