@@ -13,6 +13,7 @@
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
+    "@builder.io/sdk-react": "workspace:*",
     "@remix-run/react": "^2.8.0",
     "@remix-run/server-runtime": "^2.8.0",
     "@shopify/cli": "3.59.2",
