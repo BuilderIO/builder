@@ -37,7 +37,7 @@ jobs:
         run: yarn workspace @builder.io/root ci:lint
 
       - name: Run eslint
-        run: yarn workspace @builder.io/sdks ci:lint
+        run: yarn workspace @builder.io/sdks ci:lint:sdks
 
       - name: Typecheck
         run: yarn nx typecheck @builder.io/sdks
