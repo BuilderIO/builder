@@ -34,6 +34,9 @@ jobs:
           cache-install-state: true
 
       - name: Run prettier
+        run: yarn workspace @builder.io/root ci:lint
+
+      - name: Run eslint
         run: yarn workspace @builder.io/sdks ci:lint:sdks
 
       - name: Typecheck
