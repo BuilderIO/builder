@@ -7,7 +7,7 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "remix-serve ./build/server/index.js",
+    "serve": "remix-serve ./build/server/index.js",
     "test": "SERVER_NAME=remix yarn nx test:e2e @sdk/tests",
     "typecheck": "tsc"
   },
@@ -39,7 +39,13 @@
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
   },
-  "engines": {
-    "node": ">=20.0.0"
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/build"
+        ]
+      }
+    }
   }
 }
