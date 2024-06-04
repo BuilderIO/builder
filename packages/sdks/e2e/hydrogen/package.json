@@ -4,8 +4,8 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "shopify hydrogen build",
-    "dev": "shopify hydrogen dev",
+    "build": "shopify hydrogen build --no-lockfile-check",
+    "dev": "shopify hydrogen dev --no-lockfile-check",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .js,.ts,.jsx,.tsx .",
     "typecheck": "tsc --noEmit",
     "test": "SERVER_NAME=hydrogen yarn nx test:e2e @sdk/tests",
