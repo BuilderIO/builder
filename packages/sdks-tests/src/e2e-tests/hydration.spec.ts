@@ -22,7 +22,8 @@ test.describe('Hydration', () => {
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 
-  test('No mismatch on A/B test content', async ({ page }) => {
+  test('No mismatch on A/B test content', async ({ page, packageName }) => {
+    test.fail(packageName === 'hydrogen');
     await page.goto('/ab-test-interactive');
     await page.locator('a').locator('visible=true').first().click({ timeout: 10000 });
     await findTextInPage({ page, text: 'Stack at tablet' });

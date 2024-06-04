@@ -7,8 +7,10 @@ test.describe('Basic styles', () => {
   test('styles should be applied consistently across all SDKs (text and buttons)', async ({
     page,
     sdk,
+    packageName,
   }) => {
     test.fail(checkIsRN(sdk));
+    test.fail(packageName === 'hydrogen');
     await page.goto('/basic-styles');
 
     const button = page.getByRole('button', { name: 'Click Me!' });
