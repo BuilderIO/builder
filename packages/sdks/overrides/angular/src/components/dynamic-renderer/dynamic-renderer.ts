@@ -124,6 +124,15 @@ export class DynamicImage {
 
   constructor(private renderer: Renderer2) {}
 
+  ngAfterViewInit() {
+    const el = this.v && this.v.nativeElement;
+    if (el && this.attributes) {
+      Object.keys(this.attributes).forEach((key) => {
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+      });
+    }
+  }
+
   ngOnChanges() {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
@@ -148,6 +157,15 @@ export class DynamicButton {
 
   constructor(private renderer: Renderer2) {}
 
+  ngAfterViewInit() {
+    const el = this.v && this.v.nativeElement;
+    if (el && this.attributes) {
+      Object.keys(this.attributes).forEach((key) => {
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+      });
+    }
+  }
+
   ngOnChanges() {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
@@ -171,6 +189,15 @@ export class DynamicLink {
   v!: ElementRef;
 
   constructor(private renderer: Renderer2) {}
+
+  ngAfterViewInit() {
+    const el = this.v && this.v.nativeElement;
+    if (el && this.attributes) {
+      Object.keys(this.attributes).forEach((key) => {
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+      });
+    }
+  }
 
   ngOnChanges() {
     const el = this.v && this.v.nativeElement;
