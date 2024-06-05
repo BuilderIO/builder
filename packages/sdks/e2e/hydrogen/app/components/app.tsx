@@ -3,23 +3,20 @@ import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {getProps} from '@sdk/tests';
 
-export const loader: LoaderFunction = async ({params}) => {
+export const builderLoader: LoaderFunction = async ({params}) => {
   try {
-    // const {initializeNodeRuntime} = await import(
-    //   '@builder.io/sdk-react/node/init'
-    // );
+    const pathname = `/${params['*'] || ''}`;
 
-    // console.log('intializing node runtime');
+    console.log('pathname:', {pathname});
 
-    // await initializeNodeRuntime();
-    return await getProps({pathname: `/${params.slug || ''}`});
+    return await getProps({pathname: pathname});
   } catch (e) {
     console.error(e);
     return {content: null};
   }
 };
 
-export default function Page() {
+export default function BuilderPage() {
   const builderProps = useLoaderData<ReturnType<typeof getProps>>();
 
   return builderProps?.content ? (
