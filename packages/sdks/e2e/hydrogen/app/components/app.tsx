@@ -6,10 +6,7 @@ import {getProps} from '@sdk/tests';
 export const builderLoader: LoaderFunction = async ({params}) => {
   try {
     const pathname = `/${params['*'] || ''}`;
-
-    console.log('pathname:', {pathname});
-
-    return await getProps({pathname: pathname});
+    return await getProps({pathname});
   } catch (e) {
     console.error(e);
     return {content: null};
