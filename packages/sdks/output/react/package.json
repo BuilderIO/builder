@@ -123,8 +123,8 @@
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
     "@vitejs/plugin-react": "^4.0.4",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "react": "^18.2.0",
     "recast": "^0.23.4",
     "rimraf": "^3.0.2",

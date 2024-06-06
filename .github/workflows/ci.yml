@@ -62,6 +62,8 @@ jobs:
             'solid-start',
             'qwik-city',
             'react',
+            'remix',
+            'hydrogen',
             'next-pages-dir',
             'next-app-dir-client',
             'next-app-dir',
