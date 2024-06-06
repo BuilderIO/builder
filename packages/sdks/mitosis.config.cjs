@@ -596,17 +596,7 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
             this.emitStateUpdate.bind(this)
           );`
         );
-        code = code.replace('onClick: onClick', 'onClick: onClick.bind(this)');
-        code = code.replace('ngAfterContentChecked', 'ngOnChanges');
       }
-
-      if (code.includes('blocks-wrapper')) {
-        code = code.replace(
-          'onClick: onClick, onMouseEnter: onMouseEnter, onKeyPress: onClick',
-          'onClick: onClick.bind(this), onMouseEnter: onMouseEnter.bind(this), onKeyPress: onClick.bind(this)'
-        );
-      }
-
       return code;
     },
   },
@@ -636,6 +626,11 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
           }
           `
         );
+
+        code = code.replaceAll(
+          'this.contentSetState',
+          'this.contentSetState.bind(this)'
+        );
       }
       return code;
     },
@@ -664,6 +659,7 @@ module.exports = {
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
+        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
       ],
     },
     solid: {

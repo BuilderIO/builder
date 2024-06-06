@@ -151,6 +151,7 @@ export class DynamicImage {
 })
 export class DynamicButton {
   @Input() attributes!: any;
+  @Input() actionAttributes!: any;
 
   @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
@@ -161,7 +162,15 @@ export class DynamicButton {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        if (key.startsWith('on')) {
+          this.renderer.listen(
+            el,
+            key.replace('on', '').toLowerCase(),
+            this.attributes[key]
+          );
+        } else {
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        }
       });
     }
   }
@@ -170,7 +179,15 @@ export class DynamicButton {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        if (key.startsWith('on')) {
+          this.renderer.listen(
+            el,
+            key.replace('on', '').toLowerCase(),
+            this.attributes[key]
+          );
+        } else {
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        }
       });
     }
   }
@@ -184,6 +201,7 @@ export class DynamicButton {
 })
 export class DynamicLink {
   @Input() attributes!: any;
+  @Input() actionAttributes!: any;
 
   @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
@@ -194,7 +212,15 @@ export class DynamicLink {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        if (key.startsWith('on')) {
+          this.renderer.listen(
+            el,
+            key.replace('on', '').toLowerCase(),
+            this.attributes[key]
+          );
+        } else {
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        }
       });
     }
   }
@@ -203,7 +229,15 @@ export class DynamicLink {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        if (key.startsWith('on')) {
+          this.renderer.listen(
+            el,
+            key.replace('on', '').toLowerCase(),
+            this.attributes[key]
+          );
+        } else {
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
+        }
       });
     }
   }
