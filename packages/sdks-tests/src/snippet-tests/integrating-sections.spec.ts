@@ -1,20 +1,26 @@
 import { expect } from '@playwright/test';
 import { findTextInPage, test } from '../helpers/index.js';
 
-test.describe.skip('Integrating Sections', () => {
-  test('loads announcement bar at `/announcements`', async ({ page }) => {
+test.describe('Integrating Sections', () => {
+  test('loads announcement bar at `/announcements`', async ({ page, sdk }) => {
+    await test.fail(sdk !== 'vue', 'only Vue snippet is implemented.');
+
     await page.goto('/announcements');
 
     await findTextInPage({ page, text: 'This is an announcement banner' });
   });
 
-  test('loads announcement bar at `/announcements/hello`', async ({ page }) => {
+  test('loads announcement bar at `/announcements/hello`', async ({ page, sdk }) => {
+    await test.fail(sdk !== 'vue', 'only Vue snippet is implemented.');
+
     await page.goto('/announcements/hello');
 
     await findTextInPage({ page, text: 'This is an announcement banner' });
   });
 
-  test('does not load announcement bar at `/announcements/foo`', async ({ page }) => {
+  test('does not load announcement bar at `/announcements/foo`', async ({ page, sdk }) => {
+    await test.fail(sdk !== 'vue', 'only Vue snippet is implemented.');
+
     await page.goto('/announcements/foo');
 
     await expect(page.locator('div')).not.toHaveText('This is an announcement banner');
