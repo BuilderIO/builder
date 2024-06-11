@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.0.3
+
+### Patch Changes
+
+- 1e78ffe: Feat: class properties state approach, removes plugins for complex inline JS bindings for angular, fixes reactivity, bindings & symbol
+
 ## 0.0.2
 
 ### Patch Changes
