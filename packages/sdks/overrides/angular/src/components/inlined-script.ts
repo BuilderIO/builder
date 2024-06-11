@@ -1,7 +1,7 @@
+import { CommonModule, DOCUMENT } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { Component, Inject, Input, Renderer2 } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
 
 interface Props {
   scriptStr: string;
