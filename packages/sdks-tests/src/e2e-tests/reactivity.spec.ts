@@ -25,7 +25,6 @@ test.describe('Reactive State', () => {
   });
 
   test('updates deeply nested state value correctly', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.skip(excludeTestFor({ vue: true }, sdk), 'TO-DO: Fix this test for Vue');
     await page.goto('/js-code/');

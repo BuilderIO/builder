@@ -159,7 +159,7 @@ test.describe('A/B tests', () => {
         browser,
         sdk,
       }) => {
-        test.fail(
+        test.skip(
           excludeTestFor({ angular: true }, sdk),
           'Nested symbols are not supported in Angular'
         );
@@ -193,7 +193,7 @@ test.describe('A/B tests', () => {
         browser,
         sdk,
       }) => {
-        test.fail(
+        test.skip(
           excludeTestFor({ angular: true }, sdk),
           'Nested symbols are not supported in Angular'
         );

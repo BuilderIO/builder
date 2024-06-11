@@ -7,7 +7,6 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
-          angular: true,
         },
         sdk
       )
@@ -23,7 +22,6 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
-          angular: true,
         },
         sdk
       )
@@ -40,7 +38,6 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
-          angular: true,
         },
         sdk
       )
@@ -59,7 +56,6 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
-          angular: true,
         },
         sdk
       )
@@ -81,7 +77,6 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
-          angular: true,
           reactNative: true, // React Native does not support `order`
         },
         sdk
@@ -102,7 +97,6 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
-          angular: true,
           reactNative: true, // React Native does not support `order`
         },
         sdk
@@ -131,7 +125,6 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
-          angular: true,
         },
         sdk
       )

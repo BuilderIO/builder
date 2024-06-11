@@ -198,69 +198,6 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
-const ANGULAR_HANDLE_TEMPLATE_STRS = () => ({
-  code: {
-    post: (code) => {
-      const pathValues = code.matchAll(/\[path\]="(.*?)"/g);
-      if (pathValues) {
-        for (const match of pathValues) {
-          const pathValue = match[1];
-          const replacedPath = pathValue
-            .replaceAll('`', "'")
-            .replaceAll('\\', '')
-            .replaceAll('.${', ".'+")
-            .replaceAll('}', "+'");
-          code = code.replace(
-            `[path]="${pathValue}"`,
-            `[path]="${replacedPath}"`
-          );
-        }
-      }
-      if (code.includes('tabs, Tabs')) {
-        const classValues = code.matchAll(/\[class\]="(.*?)"/g);
-        if (classValues) {
-          for (const match of classValues) {
-            const classValue = match[1];
-            if (classValue.includes('`')) {
-              // nasty hack to replace template strings inside tabs component class
-              code = code.replace(
-                `[class]="${classValue}"`,
-                `[class]="'builder-tab-wrap ' + (activeTab === index ? 'builder-tab-active' : '')"`
-              );
-            }
-          }
-        }
-      }
-      return code;
-    },
-  },
-});
-
-// Target Component: "ComponentRef"
-// in mitosis we pass props as inputs: { prop1, prop2, etc }
-// in this we call inputs: getWrapperProps() directly inside ngComponentOutlet as we don't need to spread the props
-const ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('inputs: { getWrapperProps')) {
-        const wrapperObj =
-          code
-            .match(/inputs: {.*?}/s)[0]
-            .replace('inputs: {', '')
-            .replaceAll('props.', '') + ')';
-        const inputsObj = code
-          .match(/inputs: {.*?;/s)[0]
-          .replace('inputs: ', '');
-        code = code.replace(
-          inputsObj,
-          wrapperObj.replace('context.value', 'context')
-        );
-      }
-      return code;
-    },
-  },
-});
-
 const ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN = () => ({
   code: {
     post: (code) => {
@@ -315,6 +252,26 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
         code = code.replace(
           '</ng-container>',
           '</ng-container>\n</ng-container>'
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code?.includes('blocks-wrapper')) {
+        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnChanges() {
+              ${mergedInputsCode}
+            }
+          }
+          `
         );
       }
       return code;
@@ -512,72 +469,6 @@ const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
   },
 });
 
-const BLOCKS = [
-  'builder-button',
-  'builder-image',
-  'columns',
-  'custom-code',
-  'builder-embed',
-  'img-component',
-  'raw-text',
-  'section-component',
-  'builder-slot',
-  'builder-symbol',
-  'builder-textarea',
-  'builder-video',
-];
-
-/**
- * As in Angular we can't spread arbitrary props in a component,
- * template: `<component2 {...attributes} />` will not work.
- * So, in our current mitosis implementation we send it as an object
- * template: `<component2 [wrapperProps]="{...attributes}" />`
- * Here we spread them to respective props/inputs in the component.
- */
-const ANGULAR_BLOCKS_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (BLOCKS.some((block) => code.includes(block))) {
-        const inputNames = code.match(/@Input\(\) (.*)!:/g);
-        const inputs = inputNames.map((input) => {
-          return input.replace('@Input() ', '').replace('!:', '');
-        });
-
-        const inputsTillEnd = code.match(/@Input\(\) (.*);/g);
-        code = code.replace(
-          inputsTillEnd[inputsTillEnd.length - 1],
-          `${inputsTillEnd[inputsTillEnd.length - 1]}\n  @Input() wrapperProps: any;`
-        );
-
-        const propInitStr = `
-        const properties = [${inputs.map((input) => `'${input}'`).join(', ')}];
-        properties.forEach(prop => {
-          if (this.wrapperProps && Object.prototype.hasOwnProperty.call(this.wrapperProps, prop)) {
-            this[prop] = this.wrapperProps[prop];
-          }
-        });
-        `;
-
-        if (code.includes('ngOnInit')) {
-          code = code.replace(
-            'ngOnInit() {',
-            `ngOnInit() {\n
-              ${propInitStr}
-            `
-          );
-        } else {
-          const lastEndIndex = code.lastIndexOf('}');
-          code = `${code.slice(0, lastEndIndex)}ngOnInit() {
-            ${propInitStr}
-          }
-          ${code.slice(lastEndIndex)}`;
-        }
-      }
-      return code;
-    },
-  },
-});
-
 const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
@@ -596,17 +487,7 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
             this.emitStateUpdate.bind(this)
           );`
         );
-        code = code.replace('onClick: onClick', 'onClick: onClick.bind(this)');
-        code = code.replace('ngAfterContentChecked', 'ngOnChanges');
       }
-
-      if (code.includes('blocks-wrapper')) {
-        code = code.replace(
-          'onClick: onClick, onMouseEnter: onMouseEnter, onKeyPress: onClick',
-          'onClick: onClick.bind(this), onMouseEnter: onMouseEnter.bind(this), onKeyPress: onClick.bind(this)'
-        );
-      }
-
       return code;
     },
   },
@@ -636,6 +517,23 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
           }
           `
         );
+
+        code = code.replaceAll(
+          'this.contentSetState',
+          'this.contentSetState.bind(this)'
+        );
+      }
+      if (code.includes('content-styles, ContentStyles')) {
+        const injectedStyles = code.match(/injectedStyles = `.*;/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnInit() {
+              this.${injectedStyles}
+            }
+          }
+          `
+        );
       }
       return code;
     },
@@ -657,17 +555,16 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
+      state: 'class-properties',
       plugins: [
-        ANGULAR_HANDLE_TEMPLATE_STRS,
-        ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD,
         ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN,
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
-        ANGULAR_BLOCKS_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
-        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
+        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
+        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
       ],
     },
     solid: {

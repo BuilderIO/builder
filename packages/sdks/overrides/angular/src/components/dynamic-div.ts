@@ -50,6 +50,21 @@ export default class DynamicDiv {
 
   constructor(private renderer: Renderer2) {}
 
+  ngAfterViewInit() {
+    const el = this.v && this.v.nativeElement;
+    if (!el) {
+      return;
+    }
+    this.setAttributes(el, this.attributes);
+    this.setAttributes(el, this.showContentProps);
+    this.setAttribute(el, 'class', this.classProp);
+    this.setAttribute(el, 'style', this.style);
+    this.setAttribute(el, 'builder-parent-id', this.builderParentId);
+    this.setAttribute(el, 'builder-path', this.builderPath);
+    this.setAttribute(el, 'builder-model', this.builderModel);
+    this.setAttribute(el, 'builder-content-id', this.builderContentId);
+  }
+
   ngOnChanges() {
     const el = this.v && this.v.nativeElement;
     if (!el) {
