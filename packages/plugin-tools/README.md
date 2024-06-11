@@ -1,12 +1,17 @@
-# Builder.io plugin tools
+# Builder.io Plugin Tools
 
-Easily connect your custom ecommerce backend data to your Builder.io content!
+Easily connect your custom data sources and ecommerce backends to your Builder.io content!
 
-<img alt="Shopify data example" src="https://imgur.com/BhtUeqK.gif" >
+![Shopify data example](https://imgur.com/BhtUeqK.gif)
+![Data source demo](https://cdn.builder.io/o/assets%2FYJIGb4i01jvw0SRdL5Bt%2F25f8482abb53418795404c174e46e8c0%2Fcompressed?apiKey=YJIGb4i01jvw0SRdL5Bt&token=25f8482abb53418795404c174e46e8c0&alt=media&optimized=true)
 
-This package main export is `registerCommercePlugin`, which will allow you to define what your ecommerce backend needs ( apiToken, password), prompt Builder.io users for it and register multiple field types per resource that allow for easy embedding and custom targeting for each resource ( products, collections, personas ...etc) in your ecommerce store.
+This package's main exports are `registerCommercePlugin` and `registerDataPlugin`, which allow you to define what your ecommerce backend or data API needs (e.g., apiToken, password, environment), prompt Builder.io users for those settings, and register multiple field types per resource that allow for easy embedding and custom targeting for each resource (products, collections, personas, etc.) in your store or data source.
 
-for real world example check the [@builder.io/ecom-swell-is](../../plugins/swell) folder.
+For real-world examples, check the [@builder.io/ecom-swell-is](../../plugins/swell) and [@builder.io/plugin-contentful](../../plugins/contentful) folders.
+
+## Usage
+
+### Commerce Plugin
 
 ```ts
 import { registerCommercePlugin } from '@builder.io/plugin-tools';
@@ -16,7 +21,6 @@ registerCommercePlugin(
     name: 'Swell',
     id: '@builder.io/ecome-swell-is',
     settings: [
-      // list of information needed to connect store, optional
       {
         name: 'storeId',
         type: 'string',
@@ -34,10 +38,6 @@ registerCommercePlugin(
     ],
     ctaText: `Connect your swell.is store`,
   },
-  /**
-   * settings here will be an observable map of the settings you configured above in settings,
-   *  ( in this example settings.get('storeId') will give us the storeId entered by user)
-   */
   settings => {
     // setup basic cache for a better user experience
     const basicCache = new Map();
@@ -108,3 +108,119 @@ registerCommercePlugin(
   }
 );
 ```
+
+### Data Plugin
+
+```ts
+import { registerDataPlugin } from '@builder.io/plugin-tools';
+
+registerDataPlugin(
+  {
+    name: 'Foobar',
+    id: '@builder.io/plugin-foobar',
+    settings: [
+      {
+        name: 'foo',
+        friendlyName: 'Lorem Ipsum',
+        type: 'string',
+        required: true,
+        helperText:
+          'Lorem Ipsum',
+      }
+    ],
+    ctaText: `Connect FooBar`,
+  },
+  async settings => {
+    const spaceId = settings.get('spaceId')?.trim();
+    return {
+      async getResourceTypes() {
+        return [
+          {
+          name: 'Resource 1',
+          id: `resource-1`,
+          canPickEntries: true,
+          // inputs are the query parameter definitions for your public API
+          inputs: () => {
+            return [
+              {
+                name: 'include',
+                friendlyName: 'Retrieve linked assets level',
+                advanced: true,
+                defaultValue: 2,
+                // contentful api restricts include to be between 0 and 10
+                min: 0,
+                max: 10,
+                type: 'number',
+              },
+              {
+                name: 'limit',
+                defaultValue: 10,
+                // contentful api restricts limit to be between 0 and 100
+                min: 0,
+                max: 100,
+                type: 'number',
+              },
+
+              {
+                name: 'order',
+                friendlyName: 'Order By'
+                type: 'string',
+                enum: ['a', 'b']
+              },
+            ];
+          },
+          toUrl: (options: any) => {
+            // by entry
+            // https://cdn.contentful.com/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}?access_token={access_token}
+            if (options.entry) {
+              return `https://public.example.com/spacs/${spaceId}/resource/${options.entry}`
+            }
+            // by query
+            const params = qs.stringify(options,
+              { allowDots: true, skipNulls: true }
+            );
+            return  `https://public.example.com/spaces/${spaceId}/search?${params}`
+            );
+          },
+          }
+        ]
+      },
+      async getEntriesByResourceType(typeId: string, options) {
+        const results = await fetch(`https://public.example.com/spaces/${spaceId}?${qs.stringify(options)}`)
+      },
+    };
+  }
+);
+```
+
+## API
+
+### `registerCommercePlugin(config, settingsCallback)`
+
+Registers a commerce plugin with Builder.io.
+
+```ts
+export declare const registerCommercePlugin: (
+  config: CommercePluginConfig,
+  apiOperationsFromSettings: (settings: any) => CommerceAPIOperations | Promise<CommerceAPIOperations>
+) => Promise<void>;
+```
+
+- `config`: An object containing the plugin's name, ID, settings, and CTA text.
+- `settingsCallback`: A function that receives the user-provided settings and returns an object with methods for querying and transforming product data.
+
+### `registerDataPlugin(config, settingsCallback)`
+
+Registers a data plugin with Builder.io.
+
+```ts
+export declare const registerDataPlugin: (
+  config: DataPluginOptions,
+  apiOperationsFromSettings: (settings: any) => APIOperations | Promise<APIOperations>
+) => Promise<void>;
+```
+
+- `config`: An object containing the plugin's name, ID, settings, and CTA text.
+- `settingsCallback`: An asynchronous function that receives the user-provided settings and returns an object with methods for querying and transforming data from the external API.
+
+Both `registerCommercePlugin` and `registerDataPlugin` allow you to define the required settings for connecting to your backend, prompt users for these settings, and register various resources and their corresponding field types for easy integration with Builder.io content.
