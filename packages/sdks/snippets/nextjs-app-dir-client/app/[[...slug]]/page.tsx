@@ -8,7 +8,7 @@ import {
   fetchOneEntry,
   getBuilderSearchParams,
   isPreviewing,
-} from '@builder.io/sdk-react/edge';
+} from '@builder.io/sdk-react';
 
 interface PageProps {
   params: {
