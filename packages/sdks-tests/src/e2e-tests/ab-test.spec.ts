@@ -175,7 +175,7 @@ test.describe('A/B tests', () => {
             cookieValue: CONTENT_ID,
           }
         );
-        await page.goto('/symbol-ab-test');
+        await page.goto('/symbol-ab-test', { timeout: 30000 });
 
         await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(
@@ -210,7 +210,7 @@ test.describe('A/B tests', () => {
           }
         );
 
-        await page.goto('/symbol-ab-test');
+        await page.goto('/symbol-ab-test', { timeout: 30000 });
 
         await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(
