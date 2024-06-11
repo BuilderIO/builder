@@ -22,7 +22,7 @@ export default {
   // left out of this list
   external: [
     'react',
-    '@builder.io/react',
+    '@builder.io/sdk',
     '@builder.io/app-context',
     '@material-ui/core',
     '@emotion/core',
@@ -32,14 +32,7 @@ export default {
     'mobx-react',
   ],
   output: [
-    {
-      file: pkg.main,
-      name: camelCase(libraryName),
-      format: 'umd',
-      sourcemap: true,
-    },
-    { file: pkg.module, format: 'es', sourcemap: true },
-    { file: pkg.unpkg, format: 'system', sourcemap: true },
+    { file: pkg.unpkg, format: 'system', sourcemap: false },
   ],
   watch: {
     include: 'src/**',
@@ -62,9 +55,6 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
 
-    // Resolve source maps to the original source
-    sourceMaps(),
-    nodePolyfills(),
     ...(SERVE
       ? [
           serve({
@@ -73,8 +63,6 @@ export default {
             headers: {
               'Access-Control-Allow-Origin': '*',
               // https://developer.chrome.com/blog/private-network-access-preflight/#new-in-pna
-              'Access-Control-Allow-Private-Network': 'true',
-
               'Access-Control-Allow-Private-Network': 'true',
             },
           }),

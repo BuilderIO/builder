@@ -1,0 +1,66 @@
+{
+  "name": "@builder.io/plugin-tools",
+  "version": "0.0.3",
+  "description": "",
+  "keywords": [],
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es5.js",
+  "unpkg": "dist/index.system.js",
+  "typings": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Steve Sewell <steve@builder.io>",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish",
+    "start": "SERVE=true concurrently 'rollup -c rollup.config.ts -w' 'tsc -w'",
+    "check": "tsc -v"
+  },
+  "devDependencies": {
+    "@builder.io/sdk": "^2.2.0",
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.0",
+    "@types/lodash": "^4.17.5",
+    "@types/node": "^10.17.5",
+    "@types/pluralize": "0.0.29",
+    "@types/react": "^16.9.11",
+    "colors": "^1.3.2",
+    "concurrently": "^5.3.0",
+    "mobx": "5.15.7",
+    "mobx-react": "6.3.1",
+    "prettier": "^1.14.3",
+    "prompt": "^1.0.0",
+    "react": "^16.8.0",
+    "replace-in-file": "^3.4.2",
+    "rimraf": "^2.6.2",
+    "rollup": "^2.40.0",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "semantic-release": "^19.0.3",
+    "shelljs": "^0.8.3",
+    "travis-deploy-once": "^5.0.9",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "pluralize": "^8.0.0"
+  }
+}

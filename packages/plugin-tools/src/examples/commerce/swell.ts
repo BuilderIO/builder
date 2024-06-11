@@ -1,4 +1,4 @@
-import { registerCommercePlugin } from '../index';
+import { registerCommercePlugin } from '../../commerce';
 registerCommercePlugin(
   {
     name: 'Swell',

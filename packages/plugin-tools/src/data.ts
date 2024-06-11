@@ -1,4 +1,4 @@
-import { Builder } from '@builder.io/react';
+import { Builder } from '@builder.io/sdk';
 import { Input } from '@builder.io/sdk';
 import appState from '@builder.io/app-context';
 import { ReactNode } from 'react';

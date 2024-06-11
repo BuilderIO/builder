@@ -1,15 +1,15 @@
-# Builder.io Commerce plugin tools
+# Builder.io plugin tools
 
 Easily connect your custom ecommerce backend data to your Builder.io content!
 
 <img alt="Shopify data example" src="https://imgur.com/BhtUeqK.gif" >
 
-This package main expor is `registerCommercePlugin`, which will allow you to define what your ecommerce backend needs ( apiToken, password), prompt Builder.io users for it and register multiple field types per resource that allow for easy embedding and custom targeting for each resource ( products, collections, personas ...etc) in your ecommerce store.
+This package main export is `registerCommercePlugin`, which will allow you to define what your ecommerce backend needs ( apiToken, password), prompt Builder.io users for it and register multiple field types per resource that allow for easy embedding and custom targeting for each resource ( products, collections, personas ...etc) in your ecommerce store.
 
 for real world example check the [@builder.io/ecom-swell-is](../../plugins/swell) folder.
 
 ```ts
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { registerCommercePlugin } from '@builder.io/plugin-tools';
 
 registerCommercePlugin(
   {
