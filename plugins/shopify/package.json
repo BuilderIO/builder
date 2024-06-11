@@ -101,7 +101,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/plugin-tools": "^0.0.3-0",
+    "@builder.io/plugin-tools": "^0.0.3",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^3.9.2",
