@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0"
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2"
   }
 }

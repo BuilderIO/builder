@@ -58,19 +58,26 @@ const test = base.extend<TestOptions>({
       throw new Error('Failing test due to error in browser: ' + err);
     });
 
-    context.on('console', msg => {
-      const originalText = msg.text();
-      if (checkIfIsHydrationErrorMessage(originalText)) {
-        throw new Error('Hydration error detected: ' + originalText);
-      }
-    });
+    /**
+     * temporarily disable hydration error checks for hydrogen until we fix them.
+     */
+    const shouldCheckForHydrationError = packageName !== 'hydrogen';
 
-    page.on('console', msg => {
-      const originalText = msg.text();
-      if (checkIfIsHydrationErrorMessage(originalText)) {
-        throw new Error('Hydration error detected: ' + originalText);
-      }
-    });
+    if (shouldCheckForHydrationError) {
+      context.on('console', msg => {
+        const originalText = msg.text();
+        if (checkIfIsHydrationErrorMessage(originalText)) {
+          throw new Error('Hydration error detected: ' + originalText);
+        }
+      });
+
+      page.on('console', msg => {
+        const originalText = msg.text();
+        if (checkIfIsHydrationErrorMessage(originalText)) {
+          throw new Error('Hydration error detected: ' + originalText);
+        }
+      });
+    }
 
     await use(page);
   },

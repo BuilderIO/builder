@@ -1,4 +1,4 @@
-import { useMetadata, type Signal, useStore } from '@builder.io/mitosis';
+import { useMetadata, useStore, type Signal } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';

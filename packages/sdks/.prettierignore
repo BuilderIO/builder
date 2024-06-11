@@ -6,27 +6,23 @@ output/**/CHANGELOG.md
 **/.next
 **/.nuxt
 **/.output
+**/.solid
+**/.svelte-kit
 **/vite.config.ts.timestamp-*
-
 **/dist
-
-overrides/react-native/src/blocks/**/*
-
+**/.cache
+**/.angular
 **/.expo
 **/playwright-report
 
 output/**/types
 output/**/lib
-
 output/svelte/package
-output/svelte/.svelte-kit
-
-**/.solid
-
-e2e/sveltekit/.svelte-kit
 
 **/evaluate/**/acorn*
 **/evaluate/**/interpreter*
+
+overrides/react-native/src/blocks/**/*
 
 # Frequently used for debugging.
 e2e/**/src/sdk-src

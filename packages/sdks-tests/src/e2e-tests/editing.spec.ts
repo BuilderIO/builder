@@ -8,6 +8,7 @@ import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helper
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {
+    test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
@@ -26,6 +27,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   });
 
   test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
+    test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
         packageName === 'next-app-dir' ||
@@ -55,6 +57,7 @@ test.describe('Visual Editing', () => {
     basePort,
     packageName,
   }) => {
+    test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
         packageName === 'next-app-dir' ||

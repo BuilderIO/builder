@@ -3,9 +3,9 @@
  * snippets/react-native/App.tsx
  */
 import {
-  type BuilderContent,
   Content,
   fetchOneEntry,
+  type BuilderContent,
 } from '@builder.io/sdk-react-native';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

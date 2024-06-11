@@ -35,12 +35,12 @@ import type { BuilderContent } from '../../../types/builder-content.js';
 import type { ComponentInfo } from '../../../types/components.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import { triggerAnimation } from '../../block/animator.js';
+import DynamicDiv from '../../dynamic-div.lite.jsx';
 import type {
   BuilderComponentStateChange,
   ContentProps,
 } from '../content.types.js';
 import { getWrapperClassName } from './styles.helpers.js';
-import DynamicDiv from '../../dynamic-div.lite.jsx';
 
 useMetadata({
   qwik: {

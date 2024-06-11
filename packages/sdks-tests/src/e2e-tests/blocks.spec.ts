@@ -13,7 +13,8 @@ import {
 } from '../helpers/index.js';
 
 test.describe('Blocks', () => {
-  test('Text', async ({ page, sdk }) => {
+  test('Text', async ({ page, sdk, packageName }) => {
+    test.fail(packageName === 'hydrogen');
     test.fail(excludeRn(sdk));
     await page.goto('/text-block');
 

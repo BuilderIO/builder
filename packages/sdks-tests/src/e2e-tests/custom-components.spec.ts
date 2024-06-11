@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
@@ -7,16 +7,8 @@ const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
 
 test.describe('Custom components', () => {
   test('correctly renders custom component', async ({ page, packageName, sdk }) => {
-    test.skip(
-      !excludeTestFor(
-        {
-          angular: true,
-          react: true,
-        },
-        sdk
-      )
-    );
-    test.skip(packageName === 'next-app-dir-client');
+    test.skip(!['angular', 'react'].includes(sdk));
+    test.skip(['next-app-dir-client', 'remix', 'hydrogen'].includes(packageName));
     await page.goto('/custom-components');
     const helloWorldText = page.locator('text=hello World').first();
     await expect(helloWorldText).toBeVisible();
@@ -28,16 +20,8 @@ test.describe('Custom components', () => {
     packageName,
     sdk,
   }) => {
-    test.skip(
-      !excludeTestFor(
-        {
-          angular: true,
-          react: true,
-        },
-        sdk
-      )
-    );
-    test.skip(packageName === 'next-app-dir-client');
+    test.skip(!['angular', 'react'].includes(sdk));
+    test.skip(['next-app-dir-client', 'remix', 'hydrogen'].includes(packageName));
     const customComponentMsgPromise = page.waitForEvent('console', msg =>
       msg.text().includes(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE)
     );

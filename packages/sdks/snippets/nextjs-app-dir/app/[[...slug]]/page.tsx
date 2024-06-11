@@ -6,8 +6,8 @@
 import {
   Content,
   fetchOneEntry,
-  isPreviewing,
   getBuilderSearchParams,
+  isPreviewing,
 } from '@builder.io/sdk-react-nextjs';
 
 interface PageProps {

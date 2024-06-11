@@ -5,8 +5,8 @@
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import {
-  fetchOneEntry,
   Content,
+  fetchOneEntry,
   getBuilderSearchParams,
 } from '@builder.io/sdk-qwik';
 

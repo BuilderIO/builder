@@ -1,3 +1,5 @@
+import { componentInfo as accordionComponentInfo } from '../blocks/accordion/component-info.js';
+import { default as Accordion } from '../blocks/accordion/index.js';
 import { componentInfo as buttonComponentInfo } from '../blocks/button/component-info.js';
 import { default as Button } from '../blocks/button/index.js';
 import { componentInfo as columnsComponentInfo } from '../blocks/columns/component-info.js';
@@ -16,8 +18,6 @@ import { componentInfo as tabsComponentInfo } from '../blocks/tabs/component-inf
 import { default as Tabs } from '../blocks/tabs/index.js';
 import { componentInfo as textComponentInfo } from '../blocks/text/component-info.js';
 import { default as Text } from '../blocks/text/index.js';
-import { default as Accordion } from '../blocks/accordion/index.js';
-import { componentInfo as accordionComponentInfo } from '../blocks/accordion/component-info.js';
 import type { RegisteredComponent } from '../context/types.js';
 import { getExtraComponents } from './extra-components.js';
 import { TARGET } from './target.js';
