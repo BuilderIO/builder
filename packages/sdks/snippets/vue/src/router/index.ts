@@ -1,5 +1,5 @@
-import QuickStart from '@/views/QuickStart.vue';
 import AnnouncementBar from '@/views/AnnouncementBar.vue';
+import QuickStart from '@/views/QuickStart.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({

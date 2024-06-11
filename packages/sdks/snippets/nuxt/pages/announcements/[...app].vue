@@ -23,7 +23,7 @@ const { data: content } = await useAsyncData('builderData', () =>
     apiKey,
     options: getBuilderSearchParams(route.query),
     userAttributes: { urlPath: route.path },
-  }),
+  })
 );
 
 canShowContent.value = content.value ? true : isPreviewing(route.query);
