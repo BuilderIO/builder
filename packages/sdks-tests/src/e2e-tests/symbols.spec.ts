@@ -67,7 +67,6 @@ test.describe('Symbols', () => {
     await testSymbols(page);
   });
   test('fetch content if not provided', async ({ page, packageName, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
@@ -141,7 +140,6 @@ test.describe('Symbols', () => {
 
   test.describe('apiVersion', () => {
     test('apiVersion is not set', async ({ page, packageName, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
@@ -175,7 +173,6 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v3', async ({ page, packageName, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
 

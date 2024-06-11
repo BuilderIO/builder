@@ -7,7 +7,6 @@ test.describe('HTTP Requests', () => {
     test.fail(packageName === 'hydrogen');
     test.skip(excludeGen1(sdk));
     test.fail(packageName === 'next-app-dir', 'editor tests not supported in next-app-dir');
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(
       excludeTestFor({ qwik: true }, sdk),
       'error setting httpRequest response or making API call altogether.'

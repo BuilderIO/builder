@@ -3,7 +3,6 @@ import { excludeTestFor, test } from '../helpers/index.js';
 
 test.describe('Form', () => {
   test('Form rendering correctly', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.skip(
       excludeTestFor({ reactNative: true, rsc: true }, sdk),
       'Form not implemented in React Native and NextJS SDKs.'
