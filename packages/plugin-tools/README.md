@@ -202,7 +202,9 @@ Registers a commerce plugin with Builder.io.
 ```ts
 export declare const registerCommercePlugin: (
   config: CommercePluginConfig,
-  apiOperationsFromSettings: (settings: any) => CommerceAPIOperations | Promise<CommerceAPIOperations>
+  apiOperationsFromSettings: (
+    settings: any
+  ) => CommerceAPIOperations | Promise<CommerceAPIOperations>
 ) => Promise<void>;
 ```
 

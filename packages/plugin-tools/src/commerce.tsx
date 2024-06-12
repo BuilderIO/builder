@@ -145,5 +145,5 @@ export {
   ResourcePreviewCell,
   ResourcePickerProps,
   ResourcePreviewCellProps,
-  CommerceAPIOperations
+  CommerceAPIOperations,
 } from './editors/ResourcesPicker';

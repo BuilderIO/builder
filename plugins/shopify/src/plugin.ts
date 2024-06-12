@@ -47,15 +47,16 @@ registerCommercePlugin(
           return client.product.fetchByHandle(handle);
         },
         async search(search: string) {
-          const sources = await client.product.fetchQuery({
-            query: search ? `title:*${search}*` : '',
-            sortKey: 'TITLE',
-          }) || [];
+          const sources =
+            (await client.product.fetchQuery({
+              query: search ? `title:*${search}*` : '',
+              sortKey: 'TITLE',
+            })) || [];
           return sources.map((src: any) => {
             return {
               ...src,
               image: src.image || src.images?.[0],
-            }
+            };
           });
         },
 
