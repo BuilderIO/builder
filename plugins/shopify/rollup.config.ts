@@ -1,12 +1,9 @@
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import sourceMaps from 'rollup-plugin-sourcemaps';
-import camelCase from 'lodash.camelcase';
-import typescript from 'rollup-plugin-typescript2';
-import json from 'rollup-plugin-json';
 import replace from 'rollup-plugin-replace';
 import serve from 'rollup-plugin-serve';
-import nodePolyfills from 'rollup-plugin-node-polyfills';
+import esbuild from 'rollup-plugin-esbuild';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import json from '@rollup/plugin-json';
+import common from '@rollup/plugin-commonjs';
 
 const SERVE = process.env.SERVE === 'true';
 
@@ -22,6 +19,7 @@ export default {
   // left out of this list
   external: [
     'react',
+    '@builder.io/react',
     '@builder.io/sdk',
     '@builder.io/app-context',
     '@material-ui/core',
@@ -31,29 +29,18 @@ export default {
     'react-dom',
     'mobx-react',
   ],
-  output: [
-    { file: pkg.unpkg, format: 'system', sourcemap: false },
-  ],
+  output: [{ file: pkg.unpkg, format: 'system', sourcemap: true }],
   watch: {
     include: 'src/**',
   },
   plugins: [
-    // Allow json resolution
-    json(),
-    // Compile TypeScript files
-    typescript({ useTsconfigDeclarationDir: true }),
-    // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs({
-      extensions: ['.js', '.ts', '.tsx'],
-    }),
-    // Allow node_modules resolution, so you can use 'external' to control
-    // which external modules to include in the bundle
-    // https://github.com/rollup/rollup-plugin-node-resolve#usage
-    resolve(),
-
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
+    json(),
+    nodeResolve({ mainFields: ['module', 'browser'] }),
+    common(),
+    esbuild(),
 
     ...(SERVE
       ? [

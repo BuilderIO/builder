@@ -20,6 +20,7 @@ export default {
   external: [
     'react',
     '@builder.io/react',
+    '@builder.io/sdk',
     '@builder.io/app-context',
     '@material-ui/core',
     '@emotion/core',
