@@ -48,7 +48,12 @@ test.describe('Integrating Pages', () => {
       await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
     });
 
-    test('updates homepage', async ({ page, basePort }) => {
+    test('updates homepage', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'next-app-dir',
+        'Nextjs SDK does not support standard page editing.'
+      );
+
       await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
 
       const NEW_TEXT = 'This is a new homepage.';
