@@ -17,7 +17,7 @@ const model = 'announcement-bar';
 const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 const canShowContent = ref(false);
 
-const content = await useAsyncData('builderData', () =>
+const { data: content } = await useAsyncData('builderData', () =>
   fetchOneEntry({
     model,
     apiKey,
@@ -26,7 +26,7 @@ const content = await useAsyncData('builderData', () =>
   })
 );
 
-canShowContent.value = content.data.value ? true : isPreviewing(route.query);
+canShowContent.value = content.value ? true : isPreviewing(route.query);
 </script>
 
 <template>
@@ -34,7 +34,7 @@ canShowContent.value = content.data.value ? true : isPreviewing(route.query);
   <Content
     v-if="canShowContent"
     :model="model"
-    :content="content.data"
+    :content="content"
     :api-key="apiKey"
   />
   <div v-else>Announcement Bar not Found</div>
