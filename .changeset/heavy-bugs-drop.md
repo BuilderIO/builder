@@ -2,4 +2,4 @@
 "@builder.io/sdk-angular": patch
 ---
 
-Fix: peer dependency resolution error for angular projects version >=17
+Fix: expand Angular peer dependency from `^16.2.0" to `>=16.2.0`
