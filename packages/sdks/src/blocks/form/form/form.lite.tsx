@@ -90,7 +90,7 @@ export default function FormComponent(props: FormProps) {
         }
         event.preventDefault();
 
-        const el = event.currentTarget;
+        const el = event.currentTarget || event.target;
         const headers = props.customHeaders || {};
 
         let body: any;
@@ -101,9 +101,7 @@ export default function FormComponent(props: FormProps) {
         const formPairs: {
           key: string;
           value: File | boolean | number | string | FileList;
-        }[] = Array.from(
-          event.currentTarget.querySelectorAll('input,select,textarea')
-        )
+        }[] = Array.from(el.querySelectorAll('input,select,textarea'))
           .filter((el) => !!(el as HTMLInputElement).name)
           .map((el) => {
             let value: any;
@@ -301,6 +299,12 @@ export default function FormComponent(props: FormProps) {
       method={props.method}
       name={props.name}
       onSubmit={(event) => state.onSubmit(event)}
+      {...useTarget({
+        qwik: {
+          'preventdefault:submit': true,
+        },
+        default: {},
+      })}
       {...useTarget({
         vue: filterAttrs(props.attributes, 'v-on:', false),
         svelte: filterAttrs(props.attributes, 'on:', false),
