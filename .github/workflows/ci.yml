@@ -140,7 +140,7 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Build Snippet
+      - name: Run snippets tests
         run: yarn nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report

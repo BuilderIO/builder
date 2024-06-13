@@ -15,7 +15,7 @@ import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
 // Define a function that fetches the Builder content for a given page
 export const getStaticProps: GetStaticProps = async ({ params }) => {

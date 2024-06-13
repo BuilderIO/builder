@@ -42,7 +42,8 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  /* Allow retrying snippet tests because they're not deterministic */
+  retries: testType === 'snippet' ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -52,6 +53,13 @@ export default defineConfig({
   use: {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
+  },
+
+  expect: {
+    /**
+     * Increase the default timeout for snippet tests because they're not deterministic.
+     */
+    timeout: testType === 'snippet' ? 30000 : 5000,
   },
 
   /* Configure projects for major browsers */

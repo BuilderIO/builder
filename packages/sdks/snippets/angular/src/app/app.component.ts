@@ -25,7 +25,7 @@ import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
   `,
 })
 export class AppComponent {
-  apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660';
+  apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   model = 'page';
   content: BuilderContent | null = null;
 

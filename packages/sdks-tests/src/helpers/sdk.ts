@@ -11,7 +11,7 @@ export type Sdk =
   | 'vue'
   | 'angular';
 
-const ServerNameEnum = z.enum([
+const serverNameEnumValues = [
   'react-native',
   'solid',
   'solid-start',
@@ -31,11 +31,17 @@ const ServerNameEnum = z.enum([
   'gen1-react',
   'gen1-remix',
   'gen1-next',
-]);
+] as const;
+const ServerNameEnum = z.enum(serverNameEnumValues);
 export type ServerName = z.infer<typeof ServerNameEnum>;
 
-export const serverNames =
-  process.env.SERVER_NAME?.split(',').map(str => ServerNameEnum.parse(str)) ?? [];
+const envServerName = !process.env.SERVER_NAME
+  ? []
+  : process.env.SERVER_NAME === 'all'
+    ? serverNameEnumValues
+    : process.env.SERVER_NAME.split(',');
+
+export const serverNames = envServerName.map(str => ServerNameEnum.parse(str)) ?? [];
 
 if (serverNames.length === 0) {
   throw new Error(

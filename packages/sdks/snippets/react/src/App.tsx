@@ -11,7 +11,7 @@ import {
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
 
-const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'page';
 
 // set whether you're using the Visual Editor,

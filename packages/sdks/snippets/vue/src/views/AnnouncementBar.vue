@@ -1,5 +1,5 @@
-<!-- Quickstart snippet -->
-<!-- https://www.builder.io/c/docs/integrating-builder-pages -->
+<!-- https://www.builder.io/c/docs/integrate-section-building -->
+<!-- https://www.builder.io/c/blueprints/announcement-bar -->
 
 <script setup lang="ts">
 import {
@@ -14,7 +14,7 @@ import { onMounted, ref } from 'vue';
 const content = ref<BuilderContent | null>(null);
 const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 const canShowContent = ref(false);
-const model = 'page';
+const model = 'announcement-bar';
 
 onMounted(async () => {
   content.value = await fetchOneEntry({
@@ -30,11 +30,15 @@ onMounted(async () => {
 </script>
 
 <template>
+  <!-- Your header coming from Builder -->
   <Content
     v-if="canShowContent"
     :model="model"
     :content="content"
     :api-key="apiKey"
   />
-  <div v-else>Content not Found</div>
+  <div v-else>Announcement Bar not Found</div>
+
+  <!-- Your content coming from your app (or also Builder) -->
+  <div>The rest of your page goes here</div>
 </template>

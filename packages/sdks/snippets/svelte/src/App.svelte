@@ -4,7 +4,7 @@
 <script lang="ts">
   import { Content, fetchOneEntry, type BuilderContent } from '@builder.io/sdk-svelte';
 
-  let apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660';
+  let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   let model = 'page';
 
   let content: BuilderContent | null = null;
