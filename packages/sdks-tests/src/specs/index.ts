@@ -46,6 +46,7 @@ import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
 import { BASIC_STYLES } from './basic-styles.js';
 import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.js';
+import { SYMBOL_TRACKING } from './symbol-tracking.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -109,6 +110,7 @@ const PAGES = {
   '/accordion': ACCORDION,
   '/accordion-one-at-a-time': ACCORDION_ONE_AT_A_TIME,
   '/accordion-grid': ACCORDION_GRID,
+  '/symbol-tracking': SYMBOL_TRACKING,
 } as const;
 
 const apiVersionPathToProp = {
@@ -182,7 +184,7 @@ export const getProps = async (args: {
   }
 
   const extraProps =
-    pathname === '/can-track-false'
+    pathname === '/can-track-false' || pathname === '/symbol-tracking'
       ? {
           canTrack: false,
         }

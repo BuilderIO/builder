@@ -22,6 +22,13 @@ test.describe('Tracking', () => {
       const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
+    test('do not appear if canTrack=false (for Symbols)', async ({ page, context }) => {
+      await page.goto('/symbol-tracking', { waitUntil: 'networkidle' });
+
+      const cookies = await context.cookies();
+      const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
+      expect(builderSessionCookie).toBeUndefined();
+    });
     test('appear by default', async ({ page, context, sdk }) => {
       test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(excludeRn(sdk));
