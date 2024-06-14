@@ -1,6 +1,7 @@
+import { DOCUMENT } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import {
   _processContentResult,
   fetchOneEntry,
@@ -48,16 +49,19 @@ export class AppComponent {
     },
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   async ngOnInit() {
-    const urlPath = window.location.pathname || '';
+    const urlPath = this.document.location.pathname || '';
 
     const builderProps = await getProps({
       pathname: urlPath,
       _processContentResult,
       options: getBuilderSearchParams(
-        new URLSearchParams(window.location.search)
+        new URLSearchParams(this.document.location.search)
       ),
       fetchOneEntry,
     });
