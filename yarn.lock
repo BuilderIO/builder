@@ -12915,6 +12915,7 @@ __metadata:
     react-native-screens: ~3.22.0
     react-native-url-polyfill: ^2.0.0
     react-native-web: ~0.19.6
+    serve: ^14.2.3
     typescript: ^5.1.3
     webpack: ^5.64.4
   languageName: unknown
