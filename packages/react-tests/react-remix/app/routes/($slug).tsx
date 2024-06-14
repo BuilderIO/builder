@@ -46,10 +46,10 @@ export default function Page() {
 
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
-    if (!params.slug?.includes('can-track-false')) {
+    if (!params.slug?.includes('can-track-false') || !params.slug?.includes('symbol-tracking')) {
       builder.canTrack = true;
     }
-  }, []);
+  }, [params.slug]);
 
   return props?.content ? <BuilderComponent {...props} /> : <div>Content Not Found.</div>;
 }

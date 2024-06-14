@@ -23,7 +23,10 @@ function App() {
 
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
-    if (!window.location.pathname.includes('can-track-false')) {
+    if (
+      !window.location.pathname.includes('can-track-false') ||
+      !window.location.pathname.includes('symbol-tracking')
+    ) {
       builder.canTrack = true;
     }
   }, []);

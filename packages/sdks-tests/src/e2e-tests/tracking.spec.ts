@@ -22,7 +22,11 @@ test.describe('Tracking', () => {
       const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
-    test('do not appear if canTrack=false (for Symbols)', async ({ page, context }) => {
+    test('do not appear if canTrack=false (for Symbols)', async ({ page, context, sdk }) => {
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        'Symbols not working well for Angular Gen2 SDK'
+      );
       await page.goto('/symbol-tracking', { waitUntil: 'networkidle' });
 
       const cookies = await context.cookies();

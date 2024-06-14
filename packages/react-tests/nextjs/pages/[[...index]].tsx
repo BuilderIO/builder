@@ -45,7 +45,7 @@ export default function Page(props: PageProps & { apiVersion: any }) {
 
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
-    if (!router.asPath.includes('can-track-false')) {
+    if (!router.asPath.includes('can-track-false') || !router.asPath.includes('symbol-tracking')) {
       builder.canTrack = true;
     }
   }, []);
