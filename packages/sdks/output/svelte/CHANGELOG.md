@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.0.29
+
+### Patch Changes
+
+- 74d78e1: Fix: error in identifying model being previewed: https://github.com/BuilderIO/builder/pull/3310/files#diff-6293c2a27254fa850a123075284412ef86d270a4518e0ad3aad81132b590ea1cL311
+
 ## 1.0.28
 
 ### Patch Changes
@@ -461,7 +467,7 @@ In case you feel the need to use our older API Version `v2`, reach out to us at 
 ```
 
 ```js
-getContent({ apiVersion: 'v2' });
+getContent({ apiVersion: "v2" });
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).

@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.0.4
+
+### Patch Changes
+
+- 74d78e1: Fix: error in identifying model being previewed: https://github.com/BuilderIO/builder/pull/3310/files#diff-6293c2a27254fa850a123075284412ef86d270a4518e0ad3aad81132b590ea1cL311
+- de5d272: Fix: expand Angular peer dependency from `^16.2.0` to `>=16.2.0`
+
 ## 0.0.3
 
 ### Patch Changes
