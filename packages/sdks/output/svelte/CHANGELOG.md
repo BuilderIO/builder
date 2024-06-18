@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.0.30
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
 ## 1.0.29
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.25
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
 ## 0.14.24
 
 ### Patch Changes
