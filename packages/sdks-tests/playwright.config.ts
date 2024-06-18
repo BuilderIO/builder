@@ -17,8 +17,8 @@ const getDirName = () => {
 
 const things = serverNames.map((packageName, i) => {
   const isReactNative = packageName === 'react-native';
-  const port = isReactNative ? 19006 : 1111 + i;
-  const portFlag = isReactNative ? '' : `--port=${port}`;
+  const port = 1111 + i;
+  const portFlag = isReactNative ? `-l ${port}` : `--port=${port}`;
 
   return {
     port,

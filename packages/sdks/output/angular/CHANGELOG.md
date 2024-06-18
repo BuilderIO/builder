@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.0.5
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
 ## 0.0.4
 
 ### Patch Changes

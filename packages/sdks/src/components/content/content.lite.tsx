@@ -94,6 +94,7 @@ export default function ContentComponent(props: ContentProps) {
           default: state.contentSetState,
         }),
         context: props.context || {},
+        canTrack: props.canTrack,
         apiKey: props.apiKey,
         apiVersion: props.apiVersion,
         componentInfos: [
