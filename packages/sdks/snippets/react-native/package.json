@@ -6,9 +6,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build": "npx expo export:web",
+    "build": "expo export:web",
     "dev": "yarn run web",
-    "serve": "npx serve web-build --single",
+    "serve": "serve web-build --single",
     "test": "SERVER_NAME=react-native yarn nx test:snippet @sdk/tests"
   },
   "dependencies": {
