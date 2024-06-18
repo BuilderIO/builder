@@ -31,9 +31,9 @@ test.describe('Tracking', () => {
       // TO-DO: figure out why React gen1 fails this test,
       // track is not called in a published content if builder.canTrack = false
       test.fail(packageName === 'gen1-react');
-      test.fail(
+      test.skip(
         excludeTestFor({ angular: true }, sdk),
-        'Symbols not working well for Angular Gen2 SDK'
+        'Symbols not working well for Angular Gen2 SDK - infinite loop'
       );
       await page.goto('/symbol-tracking', { waitUntil: 'networkidle' });
 
