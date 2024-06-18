@@ -3614,7 +3614,7 @@ __metadata:
     cz-conventional-changelog: ^2.0.0
     hash-sum: ^2.0.0
     husky: ^0.14.0
-    isolated-vm: ^4.5.0
+    isolated-vm: ^5.0.0
     jest: ^28.1.3
     jest-environment-jsdom: ^28.1.3
     lint-staged: ^7.0.0
@@ -3694,7 +3694,7 @@ __metadata:
     "@builder.io/sdks": "workspace:*"
     "@types/jasmine": ~4.3.0
     "@types/node": ^20.11.30
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     jasmine-core: ~4.6.0
     karma: ~6.4.0
     karma-chrome-launcher: ~3.2.0
@@ -3723,7 +3723,7 @@ __metadata:
     "@builder.io/qwik": ^1.5.1
     "@builder.io/sdks": "workspace:*"
     "@types/node": latest
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     nx: 16.10.0
     nx-cloud: 16.5.2
     typescript: ^5.1.6
@@ -3748,7 +3748,7 @@ __metadata:
     "@types/react-native-video": ^5.0.9
     babel-plugin-module-resolver: ^5.0.0
     css-to-react-native: ^3.2.0
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     nx: 16.10.0
     nx-cloud: 16.5.2
     react-native-builder-bob: ^0.21.3
@@ -3773,7 +3773,7 @@ __metadata:
   dependencies:
     "@builder.io/sdks": "workspace:*"
     "@vitejs/plugin-react": ^4.0.4
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     lru-cache: ^10.0.0
     next: ">=13.4.20"
     nx: 16.10.0
@@ -3796,7 +3796,7 @@ __metadata:
   dependencies:
     "@builder.io/sdks": "workspace:*"
     "@vitejs/plugin-react": ^4.0.4
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     nx: 16.10.0
     nx-cloud: 16.5.2
     react: ^18.2.0
@@ -3816,7 +3816,7 @@ __metadata:
     "@builder.io/sdks": "workspace:*"
     esbuild: ^0.18.15
     esbuild-plugin-solid: ^0.5.0
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     nx: 16.10.0
     nx-cloud: 16.5.2
     solid-js: ^1.7.8
@@ -3837,7 +3837,7 @@ __metadata:
     "@sveltejs/adapter-auto": ^2.1.0
     "@sveltejs/kit": ^1.22.4
     "@sveltejs/package": ^2.2.0
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     nx: 16.10.0
     nx-cloud: 16.5.2
     svelte: ^4.1.2
@@ -3859,7 +3859,7 @@ __metadata:
     "@types/node": ^16.11.47
     "@vitejs/plugin-vue": ^5.0.3
     "@vue/tsconfig": ^0.1.3
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     npm-run-all: ^4.1.5
     nx: 16.10.0
     nx-cloud: 16.5.2
@@ -3939,7 +3939,7 @@ __metadata:
     eslint-plugin-unused-imports: ^2.0.0
     git-cz: ^4.8.0
     husky: ^7.0.4
-    isolated-vm: ^4.6.0
+    isolated-vm: ^5.0.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
     nx: 16.10.0
@@ -31118,13 +31118,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isolated-vm@npm:^4.5.0, isolated-vm@npm:^4.6.0":
-  version: 4.6.0
-  resolution: "isolated-vm@npm:4.6.0"
+"isolated-vm@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "isolated-vm@npm:5.0.0"
   dependencies:
     node-gyp: latest
     prebuild-install: ^7.1.1
-  checksum: 011853d46bc934751012f5c1ed3eaba43dc4bd274672e59ff8e4c7eb0df668c93f3e0b91e3b4e812d2b8476c9ace218f34e7a3188b08b343409370e70044a874
+  checksum: 47a8efa611cb4b25f6944a513ec040c7b71e920b5e8828338e73d8f773a40673e388634eec6c83d35295fa4175685c699e9bc9e5d4afe2d40a3a35ef534d7704
   languageName: node
   linkType: hard
 
