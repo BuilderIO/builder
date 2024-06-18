@@ -1,3 +1,6 @@
+// polyfill `regenerator-runtime` for `react-native-storage`
+import 'regenerator-runtime/runtime.js';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import Storage from 'react-native-storage';
@@ -11,7 +14,7 @@ const initStorage = () => {
   const backend =
     Platform.OS === 'web'
       ? isBrowser()
-        ? // client-side web
+        ? // web
           window?.localStorage
         : // static rendering/SSR in expo 50+
           undefined

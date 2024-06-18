@@ -3764,6 +3764,7 @@ __metadata:
     react-dom: ^18.0.0
     react-native: ">=0.64.3"
     react-native-url-polyfill: ^2.0.0
+    regenerator-runtime: ^0.14.1
   languageName: unknown
   linkType: soft
 
