@@ -118,7 +118,7 @@
     "react": ">=16"
   },
   "dependencies": {
-    "isolated-vm": "^4.6.0"
+    "isolated-vm": "^5.0.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
