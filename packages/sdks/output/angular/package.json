@@ -13,7 +13,7 @@
     "build:browser": "ng build --project sdk-angular --configuration browser"
   },
   "dependencies": {
-    "isolated-vm": "^4.6.0",
+    "isolated-vm": "^5.0.0",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
