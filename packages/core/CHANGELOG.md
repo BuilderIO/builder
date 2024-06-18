@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 2.2.4
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
 ## 2.2.3
 
 ### Patch Changes

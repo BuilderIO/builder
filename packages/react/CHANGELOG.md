@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 3.2.8
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+- Updated dependencies [4aaba38]
+  - @builder.io/sdk@2.2.4
+
 ## 3.2.7
 
 ### Patch Changes
@@ -123,10 +131,10 @@
 In case you feel the need to use our older API Version `v1`, reach out to us at support@builder.io first. But you can override the default by setting `apiVersion` explicitly to `v1` as follows:
 
 ```js
-import { builder } from '@builder.io/react';
+import { builder } from "@builder.io/react";
 
-builder.init('YOUR_BUILDER_PUBLIC_KEY');
-builder.apiVersion = 'v1';
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.apiVersion = "v1";
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
@@ -138,10 +146,10 @@ More details on the Builder API Versions visit [this link](https://www.builder.i
 You can set the apiVersion using `builder.init` or `builder.apiVersion`:
 
 ```js
-import { builder } from '@builder.io/react';
+import { builder } from "@builder.io/react";
 
-builder.init('YOUR_BUILDER_PUBLIC_KEY');
-builder.apiVersion = 'v3';
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.apiVersion = "v3";
 ```
 
 ## 2.0.16
