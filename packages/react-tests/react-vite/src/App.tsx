@@ -27,7 +27,6 @@ function App() {
       !window.location.pathname.includes('can-track-false') &&
       !window.location.pathname.includes('symbol-tracking')
     ) {
-      console.log('enabling tracking', window.location.pathname.includes('symbol-tracking'));
       builder.canTrack = true;
     }
   }, []);
