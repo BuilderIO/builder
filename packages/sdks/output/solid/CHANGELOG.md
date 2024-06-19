@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.31
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
 ## 1.0.30
 
 ### Patch Changes

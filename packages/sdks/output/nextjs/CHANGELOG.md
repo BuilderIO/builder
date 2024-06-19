@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.26
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
 ## 0.14.25
 
 ### Patch Changes
