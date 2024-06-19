@@ -1,11 +1,19 @@
+import { DOCUMENT, isPlatformServer } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Optional,
+  PLATFORM_ID,
+} from '@angular/core';
 import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
 } from '@builder.io/sdk-angular';
+import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { getProps } from '@sdk/tests';
 import { HelloComponent } from './hello.component';
 
@@ -48,31 +56,53 @@ export class AppComponent {
     },
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: any,
+    @Optional() @Inject(REQUEST) private req: any,
+    @Inject(DOCUMENT) private document: Document
+  ) {
+    if (isPlatformServer(this.platformId)) {
+      const urlPath = this.req.path || '';
+      const searchParams = new URLSearchParams(this.req.url.split('?')[1]);
+      getProps({
+        pathname: urlPath,
+        _processContentResult,
+        options: searchParams ? getBuilderSearchParams(searchParams) : {},
+        fetchOneEntry,
+      }).then((builderProps) => {
+        if (!builderProps) {
+          return;
+        }
+        this.content = builderProps.content;
+        this.canTrack = builderProps.canTrack;
+        this.trustedHosts = builderProps.trustedHosts;
+        this.apiKey = builderProps.apiKey;
+        this.model = builderProps.model;
+        this.apiVersion = builderProps.apiVersion;
+      });
+    } else {
+      const url = new URL(window.location.href);
+      getProps({
+        pathname: url.pathname,
+        _processContentResult,
+        options: getBuilderSearchParams(url.searchParams),
+        fetchOneEntry,
+      }).then((builderProps) => {
+        if (!builderProps) {
+          return;
+        }
+        this.content = builderProps.content;
+        this.canTrack = builderProps.canTrack;
+        this.trustedHosts = builderProps.trustedHosts;
+        this.apiKey = builderProps.apiKey;
+        this.model = builderProps.model;
+        this.apiVersion = builderProps.apiVersion;
+      });
+    }
+  }
 
   async ngOnInit() {
-    const urlPath = window.location.pathname || '';
-
-    const builderProps = await getProps({
-      pathname: urlPath,
-      _processContentResult,
-      options: getBuilderSearchParams(
-        new URLSearchParams(window.location.search)
-      ),
-      fetchOneEntry,
-    });
-
-    if (!builderProps) {
-      return;
-    }
-
-    this.content = builderProps.content;
-    this.canTrack = builderProps.canTrack;
-    this.trustedHosts = builderProps.trustedHosts;
-    this.apiKey = builderProps.apiKey;
-    this.model = builderProps.model;
-    this.apiVersion = builderProps.apiVersion;
-
     this.cdr.detectChanges();
   }
 }

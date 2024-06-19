@@ -1,4 +1,5 @@
 import { camelToKebabCase } from '../../functions/camel-to-kebab-case.js';
+import { isBrowser } from '../../functions/is-browser.js';
 import type { BuilderAnimation } from '../../types/builder-block.js';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -58,6 +59,7 @@ function assign(target: object, ..._args: any[]) {
 }
 
 export function bindAnimations(animations: BuilderAnimation[]) {
+  if (!isBrowser()) return;
   for (const animation of animations) {
     switch (animation.trigger) {
       case 'pageLoad':
