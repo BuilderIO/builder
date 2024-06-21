@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
-  "version": "1.0.31-0",
+  "version": "1.0.31-1",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react-native",
   "repository": {
     "type": "git",
@@ -11,7 +11,6 @@
   "type": "module",
   "main": "lib/browser/commonjs/index.js",
   "module": "lib/browser/module/index.js",
-  "react-native": "src/index.ts",
   "source": "src/index.ts",
   "types": "lib/browser/typescript/index.d.ts",
   "exports": {
