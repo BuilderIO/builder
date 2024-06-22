@@ -28,7 +28,7 @@ export interface ContentVariantsPrps {
   context?: BuilderRenderContext;
 
   /**
-   * Your API Key: needed to dynamically fetch symbols (required).
+   * Your API Key: needed to enable visual editing, and to dynamically fetch symbols (required).
    */
   apiKey: string;
 

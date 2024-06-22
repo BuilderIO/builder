@@ -1,0 +1,36 @@
+{
+  "name": "@snippet/nuxt",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "SERVER_NAME=nuxt yarn nx test:snippet @sdk/tests",
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "serve": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2"
+  },
+  "dependencies": {
+    "@builder.io/sdk-vue": "workspace:*",
+    "nuxt": "^3.11.2",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.nuxt",
+          "{projectRoot}/.output"
+        ]
+      }
+    }
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  }
+}

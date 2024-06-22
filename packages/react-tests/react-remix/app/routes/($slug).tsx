@@ -1,7 +1,7 @@
 import { Links, Meta, Scripts, useCatch, useLoaderData, useParams } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/node';
 import { BuilderComponent, builder } from '@builder.io/react';
-import { getAPIKey, getProps } from '@e2e/tests';
+import { getAPIKey, getProps } from '@sdk/tests';
 import { useEffect } from 'react';
 
 import '@builder.io/widgets';
@@ -44,12 +44,12 @@ export default function Page() {
     builder.apiVersion = props?.apiVersion;
   }
 
-  // only enable tracking if we're not in the `/can-track-false` test route
+  // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
   useEffect(() => {
-    if (!params.slug?.includes('can-track-false')) {
+    if (!params.slug?.includes('can-track-false') && !params.slug?.includes('symbol-tracking')) {
       builder.canTrack = true;
     }
-  }, []);
+  }, [params.slug]);
 
   return props?.content ? <BuilderComponent {...props} /> : <div>Content Not Found.</div>;
 }

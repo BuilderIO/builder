@@ -5,18 +5,19 @@
     "build": "remix build",
     "dev": "remix dev",
     "serve": "remix-serve build",
+    "test": "SERVER_NAME=gen1-remix yarn nx test:e2e @sdk/tests",
     "typecheck": "tsc"
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@builder.io/widgets": "^1.2.24",
-    "@e2e/tests": "workspace:*",
     "@remix-run/node": "^1.14.3",
     "@remix-run/react": "^1.14.3",
     "@remix-run/serve": "^1.14.3",
+    "@sdk/tests": "workspace:*",
     "isbot": "^3.6.5",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

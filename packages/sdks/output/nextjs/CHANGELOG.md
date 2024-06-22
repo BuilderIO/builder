@@ -1,5 +1,23 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.14.26
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
+## 0.14.25
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
+## 0.14.24
+
+### Patch Changes
+
+- 74d78e1: Fix: error in identifying model being previewed: https://github.com/BuilderIO/builder/pull/3310/files#diff-6293c2a27254fa850a123075284412ef86d270a4518e0ad3aad81132b590ea1cL311
+
 ## 0.14.21
 
 ### Patch Changes

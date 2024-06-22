@@ -6,7 +6,7 @@
     "serve": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "SERVER_NAME=angular yarn nx test:e2e @sdk/tests"
   },
   "private": true,
   "dependencies": {
@@ -19,7 +19,7 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "@builder.io/sdk-angular": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
@@ -35,6 +35,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "typescript": "~5.1.3"
   }
 }

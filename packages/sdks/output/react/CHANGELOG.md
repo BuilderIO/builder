@@ -1,5 +1,29 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.31
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
+## 1.0.30
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
+## 1.0.29
+
+### Patch Changes
+
+- 74d78e1: Fix: error in identifying model being previewed: https://github.com/BuilderIO/builder/pull/3310/files#diff-6293c2a27254fa850a123075284412ef86d270a4518e0ad3aad81132b590ea1cL311
+
+## 1.0.28
+
+### Patch Changes
+
+- f3aab34: Feat: Accordion widget for gen2 sdks
+
 ## 1.0.27
 
 ### Patch Changes
@@ -49,8 +73,8 @@
 
   ```tsx
   // _document.tsx
-  import { Html, Head, Main, NextScript } from 'next/document';
-  import { initializeNodeRuntime } from '@builder.io/sdk-react/node/init';
+  import { Html, Head, Main, NextScript } from "next/document";
+  import { initializeNodeRuntime } from "@builder.io/sdk-react/node/init";
   initializeNodeRuntime();
 
   export default function Document() {
@@ -70,11 +94,13 @@
 
   ```tsx
   // ($slug)._index.tsx
-  import { fetchOneEntry } from '@builder.io/sdk-react';
+  import { fetchOneEntry } from "@builder.io/sdk-react";
 
   export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     // the import must be inside the loader itself.
-    const { initializeNodeRuntime } = await import('@builder.io/sdk-react/node/init');
+    const { initializeNodeRuntime } = await import(
+      "@builder.io/sdk-react/node/init"
+    );
     await initializeNodeRuntime();
 
     const page = await fetchOneEntry({
@@ -529,7 +555,7 @@ In case you feel the need to use our older API Version `v2`, reach out to us at 
 ```
 
 ```js
-getContent({ apiVersion: 'v2' });
+getContent({ apiVersion: "v2" });
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).

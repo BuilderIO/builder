@@ -198,50 +198,6 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
-const ANGULAR_HANDLE_TEMPLATE_STRS = () => ({
-  code: {
-    post: (code) => {
-      const pathValue = code.match(/\[path\]="(.*?)"/);
-      if (pathValue) {
-        code = code.replace(
-          pathValue[0],
-          `[path]="${pathValue[1]
-            .replaceAll('`', "'")
-            .replaceAll('\\', '')
-            .replaceAll('.${', ".'+")
-            .replaceAll('}', "+'")}"`
-        );
-      }
-      return code;
-    },
-  },
-});
-
-// Target Component: "ComponentRef"
-// in mitosis we pass props as inputs: { prop1, prop2, etc }
-// in this we call inputs: getWrapperProps() directly inside ngComponentOutlet as we don't need to spread the props
-const ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('inputs: { getWrapperProps')) {
-        const wrapperObj =
-          code
-            .match(/inputs: {.*?}/s)[0]
-            .replace('inputs: {', '')
-            .replaceAll('props.', '') + ')';
-        const inputsObj = code
-          .match(/inputs: {.*?;/s)[0]
-          .replace('inputs: ', '');
-        code = code.replace(
-          inputsObj,
-          wrapperObj.replace('context.value', 'context')
-        );
-      }
-      return code;
-    },
-  },
-});
-
 const ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN = () => ({
   code: {
     post: (code) => {
@@ -270,9 +226,7 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
         );
         code = code.replace(
           '} from "@angular/core";',
-          `${
-            code.includes('repeated-block') ? ',' : ''
-          }forwardRef } from "@angular/core";`
+          `${code.includes('repeated-block') ? ',' : ''}forwardRef } from "@angular/core";`
         );
       }
       return code;
@@ -298,6 +252,26 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
         code = code.replace(
           '</ng-container>',
           '</ng-container>\n</ng-container>'
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code?.includes('blocks-wrapper')) {
+        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnChanges() {
+              ${mergedInputsCode}
+            }
+          }
+          `
         );
       }
       return code;
@@ -495,6 +469,77 @@ const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
   },
 });
 
+const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('enable-editor')) {
+        code = code.replace(
+          'window.addEventListener("message", this.processMessage);',
+          'window.addEventListener("message", this.processMessage.bind(this));'
+        );
+        code = code.replace(
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate
+          );`,
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate.bind(this)
+          );`
+        );
+      }
+      return code;
+    },
+  },
+});
+
+// required for registering custom components properly
+const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('content-component, ContentComponent')) {
+        const registeredComponentsCode = code.match(
+          /registeredComponents = \[.*\);/s
+        );
+        const builderContextSignalCode = code.match(
+          /builderContextSignal = \{.*\};/s
+        );
+
+        // add them to ngOnInit
+        code = code.replace(
+          // last } before the end of the class
+          /}\n\s*$/,
+          `
+            ngOnInit() {
+              this.${registeredComponentsCode}
+              this.${builderContextSignalCode}
+            }
+          }
+          `
+        );
+
+        code = code.replaceAll(
+          'this.contentSetState',
+          'this.contentSetState.bind(this)'
+        );
+      }
+      if (code.includes('content-styles, ContentStyles')) {
+        const injectedStyles = code.match(/injectedStyles = `.*;/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnInit() {
+              this.${injectedStyles}
+            }
+          }
+          `
+        );
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -510,13 +555,16 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
+      state: 'class-properties',
       plugins: [
-        ANGULAR_HANDLE_TEMPLATE_STRS,
-        ANGULAR_PASS_CALLED_FUNCTION_TO_INPUTS_NO_NEED_TO_SPREAD,
         ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN,
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
+        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
+        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
       ],
     },
     solid: {

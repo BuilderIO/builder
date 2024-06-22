@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Content, _processContentResult } from '@builder.io/sdk-svelte';
-  import { getProps } from '@e2e/tests';
+  import { getProps } from '@sdk/tests';
 
   let props = undefined;
   const fetch = async () => {

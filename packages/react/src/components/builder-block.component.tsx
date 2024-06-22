@@ -599,18 +599,18 @@ export class BuilderBlock extends React.Component<
                       {(block as any).text || options.text
                         ? options.text
                         : !InnerComponent && children && Array.isArray(children) && children.length
-                        ? children.map((block: ElementType, index: number) => (
-                            <BuilderBlock
-                              key={((this.id as string) || '') + index}
-                              block={block}
-                              index={index}
-                              size={this.props.size}
-                              fieldName={this.props.fieldName}
-                              child={this.props.child}
-                              emailMode={this.props.emailMode}
-                            />
-                          ))
-                        : null}
+                          ? children.map((block: ElementType, index: number) => (
+                              <BuilderBlock
+                                key={((this.id as string) || '') + index}
+                                block={block}
+                                index={index}
+                                size={this.props.size}
+                                fieldName={this.props.fieldName}
+                                child={this.props.child}
+                                emailMode={this.props.emailMode}
+                              />
+                            ))
+                          : null}
                     </TagName>
                   );
                 }}

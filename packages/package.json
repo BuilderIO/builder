@@ -3,16 +3,14 @@
   "description": "This mono-repo includes the new SDKs and their integration tests.",
   "private": true,
   "scripts": {
-    "e2e:build:old-react": "nx run-many -t build -p @e2e/gen1-react @e2e/gen1-next @e2e/gen1-remix",
-    "e2e:run:old-react": "SDK=oldReact yarn workspace @builder.io/sdks e2e:run",
     "ci:changeset": "changeset status --since=main",
     "fix-core-version": "yarn workspace @builder.io/react fix-core-version",
-    "build:sdks": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\*,@builder.io/react --exclude=@builder.io/sdk-angular",
+    "build:sdks": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\*,@builder.io/react",
     "ci:release": "yarn build:sdks && yarn run fix-core-version && yarn g:changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0"
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2"
   }
 }

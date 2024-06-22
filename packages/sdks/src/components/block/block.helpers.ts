@@ -122,6 +122,7 @@ export const shouldPassLinkComponent = (
         'Columns',
         'Form:Form',
         'Builder: Tabs',
+        'Builder:Accordion',
       ].includes(block.name))
   );
 };
@@ -132,6 +133,12 @@ export const shouldPassRegisteredComponents = (
   return (
     block &&
     (block.isRSC ||
-      ['Symbol', 'Columns', 'Form:Form', 'Builder: Tabs'].includes(block.name))
+      [
+        'Symbol',
+        'Columns',
+        'Form:Form',
+        'Builder: Tabs',
+        'Builder:Accordion',
+      ].includes(block.name))
   );
 };

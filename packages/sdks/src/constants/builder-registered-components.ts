@@ -1,3 +1,5 @@
+import { componentInfo as accordionComponentInfo } from '../blocks/accordion/component-info.js';
+import { default as Accordion } from '../blocks/accordion/index.js';
 import { componentInfo as buttonComponentInfo } from '../blocks/button/component-info.js';
 import { default as Button } from '../blocks/button/index.js';
 import { componentInfo as columnsComponentInfo } from '../blocks/columns/component-info.js';
@@ -34,6 +36,11 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Slot, ...slotComponentInfo },
     { component: Symbol, ...symbolComponentInfo },
     { component: Text, ...textComponentInfo },
-    ...(TARGET === 'rsc' ? [] : [{ component: Tabs, ...tabsComponentInfo }]),
+    ...(TARGET === 'rsc'
+      ? []
+      : [
+          { component: Tabs, ...tabsComponentInfo },
+          { component: Accordion, ...accordionComponentInfo },
+        ]),
     ...getExtraComponents(),
   ];

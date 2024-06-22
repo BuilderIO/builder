@@ -1,5 +1,5 @@
 import { BuilderComponent, builder } from '@builder.io/react';
-import { getAPIKey, getProps } from '@e2e/tests';
+import { getAPIKey, getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';
@@ -21,9 +21,12 @@ function App() {
     builder.apiVersion = props?.apiVersion;
   }
 
-  // only enable tracking if we're not in the `/can-track-false` test route
+  // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
   useEffect(() => {
-    if (!window.location.pathname.includes('can-track-false')) {
+    if (
+      !window.location.pathname.includes('can-track-false') &&
+      !window.location.pathname.includes('symbol-tracking')
+    ) {
       builder.canTrack = true;
     }
   }, []);

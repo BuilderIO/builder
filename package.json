@@ -9,14 +9,16 @@
     "packages/core",
     "packages/react-tests/*",
     "packages/sdks/e2e/*",
+    "packages/sdks/snippets/*",
     "packages/sdks/output/*"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "dotenv": "^16.0.3",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "octokit": "^2.0.14",
+    "prettier": "^3.2.5",
     "zx": "7.2.1"
   },
   "license": "MIT",
@@ -25,8 +27,8 @@
     "url": "https://github.com/BuilderIO/builder"
   },
   "scripts": {
-    "ci:lint": "npx prettier@2.8.8 --check '**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "npx prettier@2.8.8 --write '**/*.{js,jsx,ts,tsx}'",
+    "ci:lint": "prettier --check '**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "update-npm-dependency": "zx ./scripts/update-npm-dependency.mjs",
     "g:changeset": "changeset"
   },

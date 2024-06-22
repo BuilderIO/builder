@@ -16,6 +16,6 @@ export const blockToHtmlString = (block: BuilderElement): string =>
     block?.component?.name === 'Text'
       ? block.component.options.text
       : block.children
-      ? block.children.map(item => blockToHtmlString(item)).join('')
-      : ''
+        ? block.children.map(item => blockToHtmlString(item)).join('')
+        : ''
   }</${block.tagName || 'div'}>`.replace(/\s+/g, ' ');

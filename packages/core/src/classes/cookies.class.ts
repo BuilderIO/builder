@@ -17,7 +17,10 @@ interface Options {
 class Cookies {
   secure?: boolean;
 
-  constructor(private request: IncomingMessage, private response: ServerResponse) {}
+  constructor(
+    private request: IncomingMessage,
+    private response: ServerResponse
+  ) {}
 
   get(name: string) {
     const header = this.request.headers['cookie'] as string;

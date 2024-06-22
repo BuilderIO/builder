@@ -12,12 +12,12 @@ import { filterAttrs } from '../helpers.js';
  * This import is used by the Svelte SDK. Do not remove.
  */
 
+import DynamicDiv from '../../components/dynamic-div.lite.jsx';
 import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import type { Nullable } from '../../types/typescript.js';
 import { setAttrs } from '../helpers.js';
 import { fetchSymbolContent } from './symbol.helpers.js';
 import type { SymbolProps } from './symbol.types.js';
-import DynamicDiv from '../../components/dynamic-div.lite.jsx';
 
 useMetadata({
   rsc: {
@@ -132,6 +132,7 @@ export default function Symbol(props: SymbolProps) {
           ...props.builderContext.value.localState,
           ...state.contentToUse?.data?.state,
         }}
+        canTrack={props.builderContext.value.canTrack}
         model={props.symbol?.model}
         content={state.contentToUse}
         linkComponent={props.builderLinkComponent}

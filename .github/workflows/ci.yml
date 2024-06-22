@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -34,6 +34,9 @@ jobs:
           cache-install-state: true
 
       - name: Run prettier
+        run: yarn workspace @builder.io/root ci:lint
+
+      - name: Run eslint
         run: yarn workspace @builder.io/sdks ci:lint:sdks
 
       - name: Typecheck
@@ -50,31 +53,32 @@ jobs:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
       fail-fast: false
       matrix:
-        sdk: ['svelte', 'qwik', 'react-native', 'react', 'nextjs', 'solid', 'vue', 'angular']
-        include:
-          - sdk: svelte
-            sdk-name: svelte
-          - sdk: qwik
-            sdk-name: qwik
-          - sdk: react-native
-            sdk-name: react-native
-          - sdk: react
-            sdk-name: react
-          - sdk: nextjs
-            sdk-name: react-nextjs
-          - sdk: solid
-            sdk-name: solid
-          - sdk: vue
-            sdk-name: vue
-          - sdk: angular
-            sdk-name: angular
+        e2e-server:
+          [
+            'svelte',
+            'sveltekit',
+            'react-native',
+            'solid',
+            'solid-start',
+            'qwik-city',
+            'react',
+            'remix',
+            'hydrogen',
+            'next-pages-dir',
+            'next-app-dir-client',
+            'next-app-dir',
+            'vue',
+            'nuxt',
+            'angular',
+            'angular-ssr',
+          ]
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -84,18 +88,67 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Build E2E apps
-        run: yarn workspace @builder.io/sdks e2e:build:${{ matrix.sdk }}
-
       - name: Run E2E tests
-        run: yarn workspace @builder.io/sdks e2e:run:${{ matrix.sdk }}
+        run: yarn nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
-          name: ${{ matrix.sdk }}-playwright-report
+          name: ${{ matrix.e2e-server }}-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
+
+  sdks-snippets:
+    name: Gen 2 SDK Snippets
+    runs-on: ubuntu-latest
+
+    strategy:
+      # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
+      fail-fast: false
+      matrix:
+        snippet:
+          [
+            'vue',
+            'nuxt',
+            'react',
+            'angular',
+            'angular-ssr',
+            'qwik-city',
+            'next-app-dir',
+            'next-app-dir-client',
+            'next-pages-dir',
+            'svelte',
+            'sveltekit',
+            'solid',
+            'react-native',
+          ]
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
+
+      - name: Run snippets tests
+        run: yarn nx test @snippet/${{ matrix.snippet }}
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v3
+        # Only upload the report if the tests failed
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.snippet }}-snippet-playwright-report
           path: packages/sdks-tests/playwright-report/
           retention-days: 30
 
@@ -105,10 +158,10 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -125,12 +178,17 @@ jobs:
     name: Gen 1 React SDK
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        e2e-server: ['gen1-react', 'gen1-next', 'gen1-remix']
+
     steps:
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -140,23 +198,27 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Build E2E apps
-        run: yarn workspace @builder.io/packages e2e:build:old-react
-
       - name: Run E2E tests
-        run: yarn workspace @builder.io/packages e2e:run:old-react
+        run: yarn nx test @e2e/${{ matrix.e2e-server }}
 
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Setup
+        uses: actions/checkout@v4
 
-      - name: Use node version 18
-        uses: actions/setup-node@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
-      - run: npm run ci:lint
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
+
+      - run: yarn ci:lint
 
   build:
     runs-on: ubuntu-latest
@@ -167,10 +229,10 @@ jobs:
         package: ['webcomponents', 'widgets']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use node version 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
@@ -179,7 +241,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}

@@ -6,6 +6,7 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
+import DynamicDiv from '../../components/dynamic-div.lite.jsx';
 import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import type { SizeName } from '../../constants/device-sizes.js';
@@ -17,7 +18,6 @@ import { mapStyleObjToStrIfNeeded } from '../../functions/get-style.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { Column, ColumnProps } from './columns.types.js';
 import { getColumnsClass } from './helpers.js';
-import DynamicDiv from '../../components/dynamic-div.lite.jsx';
 
 type CSSVal = string | number;
 
@@ -85,8 +85,8 @@ export default function Columns(props: ColumnProps) {
       props.stackColumnsAt === 'never'
         ? 'row'
         : props.reverseColumnsWhenStacked
-        ? 'column-reverse'
-        : 'column',
+          ? 'column-reverse'
+          : 'column',
 
     columnsCssVars(): Dictionary<string> {
       return useTarget({

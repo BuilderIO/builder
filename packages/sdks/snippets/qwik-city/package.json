@@ -1,0 +1,33 @@
+{
+  "name": "@snippet/qwik-city",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "qwik build",
+    "build.client": "vite build",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.types": "tsc --incremental --noEmit",
+    "deploy": "echo 'Run \"npm run qwik add\" to install a server adaptor'",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "preview": "qwik build preview && vite preview --open",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik",
+    "test": "SERVER_NAME=qwik-city yarn nx test:snippet @sdk/tests",
+    "serve": "yarn run dev"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "^1.5.1",
+    "@builder.io/qwik-city": "^1.2.19",
+    "@types/node": "^18.11.18",
+    "node-fetch": "3.3.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
+    "typescript": "^5.1.6",
+    "vite": "^4.0.3",
+    "vite-tsconfig-paths": "3.5.0"
+  },
+  "dependencies": {
+    "@builder.io/sdk-qwik": "workspace:*"
+  }
+}

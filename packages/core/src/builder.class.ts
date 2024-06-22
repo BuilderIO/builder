@@ -99,8 +99,8 @@ const urlParser = {
 const parse: (url: string) => UrlLike = isReactNative
   ? () => emptyUrl()
   : typeof window === 'object'
-  ? urlParser.parse
-  : urlParse;
+    ? urlParser.parse
+    : urlParse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   try {
@@ -543,7 +543,7 @@ export interface Input {
   required?: boolean;
   /** @hidden */
   autoFocus?: boolean;
-  subFields?: Input[];
+  subFields?: readonly Input[];
   /**
    * Additional text to render in the UI to give guidance on how to use this
    *
@@ -554,7 +554,7 @@ export interface Input {
    */
   helperText?: string;
   /** @hidden */
-  allowedFileTypes?: string[];
+  allowedFileTypes?: readonly string[];
   /** @hidden */
   imageHeight?: number;
   /** @hidden */
@@ -602,7 +602,9 @@ export interface Input {
   /**
    * For "text" input type, specifying an enum will show a dropdown of options instead
    */
-  enum?: string[] | { label: string; value: string | number | boolean; helperText?: string }[];
+  enum?:
+    | readonly string[]
+    | readonly { label: string; value: string | number | boolean; helperText?: string }[];
   /** Regex field validation for all string types (text, longText, html, url, etc) */
   regex?: {
     /** pattern to test, like "^\/[a-z]$" */
@@ -692,7 +694,7 @@ export interface Component {
    * Input schema for your component for users to fill in the options via a UI
    * that translate to this components props
    */
-  inputs?: Input[];
+  inputs?: readonly Input[];
   /** @hidden @deprecated */
   class?: any;
   /** @hidden @deprecated */
@@ -727,7 +729,7 @@ export interface Component {
   /**
    * Default children
    */
-  defaultChildren?: BuilderElement[];
+  defaultChildren?: readonly BuilderElement[];
   /**
    * Default options to merge in when creating this block
    */
@@ -745,7 +747,7 @@ export interface Component {
   /**
    * Passing a list of model names will restrict using the component to only the models listed here, otherwise it'll be available for all models
    */
-  models?: string[];
+  models?: readonly string[];
 
   /**
    * Specify restrictions direct children must match
@@ -806,8 +808,8 @@ type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<DeepPartial<U>>
     : T[P] extends ReadonlyArray<infer U>
-    ? ReadonlyArray<DeepPartial<U>>
-    : DeepPartial<T[P]>;
+      ? ReadonlyArray<DeepPartial<U>>
+      : DeepPartial<T[P]>;
 };
 
 export interface InsertMenuItem {
@@ -844,7 +846,7 @@ export interface InsertMenuConfig {
   priority?: number;
   persist?: boolean;
   advanced?: boolean;
-  items: InsertMenuItem[];
+  items: readonly InsertMenuItem[];
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
@@ -856,7 +858,7 @@ type Settings = any;
 
 export interface Action {
   name: string;
-  inputs?: Input[];
+  inputs?: readonly Input[];
   returnType?: Input;
   action: Function | string;
 }
@@ -997,7 +999,7 @@ export class Builder {
     }
   }
 
-  static fields(name: string, fields: Input[]) {
+  static fields(name: string, fields: readonly Input[]) {
     window.parent?.postMessage(
       {
         type: 'builder.fields',
@@ -1098,18 +1100,21 @@ export class Builder {
           return input;
         }),
       }),
-      hooks: Object.keys(spec.hooks || {}).reduce((memo, key) => {
-        const value = spec.hooks && spec.hooks[key];
-        if (!value) {
+      hooks: Object.keys(spec.hooks || {}).reduce(
+        (memo, key) => {
+          const value = spec.hooks && spec.hooks[key];
+          if (!value) {
+            return memo;
+          }
+          if (typeof value === 'string') {
+            memo[key] = value;
+          } else {
+            memo[key] = `return (${value.toString()}).apply(this, arguments)`;
+          }
           return memo;
-        }
-        if (typeof value === 'string') {
-          memo[key] = value;
-        } else {
-          memo[key] = `return (${value.toString()}).apply(this, arguments)`;
-        }
-        return memo;
-      }, {} as { [key: string]: string }),
+        },
+        {} as { [key: string]: string }
+      ),
       class: undefined,
     };
   }
@@ -2402,10 +2407,10 @@ export class Builder {
       queue && queue[0].userAttributes
         ? queue[0].userAttributes
         : this.targetContent
-        ? this.getUserAttributes()
-        : {
-            urlPath: this.getLocation().pathname,
-          };
+          ? this.getUserAttributes()
+          : {
+              urlPath: this.getLocation().pathname,
+            };
 
     const fullUrlQueueItem = queue.find(item => !!item.includeUrl);
     if (fullUrlQueueItem) {

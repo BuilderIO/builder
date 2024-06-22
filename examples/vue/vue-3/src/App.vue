@@ -1,5 +1,12 @@
-<script lang="ts">
-import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
+<script setup lang="ts">
+import {
+  Content,
+  fetchOneEntry,
+  isPreviewing,
+  type BuilderContent,
+  getBuilderSearchParams,
+} from '@builder.io/sdk-vue';
+import { onMounted, ref } from 'vue';
 
 import HelloWorldComponent from './components/HelloWorld.vue';
 
@@ -21,35 +28,21 @@ const REGISTERED_COMPONENTS = [
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
+const content = ref<BuilderContent | null>(null);
+const canShowContent = ref(false);
+const model = 'page';
 
-export default {
-  name: 'DynamicallyRenderBuilderPage',
-  components: {
-    'builder-render-content': Content,
-  },
-  data: () => ({
-    canShowContent: false,
-    content: null,
+onMounted(async () => {
+  content.value = await fetchOneEntry({
+    model,
     apiKey: BUILDER_PUBLIC_API_KEY,
-  }),
-  methods: {
-    getRegisteredComponents() {
-      return REGISTERED_COMPONENTS;
+    options: getBuilderSearchParams(new URL(location.href).searchParams),
+    userAttributes: {
+      urlPath: window.location.pathname,
     },
-  },
-  mounted() {
-    fetchOneEntry({
-      model: 'page',
-      apiKey: BUILDER_PUBLIC_API_KEY,
-      userAttributes: {
-        urlPath: window.location.pathname,
-      },
-    }).then(res => {
-      this.content = res;
-      this.canShowContent = this.content || isPreviewing();
-    });
-  },
-};
+  });
+  canShowContent.value = content.value ? true : isPreviewing();
+});
 </script>
 
 <template>
@@ -63,11 +56,11 @@ export default {
         page title:
         {{ (content && content.data && content.data.title) || 'Unpublished' }}
       </div>
-      <builder-render-content
-        model="page"
+      <Content
+        :model="model"
         :content="content"
-        :api-key="apiKey"
-        :customComponents="getRegisteredComponents()"
+        :api-key="BUILDER_PUBLIC_API_KEY"
+        :customComponents="REGISTERED_COMPONENTS"
       />
     </div>
     <div v-else>Content not Found</div>

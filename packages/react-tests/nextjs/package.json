@@ -6,13 +6,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "SERVER_NAME=gen1-next yarn nx test:e2e @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@builder.io/widgets": "^1.2.24",
-    "@e2e/tests": "workspace:*",
-    "next": "14.0.4",
+    "@sdk/tests": "workspace:*",
+    "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -22,8 +23,8 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "typescript": "^5"
   },
   "nx": {

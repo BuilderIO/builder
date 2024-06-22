@@ -3,12 +3,12 @@ import {
   Content,
   fetchOneEntry,
 } from '@builder.io/sdk-react-native';
-import { getProps } from '@e2e/tests';
 import {
   NavigationContainer,
   NavigationContext,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { getProps } from '@sdk/tests';
 import { useContext, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 

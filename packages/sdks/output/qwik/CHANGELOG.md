@@ -1,5 +1,35 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.26
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
+## 0.14.25
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
+## 0.14.24
+
+### Patch Changes
+
+- 74d78e1: Fix: error in identifying model being previewed: https://github.com/BuilderIO/builder/pull/3310/files#diff-6293c2a27254fa850a123075284412ef86d270a4518e0ad3aad81132b590ea1cL311
+
+## 0.14.23
+
+### Patch Changes
+
+- dc874a1: Fix: qwik sdk form event submissions
+
+## 0.14.22
+
+### Patch Changes
+
+- f3aab34: Feat: Accordion widget for gen2 sdks
+
 ## 0.14.21
 
 ### Patch Changes
@@ -451,7 +481,7 @@ In case you feel the need to use our older API Version `v2`, reach out to us at 
 ```
 
 ```js
-getContent({ apiVersion: 'v2' });
+getContent({ apiVersion: "v2" });
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).

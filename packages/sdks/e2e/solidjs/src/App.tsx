@@ -3,7 +3,7 @@ import { createResource, Show } from 'solid-js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { _processContentResult, Content } from '@builder.io/sdk-solid';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 
 const App: Component = () => {
   const [props] = createResource(() => getProps({ _processContentResult }));

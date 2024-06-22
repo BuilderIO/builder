@@ -1,3 +1,4 @@
+import Hello from '@/components/Hello';
 import CatFacts from '@/components/MyTextBox/CatFacts';
 import {
   Content,
@@ -5,7 +6,7 @@ import {
   fetchOneEntry,
   getBuilderSearchParams,
 } from '@builder.io/sdk-react-nextjs';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 
@@ -40,6 +41,11 @@ export default async function Page(props: MyPageProps) {
     <Content
       {...builderProps}
       customComponents={[
+        {
+          component: Hello,
+          name: 'Hello',
+          inputs: [],
+        },
         {
           ...componentInfo,
           component: MyTextBox,

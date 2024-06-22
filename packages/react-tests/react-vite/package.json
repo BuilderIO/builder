@@ -6,14 +6,15 @@
     "dev": "vite",
     "tsc": "tsc",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "test": "SERVER_NAME=gen1-react yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@builder.io/widgets": "^1.2.24",
-    "@e2e/tests": "workspace:*",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "@sdk/tests": "workspace:*",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

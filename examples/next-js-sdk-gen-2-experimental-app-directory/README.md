@@ -1,6 +1,6 @@
 ### 🏗️ Experimental
 
-This example is EXPERIMENTAL, and you most likely don't want to use it if you are integrating Builder.io with a Next.js project. Instead, if you are using the app router in Next.js we suggest that you follow the steps outlined in the [quickstart](https://www.builder.io/c/docs/quickstart) by selecting the app router tab. Or, you may see an example project [here](https://github.com/BuilderIO/nextjs-app-router-example/tree/main).
+This example is EXPERIMENTAL, and you most likely don't want to use it if you are integrating Builder.io with a Next.js project. Instead, if you are using the app router in Next.js we suggest that you follow the steps outlined in the [quickstart](https://www.builder.io/c/docs/quickstart?codeSnippetV2=react_nextApp_gen1) by selecting the app router tab. Or, you may see an example project [here](https://github.com/BuilderIO/nextjs-app-router-example/tree/main).
 
 # Next.js experimental app directory + Builder.io starter
 

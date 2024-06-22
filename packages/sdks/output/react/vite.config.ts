@@ -91,9 +91,7 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
       import * as BrowserSdk from '../browser/index.mjs';
       import {${exportsObject}} from './${BLOCKS_EXPORTS_ENTRY}.mjs';
       
-      ${importNames
-        .map((name) => `export const ${name} = ${getComponent(name)}`)
-        .join(';\n')}
+      ${importNames.map((name) => `export const ${name} = ${getComponent(name)}`).join(';\n')}
       `;
 
         const DYNAMIC_EXPORTS_FILE_NAME = 'dynamic-blocks-exports';

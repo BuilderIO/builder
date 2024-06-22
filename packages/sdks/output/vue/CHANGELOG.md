@@ -1,5 +1,30 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.31
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
+## 1.0.30
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
+## 1.0.29
+
+### Patch Changes
+
+- 74d78e1: Fix: error in identifying model being previewed: https://github.com/BuilderIO/builder/pull/3310/files#diff-6293c2a27254fa850a123075284412ef86d270a4518e0ad3aad81132b590ea1cL311
+
+## 1.0.28
+
+### Patch Changes
+
+- f3aab34: Feat: Accordion widget for gen2 sdks
+- 3f98355: Fix: types for ESM build
+
 ## 1.0.27
 
 ### Patch Changes
@@ -276,7 +301,7 @@
   ```ts
   // nuxt.config.js
   export default defineNuxtConfig({
-    modules: ['@builder.io/sdk-vue/nuxt'],
+    modules: ["@builder.io/sdk-vue/nuxt"],
   });
   ```
 
@@ -300,10 +325,10 @@
 
   ```ts
   // BEFORE
-  import { Content } from '@builder.io/sdk-vue/vue3';
+  import { Content } from "@builder.io/sdk-vue/vue3";
 
   // AFTER
-  import { Content } from '@builder.io/sdk-vue';
+  import { Content } from "@builder.io/sdk-vue";
   ```
 
 ## 0.10.0
@@ -519,7 +544,7 @@ In case you feel the need to use our older API Version `v2`, reach out to us at 
 ```
 
 ```js
-getContent({ apiVersion: 'v2' });
+getContent({ apiVersion: "v2" });
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
@@ -600,12 +625,12 @@ No Changes.
 
 ```ts
 // imports Vue 2 SDK
-import * as BuilderSDK from '@builder.io/sdk-vue/vue2';
+import * as BuilderSDK from "@builder.io/sdk-vue/vue2";
 // fallback to Vue 2 SDK
-import * as BuilderSDK from '@builder.io/sdk-vue';
+import * as BuilderSDK from "@builder.io/sdk-vue";
 
 // imports Vue 3 SDK
-import * as BuilderSDK from '@builder.io/sdk-vue/vue3';
+import * as BuilderSDK from "@builder.io/sdk-vue/vue3";
 ```
 
 ## 0.0.1-54

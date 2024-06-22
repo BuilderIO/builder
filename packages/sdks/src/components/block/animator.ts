@@ -1,3 +1,4 @@
+import { camelToKebabCase } from '../../functions/camel-to-kebab-case.js';
 import type { BuilderAnimation } from '../../types/builder-block.js';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -55,9 +56,6 @@ function assign(target: object, ..._args: any[]) {
   }
   return to;
 }
-
-export const camelCaseToKebabCase = (str?: string) =>
-  str ? str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`) : '';
 
 export function bindAnimations(animations: BuilderAnimation[]) {
   for (const animation of animations) {
@@ -134,9 +132,9 @@ export function triggerAnimation(animation: BuilderAnimation) {
     // TODO: only include properties explicitly set in the animation
     // using Object.keys(styles)
     setTimeout(() => {
-      element.style.transition = `all ${
-        animation.duration
-      }s ${camelCaseToKebabCase(animation.easing)}`;
+      element.style.transition = `all ${animation.duration}s ${camelToKebabCase(
+        animation.easing
+      )}`;
       if (animation.delay) {
         element.style.transitionDelay = animation.delay + 's';
       }
@@ -144,11 +142,14 @@ export function triggerAnimation(animation: BuilderAnimation) {
       // TODO: maybe remove/reset transitoin property after animation duration
 
       // TODO: queue timers
-      setTimeout(() => {
-        // TODO: what if has other transition (reset back to what it was)
-        element.style.transition = '';
-        element.style.transitionDelay = '';
-      }, (animation.delay || 0) * 1000 + animation.duration * 1000 + 100);
+      setTimeout(
+        () => {
+          // TODO: what if has other transition (reset back to what it was)
+          element.style.transition = '';
+          element.style.transitionDelay = '';
+        },
+        (animation.delay || 0) * 1000 + animation.duration * 1000 + 100
+      );
     });
   });
 }
@@ -179,13 +180,16 @@ export function bindScrollInViewAnimation(animation: BuilderAnimation) {
           if (!animation.repeat) {
             document.removeEventListener('scroll', onScroll);
           }
-          setTimeout(() => {
-            pendingAnimation = false;
-            if (!animation.repeat) {
-              element.style.transition = '';
-              element.style.transitionDelay = '';
-            }
-          }, (animation.duration + (animation.delay || 0)) * 1000 + 100);
+          setTimeout(
+            () => {
+              pendingAnimation = false;
+              if (!animation.repeat) {
+                element.style.transition = '';
+                element.style.transitionDelay = '';
+              }
+            },
+            (animation.duration + (animation.delay || 0)) * 1000 + 100
+          );
         });
       } else if (
         animation.repeat &&
@@ -227,9 +231,9 @@ export function bindScrollInViewAnimation(animation: BuilderAnimation) {
 
     // TODO: queue/batch these timeouts!
     setTimeout(() => {
-      element.style.transition = `all ${
-        animation.duration
-      }s ${camelCaseToKebabCase(animation.easing)}`;
+      element.style.transition = `all ${animation.duration}s ${camelToKebabCase(
+        animation.easing
+      )}`;
       if (animation.delay) {
         element.style.transitionDelay = animation.delay + 's';
       }

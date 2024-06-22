@@ -1,9 +1,9 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "1.0.27",
+  "version": "1.0.31",
   "main": "./lib/node/index.cjs",
-  "module": "./lib/node/index.js",
+  "module": "./lib/node/index.mjs",
   "type": "module",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/vue",
   "repository": {
@@ -19,67 +19,67 @@
     "./lib/browser/style.css",
     "./lib/node/style.css",
     "./lib/edge/style.css",
-    "./lib/browser/index.js",
+    "./lib/browser/index.mjs",
     "./lib/browser/index.cjs"
   ],
   "exports": {
     "./css": "./lib/browser/style.css",
     "./nuxt": "./nuxt.js",
     "./bundle/edge": {
-      "import": "./lib/edge/index.js",
+      "import": "./lib/edge/index.mjs",
       "require": "./lib/edge/index.cjs"
     },
     "./bundle/browser": {
-      "import": "./lib/browser/index.js",
+      "import": "./lib/browser/index.mjs",
       "require": "./lib/browser/index.cjs"
     },
     "./bundle/node": {
-      "import": "./lib/node/index.js",
+      "import": "./lib/node/index.mjs",
       "require": "./lib/node/index.cjs"
     },
     ".": {
       "node": {
-        "import": "./lib/node/index.js",
+        "import": "./lib/node/index.mjs",
         "require": "./lib/node/index.cjs"
       },
       "browser": {
-        "import": "./lib/browser/index.js",
+        "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
       },
       "edge-routine": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "workerd": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "deno": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "lagon": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "netlify": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "edge-light": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "bun": {
-        "import": "./lib/edge/index.js",
+        "import": "./lib/edge/index.mjs",
         "require": "./lib/edge/index.cjs"
       },
       "electron": {
-        "import": "./lib/node/index.js",
+        "import": "./lib/node/index.mjs",
         "require": "./lib/node/index.cjs"
       },
       "default": {
-        "import": "./lib/browser/index.js",
+        "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
       }
     }
@@ -100,7 +100,7 @@
     "vue": ">= 3"
   },
   "dependencies": {
-    "isolated-vm": "^4.6.0"
+    "isolated-vm": "^5.0.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
@@ -108,8 +108,8 @@
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/tsconfig": "^0.1.3",
     "npm-run-all": "^4.1.5",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "typescript": "^5.1.6",
     "vite": "^5.0.12",
     "vite-plugin-dts": "^3.5.2",

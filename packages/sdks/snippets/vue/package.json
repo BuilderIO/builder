@@ -1,0 +1,39 @@
+{
+  "name": "@snippet/vue",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "SERVER_NAME=vue yarn nx test:snippet @sdk/tests",
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "serve": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build --force"
+  },
+  "dependencies": {
+    "@builder.io/sdk-vue": "workspace:*",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.12.5",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/tsconfig": "^0.5.1",
+    "npm-run-all2": "^6.1.2",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
+    "typescript": "~5.4.0",
+    "vite": "^5.2.8",
+    "vue-tsc": "^2.0.11"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
+    }
+  }
+}
