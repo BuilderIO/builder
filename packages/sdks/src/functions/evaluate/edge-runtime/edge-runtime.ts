@@ -93,14 +93,10 @@ theFunction();
       interpreter.createNativeFunction(setRootState)
     );
   };
-  try {
-    const myInterpreter = new Interpreter(transformed, initFunc);
-    myInterpreter.run();
-    const output = myInterpreter.pseudoToNative(myInterpreter.value);
 
-    return output;
-  } catch (e) {
-    logger.warn('Custom code error in edge runtime.', e);
-    return;
-  }
+  const myInterpreter = new Interpreter(transformed, initFunc);
+  myInterpreter.run();
+  const output = myInterpreter.pseudoToNative(myInterpreter.value);
+
+  return output;
 };
