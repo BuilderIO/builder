@@ -563,6 +563,21 @@ const ANGULAR_FIX_AB_TESTS_INITIALIZATION = () => ({
   },
 });
 
+const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('builder-symbol, BuilderSymbol')) {
+        code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
+        code = code.replace(
+          'this.setContent();',
+          'if (changes.symbol) { this.setContent(); }'
+        );
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -589,6 +604,7 @@ module.exports = {
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
         ANGULAR_FIX_AB_TESTS_INITIALIZATION,
+        ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
       ],
     },
     solid: {
