@@ -60,7 +60,7 @@ const testSymbols = async (page: Page) => {
 };
 
 test.describe('Symbols', () => {
-  test('render correctly', async ({ page, sdk }) => {
+  test('render correctly', async ({ page }) => {
     await page.goto('/symbols');
 
     await testSymbols(page);
