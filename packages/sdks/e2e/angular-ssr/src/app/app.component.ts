@@ -1,4 +1,4 @@
-import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { isPlatformServer } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
@@ -59,8 +59,7 @@ export class AppComponent {
   constructor(
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: any,
-    @Optional() @Inject(REQUEST) private req: any,
-    @Inject(DOCUMENT) private document: Document
+    @Optional() @Inject(REQUEST) private req: any
   ) {
     if (isPlatformServer(this.platformId)) {
       const urlPath = this.req.path || '';

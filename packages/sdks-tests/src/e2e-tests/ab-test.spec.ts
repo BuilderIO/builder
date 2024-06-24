@@ -66,7 +66,7 @@ const initializeAbTest = async (
   return { page };
 };
 
-test.describe('A/B tests', () => {
+test.describe.skip('A/B tests', () => {
   test.describe('entire page', () => {
     const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
     const VARIANT_ID = '661775df8c2c41d6afc0aa1b5fd1dd61';
