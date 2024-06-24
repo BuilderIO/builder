@@ -4057,7 +4057,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-react-native@workspace:packages/sdks/output/react-native":
+"@builder.io/sdk-react-native@workspace:*, @builder.io/sdk-react-native@workspace:packages/sdks/output/react-native":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react-native@workspace:packages/sdks/output/react-native"
   dependencies:
@@ -19107,13 +19107,6 @@ __metadata:
   dependencies:
     "@babel/plugin-syntax-flow": ^7.12.1
   checksum: fd52aef54448e01948a9d1cca0c8f87d064970c8682458962b7a222c372704bc2ce26ae8109e0ab2566e7ea5106856460f04c1a5ed794ab3bcd2f42cae1d9845
-  languageName: node
-  linkType: hard
-
-"babel-plugin-transform-inline-environment-variables@npm:^0.4.4":
-  version: 0.4.4
-  resolution: "babel-plugin-transform-inline-environment-variables@npm:0.4.4"
-  checksum: fa361287411301237fd8ce332aff4f8e8ccb8db30e87a2ddc7224c8bf7cd792eda47aca24dc2e09e70bce4c027bc8cbe22f4999056be37a25d2472945df21ef5
   languageName: node
   linkType: hard
 
@@ -37527,12 +37520,13 @@ __metadata:
   resolution: "my-app@workspace:packages/sdks/e2e/my-app"
   dependencies:
     "@babel/core": ^7.20.0
+    "@builder.io/sdk-react-native": "workspace:*"
     "@expo/vector-icons": ^14.0.0
     "@react-navigation/native": ^6.0.2
+    "@sdk/tests": "workspace:*"
     "@types/jest": ^29.5.12
     "@types/react": ~18.2.45
     "@types/react-test-renderer": ^18.0.7
-    babel-plugin-transform-inline-environment-variables: ^0.4.4
     expo: ~51.0.14
     expo-constants: ~16.0.2
     expo-font: ~12.0.7
