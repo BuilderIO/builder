@@ -8,7 +8,7 @@ import { findTextInPage, test } from '../helpers/index.js';
  * PS: we rely on a `.beforeEach()` in `helpers.ts` that runs on every test
  * to throw an error if there is a hydration mismatch.
  */
-test.describe.skip('Hydration', () => {
+test.describe('Hydration', () => {
   test('No mismatch on regular content', async ({ page }) => {
     await page.goto('/');
 
