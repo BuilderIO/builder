@@ -75,6 +75,62 @@ test('getTranslateableFields from content to match snapshot', async () => {
             },
           },
         },
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-068283319b1740b3aa8279c09c1dc957',
+          meta: {
+            'transformed.symbol.data.heroContent.cta.label': 'localized',
+          },
+          component: {
+            name: 'Symbol',
+            options: {
+              symbol: {
+                entry: '6a013dc290a548eb8e968c848ae5d5a2',
+                model: 'symbol',
+                ownerId: 'cfadfce0f3684576b7a6cca6599ce3be',
+                data: {
+                  heroContent: {
+                    cta: {
+                      link: 'content link',
+                      label: {
+                        '@type': localizedType,
+                        Default: 'content label',
+                        'en-GB': 'label for GB',
+                        'en-US': 'label for US',
+                        'hi-IN': 'label for India',
+                      },
+                      otherLabels: [
+                        {
+                          men: {
+                            '@type': localizedType,
+                            Default: 'content label men',
+                            'en-GB': 'label for GB men',
+                            'en-US': 'label for US men',
+                          },
+                          kids: {
+                            '@type': localizedType,
+                            Default: 'content label kids',
+                            'en-GB': 'label for GB kids',
+                            'en-US': 'label for US kids',
+                          },
+                        },
+                        {
+                          women: {
+                            '@type': localizedType,
+                            Default: 'content label women',
+                            'en-GB': 'label for GB women',
+                            'en-US': 'label for US women',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       ],
     },
   };
@@ -159,6 +215,62 @@ test('applyTranslation from content to match snapshot', async () => {
             },
           },
         },
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-068283319b1740b3aa8279c09c1dc957',
+          meta: {
+            'transformed.symbol.data.heroContent.cta.label': 'localized',
+          },
+          component: {
+            name: 'Symbol',
+            options: {
+              symbol: {
+                entry: '6a013dc290a548eb8e968c848ae5d5a2',
+                model: 'symbol',
+                ownerId: 'cfadfce0f3684576b7a6cca6599ce3be',
+                data: {
+                  heroContent: {
+                    cta: {
+                      link: 'content link',
+                      label: {
+                        '@type': localizedType,
+                        Default: 'content label',
+                        'en-GB': 'label for GB',
+                        'en-US': 'label for US',
+                        'hi-IN': 'label for India',
+                      },
+                      otherLabels: [
+                        {
+                          men: {
+                            '@type': localizedType,
+                            Default: 'content label men',
+                            'en-GB': 'label for GB men',
+                            'en-US': 'label for US men',
+                          },
+                          kids: {
+                            '@type': localizedType,
+                            Default: 'content label kids',
+                            'en-GB': 'label for GB kids',
+                            'en-US': 'label for US kids',
+                          },
+                        },
+                        {
+                          women: {
+                            '@type': localizedType,
+                            Default: 'content label women',
+                            'en-GB': 'label for GB women',
+                            'en-US': 'label for US women',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       ],
     },
   };
@@ -177,6 +289,21 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-custom-component-id#subtitle': {
       value: 'french translated subtitle',
     },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.label': {
+      value: 'french label',
+    },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].kids':
+      {
+        value: 'french label for kids',
+      },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].men':
+      {
+        value: 'french label for men',
+      },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[1].women':
+      {
+        value: 'french label for women',
+      },
   };
   const germanTranslations = {
     'metadata.title': { value: 'hallo' },
@@ -192,6 +319,21 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-custom-component-id#subtitle': {
       value: 'german translated subtitle',
     },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.label': {
+      value: 'german label',
+    },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].kids':
+      {
+        value: 'german label for kids',
+      },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].men':
+      {
+        value: 'german label for men',
+      },
+    'blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[1].women':
+      {
+        value: 'german label for women',
+      },
   };
 
   let result = applyTranslation(content, frenchTranslations, 'fr-FR');

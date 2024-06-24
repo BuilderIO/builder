@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.0.6
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
 ## 0.0.5
 
 ### Patch Changes
