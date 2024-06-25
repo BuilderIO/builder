@@ -43,16 +43,14 @@ const initialBlockList = Array.isArray(config.resolver.blockList)
   ? config.resolver.blockList
   : [config.resolver.blockList];
 
-const newLocal = new RegExp(
+/**
+ * We need to exclude the react, react-native and react-dom versions coming
+ * from the rest of the monorepo, so that we only use the versions that are part of this expo app.
+ */
+const excludedRootPkgs = new RegExp(
   rootNodeModules + '/(react|react-native|react-dom)/'
 );
-config.resolver.blockList = [
-  ...initialBlockList,
-  // we need to exclude the react, react-native and react-dom versions coming from the rest of the monorepo,
-  // so that we only use the versions that are part of this expo app.
-  newLocal,
-];
 
-console.log(config.resolver.blockList, config.watchFolders);
+config.resolver.blockList = [...initialBlockList, excludedRootPkgs];
 
 module.exports = config;
