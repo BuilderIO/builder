@@ -14,6 +14,13 @@ config.watchFolders = [
   '/Users/samijaber/code/work/builder/packages/sdks/output/react-native',
 ];
 
-// console.log('config: ', config);
+config.resolver.blacklistRE = [
+  // blacklist other react versions in the monorepo
+  /react/,
+  /react-native/,
+  /react-dom/,
+];
+
+console.log('config blacklist: ', config.resolver.blockList);
 
 module.exports = config;
