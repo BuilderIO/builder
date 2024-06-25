@@ -148,7 +148,8 @@ export const provideRegisteredComponents = (
 };
 
 export const provideBuilderBlock = (
-  block: RegisteredComponent | null | undefined
+  block: RegisteredComponent | null | undefined,
+  builderBlock: BuilderBlock
 ) => {
   /**
    * Our built-in components frequently make use of the block, so we provide all of it under `builderBlock`
@@ -165,7 +166,7 @@ export const provideBuilderBlock = (
         'Image',
         'Video',
       ].includes(block.name))
-    ? { builderBlock: block }
+    ? { builderBlock }
     : {};
 };
 

@@ -144,7 +144,7 @@ export default function Block(props: BlockProps) {
         componentRef: state.blockComponent?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
-          ...provideBuilderBlock(state.blockComponent),
+          ...provideBuilderBlock(state.blockComponent, state.processedBlock),
           ...provideBuilderContext(state.blockComponent, props.context),
           ...provideLinkComponent(state.blockComponent, props.linkComponent),
           ...provideRegisteredComponents(
