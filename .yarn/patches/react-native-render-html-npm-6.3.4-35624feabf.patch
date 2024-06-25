@@ -1,0 +1,231 @@
+# Temporary patch until https://github.com/meliorence/react-native-render-html/pull/658
+# is published.
+
+
+diff --git a/lib/commonjs/TChildrenRenderer.js b/lib/commonjs/TChildrenRenderer.js
+index 9d167380e54a344c5caf518114750ba8adb232bf..4334d1c3f8b8521c107813108acc2193bb8e2d37 100644
+--- a/lib/commonjs/TChildrenRenderer.js
++++ b/lib/commonjs/TChildrenRenderer.js
+@@ -15,15 +15,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
+  */
+ const TChildrenRenderer = _renderChildren.default.bind(null);
+ 
+-const tchildrenRendererDefaultProps = {
+-  propsForChildren: {}
+-};
+ /**
+  * @ignore
+  */
+ 
+ exports.tchildrenRendererDefaultProps = tchildrenRendererDefaultProps;
+-TChildrenRenderer.defaultProps = tchildrenRendererDefaultProps;
+ var _default = TChildrenRenderer;
+ exports.default = _default;
+ //# sourceMappingURL=TChildrenRenderer.js.map
+\ No newline at end of file
+diff --git a/lib/commonjs/TNodeChildrenRenderer.js b/lib/commonjs/TNodeChildrenRenderer.js
+index 50b43cad8fec3a5b62c5a7074eb723287eac85ce..e4ec23f797103c2090cc436b3501fd14694f50d0 100644
+--- a/lib/commonjs/TNodeChildrenRenderer.js
++++ b/lib/commonjs/TNodeChildrenRenderer.js
+@@ -68,6 +68,10 @@ function useTNodeChildrenProps({
+ 
+ 
+ function TNodeChildrenRenderer(props) {
++  props = {
++    propsForChildren: {},
++    ...props
++  };
+   if (props.tnode.type === 'text') {
+     // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20544
+     return props.tnode.data;
+@@ -78,12 +82,6 @@ function TNodeChildrenRenderer(props) {
+ 
+   return (0, _renderChildren.default)(useTNodeChildrenProps(props));
+ }
+-/**
+- * @ignore
+- */
+-
+-
+-TNodeChildrenRenderer.defaultProps = _TChildrenRenderer.tchildrenRendererDefaultProps;
+ var _default = TNodeChildrenRenderer;
+ exports.default = _default;
+ //# sourceMappingURL=TNodeChildrenRenderer.js.map
+\ No newline at end of file
+diff --git a/lib/commonjs/TNodeRenderer.js b/lib/commonjs/TNodeRenderer.js
+index eafc9422431e1680f46082c5f27ef07d0f3e7452..71ef0d100eea91e2e71f266c9d89cf3a39240777 100644
+--- a/lib/commonjs/TNodeRenderer.js
++++ b/lib/commonjs/TNodeRenderer.js
+@@ -51,6 +51,12 @@ function isGhostTNode(tnode) {
+ 
+ 
+ const TNodeRenderer = /*#__PURE__*/(0, _react.memo)(function MemoizedTNodeRenderer(props) {
++  props = {
++    propsFromParent: {
++      collapsedMarginTop: null
++    },
++    ...props
++  };
+   const {
+     tnode
+   } = props;
+@@ -109,13 +115,7 @@ const TNodeRenderer = /*#__PURE__*/(0, _react.memo)(function MemoizedTNodeRender
+   const renderFn = tnode.type === 'block' || tnode.type === 'document' ? _renderBlockContent.default : _renderTextualContent.default;
+   return Renderer === null ? renderFn(assembledProps) : /*#__PURE__*/_react.default.createElement(Renderer, assembledProps);
+ });
+-const defaultProps = {
+-  propsFromParent: {
+-    collapsedMarginTop: null
+-  }
+-}; // @ts-expect-error default props must be defined
+ 
+-TNodeRenderer.defaultProps = defaultProps;
+ var _default = TNodeRenderer;
+ exports.default = _default;
+ //# sourceMappingURL=TNodeRenderer.js.map
+\ No newline at end of file
+diff --git a/lib/commonjs/TRenderEngineProvider.js b/lib/commonjs/TRenderEngineProvider.js
+index 3a700b6e5bbbb9d3c72381b17c463d309e757151..4dff4d173c813b4b8a4fe1232ac138da7807b121 100644
+--- a/lib/commonjs/TRenderEngineProvider.js
++++ b/lib/commonjs/TRenderEngineProvider.js
+@@ -11,8 +11,6 @@ var _react = _interopRequireDefault(require("react"));
+ 
+ var _reactNative = require("react-native");
+ 
+-var _propTypes = _interopRequireDefault(require("prop-types"));
+-
+ var _useTRenderEngine = _interopRequireDefault(require("./hooks/useTRenderEngine"));
+ 
+ var _defaultSystemFonts = _interopRequireDefault(require("./defaultSystemFonts"));
+@@ -23,32 +21,6 @@ const defaultTRenderEngine = {};
+ 
+ const TRenderEngineContext = /*#__PURE__*/_react.default.createContext(defaultTRenderEngine);
+ 
+-const tRenderEngineProviderPropTypes = {
+-  customHTMLElementModels: _propTypes.default.object.isRequired,
+-  enableCSSInlineProcessing: _propTypes.default.bool,
+-  enableUserAgentStyles: _propTypes.default.bool,
+-  idsStyles: _propTypes.default.object,
+-  ignoredDomTags: _propTypes.default.array,
+-  ignoreDomNode: _propTypes.default.func,
+-  domVisitors: _propTypes.default.object,
+-  ignoredStyles: _propTypes.default.array.isRequired,
+-  allowedStyles: _propTypes.default.array,
+-  htmlParserOptions: _propTypes.default.object,
+-  tagsStyles: _propTypes.default.object,
+-  classesStyles: _propTypes.default.object,
+-  emSize: _propTypes.default.number.isRequired,
+-  baseStyle: _propTypes.default.object,
+-  systemFonts: _propTypes.default.arrayOf(_propTypes.default.string),
+-  fallbackFonts: _propTypes.default.shape({
+-    serif: _propTypes.default.string,
+-    'sans-serif': _propTypes.default.string,
+-    monospace: _propTypes.default.string
+-  }),
+-  setMarkersForTNode: _propTypes.default.func,
+-  dangerouslyDisableHoisting: _propTypes.default.bool,
+-  dangerouslyDisableWhitespaceCollapsing: _propTypes.default.bool,
+-  selectDomRoot: _propTypes.default.func
+-};
+ /**
+  * Default fallback font for special keys such as 'sans-serif', 'monospace',
+  * 'serif', based on current platform.
+@@ -121,20 +93,12 @@ function TRenderEngineProvider({
+   children,
+   ...config
+ }) {
++  config = {
++    ...defaultTRenderEngineProviderProps,
++    ...config
++  }
+   const engine = (0, _useTRenderEngine.default)(config);
+   return /*#__PURE__*/_react.default.createElement(TRenderEngineContext.Provider, {
+     value: engine
+   }, children);
+ }
+\ No newline at end of file
+-/**
+- * @ignore
+- */
+-
+-
+-TRenderEngineProvider.defaultProps = defaultTRenderEngineProviderProps;
+-/**
+- * @ignore
+- */
+-
+-TRenderEngineProvider.propTypes = tRenderEngineProviderPropTypes;
+-//# sourceMappingURL=TRenderEngineProvider.js.map
+\ No newline at end of file
+diff --git a/lib/commonjs/elements/IMGElement.js b/lib/commonjs/elements/IMGElement.js
+index 1be151ac660effd23aa228fd24a03ae9a3bdfe2e..b1e561bc714d959ffc85487ad4b3d1c6c8158823 100644
+--- a/lib/commonjs/elements/IMGElement.js
++++ b/lib/commonjs/elements/IMGElement.js
+@@ -7,8 +7,6 @@ exports.default = void 0;
+ 
+ var _react = _interopRequireDefault(require("react"));
+ 
+-var _propTypes = _interopRequireDefault(require("prop-types"));
+-
+ var _useIMGElementState = _interopRequireDefault(require("./useIMGElementState"));
+ 
+ var _IMGElementContentSuccess = _interopRequireDefault(require("./IMGElementContentSuccess"));
+@@ -40,6 +38,13 @@ function identity(arg) {
+ 
+ 
+ function IMGElement(props) {
++  props = {
++    enableExperimentalPercentWidth: false,
++    computeMaxWidth: identity,
++    imagesInitialDimensions: _defaultInitialImageDimensions.default,
++    style: {},
++    ...props
++  }
+   const state = (0, _useIMGElementState.default)(props);
+   let content;
+ 
+@@ -59,43 +64,6 @@ function IMGElement(props) {
+   }), content);
+ }
+ 
+-const imgDimensionsType = _propTypes.default.shape({
+-  width: _propTypes.default.number,
+-  height: _propTypes.default.number
+-});
+-
+-const propTypes = {
+-  source: _propTypes.default.object.isRequired,
+-  alt: _propTypes.default.string,
+-  altColor: _propTypes.default.string,
+-  height: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
+-  width: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
+-  style: _propTypes.default.oneOfType([_propTypes.default.object, _propTypes.default.array]),
+-  computeMaxWidth: _propTypes.default.func.isRequired,
+-  contentWidth: _propTypes.default.number,
+-  enableExperimentalPercentWidth: _propTypes.default.bool,
+-  initialDimensions: imgDimensionsType,
+-  onPress: _propTypes.default.func,
+-  testID: _propTypes.default.string,
+-  objectFit: _propTypes.default.string,
+-  cachedNaturalDimensions: imgDimensionsType,
+-  containerProps: _propTypes.default.object
+-};
+-/**
+- * @ignore
+- */
+-
+-IMGElement.propTypes = propTypes;
+-/**
+- * @ignore
+- */
+-
+-IMGElement.defaultProps = {
+-  enableExperimentalPercentWidth: false,
+-  computeMaxWidth: identity,
+-  imagesInitialDimensions: _defaultInitialImageDimensions.default,
+-  style: {}
+-};
+ var _default = IMGElement;
+ exports.default = _default;
+ //# sourceMappingURL=IMGElement.js.map
+\ No newline at end of file
