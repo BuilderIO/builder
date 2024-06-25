@@ -241,7 +241,7 @@ html body {
 /* Nicer code tag formatting in CSS */
 .builder-text code {
   background-color: #eee;
-  display: inlie-block;
+  display: inline-block;
   padding: 0 5px;
   border-radius: 4px;
   border: 1px solid #ddd;
