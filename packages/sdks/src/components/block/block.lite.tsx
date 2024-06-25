@@ -223,7 +223,6 @@ export default function Block(props: BlockProps) {
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
-            linkComponent={props.linkComponent}
           >
             <ComponentRef
               componentRef={state.componentRefProps.componentRef}
