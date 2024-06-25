@@ -6,6 +6,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "build": "expo export -p web",
+    "serve": "node server.js",
     "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
@@ -35,9 +37,13 @@
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
     "@types/react-test-renderer": "^18.0.7",
+    "compression": "^1.7.4",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
     "nx": "16.10.0",
     "nx-cloud": "16.5.2",
     "react-test-renderer": "18.2.0",
+    "serve": "^14.2.3",
     "typescript": "~5.3.3"
   },
   "private": true,
