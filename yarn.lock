@@ -13415,7 +13415,6 @@ __metadata:
     "@builder.io/sdk-react-native": "workspace:*"
     "@expo/vector-icons": ^14.0.0
     "@react-navigation/native": ^6.0.2
-    "@sdk/tests": "workspace:*"
     "@types/react": ~18.2.45
     "@types/react-test-renderer": ^18.0.7
     compression: ^1.7.4

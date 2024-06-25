@@ -26,9 +26,6 @@ config.watchFolders = [
   // packages/node_modules
   path.join(__dirname, '..', '..', '..', 'node_modules'),
 
-  // packages/sdks-tests
-  path.join(__dirname, '..', '..', '..', 'sdks-tests'),
-
   // packages/sdks
   path.join(__dirname, '..', '..', '..', 'sdks', 'node_modules'),
 

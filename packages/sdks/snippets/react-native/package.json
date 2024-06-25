@@ -8,13 +8,12 @@
     "web": "expo start --web",
     "build": "expo export -p web",
     "serve": "node server.js",
-    "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=react-native yarn nx test:snippet @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.0.2",
-    "@sdk/tests": "workspace:*",
     "expo": "~51.0.14",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.7",
