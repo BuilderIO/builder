@@ -14,13 +14,15 @@ config.watchFolders = [
   '/Users/samijaber/code/work/builder/packages/sdks/output/react-native',
 ];
 
-config.resolver.blacklistRE = [
-  // blacklist other react versions in the monorepo
-  /react/,
-  /react-native/,
-  /react-dom/,
-];
+const initialBlockList = Array.isArray(config.resolver.blockList)
+  ? config.resolver.blockList
+  : [config.resolver.blockList];
 
-console.log('config blacklist: ', config.resolver.blockList);
+config.resolver.blockList = [
+  ...initialBlockList,
+  // we need to exclude the react, react-native and react-dom versions coming from the rest of the monorepo,
+  // so that we only use the versions that are part of this expo app.
+  /Users\/samijaber\/code\/work\/builder\/node_modules\/(react|react-native|react-dom)\//,
+];
 
 module.exports = config;
