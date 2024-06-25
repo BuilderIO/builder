@@ -1,10 +1,7 @@
-import { Show, useMetadata, useTarget } from '@builder.io/mitosis';
+import { useMetadata, useStore, useTarget } from '@builder.io/mitosis';
+import DynamicRenderer from '../../components/dynamic-renderer/dynamic-renderer.lite.jsx';
+import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import { filterAttrs } from '../helpers.js';
-/**
- * This import is used by the Svelte SDK. Do not remove.
- */
-
-import { setAttrs } from '../helpers.js';
 import type { ButtonProps } from './button.types.js';
 
 useMetadata({
@@ -14,59 +11,47 @@ useMetadata({
 });
 
 export default function Button(props: ButtonProps) {
-  return (
-    <Show
-      when={props.link}
-      else={
-        <button
-          role="button"
-          {...useTarget({
-            vue: filterAttrs(props.attributes, 'v-on:', false),
-            svelte: filterAttrs(props.attributes, 'on:', false),
-            default: {},
-          })}
-          {...useTarget({
-            vue: filterAttrs(props.attributes, 'v-on:', true),
-            svelte: filterAttrs(props.attributes, 'on:', true),
-            default: props.attributes,
-          })}
-          class={`builder-button ${useTarget(
-            /**
-             * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.
-             */
-            {
-              react: props.attributes.className,
-              reactNative: props.attributes.className,
-              rsc: props.attributes.className,
-              default: props.attributes.class,
-            }
-          )}`}
-          style={props.attributes.style}
-        >
-          {props.text}
-        </button>
-      }
-    >
-      <a
-        {...useTarget({
+  const state = useStore({
+    attrs() {
+      return {
+        ...useTarget({
           vue: filterAttrs(props.attributes, 'v-on:', false),
           svelte: filterAttrs(props.attributes, 'on:', false),
-          default: {},
-        })}
-        {...useTarget({
-          vue: filterAttrs(props.attributes, 'v-on:', true),
-          svelte: filterAttrs(props.attributes, 'on:', true),
           default: props.attributes,
-        })}
-        role={useTarget({
-          reactNative: 'link',
-          default: 'button',
-        })}
-        href={props.link}
-        target={props.openLinkInNewTab ? '_blank' : undefined}
-      >
-        {props.text}
-      </a>
-    </Show>
+        }),
+        [getClassPropName()]: `${props.link ? '' : 'builder-button'} ${
+          props.attributes[getClassPropName()] || ''
+        }`,
+        ...(props.link
+          ? {
+              href: props.link,
+              target: props.openLinkInNewTab ? '_blank' : undefined,
+              role: 'link',
+            }
+          : { role: 'button' }),
+      };
+    },
+  });
+  return (
+    <DynamicRenderer
+      TagName={useTarget({
+        reactNative: props.link
+          ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            props.builderLinkComponent || BaseText
+          : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            BaseText,
+        default: props.link ? props.builderLinkComponent || 'a' : 'button',
+      })}
+      attributes={state.attrs()}
+      actionAttributes={useTarget({
+        vue: filterAttrs(props.attributes, 'v-on:', true),
+        svelte: filterAttrs(props.attributes, 'on:', true),
+        default: {},
+      })}
+    >
+      {props.text}
+    </DynamicRenderer>
   );
 }

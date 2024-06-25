@@ -2,8 +2,8 @@ import type { Signal } from '@builder.io/mitosis';
 import {
   For,
   Show,
+  onMount,
   useMetadata,
-  useState,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
@@ -11,12 +11,18 @@ import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../context/types.js';
-import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
-import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import { getComponent, getRepeatItemData } from './block.helpers.js';
+import DynamicDiv from '../dynamic-div.lite.jsx';
+import { bindAnimations } from './animator.js';
+import {
+  getComponent,
+  getInheritedStyles,
+  getRepeatItemData,
+  shouldPassLinkComponent,
+  shouldPassRegisteredComponents,
+} from './block.helpers.js';
 import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
@@ -27,12 +33,13 @@ export type BlockProps = {
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
+  linkComponent: any;
 };
 
 useMetadata({
   elementTag: 'state.Tag',
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },
@@ -72,6 +79,23 @@ export default function Block(props: BlockProps) {
           });
     },
     get Tag() {
+      const shouldUseLink =
+        props.block.tagName === 'a' ||
+        state.processedBlock.properties?.href ||
+        state.processedBlock.href;
+
+      if (shouldUseLink) {
+        return (
+          props.linkComponent ||
+          useTarget({
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            reactNative: BaseText,
+            default: 'a',
+          })
+        );
+      }
+
       return useTarget({
         /**
          * `tagName` will always be an HTML element. In the future, we might't map those to the right React Native components
@@ -79,6 +103,7 @@ export default function Block(props: BlockProps) {
          * eslint-disable-next-line @typescript-eslint/ban-ts-comment
          * @ts-ignore */
         reactNative: View,
+        angular: DynamicDiv,
         default: props.block.tagName || 'div',
       });
     },
@@ -118,12 +143,24 @@ export default function Block(props: BlockProps) {
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
           builderContext: props.context,
-          ...(state.blockComponent?.name === 'Symbol' ||
-          state.blockComponent?.name === 'Columns'
+          ...(shouldPassLinkComponent(state.blockComponent)
+            ? { builderLinkComponent: props.linkComponent }
+            : {}),
+          ...(shouldPassRegisteredComponents(state.blockComponent)
             ? { builderComponents: props.registeredComponents }
             : {}),
         },
-        context: childrenContext,
+        context: useTarget({
+          reactNative: {
+            ...props.context.value,
+            inheritedStyles: getInheritedStyles({
+              block: state.processedBlock,
+              context: props.context.value,
+            }),
+          } as any,
+          default: props.context,
+        }),
+        linkComponent: props.linkComponent,
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
         includeBlockProps: state.blockComponent?.noWrap === true,
@@ -132,21 +169,18 @@ export default function Block(props: BlockProps) {
     },
   });
 
-  const [childrenContext] = useState(
-    useTarget({
-      reactNative: {
-        ...props.context.value,
-        inheritedStyles: extractTextStyles(
-          getBlockProperties({
-            block: state.processedBlock,
-            context: props.context.value,
-          }).style || {}
-        ),
-      },
-      default: props.context.value,
-    }),
-    { reactive: true }
-  );
+  onMount(() => {
+    const blockId = state.processedBlock.id;
+    const animations = state.processedBlock.animations;
+    if (animations && blockId) {
+      bindAnimations(
+        animations.map((animation) => ({
+          ...animation,
+          elementId: blockId,
+        }))
+      );
+    }
+  });
 
   return (
     <Show when={state.canShowBlock}>
@@ -160,6 +194,7 @@ export default function Block(props: BlockProps) {
             blockChildren={state.componentRefProps.blockChildren}
             context={state.componentRefProps.context}
             registeredComponents={state.componentRefProps.registeredComponents}
+            linkComponent={state.componentRefProps.linkComponent}
             builderBlock={state.componentRefProps.builderBlock}
             includeBlockProps={state.componentRefProps.includeBlockProps}
             isInteractive={state.componentRefProps.isInteractive}
@@ -176,6 +211,7 @@ export default function Block(props: BlockProps) {
                   repeatContext={data.context}
                   block={data.block}
                   registeredComponents={props.registeredComponents}
+                  linkComponent={props.linkComponent}
                 />
               )}
             </For>
@@ -185,6 +221,7 @@ export default function Block(props: BlockProps) {
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
+            linkComponent={props.linkComponent}
           >
             <ComponentRef
               componentRef={state.componentRefProps.componentRef}
@@ -194,6 +231,7 @@ export default function Block(props: BlockProps) {
               registeredComponents={
                 state.componentRefProps.registeredComponents
               }
+              linkComponent={state.componentRefProps.linkComponent}
               builderBlock={state.componentRefProps.builderBlock}
               includeBlockProps={state.componentRefProps.includeBlockProps}
               isInteractive={state.componentRefProps.isInteractive}
@@ -203,8 +241,18 @@ export default function Block(props: BlockProps) {
                 <Block
                   key={child.id}
                   block={child}
-                  context={childrenContext}
+                  context={useTarget({
+                    reactNative: {
+                      ...props.context.value,
+                      inheritedStyles: getInheritedStyles({
+                        block: state.processedBlock,
+                        context: props.context.value,
+                      }),
+                    } as any,
+                    default: props.context,
+                  })}
                   registeredComponents={props.registeredComponents}
+                  linkComponent={props.linkComponent}
                 />
               )}
             </For>

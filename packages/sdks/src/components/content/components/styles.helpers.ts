@@ -77,3 +77,30 @@ export const getCss = ({
   // TODO: handle if '&' is within a string like `content: "&"`
   return cssCode?.replace(/&/g, `div[builder-content-id="${contentId}"]`) || '';
 };
+
+const DEFAULT_STYLES = `
+.builder-button {
+  all: unset;
+}
+
+.builder-text > p:first-of-type, .builder-text > .builder-paragraph:first-of-type {
+  margin: 0;
+}
+.builder-text > p, .builder-text > .builder-paragraph {
+  color: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  text-align: inherit;
+  font-family: inherit;
+}
+`;
+
+export const getDefaultStyles = (isNested: boolean | undefined) => {
+  return !isNested ? DEFAULT_STYLES : '';
+};
+
+export const getWrapperClassName = (variationId?: string) => {
+  return `variant-${variationId}`;
+};

@@ -1,7 +1,6 @@
 import { useMetadata, useStore, useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import type { PropsWithChildren } from '../../types/typescript.js';
 
 useMetadata({
   rsc: {
@@ -23,11 +22,11 @@ export type BlocksWrapperProps = {
    * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
    */
   BlocksWrapperProps: any;
+
+  children?: any;
 };
 
-export default function BlocksWrapper(
-  props: PropsWithChildren<BlocksWrapperProps>
-) {
+export default function BlocksWrapper(props: BlocksWrapperProps) {
   const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');

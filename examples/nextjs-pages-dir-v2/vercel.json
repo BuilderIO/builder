@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "Nextjs Pages Router (Gen2 SDK)",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install"
+}

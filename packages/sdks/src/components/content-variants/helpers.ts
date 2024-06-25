@@ -43,10 +43,11 @@ export const checkShouldRenderVariants = ({
 
   /**
    * For Vue and Svelte, we need to (initially) render the variants. This is to avoid hydration mismatch errors.
+   *
    * Unlike React, Vue's hydration checks are shallow and do not check the attributes/contents of each element, so we
    * are able to modify the `hidden` HTML attributes and `display` CSS properties without causing a hydration mismatch error.
    *
-   * NOTE: For Vue: after the app is hydrated, we strip the variants from the DOM (on mount) to reduce the amount of HTML in the DOM.
+   * NOTE: For Solid/Svelte: after the app is hydrated, we strip the variants from the DOM (on mount) to reduce the amount of HTML in the DOM.
    * This isn't necessary, just a nice to have.
    */
   if (TARGET === 'vue' || TARGET === 'svelte') return true;
@@ -66,7 +67,7 @@ const getIsHydrationTarget = (target: Target) =>
 
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
-export const getScriptString = () => `
+export const getInitVariantsFnsScriptString = () => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
   window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
   `;

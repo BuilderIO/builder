@@ -19,22 +19,41 @@ The best way to test a change is to create a builder content JSON in the editor,
 - go to the builder editor and create a content entry that showcases the feature/bug you want to test.
 - download that content's JSON
 - add it to `src/specs/index.ts` as a new test case (see other specs for examples)
-- add a test case for it in `src/tests` (see other tests for examples)
+- add a test case for it in `src/e2e-tests` (see other tests for examples)
 
 This new test will run against every SDK & framework combination.
 
 ### Run tests
 
-If you want to run the integration tests locally, you can do so by running (using `svelte` as an example):
+If you want to run the integration tests locally, you can do so by doing the following:
 
-- Build tests: `yarn e2e:build:svelte` in `builder/packages/sdks`
-- Run Playwright tests: `yarn e2e:run:svelte` in `builder/packages/sdks`
+- Go to the server of your choice in [`packages/sdks/e2e`](https://github.com/BuilderIO/builder/tree/main/packages/sdks/e2e) (or [`packages/react-tests`](https://github.com/BuilderIO/builder/tree/main/packages/react-tests) for gen1 react sdk)
+- Run the Playwright tests: `yarn nx test`
 
-PS: To run the tests against the gen1 React SDK, the commands are `e2e:build:old-react` and `e2e:run:old-react` in `builder/packages`.
+Alternatively, you can call `yarn nx test @e2e/svelte` from anywhere in the mono-repo (replace `@e2e/svelte` with the name of the server you want to run).
+
+NOTE: if you want to run multiple tests, you can call the underlying test command and provide it a comma-separated list of servers to test:
+
+```bash
+SERVER_NAME=svelte,react,nuxt yarn nx test:e2e @sdk/tests
+```
+
+For convenience, there are `yarn nx e2e:run:*` commands that you can use to build and run the tests for a specific SDK.
+
+### Snippet tests
+
+Snippet tests are similar to e2e tests:
+
+- servers are located in [`packages/sdks/snippets`](https://github.com/BuilderIO/builder/tree/main/packages/sdks/snippets)
+- tests are located in [`tests/src/snippet-tests`](https://github.com/BuilderIO/builder/tree/main/tests/src/snippet-tests)
+- can be run with `SERVER_NAME=svelte,react,nuxt yarn nx test:snippet @sdk/tests`
+
+Snippet tests make real network requests to the Builder API. This means they are flaky and might fail. We prefer to do this so that the snippets can be shared with customers as-is,
+without having to re-write the data-fetching logic.
 
 ### Debug tests
 
-By adding the `--debug` flag (e.g. `yarn e2e:run:svelte --debug`), you can run the tests in a browser window with an interactive Playwright. This is useful for debugging.
+By adding the `--debug` flag (e.g. `yarn nx e2e @e2e/svelte --debug`), you can run the tests in a browser window with an interactive Playwright. This is useful for debugging.
 
 When using the debug flag, it is recommended to add `.only` to the tests you want to debug, so that the others are temporarily ignored by playwright. See:
 

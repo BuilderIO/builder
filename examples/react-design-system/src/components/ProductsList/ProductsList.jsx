@@ -28,6 +28,7 @@ const catSwaps = {
   // Due to issues with ShopStyle's API returning inappropriate content for some categories,
   // we override to another category that doesn't have these issues
   ['womens-fashion']: 'handbags',
+  ['living']: 'garden',
 };
 
 export const ProductsList = props => {

@@ -1,7 +1,7 @@
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { Content, _processContentResult } from '@builder.io/sdk-qwik';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 
 export const useBuilderContentLoader = routeLoader$(async (event) => {
   const data = await getProps({

@@ -4,14 +4,15 @@
   "scripts": {
     "dev": "solid-start dev",
     "build": "solid-start build",
-    "serve": "solid-start start"
+    "serve": "solid-start start",
+    "test": "SERVER_NAME=solid-start yarn nx test:e2e @sdk/tests"
   },
   "type": "module",
   "devDependencies": {
     "@types/node": "^18.17.5",
     "esbuild": "^0.14.54",
-    "nx": "^16.6.0",
-    "nx-cloud": "^16.2.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
     "postcss": "^8.4.28",
     "solid-start-node": "^0.3.10",
     "typescript": "^4.9.5",
@@ -19,7 +20,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
-    "@e2e/tests": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "@solidjs/meta": "^0.29.1",
     "@solidjs/router": "^0.8.3",
     "solid-js": "^1.8.5",

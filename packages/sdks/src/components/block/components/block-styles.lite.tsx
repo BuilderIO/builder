@@ -5,6 +5,7 @@ import {
 } from '../../../constants/device-sizes.js';
 import { TARGET } from '../../../constants/target.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
+import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
 import { getProcessedBlock } from '../../../functions/get-processed-block.js';
 import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
@@ -96,12 +97,39 @@ export default function BlockStyles(props: BlockStylesProps) {
           })
         : '';
 
-      return [largeStylesClass, mediumStylesClass, smallStylesClass].join(' ');
+      const hoverAnimation =
+        processedBlock.animations &&
+        processedBlock.animations.find((item) => item.trigger === 'hover');
+
+      let hoverStylesClass = '';
+      if (hoverAnimation) {
+        const hoverStyles = hoverAnimation.steps?.[1]?.styles || {};
+        hoverStylesClass =
+          createCssClass({
+            className: `${className}:hover`,
+            styles: {
+              ...hoverStyles,
+              transition: `all ${hoverAnimation.duration}s ${camelToKebabCase(
+                hoverAnimation.easing
+              )}`,
+              transitionDelay: hoverAnimation.delay
+                ? `${hoverAnimation.delay}s`
+                : '0s',
+            },
+          }) || '';
+      }
+
+      return [
+        largeStylesClass,
+        mediumStylesClass,
+        smallStylesClass,
+        hoverStylesClass,
+      ].join(' ');
     },
   });
   return (
     <Show when={TARGET !== 'reactNative' && state.css && state.canShowBlock}>
-      <InlinedStyles styles={state.css} />
+      <InlinedStyles styles={state.css} id="builderio-block" />
     </Show>
   );
 }

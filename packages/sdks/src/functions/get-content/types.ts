@@ -26,7 +26,7 @@ export interface GetContentOptions {
    * }
    * ```
    */
-  userAttributes?: (Record<string, string> & { urlPath?: string }) | null;
+  userAttributes?: (Record<string, any> & { urlPath?: string }) | null;
 
   /**
    * Mongodb style query of your data. E.g.:
@@ -53,25 +53,12 @@ export interface GetContentOptions {
   options?: Record<string, any> | URLSearchParams;
 
   /**
-   * If set to `true`, it will lazy load symbols/references.
-   * If set to `false`, it will render the entire content tree eagerly.
-   * @deprecated use `enrich` instead
-   */
-  noTraverse?: boolean;
-
-  /**
    * If set to `false`, it will not use cookies to target content. Therefore, A/B Testing will be disabled and
    * only the default variation will be returned to every user.
    *
    * Defaults to `true`.
    */
   canTrack?: boolean;
-
-  /**
-   * Include content of references in the response. Defaults to `true`.
-   * @deprecated use `enrich` instead
-   */
-  includeRefs?: boolean;
 
   /**
    * Include multilevel references in the response.
@@ -86,9 +73,9 @@ export interface GetContentOptions {
   /**
    * If provided, sets the Builder API version used to fetch content.
    *
-   * Defaults to `v3`.
+   * Currently, the only available API version is `v3`.
    */
-  apiVersion?: 'v2' | 'v3';
+  apiVersion?: 'v3';
 
   /**
    * Only include these fields.
@@ -153,4 +140,14 @@ export interface GetContentOptions {
    * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
+
+  /**
+   * Optional override of the `fetch` function. (Defaults to global `fetch`)
+   */
+  fetch?: (input: string, init?: object) => Promise<any>;
+
+  /**
+   * Optional fetch options to be passed as the second argument to the `fetch` function.
+   */
+  fetchOptions?: object;
 }

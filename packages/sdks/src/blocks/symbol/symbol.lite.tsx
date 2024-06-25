@@ -5,14 +5,15 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import ContentVariants from '../../components/content-variants/content-variants.lite.jsx';
+import ContentVariants from '../../components/content-variants/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import type { PropsWithBuilderData } from '../../types/builder-props.js';
 import { filterAttrs } from '../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 
+import DynamicDiv from '../../components/dynamic-div.lite.jsx';
+import { getClassPropName } from '../../functions/get-class-prop-name.js';
 import type { Nullable } from '../../types/typescript.js';
 import { setAttrs } from '../helpers.js';
 import { fetchSymbolContent } from './symbol.helpers.js';
@@ -24,15 +25,31 @@ useMetadata({
   },
 });
 
-export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
+export default function Symbol(props: SymbolProps) {
   const state = useStore({
+    get blocksWrapper() {
+      return useTarget({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        reactNative: View,
+        angular: DynamicDiv,
+        default: 'div',
+      });
+    },
+    get contentWrapper() {
+      return useTarget({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        reactNative: View,
+        angular: DynamicDiv,
+        default: 'div',
+      });
+    },
     get className() {
       return [
         ...useTarget({
-          react: [props.attributes.className],
-          rsc: [props.attributes.className],
           reactNative: [],
-          default: [props.attributes.class],
+          default: [props.attributes[getClassPropName()]],
         }),
         'builder-symbol',
         props.symbol?.inline ? 'builder-inline-symbol' : undefined,
@@ -75,6 +92,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
     useTarget({
       react: () => {},
       reactNative: () => {},
+      solid: () => {},
 
       default: () => {
         state.setContent();
@@ -101,7 +119,7 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
       })}
     >
       <ContentVariants
-        __isNestedRender
+        isNestedRender
         apiVersion={props.builderContext.value.apiVersion}
         apiKey={props.builderContext.value.apiKey!}
         context={{
@@ -114,8 +132,12 @@ export default function Symbol(props: PropsWithBuilderData<SymbolProps>) {
           ...props.builderContext.value.localState,
           ...state.contentToUse?.data?.state,
         }}
+        canTrack={props.builderContext.value.canTrack}
         model={props.symbol?.model}
         content={state.contentToUse}
+        linkComponent={props.builderLinkComponent}
+        blocksWrapper={state.blocksWrapper}
+        contentWrapper={state.contentWrapper}
       />
     </div>
   );

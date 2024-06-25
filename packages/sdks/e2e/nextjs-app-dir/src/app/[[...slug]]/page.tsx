@@ -1,11 +1,12 @@
+import Hello from '@/components/Hello';
 import CatFacts from '@/components/MyTextBox/CatFacts';
 import {
-  RenderContent,
+  Content,
   _processContentResult,
+  fetchOneEntry,
   getBuilderSearchParams,
-  getContent,
 } from '@builder.io/sdk-react-nextjs';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
 import { componentInfo } from '../../components/MyTextBox/component-info';
 
@@ -24,7 +25,7 @@ export default async function Page(props: MyPageProps) {
     pathname: urlPath,
     _processContentResult,
     options: getBuilderSearchParams(props.searchParams),
-    getContent,
+    fetchOneEntry,
   });
 
   if (!builderProps) {
@@ -37,9 +38,14 @@ export default async function Page(props: MyPageProps) {
   }
 
   return (
-    <RenderContent
+    <Content
       {...builderProps}
       customComponents={[
+        {
+          component: Hello,
+          name: 'Hello',
+          inputs: [],
+        },
         {
           ...componentInfo,
           component: MyTextBox,

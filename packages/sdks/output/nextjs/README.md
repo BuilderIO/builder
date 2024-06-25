@@ -1,65 +1,83 @@
+## When should I use this SDK (please read carefully)
+
+- you should ONLY use this SDK if you are trying to [register](https://www.builder.io/c/docs/custom-components-setup) your RSCs (react server components) in Builder. That is its only advantage over our standard React SDKs.
+- our [Gen1](../../../react/) and [Gen2](../react/) React SDKs work perfectly well with all versions of Next.js. The only feature they do not support is registration of RSCs.
+- this SDK only works in the NextJS App Directory.
+
+To allow registering RSCs, this SDK must make compromises. Most notably:
+
+- it does not support interactive Builder features within the rendered content (such as updating dynamic bindings, state, actions etc.). As of today, there are no workarounds around these limitations, due to how RSCs work. See the [features grid](https://github.com/BuilderIO/builder/tree/main/packages/sdks#features) for more information.
+- the visual editor experience is laggy, as it requires network roundtrips to the customer's servers for each edit. We are working on improving this.
+
+this SDK is marked as "Beta" due to the missing features mentioned above. It is however actively maintained and developed alongside all other SDKs.
+
 # Builder.io React NextJS SDK (BETA)
 
 This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory.
 
-Note: you can use _any_ Builder React SDK with Next.js. Our [Gen1](../../../react/) and [Gen2](../react/) SDKs both work with Next.js (pages router or app router). This SDK, though, is the only one that supports [registering](<[url](https://www.builder.io/c/docs/custom-components-setup)>) server components, and also includes nearly 0 client side JS runtime. Our other SDKs only support registering client components in React, due to how RSC's runtime works.
+## Usage
 
-## API Reference
+When registering a custom component, you will need to add the `isRSC: true` option to the component. For example:
 
-To use the SDK, you need to:
+```tsx
+// CatFacts.tsx
+async function CatFacts() {
+  const catFacts = await fetch('https://cat-fact.herokuapp.com/facts').then(
+    (x) => x.json()
+  );
+  return (
+    <div>
+      Here are some cat facts from an RSC:
+      <ul>
+        {catFacts.slice(3).map((fact) => (
+          <li key={fact._id}>{fact.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
-- fetch the builder data using `getContent`: you can see how to use it here https://www.builder.io/c/docs/content-api, and how it differs from the React V1 SDK's `builder.get()` function.
-
-- pass that data to the `RenderContent` component, along with the following properties:
-
-```ts
-type RenderContentProps = {
-  content?: Nullable<BuilderContent>;
-  model?: string;
-  data?: { [key: string]: any };
-  context?: BuilderRenderContext;
-  apiKey: string;
-  apiVersion?: ApiVersion;
-  customComponents?: RegisteredComponent[];
-  canTrack?: boolean;
-  locale?: string;
-  includeRefs?: boolean;
+export const CatFactsInfo = {
+  name: 'CatFacts',
+  component: CatFacts,
+  // You must add the below option or the SDK will fail to render.
+  isRSC: true,
 };
 ```
 
-Here is a simplified example showing how you would use both. This needs to be created created with the name `app/[[...slug]]/page.tsx`, so it catches all routes:
+And in your `page.tsx`, you can use the custom component like this:
 
 ```tsx
+// page.tsx
 import {
-  RenderContent,
+  Content,
+  fetchOneEntry,
   getBuilderSearchParams,
-  getContent,
 } from '@builder.io/sdk-react-nextjs';
+import { CatFactsInfo } from './CatFacts';
 
-interface MyPageProps {
-  params: {
-    slug: string[];
-  };
-  searchParams: Record<string, string>;
-}
-
-const apiKey = 'YOUR_API_KEY_HERE';
-
-export default async function Page(props: MyPageProps) {
+export default async function Page(props) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
-  const content = await getContent({
+  const content = await fetchOneEntry({
     model: 'page',
     apiKey,
     options: getBuilderSearchParams(props.searchParams),
     userAttributes: { urlPath },
   });
 
-  return <RenderContent content={content} model="page" apiKey={apiKey} />;
+  return (
+    <Content
+      content={content}
+      model="page"
+      apiKey={apiKey}
+      customComponents={[CatFactsInfo]}
+    />
+  );
 }
 ```
 
-Look at the [examples](#examples) for more information.
+For more usage information, look at the [examples](#examples).
 
 ## Mitosis
 

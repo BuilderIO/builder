@@ -4,13 +4,11 @@ import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
-import type { PropsWithChildren } from '../../../types/typescript.js';
 import DynamicRenderer from '../../dynamic-renderer/dynamic-renderer.lite.jsx';
 
 useMetadata({
-  elementTag: 'props.Wrapper',
   options: {
-    vue3: {
+    vue: {
       asyncComponentImports: true,
     },
   },
@@ -23,14 +21,14 @@ type BlockWrapperProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
+  linkComponent: any;
+  children?: any;
 };
 
 /**
  * This component renders a block's wrapper HTML element (from the block's `tagName` property).
  */
-export default function BlockWrapper(
-  props: PropsWithChildren<BlockWrapperProps>
-) {
+export default function BlockWrapper(props: BlockWrapperProps) {
   return (
     <DynamicRenderer
       TagName={props.Wrapper}

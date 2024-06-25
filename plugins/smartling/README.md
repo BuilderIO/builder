@@ -2,7 +2,7 @@
 
 ## Installation
 
-From the integrations tab, pick `smartling`
+From the plugins tab, pick `smartling`
 
 ## Translating content
 What's being translated:

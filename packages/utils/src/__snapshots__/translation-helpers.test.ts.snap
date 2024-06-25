@@ -53,6 +53,74 @@ Object {
           "translated": true,
         },
       },
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "component": Object {
+          "name": "Symbol",
+          "options": Object {
+            "symbol": Object {
+              "data": Object {
+                "heroContent": Object {
+                  "cta": Object {
+                    "label": Object {
+                      "@type": "@builder.io/core:LocalizedValue",
+                      "Default": "content label",
+                      "de": "german label",
+                      "en-GB": "label for GB",
+                      "en-US": "label for US",
+                      "fr-FR": "french label",
+                      "hi-IN": "label for India",
+                    },
+                    "link": "content link",
+                    "otherLabels": Array [
+                      Object {
+                        "kids": Object {
+                          "@type": "@builder.io/core:LocalizedValue",
+                          "Default": "content label kids",
+                          "de": "german label for kids",
+                          "en-GB": "label for GB kids",
+                          "en-US": "label for US kids",
+                          "fr-FR": "french label for kids",
+                        },
+                        "men": Object {
+                          "@type": "@builder.io/core:LocalizedValue",
+                          "Default": "content label men",
+                          "de": "german label for men",
+                          "en-GB": "label for GB men",
+                          "en-US": "label for US men",
+                          "fr-FR": "french label for men",
+                        },
+                      },
+                      Object {
+                        "women": Object {
+                          "@type": "@builder.io/core:LocalizedValue",
+                          "Default": "content label women",
+                          "de": "german label for women",
+                          "en-GB": "label for GB women",
+                          "en-US": "label for US women",
+                          "fr-FR": "french label for women",
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+              "entry": "6a013dc290a548eb8e968c848ae5d5a2",
+              "model": "symbol",
+              "ownerId": "cfadfce0f3684576b7a6cca6599ce3be",
+            },
+          },
+        },
+        "id": "builder-068283319b1740b3aa8279c09c1dc957",
+        "meta": Object {
+          "transformed.symbol.data.heroContent.cta.label": "localized",
+          "transformed.symbol.data.heroContent.cta.otherLabels[0].kids": "localized",
+          "transformed.symbol.data.heroContent.cta.otherLabels[0].men": "localized",
+          "transformed.symbol.data.heroContent.cta.otherLabels[1].women": "localized",
+          "translated": true,
+        },
+      },
     ],
     "seo": Object {
       "@type": "@builder.io/core:LocalizedValue",
@@ -108,6 +176,22 @@ Object {
   "blocks.block-pre-localized-element#text": Object {
     "instructions": "This is a mobile only element",
     "value": "en-us text!",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.label": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].kids": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US kids",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].men": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US men",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[1].women": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US women",
   },
   "blocks.builder-custom-component-id#heading": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",

@@ -22,3 +22,32 @@ export function flatten<T extends Record<string, any>>(
       : { ...acc, [newPath]: value };
   }, {} as T);
 }
+
+/**
+ * Flatten a nested MongoDB query object into a flat object with dot-separated keys.
+ * $ keys are not flattened and are left as is.
+ *
+ * { foo: { bar: { $gt: 5 }}} -> { 'foo.bar': { '$gt': 5 }}
+ * { foo: {'bar.id': { $elemMatch: { 'baz.id': { $in: ['abc', 'bcd'] }}}}} -> { 'foo.bar.id': { '$elemMatch': { 'baz.id': { '$in': ['abc', 'bcd'] }}}}
+ */
+export function flattenMongoQuery(
+  obj: any,
+  _current?: any,
+  _res: any = {}
+): { [key: string]: string } {
+  for (const key in obj) {
+    const value = obj[key];
+    const newKey = _current ? _current + '.' + key : key;
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      !Object.keys(value).find((item) => item.startsWith('$'))
+    ) {
+      flattenMongoQuery(value, newKey, _res);
+    } else {
+      _res[newKey] = value;
+    }
+  }
+  return _res;
+}

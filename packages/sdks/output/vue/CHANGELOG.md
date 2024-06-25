@@ -1,5 +1,255 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 1.0.31
+
+### Patch Changes
+
+- b4381f5: Fix: `canTrack=false` not respected in Symbols
+
+## 1.0.30
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
+## 1.0.29
+
+### Patch Changes
+
+- 74d78e1: Fix: error in identifying model being previewed: https://github.com/BuilderIO/builder/pull/3310/files#diff-6293c2a27254fa850a123075284412ef86d270a4518e0ad3aad81132b590ea1cL311
+
+## 1.0.28
+
+### Patch Changes
+
+- f3aab34: Feat: Accordion widget for gen2 sdks
+- 3f98355: Fix: types for ESM build
+
+## 1.0.27
+
+### Patch Changes
+
+- 70fccea: Fix: `query` option correctly flattens mongodb queries
+
+## 1.0.26
+
+### Patch Changes
+
+- af84d1e: Fix: make `initializeNodeRuntime` argument optional
+
+## 1.0.25
+
+### Patch Changes
+
+- bd21dcf: Fix: improve NodeJS runtime performance by reusing the same IsolatedVM Isolate instance for all data bindings. Add the ability to provide arguments to configure the isolate in `initializeNodeRuntime` via an `ivmIsolateOptions` parameter.
+
+## 1.0.24
+
+### Patch Changes
+
+- 84cd444: feature: add the Builder Tabs block (ported from gen1 widgets).
+
+## 1.0.23
+
+### Patch Changes
+
+- 78dee25: Fix: remove redundant warning for evaluation of empty code blocks.
+
+## 1.0.22
+
+### Patch Changes
+
+- f3c5ff3: Fix: `isPreviewing` logic on the server, and make usage of `isEditing` unnecessary.
+- 46bd611: Feature: add support for hover animations.
+
+## 1.0.21
+
+### Patch Changes
+
+- 7bad8d9: Fix: better error-logging for `isolated-vm` import.
+- d8e08ae: Fix: `fetchOneEntry` prop types of `fetch` and `fetchOptions`
+
+## 1.0.20
+
+### Patch Changes
+
+- a309a4f: Fix: add missing `key` prop to `Select` block's `option`
+
+## 1.0.19
+
+### Patch Changes
+
+- cde7c61: feat: export `BuilderContext` from sdks
+
+## 1.0.18
+
+### Patch Changes
+
+- 6aa7dd0: Fix: flicker during SSR of A/B test content due to re-hydration with new element.
+
+## 1.0.17
+
+### Patch Changes
+
+- 2ed2cb8: Fix: data connections making multiple unnecessary API calls
+
+## 1.0.16
+
+### Patch Changes
+
+- 35fc152: Fix: add `data-id` attributes to all inline `script` and `style` tags
+
+## 1.0.15
+
+### Patch Changes
+
+- 0ffbc58: Feature: add `fetch` and `fetchOptions` arguments to `fetchEntries` and `fetchOneEntry`.
+
+## 1.0.14
+
+### Patch Changes
+
+- 2d5a016: Fix: remove forced re-render of `Content` internals.
+
+## 1.0.13
+
+### Patch Changes
+
+- 2c93c95: Fix: Symbol styles overriding subsequent content styles.
+
+## 1.0.12
+
+### Patch Changes
+
+- c880ef5: Fix: data state reactivity for nested components
+- c880ef5: Feature: add Cache layer for dynamic binding evaluator
+
+## 1.0.11
+
+### Patch Changes
+
+- b81e35a: fix: Image block `role='presentation'` set when altText prop is not provided.
+
+## 1.0.10
+
+### Patch Changes
+
+- 6dd554f: Update readme with absolute URLs
+
+## 1.0.8
+
+### Patch Changes
+
+- b659b6f: Fix: usage of `Blocks` in custom components not setting `BlocksWrapper` correctly.
+
+## 1.0.6
+
+### Patch Changes
+
+- 9b873cd: Feature: allow passing `search` param (of type `URLSearchParams | string | object`) to `isPreviewing` and `isEditing` helpers. This allows users to rely on this function in SSR environments to determine whether the current request is a preview or edit request.
+
+## 1.0.4
+
+### Patch Changes
+
+- 4528969: move `/edge`, `/node` and `/browser` sub-path exports to `/bundle/edge`, `/bundle/node` and `/bundle/browser`
+
+## 1.0.3
+
+### Patch Changes
+
+- a730741: fix `userAttributes` types in `GetContentOptions`
+
+## 1.0.2
+
+### Patch Changes
+
+- a4bfcbc: Fix: move dynamicRequire of `isolated-vm` outside of global scope to reduce crashes/issues.
+
+## 1.0.0
+
+### Major Changes
+
+- 388c152: - 🧨 Breaking changes: this release removes the following deprecations:
+
+  Exports:
+
+  - `RenderBlocks` -> `Blocks`
+  - `RenderContent` -> `Content`
+  - `getContent` -> `fetchOneEntry`
+  - `getAllContent` -> `fetchEntries`
+
+  Arguments/Props:
+
+  - `Content`'s `includeRefs` prop is removed in favor of `enrich`.
+  - `fetchOneEntry`'s `includeRefs` and `noTraverse` arguments are removed in favor of `enrich`.
+
+  Functionality:
+
+  - removed deprecated side-effect `registerComponent()`. Instead, use the `customComponents` prop of `Content`.
+
+## 0.13.4
+
+### Patch Changes
+
+- 3764321: Fix: replace broken default value of Video Block with a working link.
+
+## 0.13.3
+
+### Patch Changes
+
+- f67242f: types: add `meta` property to Input
+
+## 0.13.2
+
+### Patch Changes
+
+- cdc5ce8: Feature: Add Form, FormSelect, FormSubmit and FormInput blocks.
+
+## 0.13.1
+
+## 0.13.0
+
+### Minor Changes
+
+- da5d871: 🧨 Breaking Change: remove 'v2' as a viable `apiVersion`. Only 'v3' is now allowed.
+
+### Patch Changes
+
+- 2b67586: Fix: TypeScript types for all exports.
+
+## 0.12.8
+
+### Patch Changes
+
+- 6b32014: Add `subscribeToEditor()` export that allows listening to content changes. Helpful for previewing data models.
+
+## 0.12.7
+
+### Patch Changes
+
+- cbc49e4: Feature: add Animations support
+
+## 0.12.6
+
+## 0.12.5
+
+### Patch Changes
+
+- e7f6db6: Fix: sigfault crash when using SDK in Node v20 + M1 Macs. Skip usage of `isolated-vm` in those environments.
+
+## 0.12.4
+
+### Patch Changes
+
+- fdb6416: Feature: added `linkComponent` prop to provide a custom component for links.
+
+  This applies to:
+
+  - the Button component when provided a link
+  - the "Link URL" field for any block
+  - the "Link" field for a column within the Columns block.
+
 ## 0.12.3
 
 ### Patch Changes
@@ -51,7 +301,7 @@
   ```ts
   // nuxt.config.js
   export default defineNuxtConfig({
-    modules: ['@builder.io/sdk-vue/nuxt'],
+    modules: ["@builder.io/sdk-vue/nuxt"],
   });
   ```
 
@@ -75,10 +325,10 @@
 
   ```ts
   // BEFORE
-  import { Content } from '@builder.io/sdk-vue/vue3';
+  import { Content } from "@builder.io/sdk-vue/vue3";
 
   // AFTER
-  import { Content } from '@builder.io/sdk-vue';
+  import { Content } from "@builder.io/sdk-vue";
   ```
 
 ## 0.10.0
@@ -294,7 +544,7 @@ In case you feel the need to use our older API Version `v2`, reach out to us at 
 ```
 
 ```js
-getContent({ apiVersion: 'v2' });
+getContent({ apiVersion: "v2" });
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
@@ -375,12 +625,12 @@ No Changes.
 
 ```ts
 // imports Vue 2 SDK
-import * as BuilderSDK from '@builder.io/sdk-vue/vue2';
+import * as BuilderSDK from "@builder.io/sdk-vue/vue2";
 // fallback to Vue 2 SDK
-import * as BuilderSDK from '@builder.io/sdk-vue';
+import * as BuilderSDK from "@builder.io/sdk-vue";
 
 // imports Vue 3 SDK
-import * as BuilderSDK from '@builder.io/sdk-vue/vue3';
+import * as BuilderSDK from "@builder.io/sdk-vue/vue3";
 ```
 
 ## 0.0.1-54

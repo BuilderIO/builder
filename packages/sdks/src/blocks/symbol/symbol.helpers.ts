@@ -1,6 +1,6 @@
 import type { BuilderContextInterface } from '../../context/types.js';
+import { fetchOneEntry } from '../../functions/get-content/index.js';
 import { logger } from '../../helpers/logger.js';
-import { fetchOneEntry } from '../../index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 
 export interface SymbolInfo {

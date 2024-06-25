@@ -122,4 +122,6 @@ export interface Input {
     type?: string;
   };
   onChange?: ((options: Map<string, any>) => void | Promise<void>) | string;
+
+  meta?: Record<string, any>;
 }

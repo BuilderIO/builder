@@ -1,15 +1,12 @@
-import { getAPIKey, getProps, getAllPathnames } from '@e2e/tests';
-import { useRouter } from 'next/router';
-import type {
-  GetStaticPaths,
-  GetStaticPathsResult,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from 'next';
 import { BuilderComponent, builder } from '@builder.io/react';
+import { getAPIKey, getAllPathnames, getProps } from '@sdk/tests';
+import type { GetStaticPathsResult, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+
+import '@builder.io/widgets/dist/lib/builder-widgets-async';
 
 builder.init(getAPIKey());
 
@@ -46,9 +43,9 @@ export default function Page(props: PageProps & { apiVersion: any }) {
     builder.apiVersion = props?.apiVersion;
   }
 
-  // only enable tracking if we're not in the `/can-track-false` test route
+  // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
   useEffect(() => {
-    if (!router.asPath.includes('can-track-false')) {
+    if (!router.asPath.includes('can-track-false') && !router.asPath.includes('symbol-tracking')) {
       builder.canTrack = true;
     }
   }, []);

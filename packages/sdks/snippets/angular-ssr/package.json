@@ -1,0 +1,50 @@
+{
+  "name": "@snippet/angular-ssr",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "watch": "ng build --watch --configuration development",
+    "dev": "ng run angular-app:serve-ssr",
+    "serve": "node dist/angular-app/server/main.js",
+    "build": "ng build && ng run angular-app:server",
+    "test": "SERVER_NAME=angular-ssr yarn nx test:snippet @sdk/tests",
+    "prerender": "ng run angular-app:prerender"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^16.2.0",
+    "@angular/common": "^16.2.0",
+    "@angular/compiler": "^16.2.0",
+    "@angular/core": "^16.2.0",
+    "@angular/forms": "^16.2.0",
+    "@angular/platform-browser": "^16.2.0",
+    "@angular/platform-browser-dynamic": "^16.2.0",
+    "@angular/platform-server": "^16.2.0",
+    "@angular/router": "^16.2.0",
+    "@builder.io/sdk-angular": "workspace:*",
+    "@nguniversal/express-engine": "^16.2.0",
+    "domhandler": "^5.0.3",
+    "express": "^4.15.2",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.13.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^16.2.12",
+    "@angular/cli": "^16.2.12",
+    "@angular/compiler-cli": "^16.2.0",
+    "@nguniversal/builders": "^16.2.0",
+    "@types/express": "^4.17.0",
+    "@types/jasmine": "~4.3.0",
+    "@types/node": "^16.11.7",
+    "jasmine-core": "~4.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
+    "typescript": "~5.1.3"
+  }
+}

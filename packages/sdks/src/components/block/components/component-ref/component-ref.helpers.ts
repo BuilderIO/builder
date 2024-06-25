@@ -5,15 +5,15 @@ import type {
 } from '../../../../context/types.js';
 import { getBlockProperties } from '../../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../../types/builder-block.js';
-import type { PropsWithBuilderData } from '../../../../types/builder-props.js';
+import type { BuilderDataProps } from '../../../../types/builder-props.js';
 import type { InteractiveElementProps } from '../interactive-element.lite.jsx';
 
-type ComponentOptions = PropsWithBuilderData<{
+type ComponentOptions = BuilderDataProps & {
   [index: string]: any;
   attributes?: {
     [index: string]: any;
   };
-}>;
+};
 
 export interface ComponentProps {
   componentRef: any;
@@ -21,6 +21,7 @@ export interface ComponentProps {
   blockChildren: BuilderBlock[];
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
+  linkComponent: any;
   builderBlock: BuilderBlock;
   includeBlockProps: boolean;
   isInteractive: boolean | undefined;

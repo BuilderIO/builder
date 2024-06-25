@@ -14,14 +14,12 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
-import {
-  components,
-  serializeComponentInfo,
-} from '../../functions/register-component.js';
+import { serializeComponentInfo } from '../../functions/register-component.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
 import { getUpdateVariantVisibilityScript } from '../content-variants/helpers.js';
+import DynamicDiv from '../dynamic-div.lite.jsx';
 import InlinedScript from '../inlined-script.lite.jsx';
 import EnableEditor from './components/enable-editor.lite.jsx';
 import ContentStyles from './components/styles.lite.jsx';
@@ -55,12 +53,6 @@ export default function ContentComponent(props: ContentProps) {
 
     registeredComponents: [
       ...getDefaultRegisteredComponents(),
-      // While this `components` object is deprecated, we must maintain support for it.
-      // Since users are able to override our default components, we need to make sure that we do not break such
-      // existing usage.
-      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-      // which is the new standard way of providing custom components, and must therefore take precedence.
-      ...components,
       ...(props.customComponents || []),
     ].reduce<RegisteredComponents>(
       (acc, { component, ...info }) => ({
@@ -102,16 +94,11 @@ export default function ContentComponent(props: ContentProps) {
           default: state.contentSetState,
         }),
         context: props.context || {},
+        canTrack: props.canTrack,
         apiKey: props.apiKey,
         apiVersion: props.apiVersion,
         componentInfos: [
           ...getDefaultRegisteredComponents(),
-          // While this `components` object is deprecated, we must maintain support for it.
-          // Since users are able to override our default components, we need to make sure that we do not break such
-          // existing usage.
-          // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-          // which is the new standard way of providing custom components, and must therefore take precedence.
-          ...components,
           ...(props.customComponents || []),
         ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
@@ -125,6 +112,7 @@ export default function ContentComponent(props: ContentProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           reactNative: props.blocksWrapper || ScrollView,
+          angular: props.blocksWrapper || DynamicDiv,
           default: props.blocksWrapper || 'div',
         }),
         BlocksWrapperProps: props.blocksWrapperProps || {},
@@ -145,12 +133,12 @@ export default function ContentComponent(props: ContentProps) {
       apiKey={props.apiKey}
       canTrack={props.canTrack}
       locale={props.locale}
-      includeRefs={props.includeRefs}
       enrich={props.enrich}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
       contentWrapper={props.contentWrapper}
       contentWrapperProps={props.contentWrapperProps}
+      linkComponent={props.linkComponent}
       trustedHosts={props.trustedHosts}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
@@ -163,10 +151,14 @@ export default function ContentComponent(props: ContentProps) {
       })}
     >
       <Show when={props.isSsrAbTest}>
-        <InlinedScript scriptStr={state.scriptStr} />
+        <InlinedScript
+          scriptStr={state.scriptStr}
+          id="builderio-variant-visibility"
+        />
       </Show>
       <Show when={TARGET !== 'reactNative'}>
         <ContentStyles
+          isNestedRender={props.isNestedRender}
           contentId={builderContextSignal.value.content?.id}
           cssCode={builderContextSignal.value.content?.data?.cssCode}
           customFonts={builderContextSignal.value.content?.data?.customFonts}
@@ -176,6 +168,7 @@ export default function ContentComponent(props: ContentProps) {
         blocks={builderContextSignal.value.content?.data?.blocks}
         context={builderContextSignal}
         registeredComponents={state.registeredComponents}
+        linkComponent={props.linkComponent}
       />
     </EnableEditor>
   );

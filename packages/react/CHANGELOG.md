@@ -1,5 +1,54 @@
 # @builder.io/react
 
+## 3.2.8
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+- Updated dependencies [4aaba38]
+  - @builder.io/sdk@2.2.4
+
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies [46c38b8]
+  - @builder.io/sdk@2.2.3
+
+## 3.2.6
+
+### Patch Changes
+
+- 6dd554f: Update readme with absolute URLs
+
+## 3.2.5
+
+### Patch Changes
+
+- c32cbd6: Support single jsx node as `props.children` in `withChildren`
+
+## 3.2.4
+
+### Patch Changes
+
+- 3764321: Fix: replace broken default value of Video Block with a working link.
+
+## 3.2.3
+
+### Patch Changes
+
+- f67242f: types: add `meta` property to Input
+- Updated dependencies [f67242f]
+  - @builder.io/sdk@2.2.2
+
+## 3.2.2
+
+- Fix: `deviceSize` state not getting set properly.
+
+## 3.2.1
+
+- Fix: sigfault crash when using SDK in Node v20 + M1 Macs. Skips usage of `isolated-vm` in those environments.
+
 ## 3.2.0
 
 - Stricter checking of trusted hosts.
@@ -82,10 +131,10 @@
 In case you feel the need to use our older API Version `v1`, reach out to us at support@builder.io first. But you can override the default by setting `apiVersion` explicitly to `v1` as follows:
 
 ```js
-import { builder } from '@builder.io/react';
+import { builder } from "@builder.io/react";
 
-builder.init('YOUR_BUILDER_PUBLIC_KEY');
-builder.apiVersion = 'v1';
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.apiVersion = "v1";
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
@@ -97,10 +146,10 @@ More details on the Builder API Versions visit [this link](https://www.builder.i
 You can set the apiVersion using `builder.init` or `builder.apiVersion`:
 
 ```js
-import { builder } from '@builder.io/react';
+import { builder } from "@builder.io/react";
 
-builder.init('YOUR_BUILDER_PUBLIC_KEY');
-builder.apiVersion = 'v3';
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.apiVersion = "v3";
 ```
 
 ## 2.0.16

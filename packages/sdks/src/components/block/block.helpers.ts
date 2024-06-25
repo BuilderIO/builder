@@ -1,9 +1,12 @@
 import type {
   BuilderContextInterface,
+  RegisteredComponent,
   RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/index.js';
+import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -65,6 +68,7 @@ export const getRepeatItemData = ({
     rootState: context.rootState,
     rootSetState: context.rootSetState,
     context: context.context,
+    enableCache: true,
   });
 
   if (!Array.isArray(itemsArray)) {
@@ -90,4 +94,51 @@ export const getRepeatItemData = ({
   }));
 
   return repeatArray;
+};
+
+export const getInheritedStyles = ({
+  block,
+  context,
+}: {
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+}) => {
+  const style = getStyle({ block, context });
+  if (!style) {
+    return {};
+  }
+  return extractTextStyles(style);
+};
+
+export const shouldPassLinkComponent = (
+  block: RegisteredComponent | null | undefined
+) => {
+  return (
+    block &&
+    (block.isRSC ||
+      [
+        'Core:Button',
+        'Symbol',
+        'Columns',
+        'Form:Form',
+        'Builder: Tabs',
+        'Builder:Accordion',
+      ].includes(block.name))
+  );
+};
+
+export const shouldPassRegisteredComponents = (
+  block: RegisteredComponent | null | undefined
+) => {
+  return (
+    block &&
+    (block.isRSC ||
+      [
+        'Symbol',
+        'Columns',
+        'Form:Form',
+        'Builder: Tabs',
+        'Builder:Accordion',
+      ].includes(block.name))
+  );
 };

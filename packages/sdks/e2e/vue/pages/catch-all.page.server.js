@@ -1,5 +1,5 @@
 import { _processContentResult } from '@builder.io/sdk-vue';
-import { getProps } from '@e2e/tests';
+import { getProps } from '@sdk/tests';
 import 'cross-fetch/dist/node-polyfill.js';
 
 export { onBeforeRender };

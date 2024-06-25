@@ -15,7 +15,7 @@ import {
   Radio,
 } from '@material-ui/core';
 
-export function showJobNotification(projectUid: string) {
+export function showJobNotification(projectUid: string, isUSDataCenterAccount?: boolean) {
   appState.snackBar.show(
     <div css={{ display: 'flex', alignItems: 'center' }}>Done!</div>,
     2000,
@@ -32,7 +32,9 @@ export function showJobNotification(projectUid: string) {
       }}
       variant="contained"
       onClick={async () => {
-        const link = `https://cloud.memsource.com/web/project2/show/${projectUid}`;
+        const link = `${
+          isUSDataCenterAccount ? 'https://us.cloud.memsource.com' : 'https://cloud.memsource.com'
+        }/web/project2/show/${projectUid}`;
         window.open(link, '_blank');
         appState.snackBar.open = false;
       }}
@@ -44,7 +46,7 @@ export function showJobNotification(projectUid: string) {
 
 export function showOutdatedNotifications(callback: () => void) {
   appState.snackBar.show(
-    <div css={{ display: 'flex', alignItems: 'center' }}>Contant has new strings!</div>,
+    <div css={{ display: 'flex', alignItems: 'center' }}>Content has new strings!</div>,
     6000,
     <Button
       color="primary"

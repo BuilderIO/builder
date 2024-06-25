@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { RenderContent, _processContentResult } from '@builder.io/sdk-svelte';
-  import { getProps } from '@e2e/tests';
+  import { Content, _processContentResult } from '@builder.io/sdk-svelte';
+  import { getProps } from '@sdk/tests';
 
   let props = undefined;
   const fetch = async () => {
@@ -16,7 +16,7 @@
 
 <main>
   {#if props}
-    <RenderContent {...props} />
+    <Content {...props} />
   {:else}
     Content Not Found
   {/if}

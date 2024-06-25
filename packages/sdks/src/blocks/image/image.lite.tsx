@@ -67,7 +67,7 @@ export default function Image(props: ImageProps) {
         <img
           loading="lazy"
           alt={props.altText}
-          role={props.altText ? 'presentation' : undefined}
+          role={props.altText ? undefined : 'presentation'}
           css={{
             opacity: '1',
             transition: 'opacity 0.2s ease-in-out',
@@ -112,7 +112,7 @@ export default function Image(props: ImageProps) {
       </Show>
 
       {/* When `fitContent: false`, we wrap image children ssuch that they stretch across the entire image  */}
-      <Show when={!props.fitContent && props.children}>
+      <Show when={!props.fitContent && props.builderBlock?.children?.length}>
         <div
           css={{
             display: 'flex',

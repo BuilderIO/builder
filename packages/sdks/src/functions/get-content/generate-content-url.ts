@@ -1,24 +1,19 @@
-import { flatten } from '../../helpers/flatten.js';
+import { flatten, flattenMongoQuery } from '../../helpers/flatten.js';
+import { normalizeSearchParams } from '../../helpers/search/search.js';
 import { DEFAULT_API_VERSION } from '../../types/api-version.js';
-import {
-  getBuilderSearchParamsFromWindow,
-  normalizeSearchParams,
-} from '../get-builder-search-params/index.js';
+import { getBuilderSearchParamsFromWindow } from '../get-builder-search-params/index.js';
 import type { GetContentOptions } from './types.js';
 
 const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
-  let { noTraverse = false } = options;
-
   const {
     limit = 30,
     userAttributes,
     query,
     model,
     apiKey,
-    includeRefs = true,
     enrich,
     locale,
     apiVersion = DEFAULT_API_VERSION,
@@ -35,25 +30,26 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     throw new Error('Missing API key');
   }
 
-  if (!['v2', 'v3'].includes(apiVersion)) {
+  if (!['v3'].includes(apiVersion)) {
     throw new Error(
-      `Invalid apiVersion: expected 'v2' or 'v3', received '${apiVersion}'`
+      `Invalid apiVersion: expected 'v3', received '${apiVersion}'`
     );
   }
 
-  // Set noTraverse=true if NOT already passed by user, for query performance
-  if (
-    (options.limit === undefined || options.limit > 1) &&
-    !('noTraverse' in options)
-  ) {
-    noTraverse = true;
-  }
+  // if we are fetching an array of content, we disable noTraverse for perf reasons.
+  const noTraverse = limit !== 1;
 
   const url = new URL(
-    `https://cdn.builder.io/api/${apiVersion}/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
-      locale ? `&locale=${locale}` : ''
-    }${enrich ? `&enrich=${enrich}` : ''}`
+    `https://cdn.builder.io/api/${apiVersion}/content/${model}`
   );
+
+  url.searchParams.set('apiKey', apiKey);
+  url.searchParams.set('limit', String(limit));
+  url.searchParams.set('noTraverse', String(noTraverse));
+  url.searchParams.set('includeRefs', String(true));
+
+  if (locale) url.searchParams.set('locale', locale);
+  if (enrich) url.searchParams.set('enrich', String(enrich));
 
   url.searchParams.set('omit', omit || 'meta.componentsUsed');
 
@@ -100,11 +96,10 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
   }
   if (query) {
-    const flattened = flatten({ query });
+    const flattened = flattenMongoQuery({ query });
     for (const key in flattened) {
-      url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
+      url.searchParams.set(key, JSON.stringify(flattened[key]));
     }
   }
-
   return url;
 };

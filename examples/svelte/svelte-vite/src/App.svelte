@@ -1,6 +1,6 @@
 <script>
   import Counter from './lib/Counter.svelte';
-  import { getContent, isPreviewing, RenderContent } from '@builder.io/sdk-svelte';
+  import { fetchOneEntry, isPreviewing, Content } from '@builder.io/sdk-svelte';
 
   // Create an array of your custom components and their properties
   const CUSTOM_COMPONENTS = [
@@ -28,7 +28,7 @@
   let canShowContent = false;
   const fetch = async () => {
     // fetch your Builder content
-    content = await getContent({
+    content = await fetchOneEntry({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
       userAttributes: {
@@ -55,7 +55,7 @@
   {#if canShowContent}
     <div>page Title: {content?.data?.title || 'Unpublished'}</div>
     <!-- Render builder content with all required props -->
-    <RenderContent
+    <Content
       model="page"
       {content}
       apiKey={BUILDER_PUBLIC_API_KEY}

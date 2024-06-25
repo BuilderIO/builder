@@ -3,6 +3,7 @@ import { Builder } from '@builder.io/sdk';
 import { safeDynamicRequire } from './safe-dynamic-require';
 import { isDebug } from './is-debug';
 import { getIsolateContext, makeFn } from './string-to-function';
+import { shouldForceBrowserRuntimeInNode } from './should-force-browser-runtime-in-node';
 
 export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
   const value = str;
@@ -47,7 +48,7 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
     }
   }
   try {
-    if (Builder.isBrowser) {
+    if (Builder.isBrowser || shouldForceBrowserRuntimeInNode()) {
       return fn(data || {});
     } else {
       // Below is a hack to get certain code to *only* load in the server build, to not screw with

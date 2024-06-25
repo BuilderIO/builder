@@ -2,6 +2,7 @@ import { BuilderContent } from '@builder.io/sdk';
 import traverse from 'traverse';
 import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
+import set from 'lodash/set';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
 
@@ -30,6 +31,108 @@ function unescapeStringOrObject(input: string | Record<string, any>) {
 
   // Return input as is if it's neither a string nor an object
   return input;
+}
+
+function recordValue({
+  results,
+  value,
+  path,
+  instructions,
+  sourceLocaleId,
+}: {
+  results: TranslateableFields;
+  value: any;
+  path: string;
+  instructions: string;
+  sourceLocaleId: string;
+}) {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => {
+      recordValue({
+        results,
+        value: item,
+        path: `${path}[${index}]`,
+        instructions,
+        sourceLocaleId,
+      });
+    });
+  } else if (typeof value === 'object') {
+    if (value['@type'] === localizedType) {
+      results[path] = {
+        value: value?.[sourceLocaleId] || value?.Default,
+        instructions,
+      };
+    } else {
+      Object.entries(value).forEach(([key, v]) => {
+        recordValue({
+          results,
+          value: v,
+          path: `${path}.${key}`,
+          instructions,
+          sourceLocaleId,
+        });
+      });
+    }
+  }
+}
+
+function resolveTranslation({
+  data,
+  basePath,
+  path,
+  value,
+  translation,
+  transformedMeta,
+  locale,
+}: {
+  data: any;
+  basePath: string;
+  path: string;
+  value: any;
+  translation: any;
+  transformedMeta: Record<string, string>;
+  locale: string;
+}) {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => {
+      resolveTranslation({
+        data,
+        basePath,
+        path: `${path}[${index}]`,
+        value: item,
+        translation,
+        transformedMeta,
+        locale,
+      });
+    });
+  } else if (typeof value === 'object') {
+    if (value['@type'] === localizedType) {
+      const translatedSymbolInput = translation[`${basePath}${path}`];
+
+      if (!translatedSymbolInput?.value) {
+        return;
+      }
+
+      set(data, path, {
+        ...value,
+        [locale]: unescapeStringOrObject(translatedSymbolInput.value),
+      });
+
+      transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
+    } else {
+      Object.entries(value).forEach(([key, v]) => {
+        resolveTranslation({
+          data,
+          basePath,
+          path: `${path}.${key}`,
+          value: v,
+          translation,
+          transformedMeta,
+          locale,
+        });
+      });
+    }
+  }
 }
 
 export function getTranslateableFields(
@@ -86,6 +189,27 @@ export function getTranslateableFields(
           instructions: el.meta?.instructions || defaultInstructions,
         };
       }
+
+      if (el && el.id && el.component?.name === 'Symbol') {
+        const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
+        if (symbolInputs.length) {
+          const basePath = `blocks.${el.id}.symbolInput`;
+          symbolInputs.forEach(
+            ([symbolInputName, symbolInputValue]: [
+              symbolInputName: string,
+              symbolInputValue: any
+            ]) => {
+              recordValue({
+                results,
+                value: symbolInputValue,
+                path: `${basePath}#${symbolInputName}`,
+                instructions: el.meta?.instructions || defaultInstructions,
+                sourceLocaleId,
+              });
+            }
+          );
+        }
+      }
     });
   }
 
@@ -115,6 +239,52 @@ export function applyTranslation(
 
   if (blocks) {
     traverse(blocks).forEach(function (el) {
+      if (el && el.id && el.component?.name === 'Symbol') {
+        const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
+        if (symbolInputs.length) {
+          const transformedMeta = {};
+
+          symbolInputs.forEach(
+            ([symbolInputName, symbolInputValue]: [
+              symbolInputName: string,
+              symbolInputValue: any
+            ]) => {
+              resolveTranslation({
+                data: el.component?.options?.symbol?.data,
+                basePath: `blocks.${el.id}.symbolInput#`,
+                path: symbolInputName,
+                value: symbolInputValue,
+                translation,
+                transformedMeta,
+                locale,
+              });
+
+              this.update({
+                ...el,
+                meta: {
+                  ...el.meta,
+                  translated: true,
+                  // this tells the editor that this is a forced localized input similar to clicking the globe icon
+                  ...transformedMeta,
+                },
+                component: {
+                  ...el.component,
+                  options: {
+                    ...(el.component.options || {}),
+                    symbol: {
+                      ...(el.component.options.symbol || {}),
+                      data: {
+                        ...(el.component.options.symbol?.data || {}),
+                      },
+                    },
+                  },
+                },
+              });
+            }
+          );
+        }
+      }
+
       if (
         el &&
         el.id &&

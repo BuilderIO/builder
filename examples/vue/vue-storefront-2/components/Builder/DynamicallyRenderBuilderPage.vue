@@ -20,7 +20,7 @@
 <script>
 import Vue from 'vue';
 
-import { getContent, isPreviewing } from '@builder.io/sdk-vue';
+import { fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import HelloWorldComponent from './HelloWorld.vue';
 
 // Register your Builder components
@@ -59,7 +59,7 @@ export default Vue.extend({
     this.canShowContent = this.content || isPreviewing();
   },
   async fetch() {
-    const content = await getContent({
+    const content = await fetchOneEntry({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
       userAttributes: {

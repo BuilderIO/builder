@@ -17,6 +17,8 @@
 /packages/angular/ @BuilderIO/sdks
 /packages/core/ @BuilderIO/sdks
 
+## SDK snippets
+/packages/sdks/snippets @BuilderIO/sdks @samijaber @kapunahelewong
 
 # E-commerce plugins
 /plugins/magento2/ @BuilderIO/e-commerce-plugins

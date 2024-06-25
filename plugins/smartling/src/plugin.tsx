@@ -6,7 +6,11 @@ import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import uniq from 'lodash/uniq';
 import isEqual from 'lodash/isEqual';
-import { getTranslationModelTemplate, getTranslationModel } from './model-template';
+import {
+  getTranslationModelTemplate,
+  getTranslationModel,
+  translationModelName,
+} from './model-template';
 import {
   registerBulkAction,
   registerContentAction,
@@ -349,6 +353,29 @@ registerPlugin(
         // https://dashboard.smartling.com/app/projects/0e6193784/strings/jobs/schqxtpcnxix
         const smartlingFile = `https://dashboard.smartling.com/app/projects/${translationBatch.projectId}/strings/jobs/${translationBatch.translationJobUid}`;
         window.open(smartlingFile, '_blank', 'noreferrer,noopener');
+      },
+    });
+
+    registerContentAction({
+      label: 'Remove from translation job',
+      showIf(content, model) {
+        const translationModel = getTranslationModel();
+        return (
+          model.name !== translationModel.name && Boolean(content.meta.get('translationJobId'))
+        );
+      },
+      async onClick(content) {
+        appState.globalState.showGlobalBlockingLoading();
+
+        await api.removeContentFromTranslationJob({
+          contentId: content.id,
+          contentModel: appState.designerState.editingModel.name,
+          translationJobId: content.meta.get('translationJobId'),
+          translationModel: translationModelName,
+        });
+
+        appState.globalState.hideGlobalBlockingLoading();
+        appState.snackBar.show('Removed from translation job.');
       },
     });
 

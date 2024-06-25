@@ -174,6 +174,7 @@ export const CONTENT = {
                         },
                       },
                     ],
+                    link: '/test-column-one',
                   },
                   {
                     blocks: [

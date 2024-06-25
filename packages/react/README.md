@@ -1,10 +1,12 @@
 # Builder.io React SDK
 
-NOTE: for Next v13 app directory support, you will need to use our beta version of the SDK. You can find more about it [here](../sdks/output/react).
+NOTE: If you want to register your React Server Components as custom components in Builder, you will need to use our experimental NextJS SDK [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/nextjs).
+
+NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react).
 
 ## Integration
 
-See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
+See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page building as your initial integration:
 
 <table>
   <tr>
@@ -15,12 +17,12 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
   <tr>
     <td align="center">
       <a href="https://www.builder.io/c/docs/integrating-builder-pages">
-        <img alt="CTA to integrate page buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
+        <img alt="CTA to integrate page building" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
       </a>
     </td>
     <td align="center">
       <a href="https://www.builder.io/c/docs/integrate-section-building">
-        <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
+        <img alt="CTA to integrate section building" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
       </a>
     </td>    
     <td align="center">
@@ -62,7 +64,7 @@ const content = await builder
 
 The builder content is simply json that you pass to a `<BuilderComponent />` to render. [Learn more about it here](https://www.builder.io/c/docs/how-builder-works-technical)
 
-You can view all of the options for `builder.get` for fetching content [in our full reference here](../core/docs/interfaces/GetContentOptions.md)
+You can view all of the options for `builder.get` for fetching content [in our full reference here](https://github.com/BuilderIO/builder/blob/main/packages/core/docs/interfaces/GetContentOptions.md)
 
 For example, with Next.js, to render Builder as your homepage:
 
@@ -203,7 +205,7 @@ Builder.registerComponent(CodeBlockComponent, {
 
 See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components).
 
-See the [full reference docs for registerComponent options here](../core/docs/interfaces/Component.md).
+See the [full reference docs for registerComponent options here](https://github.com/BuilderIO/builder/blob/main/packages/core/docs/interfaces/Component.md).
 
 ### BuilderContent
 
@@ -301,7 +303,7 @@ export default () => <div>
 
 ### builder
 
-The React SDK exports the core SDK's [builder object](../core), which can be used for setting things like
+The React SDK exports the core SDK's [builder object](https://github.com/BuilderIO/builder/tree/main/packages/core), which can be used for setting things like
 your API key and user attributes
 
 ```tsx
@@ -318,8 +320,10 @@ builder.setUserAttributes({
 
 #### Lite version
 
+NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react).
+
 This SDK has a lite version where it provides only the bare minimum of components needed to render your Builder content, it won't have any built-in components registered by default, this option should work with custom components. The main difference is that you need to specifically add any built-in components you want to use or they won’t show up.
-To use the lite package, you change all your imports from `@buidler/react` to `@builder/react/lite` and then import only the built-in components that you want to use:
+To use the lite package, you change all your imports from `@builder/react` to `@builder/react/lite` and then import only the built-in components that you want to use:
 
 ```ts
 // Change all imports from '@builder.io/react' to '@builder.io/react/lite'
@@ -352,3 +356,11 @@ _Coming soon..._
 
 - Better support for localization: Some of the newer features of localization and querying based on it will be better supported in Query V3
 - Support multi-level nested references: Query V3 will allow you to query, resolve, and return content that has nested references of other contents and symbols.
+
+## Node v20 + M1 Macs (Apple Silicon) Support
+
+The SDKs rely on `isolated-vm`, a library to securely execute code on a Node server. There is a compatibility issue for that library when running on Node v20 and M1 Macs. To workaround this issue, you must provide `NODE_OPTIONS=--no-node-snapshot` to the command that runs your server.
+
+If you do not provide this flag, the SDK will skip using `isolated-vm`. This will only occur on Apple Silicon machines that are running Node v20.
+
+For more information, see [this issue](https://github.com/laverdet/isolated-vm/issues/424#issuecomment-1864629126).

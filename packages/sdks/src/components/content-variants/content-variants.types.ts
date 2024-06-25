@@ -28,7 +28,7 @@ export interface ContentVariantsPrps {
   context?: BuilderRenderContext;
 
   /**
-   * Your API Key: needed to dynamically fetch symbols (required).
+   * Your API Key: needed to enable visual editing, and to dynamically fetch symbols (required).
    */
   apiKey: string;
 
@@ -38,6 +38,10 @@ export interface ContentVariantsPrps {
    * An array of custom components to register (optional).
    */
   customComponents?: RegisteredComponent[];
+  /**
+   * The component to use for rendering links. Defaults to anchor element `<a>`.
+   */
+  linkComponent?: any;
 
   /**
    * A boolean to enable or disable tracking (optional). Defaults to `true`.
@@ -49,9 +53,6 @@ export interface ContentVariantsPrps {
    */
   locale?: string;
 
-  /** @deprecated use `enrich` instead */
-  includeRefs?: boolean;
-
   /**
    * A boolean to enable or disable enriching API content (optional).
    *
@@ -60,7 +61,7 @@ export interface ContentVariantsPrps {
   enrich?: boolean;
 
   /**
-   * The element that wraps your content. Defaults to `div` ('ScrollView' in React Native).
+   * The element that wraps your content. Defaults to `<div>` ('ScrollView' in React Native).
    */
   contentWrapper?: any;
 
@@ -70,7 +71,7 @@ export interface ContentVariantsPrps {
   contentWrapperProps?: any;
 
   /**
-   * The element that wraps your blocks. Defaults to `div` ('ScrollView' in React Native).
+   * The element that wraps your blocks. Defaults to `<div>` ('ScrollView' in React Native).
    */
   blocksWrapper?: any;
 

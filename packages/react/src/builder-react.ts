@@ -26,7 +26,7 @@ export { noWrap } from './functions/no-wrap';
 
 export { BuilderComponent as BuilderPage, onChange, RegisteredComponent };
 export { BuilderComponent };
-export { BuilderComponent as RenderContent };
+export { BuilderComponent as Content };
 
 export { Text } from './blocks/Text';
 export { Slot as Dropzone } from './blocks/Slot';

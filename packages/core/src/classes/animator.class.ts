@@ -115,11 +115,14 @@ export class Animator {
         // TODO: maybe remove/reset transitoin property after animation duration
 
         // TODO: queue timers
-        setTimeout(() => {
-          // TODO: what if has other transition (reset back to what it was)
-          element.style.transition = '';
-          element.style.transitionDelay = '';
-        }, (animation.delay || 0) * 1000 + animation.duration * 1000 + 100);
+        setTimeout(
+          () => {
+            // TODO: what if has other transition (reset back to what it was)
+            element.style.transition = '';
+            element.style.transitionDelay = '';
+          },
+          (animation.delay || 0) * 1000 + animation.duration * 1000 + 100
+        );
       });
     });
   }
@@ -188,13 +191,16 @@ export class Animator {
             if (!animation.repeat) {
               document.removeEventListener('scroll', onScroll);
             }
-            setTimeout(() => {
-              pendingAnimation = false;
-              if (!animation.repeat) {
-                element.style.transition = '';
-                element.style.transitionDelay = '';
-              }
-            }, (animation.duration + (animation.delay || 0)) * 1000 + 100);
+            setTimeout(
+              () => {
+                pendingAnimation = false;
+                if (!animation.repeat) {
+                  element.style.transition = '';
+                  element.style.transitionDelay = '';
+                }
+              },
+              (animation.duration + (animation.delay || 0)) * 1000 + 100
+            );
           });
         } else if (
           animation.repeat &&

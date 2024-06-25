@@ -1,5 +1,23 @@
 # @builder.io/sdk
 
+## 2.2.4
+
+### Patch Changes
+
+- 4aaba38: Fix: bump `isolated-vm` dependency to `5.0.0`, adding support for Node v22.
+
+## 2.2.3
+
+### Patch Changes
+
+- 46c38b8: Fix: Mark component types as `readonly`.
+
+## 2.2.2
+
+### Patch Changes
+
+- f67242f: types: add `meta` property to Input
+
 ## 2.2.0
 
 - Stricter checking of trusted hosts.

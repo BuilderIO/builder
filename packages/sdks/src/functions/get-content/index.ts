@@ -28,13 +28,6 @@ export async function fetchOneEntry(
   return null;
 }
 
-/**
- * @deprecated `getContent` was renamed to `fetchOneEntry`. This is a temporary alias to avoid breaking changes.
- *
- * NOTE: consider using `fetchBuilderProps` instead for easier setup.
- */
-export const getContent = fetchOneEntry;
-
 type ContentResults = {
   results: BuilderContent[];
 };
@@ -48,8 +41,9 @@ type ContentResponse =
 
 const _fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options);
+  const _fetch = options.fetch ?? fetch;
+  const res = await _fetch(url.href, options.fetchOptions);
 
-  const res = await fetch(url.href);
   const content = await (res.json() as Promise<ContentResponse>);
   return content;
 };
@@ -116,8 +110,3 @@ export async function fetchEntries(options: GetContentOptions) {
     return null;
   }
 }
-
-/**
- * @deprecated `getAllContent` was renamed to `fetchEntries`. This is a temporary alias to avoid breaking changes.
- */
-export const getAllContent = fetchEntries;

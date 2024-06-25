@@ -33,7 +33,7 @@ export function parse(url: string): UrlLike {
   if (pathOnly) {
     u = new URL(url, 'http://0.0.0.0/');
     out.href = u.href;
-    out.href = out.href.slice(14); // remove 'http://0.0.0.0/'
+    out.href = out.href?.slice(14); // remove 'http://0.0.0.0/'
   } else {
     u = new URL(url);
     out.href = u.href;

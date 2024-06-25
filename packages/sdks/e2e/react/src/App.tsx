@@ -1,6 +1,12 @@
-import { RenderContent, _processContentResult } from '@builder.io/sdk-react';
-import { getProps } from '@e2e/tests';
+import {
+  Content,
+  _processContentResult,
+  fetchOneEntry,
+  subscribeToEditor,
+} from '@builder.io/sdk-react';
+import { getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
+import Hello from './components/Hello';
 
 const DataComp = (props: {
   pathname: string;
@@ -22,18 +28,59 @@ const DataComp = (props: {
   }
 };
 
+const CustomLinkComp = (props: any) => {
+  return <a {...props}>Custom Link: {props.children}</a>;
+};
+
 function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps({ _processContentResult }).then((resp) => {
-      setProps(resp);
-    });
+    getProps({ _processContentResult, fetchOneEntry }).then(setProps);
+
+    if (window.location.pathname === '/data-preview') {
+      const unsubscribe = subscribeToEditor('coffee', (content) =>
+        setProps({ content })
+      );
+
+      return () => {
+        unsubscribe();
+      };
+    }
   }, []);
+
+  if (window.location.pathname === '/data-preview') {
+    if (!props?.content) {
+      return <div>Loading...</div>;
+    }
+    return (
+      <>
+        <div>coffee name: {props.content.data?.name}</div>
+        <div>coffee info: {props.content.data?.info}</div>
+      </>
+    );
+  }
 
   return props ? (
     <DataComp pathname={window.location.pathname}>
-      {({ data }) => <RenderContent {...props} data={data} />}
+      {({ data }) => (
+        <Content
+          {...props}
+          data={data}
+          linkComponent={
+            window.location.search.includes('link-component')
+              ? CustomLinkComp
+              : undefined
+          }
+          customComponents={[
+            {
+              name: 'Hello',
+              component: Hello,
+              inputs: [],
+            },
+          ]}
+        />
+      )}
     </DataComp>
   ) : (
     <div>Content Not Found</div>

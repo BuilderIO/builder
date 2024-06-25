@@ -1,6 +1,6 @@
 <script setup>
-import { RenderContent, _processContentResult } from '@builder.io/sdk-vue';
-import { getProps } from '@e2e/tests';
+import { Content, _processContentResult } from '@builder.io/sdk-vue';
+import { getProps } from '@sdk/tests';
 
 const route = useRoute();
 
@@ -11,7 +11,7 @@ const { data: props } = await useAsyncData('builderData', () =>
 
 <template>
   <div v-if="props?.content">
-    <RenderContent v-bind="props" />
+    <Content v-bind="props" />
   </div>
   <div v-else>Content not Found</div>
 </template>

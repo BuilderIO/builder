@@ -1,5 +1,5 @@
-import { RenderContent, _processContentResult } from '@builder.io/sdk-solid';
-import { getProps } from '@e2e/tests';
+import { Content, _processContentResult } from '@builder.io/sdk-solid';
+import { getProps } from '@sdk/tests';
 import { Show, createResource } from 'solid-js';
 import { Title, useLocation, useRouteData } from 'solid-start';
 
@@ -19,7 +19,7 @@ export default function App() {
     <main>
       <Title>Hello World</Title>
       <Show when={props} fallback={<div>Content Not Found</div>}>
-        <RenderContent {...props()} />
+        <Content {...props()} />
       </Show>
     </main>
   );

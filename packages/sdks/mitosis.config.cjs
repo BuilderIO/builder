@@ -61,8 +61,15 @@ const SRCSET_PLUGIN = () => ({
 const BASE_TEXT_PLUGIN = () => ({
   code: {
     pre: (code) => {
+      if (code.includes('BaseText')) {
+        return `
+import BaseText from '../../blocks/BaseText';
+${code}
+`;
+      }
+
       if (code.includes('<Text>') && !code.includes('InlinedStyles')) {
-        const importStatement = `import BaseText from '../BaseText';`;
+        const importStatement = `import BaseText from '../../blocks/BaseText';`;
         // we put the import statement after the first line so the `use client` comment stays at the top.
         // probably doesn't matter but just in case
         const [firstLine, ...restOfCode] = code.split('\n');
@@ -95,13 +102,36 @@ const REMOVE_MAGIC_PLUGIN = () => ({
   },
 });
 
+const REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM = () => ({
+  code: {
+    post: (code) => {
+      return code.replace(
+        `props.setBuilderContext((PREVIOUS_VALUE) => ({
+        ...PREVIOUS_VALUE,
+        rootState: combinedState,
+      }));`,
+        'props.builderContext.rootState = combinedState;'
+      );
+    },
+  },
+});
+
 const target = process.argv
   .find((arg) => arg.startsWith('--target='))
   ?.split('=')[1];
 
 const targets = target
   ? [target]
-  : ['reactNative', 'rsc', 'vue', 'solid', 'svelte', 'react', 'qwik'];
+  : [
+      'reactNative',
+      'rsc',
+      'vue',
+      'solid',
+      'svelte',
+      'react',
+      'qwik',
+      'angular',
+    ];
 
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
@@ -139,6 +169,377 @@ const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
     },
   },
 });
+
+/**
+ *
+ * Identifies all the bindings that are used to pass actions to our blocks.
+ * Used by Vue/Svelte plugins to convert the bindings to the appropriate binding syntax.
+ *
+ * @param {import('@builder.io/mitosis').MitosisComponent} json
+ * @param {MitosisNode} item
+ */
+const filterActionAttrBindings = (json, item) => {
+  /**
+   * Button component uses `filterAttrs` but calls `DynamicRender`.
+   * Special case, we don't want to filter the `filterAttrs` calls even though they are there.
+   */
+  const isButton = json.name === 'Button';
+  if (isButton) return [];
+
+  return Object.entries(item.bindings).filter(([_key, value]) => {
+    const blocksAttrs =
+      value?.code.includes('filterAttrs') && value.code.includes('true');
+
+    const dynamicRendererAttrs =
+      json.name === 'DynamicRenderer' &&
+      value?.code.includes('props.actionAttributes');
+
+    return blocksAttrs || dynamicRendererAttrs;
+  });
+};
+
+const ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('<enable-editor')) {
+        code = code.replace('[linkComponent]="linkComponent"', '');
+      }
+      if (code.includes('<block-wrapper')) {
+        code = code.replace('[linkComponent]="linkComponent"', '');
+      }
+      return code;
+    },
+  },
+});
+
+// for fixing circular dependencies
+const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
+  code: {
+    post: (code) => {
+      if (
+        code.includes('component-ref, ComponentRef') ||
+        code.includes('repeated-block, RepeatedBlock')
+      ) {
+        code = code.replace(
+          'imports: [CommonModule, Block]',
+          'imports: [CommonModule, forwardRef(() => Block)]'
+        );
+        code = code.replace(
+          '} from "@angular/core";',
+          `${code.includes('repeated-block') ? ',' : ''}forwardRef } from "@angular/core";`
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('component-ref, ComponentRef')) {
+        // onInit we check for this.isInteractive as its available at that time
+        // and set the Wrapper to InteractiveElement or componentRef
+        code = code.replace(
+          'ngOnInit() {\n',
+          `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`
+        );
+        // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
+        code = code.replace(
+          '<ng-container *ngFor="let child of blockChildren">',
+          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren">'
+        );
+        code = code.replace(
+          '</ng-container>',
+          '</ng-container>\n</ng-container>'
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code?.includes('blocks-wrapper')) {
+        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnChanges() {
+              ${mergedInputsCode}
+            }
+          }
+          `
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const VALID_HTML_TAGS = [
+  'html',
+  'base',
+  'head',
+  'link',
+  'meta',
+  'style',
+  'title',
+  'body',
+  'address',
+  'article',
+  'aside',
+  'footer',
+  'header',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'main',
+  'nav',
+  'section',
+  'blockquote',
+  'dd',
+  'div',
+  'dl',
+  'dt',
+  'figcaption',
+  'figure',
+  'hr',
+  'li',
+  'menu',
+  'ol',
+  'p',
+  'pre',
+  'ul',
+  'a',
+  'abbr',
+  'b',
+  'bdi',
+  'bdo',
+  'br',
+  'cite',
+  'code',
+  'data',
+  'dfn',
+  'em',
+  'i',
+  'kbd',
+  'mark',
+  'q',
+  'rp',
+  'rt',
+  'ruby',
+  's',
+  'samp',
+  'small',
+  'span',
+  'strong',
+  'sub',
+  'sup',
+  'time',
+  'u',
+  'var',
+  'wbr',
+  'area',
+  'audio',
+  'img',
+  'map',
+  'track',
+  'video',
+  'embed',
+  'iframe',
+  'object',
+  'param',
+  'picture',
+  'portal',
+  'source',
+  'svg',
+  'math',
+  'canvas',
+  'noscript',
+  'script',
+  'del',
+  'ins',
+  'caption',
+  'col',
+  'colgroup',
+  'table',
+  'tbody',
+  'td',
+  'tfoot',
+  'th',
+  'thead',
+  'tr',
+  'button',
+  'datalist',
+  'fieldset',
+  'form',
+  'input',
+  'label',
+  'legend',
+  'meter',
+  'optgroup',
+  'option',
+  'output',
+  'progress',
+  'select',
+  'textarea',
+  'details',
+  'dialog',
+  'summary',
+  'slot',
+  'template',
+  // tags below are SVG tags. See the below article for list of SVG tags
+  // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+  'animate',
+  'animateMotion',
+  'animateTransform',
+  'circle',
+  'clipPath',
+  'defs',
+  'desc',
+  'discard',
+  'ellipse',
+  'feBlend',
+  'feColorMatrix',
+  'feComponentTransfer',
+  'feComposite',
+  'feConvolveMatrix',
+  'feDiffuseLighting',
+  'feDisplacementMap',
+  'feDistantLight',
+  'feDropShadow',
+  'feFlood',
+  'feFuncA',
+  'feFuncB',
+  'feFuncG',
+  'feFuncR',
+  'feGaussianBlur',
+  'feImage',
+  'feMerge',
+  'feMergeNode',
+  'feMorphology',
+  'feOffset',
+  'fePointLight',
+  'feSpecularLighting',
+  'feSpotLight',
+  'feTile',
+  'feTurbulence',
+  'filter',
+  'foreignObject',
+  'g',
+  'hatch',
+  'hatchpath',
+  'image',
+  'line',
+  'linearGradient',
+  'marker',
+  'mask',
+  'metadata',
+  'mpath',
+  'path',
+  'pattern',
+  'polygon',
+  'polyline',
+  'radialGradient',
+  'rect',
+  'set',
+  'stop',
+  'switch',
+  'symbol',
+  'text',
+  'textPath',
+  'tspan',
+  'use',
+  'view',
+];
+
+const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
+  json: {
+    pre: (json) => {
+      if (VALID_HTML_TAGS.includes(json.name.toLowerCase())) {
+        json.name = `Builder${json.name}`;
+      }
+    },
+  },
+});
+
+const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('enable-editor')) {
+        code = code.replace(
+          'window.addEventListener("message", this.processMessage);',
+          'window.addEventListener("message", this.processMessage.bind(this));'
+        );
+        code = code.replace(
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate
+          );`,
+          `window.addEventListener(
+            "builder:component:stateChangeListenerActivated",
+            this.emitStateUpdate.bind(this)
+          );`
+        );
+      }
+      return code;
+    },
+  },
+});
+
+// required for registering custom components properly
+const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('content-component, ContentComponent')) {
+        const registeredComponentsCode = code.match(
+          /registeredComponents = \[.*\);/s
+        );
+        const builderContextSignalCode = code.match(
+          /builderContextSignal = \{.*\};/s
+        );
+
+        // add them to ngOnInit
+        code = code.replace(
+          // last } before the end of the class
+          /}\n\s*$/,
+          `
+            ngOnInit() {
+              this.${registeredComponentsCode}
+              this.${builderContextSignalCode}
+            }
+          }
+          `
+        );
+
+        code = code.replaceAll(
+          'this.contentSetState',
+          'this.contentSetState.bind(this)'
+        );
+      }
+      if (code.includes('content-styles, ContentStyles')) {
+        const injectedStyles = code.match(/injectedStyles = `.*;/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnInit() {
+              this.${injectedStyles}
+            }
+          }
+          `
+        );
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -151,9 +552,27 @@ module.exports = {
     plugins: [REMOVE_MAGIC_PLUGIN],
   },
   options: {
+    angular: {
+      standalone: true,
+      typescript: true,
+      state: 'class-properties',
+      plugins: [
+        ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN,
+        ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
+        ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
+        ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
+        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
+        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
+      ],
+    },
     solid: {
       typescript: true,
-      plugins: [INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN],
+      plugins: [
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
+      ],
     },
     vue: {
       typescript: true,
@@ -169,18 +588,7 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([_key, value]) => {
-                    const blocksAttrs =
-                      value?.code.includes('filterAttrs') &&
-                      value.code.includes('true');
-
-                    const dynamicRendererAttrs =
-                      json.name === 'DynamicRenderer' &&
-                      value?.code.includes('props.actionAttributes');
-                    return blocksAttrs || dynamicRendererAttrs;
-                  }
-                );
+                const filterAttrKeys = filterActionAttrBindings(json, item);
 
                 for (const [key, value] of filterAttrKeys) {
                   if (value) {
@@ -201,7 +609,11 @@ module.exports = {
     },
     react: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
+      ],
       stylesType: 'style-tag',
     },
     rsc: {
@@ -209,6 +621,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         () => ({
           json: {
             pre: (json) => {
@@ -242,10 +655,12 @@ module.exports = {
       stylesType: 'style-tag',
     },
     reactNative: {
+      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
         BASE_TEXT_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         () => ({
           json: {
             pre: (json) => {
@@ -300,6 +715,13 @@ module.exports = {
                   },
                 };
               }
+
+              /**
+               * Fix types
+               */
+              if (json.name === 'CustomCode') {
+                json.refs.elementRef.typeParameter = 'any';
+              }
             },
           },
         }),
@@ -308,7 +730,6 @@ module.exports = {
     qwik: {
       typescript: true,
       plugins: [
-        SRCSET_PLUGIN,
         /**
          * cleanup `onMount` hooks
          * - rmv unnecessary ones
@@ -407,18 +828,7 @@ module.exports = {
               traverse(json).forEach(function (item) {
                 if (!isMitosisNode(item)) return;
 
-                const filterAttrKeys = Object.entries(item.bindings).filter(
-                  ([_key, value]) => {
-                    const blocksAttrs =
-                      value?.code.includes('filterAttrs') &&
-                      value.code.includes('true');
-
-                    const dynamicRendererAttrs =
-                      json.name === 'DynamicRenderer' &&
-                      value?.code.includes('props.actionAttributes');
-                    return blocksAttrs || dynamicRendererAttrs;
-                  }
-                );
+                const filterAttrKeys = filterActionAttrBindings(json, item);
 
                 for (const [key, value] of filterAttrKeys) {
                   if (value && item.name !== 'svelte:component') {

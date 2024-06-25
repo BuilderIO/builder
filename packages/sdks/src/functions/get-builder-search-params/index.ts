@@ -1,18 +1,9 @@
+import type { QueryObject } from '../../helpers/search/search.js';
+import { normalizeSearchParams } from '../../helpers/search/search.js';
 import { isBrowser } from '../is-browser.js';
 
 const BUILDER_SEARCHPARAMS_PREFIX = 'builder.';
 const BUILDER_OPTIONS_PREFIX = 'options.';
-type QueryObject = Record<string, string | string[]>;
-
-export const convertSearchParamsToQueryObject = (
-  searchParams: URLSearchParams
-): QueryObject => {
-  const options: Record<string, string> = {};
-  searchParams.forEach((value, key) => {
-    options[key] = value;
-  });
-  return options;
-};
 
 /**
  * Receives a `URLSearchParams` object or a regular query object, and returns the subset of query params that are
@@ -47,10 +38,3 @@ export const getBuilderSearchParamsFromWindow = () => {
   const searchParams = new URLSearchParams(window.location.search);
   return getBuilderSearchParams(searchParams);
 };
-
-export const normalizeSearchParams = (
-  searchParams: QueryObject | URLSearchParams
-): QueryObject =>
-  searchParams instanceof URLSearchParams
-    ? convertSearchParamsToQueryObject(searchParams)
-    : searchParams;
