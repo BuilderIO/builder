@@ -546,6 +546,7 @@ export const Image = withBuilder(ImageComponent, {
     {
       name: 'highPriority',
       type: 'boolean',
+      advanced: true,
       helperText:
         'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
     },
