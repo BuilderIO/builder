@@ -1,6 +1,6 @@
-import { Builder } from '@builder.io/react';
+import { Builder } from '@builder.io/sdk';
 import {
-  ResourcePickerProps,
+  CommerceAPIOperations,
   ResourcesPickerButton,
   ResourcesPickerButtonProps,
 } from './editors/ResourcesPicker';
@@ -8,8 +8,6 @@ import { PickResourcesListButton, PickResourceListProps } from './editors/Resour
 import appState from '@builder.io/app-context';
 import React from 'react';
 import { onEditorLoad } from './actions/on-editor-load';
-import { Resource } from './interfaces/resource';
-import { BuilderRequest } from './interfaces/builder-request';
 import { ErrorBoundary } from './components/error-boundary';
 import capitalize from 'lodash/capitalize';
 import pluralize from 'pluralize';
@@ -35,16 +33,6 @@ export interface CommercePluginConfig {
   ctaText: string; // what to display on the button to save settings, e.g `Connect your store`
   onSave?: (actions: OnSaveActions) => Promise<void>; // you can run any action post save here, for example importing ${capitalize(resourceName)} data, registering webhooks
   noPreviewTypes?: boolean;
-}
-
-export interface CommerceAPIOperations {
-  [resourceName: string]: {
-    resourcePicker?: React.FC<ResourcePickerProps>;
-    findById(id: string): Promise<Resource>;
-    findByHandle?(handle: string): Promise<Resource>;
-    search(search: string, offset?: number, limit?: number): Promise<Resource[]>;
-    getRequestObject(id: string, resource?: Resource): BuilderRequest;
-  };
 }
 
 export const registerCommercePlugin = async (
@@ -157,4 +145,5 @@ export {
   ResourcePreviewCell,
   ResourcePickerProps,
   ResourcePreviewCellProps,
+  CommerceAPIOperations,
 } from './editors/ResourcesPicker';
