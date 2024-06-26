@@ -3913,6 +3913,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@builder.io/react-native-render-html@npm:^6.3.4":
+  version: 6.3.4
+  resolution: "@builder.io/react-native-render-html@npm:6.3.4"
+  dependencies:
+    "@jsamr/counter-style": ^2.0.1
+    "@jsamr/react-native-li": ^2.3.0
+    "@native-html/transient-render-engine": 11.2.3
+    "@types/ramda": ^0.27.40
+    "@types/urijs": ^1.19.15
+    prop-types: ^15.5.7
+    ramda: ^0.27.2
+    stringify-entities: ^3.1.0
+    urijs: ^1.19.6
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 6a2ed1fb07dbe46cb449fa6f4b56de7898c1d4c7c5e8ce57e857f3bec24430ac0257d767123e0350e94936f3c5961a0cd98d43aa481d4e2448d0b0024c467c14
+  languageName: node
+  linkType: hard
+
 "@builder.io/react@workspace:*, @builder.io/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@builder.io/react@workspace:packages/react"
@@ -4065,6 +4085,7 @@ __metadata:
     "@babel/preset-flow": ^7.22.5
     "@babel/preset-react": ^7.22.5
     "@babel/preset-typescript": ^7.22.5
+    "@builder.io/react-native-render-html": ^6.3.4
     "@builder.io/sdks": "workspace:*"
     "@react-native-async-storage/async-storage": ^1.17.10
     "@tsconfig/react-native": ^2.0.3
@@ -4076,7 +4097,6 @@ __metadata:
     nx: 16.10.0
     nx-cloud: 16.5.2
     react-native-builder-bob: ^0.21.3
-    react-native-render-html: ^6.3.4
     react-native-storage: ^1.0.1
     react-native-url-polyfill: ^2.0.0
     react-native-video: ^5.1.1
@@ -42246,26 +42266,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: b41808a122799806a524601e75620c8d79ebf8a0127f57fe370412f90471560005f65df8549fd8c39e627c58141a921c849fec9d263f481f153f0ddc90e4a5b6
-  languageName: node
-  linkType: hard
-
-"react-native-render-html@npm:^6.3.4":
-  version: 6.3.4
-  resolution: "react-native-render-html@npm:6.3.4"
-  dependencies:
-    "@jsamr/counter-style": ^2.0.1
-    "@jsamr/react-native-li": ^2.3.0
-    "@native-html/transient-render-engine": 11.2.3
-    "@types/ramda": ^0.27.40
-    "@types/urijs": ^1.19.15
-    prop-types: ^15.5.7
-    ramda: ^0.27.2
-    stringify-entities: ^3.1.0
-    urijs: ^1.19.6
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 9fd0c915664d4d25d23f48b4b33101385f2e497c643664c09b457eb091f90cd1d60f9c2c4bfad1a55403c8037d52de5dcbdebe0b1ebc9e4883d8a3099a23633b
   languageName: node
   linkType: hard
 
