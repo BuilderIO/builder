@@ -347,7 +347,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                 }),
               }}
               loading={eagerLoad ? 'eager' : 'lazy'}
-              fetchpriority={eagerLoad ? 'high' : 'auto'}
+              fetchPriority={eagerLoad ? 'high' : 'auto'}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
               {...(!amp && {

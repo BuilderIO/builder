@@ -1,6 +1,7 @@
 import type { BuilderBlock } from '../../types/builder-block.js';
 
 export interface ImageProps {
+  highPriority?: boolean;
   className?: string;
   image: string;
   sizes?: string;
