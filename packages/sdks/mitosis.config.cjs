@@ -56,7 +56,7 @@ const SRCSET_PLUGIN = () => ({
 /**
  * @type {Plugin}
  */
-const FETCHPRIORITY_PLUGIN = () => ({
+const FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
   code: {
     pre: (code) => {
       return code.replace(/fetchpriority=/g, 'fetchPriority=');
@@ -67,7 +67,7 @@ const FETCHPRIORITY_PLUGIN = () => ({
 /**
  * @type {Plugin}
  */
-const REMOVE_FETCHPRIORITY_PLUGIN = () => ({
+const REMOVE_FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
   json: {
     post: (json) => {
       traverse(json).forEach(function (item) {
@@ -643,7 +643,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        FETCHPRIORITY_PLUGIN,
+        FETCHPRIORITY_CAMELCASE_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
       ],
@@ -654,7 +654,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        FETCHPRIORITY_PLUGIN,
+        FETCHPRIORITY_CAMELCASE_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         () => ({
           json: {
@@ -764,8 +764,7 @@ module.exports = {
     qwik: {
       typescript: true,
       plugins: [
-        // Remove `fetchPriority` attribute from all blocks, since qwik doesn't support it
-        REMOVE_FETCHPRIORITY_PLUGIN,
+        FETCHPRIORITY_CAMELCASE_PLUGIN,
         /**
          * cleanup `onMount` hooks
          * - rmv unnecessary ones
