@@ -73,9 +73,9 @@ const REMOVE_FETCHPRIORITY_PLUGIN = () => ({
       traverse(json).forEach(function (item) {
         if (!isMitosisNode(item)) return;
 
-        for (const [key, _value] of Object.entries(item.properties)) {
+        for (const [key, _value] of Object.entries(item.bindings)) {
           if (key.toLowerCase() === 'fetchpriority') {
-            delete item.properties[key];
+            delete item.bindings[key];
           }
         }
       });
