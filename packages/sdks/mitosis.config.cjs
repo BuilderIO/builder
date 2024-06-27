@@ -69,8 +69,8 @@ const FETCHPRIORITY_PLUGIN = () => ({
  */
 const REMOVE_FETCHPRIORITY_PLUGIN = () => ({
   code: {
-    pre: (code) => {
-      return code.replace(/fetchpriority="[^\"]*"/g, '');
+    post: (code) => {
+      return code.replace(/fetchpriority="[^\"]*"/gi, '');
     },
   },
 });
