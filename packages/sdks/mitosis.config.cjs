@@ -68,9 +68,19 @@ const FETCHPRIORITY_PLUGIN = () => ({
  * @type {Plugin}
  */
 const REMOVE_FETCHPRIORITY_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      return code.replace(/fetchpriority="[^\"]*"/gi, '');
+  json: {
+    post: (json) => {
+      traverse(json).forEach(function (item) {
+        if (!isMitosisNode(item)) return;
+
+        for (const [key, _value] of Object.entries(item.properties)) {
+          if (key.toLowerCase() === 'fetchpriority') {
+            delete item.properties[key];
+          }
+        }
+      });
+
+      return json;
     },
   },
 });
