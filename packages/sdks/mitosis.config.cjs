@@ -64,26 +64,6 @@ const FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
   },
 });
 
-/**
- * @type {Plugin}
- */
-const REMOVE_FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
-  json: {
-    post: (json) => {
-      traverse(json).forEach(function (item) {
-        if (!isMitosisNode(item)) return;
-
-        for (const [key, _value] of Object.entries(item.bindings)) {
-          if (key.toLowerCase() === 'fetchpriority') {
-            delete item.bindings[key];
-          }
-        }
-      });
-
-      return json;
-    },
-  },
-});
 
 /**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
