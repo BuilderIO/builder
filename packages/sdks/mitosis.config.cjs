@@ -64,7 +64,6 @@ const FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
   },
 });
 
-
 /**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
