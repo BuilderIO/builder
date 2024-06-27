@@ -10,4 +10,4 @@
 "@builder.io/sdk-vue": minor
 ---
 
-Adds the highPriority option to the image block component to ensure eager loading
+Adds the `highPriority` option to the Image block component to ensure eager loading.
