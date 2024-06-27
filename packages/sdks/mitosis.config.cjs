@@ -65,6 +65,17 @@ const FETCHPRIORITY_PLUGIN = () => ({
 });
 
 /**
+ * @type {Plugin}
+ */
+const REMOVE_FETCHPRIORITY_PLUGIN = () => ({
+  code: {
+    pre: (code) => {
+      return code.replace(/fetchpriority="[^\"]*"/g, '');
+    },
+  },
+});
+
+/**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
  * @type {Plugin}
@@ -633,6 +644,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
+        FETCHPRIORITY_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         () => ({
           json: {
@@ -742,6 +754,8 @@ module.exports = {
     qwik: {
       typescript: true,
       plugins: [
+        // Remove `fetchPriority` attribute from all blocks, since qwik doesn't support it
+        REMOVE_FETCHPRIORITY_PLUGIN,
         /**
          * cleanup `onMount` hooks
          * - rmv unnecessary ones

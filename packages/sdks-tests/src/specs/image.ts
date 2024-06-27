@@ -199,7 +199,6 @@ export const CONTENT = {
   rev: 'n1iwryhh5oh',
 };
 
-
 export const CONTENT_2 = {
   id: '77609b2980f44ae5914e35b211abeb4c',
   meta: {

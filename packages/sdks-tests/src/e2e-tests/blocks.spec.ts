@@ -71,7 +71,7 @@ test.describe('Blocks', () => {
       );
       const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
       const mockImgBuffer = fs.readFileSync(mockImgPath);
-  
+
       await page.route('**/*', route => {
         const request = route.request();
         if (request.url().includes('cdn.builder.io/api/v1/image')) {
@@ -84,11 +84,11 @@ test.describe('Blocks', () => {
           return route.continue();
         }
       });
-  
+
       await page.goto('/image');
-  
+
       const imageLocator = page.locator('.builder-image');
-  
+
       const expected: Record<string, string>[] = [
         // first img is a webp image. React Native SDK does not yet support webp.
         ...(checkIsRN(sdk)
@@ -117,11 +117,11 @@ test.describe('Blocks', () => {
           height: '400px',
         },
       ];
-  
+
       await expect(imageLocator).toHaveCount(expected.length);
-  
+
       const expectedVals = expected.map((val, i) => ({ val, i }));
-  
+
       for (const { val, i } of Object.values(expectedVals)) {
         const image = imageLocator.nth(i);
         const expected = val;
@@ -139,7 +139,7 @@ test.describe('Blocks', () => {
       );
       const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
       const mockImgBuffer = fs.readFileSync(mockImgPath);
-  
+
       await page.route('**/*', route => {
         const request = route.request();
         if (request.url().includes('cdn.builder.io/api/v1/image')) {
@@ -152,11 +152,11 @@ test.describe('Blocks', () => {
           return route.continue();
         }
       });
-  
+
       await page.goto('/image-high-priority');
-  
+
       const imageLocator = page.locator('.builder-image');
-  
+
       const expected: Record<string, string>[] = [
         // first img is a webp image. React Native SDK does not yet support webp.
         ...(checkIsRN(sdk)
@@ -164,27 +164,27 @@ test.describe('Blocks', () => {
           : [
               {
                 fetchpriority: 'high',
-                loading: 'eager'
+                loading: 'eager',
               },
             ]),
         {
           fetchpriority: 'auto',
-          loading: 'lazy'
+          loading: 'lazy',
         },
         {
           fetchpriority: 'auto',
-          loading: 'lazy'
+          loading: 'lazy',
         },
         {
           fetchpriority: 'high',
-          loading: 'eager'
+          loading: 'eager',
         },
       ];
-  
+
       await expect(imageLocator).toHaveCount(expected.length);
-  
+
       const expectedVals = expected.map((val, i) => ({ val, i }));
-  
+
       for (const { val, i } of Object.values(expectedVals)) {
         const image = imageLocator.nth(i);
         const expected = val;
