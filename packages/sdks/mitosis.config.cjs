@@ -54,6 +54,17 @@ const SRCSET_PLUGIN = () => ({
 });
 
 /**
+ * @type {Plugin}
+ */
+const FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
+  code: {
+    pre: (code) => {
+      return code.replace(/fetchpriority=/g, 'fetchPriority=');
+    },
+  },
+});
+
+/**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
  * @type {Plugin}
@@ -611,6 +622,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
+        FETCHPRIORITY_CAMELCASE_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
       ],
@@ -621,6 +633,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
+        FETCHPRIORITY_CAMELCASE_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         () => ({
           json: {
@@ -730,6 +743,7 @@ module.exports = {
     qwik: {
       typescript: true,
       plugins: [
+        FETCHPRIORITY_CAMELCASE_PLUGIN,
         /**
          * cleanup `onMount` hooks
          * - rmv unnecessary ones

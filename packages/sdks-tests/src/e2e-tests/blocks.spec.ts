@@ -62,72 +62,137 @@ test.describe('Blocks', () => {
     await expect(button).toHaveCSS('background-color', 'rgb(0, 0, 0)');
   });
 
-  test('Image', async ({ page, sdk, packageName }) => {
-    test.skip(checkIsRN(sdk));
-    test.skip(
-      isSSRFramework(packageName),
-      'SSR frameworks get the images from the server so page.route intercept does not work'
-    );
-    const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
-    const mockImgBuffer = fs.readFileSync(mockImgPath);
+  test.describe('Image', () => {
+    test('Image size', async ({ page, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk));
+      test.skip(
+        isSSRFramework(packageName),
+        'SSR frameworks get the images from the server so page.route intercept does not work'
+      );
+      const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
+      const mockImgBuffer = fs.readFileSync(mockImgPath);
 
-    await page.route('**/*', route => {
-      const request = route.request();
-      if (request.url().includes('cdn.builder.io/api/v1/image')) {
-        return route.fulfill({
-          status: 200,
-          contentType: 'image/png',
-          body: mockImgBuffer,
-        });
-      } else {
-        return route.continue();
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes('cdn.builder.io/api/v1/image')) {
+          return route.fulfill({
+            status: 200,
+            contentType: 'image/png',
+            body: mockImgBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
+
+      await page.goto('/image');
+
+      const imageLocator = page.locator('.builder-image');
+
+      const expected: Record<string, string>[] = [
+        // first img is a webp image. React Native SDK does not yet support webp.
+        ...(checkIsRN(sdk)
+          ? []
+          : [
+              {
+                width: '604px',
+                height: '670.438px',
+                'object-fit': 'cover',
+              },
+            ]),
+        {
+          width: '1264px',
+          height: '240.156px',
+          // RN SDK does not support object-fit
+          'object-fit': checkIsRN(sdk) ? 'fill' : 'cover',
+        },
+        {
+          width: '604px',
+          height: '120.797px',
+          // RN SDK does not support object-fit
+          'object-fit': checkIsRN(sdk) ? 'fill' : 'contain',
+        },
+        {
+          width: '600px',
+          height: '400px',
+        },
+      ];
+
+      await expect(imageLocator).toHaveCount(expected.length);
+
+      const expectedVals = expected.map((val, i) => ({ val, i }));
+
+      for (const { val, i } of Object.values(expectedVals)) {
+        const image = imageLocator.nth(i);
+        const expected = val;
+        for (const property of Object.keys(expected)) {
+          await expect(image).toHaveCSS(property, expected[property]);
+        }
       }
     });
 
-    await page.goto('/image');
+    test('Image high priority', async ({ page, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk));
+      test.skip(
+        isSSRFramework(packageName),
+        'SSR frameworks get the images from the server so page.route intercept does not work'
+      );
+      const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
+      const mockImgBuffer = fs.readFileSync(mockImgPath);
 
-    const imageLocator = page.locator('.builder-image');
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes('cdn.builder.io/api/v1/image')) {
+          return route.fulfill({
+            status: 200,
+            contentType: 'image/png',
+            body: mockImgBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
 
-    const expected: Record<string, string>[] = [
-      // first img is a webp image. React Native SDK does not yet support webp.
-      ...(checkIsRN(sdk)
-        ? []
-        : [
-            {
-              width: '604px',
-              height: '670.438px',
-              'object-fit': 'cover',
-            },
-          ]),
-      {
-        width: '1264px',
-        height: '240.156px',
-        // RN SDK does not support object-fit
-        'object-fit': checkIsRN(sdk) ? 'fill' : 'cover',
-      },
-      {
-        width: '604px',
-        height: '120.797px',
-        // RN SDK does not support object-fit
-        'object-fit': checkIsRN(sdk) ? 'fill' : 'contain',
-      },
-      {
-        width: '600px',
-        height: '400px',
-      },
-    ];
+      await page.goto('/image-high-priority');
 
-    await expect(imageLocator).toHaveCount(expected.length);
+      const imageLocator = page.locator('.builder-image');
 
-    const expectedVals = expected.map((val, i) => ({ val, i }));
+      const expected: Record<string, string>[] = [
+        // first img is a webp image. React Native SDK does not yet support webp.
+        ...(checkIsRN(sdk)
+          ? []
+          : [
+              {
+                fetchpriority: 'high',
+                loading: 'eager',
+              },
+            ]),
+        {
+          fetchpriority: 'auto',
+          loading: 'lazy',
+        },
+        {
+          fetchpriority: 'auto',
+          loading: 'lazy',
+        },
+        {
+          fetchpriority: 'high',
+          loading: 'eager',
+        },
+      ];
 
-    for (const { val, i } of Object.values(expectedVals)) {
-      const image = imageLocator.nth(i);
-      const expected = val;
-      for (const property of Object.keys(expected)) {
-        await expect(image).toHaveCSS(property, expected[property]);
+      await expect(imageLocator).toHaveCount(expected.length);
+
+      const expectedVals = expected.map((val, i) => ({ val, i }));
+
+      for (const { val, i } of Object.values(expectedVals)) {
+        const image = imageLocator.nth(i);
+        const expected = val;
+        for (const property of Object.keys(expected)) {
+          await expect(image).toHaveAttribute(property, expected[property]);
+        }
       }
-    }
+    });
   });
 
   test.describe('Video', () => {

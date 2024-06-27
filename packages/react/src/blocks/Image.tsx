@@ -161,6 +161,9 @@ export const getSizes = (
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: boolean }> {
   get useLazyLoading() {
+    if (this.props.highPriority) {
+      return false;
+    }
     // Use builder.getLocation()
     return Builder.isBrowser && location.search.includes('builder.lazyLoadImages=false')
       ? false
@@ -294,6 +297,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     }
 
     const isPixel = builderBlock?.id.startsWith('builder-pixel-');
+    const eagerLoad = isPixel || this.props.highPriority;
     const { fitContent } = this.props;
 
     return (
@@ -342,7 +346,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   },
                 }),
               }}
-              loading={isPixel ? 'eager' : 'lazy'}
+              loading={eagerLoad ? 'eager' : 'lazy'}
+              fetchPriority={eagerLoad ? 'high' : 'auto'}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
               {...(!amp && {
@@ -537,6 +542,13 @@ export const Image = withBuilder(ImageComponent, {
       name: 'altText',
       type: 'string',
       helperText: 'Text to display when the user has images off',
+    },
+    {
+      name: 'highPriority',
+      type: 'boolean',
+      advanced: true,
+      helperText:
+        'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
     },
     {
       name: 'height',
