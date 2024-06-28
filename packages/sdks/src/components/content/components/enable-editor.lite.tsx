@@ -57,6 +57,7 @@ type BuilderEditorProps = Omit<
   | 'blocksWrapper'
   | 'blocksWrapperProps'
   | 'isNestedRender'
+  | 'linkComponent'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
   setBuilderContextSignal?: (signal: any) => any;

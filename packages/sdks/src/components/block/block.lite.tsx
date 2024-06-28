@@ -20,8 +20,10 @@ import {
   getComponent,
   getInheritedStyles,
   getRepeatItemData,
-  shouldPassLinkComponent,
-  shouldPassRegisteredComponents,
+  provideBuilderBlock,
+  provideBuilderContext,
+  provideLinkComponent,
+  provideRegisteredComponents,
 } from './block.helpers.js';
 import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
@@ -142,13 +144,13 @@ export default function Block(props: BlockProps) {
         componentRef: state.blockComponent?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.processedBlock),
-          builderContext: props.context,
-          ...(shouldPassLinkComponent(state.blockComponent)
-            ? { builderLinkComponent: props.linkComponent }
-            : {}),
-          ...(shouldPassRegisteredComponents(state.blockComponent)
-            ? { builderComponents: props.registeredComponents }
-            : {}),
+          ...provideBuilderBlock(state.blockComponent, state.processedBlock),
+          ...provideBuilderContext(state.blockComponent, props.context),
+          ...provideLinkComponent(state.blockComponent, props.linkComponent),
+          ...provideRegisteredComponents(
+            state.blockComponent,
+            props.registeredComponents
+          ),
         },
         context: useTarget({
           reactNative: {
@@ -221,7 +223,6 @@ export default function Block(props: BlockProps) {
             Wrapper={state.Tag}
             block={state.processedBlock}
             context={props.context}
-            linkComponent={props.linkComponent}
           >
             <ComponentRef
               componentRef={state.componentRefProps.componentRef}

@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/diff": "^5.0.9",
     "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18",
     "diff": "^5.1.0",
     "eslint": "^8",

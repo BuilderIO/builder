@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@types/react": "~18.2.45",
+    "@types/react": "^18.3.3",
     "@types/react-test-renderer": "^18.0.7",
     "compression": "^1.7.4",
     "eas-cli": "^10.0.3",

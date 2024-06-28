@@ -19,6 +19,8 @@ export type ContentAction = {
   label: string;
   showIf(content: any, model: any): Boolean;
   onClick(content: any): Promise<void>;
+  isDisabled?: () => boolean;
+  disabledTooltip?: string;
 };
 
 export function registerContentAction(contentAction: ContentAction) {

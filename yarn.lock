@@ -3695,23 +3695,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/eslint-plugin-mitosis@npm:^0.0.15":
-  version: 0.0.15
-  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.15"
+"@builder.io/eslint-plugin-mitosis@npm:^0.0.16":
+  version: 0.0.16
+  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.16"
   dependencies:
     "@babel/types": 7.12.6
     ts-pattern: ^3.3.5
   peerDependencies:
     eslint: ">=0.8.0"
-  checksum: 64186f3d27800be865149313688700eacdf94690131e9c9048a26e1c508ab4dca0c1a8e399e684ea65c3953f55b41f7292e53e1689d45b49ace70bd365aa0754
+  checksum: be4630a4dbe7118d12a66d34c397b761300c65a24ad2871d8599692b19efd95c82e080f91cc80543e051891f99380caacfde655c639bf53845e28709e0ab5dfb
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.3.5":
-  version: 0.3.5
-  resolution: "@builder.io/mitosis-cli@npm:0.3.5"
+"@builder.io/mitosis-cli@npm:^0.3.8":
+  version: 0.3.8
+  resolution: "@builder.io/mitosis-cli@npm:0.3.8"
   dependencies:
-    "@builder.io/mitosis": 0.3.5
+    "@builder.io/mitosis": 0.3.8
     debug: ^4.3.4
     dedent: ^0.7.0
     esbuild: ^0.12.16
@@ -3724,13 +3724,13 @@ __metadata:
     ts-morph: ^19.0.0
   bin:
     mitosis: bin/mitosis
-  checksum: 2f4379d15d9d20ba42dda9c1eee69b355c55eac87ce8aee870c4498907067051d847766ebe8230ff6d38b17e6f91430b7ce0c59b03e2b4797c662c9dcd3979a9
+  checksum: 36d436195cf9a2bdc5089319076851ae4c607a9472801ff7c63a91e3125ae74c006dee9fe323716406092eef7e54450a39d4ad439197f4b87afe1a04bec3e2ab
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.3.5, @builder.io/mitosis@npm:^0.3.5":
-  version: 0.3.5
-  resolution: "@builder.io/mitosis@npm:0.3.5"
+"@builder.io/mitosis@npm:0.3.8, @builder.io/mitosis@npm:^0.3.8":
+  version: 0.3.8
+  resolution: "@builder.io/mitosis@npm:0.3.8"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -3756,7 +3756,7 @@ __metadata:
     traverse: ^0.6.6
     ts-morph: ^19.0.0
     typescript: ^5.3.2
-  checksum: 1003acd37f4b393804d96a592414fd27af771d3466d0a6b3e2333efd2ec3240040201933d5613b63033ae2a07db0f32ea1385d7a47167c7a8f168f9c8232c4c6
+  checksum: 8f03262389952aa73e7ffe1f1b040a722362714ab7d1668707b82e0b9e58585d5647de1765284d30322ecfd84f91749316068895fe114475afabd282388f160a
   languageName: node
   linkType: hard
 
@@ -3846,7 +3846,7 @@ __metadata:
     "@types/jest": ^22.2.3
     "@types/node": ^10.17.13
     "@types/object-hash": ^1.3.0
-    "@types/react": ^18.2.39
+    "@types/react": ^18.3.3
     "@types/react-dom": ^16.0.7
     "@types/react-test-renderer": ^16.9.2
     "@types/rollup-plugin-commonjs": ^9.2.0
@@ -3971,7 +3971,7 @@ __metadata:
     isolated-vm: ^5.0.0
     nx: 16.10.0
     nx-cloud: 16.5.2
-    typescript: ^5.1.6
+    typescript: 5.5.2
     vite: ^4.3.2
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
@@ -4170,9 +4170,9 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:packages/sdks"
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
-    "@builder.io/eslint-plugin-mitosis": ^0.0.15
-    "@builder.io/mitosis": ^0.3.5
-    "@builder.io/mitosis-cli": ^0.3.5
+    "@builder.io/eslint-plugin-mitosis": ^0.0.16
+    "@builder.io/mitosis": ^0.3.8
+    "@builder.io/mitosis-cli": ^0.3.8
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
@@ -4697,7 +4697,7 @@ __metadata:
     "@builder.io/widgets": ^1.2.24
     "@sdk/tests": "workspace:*"
     "@types/node": ^20
-    "@types/react": ^18
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18
     eslint: ^8
     eslint-config-next: 14.0.3
@@ -4717,7 +4717,7 @@ __metadata:
     "@builder.io/react": "workspace:*"
     "@builder.io/widgets": ^1.2.24
     "@sdk/tests": "workspace:*"
-    "@types/react": ^18.2.39
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
     nx: 16.10.0
@@ -4741,7 +4741,7 @@ __metadata:
     "@remix-run/react": ^1.14.3
     "@remix-run/serve": ^1.14.3
     "@sdk/tests": "workspace:*"
-    "@types/react": ^18.0.25
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18.0.8
     eslint: ^8.27.0
     isbot: ^3.6.5
@@ -4774,7 +4774,7 @@ __metadata:
     "@shopify/remix-oxygen": ^2.0.4
     "@total-typescript/ts-reset": ^0.4.2
     "@types/eslint": ^8.4.10
-    "@types/react": ^18.2.22
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.7
     eslint: ^8.20.0
     eslint-plugin-hydrogen: 0.12.2
@@ -4799,7 +4799,7 @@ __metadata:
     "@builder.io/sdk-react": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/node": ^20
-    "@types/react": ^18
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18
     eslint: ^8
     eslint-config-next: 14.0.3
@@ -4819,7 +4819,7 @@ __metadata:
     "@builder.io/sdk-react-nextjs": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/node": ^20
-    "@types/react": ^18
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18
     eslint: ^8
     eslint-config-next: 14.0.3
@@ -4841,7 +4841,7 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@types/diff": ^5.0.9
     "@types/node": ^20
-    "@types/react": ^18
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18
     diff: ^5.1.0
     eslint: ^8
@@ -4897,7 +4897,7 @@ __metadata:
     "@react-native-async-storage/async-storage": 1.23.1
     "@react-navigation/native": ^6.0.2
     "@sdk/tests": "workspace:*"
-    "@types/react": ~18.2.45
+    "@types/react": ^18.3.3
     "@types/react-test-renderer": ^18.0.7
     compression: ^1.7.4
     eas-cli: ^10.0.3
@@ -4934,7 +4934,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@sdk/tests": "workspace:*"
-    "@types/react": ^18.2.39
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
     nx: 16.10.0
@@ -4956,7 +4956,7 @@ __metadata:
     "@remix-run/react": ^2.9.2
     "@remix-run/serve": ^2.9.2
     "@sdk/tests": "workspace:*"
-    "@types/react": ^18.2.20
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.7
     "@typescript-eslint/eslint-plugin": ^6.7.4
     "@typescript-eslint/parser": ^6.7.4
@@ -13708,7 +13708,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@types/node": ^20
-    "@types/react": ^18
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18
     eslint: ^8
     eslint-config-next: 14.0.3
@@ -13727,7 +13727,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
     "@types/node": ^20
-    "@types/react": ^18
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18
     eslint: ^8
     eslint-config-next: 14.0.3
@@ -13746,7 +13746,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@types/node": ^20
-    "@types/react": ^18
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18
     eslint: ^8
     eslint-config-next: 14.0.3
@@ -13795,13 +13795,22 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.0
     "@builder.io/sdk-react-native": "workspace:*"
+    "@react-native-async-storage/async-storage": 1.23.1
     "@react-navigation/native": ^6.0.2
-    "@types/react": ~18.2.45
+    "@sdk/tests": "workspace:*"
+    "@types/react": ^18.3.3
     "@types/react-test-renderer": ^18.0.7
     compression: ^1.7.4
     expo: ~51.0.14
+    expo-constants: ~16.0.2
+    expo-dev-client: ~4.0.18
+    expo-font: ~12.0.7
+    expo-linking: ~6.3.1
     expo-router: ~3.5.16
+    expo-splash-screen: ~0.27.5
     expo-status-bar: ~1.12.1
+    expo-system-ui: ~3.0.6
+    expo-web-browser: ~13.0.3
     express: ^4.19.2
     morgan: ^1.10.0
     nx: 16.10.0
@@ -13809,6 +13818,9 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.74.2
+    react-native-gesture-handler: ~2.16.1
+    react-native-safe-area-context: 4.10.1
+    react-native-screens: 3.31.1
     react-native-web: ~0.19.10
     react-test-renderer: 18.2.0
     serve: ^14.2.3
@@ -13821,7 +13833,7 @@ __metadata:
   resolution: "@snippet/react@workspace:packages/sdks/snippets/react"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
-    "@types/react": ^18.2.66
+    "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.22
     "@typescript-eslint/eslint-plugin": ^7.2.0
     "@typescript-eslint/parser": ^7.2.0
@@ -15470,7 +15482,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18, @types/react@npm:^18.0.25, @types/react@npm:^18.2.39":
+"@types/react@npm:*":
   version: 18.2.39
   resolution: "@types/react@npm:18.2.39"
   dependencies:
@@ -15492,33 +15504,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.20, @types/react@npm:^18.2.22":
+"@types/react@npm:^18.3.3":
   version: 18.3.3
   resolution: "@types/react@npm:18.3.3"
   dependencies:
     "@types/prop-types": "*"
     csstype: ^3.0.2
   checksum: c63d6a78163244e2022b01ef79b0baec4fe4da3475dc4a90bb8accefad35ef0c43560fd0312e5974f92a0f1108aa4d669ac72d73d66396aa060ea03b5d2e3873
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^18.2.66":
-  version: 18.3.2
-  resolution: "@types/react@npm:18.3.2"
-  dependencies:
-    "@types/prop-types": "*"
-    csstype: ^3.0.2
-  checksum: d0b8b9d0ede6cd28dbbe34106d914b5e3652d9d7aa9d0f32fe6171506b6fc7c826d9d6571642976a5422bd29c5022fd893a710ed59a1177a0c1df8e02cf17ffe
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:~18.2.45":
-  version: 18.2.79
-  resolution: "@types/react@npm:18.2.79"
-  dependencies:
-    "@types/prop-types": "*"
-    csstype: ^3.0.2
-  checksum: 85aa96e0e88725c84d8fc5f04f10a4da6a1f507dde33557ac9cc211414756867721264bfefd9e02bae1288ce2905351d949b652b931e734ea24519ee5c625138
   languageName: node
   linkType: hard
 
@@ -49422,6 +49414,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:5.5.2":
+  version: 5.5.2
+  resolution: "typescript@npm:5.5.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 9c5a7982dadcb2d38d129c575dd38645ae11588ae0d4a12852fb04482bbc5a1660b2371e48fd5b33b6b605cc57cefe777670054546856945a05e77bd22c8c2cd
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^4.7.4, typescript@npm:^4.9.4, typescript@npm:^4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
@@ -49479,6 +49481,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: c034461079fbfde3cb584ddee52afccb15b6e32a0ce186d0b2719968786f7ca73e1b07f71fac4163088790b16811c6ccf79680de190664ef66ff0ba9c1fe4a23
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@5.5.2#~builtin<compat/typescript>":
+  version: 5.5.2
+  resolution: "typescript@patch:typescript@npm%3A5.5.2#~builtin<compat/typescript>::version=5.5.2&hash=14eedb"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 9d89bac0de650e15d6846485f238d1e65f1013f2c260d9e53e86a1da6ecf8109d9fad9402575c5c36a6592dc5d4370db090e12971c8630ae84453654baabb6b4
   languageName: node
   linkType: hard
 

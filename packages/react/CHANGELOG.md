@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 3.2.9
+
+### Patch Changes
+
+- 945f26e: Adds the `highPriority` option to the Image block component to ensure eager loading.
+
 ## 3.2.8
 
 ### Patch Changes

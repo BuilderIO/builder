@@ -280,6 +280,10 @@ registerPlugin(
         });
         showJobNotification(translationJobId);
       },
+      isDisabled() {
+        return appState.designerState.hasUnsavedChanges();
+      },
+      disabledTooltip: 'Please publish your changes to add to translation job',
     });
     registerContentAction({
       label: 'Request an updated translation',

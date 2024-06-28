@@ -21,7 +21,6 @@ type BlockWrapperProps = {
   Wrapper: string;
   block: BuilderBlock;
   context: Signal<BuilderContextInterface>;
-  linkComponent: any;
   children?: any;
 };
 
