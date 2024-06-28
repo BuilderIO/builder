@@ -10,18 +10,20 @@
     "generate": "NODE_PRESERVE_SYMLINKS=1 nuxt generate"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "^0.7.0",
+    "@builder.io/sdk-vue": "^0.11.1-vue2-lts-0",
     "@nuxt/components": "^2.2.1",
-    "@nuxt/typescript-runtime": "^2.0.1",
+    "@nuxt/typescript-runtime": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.8.3",
-    "nuxt": "^2.15.8"
+    "nuxt": "^2.18.1",
+    "vue": "^2.7.16"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.0.4",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "postcss": "^8.4.38",
     "prettier": "^2.2.1"
   }
 }
