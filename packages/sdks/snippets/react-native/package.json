@@ -36,15 +36,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-<<<<<<< HEAD
-    "@types/react": "~18.2.45",
+    "@types/react": "^18.3.3",
     "@types/react-test-renderer": "^18.0.7",
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
-=======
-    "@types/react": "^18.3.3",
->>>>>>> ffd51ab8dc8d3c9193a05dd364fd3e5ade31d873
     "nx": "16.10.0",
     "nx-cloud": "16.5.2",
     "react-test-renderer": "18.2.0",
