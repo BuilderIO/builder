@@ -15,7 +15,7 @@ import appState from '@builder.io/app-context';
 import { Resource } from '../interfaces/resource';
 import capitalize from 'lodash/capitalize';
 import pluralize from 'pluralize';
-import { CommerceAPIOperations } from '..';
+import { CommerceAPIOperations } from '../commerce';
 
 export type PickResourceListProps = {
   api: CommerceAPIOperations;
@@ -139,7 +139,17 @@ export function PickResourceList(props: PickResourceListProps) {
                   }
                   close();
                 })}
-              />
+              />,
+              false,
+              {
+                PaperProps: {
+                  // Align modal to top so doesn't jump around centering itself when
+                  // grows and shrinks to show more/less resources or loading
+                  style: {
+                    alignSelf: 'flex-start',
+                  },
+                },
+              }
             );
           }}
         >
@@ -178,7 +188,17 @@ export function PickResourcesListButton(props: Omit<PickResourceListProps, 'onDo
             const close = appState.globalState.openDialog(
               <div css={{ padding: 30, width: 500, maxWidth: '90vw' }}>
                 <PickResourceList {...props} onDone={() => close()} />
-              </div>
+              </div>,
+              false,
+              {
+                PaperProps: {
+                  // Align modal to top so doesn't jump around centering itself when
+                  // grows and shrinks to show more/less resources or loading
+                  style: {
+                    alignSelf: 'flex-start',
+                  },
+                },
+              }
             );
           }}
           color="inherit"

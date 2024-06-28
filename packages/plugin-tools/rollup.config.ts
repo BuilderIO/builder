@@ -1,7 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import sourceMaps from 'rollup-plugin-sourcemaps';
-import camelCase from 'lodash.camelcase';
+import camelCase from 'lodash/camelCase';
 import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
 import replace from 'rollup-plugin-replace';
@@ -14,14 +14,14 @@ const pkg = require('./package.json');
 const libraryName = 'index';
 
 export default {
-  input: `src/${libraryName}.tsx`,
+  input: `src/${libraryName}.ts`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
   // Do not change these! If you install new dependenies, that is ok, they should be
   // left out of this list
   external: [
     'react',
-    '@builder.io/react',
+    '@builder.io/sdk',
     '@builder.io/app-context',
     '@material-ui/core',
     '@emotion/core',

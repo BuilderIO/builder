@@ -1,7 +1,7 @@
 import appState from '@builder.io/app-context';
 import template from 'lodash/template';
 import capitalize from 'lodash/capitalize';
-import { CommerceAPIOperations } from '..';
+import { CommerceAPIOperations } from '../commerce';
 
 interface ContentEditorActions {
   updatePreviewUrl: (url: string) => void;

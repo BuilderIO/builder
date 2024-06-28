@@ -21,9 +21,18 @@ import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props'
 import { Resource } from '../interfaces/resource';
 import { BuilderRequest } from '../interfaces/builder-request';
 import { SetEcomKeysMessage } from '../components/set-keys-message';
-import { CommerceAPIOperations } from '..';
 import pluralize from 'pluralize';
 import throttle from 'lodash/throttle';
+
+export interface CommerceAPIOperations {
+  [resourceName: string]: {
+    resourcePicker?: React.FC<ResourcePickerProps>;
+    findById(id: string): Promise<Resource>;
+    findByHandle?(handle: string): Promise<Resource>;
+    search(search: string, offset?: number, limit?: number): Promise<Resource[]>;
+    getRequestObject(id: string, resource?: Resource): BuilderRequest;
+  };
+}
 
 export interface ResourcesPickerButtonProps
   extends CustomReactEditorProps<BuilderRequest | string> {
@@ -108,22 +117,25 @@ export const ResourcePicker: React.FC<ResourcePickerProps> = props => {
   }, [store.searchInputText]);
 
   return useObserver(() => (
-    <div css={{ display: 'flex', flexDirection: 'column', minWidth: 500 }}>
+    <div css={{ display: 'flex', flexDirection: 'column', minWidth: 500, padding: 30 }}>
       <TextField
-        css={{ margin: 15 }}
+        css={{ marginBottom: 10 }}
         value={store.searchInputText}
         placeholder={props.title || `Search ${pluralize.plural(props.resourceName)}...`}
         InputProps={{
+          style: {
+            padding: '8px 0px',
+          },
           startAdornment: (
-            <InputAdornment position="start">
-              <Search css={{ color: '#999', marginRight: -2, fontSize: 20 }} />
+            <InputAdornment css={{ margin: '8px -2px 8px 8px' }} position="start">
+              <Search css={{ color: 'var(--off-background-7)', fontSize: 20 }} />
             </InputAdornment>
           ),
         }}
         onChange={action(e => (store.searchInputText = e.target.value))}
       />
       {store.loading && <CircularProgress disableShrink css={{ margin: '50px auto' }} />}
-      <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
+      <div>
         {!store.loading &&
           (store.resources.length ? (
             store.resources.map(item => (
@@ -221,7 +233,7 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
             close();
           })}
         />,
-        true,
+        false,
         {
           PaperProps: {
             // Align modal to top so doesn't jump around centering itself when

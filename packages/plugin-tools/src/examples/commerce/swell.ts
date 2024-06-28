@@ -1,22 +1,9 @@
-# Builder.io Commerce plugin tools
-
-Easily connect your custom ecommerce backend data to your Builder.io content!
-
-<img alt="Shopify data example" src="https://imgur.com/BhtUeqK.gif" >
-
-This package main expor is `registerCommercePlugin`, which will allow you to define what your ecommerce backend needs ( apiToken, password), prompt Builder.io users for it and register multiple field types per resource that allow for easy embedding and custom targeting for each resource ( products, collections, personas ...etc) in your ecommerce store.
-
-for real world example check the [@builder.io/ecom-swell-is](../../plugins/swell) folder.
-
-```ts
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-
+import { registerCommercePlugin } from '../../commerce';
 registerCommercePlugin(
   {
     name: 'Swell',
-    id: '@builder.io/ecome-swell-is',
+    id: '@builder.io/plugin-swell',
     settings: [
-      // list of information needed to connect store, optional
       {
         name: 'storeId',
         type: 'string',
@@ -34,13 +21,9 @@ registerCommercePlugin(
     ],
     ctaText: `Connect your swell.is store`,
   },
-  /**
-   * settings here will be an observable map of the settings you configured above in settings,
-   *  ( in this example settings.get('storeId') will give us the storeId entered by user)
-   */
   settings => {
-    // setup basic cache for a better user experience
     const basicCache = new Map();
+
     const baseUrl = (url: string) =>
       'https://builder.io/api/v1/proxy-api?url=' +
       encodeURIComponent('https://api.swell.store/' + url);
@@ -50,7 +33,6 @@ registerCommercePlugin(
       'Content-Type': 'application/json',
     };
 
-    // always transform product to match Resource interface, ts will notify you if not
     const transformProduct = (product: any) => ({
       id: product.id,
       title: product.name,
@@ -107,4 +89,3 @@ registerCommercePlugin(
     };
   }
 );
-```
