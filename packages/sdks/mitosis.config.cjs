@@ -209,20 +209,6 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
-const ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('<enable-editor')) {
-        code = code.replace('[linkComponent]="linkComponent"', '');
-      }
-      if (code.includes('<block-wrapper')) {
-        code = code.replace('[linkComponent]="linkComponent"', '');
-      }
-      return code;
-    },
-  },
-});
-
 // for fixing circular dependencies
 const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
@@ -568,7 +554,6 @@ module.exports = {
       typescript: true,
       state: 'class-properties',
       plugins: [
-        ANGULAR_REMOVE_UNUSED_LINK_COMPONENT_PROP_PLUGIN,
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
