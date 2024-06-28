@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "0.10.1-vue2-lts-0",
+  "version": "0.11.1-vue2-lts-0",
   "main": "./vue2/lib/node/index.cjs",
   "module": "./vue2/lib/node/index.js",
   "type": "module",
@@ -16,7 +16,8 @@
   },
   "files": [
     "vue2/lib",
-    "vue2/package.json"
+    "vue2/package.json",
+    "nuxt.js"
   ],
   "exports": {
     "./nuxt": "./nuxt.js",
