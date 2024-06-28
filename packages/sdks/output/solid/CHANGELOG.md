@@ -1,5 +1,13 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.32
+
+### Patch Changes
+
+- a38eae0: Fix: pass Builder props to blocks and custom components only when needed.
+- e31ef49: Misc: cleanup error message for edge runtime evaluation.
+- 945f26e: Adds the `highPriority` option to the Image block component to ensure eager loading.
+
 ## 1.0.31
 
 ### Patch Changes
