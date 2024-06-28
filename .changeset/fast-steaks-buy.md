@@ -9,4 +9,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Fix: pass builder props only when needed
+Fix: pass Builder props to blocks and custom components only when needed.
