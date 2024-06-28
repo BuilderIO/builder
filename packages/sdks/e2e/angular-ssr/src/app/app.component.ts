@@ -61,44 +61,28 @@ export class AppComponent {
     @Inject(PLATFORM_ID) private platformId: any,
     @Optional() @Inject(REQUEST) private req: any
   ) {
-    if (isPlatformServer(this.platformId)) {
-      const urlPath = this.req.path || '';
-      const searchParams = new URLSearchParams(this.req.url.split('?')[1]);
-      getProps({
-        pathname: urlPath,
-        _processContentResult,
-        options: searchParams ? getBuilderSearchParams(searchParams) : {},
-        fetchOneEntry,
-      }).then((builderProps) => {
-        if (!builderProps) {
-          return;
-        }
-        this.content = builderProps.content;
-        this.canTrack = builderProps.canTrack;
-        this.trustedHosts = builderProps.trustedHosts;
-        this.apiKey = builderProps.apiKey;
-        this.model = builderProps.model;
-        this.apiVersion = builderProps.apiVersion;
-      });
-    } else {
-      const url = new URL(window.location.href);
-      getProps({
-        pathname: url.pathname,
-        _processContentResult,
-        options: getBuilderSearchParams(url.searchParams),
-        fetchOneEntry,
-      }).then((builderProps) => {
-        if (!builderProps) {
-          return;
-        }
-        this.content = builderProps.content;
-        this.canTrack = builderProps.canTrack;
-        this.trustedHosts = builderProps.trustedHosts;
-        this.apiKey = builderProps.apiKey;
-        this.model = builderProps.model;
-        this.apiVersion = builderProps.apiVersion;
-      });
-    }
+    const urlPath = isPlatformServer(this.platformId)
+      ? this.req.path || ''
+      : window.location.pathname;
+    const searchParams = isPlatformServer(this.platformId)
+      ? new URLSearchParams(this.req.url.split('?')[1])
+      : new URLSearchParams(window.location.search);
+    getProps({
+      pathname: urlPath,
+      _processContentResult,
+      options: searchParams ? getBuilderSearchParams(searchParams) : {},
+      fetchOneEntry,
+    }).then((builderProps) => {
+      if (!builderProps) {
+        return;
+      }
+      this.content = builderProps.content;
+      this.canTrack = builderProps.canTrack;
+      this.trustedHosts = builderProps.trustedHosts;
+      this.apiKey = builderProps.apiKey;
+      this.model = builderProps.model;
+      this.apiVersion = builderProps.apiVersion;
+    });
   }
 
   async ngOnInit() {
