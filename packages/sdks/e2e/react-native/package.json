@@ -3,12 +3,13 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "build": "expo export -p web",
     "serve": "node server.js",
-    "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests",
+    "build:ios": "eas build -e development:simulator -p ios --no-wait --local"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",
@@ -29,7 +30,6 @@
     "react-dom": "18.2.0",
     "react-native": "0.74.2",
     "react-native-gesture-handler": "~2.16.1",
-    "react-native-reanimated": "~3.10.1",
     "react-native-safe-area-context": "4.10.1",
     "react-native-screens": "3.31.1",
     "react-native-web": "~0.19.10"
@@ -51,5 +51,6 @@
   "private": true,
   "installConfig": {
     "hoistingLimits": "workspaces"
-  }
+  },
+  "version": "1.0.0"
 }

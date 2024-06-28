@@ -18,3 +18,9 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+
+# ignore eas local builds
+build-*.tar.gz
+
+# ignore ios build
+ios
