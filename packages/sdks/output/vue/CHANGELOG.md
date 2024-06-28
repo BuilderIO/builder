@@ -1,5 +1,11 @@
 # Builder.io Vue 2 SDK (LONG-TERM-SUPPORT) Changelog (@builder.io/sdk-vue)
 
+## 0.11.1
+
+### Patch Changes
+
+- 4e88a75: Fix: add missing file for `/nuxt` subpath export.
+
 ## 0.10.1
 
 ### Patch Changes
