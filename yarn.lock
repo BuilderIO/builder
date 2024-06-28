@@ -3988,7 +3988,7 @@ __metadata:
     "@babel/preset-typescript": ^7.22.5
     "@builder.io/react-native-render-html": ^6.3.4
     "@builder.io/sdks": "workspace:*"
-    "@react-native-async-storage/async-storage": ^1.17.10
+    "@react-native-async-storage/async-storage": 1.23.1
     "@tsconfig/react-native": ^2.0.3
     "@types/node": ^20.11.16
     "@types/react-native-video": ^5.0.9
@@ -4894,7 +4894,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.0
     "@builder.io/sdk-react-native": "workspace:*"
-    "@expo/vector-icons": ^14.0.0
+    "@react-native-async-storage/async-storage": 1.23.1
     "@react-navigation/native": ^6.0.2
     "@sdk/tests": "workspace:*"
     "@types/react": ~18.2.45
@@ -11365,14 +11365,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:^1.17.10":
-  version: 1.21.0
-  resolution: "@react-native-async-storage/async-storage@npm:1.21.0"
+"@react-native-async-storage/async-storage@npm:1.23.1":
+  version: 1.23.1
+  resolution: "@react-native-async-storage/async-storage@npm:1.23.1"
   dependencies:
     merge-options: ^3.0.4
   peerDependencies:
     react-native: ^0.0.0-0 || >=0.60 <1.0
-  checksum: 969cdeb444a037087b1897553082e148e25c8331055dd0dc142f76deeb4aadd9ed5ec26926ae990b3e9ff088396e74ab557148a2dd2a7db86058051b774f2619
+  checksum: 7096546ed4a5faf1f6e0425e2e15713575f1a7493a04524da386ff35c3844b57b8fd20544fad4157b4a61e048b10235f2f06124f262da5b327edc74fbc31e02b
   languageName: node
   linkType: hard
 
@@ -13795,20 +13795,13 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.0
     "@builder.io/sdk-react-native": "workspace:*"
-    "@expo/vector-icons": ^14.0.0
     "@react-navigation/native": ^6.0.2
     "@types/react": ~18.2.45
     "@types/react-test-renderer": ^18.0.7
     compression: ^1.7.4
     expo: ~51.0.14
-    expo-constants: ~16.0.2
-    expo-font: ~12.0.7
-    expo-linking: ~6.3.1
     expo-router: ~3.5.16
-    expo-splash-screen: ~0.27.5
     expo-status-bar: ~1.12.1
-    expo-system-ui: ~3.0.6
-    expo-web-browser: ~13.0.3
     express: ^4.19.2
     morgan: ^1.10.0
     nx: 16.10.0
@@ -13816,9 +13809,6 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.74.2
-    react-native-gesture-handler: ~2.16.1
-    react-native-safe-area-context: 4.10.1
-    react-native-screens: 3.31.1
     react-native-web: ~0.19.10
     react-test-renderer: 18.2.0
     serve: ^14.2.3
@@ -42937,11 +42927,11 @@ __metadata:
   linkType: hard
 
 "react-freeze@npm:^1.0.0":
-  version: 1.0.3
-  resolution: "react-freeze@npm:1.0.3"
+  version: 1.0.4
+  resolution: "react-freeze@npm:1.0.4"
   peerDependencies:
     react: ">=17.0.0"
-  checksum: 4258eabdbbf74aaebc38ad1fd7cfdc1984d2a844a2247b39a341c55c1beb02d5e855e6473ec5683205a52b2251d0f7dffa07cd8100f402dd2698af88b932d946
+  checksum: 6b4d93209dff04a1f25d9f8e0c56a9a8a80e7889e8e8267299f34449c7e41a9ab90cad24569d03dd7173b56b7496576dba68f71f1d4e5c8be72f0633023668bc
   languageName: node
   linkType: hard
 

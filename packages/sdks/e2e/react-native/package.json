@@ -8,12 +8,12 @@
     "web": "expo start --web",
     "build": "expo export -p web",
     "serve": "node server.js",
-    "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests",
-    "build:ios": "eas build -e development:simulator -p ios --no-wait --local"
+    "build:ios": "eas build -e development:simulator -p ios --no-wait --local",
+    "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",
-    "@expo/vector-icons": "^14.0.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^6.0.2",
     "@sdk/tests": "workspace:*",
     "expo": "~51.0.14",
