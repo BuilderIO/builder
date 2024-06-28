@@ -16,7 +16,8 @@
   },
   "files": [
     "vue2/lib",
-    "vue2/package.json"
+    "vue2/package.json",
+    "nuxt.js"
   ],
   "exports": {
     "./nuxt": "./nuxt.js",
