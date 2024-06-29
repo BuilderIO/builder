@@ -80,28 +80,67 @@ export const Embed = withBuilder(EmbedComponent, {
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
       onChange(options: Map<string, any>) {
-        const url = options.get('url');
+        let url = options.get('url');
+
         if (url) {
-          options.set('content', 'Loading...');
-          // TODO: get this out of here!
-          const apiKey = 'ae0e60e78201a3f2b0de4b';
-          return fetch(`https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`)
-            .then(res => res.json())
-            .then(data => {
-              if (options.get('url') === url) {
+          const fetchHtmlContentForUrl = (url: string) => {
+            // TODO: get this out of here!
+            const apiKey = 'ae0e60e78201a3f2b0de4b';
+
+            return fetch(`https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`)
+              .then(res => res.json())
+              .then(data => {
                 if (data.html) {
-                  options.set('content', data.html);
+                  return data.html;
                 } else {
-                  options.set('content', 'Invalid url, please try another');
+                  return 'Invalid url, please try another';
                 }
-              }
-            })
-            .catch(err => {
+              })
+              .catch(ex => {
+                console.error(`Error fetching content for url 'url' !`, ex);
+                return 'There was an error embedding this URL, please try again or another URL';
+              });
+          };
+
+          options.set('content', 'Loading...');
+
+          if (typeof url === 'string') {
+            fetchHtmlContentForUrl(url).then(content => options.set('content', content));
+          } else {
+            // if url is an observable, extract the core url map
+            if (url.toJS) {
+              url = url.toJS();
+              url = Object.fromEntries(url.entries());
+            }
+
+            if (url['@type'] !== '@builder.io/core:LocalizedValue') {
+              console.error("Unrecognized object format for Embed component's 'url' input!", url);
+              return;
+            }
+
+            const localeEntries: Record<string, string> = Object.assign({}, url);
+            delete localeEntries['@type'];
+
+            const fetchedContent = {};
+
+            Promise.all(
+              Object.entries(localeEntries).map(([locale, url]) => {
+                return fetchHtmlContentForUrl(url).then(
+                  content => (fetchedContent[locale] = content)
+                );
+              })
+            ).then(() => {
               options.set(
                 'content',
-                'There was an error embedding this URL, please try again or another URL'
+                Object.assign(
+                  {
+                    '@type': '@builder.io/core:LocalizedValue',
+                  },
+                  fetchedContent
+                )
               );
             });
+          }
         } else {
           options.delete('content');
         }
