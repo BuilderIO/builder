@@ -10,7 +10,7 @@ export function isFromTrustedHost(
   trustedHosts: string[] | undefined,
   e: { origin: string }
 ): boolean {
-  if (!e.origin.includes('http') || !e.origin.includes('https')) {
+  if (!e.origin.includes('http') && !e.origin.includes('https')) {
     return false;
   }
   const url = new URL(e.origin),
