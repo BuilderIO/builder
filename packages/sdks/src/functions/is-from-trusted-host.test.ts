@@ -43,4 +43,8 @@ describe('isFromTrustedHost', () => {
       isFromTrustedHost(['example.com'], { origin: 'https://example.com' })
     ).toBe(true);
   });
+
+  test('when origin is not a URL', () => {
+    expect(isFromTrustedHost(undefined, { origin: 'foo' })).toBe(false);
+  });
 });
