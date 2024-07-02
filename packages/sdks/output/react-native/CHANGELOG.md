@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.33
+
+### Patch Changes
+
+- 6c8db7e: Fix: check `e.origin` of the message to be a URL first
+
 ## 1.0.32
 
 ### Patch Changes

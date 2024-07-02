@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.0.8
+
+### Patch Changes
+
+- 6c8db7e: Fix: check `e.origin` of the message to be a URL first
+
 ## 0.0.7
 
 ### Patch Changes

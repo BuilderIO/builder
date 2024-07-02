@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.28
+
+### Patch Changes
+
+- 6c8db7e: Fix: check `e.origin` of the message to be a URL first
+
 ## 0.14.27
 
 ### Patch Changes
