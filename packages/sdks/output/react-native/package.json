@@ -11,7 +11,7 @@
   "type": "module",
   "main": "lib/browser/commonjs/index.js",
   "module": "lib/browser/module/index.js",
-  "react-native": "lib/browser/commonjs/index.js",
+  "source": "src/index.ts",
   "types": "lib/browser/typescript/index.d.ts",
   "exports": {
     ".": {
@@ -93,7 +93,8 @@
     }
   },
   "files": [
-    "lib/"
+    "lib",
+    "src"
   ],
   "scripts": {
     "release": "npm publish",
@@ -106,10 +107,10 @@
     "build:browser": "SDK_ENV=browser yarn build:one"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.10",
+    "@builder.io/react-native-render-html": "^6.3.4",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "css-to-react-native": "^3.2.0",
     "isolated-vm": "^5.0.0",
-    "react-native-render-html": "^6.3.4",
     "react-native-storage": "^1.0.1",
     "react-native-video": "^5.1.1"
   },
@@ -117,7 +118,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-native": ">=0.64.3",
-    "react-native-url-polyfill": "^2.0.0"
+    "react-native-url-polyfill": "^2.0.0",
+    "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.10",
@@ -156,5 +158,6 @@
         ]
       }
     }
-  }
+  },
+  "stableVersion": "1.0.30"
 }

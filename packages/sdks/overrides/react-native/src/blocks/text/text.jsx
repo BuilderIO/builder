@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
-import { RenderHTML } from 'react-native-render-html';
+import { RenderHTML } from '@builder.io/react-native-render-html';
 import BuilderContext from '../../context/builder.context';
 import { checkIsDefined } from '../../helpers/nullable.js';
 /**
