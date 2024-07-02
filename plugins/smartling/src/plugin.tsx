@@ -50,6 +50,14 @@ registerPlugin(
         type: 'string',
         required: true,
       },
+      {
+        name: 'enableJobAutoAuthorization',
+        friendlyName: 'Authorize Smartling Jobs through Builder',
+        type: 'boolean',
+        defaultValue: true,
+        helperText: 'Allows users to authorize Smartling jobs directly from Builder',
+        requiredPermissions: ['admin'],
+      },
     ],
     onSave: async actions => {
       const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -73,10 +81,12 @@ registerPlugin(
           if (!shoudlCheck) {
             return;
           }
-          const translationStatus =
-            appState.designerState.editingContentModel.meta.get('translationStatus');
-          const translationRequested =
-            appState.designerState.editingContentModel.meta.get('translationRequested');
+          const translationStatus = appState.designerState.editingContentModel.meta.get(
+            'translationStatus'
+          );
+          const translationRequested = appState.designerState.editingContentModel.meta.get(
+            'translationRequested'
+          );
 
           // check if there's pending translation
           const isFresh =
