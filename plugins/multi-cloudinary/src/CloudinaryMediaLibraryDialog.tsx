@@ -54,7 +54,6 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
       },
       {
         insertHandler: (data: any) => {
-          console.log('hello', data);
           this.selectImages({
             ...data.assets,
           });

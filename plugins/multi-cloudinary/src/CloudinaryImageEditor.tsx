@@ -10,7 +10,7 @@ import { UploadIcon } from './svgIcons/uploadIcon';
 
 interface Props {
   value?: any;
-  onChange(newValue: { data: CloudinaryImage[]; type: string }): void;
+  onChange(newValue: { data: CloudinaryImage[]; editor: string; type: string }): void;
   context: any;
 }
 
@@ -111,8 +111,7 @@ export default class CloudinaryImageEditor extends React.Component<
   }
 
   private selectImages(images: CloudinaryImage[]) {
-    this.props.onChange({ data: images, type: 'multiCloudinaryImages' });
-    // this.setState({ selectedImagePublicId: images[0].public_id });
+    this.props.onChange({ data: images, editor: 'multiCloudinaryImageEditor',type: 'multi' });
   }
 
   buildImageName(): string {
