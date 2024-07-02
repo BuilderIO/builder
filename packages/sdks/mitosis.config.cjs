@@ -552,7 +552,7 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
-      state: 'class-properties',
+      state: 'signals',
       plugins: [
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
