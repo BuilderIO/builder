@@ -1,47 +1,20 @@
-# Builder.io Cloudinary Plugin
+# Builder.io Cloudinary Multiple Image Plugin
 
-This plugin allows you to access your Cloudinary image content in the Builder.io's Visual Editor using the official Cloudinary Media Library widget.
+This plugin is specifically designed to select multiple images from Cloudinary image content in the Builder.io's Visual Editor using the official Cloudinary Media Library widget. It will create a list item for each selected image.
 
 <img src="https://imgur.com/vpNzMud.gif" alt="Plugin example">
 
 ## Installation
-To install the plugin navigate to the [Integrations](https://builder.io/app/integrations) tab in your dashboard and click **Enable** for the Cloudinary plugin.
+To install the plugin navigate to the [Integrations](https://builder.io/app/integrations) tab in your dashboard and click **Enable** for the Cloudinary Multiple Image Picker plugin.
 
 ## Using the plugin
 
-To use the Cloudinary Media Library widget in Builder.io you must create a custom component that leverages the `cloudinaryImageEditor` custom type provided by this plugin. If you're not already familiar with creating custom components in Builder.io you can read more [here](https://www.builder.io/c/docs/custom-react-components).
+In your Model, if you have a field of type List. Then one subField can be of type Cloudinary Multiple Image Picker. This will allow you to select multiple images from the Cloudinary Window. For each image selected it will create a list item with other fields as well. 
+This will be useful when users have to create list items and add image to each item.
+Check this loom to understand more. 
 
-In your webapp register a custom component with an input of type `cloudinaryImageEditor`.
 
-```javascript
-import { Builder } from '@builder.io/react'
 
-Builder.registerComponent(
-  (props) => {
-    if (!props.cloudinaryOptions) {
-      return 'Choose an Image'
-    }
-    return (
-      <img
-        src={props.cloudinaryOptions.url}
-        width={props.cloudinaryOptions.width}
-        height={props.cloudinaryOptions.height}
-      />
-    )
-  },
-  {
-    name: 'CloudinaryImage',
-    image:
-      'https://res.cloudinary.com/cloudinary-marketing/image/upload/v1599098500/creative_source/Logo/Cloud%20Glyph/cloudinary_cloud_glyph_blue_png.png',
-    inputs: [{ 
-      name: 'cloudinaryOptions', 
-      type: 'cloudinaryImageEditor' 
-    }],
-  }
-)
-```
-
-Once you've registered your custom component, you should now see the `Cloudinary Image` custom component in the Visual Editor! You can drag and drop this component in Builder content wherever you need to use an image sourced from Cloudinary.
 
 ### Setup
 
@@ -97,4 +70,4 @@ If you think your plugin will benefit others in the Builder.io community you can
 ---
 ## Contributors
 
-Created by [@JacoboGallardo](https://github.com/jacobogallardo)!
+Created by [@anaghav2023](https://github.com/anaghav2023)!

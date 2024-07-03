@@ -48,7 +48,7 @@ export default {
       ? [
           serve({
             contentBase: 'dist',
-            port: 1268,
+            port: 1269,
             headers: {
               'Access-Control-Allow-Origin': '*',
               // https://developer.chrome.com/blog/private-network-access-preflight/#new-in-pna

@@ -1,6 +1,6 @@
 {
-  "name": "@builder.io/plugin-cloudinary",
-  "version": "1.1.5",
+  "name": "@builder.io/plugin-multi-select-cloudinary",
+  "version": "1.0.0",
   "description": "",
   "keywords": [],
   "main": "dist/builder-plugin-cloudinary.system.js",
@@ -11,8 +11,8 @@
     "dist"
   ],
   "author": {
-    "name": "Jacobo Gallardo",
-    "url": "https://github.com/jacobogallardo"
+    "name": "Anagha Varhade",
+    "url": "https://github.com/anaghav2023"
   },
   "repository": {
     "type": "git",

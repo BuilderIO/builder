@@ -111,7 +111,7 @@ export default class CloudinaryImageEditor extends React.Component<
   }
 
   private selectImages(images: CloudinaryImage[]) {
-    this.props.onChange({ data: images, editor: 'multiCloudinaryImageEditor',type: 'multi' });
+    this.props.onChange({ data: images, editor: 'cloudinaryMultipleImageEditor',type: 'multi' });
   }
 
   buildImageName(): string {
@@ -242,6 +242,6 @@ export default class CloudinaryImageEditor extends React.Component<
 }
 
 Builder.registerEditor({
-  name: 'multiCloudinaryImageEditor',
+  name: 'cloudinaryMultipleImageEditor',
   component: CloudinaryImageEditor,
 });
