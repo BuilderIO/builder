@@ -13,6 +13,8 @@ In your Model, if you have a field of type List. Then one subField can be of typ
 This will be useful when users have to create list items and add image to each item.
 Check this loom to understand more. 
 
+https://www.loom.com/share/c53b49f16d1e4c148219aa833ea7e49a
+
 
 
 
