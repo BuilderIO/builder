@@ -30,6 +30,33 @@ import stringify from 'fast-json-stable-stringify';
 // translation status that indicate the content is being queued for translations
 const enabledTranslationStatuses = ['pending', 'local'];
 
+function updatePublishCTA(content: any, translationModel: any) {
+  let publishButtonText = undefined;
+  let publishedToastMessage = undefined;
+
+  // establish that it's a job's content entry that we are currently in
+  if (content.modelId === translationModel?.id) {
+    const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
+    if (!pluginSettings) {
+      return;
+    }
+
+    const enableJobAutoAuthorization = pluginSettings.get('enableJobAutoAuthorization');
+
+    // if 'enableJobAutoAuthorization' is undefined then assume it to be true and proceed likewise
+    if (enableJobAutoAuthorization === undefined || enableJobAutoAuthorization === true) {
+      publishButtonText = 'Authorize';
+      publishedToastMessage = 'Authorized';
+    } else {
+      publishButtonText = 'Send to Smartling';
+      publishedToastMessage = 'Sent to Smartling';
+    }
+  }
+
+  appState.designerState.editorOptions.publishButtonText = publishButtonText;
+  appState.designerState.editorOptions.publishedToastMessage = publishedToastMessage;
+}
+
 registerPlugin(
   {
     name: 'Smartling',
@@ -77,10 +104,14 @@ registerPlugin(
         () => {
           return String(appState.designerState.editingContentModel?.lastUpdated || '');
         },
-        async shoudlCheck => {
-          if (!shoudlCheck) {
+        async shouldCheck => {
+          if (!shouldCheck) {
             return;
           }
+
+          const translationModel = getTranslationModel();
+          updatePublishCTA(appState.designerState.editingContentModel, translationModel);
+
           const translationStatus = appState.designerState.editingContentModel.meta.get(
             'translationStatus'
           );
@@ -108,7 +139,9 @@ registerPlugin(
               sourceLocale,
               ''
             );
-            const currentRevision = hash(stringify(translatableFields), { encoding: 'base64' });
+            const currentRevision = hash(stringify(translatableFields), {
+              encoding: 'base64',
+            });
             appState.designerState.editingContentModel.meta.set(
               'translationRevisionLatest',
               currentRevision
@@ -118,7 +151,7 @@ registerPlugin(
                 appState.globalState.showGlobalBlockingLoading('Contacting Smartling ....');
                 await api.updateTranslationFile({
                   translationJobId: lastPublishedContent.meta.translationJobId,
-                  translationModel: getTranslationModel().name,
+                  translationModel: translationModel.name,
                   contentId: lastPublishedContent.id,
                   contentModel: appState.designerState.editingModel.name,
                   preview: lastPublishedContent.meta.lastPreviewUrl,
