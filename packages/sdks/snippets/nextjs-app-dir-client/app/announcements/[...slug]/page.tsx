@@ -9,7 +9,7 @@ import {
   getBuilderSearchParams,
   isEditing,
   isPreviewing,
-} from '@builder.io/sdk-react-nextjs';
+} from '@builder.io/sdk-react';
 
 interface PageProps {
   params: {
