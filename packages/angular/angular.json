@@ -90,7 +90,8 @@
               "optimization": false,
               "sourceMap": true,
               "extractLicenses": false,
-              "vendorChunk": true
+              "vendorChunk": true,
+              "buildOptimizer": false
             }
           },
           "defaultConfiguration": "production"
@@ -119,7 +120,6 @@
       }
     }
   },
-  "defaultProject": "angular",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "builder"
