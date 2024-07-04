@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/angular/src/app/catchall/catchall.component.ts
+ * snippets/angular/src/app/catch-all/catch-all.component.ts
  */
 
 // fails because type imports cannot be injected
