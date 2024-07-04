@@ -318,6 +318,7 @@ registerPlugin(
             ...fastClone(content.meta),
             translationStatus: 'local',
             translationJobId,
+            translationBy: pkg.name,
           },
         });
         showJobNotification(translationJobId);
