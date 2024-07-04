@@ -1,46 +1,75 @@
-// These are important and needed before anything else
-import 'zone.js/dist/zone-node';
-import 'reflect-metadata';
 
-import { enableProdMode } from '@angular/core';
+import 'zone.js/node';
 
-import { ngExpressEngine } from '@nguniversal/express-engine';
-
+import { APP_BASE_HREF } from '@angular/common';
+import { CommonEngine } from '@angular/ssr';
 import * as express from 'express';
-import { join } from 'path';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import bootstrap from './src/main.server';
+import { REQUEST, RESPONSE } from './src/express.tokens';
 
-import { AppServerModule } from './src/main.server';
+// The Express app is exported so that it can be used by serverless Functions.
+export function app(): express.Express {
+  const server = express();
+  const distFolder = join(process.cwd(), 'dist/browser');
+  const indexHtml = existsSync(join(distFolder, 'index.original.html'))
+    ? join(distFolder, 'index.original.html')
+    : join(distFolder, 'index.html');
 
-// Faster server renders w/ Prod mode (dev mode never needed)
-enableProdMode();
+  const commonEngine = new CommonEngine();
 
-// Express server
-const app = express();
+  server.set('view engine', 'html');
+  server.set('views', distFolder);
 
-const PORT = process.env.PORT || 4000;
-const DIST_FOLDER = join(process.cwd(), 'dist');
+  // Example Express Rest API endpoints
+  // server.get('/api/**', (req, res) => { });
+  // Serve static files from /browser
+  server.get('*.*', express.static(distFolder, {
+    maxAge: '1y'
+  }));
 
-// * NOTE :: leave this as require() since this file is built Dynamically from webpack
+  // All regular routes use the Angular engine
+  server.get('*', (req, res, next) => {
+    const { protocol, originalUrl, baseUrl, headers } = req;
 
-app.engine(
-  'html',
-  ngExpressEngine({
-    bootstrap: AppServerModule,
-  })
-);
+    commonEngine
+      .render({
+        bootstrap,
+        documentFilePath: indexHtml,
+        url: `${protocol}://${headers.host}${originalUrl}`,
+        publicPath: distFolder,
+        providers: [
+          { provide: APP_BASE_HREF, useValue: baseUrl },
+          { provide: RESPONSE, useValue: res },
+          { provide: REQUEST, useValue: req }
+],
+      })
+      .then((html) => res.send(html))
+      .catch((err) => next(err));
+  });
 
-app.set('view engine', 'html');
-app.set('views', join(DIST_FOLDER, 'browser'));
+  return server;
+}
 
-// Server static files from /browser
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser')));
+function run(): void {
+  const port = process.env['PORT'] || 4000;
 
-// All regular routes use the Universal engine
-app.get('*', (req, res) => {
-  res.render(join(DIST_FOLDER, 'browser', 'index.html'), { req });
-});
+  // Start up the Node server
+  const server = app();
+  server.listen(port, () => {
+    console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+}
 
-// Start up the Node server
-app.listen(PORT, () => {
-  console.log(`Node server listening on http://localhost:${PORT}`);
-});
+// Webpack will replace 'require' with '__webpack_require__'
+// '__non_webpack_require__' is a proxy to Node 'require'
+// The below code is to ensure that the server is run only when not requiring the bundle.
+declare const __non_webpack_require__: NodeRequire;
+const mainModule = __non_webpack_require__.main;
+const moduleFilename = mainModule && mainModule.filename || '';
+if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
+  run();
+}
+
+export default bootstrap;
