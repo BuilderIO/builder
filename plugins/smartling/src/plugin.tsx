@@ -109,8 +109,7 @@ registerPlugin(
             return;
           }
 
-          const translationModel = getTranslationModel();
-          updatePublishCTA(appState.designerState.editingContentModel, translationModel);
+          updatePublishCTA(appState.designerState.editingContentModel, getTranslationModel());
 
           const translationStatus = appState.designerState.editingContentModel.meta.get(
             'translationStatus'
@@ -151,7 +150,7 @@ registerPlugin(
                 appState.globalState.showGlobalBlockingLoading('Contacting Smartling ....');
                 await api.updateTranslationFile({
                   translationJobId: lastPublishedContent.meta.translationJobId,
-                  translationModel: translationModel.name,
+                  translationModel: translationModelName,
                   contentId: lastPublishedContent.id,
                   contentModel: appState.designerState.editingModel.name,
                   preview: lastPublishedContent.meta.lastPreviewUrl,
