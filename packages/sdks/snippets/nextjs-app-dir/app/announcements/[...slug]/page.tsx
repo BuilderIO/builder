@@ -1,7 +1,7 @@
 /**
  * https://www.builder.io/c/docs/integrate-section-building
  * https://www.builder.io/c/blueprints/announcement-bar
- * pages/announcements/[...slug].tsx
+ * pages/announcements/[...slug]/page.tsx
  */
 import {
   Content,
