@@ -262,7 +262,7 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('blocks-wrapper')) {
+      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
         const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
         code = code.replace(
           /}\n\s*$/,
