@@ -1,8 +1,20 @@
-/* @refresh reload */
+import { Router } from '@solidjs/router';
 import { render } from 'solid-js/web';
-
-import App from './App';
 
 const root = document.getElementById('root');
 
-render(() => <App />, root!);
+import App from './App';
+import AnnouncementBar from './components/AnnouncementBar';
+
+const routes = [
+  {
+    path: '/announcements/:id',
+    component: AnnouncementBar,
+  },
+  {
+    path: '*',
+    component: App,
+  },
+];
+
+render(() => <Router explicitLinks>{routes}</Router>, root!);

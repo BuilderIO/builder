@@ -14060,6 +14060,7 @@ __metadata:
   resolution: "@snippet/solid@workspace:packages/sdks/snippets/solidjs"
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
+    "@solidjs/router": ^0.13.6
     nx: 16.10.0
     nx-cloud: 16.5.2
     solid-js: ^1.8.15
@@ -14349,6 +14350,15 @@ __metadata:
   peerDependencies:
     solid-js: ">=1.8.4"
   checksum: 562f08fd708af1827e4504950fb986600aab3e50355d5026c9933640549c211b4babd8e648be818fda3f236eba532e19fc6481dd627486d49bd6c335145c6c00
+  languageName: node
+  linkType: hard
+
+"@solidjs/router@npm:^0.13.6":
+  version: 0.13.6
+  resolution: "@solidjs/router@npm:0.13.6"
+  peerDependencies:
+    solid-js: ^1.8.6
+  checksum: 0b22ab7bf1c788560034a9c90fc132eee4a7780cda309ecebfabf0de450dd70cbc6c42671c94f57edf4a64bb1b30a1c7c4af1459da1b3774f571b178506d3459
   languageName: node
   linkType: hard
 
