@@ -1,12 +1,12 @@
 {
   "name": "@builder.io/plugin-multi-select-cloudinary",
-  "version": "0.0.2-0",
+  "version": "0.0.2",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-plugin-cloudinary.system.js",
-  "module": "dist/builder-plugin-cloudinary.es5.js",
-  "unpkg": "dist/builder-plugin-cloudinary.system.js",
-  "typings": "dist/types/builder-plugin-cloudinary.d.ts",
+  "main": "dist/builder-plugin-multi-select-cloudinary.system.js",
+  "module": "dist/builder-plugin-multi-select-cloudinary.es5.js",
+  "unpkg": "dist/builder-plugin-multi-select-cloudinary.system.js",
+  "typings": "dist/types/builder-plugin-multi-select-cloudinary.d.ts",
   "files": [
     "dist"
   ],

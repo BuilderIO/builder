@@ -49,7 +49,7 @@ npm start
 
 ### Add the development plugin to Builder.io
 
-From your [Account Settings](https://builder.io/account/space) page click the edit (pencil) button next to **Plugins** and enter the development URL for this plugin (e.g. `http://localhost:1268/builder-plugin-cloudinary.system.js`) then hit save.
+From your [Account Settings](https://builder.io/account/space) page click the edit (pencil) button next to **Plugins** and enter the development URL for this plugin (e.g. `http://localhost:1268/builder-plugin-multi-select-cloudinary.system.js`) then hit save.
 
 **NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
 
