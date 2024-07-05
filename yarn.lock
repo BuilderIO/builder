@@ -14081,6 +14081,7 @@ __metadata:
     nx-cloud: 16.5.2
     svelte: ^4.2.12
     svelte-check: ^3.6.7
+    svelte-routing: ^2.13.0
     tslib: ^2.6.2
     typescript: ^5.2.2
     vite: ^5.2.0
@@ -49061,6 +49062,13 @@ __metadata:
     typescript:
       optional: true
   checksum: e4f54578fd186b8c30deec79e591e17f21b70dc241e290031f336a90034ee2add3b3e47f11a52c0e663ac811580400f5d50670ac760ecac34b713c3cfac99f8e
+  languageName: node
+  linkType: hard
+
+"svelte-routing@npm:^2.13.0":
+  version: 2.13.0
+  resolution: "svelte-routing@npm:2.13.0"
+  checksum: 96daa058f647dc347fb456b3f7a43c5c397d47441f54f09f07a8ef5aa4d5e6c52bf8289c829844edafd2dabe294334266ac0d90e7ab8f19816b0fc32635ce1b4
   languageName: node
   linkType: hard
 

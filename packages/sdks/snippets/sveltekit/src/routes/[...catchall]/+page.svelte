@@ -3,6 +3,10 @@
 <script>
   import { isPreviewing, Content } from "@builder.io/sdk-svelte";
 
+  // TODO: use your own API key
+  const apiKey = 'ee9f13b4981e489a9a1209887695ef2b'
+  const model = 'page';
+
   // this data comes from the function in `+page.server.js`, which runs on the server only
   export let data;
 
@@ -17,9 +21,9 @@
   {#if canShowContent}
     <div>page Title: {data.content?.data?.title || "Unpublished"}</div>
     <Content
-      model="page"
+      model={model}
       content={data.content}
-      apiKey={'ee9f13b4981e489a9a1209887695ef2b'} 
+      apiKey={apiKey} 
     />
   {:else}
     Content Not Found
