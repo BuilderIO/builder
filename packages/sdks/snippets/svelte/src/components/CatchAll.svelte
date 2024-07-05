@@ -27,10 +27,10 @@
 </svelte:head>
 
 <main>
-{#if content}
-    <Content content={content} apiKey={apiKey} model={model}  />
-{:else}
-    Content Not Found
-{/if}
+    {#if content}
+        <Content content={content} apiKey={apiKey} model={model}  />
+    {:else}
+        Content Not Found
+    {/if}
 </main>
   
