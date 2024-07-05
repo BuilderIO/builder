@@ -28,3 +28,4 @@ overrides/react-native/src/blocks/**/*
 e2e/**/src/sdk-src
 
 **/react-native/ios
+**/react-native/android

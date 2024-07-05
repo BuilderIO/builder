@@ -1,0 +1,18 @@
+- get build + test working locally
+  - detox setup, not able to open local build
+  - create 'debug' release instead to see if it works
+
+
+- get build + test working in CI:
+  - either use a macos CI machine and do a local build
+  - OR use EAS cloud
+
+
+Steps to get it working locally:
+- install applesimutils:
+  - brew tap wix/brew
+  - brew install applesimutils
+- unzip tar after build, before test.
+
+- run `expo start`
+- once ready, run detox test in parallel

@@ -12,9 +12,25 @@
     },
     "production": {},
     "development:simulator": {
-      "developmentClient": true,
-      "distribution": "internal",
+      "extends": "development",
       "ios": {
+        "simulator": true
+      },
+      "env": {
+        "YARN_ENABLE_SCRIPTS": "false"
+      }
+    },
+    "test": {
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "YARN_ENABLE_SCRIPTS": "false"
+      }
+    },
+    "test_debug": {
+      "ios": {
+        "buildConfiguration": "Debug",
         "simulator": true
       },
       "env": {
