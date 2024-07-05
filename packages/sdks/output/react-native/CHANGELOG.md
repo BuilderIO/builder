@@ -1,5 +1,14 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.34
+
+### Patch Changes
+
+- c787998: Fix: add `regeneratorRuntime` polyfill
+- c787998: Fix: replace `react-native-render-html` with `@builder.io/react-native-render-html` to remove `defaultProps` errors.
+  See https://github.com/meliorence/react-native-render-html/issues/661
+- c787998: Fix: disable async storage during static rendering (node.js)
+
 ## 1.0.33
 
 ### Patch Changes
