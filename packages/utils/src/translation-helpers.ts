@@ -199,6 +199,10 @@ export function getTranslateableFields(
               symbolInputName: string,
               symbolInputValue: any
             ]) => {
+              if (symbolInputName === 'children') {
+                return;
+              }
+
               recordValue({
                 results,
                 value: symbolInputValue,
