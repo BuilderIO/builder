@@ -18,7 +18,7 @@ export const componentInfo: ComponentInfo = {
         const url = options.get('url');
         if (url) {
           options.set('content', 'Loading...');
-          
+
           const apiKey = _iframelyApiKey;
           return fetch(
             `https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`
