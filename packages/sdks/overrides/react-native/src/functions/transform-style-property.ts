@@ -166,7 +166,7 @@ function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
 const inRange = (value: number, min: number, max: number) =>
   value >= min && value <= max;
 
-function extractVarValue(value: string): string {
+function extractVarDefaultValue(value: string): string {
   // Regular expression to find var() expressions
   const varRegex = /var\(--[^,]+?,\s*([^)]+)\)/;
 
@@ -186,7 +186,7 @@ const processValue = (
 ): string | undefined => {
   if (typeof value !== 'string' || value === '') return undefined;
   if (!ALLOWED_CSS_PROPERTIES.includes(key as any)) return undefined;
-  if (value.includes('var(')) return extractVarValue(value);
+  if (value.includes('var(')) return extractVarDefaultValue(value);
   if (value.includes('calc(')) return undefined;
   if (value.includes('inherit')) return undefined;
   if (value === 'px') return undefined;
