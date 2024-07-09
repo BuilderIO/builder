@@ -180,7 +180,6 @@ function extractVarValue(value: string): string {
   return newValue;
 }
 
-
 const processValue = (
   styles: { [key: string]: string },
   [key, value]: [string, unknown]
