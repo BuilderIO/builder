@@ -10,4 +10,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Support webp file uploads for image blocks
+Feature: add `webp` support for Image block file uploads.
