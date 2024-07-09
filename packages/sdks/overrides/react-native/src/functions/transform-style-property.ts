@@ -3,6 +3,7 @@ import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import type { Dictionary } from '../types/typescript.js';
+import { extractCssVarDefaultValue } from './extract-css-var-default-value.js';
 
 const cssToReactNative: typeof cssToStyleSheet = (cssToStyleSheet as any)
   .default
@@ -166,19 +167,6 @@ function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
 const inRange = (value: number, min: number, max: number) =>
   value >= min && value <= max;
 
-function extractVarDefaultValue(value: string): string {
-  // Regular expression to find var() expressions
-  const varRegex = /var\(--[^,]+?,\s*([^)]+)\)/;
-
-  // Function to replace var() with its fallback
-  let newValue = value;
-  let match: string[] | null;
-  while ((match = newValue.match(varRegex))) {
-    newValue = newValue.replace(match[0], match[1].trim());
-  }
-
-  return newValue;
-}
 
 const processValue = (
   styles: { [key: string]: string },
@@ -186,7 +174,7 @@ const processValue = (
 ): string | undefined => {
   if (typeof value !== 'string' || value === '') return undefined;
   if (!ALLOWED_CSS_PROPERTIES.includes(key as any)) return undefined;
-  if (value.includes('var(')) return extractVarDefaultValue(value);
+  if (value.includes('var(')) return extractCssVarDefaultValue(value);
   if (value.includes('calc(')) return undefined;
   if (value.includes('inherit')) return undefined;
   if (value === 'px') return undefined;
