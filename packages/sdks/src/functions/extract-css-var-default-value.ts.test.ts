@@ -1,4 +1,4 @@
-import { extractCssVarDefaultValue } from './extract-css-var-default-value'; 
+import { extractCssVarDefaultValue } from './extract-css-var-default-value';
 
 describe('extractCssVarDefaultValue', () => {
   test('Returns the same value when no CSS variable is present', () => {
@@ -32,13 +32,15 @@ describe('extractCssVarDefaultValue', () => {
   });
 
   test('Handles complex values with multiple nested variables', () => {
-    const input = 'var(--spacing, 8px) var(--color, var(--primary, var(--fallback, #000))) 1px solid';
+    const input =
+      'var(--spacing, 8px) var(--color, var(--primary, var(--fallback, #000))) 1px solid';
     const result = extractCssVarDefaultValue(input);
     expect(result).toBe('8px #000 1px solid');
   });
 
   test('Handles complex values with multiple nested variables with a function value', () => {
-    const input = 'var(--spacing, 8px) var(--color, var(--primary, var(--fallback, rgb(0, 0, 0)))) 1px solid';
+    const input =
+      'var(--spacing, 8px) var(--color, var(--primary, var(--fallback, rgb(0, 0, 0)))) 1px solid';
     const result = extractCssVarDefaultValue(input);
     expect(result).toBe('8px rgb(0, 0, 0) 1px solid');
   });

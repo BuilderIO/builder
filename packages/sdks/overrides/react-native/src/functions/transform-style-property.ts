@@ -167,7 +167,6 @@ function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
 const inRange = (value: number, min: number, max: number) =>
   value >= min && value <= max;
 
-
 const processValue = (
   styles: { [key: string]: string },
   [key, value]: [string, unknown]
