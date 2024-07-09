@@ -1,6 +1,5 @@
 ---
-"@builder.io/packages": patch
-"@builder.io/sdks": patch
+"@builder.io/sdk-react-native": patch
 ---
 
-Support CSS variables that use default values in React Native
+Fix: Add support for CSS variables that use default values.
