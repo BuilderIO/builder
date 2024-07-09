@@ -2,4 +2,4 @@
 "@builder.io/sdk-solid": patch
 ---
 
-Use style tags for solidjs instead of solid-styled-components to fix CLS issues
+Fix: use inlined `<style>` tags instead of `solid-styled-components` to resolve CLS issues.
