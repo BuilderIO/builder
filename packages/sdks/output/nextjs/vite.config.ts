@@ -1,17 +1,11 @@
 import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, Plugin } from 'vite';
 
 const SERVER_ENTRY = 'server-entry';
 const BLOCKS_EXPORTS_ENTRY = 'blocks-exports';
 
-/**
- * @typedef {import('vite').Plugin} VitePlugin
- *
- *
- * @returns {VitePlugin}
- */
-const typeIndexGenerator = () => ({
+const typeIndexGenerator = (): Plugin => ({
   name: 'type-index-generator',
   enforce: 'pre',
   generateBundle(options, bundle) {
@@ -27,7 +21,8 @@ const typeIndexGenerator = () => ({
 export default defineConfig({
   plugins: [viteOutputGenerator(), react(), typeIndexGenerator()],
   build: {
-    emptyOutDir: true,
+    // emptyOutDir: true,
+    target: 'es2019',
     lib: {
       entry: {
         index: './src/index.ts',
@@ -36,18 +31,25 @@ export default defineConfig({
         init: './src/functions/evaluate/node-runtime/init.ts',
       },
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
+      fileName: (format, entryName) =>
+        `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
       external: [
-        'node:module',
-        'next/navigation',
         'react',
         'react/jsx-runtime',
         'react-dom',
+        'node:module',
+        'isolated-vm',
+        'next/navigation',
         'lru-cache',
       ],
       output: {
+        globals: {
+          react: 'react',
+          'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'react/jsx-runtime',
+        },
         minifyInternalExports: false,
         manualChunks(id, { getModuleIds, getModuleInfo }) {
           const moduleInfo = getModuleInfo(id);
@@ -68,11 +70,6 @@ export default defineConfig({
           }
 
           return '';
-        },
-        globals: {
-          react: 'react',
-          'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'react/jsx-runtime',
         },
       },
     },

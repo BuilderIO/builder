@@ -1,4 +1,5 @@
 import type { Context, IsolateOptions } from 'isolated-vm';
+import { SDK_NAME } from '../../../constants/sdk-name.js';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
 import { set } from '../../set.js';
@@ -101,14 +102,14 @@ const getIvm = (): IsolatedVMImport => {
   }
 
   throw new Error(
-    `${MSG_PREFIX}could not import \`isolated-vm\` module for safe script execution on Node server.
+    `${MSG_PREFIX}could not import \`isolated-vm\` module for safe script execution on a Node server.
     
-    In certain Node environments, the SDK requires additional initialization steps. This can be achieved by 
-    importing and calling \`initializeNodeRuntime()\` from "@builder.io/sdk-react/node/init". This must be done in
-    a server-only execution path within your application.
+    SOLUTION: In a server-only execution path within your application, do one of the following:
+  
+    - import and call \`initializeNodeRuntime()\` from "${SDK_NAME}/node/init".
+    - add the following import: \`await import('isolated-vm')\`.
 
-    Please see the documentation for more information: https://builder.io/c/docs/integration-tips#enabling-data-bindings-in-node-environments
-    `
+    For more information, visit https://builder.io/c/docs/integration-tips#enabling-data-bindings-in-node-environments`
   );
 };
 

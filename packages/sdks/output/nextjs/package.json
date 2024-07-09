@@ -68,7 +68,7 @@
       }
     },
     "./node/init": {
-      "types": "./types/functions/evaluate/node-runtime/init.d.ts",
+      "types": "./types/esm/functions/evaluate/node-runtime/init.d.ts",
       "import": "./lib/node/init.mjs",
       "require": "./lib/node/init.cjs"
     },
@@ -97,8 +97,8 @@
   },
   "peerDependencies": {
     "next": ">=13.4.20",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
@@ -107,10 +107,8 @@
     "nx": "16.10.0",
     "nx-cloud": "16.5.2",
     "react": "^18.2.0",
-    "rimraf": "^3.0.2",
     "typescript": "^5.1.6",
-    "vite": "^4.4.9",
-    "vite-plugin-dts": "^3.5.2"
+    "vite": "^4.4.9"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0",
