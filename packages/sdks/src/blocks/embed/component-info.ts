@@ -1,5 +1,8 @@
 import type { ComponentInfo } from '../../types/components.js';
 
+// Provided by the web app as a local variable in onChange functions
+declare const _iframelyApiKey: string;
+
 export const componentInfo: ComponentInfo = {
   name: 'Embed',
   static: true,
@@ -15,8 +18,8 @@ export const componentInfo: ComponentInfo = {
         const url = options.get('url');
         if (url) {
           options.set('content', 'Loading...');
-          // TODO: get this out of here!
-          const apiKey = 'ae0e60e78201a3f2b0de4b';
+
+          const apiKey = _iframelyApiKey;
           return fetch(
             `https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`
           )
