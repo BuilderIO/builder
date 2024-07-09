@@ -1,6 +1,5 @@
 ---
-"@builder.io/packages": patch
-"@builder.io/sdks": patch
+"@builder.io/sdk-solid": patch
 ---
 
 Use style tags for solidjs instead of solid-styled-components to fix CLS issues
