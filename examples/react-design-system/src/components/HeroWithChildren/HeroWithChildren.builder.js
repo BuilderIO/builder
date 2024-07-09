@@ -11,7 +11,7 @@ Builder.registerComponent(HeroWithBuilderChildren, {
     {
       name: 'image',
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F349738e6805b481ab6c50bda7e24445e',
