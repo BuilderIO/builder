@@ -2,8 +2,8 @@ import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-const USE_CLIENT_BUNDLE_NAME = 'USE_CLIENT_BUNDLE';
-const USE_SERVER_BUNDLE_NAME = 'USE_SERVER_BUNDLE';
+const SERVER_ENTRY = 'server-entry';
+const BLOCKS_EXPORTS_ENTRY = 'blocks-exports';
 
 /**
  * @typedef {import('vite').Plugin} VitePlugin
@@ -29,7 +29,12 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     lib: {
-      entry: './src/index.ts',
+      entry: {
+        index: './src/index.ts',
+        [SERVER_ENTRY]: './src/server-index.ts',
+        [BLOCKS_EXPORTS_ENTRY]: './src/index-helpers/blocks-exports.ts',
+        init: './src/functions/evaluate/node-runtime/init.ts',
+      },
       formats: ['es', 'cjs'],
       fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
@@ -43,26 +48,26 @@ export default defineConfig({
         'lru-cache',
       ],
       output: {
-        manualChunks(id, { getModuleInfo }) {
-          const code = getModuleInfo(id).code;
+        minifyInternalExports: false,
+        manualChunks(id, { getModuleIds, getModuleInfo }) {
+          const moduleInfo = getModuleInfo(id);
+
+          /**
+           * We make sure any code used by the server entry is bundled into it,
+           * so that it doesn't get marked with `use client`.
+           */
           if (
-            code.match(/^['"]use client['"]/) ||
-            // context file has to be in the client bundle due to `createContext` not working in RSCs.
-            id.endsWith('context.ts')
+            moduleInfo?.importers.some((x) => x.includes('server-index.ts'))
           ) {
-            return USE_CLIENT_BUNDLE_NAME;
-          } else if (code.match(/^['"]use server['"]/)) {
-            return USE_SERVER_BUNDLE_NAME;
-          } else {
-            return 'bundle';
+            return SERVER_ENTRY;
           }
         },
         banner(chunk) {
-          if (chunk.name === USE_CLIENT_BUNDLE_NAME) {
+          if (chunk.name === BLOCKS_EXPORTS_ENTRY) {
             return "'use client';";
-          } else if (chunk.name === USE_SERVER_BUNDLE_NAME) {
-            return "'use server';";
           }
+
+          return '';
         },
         globals: {
           react: 'react',

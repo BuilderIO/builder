@@ -12,8 +12,9 @@
     "lib",
     "types"
   ],
-  "main": "./lib/edge/index.cjs",
-  "module": "./lib/edge/index.mjs",
+  "types": "./types/index.d.ts",
+  "main": "./lib/node/index.cjs",
+  "module": "./lib/node/index.mjs",
   "type": "module",
   "exports": {
     ".": {
@@ -65,6 +66,11 @@
         "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
       }
+    },
+    "./node/init": {
+      "types": "./types/functions/evaluate/node-runtime/init.d.ts",
+      "import": "./lib/node/init.mjs",
+      "require": "./lib/node/init.cjs"
     },
     "./bundle/edge": {
       "import": "./lib/edge/index.mjs",
