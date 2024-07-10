@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.0.9
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
 ## 0.0.8
 
 ### Patch Changes

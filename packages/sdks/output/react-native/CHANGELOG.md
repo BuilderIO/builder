@@ -1,5 +1,13 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.35
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 7b689a8: Fix: Add support for CSS variables that use default values.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
 ## 1.0.34
 
 ### Patch Changes
