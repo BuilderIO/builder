@@ -29,7 +29,7 @@ ngPackageJson.dest = outputPath;
 // Write the modified ng-package.json back
 fs.writeFileSync(
   ngPackageJsonPath,
-  JSON.stringify(ngPackageJson, null, 2),
+  JSON.stringify(ngPackageJson, null, 2) + '\n',
   'utf-8'
 );
 
@@ -70,6 +70,6 @@ if (fs.existsSync(packageJsonPath)) {
 }
 
 // revert back the choose-eval.ts file
-content = content.replace(`./${getFolderName()}/index`, "placeholder-runtime");
+content = content.replace(`./${getFolderName()}/index`, 'placeholder-runtime');
 
 fs.writeFileSync(chooseEvalFile, content, 'utf-8');
