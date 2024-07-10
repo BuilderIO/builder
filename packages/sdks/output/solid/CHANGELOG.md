@@ -1,5 +1,13 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.35
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 7b8d742: Fix: use inlined `<style>` tags instead of `solid-styled-components` to resolve CLS issues.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
 ## 1.0.33
 
 ### Patch Changes
