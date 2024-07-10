@@ -11,4 +11,4 @@ const SDK_NAME_FOR_TARGET = (() => {
   }
 })();
 
-export const SDK_NAME = `@builder.io/sdk-${SDK_NAME_FOR_TARGET}`;
+export const SDK_NAME = `@builder.io/sdk-${SDK_NAME_FOR_TARGET}` as const;
