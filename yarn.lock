@@ -3707,11 +3707,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.3.8":
-  version: 0.3.8
-  resolution: "@builder.io/mitosis-cli@npm:0.3.8"
+"@builder.io/mitosis-cli@npm:0.3.10":
+  version: 0.3.10
+  resolution: "@builder.io/mitosis-cli@npm:0.3.10"
   dependencies:
-    "@builder.io/mitosis": 0.3.8
+    "@builder.io/mitosis": 0.3.10
     debug: ^4.3.4
     dedent: ^0.7.0
     esbuild: ^0.12.16
@@ -3724,18 +3724,17 @@ __metadata:
     ts-morph: ^19.0.0
   bin:
     mitosis: bin/mitosis
-  checksum: 36d436195cf9a2bdc5089319076851ae4c607a9472801ff7c63a91e3125ae74c006dee9fe323716406092eef7e54450a39d4ad439197f4b87afe1a04bec3e2ab
+  checksum: 1535ca0474ef5d9d177b44615711a05fe340cd46fd61188dd35f9ebe8a834430b87359cf24675391d57d4983fd445145120b00b306e630ea622851d36b15939a
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.3.8, @builder.io/mitosis@npm:^0.3.8":
-  version: 0.3.8
-  resolution: "@builder.io/mitosis@npm:0.3.8"
+"@builder.io/mitosis@npm:0.3.10":
+  version: 0.3.10
+  resolution: "@builder.io/mitosis@npm:0.3.10"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
     "@babel/generator": ^7.14.3
-    "@babel/plugin-proposal-class-properties": ^7.13.0
     "@babel/plugin-syntax-decorators": ^7.12.1
     "@babel/plugin-syntax-typescript": ^7.20.0
     "@babel/plugin-transform-react-jsx": ^7.13.12
@@ -3756,7 +3755,7 @@ __metadata:
     traverse: ^0.6.6
     ts-morph: ^19.0.0
     typescript: ^5.3.2
-  checksum: 8f03262389952aa73e7ffe1f1b040a722362714ab7d1668707b82e0b9e58585d5647de1765284d30322ecfd84f91749316068895fe114475afabd282388f160a
+  checksum: ffbd8faf86f2e56958a3b2003fa8390e8951b696b262cd51c3ec93061c8b905c6ac8ef4347bfcea9d8ace8156d8589b7d177f227628fb2c7f69ab4188a5a3fc4
   languageName: node
   linkType: hard
 
@@ -4171,8 +4170,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.16
-    "@builder.io/mitosis": ^0.3.8
-    "@builder.io/mitosis-cli": ^0.3.8
+    "@builder.io/mitosis": 0.3.10
+    "@builder.io/mitosis-cli": 0.3.10
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
