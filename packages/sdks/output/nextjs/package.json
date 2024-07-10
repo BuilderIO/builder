@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io RSC SDK for NextJS App Directory",
-  "version": "0.14.29",
+  "version": "0.14.30-0",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/nextjs",
   "repository": {
     "type": "git",
@@ -12,8 +12,9 @@
     "lib",
     "types"
   ],
-  "main": "./lib/edge/index.cjs",
-  "module": "./lib/edge/index.mjs",
+  "types": "./types/index.d.ts",
+  "main": "./lib/node/index.cjs",
+  "module": "./lib/node/index.mjs",
   "type": "module",
   "exports": {
     ".": {
@@ -66,6 +67,11 @@
         "require": "./lib/browser/index.cjs"
       }
     },
+    "./node/init": {
+      "types": "./types/esm/functions/evaluate/node-runtime/init.d.ts",
+      "import": "./lib/node/init.mjs",
+      "require": "./lib/node/init.cjs"
+    },
     "./bundle/edge": {
       "import": "./lib/edge/index.mjs",
       "require": "./lib/edge/index.cjs"
@@ -91,8 +97,8 @@
   },
   "peerDependencies": {
     "next": ">=13.4.20",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
@@ -101,10 +107,8 @@
     "nx": "16.10.0",
     "nx-cloud": "16.5.2",
     "react": "^18.2.0",
-    "rimraf": "^3.0.2",
     "typescript": "^5.1.6",
-    "vite": "^4.4.9",
-    "vite-plugin-dts": "^3.5.2"
+    "vite": "^4.4.9"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0",
@@ -129,5 +133,6 @@
         ]
       }
     }
-  }
+  },
+  "stableVersion": "0.14.29"
 }

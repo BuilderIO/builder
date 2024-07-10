@@ -23,43 +23,22 @@
   "scripts": {
     "docs": "typedoc",
     "lint": "tslint -t codeFrame '../**/*.ts' 'test/**/*.ts'",
-    "prebuild": "rimraf dist",
-    "build": "NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts",
+    "build": "rimraf dist && NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts",
     "build:docs": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:prod": "yarn lint && yarn test -- --coverage --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
-    "report-coverage": "cat ./coverage/lcov.info≈ | coveralls",
-    "commit": "git-cz",
     "release": "yarn build && npm publish",
     "release:major": "yarn build && yarn version major && yarn npm publish",
     "release:minor": "yarn build && yarn version minor && yarn npm publish",
     "release:patch": "yarn build && yarn version patch && yarn npm publish",
     "release:nightly": "yarn build && yarn version prerelease && yarn npm publish --tag nightly",
     "release:dev": "yarn build && yarn version prerelease && yarn npm publish --tag dev",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "fix-core-version": "bash ./scripts/fix-core-version.sh",
-    "precommit": "lint-staged",
     "ci:test": "yarn test",
     "ci:build": "yarn build"
-  },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,md,json}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    },
-    "validate-commit-msg": {
-      "types": "conventional-commit-types",
-      "helpMessage": "Use \"yarn commit\" instead, we use conventional-changelog format :) (https://github.com/commitizen/cz-cli)"
-    }
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -75,14 +54,10 @@
     "@types/rollup-plugin-json": "^3.0.3",
     "@types/rollup-plugin-node-resolve": "^4.1.0",
     "colors": "^1.1.2",
-    "commitizen": "^4.2.4",
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.1",
-    "cz-conventional-changelog": "^2.0.0",
-    "husky": "^0.14.0",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
-    "lint-staged": "^7.0.0",
     "nx": "16.10.0",
     "nx-cloud": "16.5.2",
     "prettier": "^3.2.5",
@@ -102,7 +77,6 @@
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-terser": "^5.3.1",
     "rollup-plugin-typescript2": "^0.32.1",
-    "semantic-release": "^19.0.3",
     "ts-jest": "^28.0.6",
     "ts-node": "^6.0.0",
     "tslib": "^2.4.0",
