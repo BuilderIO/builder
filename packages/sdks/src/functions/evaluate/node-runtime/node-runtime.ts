@@ -101,16 +101,16 @@ const getIvm = (): IsolatedVMImport => {
     logger.error('isolated-vm import error.', error);
   }
 
-  throw new Error(
-    `${MSG_PREFIX}could not import \`isolated-vm\` module for safe script execution on a Node server.
+  const ERROR_MESSAGE = `${MSG_PREFIX}could not import \`isolated-vm\` module for safe script execution on a Node server.
     
     SOLUTION: In a server-only execution path within your application, do one of the following:
   
     - import and call \`initializeNodeRuntime()\` from "${SDK_NAME}/node/init".
     - add the following import: \`await import('isolated-vm')\`.
 
-    For more information, visit https://builder.io/c/docs/integration-tips#enabling-data-bindings-in-node-environments`
-  );
+    For more information, visit https://builder.io/c/docs/integration-tips#enabling-data-bindings-in-node-environments`;
+
+  throw new Error(ERROR_MESSAGE);
 };
 
 function setIsolateContext(options: IsolateOptions = { memoryLimit: 128 }) {
