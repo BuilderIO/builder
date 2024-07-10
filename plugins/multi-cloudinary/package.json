@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-multi-select-cloudinary",
-  "version": "0.0.3",
+  "version": "0.0.4-0",
   "description": "",
   "keywords": [],
   "main": "dist/builder-plugin-multi-select-cloudinary.system.js",
@@ -81,7 +81,7 @@
     "prompt": "^1.0.0",
     "react-dom": "^16.12.0",
     "replace-in-file": "^3.4.2",
-    "rimraf": "^2.6.2",
+    "rimraf": "^2.7.1",
     "rollup": "^0.67.4",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-json": "^3.1.0",

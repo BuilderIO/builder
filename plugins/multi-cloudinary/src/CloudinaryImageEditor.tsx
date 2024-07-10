@@ -134,6 +134,14 @@ export default class CloudinaryImageEditor extends React.Component<
     return this.areCloudinaryCredentialsNotSet() ? 'Set credentials' : '...';
   }
 
+ truncateString(str: string, maxLength = 30) {
+    if (str.length > maxLength) {
+      return str.slice(0, maxLength) + '...';
+    }
+    return str;
+  }
+  
+
   componentDidMount() {
     this.appendMediaLibraryScriptToPlugin();
   }
@@ -147,7 +155,7 @@ export default class CloudinaryImageEditor extends React.Component<
       display: 'grid',
       gap: '10px',
       gridTemplateColumns: '1fr max-content',
-      marginTop: '5px',
+      marginTop: '16px',
       marginBottom: '5px',
       fontSize: 14,
     };
@@ -162,7 +170,7 @@ export default class CloudinaryImageEditor extends React.Component<
       border: '1px solid #D5D5D5',
     };
     return (
-      <div css={{ padding: '15px 0' }}>
+      <div css={{ padding: '4px 0' }}>
         {shouldRequestCloudinarySettings && (
           <CloudinayCredentialsDialog
             openDialog={this.state.showDialog}
@@ -198,19 +206,17 @@ export default class CloudinaryImageEditor extends React.Component<
               </div>
             )}
           </div>
-          <div
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 4,
-            }}
-          >
-            {<div css={{ padding: '6px 8px' }}>{selectedImageName}</div>}
-          </div>
+
+            <div css={{ padding: '6px 8px', overflow: 'hidden' }}>{this.truncateString(selectedImageName)}</div>
+
         </div>
 
         <div css={buttonContainerStyle}>
           <Button
+          css={{'&:disabled': {
+            backgroundColor:'#F5F5F5',
+            color:'#757575'
+          }}}
             disabled={this.areCloudinaryCredentialsNotSet()}
             color="primary"
             variant="contained"
