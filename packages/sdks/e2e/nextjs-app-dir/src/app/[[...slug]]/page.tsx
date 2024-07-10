@@ -59,6 +59,7 @@ export default async function Page(props: MyPageProps) {
         {
           name: 'CatFacts',
           component: CatFacts,
+          isRSC: true,
           inputs: [
             {
               name: 'text',
