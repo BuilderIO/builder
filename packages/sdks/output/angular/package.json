@@ -90,6 +90,6 @@
       }
     }
   },
-  "module": "lib/./scripts/node/fesm2022/builder.io-sdk-angular.mjs",
+  "module": "lib/node/fesm2022/builder.io-sdk-angular.mjs",
   "typings": "lib/node/index.d.ts"
 }
