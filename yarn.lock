@@ -4024,14 +4024,12 @@ __metadata:
     nx: 16.10.0
     nx-cloud: 16.5.2
     react: ^18.2.0
-    rimraf: ^3.0.2
     typescript: ^5.1.6
     vite: ^4.4.9
-    vite-plugin-dts: ^3.5.2
   peerDependencies:
     next: ">=13.4.20"
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: ">=18.2.0"
+    react-dom: ">=18.2.0"
   languageName: unknown
   linkType: soft
 
@@ -4046,7 +4044,6 @@ __metadata:
     nx-cloud: 16.5.2
     react: ^18.2.0
     recast: ^0.23.4
-    rimraf: ^3.0.2
     typescript: ^4.9.4
     vite: ^4.4.9
   peerDependencies:
@@ -4177,19 +4174,14 @@ __metadata:
     "@types/traverse": ^0.6.32
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
-    commitizen: ^4.2.4
-    cz-conventional-changelog: ^3.3.0
     eslint: ^8.12.0
     eslint-plugin-react: latest
     eslint-plugin-unused-imports: ^2.0.0
-    git-cz: ^4.8.0
-    husky: ^7.0.4
     isolated-vm: ^5.0.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
     nx: 16.10.0
     nx-cloud: 16.5.2
-    pinst: ^3.0.0
     prettier: ^3.2.5
     prettier-plugin-organize-imports: ^3.2.4
     publint: ^0.2.6
@@ -23372,7 +23364,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cz-conventional-changelog@npm:3.3.0, cz-conventional-changelog@npm:^3.3.0":
+"cz-conventional-changelog@npm:3.3.0":
   version: 3.3.0
   resolution: "cz-conventional-changelog@npm:3.3.0"
   dependencies:
@@ -29554,16 +29546,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"git-cz@npm:^4.8.0":
-  version: 4.9.0
-  resolution: "git-cz@npm:4.9.0"
-  bin:
-    git-cz: bin/git-cz.js
-    gitcz: bin/git-cz.js
-  checksum: c2f1f5b4d77f27fb3bc3edc7ac998f7ae822c5dc843e9f23929fab229fa7469a9023da35a767274559940dc140aafb92123195ea56aa2b732783807278156688
-  languageName: node
-  linkType: hard
-
 "git-hooks-list@npm:1.0.3":
   version: 1.0.3
   resolution: "git-hooks-list@npm:1.0.3"
@@ -31003,15 +30985,6 @@ __metadata:
     normalize-path: ^1.0.0
     strip-indent: ^2.0.0
   checksum: 7adccdb8b98b9883a428bc48730cbacaa66863e7799b4ef44ba82bed63071ae2f782da2bb3987283c8f0fc9259d48eb4082f7d76135b366ee523fface65143a7
-  languageName: node
-  linkType: hard
-
-"husky@npm:^7.0.4":
-  version: 7.0.4
-  resolution: "husky@npm:7.0.4"
-  bin:
-    husky: lib/bin.js
-  checksum: c6ec4af63da2c9522da8674a20ad9b48362cc92704896cc8a58c6a2a39d797feb2b806f93fbd83a6d653fbdceb2c3b6e0b602c6b2e8565206ffc2882ef7db9e9
   languageName: node
   linkType: hard
 
@@ -42156,15 +42129,6 @@ __metadata:
   version: 2.0.4
   resolution: "pinkie@npm:2.0.4"
   checksum: b12b10afea1177595aab036fc220785488f67b4b0fc49e7a27979472592e971614fa1c728e63ad3e7eb748b4ec3c3dbd780819331dad6f7d635c77c10537b9db
-  languageName: node
-  linkType: hard
-
-"pinst@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "pinst@npm:3.0.0"
-  bin:
-    pinst: bin.js
-  checksum: 4ae48a6a60f79c37071233af51b4d91bfc85cfa3c12b66ccda60cdb642b4d14a4ab0cb3587afc55b1f6192cea1772a5e4822026a0d0d3528296edef00cc2d61f
   languageName: node
   linkType: hard
 
