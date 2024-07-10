@@ -18,6 +18,7 @@ export interface TextareaProps {
   value?: string;
   defaultValue?: string;
   placeholder?: string;
+  required?: boolean;
 }
 
 export default function Textarea(props: TextareaProps) {
@@ -37,6 +38,7 @@ export default function Textarea(props: TextareaProps) {
       name={props.name}
       value={props.value}
       defaultValue={props.defaultValue}
+      required={props.required}
     />
   );
 }
