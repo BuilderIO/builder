@@ -1,5 +1,12 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.0.35
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
 ## 1.0.33
 
 ### Patch Changes
