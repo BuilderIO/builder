@@ -1,5 +1,14 @@
 # @builder.io/react
 
+## 3.2.10
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+- Updated dependencies [a5b8810]
+  - @builder.io/sdk@2.2.5
+
 ## 3.2.9
 
 ### Patch Changes
