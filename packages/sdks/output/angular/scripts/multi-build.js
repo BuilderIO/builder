@@ -55,7 +55,7 @@ const getFolderName = () => {
   }
 };
 
-content = content.replace(/placeholder-runtime/g, `./${getFolderName()}/index`);
+content = content.replace(/'placeholder-runtime'/g, `'./${getFolderName()}/index'`);
 
 fs.writeFileSync(chooseEvalFile, content, 'utf-8');
 
@@ -70,6 +70,6 @@ if (fs.existsSync(packageJsonPath)) {
 }
 
 // revert back the choose-eval.ts file
-content = content.replace(`./${getFolderName()}/index`, 'placeholder-runtime');
+content = content.replace(`'./${getFolderName()}/index'`, "'placeholder-runtime'");
 
 fs.writeFileSync(chooseEvalFile, content, 'utf-8');
