@@ -3,7 +3,7 @@ import { TARGET } from './target.js';
 const SDK_NAME_FOR_TARGET = (() => {
   switch (TARGET) {
     case 'rsc':
-      return 'nextjs';
+      return 'react-nextjs';
     case 'reactNative':
       return 'react-native';
     default:
