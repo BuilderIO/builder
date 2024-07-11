@@ -1,9 +1,9 @@
 import babel from '@babel/core';
+import tsPlugin from '@babel/plugin-syntax-typescript';
+import { execSync } from 'child_process';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
-import { execSync } from 'child_process';
-import tsPlugin from '@babel/plugin-syntax-typescript';
 import prettier from 'prettier';
 
 /**
@@ -12,7 +12,6 @@ import prettier from 'prettier';
  */
 
 const sdkEnv = process.env.SDK_ENV;
-
 
 if (!sdkEnv) {
   throw new Error('SDK_ENV is required to build the SDK.');
@@ -68,7 +67,9 @@ const transformFile = (filePath, replaceValue, revert = false) => {
         return {
           visitor: {
             ImportDeclaration(path) {
-              const currentValue = revert ? replaceValue : 'placeholder-runtime';
+              const currentValue = revert
+                ? replaceValue
+                : 'placeholder-runtime';
               const newValue = revert ? 'placeholder-runtime' : replaceValue;
               if (path.node.source.value === currentValue) {
                 path.node.source.value = newValue;
