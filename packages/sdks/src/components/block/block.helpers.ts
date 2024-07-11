@@ -1,5 +1,4 @@
 import type { Signal } from '@builder.io/mitosis';
-import { TARGET } from '../../constants/target.js';
 import type {
   BuilderContextInterface,
   RegisteredComponent,
@@ -128,9 +127,7 @@ export const provideLinkComponent = (
     ? block.shouldReceiveBuilderProps.linkComponent
     : DEFAULT_SHOULD_RECEIVE_PROPS;
 
-  const isRSCComp = block.isRSC && TARGET === 'rsc';
-
-  if (!shouldReceiveProp && !isRSCComp) return {};
+  if (!shouldReceiveProp) return {};
 
   return { linkComponent };
 };
@@ -147,9 +144,7 @@ export const provideRegisteredComponents = (
     ? block.shouldReceiveBuilderProps.registeredComponents
     : DEFAULT_SHOULD_RECEIVE_PROPS;
 
-  const isRSCComp = block.isRSC && TARGET === 'rsc';
-
-  if (!shouldReceiveProp && !isRSCComp) return {};
+  if (!shouldReceiveProp) return {};
 
   return { registeredComponents };
 };
@@ -166,12 +161,7 @@ export const provideBuilderBlock = (
     ? block.shouldReceiveBuilderProps.builderBlock
     : DEFAULT_SHOULD_RECEIVE_PROPS;
 
-  const isRSCComp = block.isRSC && TARGET === 'rsc';
-
-  const isReactNativeTextComp =
-    TARGET === 'reactNative' && block.name === 'Text';
-
-  if (!shouldReceiveProp && !isRSCComp && !isReactNativeTextComp) return {};
+  if (!shouldReceiveProp) return {};
 
   return { builderBlock };
 };
@@ -188,9 +178,7 @@ export const provideBuilderContext = (
     ? block.shouldReceiveBuilderProps.builderContext
     : DEFAULT_SHOULD_RECEIVE_PROPS;
 
-  const isRSCComp = block.isRSC && TARGET === 'rsc';
-
-  if (!shouldReceiveProp && !isRSCComp) return {};
+  if (!shouldReceiveProp) return {};
 
   return { context };
 };

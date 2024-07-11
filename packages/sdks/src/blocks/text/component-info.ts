@@ -1,8 +1,9 @@
+import { TARGET } from '../../constants/target.js';
 import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
   shouldReceiveBuilderProps: {
-    builderBlock: false,
+    builderBlock: TARGET === 'reactNative' ? true : false,
     builderContext: false,
     registeredComponents: false,
     linkComponent: false,
