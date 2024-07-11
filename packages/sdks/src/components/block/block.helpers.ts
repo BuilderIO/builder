@@ -125,7 +125,7 @@ export const provideLinkComponent = (
     block.shouldReceiveBuilderProps?.builderLinkComponent
   )
     ? block.shouldReceiveBuilderProps.builderLinkComponent
-    : DEFAULT_SHOULD_RECEIVE_PROPS;
+    : false;
 
   if (!shouldReceiveProp) return {};
 
@@ -142,7 +142,7 @@ export const provideRegisteredComponents = (
     block.shouldReceiveBuilderProps?.builderComponents
   )
     ? block.shouldReceiveBuilderProps.builderComponents
-    : DEFAULT_SHOULD_RECEIVE_PROPS;
+    : false;
 
   if (!shouldReceiveProp) return {};
 
