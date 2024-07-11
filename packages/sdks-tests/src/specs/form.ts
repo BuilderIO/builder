@@ -138,6 +138,7 @@ export const FORM = {
                 name: 'name',
                 placeholder: 'Jane Doe',
                 type: 'text',
+                required: true,
               },
             },
             responsiveStyles: {
@@ -177,6 +178,7 @@ export const FORM = {
               options: {
                 name: 'email',
                 placeholder: 'jane@doe.com',
+                required: true,
               },
             },
             responsiveStyles: {
@@ -225,7 +227,7 @@ export const FORM = {
                     name: '30+',
                   },
                 ],
-                required: false,
+                required: true,
                 name: 'age',
                 defaultValue: '',
               },
@@ -239,6 +241,37 @@ export const FORM = {
                 boxSizing: 'border-box',
                 marginTop: '20px',
                 alignSelf: 'flex-start',
+              },
+            },
+          },
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            id: 'builder-ce1a2b292e18411eba97d3f4118f3822',
+            component: {
+              name: 'Form:TextArea',
+              options: {
+                placeholder: 'Hello there',
+                required: true,
+                name: 'details',
+              },
+            },
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                flexShrink: '0',
+                boxSizing: 'border-box',
+                marginTop: '20px',
+                paddingTop: '10px',
+                paddingBottom: '10px',
+                paddingLeft: '10px',
+                paddingRight: '10px',
+                borderRadius: '3px',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: '#ccc',
               },
             },
           },

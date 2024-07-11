@@ -19,6 +19,12 @@ interface MyPageProps {
 
 // Pages are Server Components by default
 export default async function Page(props: MyPageProps) {
+  // NOTE: the import must be inside the Page component itself.
+  const { initializeNodeRuntime } = await import(
+    '@builder.io/sdk-react-nextjs/node/init'
+  );
+  initializeNodeRuntime();
+
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
   const builderProps = await getProps({
@@ -53,6 +59,7 @@ export default async function Page(props: MyPageProps) {
         {
           name: 'CatFacts',
           component: CatFacts,
+          isRSC: true,
           inputs: [
             {
               name: 'text',

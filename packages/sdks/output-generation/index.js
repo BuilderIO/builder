@@ -41,11 +41,11 @@ const getFolderName = () => {
  */
 const getEvaluatorPathAlias = (options = {}) => {
   const pointTo = options.pointTo || 'input';
-  const format = options.format || 'ts';
+  const format = options.format;
 
   const buildPath = () => {
     const folder = getFolderName();
-    const fileName = `${folder}/index.${format}`;
+    const fileName = format ? `${folder}/index.${format}` : `${folder}/index`;
 
     switch (pointTo) {
       case 'output':
@@ -122,4 +122,5 @@ module.exports = {
   viteOutputGenerator,
   esbuildOutputGenerator,
   getSdkEnv,
+  getFolderName,
 };

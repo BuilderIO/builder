@@ -12,7 +12,8 @@
     "check": "SDK_ENV=browser svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@builder.io/sdk-svelte": "workspace:*"
+    "@builder.io/sdk-svelte": "workspace:*",
+    "svelte-routing": "^2.13.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.2",

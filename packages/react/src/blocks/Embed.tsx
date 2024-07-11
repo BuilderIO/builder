@@ -3,6 +3,9 @@ import React from 'react';
 import { Builder } from '@builder.io/sdk';
 import { withBuilder } from '../functions/with-builder';
 
+// Provided by the web app as a local variable in onChange functions
+declare const _iframelyApiKey: string;
+
 class EmbedComponent extends React.Component<any> {
   elementRef: HTMLElement | null = null;
 
@@ -84,7 +87,7 @@ export const Embed = withBuilder(EmbedComponent, {
         if (url) {
           options.set('content', 'Loading...');
           // TODO: get this out of here!
-          const apiKey = 'ae0e60e78201a3f2b0de4b';
+          const apiKey = _iframelyApiKey;
           return fetch(`https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`)
             .then(res => res.json())
             .then(data => {

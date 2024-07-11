@@ -1,3 +1,7 @@
+/**
+ * Quickstart snippet
+ * snippets/react-native/app/[...slug].tsx
+ */
 import type { BuilderContent } from '@builder.io/sdk-react-native';
 import { Content, fetchOneEntry } from '@builder.io/sdk-react-native';
 import { useLocalSearchParams } from 'expo-router';

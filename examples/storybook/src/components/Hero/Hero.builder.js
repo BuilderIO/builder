@@ -15,7 +15,7 @@ export const HeroBuilderConfig = {
     {
       name: 'image',
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F52dcecf48f9c48cc8ddd8f81fec63236',

@@ -45,6 +45,9 @@ jobs:
       - name: Run tests
         run: yarn nx test @builder.io/sdks
 
+      - name: Lint changesets
+        run: yarn g:changeset version
+
   sdks:
     name: Gen 2 SDKs
     runs-on: ubuntu-latest

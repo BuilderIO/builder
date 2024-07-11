@@ -208,8 +208,8 @@ export const makeFn = (code: string, useReturn: boolean, args?: string[]) => {
               return () => obj.copySync();
             }
             const val = obj.getSync(key);
-            if (typeof val?.getSync === 'function') {
-                return refToProxy(val);
+            if (typeof val?.copySync === 'function') {
+                return JSON.parse(stringify(val));
             }
             return val;
         },
@@ -237,7 +237,11 @@ ${refToProxyFn}
 ${strinfigyFn}
 `.concat(names.map((arg, index) => `var ${arg} = refToProxy($${index});`).join('\n')).concat(`
 ${names.includes('context') ? 'var ctx = context;' : ''}
-${useReturn ? `return stringify(${code});` : code};
+var endResult = function() {
+  ${useReturn ? `return (${code});` : code};
+};
+
+return stringify(endResult());
 `);
 };
 

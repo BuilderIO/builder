@@ -1,5 +1,71 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.1.1
+
+### Patch Changes
+
+- 22de13c: Fix: add missing `override` component config
+
+## 1.1.0
+
+### Minor Changes
+
+- 3594120: Feature: add `shouldReceiveBuilderProps` config to Registered Components, with the following defaults:
+
+  ```ts
+  shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: true,
+      builderComponents: false,
+      builderLinkComponent: false,
+    },
+  ```
+
+  To configure a component to receive only certain Builder props, override the `shouldReceiveBuilderProps` config:
+
+  Example:
+
+  ```ts
+  export const componentInfo = {
+    name: "Text",
+
+    shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: false,
+      builderComponents: true,
+      builderLinkComponent: false,
+    },
+
+    inputs: [
+      {
+        name: "text",
+        type: "html",
+        required: true,
+        autoFocus: true,
+        bubble: true,
+        defaultValue: "Enter some text...",
+      },
+    ],
+  };
+  ```
+
+## 1.0.35
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 7b689a8: Fix: Add support for CSS variables that use default values.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
+## 1.0.34
+
+### Patch Changes
+
+- c787998: Fix: add `regeneratorRuntime` polyfill
+- c787998: Fix: replace `react-native-render-html` with `@builder.io/react-native-render-html` to remove `defaultProps` errors.
+  See https://github.com/meliorence/react-native-render-html/issues/661
+- c787998: Fix: disable async storage during static rendering (node.js)
+
 ## 1.0.33
 
 ### Patch Changes

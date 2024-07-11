@@ -2,34 +2,18 @@
 <!-- snippets/svelte/src/App.svelte -->
 
 <script lang="ts">
-  import { Content, fetchOneEntry, type BuilderContent } from '@builder.io/sdk-svelte';
+  import { Router, Route } from "svelte-routing";
+  import CatchAll from "./components/CatchAll.svelte";
+  import AnnouncementBar from "./components/AnnouncementBar.svelte";
 
-  let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
-  let model = 'page';
-
-  let content: BuilderContent | null = null;
-
-  async function fetchContent() {
-    content = await fetchOneEntry({
-      apiKey,
-      model,
-      userAttributes: {
-        urlPath: window.location.pathname
-      }
-    });
-  }
-
-  fetchContent();
+  export let url = "";
 </script>
 
 <svelte:head>
   <title>Home</title>
 </svelte:head>
 
-<main>
-  {#if content}
-    <Content content={content} apiKey={apiKey} model={model}  />
-  {:else}
-    Content Not Found
-  {/if}
-</main>
+<Router {url}>
+  <Route path="/announcements/:id" component={AnnouncementBar} />
+  <Route path="/*" component={CatchAll} />
+</Router>

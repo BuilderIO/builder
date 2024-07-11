@@ -4,7 +4,7 @@ import tsPlugin from '@babel/plugin-syntax-typescript';
 import tsPreset from '@babel/preset-typescript';
 import t from '@babel/types';
 import fs from 'fs';
-import glob from 'glob';
+import { glob } from 'glob';
 
 /**
  * - add watch cmd that combines sdk build and this
@@ -26,7 +26,7 @@ const buildInlineFns = async () => {
     );
   }
 
-  const foundFiles = glob.glob(init_cwd + '/src/**/*/inlined-fns.*', {
+  const foundFiles = glob.globSync(init_cwd + '/src/**/*/inlined-fns.*', {
     sync: true,
   });
 

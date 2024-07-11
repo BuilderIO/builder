@@ -39,4 +39,11 @@ export const componentInfo: ComponentInfo = {
   ],
   static: true,
   noWrap: true,
+
+  shouldReceiveBuilderProps: {
+    builderBlock: false,
+    builderContext: false,
+    builderComponents: false,
+    builderLinkComponent: true,
+  },
 };
