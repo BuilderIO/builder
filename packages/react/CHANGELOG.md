@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 3.2.11
+
+### Patch Changes
+
+- 6187c39: Fix: `required` option for TextArea and Select blocks
+- 767795c: Fix binding to array property getters and methods in server context
+
 ## 3.2.10
 
 ### Patch Changes
