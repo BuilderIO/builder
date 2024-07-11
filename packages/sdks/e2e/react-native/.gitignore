@@ -26,3 +26,5 @@ build-*.tar.gz
 # ignore ios build
 ios
 android
+
+!.eas/**/*
