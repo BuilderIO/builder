@@ -1,5 +1,53 @@
 # @builder.io/sdk-angular
 
+## 0.1.0
+
+### Minor Changes
+
+- 3594120: Feature: add `shouldReceiveBuilderProps` config to Registered Components, with the following defaults:
+
+  ```ts
+  shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: true,
+      builderComponents: false,
+      builderLinkComponent: false,
+    },
+  ```
+
+  To configure a component to receive only certain Builder props, override the `shouldReceiveBuilderProps` config:
+
+  Example:
+
+  ```ts
+  export const componentInfo = {
+    name: "Text",
+
+    shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: false,
+      builderComponents: true,
+      builderLinkComponent: false,
+    },
+
+    inputs: [
+      {
+        name: "text",
+        type: "html",
+        required: true,
+        autoFocus: true,
+        bubble: true,
+        defaultValue: "Enter some text...",
+      },
+    ],
+  };
+  ```
+
+### Patch Changes
+
+- 27c2175: Feat: add multi bundle support for angular sdk (node and browser)
+- 5fb20a8: Fix: SSR for ab-tests and Symbols
+
 ## 0.0.10
 
 ### Patch Changes

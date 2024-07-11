@@ -1,5 +1,48 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.1.0
+
+### Minor Changes
+
+- 3594120: Feature: add `shouldReceiveBuilderProps` config to Registered Components, with the following defaults:
+
+  ```ts
+  shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: true,
+      builderComponents: false,
+      builderLinkComponent: false,
+    },
+  ```
+
+  To configure a component to receive only certain Builder props, override the `shouldReceiveBuilderProps` config:
+
+  Example:
+
+  ```ts
+  export const componentInfo = {
+    name: "Text",
+
+    shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: false,
+      builderComponents: true,
+      builderLinkComponent: false,
+    },
+
+    inputs: [
+      {
+        name: "text",
+        type: "html",
+        required: true,
+        autoFocus: true,
+        bubble: true,
+        defaultValue: "Enter some text...",
+      },
+    ],
+  };
+  ```
+
 ## 1.0.36
 
 ### Patch Changes
