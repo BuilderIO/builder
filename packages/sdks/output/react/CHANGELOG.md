@@ -1,5 +1,12 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 1.0.36
+
+### Patch Changes
+
+- 6187c39: Fix: `required` option for TextArea and Select blocks
+- 6187c39: Feat: Add support for TextArea block
+
 ## 1.0.35
 
 ### Patch Changes
