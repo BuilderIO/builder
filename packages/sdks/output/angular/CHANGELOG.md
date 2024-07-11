@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.1.1
+
+### Patch Changes
+
+- 22de13c: Fix: add missing `override` component config
+
 ## 0.1.0
 
 ### Minor Changes
