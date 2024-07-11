@@ -1,5 +1,10 @@
 import babel from '@babel/core';
 import tsPlugin from '@babel/plugin-syntax-typescript';
+import {
+  getFolderName,
+  getSdkEnv,
+  getSdkOutputPath,
+} from '@builder.io/sdks/output-generation/index.js';
 import { execSync } from 'child_process';
 import fs from 'fs';
 import glob from 'glob';
@@ -11,7 +16,7 @@ import prettier from 'prettier';
  * @typedef {babel.PluginObj} InlinePlugin
  */
 
-const sdkEnv = process.env.SDK_ENV;
+const sdkEnv = getSdkEnv();
 
 if (!sdkEnv) {
   throw new Error('SDK_ENV is required to build the SDK.');
@@ -20,10 +25,7 @@ if (!sdkEnv) {
 const ngPackageJsonPath = path.resolve('ng-package.json');
 const ngPackageJson = JSON.parse(fs.readFileSync(ngPackageJsonPath, 'utf-8'));
 
-const outputPath = {
-  node: './lib/node',
-  browser: './lib/browser',
-}[sdkEnv];
+const outputPath = getSdkOutputPath();
 
 if (!outputPath) {
   throw new Error(
@@ -53,12 +55,9 @@ if (foundFiles.length !== 1) {
 
 const chooseEvalFile = foundFiles[0];
 
-const getFolderName = () => {
-  return sdkEnv === 'node' ? 'node-runtime' : 'browser-runtime';
-};
-
 // Helper function to transform the file
 const transformFile = (filePath, replaceValue, revert = false) => {
+  let hasReplacedImport = false;
   const result = babel.transformFileSync(filePath, {
     plugins: [
       tsPlugin,
@@ -73,6 +72,7 @@ const transformFile = (filePath, replaceValue, revert = false) => {
               const newValue = revert ? 'placeholder-runtime' : replaceValue;
               if (path.node.source.value === currentValue) {
                 path.node.source.value = newValue;
+                hasReplacedImport = true;
               }
             },
           },
@@ -80,6 +80,12 @@ const transformFile = (filePath, replaceValue, revert = false) => {
       },
     ],
   });
+
+  if (!hasReplacedImport) {
+    throw new Error(
+      `Expected to replace import with value ${replaceValue} in ${filePath} but no such import found.`
+    );
+  }
 
   fs.writeFileSync(filePath, result.code, 'utf-8');
 };
