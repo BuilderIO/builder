@@ -9,6 +9,7 @@ import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { getStyle } from '../../functions/get-style.js';
+import { checkIsDefined } from '../../helpers/nullable.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -121,9 +122,11 @@ export const provideLinkComponent = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp =
-    block.shouldReceiveBuilderProps?.linkComponent ??
-    DEFAULT_SHOULD_RECEIVE_PROPS;
+  const shouldReceiveProp = checkIsDefined(
+    block.shouldReceiveBuilderProps?.linkComponent
+  )
+    ? block.shouldReceiveBuilderProps.linkComponent
+    : DEFAULT_SHOULD_RECEIVE_PROPS;
 
   const isRSCComp = block.isRSC && TARGET === 'rsc';
 
@@ -138,9 +141,11 @@ export const provideRegisteredComponents = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp =
-    block.shouldReceiveBuilderProps?.registeredComponents ??
-    DEFAULT_SHOULD_RECEIVE_PROPS;
+  const shouldReceiveProp = checkIsDefined(
+    block.shouldReceiveBuilderProps?.registeredComponents
+  )
+    ? block.shouldReceiveBuilderProps.registeredComponents
+    : DEFAULT_SHOULD_RECEIVE_PROPS;
 
   const isRSCComp = block.isRSC && TARGET === 'rsc';
 
@@ -155,9 +160,11 @@ export const provideBuilderBlock = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp =
-    block.shouldReceiveBuilderProps?.builderBlock ??
-    DEFAULT_SHOULD_RECEIVE_PROPS;
+  const shouldReceiveProp = checkIsDefined(
+    block.shouldReceiveBuilderProps?.builderBlock
+  )
+    ? block.shouldReceiveBuilderProps.builderBlock
+    : DEFAULT_SHOULD_RECEIVE_PROPS;
 
   const isRSCComp = block.isRSC && TARGET === 'rsc';
 
@@ -175,9 +182,11 @@ export const provideBuilderContext = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp =
-    block.shouldReceiveBuilderProps?.builderContext ??
-    DEFAULT_SHOULD_RECEIVE_PROPS;
+  const shouldReceiveProp = checkIsDefined(
+    block.shouldReceiveBuilderProps?.builderContext
+  )
+    ? block.shouldReceiveBuilderProps.builderContext
+    : DEFAULT_SHOULD_RECEIVE_PROPS;
 
   const isRSCComp = block.isRSC && TARGET === 'rsc';
 
