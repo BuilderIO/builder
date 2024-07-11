@@ -115,6 +115,17 @@ export interface ComponentInfo {
   hidden?: boolean;
 
   /**
+   * When overriding built-in components, if you don't want any special behavior that
+   * the original has, set this to `true` to skip the default behavior
+   *
+   * Default behaviors include special "virtual options", such as a custom
+   * aspect ratio editor for Images, or a special column editor for Columns
+   *
+   * Learn more about overriding built-in components here: https://www.builder.io/c/docs/custom-components-overriding
+   */
+  override?: boolean;
+
+  /**
    * Whether or not the component should receive SDK-related props.
    */
   shouldReceiveBuilderProps?: {
