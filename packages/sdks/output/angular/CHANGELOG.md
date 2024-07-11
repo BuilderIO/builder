@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.0.10
+
+### Patch Changes
+
+- 6187c39: Fix: `required` option for TextArea and Select blocks
+- 6187c39: Feat: Add support for TextArea block
+
 ## 0.0.9
 
 ### Patch Changes
