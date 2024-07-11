@@ -59,7 +59,6 @@ function assign(target: object, ..._args: any[]) {
 }
 
 export function bindAnimations(animations: BuilderAnimation[]) {
-  if (!isBrowser()) return;
   for (const animation of animations) {
     switch (animation.trigger) {
       case 'pageLoad':

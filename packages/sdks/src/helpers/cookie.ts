@@ -13,7 +13,7 @@ export const getCookieSync = ({
   canTrack,
 }: GetCookieArgs): string | undefined => {
   try {
-    if (!canTrack || !isBrowser()) {
+    if (!canTrack) {
       return undefined;
     }
 
@@ -101,7 +101,7 @@ export const setCookie = async ({
   expires?: Date;
 } & CanTrack): Promise<void> => {
   try {
-    if (!canTrack || !isBrowser()) {
+    if (!canTrack) {
       return;
     }
     const cookie = createCookieString({ name, value, expires });
