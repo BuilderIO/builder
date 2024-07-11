@@ -8,7 +8,7 @@ import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { getStyle } from '../../functions/get-style.js';
-import { checkIsDefined } from '../../helpers/nullable.js';
+import type { ComponentInfo } from '../../server-index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -112,8 +112,19 @@ export const getInheritedStyles = ({
   return extractTextStyles(style);
 };
 
-// once we bump to a major version, toggle this to `false`.
-const DEFAULT_SHOULD_RECEIVE_PROPS = true;
+const applyDefaults = (
+  shouldReceiveBuilderProps: ComponentInfo['shouldReceiveBuilderProps']
+) => {
+  return {
+    // once we bump to a major version, toggle this to `false`.
+    builderBlock: true,
+    // once we bump to a major version, toggle this to `false`.
+    builderContext: true,
+    builderComponents: false,
+    builderLinkComponent: false,
+    ...shouldReceiveBuilderProps,
+  };
+};
 
 export const provideLinkComponent = (
   block: RegisteredComponent | null | undefined,
@@ -121,11 +132,9 @@ export const provideLinkComponent = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp = checkIsDefined(
-    block.shouldReceiveBuilderProps?.builderLinkComponent
-  )
-    ? block.shouldReceiveBuilderProps.builderLinkComponent
-    : false;
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderLinkComponent;
 
   if (!shouldReceiveProp) return {};
 
@@ -138,11 +147,9 @@ export const provideRegisteredComponents = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp = checkIsDefined(
-    block.shouldReceiveBuilderProps?.builderComponents
-  )
-    ? block.shouldReceiveBuilderProps.builderComponents
-    : false;
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderComponents;
 
   if (!shouldReceiveProp) return {};
 
@@ -155,11 +162,9 @@ export const provideBuilderBlock = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp = checkIsDefined(
-    block.shouldReceiveBuilderProps?.builderBlock
-  )
-    ? block.shouldReceiveBuilderProps.builderBlock
-    : DEFAULT_SHOULD_RECEIVE_PROPS;
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderBlock;
 
   if (!shouldReceiveProp) return {};
 
@@ -172,11 +177,9 @@ export const provideBuilderContext = (
 ) => {
   if (!block) return {};
 
-  const shouldReceiveProp = checkIsDefined(
-    block.shouldReceiveBuilderProps?.builderContext
-  )
-    ? block.shouldReceiveBuilderProps.builderContext
-    : DEFAULT_SHOULD_RECEIVE_PROPS;
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderContext;
 
   if (!shouldReceiveProp) return {};
 

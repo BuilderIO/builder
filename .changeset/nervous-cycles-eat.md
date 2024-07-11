@@ -9,7 +9,18 @@
 '@builder.io/sdk-vue': minor
 ---
 
-Feature: add `shouldReceiveBuilderProps` config to Registered Components, with a default that provides all Builder props.
+Feature: add `shouldReceiveBuilderProps` config to Registered Components, with the following defaults:
+
+```ts
+shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderContext: true,
+    builderComponents: false,
+    builderLinkComponent: false,
+  },
+```
+
+To configure a component to receive only certain Builder props, override the `shouldReceiveBuilderProps` config:
 
 Example:
 

@@ -116,14 +116,37 @@ export interface ComponentInfo {
 
   /**
    * Whether or not the component should receive SDK-related props.
-   *
-   * Defaults to providing all Builder props.
    */
   shouldReceiveBuilderProps?: {
-    builderContext?: boolean;
-    builderComponents?: boolean;
-    builderLinkComponent?: boolean;
+    /**
+     * Whether or not the component should receive the `builderBlock` prop, containing the current Builder block being rendered.
+     *
+     * Defaults to `true`.
+     */
     builderBlock?: boolean;
+
+    /**
+     * Whether or not the component should receive the `builderContext` prop, containing the current context.
+     * The Builder Context contains a lot of data relevant to the current `Content` render.
+     * You can see more information [here](https://github.com/BuilderIO/builder/blob/main/packages/sdks/src/context/types.ts).
+     *
+     * Defaults to `true`.
+     */
+    builderContext?: boolean;
+
+    /**
+     * Whether or not the component should receive the `builderComponents` array, containing the all registered components (custom and built-in).
+     *
+     * Defaults to `false`.
+     */
+    builderComponents?: boolean;
+
+    /**
+     * Whether or not the component should receive the `builderLinkComponent` prop, containing the custom link component provided to `Content`.
+     *
+     * Defaults to `false`.
+     */
+    builderLinkComponent?: boolean;
   };
 }
 
