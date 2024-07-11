@@ -112,80 +112,76 @@ export const getInheritedStyles = ({
   return extractTextStyles(style);
 };
 
+// once we bump to a major version, toggle this to `false`.
+const DEFAULT_SHOULD_RECEIVE_PROPS = true;
+
 export const provideLinkComponent = (
   block: RegisteredComponent | null | undefined,
   linkComponent: any
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Core:Button',
-        'Symbol',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Builder:Accordion',
-      ].includes(block.name))
-    ? { builderLinkComponent: linkComponent }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp =
+    block.shouldReceiveBuilderProps?.linkComponent ??
+    DEFAULT_SHOULD_RECEIVE_PROPS;
+
+  const isRSCComp = block.isRSC && TARGET === 'rsc';
+
+  if (!shouldReceiveProp && !isRSCComp) return {};
+
+  return { linkComponent };
 };
 
 export const provideRegisteredComponents = (
   block: RegisteredComponent | null | undefined,
   registeredComponents: RegisteredComponents
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Symbol',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Builder:Accordion',
-      ].includes(block.name))
-    ? { builderComponents: registeredComponents }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp =
+    block.shouldReceiveBuilderProps?.registeredComponents ??
+    DEFAULT_SHOULD_RECEIVE_PROPS;
+
+  const isRSCComp = block.isRSC && TARGET === 'rsc';
+
+  if (!shouldReceiveProp && !isRSCComp) return {};
+
+  return { registeredComponents };
 };
 
 export const provideBuilderBlock = (
   block: RegisteredComponent | null | undefined,
   builderBlock: BuilderBlock
 ) => {
-  /**
-   * Our built-in components frequently make use of the block, so we provide all of it under `builderBlock`
-   */
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      (TARGET === 'reactNative' && block.name === 'Text') ||
-      [
-        'Builder:Accordion',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Symbol',
-        'Image',
-        'Video',
-      ].includes(block.name))
-    ? { builderBlock }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp =
+    block.shouldReceiveBuilderProps?.builderBlock ??
+    DEFAULT_SHOULD_RECEIVE_PROPS;
+
+  const isRSCComp = block.isRSC && TARGET === 'rsc';
+
+  const isReactNativeTextComp =
+    TARGET === 'reactNative' && block.name === 'Text';
+
+  if (!shouldReceiveProp && !isRSCComp && !isReactNativeTextComp) return {};
+
+  return { builderBlock };
 };
 
 export const provideBuilderContext = (
   block: RegisteredComponent | null | undefined,
   context: Signal<BuilderContextInterface>
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Builder:Accordion',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Symbol',
-        'Slot',
-      ].includes(block.name))
-    ? {
-        builderContext: context,
-      }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp =
+    block.shouldReceiveBuilderProps?.builderContext ??
+    DEFAULT_SHOULD_RECEIVE_PROPS;
+
+  const isRSCComp = block.isRSC && TARGET === 'rsc';
+
+  if (!shouldReceiveProp && !isRSCComp) return {};
+
+  return { context };
 };

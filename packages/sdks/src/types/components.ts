@@ -113,6 +113,17 @@ export interface ComponentInfo {
 
   // TO-DO: is this used?
   hidden?: boolean;
+
+  /**
+   * Whether or not the component should receive SDK-related props.
+   *
+   */
+  shouldReceiveBuilderProps?: {
+    builderContext?: boolean;
+    registeredComponents?: boolean;
+    linkComponent?: boolean;
+    builderBlock?: boolean;
+  };
 }
 
 type Permission =
