@@ -1,9 +1,8 @@
 import babel from '@babel/core';
 import tsPlugin from '@babel/plugin-syntax-typescript';
 import {
-  getSdkEnv,
-  getSdkOutputPath,
   getEvaluatorPathAlias,
+  getSdkOutputPath,
 } from '@builder.io/sdks/output-generation/index.js';
 import { execSync } from 'child_process';
 import fs from 'fs';
@@ -16,22 +15,10 @@ import prettier from 'prettier';
  * @typedef {babel.PluginObj} InlinePlugin
  */
 
-const sdkEnv = getSdkEnv();
-
-if (!sdkEnv) {
-  throw new Error('SDK_ENV is required to build the SDK.');
-}
-
 const ngPackageJsonPath = path.resolve('ng-package.json');
 const ngPackageJson = JSON.parse(fs.readFileSync(ngPackageJsonPath, 'utf-8'));
 
 const outputPath = getSdkOutputPath();
-
-if (!outputPath) {
-  throw new Error(
-    `Unknown SDK_ENV: ${sdkEnv}. Expected one of 'node', 'browser'.`
-  );
-}
 
 // Set the destination path to the correct output path for specific SDK_ENV
 ngPackageJson.dest = outputPath;
