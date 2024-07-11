@@ -2,8 +2,6 @@
   "name": "@builder.io/sdks",
   "private": true,
   "scripts": {
-    "prepare": "cd ../../ && npx husky install",
-    "cz": "cz",
     "g:build-inline-fns": "node ./output-generation/build-inline-fns.mjs",
     "build-mitosis": "../../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:angular": "yarn build-mitosis --target=angular && yarn run set-sdk-version angular",
@@ -54,10 +52,6 @@
     "e2e:run:vue": "SERVER_NAME=vue,nuxt yarn nx test:e2e @sdk/tests",
     "e2e:run:angular": "SERVER_NAME=angular,angular-ssr yarn nx test:e2e @sdk/tests",
     "loop": "bash ./scripts/loop-command.sh",
-    "version-sdks": "bash ./scripts/version-sdks.sh",
-    "version:all:patch": "yarn version-sdks patch all",
-    "version:all:minor": "yarn version-sdks minor all",
-    "version:all:dev": "yarn version-sdks dev all",
     "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "yarn loop upgrade-example latest"
@@ -80,15 +74,11 @@
     "@types/traverse": "^0.6.32",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
-    "commitizen": "^4.2.4",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.12.0",
     "eslint-plugin-react": "latest",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "git-cz": "^4.8.0",
-    "husky": "^7.0.4",
+    "glob": "^11.0.0",
     "npm-run-all": "^4.1.5",
-    "pinst": "^3.0.0",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
     "publint": "^0.2.6",
@@ -99,11 +89,6 @@
   },
   "engines": {
     "yarn": ">= 3.0.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "git-cz"
-    }
   },
   "nx": {
     "targets": {

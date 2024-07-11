@@ -113,6 +113,52 @@ export interface ComponentInfo {
 
   // TO-DO: is this used?
   hidden?: boolean;
+
+  /**
+   * When overriding built-in components, if you don't want any special behavior that
+   * the original has, set this to `true` to skip the default behavior
+   *
+   * Default behaviors include special "virtual options", such as a custom
+   * aspect ratio editor for Images, or a special column editor for Columns
+   *
+   * Learn more about overriding built-in components here: https://www.builder.io/c/docs/custom-components-overriding
+   */
+  override?: boolean;
+
+  /**
+   * Whether or not the component should receive SDK-related props.
+   */
+  shouldReceiveBuilderProps?: {
+    /**
+     * Whether or not the component should receive the `builderBlock` prop, containing the current Builder block being rendered.
+     *
+     * Defaults to `true`.
+     */
+    builderBlock?: boolean;
+
+    /**
+     * Whether or not the component should receive the `builderContext` prop, containing the current context.
+     * The Builder Context contains a lot of data relevant to the current `Content` render.
+     * You can see more information [here](https://github.com/BuilderIO/builder/blob/main/packages/sdks/src/context/types.ts).
+     *
+     * Defaults to `true`.
+     */
+    builderContext?: boolean;
+
+    /**
+     * Whether or not the component should receive the `builderComponents` array, containing the all registered components (custom and built-in).
+     *
+     * Defaults to `false`.
+     */
+    builderComponents?: boolean;
+
+    /**
+     * Whether or not the component should receive the `builderLinkComponent` prop, containing the custom link component provided to `Content`.
+     *
+     * Defaults to `false`.
+     */
+    builderLinkComponent?: boolean;
+  };
 }
 
 type Permission =

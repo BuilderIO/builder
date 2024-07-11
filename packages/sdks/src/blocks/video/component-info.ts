@@ -112,4 +112,11 @@ export const componentInfo: ComponentInfo = {
       advanced: true,
     },
   ],
+
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderContext: false,
+    builderComponents: false,
+    builderLinkComponent: false,
+  },
 };

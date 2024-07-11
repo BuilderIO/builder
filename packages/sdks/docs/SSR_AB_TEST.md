@@ -11,10 +11,13 @@ Server Side Render:
 - render every single variant
 - show only the default variant, and hide all other variants using CSS and `hidden` + `aria-hidden` HTML attributes
 
-Client Side Render:
+Client Side Render (before web frameworks have had a chance to hydrate):
 
 - read/set a cookie to determine the winning variant
 - hide or delete all losing variants (depending on the framework), and show the winning variant.
+
+Essentially, we use inlined scripts to modify the SSR'd content ASAP, _before_ web frameworks hydrate/consume the content.
+This is how we "trick" them into thinking that the SSR'd content only ever had one visible variant.
 
 ### SSR
 

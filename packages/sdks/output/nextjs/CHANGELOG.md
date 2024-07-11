@@ -1,5 +1,69 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.15.0
+
+### Minor Changes
+
+- 3594120: Fix: stop automatically providing `builderComponents` and `builderLinkComponents` to all RSC custom components. Instead, use the `shouldReceiveBuilderProps` to configure whether they should be provided or not.
+- 3594120: Feature: add `shouldReceiveBuilderProps` config to Registered Components, with the following defaults:
+
+  ```ts
+  shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: true,
+      builderComponents: false,
+      builderLinkComponent: false,
+    },
+  ```
+
+  To configure a component to receive only certain Builder props, override the `shouldReceiveBuilderProps` config:
+
+  Example:
+
+  ```ts
+  export const componentInfo = {
+    name: "Text",
+
+    shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: false,
+      builderComponents: true,
+      builderLinkComponent: false,
+    },
+
+    inputs: [
+      {
+        name: "text",
+        type: "html",
+        required: true,
+        autoFocus: true,
+        bubble: true,
+        defaultValue: "Enter some text...",
+      },
+    ],
+  };
+  ```
+
+## 0.14.30
+
+### Patch Changes
+
+- 7ae4170: Feature: add `@builder.io/sdk-react-nextjs/node/init` entry point with `initializeNodeRuntime` export that sets the IVM instance.
+
+  This import should be called in a server-only location, such as _inside_ of a Next.js async `Page` component.
+
+  ```tsx
+  export default async function Page(props: MyPageProps) {
+    // NOTE: the import must be inside the Page component itself.
+    const { initializeNodeRuntime } = await import(
+      "@builder.io/sdk-react-nextjs/node/init"
+    );
+    initializeNodeRuntime();
+
+    // rest of your logic...
+  }
+  ```
+
 ## 0.14.29
 
 ### Patch Changes
