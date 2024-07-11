@@ -5,8 +5,8 @@ export const componentInfo: ComponentInfo = {
   shouldReceiveBuilderProps: {
     builderBlock: TARGET === 'reactNative' ? true : false,
     builderContext: false,
-    registeredComponents: false,
-    linkComponent: false,
+    builderComponents: false,
+    builderLinkComponent: false,
   },
   name: 'Text',
   static: true,

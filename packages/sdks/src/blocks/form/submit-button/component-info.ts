@@ -4,8 +4,8 @@ export const componentInfo: ComponentInfo = {
   shouldReceiveBuilderProps: {
     builderBlock: false,
     builderContext: false,
-    registeredComponents: false,
-    linkComponent: false,
+    builderComponents: false,
+    builderLinkComponent: false,
   },
   name: 'Form:SubmitButton',
 

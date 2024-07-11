@@ -117,11 +117,12 @@ export interface ComponentInfo {
   /**
    * Whether or not the component should receive SDK-related props.
    *
+   * Defaults to providing all Builder props.
    */
   shouldReceiveBuilderProps?: {
     builderContext?: boolean;
-    registeredComponents?: boolean;
-    linkComponent?: boolean;
+    builderComponents?: boolean;
+    builderLinkComponent?: boolean;
     builderBlock?: boolean;
   };
 }

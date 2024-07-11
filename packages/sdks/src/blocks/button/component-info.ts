@@ -43,7 +43,7 @@ export const componentInfo: ComponentInfo = {
   shouldReceiveBuilderProps: {
     builderBlock: false,
     builderContext: false,
-    registeredComponents: false,
-    linkComponent: true,
+    builderComponents: false,
+    builderLinkComponent: true,
   },
 };

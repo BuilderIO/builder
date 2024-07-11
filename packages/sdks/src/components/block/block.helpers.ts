@@ -122,14 +122,14 @@ export const provideLinkComponent = (
   if (!block) return {};
 
   const shouldReceiveProp = checkIsDefined(
-    block.shouldReceiveBuilderProps?.linkComponent
+    block.shouldReceiveBuilderProps?.builderLinkComponent
   )
-    ? block.shouldReceiveBuilderProps.linkComponent
+    ? block.shouldReceiveBuilderProps.builderLinkComponent
     : DEFAULT_SHOULD_RECEIVE_PROPS;
 
   if (!shouldReceiveProp) return {};
 
-  return { linkComponent };
+  return { builderLinkComponent: linkComponent };
 };
 
 export const provideRegisteredComponents = (
@@ -139,14 +139,14 @@ export const provideRegisteredComponents = (
   if (!block) return {};
 
   const shouldReceiveProp = checkIsDefined(
-    block.shouldReceiveBuilderProps?.registeredComponents
+    block.shouldReceiveBuilderProps?.builderComponents
   )
-    ? block.shouldReceiveBuilderProps.registeredComponents
+    ? block.shouldReceiveBuilderProps.builderComponents
     : DEFAULT_SHOULD_RECEIVE_PROPS;
 
   if (!shouldReceiveProp) return {};
 
-  return { registeredComponents };
+  return { builderComponents: registeredComponents };
 };
 
 export const provideBuilderBlock = (
@@ -180,5 +180,5 @@ export const provideBuilderContext = (
 
   if (!shouldReceiveProp) return {};
 
-  return { context };
+  return { builderContext: context };
 };
