@@ -161,6 +161,9 @@ export const getSizes = (
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: boolean }> {
   get useLazyLoading() {
+    if (this.props.highPriority) {
+      return false;
+    }
     // Use builder.getLocation()
     return Builder.isBrowser && location.search.includes('builder.lazyLoadImages=false')
       ? false
@@ -294,6 +297,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     }
 
     const isPixel = builderBlock?.id.startsWith('builder-pixel-');
+    const eagerLoad = isPixel || this.props.highPriority;
     const { fitContent } = this.props;
 
     return (
@@ -342,7 +346,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   },
                 }),
               }}
-              loading={isPixel ? 'eager' : 'lazy'}
+              loading={eagerLoad ? 'eager' : 'lazy'}
+              fetchPriority={eagerLoad ? 'high' : 'auto'}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
               {...(!amp && {
@@ -433,7 +438,7 @@ export const Image = withBuilder(ImageComponent, {
       name: 'image',
       type: 'file',
       bubble: true,
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a',
@@ -537,6 +542,13 @@ export const Image = withBuilder(ImageComponent, {
       name: 'altText',
       type: 'string',
       helperText: 'Text to display when the user has images off',
+    },
+    {
+      name: 'highPriority',
+      type: 'boolean',
+      advanced: true,
+      helperText:
+        'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
     },
     {
       name: 'height',

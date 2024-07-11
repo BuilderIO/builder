@@ -19,15 +19,15 @@ The easiest way to start is to pick a starting point from the list of plugin typ
 With e-commerce plugins, users can search and link selected products and categories from their E-Commerce backend to structured data entries, sections, and pages built within the visual editor. This allows teams to easily enrich content for selected products and build landing pages or custom sections with elements linked directly to their E-Commerce backend, for e.g product cards, product galleries, add to cart buttons, list of product recommendations, and much more.
 
 Resources:
-1. [Utility library that makes connecting e-commerce backends easier](https://github.com/BuilderIO/builder/tree/main/packages/commerce-plugin-tools)
+1. [Utility library that makes connecting backends easier](https://github.com/BuilderIO/builder/tree/main/packages/plugin-tools)
 2. [Forum post details how to use the utils library](https://forum.builder.io/t/how-to-build-a-custom-editor-plugin-for-my-ecommerce-backend-with-builder-io/519)
-3. Good starting point and/or a reference implementation [https://github.com/BuilderIO/builder/tree/main/plugins/swell](https://github.com/BuilderIO/builder/tree/main/plugins/swell)
+3. Good starting point and/or a reference implementation [https://github.com/BuilderIO/builder/tree/main/plugins/shopify](https://github.com/BuilderIO/builder/tree/main/plugins/shopify)
 
 ## Data Connector plugins
 
 Data connector plugins are a way to enrich the data available in the editor sections and pages from external sources, once linked a data source users will be able to pick and choose entries or query that source and bind to the results of those queries directly in builder.
 Resources:
-1. [Utility library that makes creating Data Connectors easier](https://github.com/BuilderIO/builder/tree/main/packages/data-plugin-tools)
+1. [Utility library that makes connecting backends easier](https://github.com/BuilderIO/builder/tree/main/packages/plugin-tools)
 2. [Reference implementation: Contentful data connector](https://www.builder.io/blog/builder-contentful)
 
 ## Action shortcut plugins

@@ -21,7 +21,7 @@ import { FORM } from './form.js';
 import { CONTENT as homepage } from './homepage.js';
 import { HOVER_ANIMATION } from './hover-animation.js';
 import { HTTP_REQUESTS } from './http-requests.js';
-import { CONTENT as image } from './image.js';
+import { CONTENT as image, CONTENT_2 as imageHighPriority } from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
 import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
@@ -71,6 +71,7 @@ const PAGES = {
   '/symbol-with-input-binding': symbolWithInputBinding,
   '/content-bindings': contentBindings,
   '/image': image,
+  '/image-high-priority': imageHighPriority,
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
   '/ab-test': abTest,

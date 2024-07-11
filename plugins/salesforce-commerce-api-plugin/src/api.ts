@@ -1,5 +1,5 @@
 import appState from '@builder.io/app-context';
-import { Resource } from '@builder.io/commerce-plugin-tools';
+import { Resource } from '@builder.io/plugin-tools';
 
 const basicCache = new Map();
 

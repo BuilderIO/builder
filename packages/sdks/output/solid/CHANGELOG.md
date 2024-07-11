@@ -1,5 +1,27 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 1.0.35
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 7b8d742: Fix: use inlined `<style>` tags instead of `solid-styled-components` to resolve CLS issues.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
+## 1.0.33
+
+### Patch Changes
+
+- 6c8db7e: Fix: check `e.origin` of the message to be a URL first
+
+## 1.0.32
+
+### Patch Changes
+
+- a38eae0: Fix: pass Builder props to blocks and custom components only when needed.
+- e31ef49: Misc: cleanup error message for edge runtime evaluation.
+- 945f26e: Adds the `highPriority` option to the Image block component to ensure eager loading.
+
 ## 1.0.31
 
 ### Patch Changes

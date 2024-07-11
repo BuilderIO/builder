@@ -1,5 +1,5 @@
 import React from 'react';
-import { logger } from '../helpers/logger';
+import { logger } from '../helpers/logger.js';
 
 export default class ErrorBoundary extends React.Component<
   React.PropsWithChildren,

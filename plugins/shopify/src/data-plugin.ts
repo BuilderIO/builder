@@ -1,6 +1,5 @@
-import { APIOperations, ResourceType } from '@builder.io/data-plugin-tools';
+import { APIOperations, ResourceType, CommerceAPIOperations } from '@builder.io/plugin-tools';
 import appState from '@builder.io/app-context';
-import { CommerceAPIOperations } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 type ShopifyResourceType = 'product' | 'collection';
 

@@ -1,14 +1,26 @@
-import type { CanTrack } from '../types/can-track.js';
-import { logger } from './logger.js';
+// polyfill `regenerator-runtime` for `react-native-storage`
+import 'regenerator-runtime/runtime.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import Storage from 'react-native-storage';
 import { isBrowser } from '../functions/is-browser.js';
+import type { CanTrack } from '../types/can-track.js';
+import { logger } from './logger.js';
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
 
 const initStorage = () => {
-  const backend = isBrowser() ? window.localStorage : AsyncStorage;
+  const backend =
+    Platform.OS === 'web'
+      ? isBrowser()
+        ? // web
+          window?.localStorage
+        : // static rendering/SSR in expo 50+
+          undefined
+      : // non-web (iOS/Android)
+        AsyncStorage;
+
   const storage = new Storage({
     // maximum capacity, default 1000 key-ids
     size: 1000,

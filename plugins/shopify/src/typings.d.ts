@@ -1,8 +1,7 @@
 declare module '@builder.io/app-context';
 
 declare namespace ShopifyBuy {
-  type Resource =
-    import('@builder.io/commerce-plugin-tools/dist/types/interfaces/resource').Resource;
+  type Resource = import('@builder.io/plugin-tools/dist/types/interfaces/resource').Resource;
 
   export interface Product extends ShopifyBuy.Product {
     handle: string;

@@ -1,5 +1,36 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 1.0.35
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 7b689a8: Fix: Add support for CSS variables that use default values.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
+## 1.0.34
+
+### Patch Changes
+
+- c787998: Fix: add `regeneratorRuntime` polyfill
+- c787998: Fix: replace `react-native-render-html` with `@builder.io/react-native-render-html` to remove `defaultProps` errors.
+  See https://github.com/meliorence/react-native-render-html/issues/661
+- c787998: Fix: disable async storage during static rendering (node.js)
+
+## 1.0.33
+
+### Patch Changes
+
+- 6c8db7e: Fix: check `e.origin` of the message to be a URL first
+
+## 1.0.32
+
+### Patch Changes
+
+- a38eae0: Fix: pass Builder props to blocks and custom components only when needed.
+- e31ef49: Misc: cleanup error message for edge runtime evaluation.
+- 945f26e: Adds the `highPriority` option to the Image block component to ensure eager loading.
+
 ## 1.0.31
 
 ### Patch Changes

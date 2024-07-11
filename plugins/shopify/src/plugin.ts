@@ -1,4 +1,4 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { registerCommercePlugin } from '@builder.io/plugin-tools';
 
 import Client from 'shopify-buy';
 import pkg from '../package.json';
@@ -14,8 +14,7 @@ registerCommercePlugin(
       {
         name: 'storefrontAccessToken',
         type: 'string',
-        helperText:
-          'Required to sync, index, and cache your storefront product data to avoid rate limits',
+        helperText: 'Required to fetch storefront product data',
         required: true,
       },
       {
@@ -24,6 +23,11 @@ registerCommercePlugin(
         helperText: 'Your entire store domain, such as "your-store.myshopify.com"',
         required: true,
       },
+      {
+        name: 'apiVersion',
+        type: 'text',
+        helperText: 'Your Shopify API version, such as "2020-04"',
+      },
     ],
     ctaText: `Connect your shopify custom app`,
   },
@@ -31,9 +35,10 @@ registerCommercePlugin(
     const client = Client.buildClient({
       storefrontAccessToken: settings.get('storefrontAccessToken'),
       domain: settings.get('storeDomain'),
+      apiVersion: settings.get('apiVersion') || '2020-07',
     });
 
-    const service = {
+    const service: any = {
       product: {
         async findById(id: string) {
           return client.product.fetch(id);
@@ -42,9 +47,16 @@ registerCommercePlugin(
           return client.product.fetchByHandle(handle);
         },
         async search(search: string) {
-          return client.product.fetchQuery({
-            query: search ? `title:*${search}*` : '',
-            sortKey: 'TITLE',
+          const sources =
+            (await client.product.fetchQuery({
+              query: search ? `title:*${search}*` : '',
+              sortKey: 'TITLE',
+            })) || [];
+          return sources.map((src: any) => {
+            return {
+              ...src,
+              image: src.image || src.images?.[0],
+            };
           });
         },
 
@@ -92,7 +104,7 @@ registerCommercePlugin(
       },
     };
 
-    appState.registerDataPlugin(getDataConfig(service));
+    appState.registerDataPlugin(getDataConfig(service as any));
 
     return service;
   }

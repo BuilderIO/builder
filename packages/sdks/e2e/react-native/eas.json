@@ -1,0 +1,44 @@
+{
+  "cli": {
+    "version": ">= 10.0.3"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {},
+    "development:simulator": {
+      "extends": "development",
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "YARN_ENABLE_SCRIPTS": "false"
+      }
+    },
+    "test": {
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "YARN_ENABLE_SCRIPTS": "false"
+      }
+    },
+    "test_debug": {
+      "ios": {
+        "buildConfiguration": "Debug",
+        "simulator": true
+      },
+      "env": {
+        "YARN_ENABLE_SCRIPTS": "false"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

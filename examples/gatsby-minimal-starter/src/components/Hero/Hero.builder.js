@@ -15,7 +15,7 @@ Builder.registerComponent(Hero, {
     {
       name: 'image',
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
       required: true,
       defaultValue:
         'https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg',

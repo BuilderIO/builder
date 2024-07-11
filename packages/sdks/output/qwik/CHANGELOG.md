@@ -1,5 +1,26 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.29
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
+## 0.14.28
+
+### Patch Changes
+
+- 6c8db7e: Fix: check `e.origin` of the message to be a URL first
+
+## 0.14.27
+
+### Patch Changes
+
+- a38eae0: Fix: pass Builder props to blocks and custom components only when needed.
+- e31ef49: Misc: cleanup error message for edge runtime evaluation.
+- 945f26e: Adds the `highPriority` option to the Image block component to ensure eager loading.
+
 ## 0.14.26
 
 ### Patch Changes

@@ -53,6 +53,171 @@ Object {
           "translated": true,
         },
       },
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "component": Object {
+          "name": "Symbol",
+          "options": Object {
+            "symbol": Object {
+              "data": Object {
+                "heroContent": Object {
+                  "cta": Object {
+                    "label": Object {
+                      "@type": "@builder.io/core:LocalizedValue",
+                      "Default": "content label",
+                      "de": "german label",
+                      "en-GB": "label for GB",
+                      "en-US": "label for US",
+                      "fr-FR": "french label",
+                      "hi-IN": "label for India",
+                    },
+                    "link": "content link",
+                    "otherLabels": Array [
+                      Object {
+                        "kids": Object {
+                          "@type": "@builder.io/core:LocalizedValue",
+                          "Default": "content label kids",
+                          "de": "german label for kids",
+                          "en-GB": "label for GB kids",
+                          "en-US": "label for US kids",
+                          "fr-FR": "french label for kids",
+                        },
+                        "men": Object {
+                          "@type": "@builder.io/core:LocalizedValue",
+                          "Default": "content label men",
+                          "de": "german label for men",
+                          "en-GB": "label for GB men",
+                          "en-US": "label for US men",
+                          "fr-FR": "french label for men",
+                        },
+                      },
+                      Object {
+                        "women": Object {
+                          "@type": "@builder.io/core:LocalizedValue",
+                          "Default": "content label women",
+                          "de": "german label for women",
+                          "en-GB": "label for GB women",
+                          "en-US": "label for US women",
+                          "fr-FR": "french label for women",
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+              "entry": "6a013dc290a548eb8e968c848ae5d5a2",
+              "model": "symbol",
+              "ownerId": "cfadfce0f3684576b7a6cca6599ce3be",
+            },
+          },
+        },
+        "id": "builder-068283319b1740b3aa8279c09c1dc957",
+        "meta": Object {
+          "transformed.symbol.data.heroContent.cta.label": "localized",
+          "transformed.symbol.data.heroContent.cta.otherLabels[0].kids": "localized",
+          "transformed.symbol.data.heroContent.cta.otherLabels[0].men": "localized",
+          "transformed.symbol.data.heroContent.cta.otherLabels[1].women": "localized",
+          "translated": true,
+        },
+      },
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "component": Object {
+          "name": "Symbol",
+          "options": Object {
+            "symbol": Object {
+              "data": Object {
+                "children": Array [
+                  Object {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "children": Array [
+                      Object {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "component": Object {
+                          "name": "Typography",
+                          "options": Object {
+                            "children": Object {
+                              "@type": "@builder.io/core:LocalizedValue",
+                              "Default": "2. Properly configuring your gamepad",
+                              "de": "2. german Properly configuring your gamepad",
+                              "fr": "Gardez vos fichiers privés et en sécurité grâce à Shadow Drive, notre solution de stockage dans le cloud conçue et hébergée en Europe.<br><strong> C'est désormais le drive sécurisé le moins cher du marché.",
+                              "fr-FR": "2. french Properly configuring your gamepad",
+                            },
+                            "color": "black",
+                            "component": "p",
+                            "htmlTag": "h2",
+                            "variant": "heading-h4",
+                            "variantMobile": "heading-h5",
+                            "variantTablet": "body-md",
+                          },
+                        },
+                        "id": "builder-5f0b30f48b5a47a7ababc6526b65a17e",
+                        "layerName": "Intertitre",
+                        "meta": Object {
+                          "localizedTextInputs": Array [
+                            "children",
+                          ],
+                          "previousId": "builder-5f7863a185524c40ba854534de6c5d7f",
+                          "transformed.children": "localized",
+                          "translated": true,
+                        },
+                        "responsiveStyles": Object {
+                          "large": Object {
+                            "display": "inline",
+                          },
+                        },
+                      },
+                      Object {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "component": Object {
+                          "name": "Typography",
+                          "options": Object {
+                            "children": Object {
+                              "@type": "@builder.io/core:LocalizedValue",
+                              "Default": "3. Optimizing connectivity",
+                              "de": "3. german Optimizing connectivity",
+                              "fr": "Gardez vos fichiers privés et en sécurité grâce à Shadow Drive, notre solution de stockage dans le cloud conçue et hébergée en Europe.<br><strong> C'est désormais le drive sécurisé le moins cher du marché.",
+                              "fr-FR": "3. french Optimizing connectivity",
+                            },
+                            "color": "black",
+                            "component": "p",
+                            "variant": "heading-h4",
+                            "variantMobile": "heading-h5",
+                            "variantTablet": "body-md",
+                          },
+                        },
+                        "id": "builder-5ce42f734ffa429b8c5612cb2e340bd7",
+                        "layerName": "Intertitre",
+                        "meta": Object {
+                          "localizedTextInputs": Array [
+                            "children",
+                          ],
+                          "previousId": "builder-5f0b30f48b5a47a7ababc6526b65a17e",
+                          "transformed.children": "localized",
+                          "translated": true,
+                        },
+                      },
+                    ],
+                    "id": "builder-1fae3855fc1c441683f52c18d46e2601",
+                  },
+                ],
+              },
+              "entry": "6a013dc290a548eb8e968c848ae5d5a2",
+              "model": "symbol",
+              "ownerId": "cfadfce0f3684576b7a6cca6599ce3be",
+            },
+          },
+        },
+        "id": "builder-5128283319b1740b3aa8279c09c1dc957",
+        "meta": Object {
+          "translated": true,
+        },
+      },
     ],
     "seo": Object {
       "@type": "@builder.io/core:LocalizedValue",
@@ -108,6 +273,30 @@ Object {
   "blocks.block-pre-localized-element#text": Object {
     "instructions": "This is a mobile only element",
     "value": "en-us text!",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.label": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].kids": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US kids",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[0].men": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US men",
+  },
+  "blocks.builder-068283319b1740b3aa8279c09c1dc957.symbolInput#heroContent.cta.otherLabels[1].women": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "label for US women",
+  },
+  "blocks.builder-5ce42f734ffa429b8c5612cb2e340bd7#children": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "3. Optimizing connectivity",
+  },
+  "blocks.builder-5f0b30f48b5a47a7ababc6526b65a17e#children": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "2. Properly configuring your gamepad",
   },
   "blocks.builder-custom-component-id#heading": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
