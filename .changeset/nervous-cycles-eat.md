@@ -10,3 +10,29 @@
 ---
 
 Feature: add `shouldReceiveBuilderProps` config to Registered Components, with a default that provides all Builder props.
+
+Example:
+
+```ts
+export const componentInfo = {
+  name: 'Text',
+
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderContext: false,
+    builderComponents: true,
+    builderLinkComponent: false,
+  },
+
+  inputs: [
+    {
+      name: 'text',
+      type: 'html',
+      required: true,
+      autoFocus: true,
+      bubble: true,
+      defaultValue: 'Enter some text...',
+    },
+  ],
+};
+```
