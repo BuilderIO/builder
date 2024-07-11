@@ -4,12 +4,6 @@ import type { ComponentInfo } from '../../types/components.js';
 declare const _iframelyApiKey: string;
 
 export const componentInfo: ComponentInfo = {
-  shouldReceiveBuilderProps: {
-    builderBlock: false,
-    builderContext: false,
-    builderComponents: false,
-    builderLinkComponent: false,
-  },
   name: 'Embed',
   static: true,
 

@@ -176,8 +176,5 @@ export const componentInfo: ComponentInfo = {
 
   shouldReceiveBuilderProps: {
     builderBlock: true,
-    builderContext: false,
-    builderComponents: false,
-    builderLinkComponent: false,
   },
 };
