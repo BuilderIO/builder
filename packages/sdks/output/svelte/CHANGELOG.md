@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 1.1.1
+
+### Patch Changes
+
+- 22de13c: Fix: add missing `override` component config
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.15.1
+
+### Patch Changes
+
+- 22de13c: Fix: add missing `override` component config
+
 ## 0.15.0
 
 ### Minor Changes
