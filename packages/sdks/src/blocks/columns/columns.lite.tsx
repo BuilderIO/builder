@@ -57,8 +57,10 @@ export default function Columns(props: ColumnProps) {
     },
     getColumnCssWidth(index: number) {
       const width = state.getWidth(index);
+
       const subtractWidth =
-        (state.gutterSize * (state.cols.length - 1)) * (width/100);
+        state.gutterSize * (state.cols.length - 1) * (width / 100);
+
       return `calc(${width}% - ${subtractWidth}px)`;
     },
 

@@ -80,8 +80,11 @@ class ColumnsComponent extends React.Component<any> {
 
   getColumnWidth(index: number) {
     const { columns, gutterSize } = this;
-    const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
-    return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+    const width = this.getWidth(index);
+
+    const subtractWidth = gutterSize * (columns.length - 1) * (width / 100);
+
+    return `calc(${width}% - ${subtractWidth}px)`;
   }
 
   render() {
