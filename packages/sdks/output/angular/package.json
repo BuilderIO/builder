@@ -8,8 +8,8 @@
     "release": "npm publish",
     "build-inline-fns": "yarn g:build-inline-fns",
     "build": "nx run-many -p @builder.io/sdk-angular -t build:node build:browser --parallel=false",
-    "build:node": "cross-env SDK_ENV=node node ./scripts/multi-build.js",
-    "build:browser": "cross-env SDK_ENV=browser node ./scripts/multi-build.js"
+    "build:node": "cross-env SDK_ENV=node node ./scripts/multi-build.mjs",
+    "build:browser": "cross-env SDK_ENV=browser node ./scripts/multi-build.mjs"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0",
