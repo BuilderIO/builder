@@ -173,4 +173,11 @@ export const componentInfo: ComponentInfo = {
       defaultValue: 0.7041,
     },
   ],
+
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderContext: false,
+    builderComponents: false,
+    builderLinkComponent: false,
+  },
 };

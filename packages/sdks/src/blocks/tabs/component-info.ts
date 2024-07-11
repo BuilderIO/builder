@@ -152,4 +152,11 @@ export const componentInfo: ComponentInfo = {
       ],
     },
   ],
+
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderContext: true,
+    builderComponents: true,
+    builderLinkComponent: true,
+  },
 };

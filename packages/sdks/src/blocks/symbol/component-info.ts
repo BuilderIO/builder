@@ -41,4 +41,11 @@ export const componentInfo: ComponentInfo = {
       type: 'boolean',
     },
   ],
+
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderContext: true,
+    builderComponents: true,
+    builderLinkComponent: true,
+  },
 };

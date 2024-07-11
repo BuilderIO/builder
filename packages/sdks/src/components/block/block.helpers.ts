@@ -1,5 +1,4 @@
 import type { Signal } from '@builder.io/mitosis';
-import { TARGET } from '../../constants/target.js';
 import type {
   BuilderContextInterface,
   RegisteredComponent,
@@ -9,6 +8,7 @@ import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { getStyle } from '../../functions/get-style.js';
+import type { ComponentInfo } from '../../server-index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -112,80 +112,76 @@ export const getInheritedStyles = ({
   return extractTextStyles(style);
 };
 
+const applyDefaults = (
+  shouldReceiveBuilderProps: ComponentInfo['shouldReceiveBuilderProps']
+) => {
+  return {
+    // once we bump to a major version, toggle this to `false`.
+    builderBlock: true,
+    // once we bump to a major version, toggle this to `false`.
+    builderContext: true,
+    builderComponents: false,
+    builderLinkComponent: false,
+    ...shouldReceiveBuilderProps,
+  };
+};
+
 export const provideLinkComponent = (
   block: RegisteredComponent | null | undefined,
   linkComponent: any
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Core:Button',
-        'Symbol',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Builder:Accordion',
-      ].includes(block.name))
-    ? { builderLinkComponent: linkComponent }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderLinkComponent;
+
+  if (!shouldReceiveProp) return {};
+
+  return { builderLinkComponent: linkComponent };
 };
 
 export const provideRegisteredComponents = (
   block: RegisteredComponent | null | undefined,
   registeredComponents: RegisteredComponents
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Symbol',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Builder:Accordion',
-      ].includes(block.name))
-    ? { builderComponents: registeredComponents }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderComponents;
+
+  if (!shouldReceiveProp) return {};
+
+  return { builderComponents: registeredComponents };
 };
 
 export const provideBuilderBlock = (
   block: RegisteredComponent | null | undefined,
   builderBlock: BuilderBlock
 ) => {
-  /**
-   * Our built-in components frequently make use of the block, so we provide all of it under `builderBlock`
-   */
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      (TARGET === 'reactNative' && block.name === 'Text') ||
-      [
-        'Builder:Accordion',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Symbol',
-        'Image',
-        'Video',
-      ].includes(block.name))
-    ? { builderBlock }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderBlock;
+
+  if (!shouldReceiveProp) return {};
+
+  return { builderBlock };
 };
 
 export const provideBuilderContext = (
   block: RegisteredComponent | null | undefined,
   context: Signal<BuilderContextInterface>
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Builder:Accordion',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Symbol',
-        'Slot',
-      ].includes(block.name))
-    ? {
-        builderContext: context,
-      }
-    : {};
+  if (!block) return {};
+
+  const shouldReceiveProp = applyDefaults(
+    block.shouldReceiveBuilderProps
+  ).builderContext;
+
+  if (!shouldReceiveProp) return {};
+
+  return { builderContext: context };
 };
