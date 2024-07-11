@@ -6,11 +6,10 @@
   ],
   "scripts": {
     "release": "npm publish",
-    "build-inline-fns": "echo 'not implemented yet'",
-    "build": "ng build --project sdk-angular && rm -rf lib/package.json",
-    "build:node": "ng build --project sdk-angular --configuration node",
-    "build:edge": "ng build --project sdk-angular --configuration edge",
-    "build:browser": "ng build --project sdk-angular --configuration browser"
+    "build-inline-fns": "yarn g:build-inline-fns",
+    "build": "nx run-many -p @builder.io/sdk-angular -t build:node build:browser --parallel=false",
+    "build:node": "cross-env SDK_ENV=node node ./scripts/multi-build.mjs",
+    "build:browser": "cross-env SDK_ENV=browser node ./scripts/multi-build.mjs"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0",
@@ -35,6 +34,8 @@
     "@builder.io/sdks": "workspace:*",
     "@types/jasmine": "~4.3.0",
     "@types/node": "^20.11.30",
+    "cross-env": "^7.0.3",
+    "glob": "^7.2.3",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -76,12 +77,22 @@
       "default": "./package.json"
     },
     ".": {
-      "types": "./lib/index.d.ts",
-      "esm2022": "./lib/esm2022/builder.io-sdk-angular.mjs",
-      "esm": "./lib/esm2022/builder.io-sdk-angular.mjs",
-      "default": "./lib/fesm2022/builder.io-sdk-angular.mjs"
+      "node": {
+        "esm2022": "./lib/node/esm2022/builder.io-sdk-angular.mjs",
+        "esm": "./lib/node/esm2022/builder.io-sdk-angular.mjs",
+        "types": "./lib/node/index.d.ts",
+        "default": "./lib/node/fesm2022/builder.io-sdk-angular.mjs"
+      },
+      "browser": {
+        "esm2022": "./lib/browser/esm2022/builder.io-sdk-angular.mjs",
+        "esm": "./lib/browser/esm2022/builder.io-sdk-angular.mjs",
+        "types": "./lib/browser/index.d.ts",
+        "default": "./lib/browser/fesm2022/builder.io-sdk-angular.mjs"
+      }
     }
   },
-  "module": "lib/fesm2022/builder.io-sdk-angular.mjs",
-  "typings": "lib/index.d.ts"
+  "main": "lib/node/fesm2022/builder.io-sdk-angular.mjs",
+  "module": "lib/node/fesm2022/builder.io-sdk-angular.mjs",
+  "typings": "lib/node/index.d.ts",
+  "types": "lib/node/index.d.ts"
 }
