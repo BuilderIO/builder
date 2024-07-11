@@ -1,9 +1,9 @@
 import babel from '@babel/core';
 import tsPlugin from '@babel/plugin-syntax-typescript';
 import {
-  getFolderName,
   getSdkEnv,
   getSdkOutputPath,
+  getEvaluatorPathAlias,
 } from '@builder.io/sdks/output-generation/index.js';
 import { execSync } from 'child_process';
 import fs from 'fs';
@@ -92,7 +92,8 @@ const transformFile = (filePath, replaceValue, revert = false) => {
 
 // Transform the choose-eval.ts file to replace 'placeholder-runtime'
 // to appropriate runtime value based on the SDK_ENV
-const folderName = `./${getFolderName()}/index`;
+const alias = getEvaluatorPathAlias();
+const folderName = alias['placeholder-runtime'];
 transformFile(chooseEvalFile, folderName);
 
 // Run the Angular build command
