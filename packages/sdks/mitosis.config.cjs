@@ -565,6 +565,7 @@ module.exports = {
     },
     solid: {
       typescript: true,
+      stylesType: 'style-tag',
       plugins: [
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,

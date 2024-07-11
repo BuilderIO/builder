@@ -14,7 +14,7 @@ Builder.registerComponent(TripleColumns, {
     {
       name: 'image1',
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
@@ -27,7 +27,7 @@ Builder.registerComponent(TripleColumns, {
     {
       name: 'image2',
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
@@ -40,7 +40,7 @@ Builder.registerComponent(TripleColumns, {
     {
       name: 'image3',
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',

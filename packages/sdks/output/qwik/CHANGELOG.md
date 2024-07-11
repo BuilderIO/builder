@@ -1,5 +1,12 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.14.29
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
 ## 0.14.28
 
 ### Patch Changes

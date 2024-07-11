@@ -3,6 +3,7 @@ import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import type { Dictionary } from '../types/typescript.js';
+import { extractCssVarDefaultValue } from './extract-css-var-default-value.js';
 
 const cssToReactNative: typeof cssToStyleSheet = (cssToStyleSheet as any)
   .default
@@ -172,7 +173,8 @@ const processValue = (
 ): string | undefined => {
   if (typeof value !== 'string' || value === '') return undefined;
   if (!ALLOWED_CSS_PROPERTIES.includes(key as any)) return undefined;
-  if (value.includes('calc')) return undefined;
+  if (value.includes('var(')) return extractCssVarDefaultValue(value);
+  if (value.includes('calc(')) return undefined;
   if (value.includes('inherit')) return undefined;
   if (value === 'px') return undefined;
   if (key === 'display' && !DISPLAY_VALUES.includes(value)) return undefined;

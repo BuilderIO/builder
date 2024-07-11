@@ -24,7 +24,7 @@ Builder.registerComponent(
         name: 'imageSrc',
         friendlyName: 'Hero Image',
         type: 'file',
-        allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+        allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
         required: true,
         defaultValue:
           'https://cdn.builder.io/api/v1/image/assets%2Fe7eb284a1bc549c8856f32d1fc7a44cf%2F992e8c492ebc491badb17b91c4f7d6fd',

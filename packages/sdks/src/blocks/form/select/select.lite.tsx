@@ -19,6 +19,7 @@ export interface FormSelectProps {
   name?: string;
   value?: string;
   defaultValue?: string;
+  required?: boolean;
 }
 
 export default function SelectComponent(props: FormSelectProps) {
@@ -40,6 +41,7 @@ export default function SelectComponent(props: FormSelectProps) {
       }
       defaultValue={props.defaultValue}
       name={props.name}
+      required={props.required}
     >
       <For each={props.options}>
         {(option, index) => (

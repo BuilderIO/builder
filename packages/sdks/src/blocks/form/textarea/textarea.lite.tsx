@@ -1,10 +1,10 @@
 import { useMetadata, useTarget } from '@builder.io/mitosis';
-import { filterAttrs } from '../helpers.js';
+import { filterAttrs } from '../../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
 
-import { setAttrs } from '../helpers.js';
+import { setAttrs } from '../../helpers.js';
 
 useMetadata({
   rsc: {
@@ -18,6 +18,7 @@ export interface TextareaProps {
   value?: string;
   defaultValue?: string;
   placeholder?: string;
+  required?: boolean;
 }
 
 export default function Textarea(props: TextareaProps) {
@@ -37,6 +38,7 @@ export default function Textarea(props: TextareaProps) {
       name={props.name}
       value={props.value}
       defaultValue={props.defaultValue}
+      required={props.required}
     />
   );
 }
