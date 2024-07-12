@@ -21,22 +21,22 @@ jobs:
           fetch-depth: 2
           token: ${{ secrets.LINT_AND_COMMIT_PAT }}
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
+      # - name: Use Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '18.x'
 
-      - name: 📥 Monorepo install
-        uses: ./.github/actions/yarn-nm-install
-        with:
-          cache-node-modules: true
-          cache-install-state: true
+      # - name: 📥 Monorepo install
+      #   uses: ./.github/actions/yarn-nm-install
+      #   with:
+      #     cache-node-modules: true
+      #     cache-install-state: true
 
-      - name: Run prettier
-        run: yarn workspace @builder.io/root lint:fix
+      # - name: Run prettier
+      #   run: yarn workspace @builder.io/root lint:fix
 
-      - name: Run eslint
-        run: yarn workspace @builder.io/sdks lint
+      # - name: Run eslint
+      #   run: yarn workspace @builder.io/sdks lint
 
       - name: "Import GPG key"
         id: import-gpg
@@ -44,23 +44,31 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_KEY }}
           passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
+          fingerprint: "EC822FB42CF3BC27"
           git_user_signingkey: true
           git_commit_gpgsign: true
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        id: auto-commit-action
-        with:
-          commit_message: Apply linting changes
-          commit_author: "${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>"
-          commit_user_name: ${{ steps.import-gpg.outputs.name }}
-          commit_user_email: ${{ steps.import-gpg.outputs.email }}
+      - name: Sign commit and push changes
+        run: |
+          echo foo > bar.txt
+          git add .
+          git commit -S -m "This commit is signed!"
+          git push
+  
+      # - uses: stefanzweifel/git-auto-commit-action@v5
+      #   id: auto-commit-action
+      #   with:
+      #     commit_message: Apply linting changes
+      #     commit_author: "${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>"
+      #     commit_user_name: ${{ steps.import-gpg.outputs.name }}
+      #     commit_user_email: ${{ steps.import-gpg.outputs.email }}
      
     
-      - name: "Run if changes have been detected"
-        if: steps.auto-commit-action.outputs.changes_detected == 'true'
-        run: echo "Committing linting changes."
+      # - name: "Run if changes have been detected"
+      #   if: steps.auto-commit-action.outputs.changes_detected == 'true'
+      #   run: echo "Committing linting changes."
     
-      - name: "Run if no changes have been detected"
-        if: steps.auto-commit-action.outputs.changes_detected == 'false'
-        run: echo "No linting changes to commit."
+      # - name: "Run if no changes have been detected"
+      #   if: steps.auto-commit-action.outputs.changes_detected == 'false'
+      #   run: echo "No linting changes to commit."
   
