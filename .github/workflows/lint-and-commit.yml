@@ -67,6 +67,12 @@ jobs:
       # git push
         run: echo foo > bar.txt
   
+
+      - run: git config --global credential.https://github.com.username builderio-bot
+      - run: git config --global credential.https://github.com.password $GH_ACCESS_TOKEN
+        env:
+          GH_ACCESS_TOKEN: ${{ secrets.LINT_AND_COMMIT_PAT }}
+  
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: auto-commit-action
         with:
