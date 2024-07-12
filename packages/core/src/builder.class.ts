@@ -698,7 +698,7 @@ export interface Component {
   /** @hidden @deprecated */
   class?: any;
   /** @hidden @deprecated */
-  type?: 'angular' | 'webcomponent' | 'react' | 'vue';
+  type?: "angular" | 'webcomponent' | 'react' | 'vue';
   /**
    * Default styles to apply when droppged into the Builder.io editor
    *
