@@ -12,3 +12,7 @@ export default function BaseText(props: { text: string }) {
     </span>
   );
 }
+
+
+
+
