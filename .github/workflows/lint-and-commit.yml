@@ -1,5 +1,5 @@
 ---
-name: CI
+name: Auto lint & commit 🤖
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
 
 jobs:
   auto-lint-and-commit:
-    name: Auto lint & commit
+    name: Auto lint & commit 🤖
     runs-on: ubuntu-latest
 
     steps:
