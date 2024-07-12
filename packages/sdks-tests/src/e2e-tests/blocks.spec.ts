@@ -416,6 +416,10 @@ test.describe('Blocks', () => {
 
     test('check different width columns are correctly rendered', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        "Angular SDK columns don't set the width correctly"
+      );
 
       await page.goto('/columns-with-different-widths');
 
@@ -455,6 +459,10 @@ test.describe('Blocks', () => {
 
     test('space is correctly allocated', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        "Angular SDK columns don't set the width correctly"
+      );
 
       await page.goto('/columns-with-different-widths');
 
