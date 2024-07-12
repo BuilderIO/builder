@@ -44,7 +44,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_KEY }}
           passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
-          fingerprint: "D756EFC386E217D38930FE7EEC822FB42CF3BC27"
+          fingerprint: "fpr:::::::::D756EFC386E217D38930FE7EEC822FB42CF3BC27:"
           git_user_signingkey: true
           git_commit_gpgsign: true
 
