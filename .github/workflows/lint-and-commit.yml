@@ -9,6 +9,9 @@ on:
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
+permissions: 
+  contents: write
+  
 jobs:
   auto-lint-and-commit:
     name: Auto lint & commit 🤖
