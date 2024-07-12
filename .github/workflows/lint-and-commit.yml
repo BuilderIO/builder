@@ -41,14 +41,14 @@ jobs:
       # - name: Run eslint
       #   run: yarn workspace @builder.io/sdks lint
 
-      - name: "Import GPG key"
-        id: import-gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+      # - name: "Import GPG key"
+      #   id: import-gpg
+      #   uses: crazy-max/ghaction-import-gpg@v6
+      #   with:
+      #     gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
+      #     git_user_signingkey: true
+      #     git_commit_gpgsign: true
 
       # - run: ./scripts/lint-and-commit.sh
       #   shell: bash
@@ -71,9 +71,9 @@ jobs:
         id: auto-commit-action
         with:
           commit_message: Apply linting changes
-          commit_author: "${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>"
-          commit_user_name: ${{ steps.import-gpg.outputs.name }}
-          commit_user_email: ${{ steps.import-gpg.outputs.email }}
+          commit_author: "builderio-bot <sami+builderbot@builder.io>"
+          commit_user_name: builderio-bot
+          commit_user_email: sami+builderbot@builder.io
      
     
       - name: "Run if changes have been detected"
