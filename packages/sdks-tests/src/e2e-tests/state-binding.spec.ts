@@ -15,7 +15,7 @@ test.describe('State binding', () => {
           packageName === 'solid-start' ||
           packageName === 'svelte' ||
           packageName === 'sveltekit' ||
-          packageName === 'next-app-dir' ||
+          packageName === 'next-nextjs-sdk' ||
           packageName === 'vue' ||
           packageName === 'nuxt'
       );

@@ -50,7 +50,7 @@ test.describe('Integrating Pages', () => {
 
     test('updates homepage', async ({ page, basePort, packageName }) => {
       test.skip(
-        packageName === 'next-app-dir',
+        packageName === 'next-nextjs-sdk',
         'Nextjs SDK does not support standard page editing.'
       );
 

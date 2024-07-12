@@ -1,5 +1,5 @@
 {
-  "name": "@snippet/next-app-dir",
+  "name": "@snippet/next-nextjs-sdk",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=next-app-dir yarn nx test:snippet @sdk/tests",
+    "test": "SERVER_NAME=next-nextjs-sdk yarn nx test:snippet @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {

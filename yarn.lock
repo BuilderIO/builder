@@ -4732,9 +4732,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-app-router@workspace:packages/sdks/e2e/nextjs-app-dir-client":
+"@e2e/next-app-router@workspace:packages/sdks/e2e/next-app-router":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-app-router@workspace:packages/sdks/e2e/nextjs-app-dir-client"
+  resolution: "@e2e/next-app-router@workspace:packages/sdks/e2e/next-app-router"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@sdk/tests": "workspace:*"
@@ -4752,9 +4752,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-app-dir@workspace:packages/sdks/e2e/nextjs-app-dir":
+"@e2e/next-nextjs-sdk@workspace:packages/sdks/e2e/next-nextjs-sdk":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-app-dir@workspace:packages/sdks/e2e/nextjs-app-dir"
+  resolution: "@e2e/next-nextjs-sdk@workspace:packages/sdks/e2e/next-nextjs-sdk"
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
     "@sdk/tests": "workspace:*"
@@ -4772,9 +4772,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-pages-dir@workspace:packages/sdks/e2e/nextjs-pages-dir":
+"@e2e/next-pages-router@workspace:packages/sdks/e2e/next-pages-router":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-pages-dir@workspace:packages/sdks/e2e/nextjs-pages-dir"
+  resolution: "@e2e/next-pages-router@workspace:packages/sdks/e2e/next-pages-router"
   dependencies:
     "@builder.io/react-hydration-overlay": ^0.0.4
     "@builder.io/sdk-react": "workspace:*"
@@ -13541,9 +13541,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/next-app-router@workspace:packages/sdks/snippets/nextjs-app-dir-client":
+"@snippet/next-app-router@workspace:packages/sdks/snippets/next-app-router":
   version: 0.0.0-use.local
-  resolution: "@snippet/next-app-router@workspace:packages/sdks/snippets/nextjs-app-dir-client"
+  resolution: "@snippet/next-app-router@workspace:packages/sdks/snippets/next-app-router"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@types/node": ^20
@@ -13560,9 +13560,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/next-app-dir@workspace:packages/sdks/snippets/nextjs-app-dir":
+"@snippet/next-nextjs-sdk@workspace:packages/sdks/snippets/next-nextjs-sdk":
   version: 0.0.0-use.local
-  resolution: "@snippet/next-app-dir@workspace:packages/sdks/snippets/nextjs-app-dir"
+  resolution: "@snippet/next-nextjs-sdk@workspace:packages/sdks/snippets/next-nextjs-sdk"
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
     "@types/node": ^20
@@ -13579,9 +13579,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/next-pages-dir@workspace:packages/sdks/snippets/nextjs-pages-dir":
+"@snippet/next-pages-router@workspace:packages/sdks/snippets/next-pages-router":
   version: 0.0.0-use.local
-  resolution: "@snippet/next-pages-dir@workspace:packages/sdks/snippets/nextjs-pages-dir"
+  resolution: "@snippet/next-pages-router@workspace:packages/sdks/snippets/next-pages-router"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@types/node": ^20

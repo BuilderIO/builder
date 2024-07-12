@@ -51,9 +51,9 @@ const initializeAbTest = async (
   test.skip(packageName === 'react-native');
 
   /**
-   * This test is flaky on `next-app-dir` and `qwik-city`. Most likely because it is the very first test that runs.
+   * This test is flaky on `next-nextjs-sdk` and `qwik-city`. Most likely because it is the very first test that runs.
    */
-  test.slow(packageName === 'next-app-dir' || packageName === 'qwik-city');
+  test.slow(packageName === 'next-nextjs-sdk' || packageName === 'qwik-city');
 
   const context = await createContextWithCookies({
     baseURL,
