@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.1.2
+
+### Patch Changes
+
+- 1defae7: Refactor: move Embed iframe generation to Visual Editor
+
 ## 0.1.1
 
 ### Patch Changes

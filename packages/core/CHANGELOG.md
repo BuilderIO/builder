@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 2.2.6
+
+### Patch Changes
+
+- 1defae7: Refactor: move Embed iframe generation to Visual Editor
+
 ## 2.2.5
 
 ### Patch Changes
