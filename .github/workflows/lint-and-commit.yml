@@ -24,22 +24,22 @@ jobs:
           fetch-depth: 2
           token: ${{ secrets.LINT_AND_COMMIT_PAT }}
 
-      # - name: Use Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '18.x'
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
 
-      # - name: 📥 Monorepo install
-      #   uses: ./.github/actions/yarn-nm-install
-      #   with:
-      #     cache-node-modules: true
-      #     cache-install-state: true
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
 
-      # - name: Run prettier
-      #   run: yarn workspace @builder.io/root lint:fix
+      - name: Run prettier
+        run: yarn workspace @builder.io/root lint:fix
 
-      # - name: Run eslint
-      #   run: yarn workspace @builder.io/sdks lint
+      - name: Run eslint
+        run: yarn workspace @builder.io/sdks lint
 
       - name: "Import GPG key"
         id: import-gpg
@@ -50,23 +50,6 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
 
-      # - run: ./scripts/lint-and-commit.sh
-      #   shell: bash
-      #   env:
-      #     PRIVATE_KEY: ${{secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY}}
-      #     PUBLIC_KEY: ${{secrets.LINT_AND_COMMIT_GPG_PUBLIC_KEY}}
-      #     KEY_ID: ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
-  
-      - name: add changes
-      # git config --global user.email "sami+builderbot@builder.io"
-      # git config --global user.name "builderio-bot"
-      # git config --global user.signingkey ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
-      # git config --global commit.gpgsign true
-      # git add .
-      # git commit -S -m "This commit is signed!"
-      # git push
-        run: echo foo > bar.txt
-  
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: auto-commit-action
         with:
