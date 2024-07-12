@@ -1,3 +1,4 @@
+
 ---
 name: Auto lint & commit 🤖
 
@@ -16,6 +17,9 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.PAT }}
 
       - name: Use Node.js
         uses: actions/setup-node@v4
