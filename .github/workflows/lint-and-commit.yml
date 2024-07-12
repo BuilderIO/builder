@@ -38,18 +38,24 @@ jobs:
       # - name: Run eslint
       #   run: yarn workspace @builder.io/sdks lint
 
-      - name: "Import GPG key"
-        id: import-gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_KEY }}
-          passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
-          fingerprint: "fpr:::::::::D756EFC386E217D38930FE7EEC822FB42CF3BC27:"
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+      # - name: "Import GPG key"
+      #   id: import-gpg
+      #   uses: crazy-max/ghaction-import-gpg@v6
+      #   with:
+      #     gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_KEY }}
+      #     passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
+      #     fingerprint: "fpr:::::::::D756EFC386E217D38930FE7EEC822FB42CF3BC27:"
+      #     git_user_signingkey: true
+      #     git_commit_gpgsign: true
 
       - name: Sign commit and push changes
         run: |
+          echo ${{ secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY }} > private.key
+          echo ${{ secrets.LINT_AND_COMMIT_GPG_PUBLIC_KEY }} > public.key
+          gpg --import private.key
+          gpg --import public.key
+          git config --global user.signingkey ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
+          git config --global commit.gpgsign true
           echo foo > bar.txt
           git add .
           git commit -S -m "This commit is signed!"
