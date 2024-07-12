@@ -11,7 +11,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
     test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
+        packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
@@ -30,7 +30,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
     test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
+        packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
@@ -60,7 +60,7 @@ test.describe('Visual Editing', () => {
     test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
+        packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'

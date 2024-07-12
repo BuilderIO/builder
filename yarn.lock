@@ -4732,58 +4732,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-app-dir-client@workspace:packages/sdks/e2e/nextjs-app-dir-client":
+"@e2e/nextjs-sdk-next-app@workspace:packages/sdks/e2e/nextjs-sdk-next-app":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-app-dir-client@workspace:packages/sdks/e2e/nextjs-app-dir-client"
-  dependencies:
-    "@builder.io/sdk-react": "workspace:*"
-    "@sdk/tests": "workspace:*"
-    "@types/node": ^20
-    "@types/react": ^18.3.3
-    "@types/react-dom": ^18
-    eslint: ^8
-    eslint-config-next: 14.0.3
-    next: 14.1.1
-    nx: 16.10.0
-    nx-cloud: 16.5.2
-    react: ^18
-    react-dom: ^18
-    typescript: ^5
-  languageName: unknown
-  linkType: soft
-
-"@e2e/next-app-dir@workspace:packages/sdks/e2e/nextjs-app-dir":
-  version: 0.0.0-use.local
-  resolution: "@e2e/next-app-dir@workspace:packages/sdks/e2e/nextjs-app-dir"
+  resolution: "@e2e/nextjs-sdk-next-app@workspace:packages/sdks/e2e/nextjs-sdk-next-app"
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/node": ^20
     "@types/react": ^18.3.3
     "@types/react-dom": ^18
-    eslint: ^8
-    eslint-config-next: 14.0.3
-    next: 14.1.1
-    nx: 16.10.0
-    nx-cloud: 16.5.2
-    react: ^18
-    react-dom: ^18
-    typescript: ^5
-  languageName: unknown
-  linkType: soft
-
-"@e2e/next-pages-dir@workspace:packages/sdks/e2e/nextjs-pages-dir":
-  version: 0.0.0-use.local
-  resolution: "@e2e/next-pages-dir@workspace:packages/sdks/e2e/nextjs-pages-dir"
-  dependencies:
-    "@builder.io/react-hydration-overlay": ^0.0.4
-    "@builder.io/sdk-react": "workspace:*"
-    "@sdk/tests": "workspace:*"
-    "@types/diff": ^5.0.9
-    "@types/node": ^20
-    "@types/react": ^18.3.3
-    "@types/react-dom": ^18
-    diff: ^5.1.0
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
@@ -4872,6 +4829,49 @@ __metadata:
     serve: ^14.2.3
     ts-jest: ^29.1.5
     typescript: ~5.3.3
+  languageName: unknown
+  linkType: soft
+
+"@e2e/react-sdk-next-app@workspace:packages/sdks/e2e/react-sdk-next-app":
+  version: 0.0.0-use.local
+  resolution: "@e2e/react-sdk-next-app@workspace:packages/sdks/e2e/react-sdk-next-app"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@sdk/tests": "workspace:*"
+    "@types/node": ^20
+    "@types/react": ^18.3.3
+    "@types/react-dom": ^18
+    eslint: ^8
+    eslint-config-next: 14.0.3
+    next: 14.1.1
+    nx: 16.10.0
+    nx-cloud: 16.5.2
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
+  languageName: unknown
+  linkType: soft
+
+"@e2e/react-sdk-next-pages@workspace:packages/sdks/e2e/react-sdk-next-pages":
+  version: 0.0.0-use.local
+  resolution: "@e2e/react-sdk-next-pages@workspace:packages/sdks/e2e/react-sdk-next-pages"
+  dependencies:
+    "@builder.io/react-hydration-overlay": ^0.0.4
+    "@builder.io/sdk-react": "workspace:*"
+    "@sdk/tests": "workspace:*"
+    "@types/diff": ^5.0.9
+    "@types/node": ^20
+    "@types/react": ^18.3.3
+    "@types/react-dom": ^18
+    diff: ^5.1.0
+    eslint: ^8
+    eslint-config-next: 14.0.3
+    next: 14.1.1
+    nx: 16.10.0
+    nx-cloud: 16.5.2
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
   languageName: unknown
   linkType: soft
 
@@ -13541,49 +13541,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/next-app-dir-client@workspace:packages/sdks/snippets/nextjs-app-dir-client":
+"@snippet/nextjs-sdk-next-app@workspace:packages/sdks/snippets/nextjs-sdk-next-app":
   version: 0.0.0-use.local
-  resolution: "@snippet/next-app-dir-client@workspace:packages/sdks/snippets/nextjs-app-dir-client"
-  dependencies:
-    "@builder.io/sdk-react": "workspace:*"
-    "@types/node": ^20
-    "@types/react": ^18.3.3
-    "@types/react-dom": ^18
-    eslint: ^8
-    eslint-config-next: 14.0.3
-    next: 14.1.1
-    nx: 16.10.0
-    nx-cloud: 16.5.2
-    react: ^18
-    react-dom: ^18
-    typescript: ^5
-  languageName: unknown
-  linkType: soft
-
-"@snippet/next-app-dir@workspace:packages/sdks/snippets/nextjs-app-dir":
-  version: 0.0.0-use.local
-  resolution: "@snippet/next-app-dir@workspace:packages/sdks/snippets/nextjs-app-dir"
+  resolution: "@snippet/nextjs-sdk-next-app@workspace:packages/sdks/snippets/nextjs-sdk-next-app"
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
-    "@types/node": ^20
-    "@types/react": ^18.3.3
-    "@types/react-dom": ^18
-    eslint: ^8
-    eslint-config-next: 14.0.3
-    next: 14.1.1
-    nx: 16.10.0
-    nx-cloud: 16.5.2
-    react: ^18
-    react-dom: ^18
-    typescript: ^5
-  languageName: unknown
-  linkType: soft
-
-"@snippet/next-pages-dir@workspace:packages/sdks/snippets/nextjs-pages-dir":
-  version: 0.0.0-use.local
-  resolution: "@snippet/next-pages-dir@workspace:packages/sdks/snippets/nextjs-pages-dir"
-  dependencies:
-    "@builder.io/sdk-react": "workspace:*"
     "@types/node": ^20
     "@types/react": ^18.3.3
     "@types/react-dom": ^18
@@ -13664,6 +13626,44 @@ __metadata:
     react-test-renderer: 18.2.0
     serve: ^14.2.3
     typescript: ~5.3.3
+  languageName: unknown
+  linkType: soft
+
+"@snippet/react-sdk-next-app@workspace:packages/sdks/snippets/react-sdk-next-app":
+  version: 0.0.0-use.local
+  resolution: "@snippet/react-sdk-next-app@workspace:packages/sdks/snippets/react-sdk-next-app"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@types/node": ^20
+    "@types/react": ^18.3.3
+    "@types/react-dom": ^18
+    eslint: ^8
+    eslint-config-next: 14.0.3
+    next: 14.1.1
+    nx: 16.10.0
+    nx-cloud: 16.5.2
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
+  languageName: unknown
+  linkType: soft
+
+"@snippet/react-sdk-next-pages@workspace:packages/sdks/snippets/react-sdk-next-pages":
+  version: 0.0.0-use.local
+  resolution: "@snippet/react-sdk-next-pages@workspace:packages/sdks/snippets/react-sdk-next-pages"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@types/node": ^20
+    "@types/react": ^18.3.3
+    "@types/react-dom": ^18
+    eslint: ^8
+    eslint-config-next: 14.0.3
+    next: 14.1.1
+    nx: 16.10.0
+    nx-cloud: 16.5.2
+    react: ^18
+    react-dom: ^18
+    typescript: ^5
   languageName: unknown
   linkType: soft
 

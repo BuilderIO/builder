@@ -13,7 +13,7 @@ test.describe('Reactive State', () => {
   test('increments value correctly', async ({ page, packageName, sdk }) => {
     test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.fail(packageName === 'next-app-dir');
+    test.fail(packageName === 'nextjs-sdk-next-app');
 
     await page.goto('/reactive-state');
 

@@ -6,7 +6,10 @@ test.describe('HTTP Requests', () => {
   test('call proxy API only once - in page', async ({ page, packageName, sdk }) => {
     test.fail(packageName === 'hydrogen');
     test.skip(excludeGen1(sdk));
-    test.fail(packageName === 'next-app-dir', 'editor tests not supported in next-app-dir');
+    test.fail(
+      packageName === 'nextjs-sdk-next-app',
+      'editor tests not supported in nextjs-sdk-next-app'
+    );
     test.fail(
       excludeTestFor({ qwik: true }, sdk),
       'error setting httpRequest response or making API call altogether.'
@@ -39,7 +42,10 @@ test.describe('HTTP Requests', () => {
     test.skip(packageName === 'hydrogen');
     test.skip(excludeGen1(sdk));
     test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
-    test.skip(packageName === 'next-app-dir', 'editor tests not supported in next-app-dir');
+    test.skip(
+      packageName === 'nextjs-sdk-next-app',
+      'editor tests not supported in nextjs-sdk-next-app'
+    );
     test.skip(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(
       excludeTestFor({ qwik: true }, sdk),

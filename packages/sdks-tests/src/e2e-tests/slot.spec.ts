@@ -7,7 +7,7 @@ test.describe('Slot', () => {
     test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
     await page.goto('/slot');
     await expect(page.locator('text=Inside a slot!!')).toBeVisible();
   });
@@ -16,7 +16,7 @@ test.describe('Slot', () => {
     test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
     await page.goto('/slot');
     const builderTextElements = checkIsRN(sdk)
       ? page.locator('[data-testid="div"]')
@@ -31,7 +31,7 @@ test.describe('Slot', () => {
     test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
     await page.goto('/slot-with-symbol');
 
     await expect(page.locator('text=This is called recursion!')).toBeVisible();
@@ -41,7 +41,9 @@ test.describe('Slot', () => {
     test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // ssr packages skipped because it fetches the slot content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'next-app-dir', 'qwik-city'].includes(packageName));
+    test.fail(
+      ['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app', 'qwik-city'].includes(packageName)
+    );
 
     let x = 0;
 
