@@ -1,8 +1,5 @@
 import type { ComponentInfo } from '../../types/components.js';
 
-// Provided by the web app as a local variable in onChange functions
-declare const _iframelyApiKey: string;
-
 export const componentInfo: ComponentInfo = {
   shouldReceiveBuilderProps: {
     builderBlock: false,

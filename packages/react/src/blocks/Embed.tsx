@@ -3,9 +3,6 @@ import React from 'react';
 import { Builder } from '@builder.io/sdk';
 import { withBuilder } from '../functions/with-builder';
 
-// Provided by the web app as a local variable in onChange functions
-declare const _iframelyApiKey: string;
-
 class EmbedComponent extends React.Component<any> {
   elementRef: HTMLElement | null = null;
 
