@@ -82,36 +82,6 @@ export const Embed = withBuilder(EmbedComponent, {
       required: true,
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
-<<<<<<< Updated upstream
-      onChange(options: Map<string, any>) {
-        const url = options.get('url');
-        if (url) {
-          options.set('content', 'Loading...');
-          // TODO: get this out of here!
-          const apiKey = _iframelyApiKey;
-          return fetch(`https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`)
-            .then(res => res.json())
-            .then(data => {
-              if (options.get('url') === url) {
-                if (data.html) {
-                  options.set('content', data.html);
-                } else {
-                  options.set('content', 'Invalid url, please try another');
-                }
-              }
-            })
-            .catch(err => {
-              options.set(
-                'content',
-                'There was an error embedding this URL, please try again or another URL'
-              );
-            });
-        } else {
-          options.delete('content');
-        }
-      },
-=======
->>>>>>> Stashed changes
     },
     {
       name: 'content',
