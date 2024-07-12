@@ -21,9 +21,8 @@ jobs:
       - name: Setup
         uses: actions/checkout@v4
         with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.  
-          # token: ${{ secrets.LINT_AND_COMMIT_PAT }}
+          fetch-depth: 2
+          token: ${{ secrets.LINT_AND_COMMIT_PAT }}
 
       # - name: Use Node.js
       #   uses: actions/setup-node@v4
@@ -42,14 +41,14 @@ jobs:
       # - name: Run eslint
       #   run: yarn workspace @builder.io/sdks lint
 
-      # - name: "Import GPG key"
-      #   id: import-gpg
-      #   uses: crazy-max/ghaction-import-gpg@v6
-      #   with:
-      #     gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY }}
-      #     passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
-      #     git_user_signingkey: true
-      #     git_commit_gpgsign: true
+      - name: "Import GPG key"
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
 
       # - run: ./scripts/lint-and-commit.sh
       #   shell: bash
@@ -59,39 +58,29 @@ jobs:
       #     KEY_ID: ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
   
       - name: add changes
-        run: |
-          git config --global user.email "sami+builderbot@builder.io"
-          git config --global user.name "builderio-bot"
-          echo foo > bar.txt
-          git add .
-          git commit -m "Apply linting changes"
+      # git config --global user.email "sami+builderbot@builder.io"
+      # git config --global user.name "builderio-bot"
+      # git config --global user.signingkey ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
+      # git config --global commit.gpgsign true
+      # git add .
+      # git commit -S -m "This commit is signed!"
+      # git push
+        run: echo foo > bar.txt
   
-
-      # - run: git config --global credential.https://github.com.username builderio-bot
-      # - run: git config --global credential.https://github.com.password $GH_ACCESS_TOKEN
-      #   env:
-      #     GH_ACCESS_TOKEN: ${{ secrets.LINT_AND_COMMIT_PAT }}
-  
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit-action
         with:
-          github_token: ${{ secrets.LINT_AND_COMMIT_PAT }}
-          branch: main
-    
-      # - uses: stefanzweifel/git-auto-commit-action@v5
-      #   id: auto-commit-action
-      #   with:
-      #     commit_message: Apply linting changes
-      #     commit_author: "builderio-bot <sami+builderbot@builder.io>"
-      #     commit_user_name: builderio-bot
-      #     commit_user_email: sami+builderbot@builder.io
+          commit_message: Apply linting changes
+          commit_author: "${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>"
+          commit_user_name: ${{ steps.import-gpg.outputs.name }}
+          commit_user_email: ${{ steps.import-gpg.outputs.email }}
      
     
-      # - name: "Run if changes have been detected"
-      #   if: steps.auto-commit-action.outputs.changes_detected == 'true'
-      #   run: echo "Committed linting changes."
+      - name: "Run if changes have been detected"
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        run: echo "Committed linting changes."
     
-      # - name: "Run if no changes have been detected"
-      #   if: steps.auto-commit-action.outputs.changes_detected == 'false'
-      #   run: echo "No linting changes to commit."
+      - name: "Run if no changes have been detected"
+        if: steps.auto-commit-action.outputs.changes_detected == 'false'
+        run: echo "No linting changes to commit."
   
