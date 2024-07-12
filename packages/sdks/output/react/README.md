@@ -11,7 +11,6 @@ This is the React v2 SDK, `@builder.io/sdk-react`. It is a complete rewrite of t
 
 NOTE: if you are using the SDK in a webapp that gets deployed on a serverless environment (like Next or Hydrogen), you might need to import the SDK from `@builder.io/sdk-react/edge`. This is a special import that handles edge cases surrounding serverless environments.
 
-
 ## API Reference
 
 To use the SDK, you need to:
