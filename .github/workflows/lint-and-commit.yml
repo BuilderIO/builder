@@ -41,48 +41,46 @@ jobs:
       # - name: Run eslint
       #   run: yarn workspace @builder.io/sdks lint
 
-      # - name: "Import GPG key"
-      #   id: import-gpg
-      #   uses: crazy-max/ghaction-import-gpg@v6
-      #   with:
-      #     gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_KEY }}
-      #     passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
-      #     fingerprint: "fpr:::::::::D756EFC386E217D38930FE7EEC822FB42CF3BC27:"
-      #     git_user_signingkey: true
-      #     git_commit_gpgsign: true
+      - name: "Import GPG key"
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
+          passphrase: ${{ secrets.LINT_AND_COMMIT_GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
 
-      - run: ./scripts/lint-and-commit.sh
-        shell: bash
-        env:
-          PRIVATE_KEY: ${{secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY}}
-          PUBLIC_KEY: ${{secrets.LINT_AND_COMMIT_GPG_PUBLIC_KEY}}
-          KEY_ID: ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
+      # - run: ./scripts/lint-and-commit.sh
+      #   shell: bash
+      #   env:
+      #     PRIVATE_KEY: ${{secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY}}
+      #     PUBLIC_KEY: ${{secrets.LINT_AND_COMMIT_GPG_PUBLIC_KEY}}
+      #     KEY_ID: ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
   
-      # - name: Sign commit and push changes
-      #   run: |
-      #     git config --global user.email "sami+builderbot@builder.io"
-      #     git config --global user.name "builderio-bot"
-      #     git config --global user.signingkey ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
-      #     git config --global commit.gpgsign true
-      #     echo foo > bar.txt
-      #     git add .
-      #     git commit -S -m "This commit is signed!"
-      #     git push
+      - name: add changes
+      # git config --global user.email "sami+builderbot@builder.io"
+      # git config --global user.name "builderio-bot"
+      # git config --global user.signingkey ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
+      # git config --global commit.gpgsign true
+      # git add .
+      # git commit -S -m "This commit is signed!"
+      # git push
+        run: echo foo > bar.txt
   
-      # - uses: stefanzweifel/git-auto-commit-action@v5
-      #   id: auto-commit-action
-      #   with:
-      #     commit_message: Apply linting changes
-      #     commit_author: "${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>"
-      #     commit_user_name: ${{ steps.import-gpg.outputs.name }}
-      #     commit_user_email: ${{ steps.import-gpg.outputs.email }}
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit-action
+        with:
+          commit_message: Apply linting changes
+          commit_author: "${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>"
+          commit_user_name: ${{ steps.import-gpg.outputs.name }}
+          commit_user_email: ${{ steps.import-gpg.outputs.email }}
      
     
-      # - name: "Run if changes have been detected"
-      #   if: steps.auto-commit-action.outputs.changes_detected == 'true'
-      #   run: echo "Committing linting changes."
+      - name: "Run if changes have been detected"
+        if: steps.auto-commit-action.outputs.changes_detected == 'true'
+        run: echo "Committed linting changes."
     
-      # - name: "Run if no changes have been detected"
-      #   if: steps.auto-commit-action.outputs.changes_detected == 'false'
-      #   run: echo "No linting changes to commit."
+      - name: "Run if no changes have been detected"
+        if: steps.auto-commit-action.outputs.changes_detected == 'false'
+        run: echo "No linting changes to commit."
   
