@@ -4732,9 +4732,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/next-app-dir-client@workspace:packages/sdks/e2e/nextjs-app-dir-client":
+"@e2e/next-app-router@workspace:packages/sdks/e2e/nextjs-app-dir-client":
   version: 0.0.0-use.local
-  resolution: "@e2e/next-app-dir-client@workspace:packages/sdks/e2e/nextjs-app-dir-client"
+  resolution: "@e2e/next-app-router@workspace:packages/sdks/e2e/nextjs-app-dir-client"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@sdk/tests": "workspace:*"
@@ -13541,9 +13541,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/next-app-dir-client@workspace:packages/sdks/snippets/nextjs-app-dir-client":
+"@snippet/next-app-router@workspace:packages/sdks/snippets/nextjs-app-dir-client":
   version: 0.0.0-use.local
-  resolution: "@snippet/next-app-dir-client@workspace:packages/sdks/snippets/nextjs-app-dir-client"
+  resolution: "@snippet/next-app-router@workspace:packages/sdks/snippets/nextjs-app-dir-client"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@types/node": ^20

@@ -1,17 +1,17 @@
 {
-  "name": "@e2e/next-app-dir-client",
+  "name": "@snippet/next-app-router",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=next-app-dir-client yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=next-app-router yarn nx test:snippet @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",
-    "@sdk/tests": "workspace:*",
     "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18"
