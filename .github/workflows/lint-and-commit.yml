@@ -50,10 +50,8 @@ jobs:
 
       - name: Sign commit and push changes
         run: |
-          echo ${{ secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY }} > private.key
-          echo ${{ secrets.LINT_AND_COMMIT_GPG_PUBLIC_KEY }} > public.key
-          gpg --import private.key
-          gpg --import public.key
+          echo ${{ secrets.LINT_AND_COMMIT_GPG_PRIVATE_KEY }} > gpg --import
+          echo ${{ secrets.LINT_AND_COMMIT_GPG_PUBLIC_KEY }} > gpg --import
           git config --global user.signingkey ${{ secrets.LINT_AND_COMMIT_GPG_KEY_ID }}
           git config --global commit.gpgsign true
           echo foo > bar.txt
