@@ -1,12 +1,12 @@
 {
-  "name": "@e2e/next-pages-router",
+  "name": "@e2e/react-sdk-next-pages",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=next-pages-router yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=react-sdk-next-pages yarn nx test:e2e @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {
