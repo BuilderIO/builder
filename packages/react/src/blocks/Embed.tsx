@@ -82,6 +82,7 @@ export const Embed = withBuilder(EmbedComponent, {
       required: true,
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
+<<<<<<< Updated upstream
       onChange(options: Map<string, any>) {
         const url = options.get('url');
         if (url) {
@@ -109,6 +110,8 @@ export const Embed = withBuilder(EmbedComponent, {
           options.delete('content');
         }
       },
+=======
+>>>>>>> Stashed changes
     },
     {
       name: 'content',

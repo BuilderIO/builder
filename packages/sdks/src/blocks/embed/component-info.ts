@@ -20,6 +20,7 @@ export const componentInfo: ComponentInfo = {
       required: true,
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
+<<<<<<< Updated upstream
       onChange: (options: Map<string, any>): void | Promise<void> => {
         const url = options.get('url');
         if (url) {
@@ -49,6 +50,8 @@ export const componentInfo: ComponentInfo = {
           options.delete('content');
         }
       },
+=======
+>>>>>>> Stashed changes
     },
     {
       name: 'content',
