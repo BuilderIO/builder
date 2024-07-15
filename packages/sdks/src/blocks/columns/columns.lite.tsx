@@ -56,9 +56,12 @@ export default function Columns(props: ColumnProps) {
       return state.cols[index]?.width || 100 / state.cols.length;
     },
     getColumnCssWidth(index: number) {
+      const width = state.getWidth(index);
+
       const subtractWidth =
-        (state.gutterSize * (state.cols.length - 1)) / state.cols.length;
-      return `calc(${state.getWidth(index)}% - ${subtractWidth}px)`;
+        state.gutterSize * (state.cols.length - 1) * (width / 100);
+
+      return `calc(${width}% - ${subtractWidth}px)`;
     },
 
     getTabletStyle({
