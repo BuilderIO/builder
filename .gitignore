@@ -36,4 +36,4 @@ Pods/
 
 .nx-cache
 
-!**/.eas/**/*
+!packages/sdks/e2e/react-native/.eas/build/*
