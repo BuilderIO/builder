@@ -1,5 +1,25 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.0
+
+### Minor Changes
+
+- 2c6330f: Breaking Change 🧨: updated `shouldReceiveBuilderProps` config of Registered Components, with the following NEW defaults:
+
+  ```ts
+  shouldReceiveBuilderProps: {
+      builderBlock: true, // used to be `true`
+      builderContext: true, // used to be `true`
+      builderComponents: false, // unchanged
+      builderLinkComponent: false, // unchanged
+    },
+  ```
+
+  This means that by default, the SDK will no longer provide any Builder props unless its respective config is explicitly set to `true`.
+
+- d031580: Breaking Change 🧨: Columns block now computes percentage widths correctly, by subtracting gutter space proportionally to each percentage.
+  Previously, it computed the column's widths by subtracting gutter space equally from each column's width. This previous behavior was incorrect, and most strongly felt when the `space` was a substantially high percentage of the total width of the Columns block.
+
 ## 0.15.2
 
 ### Patch Changes
