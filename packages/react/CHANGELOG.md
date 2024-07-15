@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 3.2.12
+
+### Patch Changes
+
+- 1defae7: Refactor: move Embed iframe generation to Visual Editor
+- Updated dependencies [1defae7]
+  - @builder.io/sdk@2.2.6
+
 ## 3.2.11
 
 ### Patch Changes
