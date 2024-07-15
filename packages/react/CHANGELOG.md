@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 4.0.0
+
+### Major Changes
+
+- d031580: Breaking Change 🧨: Columns block now computes percentage widths correctly, by subtracting gutter space proportionally to each percentage.
+  Previously, it computed the column's widths by subtracting gutter space equally from each column's width. This previous behavior was incorrect, and most strongly felt when the `space` was a substantially high percentage of the total width of the Columns block.
+
 ## 3.2.12
 
 ### Patch Changes
