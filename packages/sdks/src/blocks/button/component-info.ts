@@ -41,9 +41,6 @@ export const componentInfo: ComponentInfo = {
   noWrap: true,
 
   shouldReceiveBuilderProps: {
-    builderBlock: false,
-    builderContext: false,
-    builderComponents: false,
     builderLinkComponent: true,
   },
 };
