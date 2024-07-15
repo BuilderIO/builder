@@ -14,7 +14,7 @@ import type { ServerName } from '../helpers/sdk.js';
 /**
  * These packages fetch symbol content on the server, so we cannot test them.
  */
-const SSR_FETCHING_PACKAGES: (ServerName | 'DEFAULT')[] = ['next-app-dir', 'qwik-city'];
+const SSR_FETCHING_PACKAGES: (ServerName | 'DEFAULT')[] = ['nextjs-sdk-next-app', 'qwik-city'];
 
 const testSymbols = async (page: Page) => {
   await expect(page.getByText('special test description').locator('visible=true')).toBeVisible();
@@ -239,7 +239,7 @@ test.describe('Symbols', () => {
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
     // rsc skipped because it fetches the content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'next-app-dir'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
 
     const symbols = page.locator('[builder-model="symbol"]');
     await expect(symbols).toHaveCount(2);

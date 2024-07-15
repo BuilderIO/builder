@@ -2,8 +2,6 @@
 
 NOTE: If you want to register your React Server Components as custom components in Builder, you will need to use our experimental NextJS SDK [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/nextjs).
 
-NOTE: If you want a zero-dependencies, fast and small Builder SDK for React, we strongly encourage you to try out our Gen 2 React SDK. You can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react).
-
 ## Integration
 
 See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page building as your initial integration:

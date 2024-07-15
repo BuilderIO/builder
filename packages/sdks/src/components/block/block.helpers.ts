@@ -8,7 +8,6 @@ import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { getStyle } from '../../functions/get-style.js';
-import type { ComponentInfo } from '../../server-index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -112,76 +111,41 @@ export const getInheritedStyles = ({
   return extractTextStyles(style);
 };
 
-const applyDefaults = (
-  shouldReceiveBuilderProps: ComponentInfo['shouldReceiveBuilderProps']
-) => {
-  return {
-    // once we bump to a major version, toggle this to `false`.
-    builderBlock: true,
-    // once we bump to a major version, toggle this to `false`.
-    builderContext: true,
-    builderComponents: false,
-    builderLinkComponent: false,
-    ...shouldReceiveBuilderProps,
-  };
-};
-
 export const provideLinkComponent = (
   block: RegisteredComponent | null | undefined,
   linkComponent: any
 ) => {
-  if (!block) return {};
+  if (block?.shouldReceiveBuilderProps?.builderLinkComponent)
+    return { builderLinkComponent: linkComponent };
 
-  const shouldReceiveProp = applyDefaults(
-    block.shouldReceiveBuilderProps
-  ).builderLinkComponent;
-
-  if (!shouldReceiveProp) return {};
-
-  return { builderLinkComponent: linkComponent };
+  return {};
 };
 
 export const provideRegisteredComponents = (
   block: RegisteredComponent | null | undefined,
   registeredComponents: RegisteredComponents
 ) => {
-  if (!block) return {};
+  if (block?.shouldReceiveBuilderProps?.builderComponents)
+    return { builderComponents: registeredComponents };
 
-  const shouldReceiveProp = applyDefaults(
-    block.shouldReceiveBuilderProps
-  ).builderComponents;
-
-  if (!shouldReceiveProp) return {};
-
-  return { builderComponents: registeredComponents };
+  return {};
 };
 
 export const provideBuilderBlock = (
   block: RegisteredComponent | null | undefined,
   builderBlock: BuilderBlock
 ) => {
-  if (!block) return {};
+  if (block?.shouldReceiveBuilderProps?.builderBlock) return { builderBlock };
 
-  const shouldReceiveProp = applyDefaults(
-    block.shouldReceiveBuilderProps
-  ).builderBlock;
-
-  if (!shouldReceiveProp) return {};
-
-  return { builderBlock };
+  return {};
 };
 
 export const provideBuilderContext = (
   block: RegisteredComponent | null | undefined,
   context: Signal<BuilderContextInterface>
 ) => {
-  if (!block) return {};
+  if (block?.shouldReceiveBuilderProps?.builderContext)
+    return { builderContext: context };
 
-  const shouldReceiveProp = applyDefaults(
-    block.shouldReceiveBuilderProps
-  ).builderContext;
-
-  if (!shouldReceiveProp) return {};
-
-  return { builderContext: context };
+  return {};
 };

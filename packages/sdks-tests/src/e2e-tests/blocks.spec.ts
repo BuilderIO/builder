@@ -413,5 +413,75 @@ test.describe('Blocks', () => {
         }
       });
     }
+
+    test('check different width columns are correctly rendered', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        "Angular SDK columns don't set the width correctly"
+      );
+
+      await page.goto('/columns-with-different-widths');
+
+      const columns = await page.locator('.builder-columns').all();
+
+      const expected = [
+        [1 / 2, 1 / 2],
+        [1 / 1],
+        [1 / 3, 1 / 3, 1 / 3],
+        [1 / 3, 2 / 3],
+        [1 / 3, 2 / 3],
+      ];
+      const spaces = [20, 0, 40, 20, 400];
+
+      for (let i = 0; i < columns.length; i++) {
+        const containerWidth = (await columns[i].boundingBox())?.width ?? 0;
+        const expectedContainerWidth = containerWidth - spaces[i];
+        const innerColumns = await columns[i].locator('.builder-column').all();
+
+        for (let j = 0; j < innerColumns.length; j++) {
+          const width = await innerColumns[j].boundingBox();
+
+          // for example, 1200px container width and 20px space in between
+          // 1/2 column should be 590px, so 590px 590px
+          // we check if the width is close to 590px with in 1 decimal place of precision
+          // 590px + 590px + 20px = 1200px
+
+          // for a more complex example like the last one,
+          // container width is 1200px, space is 400px
+          // 1/3 should be 1200 / 3 - 400 / 3 = 800 / 3 = 266.6666666666667
+          // 2/3 should be 1200 * 2 / 3 - 400 * 2 / 3 = 1600 / 3 = 533.3333333333334
+          // so 266.6666666666667 + 533.3333333333334 + 400  = 1200
+          expect(width?.width).toBeCloseTo(expected[i][j] * expectedContainerWidth, 1);
+        }
+      }
+    });
+
+    test('space is correctly allocated', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        "Angular SDK columns don't set the width correctly"
+      );
+
+      await page.goto('/columns-with-different-widths');
+
+      const columns = page.locator('.builder-columns').nth(4);
+
+      const firstColumn = columns.locator('.builder-column').nth(0);
+      const secondColumn = columns.locator('.builder-column').nth(1);
+
+      const columnsContainerWidth = (await columns.boundingBox())?.width ?? 0;
+
+      const firstColumnWidth = (await firstColumn.boundingBox())?.width ?? 0;
+      const secondColumnWidth = (await secondColumn.boundingBox())?.width ?? 0;
+
+      const firstColumnSpace = columnsContainerWidth / 3 - firstColumnWidth;
+      const secondColumnSpace = (columnsContainerWidth / 3) * 2 - secondColumnWidth;
+
+      expect(firstColumnSpace).toBeCloseTo(400 / 3, 1);
+      expect(secondColumnSpace).toBeCloseTo((400 / 3) * 2, 1);
+      expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
+    });
   });
 });
