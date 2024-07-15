@@ -1,0 +1,34 @@
+{
+  "name": "@builder.io/bynder-plugin",
+  "version": "1.0.0",
+  "description": "Integrate Bynder's Compact View into Builder.io",
+  "entry": "plugin",
+  "output": "plugin.system.js",
+  "main": "dist/plugin.system.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development"
+  },
+  "author": "madison@builder.io",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-react": "^7.24.7",
+    "@builder.io/app-context": "^1.0.0",
+    "@builder.io/react": "^3.2.9",
+    "@emotion/react": "11.9.0",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^1.1.1",
+    "babel-loader": "^9.1.3",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  },
+  "dependencies": {
+    "@bynder/compact-view": "^4.2.4",
+    "@tabler/icons-react": "^3.10.0",
+    "filesize": "^10.1.4"
+  }
+}
