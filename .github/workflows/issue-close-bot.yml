@@ -2,6 +2,7 @@ name: 'Close issues'
 
 permissions:
   issues: write
+  actions: write
 
 on:
   # for manual runs when necessary (or for testing)
