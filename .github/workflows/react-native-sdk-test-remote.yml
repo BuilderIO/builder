@@ -39,6 +39,6 @@ jobs:
         run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
       - name: Build and test
-        run: yarn nx build-and-test:ios-remote @e2e/react-native
-        env:
-          EXPO_TOKEN: ${{ env.EXPO_TOKEN }}
+        run: |
+          EXPO_TOKEN=${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
+          yarn nx build-and-test:ios-remote @e2e/react-native
