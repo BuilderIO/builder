@@ -33,4 +33,4 @@ jobs:
       - name: Build and test
         run: yarn workspace @e2e/react-native test:ios-remote
         env:
-          EXPO_TOKEN: ${{ env.EXPO_ACCESS_TOKEN }}
+          EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
