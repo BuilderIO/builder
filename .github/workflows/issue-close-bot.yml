@@ -1,5 +1,8 @@
 name: 'Close issues'
 
+permissions:
+  issues: write
+
 on:
   # for manual runs when necessary (or for testing)
   workflow_dispatch:
@@ -13,6 +16,7 @@ jobs:
     steps:
       - uses: actions/stale@v9
         with:
-          close-issue-message: 'Hello, I am the Builder issue triage bot. This issue is related to the Builder product. The best place to receive timely support is by contacting the Builder support team. Please read [our docs](https://www.builder.io/c/docs/help-and-support#contacting-us) for more information on how to contact us.'
-          close-issue-label: 'bot-close'
-          days-before-close: -1
+          stale-issue-message: 'Hello, I am the Builder issue triage bot. This issue is related to the Builder product. The best place to receive timely support is by contacting the Builder support team. Please read [our docs](https://www.builder.io/c/docs/help-and-support#contacting-us) for more information on how to contact us.'
+          stale-issue-label: 'bot-close'
+          days-before-stale: -1
+          days-before-close: 0
