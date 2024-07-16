@@ -33,50 +33,35 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
+      - name: Install Maestro
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
       - name: Install macOS dependencies
         run: |
-          brew tap wix/brew
-          brew install applesimutils
+          brew tap facebook/fb
+          brew install facebook/fb/idb-companion
+          
         env:
           HOMEBREW_NO_AUTO_UPDATE: 1
           HOMEBREW_NO_INSTALL_CLEANUP: 1
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.1.0
-          bundler-cache: true
+      # - name: Setup Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: 3.1.0
+      #     bundler-cache: true
 
-      - name: Cache CocoaPods
-        id: cache-cocoapods
-        uses: actions/cache@v3
-        with:
-          path: ios/Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
-          restore-keys: ${{ runner.os }}-pods-
+      # - name: Cache CocoaPods
+      #   id: cache-cocoapods
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ios/Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+      #     restore-keys: ${{ runner.os }}-pods-
 
-      - name: Install CocoaPods
-        if: steps.cache-cocoapods.outputs.cache-hit != 'true'
-        run: cd ios ; pod install ; cd -
+      # - name: Install CocoaPods
+      #   if: steps.cache-cocoapods.outputs.cache-hit != 'true'
+      #   run: cd ios ; pod install ; cd -
 
-      - name: Cache Detox build
-        id: cache-detox-build
-        uses: actions/cache@v3
-        with:
-          path: ios/build
-          key: ${{ runner.os }}-detox-build
-          restore-keys: |
-            ${{ runner.os }}-detox-build
-
-      - name: Detox build
-        run: yarn detox build --configuration ios.sim.release
-
-      - name: Detox test
-        run: yarn detox test --configuration ios.sim.release --cleanup --headless --record-logs all
-
-      - name: Upload artifacts
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: detox-artifacts
-          path: artifacts
+      - name: Build and test
+        run: yarn build-and-test:ios
