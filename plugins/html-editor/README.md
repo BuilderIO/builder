@@ -34,4 +34,3 @@ Build js file on production
 ```bash
 npm run build
 ```
-Video demo on local (Using node version 16.18.0) [here](https://drive.google.com/file/d/1b_f4hLewbHUH_KfxxijWzuVEmNas29xk/view)
