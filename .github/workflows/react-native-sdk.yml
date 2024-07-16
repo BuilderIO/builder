@@ -66,10 +66,8 @@ jobs:
       #   if: steps.cache-cocoapods.outputs.cache-hit != 'true'
       #   run: cd ios ; pod install ; cd -
 
-      - name: Navigate to e2e folder
-        run: cd packages/sdks/e2e/react-native
-
       - name: Build and test
         run: yarn eas whoami
+        working-directory: packages/sdks/e2e/react-native
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
