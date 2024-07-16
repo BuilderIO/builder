@@ -12,7 +12,7 @@ on:
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-  EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
+  EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
 
 jobs:
   e2e-ios:
@@ -69,5 +69,3 @@ jobs:
       - name: Build and test
         run: yarn eas whoami
         working-directory: packages/sdks/e2e/react-native
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}

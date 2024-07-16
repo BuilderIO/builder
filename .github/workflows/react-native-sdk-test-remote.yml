@@ -37,6 +37,12 @@ jobs:
       # - name: Install Maestro
       #   run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_ACCESS_TOKEN }}
+
       - name: Build and test
         run: yarn eas whoami
         working-directory: packages/sdks/e2e/react-native
