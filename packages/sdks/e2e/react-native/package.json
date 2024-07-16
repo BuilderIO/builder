@@ -12,8 +12,8 @@
     "build": "yarn build:web",
     "build:web": "expo export -p web",
     "build:ios:test": "eas build -e build-and-maestro-test -p ios --no-wait --local --output ios-test-build.tar.gz",
-    "build-and-test:ios": "eas build -e build-and-maestro-test -p ios --no-wait --local",
-    "build-and-test:ios-remote": "eas build -e build-and-maestro-test -p ios --no-wait",
+    "test:ios": "eas build -e build-and-maestro-test -p ios --no-wait --local",
+    "test:ios-remote": "eas build -e build-and-maestro-test -p ios --no-wait",
     "tar:ios": "tar -xzf ios-test-build.tar.gz",
     "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
   },
