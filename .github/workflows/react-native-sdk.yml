@@ -32,6 +32,8 @@ jobs:
         with:
           cache-node-modules: true
           cache-install-state: true
+        env:
+          YARN_ENABLE_SCRIPTS: false
 
       - name: Install Maestro
         run: curl -Ls "https://get.maestro.mobile.dev" | bash
