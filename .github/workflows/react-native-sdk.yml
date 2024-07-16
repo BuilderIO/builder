@@ -62,6 +62,6 @@ jobs:
         run: cd ios ; pod install ; cd -
 
       - name: Build and test
-        run: yarn workspace @nortech/sdks-e2e-react-native test:ios
+        run: yarn workspace @e2e/react-native test:ios
         env:
           EXPO_TOKEN: ${{ env.EXPO_ACCESS_TOKEN }}
