@@ -1,6 +1,8 @@
 name: 'Close issues'
 
 on:
+  # for manual runs when necessary (or for testing)
+  workflow_dispatch:
   schedule:
     # run every 5 minutes
     - cron: '*/5 * * * *'
