@@ -8,8 +8,8 @@
 
   ```ts
   shouldReceiveBuilderProps: {
-      builderBlock: true, // used to be `true`
-      builderContext: true, // used to be `true`
+      builderBlock: false, // used to be `true`
+      builderContext: false, // used to be `true`
       builderComponents: false, // unchanged
       builderLinkComponent: false, // unchanged
     },
