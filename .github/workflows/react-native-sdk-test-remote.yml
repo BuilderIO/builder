@@ -15,9 +15,11 @@ env:
 
 jobs:
   e2e-ios:
-    name: React Native SDK iOS E2E tests
+    name: React Native SDK iOS E2E tests (remote)
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    env:
+      EXPO_ACCESS_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
 
     steps:
       - name: Setup
@@ -41,10 +43,10 @@ jobs:
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
-          token: ${{ secrets.EXPO_ACCESS_TOKEN }}
+          token: ${{ env.EXPO_ACCESS_TOKEN }}
 
       - name: Build and test
         run: yarn eas whoami
         working-directory: packages/sdks/e2e/react-native
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
+          EXPO_TOKEN: ${{ env.EXPO_ACCESS_TOKEN }}
