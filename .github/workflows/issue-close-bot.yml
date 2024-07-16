@@ -1,0 +1,24 @@
+name: 'Close issues'
+
+permissions:
+  issues: write
+  actions: write
+
+on:
+  # for manual runs when necessary (or for testing)
+  workflow_dispatch:
+  schedule:
+    # run every 5 minutes
+    - cron: '*/5 * * * *'
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          close-issue-message: 'Hello, I am the Builder issue triage bot. This issue is related to the Builder product. The best place to receive timely support is by contacting the Builder support team. Please read [our docs](https://www.builder.io/c/docs/help-and-support#contacting-us) for more information on how to contact us.'
+          stale-issue-label: 'bot-close'
+          only-labels: 'bot-close'
+          days-before-stale: -1
+          days-before-close: 0
