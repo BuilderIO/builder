@@ -41,3 +41,4 @@ jobs:
         run: yarn nx build-and-test:ios-remote @e2e/react-native
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
+          NX_PUBLIC_EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
