@@ -17,6 +17,9 @@
       "ios": {
         "simulator": true,
         "image": "latest"
+      },
+      "env": {
+        "YARN_ENABLE_SCRIPTS": "false"
       }
     }
   },

@@ -1,0 +1,42 @@
+# Need `.easignore` to exist to prevent EAS from trying to use `.gitignore`s across the monorepo, which caused issues.
+# This is mostly a copy/paste of the sibling `.gitignore` with some modifications
+
+node_modules
+*.log
+test-lib/**/*.js
+coverage
+.history
+.nyc_output
+.idea
+.vscode
+.next
+firebase.json
+temp
+yarn-error.log
+.build
+Pods/
+
+**/xcuserdata/*
+**/build/*
+
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions
+
+# macOS
+.DS_Store
+
+.cache
+.rpt2_cache/
+
+.env
+.vercel
+
+.nx-cache
+
+# allow `.eas` folders
+!**/.eas/**/*
