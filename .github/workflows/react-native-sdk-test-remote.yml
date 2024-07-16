@@ -31,6 +31,6 @@ jobs:
           cache-install-state: true
 
       - name: Build and test
-        run: yarn workspace @nortech/sdks-e2e-react-native test:ios-remote
+        run: yarn workspace @e2e/react-native test:ios-remote
         env:
           EXPO_TOKEN: ${{ env.EXPO_ACCESS_TOKEN }}
