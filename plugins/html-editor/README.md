@@ -14,8 +14,7 @@ Jodit rich text editor
 3. Enter the address for this plugin: **@builder-io/html-plugin**
 4. Click the Save button.
 
-<img src="https://raw.githubusercontent.com/BuilderIO/builder/453433ebce30338771b2ef19ef7506f872575033/plugins/html-editor/images/add-plugin.gif" alt="add-plugin"/>
-![jodit](https://raw.githubusercontent.com/BuilderIO/builder/453433ebce30338771b2ef19ef7506f872575033/plugins/html-editor/images/add-plugin.gif)
+<img src="https://raw.githubusercontent.com/BuilderIO/builder/453433ebce30338771b2ef19ef7506f872575033/plugins/html-editor/images/add-plugin.gif" alt="add-plugin" width="100%"/>
 
 
 ### How to run this plugin on local
