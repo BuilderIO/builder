@@ -12,6 +12,7 @@ on:
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
 
 jobs:
   e2e-ios:
@@ -27,12 +28,6 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
-  
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
@@ -72,4 +67,6 @@ jobs:
       #   run: cd ios ; pod install ; cd -
 
       - name: Build and test
-        run: yarn nx build-and-test:ios @e2e/react-native
+        run: EXPO_TOKEN="$EXPO_TOKEN" yarn nx build-and-test:ios @e2e/react-native
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
