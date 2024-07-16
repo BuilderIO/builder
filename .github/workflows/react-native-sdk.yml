@@ -64,4 +64,4 @@ jobs:
       #   run: cd ios ; pod install ; cd -
 
       - name: Build and test
-        run: yarn build-and-test:ios
+        run: yarn nx build-and-test:ios @e2e/react-native
