@@ -69,4 +69,4 @@ jobs:
       - name: Build and test
         run: yarn workspace @e2e/react-native eas whoami
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
+          EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}

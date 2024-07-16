@@ -37,12 +37,7 @@ jobs:
       # - name: Install Maestro
       #   run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
-      - name: Build and test (no env var)
-        run: yarn workspace @e2e/react-native eas whoami
-        env:
-          EXPO_TOKEN: 'foooooo'
-
       - name: Build and test
         run: yarn workspace @e2e/react-native eas whoami
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
+          EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
