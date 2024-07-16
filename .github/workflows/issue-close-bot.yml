@@ -1,5 +1,8 @@
 name: 'Close issues'
 
+permissions:
+  issues: write
+
 on:
   # for manual runs when necessary (or for testing)
   workflow_dispatch:
