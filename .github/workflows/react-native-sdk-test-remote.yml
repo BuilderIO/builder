@@ -6,10 +6,6 @@ on:
     branches:
       - main
 
-  pull_request:
-    branches:
-      - main
-
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
@@ -18,8 +14,6 @@ jobs:
     name: React Native SDK iOS E2E tests (remote)
     timeout-minutes: 15
     runs-on: ubuntu-latest
-    env:
-      EXPO_ACCESS_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
 
     steps:
       - name: Setup
@@ -36,17 +30,7 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      # - name: Install Maestro
-      #   run: curl -Ls "https://get.maestro.mobile.dev" | bash
-
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ env.EXPO_ACCESS_TOKEN }}
-
       - name: Build and test
-        run: yarn eas whoami
-        working-directory: packages/sdks/e2e/react-native
+        run: yarn workspace @nortech/sdks-e2e-react-native test:ios-remote
         env:
           EXPO_TOKEN: ${{ env.EXPO_ACCESS_TOKEN }}
