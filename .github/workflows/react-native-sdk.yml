@@ -67,7 +67,6 @@ jobs:
       #   run: cd ios ; pod install ; cd -
 
       - name: Build and test
-        run: yarn nx build-and-test:ios @e2e/react-native
+        run: yarn workspace @e2e/react-native eas whoami
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
-          NX_PUBLIC_EXPO_TOKEN: ${{ secrets.EXPO_PAT_BUILD_AND_TEST }}
