@@ -1,27 +1,20 @@
 /** @jsx jsx */
-import React from "react";
-import { jsx } from "@emotion/react";
-import appState from "@builder.io/app-context";
-import { Modal, Login, CompactView } from "@bynder/compact-view";
+import appState from '@builder.io/app-context';
+import { CompactView, Login, Modal } from '@bynder/compact-view';
+import { Button, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import { IconCloudUpload } from '@tabler/icons-react';
+import { partial } from 'filesize';
+import React from 'react';
 import {
-  Button,
-  Paper,
-  Tooltip,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
-import { IconCloudUpload } from "@tabler/icons-react";
-import { Close } from "@material-ui/icons";
-import {
-  fastClone,
+  ASSET_FIELD_SELECTION,
   BYNDER_LANGUAGE,
   BYNDER_URL,
-  ASSET_FIELD_SELECTION,
   SHOW_ASSET_FIELD_SELECTION,
+  fastClone,
   pluginId,
-} from "./utils";
-import { partial } from "filesize";
-const filesize = partial({ standard: "jedec" });
+} from './utils';
+const filesize = partial({ standard: 'jedec' });
 
 // TODO: convert to TS
 /**
@@ -38,7 +31,7 @@ const filesize = partial({ standard: "jedec" });
  * @param {BynderCompactViewProps} props - The props of the component.
  * @returns {JSX.Element} The rendered component.
  */
-export const BynderCompactView = (props) => {
+export const BynderCompactView = props => {
   const { value, onChange, mode, assetTypes, context } = props;
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -46,14 +39,14 @@ export const BynderCompactView = (props) => {
   // Keep a local state value because onChange does not trigger a re-render with a new value object.
   const [internalValue, setInternalValue] = React.useState(fastClone(value));
 
-  const onChangeWrapper = (val) => {
+  const onChangeWrapper = val => {
     onChange(val);
     setInternalValue(val);
   };
 
   const onSuccess = (assets, additionalInfo) => {
     // TODO: What do we do with additionalInfo? Only used with mode === "SingleSelectFile"
-    if (mode === "SingleSelect") {
+    if (mode === 'SingleSelect') {
       onChangeWrapper(assets[0]);
     } else {
       onChangeWrapper(assets);
@@ -62,15 +55,14 @@ export const BynderCompactView = (props) => {
   };
 
   const selectedAssets = React.useMemo(() => {
-    if (mode === "SingleSelect") {
+    if (mode === 'SingleSelect') {
       return internalValue?.id ? [internalValue?.id] : [];
     }
-    return internalValue?.length ? internalValue.map((asset) => asset.id) : [];
+    return internalValue?.length ? internalValue.map(asset => asset.id) : [];
   }, [internalValue, mode]);
 
   // Get the saved Bynder URL from the plugin settings
-  const pluginSettings =
-    appState.user.organization.value.settings.plugins?.get(pluginId);
+  const pluginSettings = appState.user.organization.value.settings.plugins?.get(pluginId);
   const url = pluginSettings?.get(BYNDER_URL);
   const language = pluginSettings?.get(BYNDER_LANGUAGE);
 
@@ -82,47 +74,15 @@ export const BynderCompactView = (props) => {
     selectedAssets,
   };
   if (pluginSettings?.get(SHOW_ASSET_FIELD_SELECTION)) {
-    bynderProps.assetFieldSelection = pluginSettings?.get(
-      ASSET_FIELD_SELECTION
-    );
+    bynderProps.assetFieldSelection = pluginSettings?.get(ASSET_FIELD_SELECTION);
   }
 
   return (
     <div>
       {/* TODO:  show the # of selected items if multi-select? Previews as Chips/list instead? */}
-      {mode === "MultiSelect" && (
-        <div
-          css={{
-            display: "flex",
-            alignItems: "left",
-            alignContent: "center",
-            border: `1px solid ${context.theme.colors.border}`,
-            borderRadius: 4,
-            padding: 8,
-          }}
-        >
-          {selectedAssets.length > 0 && (
-            <div css={{ flexGrow: 1 }}>
-              <ul css={{ textAlign: "left" }}>
-                {internalValue.map((asset) => (
-                  <li>{asset.name}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <Button
-            onClick={() => setIsOpen(true)}
-            variant="contained"
-            color="primary"
-          >
-            {selectedAssets.length
-              ? "Change Selection"
-              : "Select Bynder Assets"}
-          </Button>
-        </div>
-      )}
+      {/* {mode === "MultiSelect" && ()} */}
 
-      {mode === "SingleSelect" && (
+      {mode === 'SingleSelect' && (
         <RenderSinglePreview
           asset={internalValue}
           onClick={() => setIsOpen(true)}
@@ -154,10 +114,10 @@ const RenderSinglePreview = ({
   return (
     <div
       css={{
-        display: "flex",
-        alignItems: "center",
-        "&:hover .close-button": { display: "flex" },
-        position: "relative",
+        display: 'flex',
+        alignItems: 'center',
+        '&:hover .close-button': { display: 'flex' },
+        position: 'relative',
         border: `1px solid ${theme.colors.border}`,
         borderRadius: 4,
         padding: 8,
@@ -166,31 +126,31 @@ const RenderSinglePreview = ({
       {asset ? (
         <div
           css={{
-            position: "relative",
-            "&:hover .close-button": { opacity: 1 },
+            position: 'relative',
+            '&:hover .close-button': { opacity: 1 },
           }}
         >
           <div
             css={{
-              height: "auto",
-              cursor: "pointer",
+              height: 'auto',
+              cursor: 'pointer',
             }}
-            onClick={() => window.open(asset.files.webImage.url, "_blank")}
+            onClick={() => window.open(asset.files.webImage.url, '_blank')}
           >
             <Paper
               css={{
-                display: "inline-block",
+                display: 'inline-block',
                 fontSize: 0,
                 marginTop: 3,
-                overflow: "hidden",
-                "&:hover": {
+                overflow: 'hidden',
+                '&:hover': {
                   border: `1px solid ${theme.colors.primary}`,
                 },
               }}
             >
               <img
                 key={asset.id}
-                onContextMenu={(e) => {
+                onContextMenu={e => {
                   // Allow normal context menu on right click so people can "copy image url",
                   // don't propagate to the blocking custom context menu
                   e.stopPropagation();
@@ -198,12 +158,12 @@ const RenderSinglePreview = ({
                 css={{
                   width: 64,
                   height: 64,
-                  objectFit: "cover",
-                  objectPosition: "center",
+                  objectFit: 'cover',
+                  objectPosition: 'center',
                 }}
                 src={asset.files.thumbnail.url}
                 // TODO: Error handling?
-                onError={(error) => {}}
+                onError={error => {}}
               />
             </Paper>
           </div>
@@ -230,10 +190,10 @@ const RenderSinglePreview = ({
             className="close-button"
             component="label"
             css={{
-              position: "absolute",
+              position: 'absolute',
               top: 4,
               right: 4,
-              display: "none",
+              display: 'none',
               padding: 4,
             }}
             onClick={() => {
@@ -246,11 +206,11 @@ const RenderSinglePreview = ({
       )}
       <div
         css={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           gap: 4,
-          width: "100%",
-          overflow: "hidden",
+          width: '100%',
+          overflow: 'hidden',
         }}
       >
         {fileName && (
@@ -262,13 +222,13 @@ const RenderSinglePreview = ({
                   fontSize: 12,
                   color: theme.colors.text.regular,
                   marginLeft: 8,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  display: "inline-block",
-                  textOverflow: "ellipsis",
-                  "&:hover": {
-                    textDecoration: "underline",
-                    cursor: "pointer",
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  display: 'inline-block',
+                  textOverflow: 'ellipsis',
+                  '&:hover': {
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
                   },
                 }}
               >
@@ -281,7 +241,7 @@ const RenderSinglePreview = ({
                 <Typography
                   css={{
                     fontSize: 12,
-                    color: "var(--text-caption)",
+                    color: 'var(--text-caption)',
                     marginLeft: 8,
                   }}
                 >
@@ -291,19 +251,19 @@ const RenderSinglePreview = ({
             )}
           </>
         )}
-        <div css={{ width: "100%" }}>
+        <div css={{ width: '100%' }}>
           <Button
             color="primary"
             onClick={onClick}
             css={{
               marginLeft: 8,
               ...(fileName && {
-                padding: "0 5px",
+                padding: '0 5px',
                 fontSize: 12,
               }),
             }}
           >
-            {`${asset ? "Change" : "Choose"} Bynder Asset`}
+            {`${asset ? 'Change' : 'Choose'} Bynder Asset`}
           </Button>
         </div>
       </div>
