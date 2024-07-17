@@ -256,26 +256,6 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   },
 });
 
-const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
-        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnChanges() {
-              ${mergedInputsCode}
-            }
-          }
-          `
-        );
-      }
-      return code;
-    },
-  },
-});
-
 const VALID_HTML_TAGS = [
   'html',
   'base',
@@ -537,29 +517,6 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
   },
 });
 
-const ANGULAR_FIX_AB_TESTS_INITIALIZATION = () => ({
-  json: {
-    pre: (json) => {
-      if (json.name === 'ContentVariants') {
-        if (json.state['defaultContent']) {
-          json.state['getdefaultContent'] = {
-            code: json.state['defaultContent'].code.replace('get ', 'get'),
-            type: 'method',
-          };
-          json.state['defaultContent'] = {
-            code: 'null',
-            type: 'property',
-          };
-
-          json.hooks.onUpdate.push({
-            code: `if (props.content) { state.defaultContent = state.getdefaultContent(); }`,
-          });
-        }
-      }
-    },
-  },
-});
-
 const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   code: {
     post: (code) => {
@@ -598,8 +555,6 @@ module.exports = {
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
-        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
-        ANGULAR_FIX_AB_TESTS_INITIALIZATION,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
       ],
     },
