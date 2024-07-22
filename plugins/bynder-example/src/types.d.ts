@@ -4,9 +4,11 @@ export type AdditionalInformation = {
   selectedFile?: File;
 };
 
-type SingleSelectProps = {
-  value: BynderAsset | undefined;
-  onChange: (value: BynderAsset | undefined) => void;
+type MaybeBynderAsset = BynderAsset | null | undefined;
+
+export type SingleSelectProps = {
+  value: MaybeBynderAsset;
+  onChange: (value: MaybeBynderAsset) => void;
   mode: 'SingleSelect';
 };
 
@@ -16,12 +18,20 @@ type MultiSelectProps = {
   mode: 'MultiSelect';
 };
 
-type SharedProps = {
+export type SharedProps = {
   context: any;
   assetTypes?: assetType[];
 };
 
 export type BynderCompactViewProps = (SingleSelectProps | MultiSelectProps) & SharedProps;
+
+export interface RenderSinglePreviewProps {
+  asset?: BynderAsset;
+  additionalInfo?: AdditionalInfo;
+  onClick: () => void;
+  onClear: () => void;
+  context: any;
+}
 
 // AI-generated types from 3 different Bynder assets, may not be complete, hence the extends Record.
 type Capitalize<S extends string> = S extends `${infer F}${infer R}`

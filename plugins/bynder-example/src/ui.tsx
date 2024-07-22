@@ -8,7 +8,13 @@ import { Close } from '@material-ui/icons';
 import { IconCloudUpload } from '@tabler/icons-react';
 import { partial } from 'filesize';
 
-import type { BynderAsset, BynderCompactViewProps } from './types';
+import type {
+  BynderAsset,
+  BynderCompactViewProps,
+  RenderSinglePreviewProps,
+  SharedProps,
+  SingleSelectProps,
+} from './types';
 import {
   ASSET_FIELD_SELECTION,
   AssetTypes,
@@ -23,17 +29,12 @@ import {
 
 const filesize = partial({ standard: 'jedec' });
 
-type SingleSelectProps = {
-  value: BynderAsset | undefined;
-  onChange: (asset: any) => void;
-  context: any;
-};
-
 // This component is what handles rendering when the user selects the Bynder plugin
-export const SingleSelect: React.FC<SingleSelectProps> = props => {
+export const SingleSelect: React.FC<SingleSelectProps & SharedProps> = props => {
   return <BynderCompactView {...props} mode="SingleSelect" assetTypes={AssetTypes} />;
 };
 
+// A generic component that could be expanded to handle both single and multi-select modes
 export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
   const { value, onChange, context, mode, assetTypes } = props;
   const [isOpen, setIsOpen] = React.useState(false);
@@ -48,7 +49,7 @@ export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
     setInternalValue(asset);
   };
 
-  // additionalInfo is only returned with mode === "SingleSelectFile"
+  // additionalInfo is only returned by Bynder when mode === "SingleSelectFile"
   const onSuccess = (assets: unknown[], additionalInfo: AdditionalInfo) => {
     if (mode === 'MultiSelect') {
       onChangeWrapper(assets as BynderAsset[]);
@@ -85,14 +86,17 @@ export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
 
   return (
     <div>
-      {/* TODO:  show the # of selected items if multi-select? Previews as Chips/list instead? */}
+      {/* Opportunity: show the # of selected items if multi-select? Previews as Chips/list? */}
       {/* {mode === "MultiSelect" && ()} */}
 
       {mode === 'SingleSelect' && (
         <RenderSinglePreview
           asset={internalValue as BynderAsset}
           onClick={() => setIsOpen(true)}
-          onChange={onChangeWrapper}
+          onClear={() => {
+            // Cannot set undefined to the MobX proxy object, so set to null
+            onChangeWrapper(null);
+          }}
           context={context}
         />
       )}
@@ -106,19 +110,11 @@ export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
   );
 };
 
-interface RenderSinglePreviewProps {
-  asset?: BynderAsset;
-  additionalInfo?: AdditionalInfo;
-  onClick: () => void;
-  onChange: (asset?: BynderAsset) => void;
-  context: any;
-}
-
 const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
   asset,
   additionalInfo, // TODO: Find a way to incorporate this for "SingleSelectFile" inputs?
   onClick,
-  onChange,
+  onClear,
   context,
 }) => {
   const theme = context.theme;
@@ -176,7 +172,7 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
                   objectPosition: 'center',
                 }}
                 src={asset.files.thumbnail.url}
-                // TODO: Error handling?
+                // TODO: Error handling when the image fails to load?
                 onError={error => {}}
               />
             </Paper>
@@ -210,9 +206,7 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
               display: 'none',
               padding: 4,
             }}
-            onClick={() => {
-              onChange(undefined);
-            }}
+            onClick={onClear}
           >
             <Close css={{ fontSize: 16 }} />
           </IconButton>
