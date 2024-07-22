@@ -101,7 +101,4 @@ Using these frameworks in Builder plugins ensures best possible experience and p
 
 If you think your plugin will benefit others in the Builder.io community you can send a pull request to this repo with your plugin, and we will review it! Otherwise, once your plugin is ready for use you can publish the package and add the link to its bundled JS in **Account Settings > Plugins** (enterprise only).
 
----
-## Contributors
 
-Created by [@JacoboGallardo](https://github.com/jacobogallardo)!
