@@ -1,0 +1,8 @@
+build:
+  name: Create a build and run Maestro tests on it
+  steps:
+    - eas/build
+    - eas/maestro_test:
+        inputs:
+          flow_path: |
+            maestro/home.yaml

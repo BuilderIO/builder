@@ -1,6 +1,8 @@
+# Need `.easignore` to exist to prevent EAS from trying to use `.gitignore`s across the monorepo, which caused issues.
+# This is mostly a copy/paste of the sibling `.gitignore` with some modifications
+
 node_modules
 *.log
-dist
 test-lib/**/*.js
 coverage
 .history
@@ -36,4 +38,5 @@ Pods/
 
 .nx-cache
 
-!packages/sdks/e2e/react-native/.eas/build/*
+# allow `.eas` folders
+!**/.eas/**/*
