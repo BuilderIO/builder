@@ -10,7 +10,12 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy();
+  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+    // we need to whitelist Builder's CDN for API calls to work
+    connectSrc: ['https://cdn.builder.io'],
+    // we need to whitelist Builder's CDN for image requests to work
+    imgSrc: ['https://cdn.builder.io', 'http://localhost:*'],
+  });
 
   const body = await renderToReadableStream(
     <NonceProvider>
