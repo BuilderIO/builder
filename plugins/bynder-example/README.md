@@ -76,7 +76,7 @@ npm install
 ### Develop
 
 ```bash
-npm run dev
+npm run start
 ```
 
 ### Add the development plugin to Builder.io

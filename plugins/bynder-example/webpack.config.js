@@ -1,46 +1,62 @@
-const path = require("path");
-const pkg = require("./package.json");
+const path = require('path');
+const pkg = require('./package.json');
 
 module.exports = {
-  entry: `./src/${pkg.entry}.jsx`,
+  entry: `./src/${pkg.entry}.ts`,
   externals: {
-    "@builder.io/react": "@builder.io/react",
-    "@builder.io/app-context": "@builder.io/app-context",
-    react: "react",
-    "react-dom": "react-dom",
-    "@material-ui/core": "@material-ui/core",
-    "@emotion/react": "@emotion/react",
-    "@material-ui/icons": "@material-ui/icons",
+    react: 'react',
+    // 'react-dom': 'react-dom',
+    '@emotion/core': '@emotion/core',
+    '@emotion/styled': '@emotion/styled',
+    '@builder.io/react': '@builder.io/react',
+    '@builder.io/sdk': '@builder.io/sdk',
+    '@builder.io/app-context': '@builder.io/app-context',
+    '@material-ui/core': '@material-ui/core',
+    '@material-ui/icons': '@material-ui/icons',
   },
   output: {
     filename: pkg.output,
-    path: path.resolve(__dirname, "dist"),
-    libraryTarget: "system",
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'system',
   },
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
       {
-        test: /\.(jsx)$/,
+        rules: [
+          {
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader'],
+          },
+        ],
+      },
+      {
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader",
+            loader: 'ts-loader',
           },
         ],
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
       },
     ],
   },
   devServer: {
+    compress: true,
     port: 1268,
     static: {
-      directory: path.join(__dirname, "./dist"),
+      directory: path.join(__dirname, './dist'),
     },
     headers: {
-      "Access-Control-Allow-Private-Network": "true",
-      "Access-Control-Allow-Origin": "*",
+      'Access-Control-Allow-Private-Network': 'true',
+      'Access-Control-Allow-Origin': '*',
     },
   },
 };

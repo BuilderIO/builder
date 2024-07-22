@@ -1,76 +1,82 @@
 /** @jsx jsx */
+import React from 'react';
+import { jsx } from '@emotion/core';
 import appState from '@builder.io/app-context';
-import { CompactView, Login, Modal } from '@bynder/compact-view';
+import { AdditionalInfo, CompactView, CompactViewProps, Login, Modal } from '@bynder/compact-view';
 import { Button, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { IconCloudUpload } from '@tabler/icons-react';
 import { partial } from 'filesize';
-import React from 'react';
+
+import type { BynderAsset, BynderCompactViewProps } from './types';
 import {
   ASSET_FIELD_SELECTION,
+  AssetTypes,
   BYNDER_LANGUAGE,
   BYNDER_URL,
   SHOW_ASSET_FIELD_SELECTION,
+  SupportedLanguage,
+  SupportedLanguages,
   fastClone,
   pluginId,
 } from './utils';
+
 const filesize = partial({ standard: 'jedec' });
 
-// TODO: convert to TS
-/**
- * @typedef {"MultiSelect" | "SingleSelect" | "SingleSelectFile"} SelectType
- *
- * @typedef {Object} BynderCompactViewProps
- * @property {any} value - The title of the component.
- * @property {function} onChange - The count to display.
- * @property {SelectType} mode - Whether the component is active.
- */
+type SingleSelectProps = {
+  value: BynderAsset | undefined;
+  onChange: (asset: any) => void;
+  context: any;
+};
 
-/**
- * A React Component to show the Bynder Universal Compact View compoonent and handle responses
- * @param {BynderCompactViewProps} props - The props of the component.
- * @returns {JSX.Element} The rendered component.
- */
-export const BynderCompactView = props => {
-  const { value, onChange, mode, assetTypes, context } = props;
+// This component is what handles rendering when the user selects the Bynder plugin
+export const SingleSelect: React.FC<SingleSelectProps> = props => {
+  return <BynderCompactView {...props} mode="SingleSelect" assetTypes={AssetTypes} />;
+};
+
+export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
+  const { value, onChange, context, mode, assetTypes } = props;
   const [isOpen, setIsOpen] = React.useState(false);
 
-  // The type of `value` is a MobX proxy object. Convert back to a usable object.
+  // `value` is a MobX proxy object. Convert back to a usable object with fastClone.
   // Keep a local state value because onChange does not trigger a re-render with a new value object.
   const [internalValue, setInternalValue] = React.useState(fastClone(value));
 
-  const onChangeWrapper = val => {
-    onChange(val);
-    setInternalValue(val);
+  const onChangeWrapper = (asset: typeof value) => {
+    // onChange has odd TS typing here
+    onChange(asset as any);
+    setInternalValue(asset);
   };
 
-  const onSuccess = (assets, additionalInfo) => {
-    // TODO: What do we do with additionalInfo? Only used with mode === "SingleSelectFile"
-    if (mode === 'SingleSelect') {
-      onChangeWrapper(assets[0]);
+  // additionalInfo is only returned with mode === "SingleSelectFile"
+  const onSuccess = (assets: unknown[], additionalInfo: AdditionalInfo) => {
+    if (mode === 'MultiSelect') {
+      onChangeWrapper(assets as BynderAsset[]);
     } else {
-      onChangeWrapper(assets);
+      onChangeWrapper(assets[0] as BynderAsset);
     }
-    setIsOpen(false); // Why do we have to do this?
+    // Manually close the modal. The onClose prop does not appear to fire.
+    setIsOpen(false);
   };
 
   const selectedAssets = React.useMemo(() => {
     if (mode === 'SingleSelect') {
-      return internalValue?.id ? [internalValue?.id] : [];
-    }
-    return internalValue?.length ? internalValue.map(asset => asset.id) : [];
+      const id = (internalValue as BynderAsset)?.id;
+      return id ? [id] : [];
+    } else
+      return internalValue?.length ? (internalValue as BynderAsset[]).map(asset => asset.id) : [];
   }, [internalValue, mode]);
 
   // Get the saved Bynder URL from the plugin settings
   const pluginSettings = appState.user.organization.value.settings.plugins?.get(pluginId);
   const url = pluginSettings?.get(BYNDER_URL);
-  const language = pluginSettings?.get(BYNDER_LANGUAGE);
+  const language = pluginSettings?.get(BYNDER_LANGUAGE) as SupportedLanguage;
 
-  const bynderProps = {
+  const bynderProps: CompactViewProps = {
     onSuccess,
-    language: language ?? supportedLanguages[0],
+    language: language ?? SupportedLanguages[0],
     mode,
-    // assetTypes, // this was breaking for some reason
+    assetTypes, // this was breaking for some reason
     selectedAssets,
   };
   if (pluginSettings?.get(SHOW_ASSET_FIELD_SELECTION)) {
@@ -84,7 +90,7 @@ export const BynderCompactView = props => {
 
       {mode === 'SingleSelect' && (
         <RenderSinglePreview
-          asset={internalValue}
+          asset={internalValue as BynderAsset}
           onClick={() => setIsOpen(true)}
           onChange={onChangeWrapper}
           context={context}
@@ -92,7 +98,7 @@ export const BynderCompactView = props => {
       )}
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <Login portal={{ url, editable: true, language: bynderProps.language }}>
+        <Login portal={{ url, editable: false }} language={bynderProps.language}>
           <CompactView {...bynderProps} />
         </Login>
       </Modal>
@@ -100,9 +106,17 @@ export const BynderCompactView = props => {
   );
 };
 
-const RenderSinglePreview = ({
+interface RenderSinglePreviewProps {
+  asset?: BynderAsset;
+  additionalInfo?: AdditionalInfo;
+  onClick: () => void;
+  onChange: (asset?: BynderAsset) => void;
+  context: any;
+}
+
+const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
   asset,
-  additionalInfo, // TODO: Find a way to incorporate this for "SingleSelect" inputs?
+  additionalInfo, // TODO: Find a way to incorporate this for "SingleSelectFile" inputs?
   onClick,
   onChange,
   context,
@@ -197,7 +211,7 @@ const RenderSinglePreview = ({
               padding: 4,
             }}
             onClick={() => {
-              onChange(null);
+              onChange(undefined);
             }}
           >
             <Close css={{ fontSize: 16 }} />
@@ -214,7 +228,7 @@ const RenderSinglePreview = ({
         }}
       >
         {fileName && (
-          <>
+          <React.Fragment>
             <div>
               <Typography
                 title={asset.name}
@@ -249,7 +263,7 @@ const RenderSinglePreview = ({
                 </Typography>
               </div>
             )}
-          </>
+          </React.Fragment>
         )}
         <div css={{ width: '100%' }}>
           <Button
