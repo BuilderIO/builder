@@ -3,9 +3,9 @@
 ## Notes
 This is a starting point, not a complete integration. 
 * The current output is the full Bynder file information object. This may or may not meet your needs.
-* The plugin's main setup is configured in the `plugin.jsx` file. 
-* UI elements that handle loading the Bynder-provided Universal Compact View asset selector, and rendering the result as a preview in the `ui.jsx` file.
-* Simple utils in `utils.js`, largely CONSTS for consistency between files.
+* The plugin's main setup is configured in the `plugin.ts` file. 
+* UI elements that handle loading the Bynder-provided Universal Compact View asset selector, and rendering the result as a preview in the `ui.tsx` file.
+* Simple utils in `utils.ts`, largely CONSTS for consistency between files.
 * Bynder's docs can be found (here)[https://developer-docs.bynder.com/ui-components], and their React-specific code docs (here)[https://www.npmjs.com/package/@bynder/compact-view]
 
 ### Using the plugin
