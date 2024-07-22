@@ -12,6 +12,7 @@ import {
 interface Props {
   scriptStr: string;
   id: string;
+  nonce?: string;
 }
 
 @Component({
@@ -23,6 +24,7 @@ interface Props {
 export default class InlinedScript {
   @Input() scriptStr!: Props['scriptStr'];
   @Input() id!: Props['id'];
+  @Input() nonce?: Props['nonce'];
 
   constructor(
     private renderer: Renderer2,
@@ -35,6 +37,9 @@ export default class InlinedScript {
       const script = this.renderer.createElement('script');
       script.innerHTML = this.scriptStr;
       this.renderer.setAttribute(script, 'data-id', this.id);
+      if (this.nonce) {
+        this.renderer.setAttribute(script, 'nonce', this.nonce);
+      }
       this.renderer.appendChild(this.document.body, script);
     }
   }

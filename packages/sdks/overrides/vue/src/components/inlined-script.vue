@@ -6,10 +6,11 @@ export default defineComponent({
     return h('script', {
       innerHTML: this.scriptStr,
       'data-id': this.id,
+      nonce: this.nonce,
     });
   },
   name: 'inlined-script',
 
-  props: ['scriptStr', 'id'],
+  props: ['scriptStr', 'id', 'nonce'],
 });
 </script>

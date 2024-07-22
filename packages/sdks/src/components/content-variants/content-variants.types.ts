@@ -86,7 +86,7 @@ export interface ContentVariantsPrps {
   trustedHosts?: string[];
 
   /**
-   * A CSP nonce to use for inlined `script` and `style` tags.
+   * A CSP nonce to use for the SDK's inlined `<script>` and `<style>` tags.
    */
-  nonce: string;
+  nonce?: string;
 }

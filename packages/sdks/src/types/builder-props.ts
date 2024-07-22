@@ -19,5 +19,5 @@ export type BuilderLinkComponentProp = {
 };
 
 export type BuilderNonceProp = {
-  nonce: string;
+  nonce?: string;
 };
