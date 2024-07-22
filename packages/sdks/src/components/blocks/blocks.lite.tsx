@@ -46,6 +46,7 @@ export default function Blocks(props: BlocksProps) {
             <Block
               key={block.id}
               block={block}
+              nonce={props.nonce}
               context={useTarget({
                 rsc: props.context,
                 default: props.context || builderContext,

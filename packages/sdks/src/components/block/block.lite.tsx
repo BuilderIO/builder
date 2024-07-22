@@ -14,6 +14,7 @@ import type {
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type { BuilderNonceProp } from '../../types/builder-props.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
 import { bindAnimations } from './animator.js';
 import {
@@ -36,7 +37,7 @@ export type BlockProps = {
   context: Signal<BuilderContextInterface>;
   registeredComponents: RegisteredComponents;
   linkComponent: any;
-};
+} & BuilderNonceProp;
 
 useMetadata({
   elementTag: 'state.Tag',
@@ -167,6 +168,7 @@ export default function Block(props: BlockProps) {
         builderBlock: state.processedBlock,
         includeBlockProps: state.blockComponent?.noWrap === true,
         isInteractive: !state.blockComponent?.isRSC,
+        nonce: props.nonce,
       };
     },
   });
@@ -186,11 +188,16 @@ export default function Block(props: BlockProps) {
 
   return (
     <Show when={state.canShowBlock}>
-      <BlockStyles block={props.block} context={props.context.value} />
+      <BlockStyles
+        block={props.block}
+        context={props.context.value}
+        nonce={props.nonce}
+      />
       <Show
         when={!state.blockComponent?.noWrap}
         else={
           <ComponentRef
+            nonce={props.nonce}
             componentRef={state.componentRefProps.componentRef}
             componentOptions={state.componentRefProps.componentOptions}
             blockChildren={state.componentRefProps.blockChildren}
@@ -210,6 +217,7 @@ export default function Block(props: BlockProps) {
               {(data, index) => (
                 <RepeatedBlock
                   key={index}
+                  nonce={props.nonce}
                   repeatContext={data.context}
                   block={data.block}
                   registeredComponents={props.registeredComponents}
@@ -225,6 +233,7 @@ export default function Block(props: BlockProps) {
             context={props.context}
           >
             <ComponentRef
+              nonce={props.nonce}
               componentRef={state.componentRefProps.componentRef}
               componentOptions={state.componentRefProps.componentOptions}
               blockChildren={state.componentRefProps.blockChildren}
@@ -252,6 +261,7 @@ export default function Block(props: BlockProps) {
                     } as any,
                     default: props.context,
                   })}
+                  nonce={props.nonce}
                   registeredComponents={props.registeredComponents}
                   linkComponent={props.linkComponent}
                 />

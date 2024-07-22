@@ -84,4 +84,9 @@ export interface ContentVariantsPrps {
    * List of hosts to allow editing content from.
    */
   trustedHosts?: string[];
+
+  /**
+   * A CSP nonce to use for inlined `script` and `style` tags.
+   */
+  nonce: string;
 }

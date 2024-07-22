@@ -192,6 +192,7 @@ export default function Accordion(props: AccordionProps) {
               onClick={() => state.onClick(index)}
             >
               <Blocks
+                nonce={props.nonce}
                 blocks={item.title}
                 path={`items.${index}.title`}
                 parent={props.builderBlock.id}
@@ -206,6 +207,7 @@ export default function Accordion(props: AccordionProps) {
                 style={state.accordionDetailStyles}
               >
                 <Blocks
+                  nonce={props.nonce}
                   blocks={item.detail}
                   path={`items.${index}.detail`}
                   parent={props.builderBlock.id}

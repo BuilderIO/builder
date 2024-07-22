@@ -46,6 +46,7 @@ export default function Tabs(props: TabsProps) {
               onClick={() => state.onClick(index)}
             >
               <Blocks
+                nonce={props.nonce}
                 parent={props.builderBlock.id}
                 path={`component.options.tabs.${index}.label`}
                 blocks={tab.label}
@@ -61,6 +62,7 @@ export default function Tabs(props: TabsProps) {
       <Show when={state.activeTabContent(state.activeTab)}>
         <div>
           <Blocks
+            nonce={props.nonce}
             parent={props.builderBlock.id}
             path={`component.options.tabs.${state.activeTab}.content`}
             blocks={state.activeTabContent(state.activeTab)}

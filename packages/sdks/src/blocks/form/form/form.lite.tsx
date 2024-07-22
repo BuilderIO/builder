@@ -18,6 +18,7 @@ import type {
   BuilderComponentsProp,
   BuilderDataProps,
   BuilderLinkComponentProp,
+  BuilderNonceProp,
 } from '../../../types/builder-props.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import { filterAttrs } from '../../helpers.js';
@@ -28,7 +29,8 @@ import { setAttrs } from '../../helpers.js';
 
 export type FormProps = BuilderDataProps &
   BuilderComponentsProp &
-  BuilderLinkComponentProp & {
+  BuilderLinkComponentProp &
+  BuilderNonceProp & {
     attributes?: any;
     name?: string;
     action?: string;
@@ -323,6 +325,7 @@ export default function FormComponent(props: FormProps) {
               key={`form-block-${idx}`}
               block={block}
               context={props.builderContext}
+              nonce={props.nonce}
               registeredComponents={props.builderComponents}
               linkComponent={props.builderLinkComponent}
             />
@@ -335,6 +338,7 @@ export default function FormComponent(props: FormProps) {
           path="errorMessage"
           blocks={props.errorMessage!}
           context={props.builderContext}
+          nonce={props.nonce}
         />
       </Show>
 
@@ -343,6 +347,7 @@ export default function FormComponent(props: FormProps) {
           path="sendingMessage"
           blocks={props.sendingMessage!}
           context={props.builderContext}
+          nonce={props.nonce}
         />
       </Show>
 
@@ -357,6 +362,7 @@ export default function FormComponent(props: FormProps) {
 
       <Show when={state.submissionState() === 'success'}>
         <Blocks
+          nonce={props.nonce}
           path="successMessage"
           blocks={props.successMessage!}
           context={props.builderContext}

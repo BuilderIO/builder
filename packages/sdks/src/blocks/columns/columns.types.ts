@@ -3,6 +3,7 @@ import type {
   BuilderComponentsProp,
   BuilderDataProps,
   BuilderLinkComponentProp,
+  BuilderNonceProp,
 } from '../../types/builder-props.js';
 
 export type Column = {
@@ -16,6 +17,7 @@ type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 export interface ColumnProps
   extends BuilderComponentsProp,
     BuilderLinkComponentProp,
+    BuilderNonceProp,
     BuilderDataProps {
   columns?: Column[];
   space?: number;

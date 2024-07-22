@@ -55,6 +55,7 @@ export default function ComponentRef(props: ComponentProps) {
               key={child.id}
               block={child}
               context={props.context}
+              nonce={props.nonce}
               registeredComponents={props.registeredComponents}
               linkComponent={props.linkComponent}
             />

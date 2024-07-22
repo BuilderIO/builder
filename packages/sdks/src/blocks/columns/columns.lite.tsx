@@ -228,7 +228,11 @@ export default function Columns(props: ColumnProps) {
          * "dynamic" media query values based on custom breakpoints.
          * Adding them directly otherwise leads to Mitosis and TS errors.
          */}
-        <InlinedStyles styles={state.columnsStyles()} id="builderio-columns" />
+        <InlinedStyles
+          styles={state.columnsStyles()}
+          id="builderio-columns"
+          nonce={props.nonce}
+        />
       </Show>
 
       <For each={props.columns}>
@@ -240,6 +244,7 @@ export default function Columns(props: ColumnProps) {
             attributes={state.getAttributes(column, index)}
           >
             <Blocks
+              nonce={props.nonce}
               blocks={useTarget({
                 /**
                  * Workaround until https://github.com/BuilderIO/qwik/issues/5017 is fixed.

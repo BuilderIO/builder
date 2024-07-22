@@ -126,6 +126,7 @@ export default function ContentComponent(props: ContentProps) {
 
   return (
     <EnableEditor
+      nonce={props.nonce}
       content={props.content}
       data={props.data}
       model={props.model}
@@ -153,10 +154,12 @@ export default function ContentComponent(props: ContentProps) {
         <InlinedScript
           scriptStr={state.scriptStr}
           id="builderio-variant-visibility"
+          nonce={props.nonce}
         />
       </Show>
       <Show when={TARGET !== 'reactNative'}>
         <ContentStyles
+          nonce={props.nonce}
           isNestedRender={props.isNestedRender}
           contentId={builderContextSignal.value.content?.id}
           cssCode={builderContextSignal.value.content?.data?.cssCode}
@@ -164,6 +167,7 @@ export default function ContentComponent(props: ContentProps) {
         />
       </Show>
       <Blocks
+        nonce={props.nonce}
         blocks={builderContextSignal.value.content?.data?.blocks}
         context={builderContextSignal}
         registeredComponents={state.registeredComponents}

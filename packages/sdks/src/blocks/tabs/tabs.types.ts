@@ -3,12 +3,14 @@ import type {
   BuilderComponentsProp,
   BuilderDataProps,
   BuilderLinkComponentProp,
+  BuilderNonceProp,
 } from '../../types/builder-props.js';
 
 export interface TabsProps
   extends BuilderComponentsProp,
     BuilderLinkComponentProp,
-    BuilderDataProps {
+    BuilderDataProps,
+    BuilderNonceProp {
   tabs: {
     label: BuilderBlock[];
     content: BuilderBlock[];
