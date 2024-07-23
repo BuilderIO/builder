@@ -20,38 +20,38 @@
     ".": {
       "edge-routine": {
         "types": "./types/index.d.ts",
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/edge-entry.mjs",
+        "require": "./lib/edge/edge-entry.cjs"
       },
       "workerd": {
         "types": "./types/index.d.ts",
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/edge-entry.mjs",
+        "require": "./lib/edge/edge-entry.cjs"
       },
       "deno": {
         "types": "./types/index.d.ts",
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/edge-entry.mjs",
+        "require": "./lib/edge/edge-entry.cjs"
       },
       "lagon": {
         "types": "./types/index.d.ts",
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/edge-entry.mjs",
+        "require": "./lib/edge/edge-entry.cjs"
       },
       "netlify": {
         "types": "./types/index.d.ts",
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/edge-entry.mjs",
+        "require": "./lib/edge/edge-entry.cjs"
       },
       "edge-light": {
         "types": "./types/index.d.ts",
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/edge-entry.mjs",
+        "require": "./lib/edge/edge-entry.cjs"
       },
       "bun": {
         "types": "./types/index.d.ts",
-        "import": "./lib/edge/index.mjs",
-        "require": "./lib/edge/index.cjs"
+        "import": "./lib/edge/edge-entry.mjs",
+        "require": "./lib/edge/edge-entry.cjs"
       },
       "react-native": {
         "types": "./types/index.d.ts",

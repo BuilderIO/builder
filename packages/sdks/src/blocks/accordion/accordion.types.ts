@@ -3,14 +3,12 @@ import type {
   BuilderComponentsProp,
   BuilderDataProps,
   BuilderLinkComponentProp,
-  BuilderNonceProp,
 } from '../../types/builder-props.js';
 
 export interface AccordionProps
   extends BuilderComponentsProp,
     BuilderLinkComponentProp,
-    BuilderDataProps,
-    BuilderNonceProp {
+    BuilderDataProps {
   items: {
     title: BuilderBlock[];
     detail: BuilderBlock[];

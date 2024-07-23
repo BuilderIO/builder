@@ -3,7 +3,6 @@ import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {getProps} from '@sdk/tests';
 import {useNonce} from '@shopify/hydrogen';
-import {useContext} from 'react';
 
 export const builderLoader: LoaderFunction = async ({params}) => {
   try {

@@ -37,7 +37,6 @@ export default function RepeatedBlock(props: Props) {
     <Block
       block={props.block}
       context={store}
-      nonce={props.nonce}
       registeredComponents={props.registeredComponents}
       linkComponent={props.linkComponent}
     />

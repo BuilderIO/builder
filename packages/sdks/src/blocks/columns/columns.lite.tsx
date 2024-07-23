@@ -231,7 +231,7 @@ export default function Columns(props: ColumnProps) {
         <InlinedStyles
           styles={state.columnsStyles()}
           id="builderio-columns"
-          nonce={props.nonce}
+          nonce={props.builderContext.value.nonce}
         />
       </Show>
 
@@ -244,7 +244,6 @@ export default function Columns(props: ColumnProps) {
             attributes={state.getAttributes(column, index)}
           >
             <Blocks
-              nonce={props.nonce}
               blocks={useTarget({
                 /**
                  * Workaround until https://github.com/BuilderIO/qwik/issues/5017 is fixed.

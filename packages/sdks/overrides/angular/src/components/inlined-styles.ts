@@ -6,7 +6,7 @@ import { Component, Inject, Input, Renderer2 } from '@angular/core';
 interface Props {
   styles: string;
   id: string;
-  nonce?: string;
+  nonce: string;
 }
 
 @Component({
@@ -18,7 +18,7 @@ interface Props {
 export default class InlinedStyles {
   @Input() styles!: Props['styles'];
   @Input() id!: Props['id'];
-  @Input() nonce?: Props['nonce'];
+  @Input() nonce!: Props['nonce'];
 
   constructor(
     private renderer: Renderer2,

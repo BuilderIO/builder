@@ -10,7 +10,7 @@ export default function InlinedScript(props: Props) {
     <script
       innerHTML={props.scriptStr}
       data-id={props.id}
-      nonce={props.nonce}
+      nonce={props.nonce || ''}
     />
   );
 }

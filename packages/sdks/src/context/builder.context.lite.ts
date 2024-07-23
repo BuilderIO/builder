@@ -14,6 +14,7 @@ export default createContext<BuilderContextInterface>(
     inheritedStyles: {},
     BlocksWrapper: 'div',
     BlocksWrapperProps: {},
+    nonce: '',
   },
   { reactive: true }
 );

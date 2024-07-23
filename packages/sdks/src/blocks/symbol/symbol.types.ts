@@ -3,7 +3,6 @@ import type {
   BuilderComponentsProp,
   BuilderDataProps,
   BuilderLinkComponentProp,
-  BuilderNonceProp,
 } from '../../types/builder-props.js';
 
 interface SymbolInfo {
@@ -18,8 +17,7 @@ interface SymbolInfo {
 export interface SymbolProps
   extends BuilderComponentsProp,
     BuilderDataProps,
-    BuilderLinkComponentProp,
-    BuilderNonceProp {
+    BuilderLinkComponentProp {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
   dynamic?: boolean;

@@ -9,8 +9,7 @@ test.describe('JS Code', () => {
     await expect(menuLocator).toBeVisible();
   });
 
-  test('code inside Browser.isBrowser should work', async ({ page, sdk, packageName }) => {
-    test.fail(packageName === 'hydrogen');
+  test('code inside Browser.isBrowser should work', async ({ page, sdk }) => {
     // doesn't work for these as they are SSR and there is no hydration step
     // so the code is not run on the client (Builder.isBrowser) block isn't executed
     test.fail(excludeTestFor(['vue', 'qwik', 'rsc'], sdk));

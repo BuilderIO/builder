@@ -4,7 +4,6 @@ import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 test.describe('HTTP Requests', () => {
   test('call proxy API only once - in page', async ({ page, packageName, sdk }) => {
-    test.fail(packageName === 'hydrogen');
     test.skip(excludeGen1(sdk));
     test.fail(
       packageName === 'nextjs-sdk-next-app',

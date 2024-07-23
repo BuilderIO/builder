@@ -122,7 +122,7 @@ export default function Symbol(props: SymbolProps) {
       })}
     >
       <ContentVariants
-        nonce={props.nonce}
+        nonce={props.builderContext.value.nonce}
         isNestedRender
         apiVersion={props.builderContext.value.apiVersion}
         apiKey={props.builderContext.value.apiKey!}

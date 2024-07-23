@@ -5,10 +5,7 @@ import type {
 } from '../../../../context/types.js';
 import { getBlockProperties } from '../../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../../types/builder-block.js';
-import type {
-  BuilderDataProps,
-  BuilderNonceProp,
-} from '../../../../types/builder-props.js';
+import type { BuilderDataProps } from '../../../../types/builder-props.js';
 import type { InteractiveElementProps } from '../interactive-element.lite.jsx';
 
 type ComponentOptions = BuilderDataProps & {
@@ -18,7 +15,7 @@ type ComponentOptions = BuilderDataProps & {
   };
 };
 
-export interface ComponentProps extends BuilderNonceProp {
+export interface ComponentProps {
   componentRef: any;
   componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];

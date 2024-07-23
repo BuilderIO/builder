@@ -101,20 +101,20 @@ export default function ContentVariants(props: VariantsProviderProps) {
         <InlinedScript
           scriptStr={getInitVariantsFnsScriptString()}
           id="builderio-init-variants-fns"
-          nonce={props.nonce}
+          nonce={props.nonce || ''}
         />
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
           id="builderio-variants"
           styles={state.hideVariantsStyleString}
-          nonce={props.nonce}
+          nonce={props.nonce || ''}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
         <InlinedScript
           id="builderio-variants-visibility"
           scriptStr={state.updateCookieAndStylesScriptStr}
-          nonce={props.nonce}
+          nonce={props.nonce || ''}
         />
 
         <For each={getVariants(props.content)}>

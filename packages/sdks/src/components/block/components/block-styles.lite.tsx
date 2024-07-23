@@ -10,13 +10,12 @@ import { getProcessedBlock } from '../../../functions/get-processed-block.js';
 import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
-import type { BuilderNonceProp } from '../../../types/builder-props.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
   context: BuilderContextInterface;
-} & BuilderNonceProp;
+};
 
 useMetadata({
   qwik: {
@@ -133,7 +132,7 @@ export default function BlockStyles(props: BlockStylesProps) {
       <InlinedStyles
         styles={state.css}
         id="builderio-block"
-        nonce={props.nonce}
+        nonce={props.context.nonce}
       />
     </Show>
   );

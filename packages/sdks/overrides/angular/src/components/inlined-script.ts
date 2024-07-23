@@ -12,7 +12,7 @@ import {
 interface Props {
   scriptStr: string;
   id: string;
-  nonce?: string;
+  nonce: string;
 }
 
 @Component({
@@ -24,7 +24,7 @@ interface Props {
 export default class InlinedScript {
   @Input() scriptStr!: Props['scriptStr'];
   @Input() id!: Props['id'];
-  @Input() nonce?: Props['nonce'];
+  @Input() nonce!: Props['nonce'];
 
   constructor(
     private renderer: Renderer2,

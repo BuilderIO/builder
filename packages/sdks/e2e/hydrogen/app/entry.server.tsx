@@ -15,6 +15,8 @@ export default async function handleRequest(
     connectSrc: ['https://cdn.builder.io'],
     // we need to whitelist Builder's CDN for image requests to work
     imgSrc: ['https://cdn.builder.io', 'http://localhost:*'],
+    // we need to allow 'unsafe-eval' for Builder's SDK to evaluate dynamic bindings
+    scriptSrc: ["'unsafe-eval'", 'http://localhost:*'],
   });
 
   const body = await renderToReadableStream(
