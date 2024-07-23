@@ -29,9 +29,7 @@ export default class InlinedStyles {
     const style = this.renderer.createElement('style');
     this.renderer.setAttribute(style, 'data-id', this.id);
     this.renderer.appendChild(style, this.renderer.createText(this.styles));
-    if (this.nonce) {
-      this.renderer.setAttribute(style, 'nonce', this.nonce);
-    }
+    this.renderer.setAttribute(style, 'nonce', this.nonce);
     this.renderer.appendChild(this.document.head, style);
   }
 }
