@@ -532,6 +532,26 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   },
 });
 
+const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
+        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnChanges() {
+              ${mergedInputsCode}
+            }
+          }
+          `
+        );
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -556,6 +576,7 @@ module.exports = {
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
+        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
       ],
     },
     solid: {
