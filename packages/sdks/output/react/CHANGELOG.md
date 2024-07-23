@@ -1,5 +1,12 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.1
+
+### Patch Changes
+
+- f6add9e: Fix: improve `edge` subpath exports to handle dynamically importing edge-specific and browser-specific SDK bundles.
+- f6add9e: Feature: Add `nonce` prop to `<Content>`: allows SDK to set `nonce` attribute for its inlined `style` and `script` tags.
+
 ## 2.0.0
 
 ### Major Changes

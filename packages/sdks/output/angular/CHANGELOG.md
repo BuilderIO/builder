@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.1
+
+### Patch Changes
+
+- f6add9e: Feature: Add `nonce` prop to `<Content>`: allows SDK to set `nonce` attribute for its inlined `style` and `script` tags.
+
 ## 0.2.0
 
 ### Minor Changes
