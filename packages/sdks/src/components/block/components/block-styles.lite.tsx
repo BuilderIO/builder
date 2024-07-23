@@ -129,7 +129,11 @@ export default function BlockStyles(props: BlockStylesProps) {
   });
   return (
     <Show when={TARGET !== 'reactNative' && state.css && state.canShowBlock}>
-      <InlinedStyles styles={state.css} id="builderio-block" />
+      <InlinedStyles
+        styles={state.css}
+        id="builderio-block"
+        nonce={props.context.nonce}
+      />
     </Show>
   );
 }

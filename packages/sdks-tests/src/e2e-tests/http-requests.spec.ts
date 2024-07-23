@@ -4,7 +4,6 @@ import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 test.describe('HTTP Requests', () => {
   test('call proxy API only once - in page', async ({ page, packageName, sdk }) => {
-    test.fail(packageName === 'hydrogen');
     test.skip(excludeGen1(sdk));
     test.fail(
       packageName === 'nextjs-sdk-next-app',
@@ -39,7 +38,6 @@ test.describe('HTTP Requests', () => {
   });
 
   test('call proxy API only once - in editor', async ({ page, basePort, packageName, sdk }) => {
-    test.skip(packageName === 'hydrogen');
     test.skip(excludeGen1(sdk));
     test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
     test.skip(

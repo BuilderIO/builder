@@ -228,7 +228,11 @@ export default function Columns(props: ColumnProps) {
          * "dynamic" media query values based on custom breakpoints.
          * Adding them directly otherwise leads to Mitosis and TS errors.
          */}
-        <InlinedStyles styles={state.columnsStyles()} id="builderio-columns" />
+        <InlinedStyles
+          styles={state.columnsStyles()}
+          id="builderio-columns"
+          nonce={props.builderContext.value.nonce}
+        />
       </Show>
 
       <For each={props.columns}>
