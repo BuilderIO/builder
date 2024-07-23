@@ -35,7 +35,7 @@ export const getWrapperProps = ({
   includeBlockProps,
   isInteractive,
   contextValue,
-}: Omit<ComponentProps, 'blockChildren' | 'registeredComponents' | 'nonce'> & {
+}: Omit<ComponentProps, 'blockChildren' | 'registeredComponents'> & {
   contextValue: BuilderContextInterface;
 }) => {
   const wrapperPropsWithAttributes = {
