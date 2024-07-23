@@ -37,7 +37,7 @@ See [here](src/CloudinaryImageEditor.tsx) for the React component that powers th
 
 ```bash
 git clone https://github.com/BuilderIO/builder.git
-cd plugins/cloudinary
+cd plugins/multi-cloudinary
 npm install
 ```
 
