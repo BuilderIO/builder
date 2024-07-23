@@ -1,4 +1,4 @@
-import type { BuilderNonceProp } from '../types/builder-props';
+import type { BuilderNonceProp } from '../types/builder-props.js';
 
 interface Props extends BuilderNonceProp {
   scriptStr: string;
