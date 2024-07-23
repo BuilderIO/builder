@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-multi-select-cloudinary",
-  "version": "0.0.4-0",
+  "version": "0.0.6",
   "description": "",
   "keywords": [],
   "main": "dist/builder-plugin-multi-select-cloudinary.system.js",
