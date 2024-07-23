@@ -442,7 +442,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
   });
 
   onUpdate(() => {
-    state.evaluateJsCode();
+    if (isEditing()) {
+      state.evaluateJsCode();
+    }
   }, [props.builderContextSignal.value.content?.data?.jsCode]);
 
   onUpdate(() => {
