@@ -76,13 +76,18 @@ export class Api {
 
   constructor(private apiKey: string, private pluginId: string) {}
 
-  request(path: string, config?: RequestInit, search = {}) {
-    return fetch(`${this.getBaseUrl(path, search)}`, {
-      ...config,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(res => res.json());
+  async request(path: string, config?: RequestInit, search = {}) {
+    try {
+      const response = await fetch(`${this.getBaseUrl(path, search)}`, {
+        ...config,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
   }
 
   getProduct(id: string): Promise<any> {
@@ -115,11 +120,14 @@ export class Api {
     });
   }
 
-  searchCategories(search: string): Promise<Resource[]> {
-    return this.request('categories-search', { method: 'GET' }, { q: search }).then(categories => {
+  async searchCategories(search: string): Promise<Resource[]> {
+    try {
+      const categories = await this.request('categories-search', { method: 'GET' }, { q: search });
       const resources = categories?.map(transformCategory) || [];
       resources.forEach((r: Resource) => basicCache.set(r.id, r));
       return resources;
-    });
+    } catch (e) {
+      throw e;
+    }
   }
 }
