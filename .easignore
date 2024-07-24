@@ -21,6 +21,7 @@ packages/*
 # original .gitignore below
 node_modules
 *.log
+dist
 test-lib/**/*.js
 coverage
 .history
