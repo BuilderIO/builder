@@ -1,8 +1,28 @@
 build:
   name: Create a build and run Maestro tests on it
   steps:
-    - eas/build
+    - run:
+      name: Build SDK
+      command: yarn nx build @builder.io/sdk-react-native
+    - eas/build:
+        inputs:
+          platform: 'ios'
     - eas/maestro_test:
         inputs:
           flow_path: |
             maestro/home.yaml
+    - eas/send_slack_message:
+        if: ${ failure() }
+        name: Send Slack message when the build fails (iOS)
+        inputs:
+          message: |
+            This is a test message when iOS build fails.
+            Error: `${ steps.run_fastlane.error_text }`
+            Link: `${ eas.job.expoBuildUrl }`
+    - eas/send_slack_message:
+        if: ${ success() }
+        name: Send Slack message when the build fails (iOS)
+        inputs:
+          message: |
+            iOS build and test succeeded.
+            Link: `${ eas.job.expoBuildUrl }`
