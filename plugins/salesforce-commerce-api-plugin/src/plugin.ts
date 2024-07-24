@@ -24,6 +24,7 @@ registerCommercePlugin(
         name: 'clientId',
         type: 'string',
         required: true,
+        friendlyName:'Public Client ID',
       },
       {
         name: 'organizationId',
@@ -96,7 +97,7 @@ registerCommercePlugin(
           return await api.getProduct(id);
         },
         async search(search: string) {
-          return await api.search(search || 'womens');
+          return await api.search(search || '');
         },
         getRequestObject(id: string) {
           return {

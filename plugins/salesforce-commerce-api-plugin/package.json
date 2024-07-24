@@ -53,6 +53,6 @@
   },
   "dependencies": {
     "@builder.io/plugin-tools": "^0.0.3",
-    "commerce-sdk-isomorphic": "^1.7.0"
+    "commerce-sdk-isomorphic": "2.1.0"
   }
 }
