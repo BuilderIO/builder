@@ -1,6 +1,24 @@
 # Need `.easignore` to exist to prevent EAS from trying to use `.gitignore`s across the monorepo, which caused issues.
 # This is mostly a copy/paste of the sibling `.gitignore` with some modifications
 
+# exclude all unnecessary stuff to keep the size of the EAS archive small
+.changeset
+.github
+.husky
+examples
+plugins
+scripts
+starters
+
+# excluding everything except the monorepo packages
+packages/*
+!packages/sdks
+!packages/sdks-tests
+!packages/react
+!packages/core
+!packages/react-tests
+
+# original .gitignore below
 node_modules
 *.log
 test-lib/**/*.js
