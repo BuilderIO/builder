@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActivatedRoute } from '@angular/router';
+import { HelloComponent } from './hello.component';
 
 interface BuilderProps {
   apiVersion: string;
@@ -22,6 +23,7 @@ interface BuilderProps {
         [apiKey]="apiKey"
         [trustedHosts]="trustedHosts"
         [canTrack]="canTrack"
+        [customComponents]="customComponents"
       ></content-variants>
     </ng-container>
 
@@ -36,6 +38,14 @@ export class CatchAllComponent {
   apiKey: BuilderProps['apiKey'] = 'abcd';
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
+
+  customComponents = [
+    {
+      component: HelloComponent,
+      name: 'Hello',
+      inputs: [],
+    },
+  ];
 
   constructor(private activatedRoute: ActivatedRoute) {}
 

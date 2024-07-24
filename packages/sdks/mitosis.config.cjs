@@ -256,6 +256,26 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   },
 });
 
+const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
+        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
+        code = code.replace(
+          /}\n\s*$/,
+          `
+            ngOnChanges() {
+              ${mergedInputsCode}
+            }
+          }
+          `
+        );
+      }
+      return code;
+    },
+  },
+});
+
 const VALID_HTML_TAGS = [
   'html',
   'base',
@@ -525,26 +545,6 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
         code = code.replace(
           'this.setContent();',
           'if (changes.symbol) { this.setContent(); }'
-        );
-      }
-      return code;
-    },
-  },
-});
-
-const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
-        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnChanges() {
-              ${mergedInputsCode}
-            }
-          }
-          `
         );
       }
       return code;

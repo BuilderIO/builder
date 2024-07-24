@@ -44,6 +44,8 @@ export default class DynamicDiv {
   @Input() onClick: any;
   @Input() onMouseEnter: any;
   @Input() onKeyPress: any;
+  @Input() hidden: any;
+  @Input('aria-hidden') ariaHidden: any;
 
   @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
@@ -63,6 +65,8 @@ export default class DynamicDiv {
     this.setAttribute(el, 'builder-path', this.builderPath);
     this.setAttribute(el, 'builder-model', this.builderModel);
     this.setAttribute(el, 'builder-content-id', this.builderContentId);
+    this.setAttribute(el, 'hidden', this.hidden);
+    this.setAttribute(el, 'aria-hidden', this.ariaHidden);
   }
 
   ngOnChanges() {
@@ -78,6 +82,8 @@ export default class DynamicDiv {
     this.setAttribute(el, 'builder-path', this.builderPath);
     this.setAttribute(el, 'builder-model', this.builderModel);
     this.setAttribute(el, 'builder-content-id', this.builderContentId);
+    this.setAttribute(el, 'hidden', this.hidden);
+    this.setAttribute(el, 'aria-hidden', this.ariaHidden);
   }
 
   private setAttributes(el: HTMLElement, attributes: any) {
