@@ -2,6 +2,7 @@ build:
   name: Create a build and run Maestro tests on it
   steps:
     - run:
+      id: build-sdk
       name: Build SDK
       command: yarn nx build @builder.io/sdk-react-native
     - eas/build:
