@@ -5,10 +5,18 @@
 .changeset
 .github
 .husky
-examples
-plugins
-scripts
-starters
+
+# Ignore root-level folders
+/examples
+/plugins
+/scripts
+/starters
+
+# But allow these folders in nested packages
+!packages/**/examples
+!packages/**/plugins
+!packages/**/scripts
+!packages/**/starters
 
 # excluding everything except the monorepo packages
 packages/*
@@ -17,6 +25,8 @@ packages/*
 !packages/react
 !packages/core
 !packages/react-tests
+
+*.tar.gz
 
 # original .gitignore below
 node_modules
