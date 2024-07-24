@@ -21,14 +21,20 @@ interface BuilderProps {
 @Component({
   selector: 'app-root',
   template: `
-    <content-variants
-      [model]="model"
-      [content]="content"
-      [apiKey]="apiKey"
-      [trustedHosts]="trustedHosts"
-      [canTrack]="canTrack"
-      [customComponents]="customComponents"
-    ></content-variants>
+    <ng-container *ngIf="content; else notFound">
+      <content-variants
+        [model]="model"
+        [content]="content"
+        [apiKey]="apiKey"
+        [trustedHosts]="trustedHosts"
+        [canTrack]="canTrack"
+        [customComponents]="customComponents"
+      ></content-variants>
+    </ng-container>
+
+    <ng-template #notFound>
+      <div>404 - Content not found</div>
+    </ng-template>
   `,
 })
 export class AppComponent {
