@@ -23,7 +23,6 @@ test.describe('Hydration', () => {
   });
 
   test('No mismatch on A/B test content', async ({ page, packageName }) => {
-    test.fail(packageName === 'hydrogen');
     test.fail(packageName === 'angular-ssr');
     test.fail(
       packageName === 'nextjs-sdk-next-app',
