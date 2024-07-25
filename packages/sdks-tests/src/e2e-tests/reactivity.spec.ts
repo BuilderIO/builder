@@ -47,8 +47,7 @@ test.describe('Element Events', () => {
     const text = consoleMessage.text();
     return text.startsWith('clicked');
   };
-  test('click works on button', async ({ page, sdk }) => {
-    test.skip(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+  test('click works on button', async ({ page }) => {
     await page.goto('/element-events');
 
     // Get the next console log message
