@@ -42,7 +42,6 @@ test.describe('Tracking', () => {
       expect(builderSessionCookie).toBeUndefined();
     });
     test('appear by default', async ({ page, context, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(excludeRn(sdk));
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
@@ -61,7 +60,6 @@ test.describe('Tracking', () => {
   });
   test.describe('POST data', () => {
     test('POSTs correct impression data', async ({ page, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk));
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         request =>

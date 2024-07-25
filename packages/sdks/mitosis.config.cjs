@@ -261,6 +261,7 @@ const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
     post: (code) => {
       if (code?.includes('blocks-wrapper, BlocksWrapper')) {
         const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
+        code = code.replace('ngOnInit', 'ngAfterViewInit');
         code = code.replace(
           /}\n\s*$/,
           `

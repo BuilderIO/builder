@@ -9,8 +9,7 @@ import {
 } from '../helpers/index.js';
 
 test.describe('Styles', () => {
-  test('data-binding-styles', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Styles not working properly in Angular SDK');
+  test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
     await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
       'color',
