@@ -53,7 +53,9 @@ export default function ContentComponent(props: ContentProps) {
 
     registeredComponents: [
       ...getDefaultRegisteredComponents(),
-      ...(props.customComponents || []),
+      ...(props.customComponents?.filter(
+        ({ models }) => !models?.length || models.includes(props.model || '')
+      ) || []),
     ].reduce<RegisteredComponents>(
       (acc, { component, ...info }) => ({
         ...acc,
@@ -99,7 +101,10 @@ export default function ContentComponent(props: ContentProps) {
         apiVersion: props.apiVersion,
         componentInfos: [
           ...getDefaultRegisteredComponents(),
-          ...(props.customComponents || []),
+          ...(props.customComponents?.filter(
+            ({ models }) =>
+              !models?.length || models.includes(props.model || '')
+          ) || []),
         ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
             ...acc,
