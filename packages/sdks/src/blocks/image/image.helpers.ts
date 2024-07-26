@@ -58,7 +58,7 @@ export function getSrcSet(url: string): string {
     return sizes
       .filter((size) => size !== widthInSrc)
       .map((size) => `${updateQueryParam(url, 'width', size)} ${size}w`)
-      .concat([srcUrl])
+      .concat([`${srcUrl} 9999w`])
       .join(', ');
   }
 
