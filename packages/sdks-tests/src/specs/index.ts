@@ -198,6 +198,7 @@ export const getProps = async (args: {
       };
       break;
     case '/no-trusted-hosts':
+    case '/editing-styles-no-trusted-hosts':
       extraProps = {
         trustedHosts: [],
       };
