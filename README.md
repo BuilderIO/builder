@@ -11,7 +11,7 @@
   Visual Development On Any Stack
 </h3>
 <p align="center">
-   Turn Figma designs to code. Drag and drop with the components already in your codebase. Publish with a click.
+   Turn Figma designs to code. Drag and drop with your components. Publish with a click.
 </p>
 
 <p align="center">
