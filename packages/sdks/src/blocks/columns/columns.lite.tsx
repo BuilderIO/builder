@@ -1,5 +1,6 @@
 import {
   For,
+  onInit,
   Show,
   useMetadata,
   useStore,
@@ -204,6 +205,23 @@ export default function Columns(props: ColumnProps) {
         style: mapStyleObjToStrIfNeeded(state.columnCssVars(index)),
       };
     },
+  });
+
+  onInit(() => {
+    useTarget({
+      angular: () => {
+        state.flexDir =
+          props.stackColumnsAt === 'never'
+            ? 'row'
+            : props.reverseColumnsWhenStacked
+              ? 'column-reverse'
+              : 'column';
+        state.gutterSize =
+          typeof props.space === 'number' ? props.space || 0 : 20;
+        state.cols = props.columns || [];
+        state.stackAt = props.stackColumnsAt || 'tablet';
+      },
+    });
   });
 
   return (

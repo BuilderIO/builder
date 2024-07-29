@@ -1,4 +1,5 @@
 import {
+  onInit,
   onMount,
   onUpdate,
   useMetadata,
@@ -88,15 +89,20 @@ export default function Symbol(props: SymbolProps) {
     state.setContent();
   }, [props.symbol]);
 
+  onInit(() => {
+    useTarget({
+      angular: () => {
+        state.contentToUse = props.symbol?.content;
+      },
+    });
+  });
+
   onMount(() => {
     useTarget({
       react: () => {},
       reactNative: () => {},
       solid: () => {},
-      angular: () => {
-        state.contentToUse = props.symbol?.content;
-      },
-
+      angular: () => {},
       default: () => {
         state.setContent();
       },
