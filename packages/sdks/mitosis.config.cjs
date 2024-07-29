@@ -576,13 +576,17 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
 });
 
 const ANGULAR_FIX_REPEAT_ITEMS_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('repeated-block, RepeatedBlock')) {
-        code = code.replace('store = this.repeatContext;', '');
-        code = code.replace('[context]="store"', '[context]="repeatContext"');
+  json: {
+    pre: (json) => {
+      if (json.name === 'RepeatedBlock') {
+        const ctxCode = json.state['store'].code;
+        if (json.children[0].name === 'Block') {
+          json.children[0].bindings['context'].code = ctxCode;
+          delete json.state['store'];
+        } else {
+          throw new Error('RepeatedBlock should have a Block child');
+        }
       }
-      return code;
     },
   },
 });
