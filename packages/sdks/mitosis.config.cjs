@@ -575,6 +575,18 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   },
 });
 
+const ANGULAR_FIX_REPEAT_ITEMS_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('repeated-block, RepeatedBlock')) {
+        code = code.replace('store = this.repeatContext;', '');
+        code = code.replace('[context]="store"', '[context]="repeatContext"');
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -601,6 +613,7 @@ module.exports = {
         ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
         ANGULAR_FIX_AB_TESTS_INITIALIZATION,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
+        ANGULAR_FIX_REPEAT_ITEMS_PLUGIN,
       ],
     },
     solid: {
