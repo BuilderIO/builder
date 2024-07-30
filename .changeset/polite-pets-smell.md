@@ -10,4 +10,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Fix: remove srcset for svg images
+Fix: Image block: remove redundant `srcset` for SVG images
