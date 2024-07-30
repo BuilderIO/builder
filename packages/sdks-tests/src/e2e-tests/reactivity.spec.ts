@@ -3,15 +3,13 @@ import { expect } from '@playwright/test';
 import { excludeTestFor, checkIsRN, test } from '../helpers/index.js';
 
 test.describe('Reactive State', () => {
-  test('shows default value', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+  test('shows default value', async ({ page }) => {
     await page.goto('/reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
   });
 
   test('increments value correctly', async ({ page, packageName, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.fail(packageName === 'nextjs-sdk-next-app');
 
@@ -49,8 +47,7 @@ test.describe('Element Events', () => {
     const text = consoleMessage.text();
     return text.startsWith('clicked');
   };
-  test('click works on button', async ({ page, sdk }) => {
-    test.skip(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+  test('click works on button', async ({ page }) => {
     await page.goto('/element-events');
 
     // Get the next console log message

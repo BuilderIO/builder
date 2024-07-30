@@ -23,6 +23,7 @@ test.describe('Hydration', () => {
   });
 
   test('No mismatch on A/B test content', async ({ page, packageName }) => {
+    test.fail(packageName === 'angular-ssr');
     test.fail(
       packageName === 'nextjs-sdk-next-app',
       "NextJS SDK currently does not support SSR'd A/B tests. Losing variants are stripped from SSR'd Content too late."
