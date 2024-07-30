@@ -1,4 +1,5 @@
 ---
+'@builder.io/react': patch
 '@builder.io/sdk-angular': patch
 '@builder.io/sdk-react-nextjs': patch
 '@builder.io/sdk-qwik': patch
