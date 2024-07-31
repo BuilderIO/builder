@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.2.3
+
+### Patch Changes
+
+- 4ee499e: Fix: Image block: remove redundant `srcset` for SVG images
+- 14da62f: Fix: restrict custom components to the models that get passed in `models`
+
 ## 0.2.2
 
 ### Patch Changes

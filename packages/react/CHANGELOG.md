@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 4.0.1
+
+### Patch Changes
+
+- 4ee499e: Fix: Image block: remove redundant `srcset` for SVG images
+
 ## 4.0.0
 
 ### Major Changes
