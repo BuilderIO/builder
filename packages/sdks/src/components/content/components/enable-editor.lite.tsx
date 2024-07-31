@@ -2,6 +2,7 @@ import type { Signal } from '@builder.io/mitosis';
 import {
   Show,
   onEvent,
+  onInit,
   onMount,
   onUnMount,
   onUpdate,
@@ -428,23 +429,22 @@ export default function EnableEditor(props: BuilderEditorProps) {
     }
   });
 
-  onMount(
-    () => {
-      if (!props.apiKey) {
-        logger.error(
-          'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
-        );
-      }
+  onInit(() => {
+    if (!props.apiKey) {
+      logger.error(
+        'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
 
-      state.evaluateJsCode();
-      state.runHttpRequests();
-      state.emitStateUpdate();
-    },
-    { onSSR: true }
-  );
+    state.evaluateJsCode();
+    state.runHttpRequests();
+    state.emitStateUpdate();
+  });
 
   onUpdate(() => {
-    state.evaluateJsCode();
+    if (isEditing()) {
+      state.evaluateJsCode();
+    }
   }, [props.builderContextSignal.value.content?.data?.jsCode]);
 
   onUpdate(() => {
