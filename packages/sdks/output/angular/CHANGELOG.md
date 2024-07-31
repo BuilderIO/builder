@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.4
+
+### Patch Changes
+
+- 48ee285: Feat: optimise DOM updates with `trackBy` in angular
+
 ## 0.2.3
 
 ### Patch Changes
