@@ -242,14 +242,12 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
           `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`
         );
         // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
-        code = code.replace(
-          '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
-          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
-        );
-        code = code.replace(
-          '</ng-container>',
-          '</ng-container>\n</ng-container>'
-        );
+        code = code
+          .replace(
+            '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
+            '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
+          )
+          .replace('</ng-container>', '</ng-container>\n</ng-container>');
       }
       return code;
     },
@@ -261,7 +259,7 @@ const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
     post: (code) => {
       if (code?.includes('blocks-wrapper, BlocksWrapper')) {
         const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
-        code = code.replace('ngOnInit', 'ngAfterViewInit');
+        // code = code.replace('ngOnInit', 'ngAfterViewInit');
         code = code.replace(
           /}\n\s*$/,
           `
