@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "isolated-vm": "^5.0.0",
+    "microdiff": "^1.4.0",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {

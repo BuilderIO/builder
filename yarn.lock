@@ -3942,6 +3942,7 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
+    microdiff: ^1.4.0
     ng-packagr: ^16.2.0
     nx: 16.10.0
     nx-cloud: 16.5.2
@@ -35871,6 +35872,13 @@ __metadata:
   bin:
     metro: src/cli.js
   checksum: 085191ea2a1d599ff99a4e97d9387f22d41bc0225bc579e3a708b4a735339163706ba7807711629550d6a54039009615528f685f6669034b6e701fe73657aa7c
+  languageName: node
+  linkType: hard
+
+"microdiff@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "microdiff@npm:1.4.0"
+  checksum: 4cae2ec4d0540b65656837a7c47a17d6428a1be2909d268a579921183c9c21a86e0dfa0c8ade8c60f9127887783a17d54ce7be16d5556708a0e58312bca8803d
   languageName: node
   linkType: hard
 
