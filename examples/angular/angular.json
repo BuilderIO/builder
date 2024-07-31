@@ -106,7 +106,6 @@
       }
     }
   },
-  "defaultProject": "angular-test-site",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
