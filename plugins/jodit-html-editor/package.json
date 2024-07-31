@@ -1,11 +1,12 @@
 {
   "name": "@builder.io/plugin-jodit-html-editor",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "",
   "keywords": [],
   "entry": "plugin",
   "output": "plugin.system.js",
   "main": "dist/plugin.system.js",
+  "unpkg": "dist/plugin.system.js",
   "typings": "dist/types/plugin.d.ts",
   "files": [
     "dist"
@@ -24,6 +25,8 @@
     "prebuild": "rimraf dist",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development",
+    "release:minor": "npm run build && npm version minor --no-git-tag-version && npm publish",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
