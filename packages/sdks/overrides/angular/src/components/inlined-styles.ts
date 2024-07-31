@@ -31,15 +31,16 @@ export default class InlinedStyles {
     if (changes.styles) {
       if (this.styleElement) {
         this.styleElement.textContent = this.styles;
+      } else {
+        this.styleElement = this.renderer.createElement('style');
+        this.renderer.setAttribute(this.styleElement, 'data-id', this.id);
+        this.renderer.appendChild(
+          this.styleElement,
+          this.renderer.createText(this.styles)
+        );
+        this.renderer.setAttribute(this.styleElement, 'nonce', this.nonce);
+        this.renderer.appendChild(this.document.head, this.styleElement);
       }
-      this.styleElement = this.renderer.createElement('style');
-      this.renderer.setAttribute(this.styleElement, 'data-id', this.id);
-      this.renderer.appendChild(
-        this.styleElement,
-        this.renderer.createText(this.styles)
-      );
-      this.renderer.setAttribute(this.styleElement, 'nonce', this.nonce);
-      this.renderer.appendChild(this.document.head, this.styleElement);
     }
   }
 }
