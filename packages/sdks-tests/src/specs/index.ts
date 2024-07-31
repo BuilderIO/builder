@@ -52,6 +52,7 @@ import { BASIC_STYLES } from './basic-styles.js';
 import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.js';
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
+import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -119,6 +120,8 @@ const PAGES = {
   '/accordion-grid': ACCORDION_GRID,
   '/symbol-tracking': SYMBOL_TRACKING,
   '/columns-with-different-widths': COLUMNS_WITH_DIFFERENT_WIDTHS,
+  '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+  '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
 } as const;
 
 const apiVersionPathToProp = {
@@ -191,16 +194,29 @@ export const getProps = async (args: {
     return null;
   }
 
-  const extraProps =
-    pathname === '/can-track-false' || pathname === '/symbol-tracking'
-      ? {
-          canTrack: false,
-        }
-      : pathname.includes('no-trusted-hosts')
-        ? {
-            trustedHosts: [],
-          }
-        : {};
+  let extraProps = {};
+  switch (pathname) {
+    case '/can-track-false':
+    case '/symbol-tracking':
+      extraProps = {
+        canTrack: false,
+      };
+      break;
+    case '/no-trusted-hosts':
+    case '/editing-styles-no-trusted-hosts':
+      extraProps = {
+        trustedHosts: [],
+      };
+      break;
+    case '/custom-components-models-show':
+      // overrides page model below
+      extraProps = {
+        model: 'test-model',
+      };
+      break;
+    default:
+      break;
+  }
 
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};

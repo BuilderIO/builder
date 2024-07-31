@@ -493,29 +493,28 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
 
 // required for registering custom components properly
 const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name === 'ContentComponent') {
+        const builderContextSignalCode =
+          json.state['builderContextSignal'].code;
+        const registeredComponentsCode =
+          json.state['registeredComponents'].code;
+        if (!json.hooks.onInit?.code) {
+          json.hooks.onInit = {
+            code: '',
+          };
+        }
+        json.hooks.onInit.code += `
+          this.builderContextSignal = ${builderContextSignalCode};
+          this.registeredComponents = ${registeredComponentsCode};
+          `;
+      }
+    },
+  },
   code: {
     post: (code) => {
       if (code.includes('content-component, ContentComponent')) {
-        const registeredComponentsCode = code.match(
-          /registeredComponents = \[.*\);/s
-        );
-        const builderContextSignalCode = code.match(
-          /builderContextSignal = \{.*\};/s
-        );
-
-        // add them to ngOnInit
-        code = code.replace(
-          // last } before the end of the class
-          /}\n\s*$/,
-          `
-            ngOnInit() {
-              this.${registeredComponentsCode}
-              this.${builderContextSignalCode}
-            }
-          }
-          `
-        );
-
         code = code.replaceAll(
           'this.contentSetState',
           'this.contentSetState.bind(this)'
