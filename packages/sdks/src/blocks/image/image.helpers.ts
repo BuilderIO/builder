@@ -53,12 +53,14 @@ export function getSrcSet(url: string): string {
     const widthInSrc = Number(url.split('?width=')[1]);
     if (!isNaN(widthInSrc)) {
       srcUrl = `${srcUrl} ${widthInSrc}w`;
+    } else {
+      srcUrl = `${srcUrl} 9999w`; // #3448 every srcset element has to have "w" or "x", otherwise browsers might ignore srcset
     }
 
     return sizes
       .filter((size) => size !== widthInSrc)
       .map((size) => `${updateQueryParam(url, 'width', size)} ${size}w`)
-      .concat([`${srcUrl} 9999w`])
+      .concat([srcUrl])
       .join(', ');
   }
 
