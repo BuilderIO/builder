@@ -2,8 +2,7 @@
   "name": "@e2e/react-native",
   "main": "expo-router/entry",
   "scripts": {
-    "eas-build-pre-install": "./eas-hooks/eas-build-pre-install.sh",
-    "eas-build-on-success": "./eas-hooks/eas-build-on-success.sh",
+    "eas-build-pre-install": "yarn nx build @builder.io/sdk-react-native",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
