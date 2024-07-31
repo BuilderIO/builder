@@ -243,8 +243,8 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
         );
         // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
         code = code.replace(
-          '<ng-container *ngFor="let child of blockChildren">',
-          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren">'
+          '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
+          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
         );
         code = code.replace(
           '</ng-container>',
