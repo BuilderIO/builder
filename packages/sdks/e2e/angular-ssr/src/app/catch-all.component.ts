@@ -1,12 +1,7 @@
+import { Component } from '@angular/core';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeDetectorRef, Component } from '@angular/core';
-import {
-  _processContentResult,
-  fetchOneEntry,
-  getBuilderSearchParams,
-} from '@builder.io/sdk-angular';
-import { getProps } from '@sdk/tests';
+import { ActivatedRoute } from '@angular/router';
 import { HelloComponent } from './hello.component';
 
 interface BuilderProps {
@@ -19,7 +14,7 @@ interface BuilderProps {
 }
 
 @Component({
-  selector: 'app-root',
+  selector: 'catch-all-route',
   template: `
     <ng-container *ngIf="content; else notFound">
       <content-variants
@@ -37,9 +32,7 @@ interface BuilderProps {
     </ng-template>
   `,
 })
-export class AppComponent {
-  title = 'angular';
-  apiVersion: BuilderProps['apiVersion'] = 'v3';
+export class CatchAllComponent {
   canTrack: BuilderProps['canTrack'];
   trustedHosts: BuilderProps['trustedHosts'];
   apiKey: BuilderProps['apiKey'] = 'abcd';
@@ -54,31 +47,13 @@ export class AppComponent {
     },
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private activatedRoute: ActivatedRoute) {}
 
-  async ngOnInit() {
-    const urlPath = window.location.pathname || '';
-
-    const builderProps = await getProps({
-      pathname: urlPath,
-      _processContentResult,
-      options: getBuilderSearchParams(
-        new URLSearchParams(window.location.search)
-      ),
-      fetchOneEntry,
+  ngOnInit() {
+    this.activatedRoute.data.subscribe((data: any) => {
+      this.content = data.content?.content;
+      this.canTrack = data.content?.canTrack;
+      this.trustedHosts = data.content?.trustedHosts;
     });
-
-    if (!builderProps) {
-      return;
-    }
-
-    this.content = builderProps.content;
-    this.canTrack = builderProps.canTrack;
-    this.trustedHosts = builderProps.trustedHosts;
-    this.apiKey = builderProps.apiKey;
-    this.model = builderProps.model;
-    this.apiVersion = builderProps.apiVersion;
-
-    this.cdr.detectChanges();
   }
 }

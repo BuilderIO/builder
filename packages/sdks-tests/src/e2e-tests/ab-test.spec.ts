@@ -88,7 +88,12 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
+        test.skip(
+          excludeTestFor({ angular: true }, sdk),
+          'A/B tests with SSR are not supported in Angular'
+        );
         const { page } = await initializeAbTest(
           {
             page: _page,
@@ -114,7 +119,12 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
+        test.skip(
+          excludeTestFor({ angular: true }, sdk),
+          'A/B tests with SSR are not supported in Angular'
+        );
         const { page } = await initializeAbTest(
           {
             page: _page,

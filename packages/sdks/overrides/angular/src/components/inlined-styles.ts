@@ -25,7 +25,7 @@ export default class InlinedStyles {
     @Inject(DOCUMENT) private document: Document
   ) {}
 
-  ngOnChanges() {
+  ngOnInit() {
     const style = this.renderer.createElement('style');
     this.renderer.setAttribute(style, 'data-id', this.id);
     this.renderer.appendChild(style, this.renderer.createText(this.styles));

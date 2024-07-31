@@ -1,8 +1,8 @@
 import {
   For,
   Show,
+  onInit,
   onMount,
-  onUpdate,
   useMetadata,
   useStore,
   useTarget,
@@ -82,15 +82,13 @@ export default function ContentVariants(props: VariantsProviderProps) {
     },
   });
 
-  onUpdate(() => {
+  onInit(() => {
     useTarget({
       angular: () => {
-        if (props.content) {
-          state.shouldRenderVariants = checkShouldRenderVariants({
-            canTrack: props.canTrack,
-            content: props.content,
-          });
-        }
+        state.shouldRenderVariants = checkShouldRenderVariants({
+          canTrack: getDefaultCanTrack(props.canTrack),
+          content: props.content,
+        });
       },
     });
   });
