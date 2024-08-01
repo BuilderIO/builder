@@ -25,9 +25,9 @@ export type BlocksWrapperProps = {
   children?: any;
 };
 
+import diff from 'microdiff';
 import { isEditing } from '../../functions/is-editing';
 import type { BuilderBlock } from '../../types/builder-block';
-import diff from 'microdiff';
 
 @Component({
   selector: 'blocks-wrapper, BlocksWrapper',
@@ -122,16 +122,51 @@ export default class BlocksWrapper {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('blocks-wrapper: ngOnChanges', changes);
-    this.mergedInputs_yllqi6 = {
-      class: this.className + ' props-blocks-wrapper',
-      'builder-path': this.path,
-      'builder-parent-id': this.parent,
-      style: this.styleProp,
-      onClick: this.onClick.bind(this),
-      onMouseEnter: this.onMouseEnter.bind(this),
-      onKeyPress: this.onClick.bind(this),
-      ...this.BlocksWrapperProps,
-    };
+    const blocksLengthChanged =
+      changes.blocks?.previousValue?.length !==
+      changes.blocks?.currentValue?.length;
+    const parentChanged =
+      changes.parent?.previousValue !== changes.parent?.currentValue;
+    const pathChanged =
+      changes.path?.previousValue !== changes.path?.currentValue;
+    const handlerChanges = blocksLengthChanged || parentChanged || pathChanged;
+
+    if (handlerChanges) {
+      console.log('blocks-wrapper: ngOnChanges (handlerChanges)', changes);
+      this.mergedInputs_yllqi6.onClick = this.onClick.bind(this);
+      this.mergedInputs_yllqi6.onMouseEnter = this.onMouseEnter.bind(this);
+      this.mergedInputs_yllqi6.onKeyPress = this.onClick.bind(this);
+    }
+
+    if (blocksLengthChanged) {
+      console.log('blocks-wrapper: ngOnChanges (blocksLengthChanged)', changes);
+      this.mergedInputs_yllqi6.class = this.className + ' props-blocks-wrapper';
+    }
+
+    if (parentChanged) {
+      console.log('blocks-wrapper: ngOnChanges (parentChanged)', changes);
+      this.mergedInputs_yllqi6['builder-parent-id'] = this.parent;
+    }
+
+    if (pathChanged) {
+      console.log('blocks-wrapper: ngOnChanges (pathChanged)', changes);
+      this.mergedInputs_yllqi6['builder-path'] = this.path;
+    }
+
+    if (changes.styleProp) {
+      console.log('blocks-wrapper: ngOnChanges (changes.styleProp)', changes);
+      this.mergedInputs_yllqi6.style = this.styleProp;
+    }
+
+    if (changes.BlocksWrapperProps) {
+      console.log(
+        'blocks-wrapper: ngOnChanges (changes.BlocksWrapperProps)',
+        changes
+      );
+      this.mergedInputs_yllqi6 = {
+        ...this.mergedInputs_yllqi6,
+        ...this.BlocksWrapperProps,
+      };
+    }
   }
 }

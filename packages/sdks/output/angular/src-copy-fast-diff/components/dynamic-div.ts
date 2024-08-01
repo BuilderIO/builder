@@ -75,17 +75,27 @@ export default class DynamicDiv {
     if (!el) {
       return;
     }
-    // console.log('dynamic-div: ngOnChanges: el and attributes');
+
+    if (Object.keys(changes).length === 0) {
+      return;
+    }
+
+    console.log('dynamic-div: ngOnChanges: el and attributes');
     if (changes.attributes) this.setAttributes(el, this.attributes);
     if (changes.showContentProps) this.setAttributes(el, this.showContentProps);
     if (changes.classProp) this.setAttribute(el, 'class', this.classProp);
     if (changes.style) this.setAttribute(el, 'style', this.style);
-    if (changes.builderParentId) this.setAttribute(el, 'builder-parent-id', this.builderParentId);
-    if (changes.builderPath) this.setAttribute(el, 'builder-path', this.builderPath);
-    if (changes.builderModel) this.setAttribute(el, 'builder-model', this.builderModel);
-    if (changes.builderContentId) this.setAttribute(el, 'builder-content-id', this.builderContentId);
+    if (changes.builderParentId)
+      this.setAttribute(el, 'builder-parent-id', this.builderParentId);
+    if (changes.builderPath)
+      this.setAttribute(el, 'builder-path', this.builderPath);
+    if (changes.builderModel)
+      this.setAttribute(el, 'builder-model', this.builderModel);
+    if (changes.builderContentId)
+      this.setAttribute(el, 'builder-content-id', this.builderContentId);
     if (changes.hidden) this.setAttribute(el, 'hidden', this.hidden);
-    if (changes.ariaHidden) this.setAttribute(el, 'aria-hidden', this.ariaHidden);
+    if (changes.ariaHidden)
+      this.setAttribute(el, 'aria-hidden', this.ariaHidden);
   }
 
   private setAttributes(el: HTMLElement, attributes: any) {
