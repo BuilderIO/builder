@@ -100,7 +100,7 @@ export default class BlocksWrapper {
       );
     }
   }
-  mergedInputs_yllqi6 = {};
+  mergedInputs_yllqi6 = null;
 
   constructor(private vcRef: ViewContainerRef) {}
 
