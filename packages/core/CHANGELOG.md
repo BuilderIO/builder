@@ -1,5 +1,17 @@
 # @builder.io/sdk
 
+## 2.2.6
+
+### Patch Changes
+
+- 1defae7: Refactor: move Embed iframe generation to Visual Editor
+
+## 2.2.5
+
+### Patch Changes
+
+- a5b8810: Fix: handle parsing of stringified numeric values in `userAttributes`
+
 ## 2.2.4
 
 ### Patch Changes

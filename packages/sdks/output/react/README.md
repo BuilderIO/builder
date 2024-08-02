@@ -1,3 +1,7 @@
+## NOTE
+
+At the moment, we are investigating some performance issues in our gen2 React SDK that prevent us from recommending it over the gen1 React SDK for all customer use-cases. Our team is actively working on these issues, and once they are resolved our recommendation will be to use the gen2 React SDK.
+
 # Builder.io React SDK v2
 
 This is the React v2 SDK, `@builder.io/sdk-react`. It is a complete rewrite of the React SDK, and has the following benefits:

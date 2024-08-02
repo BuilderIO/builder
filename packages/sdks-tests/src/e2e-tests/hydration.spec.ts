@@ -23,7 +23,11 @@ test.describe('Hydration', () => {
   });
 
   test('No mismatch on A/B test content', async ({ page, packageName }) => {
-    test.fail(packageName === 'hydrogen');
+    test.skip(packageName === 'angular-ssr', 'Angular SSR does not support A/B tests');
+    test.fail(
+      packageName === 'nextjs-sdk-next-app',
+      "NextJS SDK currently does not support SSR'd A/B tests. Losing variants are stripped from SSR'd Content too late."
+    );
     await page.goto('/ab-test-interactive');
     await page.locator('a').locator('visible=true').first().click({ timeout: 10000 });
     await findTextInPage({ page, text: 'Stack at tablet' });

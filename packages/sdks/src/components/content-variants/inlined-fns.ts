@@ -106,7 +106,7 @@ function updateCookiesAndStyles(
 
 /**
  * For more information on how this works,
- * see our [SSR A/B Test Docs](https://github.com/BuilderIO/builder/tree/main/packages/sdks/src/SSR_AB_TEST.md)
+ * see our [SSR A/B Test Docs](https://github.com/BuilderIO/builder/tree/main/packages/sdks/docs/SSR_AB_TEST.md)
  */
 function updateVariantVisibility(
   variantContentId: string,

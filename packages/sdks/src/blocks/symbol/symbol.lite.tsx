@@ -93,6 +93,9 @@ export default function Symbol(props: SymbolProps) {
       react: () => {},
       reactNative: () => {},
       solid: () => {},
+      angular: () => {
+        state.contentToUse = props.symbol?.content;
+      },
 
       default: () => {
         state.setContent();
@@ -119,6 +122,7 @@ export default function Symbol(props: SymbolProps) {
       })}
     >
       <ContentVariants
+        nonce={props.builderContext.value.nonce}
         isNestedRender
         apiVersion={props.builderContext.value.apiVersion}
         apiKey={props.builderContext.value.apiKey!}

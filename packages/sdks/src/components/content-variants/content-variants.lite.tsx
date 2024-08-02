@@ -1,6 +1,7 @@
 import {
   For,
   Show,
+  onInit,
   onMount,
   useMetadata,
   useStore,
@@ -81,23 +82,37 @@ export default function ContentVariants(props: VariantsProviderProps) {
     },
   });
 
+  onInit(() => {
+    useTarget({
+      angular: () => {
+        state.shouldRenderVariants = checkShouldRenderVariants({
+          canTrack: getDefaultCanTrack(props.canTrack),
+          content: props.content,
+        });
+      },
+    });
+  });
+
   return (
     <>
       <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
         <InlinedScript
           scriptStr={getInitVariantsFnsScriptString()}
           id="builderio-init-variants-fns"
+          nonce={props.nonce || ''}
         />
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
           id="builderio-variants"
           styles={state.hideVariantsStyleString}
+          nonce={props.nonce || ''}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
         <InlinedScript
           id="builderio-variants-visibility"
           scriptStr={state.updateCookieAndStylesScriptStr}
+          nonce={props.nonce || ''}
         />
 
         <For each={getVariants(props.content)}>
@@ -105,6 +120,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
             <ContentComponent
               isNestedRender={props.isNestedRender}
               key={variant.testVariationId}
+              nonce={props.nonce}
               content={variant}
               showContent={false}
               model={props.model}
@@ -128,6 +144,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <ContentComponent
+        nonce={props.nonce}
         isNestedRender={props.isNestedRender}
         {...useTarget({
           vue: { key: state.shouldRenderVariants.toString() },

@@ -112,4 +112,8 @@ export const componentInfo: ComponentInfo = {
       advanced: true,
     },
   ],
+
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+  },
 };

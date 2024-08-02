@@ -13,4 +13,8 @@ export const componentInfo: ComponentInfo = {
   inputs: [
     { name: 'name', type: 'string', required: true, defaultValue: 'children' },
   ],
+
+  shouldReceiveBuilderProps: {
+    builderContext: true,
+  },
 };

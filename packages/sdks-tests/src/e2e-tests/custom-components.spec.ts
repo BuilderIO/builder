@@ -8,7 +8,7 @@ const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
 test.describe('Custom components', () => {
   test('correctly renders custom component', async ({ page, packageName, sdk }) => {
     test.skip(!['angular', 'react'].includes(sdk));
-    test.skip(['next-app-dir-client', 'remix', 'hydrogen'].includes(packageName));
+    test.skip(['react-sdk-next-app', 'remix', 'hydrogen'].includes(packageName));
     await page.goto('/custom-components');
     const helloWorldText = page.locator('text=hello World').first();
     await expect(helloWorldText).toBeVisible();
@@ -21,7 +21,7 @@ test.describe('Custom components', () => {
     sdk,
   }) => {
     test.skip(!['angular', 'react'].includes(sdk));
-    test.skip(['next-app-dir-client', 'remix', 'hydrogen'].includes(packageName));
+    test.skip(['react-sdk-next-app', 'remix', 'hydrogen'].includes(packageName));
     const customComponentMsgPromise = page.waitForEvent('console', msg =>
       msg.text().includes(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE)
     );
@@ -31,5 +31,23 @@ test.describe('Custom components', () => {
       path: '/custom-components',
     });
     await customComponentMsgPromise;
+  });
+
+  test('do not show component in `page` model when restricted to `test-model`', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react'].includes(packageName));
+    await page.goto('/custom-components-models-not-show');
+    await expect(page.locator('text=hello World').first()).not.toBeVisible();
+  });
+
+  test('show component in `test-model` model when restricted to `test-model`', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react'].includes(packageName));
+    await page.goto('/custom-components-models-show');
+    await expect(page.locator('text=hello World').first()).toBeVisible();
   });
 });

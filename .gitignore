@@ -28,7 +28,6 @@ Pods/
 # macOS
 .DS_Store
 
-
 .cache
 .rpt2_cache/
 
@@ -36,3 +35,5 @@ Pods/
 .vercel
 
 .nx-cache
+
+!packages/sdks/e2e/react-native/.eas/build/*

@@ -8,10 +8,9 @@ import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helper
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {
-    test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
+        packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
@@ -27,10 +26,9 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   });
 
   test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
-    test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
+        packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
@@ -57,10 +55,9 @@ test.describe('Visual Editing', () => {
     basePort,
     packageName,
   }) => {
-    test.skip(packageName === 'hydrogen');
     test.skip(
       packageName === 'react-native' ||
-        packageName === 'next-app-dir' ||
+        packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'

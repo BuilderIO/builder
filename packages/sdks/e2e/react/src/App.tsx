@@ -77,6 +77,11 @@ function App() {
               name: 'Hello',
               component: Hello,
               inputs: [],
+              ...(window.location.pathname.includes(
+                'custom-components-models'
+              ) && {
+                models: ['test-model'],
+              }),
             },
           ]}
         />

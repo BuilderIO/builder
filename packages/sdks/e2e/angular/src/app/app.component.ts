@@ -1,6 +1,4 @@
-// fails because type imports cannot be injected
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   _processContentResult,
   fetchOneEntry,
@@ -21,14 +19,20 @@ interface BuilderProps {
 @Component({
   selector: 'app-root',
   template: `
-    <content-variants
-      [model]="model"
-      [content]="content"
-      [apiKey]="apiKey"
-      [trustedHosts]="trustedHosts"
-      [canTrack]="canTrack"
-      [customComponents]="customComponents"
-    ></content-variants>
+    <ng-container *ngIf="content; else notFound">
+      <content-variants
+        [model]="model"
+        [content]="content"
+        [apiKey]="apiKey"
+        [trustedHosts]="trustedHosts"
+        [canTrack]="canTrack"
+        [customComponents]="customComponents"
+      ></content-variants>
+    </ng-container>
+
+    <ng-template #notFound>
+      <div>404 - Content not found</div>
+    </ng-template>
   `,
 })
 export class AppComponent {
@@ -47,8 +51,6 @@ export class AppComponent {
       inputs: [],
     },
   ];
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   async ngOnInit() {
     const urlPath = window.location.pathname || '';
@@ -72,7 +74,5 @@ export class AppComponent {
     this.apiKey = builderProps.apiKey;
     this.model = builderProps.model;
     this.apiVersion = builderProps.apiVersion;
-
-    this.cdr.detectChanges();
   }
 }

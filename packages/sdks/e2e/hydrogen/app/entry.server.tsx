@@ -10,7 +10,16 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy();
+  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+    // we need to whitelist Builder's CDN for API calls to work.
+    connectSrc: ['https://cdn.builder.io'],
+    // we need to whitelist Builder's CDN for image requests to work.
+    imgSrc: ['https://cdn.builder.io', 'http://localhost:*'],
+    // we need to allow 'unsafe-eval' for Builder's SDK to evaluate dynamic bindings.
+    scriptSrc: ["'unsafe-eval'", 'http://localhost:*'],
+    // we need to allow Builder's visual editor to embed the app in an iframe.
+    frameAncestors: ['https://builder.io', 'http://localhost:*'],
+  });
 
   const body = await renderToReadableStream(
     <NonceProvider>

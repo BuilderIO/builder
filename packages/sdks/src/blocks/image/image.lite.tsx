@@ -23,6 +23,10 @@ export default function Image(props: ImageProps) {
         return props.srcset;
       }
 
+      if (props.noWebp) {
+        return undefined; // no need to add srcset to svg images
+      }
+
       if (props.srcset && props.image?.includes('builder.io/api/v1/image')) {
         if (!props.srcset.includes(props.image.split('?')[0])) {
           console.debug('Removed given srcset');

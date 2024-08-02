@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
+    "@solidjs/router": "^0.13.6",
     "solid-js": "^1.8.15"
   },
   "devDependencies": {

@@ -1,0 +1,38 @@
+{
+  "name": "@snippet/react-sdk-next-pages",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "SERVER_NAME=react-sdk-next-pages yarn nx test:snippet @sdk/tests",
+    "serve": "yarn start"
+  },
+  "dependencies": {
+    "@builder.io/sdk-react": "workspace:*",
+    "next": "14.1.1",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "nx": "16.10.0",
+    "nx-cloud": "16.5.2",
+    "typescript": "^5"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.next"
+        ]
+      }
+    }
+  }
+}

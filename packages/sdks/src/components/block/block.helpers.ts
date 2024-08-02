@@ -1,5 +1,4 @@
 import type { Signal } from '@builder.io/mitosis';
-import { TARGET } from '../../constants/target.js';
 import type {
   BuilderContextInterface,
   RegisteredComponent,
@@ -116,76 +115,37 @@ export const provideLinkComponent = (
   block: RegisteredComponent | null | undefined,
   linkComponent: any
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Core:Button',
-        'Symbol',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Builder:Accordion',
-      ].includes(block.name))
-    ? { builderLinkComponent: linkComponent }
-    : {};
+  if (block?.shouldReceiveBuilderProps?.builderLinkComponent)
+    return { builderLinkComponent: linkComponent };
+
+  return {};
 };
 
 export const provideRegisteredComponents = (
   block: RegisteredComponent | null | undefined,
   registeredComponents: RegisteredComponents
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Symbol',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Builder:Accordion',
-      ].includes(block.name))
-    ? { builderComponents: registeredComponents }
-    : {};
+  if (block?.shouldReceiveBuilderProps?.builderComponents)
+    return { builderComponents: registeredComponents };
+
+  return {};
 };
 
 export const provideBuilderBlock = (
   block: RegisteredComponent | null | undefined,
   builderBlock: BuilderBlock
 ) => {
-  /**
-   * Our built-in components frequently make use of the block, so we provide all of it under `builderBlock`
-   */
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      (TARGET === 'reactNative' && block.name === 'Text') ||
-      [
-        'Builder:Accordion',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Symbol',
-        'Image',
-        'Video',
-      ].includes(block.name))
-    ? { builderBlock }
-    : {};
+  if (block?.shouldReceiveBuilderProps?.builderBlock) return { builderBlock };
+
+  return {};
 };
 
 export const provideBuilderContext = (
   block: RegisteredComponent | null | undefined,
   context: Signal<BuilderContextInterface>
 ) => {
-  return block &&
-    ((block.isRSC && TARGET === 'rsc') ||
-      [
-        'Builder:Accordion',
-        'Columns',
-        'Form:Form',
-        'Builder: Tabs',
-        'Symbol',
-        'Slot',
-      ].includes(block.name))
-    ? {
-        builderContext: context,
-      }
-    : {};
+  if (block?.shouldReceiveBuilderProps?.builderContext)
+    return { builderContext: context };
+
+  return {};
 };

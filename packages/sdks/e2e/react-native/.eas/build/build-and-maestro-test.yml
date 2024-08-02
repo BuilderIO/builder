@@ -1,0 +1,56 @@
+build:
+  name: Create a build and run Maestro tests on it
+  steps:
+    # https://github.com/expo/eas-custom-builds-example/blob/main/.eas/build/ios-simulator-build.yml
+    # START OF ios-simulator-build.yml
+    - eas/checkout
+    - eas/install_node_modules
+
+    # addition
+    - run:
+        id: build-sdk
+        name: Build SDK
+        command: yarn nx build @builder.io/sdk-react-native
+
+    - eas/resolve_build_config
+    - eas/prebuild
+    - run:
+        name: Install pods
+        working_directory: ./ios
+        command: pod install
+    # if you are not using EAS Update you can remove this step from your config
+    # https://docs.expo.dev/eas-update/introduction/
+    - eas/configure_eas_update:
+        inputs:
+          throw_if_not_configured: false
+    - eas/generate_gymfile_from_template
+    - eas/run_fastlane
+    - eas/find_and_upload_build_artifacts
+    # END OF ios-simulator-build.yml
+
+    - eas/send_slack_message:
+        if: ${ failure() }
+        name: Send Slack message when the build fails (iOS)
+        inputs:
+          slack_hook_url: ${ eas.env.SLACK_RN_SDK_HOOK_URL }
+          payload:
+            message: |
+              iOS build and test failed.
+              Link: ${ eas.job.expoBuildUrl }
+              Error: ${ steps.run_fastlane.error_text }
+
+    - eas/maestro_test:
+        inputs:
+          flow_path: |
+            maestro/home.yaml
+
+    - eas/send_slack_message:
+        if: ${ failure() }
+        name: Send Slack message when the test fails (iOS)
+        inputs:
+          slack_hook_url: ${ eas.env.SLACK_RN_SDK_HOOK_URL }
+          payload:
+            message: |
+              iOS build and test failed.
+              Link: ${ eas.job.expoBuildUrl }
+              Error: ${ steps.maestro_test.error_text }

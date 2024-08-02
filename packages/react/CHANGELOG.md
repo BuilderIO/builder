@@ -1,5 +1,48 @@
 # @builder.io/react
 
+## 4.0.1
+
+### Patch Changes
+
+- 4ee499e: Fix: Image block: remove redundant `srcset` for SVG images
+
+## 4.0.0
+
+### Major Changes
+
+- d031580: Breaking Change 🧨: Columns block now computes percentage widths correctly, by subtracting gutter space proportionally to each percentage.
+  Previously, it computed the column's widths by subtracting gutter space equally from each column's width. This previous behavior was incorrect, and most strongly felt when the `space` was a substantially high percentage of the total width of the Columns block.
+
+## 3.2.12
+
+### Patch Changes
+
+- 1defae7: Refactor: move Embed iframe generation to Visual Editor
+- Updated dependencies [1defae7]
+  - @builder.io/sdk@2.2.6
+
+## 3.2.11
+
+### Patch Changes
+
+- 6187c39: Fix: `required` option for TextArea and Select blocks
+- 767795c: Fix binding to array property getters and methods in server context
+
+## 3.2.10
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+- Updated dependencies [a5b8810]
+  - @builder.io/sdk@2.2.5
+
+## 3.2.9
+
+### Patch Changes
+
+- 945f26e: Adds the `highPriority` option to the Image block component to ensure eager loading.
+
 ## 3.2.8
 
 ### Patch Changes

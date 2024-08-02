@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS EXPECTED TO EXIST WITH THIS EXACT NAME BY SUBSEQUENT BUNDLE STEPS THAT TRANSFORM IT.
+ * DO NOT RENAME THIS FILE.
+ */
 import { isBrowser } from '../is-browser.js';
 import { runInBrowser } from './browser-runtime/browser.js';
 import type { ExecutorArgs } from './helpers.js';

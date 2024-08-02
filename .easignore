@@ -1,0 +1,71 @@
+# Need `.easignore` to exist to prevent EAS from trying to use `.gitignore`s across the monorepo, which caused issues.
+# This is mostly a copy/paste of the sibling `.gitignore` with some modifications
+
+# exclude all unnecessary stuff to keep the size of the EAS archive small
+.changeset
+.github
+.husky
+
+# Ignore root-level folders
+/examples
+/plugins
+/scripts
+/starters
+
+# But allow these folders in nested packages
+!packages/**/examples
+!packages/**/plugins
+!packages/**/scripts
+!packages/**/starters
+
+# excluding everything except the monorepo packages
+packages/*
+!packages/sdks
+!packages/sdks-tests
+!packages/react
+!packages/core
+!packages/react-tests
+
+*.tar.gz
+
+# original .gitignore below
+node_modules
+*.log
+dist
+test-lib/**/*.js
+coverage
+.history
+.nyc_output
+.idea
+.vscode
+.next
+firebase.json
+temp
+yarn-error.log
+.build
+Pods/
+
+**/xcuserdata/*
+**/build/*
+
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions
+
+# macOS
+.DS_Store
+
+.cache
+.rpt2_cache/
+
+.env
+.vercel
+
+.nx-cache
+
+# allow `.eas` folders
+!**/.eas/**/*

@@ -1,5 +1,122 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.2
+
+### Patch Changes
+
+- 4ee499e: Fix: Image block: remove redundant `srcset` for SVG images
+- 14da62f: Fix: restrict custom components to the models that get passed in `models`
+
+## 2.0.1
+
+### Patch Changes
+
+- f6add9e: Fix: improve `edge` subpath exports to handle dynamically importing edge-specific and browser-specific SDK bundles.
+- f6add9e: Feature: Add `nonce` prop to `<Content>`: allows SDK to set `nonce` attribute for its inlined `style` and `script` tags.
+
+## 2.0.0
+
+### Major Changes
+
+- 2c6330f: Breaking Change 🧨: updated `shouldReceiveBuilderProps` config of Registered Components, with the following NEW defaults:
+
+  ```ts
+  shouldReceiveBuilderProps: {
+      builderBlock: false, // used to be `true`
+      builderContext: false, // used to be `true`
+      builderComponents: false, // unchanged
+      builderLinkComponent: false, // unchanged
+    },
+  ```
+
+  This means that by default, the SDK will no longer provide any Builder props unless its respective config is explicitly set to `true`.
+
+- d031580: Breaking Change 🧨: Columns block now computes percentage widths correctly, by subtracting gutter space proportionally to each percentage.
+  Previously, it computed the column's widths by subtracting gutter space equally from each column's width. This previous behavior was incorrect, and most strongly felt when the `space` was a substantially high percentage of the total width of the Columns block.
+
+## 1.1.2
+
+### Patch Changes
+
+- 1defae7: Refactor: move Embed iframe generation to Visual Editor
+
+## 1.1.1
+
+### Patch Changes
+
+- 22de13c: Fix: add missing `override` component config
+
+## 1.1.0
+
+### Minor Changes
+
+- 3594120: Feature: add `shouldReceiveBuilderProps` config to Registered Components, with the following defaults:
+
+  ```ts
+  shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: true,
+      builderComponents: false,
+      builderLinkComponent: false,
+    },
+  ```
+
+  To configure a component to receive only certain Builder props, override the `shouldReceiveBuilderProps` config:
+
+  Example:
+
+  ```ts
+  export const componentInfo = {
+    name: "Text",
+
+    shouldReceiveBuilderProps: {
+      builderBlock: true,
+      builderContext: false,
+      builderComponents: true,
+      builderLinkComponent: false,
+    },
+
+    inputs: [
+      {
+        name: "text",
+        type: "html",
+        required: true,
+        autoFocus: true,
+        bubble: true,
+        defaultValue: "Enter some text...",
+      },
+    ],
+  };
+  ```
+
+## 1.0.36
+
+### Patch Changes
+
+- 6187c39: Fix: `required` option for TextArea and Select blocks
+- 6187c39: Feat: Add support for TextArea block
+
+## 1.0.35
+
+### Patch Changes
+
+- bb4a5fd: Feature: add `webp` support for Image block file uploads.
+- 1f62b28: Fix: Remove `iframely` API key from Embed block logic.
+
+## 1.0.33
+
+### Patch Changes
+
+- 6c8db7e: Fix: check `e.origin` of the message to be a URL first
+
+## 1.0.32
+
+### Patch Changes
+
+- a38eae0: Fix: pass Builder props to blocks and custom components only when needed.
+- e31ef49: Misc: cleanup error message for edge runtime evaluation.
+- 945f26e: Adds the `highPriority` option to the Image block component to ensure eager loading.
+
 ## 1.0.31
 
 ### Patch Changes

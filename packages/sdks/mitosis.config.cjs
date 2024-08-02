@@ -243,8 +243,8 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
         );
         // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
         code = code.replace(
-          '<ng-container *ngFor="let child of blockChildren">',
-          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren">'
+          '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
+          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
         );
         code = code.replace(
           '</ng-container>',
@@ -259,8 +259,9 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('blocks-wrapper')) {
+      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
         const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
+        code = code.replace('ngOnInit', 'ngAfterViewInit');
         code = code.replace(
           /}\n\s*$/,
           `
@@ -492,29 +493,28 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
 
 // required for registering custom components properly
 const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name === 'ContentComponent') {
+        const builderContextSignalCode =
+          json.state['builderContextSignal'].code;
+        const registeredComponentsCode =
+          json.state['registeredComponents'].code;
+        if (!json.hooks.onInit?.code) {
+          json.hooks.onInit = {
+            code: '',
+          };
+        }
+        json.hooks.onInit.code += `
+          this.builderContextSignal = ${builderContextSignalCode};
+          this.registeredComponents = ${registeredComponentsCode};
+          `;
+      }
+    },
+  },
   code: {
     post: (code) => {
       if (code.includes('content-component, ContentComponent')) {
-        const registeredComponentsCode = code.match(
-          /registeredComponents = \[.*\);/s
-        );
-        const builderContextSignalCode = code.match(
-          /builderContextSignal = \{.*\};/s
-        );
-
-        // add them to ngOnInit
-        code = code.replace(
-          // last } before the end of the class
-          /}\n\s*$/,
-          `
-            ngOnInit() {
-              this.${registeredComponentsCode}
-              this.${builderContextSignalCode}
-            }
-          }
-          `
-        );
-
         code = code.replaceAll(
           'this.contentSetState',
           'this.contentSetState.bind(this)'
@@ -530,6 +530,21 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
             }
           }
           `
+        );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('builder-symbol, BuilderSymbol')) {
+        code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
+        code = code.replace(
+          'this.setContent();',
+          'if (changes.symbol) { this.setContent(); }'
         );
       }
       return code;
@@ -560,11 +575,13 @@ module.exports = {
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
+        ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
         ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
       ],
     },
     solid: {
       typescript: true,
+      stylesType: 'style-tag',
       plugins: [
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,

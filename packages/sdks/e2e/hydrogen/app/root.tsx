@@ -79,8 +79,6 @@ export function ErrorBoundary() {
   let errorMessage = 'Unknown error';
   let errorStatus = 500;
 
-  console.log('error loggeroo:', error);
-
   if (isRouteErrorResponse(error)) {
     errorMessage = error?.data?.message ?? error.data;
     errorStatus = error.status;

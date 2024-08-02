@@ -26,3 +26,6 @@ overrides/react-native/src/blocks/**/*
 
 # Frequently used for debugging.
 e2e/**/src/sdk-src
+
+**/react-native/ios
+**/react-native/android
