@@ -15,5 +15,7 @@ export const appResolver: ResolveFn<any> = (route: ActivatedRouteSnapshot) => {
     _processContentResult,
     options: searchParams,
     fetchOneEntry,
+    data: 'real',
+    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
   });
 };
