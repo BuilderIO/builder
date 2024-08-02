@@ -3,22 +3,9 @@
  * snippets/angular-ssr/src/app/catch-all/catch-all.component.ts
  */
 
-import { isPlatformServer } from '@angular/common';
-// fails because type imports cannot be injected
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Optional,
-  PLATFORM_ID,
-} from '@angular/core';
-import {
-  fetchOneEntry,
-  getBuilderSearchParams,
-  type BuilderContent,
-} from '@builder.io/sdk-angular';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-catchall',
@@ -41,29 +28,11 @@ export class CatchAllComponent {
   model = 'page';
   content: BuilderContent | null = null;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: any,
-    @Optional() @Inject(REQUEST) private req: any
-  ) {
-    const urlPath = isPlatformServer(this.platformId)
-      ? this.req.path || ''
-      : window.location.pathname;
-    const searchParams = isPlatformServer(this.platformId)
-      ? new URLSearchParams(this.req.url.split('?')[1])
-      : new URLSearchParams(window.location.search);
+  constructor(private activatedRoute: ActivatedRoute) {}
 
-    fetchOneEntry({
-      apiKey: this.apiKey,
-      model: this.model,
-      userAttributes: { urlPath },
-      options: getBuilderSearchParams(searchParams),
-    }).then((content) => {
-      this.content = content;
+  ngOnInit() {
+    this.activatedRoute.data.subscribe((data: any) => {
+      this.content = data.content;
     });
-  }
-
-  async ngOnInit() {
-    this.cdr.detectChanges();
   }
 }
