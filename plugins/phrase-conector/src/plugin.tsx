@@ -31,6 +31,12 @@ registerPlugin(
         required: true,
       },
       {
+        name: 'templateUId',
+        friendlyName: 'Template Id',
+        helperText: 'ID of template project to be use when creating projects for translation jobs',
+        type: 'string',
+      },
+      {
         name: 'isUSDataCenterAccount',
         type: 'boolean',
       },
@@ -58,14 +64,16 @@ registerPlugin(
         () => {
           return String(appState.designerState.editingContentModel?.lastUpdated || '');
         },
-        async shoudlCheck => {
-          if (!shoudlCheck) {
+        async shouldCheck => {
+          if (!shouldCheck) {
             return;
           }
-          const translationStatus =
-            appState.designerState.editingContentModel.meta.get('translationStatus');
-          const translationRequested =
-            appState.designerState.editingContentModel.meta.get('translationRequested');
+          const translationStatus = appState.designerState.editingContentModel.meta.get(
+            'translationStatus'
+          );
+          const translationRequested = appState.designerState.editingContentModel.meta.get(
+            'translationRequested'
+          );
 
           // check if there's pending translation
           const isFresh =
