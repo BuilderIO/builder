@@ -2,4 +2,4 @@
 "@builder.io/sdk": patch
 ---
 
-Fix: reverts `userAttributes` parsing logic to the old way that requires users to handle/preserve strings on their end
+Fix: reverts `v2.2.5` change to `userAttributes` parsing logic, as it caused breaking changes in certain cases.
