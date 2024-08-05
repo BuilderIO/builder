@@ -138,14 +138,12 @@ export class BuilderBlock extends React.Component<
   get emotionCss() {
     let initialAnimationStepStyles: any;
     const { block } = this;
-    if (Builder.isServer) {
-      const animation = block.animations && block.animations[0];
-      if (animation && animation.trigger !== 'hover') {
-        const firstStep = animation && animation.steps && animation.steps[0];
-        const stepStyles = firstStep && firstStep.styles;
-        if (stepStyles) {
-          initialAnimationStepStyles = stepStyles;
-        }
+    const animation = block.animations && block.animations[0];
+    if (animation && animation.trigger !== 'hover') {
+      const firstStep = animation && animation.steps && animation.steps[0];
+      const stepStyles = firstStep && firstStep.styles;
+      if (stepStyles) {
+        initialAnimationStepStyles = stepStyles;
       }
     }
 

@@ -4112,7 +4112,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk@^2.1.1, @builder.io/sdk@workspace:*, @builder.io/sdk@workspace:packages/core":
+"@builder.io/sdk@npm:^2.1.1":
+  version: 2.2.6
+  resolution: "@builder.io/sdk@npm:2.2.6"
+  dependencies:
+    hash-sum: ^2.0.0
+    node-fetch: ^2.3.0
+    tslib: ^1.10.0
+  checksum: ba5067ee24adb464f9987674c0a2d1e57369846e859ad9279e8cc108a1cd09a18f8c300dc0547bd47e41ff8dc5ff4abcbbc07cf00a3d5170be1430ba7027d314
+  languageName: node
+  linkType: hard
+
+"@builder.io/sdk@workspace:*, @builder.io/sdk@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk@workspace:packages/core"
   dependencies:
