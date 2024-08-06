@@ -35,11 +35,12 @@ export default class BuilderText {
     };
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges() {
     if (typeof window !== "undefined") {
-      if (changes.text) {
-        this.node_0_div = this.text?.toString() || "";
-      }
+      this.node_0_div = this.text?.toString() || "";
+      this.node_1_div = {
+        outline: "none",
+      };
     }
   }
 }

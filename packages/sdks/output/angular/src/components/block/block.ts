@@ -45,15 +45,15 @@ import RepeatedBlock from "./components/repeated-block";
             [context]="context"
           >
             <component-ref
-              [blockChildren]="processedBlock.children"
-              [componentRef]="blockComponent?.component"
+              [componentRef]="componentRefProps.componentRef"
               [componentOptions]="componentRefProps.componentOptions"
-              [context]="context"
-              [registeredComponents]="registeredComponents"
-              [linkComponent]="linkComponent"
-              [builderBlock]="processedBlock"
-              [includeBlockProps]="blockComponent?.noWrap === true"
-              [isInteractive]="!blockComponent?.isRSC"
+              [blockChildren]="componentRefProps.blockChildren"
+              [context]="componentRefProps.context"
+              [registeredComponents]="componentRefProps.registeredComponents"
+              [linkComponent]="componentRefProps.linkComponent"
+              [builderBlock]="componentRefProps.builderBlock"
+              [includeBlockProps]="componentRefProps.includeBlockProps"
+              [isInteractive]="componentRefProps.isInteractive"
             ></component-ref>
             <ng-container
               *ngFor="let child of childrenWithoutParentComponent; trackBy: trackByChild0"

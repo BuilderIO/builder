@@ -397,7 +397,6 @@ export default class EnableEditor {
   }
 
   ngOnChanges() {
-    console.log('enable-editor: ngOnChanges');
     if (typeof window !== "undefined") {
       if (this.content) {
         this.mergeNewContent(this.content);
