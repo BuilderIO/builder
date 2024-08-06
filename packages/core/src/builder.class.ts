@@ -1077,44 +1077,32 @@ export class Builder {
     }
   }
 
+  private static serializeComponentInfo(info: any) {
+    const serializeFn = (fnValue: Function) => {
+      const fnStr = fnValue.toString().trim();
+
+      // we need to account for a few different fn syntaxes:
+      // 1. `function name(args) => {code}`
+      // 2. `name(args) => {code}`
+      // 3. `(args) => {}`
+      const appendFunction = !fnStr.startsWith('function') && !fnStr.startsWith('(');
+
+      return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
+    };
+
+    return JSON.parse(
+      JSON.stringify(info, (key, value) => {
+        if (typeof value === 'function') {
+          return serializeFn(value);
+        }
+        return value;
+      })
+    );
+  }
+
   private static prepareComponentSpecToSend(spec: Component): Component {
     return {
-      ...spec,
-      ...(spec.inputs && {
-        inputs: spec.inputs.map((input: any) => {
-          // TODO: do for nexted fields too
-          // TODO: probably just convert all functions, not just
-          // TODO: put this in input hooks: { onChange: ..., showIf: ... }
-          const keysToConvertFnToString = ['onChange', 'showIf'];
-
-          for (const key of keysToConvertFnToString) {
-            if (input[key] && typeof input[key] === 'function') {
-              const fn = input[key];
-              input = {
-                ...input,
-                [key]: `return (${fn.toString()}).apply(this, arguments)`,
-              };
-            }
-          }
-
-          return input;
-        }),
-      }),
-      hooks: Object.keys(spec.hooks || {}).reduce(
-        (memo, key) => {
-          const value = spec.hooks && spec.hooks[key];
-          if (!value) {
-            return memo;
-          }
-          if (typeof value === 'string') {
-            memo[key] = value;
-          } else {
-            memo[key] = `return (${value.toString()}).apply(this, arguments)`;
-          }
-          return memo;
-        },
-        {} as { [key: string]: string }
-      ),
+      ...this.serializeComponentInfo(spec),
       class: undefined,
     };
   }
