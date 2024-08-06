@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 2.2.7
+
+### Patch Changes
+
+- b965695: Fix: reverts `v2.2.5` change to `userAttributes` parsing logic, as it caused breaking changes in certain cases.
+
 ## 2.2.6
 
 ### Patch Changes

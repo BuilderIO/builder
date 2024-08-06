@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [b965695]
+  - @builder.io/sdk@2.2.7
+
 ## 4.0.1
 
 ### Patch Changes
