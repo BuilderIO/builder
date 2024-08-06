@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles arrow functions 1`] = `
+{
+  "hooks": {
+    "onInit": "return ((num) => num * 2).apply(this, arguments)",
+  },
+  "inputs": [
+    {
+      "name": "testInput",
+      "type": "number",
+    },
+  ],
+  "name": "ArrowComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles functions correctly 1`] = `
+{
+  "hooks": {
+    "onChange": "return (function(value) {
+          return value.toUpperCase();
+        }).apply(this, arguments)",
+  },
+  "inputs": [
+    {
+      "name": "testInput",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeFn handles different function syntaxes 1`] = `
+{
+  "hooks": {
+    "func1": "return (function namedFunction(x) {
+          return x + 1;
+        }).apply(this, arguments)",
+    "func2": "return ((x) => x * 2).apply(this, arguments)",
+    "func3": "return (function func3(x) {
+          return x - 1;
+        }).apply(this, arguments)",
+  },
+  "inputs": [
+    {
+      "name": "testInput",
+      "type": "string",
+    },
+  ],
+  "name": "SyntaxTestComponent",
+}
+`;
