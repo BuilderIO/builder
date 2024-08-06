@@ -32,12 +32,14 @@ registerPlugin(
       },
       {
         name: 'templateUId',
-        friendlyName: 'Template Id',
-        helperText: 'ID of template project to be use when creating projects for translation jobs',
+        friendlyName: 'Template ID',
+        helperText:
+          'Template ID is the unique identifier of a Phrase Template used when creating a new Phrase Project',
         type: 'string',
       },
       {
         name: 'isUSDataCenterAccount',
+        friendlyName: "Account's data center is US based",
         type: 'boolean',
       },
       // allow developer to override callback host , e.g ngrok for local development
