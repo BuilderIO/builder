@@ -225,9 +225,9 @@ export class DynamicLink {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
     const el = this.v && this.v.nativeElement;
-    if (el && this.attributes) {
+    if (el && this.attributes && changes.attributes) {
       Object.keys(this.attributes).forEach((key) => {
         if (key.startsWith('on')) {
           this.renderer.listen(
