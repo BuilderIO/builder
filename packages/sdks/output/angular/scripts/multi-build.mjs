@@ -83,6 +83,7 @@ const alias = getEvaluatorPathAlias();
 const folderName = alias['placeholder-runtime'];
 transformFile(chooseEvalFile, folderName);
 
+let caughtError = undefined;
 try {
   // Run the Angular build command
   execSync(`ng build --project sdk-angular`, { stdio: 'inherit' });
@@ -94,8 +95,12 @@ try {
     fs.unlinkSync(packageJsonPath);
   }
 } catch (error) {
-  console.error(error);
+  caughtError = error;
 } finally {
   // Revert the choose-eval.ts file to its original state i.e, "placeholder-runtime"
   transformFile(chooseEvalFile, folderName, true);
+}
+
+if (caughtError) {
+  throw caughtError;
 }
