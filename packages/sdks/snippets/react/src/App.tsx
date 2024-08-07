@@ -12,9 +12,7 @@ import {
 import { useEffect, useState } from 'react';
 import { customComponents } from './components/CustomTabs';
 
-
-/**ee9f13b4981e489a9a1209887695ef2b */
-const BUILDER_API_KEY = '53f2762d3e734a1e834af1ff30c97928';
+const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'page';
 
 // set whether you're using the Visual Editor,
