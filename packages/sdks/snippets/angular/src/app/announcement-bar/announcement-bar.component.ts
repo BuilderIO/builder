@@ -4,9 +4,7 @@
  * src/app/announcement-bar/announcement-bar.component.ts
  */
 
-// fails because type imports cannot be injected
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
@@ -33,8 +31,6 @@ export class AnnouncementBarComponent {
   model = 'announcement-bar';
   content: BuilderContent | null = null;
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
   async ngOnInit() {
     const urlPath = window.location.pathname || '';
 
@@ -51,6 +47,5 @@ export class AnnouncementBarComponent {
     }
 
     this.content = content;
-    this.cdr.detectChanges();
   }
 }

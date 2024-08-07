@@ -28,7 +28,6 @@ const components = [
   providers: [BuilderService, BuilderContentService, BuilderComponentService],
   declarations: [components, directives],
   exports: [components, directives],
-  entryComponents: [components],
 })
 export class BuilderModule {
   constructor(injector: Injector, @Inject(PLATFORM_ID) private platformId: string) {

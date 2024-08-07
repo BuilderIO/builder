@@ -8,7 +8,6 @@ import { FooComponent } from './foo.component';
 import { CustomThingChildren } from './with-children';
 @NgModule({
   declarations: [AppComponent, FooComponent, CustomThing, CustomThingChildren],
-  entryComponents: [CustomThing, CustomThingChildren],
   imports: [
     BrowserModule,
     BuilderModule.forRoot('1f3bf1d766354f32ba70dde440fcef97'),
