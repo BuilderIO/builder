@@ -1,8 +1,8 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android -d",
+    "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject",
@@ -16,6 +16,7 @@
     "@builder.io/sdk-react-native": "^1.0.14",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
+    "@react-native/babel-preset": "0.74.87",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "expo": "~51.0.24",
     "expo-status-bar": "~1.12.1",
@@ -28,7 +29,9 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.6",
     "expo-dev-client": "~4.0.21",
-    "expo-splash-screen": "~0.27.5"
+    "expo-splash-screen": "~0.27.5",
+    "@expo/metro-runtime": "~3.2.1",
+    "expo-router": "~3.5.20"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
