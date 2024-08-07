@@ -1,4 +1,4 @@
-# Bynder Plugin for Builder.io
+# Example Bynder Plugin for Builder.io
 
 ## Notes
 This is a starting point, not a complete integration. 
