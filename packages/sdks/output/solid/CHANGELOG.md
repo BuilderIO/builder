@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 2.0.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 2.0.2
 
 ### Patch Changes
