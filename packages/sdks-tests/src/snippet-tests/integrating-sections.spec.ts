@@ -12,7 +12,7 @@ test.describe('Integrating Sections', () => {
     await page.goto('/announcements/foo');
 
     await expect(page.locator('body')).not.toHaveText('This is an announcement banner');
-    await findTextInPage({ page, text: 'The rest of your page goes here' });
+    await expect(page.locator('body')).toHaveText('The rest of your page goes here');
   });
 
   test('rest of the content is always present', async ({ page }) => {
