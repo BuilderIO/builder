@@ -18,9 +18,7 @@
     <!-- Your Announcement bar section goes here -->
     <Content {model} content={data.announcementBar} {apiKey} />
   {/if}
-  
-  <div>
-    <p>Loading...</p>
-    <!-- <TheRestOfYourPage/> -->
-  </div> 
+
+  <!-- <TheRestOfYourPage/> -->
+  <div>The rest of the page goes here</div>
 </main>
