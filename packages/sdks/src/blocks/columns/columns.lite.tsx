@@ -171,7 +171,7 @@ export default function Columns(props: ColumnProps) {
             align-items: stretch;
           }
 
-          .${props.builderBlock.id}-breakpoints > .builder-column {
+          .${props.builderBlock.id}-breakpoints .builder-column {
             width: var(--column-width-tablet) !important;
             margin-left: var(--column-margin-left-tablet) !important;
           }
@@ -183,7 +183,7 @@ export default function Columns(props: ColumnProps) {
             align-items: stretch;
           }
 
-          .${props.builderBlock.id}-breakpoints > .builder-column {
+          .${props.builderBlock.id}-breakpoints .builder-column {
             width: var(--column-width-mobile) !important;
             margin-left: var(--column-margin-left-mobile) !important;
           }

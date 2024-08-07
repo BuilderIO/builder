@@ -3,14 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from '../helpers/index.js';
-import {
-  excludeRn,
-  checkIsRN,
-  test,
-  isSSRFramework,
-  mockFolderPath,
-  excludeTestFor,
-} from '../helpers/index.js';
+import { excludeRn, checkIsRN, test, isSSRFramework, mockFolderPath } from '../helpers/index.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk, packageName }) => {
@@ -406,10 +399,6 @@ test.describe('Blocks', () => {
               "intermittent success, can't use test.fail()"
             );
 
-            test.fail(
-              (sizeName === 'mobile' || sizeName === 'tablet') &&
-                excludeTestFor({ angular: true }, sdk)
-            );
             await page.setViewportSize(size);
             await page.goto('/columns');
             const columns = checkIsRN(sdk)
