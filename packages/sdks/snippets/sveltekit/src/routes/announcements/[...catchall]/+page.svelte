@@ -9,16 +9,15 @@
   const model = 'announcement-bar';
 
   export let data;
-
+  
   const canShowContent = data.announcementBar || isPreviewing();
 </script>
 
 <main>
   {#if canShowContent}
-    <!-- Your Announcement bar section goes here -->
+    <!-- Your Announcement Bar section -->
     <Content {model} content={data.announcementBar} {apiKey} />
   {/if}
 
-  <!-- <TheRestOfYourPage/> -->
-  <div>The rest of the page goes here</div>
+  <div>The rest of your page goes here</div>
 </main>
