@@ -1,8 +1,12 @@
 import { SetStateAction, useState } from 'react';
-import { Blocks } from '@builder.io/sdk-react';
+import { Blocks, BuilderBlock } from '@builder.io/sdk-react';
 
+type Tab = {
+  tabName: string,
+  children: BuilderBlock[]
+}
 type TabProps = {
-  tabList: any[];
+  tabList: Tab[]
   builderBlock: {
     id: string | undefined;
   };
