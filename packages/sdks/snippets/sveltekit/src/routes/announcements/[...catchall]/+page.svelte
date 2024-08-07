@@ -10,18 +10,16 @@
 
   export let data;
 
-  const canShowContent = data.content || isPreviewing();
+  const canShowContent = data.announcementBar || isPreviewing();
 </script>
 
 <main>
-  <h1>Welcome to SvelteKit</h1>
-  <h2>Below is your Builder Content:</h2>
   {#if canShowContent}
-    <div>page Title: {data.content?.data?.title || 'Unpublished'}</div>
-    <Content {model} content={data.content} {apiKey} />
-  {:else}
-    <div>Announcement Bar not Found</div>
+    <!-- Your Announcement bar section goes here -->
+    <Content {model} content={data.announcementBar} {apiKey} />
   {/if}
-  <!-- Your content coming from your app (or also Builder) -->
-  <div>The rest of your page goes here</div>
+  
+  <div>
+    <!-- <TheRestOfYourPage/> -->
+  </div> 
 </main>
