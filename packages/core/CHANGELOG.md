@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 2.2.8
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 2.2.7
 
 ### Patch Changes
