@@ -10,8 +10,11 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
+import { customComponents } from './components/CustomTabs';
 
-const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+
+/**ee9f13b4981e489a9a1209887695ef2b */
+const BUILDER_API_KEY = '53f2762d3e734a1e834af1ff30c97928';
 const MODEL_NAME = 'page';
 
 // set whether you're using the Visual Editor,
@@ -42,6 +45,7 @@ export default function App() {
       });
   }, []);
 
+
   // If no page is found, return
   // a 404 page from your code.
   if (notFound && !isPreviewing()) {
@@ -50,6 +54,6 @@ export default function App() {
 
   // return the page when found
   return (
-    <Content content={content} model={MODEL_NAME} apiKey={BUILDER_API_KEY} />
+    <Content content={content} model={MODEL_NAME} apiKey={BUILDER_API_KEY} customComponents={customComponents}/>
   );
 }
