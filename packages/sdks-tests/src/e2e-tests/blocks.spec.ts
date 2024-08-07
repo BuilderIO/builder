@@ -3,14 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from '../helpers/index.js';
-import {
-  excludeRn,
-  excludeTestFor,
-  checkIsRN,
-  test,
-  isSSRFramework,
-  mockFolderPath,
-} from '../helpers/index.js';
+import { excludeRn, checkIsRN, test, isSSRFramework, mockFolderPath } from '../helpers/index.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk, packageName }) => {
@@ -406,10 +399,6 @@ test.describe('Blocks', () => {
               "intermittent success, can't use test.fail()"
             );
 
-            test.fail(
-              (sizeName === 'mobile' || sizeName === 'tablet') &&
-                excludeTestFor({ angular: true }, sdk)
-            );
             await page.setViewportSize(size);
             await page.goto('/columns');
             const columns = checkIsRN(sdk)
@@ -445,10 +434,6 @@ test.describe('Blocks', () => {
 
     test('check different width columns are correctly rendered', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      test.fail(
-        excludeTestFor({ angular: true }, sdk),
-        "Angular SDK columns don't set the width correctly"
-      );
 
       await page.goto('/columns-with-different-widths');
 
@@ -488,10 +473,6 @@ test.describe('Blocks', () => {
 
     test('space is correctly allocated', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      test.fail(
-        excludeTestFor({ angular: true }, sdk),
-        "Angular SDK columns don't set the width correctly"
-      );
 
       await page.goto('/columns-with-different-widths');
 
