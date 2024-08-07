@@ -20,6 +20,7 @@
   {/if}
   
   <div>
+    <p>Loading...</p>
     <!-- <TheRestOfYourPage/> -->
   </div> 
 </main>
