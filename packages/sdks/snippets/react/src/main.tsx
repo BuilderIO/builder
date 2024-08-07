@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
 import AnnouncementBar from './components/AnnouncementBar.tsx';
 
+
+
 const router = createBrowserRouter([
   {
     path: '/announcements/:id',
