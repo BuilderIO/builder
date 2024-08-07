@@ -326,7 +326,7 @@ test.describe('Blocks', () => {
     });
   });
 
-  test.describe.only('Columns', () => {
+  test.describe('Columns', () => {
     type ColumnTypes =
       | 'stackAtTablet'
       | 'stackAtTabletReverse'
