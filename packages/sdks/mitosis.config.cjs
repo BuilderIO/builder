@@ -699,6 +699,13 @@ module.exports = {
               if (json.name === 'CustomCode') {
                 json.refs.elementRef.typeParameter = 'any';
               }
+
+              /**
+               * Fix component name as `Button` is imported from react-native
+               */
+              if (json.name === 'Button') {
+                json.name = 'BuilderButton';
+              }
             },
           },
         }),
