@@ -98,9 +98,7 @@ export default function Symbol(props: SymbolProps) {
       react: () => {},
       reactNative: () => {},
       solid: () => {},
-      angular: () => {
-        state.contentToUse = props.symbol?.content;
-      },
+      angular: () => {},
 
       default: () => {
         state.setContent();

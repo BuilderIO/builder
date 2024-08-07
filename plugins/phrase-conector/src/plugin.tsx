@@ -31,7 +31,15 @@ registerPlugin(
         required: true,
       },
       {
+        name: 'templateUId',
+        friendlyName: 'Template ID',
+        helperText:
+          'Template ID is the unique identifier of a Phrase Template used when creating a new Phrase Project',
+        type: 'string',
+      },
+      {
         name: 'isUSDataCenterAccount',
+        friendlyName: "Account's data center is US based",
         type: 'boolean',
       },
       // allow developer to override callback host , e.g ngrok for local development
@@ -58,14 +66,16 @@ registerPlugin(
         () => {
           return String(appState.designerState.editingContentModel?.lastUpdated || '');
         },
-        async shoudlCheck => {
-          if (!shoudlCheck) {
+        async shouldCheck => {
+          if (!shouldCheck) {
             return;
           }
-          const translationStatus =
-            appState.designerState.editingContentModel.meta.get('translationStatus');
-          const translationRequested =
-            appState.designerState.editingContentModel.meta.get('translationRequested');
+          const translationStatus = appState.designerState.editingContentModel.meta.get(
+            'translationStatus'
+          );
+          const translationRequested = appState.designerState.editingContentModel.meta.get(
+            'translationRequested'
+          );
 
           // check if there's pending translation
           const isFresh =
