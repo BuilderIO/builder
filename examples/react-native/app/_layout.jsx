@@ -8,10 +8,9 @@ export default function Layout() {
     <Stack
       screenOptions={{
         contentStyle: { backgroundColor: 'white' },
+        headerShown: false
       }}
     >
-      <Stack.Screen name="index" options={{ headerShown: false }}  />
-      <Stack.Screen name="Page" options={{ headerShown: false }}  />
     </Stack>
   );
 }

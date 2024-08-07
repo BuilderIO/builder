@@ -2,21 +2,10 @@ import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react-nati
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
 // TO-DO: add your own public Builder API key here
 const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
-
-const linking = {
-  prefixes: ['http://localhost:19006'],
-  config: {
-    screens: {
-      Page: {
-        path: ':page?',
-      },
-    },
-  },
-};
 
 // create a custom React component
 function CustomComponent(props) {
@@ -38,20 +27,15 @@ const CUSTOM_COMPONENTS = [
 ];
 
 export default function BuilderContent() {
-  const [content, setContent] = useState(undefined);
-  const router = useRouter();
+  const [content, setContent] = useState(null);
   const params = useLocalSearchParams();
-  console.log(params)
-  console.log(router.path)
-
-
   useEffect(() => {
     fetchOneEntry({
       model: 'page',
       apiKey: BUILDER_API_KEY,
       options: params,
       userAttributes: {
-        urlPath: params.path || '/',
+        urlPath: params.page ? `/${params.page}` : '/',
       },
     })
       .then(content => {
@@ -68,7 +52,7 @@ export default function BuilderContent() {
 
   return (
     <View style={styles.container}>
-      <Text>Hello world from your React-Native codebase. Below is your Builder content: {Object.keys(params).join(',')}</Text>
+      <Text>Hello world from your React-Native codebase. Below is your Builder content: </Text>
       {shouldRenderBuilderContent ? (
         <View
           style={{

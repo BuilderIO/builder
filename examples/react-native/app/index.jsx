@@ -1,3 +1,3 @@
-import BuilderContent from "./Page";
+import BuilderContent from "./[page]";
 
 export default BuilderContent;
