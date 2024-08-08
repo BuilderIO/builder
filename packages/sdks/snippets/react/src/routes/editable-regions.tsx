@@ -1,7 +1,8 @@
 /**
  * Quickstart snippet
- * snippets/react/App.tsx
+ * snippets/react/routes/EditableRegionRoute.tsx
  */
+
 import {
   Content,
   fetchOneEntry,

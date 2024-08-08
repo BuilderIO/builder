@@ -1,4 +1,8 @@
-/**comments on top */
+/**
+ * https://www.builder.io/c/docs/custom-components-children
+ * src/components/customTabs.tsx
+ */
+
 import { useState } from 'react';
 import { Blocks, BuilderBlock } from '@builder.io/sdk-react';
 
@@ -26,7 +30,11 @@ const CustomTabs = (props: TabProps) => {
 
       <div>
         <div>
-          {/* explain about the props */}
+          {/* 
+            The tabList[] prop is an array that represents the tabs.
+            Each tab has a tabName, which is displayed as the button label,
+            and children, which are the content blocks rendered inside the tab.
+          */}
           {props.tabList && props.tabList.map((tab, index) => (
             <button
               key={index}
@@ -43,7 +51,12 @@ const CustomTabs = (props: TabProps) => {
         <div>
           {props.tabList.map((tab, index) => (
             <div key={index} style={{ display: activeTab === index ? 'block' : 'none' }}>
-               {/** comments on Blocks why are the proos required and what is block */}
+               {/** 
+                The Blocks component from Builder.io dynamically renders the content inside the tab.
+                - `parent` is the ID of the Builder's parent div, ensuring correct content rendering.
+                - `path` defines where to find the content for this Tab
+                - `blocks` contains the actual content to be displayed inside the tab.
+              */}
               <Blocks
                 parent={props.builderBlock?.id}
                 path={`component.options.tabList.${index}.children`}
