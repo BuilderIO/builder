@@ -1713,14 +1713,18 @@ export class Builder {
 
   setTestsFromUrl() {
     const search = this.getLocation().search;
-    const params = QueryString.parseDeep(this.modifySearch(search || '').substr(1));
-    const tests = params.builder && params.builder.tests;
-    if (tests && typeof tests === 'object') {
-      for (const key in tests) {
-        if (tests.hasOwnProperty(key)) {
-          this.setTestCookie(key, tests[key]);
+    try {
+      const params = QueryString.parseDeep(this.modifySearch(search || '').substr(1));
+      const tests = params.builder && params.builder.tests;
+      if (tests && typeof tests === 'object') {
+        for (const key in tests) {
+          if (tests.hasOwnProperty(key)) {
+            this.setTestCookie(key, tests[key]);
+          }
         }
       }
+    } catch (e) {
+      console.debug('Error parsing tests from URL', e);
     }
   }
 
@@ -1741,67 +1745,71 @@ export class Builder {
 
   getOverridesFromQueryString() {
     const location = this.getLocation();
-    const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
-    const { builder } = params;
-    if (builder) {
-      const {
-        userAttributes,
-        overrides,
-        env,
-        host,
-        api,
-        cachebust,
-        noCache,
-        preview,
-        editing,
-        frameEditing,
-        options,
-        params: overrideParams,
-      } = builder;
+    try {
+      const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
+      const { builder } = params;
+      if (builder) {
+        const {
+          userAttributes,
+          overrides,
+          env,
+          host,
+          api,
+          cachebust,
+          noCache,
+          preview,
+          editing,
+          frameEditing,
+          options,
+          params: overrideParams,
+        } = builder;
 
-      if (userAttributes) {
-        this.setUserAttributes(userAttributes);
-      }
+        if (userAttributes) {
+          this.setUserAttributes(userAttributes);
+        }
 
-      if (options) {
-        // picking only locale, includeRefs, and enrich for now
-        this.queryOptions = {
-          ...(options.locale && { locale: options.locale }),
-          ...(options.includeRefs && { includeRefs: options.includeRefs }),
-          ...(options.enrich && { enrich: options.enrich }),
-        };
-      }
+        if (options) {
+          // picking only locale, includeRefs, and enrich for now
+          this.queryOptions = {
+            ...(options.locale && { locale: options.locale }),
+            ...(options.includeRefs && { includeRefs: options.includeRefs }),
+            ...(options.enrich && { enrich: options.enrich }),
+          };
+        }
 
-      if (overrides) {
-        this.overrides = overrides;
-      }
+        if (overrides) {
+          this.overrides = overrides;
+        }
 
-      if (validEnvList.indexOf(env || api) > -1) {
-        this.env = env || api;
-      }
+        if (validEnvList.indexOf(env || api) > -1) {
+          this.env = env || api;
+        }
 
-      if (Builder.isEditing) {
-        const editingModel = frameEditing || editing || preview;
-        if (editingModel && editingModel !== 'true') {
-          this.editingModel = editingModel;
+        if (Builder.isEditing) {
+          const editingModel = frameEditing || editing || preview;
+          if (editingModel && editingModel !== 'true') {
+            this.editingModel = editingModel;
+          }
+        }
+
+        if (cachebust) {
+          this.cachebust = true;
+        }
+
+        if (noCache) {
+          this.noCache = true;
+        }
+
+        if (preview) {
+          this.preview = true;
+        }
+
+        if (params) {
+          this.overrideParams = overrideParams;
         }
       }
-
-      if (cachebust) {
-        this.cachebust = true;
-      }
-
-      if (noCache) {
-        this.noCache = true;
-      }
-
-      if (preview) {
-        this.preview = true;
-      }
-
-      if (params) {
-        this.overrideParams = overrideParams;
-      }
+    } catch (e) {
+      console.debug('Error parsing overrides from URL', e);
     }
   }
 
