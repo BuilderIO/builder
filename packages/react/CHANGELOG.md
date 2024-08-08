@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 4.0.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+- Updated dependencies [11e118c]
+  - @builder.io/sdk@2.2.8
+
 ## 4.0.2
 
 ### Patch Changes

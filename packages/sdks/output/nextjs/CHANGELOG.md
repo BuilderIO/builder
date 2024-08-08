@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 0.16.2
 
 ### Patch Changes

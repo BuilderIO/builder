@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 2.0.2
 
 ### Patch Changes
