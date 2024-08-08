@@ -42,7 +42,6 @@ export default function App() {
       });
   }, []);
 
-
   // If no page is found, return
   // a 404 page from your code.
   if (notFound && !isPreviewing()) {
@@ -51,6 +50,6 @@ export default function App() {
 
   // return the page when found
   return (
-    <Content content={content} model={MODEL_NAME} apiKey={BUILDER_API_KEY}/>
+    <Content content={content} model={MODEL_NAME} apiKey={BUILDER_API_KEY} />
   );
 }

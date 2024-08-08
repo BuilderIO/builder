@@ -1,6 +1,6 @@
 /**
  * https://www.builder.io/c/docs/custom-components-children
- * src/components/customTabs.tsx
+ * src/components/CustomTabs.tsx
  */
 
 import { useState } from 'react';
@@ -20,10 +20,6 @@ type TabProps = {
 const CustomTabs = (props: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
 
-  const selectTab = (tab: number) => {
-    setActiveTab(tab);
-  };
-
   return (
     <div>
       <h2>Custom Component with editable regions</h2>
@@ -34,12 +30,14 @@ const CustomTabs = (props: TabProps) => {
             The tabList[] prop is an array that represents the tabs.
             Each tab has a tabName, which is displayed as the button label,
             and children, which are the content blocks rendered inside the tab.
+            This comes from the inputs declared inside your custom component.
+            For more details: https://www.builder.io/c/docs/custom-components-input-types
           */}
-          {props.tabList && props.tabList.map((tab, index) => (
+          {props.tabList?.map((tab, index) => (
             <button
               key={index}
               className={activeTab === index ? 'active' : ''}
-              onClick={() => selectTab(index)}
+              onClick={() => setActiveTab(index)}
             >
               {tab.tabName}
             </button>
@@ -51,7 +49,7 @@ const CustomTabs = (props: TabProps) => {
         <div>
           {props.tabList.map((tab, index) => (
             <div key={index} style={{ display: activeTab === index ? 'block' : 'none' }}>
-               {/** 
+              {/** 
                 The Blocks component from Builder.io dynamically renders the content inside the tab.
                 - `parent` is the ID of the Builder's parent div, ensuring correct content rendering.
                 - `path` defines where to find the content for this Tab
