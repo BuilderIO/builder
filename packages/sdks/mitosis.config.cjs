@@ -209,7 +209,29 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
+/**
+ * @type {Plugin}
+ */
+const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BuilderImage' || json.name === 'BuilderSymbol') {
+        json.hooks.onMount = json.hooks.onMount.filter(
+          (hook) =>
+            !hook.code.includes(
+              '/** this is a hack to include the input in angular */'
+            )
+        );
+      }
+      return json;
+    },
+  },
+});
+
 // for fixing circular dependencies
+/**
+ * @type {Plugin}
+ */
 const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
@@ -537,6 +559,7 @@ module.exports = {
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
         ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
+        ANGULAR_ADD_UNUSED_PROP_TYPES,
       ],
     },
     solid: {

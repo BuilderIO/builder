@@ -14,6 +14,7 @@ export interface ImageProps {
   backgroundPosition?: string;
   srcset?: string;
   aspectRatio?: number;
+  lockAspectRatio?: boolean;
   children?: any;
   fitContent?: boolean;
   builderBlock?: BuilderBlock;
