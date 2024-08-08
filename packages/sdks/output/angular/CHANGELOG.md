@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.2.6
+
+### Patch Changes
+
+- 22a3865: Fix: Symbol infinite re-render and editor overlay not showing up.
+- a6c453f: Fix: support Visual Editing for Interactive Elements
+
 ## 0.2.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 2.2.9
+
+### Patch Changes
+
+- b7c00cf: Silence errors from non essential query params parsing
+
 ## 2.2.8
 
 ### Patch Changes
