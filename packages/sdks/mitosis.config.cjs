@@ -209,7 +209,49 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
+/**
+ * @type {Plugin}
+ */
+const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BuilderImage' || json.name === 'BuilderSymbol') {
+        json.hooks.onMount = json.hooks.onMount.filter(
+          (hook) =>
+            !hook.code.includes(
+              '/** this is a hack to include the input in angular */'
+            )
+        );
+      }
+      return json;
+    },
+  },
+});
+
+/**
+ * @type {Plugin}
+ * We explicitly add the builder-id attribute to the symbol component for Angular,
+ * because mitosis doesn't support spreading `props.attributes` yet.
+ *
+ */
+const ANGULAR_FIX_SYMBOL_BUILDER_ID_ATTRIBUTE = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BuilderSymbol') {
+        json.children[0].bindings['builder-id'] = {
+          code: "props.attributes['builder-id']",
+          type: 'single',
+        };
+      }
+      return json;
+    },
+  },
+});
+
 // for fixing circular dependencies
+/**
+ * @type {Plugin}
+ */
 const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
@@ -235,14 +277,12 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   code: {
     post: (code) => {
       if (code.includes('component-ref, ComponentRef')) {
-        code = code.replace(
-          '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
-          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
-        );
-        code = code.replace(
-          '</ng-container>',
-          '</ng-container>\n</ng-container>'
-        );
+        code = code
+          .replace(
+            '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
+            '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
+          )
+          .replace('</ng-container>', '</ng-container>\n</ng-container>');
       }
       return code;
     },
@@ -254,7 +294,7 @@ const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
     post: (code) => {
       if (code?.includes('blocks-wrapper, BlocksWrapper')) {
         const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
-        code = code.replace('ngOnInit', 'ngAfterViewInit');
+        code = code.replace('ngOnInit', 'ngAfterContentInit');
         code = code.replace(
           /}\n\s*$/,
           `
@@ -532,6 +572,7 @@ module.exports = {
       state: 'class-properties',
       plugins: [
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
+        ANGULAR_FIX_SYMBOL_BUILDER_ID_ATTRIBUTE,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
@@ -539,6 +580,7 @@ module.exports = {
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
         ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
+        ANGULAR_ADD_UNUSED_PROP_TYPES,
       ],
     },
     solid: {
