@@ -4,6 +4,7 @@ import {
   Show,
   onMount,
   useMetadata,
+  useRef,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
@@ -69,10 +70,10 @@ export default function Block(props: BlockProps) {
         context: props.context.value,
       });
     },
-    _processedBlock: null as BuilderBlock | null,
+    _processedBlock: { value: null as BuilderBlock | null },
     get processedBlock(): BuilderBlock {
-      if (state._processedBlock && !isPreviewing()) {
-        return state._processedBlock;
+      if (state._processedBlock.value && !isPreviewing()) {
+        return state._processedBlock.value;
       }
       const block = props.block.repeat?.collection
         ? props.block
@@ -85,7 +86,7 @@ export default function Block(props: BlockProps) {
             shouldEvaluateBindings: true,
           });
 
-      state._processedBlock = block;
+      state._processedBlock.value = block;
 
       return block;
     },
