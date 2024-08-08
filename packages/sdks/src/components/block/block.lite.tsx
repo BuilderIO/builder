@@ -4,7 +4,6 @@ import {
   Show,
   onMount,
   useMetadata,
-  useRef,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
@@ -70,6 +69,10 @@ export default function Block(props: BlockProps) {
         context: props.context.value,
       });
     },
+    // Simple agnostic memoization for the processed block
+    // This is used to avoid re-processing the block on every render
+    // We need to make this a property on an object so setState() isn't
+    // called causing infinite rerenders e.g. in React
     _processedBlock: { value: null as BuilderBlock | null },
     get processedBlock(): BuilderBlock {
       if (state._processedBlock.value && !isPreviewing()) {
