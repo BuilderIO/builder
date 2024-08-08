@@ -106,6 +106,5 @@
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
-  },
-  "stableVersion": "4.0.1"
+  }
 }
