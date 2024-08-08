@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.2.5
+
+### Patch Changes
+
+- 53d3cf9: Fix: State inits in Angular which fixes repeat elements, show-if and hide-if and Columns
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 0.2.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 2.0.2
 
 ### Patch Changes

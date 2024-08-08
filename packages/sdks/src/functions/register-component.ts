@@ -1,6 +1,4 @@
 import type { ComponentInfo } from '../types/components.js';
-import type { Input } from '../types/input.js';
-import { fastClone } from './fast-clone.js';
 
 export const createRegisterComponentMessage = (info: ComponentInfo) => ({
   type: 'builder.registerComponent',
@@ -21,21 +19,13 @@ const serializeFn = (fnValue: Function) => {
   return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
 };
 
-const serializeValue = (value: object): any =>
-  typeof value === 'function' ? serializeFn(value) : fastClone(value);
-
-export const serializeComponentInfo = ({
-  inputs,
-  ...info
-}: ComponentInfo): ComponentInfo => ({
-  ...fastClone(info),
-  inputs: inputs?.map((input) =>
-    Object.entries(input).reduce(
-      (acc, [key, value]) => ({
-        ...acc,
-        [key]: serializeValue(value),
-      }),
-      {} as Input
-    )
-  ),
-});
+export function serializeComponentInfo(info: ComponentInfo) {
+  return JSON.parse(
+    JSON.stringify(info, (key, value) => {
+      if (typeof value === 'function') {
+        return serializeFn(value);
+      }
+      return value;
+    })
+  );
+}

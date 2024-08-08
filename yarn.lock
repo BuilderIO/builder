@@ -3707,11 +3707,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:0.3.16":
-  version: 0.3.16
-  resolution: "@builder.io/mitosis-cli@npm:0.3.16"
+"@builder.io/mitosis-cli@npm:0.3.20":
+  version: 0.3.20
+  resolution: "@builder.io/mitosis-cli@npm:0.3.20"
   dependencies:
-    "@builder.io/mitosis": 0.3.16
+    "@builder.io/mitosis": 0.3.20
     debug: ^4.3.4
     dedent: ^0.7.0
     esbuild: ^0.12.16
@@ -3724,13 +3724,13 @@ __metadata:
     ts-morph: ^19.0.0
   bin:
     mitosis: bin/mitosis
-  checksum: 950f196d4acf0f5664de8946bb12901cbf2856086057cfc0b7a0b1b7d2ea250fa4693347f696b9f677a80e50e0752aa1a8e6e625e9d839ae117d76a99c473ee5
+  checksum: 716412537d9c9bc17f5cffdf3b5da9ec5c4728350c4c3c1e9eae074834ff82ba70435f4544ad22b7903f2dbbf26fc0951a548e8bf4b0f6af941f6091d874cc29
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.3.16":
-  version: 0.3.16
-  resolution: "@builder.io/mitosis@npm:0.3.16"
+"@builder.io/mitosis@npm:0.3.20":
+  version: 0.3.20
+  resolution: "@builder.io/mitosis@npm:0.3.20"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -3755,7 +3755,7 @@ __metadata:
     svelte-preprocess: ^5.0.3
     ts-morph: ^19.0.0
     typescript: ^5.3.2
-  checksum: 111fc5452bf8668120b137d0653ca8acb9069aaa73f248cce31574674020b63ae219ec8bb7c3b506a2fa412270f0aea14b1e860c7b2d393318c58b292e100dda
+  checksum: 89dcfc425b523746234b73488e6e20e1692c335925ffb264fc9ce77883559de67e9e11b0b6ea62ba27f2d1fa12fe1d56db6248f2225c323f7b7641421d7005d6
   languageName: node
   linkType: hard
 
@@ -4164,8 +4164,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.16
-    "@builder.io/mitosis": 0.3.16
-    "@builder.io/mitosis-cli": 0.3.16
+    "@builder.io/mitosis": 0.3.20
+    "@builder.io/mitosis-cli": 0.3.20
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32

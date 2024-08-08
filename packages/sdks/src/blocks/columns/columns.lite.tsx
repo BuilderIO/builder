@@ -164,6 +164,10 @@ export default function Columns(props: ColumnProps) {
     },
 
     columnsStyles(): string {
+      const childColumnDiv = useTarget({
+        angular: `.${props.builderBlock.id}-breakpoints .builder-column:first-of-type`,
+        default: `.${props.builderBlock.id}-breakpoints > .builder-column`,
+      });
       return `
         @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
           .${props.builderBlock.id}-breakpoints {
@@ -171,7 +175,7 @@ export default function Columns(props: ColumnProps) {
             align-items: stretch;
           }
 
-          .${props.builderBlock.id}-breakpoints > .builder-column {
+          ${childColumnDiv} {
             width: var(--column-width-tablet) !important;
             margin-left: var(--column-margin-left-tablet) !important;
           }
@@ -183,7 +187,7 @@ export default function Columns(props: ColumnProps) {
             align-items: stretch;
           }
 
-          .${props.builderBlock.id}-breakpoints > .builder-column {
+          ${childColumnDiv} {
             width: var(--column-width-mobile) !important;
             margin-left: var(--column-margin-left-mobile) !important;
           }

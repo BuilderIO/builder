@@ -6,6 +6,7 @@ import {
   ElementRef,
   Input,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -133,7 +134,9 @@ export class DynamicImage {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes.attributes) return;
+
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
