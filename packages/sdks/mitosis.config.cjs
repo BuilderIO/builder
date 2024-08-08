@@ -283,34 +283,32 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
             '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
           )
           .replace('</ng-container>', '</ng-container>\n</ng-container>');
-      }
-
-      const ngOnChangesIndex = code.indexOf(
-        'ngOnChanges(changes: SimpleChanges) {'
-      );
-
-      if (ngOnChangesIndex > -1) {
-        code = code.replace(
-          'ngOnChanges(changes: SimpleChanges) {',
-          // Add a check to see if the componentOptions have changed
-          `ngOnChanges(changes: SimpleChanges) {
-            if (changes.componentOptions) {
-              let foundChange = false;
-              for (const key in changes.componentOptions.previousValue) {
-                if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
-                  foundChange = true;
-                  break;
-                }
-              }
-              if (!foundChange) {
-                return;
-              }
-            }`
+        const ngOnChangesIndex = code.indexOf(
+          'ngOnChanges(changes: SimpleChanges) {'
         );
-      } else {
-        throw new Error('ngOnChanges not found in component-ref');
-      }
 
+        if (ngOnChangesIndex > -1) {
+          code = code.replace(
+            'ngOnChanges(changes: SimpleChanges) {',
+            // Add a check to see if the componentOptions have changed
+            `ngOnChanges(changes: SimpleChanges) {
+                if (changes.componentOptions) {
+                  let foundChange = false;
+                  for (const key in changes.componentOptions.previousValue) {
+                    if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
+                      foundChange = true;
+                      break;
+                    }
+                  }
+                  if (!foundChange) {
+                    return;
+                  }
+                }`
+          );
+        } else {
+          throw new Error('ngOnChanges not found in component-ref');
+        }
+      }
       return code;
     },
   },
