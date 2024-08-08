@@ -283,27 +283,42 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
             '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
           )
           .replace('</ng-container>', '</ng-container>\n</ng-container>');
+        const ngOnChangesIndex = code.indexOf(
+          'ngOnChanges(changes: SimpleChanges) {'
+        );
+
+        if (ngOnChangesIndex > -1) {
+          code = code.replace(
+            'ngOnChanges(changes: SimpleChanges) {',
+            // Add a check to see if the componentOptions have changed
+            `ngOnChanges(changes: SimpleChanges) {
+                if (changes.componentOptions) {
+                  let foundChange = false;
+                  for (const key in changes.componentOptions.previousValue) {
+                    if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
+                      foundChange = true;
+                      break;
+                    }
+                  }
+                  if (!foundChange) {
+                    return;
+                  }
+                }`
+          );
+        } else {
+          throw new Error('ngOnChanges not found in component-ref');
+        }
       }
       return code;
     },
   },
 });
 
-const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
       if (code?.includes('blocks-wrapper, BlocksWrapper')) {
-        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
         code = code.replace('ngOnInit', 'ngAfterContentInit');
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnChanges() {
-              ${mergedInputsCode}
-            }
-          }
-          `
-        );
       }
       return code;
     },
@@ -579,7 +594,7 @@ module.exports = {
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
-        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
+        ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
         ANGULAR_ADD_UNUSED_PROP_TYPES,
       ],
     },
