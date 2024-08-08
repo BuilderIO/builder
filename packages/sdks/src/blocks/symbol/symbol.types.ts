@@ -23,4 +23,5 @@ export interface SymbolProps
   dynamic?: boolean;
   attributes?: any;
   inheritState?: boolean;
+  renderToLiquid?: boolean;
 }
