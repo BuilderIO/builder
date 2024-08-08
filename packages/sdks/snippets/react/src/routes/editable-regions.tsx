@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/react/App.tsx
+ * snippets/react/EditableRegionRoute.tsx
  */
 import {
   Content,
@@ -10,6 +10,7 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
+import { customComponents } from '../custom-components';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'page';
@@ -17,7 +18,7 @@ const MODEL_NAME = 'page';
 // set whether you're using the Visual Editor,
 // whether there are changes,
 // and render the content if found
-export default function App() {
+export default function EditableRegionRoute() {
   const [notFound, setNotFound] = useState(false);
   const [content, setContent] = useState<BuilderContent | null>(null);
 
@@ -51,6 +52,6 @@ export default function App() {
 
   // return the page when found
   return (
-    <Content content={content} model={MODEL_NAME} apiKey={BUILDER_API_KEY}/>
+    <Content content={content} model={MODEL_NAME} apiKey={BUILDER_API_KEY} customComponents={customComponents}/>
   );
 }

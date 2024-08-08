@@ -36,6 +36,8 @@ export default function AnnouncementBar() {
       });
   }, []);
 
+  console.log(content)
+
   return (
     <>
       {content ? (
