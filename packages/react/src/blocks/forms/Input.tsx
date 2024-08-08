@@ -25,11 +25,13 @@ class FormInputComponent extends React.Component<FormInputProps> {
         placeholder={this.props.placeholder}
         type={this.props.type}
         name={this.props.name}
-        {...typeof this.props.value === 'undefined' ? {
-          defaultValue: this.props.defaultValue
-        }: {
-          value: this.props.value
-        }}
+        {...(typeof this.props.value === 'undefined'
+          ? {
+              defaultValue: this.props.defaultValue,
+            }
+          : {
+              value: this.props.value,
+            })}
         required={this.props.required}
         {...this.props.attributes}
       />

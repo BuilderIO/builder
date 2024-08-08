@@ -66,7 +66,7 @@ class FormComponent extends React.Component<FormProps> {
             }}
           >
             <form
-              {...!this.props.validate ? { noValidate: true } : {}}
+              {...(!this.props.validate ? { noValidate: true } : {})}
               ref={ref => (this.ref = ref)}
               action={!this.props.sendWithJs && this.props.action ? this.props.action : undefined}
               method={this.props.method}
