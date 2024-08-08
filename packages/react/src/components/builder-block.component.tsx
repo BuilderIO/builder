@@ -135,7 +135,7 @@ export class BuilderBlock extends React.Component<
     return this.props.block;
   }
 
-  get emotionCss() {
+  emotionCss(responsiveStyles: BuilderElement['responsiveStyles']) {
     let initialAnimationStepStyles: any;
     const { block } = this;
     const animation = block.animations && block.animations[0];
@@ -148,15 +148,14 @@ export class BuilderBlock extends React.Component<
     }
 
     const reversedNames = sizeNames.slice().reverse();
-    const self = this.block;
     const styles: any = {};
-    if (self.responsiveStyles) {
+    if (responsiveStyles) {
       for (const size of reversedNames) {
         if (size === 'large') {
           if (!this.props.emailMode) {
             styles[`&.builder-block`] = Object.assign(
               {},
-              self.responsiveStyles[size],
+              responsiveStyles[size],
               initialAnimationStepStyles
             );
           }
@@ -165,7 +164,7 @@ export class BuilderBlock extends React.Component<
             this.privateState.context.builderContent?.meta?.breakpoints || {}
           );
           styles[`@media only screen and (max-width: ${sizesPerBreakpoints[size].max}px)`] = {
-            '&.builder-block': self.responsiveStyles[size],
+            '&.builder-block': responsiveStyles[size],
           };
         }
       }
@@ -374,6 +373,7 @@ export class BuilderBlock extends React.Component<
       // Attributes?
       ...block.properties,
       style: {}, // this.styles
+      responsiveStyles: block.responsiveStyles,
     };
 
     options = {
@@ -489,7 +489,7 @@ export class BuilderBlock extends React.Component<
     }
 
     const finalOptions: { [key: string]: string } = {
-      ...omit(options, ['class', 'component', 'attr']),
+      ...omit(options, ['class', 'component', 'attr', 'responsiveStyles']),
       [typeof TagName === 'string' && !TagName.includes('-') ? 'className' : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component && !(['Image', 'Video', 'Banner'].indexOf(componentName) > -1)
@@ -556,7 +556,7 @@ export class BuilderBlock extends React.Component<
         <ClassNames>
           {({ css, cx }) => {
             if (!this.props.emailMode) {
-              const addClass = ' ' + css(this.emotionCss);
+              const addClass = ' ' + css(this.emotionCss(options.responsiveStyles));
               if (finalOptions.class) {
                 finalOptions.class += addClass;
               }

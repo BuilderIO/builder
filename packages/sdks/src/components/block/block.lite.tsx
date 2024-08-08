@@ -57,7 +57,7 @@ export default function Block(props: BlockProps) {
   const state = useStore({
     get blockComponent() {
       return getComponent({
-        block: props.block,
+        block: state.processedBlock,
         context: props.context.value,
         registeredComponents: props.registeredComponents,
       });
@@ -186,7 +186,7 @@ export default function Block(props: BlockProps) {
 
   return (
     <Show when={state.canShowBlock}>
-      <BlockStyles block={props.block} context={props.context.value} />
+      <BlockStyles block={state.processedBlock} context={props.context.value} />
       <Show
         when={!state.blockComponent?.noWrap}
         else={
