@@ -4,5 +4,5 @@
   "lib": {
     "entryFile": "src/index.ts"
   },
-  "allowedNonPeerDependencies": ["isolated-vm", "microdiff"]
+  "allowedNonPeerDependencies": ["isolated-vm"]
 }

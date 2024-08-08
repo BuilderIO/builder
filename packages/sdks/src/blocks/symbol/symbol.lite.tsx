@@ -86,11 +86,6 @@ export default function Symbol(props: SymbolProps) {
 
   onUpdate(() => {
     state.setContent();
-    const x =
-      String(props.renderToLiquid) +
-      String(props.dataOnly) +
-      String(props.inheritState);
-    console.log(x);
   }, [props.symbol]);
 
   onMount(() => {
