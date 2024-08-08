@@ -48,7 +48,10 @@ import { getWrapperProps } from "./component-ref.helpers";
   ],
   standalone: true,
   imports: [CommonModule, forwardRef(() => Block)],
+
+
 })
+
 export default class ComponentRef {
   @Input() componentOptions!: ComponentProps["componentOptions"];
   @Input() builderBlock!: ComponentProps["builderBlock"];
@@ -95,8 +98,27 @@ export default class ComponentRef {
     ];
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
+    if (changes.componentOptions) {
+      let foundChange = false;
+      for (const key in changes.componentOptions.previousValue) {
+        if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
+          foundChange = true;
+          break;
+        }
+      }
+
+      if (!foundChange) {
+        return;
+      }
+      console.log('component-ref: ngOnChanges: change found!');
+    }
+
+    if (!(changes.componentOptions || changes.builderBlock || changes.context || changes.componentRef || changes.linkComponent || changes.includeBlockProps || changes.isInteractive || changes.context))
+      return;
+
     if (typeof window !== "undefined") {
+      console.log('component-ref: ngOnChanges', changes);
       this.node_0_state_Wrapper = {
         ...getWrapperProps({
           componentOptions: this.componentOptions,

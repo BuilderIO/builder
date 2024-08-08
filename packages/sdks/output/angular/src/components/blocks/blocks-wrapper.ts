@@ -1,12 +1,13 @@
+import { CommonModule } from "@angular/common";
 import {
   Component,
-  ViewChild,
   ElementRef,
   Input,
-  ViewContainerRef,
+  SimpleChanges,
   TemplateRef,
+  ViewChild,
+  ViewContainerRef,
 } from "@angular/core";
-import { CommonModule } from "@angular/common";
 
 export type BlocksWrapperProps = {
   blocks: BuilderBlock[] | undefined;
@@ -98,7 +99,7 @@ export default class BlocksWrapper {
       );
     }
   }
-  mergedInputs_yllqi6 = null;
+  mergedInputs_yllqi6 = {} as any;
 
   constructor(private vcRef: ViewContainerRef) {}
 
@@ -119,17 +120,43 @@ export default class BlocksWrapper {
     ];
   }
 
-            ngOnChanges() {
-              this.mergedInputs_yllqi6 = {
-      class: this.className + " props-blocks-wrapper",
-      "builder-path": this.path,
-      "builder-parent-id": this.parent,
-      style: this.styleProp,
-      onClick: this.onClick.bind(this),
-      onMouseEnter: this.onMouseEnter.bind(this),
-      onKeyPress: this.onClick.bind(this),
-      ...this.BlocksWrapperProps,
-    };
-            }
-          }
-          
+  ngOnChanges(changes: SimpleChanges) {
+    const blocksLengthChanged =
+      changes.blocks?.previousValue?.length !==
+      changes.blocks?.currentValue?.length;
+    const parentChanged =
+      changes.parent?.previousValue !== changes.parent?.currentValue;
+    const pathChanged =
+      changes.path?.previousValue !== changes.path?.currentValue;
+    const handlerChanges = blocksLengthChanged || parentChanged || pathChanged;
+
+    if (handlerChanges) {
+      this.mergedInputs_yllqi6.onClick = this.onClick.bind(this);
+      this.mergedInputs_yllqi6.onMouseEnter = this.onMouseEnter.bind(this);
+      this.mergedInputs_yllqi6.onKeyPress = this.onClick.bind(this);
+    }
+
+    if (blocksLengthChanged) {
+      this.mergedInputs_yllqi6.class = this.className + " props-blocks-wrapper";
+    }
+
+    if (parentChanged) {
+      this.mergedInputs_yllqi6["builder-parent-id"] = this.parent;
+    }
+
+    if (pathChanged) {
+      this.mergedInputs_yllqi6["builder-path"] = this.path;
+    }
+
+    if (changes.styleProp) {
+      this.mergedInputs_yllqi6.style = this.styleProp;
+    }
+
+    if (changes.BlocksWrapperProps) {
+      this.mergedInputs_yllqi6 = {
+        ...this.mergedInputs_yllqi6,
+        ...this.BlocksWrapperProps,
+      };
+    }
+  }
+}
