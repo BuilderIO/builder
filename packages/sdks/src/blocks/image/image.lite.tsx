@@ -77,6 +77,8 @@ export default function Image(props: ImageProps) {
           a: props.lockAspectRatio,
           b: props.width,
           c: props.height,
+          d: props.lazy,
+          e: props.attributes,
         };
       },
     });
