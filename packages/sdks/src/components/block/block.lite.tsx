@@ -13,6 +13,7 @@ import type {
 } from '../../context/types.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { isPreviewing } from '../../server-index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
 import { bindAnimations } from './animator.js';
@@ -68,8 +69,12 @@ export default function Block(props: BlockProps) {
         context: props.context.value,
       });
     },
+    _processedBlock: null as BuilderBlock | null,
     get processedBlock(): BuilderBlock {
-      return props.block.repeat?.collection
+      if (state._processedBlock && !isPreviewing()) {
+        return state._processedBlock;
+      }
+      const block = props.block.repeat?.collection
         ? props.block
         : getProcessedBlock({
             block: props.block,
@@ -79,6 +84,10 @@ export default function Block(props: BlockProps) {
             context: props.context.value.context,
             shouldEvaluateBindings: true,
           });
+
+      state._processedBlock = block;
+
+      return block;
     },
     get Tag() {
       const shouldUseLink =
