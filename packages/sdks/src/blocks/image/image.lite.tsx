@@ -88,8 +88,6 @@ export default function Image(props: ImageProps) {
           <source srcset={state.webpSrcSet} type="image/webp" />
         </Show>
         <img
-          data-a={props.lazy}
-          data-b={props.attributes}
           loading={props.highPriority ? 'eager' : 'lazy'}
           fetchpriority={props.highPriority ? 'high' : 'auto'}
           alt={props.altText}
