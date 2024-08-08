@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/react/EditableRegionRoute.tsx
+ * snippets/react/App.tsx
  */
 import {
   Content,
