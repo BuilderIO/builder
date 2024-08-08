@@ -1,9 +1,8 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
 
 test.describe('Repeat items bindings', () => {
   test('Updating state should display repeat collection', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(sdk === 'rsc', "NextJS SDK doesn't support state updates");
 
     await page.goto('/repeat-items-bindings/');

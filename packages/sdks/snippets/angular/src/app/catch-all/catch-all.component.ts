@@ -3,9 +3,7 @@
  * snippets/angular/src/app/catch-all/catch-all.component.ts
  */
 
-// fails because type imports cannot be injected
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
@@ -29,8 +27,6 @@ export class CatchAllComponent {
   model = 'page';
   content: BuilderContent | null = null;
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
   async ngOnInit() {
     const urlPath = window.location.pathname || '';
 
@@ -47,6 +43,5 @@ export class CatchAllComponent {
     }
 
     this.content = content;
-    this.cdr.detectChanges();
   }
 }
