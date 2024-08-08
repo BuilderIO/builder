@@ -289,21 +289,11 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   },
 });
 
-const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
       if (code?.includes('blocks-wrapper, BlocksWrapper')) {
-        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
         code = code.replace('ngOnInit', 'ngAfterContentInit');
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnChanges() {
-              ${mergedInputsCode}
-            }
-          }
-          `
-        );
       }
       return code;
     },
@@ -579,7 +569,7 @@ module.exports = {
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
-        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
+        ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
         ANGULAR_ADD_UNUSED_PROP_TYPES,
       ],
     },
