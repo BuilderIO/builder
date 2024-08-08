@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 4.0.4
+
+### Patch Changes
+
+- b7c00cf: Fix SSR hydration issues with non-hover animated builder blocks
+- Updated dependencies [b7c00cf]
+  - @builder.io/sdk@2.2.9
+
 ## 4.0.3
 
 ### Patch Changes
