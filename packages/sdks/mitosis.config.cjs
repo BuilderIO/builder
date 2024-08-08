@@ -1,6 +1,6 @@
-const traverse = require("traverse");
-const seedrandom = require("seedrandom");
-const rng = seedrandom("vue-sdk-seed");
+const traverse = require('traverse');
+const seedrandom = require('seedrandom');
+const rng = seedrandom('vue-sdk-seed');
 
 /**
  * @typedef {import('@builder.io/mitosis')} Mitosis
@@ -13,28 +13,28 @@ const rng = seedrandom("vue-sdk-seed");
 
 const getSeededId = () => {
   const rngVal = rng();
-  return Number(String(rngVal).split(".")[1]).toString(36);
+  return Number(String(rngVal).split('.')[1]).toString(36);
 };
 
 /**
  * @param {any} x
  * @returns {x is MitosisNode}
  */
-const isMitosisNode = (x) => x && x["@type"] === "@builder.io/mitosis/node";
+const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
 /**
  * @param {string} string
  */
 const kebabCase = (string) =>
-  string.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2").toLowerCase();
+  string.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
 
 /**
  * @type {MitosisConfig['getTargetPath']}
  */
 const getTargetPath = ({ target }) => {
   switch (target) {
-    case "rsc":
-      return "nextjs";
+    case 'rsc':
+      return 'nextjs';
     default:
       return kebabCase(target);
   }
@@ -48,7 +48,7 @@ const SRCSET_PLUGIN = () => ({
     pre: (code) => {
       // workaround until we resolve
       // https://github.com/BuilderIO/mitosis/issues/526
-      return code.replace(/srcset=/g, "srcSet=");
+      return code.replace(/srcset=/g, 'srcSet=');
     },
   },
 });
@@ -59,7 +59,7 @@ const SRCSET_PLUGIN = () => ({
 const FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
   code: {
     pre: (code) => {
-      return code.replace(/fetchpriority=/g, "fetchPriority=");
+      return code.replace(/fetchpriority=/g, 'fetchPriority=');
     },
   },
 });
@@ -72,22 +72,22 @@ const FETCHPRIORITY_CAMELCASE_PLUGIN = () => ({
 const BASE_TEXT_PLUGIN = () => ({
   code: {
     pre: (code) => {
-      if (code.includes("BaseText")) {
+      if (code.includes('BaseText')) {
         return `
 import BaseText from '../../blocks/BaseText';
 ${code}
 `;
       }
 
-      if (code.includes("<Text>") && !code.includes("InlinedStyles")) {
+      if (code.includes('<Text>') && !code.includes('InlinedStyles')) {
         const importStatement = `import BaseText from '../../blocks/BaseText';`;
         // we put the import statement after the first line so the `use client` comment stays at the top.
         // probably doesn't matter but just in case
-        const [firstLine, ...restOfCode] = code.split("\n");
+        const [firstLine, ...restOfCode] = code.split('\n');
         return `
 ${firstLine}
 ${importStatement}
-${restOfCode.join("\n").replace(/<(\/?)Text(.*?)>/g, "<$1BaseText$2>")}
+${restOfCode.join('\n').replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 `;
       }
       return code;
@@ -102,7 +102,7 @@ const REMOVE_MAGIC_PLUGIN = () => ({
         if (!isMitosisNode(item)) return;
 
         for (const [key, _value] of Object.entries(item.properties)) {
-          if (key === "MAGIC") {
+          if (key === 'MAGIC') {
             delete item.properties[key];
           }
         }
@@ -121,59 +121,59 @@ const REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM = () => ({
         ...PREVIOUS_VALUE,
         rootState: combinedState,
       }));`,
-        "props.builderContext.rootState = combinedState;"
+        'props.builderContext.rootState = combinedState;'
       );
     },
   },
 });
 
 const target = process.argv
-  .find((arg) => arg.startsWith("--target="))
-  ?.split("=")[1];
+  .find((arg) => arg.startsWith('--target='))
+  ?.split('=')[1];
 
 const targets = target
   ? [target]
   : [
-      "reactNative",
-      "rsc",
-      "vue",
-      "solid",
-      "svelte",
-      "react",
-      "qwik",
-      "angular",
+      'reactNative',
+      'rsc',
+      'vue',
+      'solid',
+      'svelte',
+      'react',
+      'qwik',
+      'angular',
     ];
 
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
-      if (json.name !== "EnableEditor") return;
+      if (json.name !== 'EnableEditor') return;
       json.hooks.onMount.forEach((onMountHook) => {
         json.hooks.onEvent.forEach((eventHook) => {
           const isEditingHook =
-            onMountHook.code.includes("INJECT_EDITING_HOOK_HERE") &&
-            eventHook.eventName === "initeditingbldr";
+            onMountHook.code.includes('INJECT_EDITING_HOOK_HERE') &&
+            eventHook.eventName === 'initeditingbldr';
 
           if (isEditingHook) {
             onMountHook.code = onMountHook.code.replace(
-              "INJECT_EDITING_HOOK_HERE",
+              'INJECT_EDITING_HOOK_HERE',
               eventHook.code
             );
           }
 
           const isPreviewingHook =
-            onMountHook.code.includes("INJECT_PREVIEWING_HOOK_HERE") &&
-            eventHook.eventName === "initpreviewingbldr";
+            onMountHook.code.includes('INJECT_PREVIEWING_HOOK_HERE') &&
+            eventHook.eventName === 'initpreviewingbldr';
 
           if (isPreviewingHook) {
             onMountHook.code = onMountHook.code.replace(
-              "INJECT_PREVIEWING_HOOK_HERE",
+              'INJECT_PREVIEWING_HOOK_HERE',
               eventHook.code
             );
           }
         });
 
-        onMountHook.code = onMountHook.code.replaceAll("elementRef", "true");
+        onMountHook.code = onMountHook.code.replaceAll('elementRef', 'true');
       });
 
       json.hooks.onEvent = [];
@@ -194,16 +194,16 @@ const filterActionAttrBindings = (json, item) => {
    * Button component uses `filterAttrs` but calls `DynamicRender`.
    * Special case, we don't want to filter the `filterAttrs` calls even though they are there.
    */
-  const isButton = json.name === "Button";
+  const isButton = json.name === 'Button';
   if (isButton) return [];
 
   return Object.entries(item.bindings).filter(([_key, value]) => {
     const blocksAttrs =
-      value?.code.includes("filterAttrs") && value.code.includes("true");
+      value?.code.includes('filterAttrs') && value.code.includes('true');
 
     const dynamicRendererAttrs =
-      json.name === "DynamicRenderer" &&
-      value?.code.includes("props.actionAttributes");
+      json.name === 'DynamicRenderer' &&
+      value?.code.includes('props.actionAttributes');
 
     return blocksAttrs || dynamicRendererAttrs;
   });
@@ -214,16 +214,16 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
       if (
-        code.includes("component-ref, ComponentRef") ||
-        code.includes("repeated-block, RepeatedBlock")
+        code.includes('component-ref, ComponentRef') ||
+        code.includes('repeated-block, RepeatedBlock')
       ) {
         code = code.replace(
-          "imports: [CommonModule, Block]",
-          "imports: [CommonModule, forwardRef(() => Block)]"
+          'imports: [CommonModule, Block]',
+          'imports: [CommonModule, forwardRef(() => Block)]'
         );
         code = code.replace(
           '} from "@angular/core";',
-          `${code.includes("repeated-block") ? "," : ""}forwardRef } from "@angular/core";`
+          `${code.includes('repeated-block') ? ',' : ''}forwardRef } from "@angular/core";`
         );
       }
       return code;
@@ -234,13 +234,13 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
 const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code.includes("component-ref, ComponentRef")) {
+      if (code.includes('component-ref, ComponentRef')) {
         code = code
           .replace(
             '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
             '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
           )
-          .replace("</ng-container>", "</ng-container>\n</ng-container>");
+          .replace('</ng-container>', '</ng-container>\n</ng-container>');
       }
       return code;
     },
@@ -250,9 +250,9 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes("blocks-wrapper, BlocksWrapper")) {
+      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
         const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
-        code = code.replace("ngOnInit", "ngAfterContentInit");
+        code = code.replace('ngOnInit', 'ngAfterContentInit');
         code = code.replace(
           /}\n\s*$/,
           `
@@ -269,183 +269,183 @@ const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
 });
 
 const VALID_HTML_TAGS = [
-  "html",
-  "base",
-  "head",
-  "link",
-  "meta",
-  "style",
-  "title",
-  "body",
-  "address",
-  "article",
-  "aside",
-  "footer",
-  "header",
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "main",
-  "nav",
-  "section",
-  "blockquote",
-  "dd",
-  "div",
-  "dl",
-  "dt",
-  "figcaption",
-  "figure",
-  "hr",
-  "li",
-  "menu",
-  "ol",
-  "p",
-  "pre",
-  "ul",
-  "a",
-  "abbr",
-  "b",
-  "bdi",
-  "bdo",
-  "br",
-  "cite",
-  "code",
-  "data",
-  "dfn",
-  "em",
-  "i",
-  "kbd",
-  "mark",
-  "q",
-  "rp",
-  "rt",
-  "ruby",
-  "s",
-  "samp",
-  "small",
-  "span",
-  "strong",
-  "sub",
-  "sup",
-  "time",
-  "u",
-  "var",
-  "wbr",
-  "area",
-  "audio",
-  "img",
-  "map",
-  "track",
-  "video",
-  "embed",
-  "iframe",
-  "object",
-  "param",
-  "picture",
-  "portal",
-  "source",
-  "svg",
-  "math",
-  "canvas",
-  "noscript",
-  "script",
-  "del",
-  "ins",
-  "caption",
-  "col",
-  "colgroup",
-  "table",
-  "tbody",
-  "td",
-  "tfoot",
-  "th",
-  "thead",
-  "tr",
-  "button",
-  "datalist",
-  "fieldset",
-  "form",
-  "input",
-  "label",
-  "legend",
-  "meter",
-  "optgroup",
-  "option",
-  "output",
-  "progress",
-  "select",
-  "textarea",
-  "details",
-  "dialog",
-  "summary",
-  "slot",
-  "template",
+  'html',
+  'base',
+  'head',
+  'link',
+  'meta',
+  'style',
+  'title',
+  'body',
+  'address',
+  'article',
+  'aside',
+  'footer',
+  'header',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'main',
+  'nav',
+  'section',
+  'blockquote',
+  'dd',
+  'div',
+  'dl',
+  'dt',
+  'figcaption',
+  'figure',
+  'hr',
+  'li',
+  'menu',
+  'ol',
+  'p',
+  'pre',
+  'ul',
+  'a',
+  'abbr',
+  'b',
+  'bdi',
+  'bdo',
+  'br',
+  'cite',
+  'code',
+  'data',
+  'dfn',
+  'em',
+  'i',
+  'kbd',
+  'mark',
+  'q',
+  'rp',
+  'rt',
+  'ruby',
+  's',
+  'samp',
+  'small',
+  'span',
+  'strong',
+  'sub',
+  'sup',
+  'time',
+  'u',
+  'var',
+  'wbr',
+  'area',
+  'audio',
+  'img',
+  'map',
+  'track',
+  'video',
+  'embed',
+  'iframe',
+  'object',
+  'param',
+  'picture',
+  'portal',
+  'source',
+  'svg',
+  'math',
+  'canvas',
+  'noscript',
+  'script',
+  'del',
+  'ins',
+  'caption',
+  'col',
+  'colgroup',
+  'table',
+  'tbody',
+  'td',
+  'tfoot',
+  'th',
+  'thead',
+  'tr',
+  'button',
+  'datalist',
+  'fieldset',
+  'form',
+  'input',
+  'label',
+  'legend',
+  'meter',
+  'optgroup',
+  'option',
+  'output',
+  'progress',
+  'select',
+  'textarea',
+  'details',
+  'dialog',
+  'summary',
+  'slot',
+  'template',
   // tags below are SVG tags. See the below article for list of SVG tags
   // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
-  "animate",
-  "animateMotion",
-  "animateTransform",
-  "circle",
-  "clipPath",
-  "defs",
-  "desc",
-  "discard",
-  "ellipse",
-  "feBlend",
-  "feColorMatrix",
-  "feComponentTransfer",
-  "feComposite",
-  "feConvolveMatrix",
-  "feDiffuseLighting",
-  "feDisplacementMap",
-  "feDistantLight",
-  "feDropShadow",
-  "feFlood",
-  "feFuncA",
-  "feFuncB",
-  "feFuncG",
-  "feFuncR",
-  "feGaussianBlur",
-  "feImage",
-  "feMerge",
-  "feMergeNode",
-  "feMorphology",
-  "feOffset",
-  "fePointLight",
-  "feSpecularLighting",
-  "feSpotLight",
-  "feTile",
-  "feTurbulence",
-  "filter",
-  "foreignObject",
-  "g",
-  "hatch",
-  "hatchpath",
-  "image",
-  "line",
-  "linearGradient",
-  "marker",
-  "mask",
-  "metadata",
-  "mpath",
-  "path",
-  "pattern",
-  "polygon",
-  "polyline",
-  "radialGradient",
-  "rect",
-  "set",
-  "stop",
-  "switch",
-  "symbol",
-  "text",
-  "textPath",
-  "tspan",
-  "use",
-  "view",
+  'animate',
+  'animateMotion',
+  'animateTransform',
+  'circle',
+  'clipPath',
+  'defs',
+  'desc',
+  'discard',
+  'ellipse',
+  'feBlend',
+  'feColorMatrix',
+  'feComponentTransfer',
+  'feComposite',
+  'feConvolveMatrix',
+  'feDiffuseLighting',
+  'feDisplacementMap',
+  'feDistantLight',
+  'feDropShadow',
+  'feFlood',
+  'feFuncA',
+  'feFuncB',
+  'feFuncG',
+  'feFuncR',
+  'feGaussianBlur',
+  'feImage',
+  'feMerge',
+  'feMergeNode',
+  'feMorphology',
+  'feOffset',
+  'fePointLight',
+  'feSpecularLighting',
+  'feSpotLight',
+  'feTile',
+  'feTurbulence',
+  'filter',
+  'foreignObject',
+  'g',
+  'hatch',
+  'hatchpath',
+  'image',
+  'line',
+  'linearGradient',
+  'marker',
+  'mask',
+  'metadata',
+  'mpath',
+  'path',
+  'pattern',
+  'polygon',
+  'polyline',
+  'radialGradient',
+  'rect',
+  'set',
+  'stop',
+  'switch',
+  'symbol',
+  'text',
+  'textPath',
+  'tspan',
+  'use',
+  'view',
 ];
 
 const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
@@ -461,7 +461,7 @@ const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
 const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
-      if (code.includes("enable-editor")) {
+      if (code.includes('enable-editor')) {
         code = code.replace(
           'window.addEventListener("message", this.processMessage);',
           'window.addEventListener("message", this.processMessage.bind(this));'
@@ -486,10 +486,10 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
 const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
   code: {
     post: (code) => {
-      if (code.includes("content-component, ContentComponent")) {
+      if (code.includes('content-component, ContentComponent')) {
         code = code.replaceAll(
-          "this.contentSetState",
-          "this.contentSetState.bind(this)"
+          'this.contentSetState',
+          'this.contentSetState.bind(this)'
         );
       }
       return code;
@@ -500,11 +500,11 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
 const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   code: {
     post: (code) => {
-      if (code.includes("builder-symbol, BuilderSymbol")) {
-        code = code.replace("ngOnChanges() {", "ngOnChanges(changes) {");
+      if (code.includes('builder-symbol, BuilderSymbol')) {
+        code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
         code = code.replace(
-          "this.setContent();",
-          "if (changes.symbol) { this.setContent(); }"
+          'this.setContent();',
+          'if (changes.symbol) { this.setContent(); }'
         );
       }
       return code;
@@ -516,8 +516,8 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
  * @type {MitosisConfig}
  */
 module.exports = {
-  files: "src/**",
-  exclude: ["src/**/*.test.ts"],
+  files: 'src/**',
+  exclude: ['src/**/*.test.ts'],
   targets,
   getTargetPath,
   commonOptions: {
@@ -527,7 +527,7 @@ module.exports = {
     angular: {
       standalone: true,
       typescript: true,
-      state: "class-properties",
+      state: 'class-properties',
       plugins: [
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
@@ -541,7 +541,7 @@ module.exports = {
     },
     solid: {
       typescript: true,
-      stylesType: "style-tag",
+      stylesType: 'style-tag',
       plugins: [
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
@@ -549,7 +549,7 @@ module.exports = {
     },
     vue: {
       typescript: true,
-      namePrefix: (path) => (path.includes("/blocks/") ? "builder" : ""),
+      namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
       cssNamespace: getSeededId,
       plugins: [
         () => ({
@@ -567,8 +567,8 @@ module.exports = {
                   if (value) {
                     item.bindings[key] = {
                       ...value,
-                      type: "spread",
-                      spreadType: "event-handlers",
+                      type: 'spread',
+                      spreadType: 'event-handlers',
                     };
                   }
                 }
@@ -577,7 +577,7 @@ module.exports = {
           },
         }),
       ],
-      api: "options",
+      api: 'options',
       asyncComponentImports: false,
     },
     react: {
@@ -588,7 +588,7 @@ module.exports = {
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
       ],
-      stylesType: "style-tag",
+      stylesType: 'style-tag',
     },
     rsc: {
       explicitImportFileExtension: true,
@@ -600,16 +600,16 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (json.name === "Symbol") {
+              if (json.name === 'Symbol') {
                 delete json.state.setContent;
 
                 json.state.contentToUse.code =
-                  json.state.contentToUse?.code.replace("async () => ", "");
-              } else if (json.name === "EnableEditor") {
+                  json.state.contentToUse?.code.replace('async () => ', '');
+              } else if (json.name === 'EnableEditor') {
                 json.imports.push({
-                  path: "next/navigation",
+                  path: 'next/navigation',
                   imports: {
-                    useRouter: "useRouter",
+                    useRouter: 'useRouter',
                   },
                 });
 
@@ -622,12 +622,12 @@ module.exports = {
           },
           code: {
             pre: (code) => {
-              return code.replace("function Symbol(", "async function Symbol(");
+              return code.replace('function Symbol(', 'async function Symbol(');
             },
           },
         }),
       ],
-      stylesType: "style-tag",
+      stylesType: 'style-tag',
     },
     reactNative: {
       typescript: true,
@@ -643,48 +643,48 @@ module.exports = {
                * We cannot set context in `ComponentRef` because it's a light component.
                * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
                **/
-              if (json.name === "ComponentRef") {
+              if (json.name === 'ComponentRef') {
                 json.imports.push({
                   imports: {
-                    BuilderContext: "default",
+                    BuilderContext: 'default',
                   },
-                  path: "../../../../context/builder.context.lite",
+                  path: '../../../../context/builder.context.lite',
                 });
                 json.context.set = {
-                  "../../../../context/builder.context.lite:default": {
-                    name: "BuilderContext",
+                  '../../../../context/builder.context.lite:default': {
+                    name: 'BuilderContext',
                     value: {
                       content: {
-                        code: "props.context.content",
-                        type: "property",
+                        code: 'props.context.content',
+                        type: 'property',
                       },
                       rootState: {
-                        code: "props.context.rootState",
-                        type: "property",
+                        code: 'props.context.rootState',
+                        type: 'property',
                       },
                       localState: {
-                        code: "props.context.localState",
-                        type: "property",
+                        code: 'props.context.localState',
+                        type: 'property',
                       },
                       context: {
-                        code: "props.context.context",
-                        type: "property",
+                        code: 'props.context.context',
+                        type: 'property',
                       },
                       apiKey: {
-                        code: "props.context.apiKey",
-                        type: "property",
+                        code: 'props.context.apiKey',
+                        type: 'property',
                       },
                       componentInfos: {
-                        code: "props.context.componentInfos",
-                        type: "property",
+                        code: 'props.context.componentInfos',
+                        type: 'property',
                       },
                       inheritedStyles: {
-                        code: "props.context.inheritedStyles",
-                        type: "property",
+                        code: 'props.context.inheritedStyles',
+                        type: 'property',
                       },
                       apiVersion: {
-                        code: "props.context.apiVersion",
-                        type: "property",
+                        code: 'props.context.apiVersion',
+                        type: 'property',
                       },
                     },
                   },
@@ -694,15 +694,15 @@ module.exports = {
               /**
                * Fix types
                */
-              if (json.name === "CustomCode") {
-                json.refs.elementRef.typeParameter = "any";
+              if (json.name === 'CustomCode') {
+                json.refs.elementRef.typeParameter = 'any';
               }
 
               /**
                * Fix component name as `Button` is imported from react-native
                */
-              if (json.name === "Button") {
-                json.name = "BuilderButton";
+              if (json.name === 'Button') {
+                json.name = 'BuilderButton';
               }
             },
           },
@@ -721,24 +721,24 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (["Symbol", "ContentVariants"].includes(json.name)) {
+              if (['Symbol', 'ContentVariants'].includes(json.name)) {
                 json.hooks.onMount = [];
                 return;
               }
 
-              if (["EnableEditor", "CustomCode"].includes(json.name)) {
+              if (['EnableEditor', 'CustomCode'].includes(json.name)) {
                 json.hooks.onMount.forEach((hook, i) => {
                   if (hook.onSSR) return;
 
                   json.hooks.onMount.splice(i, 1);
 
                   json.hooks.onEvent.push({
-                    code: hook.code.replaceAll("elementRef", "element"),
-                    eventArgName: "event",
-                    eventName: "qvisible",
+                    code: hook.code.replaceAll('elementRef', 'element'),
+                    eventArgName: 'event',
+                    eventName: 'qvisible',
                     isRoot: true,
-                    refName: "element",
-                    elementArgName: "element",
+                    refName: 'element',
+                    elementArgName: 'element',
                   });
                 });
               }
@@ -770,11 +770,11 @@ module.exports = {
 
                   if (tagArr.includes(item.name)) {
                     item.bindings.this = {
-                      type: "single",
+                      type: 'single',
                       ...item.bindings.this,
                       code: item.name,
                     };
-                    item.name = "svelte:element";
+                    item.name = 'svelte:element';
                   }
                 });
               }
@@ -791,14 +791,14 @@ module.exports = {
                * <svelte:element> and <svelte:component> depending on the type of the block, while
                * handling empty HTML elements.
                */
-              if (json.name === "DynamicRenderer") {
+              if (json.name === 'DynamicRenderer') {
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) return;
 
-                  if (!item.name.includes("TagName")) return;
+                  if (!item.name.includes('TagName')) return;
 
                   item.bindings.this = {
-                    type: "single",
+                    type: 'single',
                     ...item.bindings.this,
                     code: item.name,
                   };
@@ -814,10 +814,10 @@ module.exports = {
                 const filterAttrKeys = filterActionAttrBindings(json, item);
 
                 for (const [key, value] of filterAttrKeys) {
-                  if (value && item.name !== "svelte:component") {
-                    item.bindings["use:setAttrs"] = {
+                  if (value && item.name !== 'svelte:component') {
+                    item.bindings['use:setAttrs'] = {
                       ...value,
-                      type: "single",
+                      type: 'single',
                     };
 
                     delete item.bindings[key];
