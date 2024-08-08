@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
@@ -10,8 +10,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-} from "@angular/core";
-import { isEmptyElement } from "./dynamic-renderer.helpers";
+} from '@angular/core';
+import { isEmptyElement } from './dynamic-renderer.helpers';
 
 export interface DynamicRendererProps {
   children?: any;
@@ -21,7 +21,7 @@ export interface DynamicRendererProps {
 }
 
 @Component({
-  selector: "dynamic-renderer, DynamicRenderer",
+  selector: 'dynamic-renderer, DynamicRenderer',
   template: `
     <ng-template #tagnameTemplate><ng-content></ng-content></ng-template>
     <ng-container *ngIf="!isEmptyElement(TagName)">
@@ -65,16 +65,16 @@ export interface DynamicRendererProps {
   `,
   standalone: true,
   imports: [CommonModule],
-  styles: [":host { display: contents; }"],
+  styles: [':host { display: contents; }'],
 })
 export default class DynamicRenderer {
   isEmptyElement = isEmptyElement;
 
-  @Input() TagName!: DynamicRendererProps["TagName"];
-  @Input() attributes!: DynamicRendererProps["attributes"];
-  @Input() actionAttributes!: DynamicRendererProps["actionAttributes"];
+  @Input() TagName!: DynamicRendererProps['TagName'];
+  @Input() attributes!: DynamicRendererProps['attributes'];
+  @Input() actionAttributes!: DynamicRendererProps['actionAttributes'];
 
-  @ViewChild("tagnameTemplate", { static: true })
+  @ViewChild('tagnameTemplate', { static: true })
   tagnameTemplateRef!: TemplateRef<any>;
 
   myContent?: any[][];
@@ -86,15 +86,15 @@ export default class DynamicRenderer {
   constructor(private vcRef: ViewContainerRef) {}
 
   ngOnInit() {
-    if (typeof this.TagName === "string") {
+    if (typeof this.TagName === 'string') {
       switch (this.TagName) {
-        case "img":
+        case 'img':
           this.TagName = DynamicImage;
           break;
-        case "button":
+        case 'button':
           this.TagName = DynamicButton;
           break;
-        case "a":
+        case 'a':
           this.TagName = DynamicLink;
           break;
         default:
@@ -112,15 +112,15 @@ export default class DynamicRenderer {
 }
 
 @Component({
-  selector: "dynamic-image, DynamicImage",
+  selector: 'dynamic-image, DynamicImage',
   template: ` <img #v /> `,
   standalone: true,
-  styles: [":host { display: contents; }"],
+  styles: [':host { display: contents; }'],
 })
 export class DynamicImage {
   @Input() attributes!: any;
 
-  @ViewChild("v", { read: ElementRef })
+  @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
 
   constructor(private renderer: Renderer2) {}
@@ -129,7 +129,7 @@ export class DynamicImage {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        this.renderer.setAttribute(el, key, this.attributes[key] ?? "");
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
       });
     }
   }
@@ -140,23 +140,23 @@ export class DynamicImage {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        this.renderer.setAttribute(el, key, this.attributes[key] ?? "");
+        this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
       });
     }
   }
 }
 
 @Component({
-  selector: "dynamic-button, DynamicButton",
+  selector: 'dynamic-button, DynamicButton',
   template: ` <button #v><ng-content></ng-content></button>`,
   standalone: true,
-  styles: [":host { display: contents; }"],
+  styles: [':host { display: contents; }'],
 })
 export class DynamicButton {
   @Input() attributes!: any;
   @Input() actionAttributes!: any;
 
-  @ViewChild("v", { read: ElementRef })
+  @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
 
   constructor(private renderer: Renderer2) {}
@@ -165,14 +165,14 @@ export class DynamicButton {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        if (key.startsWith("on")) {
+        if (key.startsWith('on')) {
           this.renderer.listen(
             el,
-            key.replace("on", "").toLowerCase(),
+            key.replace('on', '').toLowerCase(),
             this.attributes[key]
           );
         } else {
-          this.renderer.setAttribute(el, key, this.attributes[key] ?? "");
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
         }
       });
     }
@@ -182,14 +182,14 @@ export class DynamicButton {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        if (key.startsWith("on")) {
+        if (key.startsWith('on')) {
           this.renderer.listen(
             el,
-            key.replace("on", "").toLowerCase(),
+            key.replace('on', '').toLowerCase(),
             this.attributes[key]
           );
         } else {
-          this.renderer.setAttribute(el, key, this.attributes[key] ?? "");
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
         }
       });
     }
@@ -197,16 +197,16 @@ export class DynamicButton {
 }
 
 @Component({
-  selector: "dynamic-link, DynamicLink",
+  selector: 'dynamic-link, DynamicLink',
   template: ` <a #v><ng-content></ng-content></a>`,
   standalone: true,
-  styles: [":host { display: contents; }"],
+  styles: [':host { display: contents; }'],
 })
 export class DynamicLink {
   @Input() attributes!: any;
   @Input() actionAttributes!: any;
 
-  @ViewChild("v", { read: ElementRef })
+  @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
 
   constructor(private renderer: Renderer2) {}
@@ -215,14 +215,14 @@ export class DynamicLink {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        if (key.startsWith("on")) {
+        if (key.startsWith('on')) {
           this.renderer.listen(
             el,
-            key.replace("on", "").toLowerCase(),
+            key.replace('on', '').toLowerCase(),
             this.attributes[key]
           );
         } else {
-          this.renderer.setAttribute(el, key, this.attributes[key] ?? "");
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
         }
       });
     }
@@ -232,14 +232,14 @@ export class DynamicLink {
     const el = this.v && this.v.nativeElement;
     if (el && this.attributes) {
       Object.keys(this.attributes).forEach((key) => {
-        if (key.startsWith("on")) {
+        if (key.startsWith('on')) {
           this.renderer.listen(
             el,
-            key.replace("on", "").toLowerCase(),
+            key.replace('on', '').toLowerCase(),
             this.attributes[key]
           );
         } else {
-          this.renderer.setAttribute(el, key, this.attributes[key] ?? "");
+          this.renderer.setAttribute(el, key, this.attributes[key] ?? '');
         }
       });
     }
