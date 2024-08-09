@@ -9,7 +9,7 @@ test.describe('Integrating Sections', () => {
   });
 
   test('does not load announcement bar at `/announcements/foo`', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName))
+    test.skip(!['react'].includes(packageName));
 
     await page.goto('/announcements/foo');
 

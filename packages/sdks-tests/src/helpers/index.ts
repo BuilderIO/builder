@@ -108,15 +108,14 @@ export const verifyTabContent = async (
   expectedVisibleContent: string,
   expectedHiddenContent: string
 ): Promise<void> => {
-
   await page.click(`button:has-text("${tabButtonText}")`);
-  
+
   const visibleContent = page.locator(`[builder-path="${expectedVisibleContent}"]`);
   await expect(visibleContent).toBeVisible();
-  
+
   const hiddenContent = page.locator(`[builder-path="${expectedHiddenContent}"]`);
   await expect(hiddenContent).not.toBeVisible();
-}
+};
 
 export const checkIsRN = (sdk: Sdk) => sdk === 'reactNative';
 export const checkIsGen1React = (sdk: Sdk) => sdk === 'oldReact';

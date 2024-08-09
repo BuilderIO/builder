@@ -38,7 +38,7 @@ export default function AnnouncementBar() {
 
   return (
     <>
-      {/* Announcement Bar goes here */}  
+      {/* Announcement Bar goes here */}
       {content && (
         <Content
           content={content}

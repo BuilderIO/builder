@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/editable-region',
-    element: <EditableRegionRoute/>
+    element: <EditableRegionRoute />,
   },
   {
     path: '/*',

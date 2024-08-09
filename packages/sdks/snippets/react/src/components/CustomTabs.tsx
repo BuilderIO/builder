@@ -3,19 +3,19 @@
  * src/components/CustomTabs.tsx
  */
 
-import { useState } from 'react';
 import { Blocks, BuilderBlock } from '@builder.io/sdk-react';
+import { useState } from 'react';
 
 type Tab = {
-  tabName: string,
-  children: BuilderBlock[]
-}
+  tabName: string;
+  children: BuilderBlock[];
+};
 type TabProps = {
   tabList: Tab[];
   builderBlock: {
     id: string | undefined;
   };
-}
+};
 
 const CustomTabs = (props: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -48,7 +48,10 @@ const CustomTabs = (props: TabProps) => {
       {props.tabList && props.tabList.length !== 0 && (
         <div>
           {props.tabList.map((tab, index) => (
-            <div key={index} style={{ display: activeTab === index ? 'block' : 'none' }}>
+            <div
+              key={index}
+              style={{ display: activeTab === index ? 'block' : 'none' }}
+            >
               {/** 
                 The Blocks component from Builder.io dynamically renders the content inside the tab.
                 - `parent` is the ID of the Builder's parent div, ensuring correct content rendering.
@@ -62,7 +65,6 @@ const CustomTabs = (props: TabProps) => {
               />
             </div>
           ))}
-
         </div>
       )}
     </div>
@@ -70,4 +72,3 @@ const CustomTabs = (props: TabProps) => {
 };
 
 export default CustomTabs;
-
