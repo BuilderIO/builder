@@ -39,6 +39,11 @@ class EvalCache {
 // - JSON.stringify is expensive to run as a cache key
 // - This likely only helped because we were running processBlock multiple times
 //   but that is not fixed, and this will cause bugs and issues if enabled
+//
+// Perhaps the best approach is to allow users to configure if caching  is enabled or not
+// for instance on edge runtimes with slower evaluation times via the interpreter
+// That said, the repeat processBLock calls was making any evaluation time 10x+ slower
+// which is now fixed, so this still may not be necessary
 const DISABLE_CACHE = true;
 
 export function evaluate({
