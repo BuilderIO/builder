@@ -27,7 +27,6 @@ test.describe('Editable Regions in Custom Components', () => {
     const buttonTexts = await Promise.all(
       buttons.map(async button => {
         const text = await button.textContent();
-        console.log(`Button text: "${text}"`);
         return text?.trim();
       })
     );
