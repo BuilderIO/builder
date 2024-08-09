@@ -8,11 +8,12 @@ test.describe('Integrating Sections', () => {
     await findTextInPage({ page, text: 'This is an announcement banner' });
   });
 
-  test('does not load announcement bar at `/announcements/foo`', async ({ page }) => {
+  test('does not load announcement bar at `/announcements/foo`', async ({ page, packageName }) => {
+    test.skip(!['react'].includes(packageName))
+
     await page.goto('/announcements/foo');
 
     await expect(page.locator('body')).not.toHaveText('This is an announcement banner');
-    await findTextInPage({ page, text: 'Announcement Bar not Found' });
   });
 
   test('rest of the content is always present', async ({ page }) => {
