@@ -3,7 +3,10 @@ import { excludeTestFor, test } from '../helpers/index.js';
 
 test.describe('Duplicate Attributes', () => {
   test('wrapped block has no duplicate attributes', async ({ page, packageName, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+    test.fail(
+      excludeTestFor({ angular: true }, sdk),
+      'attributes not spread out so cant set footer'
+    );
     test.skip(packageName === 'react-native');
     await page.goto('/duplicate-attributes');
 

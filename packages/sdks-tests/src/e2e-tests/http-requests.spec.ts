@@ -44,7 +44,6 @@ test.describe('HTTP Requests', () => {
       packageName === 'nextjs-sdk-next-app',
       'editor tests not supported in nextjs-sdk-next-app'
     );
-    test.skip(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(
       excludeTestFor({ qwik: true }, sdk),
       'error setting httpRequest response or making API call altogether.'

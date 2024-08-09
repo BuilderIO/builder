@@ -2,7 +2,6 @@ import { expect } from '@playwright/test';
 import {
   excludeGen1,
   excludeRn,
-  excludeTestFor,
   getBuilderSessionIdCookie,
   checkIsRN,
   test,
@@ -25,16 +24,11 @@ test.describe('Tracking', () => {
     test('do not appear if canTrack=false (for Symbols)', async ({
       page,
       context,
-      sdk,
       packageName,
     }) => {
       // TO-DO: figure out why React gen1 fails this test,
       // track is not called in a published content if builder.canTrack = false
       test.fail(packageName === 'gen1-react');
-      test.skip(
-        excludeTestFor({ angular: true }, sdk),
-        'Symbols not working well for Angular Gen2 SDK - infinite loop'
-      );
       await page.goto('/symbol-tracking', { waitUntil: 'networkidle' });
 
       const cookies = await context.cookies();

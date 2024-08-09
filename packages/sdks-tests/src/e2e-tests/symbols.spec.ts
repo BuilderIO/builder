@@ -99,7 +99,6 @@ test.describe('Symbols', () => {
   });
 
   test('refresh on locale change', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     // have to use `.skip()` because this test sometimes works in gen2 but flaky
     test.skip(excludeGen2(sdk));
 
@@ -204,7 +203,6 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v1', async ({ page, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(excludeGen2(sdk));
       let x = 0;
 
