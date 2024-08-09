@@ -1,0 +1,114 @@
+{
+  "name": "@builder.io/plugin-multi-select-cloudinary",
+  "version": "0.0.6",
+  "description": "",
+  "keywords": [],
+  "main": "dist/builder-plugin-multi-select-cloudinary.system.js",
+  "module": "dist/builder-plugin-multi-select-cloudinary.es5.js",
+  "unpkg": "dist/builder-plugin-multi-select-cloudinary.system.js",
+  "typings": "dist/types/builder-plugin-multi-select-cloudinary.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": {
+    "name": "Anagha Varhade",
+    "url": "https://github.com/anaghav2023"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "prebuild": "rimraf dist",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch && npm publish",
+    "start": "cross-env SERVE=true rollup -c rollup.config.ts -w",
+    "test": "jest -c jest.config.js",
+    "test:watch": "jest -c jest.config.js --watch",
+    "test:prod": "npm run lint && npm run test -- --no-cache",
+    "deploy-docs": "ts-node tools/gh-pages-publish",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "travis-deploy-once": "travis-deploy-once"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "@babel/preset-typescript": "^7.7.2",
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^10.17.60",
+    "@types/react": "^16.9.11",
+    "colors": "^1.3.2",
+    "commitizen": "^4.3.0",
+    "coveralls": "^3.0.2",
+    "cz-conventional-changelog": "^2.1.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "husky": "^1.0.1",
+    "jest": "^24.9.0",
+    "lint-staged": "^13.2.1",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^1.14.3",
+    "prompt": "^1.0.0",
+    "react-dom": "^16.12.0",
+    "replace-in-file": "^3.4.2",
+    "rimraf": "^2.7.1",
+    "rollup": "^0.67.4",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.18.0",
+    "semantic-release": "^21.0.1",
+    "shelljs": "^0.8.3",
+    "travis-deploy-once": "^5.0.9",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "typedoc": "^0.12.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@builder.io/sdk": "^1.1.29",
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "@material-ui/core": "^3.9.4",
+    "@material-ui/icons": "^3.0.2",
+    "@types/react-helmet": "^5.0.14",
+    "cross-env": "^6.0.3",
+    "react": "^16.11.0",
+    "react-helmet": "^5.2.1"
+  }
+}
