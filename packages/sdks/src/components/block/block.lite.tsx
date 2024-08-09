@@ -3,6 +3,7 @@ import {
   For,
   Show,
   onMount,
+  onUpdate,
   useMetadata,
   useStore,
   useTarget,
@@ -73,9 +74,13 @@ export default function Block(props: BlockProps) {
     // This is used to avoid re-processing the block on every render
     // We need to make this a property on an object so setState() isn't
     // called causing infinite rerenders e.g. in React
-    _processedBlock: { value: null as BuilderBlock | null },
+    _processedBlock: { value: null as BuilderBlock | null, update: false },
     get processedBlock(): BuilderBlock {
-      if (state._processedBlock.value && !isPreviewing()) {
+      if (
+        state._processedBlock.value &&
+        !state._processedBlock.update &&
+        !isPreviewing()
+      ) {
         return state._processedBlock.value;
       }
       const block = props.block.repeat?.collection
@@ -90,6 +95,7 @@ export default function Block(props: BlockProps) {
           });
 
       state._processedBlock.value = block;
+      state._processedBlock.update = false;
 
       return block;
     },
@@ -182,6 +188,10 @@ export default function Block(props: BlockProps) {
         isInteractive: !state.blockComponent?.isRSC,
       };
     },
+  });
+
+  onUpdate(() => {
+    state._processedBlock.update = true;
   });
 
   onMount(() => {
