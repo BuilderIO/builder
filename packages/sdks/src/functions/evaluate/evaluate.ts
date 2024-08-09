@@ -32,6 +32,15 @@ class EvalCache {
   }
 }
 
+// Caching is dangerous for several reasons
+// - JSON.stringify is not safe to run on things like `context`
+//   because anything can be passed, including non-stringifiable objects,
+//   circiular references, etc.
+// - JSON.stringify is expensive to run as a cache key
+// - This likely only helped because we were running processBlock multiple times
+//   but that is not fixed, and this will cause bugs and issues if enabled
+const DISABLE_CACHE = true;
+
 export function evaluate({
   code,
   context,
@@ -56,7 +65,8 @@ export function evaluate({
     localState,
   };
 
-  if (enableCache) {
+  // Do not cache in the browser
+  if (!DISABLE_CACHE && enableCache) {
     const cacheKey = EvalCache.getCacheKey(args);
     const cachedValue = EvalCache.getCachedValue(cacheKey);
 

@@ -63,7 +63,7 @@ const evaluateBindings = ({
       rootState,
       rootSetState,
       context,
-      enableCache: typeof window === 'undefined',
+      enableCache: true,
     });
     set(copied, binding, value);
   }
