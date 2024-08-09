@@ -5,7 +5,7 @@
  */
 import { fetchOneEntry, getBuilderSearchParams } from '@builder.io/sdk-svelte';
 
-/** @type {import('../../$types').PageServerLoad} */
+// /** @type {import('../../$types').PageServerLoad} */
 export async function load(event) {
   // fetch your Builder content
   const content = await fetchOneEntry({

@@ -14,14 +14,11 @@
 </script>
 
 <main>
-  <h1>Welcome to SvelteKit</h1>
-  <h2>Below is your Builder Content:</h2>
   {#if canShowContent}
-    <div>page Title: {data.content?.data?.title || 'Unpublished'}</div>
+    <!-- Your Announcement Bar section -->
     <Content {model} content={data.content} {apiKey} />
-  {:else}
-    <div>Announcement Bar not Found</div>
   {/if}
-  <!-- Your content coming from your app (or also Builder) -->
+  <!-- <NavBar/> -->
+  <!-- <OtherRestOfYourPage/> -->
   <div>The rest of your page goes here</div>
 </main>
