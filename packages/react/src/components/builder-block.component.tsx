@@ -395,10 +395,9 @@ export class BuilderBlock extends React.Component<
     const TextTag: any = 'span';
 
     let options: any = {
-      // Attributes?
       ...block.properties,
-      style: {}, // this.styles
-      responsiveStyles: block.responsiveStyles,
+      style: {},
+      responsiveStyles: fastClone(block.responsiveStyles || {}),
     };
 
     options = {
