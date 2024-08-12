@@ -2422,7 +2422,7 @@ export class Builder {
     }
     // TODO: merge in the attribute from query string ones
     // TODO: make this an option per component/request
-    queryParams.userAttributes = userAttributes;
+    queryParams.userAttributes = JSON.stringify(userAttributes);
 
     if (!usePastQueue && !useQueue) {
       this.priorContentQueue = queue;
