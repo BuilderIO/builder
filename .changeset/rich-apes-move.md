@@ -28,4 +28,4 @@ userAttributes: {
 }
 ```
 
-they were actual string numbers but we failed to parse it because we were not preserving the strings and users had to perform manual stringification hacks like "'1'" to achieve correct result. With this change stringified numbers/bools etc will work out of the box as expected showing less room for randomness.
+they were actual string numbers but we failed to parse it because we were not preserving the strings and users had to perform manual stringification hacks like `"'1'"` to achieve correct result. With this change stringified numbers/bools etc will work out of the box as expected showing less room for randomness.
