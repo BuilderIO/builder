@@ -38,11 +38,8 @@ export default async function Page(props: PageProps) {
 
   return (
     <>
-      {/* Your header coming from Builder */}
-      {canShowContent ? (
+      {canShowContent && (
         <Content content={content} apiKey={apiKey} model={model} />
-      ) : (
-        <div>Announcement Bar not Found</div>
       )}
       {/* Your content coming from your app (or also Builder) */}
       <div>The rest of your page goes here</div>
