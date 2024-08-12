@@ -42,6 +42,7 @@ const AnnouncementBarPage = (props: { content: BuilderContent | null }) => {
           apiKey={BUILDER_API_KEY}
         />
       )}
+      
       {/* content coming from your app (or also Builder) */}
       <div>The rest of your page goes here</div>
     </>

@@ -30,9 +30,11 @@ function AnnouncementBar() {
 
   return (
     <>
+      {/* Your Announcement Bar goes here */}
       {content() && (
         <Content content={content()} apiKey={BUILDER_API_KEY} model={MODEL} />
       )}
+      
       {/* Your content coming from your app (or also Builder) */}
       <div>The rest of your page goes here</div>
     </>

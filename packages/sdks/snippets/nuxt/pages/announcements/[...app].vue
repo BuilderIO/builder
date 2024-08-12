@@ -30,6 +30,8 @@ canShowContent.value = content.value ? true : isPreviewing(route.query);
 </script>
 
 <template>
+  
+  <!--Your Announcement Bar goes here -->
   <Content
     v-if="canShowContent"
     :model="model"

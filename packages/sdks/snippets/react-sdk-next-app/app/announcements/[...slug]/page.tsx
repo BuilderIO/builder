@@ -38,6 +38,7 @@ export default async function Page(props: PageProps) {
 
   return (
     <>
+      {/* Your Announcement Bar goes here */}
       {canShowContent && (
         <Content content={content} apiKey={apiKey} model={model} />
       )}
