@@ -2,7 +2,7 @@
 '@builder.io/react': major
 ---
 
-Breaking Change :firecracker:: `userAttributes` now is parsed as an object - `JSON.stringify(userAttributes)` which preserves strings. Users no longer need to manually stringify anything unless they have explicitly included it in custom targeting attributes.
+Breaking Change 🧨: `userAttributes` now is parsed as an object - `JSON.stringify(userAttributes)` which preserves strings. Users no longer need to manually stringify anything unless they have explicitly included it in custom targeting attributes.
 
 For example,
 
