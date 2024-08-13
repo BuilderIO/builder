@@ -26,7 +26,9 @@ const { data: announcement } = await useAsyncData('builderData', () =>
   })
 );
 
-canShowAnnouncementBar.value = announcement.value ? true : isPreviewing(route.query);
+canShowAnnouncementBar.value = announcement.value
+  ? true
+  : isPreviewing(route.query);
 </script>
 
 <template>

@@ -39,7 +39,7 @@ export default component$(() => {
           apiKey={BUILDER_PUBLIC_API_KEY}
         />
       )}
-      
+
       {/* Your content coming from your app (or also Builder) */}
       <div>The rest of your page goes here</div>
     </>

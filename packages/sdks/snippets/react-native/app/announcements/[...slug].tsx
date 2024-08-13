@@ -24,7 +24,7 @@ export default function AnnouncementScreen() {
         urlPath: `/announcements/${slug}`,
       },
     })
-      .then((data:BuilderContent) => {
+      .then((data: BuilderContent) => {
         setContent(data);
       })
       .catch((err) => console.error('Error fetching Builder Content: ', err));
@@ -39,7 +39,7 @@ export default function AnnouncementScreen() {
           content={content}
         />
       )}
-      
+
       {/* Your content coming from your app (or also Builder) */}
       <Text>The rest of your page goes here</Text>
     </View>
