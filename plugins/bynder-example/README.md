@@ -81,15 +81,15 @@ npm run start
 
 ### Add the development plugin to Builder.io
 
-From your [Account Settings](https://builder.io/account/space) page click the edit (pencil) button next to **Plugins** and enter the development URL for this plugin (e.g. `http://localhost:1268/plugin.system.js`) then hit save.
+From your [Space Settings](https://builder.io/account/space) (click the gear Settings icon in the left menu) click the edit button next to **Plugins**, click the "Add Plugin" and enter the development URL for this plugin in the text field (`http://localhost:1268/plugin.system.js?pluginId=@builder.io/bynder-plugin`) then hit save. The query parameter is necessary for Builder to know what the id of this plugin is, to identify the plugin's settings/configuration. 
 
-**NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
+Now as you develop you can reload the Builder interface to see the latest version of your plugin. (Plugins are loaded once per session, a refresh is required to see any code changes)
 
-<img alt="Load unsafe script example" src="https://i.stack.imgur.com/uSaLL.png">
+**NOTE:** Loading http:// content on an https:// website may give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when developing locally.
 
-Now as you develop you can restart Builder to see the latest version of your plugin.
 
-To uninstall your plugin run just go back to your [Account Settings](https://builder.io/account/space) and click the edit (pencil) button next to **Plugins**, delete your development URL from the list and save
+
+To uninstall your plugin run just go back to your [Space Settings](https://builder.io/account/space) and click the edit button next to **Plugins**, click the X button to remove the plugin
 
 ### Frameworks
 
