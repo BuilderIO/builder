@@ -907,6 +907,10 @@ export class Builder {
   static register(type: 'insertMenu', info: InsertMenuConfig): void;
   static register(type: string, info: any): void;
   static register(type: string, info: any) {
+    if (type === 'plugin') {
+      info = this.serializeIncludingFunctions(info);
+    }
+
     // TODO: all must have name and can't conflict?
     let typeList = this.registry[type];
     if (!typeList) {
@@ -1077,7 +1081,7 @@ export class Builder {
     }
   }
 
-  private static serializeComponentInfo(info: any) {
+  private static serializeIncludingFunctions(info: any) {
     const serializeFn = (fnValue: Function) => {
       const fnStr = fnValue.toString().trim();
 
@@ -1102,7 +1106,7 @@ export class Builder {
 
   private static prepareComponentSpecToSend(spec: Component): Component {
     return {
-      ...this.serializeComponentInfo(spec),
+      ...this.serializeIncludingFunctions(spec),
       class: undefined,
     };
   }

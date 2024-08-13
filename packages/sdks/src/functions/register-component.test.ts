@@ -1,7 +1,7 @@
 import type { ComponentInfo } from '../types/components.js';
 import {
   createRegisterComponentMessage,
-  serializeComponentInfo,
+  serializeIncludingFunctions,
 } from './register-component.js';
 
 describe('Component Registration and Serialization', () => {
@@ -33,7 +33,7 @@ describe('Component Registration and Serialization', () => {
       // Add other required fields as necessary
     };
 
-    const result = serializeComponentInfo(mockComponentInfo);
+    const result = serializeIncludingFunctions(mockComponentInfo);
 
     expect(result).toMatchSnapshot();
     expect(result.name).toBe('TestComponent');
@@ -52,7 +52,7 @@ describe('Component Registration and Serialization', () => {
       // Add other required fields as necessary
     };
 
-    const result = serializeComponentInfo(mockComponentInfo);
+    const result = serializeIncludingFunctions(mockComponentInfo);
 
     expect(result).toMatchSnapshot();
     expect(typeof result.hooks.onInit).toBe('string');
@@ -75,7 +75,7 @@ describe('Component Registration and Serialization', () => {
       // Add other required fields as necessary
     };
 
-    const result = serializeComponentInfo(mockComponentInfo);
+    const result = serializeIncludingFunctions(mockComponentInfo);
 
     expect(result).toMatchSnapshot();
   });
