@@ -30,14 +30,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- Your header coming from Builder -->
   <Content
     v-if="canShowContent"
     :model="model"
     :content="content"
     :api-key="apiKey"
   />
-  <div v-else>Announcement Bar not Found</div>
 
   <!-- Your content coming from your app (or also Builder) -->
   <div>The rest of your page goes here</div>
