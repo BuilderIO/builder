@@ -5,16 +5,16 @@
  */
 import {
   Content,
+  fetchEntries,
   fetchOneEntry,
-  getBuilderSearchParams,
   type BuilderContent,
 } from '@builder.io/sdk-react';
-import type { GetServerSideProps } from 'next';
+import type { GetStaticPaths, GetStaticProps } from 'next';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'announcement-bar';
 
-export const getServerSideProps: GetServerSideProps = async ({ params, query }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const urlPath =
     '/announcements/' +
     (Array.isArray(params?.page) ? params.page.join('/') : params?.page || '');
@@ -23,7 +23,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params, query }) 
     model: MODEL_NAME,
     apiKey: BUILDER_API_KEY,
     userAttributes: { urlPath },
-    options: getBuilderSearchParams(new URLSearchParams(query as any)),
   });
 
   return {
@@ -31,10 +30,16 @@ export const getServerSideProps: GetServerSideProps = async ({ params, query }) 
   };
 };
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
 const AnnouncementBarPage = (props: { content: BuilderContent | null }) => {
   return (
     <>
-      {/* Announcement Bar goes here */}
       {props.content && (
         <Content
           content={props.content}

@@ -30,7 +30,6 @@ function AnnouncementBar() {
 
   return (
     <>
-      {/* Your Announcement Bar goes here */}
       {content() && (
         <Content content={content()} apiKey={BUILDER_API_KEY} model={MODEL} />
       )}

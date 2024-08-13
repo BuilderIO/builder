@@ -12,10 +12,10 @@
   let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   let model = 'announcement-bar';
 
-  let content: BuilderContent | null = null;
+  let announcementBar: BuilderContent | null = null;
 
   async function fetchContent() {
-    content = await fetchOneEntry({
+    announcementBar = await fetchOneEntry({
       apiKey,
       model,
       userAttributes: {
@@ -27,15 +27,11 @@
   fetchContent();
 </script>
 
-<svelte:head>
-  <title>{content?.data?.title || 'Unpublished'}</title>
-</svelte:head>
-
 <main>
-  <!--Your Announcement Bar goes here-->
-  {#if content}
-    <Content {content} {apiKey} {model} />
+  {#if announcementBar}
+    <Content content={announcementBar} {apiKey} {model} />
   {/if}
+  
   <!-- Your content coming from your app (or also Builder) -->
   <div>The rest of your page goes here</div>
 </main>
