@@ -80,6 +80,7 @@ export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
     assetTypes, // this was breaking for some reason
     selectedAssets,
   };
+  // Add the assetFieldSelection prop only if the user has enabled it in advanced settings
   if (pluginSettings?.get(SHOW_ASSET_FIELD_SELECTION)) {
     bynderProps.assetFieldSelection = pluginSettings?.get(ASSET_FIELD_SELECTION);
   }
@@ -173,7 +174,7 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
                 }}
                 src={asset.files.thumbnail.url}
                 // TODO: Error handling when the image fails to load?
-                onError={error => {}}
+                onError={error => { }}
               />
             </Paper>
           </div>

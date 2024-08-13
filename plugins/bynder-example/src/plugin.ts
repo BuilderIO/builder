@@ -58,10 +58,8 @@ Builder.register('plugin', {
       name: ASSET_FIELD_SELECTION,
       friendlyName: 'Asset Field Selection',
       helperText: `Optional: GraphQL selection for asset fields, see https://developer-docs.bynder.com/ui-components`,
-      // Ideally this should be used but it seems to break the app
-      // showIf(options) {
-      //   return !!options.get("showAssetFieldSelection") // also tried with .toJSON();
-      // },
+      showIf: `!!options.get('${SHOW_ASSET_FIELD_SELECTION}')`
+      ,
     },
   ],
   // Modify the save button text
