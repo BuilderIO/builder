@@ -98,6 +98,7 @@
     "@bynder/compact-view": "^4.2.4",
     "@emotion/core": "^10.0.22",
     "@tabler/icons-react": "^3.10.0",
-    "filesize": "^10.1.4"
+    "filesize": "^10.1.4",
+    "source-map-loader": "^0.2.4"
   }
 }

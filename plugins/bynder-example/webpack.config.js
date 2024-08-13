@@ -5,7 +5,7 @@ module.exports = {
   entry: `./src/${pkg.entry}.ts`,
   externals: {
     react: 'react',
-    // 'react-dom': 'react-dom',
+    'react-dom': 'react-dom',
     '@emotion/core': '@emotion/core',
     '@emotion/styled': '@emotion/styled',
     '@builder.io/react': '@builder.io/react',
