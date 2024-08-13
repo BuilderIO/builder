@@ -247,26 +247,6 @@ const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
   },
 });
 
-/**
- * @type {Plugin}
- * We explicitly add the builder-id attribute to the symbol component for Angular,
- * because mitosis doesn't support spreading `props.attributes` yet.
- *
- */
-const ANGULAR_FIX_SYMBOL_BUILDER_ID_ATTRIBUTE = () => ({
-  json: {
-    post: (json) => {
-      if (json.name === 'BuilderSymbol') {
-        json.children[0].bindings['builder-id'] = {
-          code: "props.attributes['builder-id']",
-          type: 'single',
-        };
-      }
-      return json;
-    },
-  },
-});
-
 // for fixing circular dependencies
 /**
  * @type {Plugin}
@@ -606,7 +586,6 @@ module.exports = {
       state: 'class-properties',
       plugins: [
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
-        ANGULAR_FIX_SYMBOL_BUILDER_ID_ATTRIBUTE,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
