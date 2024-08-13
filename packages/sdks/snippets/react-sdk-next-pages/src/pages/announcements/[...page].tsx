@@ -5,7 +5,6 @@
  */
 import {
   Content,
-  fetchEntries,
   fetchOneEntry,
   type BuilderContent,
 } from '@builder.io/sdk-react';
