@@ -30,7 +30,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!--Your Announcement Bar goes here-->
   <Content
     v-if="canShowContent"
     :model="model"
