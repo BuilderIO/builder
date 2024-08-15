@@ -2311,10 +2311,7 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, {
-      next: { revalidate: 1, ...options?.next },
-      ...options,
-    } as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
   }
 
   get host() {
@@ -2516,7 +2513,7 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = { headers: {}, next: { revalidate: 1 } };
+    const requestOptions = { headers: {} };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,
