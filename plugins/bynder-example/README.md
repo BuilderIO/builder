@@ -51,8 +51,9 @@ Builder.registerComponent(
 * Per-instance file-type inputs like Builder's file input component
   * This will require an improvement on Builder's side to support
   * In the meantime, extending `BynderSingleSelect` by creating per-asset-type pickers would be the recommendation.
-* Fix this odd bug:
+* Bynder's React NPM Package Bug:
   * Passing in the currently selected value does not appear to maintain the selection, despite passing in the assetID as defined in Bynder's docs.
+  * Bynder is aware of this issue, and should be resolved with a new version of the Library.
 
 ### Idea: Builder Input replacement
 If completely replacing access to the Builder file input component is desired, you would need to do the following:
