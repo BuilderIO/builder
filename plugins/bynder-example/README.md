@@ -46,7 +46,7 @@ Builder.registerComponent(
 )
 ```
 
-### Rainy Day Task List:
+### Opportunities for further improvement:
 * Change mode from "SingleSelect" to "SingleSelectFile" to take advantage of Asset Derivatives and DAT.
 * Create & implement a multi-image select handler, if valuable
 * Per-instance file-type inputs like Builder's file input component
@@ -61,6 +61,7 @@ If completely replacing access to the Builder file input component is desired, y
 * Change the name key from `"BynderSingleSelect"` to `"file"` when calling `Builder.registerEditor()`
 * Ensure that the only values being saved in the onChange are the final URL of the image, matching the Builder file input type's format. 
 * This could also be done as a toggle, conditionally changing the plugin's name from one to the other.
+* Alternatively, you can use the Builder menu registration to create custom menus that simply don't include the default file picker. 
 
 ## Plugin Development
 
