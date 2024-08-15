@@ -47,7 +47,8 @@ Builder.registerComponent(
 ```
 
 ### Rainy Day Task List:
-* Create & implement a multi-image select handler
+* Change mode from "SingleSelect" to "SingleSelectFile" to take advantage of Asset Derivatives and DAT.
+* Create & implement a multi-image select handler, if valuable
 * Per-instance file-type inputs like Builder's file input component
   * This will require an improvement on Builder's side to support
   * In the meantime, extending `BynderSingleSelect` by creating per-asset-type pickers would be the recommendation.
