@@ -5,9 +5,6 @@ import type { TextProps } from './text.types.js';
 export default function Text(props: TextProps) {
   const state = useStore({
     get processedText(): string {
-      console.log("KYLE ==================")
-      console.log(props);
-    
       const context = props.builderContext.value;
       const {
         context: contextContext,
@@ -16,8 +13,7 @@ export default function Text(props: TextProps) {
         rootSetState,
       } = context;
     
-      console.log(context);
-      return String(props.text || '').replace(
+      return String(props.text?.toString() || '').replace(
         /{{([^}]+)}}/g,
         (match, group) =>
           evaluate({
