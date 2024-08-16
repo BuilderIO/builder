@@ -1,10 +1,13 @@
 import { useStore } from '@builder.io/mitosis';
-import { evaluate } from '../../functions/evaluate/evaluate.js';
+import { evaluate } from '../../functions/evaluate/index.js';
 import type { TextProps } from './text.types.js';
 
 export default function Text(props: TextProps) {
   const state = useStore({
     get processedText(): string {
+      console.log("KYLE ==================")
+      console.log(props);
+    
       const context = props.builderContext.value;
       const {
         context: contextContext,
@@ -12,7 +15,8 @@ export default function Text(props: TextProps) {
         rootState,
         rootSetState,
       } = context;
-      
+    
+      console.log(context);
       return String(props.text || '').replace(
         /{{([^}]+)}}/g,
         (match, group) =>
