@@ -172,16 +172,21 @@ export default function Block(props: BlockProps) {
   });
 
   onMount(() => {
-    const blockId = state.processedBlock.id;
-    const animations = state.processedBlock.animations;
-    if (animations && blockId) {
-      bindAnimations(
-        animations.map((animation) => ({
-          ...animation,
-          elementId: blockId,
-        }))
-      );
-    }
+    useTarget({
+      reactNative: () => {},
+      default: () => {
+        const blockId = state.processedBlock.id;
+        const animations = state.processedBlock.animations;
+        if (animations && blockId) {
+          bindAnimations(
+            animations.map((animation) => ({
+              ...animation,
+              elementId: blockId,
+            }))
+          );
+        }
+      },
+    });
   });
 
   return (
