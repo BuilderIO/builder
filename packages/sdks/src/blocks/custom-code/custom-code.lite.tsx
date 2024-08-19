@@ -1,5 +1,5 @@
 import { onMount, useMetadata, useRef, useStore } from '@builder.io/mitosis';
-import type { BuilderDataProps } from '../../types/builder-props';
+import type { BuilderDataProps } from '../../types/builder-props.js';
 
 useMetadata({
   rsc: {
