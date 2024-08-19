@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.4
+
+### Patch Changes
+
+- 5a6cd39: Fix: ignore animations (avoid crashes when they are used).
+
 ## 2.0.3
 
 ### Patch Changes
