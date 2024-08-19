@@ -2,9 +2,14 @@ import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { RenderHTML } from '@builder.io/react-native-render-html';
 import BuilderContext from '../../context/builder.context';
-import { checkIsDefined } from '../../helpers/nullable.js';
+import { evaluate } from '../../functions/evaluate/index.js';
+
 /**
  * @typedef {{}} BuilderBlock
+ */
+
+/**
+ * @typedef {{}} BuilderContext
  */
 
 /**
@@ -84,12 +89,30 @@ function getCss(block, inheritedStyles) {
 
 /**
  *
- * @param {{ text: string; builderBlock: BuilderBlock}} props
- * @returns
+ * @param {{ text: string; builderBlock: BuilderBlock, builderContext: BuilderContext}} props
+ * @returns 
  */
 export default function Text(props) {
   const { width } = useWindowDimensions();
-  const builderContext = React.useContext(BuilderContext);
+  const context = React.useContext(BuilderContext);
+  const {
+    context: contextContext,
+    localState,
+    rootState,
+    rootSetState,
+  } = context;
+
+  const processedText = String(props.text?.toString() || '').replace(
+        /{{([^}]+)}}/g, 
+        (match, group) => evaluate({
+          code: group,
+          context: contextContext,
+          localState,
+          rootState,
+          rootSetState,
+          enableCache: false,
+        }).toString()
+      );
 
   return (
     <RenderHTML
@@ -97,8 +120,8 @@ export default function Text(props) {
       source={{
         html: `<div style="${getCss(
           props.builderBlock,
-          builderContext.inheritedStyles
-        )}">${checkIsDefined(props.text) ? String(props.text) : ''}</div>`,
+          context.inheritedStyles
+        )}">${processedText}</div>`,
       }}
     />
   );
