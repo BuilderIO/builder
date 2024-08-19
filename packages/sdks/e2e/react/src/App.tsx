@@ -84,6 +84,7 @@ function App() {
               }),
             },
           ]}
+          nonce={window.location.pathname.includes('nonce') ? '123' : undefined}
         />
       )}
     </DataComp>

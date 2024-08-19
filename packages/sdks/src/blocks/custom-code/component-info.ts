@@ -4,6 +4,9 @@ export const componentInfo: ComponentInfo = {
   name: 'Custom Code',
   static: true,
 
+  shouldReceiveBuilderProps: {
+    builderContext: true,
+  },
   requiredPermissions: ['editCode'],
   inputs: [
     {

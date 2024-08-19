@@ -1,4 +1,5 @@
 import { onMount, useMetadata, useRef, useStore } from '@builder.io/mitosis';
+import type { BuilderDataProps } from '../../types/builder-props';
 
 useMetadata({
   rsc: {
@@ -9,6 +10,7 @@ useMetadata({
 export interface CustomCodeProps {
   code: string;
   replaceNodes?: boolean;
+  builderContext: BuilderDataProps['builderContext'];
 }
 
 export default function CustomCode(props: CustomCodeProps) {
@@ -36,6 +38,9 @@ export default function CustomCode(props: CustomCodeProps) {
         const newScript = document.createElement('script');
         newScript.async = true;
         newScript.src = script.src;
+        if (props.builderContext.value.nonce) {
+          newScript.setAttribute('nonce', props.builderContext.value.nonce);
+        }
         document.head.appendChild(newScript);
       } else if (
         !script.type ||
@@ -49,11 +54,22 @@ export default function CustomCode(props: CustomCodeProps) {
           continue;
         }
         try {
+          if (props.builderContext.value.nonce) {
+            script.setAttribute('nonce', props.builderContext.value.nonce);
+          }
           state.scriptsRun.push(script.innerText);
           new Function(script.innerText)();
         } catch (error) {
           console.warn('`CustomCode`: Error running script:', error);
         }
+      }
+    }
+
+    if (props.builderContext.value.nonce) {
+      const styles = elementRef.getElementsByTagName('style');
+      for (let i = 0; i < styles.length; i++) {
+        const style = styles[i];
+        style.setAttribute('nonce', props.builderContext.value.nonce);
       }
     }
   });
