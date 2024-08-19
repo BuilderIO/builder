@@ -1,3 +1,4 @@
+import { TARGET } from '../../constants/target.js';
 import { camelToKebabCase } from '../../functions/camel-to-kebab-case.js';
 import type { BuilderAnimation } from '../../types/builder-block.js';
 
@@ -58,6 +59,10 @@ function assign(target: object, ..._args: any[]) {
 }
 
 export function bindAnimations(animations: BuilderAnimation[]) {
+  if (TARGET === 'reactNative') {
+    return;
+  }
+
   for (const animation of animations) {
     switch (animation.trigger) {
       case 'pageLoad':
