@@ -4112,7 +4112,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk@^2.1.1, @builder.io/sdk@workspace:*, @builder.io/sdk@workspace:packages/core":
+"@builder.io/sdk@workspace:*, @builder.io/sdk@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk@workspace:packages/core"
   dependencies:
