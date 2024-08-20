@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 2.0.5
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 2.0.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.7
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 0.2.6
 
 ### Patch Changes
