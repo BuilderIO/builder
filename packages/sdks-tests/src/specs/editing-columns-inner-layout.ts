@@ -130,7 +130,7 @@ export const MODIFIED_EDITING_COLUMNS = {
                     component: {
                       name: 'Text',
                       options: {
-                        text: 'first',
+                        text: 'third',
                       },
                     },
                     responsiveStyles: {

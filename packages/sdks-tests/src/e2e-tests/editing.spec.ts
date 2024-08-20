@@ -99,10 +99,13 @@ test.describe('Visual Editing', () => {
     }
 
     await sendContentUpdateMessage({ page, newContent: MODIFIED_EDITING_COLUMNS, model: 'page' });
+    // had to hack this so that we can wait for the content update to actually show up (was failing in Qwik)
+    await page.frameLocator('iframe').getByText('third').waitFor();
 
-    await expect(firstText).toBeVisible();
+    const updatedFirstText = page.frameLocator('iframe').getByText('third');
+    await expect(updatedFirstText).toBeVisible();
     await expect(secondText).toBeVisible();
-    const updatedFirstBox = await firstText.boundingBox();
+    const updatedFirstBox = await updatedFirstText.boundingBox();
     const updatedSecondBox = await secondText.boundingBox();
     if (updatedFirstBox && updatedSecondBox) {
       expect(updatedFirstBox.x).toBeLessThan(updatedSecondBox.x);
