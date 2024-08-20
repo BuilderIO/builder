@@ -29,7 +29,7 @@ export const CONTENT = {
   data: {
     themeId: false,
     title: 'text-eval',
-    inputs: [ ],
+    inputs: [],
     blocks: [
       {
         '@type': '@builder.io/sdk:Element',

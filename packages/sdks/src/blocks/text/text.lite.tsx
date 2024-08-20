@@ -12,7 +12,7 @@ export default function Text(props: TextProps) {
         rootState,
         rootSetState,
       } = context;
-    
+
       return String(props.text?.toString() || '').replace(
         /{{([^}]+)}}/g,
         (match, group) =>
