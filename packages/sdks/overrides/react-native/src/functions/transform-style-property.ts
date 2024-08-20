@@ -5,6 +5,213 @@ import type { BuilderBlock } from '../types/builder-block.js';
 import type { Dictionary } from '../types/typescript.js';
 import { extractCssVarDefaultValue } from './extract-css-var-default-value.js';
 
+function extractVarValue(value: string): string {
+  // Regular expression to find var() expressions
+  const varRegex = /var\(--[^,]+?,\s*([^)]+)\)/;
+
+  // Function to replace var() with its fallback
+  let newValue = value;
+  let match;
+  while ((match = newValue.match(varRegex))) {
+    newValue = newValue.replace(match[0], match[1].trim());
+  }
+
+  return newValue;
+}
+// Common regex patterns
+const numberPattern = /^-?\d+(\.\d+)?$/;
+const lengthPattern = /^-?(\d+)(px|%)?$/;
+const pixelPattern = /^-?(\d+)(px)?$/;
+const colorPattern =
+  /^(#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}|rgb\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)|rgba\(\d{1,3},\s?\d{1,3},\s?\d{1,3},\s?([01]|0?\.\d+)\))$/;
+const offsetPattern = /^\{width:\s?-?\d+(px)?,\s?height:\s?-?\d+(px)?\}$/;
+
+type CSSPropertyValidator = (value: string) => boolean;
+
+const cssProperties: Record<string, CSSPropertyValidator> = {
+  // Ignore this, we add it to elements but this is the behavior already in
+  // React Native and ignored by it
+  boxSizing: () => true,
+  // Layout Properties
+  width: (value: string) =>
+    lengthPattern.test(value) || ['auto', 'fit-content'].includes(value),
+  height: (value: string) =>
+    lengthPattern.test(value) || ['auto', 'fit-content'].includes(value),
+  minWidth: (value: string) => lengthPattern.test(value) || value === 'auto',
+  maxWidth: (value: string) => lengthPattern.test(value) || value === 'auto',
+  minHeight: (value: string) => lengthPattern.test(value) || value === 'auto',
+  maxHeight: (value: string) => lengthPattern.test(value) || value === 'auto',
+  aspectRatio: (value: string) =>
+    numberPattern.test(value) || /^\d+\/\d+$/.test(value),
+
+  // Flexbox Properties
+  flex: (value: string) => numberPattern.test(value),
+  flexBasis: (value: string) => lengthPattern.test(value) || value === 'auto',
+  flexDirection: (value: string) =>
+    ['row', 'row-reverse', 'column', 'column-reverse'].includes(value),
+  flexGrow: (value: string) => numberPattern.test(value),
+  flexShrink: (value: string) => numberPattern.test(value),
+  flexWrap: (value: string) =>
+    ['wrap', 'nowrap', 'wrap-reverse'].includes(value),
+
+  // Alignment Properties
+  alignContent: (value: string) =>
+    [
+      'flex-start',
+      'flex-end',
+      'center',
+      'stretch',
+      'space-between',
+      'space-around',
+    ].includes(value),
+  alignItems: (value: string) =>
+    ['flex-start', 'flex-end', 'center', 'stretch', 'baseline'].includes(value),
+  alignSelf: (value: string) =>
+    [
+      'auto',
+      'flex-start',
+      'flex-end',
+      'center',
+      'stretch',
+      'baseline',
+    ].includes(value),
+  justifyContent: (value: string) =>
+    [
+      'flex-start',
+      'flex-end',
+      'center',
+      'space-between',
+      'space-around',
+      'space-evenly',
+    ].includes(value),
+
+  // Positioning Properties
+  position: (value: string) => ['absolute', 'relative'].includes(value),
+  top: (value: string) => lengthPattern.test(value) || value === 'auto',
+  right: (value: string) => lengthPattern.test(value) || value === 'auto',
+  bottom: (value: string) => lengthPattern.test(value) || value === 'auto',
+  left: (value: string) => lengthPattern.test(value) || value === 'auto',
+  zIndex: (value: string) => /^-?\d+$/.test(value),
+
+  // Margin and Padding Properties
+  margin: (value: string) => lengthPattern.test(value) || value === 'auto',
+  marginTop: (value: string) => lengthPattern.test(value) || value === 'auto',
+  marginRight: (value: string) => lengthPattern.test(value) || value === 'auto',
+  marginBottom: (value: string) =>
+    lengthPattern.test(value) || value === 'auto',
+  marginLeft: (value: string) => lengthPattern.test(value) || value === 'auto',
+  marginHorizontal: (value: string) =>
+    lengthPattern.test(value) || value === 'auto',
+  marginVertical: (value: string) =>
+    lengthPattern.test(value) || value === 'auto',
+  padding: (value: string) => lengthPattern.test(value),
+  paddingTop: (value: string) => lengthPattern.test(value),
+  paddingRight: (value: string) => lengthPattern.test(value),
+  paddingBottom: (value: string) => lengthPattern.test(value),
+  paddingLeft: (value: string) => lengthPattern.test(value),
+  paddingHorizontal: (value: string) => lengthPattern.test(value),
+  paddingVertical: (value: string) => lengthPattern.test(value),
+
+  // Border Properties
+  borderStyle: (value: string) =>
+    ['solid', 'dotted', 'dashed', 'none'].includes(value),
+  borderWidth: (value: string) => pixelPattern.test(value),
+  borderTopWidth: (value: string) => pixelPattern.test(value),
+  borderRightWidth: (value: string) => pixelPattern.test(value),
+  borderBottomWidth: (value: string) => pixelPattern.test(value),
+  borderLeftWidth: (value: string) => pixelPattern.test(value),
+  borderColor: (value: string) => colorPattern.test(value),
+  borderTopColor: (value: string) => colorPattern.test(value),
+  borderRightColor: (value: string) => colorPattern.test(value),
+  borderBottomColor: (value: string) => colorPattern.test(value),
+  borderLeftColor: (value: string) => colorPattern.test(value),
+  borderRadius: (value: string) => pixelPattern.test(value),
+  borderTopLeftRadius: (value: string) => pixelPattern.test(value),
+  borderTopRightRadius: (value: string) => pixelPattern.test(value),
+  borderBottomLeftRadius: (value: string) => pixelPattern.test(value),
+  borderBottomRightRadius: (value: string) => pixelPattern.test(value),
+
+  // Background Properties
+  backgroundColor: (value: string) => colorPattern.test(value),
+  opacity: (value: string) => /^([01]|0?\.\d+)$/.test(value),
+
+  // Text Properties
+  color: (value: string) => colorPattern.test(value),
+  fontFamily: () => true, // Any string is valid
+  fontSize: (value: string) => pixelPattern.test(value),
+  fontStyle: (value: string) => ['normal', 'italic'].includes(value),
+  fontWeight: (value: string) =>
+    [
+      'normal',
+      'bold',
+      '100',
+      '200',
+      '300',
+      '400',
+      '500',
+      '600',
+      '700',
+      '800',
+      '900',
+    ].includes(value),
+  letterSpacing: (value: string) => pixelPattern.test(value),
+  lineHeight: (value: string) =>
+    numberPattern.test(value) || pixelPattern.test(value),
+  textAlign: (value: string) =>
+    ['auto', 'left', 'right', 'center', 'justify'].includes(value),
+  textDecorationLine: (value: string) =>
+    ['none', 'underline', 'line-through', 'underline line-through'].includes(
+      value
+    ),
+  textDecorationStyle: (value: string) =>
+    ['solid', 'double', 'dotted', 'dashed'].includes(value),
+  textDecorationColor: (value: string) => colorPattern.test(value),
+  textShadowColor: (value: string) => colorPattern.test(value),
+  textShadowOffset: (value: string) => offsetPattern.test(value),
+  textShadowRadius: (value: string) => pixelPattern.test(value),
+  textTransform: (value: string) =>
+    ['none', 'uppercase', 'lowercase', 'capitalize'].includes(value),
+
+  // Other Properties
+  elevation: (value: string) => /^\d+$/.test(value), // Android-specific
+  resizeMode: (value: string) =>
+    ['cover', 'contain', 'stretch', 'repeat', 'center'].includes(value),
+  overflow: (value: string) => ['visible', 'hidden', 'scroll'].includes(value),
+  display: (value: string) => ['none', 'flex'].includes(value),
+
+  // iOS-specific Shadow Properties
+  shadowColor: (value: string) => colorPattern.test(value),
+  shadowOffset: (value: string) => offsetPattern.test(value),
+  shadowOpacity: (value: string) => /^([01]|0?\.\d+)$/.test(value),
+  shadowRadius: (value: string) => pixelPattern.test(value),
+
+  // Android-specific Properties
+  includeFontPadding: (value: string) => ['true', 'false'].includes(value),
+
+  // Transform Properties
+  transform: (value: string) => {
+    const validTransforms = [
+      /^translate\(\s*-?\d+(\.\d+)?(px|%)?\s*,\s*-?\d+(\.\d+)?(px|%)?\s*\)$/,
+      /^scale\(\s*-?\d+(\.\d+)?\s*(,\s*-?\d+(\.\d+)?)?\s*\)$/,
+      /^rotate\(\s*-?\d+(\.\d+)?deg\s*\)$/,
+      /^skew\(\s*-?\d+(\.\d+)?deg\s*(,\s*-?\d+(\.\d+)?deg)?\s*\)$/,
+    ];
+    const transforms = value.split(/\s(?=[a-z])/).filter(Boolean);
+    return transforms.every((t) =>
+      validTransforms.some((regex) => regex.test(t))
+    );
+  },
+};
+
+function validateReactNativeCssProperty(key: string, value: string): boolean {
+  const validator = cssProperties[key];
+  if (!validator) {
+    // Property not supported in React Native
+    return false;
+  }
+  return validator(extractVarValue(value.trim()));
+}
+
 const cssToReactNative: typeof cssToStyleSheet = (cssToStyleSheet as any)
   .default
   ? (cssToStyleSheet as any).default
@@ -234,6 +441,8 @@ const cleanCssStyleProps = (styles: {
   Object.entries(styles).reduce((acc, [key, value]) => {
     const processedValue = processValue(styles, [key, value]);
     if (processedValue === undefined) return acc;
+    const isValid = validateReactNativeCssProperty(key, processedValue);
+    if (!isValid) return acc;
     return { ...acc, [key]: processedValue };
   }, {});
 
@@ -276,6 +485,18 @@ function getReactNativeBlockStyles({
   const newStyles = cssToReactNative(
     Object.entries(cleanedCSS)
   ) as any as CSSStyleDeclaration;
+
+  if (context.isStrictStyleMode) {
+    for (const key in newStyles) {
+      const isValid = validateReactNativeCssProperty(key, newStyles[key]);
+      if (!isValid) {
+        console.log('invalid style', { key, value: newStyles[key] });
+        delete newStyles[key];
+      }
+    }
+  }
+
+  console.log({ isStrictStyleMode: context.isStrictStyleMode });
 
   return newStyles;
 }
