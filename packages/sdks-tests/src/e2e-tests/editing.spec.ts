@@ -5,6 +5,7 @@ import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import { test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
+import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {
@@ -67,6 +68,48 @@ test.describe('Visual Editing', () => {
     await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
+
+  test('correctly updates Box -> Columns when used Inner Layout > Columns option', async ({
+    page,
+    packageName,
+    basePort,
+  }) => {
+    test.skip(
+      packageName === 'react-native' ||
+        packageName === 'nextjs-sdk-next-app' ||
+        packageName === 'gen1-next' ||
+        packageName === 'gen1-react' ||
+        packageName === 'gen1-remix'
+    );
+
+    await launchEmbedderAndWaitForSdk({
+      path: '/editing-box-columns-inner-layout',
+      basePort,
+      page,
+    });
+
+    const firstText = page.frameLocator('iframe').getByText('first');
+    const secondText = page.frameLocator('iframe').getByText('second');
+    await expect(firstText).toBeVisible();
+    await expect(secondText).toBeVisible();
+    const firstBox = await firstText.boundingBox();
+    const secondBox = await secondText.boundingBox();
+    if (firstBox && secondBox) {
+      expect(firstBox.y).toBeLessThan(secondBox.y);
+    }
+
+    await sendContentUpdateMessage({ page, newContent: MODIFIED_EDITING_COLUMNS, model: 'page' });
+
+    await expect(firstText).toBeVisible();
+    await expect(secondText).toBeVisible();
+    const updatedFirstBox = await firstText.boundingBox();
+    const updatedSecondBox = await secondText.boundingBox();
+    if (updatedFirstBox && updatedSecondBox) {
+      expect(updatedFirstBox.x).toBeLessThan(updatedSecondBox.x);
+      expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
+    }
+  });
+
   test.describe('fails for empty trusted hosts', () => {
     test.fail();
     editorTests({ noTrustedHosts: true });
