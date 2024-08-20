@@ -45,6 +45,7 @@ import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
+import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
@@ -93,6 +94,7 @@ const PAGES = {
   '/show-hide-if-repeats': SHOW_HIDE_IF_REPEATS,
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
+  '/text-eval': textEval,
   '/state-binding': stateBinding,
   '/nested-symbols': nestedSymbols,
   '/editing-styles': EDITING_STYLES,
