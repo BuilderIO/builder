@@ -518,20 +518,37 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
       if (code.includes('enable-editor')) {
-        code = code.replace(
-          'window.addEventListener("message", this.processMessage);',
-          'window.addEventListener("message", this.processMessage.bind(this));'
+        // find two event listeners and add bind(this) to the fn passed
+        const eventListeners = code.match(
+          /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
-        code = code.replace(
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate
-          );`,
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate.bind(this)
-          );`
+        if (eventListeners && eventListeners.length) {
+          eventListeners.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.addEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.addEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
+        const eventListenersRemove = code.match(
+          /window\.removeEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
+        if (eventListenersRemove && eventListenersRemove.length) {
+          eventListenersRemove.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.removeEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.removeEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
       }
       return code;
     },
