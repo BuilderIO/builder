@@ -3,6 +3,7 @@ import type { ApiVersion } from '../types/api-version.js';
 import type { BuilderContent } from '../types/builder-content.js';
 import type { ComponentInfo } from '../types/components.js';
 import type { Dictionary, Nullable } from '../types/typescript.js';
+import type { ExtraContextTypes } from './extra-context-types.js';
 
 export type RegisteredComponent = ComponentInfo & {
   component: any;
@@ -15,7 +16,8 @@ export type BuilderRenderState = Record<string, unknown>;
 export type BuilderRenderContext = Record<string, unknown>;
 
 export interface BuilderContextInterface
-  extends Pick<BlocksWrapperProps, 'BlocksWrapper' | 'BlocksWrapperProps'> {
+  extends Pick<BlocksWrapperProps, 'BlocksWrapper' | 'BlocksWrapperProps'>,
+    ExtraContextTypes {
   content: Nullable<BuilderContent>;
   context: BuilderRenderContext;
   /**

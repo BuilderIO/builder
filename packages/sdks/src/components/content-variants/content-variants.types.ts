@@ -5,8 +5,9 @@ import type {
 import type { ApiVersion } from '../../types/api-version.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
+import type { ExtraFrameworkProps } from './extra-framework-props-types.js';
 
-export interface ContentVariantsPrps {
+export interface ContentVariantsPrps extends ExtraFrameworkProps {
   /**
    * The Builder content JSON to render (required).
    */
