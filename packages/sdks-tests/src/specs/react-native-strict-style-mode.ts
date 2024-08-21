@@ -1,57 +1,19 @@
 export const REACT_NATIVE_STRICT_STYLE_MODE_CONTENT = {
   data: {
     themeId: false,
-    title: 'data-binding-styles',
+    title: 'test-rn-style',
+    newField3: 'testing',
     blocks: [
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        id: 'builder-53b3b3d1ab0e49e6b9645f0edb5cfa2c',
-        children: [
-          {
-            '@type': '@builder.io/sdk:Element',
-            '@version': 2,
-            bindings: { 'style.color': 'state.myTextColor' },
-            code: {
-              bindings: {
-                'style.color':
-                  '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\nstate.myTextColor;\n',
-              },
-            },
-            id: 'builder-05cadf76ae1e4359aeb76b2b5e4febc4',
-            meta: {
-              bindingActions: {
-                style: {
-                  color: [
-                    {
-                      '@type': '@builder.io/core:Action',
-                      action: '@builder.io:customCode',
-                      options: {
-                        code: '/**\n * Global objects available in custom action code:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * context - builder context object - learn about context https://github.com/BuilderIO/builder/tree/main/packages/react#passing-data-and-functions-down\n * event - HTML Event - https://developer.mozilla.org/en-US/docs/Web/API/Event\n *\n * Learn more: https://www.builder.io/c/docs/guides/custom-code\n *\n */\nstate.myTextColor',
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-            component: {
-              name: 'Text',
-              options: { text: 'This text should be red...' },
-            },
-            responsiveStyles: {
-              large: {
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-                flexShrink: '0',
-                boxSizing: 'border-box',
-                marginTop: '20px',
-                lineHeight: 'normal',
-                height: 'auto',
-              },
-            },
+        id: 'builder-6d7499351c7b402bb343a2b1492c6573',
+        component: {
+          name: 'Text',
+          options: {
+            text: '<span style="display: block;" class="builder-paragraph">hello world</span>',
           },
-        ],
+        },
         responsiveStyles: {
           large: {
             display: 'flex',
@@ -59,15 +21,23 @@ export const REACT_NATIVE_STRICT_STYLE_MODE_CONTENT = {
             position: 'relative',
             flexShrink: '0',
             boxSizing: 'border-box',
-            marginTop: '20px',
+            marginTop: '20p',
+            lineHeight: 'normal',
             height: 'auto',
-            paddingBottom: '30px',
+          },
+          small: {
+            width: '65%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            borderRadius: '50%',
+            borderWidth: '4px',
+            borderStyle: 'solid',
+            color: 'rgba(255, 27, 27, 1)',
+            borderColor: 'rgba(80, 227, 194, 1)',
           },
         },
       },
     ],
-    state: {
-      myTextColor: 'red',
-    },
+    inputs: [],
   },
 };
