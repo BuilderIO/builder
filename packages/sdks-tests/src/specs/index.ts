@@ -53,6 +53,7 @@ import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
 import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
+import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -81,6 +82,8 @@ const PAGES = {
   '/image-no-webp': imageNoWebp,
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
+  '/react-native-strict-style-mode': REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
+  '/react-native-strict-style-mode-disabled': REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
   '/ab-test': abTest,
   '/ab-test-interactive': AB_TEST_INTERACTIVE,
   '/http-requests': HTTP_REQUESTS,
@@ -212,6 +215,11 @@ export const getProps = async (args: {
       // overrides page model below
       extraProps = {
         model: 'test-model',
+      };
+      break;
+    case '/react-native-strict-style-mode':
+      extraProps = {
+        isStrictStyleMode: true,
       };
       break;
     default:

@@ -1,4 +1,4 @@
-import cssToStyleSheet from 'css-to-react-native';
+import { getPropertyName, getStylesForProperty } from 'css-to-react-native';
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
@@ -209,13 +209,17 @@ function validateReactNativeCssProperty(key: string, value: string): boolean {
     // Property not supported in React Native
     return false;
   }
+  if (typeof value !== 'string') {
+    return false;
+  }
   return validator(extractVarValue(value.trim()));
 }
 
-const cssToReactNative: typeof cssToStyleSheet = (cssToStyleSheet as any)
-  .default
-  ? (cssToStyleSheet as any).default
-  : cssToStyleSheet;
+// type CssToReactNative = typeof import('css-to-react-native')
+// const cssToReactNative: typeof cssToStyleSheet = (cssToStyleSheet as any)
+//   .default
+//   ? (cssToStyleSheet as any).default
+//   : cssToStyleSheet;
 
 type StyleSheetProperties = ImageStyle & TextStyle & ViewStyle;
 
@@ -374,8 +378,10 @@ function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
 const inRange = (value: number, min: number, max: number) =>
   value >= min && value <= max;
 
+type Styles = { [key: string]: string };
+
 const processValue = (
-  styles: { [key: string]: string },
+  styles: Styles,
   [key, value]: [string, unknown]
 ): string | undefined => {
   if (typeof value !== 'string' || value === '') return undefined;
@@ -435,14 +441,21 @@ const processValue = (
 /**
  * @description Cleans styles that RN can't handle and css-to-react-native doesn't fix
  */
-const cleanCssStyleProps = (styles: {
-  [key: string]: string;
-}): { [key: string]: string } =>
+const cleanCssStyleProps = ({
+  styles,
+  isStrictStyleMode,
+}: {
+  styles: Styles;
+  isStrictStyleMode: boolean;
+}): Styles =>
   Object.entries(styles).reduce((acc, [key, value]) => {
     const processedValue = processValue(styles, [key, value]);
     if (processedValue === undefined) return acc;
-    const isValid = validateReactNativeCssProperty(key, processedValue);
-    if (!isValid) return acc;
+    if (
+      isStrictStyleMode &&
+      !validateReactNativeCssProperty(key, processedValue)
+    )
+      return acc;
     return { ...acc, [key]: processedValue };
   }, {});
 
@@ -478,25 +491,32 @@ function getReactNativeBlockStyles({
     ...largeAndMediumStyles,
     ...(responsiveStyles.small || {}),
     ...blockStyles,
-  } as Record<string, string | number>;
+  };
 
-  const cleanedCSS = cleanCssStyleProps(styles as any);
+  const cleanedCSS = cleanCssStyleProps({
+    styles,
+    isStrictStyleMode: context.isStrictStyleMode,
+  });
 
-  const newStyles = cssToReactNative(
-    Object.entries(cleanedCSS)
-  ) as any as CSSStyleDeclaration;
-
-  if (context.isStrictStyleMode) {
-    for (const key in newStyles) {
-      const isValid = validateReactNativeCssProperty(key, newStyles[key]);
-      if (!isValid) {
-        console.log('invalid style', { key, value: newStyles[key] });
-        delete newStyles[key];
-      }
+  /**
+   * Rewrite of library's default export with per-rule error-swallowing:
+   * https://github.com/styled-components/css-to-react-native/blob/837637bb134a88e8cd734b51634338fd6555068d/src/index.js#L70-L79
+   */
+  const newStyles = Object.entries(cleanedCSS).reduce((accum, rule) => {
+    try {
+      const propertyName = getPropertyName(rule[0]);
+      const stylesForProp = getStylesForProperty(propertyName, rule[1], true);
+      return Object.assign(accum, stylesForProp);
+    } catch (error) {
+      /**
+       * Silently ignore any values that cause a crash in `css-to-react-native`
+       * Example: this is most common when actively editing. In the process of
+       * typing `15px`, the visual editor sends `15p` which throws an error.
+       */
     }
-  }
 
-  console.log({ isStrictStyleMode: context.isStrictStyleMode });
+    return accum;
+  }, {});
 
   return newStyles;
 }
