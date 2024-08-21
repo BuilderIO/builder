@@ -157,7 +157,7 @@ export default function ContentComponent(props: ContentProps) {
           setBuilderContextSignal: setBuilderContextSignal,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          isStrictStyleMode: props.isStrictStyleMode,
+          strictStyleMode: props.strictStyleMode,
         },
         // eslint-disable-next-line object-shorthand
         solid: { setBuilderContextSignal: setBuilderContextSignal },
