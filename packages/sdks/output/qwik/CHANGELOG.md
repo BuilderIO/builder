@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.4
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 0.16.3
 
 ### Patch Changes

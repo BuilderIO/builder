@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.5
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 2.0.4
 
 ### Patch Changes
