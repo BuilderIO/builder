@@ -130,7 +130,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
               {...useTarget({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-expect-error
-                reactNative: { isStrictStyleMode: props.isStrictStyleMode },
+                reactNative: { strictStyleMode: props.strictStyleMode },
                 default: {},
               })}
             />
@@ -144,7 +144,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
           vue: { key: state.shouldRenderVariants.toString() },
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
-          reactNative: { isStrictStyleMode: props.isStrictStyleMode },
+          reactNative: { strictStyleMode: props.strictStyleMode },
           default: {},
         })}
         content={state.defaultContent}

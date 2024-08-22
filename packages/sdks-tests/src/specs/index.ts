@@ -221,7 +221,7 @@ export const getProps = async (args: {
       break;
     case '/react-native-strict-style-mode':
       extraProps = {
-        isStrictStyleMode: true,
+        strictStyleMode: true,
       };
       break;
     default:

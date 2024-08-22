@@ -24,7 +24,7 @@ test.describe('React Native - Strict Styles', () => {
     // non-ignored style
     await expect(textWrapper).toHaveCSS('border-color', 'rgb(80, 227, 194)');
 
-    // style that would be ignored by `isStrictStyleMode` prop
+    // style that would be ignored by `strictStyleMode` prop
     await expect(textWrapper).toHaveCSS('border-radius', '50%');
   });
 });

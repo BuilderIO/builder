@@ -443,18 +443,15 @@ const processValue = (
  */
 const cleanCssStyleProps = ({
   styles,
-  isStrictStyleMode,
+  strictStyleMode,
 }: {
   styles: Styles;
-  isStrictStyleMode: boolean;
+  strictStyleMode: boolean;
 }): Styles =>
   Object.entries(styles).reduce((acc, [key, value]) => {
     const processedValue = processValue(styles, [key, value]);
     if (processedValue === undefined) return acc;
-    if (
-      isStrictStyleMode &&
-      !validateReactNativeCssProperty(key, processedValue)
-    )
+    if (strictStyleMode && !validateReactNativeCssProperty(key, processedValue))
       return acc;
     return { ...acc, [key]: processedValue };
   }, {});
@@ -495,7 +492,7 @@ function getReactNativeBlockStyles({
 
   const cleanedCSS = cleanCssStyleProps({
     styles,
-    isStrictStyleMode: context.isStrictStyleMode,
+    strictStyleMode: context.strictStyleMode,
   });
 
   /**

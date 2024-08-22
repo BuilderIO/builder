@@ -155,7 +155,7 @@ const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
       json.state.builderContextSignal.code =
         json.state.builderContextSignal.code.replace(
           /^\s*{/,
-          '{isStrictStyleMode: props.isStrictStyleMode,'
+          '{strictStyleMode: props.strictStyleMode,'
         );
 
       return json;
