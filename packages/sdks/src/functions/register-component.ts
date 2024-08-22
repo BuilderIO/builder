@@ -2,7 +2,7 @@ import type { ComponentInfo } from '../types/components.js';
 
 export const createRegisterComponentMessage = (info: ComponentInfo) => ({
   type: 'builder.registerComponent',
-  data: serializeComponentInfo(info),
+  data: serializeIncludingFunctions(info),
 });
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -19,7 +19,7 @@ const serializeFn = (fnValue: Function) => {
   return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
 };
 
-export function serializeComponentInfo(info: ComponentInfo) {
+export function serializeIncludingFunctions(info: ComponentInfo) {
   return JSON.parse(
     JSON.stringify(info, (key, value) => {
       if (typeof value === 'function') {

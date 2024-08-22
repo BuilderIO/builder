@@ -22,7 +22,7 @@ describe('Builder', () => {
   });
 });
 
-describe('serializeComponentInfo', () => {
+describe('serializeIncludingFunctions', () => {
   test('serializes functions in inputs', () => {
     const input = {
       name: 'TestComponent',
@@ -37,7 +37,7 @@ describe('serializeComponentInfo', () => {
       ],
     };
 
-    const result = Builder['serializeComponentInfo'](input);
+    const result = Builder['serializeIncludingFunctions'](input);
 
     expect(typeof result.inputs[0].onChange).toBe('string');
     expect(result.inputs[0].onChange).toContain('return value.toUpperCase()');
@@ -55,7 +55,7 @@ describe('serializeComponentInfo', () => {
       ],
     };
 
-    const result = Builder['serializeComponentInfo'](input);
+    const result = Builder['serializeIncludingFunctions'](input);
 
     expect(typeof result.inputs[0].onChange).toBe('string');
     expect(result.inputs[0].onChange).toContain('value * 2');
@@ -73,7 +73,7 @@ describe('serializeComponentInfo', () => {
       ],
     };
 
-    const result = Builder['serializeComponentInfo'](input);
+    const result = Builder['serializeIncludingFunctions'](input);
 
     expect(result).toEqual(input);
   });
@@ -102,7 +102,7 @@ describe('serializeComponentInfo', () => {
       ],
     };
 
-    const result = Builder['serializeComponentInfo'](input);
+    const result = Builder['serializeIncludingFunctions'](input);
 
     expect(typeof result.inputs[0].onChange).toBe('string');
     expect(result.inputs[0].onChange).toContain('value.trim()');
