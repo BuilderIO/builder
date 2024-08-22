@@ -7,6 +7,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { TARGET } from '../../constants/target.js';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
@@ -166,7 +167,7 @@ export default function Block(props: BlockProps) {
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
         includeBlockProps: state.blockComponent?.noWrap === true,
-        isInteractive: !state.blockComponent?.isRSC,
+        isInteractive: !(state.blockComponent?.isRSC && TARGET === 'rsc'),
       };
     },
   });
