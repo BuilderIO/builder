@@ -36,7 +36,12 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps({ _processContentResult, fetchOneEntry }).then(setProps);
+    getProps({
+      _processContentResult,
+      fetchOneEntry,
+      data: 'real',
+      apiKey: 'ad30f9a246614faaa6a03374f83554c9',
+    }).then(setProps);
 
     if (window.location.pathname === '/data-preview') {
       const unsubscribe = subscribeToEditor('coffee', (content) =>

@@ -152,8 +152,13 @@ export default function ContentComponent(props: ContentProps) {
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },
-        // eslint-disable-next-line object-shorthand
-        reactNative: { setBuilderContextSignal: setBuilderContextSignal },
+        reactNative: {
+          // eslint-disable-next-line object-shorthand
+          setBuilderContextSignal: setBuilderContextSignal,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          isStrictStyleMode: props.isStrictStyleMode,
+        },
         // eslint-disable-next-line object-shorthand
         solid: { setBuilderContextSignal: setBuilderContextSignal },
         default: {},
