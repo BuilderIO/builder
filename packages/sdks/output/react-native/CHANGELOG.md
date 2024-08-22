@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.7
+
+### Patch Changes
+
+- 6a4c1f5: Feature: add optional `strictStyleMode` prop to `<Content>` that will validate and ignore any style that does not work on React Native. The validation logic is identical to the one in the Visual Editor's "Strict React Native Styling" advanced setting.
+- 6a4c1f5: Fix: gracefully handle css sanitization errors.
+
 ## 2.0.5
 
 ### Patch Changes
