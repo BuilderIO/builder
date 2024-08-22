@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.8
+
+### Patch Changes
+
+- e8b80b3: Fix: scoped `isInteractive` prop for RSC SDK only so that it fixes Inner Layout > "Columns" option during visual editing
+
 ## 0.2.7
 
 ### Patch Changes
