@@ -5,6 +5,7 @@ import { isEditing } from './is-editing.js';
 
 export function transformBlockProperties({
   properties,
+  block,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
@@ -26,6 +27,14 @@ export function transformBlockProperties({
       if (el && !(el instanceof Text)) {
         el.setAttribute('builder-id', id);
         el.classList.add(id);
+        // Support inline text editing for React Native SDK
+        if (block.component?.name === 'Text') {
+          const textElement = el.querySelector('[dir="auto"]');
+          if (textElement) {
+            textElement.classList.add('builder-text');
+            (textElement as HTMLDivElement).style.outline = 'none';
+          }
+        }
       }
     }
   };
