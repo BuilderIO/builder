@@ -19,11 +19,11 @@ function extractVarValue(value: string): string {
   return newValue;
 }
 // Common regex patterns
-const numberPattern = /^-?\d+(\.\d+)?$/;
-const lengthPattern = /^-?(\d+)(px|%)?$/;
-const pixelPattern = /^-?(\d+)(px)?$/;
+const numberPattern = /^-?\d*\.?\d+$/;
+const lengthPattern = /^-?\d*\.?\d+(px|%)?$/;
+const pixelPattern = /^-?\d*\.?\d+(px)?$/;
 const colorPattern =
-  /^(#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}|rgb\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)|rgba\(\d{1,3},\s?\d{1,3},\s?\d{1,3},\s?([01]|0?\.\d+)\))$/;
+  /^(#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}|rgb\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)|rgba\(\d{1,3},\s?\d{1,3},\s?\d{1,3},\s?([01]|0?\.\d+)\)|[a-zA-Z]+)$/;
 const offsetPattern = /^\{width:\s?-?\d+(px)?,\s?height:\s?-?\d+(px)?\}$/;
 
 type CSSPropertyValidator = (value: string) => boolean;
