@@ -786,6 +786,19 @@ module.exports = {
             },
           },
         }),
+        () => ({
+          code: {
+            post: (code) => {
+              if (
+                code.includes('BlocksWrapper') ||
+                code.includes('EnableEditor')
+              ) {
+                code = code.replace('onPress', 'onClick');
+              }
+              return code;
+            },
+          },
+        }),
       ],
     },
     qwik: {
