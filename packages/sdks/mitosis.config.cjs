@@ -793,6 +793,10 @@ module.exports = {
                 code.includes('BlocksWrapper') ||
                 code.includes('EnableEditor')
               ) {
+                /**
+                 * Replaces `onPress` event handler with `onClick` for React Native
+                 * such that visual editing "+Add Block" works on web target.
+                 */
                 code = code.replace('onPress', 'onClick');
               }
               return code;

@@ -72,6 +72,10 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
     useTarget({
       reactNative: () => {
         if (isEditing()) {
+          /**
+           * React Native strips off custom HTML attributes, so we have to manually set them here
+           * to ensure that blocks are correctly dropped into the correct parent.
+           */
           props.path &&
             blocksWrapperRef.setAttribute('builder-path', props.path);
           props.parent &&
