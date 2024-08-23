@@ -112,6 +112,10 @@ const cssProperties: Record<string, CSSPropertyValidator> = {
   paddingHorizontal: (value: string) => lengthPattern.test(value),
   paddingVertical: (value: string) => lengthPattern.test(value),
 
+  gap: (value: string) => lengthPattern.test(value),
+  columnGap: (value: string) => lengthPattern.test(value),
+  rowGap: (value: string) => lengthPattern.test(value),
+
   // Border Properties
   borderStyle: (value: string) =>
     ['solid', 'dotted', 'dashed', 'none'].includes(value),
