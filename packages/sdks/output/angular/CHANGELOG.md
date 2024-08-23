@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.9
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+
 ## 0.2.8
 
 ### Patch Changes

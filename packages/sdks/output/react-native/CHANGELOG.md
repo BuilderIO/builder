@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.9
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+- f1527ee: Allow gap, rowGap, columnGap in react native strict mode styles
+
 ## 2.0.8
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 5.0.1
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+- Updated dependencies [69859d4]
+  - @builder.io/sdk@3.0.1
+
 ## 5.0.0
 
 ### Major Changes

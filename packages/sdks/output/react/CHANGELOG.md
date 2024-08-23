@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.9
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+
 ## 2.0.8
 
 ### Patch Changes
