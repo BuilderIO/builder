@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.10
+
+### Patch Changes
+
+- 561e375: Fix: Drag and drop blocks into the correct place and add blocks using the "+Add Block" button
+
 ## 2.0.9
 
 ### Patch Changes
