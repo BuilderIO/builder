@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './App.tsx';
-import AnnouncementBar from './components/AnnouncementBar.tsx';
+import AnnouncementBar from './routes/AnnouncementBar.tsx';
+import App from './routes/App.tsx';
 import EditableRegionRoute from './routes/editable-regions.tsx';
 
 const router = createBrowserRouter([
