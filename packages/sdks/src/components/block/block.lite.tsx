@@ -84,7 +84,7 @@ export default function Block(props: BlockProps) {
       ) {
         return state._processedBlock.value;
       }
-      const block = props.block.repeat?.collection
+      const blockToUse = props.block.repeat?.collection
         ? props.block
         : getProcessedBlock({
             block: props.block,
@@ -95,10 +95,10 @@ export default function Block(props: BlockProps) {
             shouldEvaluateBindings: true,
           });
 
-      state._processedBlock.value = block;
+      state._processedBlock.value = blockToUse;
       state._processedBlock.update = false;
 
-      return block;
+      return blockToUse;
     },
     get Tag() {
       const shouldUseLink =
