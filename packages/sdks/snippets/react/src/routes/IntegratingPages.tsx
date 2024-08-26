@@ -17,7 +17,7 @@ const MODEL_NAME = 'page';
 // set whether you're using the Visual Editor,
 // whether there are changes,
 // and render the content if found
-export default function IntegratingPages() {
+export default function App() {
   const [notFound, setNotFound] = useState(false);
   const [content, setContent] = useState<BuilderContent | null>(null);
 
