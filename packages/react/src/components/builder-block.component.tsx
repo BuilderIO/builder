@@ -20,31 +20,6 @@ const kebabCaseToCamelCase = (str = '') =>
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 };
 
-// Deep clone a block but without cloning any child blocks
-export function deepCloneWithConditions<T = any>(obj: T): T {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map((item: any) => deepCloneWithConditions(item)) as T;
-  }
-
-  if ((obj as any)['@type'] === '@builder.io/sdk:Element') {
-    return obj;
-  }
-
-  const clonedObj: any = {};
-
-  for (const key in obj) {
-    if (key !== 'meta' && Object.prototype.hasOwnProperty.call(obj, key)) {
-      clonedObj[key] = deepCloneWithConditions(obj[key]);
-    }
-  }
-
-  return clonedObj;
-}
-
 const voidElements = new Set([
   'area',
   'base',
@@ -160,7 +135,7 @@ export class BuilderBlock extends React.Component<
     return this.props.block;
   }
 
-  emotionCss(responsiveStyles: BuilderElement['responsiveStyles']) {
+  get emotionCss() {
     let initialAnimationStepStyles: any;
     const { block } = this;
     const animation = block.animations && block.animations[0];
@@ -173,14 +148,15 @@ export class BuilderBlock extends React.Component<
     }
 
     const reversedNames = sizeNames.slice().reverse();
+    const self = this.block;
     const styles: any = {};
-    if (responsiveStyles) {
+    if (self.responsiveStyles) {
       for (const size of reversedNames) {
         if (size === 'large') {
           if (!this.props.emailMode) {
             styles[`&.builder-block`] = Object.assign(
               {},
-              responsiveStyles[size],
+              self.responsiveStyles[size],
               initialAnimationStepStyles
             );
           }
@@ -189,7 +165,7 @@ export class BuilderBlock extends React.Component<
             this.privateState.context.builderContent?.meta?.breakpoints || {}
           );
           styles[`@media only screen and (max-width: ${sizesPerBreakpoints[size].max}px)`] = {
-            '&.builder-block': responsiveStyles[size],
+            '&.builder-block': self.responsiveStyles[size],
           };
         }
       }
@@ -395,9 +371,9 @@ export class BuilderBlock extends React.Component<
     const TextTag: any = 'span';
 
     let options: any = {
+      // Attributes?
       ...block.properties,
-      style: {},
-      responsiveStyles: fastClone(block.responsiveStyles || {}),
+      style: {}, // this.styles
     };
 
     options = {
@@ -406,7 +382,7 @@ export class BuilderBlock extends React.Component<
     };
 
     if (block.component) {
-      options.component = deepCloneWithConditions(block.component);
+      options.component = fastClone(block.component);
     }
 
     // Binding should be properties to href or href?
@@ -513,7 +489,7 @@ export class BuilderBlock extends React.Component<
     }
 
     const finalOptions: { [key: string]: string } = {
-      ...omit(options, ['class', 'component', 'attr', 'responsiveStyles']),
+      ...omit(options, ['class', 'component', 'attr']),
       [typeof TagName === 'string' && !TagName.includes('-') ? 'className' : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component && !(['Image', 'Video', 'Banner'].indexOf(componentName) > -1)
@@ -580,7 +556,7 @@ export class BuilderBlock extends React.Component<
         <ClassNames>
           {({ css, cx }) => {
             if (!this.props.emailMode) {
-              const addClass = ' ' + css(this.emotionCss(options.responsiveStyles));
+              const addClass = ' ' + css(this.emotionCss);
               if (finalOptions.class) {
                 finalOptions.class += addClass;
               }
