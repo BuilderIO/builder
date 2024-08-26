@@ -1,5 +1,23 @@
 # @builder.io/sdk-angular
 
+## 0.2.9
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+
+## 0.2.8
+
+### Patch Changes
+
+- e8b80b3: Fix: scoped `isInteractive` prop for RSC SDK only so that it fixes Inner Layout > "Columns" option during visual editing
+
+## 0.2.7
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 0.2.6
 
 ### Patch Changes

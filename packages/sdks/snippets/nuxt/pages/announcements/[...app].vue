@@ -15,9 +15,9 @@ const route = useRoute();
 
 const model = 'announcement-bar';
 const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
-const canShowContent = ref(false);
+const canShowAnnouncementBar = ref(false);
 
-const { data: content } = await useAsyncData('builderData', () =>
+const { data: announcement } = await useAsyncData('builderData', () =>
   fetchOneEntry({
     model,
     apiKey,
@@ -26,18 +26,18 @@ const { data: content } = await useAsyncData('builderData', () =>
   })
 );
 
-canShowContent.value = content.value ? true : isPreviewing(route.query);
+canShowAnnouncementBar.value = announcement.value
+  ? true
+  : isPreviewing(route.query);
 </script>
 
 <template>
-  <!-- Your header coming from Builder -->
   <Content
-    v-if="canShowContent"
+    v-if="canShowAnnouncementBar"
     :model="model"
-    :content="content"
+    :content="announcement"
     :api-key="apiKey"
   />
-  <div v-else>Announcement Bar not Found</div>
 
   <!-- Your content coming from your app (or also Builder) -->
   <div>The rest of your page goes here</div>

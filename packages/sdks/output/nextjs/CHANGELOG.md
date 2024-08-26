@@ -1,5 +1,17 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.6
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+
+## 0.16.4
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 0.16.3
 
 ### Patch Changes

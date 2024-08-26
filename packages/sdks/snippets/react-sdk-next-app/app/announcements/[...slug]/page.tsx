@@ -24,25 +24,22 @@ const model = 'announcement-bar';
 export default async function Page(props: PageProps) {
   const urlPath = '/announcements/' + (props.params?.slug?.join('/') || '');
 
-  const content = await fetchOneEntry({
+  const announcementBar = await fetchOneEntry({
     apiKey,
     model,
     options: getBuilderSearchParams(props.searchParams),
     userAttributes: { urlPath },
   });
 
-  const canShowContent =
-    content ||
+  const canShowAnnouncementBar =
+    announcementBar ||
     isPreviewing(props.searchParams) ||
     isEditing(props.searchParams);
 
   return (
     <>
-      {/* Your header coming from Builder */}
-      {canShowContent ? (
-        <Content content={content} apiKey={apiKey} model={model} />
-      ) : (
-        <div>Announcement Bar not Found</div>
+      {canShowAnnouncementBar && (
+        <Content content={announcementBar} apiKey={apiKey} model={model} />
       )}
       {/* Your content coming from your app (or also Builder) */}
       <div>The rest of your page goes here</div>

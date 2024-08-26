@@ -907,6 +907,10 @@ export class Builder {
   static register(type: 'insertMenu', info: InsertMenuConfig): void;
   static register(type: string, info: any): void;
   static register(type: string, info: any) {
+    if (type === 'plugin') {
+      info = this.serializeIncludingFunctions(info);
+    }
+
     // TODO: all must have name and can't conflict?
     let typeList = this.registry[type];
     if (!typeList) {
@@ -1077,7 +1081,7 @@ export class Builder {
     }
   }
 
-  private static serializeComponentInfo(info: any) {
+  private static serializeIncludingFunctions(info: any) {
     const serializeFn = (fnValue: Function) => {
       const fnStr = fnValue.toString().trim();
 
@@ -1102,7 +1106,7 @@ export class Builder {
 
   private static prepareComponentSpecToSend(spec: Component): Component {
     return {
-      ...this.serializeComponentInfo(spec),
+      ...this.serializeIncludingFunctions(spec),
       class: undefined,
     };
   }
@@ -2311,10 +2315,7 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, {
-      next: { revalidate: 1, ...options?.next },
-      ...options,
-    } as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
   }
 
   get host() {
@@ -2422,7 +2423,7 @@ export class Builder {
     }
     // TODO: merge in the attribute from query string ones
     // TODO: make this an option per component/request
-    queryParams.userAttributes = userAttributes;
+    queryParams.userAttributes = JSON.stringify(userAttributes);
 
     if (!usePastQueue && !useQueue) {
       this.priorContentQueue = queue;
@@ -2516,7 +2517,7 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = { headers: {}, next: { revalidate: 1 } };
+    const requestOptions = { headers: {} };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,

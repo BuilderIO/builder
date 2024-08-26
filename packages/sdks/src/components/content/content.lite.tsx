@@ -14,7 +14,7 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
-import { serializeComponentInfo } from '../../functions/register-component.js';
+import { serializeIncludingFunctions } from '../../functions/register-component.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
@@ -66,7 +66,7 @@ export default function ContentComponent(props: ContentProps) {
             vue: wrapComponentRef(component),
             default: component,
           }),
-          ...serializeComponentInfo(info),
+          ...serializeIncludingFunctions(info),
         },
       }),
       {}
@@ -111,7 +111,7 @@ export default function ContentComponent(props: ContentProps) {
         ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
             ...acc,
-            [info.name]: serializeComponentInfo(info),
+            [info.name]: serializeIncludingFunctions(info),
           }),
           {}
         ),
@@ -152,8 +152,13 @@ export default function ContentComponent(props: ContentProps) {
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },
-        // eslint-disable-next-line object-shorthand
-        reactNative: { setBuilderContextSignal: setBuilderContextSignal },
+        reactNative: {
+          // eslint-disable-next-line object-shorthand
+          setBuilderContextSignal: setBuilderContextSignal,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          strictStyleMode: props.strictStyleMode,
+        },
         // eslint-disable-next-line object-shorthand
         solid: { setBuilderContextSignal: setBuilderContextSignal },
         default: {},

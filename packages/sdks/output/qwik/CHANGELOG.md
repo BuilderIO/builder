@@ -1,5 +1,23 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.6
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+
+## 0.16.5
+
+### Patch Changes
+
+- e8b80b3: Fix: scoped `isInteractive` prop for RSC SDK only so that it fixes Inner Layout > "Columns" option during visual editing
+
+## 0.16.4
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 0.16.3
 
 ### Patch Changes

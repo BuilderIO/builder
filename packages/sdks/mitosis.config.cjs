@@ -144,6 +144,25 @@ const targets = target
       'angular',
     ];
 
+/**
+ * @type {Plugin}
+ */
+const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name !== 'ContentComponent') return json;
+
+      json.state.builderContextSignal.code =
+        json.state.builderContextSignal.code.replace(
+          /^\s*{/,
+          '{strictStyleMode: props.strictStyleMode,'
+        );
+
+      return json;
+    },
+  },
+});
+
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -695,6 +714,7 @@ module.exports = {
         BASE_TEXT_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
+        ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -763,6 +783,23 @@ module.exports = {
               if (json.name === 'Button') {
                 json.name = 'BuilderButton';
               }
+            },
+          },
+        }),
+        () => ({
+          code: {
+            post: (code) => {
+              if (
+                code.includes('BlocksWrapper') ||
+                code.includes('EnableEditor')
+              ) {
+                /**
+                 * Replaces `onPress` event handler with `onClick` for React Native
+                 * such that visual editing "+Add Block" works on web target.
+                 */
+                code = code.replace('onPress', 'onClick');
+              }
+              return code;
             },
           },
         }),

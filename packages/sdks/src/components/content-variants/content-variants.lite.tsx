@@ -127,6 +127,12 @@ export default function ContentVariants(props: VariantsProviderProps) {
               contentWrapper={props.contentWrapper}
               contentWrapperProps={props.contentWrapperProps}
               trustedHosts={props.trustedHosts}
+              {...useTarget({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
+                reactNative: { strictStyleMode: props.strictStyleMode },
+                default: {},
+              })}
             />
           )}
         </For>
@@ -136,6 +142,9 @@ export default function ContentVariants(props: VariantsProviderProps) {
         isNestedRender={props.isNestedRender}
         {...useTarget({
           vue: { key: state.shouldRenderVariants.toString() },
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          reactNative: { strictStyleMode: props.strictStyleMode },
           default: {},
         })}
         content={state.defaultContent}

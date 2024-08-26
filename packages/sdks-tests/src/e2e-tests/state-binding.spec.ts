@@ -4,7 +4,10 @@ import { excludeTestFor, test } from '../helpers/index.js';
 test.describe('State binding', () => {
   test.describe('inside repeater', () => {
     test('writing to state should update binding', async ({ page, packageName, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+      test.fail(
+        excludeTestFor({ angular: true }, sdk),
+        'Angular Gen2 event binding not working for other blocks than button.'
+      );
       // hydration errors
       test.fail(packageName === 'gen1-next' || packageName === 'gen1-remix');
 

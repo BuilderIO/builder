@@ -1,5 +1,17 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 2.0.8
+
+### Patch Changes
+
+- e8b80b3: Fix: scoped `isInteractive` prop for RSC SDK only so that it fixes Inner Layout > "Columns" option during visual editing
+
+## 2.0.5
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
 ## 2.0.3
 
 ### Patch Changes

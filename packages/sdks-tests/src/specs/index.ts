@@ -45,6 +45,7 @@ import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
+import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
@@ -53,6 +54,8 @@ import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
 import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
+import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layout.js';
+import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -81,6 +84,8 @@ const PAGES = {
   '/image-no-webp': imageNoWebp,
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
+  '/react-native-strict-style-mode': REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
+  '/react-native-strict-style-mode-disabled': REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
   '/ab-test': abTest,
   '/ab-test-interactive': AB_TEST_INTERACTIVE,
   '/http-requests': HTTP_REQUESTS,
@@ -93,6 +98,7 @@ const PAGES = {
   '/show-hide-if-repeats': SHOW_HIDE_IF_REPEATS,
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
+  '/text-eval': textEval,
   '/state-binding': stateBinding,
   '/nested-symbols': nestedSymbols,
   '/editing-styles': EDITING_STYLES,
@@ -122,6 +128,7 @@ const PAGES = {
   '/columns-with-different-widths': COLUMNS_WITH_DIFFERENT_WIDTHS,
   '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+  '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
 } as const;
 
 const apiVersionPathToProp = {
@@ -212,6 +219,11 @@ export const getProps = async (args: {
       // overrides page model below
       extraProps = {
         model: 'test-model',
+      };
+      break;
+    case '/react-native-strict-style-mode':
+      extraProps = {
+        strictStyleMode: true,
       };
       break;
     default:

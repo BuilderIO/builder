@@ -1,4 +1,10 @@
-import { useMetadata, useStore, useTarget } from '@builder.io/mitosis';
+import {
+  onMount,
+  useMetadata,
+  useRef,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 
@@ -27,6 +33,7 @@ export type BlocksWrapperProps = {
 };
 
 export default function BlocksWrapper(props: BlocksWrapperProps) {
+  const blocksWrapperRef = useRef<HTMLDivElement>();
   const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
@@ -61,8 +68,27 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
     },
   });
 
+  onMount(() => {
+    useTarget({
+      reactNative: () => {
+        if (isEditing()) {
+          /**
+           * React Native strips off custom HTML attributes, so we have to manually set them here
+           * to ensure that blocks are correctly dropped into the correct parent.
+           */
+          props.path &&
+            blocksWrapperRef.setAttribute('builder-path', props.path);
+          props.parent &&
+            blocksWrapperRef.setAttribute('builder-parent-id', props.parent);
+        }
+      },
+      default: () => {},
+    });
+  });
+
   return (
     <props.BlocksWrapper
+      ref={blocksWrapperRef}
       class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
