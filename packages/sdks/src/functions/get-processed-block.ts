@@ -20,7 +20,6 @@ const evaluateBindings = ({
   if (!block.bindings) {
     return block;
   }
-  // TODO: don't fast clone this! Any
   const copy = fastClone(block);
   const copied = {
     ...copy,
@@ -41,7 +40,7 @@ const evaluateBindings = ({
     set(copied, binding, value);
   }
 
-  return copied as BuilderBlock;
+  return copied;
 };
 
 export function getProcessedBlock({

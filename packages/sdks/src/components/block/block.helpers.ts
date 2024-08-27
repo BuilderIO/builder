@@ -15,7 +15,6 @@ export const getComponent = ({
   registeredComponents,
 }: {
   block: BuilderBlock;
-  context: BuilderContextInterface;
   registeredComponents: RegisteredComponents;
 }) => {
   const componentName = block.component?.name;

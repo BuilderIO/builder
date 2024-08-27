@@ -61,7 +61,6 @@ export default function Block(props: BlockProps) {
     get blockComponent() {
       return getComponent({
         block: state.processedBlock,
-        context: props.context.value,
         registeredComponents: props.registeredComponents,
       });
     },
