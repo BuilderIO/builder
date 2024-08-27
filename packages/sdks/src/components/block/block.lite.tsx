@@ -193,9 +193,9 @@ export default function Block(props: BlockProps) {
   /**
    * This trick forces the component to re-compute the `processedBlock` on every update.
    */
-  onUpdate(() => {
-    state._processedBlock.update = true;
-  });
+  // onUpdate(() => {
+  //   state._processedBlock.update = true;
+  // });
 
   /**
    * For frameworks that use signals/stores (e.g. Svelte), we need to
