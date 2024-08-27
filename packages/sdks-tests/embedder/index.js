@@ -37,7 +37,7 @@ const server = (req, res) => {
       }
     }
     window.addEventListener('message', (event) => {
-      if (event.data.type.startsWith('builder.')) {
+      if (event?.data?.type?.startsWith('builder.')) {
         console.log('BUILDER_EVENT:', event.data.type, handleEventData(event));
       }
     })
