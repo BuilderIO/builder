@@ -20,31 +20,6 @@ const kebabCaseToCamelCase = (str = '') =>
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 };
 
-// Deep clone a block but without cloning any child blocks
-export function deepCloneWithConditions<T = any>(obj: T): T {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map((item: any) => deepCloneWithConditions(item)) as T;
-  }
-
-  if ((obj as any)['@type'] === '@builder.io/sdk:Element') {
-    return obj;
-  }
-
-  const clonedObj: any = {};
-
-  for (const key in obj) {
-    if (key !== 'meta' && Object.prototype.hasOwnProperty.call(obj, key)) {
-      clonedObj[key] = deepCloneWithConditions(obj[key]);
-    }
-  }
-
-  return clonedObj;
-}
-
 const voidElements = new Set([
   'area',
   'base',
@@ -406,7 +381,7 @@ export class BuilderBlock extends React.Component<
     };
 
     if (block.component) {
-      options.component = deepCloneWithConditions(block.component);
+      options.component = fastClone(block.component);
     }
 
     // Binding should be properties to href or href?
