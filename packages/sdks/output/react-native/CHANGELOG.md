@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.11
+
+### Patch Changes
+
+- 077cae9: strict validation fixes for react native
+
 ## 2.0.10
 
 ### Patch Changes
