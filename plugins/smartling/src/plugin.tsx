@@ -90,7 +90,7 @@ registerPlugin(
         friendlyName: 'Copy Locales from Smartling to Builder',
         type: 'boolean',
         defaultValue: true,
-        helperText: 'This will copy additional locales from Smartling to Builder',
+        helperText: 'This will copy locales from Smartling to Builder',
         requiredPermissions: ['admin'],
       },
     ],
