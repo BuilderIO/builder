@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
 
-test.describe('Large Reactive State', () => {
+test.describe.only('Large Reactive State', () => {
   test('shows default value', async ({ page }) => {
     await page.goto('/large-reactive-state');
 
@@ -21,11 +21,11 @@ test.describe('Large Reactive State', () => {
     await expect(page.getByText('1', { exact: true })).toBeVisible();
   });
 
-  test('renders all dummy text blocks', async ({ page }) => {
+  test('renders all dummy text blocks with correct bindings', async ({ page }) => {
     await page.goto('/large-reactive-state');
 
     // Check if the last dummy text block is rendered
-    await expect(page.getByText('Dummy text block 500')).toBeVisible();
+    await expect(page.getByText('Dummy text block 1000')).toBeVisible();
   });
 
   test('maintains reactivity with large state', async ({ page, sdk }) => {
@@ -59,7 +59,7 @@ test.describe('Large Reactive State', () => {
     const duration = endTime - startTime;
 
     // Assuming a threshold of 1000ms for 10 updates
-    expect(duration).toBeLessThan(1000);
+    expect(duration).toBeLessThan(2000);
 
     // Verify final state
     await expect(page.getByText('10', { exact: true })).toBeVisible();

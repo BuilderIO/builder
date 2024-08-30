@@ -210,7 +210,7 @@ export const LARGE_REACTIVE_STATE_CONTENT = {
         },
       },
       /**
-       * 500 dummy text blocks
+       * 1000 dummy text blocks with data bindings
        */
       ...Array.from({ length: 1000 }, (_, index) => ({
         '@type': '@builder.io/sdk:Element',
@@ -221,6 +221,9 @@ export const LARGE_REACTIVE_STATE_CONTENT = {
           options: {
             text: `<p>Dummy text block ${index + 1}</p>`,
           },
+        },
+        bindings: {
+          'component.options.text': `state.dummyState.value${index + 1}`,
         },
         responsiveStyles: {
           large: {
@@ -255,9 +258,14 @@ export const LARGE_REACTIVE_STATE_CONTENT = {
     state: {
       deviceSize: 'large',
       location: {
-        pathname: '/reactive-state',
-        path: ['reactive-state'],
+        pathname: '/large-reactive-state',
+        path: ['large-reactive-state'],
         query: {},
+      },
+      dummyState: {
+        ...Object.fromEntries(
+          Array.from({ length: 1000 }, (_, i) => [`value${i + 1}`, `Dummy text block ${i + 1}`])
+        ),
       },
     },
   },
