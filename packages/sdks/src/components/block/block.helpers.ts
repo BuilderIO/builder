@@ -29,7 +29,8 @@ export const getComponent = ({
     // TODO: Public doc page with more info about this message
     console.warn(`
       Could not find a registered component named "${componentName}". 
-      If you registered it, is the file that registered it imported by the file that needs to render it?`);
+      Are you sure you provided a component with that exact "name" value in your \`registeredComponents\` array?
+    `);
     return undefined;
   } else {
     return ref;
