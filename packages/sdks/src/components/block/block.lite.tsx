@@ -2,6 +2,7 @@ import type { Signal } from '@builder.io/mitosis';
 import {
   For,
   Show,
+  onMount,
   useMetadata,
   useStore,
   useTarget,
@@ -15,6 +16,7 @@ import { getBlockComponentOptions } from '../../functions/get-block-component-op
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
+import { bindAnimations } from './animator.js';
 import {
   getComponent,
   getInheritedStyles,
@@ -66,12 +68,12 @@ export default function Block(props: BlockProps) {
         context: props.context.value,
       });
     },
-    // Simple agnostic memoization for the processed block
-    // This is used to avoid re-processing the block on every render
-    // We need to make this a property on an object so setState() isn't
-    // called causing infinite rerenders e.g. in React
-    // _processedBlock: { value: null as BuilderBlock | null, update: false },
     get processedBlock(): BuilderBlock {
+      // Simple agnostic memoization for the processed block
+      // This is used to avoid re-processing the block on every render
+      // We need to make this a property on an object so setState() isn't
+      // called causing infinite rerenders e.g. in React
+      // _processedBlock: { value: null as BuilderBlock | null, update: false },
       // if (
       //   state._processedBlock.value &&
       //   !state._processedBlock.update &&
