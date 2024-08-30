@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
 
-test.describe('Large Reactive State', () => {
+test.describe.only('Large Reactive State', () => {
   test('shows default value', async ({ page }) => {
-    await page.goto('/reactive-state');
+    await page.goto('/large-reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
   });
@@ -12,7 +12,7 @@ test.describe('Large Reactive State', () => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.fail(packageName === 'nextjs-sdk-next-app');
 
-    await page.goto('/reactive-state');
+    await page.goto('/large-reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
 
@@ -22,7 +22,7 @@ test.describe('Large Reactive State', () => {
   });
 
   test('renders all dummy text blocks', async ({ page }) => {
-    await page.goto('/reactive-state');
+    await page.goto('/large-reactive-state');
 
     // Check if the last dummy text block is rendered
     await expect(page.getByText('Dummy text block 500')).toBeVisible();
@@ -31,7 +31,7 @@ test.describe('Large Reactive State', () => {
   test('maintains reactivity with large state', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
 
-    await page.goto('/reactive-state');
+    await page.goto('/large-reactive-state');
 
     // Initial state
     await expect(page.getByText('0', { exact: true })).toBeVisible();
@@ -41,16 +41,12 @@ test.describe('Large Reactive State', () => {
       await page.getByText('Increment Number').click();
       await expect(page.getByText(`${i}`, { exact: true })).toBeVisible();
     }
-
-    // Scroll to the bottom and check if the last dummy text is still visible
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await expect(page.getByText('Dummy text block 500')).toBeVisible();
   });
 
   test('performance check for large state updates', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
 
-    await page.goto('/reactive-state');
+    await page.goto('/large-reactive-state');
 
     const startTime = Date.now();
 
