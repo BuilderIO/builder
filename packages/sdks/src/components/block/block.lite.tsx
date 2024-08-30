@@ -211,23 +211,23 @@ export default function Block(props: BlockProps) {
   //   state._processedBlock.update = true;
   // }, [props.block]);
 
-  // onMount(() => {
-  //   useTarget({
-  //     reactNative: () => {},
-  //     default: () => {
-  //       const blockId = state.processedBlock.id;
-  //       const animations = state.processedBlock.animations;
-  //       if (animations && blockId) {
-  //         bindAnimations(
-  //           animations.map((animation) => ({
-  //             ...animation,
-  //             elementId: blockId,
-  //           }))
-  //         );
-  //       }
-  //     },
-  //   });
-  // });
+  onMount(() => {
+    useTarget({
+      reactNative: () => {},
+      default: () => {
+        const blockId = state.processedBlock.id;
+        const animations = state.processedBlock.animations;
+        if (animations && blockId) {
+          bindAnimations(
+            animations.map((animation) => ({
+              ...animation,
+              elementId: blockId,
+            }))
+          );
+        }
+      },
+    });
+  });
 
   return (
     <Show when={state.canShowBlock}>
