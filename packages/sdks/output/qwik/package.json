@@ -79,7 +79,7 @@
       }
     },
     "./node/init": {
-      "types": "./types/functions/evaluate/node-runtime/init.d.ts",
+      "types": "./types/src/functions/evaluate/node-runtime/init.d.ts",
       "import": "./lib/node/functions/evaluate/node-runtime/init.qwik.mjs",
       "require": "./lib/node/functions/evaluate/node-runtime/init.qwik.cjs"
     },
