@@ -85,6 +85,14 @@ registerPlugin(
         helperText: 'Allows users to authorize Smartling jobs directly from Builder',
         requiredPermissions: ['admin'],
       },
+      {
+        name: 'copySmartlingLocales',
+        friendlyName: 'Copy Locales from Smartling to Builder',
+        type: 'boolean',
+        defaultValue: true,
+        helperText: 'This will copy locales from Smartling to Builder',
+        requiredPermissions: ['admin'],
+      },
     ],
     onSave: async actions => {
       const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -97,7 +105,8 @@ registerPlugin(
     ctaText: `Connect your Smartling account`,
     noPreviewTypes: true,
   },
-  async () => {
+  async (settings) => {
+    const copySmartlingLocales= settings.get('copySmartlingLocales');
     const api = new SmartlingApi();
     registerEditorOnLoad(({ safeReaction }) => {
       safeReaction(
@@ -189,17 +198,25 @@ registerPlugin(
           )
           .reduce((acc, val) => acc.concat(val), [])
       );
-
       const currentLocales = appState.user.organization.value.customTargetingAttributes
-        ?.get('locale')
-        ?.toJSON();
+      ?.get('locale')
+      ?.toJSON();
 
-      if (!isEqual(currentLocales?.enum, smartlingLocales)) {
-        appState.user.organization.value.customTargetingAttributes.set('locale', {
-          type: 'string',
-          enum: smartlingLocales,
-        });
-      }
+      let combinedLocales = [...new Set([...smartlingLocales, ...currentLocales?.enum || []])];
+
+      
+        if (copySmartlingLocales) {
+          //merge builder locales with smartling locales (all unique locales)
+          if(!isEqual(currentLocales?.enum, combinedLocales)){
+            appState.user.organization.value.customTargetingAttributes?.get('locale').set('enum', combinedLocales);
+          }
+        } else if(appState.hasFeatureFlag('manage-locales-in-smartling') && !isEqual(currentLocales?.enum, smartlingLocales)){
+          // overwrite all builder locales by smartling locales
+            appState.user.organization.value.customTargetingAttributes.set('locale', {
+              type: 'string',
+              enum: smartlingLocales,
+            });
+        }
     });
     // create a new action on content to add to job
     registerBulkAction({
