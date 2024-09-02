@@ -23,6 +23,7 @@ import type { IsolateOptions } from 'isolated-vm';
  * from a server-only location, such as:
  * - The NextJS Pages router's `_document.tsx`
  * - Your Remix route's `loader`
+ * - Qwik's `entry.ssr.tsx` file
  */
 export const initializeNodeRuntime = (args?: {
   ivmIsolateOptions?: IsolateOptions;
