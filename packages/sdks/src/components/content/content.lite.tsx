@@ -75,7 +75,7 @@ export default function ContentComponent(props: ContentProps) {
           ...serializeComponentInfo(info),
         },
       }),
-      {},
+      {}
     ),
   });
 
@@ -124,11 +124,11 @@ export default function ContentComponent(props: ContentProps) {
             ...acc,
             [info.name]: serializeComponentInfo(info),
           }),
-          {},
+          {}
         ),
         inheritedStyles: {},
       },
-      { reactive: true },
+      { reactive: true }
     );
 
   setContext(ComponentsContext, {
