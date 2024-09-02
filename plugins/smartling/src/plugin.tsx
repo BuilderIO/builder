@@ -203,13 +203,14 @@ registerPlugin(
       ?.toJSON();
 
       let combinedLocales = [...new Set([...smartlingLocales, ...currentLocales?.enum || []])];
+
       
         if (copySmartlingLocales) {
           //merge builder locales with smartling locales (all unique locales)
           if(!isEqual(currentLocales?.enum, combinedLocales)){
             appState.user.organization.value.customTargetingAttributes?.get('locale').set('enum', combinedLocales);
           }
-        } else if(appState.hasFeatureFlag('manage-locales-in-smartling' && !isEqual(currentLocales?.enum, smartlingLocales))){
+        } else if(appState.hasFeatureFlag('manage-locales-in-smartling') && !isEqual(currentLocales?.enum, smartlingLocales)){
           // overwrite all builder locales by smartling locales
             appState.user.organization.value.customTargetingAttributes.set('locale', {
               type: 'string',
