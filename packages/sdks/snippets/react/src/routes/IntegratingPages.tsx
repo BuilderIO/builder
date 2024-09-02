@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/react/App.tsx
+ * snippets/react/src/routes/IntegratingPages.tsx
  */
 import {
   Content,

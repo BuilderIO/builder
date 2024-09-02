@@ -456,13 +456,27 @@ registerPlugin(
           return api.getProject(id).then(res => transformProject(res.project));
         },
         search(q = '') {
-          return api
-            .getAllProjects()
-            .then(res =>
-              res.results
-                .filter(proj => proj.projectName.toLowerCase().includes(q.toLowerCase()))
-                .map(transformProject)
-            );
+          return api.getAllProjects().then(res => {
+            if (!res.results || res.results.length === 0) {
+              return appState.globalState
+                .getPluginPrivateKey(pkg.name)
+                .then((pluginPrivateKey: string) => {
+                  if (api.isPluginPrivateKeySame(pluginPrivateKey)) {
+                    appState.snackBar.show('Oh no! There was an error searching for resources');
+                  } else {
+                    appState.snackBar.show(
+                      'Please refresh your browser to view your Smartling projects.'
+                    );
+                  }
+
+                  return [];
+                });
+            }
+
+            return res.results
+              .filter(proj => proj.projectName.toLowerCase().includes(q.toLowerCase()))
+              .map(transformProject);
+          });
         },
         getRequestObject(id) {
           // todo update types, commerce-plugin-tools actually accepts strings, just needs an interface update
