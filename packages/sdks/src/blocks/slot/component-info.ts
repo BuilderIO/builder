@@ -16,5 +16,6 @@ export const componentInfo: ComponentInfo = {
 
   shouldReceiveBuilderProps: {
     builderContext: true,
+    builderComponents: true,
   },
 };

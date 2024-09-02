@@ -2,12 +2,16 @@ import { useMetadata, useTarget } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import { deoptSignal } from '../../functions/deopt.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import type { BuilderDataProps } from '../../types/builder-props.js';
+import type {
+  BuilderComponentsProp,
+  BuilderDataProps,
+} from '../../types/builder-props.js';
 
-export type DropzoneProps = BuilderDataProps & {
-  name: string;
-  attributes: any;
-};
+export type DropzoneProps = BuilderDataProps &
+  BuilderComponentsProp & {
+    name: string;
+    attributes: any;
+  };
 
 useMetadata({
   rsc: {
@@ -40,6 +44,7 @@ export default function Slot(props: DropzoneProps) {
           ] as BuilderBlock[],
         })}
         context={props.builderContext}
+        registeredComponents={props.builderComponents}
       />
     </div>
   );

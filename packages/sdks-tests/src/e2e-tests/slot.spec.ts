@@ -1,10 +1,9 @@
 import { expect } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/slot-with-symbol.js';
-import { excludeTestFor, checkIsRN, test } from '../helpers/index.js';
+import { checkIsRN, test } from '../helpers/index.js';
 
 test.describe('Slot', () => {
-  test('slot should render', async ({ page, packageName, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
+  test('slot should render', async ({ page, packageName }) => {
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
@@ -13,7 +12,6 @@ test.describe('Slot', () => {
   });
 
   test('slot should render in the correct place', async ({ page, packageName, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
@@ -27,8 +25,7 @@ test.describe('Slot', () => {
     await expect(slotElement).toHaveText('Inside a slot!!');
   });
 
-  test('slot should render with symbol (with content)', async ({ page, packageName, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
+  test('slot should render with symbol (with content)', async ({ page, packageName }) => {
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // rsc skipped because it fetches the slot content from the server
     test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
@@ -38,7 +35,6 @@ test.describe('Slot', () => {
   });
 
   test('slot should render with symbol (without content)', async ({ page, packageName, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Slot not working in Angular SDK');
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // ssr packages skipped because it fetches the slot content from the server
     test.fail(
