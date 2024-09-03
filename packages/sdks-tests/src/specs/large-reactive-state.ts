@@ -218,9 +218,7 @@ export const LARGE_REACTIVE_STATE_CONTENT = {
         id: `builder-dummy-text-${index + 1}`,
         component: {
           name: 'Text',
-          options: {
-            text: `<p>Dummy text block ${index + 1}</p>`,
-          },
+          options: { text: 'Enter some text...' },
         },
         bindings: {
           'component.options.text': `state.dummyState.value${index + 1}`,
@@ -231,7 +229,6 @@ export const LARGE_REACTIVE_STATE_CONTENT = {
           },
         },
       })),
-
       {
         id: 'builder-pixel-6yc5qr11gcq',
         '@type': '@builder.io/sdk:Element',
