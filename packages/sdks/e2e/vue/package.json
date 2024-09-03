@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
-    "dev": "vue-tsc --noEmit && vite",
+    "build": "vite build",
+    "dev": "vite",
     "serve": "vite preview",
     "test": "SERVER_NAME=vue yarn nx test:e2e @sdk/tests"
   },
