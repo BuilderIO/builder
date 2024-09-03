@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './App.tsx';
-import AnnouncementBar from './components/AnnouncementBar.tsx';
+import AnnouncementBar from './routes/AnnouncementBar.tsx';
 import EditableRegionRoute from './routes/editable-regions.tsx';
+import IntegratingPages from './routes/IntegratingPages.tsx';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/*',
-    element: <App />,
+    element: <IntegratingPages />,
   },
 ]);
 
