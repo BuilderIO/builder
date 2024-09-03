@@ -112,8 +112,8 @@
     "@builder.io/qwik": "^1.5.1",
     "@builder.io/sdks": "workspace:*",
     "@types/node": "latest",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "typescript": "5.5.2",
     "vite": "^4.3.2"
   },

@@ -65,7 +65,8 @@ Pods/
 .env
 .vercel
 
-.nx-cache
+.nx/cache
+.nx/workspace-data
 
 # allow `.eas` folders
 !**/.eas/**/*
