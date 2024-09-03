@@ -1,5 +1,11 @@
 # Builder.io Vue 2 SDK (LONG-TERM-SUPPORT) Changelog (@builder.io/sdk-vue)
 
+## 0.12.1
+
+### Patch Changes
+
+- Fix: restrict custom components to the models that get passed in `models`
+
 ## 0.11.1
 
 ### Patch Changes
