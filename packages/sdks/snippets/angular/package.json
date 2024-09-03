@@ -34,8 +34,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "typescript": "~5.1.3"
   }
 }
