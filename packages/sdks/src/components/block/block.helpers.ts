@@ -6,18 +6,28 @@ import type {
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
+import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
 export const getComponent = ({
   block,
+  context,
   registeredComponents,
 }: {
   block: BuilderBlock;
+  context: BuilderContextInterface;
   registeredComponents: RegisteredComponents;
 }) => {
-  const componentName = block.component?.name;
+  const componentName = getProcessedBlock({
+    block,
+    localState: context.localState,
+    rootState: context.rootState,
+    rootSetState: context.rootSetState,
+    context: context.context,
+    shouldEvaluateBindings: false,
+  }).component?.name;
 
   if (!componentName) {
     return null;
@@ -29,8 +39,7 @@ export const getComponent = ({
     // TODO: Public doc page with more info about this message
     console.warn(`
       Could not find a registered component named "${componentName}". 
-      Are you sure you provided a component with that exact "name" value in your \`registeredComponents\` array?
-    `);
+      If you registered it, is the file that registered it imported by the file that needs to render it?`);
     return undefined;
   } else {
     return ref;
