@@ -22,6 +22,12 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
+import {
+  flatten,
+  flattenMongoQuery,
+  getBuilderSearchParamsFromWindow,
+  normalizeSearchParams,
+} from './builder.helper';
 
 export type Url = any;
 
@@ -277,6 +283,12 @@ type AllowEnrich =
   | { apiVersion?: never; enrich?: boolean };
 
 export type GetContentOptions = AllowEnrich & {
+  /** The model to get content for (required) */
+  model?: string;
+
+  /** Your public API key (required) */
+  apiKey?: string;
+
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
@@ -286,10 +298,11 @@ export type GetContentOptions = AllowEnrich & {
    * userAttributes: {
    *   urlPath: '/',
    *   returnVisitor: true,
+   *   device: 'mobile'
    * }
    * ```
    */
-  userAttributes?: UserAttributes;
+  userAttributes?: (Record<string, any> & { urlPath?: string }) | null;
   /**
    * Alias for userAttributes.urlPath except it can handle a full URL (optionally with host,
    * protocol, query, etc) and we will parse out the path.
@@ -350,7 +363,7 @@ export type GetContentOptions = AllowEnrich & {
    *
    * @see {@link https://docs.mongodb.com/manual/reference/operator/query/}
    */
-  query?: any;
+  query?: Record<string, any>;
   /**
    * Bust through all caches. Not recommended for production (for performance),
    * but can be useful for development and static builds (so the static site has
@@ -374,16 +387,19 @@ export type GetContentOptions = AllowEnrich & {
    */
   initialContent?: any;
   /**
-   * The name of the model to fetch content for.
-   */
-  model?: string;
-  /**
    * Set to `false` to not cache responses when running on the client.
    */
   cache?: boolean;
+
+  canTrack?: boolean;
+
   /**
-   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
-   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
+   * Include multilevel references in the response.
+   */
+  enrich?: boolean;
+
+  /**
+   * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
    */
   locale?: string;
   /**
@@ -402,6 +418,13 @@ export type GetContentOptions = AllowEnrich & {
    * @hidden
    */
   alias?: string;
+  /**
+   * If provided, sets the Builder API version used to fetch content.
+   *
+   * Currently, the only available API version is `v3`.
+   */
+  apiVersion?: 'v3';
+
   /**
    * Only include these fields.
    * Note: 'omit' takes precedence over 'fields'
@@ -491,6 +514,16 @@ export type GetContentOptions = AllowEnrich & {
    * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
+
+  /**
+   * Optional override of the `fetch` function. (Defaults to global `fetch`)
+   */
+  fetch?: (input: string, init?: object) => Promise<any>;
+
+  /**
+   * Optional fetch options to be passed as the second argument to the `fetch` function.
+   */
+  fetchOptions?: object;
 };
 
 export type Class = {
@@ -2342,6 +2375,98 @@ export class Builder {
     }
   }
 
+  private generateContentUrl(options: GetContentOptions): URL {
+    const {
+      limit = 30,
+      userAttributes,
+      query,
+      enrich,
+      model,
+      locale,
+      apiVersion = DEFAULT_API_VERSION,
+      fields,
+      omit,
+      offset,
+      cacheSeconds,
+      staleCacheSeconds,
+      sort,
+      includeUnpublished,
+    } = options;
+
+    if (!['v3'].includes(apiVersion)) {
+      throw new Error(`Invalid apiVersion: expected 'v3', received '${apiVersion}'`);
+    }
+
+    // if we are fetching an array of content, we disable noTraverse for perf reasons.
+    const noTraverse = limit !== 1;
+
+    const url = new URL(`https://cdn.builder.io/api/${apiVersion}/content/${model}`);
+
+    url.searchParams.set('apiKey', this.apiKey!);
+    url.searchParams.set('limit', String(limit));
+    url.searchParams.set('noTraverse', String(noTraverse));
+    url.searchParams.set('includeRefs', String(true));
+
+    if (locale) url.searchParams.set('locale', locale);
+    if (enrich) url.searchParams.set('enrich', String(enrich));
+
+    url.searchParams.set('omit', omit || 'meta.componentsUsed');
+
+    if (fields) {
+      url.searchParams.set('fields', fields);
+    }
+
+    if (Number.isFinite(offset) && offset! > -1) {
+      url.searchParams.set('offset', String(Math.floor(offset!)));
+    }
+
+    if (typeof includeUnpublished === 'boolean') {
+      url.searchParams.set('includeUnpublished', String(includeUnpublished));
+    }
+
+    if (cacheSeconds && isPositiveNumber(cacheSeconds)) {
+      url.searchParams.set('cacheSeconds', String(cacheSeconds));
+    }
+
+    if (staleCacheSeconds && isPositiveNumber(staleCacheSeconds)) {
+      url.searchParams.set('staleCacheSeconds', String(staleCacheSeconds));
+    }
+
+    if (sort) {
+      const flattened = flatten({ sort });
+      for (const key in flattened) {
+        url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
+      }
+    }
+
+    // TODO: how to express 'offset' in the url - as direct queryparam or as flattened in options[key] ?
+
+    const queryOptions = {
+      ...getBuilderSearchParamsFromWindow(),
+      ...normalizeSearchParams(options.options || {}),
+    };
+
+    const flattened = flatten(queryOptions);
+    for (const key in flattened) {
+      url.searchParams.set(key, String(flattened[key]));
+    }
+
+    if (userAttributes) {
+      url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
+    }
+    if (query) {
+      const flattened = flattenMongoQuery({ query });
+      for (const key in flattened) {
+        url.searchParams.set(key, JSON.stringify(flattened[key]));
+      }
+    }
+    return url;
+  }
+
+  private makeCodegenOrContentApiCall(url: string, requestOptions: any): Promise<any> {
+    return getFetch()(url, requestOptions);
+  }
+
   private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
     if (!this.apiKey) {
       throw new Error(
@@ -2350,8 +2475,8 @@ export class Builder {
     }
 
     if (this.apiVersion) {
-      if (!['v1', 'v3'].includes(this.apiVersion)) {
-        throw new Error(`Invalid apiVersion: expected 'v1' or 'v3', received '${this.apiVersion}'`);
+      if (this.apiVersion !== 'v3') {
+        throw new Error(`Invalid apiVersion: 'v3', received '${this.apiVersion}'`);
       }
     } else {
       this.apiVersion = DEFAULT_API_VERSION;
@@ -2527,13 +2652,16 @@ export class Builder {
 
     const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
 
-    // NOTE: this is a hack to get around the fact that the codegen endpoint is not yet available in v3
-    const apiVersionBasedOnFn = fn === 'query' ? this.apiVersion : 'v1';
-    const url =
-      `${host}/api/${apiVersionBasedOnFn}/${fn}/${this.apiKey}/${keyNames}` +
-      (queryParams && hasParams ? `?${queryStr}` : '');
+    let url;
+    if (format === 'solid' || format === 'react') {
+      url =
+        `${host}/api/${this.apiVersion}/${fn}/${this.apiKey}/${keyNames}` +
+        (queryParams && hasParams ? `?${queryStr}` : '');
+    } else {
+      url = this.generateContentUrl(queue[0]).toString();
+    }
 
-    const promise = getFetch()(url, requestOptions)
+    const promise = this.makeCodegenOrContentApiCall(url, requestOptions)
       .then(res => res.json())
       .then(
         result => {
