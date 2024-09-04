@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.10
+
+### Patch Changes
+
+- cb68f66: Fix: update exported `content-variants` selector to `content`
+
 ## 0.2.9
 
 ### Patch Changes
