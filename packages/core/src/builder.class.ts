@@ -418,12 +418,6 @@ export type GetContentOptions = AllowEnrich & {
    * @hidden
    */
   alias?: string;
-  /**
-   * If provided, sets the Builder API version used to fetch content.
-   *
-   * Currently, the only available API version is `v3`.
-   */
-  apiVersion?: 'v3';
 
   /**
    * Only include these fields.
@@ -514,16 +508,6 @@ export type GetContentOptions = AllowEnrich & {
    * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
-
-  /**
-   * Optional override of the `fetch` function. (Defaults to global `fetch`)
-   */
-  fetch?: (input: string, init?: object) => Promise<any>;
-
-  /**
-   * Optional fetch options to be passed as the second argument to the `fetch` function.
-   */
-  fetchOptions?: object;
 };
 
 export type Class = {
@@ -2375,94 +2359,6 @@ export class Builder {
     }
   }
 
-  private generateContentUrl(options: GetContentOptions): URL {
-    const {
-      limit = 30,
-      userAttributes,
-      query,
-      enrich,
-      model,
-      locale,
-      apiVersion = DEFAULT_API_VERSION,
-      fields,
-      omit,
-      offset,
-      cacheSeconds,
-      staleCacheSeconds,
-      sort,
-      includeUnpublished,
-    } = options;
-
-    if (!['v3'].includes(apiVersion)) {
-      throw new Error(`Invalid apiVersion: expected 'v3', received '${apiVersion}'`);
-    }
-
-    // if we are fetching an array of content, we disable noTraverse for perf reasons.
-    const noTraverse = limit !== 1;
-
-    const url = new URL(`https://cdn.builder.io/api/${apiVersion}/content/${model}`);
-
-    url.searchParams.set('apiKey', this.apiKey!);
-    url.searchParams.set('limit', String(limit));
-    url.searchParams.set('noTraverse', String(noTraverse));
-    url.searchParams.set('includeRefs', String(true));
-
-    if (locale) url.searchParams.set('locale', locale);
-    if (enrich) url.searchParams.set('enrich', String(enrich));
-
-    url.searchParams.set('omit', omit || 'meta.componentsUsed');
-
-    if (fields) {
-      url.searchParams.set('fields', fields);
-    }
-
-    if (Number.isFinite(offset) && offset! > -1) {
-      url.searchParams.set('offset', String(Math.floor(offset!)));
-    }
-
-    if (typeof includeUnpublished === 'boolean') {
-      url.searchParams.set('includeUnpublished', String(includeUnpublished));
-    }
-
-    if (cacheSeconds && isPositiveNumber(cacheSeconds)) {
-      url.searchParams.set('cacheSeconds', String(cacheSeconds));
-    }
-
-    if (staleCacheSeconds && isPositiveNumber(staleCacheSeconds)) {
-      url.searchParams.set('staleCacheSeconds', String(staleCacheSeconds));
-    }
-
-    if (sort) {
-      const flattened = flatten({ sort });
-      for (const key in flattened) {
-        url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
-      }
-    }
-
-    // TODO: how to express 'offset' in the url - as direct queryparam or as flattened in options[key] ?
-
-    const queryOptions = {
-      ...getBuilderSearchParamsFromWindow(),
-      ...normalizeSearchParams(options.options || {}),
-    };
-
-    const flattened = flatten(queryOptions);
-    for (const key in flattened) {
-      url.searchParams.set(key, String(flattened[key]));
-    }
-
-    if (userAttributes) {
-      url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
-    }
-    if (query) {
-      const flattened = flattenMongoQuery({ query });
-      for (const key in flattened) {
-        url.searchParams.set(key, JSON.stringify(flattened[key]));
-      }
-    }
-    return url;
-  }
-
   private makeCodegenOrContentApiCall(url: string, requestOptions: any): Promise<any> {
     return getFetch()(url, requestOptions);
   }
@@ -2582,8 +2478,10 @@ export class Builder {
     }
 
     for (const options of queue) {
-      if (options.format) {
-        queryParams.format = options.format;
+      const format = options.format;
+      const areOptionsForCodegen = format === 'solid' || format === 'react';
+      if (format) {
+        queryParams.format = format;
       }
       // TODO: remove me and make permodel
       if (options.static) {
@@ -2617,9 +2515,13 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          queryParams.options = queryParams.options || {};
-          queryParams.options[options.key!] = queryParams.options[options.key!] || {};
-          queryParams.options[options.key!][key] = JSON.stringify(value);
+          if (areOptionsForCodegen) {
+            queryParams.options = queryParams.options || {};
+            queryParams.options[options.key!] = queryParams.options[options.key!] || {};
+            queryParams.options[options.key!][key] = JSON.stringify(value);
+          } else {
+            queryParams[key] = JSON.stringify(value);
+          }
         }
       }
     }
@@ -2650,16 +2552,13 @@ export class Builder {
       };
     }
 
-    const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
+    const fn = format === 'solid' || format === 'react' ? 'codegen' : 'content';
+    let url =
+      fn === 'codegen'
+        ? `${host}/api/v3/${fn}/${this.apiKey}/${keyNames}`
+        : `https://cdn.builder.io/api/v3/${fn}/${queue[0].model}`;
 
-    let url;
-    if (format === 'solid' || format === 'react') {
-      url =
-        `${host}/api/${this.apiVersion}/${fn}/${this.apiKey}/${keyNames}` +
-        (queryParams && hasParams ? `?${queryStr}` : '');
-    } else {
-      url = this.generateContentUrl(queue[0]).toString();
-    }
+    url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
     const promise = this.makeCodegenOrContentApiCall(url, requestOptions)
       .then(res => res.json())

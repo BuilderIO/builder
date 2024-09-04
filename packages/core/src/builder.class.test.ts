@@ -168,218 +168,9 @@ describe('prepareComponentSpecToSend', () => {
   });
 });
 
-describe('generateContentUrl', () => {
-  const testKey = 'YJIGb4i01jvw0SRdL5Bt';
-  const testModel = 'page';
-  const testId = 'c1b81bab59704599b997574eb0736def';
-
-  const options = {
-    cachebust: 'true',
-    noCache: 'true',
-    'overrides.037948e52eaf4743afed464f02c70da4': '037948e52eaf4743afed464f02c70da4',
-    'overrides.page': '037948e52eaf4743afed464f02c70da4',
-    'overrides.page:/': '037948e52eaf4743afed464f02c70da4',
-    preview: 'page',
-  };
-
-  const builder = new Builder();
-
-  test('generates the proper value for a simple query', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      query: { id: testId },
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('Handles overrides correctly', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      query: { id: testId },
-      options,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with apiVersion as default', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      query: { id: testId },
-      options,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('throw error when trying to generate content url with apiVersion as v1', () => {
-    expect(() => {
-      builder['generateContentUrl']({
-        apiKey: testKey,
-        model: testModel,
-        query: { id: testId },
-        options,
-        apiVersion: 'v2' as GetContentOptions['apiVersion'],
-      });
-    }).toThrow(`Invalid apiVersion: expected 'v3', received 'v2'`);
-  });
-
-  test('generate content url with apiVersion as v3', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      query: { id: testId },
-      options,
-      apiVersion: 'v3',
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('throw error when trying to generate content url with apiVersion as v1', () => {
-    expect(() => {
-      builder['generateContentUrl']({
-        apiKey: testKey,
-        model: testModel,
-        query: { id: testId },
-        options,
-        apiVersion: 'v1' as GetContentOptions['apiVersion'],
-      });
-    }).toThrow(`Invalid apiVersion: expected 'v3', received 'v1'`);
-  });
-
-  test('throw error when trying to generate content url with an invalid apiVersion value', () => {
-    expect(() => {
-      builder['generateContentUrl']({
-        apiKey: testKey,
-        model: testModel,
-        query: { id: testId },
-        options,
-        apiVersion: 'INVALID_API_VERSION' as GetContentOptions['apiVersion'],
-      });
-    }).toThrow(`Invalid apiVersion: expected 'v3', received 'INVALID_API_VERSION'`);
-  });
-
-  test('generate content url with enrich option true', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      enrich: true,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with enrich option not present', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with limit unset and check for noTraverse', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with limit set to 2 and check for noTraverse', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      limit: 2,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with limit set to 1 and check for noTraverse', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      limit: 1,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with omit, fields, offset, includeUnpublished, cacheSeconds, staleCacheSeconds and sort combination', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      omit: 'someId, some.nested.id',
-      fields: 'id, nested.property',
-      offset: 1,
-      includeUnpublished: true,
-      cacheSeconds: 5,
-      staleCacheSeconds: 10,
-      sort: {
-        updatedDate: -1,
-        createdDate: 1,
-      },
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url when given invalid values of offset, includeUnpublished, cacheSeconds, staleCacheSeconds', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      offset: -10,
-      includeUnpublished: false,
-      cacheSeconds: -5,
-      staleCacheSeconds: -10,
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with correct mongoQuery with $and as the root key', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      query: {
-        $and: [
-          {
-            'some.key': {
-              $elemMatch: {
-                'some.nested.key': {
-                  $in: ['value1', 'value2'],
-                },
-              },
-            },
-          },
-          {
-            'some.other.key': {
-              $eq: 'value3',
-            },
-          },
-        ],
-      },
-    });
-    expect(output).toMatchSnapshot();
-  });
-
-  test('generate content url with correct mongoQuery with $ in child key', () => {
-    const output = builder['generateContentUrl']({
-      apiKey: testKey,
-      model: testModel,
-      query: {
-        'some.key': {
-          $elemMatch: {
-            'some.nested.key': {
-              $in: ['value1', 'value2'],
-            },
-          },
-        },
-      },
-    });
-    expect(output).toMatchSnapshot();
-  });
-});
-
 describe('flushGetContentQueue', () => {
   const API_KEY = '25608a566fbb654ea959c1b1729e370d';
-  const MODEL = '20074d8eddc2fcc8a7b5282b89dd6e30';
+  const MODEL = 'page';
   const AUTH_TOKEN = '82202e99f9fb4ed1da5940f7fa191e72';
   const KEY = 'my-key';
   const OMIT = 'data.blocks';
@@ -432,7 +223,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledTimes(1);
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/codegen/${API_KEY}/${KEY}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=solid&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.my-key.model=%2220074d8eddc2fcc8a7b5282b89dd6e30%22`,
+      `https://cdn.builder.io/api/v3/codegen/${API_KEY}/${KEY}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=solid&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${KEY}.model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -469,12 +260,13 @@ describe('flushGetContentQueue', () => {
         userAttributes: { respectScheduling: true },
         omit: OMIT,
         fields: 'data',
+        limit: 10,
       },
     ]);
 
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledTimes(1);
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?apiKey=${API_KEY}&limit=30&noTraverse=true&includeRefs=true&omit=${OMIT}&fields=data&userAttributes=%7B%22respectScheduling%22%3Atrue%7D`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=html&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&limit=10&model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -490,12 +282,13 @@ describe('flushGetContentQueue', () => {
         userAttributes: { respectScheduling: true },
         omit: OMIT,
         fields: 'data',
+        limit: 10,
       },
     ]);
 
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledTimes(1);
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?apiKey=${API_KEY}&limit=30&noTraverse=true&includeRefs=true&omit=${OMIT}&fields=data&userAttributes=%7B%22respectScheduling%22%3Atrue%7D`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=amp&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&limit=10&model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -511,12 +304,13 @@ describe('flushGetContentQueue', () => {
         userAttributes: { respectScheduling: true },
         omit: OMIT,
         fields: 'data',
+        limit: 10,
       },
     ]);
 
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledTimes(1);
     expect(builder['makeCodegenOrContentApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?apiKey=${API_KEY}&limit=30&noTraverse=true&includeRefs=true&omit=${OMIT}&fields=data&userAttributes=%7B%22respectScheduling%22%3Atrue%7D`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=email&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&limit=10&model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
