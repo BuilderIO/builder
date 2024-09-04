@@ -29,7 +29,7 @@ useMetadata({
   },
   angular: {
     selector: 'content, content-variants',
-  }
+  },
 });
 
 type VariantsProviderProps = ContentVariantsPrps & {

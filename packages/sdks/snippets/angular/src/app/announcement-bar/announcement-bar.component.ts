@@ -11,11 +11,7 @@ import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
   selector: 'app-announcement-bar',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content
-        [model]="model"
-        [content]="content"
-        [apiKey]="apiKey"
-      ></content>
+      <content [model]="model" [content]="content" [apiKey]="apiKey"></content>
     </ng-container>
 
     <ng-template #notFound>
