@@ -12,11 +12,11 @@ import { type BuilderContent } from '@builder.io/sdk-angular';
   selector: 'app-announcement-bar',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content-variants
+      <content
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
-      ></content-variants>
+      ></content>
     </ng-container>
 
     <ng-template #notFound>

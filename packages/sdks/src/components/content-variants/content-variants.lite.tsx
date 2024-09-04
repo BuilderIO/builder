@@ -27,6 +27,9 @@ useMetadata({
   qwik: {
     setUseStoreFirst: true,
   },
+  angular: {
+    selector: 'content, content-variants',
+  }
 });
 
 type VariantsProviderProps = ContentVariantsPrps & {

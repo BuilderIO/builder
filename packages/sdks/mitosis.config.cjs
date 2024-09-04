@@ -275,8 +275,8 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
       if (
-        code.includes('component-ref, ComponentRef') ||
-        code.includes('repeated-block, RepeatedBlock')
+        code.includes('selector: "component-ref"') ||
+        code.includes('selector: "repeated-block"')
       ) {
         code = code.replace(
           'imports: [CommonModule, Block]',
@@ -295,7 +295,7 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
 const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code.includes('component-ref, ComponentRef')) {
+      if (code.includes('selector: "component-ref"')) {
         code = code
           .replace(
             '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
@@ -336,7 +336,7 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
+      if (code?.includes('selector: "blocks-wrapper"')) {
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
@@ -562,7 +562,7 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
 const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
   code: {
     post: (code) => {
-      if (code.includes('content-component, ContentComponent')) {
+      if (code.includes('selector: "content-component"')) {
         code = code.replaceAll(
           'this.contentSetState',
           'this.contentSetState.bind(this)'
@@ -576,7 +576,7 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
 const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   code: {
     post: (code) => {
-      if (code.includes('builder-symbol, BuilderSymbol')) {
+      if (code.includes('selector: "builder-symbol"')) {
         code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
         code = code.replace(
           'this.setContent();',
