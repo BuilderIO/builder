@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test, verifyTabContent } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
 
 test.describe('Adding a child block to custom component', () => {
 

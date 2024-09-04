@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test, verifyBlocks, verifyTabContent } from '../helpers/index.js';
+import { findTextInPage, test, verifyBlocks } from '../helpers/index.js';
 
 test.describe('Adding advanced child blocks in custom components', () => {
   test('render two divs with the attribute builder-path', async ({ page, packageName }) => {
