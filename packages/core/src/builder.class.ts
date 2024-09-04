@@ -22,12 +22,6 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
-import {
-  flatten,
-  flattenMongoQuery,
-  getBuilderSearchParamsFromWindow,
-  normalizeSearchParams,
-} from './builder.helper';
 
 export type Url = any;
 
