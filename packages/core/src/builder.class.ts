@@ -385,13 +385,6 @@ export type GetContentOptions = AllowEnrich & {
    */
   cache?: boolean;
 
-  canTrack?: boolean;
-
-  /**
-   * Include multilevel references in the response.
-   */
-  enrich?: boolean;
-
   /**
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
    */
@@ -412,7 +405,6 @@ export type GetContentOptions = AllowEnrich & {
    * @hidden
    */
   alias?: string;
-
   /**
    * Only include these fields.
    * Note: 'omit' takes precedence over 'fields'
