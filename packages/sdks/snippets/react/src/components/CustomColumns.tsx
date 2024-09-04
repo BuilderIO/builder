@@ -13,7 +13,7 @@ interface CustomColumnProps
 const CustomColumns = (props: CustomColumnProps) => {
     return (
       <div
-        className="hero"
+        className="two-columns"
         style={{
           display: "flex",
           flexDirection: "row",
