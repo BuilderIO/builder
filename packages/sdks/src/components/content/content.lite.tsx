@@ -59,7 +59,11 @@ export default function ContentComponent(props: ContentProps) {
       // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
       // which is the new standard way of providing custom components, and must therefore take precedence.
       ...components,
-      ...(props.customComponents || []),
+      ...(props.customComponents?.filter(({ models }) => {
+        if (!models?.length) return true;
+        if (!props.model) return true;
+        return models.includes(props.model);
+      }) || []),
     ].reduce<RegisteredComponents>(
       (acc, { component, ...info }) => ({
         ...acc,
@@ -110,7 +114,11 @@ export default function ContentComponent(props: ContentProps) {
           // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
           // which is the new standard way of providing custom components, and must therefore take precedence.
           ...components,
-          ...(props.customComponents || []),
+          ...(props.customComponents?.filter(({ models }) => {
+            if (!models?.length) return true;
+            if (!props.model) return true;
+            return models.includes(props.model);
+          }) || []),
         ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
             ...acc,

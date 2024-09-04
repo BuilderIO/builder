@@ -30,6 +30,7 @@ import { CONTENT as textBlock } from './text-block.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { DUPLICATE_ATTRIBUTES } from './duplicate-attributes.js';
+import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -73,6 +74,8 @@ const pages = {
   '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
   '/input-default-value': INPUT_DEFAULT_VALUE,
   '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
+  '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+  '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
 } as const;
 
 const apiVersionPathToProp = {
@@ -144,12 +147,21 @@ export const getProps = async (args: {
     return null;
   }
 
-  const extraProps =
-    pathname === '/can-track-false'
-      ? {
-          canTrack: false,
-        }
-      : {};
+  let extraProps = {};
+  switch (pathname) {
+    case '/can-track-false':
+      extraProps = {
+        canTrack: false,
+      };
+      break;
+    case '/custom-components-models-show':
+      extraProps = {
+        model: 'test-model',
+      };
+    break;
+    default:
+      break;
+  }
 
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
