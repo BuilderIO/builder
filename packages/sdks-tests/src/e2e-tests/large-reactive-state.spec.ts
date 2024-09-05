@@ -11,7 +11,7 @@ test.describe('Large Reactive State', () => {
 
   test('maintains reactivity with large state', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.fail(true, 'performance improvement not implemented yet');
+    test.skip(true, 'performance improvement not implemented yet');
 
     await page.goto('/large-reactive-state');
 
@@ -27,7 +27,7 @@ test.describe('Large Reactive State', () => {
 
   test('performance check for large state updates', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.fail(true, 'performance improvement not implemented yet');
+    test.skip(true, 'performance improvement not implemented yet');
 
     await page.goto('/large-reactive-state');
 
