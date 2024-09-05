@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-angular",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "files": [
     "lib"
   ],

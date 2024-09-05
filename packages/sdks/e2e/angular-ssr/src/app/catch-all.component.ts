@@ -17,14 +17,14 @@ interface BuilderProps {
   selector: 'catch-all-route',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content-variants
+      <content
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
         [trustedHosts]="trustedHosts"
         [canTrack]="canTrack"
         [customComponents]="customComponents"
-      ></content-variants>
+      ></content>
     </ng-container>
 
     <ng-template #notFound>
