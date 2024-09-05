@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Content } from '@builder.io/sdk-vue';
+import { Content } from './src';
 
 export default defineComponent({
   name: 'DynamicallyRenderBuilderPage',
@@ -12,8 +12,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="props?.content">
-    <builder-render-content v-bind="props" />
-  </div>
-  <div v-else>Content not Found</div>
+  <builder-render-content v-bind="props" />
 </template>
