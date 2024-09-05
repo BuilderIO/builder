@@ -21,7 +21,7 @@ export type PersonalizationContainerProps = {
   attributes: any;
 };
 
-function PersonalizationContainer(props: PersonalizationContainerProps) {
+export function PersonalizationContainer(props: PersonalizationContainerProps) {
   const [isClient, setIsClient] = useState(false);
   const [update, setUpdate] = useState(0);
 
@@ -93,8 +93,6 @@ function PersonalizationContainer(props: PersonalizationContainerProps) {
     </div>
   );
 }
-
-export default PersonalizationContainer;
 
 export function filterWithCustomTargeting(
   userAttributes: UserAttributes,
