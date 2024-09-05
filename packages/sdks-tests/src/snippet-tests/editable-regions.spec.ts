@@ -26,10 +26,12 @@ test.describe('Adding advanced child blocks in custom components', () => {
 
     await page.goto('/editable-region');
 
-    const twoColumns = page.locator('div.two-columns').first();
+    const twoColumns = page.locator('div.builder-block').first();
     await expect(twoColumns).toBeVisible();
 
-    const columns = twoColumns.locator('div.builder-text');
+    const childDivs = twoColumns.locator('div');
+
+    const columns = childDivs.locator('div.builder-text');
 
     await columns.first().waitFor({ state: 'attached' });
     await columns.nth(1).waitFor({ state: 'attached' });

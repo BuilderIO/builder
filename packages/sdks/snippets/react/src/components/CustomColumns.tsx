@@ -1,4 +1,8 @@
-import { Blocks, BuilderBlock } from '@builder.io/sdk-react';
+import {
+  Blocks,
+  BuilderBlock,
+  RegisteredComponent,
+} from '@builder.io/sdk-react';
 
 interface CustomColumnsProps {
   columns: { blocks: BuilderBlock[] | undefined }[];
@@ -8,7 +12,6 @@ interface CustomColumnsProps {
 const CustomColumns = (props: CustomColumnsProps) => {
   return (
     <div
-      className="two-columns"
       style={{
         display: 'flex',
         flexDirection: 'row',
@@ -32,4 +35,26 @@ const CustomColumns = (props: CustomColumnsProps) => {
   );
 };
 
-export default CustomColumns;
+export const customColumnsInfo: RegisteredComponent = {
+  name: 'MyColumns',
+  component: CustomColumns,
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+  },
+  inputs: [
+    {
+      name: 'columns',
+      type: 'array',
+      broadcast: true,
+      hideFromUI: true,
+      defaultValue: [
+        {
+          blocks: [],
+        },
+        {
+          blocks: [],
+        },
+      ],
+    },
+  ],
+};

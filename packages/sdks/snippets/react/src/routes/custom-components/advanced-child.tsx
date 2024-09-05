@@ -11,7 +11,7 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
-import { customTabsInfo } from '../../components/customTabsInfo';
+import { customTabsInfo } from '../../components/CustomTabs';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'page';
