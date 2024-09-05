@@ -1,10 +1,9 @@
+import { RegisteredComponent } from '@builder.io/sdk-react';
 import CustomTabs from './CustomTabs';
 
-export const customTabsInfo = {
+export const customTabsInfo: RegisteredComponent = {
   component: CustomTabs,
   name: 'TabFields',
-  /** To accept children in your custom component and by default it is false */
-  canHaveChildren: true,
   /** To receieve Builder props inside your custom component: by default false  */
   shouldReceiveBuilderProps: {
     /** To access builder's Blocks relative to your parent */

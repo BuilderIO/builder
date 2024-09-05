@@ -12,9 +12,7 @@ type Tab = {
 };
 interface TabProps {
   tabList: Tab[];
-  builderBlock: {
-    id: string | undefined;
-  };
+  builderBlock: BuilderBlock;
 }
 
 const CustomTabs = (props: TabProps) => {

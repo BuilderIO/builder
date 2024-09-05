@@ -1,6 +1,7 @@
+import { RegisteredComponent } from '@builder.io/sdk-react';
 import CustomColumns from './CustomColumns';
 
-export const customColumnsInfo = {
+export const customColumnsInfo: RegisteredComponent = {
   name: 'MyColumns',
   component: CustomColumns,
   shouldReceiveBuilderProps: {

@@ -9,17 +9,7 @@ test.describe('Div with Hero class, background, and text', () => {
     expect(response?.status()).toBeLessThan(400);
   });
 
-  test('contain a div with class "Hero', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
-
-    await page.goto('/custom-child');
-
-    const hero = page.locator('.Hero');
-    await hero.waitFor();
-    await expect(hero).toBeVisible();
-  });
-
-  test('contain a div under the div with Hero with background color', async ({
+  test('should verify builder-block with specific text and styles', async ({
     page,
     packageName,
   }) => {
@@ -27,35 +17,21 @@ test.describe('Div with Hero class, background, and text', () => {
 
     await page.goto('/custom-child');
 
-    const hero = page.locator('.Hero');
-    await hero.waitFor();
-    await expect(hero).toBeVisible();
+    const builderBlock = page.locator('div.builder-block').first();
+    await expect(builderBlock).toBeVisible();
 
-    const backgroundDiv = hero.locator('div').first();
-    await backgroundDiv.waitFor();
-    await expect(backgroundDiv).toBeVisible();
+    const childDivs = builderBlock.locator('div');
 
-    const backgroundColor = await backgroundDiv.evaluate(el => {
-      return window.getComputedStyle(el).backgroundColor;
-    });
+    const inlineStyledDiv = childDivs.nth(0);
+    await expect(inlineStyledDiv).toBeVisible();
 
-    expect(backgroundColor).toBeTruthy();
-  });
+    const inlineText = await inlineStyledDiv.textContent();
+    expect(inlineText?.trim()).toBe("This is a your component's text");
 
-  test('Display the Hero text', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
+    const builderTextDiv = childDivs.nth(1);
+    await expect(builderTextDiv).toBeVisible();
 
-    await page.goto('/custom-child');
-
-    const hero = page.locator('.Hero');
-    await hero.waitFor();
-    await expect(hero).toBeVisible();
-
-    const textDiv = hero.locator('div.builder-text:has-text("Im a Builder Hero Text")').first();
-
-    await expect(textDiv).toBeVisible();
-
-    const text = await textDiv.textContent();
-    expect(text?.trim()).toBe('Im a Builder Hero Text');
+    const builderText = await builderTextDiv.textContent();
+    expect(builderText?.trim()).toBe('This is Builder text');
   });
 });

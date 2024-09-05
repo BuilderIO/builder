@@ -11,7 +11,7 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
-import { customComponents } from '../../custom-components';
+import { customColumnsInfo } from '../../components/customColumnsInfo';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'page';
@@ -53,7 +53,7 @@ export default function EditableRegionRoute() {
       content={content}
       model={MODEL_NAME}
       apiKey={BUILDER_API_KEY}
-      customComponents={customComponents}
+      customComponents={[customColumnsInfo]}
     />
   );
 }

@@ -2,7 +2,7 @@ import { Blocks, BuilderBlock } from '@builder.io/sdk-react';
 
 interface CustomColumnsProps {
   columns: { blocks: BuilderBlock[] | undefined }[];
-  builderBlock: { id: string | undefined };
+  builderBlock: BuilderBlock;
 }
 
 const CustomColumns = (props: CustomColumnsProps) => {
@@ -17,21 +17,17 @@ const CustomColumns = (props: CustomColumnsProps) => {
         padding: '10px',
       }}
     >
-      {props.columns && (
-        <>
-          <Blocks
-            blocks={props.columns[0]?.blocks}
-            path={`component.options.columns.0.blocks`}
-            parent={props.builderBlock.id}
-          />
+      <Blocks
+        blocks={props.columns[0]?.blocks}
+        path={`component.options.columns.0.blocks`}
+        parent={props.builderBlock.id}
+      />
 
-          <Blocks
-            blocks={props.columns[1]?.blocks}
-            path={`component.options.columns.1.blocks`}
-            parent={props.builderBlock.id}
-          />
-        </>
-      )}
+      <Blocks
+        blocks={props.columns[1]?.blocks}
+        path={`component.options.columns.1.blocks`}
+        parent={props.builderBlock.id}
+      />
     </div>
   );
 };
