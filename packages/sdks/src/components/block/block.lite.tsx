@@ -3,6 +3,7 @@ import {
   For,
   Show,
   onMount,
+  onUpdate,
   useMetadata,
   useStore,
   useTarget,
@@ -14,6 +15,7 @@ import type {
 } from '../../context/types.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { isPreviewing } from '../../server-index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
 import { bindAnimations } from './animator.js';
@@ -69,8 +71,22 @@ export default function Block(props: BlockProps) {
         context: props.context.value,
       });
     },
+    /**
+     * Simple agnostic memoization for the processed block
+     * This is used to avoid re-processing the block on every render
+     * We need to make this a property on an object so setState() isn't
+     * called causing infinite rerenders e.g. in React
+     */
+    _processedBlock: { value: null as BuilderBlock | null, update: false },
     get processedBlock(): BuilderBlock {
-      return props.block.repeat?.collection
+      if (
+        state._processedBlock.value &&
+        !state._processedBlock.update &&
+        !isPreviewing()
+      ) {
+        return state._processedBlock.value;
+      }
+      const blockToUse = props.block.repeat?.collection
         ? props.block
         : getProcessedBlock({
             block: props.block,
@@ -80,6 +96,11 @@ export default function Block(props: BlockProps) {
             context: props.context.value.context,
             shouldEvaluateBindings: true,
           });
+
+      state._processedBlock.value = blockToUse;
+      state._processedBlock.update = false;
+
+      return blockToUse;
     },
     get Tag() {
       const shouldUseLink =
@@ -171,6 +192,31 @@ export default function Block(props: BlockProps) {
       };
     },
   });
+
+  /**
+   * This trick forces the component to re-compute the `processedBlock` on every update.
+   */
+  onUpdate(() => {
+    useTarget({
+      svelte: () => {},
+      vue: () => {},
+      angular: () => {},
+      qwik: () => {},
+      solid: () => {},
+      default: () => {
+        state._processedBlock.update = true;
+      },
+    });
+  });
+
+  /**
+   * For frameworks that use signals/stores (e.g. Svelte), we need to
+   * track changes on the `block` prop to force the component to re-compute
+   * the `processedBlock`
+   */
+  onUpdate(() => {
+    state._processedBlock.update = true;
+  }, [props.block]);
 
   onMount(() => {
     useTarget({
