@@ -50,7 +50,6 @@ test.describe.only('Large Reactive State', () => {
 
   test('stress test visual editor sending multiple updates', async ({ page, sdk, basePort }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(true, 'performance improvement not implemented yet');
 
     await launchEmbedderAndWaitForSdk({ path: '/large-reactive-state', basePort, page });
 
