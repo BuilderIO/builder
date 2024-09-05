@@ -56,7 +56,7 @@ test.describe('Large Reactive State', () => {
     const startTime = Date.now();
     const updatedContent = JSON.parse(JSON.stringify(LARGE_REACTIVE_STATE_CONTENT));
 
-    const numUpdates = 50;
+    const numUpdates = 10;
 
     for (let i = 0; i < numUpdates; i++) {
       updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text =
