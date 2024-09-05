@@ -5,7 +5,6 @@ import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
 
 test.describe('Large Reactive State', () => {
   test('renders entire page correctly', async ({ page, sdk }) => {
-    test.skip(sdk === 'qwik', 'performance improvement not implemented yet');
     await page.goto('/large-reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
