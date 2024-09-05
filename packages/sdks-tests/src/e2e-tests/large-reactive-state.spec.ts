@@ -3,7 +3,7 @@ import { excludeTestFor, test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
 
-test.describe.only('Large Reactive State', () => {
+test.describe('Large Reactive State', () => {
   test('renders entire page correctly', async ({ page }) => {
     await page.goto('/large-reactive-state');
 
