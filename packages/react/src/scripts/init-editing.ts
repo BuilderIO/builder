@@ -9,6 +9,7 @@ if (typeof window !== 'undefined') {
         supportsPatchUpdates: 'v4',
         supportsCustomBreakpoints: true,
         supportsGlobalSymbols: true,
+        blockLevelPersonalization: true,
         priorVersion: version,
       },
     },

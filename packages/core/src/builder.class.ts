@@ -639,6 +639,9 @@ export interface Input {
   model?: string;
 
   meta?: Record<string, any>;
+
+  // internal
+  behavior?: string;
 }
 
 /**
