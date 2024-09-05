@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
 
-test.describe('Large Reactive State', () => {
+test.describe.only('Large Reactive State', () => {
   test('renders entire page correctly', async ({ page }) => {
     await page.goto('/large-reactive-state');
 
