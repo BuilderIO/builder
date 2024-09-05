@@ -1,5 +1,9 @@
 import fs from 'fs';
 
+const PATH_TO_DYNAMIC_RENDERER = './src/components/dynamic-renderer/dynamic-renderer.ts';
+
+console.log('Generating dynamic-renderer.ts component...');
+
 const htmlElements = [
   'a',
   'button',
@@ -190,7 +194,9 @@ export default class DynamicRenderer {
     dynamicRendererCode += dynamicComponentTemplate(tagName) + '\n';
   });
 
-  fs.writeFileSync('dynamic-renderer.ts', dynamicRendererCode);
+  fs.writeFileSync(PATH_TO_DYNAMIC_RENDERER, dynamicRendererCode);
+
+  console.log('Dynamic renderer generated successfully!');
 };
 
 generateComponents();
