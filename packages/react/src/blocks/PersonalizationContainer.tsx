@@ -49,12 +49,12 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
 
   return (
     <div
+      {...props.attributes}
       style={{
         opacity: isClient ? 1 : 0,
         transition: 'opacity 0.2s ease-in-out',
-        ...props.attributes,
+        ...props.attributes?.style,
       }}
-      {...props.attributes}
       className={`builder-personalization-container ${
         props.attributes.className
       } ${isClient ? '' : 'builder-personalization-container-loading'}`}
@@ -212,7 +212,7 @@ Builder.registerComponent(PersonalizationContainer, {
           type: 'text',
         },
         {
-          name: 'variants',
+          name: 'query',
           type: 'BuilderQuery',
           defaultValue: [],
         },
