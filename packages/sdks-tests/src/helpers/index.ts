@@ -117,15 +117,6 @@ export const verifyTabContent = async (
   await expect(hiddenContent).not.toBeVisible();
 };
 
-export const verifyBlocks = async (
-  page: Page,
-  element: Locator,
-  expectedVisibleContent: string
-): Promise<void> => {
-  const visibleContent = page.locator(`[builder-path="${expectedVisibleContent}"]`);
-  await expect(visibleContent).toBeVisible();
-};
-
 export const checkIsRN = (sdk: Sdk) => sdk === 'reactNative';
 export const checkIsGen1React = (sdk: Sdk) => sdk === 'oldReact';
 
