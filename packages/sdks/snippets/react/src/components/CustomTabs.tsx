@@ -10,12 +10,12 @@ type Tab = {
   tabName: string;
   children: BuilderBlock[];
 };
-type TabProps = {
+interface TabProps {
   tabList: Tab[];
   builderBlock: {
     id: string | undefined;
   };
-};
+}
 
 const CustomTabs = (props: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);

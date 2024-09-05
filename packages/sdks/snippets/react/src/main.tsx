@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AnnouncementBar from './routes/AnnouncementBar.tsx';
-import EditableRegionRoute from './routes/custom-components/editable-regions.tsx';
 import IntegratingPages from './routes/IntegratingPages.tsx';
-import CustomChildRoute from './routes/custom-components/custom-child.tsx';
+import EditableRegionRoute from './routes/custom-components/editable-region.tsx';
 import AdvancedChildRoute from './routes/custom-components/advanced-child.tsx';
+import CustomChildRoute from './routes/custom-components/custom-child.tsx';
 
 const router = createBrowserRouter([
   {

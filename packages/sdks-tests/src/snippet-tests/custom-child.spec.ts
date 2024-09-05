@@ -1,8 +1,25 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
-test.describe('Div with red background, text, and image', () => {
-  test('should render a div with red background, text "I am child text block!", and an image', async ({
+test.describe('Div with Hero class, background, and text', () => {
+  test('should render the page without 404', async ({ page, packageName }) => {
+    test.skip(!['react'].includes(packageName));
+
+    const response = await page.goto('/custom-child');
+    expect(response?.status()).toBeLessThan(400);
+  });
+
+  test('contain a div with class "Hero', async ({ page, packageName }) => {
+    test.skip(!['react'].includes(packageName));
+
+    await page.goto('/custom-child');
+
+    const hero = page.locator('.Hero');
+    await hero.waitFor();
+    await expect(hero).toBeVisible();
+  });
+
+  test('contain a div under the div with Hero with background color', async ({
     page,
     packageName,
   }) => {
@@ -10,24 +27,35 @@ test.describe('Div with red background, text, and image', () => {
 
     await page.goto('/custom-child');
 
-    const redDiv = await page.locator('div[style*="background-color: red"]').first();
-    await expect(redDiv).toBeVisible();
+    const hero = page.locator('.Hero');
+    await hero.waitFor();
+    await expect(hero).toBeVisible();
 
-    const textBlock = redDiv.locator('div.builder-text:has-text("I am child text block!")');
-    await expect(textBlock).toBeVisible();
+    const backgroundDiv = hero.locator('div').first();
+    await backgroundDiv.waitFor();
+    await expect(backgroundDiv).toBeVisible();
 
-    const imageBlock = redDiv.locator('img');
-    await expect(imageBlock).toBeVisible();
-
-    await imageBlock.waitFor({ state: 'attached' });
-
-    const imageSrc = await imageBlock.getAttribute('src');
-    expect(imageSrc).toBeTruthy();
-
-    const imageLoaded = await imageBlock.evaluate((img: HTMLImageElement) => {
-      return img.complete && img.naturalHeight > 0;
+    const backgroundColor = await backgroundDiv.evaluate(el => {
+      return window.getComputedStyle(el).backgroundColor;
     });
 
-    expect(imageLoaded).toBe(true);
+    expect(backgroundColor).toBeTruthy();
+  });
+
+  test('Display the Hero text', async ({ page, packageName }) => {
+    test.skip(!['react'].includes(packageName));
+
+    await page.goto('/custom-child');
+
+    const hero = page.locator('.Hero');
+    await hero.waitFor();
+    await expect(hero).toBeVisible();
+
+    const textDiv = hero.locator('div.builder-text:has-text("Im a Builder Hero Text")').first();
+
+    await expect(textDiv).toBeVisible();
+
+    const text = await textDiv.textContent();
+    expect(text?.trim()).toBe('Im a Builder Hero Text');
   });
 });

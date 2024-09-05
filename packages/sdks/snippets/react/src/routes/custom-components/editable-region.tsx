@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/react/routes/EditableRegionRoute.tsx
+ * snippets/react/routes/custom-child.tsx
  */
 
 import {
@@ -16,9 +16,6 @@ import { customComponents } from '../../custom-components';
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'page';
 
-// set whether you're using the Visual Editor,
-// whether there are changes,
-// and render the content if found
 export default function EditableRegionRoute() {
   const [notFound, setNotFound] = useState(false);
   const [content, setContent] = useState<BuilderContent | null>(null);

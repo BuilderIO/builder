@@ -1,39 +1,60 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test, verifyBlocks } from '../helpers/index.js';
+import { findTextInPage, test, verifyTabContent } from '../helpers/index.js';
 
-test.describe('Adding advanced child blocks in custom components', () => {
-  test('render two divs with the attribute builder-path', async ({ page, packageName }) => {
+test.describe('Editable Regions in Custom Components', () => {
+  test('Registers the custom component and contains a text on initial render', async ({
+    page,
+    packageName,
+  }) => {
     test.skip(!['react'].includes(packageName));
 
     await page.goto('/advanced-child');
 
-    await page.waitForSelector('div[builder-path]', { timeout: 5000 });
-
-    const div = page.locator('div[builder-path]');
-    const count = await div.count();
-
-    expect(count).toBeGreaterThan(1);
+    await findTextInPage({ page, text: 'Custom Component with editable regions' });
   });
 
-  test('should render a div with two columns', async ({ page, packageName }) => {
+  test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
     test.skip(!['react'].includes(packageName));
 
     await page.goto('/advanced-child');
 
-    const twoColumns = page.locator('div.two-columns').first();
-    await expect(twoColumns).toBeVisible();
+    await page.waitForSelector('button');
 
-    const columns = twoColumns.locator('div.builder-text');
-    await expect(columns).toBeVisible();
+    const buttons = await page.$$('button');
 
-    await findTextInPage({ page, text: 'Enter some text...' });
+    expect(buttons.length).toBeGreaterThan(0);
 
-    await verifyBlocks(page, twoColumns, 'component.options.inside.0.blocks');
-    await verifyBlocks(page, twoColumns, 'component.options.inside.1.blocks');
+    const buttonTexts = await Promise.all(
+      buttons.map(async button => {
+        const text = await button.textContent();
+        return text?.trim();
+      })
+    );
 
-    const image = twoColumns.locator('img');
-    const imageSrc = await image.getAttribute('src');
-    expect(imageSrc).not.toBeNull();
-    await expect(image).toBeVisible();
+    expect(buttonTexts).toContain('Tab 1');
+    expect(buttonTexts).toContain('Tab 2');
+  });
+
+  test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
+    test.skip(!['react'].includes(packageName));
+
+    await page.goto('/advanced-child');
+
+    await page.waitForSelector('button:has-text("Tab 1")');
+    await page.waitForSelector('button:has-text("Tab 2")');
+
+    await verifyTabContent(
+      page,
+      'Tab 1',
+      'component.options.tabList.0.children',
+      'component.options.tabList.1.children'
+    );
+
+    await verifyTabContent(
+      page,
+      'Tab 2',
+      'component.options.tabList.1.children',
+      'component.options.tabList.0.children'
+    );
   });
 });

@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface CustomHeroProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 const CustomHero: React.FC<CustomHeroProps> = (props) => {
-    return <div style={{backgroundColor: "red"}}>{props.children}</div>
-}
+  return <div className="Hero">{props.children}</div>;
+};
 
 export default CustomHero;
