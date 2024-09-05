@@ -83,9 +83,6 @@ test.describe('Large Reactive State', () => {
     const endTime = Date.now();
     const duration = endTime - startTime;
 
-    // Assuming a threshold of 10000ms for 50 updates (200ms per update on average)
     expect(duration).toBeLessThan(10000);
-
-    console.log(`Stress test completed in ${duration}ms`);
   });
 });
