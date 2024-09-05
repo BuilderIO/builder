@@ -2,6 +2,11 @@ import fs from 'fs';
 
 const PATH_TO_DYNAMIC_RENDERER = './src/components/dynamic-renderer/dynamic-renderer.ts';
 
+if (!fs.existsSync(PATH_TO_DYNAMIC_RENDERER)) {
+  console.error(`File ${PATH_TO_DYNAMIC_RENDERER} not found! Was the file moved or renamed?`);
+  process.exit(1);
+}
+
 console.log('Generating dynamic-renderer.ts component...');
 
 const htmlElements = [
