@@ -76,9 +76,8 @@ const CustomTabs = (props: TabProps) => {
 export const customTabsInfo: RegisteredComponent = {
   component: CustomTabs,
   name: 'TabFields',
-  /** To receieve Builder props inside your custom component: by default false  */
   shouldReceiveBuilderProps: {
-    /** To access builder's Blocks relative to your parent */
+    /** enabling this causes the SDK to pass the `builderBlock` prop down to the component */
     builderBlock: true,
   },
   inputs: [
