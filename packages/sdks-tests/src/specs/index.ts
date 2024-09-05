@@ -31,7 +31,8 @@ import { JS_CODE_CONTENT } from './js-code.js';
 import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
-import { CONTENT as reactiveState } from './reactive-state.js';
+import { REACTIVE_STATE_CONTENT } from './reactive-state.js';
+import { LARGE_REACTIVE_STATE_CONTENT } from './large-reactive-state.js';
 import { REPEAT_ITEMS_BINDINGS } from './repeat-items-bindings.js';
 import { SHOW_HIDE_IF_REPEATS } from './show-hide-if-repeat.js';
 import { SHOW_HIDE_IF } from './show-hide-if.js';
@@ -91,7 +92,8 @@ const PAGES = {
   '/http-requests': HTTP_REQUESTS,
   '/symbol-ab-test': symbolAbTest,
   '/custom-breakpoints': customBreakpoints,
-  '/reactive-state': reactiveState,
+  '/reactive-state': REACTIVE_STATE_CONTENT,
+  '/large-reactive-state': LARGE_REACTIVE_STATE_CONTENT,
   '/element-events': elementEvents,
   '/external-data': EXTERNAL_DATA,
   '/show-hide-if': SHOW_HIDE_IF,

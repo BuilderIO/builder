@@ -5,7 +5,6 @@
       "runner": "nx-cloud",
       "options": {
         "accessToken": "MWRjZDNhMmQtMTlhMi00YWExLTkzZDAtMTA1NzM1ZmIxMmRkfHJlYWQ=",
-        "cacheDirectory": ".nx-cache",
         "cacheableOperations": [
           "build",
           "build-inline-fns",

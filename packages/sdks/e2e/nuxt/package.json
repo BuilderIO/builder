@@ -18,8 +18,8 @@
   "devDependencies": {
     "@types/node": "^18",
     "nuxt": "^3.8.1",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2"
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0"
   },
   "nx": {
     "targets": {
