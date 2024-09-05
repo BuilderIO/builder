@@ -11,11 +11,15 @@ export default defineConfig(() => {
         /**
          * https://github.com/BuilderIO/qwik/issues/4952
          */
-        fileName: (format, entryName) => `${entryName}.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
+        fileName: (format, entryName) =>
+          `${entryName}.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
       },
       rollupOptions: {
         external: ['@builder.io/qwik', 'node:module', 'isolated-vm'],
-        input: ['./src/index.ts', './src/functions/evaluate/node-runtime/init.ts'],
+        input: [
+          './src/index.ts',
+          './src/functions/evaluate/node-runtime/init.ts',
+        ],
         output: {
           preserveModules: true,
           preserveModulesRoot: 'src',
