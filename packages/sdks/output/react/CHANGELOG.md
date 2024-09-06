@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.12
+
+### Patch Changes
+
+- 1a69210: Chore: improve performance by caching block processing during renders.
+
 ## 2.0.9
 
 ### Patch Changes
