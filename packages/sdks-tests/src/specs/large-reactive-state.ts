@@ -254,6 +254,7 @@ export const LARGE_REACTIVE_STATE_CONTENT = {
     url: '/reactive-state',
     state: {
       deviceSize: 'large',
+      reactiveValue: 0,
       location: {
         pathname: '/large-reactive-state',
         path: ['large-reactive-state'],
