@@ -172,7 +172,7 @@ const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
-  sdk: Sdk;
+  sdk?: Sdk;
   pathname?: string;
   _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
   fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
@@ -206,7 +206,8 @@ export const getProps = async (args: {
   let _content = getContentForPathname(pathname);
 
   if (args.sdk === 'oldReact' && pathname === '/large-reactive-state-editing') {
-    // `undefined` on purpose to enable editing. Playwright will fill in the content instead when the gen1 SDK makes the request.
+    // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
+    // which Playwright will intercept and provide the content itself.
     _content = null;
   }
 
@@ -245,7 +246,7 @@ export const getProps = async (args: {
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
   const props = {
-    apiKey: getAPIKey(shouldUseRealApiKey ? 'real' : 'mock'),
+    apiKey: getAPIKey(data),
     model: 'page',
     ...extraProps,
     ...extraApiVersionProp,

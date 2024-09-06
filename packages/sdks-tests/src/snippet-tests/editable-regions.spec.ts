@@ -1,8 +1,24 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test, verifyTabContent } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
 
-test.describe('Editable Regions in Custom Components', () => {
-  test('Registers the custom component and contains a text on initial render', async ({
+test.describe('Adding advanced child blocks in custom components', () => {
+  test('should render a div with two columns with builder-path attr', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react'].includes(packageName));
+
+    await page.goto('/editable-region');
+    await page.waitForLoadState('networkidle');
+
+    const divs = await page.$$('div[builder-path]');
+
+    const count = divs.length;
+
+    expect(count).toBe(2);
+  });
+
+  test('should render a div with two columns with placeholder text', async ({
     page,
     packageName,
   }) => {
@@ -10,51 +26,23 @@ test.describe('Editable Regions in Custom Components', () => {
 
     await page.goto('/editable-region');
 
-    await findTextInPage({ page, text: 'Custom Component with editable regions' });
-  });
+    const twoColumns = page.locator('div.builder-block').first();
+    await expect(twoColumns).toBeVisible();
 
-  test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
+    const childDivs = twoColumns.locator('div');
 
-    await page.goto('/editable-region');
+    const columns = childDivs.locator('div.builder-text');
 
-    await page.waitForSelector('button');
+    await columns.first().waitFor({ state: 'attached' });
+    await columns.nth(1).waitFor({ state: 'attached' });
 
-    const buttons = await page.$$('button');
+    await expect(columns.first()).toBeVisible();
+    await expect(columns.nth(1)).toBeVisible();
 
-    expect(buttons.length).toBeGreaterThan(0);
+    const firstText = await columns.first().textContent();
+    expect(firstText?.trim().toLowerCase()).toBe('column 1 text');
 
-    const buttonTexts = await Promise.all(
-      buttons.map(async button => {
-        const text = await button.textContent();
-        return text?.trim();
-      })
-    );
-
-    expect(buttonTexts).toContain('Tab 1');
-    expect(buttonTexts).toContain('Tab 2');
-  });
-
-  test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
-
-    await page.goto('/editable-region');
-
-    await page.waitForSelector('button:has-text("Tab 1")');
-    await page.waitForSelector('button:has-text("Tab 2")');
-
-    await verifyTabContent(
-      page,
-      'Tab 1',
-      'component.options.tabList.0.children',
-      'component.options.tabList.1.children'
-    );
-
-    await verifyTabContent(
-      page,
-      'Tab 2',
-      'component.options.tabList.1.children',
-      'component.options.tabList.0.children'
-    );
+    const secondText = await columns.nth(1).textContent();
+    expect(secondText?.trim().toLowerCase()).toBe('column 2 text');
   });
 });

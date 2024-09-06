@@ -3,19 +3,21 @@
  * src/components/CustomTabs.tsx
  */
 
-import { Blocks, BuilderBlock } from '@builder.io/sdk-react';
+import {
+  Blocks,
+  BuilderBlock,
+  RegisteredComponent,
+} from '@builder.io/sdk-react';
 import { useState } from 'react';
 
 type Tab = {
   tabName: string;
   children: BuilderBlock[];
 };
-type TabProps = {
+interface TabProps {
   tabList: Tab[];
-  builderBlock: {
-    id: string | undefined;
-  };
-};
+  builderBlock: BuilderBlock;
+}
 
 const CustomTabs = (props: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -71,4 +73,58 @@ const CustomTabs = (props: TabProps) => {
   );
 };
 
-export default CustomTabs;
+export const customTabsInfo: RegisteredComponent = {
+  component: CustomTabs,
+  name: 'TabFields',
+  shouldReceiveBuilderProps: {
+    /** enabling this causes the SDK to pass the `builderBlock` prop down to the component */
+    builderBlock: true,
+  },
+  inputs: [
+    {
+      name: 'tabList',
+      type: 'list',
+
+      subFields: [
+        {
+          name: 'tabName',
+          type: 'string',
+        },
+        {
+          name: 'children',
+          type: 'uiBlocks',
+          hideFromUI: true,
+          defaultValue: [
+            {
+              '@type': '@builder.io/sdk:Element',
+              component: {
+                name: 'Text',
+
+                options: {
+                  text: 'This is editable block within the builder editor',
+                },
+              },
+              responsiveStyles: {
+                large: {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  position: 'relative',
+                  flexShrink: '0',
+                  boxSizing: 'border-box',
+                  marginTop: '8px',
+                  lineHeight: 'normal',
+                  height: '200px',
+                  textAlign: 'left',
+                  minHeight: '200px',
+                },
+                small: {
+                  height: '200px',
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
