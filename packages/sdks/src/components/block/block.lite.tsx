@@ -84,6 +84,8 @@ export default function Block(props: BlockProps) {
         angular: () => {},
         qwik: () => {},
         solid: () => {},
+
+        // @ts-expect-error: missing return value
         default: () => {
           if (
             state._processedBlock.value &&
