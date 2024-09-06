@@ -12,5 +12,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <builder-render-content v-bind="props" />
+  <div v-if="props?.content">
+    <builder-render-content v-bind="props" />
+  </div>
+  <div v-else>Content not Found</div>
 </template>
