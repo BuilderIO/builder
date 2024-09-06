@@ -1,9 +1,13 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
-import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
+import {
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+  sendPatchUpdatesMessage,
+} from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
 
-test.describe('Large Reactive State', () => {
+test.describe.only('Large Reactive State', () => {
   test('renders entire page correctly', async ({ page }) => {
     await page.goto('/large-reactive-state');
 
@@ -48,10 +52,19 @@ test.describe('Large Reactive State', () => {
     await expect(page.getByText('10', { exact: true })).toBeVisible();
   });
 
-  test('stress test visual editor sending multiple updates', async ({ page, sdk, basePort }) => {
+  test.only('stress test visual editor sending multiple updates', async ({
+    page,
+    sdk,
+    basePort,
+  }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
 
-    await launchEmbedderAndWaitForSdk({ path: '/large-reactive-state', basePort, page });
+    await launchEmbedderAndWaitForSdk({
+      path: '/large-reactive-state-editing',
+      basePort,
+      page,
+      sdk,
+    });
 
     const startTime = Date.now();
     const updatedContent = JSON.parse(JSON.stringify(LARGE_REACTIVE_STATE_CONTENT));
@@ -59,17 +72,34 @@ test.describe('Large Reactive State', () => {
     const numUpdates = 10;
 
     for (let i = 0; i < numUpdates; i++) {
-      updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text =
+      const newText =
         updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text.replace(
           'Below',
           'BelowX'
         );
 
-      await sendContentUpdateMessage({
-        page,
-        newContent: updatedContent,
-        model: 'page',
-      });
+      updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text =
+        newText;
+
+      if (sdk === 'oldReact') {
+        await sendPatchUpdatesMessage({
+          page,
+          patches: [
+            {
+              op: 'replace',
+              path: '/data/blocks/0/component/options/columns/0/blocks/0/component/options/text',
+              value: newText,
+            },
+          ],
+          id: updatedContent.id,
+        });
+      } else {
+        await sendContentUpdateMessage({
+          page,
+          newContent: updatedContent,
+          model: 'page',
+        });
+      }
     }
 
     // Verify the final state
