@@ -240,8 +240,6 @@ export const getProps = async (args: {
       break;
   }
 
-  const shouldUseRealApiKey = pathname === '/large-reactive-state-editing';
-
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
