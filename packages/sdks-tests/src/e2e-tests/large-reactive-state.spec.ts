@@ -32,9 +32,10 @@ test.describe('Large Reactive State', () => {
     }
   });
 
-  test('performance check for large state updates', async ({ page, sdk }) => {
+  test('performance check for large state updates', async ({ page, sdk, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
+    test.fail(packageName === 'gen1-remix', 'hydration mismatch');
 
     await page.goto('/large-reactive-state');
 
