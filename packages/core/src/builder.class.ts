@@ -558,6 +558,8 @@ export interface Input {
   /** @hidden */
   imageHeight?: number;
   /** @hidden */
+  behavior?: string;
+  /** @hidden */
   imageWidth?: number;
   /** @hidden */
   mediaHeight?: number;
@@ -639,9 +641,6 @@ export interface Input {
   model?: string;
 
   meta?: Record<string, any>;
-
-  // internal
-  behavior?: string;
 }
 
 /**
