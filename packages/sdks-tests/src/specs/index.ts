@@ -206,7 +206,8 @@ export const getProps = async (args: {
   let _content = getContentForPathname(pathname);
 
   if (args.sdk === 'oldReact' && pathname === '/large-reactive-state-editing') {
-    // `undefined` on purpose to enable editing. Playwright will fill in the content instead when the gen1 SDK makes the request.
+    // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
+    // which Playwright will intercept and provide the content itself.
     _content = null;
   }
 
