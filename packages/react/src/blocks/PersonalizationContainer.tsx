@@ -213,6 +213,7 @@ Builder.registerComponent(PersonalizationContainer, {
         },
         {
           name: 'query',
+          friendlyName: 'Targeting rules',
           type: 'BuilderQuery',
           defaultValue: [],
         },
