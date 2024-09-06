@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "5.0.2-5",
+  "version": "5.0.2-7",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -106,6 +106,5 @@
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
-  },
-  "stableVersion": "5.0.2-4"
+  }
 }
