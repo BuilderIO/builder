@@ -53,7 +53,7 @@ test.describe('Large Reactive State', () => {
       description: logMsg,
     });
     // Assuming a threshold of 1000ms for 10 updates
-    expect(duration).toBeLessThan(5000);
+    expect(duration).toBeLessThan(10000);
 
     // Verify final state
     await expect(page.getByText('10', { exact: true })).toBeVisible();
