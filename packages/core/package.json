@@ -72,6 +72,5 @@
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
-  },
-  "stableVersion": "3.0.1"
+  }
 }
