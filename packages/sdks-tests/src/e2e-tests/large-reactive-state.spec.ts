@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeGen1, excludeTestFor, test } from '../helpers/index.js';
+import { excludeGen2, excludeTestFor, test } from '../helpers/index.js';
 import {
   launchEmbedderAndWaitForSdk,
   sendContentUpdateMessage,
@@ -18,7 +18,7 @@ test.describe('Large Reactive State', () => {
 
   test('maintains reactivity with large state', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(excludeGen1(sdk), 'performance improvement not implemented yet');
+    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
 
     await page.goto('/large-reactive-state');
 
@@ -34,7 +34,7 @@ test.describe('Large Reactive State', () => {
 
   test('performance check for large state updates', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(excludeGen1(sdk), 'performance improvement not implemented yet');
+    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
 
     await page.goto('/large-reactive-state');
 
@@ -57,7 +57,7 @@ test.describe('Large Reactive State', () => {
 
   test('stress test visual editor sending multiple updates', async ({ page, sdk, basePort }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(excludeGen1(sdk), 'performance improvement not implemented yet');
+    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
 
     await launchEmbedderAndWaitForSdk({
       path: '/large-reactive-state-editing',
