@@ -55,8 +55,17 @@ test.describe('Large Reactive State', () => {
     await expect(page.getByText('10', { exact: true })).toBeVisible();
   });
 
-  test('stress test visual editor sending multiple updates', async ({ page, sdk, basePort }) => {
+  test('stress test visual editor sending multiple updates', async ({
+    page,
+    sdk,
+    basePort,
+    packageName,
+  }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
+    test.skip(
+      packageName === 'gen1-next' || packageName === 'gen1-remix',
+      'visual editing is only implemented for gen1 react-vite.'
+    );
     test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
 
     await launchEmbedderAndWaitForSdk({
