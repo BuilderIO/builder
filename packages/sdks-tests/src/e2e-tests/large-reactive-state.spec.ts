@@ -46,6 +46,12 @@ test.describe('Large Reactive State', () => {
     const endTime = Date.now();
     const duration = endTime - startTime;
 
+    const logMsg = `Large state updates duration: ${duration}ms`;
+    console.log(logMsg);
+    test.info().annotations.push({
+      type: 'performance',
+      description: logMsg,
+    });
     // Assuming a threshold of 1000ms for 10 updates
     expect(duration).toBeLessThan(5000);
 
@@ -115,6 +121,13 @@ test.describe('Large Reactive State', () => {
 
     const endTime = Date.now();
     const duration = endTime - startTime;
+
+    const logMsg = `Visual editor updates duration: ${duration}ms`;
+    console.log(logMsg);
+    test.info().annotations.push({
+      type: 'performance',
+      description: logMsg,
+    });
 
     expect(duration).toBeLessThan(10000);
   });
