@@ -3,6 +3,20 @@ import { chooseBrowserOrServerEval } from './choose-eval.js';
 import type { EvaluatorArgs, ExecutorArgs } from './helpers.js';
 import { getBuilderGlobals, parseCode } from './helpers.js';
 
+// Caching is dangerous for several reasons
+// - JSON.stringify is not safe to run on things like `context`
+//   because anything can be passed, including non-stringifiable objects,
+//   circiular references, etc.
+// - JSON.stringify is expensive to run as a cache key
+// - This likely only helped because we were running processBlock multiple times
+//   but that is not fixed, and this will cause bugs and issues if enabled
+//
+// Perhaps the best approach is to allow users to configure if caching  is enabled or not
+// for instance on edge runtimes with slower evaluation times via the interpreter
+// That said, the repeat processBLock calls was making any evaluation time 10x+ slower
+// which is now fixed, so this still may not be necessary
+const DISABLE_CACHE = true;
+
 type EvalValue = unknown;
 
 class EvalCache {
@@ -56,7 +70,7 @@ export function evaluate({
     localState,
   };
 
-  if (enableCache) {
+  if (enableCache && !DISABLE_CACHE) {
     const cacheKey = EvalCache.getCacheKey(args);
     const cachedValue = EvalCache.getCachedValue(cacheKey);
 

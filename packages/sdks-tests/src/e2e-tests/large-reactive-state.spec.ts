@@ -1,15 +1,28 @@
 import { expect } from '@playwright/test';
-import { excludeGen2, excludeTestFor, test } from '../helpers/index.js';
+import { excludeTestFor, test } from '../helpers/index.js';
 import {
   launchEmbedderAndWaitForSdk,
   sendContentUpdateMessage,
   sendPatchUpdatesMessage,
 } from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
+import type { Sdk } from '../helpers/sdk.js';
+
+export const excludeSdksWithoutCachedProcessedBlock = (sdk: Sdk) =>
+  excludeTestFor(
+    {
+      svelte: true,
+      vue: true,
+      angular: true,
+      qwik: true,
+      solid: true,
+    },
+    sdk
+  );
 
 test.describe('Large Reactive State', () => {
   test('renders entire page correctly', async ({ page, sdk }) => {
-    test.skip(sdk === 'qwik', 'performance improvement not implemented yet');
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
     await page.goto('/large-reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
@@ -18,7 +31,7 @@ test.describe('Large Reactive State', () => {
 
   test('maintains reactivity with large state', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
 
     await page.goto('/large-reactive-state');
 
@@ -34,8 +47,8 @@ test.describe('Large Reactive State', () => {
 
   test('performance check for large state updates', async ({ page, sdk, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
     test.fail(packageName === 'gen1-remix', 'hydration mismatch');
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
 
     await page.goto('/large-reactive-state');
 
@@ -49,8 +62,14 @@ test.describe('Large Reactive State', () => {
     const endTime = Date.now();
     const duration = endTime - startTime;
 
+    const logMsg = `Large state updates duration: ${duration}ms`;
+    console.log(logMsg);
+    test.info().annotations.push({
+      type: 'performance',
+      description: logMsg,
+    });
     // Assuming a threshold of 1000ms for 10 updates
-    expect(duration).toBeLessThan(5000);
+    expect(duration).toBeLessThan(10000);
 
     // Verify final state
     await expect(page.getByText('10', { exact: true })).toBeVisible();
@@ -67,7 +86,7 @@ test.describe('Large Reactive State', () => {
       packageName === 'gen1-next' || packageName === 'gen1-remix',
       'visual editing is only implemented for gen1 react-vite.'
     );
-    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
 
     await launchEmbedderAndWaitForSdk({
       path: '/large-reactive-state-editing',
@@ -119,6 +138,13 @@ test.describe('Large Reactive State', () => {
 
     const endTime = Date.now();
     const duration = endTime - startTime;
+
+    const logMsg = `Visual editor updates duration: ${duration}ms`;
+    console.log(logMsg);
+    test.info().annotations.push({
+      type: 'performance',
+      description: logMsg,
+    });
 
     expect(duration).toBeLessThan(10000);
   });

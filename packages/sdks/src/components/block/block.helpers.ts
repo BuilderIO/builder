@@ -6,28 +6,18 @@ import type {
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
 export const getComponent = ({
   block,
-  context,
   registeredComponents,
 }: {
   block: BuilderBlock;
-  context: BuilderContextInterface;
   registeredComponents: RegisteredComponents;
 }) => {
-  const componentName = getProcessedBlock({
-    block,
-    localState: context.localState,
-    rootState: context.rootState,
-    rootSetState: context.rootSetState,
-    context: context.context,
-    shouldEvaluateBindings: false,
-  }).component?.name;
+  const componentName = block.component?.name;
 
   if (!componentName) {
     return null;
