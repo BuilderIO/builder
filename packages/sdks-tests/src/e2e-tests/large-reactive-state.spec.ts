@@ -6,9 +6,23 @@ import {
   sendPatchUpdatesMessage,
 } from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
+import type { Sdk } from '../helpers/sdk.js';
+
+export const excludeSdksWithoutCachedProcessedBlock = (sdk: Sdk) =>
+  excludeTestFor(
+    {
+      svelte: true,
+      vue: true,
+      angular: true,
+      qwik: true,
+      solid: true,
+    },
+    sdk
+  );
 
 test.describe('Large Reactive State', () => {
   test('renders entire page correctly', async ({ page }) => {
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
     await page.goto('/large-reactive-state');
 
     await expect(page.getByText('0', { exact: true })).toBeVisible();
@@ -17,6 +31,7 @@ test.describe('Large Reactive State', () => {
 
   test('maintains reactivity with large state', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
 
     await page.goto('/large-reactive-state');
 
@@ -33,6 +48,7 @@ test.describe('Large Reactive State', () => {
   test('performance check for large state updates', async ({ page, sdk, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.fail(packageName === 'gen1-remix', 'hydration mismatch');
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
 
     await page.goto('/large-reactive-state');
 
@@ -70,6 +86,7 @@ test.describe('Large Reactive State', () => {
       packageName === 'gen1-next' || packageName === 'gen1-remix',
       'visual editing is only implemented for gen1 react-vite.'
     );
+    test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
 
     await launchEmbedderAndWaitForSdk({
       path: '/large-reactive-state-editing',
