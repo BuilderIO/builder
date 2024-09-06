@@ -1,7 +1,9 @@
+import { TARGET } from '../constants/target.js';
 import type { BuilderContextInterface } from '../context/types.js';
 import { omit } from '../helpers/omit.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate/index.js';
+import { fastClone } from './fast-clone.js';
 import { set } from './set.js';
 import { transformBlock } from './transform-block.js';
 
@@ -30,6 +32,37 @@ export function deepCloneWithConditions<T = any>(obj: T): T {
   return clonedObj;
 }
 
+const IS_SDK_WITHOUT_CACHED_PROCESSED_BLOCK = [
+  'svelte',
+  'vue',
+  'angular',
+  'qwik',
+  'solid',
+].includes(TARGET);
+
+const getCopy = (block: BuilderBlock): BuilderBlock => {
+  if (IS_SDK_WITHOUT_CACHED_PROCESSED_BLOCK) {
+    const copy = fastClone(block);
+    const copied = {
+      ...copy,
+      properties: { ...copy.properties },
+      actions: { ...copy.actions },
+    };
+    return copied;
+  } else {
+    const copy = deepCloneWithConditions(
+      omit(block, 'children', 'meta')
+    ) as BuilderBlock;
+    return {
+      ...copy,
+      properties: { ...copy.properties },
+      actions: { ...copy.actions },
+      children: block.children,
+      meta: block.meta,
+    };
+  }
+};
+
 const evaluateBindings = ({
   block,
   context,
@@ -45,14 +78,8 @@ const evaluateBindings = ({
   if (!block.bindings) {
     return block;
   }
-  const copy = deepCloneWithConditions(omit(block, 'children', 'meta'));
-  const copied = {
-    ...copy,
-    properties: { ...copy.properties },
-    actions: { ...copy.actions },
-    children: block.children,
-    meta: block.meta,
-  } as BuilderBlock;
+
+  const copied = getCopy(block);
 
   for (const binding in block.bindings) {
     const expression = block.bindings[binding];
