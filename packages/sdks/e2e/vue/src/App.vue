@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Content } from './src';
+import { Content } from '@builder.io/sdk-vue';
 
 export default defineComponent({
   name: 'DynamicallyRenderBuilderPage',
