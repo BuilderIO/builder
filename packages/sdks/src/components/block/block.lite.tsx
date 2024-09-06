@@ -78,13 +78,22 @@ export default function Block(props: BlockProps) {
      */
     _processedBlock: { value: null as BuilderBlock | null, update: false },
     get processedBlock(): BuilderBlock {
-      if (
-        state._processedBlock.value &&
-        !state._processedBlock.update &&
-        !isPreviewing()
-      ) {
-        return state._processedBlock.value;
-      }
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+        solid: () => {},
+        default: () => {
+          if (
+            state._processedBlock.value &&
+            !state._processedBlock.update &&
+            !isPreviewing()
+          ) {
+            return state._processedBlock.value;
+          }
+        },
+      });
       const blockToUse = props.block.repeat?.collection
         ? props.block
         : getProcessedBlock({
@@ -96,8 +105,17 @@ export default function Block(props: BlockProps) {
             shouldEvaluateBindings: true,
           });
 
-      state._processedBlock.value = blockToUse;
-      state._processedBlock.update = false;
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+        solid: () => {},
+        default: () => {
+          state._processedBlock.value = blockToUse;
+          state._processedBlock.update = false;
+        },
+      });
 
       return blockToUse;
     },
@@ -207,15 +225,6 @@ export default function Block(props: BlockProps) {
       },
     });
   });
-
-  /**
-   * For frameworks that use signals/stores (e.g. Svelte), we need to
-   * track changes on the `block` prop to force the component to re-compute
-   * the `processedBlock`
-   */
-  onUpdate(() => {
-    state._processedBlock.update = true;
-  }, [props.block]);
 
   onMount(() => {
     useTarget({
