@@ -172,7 +172,7 @@ const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
-  sdk: Sdk;
+  sdk?: Sdk;
   pathname?: string;
   _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
   fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
