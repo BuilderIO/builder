@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeGen2, excludeTestFor, test } from '../helpers/index.js';
+import { excludeTestFor, test } from '../helpers/index.js';
 import {
   launchEmbedderAndWaitForSdk,
   sendContentUpdateMessage,
@@ -32,7 +32,6 @@ test.describe.only('Large Reactive State', () => {
 
   test('performance check for large state updates', async ({ page, sdk, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
     test.fail(packageName === 'gen1-remix', 'hydration mismatch');
 
     await page.goto('/large-reactive-state');
@@ -65,7 +64,6 @@ test.describe.only('Large Reactive State', () => {
       packageName === 'gen1-next' || packageName === 'gen1-remix',
       'visual editing is only implemented for gen1 react-vite.'
     );
-    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
 
     await launchEmbedderAndWaitForSdk({
       path: '/large-reactive-state-editing',
