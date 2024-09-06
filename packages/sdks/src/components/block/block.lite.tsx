@@ -58,12 +58,6 @@ useMetadata({
 
 export default function Block(props: BlockProps) {
   const state = useStore({
-    get blockComponent() {
-      return getComponent({
-        block: state.processedBlock,
-        registeredComponents: props.registeredComponents,
-      });
-    },
     get repeatItem() {
       return getRepeatItemData({
         block: props.block,
@@ -120,6 +114,12 @@ export default function Block(props: BlockProps) {
       });
 
       return blockToUse;
+    },
+    get blockComponent() {
+      return getComponent({
+        block: state.processedBlock,
+        registeredComponents: props.registeredComponents,
+      });
     },
     get Tag() {
       const shouldUseLink =
