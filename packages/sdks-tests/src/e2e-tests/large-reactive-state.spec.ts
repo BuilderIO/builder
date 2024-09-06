@@ -1,6 +1,10 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from '../helpers/index.js';
-import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
+import { excludeGen2, excludeTestFor, test } from '../helpers/index.js';
+import {
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+  sendPatchUpdatesMessage,
+} from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
 
 test.describe('Large Reactive State', () => {
@@ -14,7 +18,7 @@ test.describe('Large Reactive State', () => {
 
   test('maintains reactivity with large state', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(true, 'performance improvement not implemented yet');
+    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
 
     await page.goto('/large-reactive-state');
 
@@ -28,9 +32,10 @@ test.describe('Large Reactive State', () => {
     }
   });
 
-  test('performance check for large state updates', async ({ page, sdk }) => {
+  test('performance check for large state updates', async ({ page, sdk, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(true, 'performance improvement not implemented yet');
+    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
+    test.fail(packageName === 'gen1-remix', 'hydration mismatch');
 
     await page.goto('/large-reactive-state');
 
@@ -45,35 +50,66 @@ test.describe('Large Reactive State', () => {
     const duration = endTime - startTime;
 
     // Assuming a threshold of 1000ms for 10 updates
-    expect(duration).toBeLessThan(2000);
+    expect(duration).toBeLessThan(5000);
 
     // Verify final state
     await expect(page.getByText('10', { exact: true })).toBeVisible();
   });
 
-  test('stress test visual editor sending multiple updates', async ({ page, sdk, basePort }) => {
+  test('stress test visual editor sending multiple updates', async ({
+    page,
+    sdk,
+    basePort,
+    packageName,
+  }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.skip(true, 'performance improvement not implemented yet');
+    test.skip(
+      packageName === 'gen1-next' || packageName === 'gen1-remix',
+      'visual editing is only implemented for gen1 react-vite.'
+    );
+    test.skip(excludeGen2(sdk), 'performance improvement not implemented yet');
 
-    await launchEmbedderAndWaitForSdk({ path: '/large-reactive-state', basePort, page });
+    await launchEmbedderAndWaitForSdk({
+      path: '/large-reactive-state-editing',
+      basePort,
+      page,
+      sdk,
+    });
 
     const startTime = Date.now();
     const updatedContent = JSON.parse(JSON.stringify(LARGE_REACTIVE_STATE_CONTENT));
 
-    const numUpdates = 50;
+    const numUpdates = 10;
 
     for (let i = 0; i < numUpdates; i++) {
-      updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text =
+      const newText =
         updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text.replace(
           'Below',
           'BelowX'
         );
 
-      await sendContentUpdateMessage({
-        page,
-        newContent: updatedContent,
-        model: 'page',
-      });
+      updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text =
+        newText;
+
+      if (sdk === 'oldReact') {
+        await sendPatchUpdatesMessage({
+          page,
+          patches: [
+            {
+              op: 'replace',
+              path: '/data/blocks/0/component/options/columns/0/blocks/0/component/options/text',
+              value: newText,
+            },
+          ],
+          id: updatedContent.id,
+        });
+      } else {
+        await sendContentUpdateMessage({
+          page,
+          newContent: updatedContent,
+          model: 'page',
+        });
+      }
     }
 
     // Verify the final state

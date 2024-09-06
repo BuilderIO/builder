@@ -57,6 +57,7 @@ import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.j
 import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
 import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layout.js';
 import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
+import type { Sdk } from '../helpers/sdk.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -64,7 +65,7 @@ function isBrowser(): boolean {
 
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
-const PAGES = {
+export const PAGES = {
   '/': homepage,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
@@ -94,6 +95,7 @@ const PAGES = {
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': REACTIVE_STATE_CONTENT,
   '/large-reactive-state': LARGE_REACTIVE_STATE_CONTENT,
+  '/large-reactive-state-editing': LARGE_REACTIVE_STATE_CONTENT,
   '/element-events': elementEvents,
   '/external-data': EXTERNAL_DATA,
   '/show-hide-if': SHOW_HIDE_IF,
@@ -162,12 +164,15 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
 const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
-export const getAPIKey = (): string => 'abcd';
+export const getAPIKey = (type: 'real' | 'mock' = 'mock'): string =>
+  type === 'real' ? REAL_API_KEY : 'abcd';
+
 const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
+  sdk?: Sdk;
   pathname?: string;
   _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
   fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
@@ -197,10 +202,13 @@ export const getProps = async (args: {
       }),
     };
   }
-  const _content = getContentForPathname(pathname);
 
-  if (!_content) {
-    return null;
+  let _content = getContentForPathname(pathname);
+
+  if (args.sdk === 'oldReact' && pathname === '/large-reactive-state-editing') {
+    // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
+    // which Playwright will intercept and provide the content itself.
+    _content = null;
   }
 
   let extraProps = {};
@@ -236,15 +244,17 @@ export const getProps = async (args: {
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
   const props = {
-    apiKey: getAPIKey(),
+    apiKey: getAPIKey(data),
     model: 'page',
     ...extraProps,
     ...extraApiVersionProp,
   };
 
-  const content = _processContentResult
-    ? (await _processContentResult(props, { results: [_content] }))[0]
-    : _content;
+  const content = _content
+    ? _processContentResult
+      ? (await _processContentResult(props, { results: [_content] }))[0]
+      : _content
+    : undefined;
 
   return { ...props, content } as any;
 };
