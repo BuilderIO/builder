@@ -21,7 +21,7 @@ export const excludeSdksWithoutCachedProcessedBlock = (sdk: Sdk) =>
   );
 
 test.describe('Large Reactive State', () => {
-  test('renders entire page correctly', async ({ page }) => {
+  test('renders entire page correctly', async ({ page, sdk }) => {
     test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
     await page.goto('/large-reactive-state');
 
