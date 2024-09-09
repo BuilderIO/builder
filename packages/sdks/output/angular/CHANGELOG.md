@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.11
+
+### Patch Changes
+
+- 6003607: Fix: support destructuring out objects in Angular. Fixes slot, nested symbols and element event binding in blocks other than button
+
 ## 0.2.10
 
 ### Patch Changes
