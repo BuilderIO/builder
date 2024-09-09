@@ -277,6 +277,8 @@ type AllowEnrich =
   | { apiVersion?: never; enrich?: boolean };
 
 export type GetContentOptions = AllowEnrich & {
+  apiEndpoint?: 'content' | 'query';
+
   /** The model to get content for (required) */
   model?: string;
 
@@ -296,7 +298,7 @@ export type GetContentOptions = AllowEnrich & {
    * }
    * ```
    */
-  userAttributes?: (Record<string, any> & { urlPath?: string }) | null;
+  userAttributes?: UserAttributes;
   /**
    * Alias for userAttributes.urlPath except it can handle a full URL (optionally with host,
    * protocol, query, etc) and we will parse out the path.
@@ -357,7 +359,7 @@ export type GetContentOptions = AllowEnrich & {
    *
    * @see {@link https://docs.mongodb.com/manual/reference/operator/query/}
    */
-  query?: Record<string, any>;
+  query?: any;
   /**
    * Bust through all caches. Not recommended for production (for performance),
    * but can be useful for development and static builds (so the static site has
@@ -2345,7 +2347,7 @@ export class Builder {
     }
   }
 
-  private makeCodegenOrContentApiCall(url: string, requestOptions: any): Promise<any> {
+  private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
     return getFetch()(url, requestOptions);
   }
 
@@ -2358,7 +2360,7 @@ export class Builder {
 
     if (this.apiVersion) {
       if (this.apiVersion !== 'v3') {
-        throw new Error(`Invalid apiVersion: 'v3', received '${this.apiVersion}'`);
+        throw new Error(`Invalid apiVersion: expected 'v3', received '${this.apiVersion}'`);
       }
     } else {
       this.apiVersion = DEFAULT_API_VERSION;
@@ -2369,6 +2371,8 @@ export class Builder {
     }
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
+
+    const apiEndpoint = queue[0].apiEndpoint || 'query';
 
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
@@ -2501,7 +2505,7 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (areOptionsForCodegen) {
+          if (areOptionsForCodegen || apiEndpoint === 'query') {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
@@ -2526,9 +2530,14 @@ export class Builder {
       assign(queryParams, params);
     }
 
-    const queryStr = QueryString.stringifyDeep(queryParams);
-
     const format = queryParams.format;
+    const isApiCallForCodegen = format === 'solid' || format === 'react';
+    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
+
+    if (!isApiCallForCodegenOrQuery) {
+      delete queryParams.userAttributes;
+    }
+    const queryStr = QueryString.stringifyDeep(queryParams);
 
     const requestOptions = { headers: {} };
     if (this.authToken) {
@@ -2538,15 +2547,18 @@ export class Builder {
       };
     }
 
-    const fn = format === 'solid' || format === 'react' ? 'codegen' : 'content';
-    let url =
-      fn === 'codegen'
-        ? `${host}/api/v3/${fn}/${this.apiKey}/${keyNames}`
-        : `https://cdn.builder.io/api/v3/${fn}/${queue[0].model}`;
+    let url;
+    if (isApiCallForCodegen) {
+      url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
+    } else if (apiEndpoint === 'query') {
+      url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
+    } else {
+      url = `${host}/api/v3/content/${queue[0].model}`;
+    }
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
-    const promise = this.makeCodegenOrContentApiCall(url, requestOptions)
+    const promise = this.makeFetchApiCall(url, requestOptions)
       .then(res => res.json())
       .then(
         result => {
@@ -2565,7 +2577,7 @@ export class Builder {
             if (!observer) {
               return;
             }
-            const data = result[keyName];
+            const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer
