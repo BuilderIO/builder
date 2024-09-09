@@ -2,9 +2,7 @@ import React from 'react';
 import { Builder, builder, BuilderElement } from '@builder.io/sdk';
 import { useEffect, useState } from 'react';
 import { BuilderBlocks } from '../components/builder-blocks.component';
-
-type UserAttributes = any;
-type Query = any;
+import { filterWithCustomTargeting, Query } from '../functions/filter-with-custom-targeting';
 
 export type PersonalizationContainerProps = {
   children: React.ReactNode;
@@ -19,17 +17,15 @@ export type PersonalizationContainerProps = {
     },
   ];
   attributes: any;
+  clientSideOnly?: boolean;
 };
 
 export function PersonalizationContainer(props: PersonalizationContainerProps) {
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(!props.clientSideOnly);
   const [update, setUpdate] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
-
-  useEffect(() => {
     const subscriber = builder.userAttributesChanged.subscribe(() => {
       setUpdate(update + 1);
     });
@@ -94,106 +90,6 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   );
 }
 
-export function filterWithCustomTargeting(
-  userAttributes: UserAttributes,
-  query: Query[],
-  startDate?: string,
-  endDate?: string
-) {
-  const item = {
-    query,
-    startDate,
-    endDate,
-  };
-
-  const now = (userAttributes.date && new Date(userAttributes.date)) || new Date();
-
-  if (item.startDate && new Date(item.startDate) > now) {
-    return false;
-  } else if (item.endDate && new Date(item.endDate) < now) {
-    return false;
-  }
-
-  if (!item.query || !item.query.length) {
-    return true;
-  }
-
-  return item.query.every((filter: Query) => {
-    if (
-      filter &&
-      filter.property === 'urlPath' &&
-      filter.value &&
-      typeof filter.value === 'string' &&
-      filter.value !== '/' &&
-      filter.value.endsWith('/')
-    ) {
-      filter.value = filter.value.slice(0, -1);
-    }
-    return objectMatchesQuery(userAttributes, filter);
-  });
-
-  function isNumber(val: unknown) {
-    return typeof val === 'number';
-  }
-
-  function isString(val: unknown) {
-    return typeof val === 'string';
-  }
-
-  function objectMatchesQuery(userattr: UserAttributes, query: Query): boolean {
-    const result = (() => {
-      const property = query.property;
-      const operator = query.operator;
-      const testValue = query.value;
-
-      // Check is query property is present in userAttributes. Proceed only if it is present.
-      if (!(property && operator)) {
-        return true;
-      }
-
-      if (Array.isArray(testValue)) {
-        if (operator === 'isNot') {
-          return testValue.every(val =>
-            objectMatchesQuery(userattr, { property, operator, value: val })
-          );
-        }
-        return !!testValue.find(val =>
-          objectMatchesQuery(userattr, { property, operator, value: val })
-        );
-      }
-      const value = userattr[property];
-
-      if (Array.isArray(value)) {
-        return value.includes(testValue);
-      }
-
-      switch (operator) {
-        case 'is':
-          return value === testValue;
-        case 'isNot':
-          return value !== testValue;
-        case 'contains':
-          return (isString(value) || Array.isArray(value)) && value.includes(testValue);
-        case 'startsWith':
-          return isString(value) && value.startsWith(testValue);
-        case 'endsWith':
-          return isString(value) && value.endsWith(testValue);
-        case 'greaterThan':
-          return isNumber(value) && isNumber(testValue) && value > testValue;
-        case 'lessThan':
-          return isNumber(value) && isNumber(testValue) && value < testValue;
-        case 'greaterThanOrEqualTo':
-          return isNumber(value) && isNumber(testValue) && value >= testValue;
-        case 'lessThanOrEqualTo':
-          return isNumber(value) && isNumber(testValue) && value <= testValue;
-      }
-      return false;
-    })();
-
-    return result;
-  }
-}
-
 Builder.registerComponent(PersonalizationContainer, {
   name: 'PersonalizationContainer',
   noWrap: true,
@@ -232,6 +128,11 @@ Builder.registerComponent(PersonalizationContainer, {
           defaultValue: [],
         },
       ],
+    },
+    {
+      name: 'clientSideOnly',
+      type: 'boolean',
+      advanced: true,
     },
   ],
 });
