@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 2.0.13
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
 ## 2.0.9
 
 ### Patch Changes

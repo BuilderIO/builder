@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.13
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
 ## 2.0.12
 
 ### Patch Changes

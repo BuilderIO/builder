@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.13
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
 ## 2.0.12
 
 ### Patch Changes
