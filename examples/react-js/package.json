@@ -12,7 +12,7 @@
     "@builder.io/react": "^2.0.14",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-router-dom": "^5.0.1"
+    "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
