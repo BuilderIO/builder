@@ -14,6 +14,7 @@ interface BuilderProps {
   apiKey: string;
   model: string;
   content: any;
+  data?: any;
 }
 
 @Component({
@@ -27,6 +28,7 @@ interface BuilderProps {
         [trustedHosts]="trustedHosts"
         [canTrack]="canTrack"
         [customComponents]="customComponents"
+        [data]="data"
       ></content>
     </ng-container>
 
@@ -43,6 +45,7 @@ export class AppComponent {
   apiKey: BuilderProps['apiKey'] = 'abcd';
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
+  data: BuilderProps['data'];
 
   customComponents = [
     {
@@ -74,5 +77,6 @@ export class AppComponent {
     this.apiKey = builderProps.apiKey;
     this.model = builderProps.model;
     this.apiVersion = builderProps.apiVersion;
+    this.data = builderProps.data;
   }
 }
