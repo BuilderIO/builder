@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.9
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
 ## 0.16.8
 
 ### Patch Changes
