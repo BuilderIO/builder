@@ -14,6 +14,23 @@ function App() {
   useEffect(() => {
     getProps({}).then(resp => {
       setProps(resp);
+      if (window.location.pathname.includes('get-query')) {
+        builder
+          .get('', {
+            ...resp,
+            ...resp['options'],
+          })
+          .promise()
+          .then();
+      } else if (window.location.pathname.includes('get-content')) {
+        builder
+          .get('', {
+            ...resp,
+            ...resp['options'],
+          })
+          .promise()
+          .then();
+      }
     });
   }, []);
 

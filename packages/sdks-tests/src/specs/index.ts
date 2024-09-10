@@ -129,6 +129,8 @@ const PAGES = {
   '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
+  '/get-content': HTTP_REQUESTS,
+  '/get-query': HTTP_REQUESTS,
 } as const;
 
 const apiVersionPathToProp = {
@@ -224,6 +226,16 @@ export const getProps = async (args: {
     case '/react-native-strict-style-mode':
       extraProps = {
         strictStyleMode: true,
+      };
+      break;
+    case '/get-content':
+      extraProps = {
+        options: { apiEndpoint: 'content' },
+      };
+      break;
+    case '/get-query':
+      extraProps = {
+        options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
       };
       break;
     default:
