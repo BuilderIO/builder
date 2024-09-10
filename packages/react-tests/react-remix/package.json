@@ -16,8 +16,8 @@
     "@remix-run/serve": "^1.14.3",
     "@sdk/tests": "workspace:*",
     "isbot": "^3.6.5",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

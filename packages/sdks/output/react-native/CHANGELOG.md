@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.12
+
+### Patch Changes
+
+- 1a69210: Chore: improve performance by caching block processing during renders.
+
 ## 2.0.11
 
 ### Patch Changes

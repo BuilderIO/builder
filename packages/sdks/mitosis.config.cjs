@@ -247,26 +247,6 @@ const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
   },
 });
 
-/**
- * @type {Plugin}
- * We explicitly add the builder-id attribute to the symbol component for Angular,
- * because mitosis doesn't support spreading `props.attributes` yet.
- *
- */
-const ANGULAR_FIX_SYMBOL_BUILDER_ID_ATTRIBUTE = () => ({
-  json: {
-    post: (json) => {
-      if (json.name === 'BuilderSymbol') {
-        json.children[0].bindings['builder-id'] = {
-          code: "props.attributes['builder-id']",
-          type: 'single',
-        };
-      }
-      return json;
-    },
-  },
-});
-
 // for fixing circular dependencies
 /**
  * @type {Plugin}
@@ -275,8 +255,8 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
       if (
-        code.includes('component-ref, ComponentRef') ||
-        code.includes('repeated-block, RepeatedBlock')
+        code.includes('selector: "component-ref"') ||
+        code.includes('selector: "repeated-block"')
       ) {
         code = code.replace(
           'imports: [CommonModule, Block]',
@@ -295,7 +275,7 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
 const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code.includes('component-ref, ComponentRef')) {
+      if (code.includes('selector: "component-ref"')) {
         code = code
           .replace(
             '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
@@ -336,7 +316,7 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
+      if (code?.includes('selector: "blocks-wrapper"')) {
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
@@ -538,20 +518,37 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
       if (code.includes('enable-editor')) {
-        code = code.replace(
-          'window.addEventListener("message", this.processMessage);',
-          'window.addEventListener("message", this.processMessage.bind(this));'
+        // find two event listeners and add bind(this) to the fn passed
+        const eventListeners = code.match(
+          /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
-        code = code.replace(
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate
-          );`,
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate.bind(this)
-          );`
+        if (eventListeners && eventListeners.length) {
+          eventListeners.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.addEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.addEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
+        const eventListenersRemove = code.match(
+          /window\.removeEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
+        if (eventListenersRemove && eventListenersRemove.length) {
+          eventListenersRemove.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.removeEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.removeEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
       }
       return code;
     },
@@ -562,7 +559,7 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
 const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
   code: {
     post: (code) => {
-      if (code.includes('content-component, ContentComponent')) {
+      if (code.includes('selector: "content-component"')) {
         code = code.replaceAll(
           'this.contentSetState',
           'this.contentSetState.bind(this)'
@@ -576,7 +573,7 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
 const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   code: {
     post: (code) => {
-      if (code.includes('builder-symbol, BuilderSymbol')) {
+      if (code.includes('selector: "builder-symbol"')) {
         code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
         code = code.replace(
           'this.setContent();',
@@ -606,7 +603,6 @@ module.exports = {
       state: 'class-properties',
       plugins: [
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
-        ANGULAR_FIX_SYMBOL_BUILDER_ID_ATTRIBUTE,
         ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,

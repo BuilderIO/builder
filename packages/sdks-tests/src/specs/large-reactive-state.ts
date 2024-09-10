@@ -1,4 +1,4 @@
-export const REACTIVE_STATE_CONTENT = {
+export const LARGE_REACTIVE_STATE_CONTENT = {
   id: '6212bd298e3248dab74048c6a10f84ec',
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   lastUpdated: 1674570277771,
@@ -209,6 +209,26 @@ export const REACTIVE_STATE_CONTENT = {
           },
         },
       },
+      /**
+       * 1000 dummy text blocks with data bindings
+       */
+      ...Array.from({ length: 1000 }, (_, index) => ({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: `builder-dummy-text-${index + 1}`,
+        component: {
+          name: 'Text',
+          options: { text: 'Enter some text...' },
+        },
+        bindings: {
+          'component.options.text': `state.dummyState.value${index + 1}`,
+        },
+        responsiveStyles: {
+          large: {
+            marginTop: '10px',
+          },
+        },
+      })),
       {
         id: 'builder-pixel-6yc5qr11gcq',
         '@type': '@builder.io/sdk:Element',
@@ -234,10 +254,16 @@ export const REACTIVE_STATE_CONTENT = {
     url: '/reactive-state',
     state: {
       deviceSize: 'large',
+      reactiveValue: 0,
       location: {
-        pathname: '/reactive-state',
-        path: ['reactive-state'],
+        pathname: '/large-reactive-state',
+        path: ['large-reactive-state'],
         query: {},
+      },
+      dummyState: {
+        ...Object.fromEntries(
+          Array.from({ length: 1000 }, (_, i) => [`value${i + 1}`, `Dummy text block ${i + 1}`])
+        ),
       },
     },
   },

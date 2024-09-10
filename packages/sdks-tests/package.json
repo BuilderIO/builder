@@ -32,8 +32,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "traverse": "^0.6.7",
     "zod": "^3.20.2"
   },

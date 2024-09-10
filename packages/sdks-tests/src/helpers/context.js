@@ -3,4 +3,5 @@ export const targetContext = {
 };
 
 export const EMBEDDER_PORT = 9999;
-export const SDK_LOADED_MSG = 'BUILDER_EVENT: builder.sdkInfo';
+export const GEN2_SDK_LOADED_MSG = 'BUILDER_EVENT: builder.sdkInfo';
+export const GEN1_SDK_LOADED_MSG = 'BUILDER_EVENT: builder.isReactSdk';

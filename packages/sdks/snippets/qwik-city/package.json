@@ -21,8 +21,8 @@
     "@builder.io/qwik-city": "^1.2.19",
     "@types/node": "^18.11.18",
     "node-fetch": "3.3.0",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "typescript": "^5.1.6",
     "vite": "^4.0.3",
     "vite-tsconfig-paths": "3.5.0"
