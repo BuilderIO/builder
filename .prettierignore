@@ -34,6 +34,8 @@ packages/sdks/overrides/react-native/src/blocks/**/*
 **/.solid
 **/.output
 
-.nx-cache
+.nx/cache
+.nx/workspace-data
+
 .vercel
 playwright-report

@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.8
+
+### Patch Changes
+
+- 1a69210: Chore: improve performance by caching block processing during renders.
+
 ## 0.16.6
 
 ### Patch Changes

@@ -59,8 +59,7 @@ test.describe('Element Events', () => {
 
     expect(msg.text()).toEqual('clicked button');
   });
-  test('click works on box', async ({ page, sdk }) => {
-    test.skip(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+  test('click works on box', async ({ page }) => {
     await page.goto('/element-events');
 
     // Get the next console log message
@@ -72,8 +71,7 @@ test.describe('Element Events', () => {
     expect(msg.text()).toEqual('clicked box');
   });
 
-  test('click works on text', async ({ page, sdk }) => {
-    test.skip(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+  test('click works on text', async ({ page }) => {
     await page.goto('/element-events');
 
     // Get the next console log message

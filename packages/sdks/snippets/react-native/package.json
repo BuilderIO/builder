@@ -41,8 +41,8 @@
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "react-test-renderer": "18.2.0",
     "serve": "^14.2.3",
     "typescript": "~5.3.3"

@@ -13,8 +13,8 @@
     "@builder.io/react": "workspace:*",
     "@builder.io/widgets": "^1.2.24",
     "@sdk/tests": "workspace:*",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

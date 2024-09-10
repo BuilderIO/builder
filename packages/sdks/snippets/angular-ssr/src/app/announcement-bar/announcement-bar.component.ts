@@ -12,11 +12,7 @@ import { type BuilderContent } from '@builder.io/sdk-angular';
   selector: 'app-announcement-bar',
   template: `
     <ng-container *ngIf="content">
-      <content-variants
-        [model]="model"
-        [content]="content"
-        [apiKey]="apiKey"
-      ></content-variants>
+      <content [model]="model" [content]="content" [apiKey]="apiKey"></content>
     </ng-container>
 
     <!-- Your content coming from your app (or also Builder) -->

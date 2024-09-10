@@ -13,7 +13,7 @@ To check the status of the SDK, look at [these tables](../../README.md#feature-i
 ## Getting Started
 
 ```
-npm install @builder.io/sdk-svelte@dev
+npm install @builder.io/sdk-qwik
 ```
 
 Take a look at [our example repo](https://github.com/BuilderIO/builder/tree/main/examples/qwik) for how to use this SDK.
