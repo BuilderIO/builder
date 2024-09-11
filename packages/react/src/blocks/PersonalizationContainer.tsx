@@ -45,7 +45,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
 
   if (Builder.isServer) {
     return (
-      <>
+      <section>
         {props.variants?.map((variant, index) => (
           <template key={index} data-variant-id={props.builderBlock?.id! + index}>
             <BuilderBlocks
@@ -64,6 +64,12 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         />
         <div
           {...props.attributes}
+          // same as the client side styles for hydration matching
+          style={{
+            opacity: 1,
+            transition: 'opacity 0.2s ease-in-out',
+            ...props.attributes?.style,
+          }}
           className={`builder-personalization-container ${props.attributes.className}`}
         >
           <BuilderBlocks
@@ -73,7 +79,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             child
           />
         </div>
-      </>
+      </section>
     );
   }
 
@@ -87,58 +93,60 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   });
 
   return (
-    <div
-      {...props.attributes}
-      style={{
-        opacity: isClient ? 1 : 0,
-        transition: 'opacity 0.2s ease-in-out',
-        ...props.attributes?.style,
-      }}
-      className={`builder-personalization-container ${
-        props.attributes.className
-      } ${isClient ? '' : 'builder-personalization-container-loading'}`}
-    >
-      {/* If editing a specific varient */}
-      {Builder.isEditing &&
-      typeof props.previewingIndex === 'number' &&
-      props.previewingIndex < (props.variants?.length || 0) ? (
-        <BuilderBlocks
-          blocks={props.variants?.[props.previewingIndex]?.blocks}
-          parentElementId={props.builderBlock?.id}
-          dataPath={`component.options.variants.${props.previewingIndex}.blocks`}
-          child
-        />
-      ) : // If editing the default or we're on the server and there are no matching variants show the default
-      (Builder.isEditing && typeof props.previewingIndex !== 'number') ||
-        !isClient ||
-        !filteredVariants.length ? (
-        <BuilderBlocks
-          blocks={props.builderBlock?.children}
-          parentElementId={props.builderBlock?.id}
-          dataPath="this.children"
-          child
-        />
-      ) : (
-        // Show the variant matching the current user attributes
-        <BuilderBlocks
-          blocks={filteredVariants[0]?.blocks}
-          parentElementId={props.builderBlock?.id}
-          dataPath={`component.options.variants.${props.variants?.indexOf(
-            filteredVariants[0]
-          )}.blocks`}
-          child
-        />
-      )}
+    <section>
+      <div
+        {...props.attributes}
+        style={{
+          opacity: isClient ? 1 : 0,
+          transition: 'opacity 0.2s ease-in-out',
+          ...props.attributes?.style,
+        }}
+        className={`builder-personalization-container ${
+          props.attributes.className
+        } ${isClient ? '' : 'builder-personalization-container-loading'}`}
+      >
+        {/* If editing a specific varient */}
+        {Builder.isEditing &&
+        typeof props.previewingIndex === 'number' &&
+        props.previewingIndex < (props.variants?.length || 0) ? (
+          <BuilderBlocks
+            blocks={props.variants?.[props.previewingIndex]?.blocks}
+            parentElementId={props.builderBlock?.id}
+            dataPath={`component.options.variants.${props.previewingIndex}.blocks`}
+            child
+          />
+        ) : // If editing the default or we're on the server and there are no matching variants show the default
+        (Builder.isEditing && typeof props.previewingIndex !== 'number') ||
+          !isClient ||
+          !filteredVariants.length ? (
+          <BuilderBlocks
+            blocks={props.builderBlock?.children}
+            parentElementId={props.builderBlock?.id}
+            dataPath="this.children"
+            child
+          />
+        ) : (
+          // Show the variant matching the current user attributes
+          <BuilderBlocks
+            blocks={filteredVariants[0]?.blocks}
+            parentElementId={props.builderBlock?.id}
+            dataPath={`component.options.variants.${props.variants?.indexOf(
+              filteredVariants[0]
+            )}.blocks`}
+            child
+          />
+        )}
 
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
          window.__hydrated = window.__hydrated || {};
          window.__hydrated['${props.builderBlock?.id}'] = true;
         `.replace(/\s+/g, ' '),
-        }}
-      />
-    </div>
+          }}
+        />
+      </div>
+    </section>
   );
 }
 
