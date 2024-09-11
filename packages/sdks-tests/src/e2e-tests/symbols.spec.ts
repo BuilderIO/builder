@@ -53,7 +53,7 @@ const testSymbols = async (page: Page) => {
   }
 };
 
-test.describe.only('Symbols', () => {
+test.describe('Symbols', () => {
   test('render correctly', async ({ page }) => {
     await page.goto('/symbols');
 
