@@ -2,7 +2,13 @@ import React from 'react';
 import { Builder, builder, BuilderElement } from '@builder.io/sdk';
 import { useEffect, useState } from 'react';
 import { BuilderBlocks } from '../components/builder-blocks.component';
-import { filterWithCustomTargeting, Query } from '../functions/filter-with-custom-targeting';
+import {
+  filterWithCustomTargeting,
+  filterWithCustomTargetingScript,
+  Query,
+} from '../functions/filter-with-custom-targeting';
+
+const attributesCookie = 'builder.attributes';
 
 export type PersonalizationContainerProps = {
   children: React.ReactNode;
@@ -17,22 +23,58 @@ export type PersonalizationContainerProps = {
     },
   ];
   attributes: any;
-  clientSideOnly?: boolean;
 };
 
 export function PersonalizationContainer(props: PersonalizationContainerProps) {
-  const [isClient, setIsClient] = useState(!props.clientSideOnly);
+  const isBeingHydrated = Boolean(
+    Builder.isBrowser && (window as any).__hydrated?.[props.builderBlock?.id!]
+  );
+  const [isClient, setIsClient] = useState(isBeingHydrated);
   const [update, setUpdate] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
     const subscriber = builder.userAttributesChanged.subscribe(() => {
+      builder.setCookie(attributesCookie, JSON.stringify(builder.getUserAttributes()));
       setUpdate(update + 1);
     });
     return () => {
       subscriber.unsubscribe();
     };
   }, []);
+
+  if (Builder.isServer) {
+    return (
+      <>
+        {props.variants?.map((variant, index) => (
+          <template key={index} data-variant-id={props.builderBlock?.id! + index}>
+            <BuilderBlocks
+              blocks={variant.blocks}
+              parentElementId={props.builderBlock?.id}
+              dataPath={`component.options.variants.${index}.blocks`}
+              child
+            />
+          </template>
+        ))}
+        <script
+          id={`variants-script-${props.builderBlock?.id}`}
+          dangerouslySetInnerHTML={{ __html: getPersonalizationScript(props) }}
+        />
+        <div
+          {...props.attributes}
+          data-default-variant-id={props.builderBlock?.id}
+          className={`builder-personalization-container ${props.attributes.className}`}
+        >
+          <BuilderBlocks
+            blocks={props.builderBlock?.children}
+            parentElementId={props.builderBlock?.id}
+            dataPath="this.children"
+            child
+          />
+        </div>
+      </>
+    );
+  }
 
   const filteredVariants = (props.variants || []).filter(variant => {
     return filterWithCustomTargeting(
@@ -86,6 +128,15 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
           child
         />
       )}
+
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+         window.__hydrated = window.__hydrated || {};
+         window.__hydrated['${props.builderBlock?.id}'] = true;
+        `.replace(/\s+/g, ' '),
+        }}
+      />
     </div>
   );
 }
@@ -129,10 +180,51 @@ Builder.registerComponent(PersonalizationContainer, {
         },
       ],
     },
-    {
-      name: 'clientSideOnly',
-      type: 'boolean',
-      advanced: true,
-    },
   ],
 });
+
+function getPersonalizationScript(props: PersonalizationContainerProps) {
+  return `
+      (function() {
+        function getCookie(name) {
+          var nameEQ = name + "=";
+          var ca = document.cookie.split(';');
+          for(var i=0;i < ca.length;i++) {
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1,c.length);
+              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+          }
+          return null;
+        }
+          function removeVariants() {
+            variants.forEach(function (template, index) {
+              document.querySelector('template[data-variant-id="' + "${props.builderBlock?.id}" + index + '"]').remove();
+            });
+            document.getElementById('variants-script-${props.builderBlock?.id}').remove();
+          }
+
+        var attributes = JSON.parse(getCookie("${attributesCookie}") || "{}");
+        var variants = ${JSON.stringify(props.variants?.map(v => ({ query: v.query, startDate: v.startDate, endDate: v.endDate })))};
+        var winningVariantIndex = variants.findIndex(function(variant) {
+          return filterWithCustomTargeting(
+            attributes,
+            variant.query,
+            variant.startDate,
+            variant.endDate
+          );
+        });
+        if (winningVariantIndex !== -1) {
+          var winningVariant = document.querySelector('template[data-variant-index="' + "${props.builderBlock?.id}" + winningVariantIndex + '"]');
+          if (winningVariant) {
+            var parentNode = winningVariant.parentNode;
+            var newParent = parentNode.cloneNode(false);
+            newParent.appendChild(winningVariant.content.firstChild);
+            parentNode.parentNode.replaceChild(newParent, parentNode);
+          }
+        } else if (variants.length > 0) {
+          removeVariants();
+        }
+        ${filterWithCustomTargetingScript}
+      })();
+    `.replace(/\s+/g, ' ');
+}

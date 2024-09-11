@@ -24,6 +24,9 @@ export type Query = {
   value: QueryValue;
 };
 
+// minified version of the function need to be added to the script
+export const filterWithCustomTargetingScript = `function filterWithCustomTargeting(e,t,n,r){var i={query:t,startDate:n,endDate:r},o=e.date&&new Date(e.date)||new Date;return!(i.startDate&&new Date(i.startDate)>o)&&(!(i.endDate&&new Date(i.endDate)<o)&&(!i.query||!i.query.length||i.query.every((function(t){return objectMatchesQuery(e,t)}))))}function isString(e){return"string"==typeof e}function isNumber(e){return"number"==typeof e}function objectMatchesQuery(e,t){return function(){var n=t.property,r=t.operator,i=t.value;if(t&&"urlPath"===t.property&&t.value&&"string"==typeof t.value&&"/"!==t.value&&t.value.endsWith("/")&&(i=t.value.slice(0,-1)),!n||!r)return!0;if(Array.isArray(i))return"isNot"===r?i.every((function(t){return objectMatchesQuery(e,{property:n,operator:r,value:t})})):!!i.find((function(t){return objectMatchesQuery(e,{property:n,operator:r,value:t})}));var o=e[n];if(Array.isArray(o))return o.includes(i);switch(r){case"is":return o===i;case"isNot":return o!==i;case"contains":return(isString(o)||Array.isArray(o))&&o.includes(String(i));case"startsWith":return isString(o)&&o.startsWith(String(i));case"endsWith":return isString(o)&&o.endsWith(String(i));case"greaterThan":return isNumber(o)&&isNumber(i)&&o>i;case"lessThan":return isNumber(o)&&isNumber(i)&&o<i;case"greaterThanOrEqualTo":return isNumber(o)&&isNumber(i)&&o>=i;case"lessThanOrEqualTo":return isNumber(o)&&isNumber(i)&&o<=i}return!1}()}`;
+
 export function filterWithCustomTargeting(
   userAttributes: UserAttributes,
   query: Query[],
