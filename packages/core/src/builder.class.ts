@@ -901,6 +901,7 @@ export class Builder {
   static actions: Action[] = [];
   static registry: { [key: string]: any[] } = {};
   static overrideHost: string | undefined;
+  static attributesCookieName = 'builder.userAttributes';
 
   /**
    * @todo `key` property on any info where if a key matches a current
@@ -2149,6 +2150,13 @@ export class Builder {
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
+
+    try {
+      this.setCookie(Builder.attributesCookieName, JSON.stringify(this.getUserAttributes()));
+    } catch {
+      // Ignore
+    }
+
     this.userAttributesChanged.next(options);
   }
 

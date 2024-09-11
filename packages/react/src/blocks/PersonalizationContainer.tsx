@@ -8,8 +8,6 @@ import {
   Query,
 } from '../functions/filter-with-custom-targeting';
 
-const attributesCookie = 'builder.attributes';
-
 export type PersonalizationContainerProps = {
   children: React.ReactNode;
   previewingIndex: number | null;
@@ -35,7 +33,6 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   useEffect(() => {
     setIsClient(true);
     const subscriber = builder.userAttributesChanged.subscribe(() => {
-      builder.setCookie(attributesCookie, JSON.stringify(builder.getUserAttributes()));
       setUpdate(update + 1);
     });
     return () => {
@@ -222,7 +219,7 @@ function getPersonalizationScript(
           document.getElementById('variants-script-${blockId}').remove();
         }
 
-        var attributes = JSON.parse(getCookie("${attributesCookie}") || "{}");
+        var attributes = JSON.parse(getCookie("${Builder.attributesCookieName}") || "{}");
         var variants = ${JSON.stringify(variants?.map(v => ({ query: v.query, startDate: v.startDate, endDate: v.endDate })))};
         var winningVariantIndex = variants.findIndex(function(variant) {
           return filterWithCustomTargeting(
