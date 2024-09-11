@@ -45,23 +45,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
 
   if (Builder.isServer) {
     return (
-      <section>
-        {props.variants?.map((variant, index) => (
-          <template key={index} data-variant-id={props.builderBlock?.id! + index}>
-            <BuilderBlocks
-              blocks={variant.blocks}
-              parentElementId={props.builderBlock?.id}
-              dataPath={`component.options.variants.${index}.blocks`}
-              child
-            />
-          </template>
-        ))}
-        <script
-          id={`variants-script-${props.builderBlock?.id}`}
-          dangerouslySetInnerHTML={{
-            __html: getPersonalizationScript(props.variants, props.builderBlock?.id),
-          }}
-        />
+      <React.Fragment>
         <div
           {...props.attributes}
           // same as the client side styles for hydration matching
@@ -72,6 +56,22 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
           }}
           className={`builder-personalization-container ${props.attributes.className}`}
         >
+          {props.variants?.map((variant, index) => (
+            <template key={index} data-variant-id={props.builderBlock?.id! + index}>
+              <BuilderBlocks
+                blocks={variant.blocks}
+                parentElementId={props.builderBlock?.id}
+                dataPath={`component.options.variants.${index}.blocks`}
+                child
+              />
+            </template>
+          ))}
+          <script
+            id={`variants-script-${props.builderBlock?.id}`}
+            dangerouslySetInnerHTML={{
+              __html: getPersonalizationScript(props.variants, props.builderBlock?.id),
+            }}
+          />
           <BuilderBlocks
             blocks={props.builderBlock?.children}
             parentElementId={props.builderBlock?.id}
@@ -79,7 +79,15 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             child
           />
         </div>
-      </section>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+         window.__hydrated = window.__hydrated || {};
+         window.__hydrated['${props.builderBlock?.id}'] = true;
+        `.replace(/\s+/g, ' '),
+          }}
+        />
+      </React.Fragment>
     );
   }
 
@@ -93,7 +101,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   });
 
   return (
-    <section>
+    <React.Fragment>
       <div
         {...props.attributes}
         style={{
@@ -136,17 +144,16 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             child
           />
         )}
-
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+      </div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
          window.__hydrated = window.__hydrated || {};
          window.__hydrated['${props.builderBlock?.id}'] = true;
         `.replace(/\s+/g, ' '),
-          }}
-        />
-      </div>
-    </section>
+        }}
+      />
+    </React.Fragment>
   );
 }
 
@@ -225,13 +232,24 @@ function getPersonalizationScript(
             variant.endDate
           );
         });
+        var isDebug = location.href.includes('builder.debug=true');
+        if (isDebug) {
+          console.debug('PersonalizationContainer', {
+            attributes: attributes,
+            variants: variants,
+            winningVariantIndex: winningVariantIndex,
+            });
+        }
         if (winningVariantIndex !== -1) {
-          var winningVariant = document.querySelector('template[data-variant-index="' + "${blockId}" + winningVariantIndex + '"]');
+          var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}" + winningVariantIndex + '"]');
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
             newParent.appendChild(winningVariant.content.firstChild);
             parentNode.parentNode.replaceChild(newParent, parentNode);
+            if (isDebug) {
+              console.debug('PersonalizationContainer', 'Winning variant Replaced:', winningVariant);
+            }
           }
         } else if (variants.length > 0) {
           removeVariants();
