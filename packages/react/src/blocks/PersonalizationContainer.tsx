@@ -58,11 +58,12 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         ))}
         <script
           id={`variants-script-${props.builderBlock?.id}`}
-          dangerouslySetInnerHTML={{ __html: getPersonalizationScript(props) }}
+          dangerouslySetInnerHTML={{
+            __html: getPersonalizationScript(props.variants, props.builderBlock?.id),
+          }}
         />
         <div
           {...props.attributes}
-          data-default-variant-id={props.builderBlock?.id}
           className={`builder-personalization-container ${props.attributes.className}`}
         >
           <BuilderBlocks
@@ -183,7 +184,10 @@ Builder.registerComponent(PersonalizationContainer, {
   ],
 });
 
-function getPersonalizationScript(props: PersonalizationContainerProps) {
+function getPersonalizationScript(
+  variants: PersonalizationContainerProps['variants'],
+  blockId?: string
+) {
   return `
       (function() {
         function getCookie(name) {
@@ -196,15 +200,15 @@ function getPersonalizationScript(props: PersonalizationContainerProps) {
           }
           return null;
         }
-          function removeVariants() {
-            variants.forEach(function (template, index) {
-              document.querySelector('template[data-variant-id="' + "${props.builderBlock?.id}" + index + '"]').remove();
-            });
-            document.getElementById('variants-script-${props.builderBlock?.id}').remove();
-          }
+        function removeVariants() {
+          variants.forEach(function (template, index) {
+            document.querySelector('template[data-variant-id="' + "${blockId}" + index + '"]').remove();
+          });
+          document.getElementById('variants-script-${blockId}').remove();
+        }
 
         var attributes = JSON.parse(getCookie("${attributesCookie}") || "{}");
-        var variants = ${JSON.stringify(props.variants?.map(v => ({ query: v.query, startDate: v.startDate, endDate: v.endDate })))};
+        var variants = ${JSON.stringify(variants?.map(v => ({ query: v.query, startDate: v.startDate, endDate: v.endDate })))};
         var winningVariantIndex = variants.findIndex(function(variant) {
           return filterWithCustomTargeting(
             attributes,
@@ -214,7 +218,7 @@ function getPersonalizationScript(props: PersonalizationContainerProps) {
           );
         });
         if (winningVariantIndex !== -1) {
-          var winningVariant = document.querySelector('template[data-variant-index="' + "${props.builderBlock?.id}" + winningVariantIndex + '"]');
+          var winningVariant = document.querySelector('template[data-variant-index="' + "${blockId}" + winningVariantIndex + '"]');
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
