@@ -53,7 +53,7 @@ const testSymbols = async (page: Page) => {
   }
 };
 
-test.describe('Symbols', () => {
+test.describe.only('Symbols', () => {
   test('render correctly', async ({ page }) => {
     await page.goto('/symbols');
 
@@ -225,14 +225,18 @@ test.describe('Symbols', () => {
     // });
   });
 
-  test('works in nested symbols with inherit', async ({ packageName, page }) => {
+  test('works in nested symbols with inherit', async ({ packageName, page, sdk }) => {
     await page.goto('/nested-symbols');
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
     // rsc skipped because it fetches the content from the server
     test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
 
-    const symbols = page.locator('[builder-model="symbol"]');
+    let selector = '[builder-model="symbol"]';
+    if (checkIsRN(sdk)) {
+      selector = '[data-class="builder-symbol"]';
+    }
+    const symbols = page.locator(selector);
     await expect(symbols).toHaveCount(2);
   });
 });
