@@ -277,10 +277,8 @@ type AllowEnrich =
   | { apiVersion?: never; enrich?: boolean };
 
 export type GetContentOptions = AllowEnrich & {
+  /* A temporary field that will allow us to gracefully transition from hitting query API to hitting content API */
   apiEndpoint?: 'content' | 'query';
-
-  /** The model to get content for (required) */
-  model?: string;
 
   /** Your public API key (required) */
   apiKey?: string;
@@ -294,7 +292,6 @@ export type GetContentOptions = AllowEnrich & {
    * userAttributes: {
    *   urlPath: '/',
    *   returnVisitor: true,
-   *   device: 'mobile'
    * }
    * ```
    */
@@ -383,12 +380,17 @@ export type GetContentOptions = AllowEnrich & {
    */
   initialContent?: any;
   /**
+   * The name of the model to fetch content for.
+   */
+  model?: string;
+  /**
    * Set to `false` to not cache responses when running on the client.
    */
   cache?: boolean;
 
   /**
-   * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
+   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
+   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
    */
   locale?: string;
   /**

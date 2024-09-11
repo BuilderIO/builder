@@ -1,6 +1,6 @@
 ---
-"@builder.io/sdk": major
-"@builder.io/react": major
+'@builder.io/sdk': major
+'@builder.io/react': major
 ---
 
-Migrate gen1 SDK to use content API instead of query API
+Adds support for using Content API in gen1 SDK by passing `apiEndpoint` prop to builder.get/getAll

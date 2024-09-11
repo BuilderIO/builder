@@ -45,15 +45,10 @@ export default function Page() {
   }
 
   useEffect(() => {
-    if (window.location.pathname.includes('get-query')) {
-      builder
-        .get('', {
-          ...props,
-          ...props['options'],
-        })
-        .promise()
-        .then();
-    } else if (window.location.pathname.includes('get-content')) {
+    if (
+      window.location.pathname.includes('get-query') ||
+      window.location.pathname.includes('get-content')
+    ) {
       builder
         .get('', {
           ...props,
