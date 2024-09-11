@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.12
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
 ## 0.2.11
 
 ### Patch Changes

@@ -58,6 +58,7 @@ import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models
 import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layout.js';
 import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
 import type { Sdk } from '../helpers/sdk.js';
+import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-binding.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -135,6 +136,7 @@ export const PAGES = {
   '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
   '/get-content': HTTP_REQUESTS,
   '/get-query': HTTP_REQUESTS,
+  '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
 } as const;
 
 const apiVersionPathToProp = {
@@ -246,6 +248,11 @@ export const getProps = async (args: {
     case '/get-query':
       extraProps = {
         options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
+      };
+      break;
+    case '/symbol-with-repeat-input-binding':
+      extraProps = {
+        data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
       };
       break;
     default:

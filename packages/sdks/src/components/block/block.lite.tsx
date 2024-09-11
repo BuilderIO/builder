@@ -252,17 +252,36 @@ export default function Block(props: BlockProps) {
       <Show
         when={!state.blockComponent?.noWrap}
         else={
-          <ComponentRef
-            componentRef={state.componentRefProps.componentRef}
-            componentOptions={state.componentRefProps.componentOptions}
-            blockChildren={state.componentRefProps.blockChildren}
-            context={state.componentRefProps.context}
-            registeredComponents={state.componentRefProps.registeredComponents}
-            linkComponent={state.componentRefProps.linkComponent}
-            builderBlock={state.componentRefProps.builderBlock}
-            includeBlockProps={state.componentRefProps.includeBlockProps}
-            isInteractive={state.componentRefProps.isInteractive}
-          />
+          <Show
+            when={!state.repeatItem}
+            else={
+              <For each={state.repeatItem}>
+                {(data, index) => (
+                  <RepeatedBlock
+                    key={index}
+                    repeatContext={data.context}
+                    block={data.block}
+                    registeredComponents={props.registeredComponents}
+                    linkComponent={props.linkComponent}
+                  />
+                )}
+              </For>
+            }
+          >
+            <ComponentRef
+              componentRef={state.componentRefProps.componentRef}
+              componentOptions={state.componentRefProps.componentOptions}
+              blockChildren={state.componentRefProps.blockChildren}
+              context={state.componentRefProps.context}
+              registeredComponents={
+                state.componentRefProps.registeredComponents
+              }
+              linkComponent={state.componentRefProps.linkComponent}
+              builderBlock={state.componentRefProps.builderBlock}
+              includeBlockProps={state.componentRefProps.includeBlockProps}
+              isInteractive={state.componentRefProps.isInteractive}
+            />
+          </Show>
         }
       >
         <Show

@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.9
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
 ## 0.16.7
 
 ### Patch Changes
