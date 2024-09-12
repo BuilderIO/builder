@@ -30,13 +30,20 @@ export type BlocksWrapperProps = {
   BlocksWrapperProps: any;
 
   children?: any;
+
+  className?: string;
 };
 
 export default function BlocksWrapper(props: BlocksWrapperProps) {
+  console.log('props.className', props.className);
   const blocksWrapperRef = useRef<HTMLDivElement>();
   const state = useStore({
     get className() {
-      return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
+      return (
+        'builder-blocks' +
+        (!props.blocks?.length ? ' no-blocks' : '') +
+        (props.className ? ' ' + props.className : '')
+      );
     },
     onClick() {
       if (isEditing() && !props.blocks?.length) {
