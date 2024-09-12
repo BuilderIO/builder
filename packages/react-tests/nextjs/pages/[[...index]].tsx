@@ -27,7 +27,7 @@ export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
 
       return { params: output };
     }),
-    fallback: true,
+    fallback: 'blocking',
   };
 }
 
@@ -50,9 +50,6 @@ export default function Page(props: PageProps & { apiVersion: any }) {
     }
   }, []);
 
-  if (router.isFallback) {
-    return <h1>Loading...</h1>;
-  }
 
   return (
     <>
