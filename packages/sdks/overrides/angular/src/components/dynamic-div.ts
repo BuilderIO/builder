@@ -50,14 +50,17 @@ export default class DynamicDiv {
   @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
 
+  private _listenerFns = new Map<string, () => void>();
+
   constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
-    const el = this.v && this.v.nativeElement;
+    const el = this.v?.nativeElement;
     if (!el) {
       return;
     }
     this.setAttributes(el, this.attributes);
+    this.setAttributes(el, this.actionAttributes);
     this.setAttributes(el, this.showContentProps);
     this.setAttribute(el, 'class', this.classProp);
     this.setAttribute(el, 'style', this.style);
@@ -69,36 +72,81 @@ export default class DynamicDiv {
     this.setAttribute(el, 'aria-hidden', this.ariaHidden);
   }
 
-  ngOnChanges() {
-    const el = this.v && this.v.nativeElement;
+  ngOnChanges(changes) {
+    const el = this.v?.nativeElement;
     if (!el) {
       return;
     }
-    this.setAttributes(el, this.attributes);
-    this.setAttributes(el, this.showContentProps);
-    this.setAttribute(el, 'class', this.classProp);
-    this.setAttribute(el, 'style', this.style);
-    this.setAttribute(el, 'builder-parent-id', this.builderParentId);
-    this.setAttribute(el, 'builder-path', this.builderPath);
-    this.setAttribute(el, 'builder-model', this.builderModel);
-    this.setAttribute(el, 'builder-content-id', this.builderContentId);
-    this.setAttribute(el, 'hidden', this.hidden);
-    this.setAttribute(el, 'aria-hidden', this.ariaHidden);
+
+    if (Object.keys(changes).length === 0) {
+      return;
+    }
+
+    if (changes.attributes) {
+      this.setAttributes(el, this.attributes, changes.attributes.currentValue);
+    }
+    if (changes.actionAttributes) {
+      this.setAttributes(
+        el,
+        this.actionAttributes,
+        changes.actionAttributes.currentValue
+      );
+    }
+    if (changes.showContentProps) {
+      this.setAttributes(
+        el,
+        this.showContentProps,
+        changes.showContentProps.currentValue
+      );
+    }
+    if (changes.classProp) this.setAttribute(el, 'class', this.classProp);
+    if (changes.style) this.setAttribute(el, 'style', this.style);
+    if (changes.builderParentId)
+      this.setAttribute(el, 'builder-parent-id', this.builderParentId);
+    if (changes.builderPath)
+      this.setAttribute(el, 'builder-path', this.builderPath);
+    if (changes.builderModel)
+      this.setAttribute(el, 'builder-model', this.builderModel);
+    if (changes.builderContentId)
+      this.setAttribute(el, 'builder-content-id', this.builderContentId);
+    if (changes.hidden) this.setAttribute(el, 'hidden', this.hidden);
+    if (changes.ariaHidden)
+      this.setAttribute(el, 'aria-hidden', this.ariaHidden);
   }
 
-  private setAttributes(el: HTMLElement, attributes: any) {
-    if (attributes) {
-      Object.keys(attributes).forEach((key) => {
-        if (attributes[key] !== undefined) {
-          this.renderer.setAttribute(el, key, attributes[key]);
+  private setAttributes(el: any, value: any, changes?: any) {
+    if (!el) return;
+
+    const target = changes ? changes : value;
+
+    if (!target) return;
+
+    Object.keys(target).forEach((key) => {
+      if (key.startsWith('on')) {
+        if (this._listenerFns.has(key)) {
+          this._listenerFns.get(key)!();
         }
-      });
-    }
+        this._listenerFns.set(
+          key,
+          this.renderer.listen(
+            el,
+            key.replace('on', '').toLowerCase(),
+            target[key]
+          )
+        );
+      } else {
+        this.renderer.setAttribute(el, key, target[key] ?? '');
+      }
+    });
   }
 
   private setAttribute(el: HTMLElement, key: string, value: any) {
     if (value) {
       this.renderer.setAttribute(el, key, value);
     }
+  }
+
+  ngOnDestroy() {
+    this._listenerFns.forEach((fn) => fn());
   }
 }

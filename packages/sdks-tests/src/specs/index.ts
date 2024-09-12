@@ -31,7 +31,8 @@ import { JS_CODE_CONTENT } from './js-code.js';
 import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
-import { CONTENT as reactiveState } from './reactive-state.js';
+import { REACTIVE_STATE_CONTENT } from './reactive-state.js';
+import { LARGE_REACTIVE_STATE_CONTENT } from './large-reactive-state.js';
 import { REPEAT_ITEMS_BINDINGS } from './repeat-items-bindings.js';
 import { SHOW_HIDE_IF_REPEATS } from './show-hide-if-repeat.js';
 import { SHOW_HIDE_IF } from './show-hide-if.js';
@@ -45,6 +46,7 @@ import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
+import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
@@ -53,6 +55,10 @@ import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
 import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
+import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layout.js';
+import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
+import type { Sdk } from '../helpers/sdk.js';
+import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-binding.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -60,7 +66,7 @@ function isBrowser(): boolean {
 
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
-const PAGES = {
+export const PAGES = {
   '/': homepage,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
@@ -81,18 +87,23 @@ const PAGES = {
   '/image-no-webp': imageNoWebp,
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
+  '/react-native-strict-style-mode': REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
+  '/react-native-strict-style-mode-disabled': REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
   '/ab-test': abTest,
   '/ab-test-interactive': AB_TEST_INTERACTIVE,
   '/http-requests': HTTP_REQUESTS,
   '/symbol-ab-test': symbolAbTest,
   '/custom-breakpoints': customBreakpoints,
-  '/reactive-state': reactiveState,
+  '/reactive-state': REACTIVE_STATE_CONTENT,
+  '/large-reactive-state': LARGE_REACTIVE_STATE_CONTENT,
+  '/large-reactive-state-editing': LARGE_REACTIVE_STATE_CONTENT,
   '/element-events': elementEvents,
   '/external-data': EXTERNAL_DATA,
   '/show-hide-if': SHOW_HIDE_IF,
   '/show-hide-if-repeats': SHOW_HIDE_IF_REPEATS,
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
+  '/text-eval': textEval,
   '/state-binding': stateBinding,
   '/nested-symbols': nestedSymbols,
   '/editing-styles': EDITING_STYLES,
@@ -122,6 +133,8 @@ const PAGES = {
   '/columns-with-different-widths': COLUMNS_WITH_DIFFERENT_WIDTHS,
   '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+  '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
+  '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
 } as const;
 
 const apiVersionPathToProp = {
@@ -153,12 +166,15 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
 const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
-export const getAPIKey = (): string => 'abcd';
+export const getAPIKey = (type: 'real' | 'mock' = 'mock'): string =>
+  type === 'real' ? REAL_API_KEY : 'abcd';
+
 const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
+  sdk?: Sdk;
   pathname?: string;
   _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
   fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
@@ -188,10 +204,13 @@ export const getProps = async (args: {
       }),
     };
   }
-  const _content = getContentForPathname(pathname);
 
-  if (!_content) {
-    return null;
+  let _content = getContentForPathname(pathname);
+
+  if (args.sdk === 'oldReact' && pathname === '/large-reactive-state-editing') {
+    // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
+    // which Playwright will intercept and provide the content itself.
+    _content = null;
   }
 
   let extraProps = {};
@@ -214,6 +233,16 @@ export const getProps = async (args: {
         model: 'test-model',
       };
       break;
+    case '/react-native-strict-style-mode':
+      extraProps = {
+        strictStyleMode: true,
+      };
+      break;
+    case '/symbol-with-repeat-input-binding':
+      extraProps = {
+        data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
+      };
+      break;
     default:
       break;
   }
@@ -222,15 +251,17 @@ export const getProps = async (args: {
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
   const props = {
-    apiKey: getAPIKey(),
+    apiKey: getAPIKey(data),
     model: 'page',
     ...extraProps,
     ...extraApiVersionProp,
   };
 
-  const content = _processContentResult
-    ? (await _processContentResult(props, { results: [_content] }))[0]
-    : _content;
+  const content = _content
+    ? _processContentResult
+      ? (await _processContentResult(props, { results: [_content] }))[0]
+      : _content
+    : undefined;
 
   return { ...props, content } as any;
 };

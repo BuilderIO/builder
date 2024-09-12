@@ -66,7 +66,7 @@ function App() {
       {({ data }) => (
         <Content
           {...props}
-          data={data}
+          data={data || props.data}
           linkComponent={
             window.location.search.includes('link-component')
               ? CustomLinkComp

@@ -15,8 +15,8 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "dotenv": "^16.0.3",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "octokit": "^2.0.14",
     "prettier": "^3.2.5",
     "zx": "7.2.1"
@@ -40,6 +40,7 @@
     "minimist": "^1.2.7",
     "json5": "2.2.1",
     "@builder.io/react": "workspace:*",
+    "@builder.io/sdk": "workspace:*",
     "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
   }
 }

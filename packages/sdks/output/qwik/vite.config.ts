@@ -11,19 +11,18 @@ export default defineConfig(() => {
         /**
          * https://github.com/BuilderIO/qwik/issues/4952
          */
-        fileName: (format) => `index.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
+        fileName: (format, entryName) =>
+          `${entryName}.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
       },
       rollupOptions: {
-        external: ['@builder.io/qwik', 'node:module'],
+        external: ['@builder.io/qwik', 'node:module', 'isolated-vm'],
+        input: [
+          './src/index.ts',
+          './src/functions/evaluate/node-runtime/init.ts',
+        ],
         output: {
-          manualChunks(id, { getModuleIds, getModuleInfo }) {
-            const moduleInfo = getModuleInfo(id);
-
-            // We need to move this node-only code to its own file so that `isServer` can tree-shake it.
-            if (moduleInfo?.code?.includes('node:module')) {
-              return 'node-evaluate';
-            }
-          },
+          preserveModules: true,
+          preserveModulesRoot: 'src',
         },
       },
     },

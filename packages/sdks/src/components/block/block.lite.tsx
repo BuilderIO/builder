@@ -3,16 +3,19 @@ import {
   For,
   Show,
   onMount,
+  onUpdate,
   useMetadata,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { TARGET } from '../../constants/target.js';
 import type {
   BuilderContextInterface,
   RegisteredComponents,
 } from '../../context/types.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { isPreviewing } from '../../server-index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
 import { bindAnimations } from './animator.js';
@@ -55,21 +58,39 @@ useMetadata({
 
 export default function Block(props: BlockProps) {
   const state = useStore({
-    get blockComponent() {
-      return getComponent({
-        block: props.block,
-        context: props.context.value,
-        registeredComponents: props.registeredComponents,
-      });
-    },
     get repeatItem() {
       return getRepeatItemData({
         block: props.block,
         context: props.context.value,
       });
     },
+    /**
+     * Simple agnostic memoization for the processed block
+     * This is used to avoid re-processing the block on every render
+     * We need to make this a property on an object so setState() isn't
+     * called causing infinite rerenders e.g. in React
+     */
+    _processedBlock: { value: null as BuilderBlock | null, update: false },
     get processedBlock(): BuilderBlock {
-      return props.block.repeat?.collection
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+        solid: () => {},
+
+        // @ts-expect-error: missing return value
+        default: () => {
+          if (
+            state._processedBlock.value &&
+            !state._processedBlock.update &&
+            !isPreviewing()
+          ) {
+            return state._processedBlock.value;
+          }
+        },
+      });
+      const blockToUse = props.block.repeat?.collection
         ? props.block
         : getProcessedBlock({
             block: props.block,
@@ -79,6 +100,26 @@ export default function Block(props: BlockProps) {
             context: props.context.value.context,
             shouldEvaluateBindings: true,
           });
+
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+        solid: () => {},
+        default: () => {
+          state._processedBlock.value = blockToUse;
+          state._processedBlock.update = false;
+        },
+      });
+
+      return blockToUse;
+    },
+    get blockComponent() {
+      return getComponent({
+        block: state.processedBlock,
+        registeredComponents: props.registeredComponents,
+      });
     },
     get Tag() {
       const shouldUseLink =
@@ -166,41 +207,81 @@ export default function Block(props: BlockProps) {
         registeredComponents: props.registeredComponents,
         builderBlock: state.processedBlock,
         includeBlockProps: state.blockComponent?.noWrap === true,
-        isInteractive: !state.blockComponent?.isRSC,
+        isInteractive: !(state.blockComponent?.isRSC && TARGET === 'rsc'),
       };
     },
   });
 
+  /**
+   * This trick forces the component to re-compute the `processedBlock` on every update.
+   */
+  onUpdate(() => {
+    useTarget({
+      svelte: () => {},
+      vue: () => {},
+      angular: () => {},
+      qwik: () => {},
+      solid: () => {},
+      default: () => {
+        state._processedBlock.update = true;
+      },
+    });
+  });
+
   onMount(() => {
-    const blockId = state.processedBlock.id;
-    const animations = state.processedBlock.animations;
-    if (animations && blockId) {
-      bindAnimations(
-        animations.map((animation) => ({
-          ...animation,
-          elementId: blockId,
-        }))
-      );
-    }
+    useTarget({
+      reactNative: () => {},
+      default: () => {
+        const blockId = state.processedBlock.id;
+        const animations = state.processedBlock.animations;
+        if (animations && blockId) {
+          bindAnimations(
+            animations.map((animation) => ({
+              ...animation,
+              elementId: blockId,
+            }))
+          );
+        }
+      },
+    });
   });
 
   return (
     <Show when={state.canShowBlock}>
-      <BlockStyles block={props.block} context={props.context.value} />
+      <BlockStyles block={state.processedBlock} context={props.context.value} />
       <Show
         when={!state.blockComponent?.noWrap}
         else={
-          <ComponentRef
-            componentRef={state.componentRefProps.componentRef}
-            componentOptions={state.componentRefProps.componentOptions}
-            blockChildren={state.componentRefProps.blockChildren}
-            context={state.componentRefProps.context}
-            registeredComponents={state.componentRefProps.registeredComponents}
-            linkComponent={state.componentRefProps.linkComponent}
-            builderBlock={state.componentRefProps.builderBlock}
-            includeBlockProps={state.componentRefProps.includeBlockProps}
-            isInteractive={state.componentRefProps.isInteractive}
-          />
+          <Show
+            when={!state.repeatItem}
+            else={
+              <For each={state.repeatItem}>
+                {(data, index) => (
+                  <RepeatedBlock
+                    key={index}
+                    repeatContext={data.context}
+                    block={data.block}
+                    registeredComponents={props.registeredComponents}
+                    linkComponent={props.linkComponent}
+                  />
+                )}
+              </For>
+            }
+          >
+            <ComponentRef
+              componentRef={state.componentRefProps.componentRef}
+              componentOptions={state.componentRefProps.componentOptions}
+              blockChildren={state.componentRefProps.blockChildren}
+              context={state.componentRefProps.context}
+              registeredComponents={
+                state.componentRefProps.registeredComponents
+              }
+              linkComponent={state.componentRefProps.linkComponent}
+              builderBlock={state.componentRefProps.builderBlock}
+              includeBlockProps={state.componentRefProps.includeBlockProps}
+              isInteractive={state.componentRefProps.isInteractive}
+            />
+          </Show>
         }
       >
         <Show

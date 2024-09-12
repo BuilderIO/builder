@@ -1,5 +1,75 @@
 # @builder.io/react
 
+## 5.0.1
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+- Updated dependencies [69859d4]
+  - @builder.io/sdk@3.0.1
+
+## 5.0.0
+
+### Major Changes
+
+- bc1d409: Breaking Change 🧨: `userAttributes` now is parsed as an object - `JSON.stringify(userAttributes)` which preserves strings. Users no longer need to manually stringify anything unless they have explicitly included it in custom targeting attributes.
+
+  For example,
+
+  ```js
+  userAttributes: {
+    stringWithStrs: ["a", "c"];
+  }
+  ```
+
+  used to work as well as this,
+
+  ```js
+  userAttributes: {
+    stringWithStrs: ["'a'", "'c'"];
+  }
+  ```
+
+  but now its not needed to manually stringify strings. This change was needed to preserve data types and strings so previously when we passed,
+
+  ```js
+  userAttributes: {
+    stringWithNums: ["1", "2"];
+  }
+  ```
+
+  they were actual string numbers but we failed to parse it because we were not preserving the strings and users had to perform manual stringification hacks like `"'1'"` to achieve correct result. With this change stringified numbers/bools etc will work out of the box as expected showing less room for randomness.
+
+### Patch Changes
+
+- 1586519: Fix: remove `next: { revalidate: 1 }` in SDKs fetch
+- Updated dependencies [bc1d409]
+- Updated dependencies [1586519]
+  - @builder.io/sdk@3.0.0
+
+## 4.0.4
+
+### Patch Changes
+
+- b7c00cf: Fix SSR hydration issues with non-hover animated builder blocks
+- Updated dependencies [b7c00cf]
+  - @builder.io/sdk@2.2.9
+
+## 4.0.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+- Updated dependencies [11e118c]
+  - @builder.io/sdk@2.2.8
+
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [b965695]
+  - @builder.io/sdk@2.2.7
+
 ## 4.0.1
 
 ### Patch Changes

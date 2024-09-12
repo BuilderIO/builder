@@ -14,20 +14,22 @@ interface BuilderProps {
   apiKey: string;
   model: string;
   content: any;
+  data?: any;
 }
 
 @Component({
   selector: 'app-root',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content-variants
+      <content
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
         [trustedHosts]="trustedHosts"
         [canTrack]="canTrack"
         [customComponents]="customComponents"
-      ></content-variants>
+        [data]="data"
+      ></content>
     </ng-container>
 
     <ng-template #notFound>
@@ -43,6 +45,7 @@ export class AppComponent {
   apiKey: BuilderProps['apiKey'] = 'abcd';
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
+  data: BuilderProps['data'];
 
   customComponents = [
     {
@@ -74,5 +77,6 @@ export class AppComponent {
     this.apiKey = builderProps.apiKey;
     this.model = builderProps.model;
     this.apiVersion = builderProps.apiVersion;
+    this.data = builderProps.data;
   }
 }

@@ -94,7 +94,8 @@ export const setIvm = (ivm: IsolatedVMImport, options: IsolateOptions = {}) => {
 // only mention the script for SDKs that have it.
 const SHOULD_MENTION_INITIALIZE_SCRIPT =
   SDK_NAME === '@builder.io/sdk-react-nextjs' ||
-  SDK_NAME === '@builder.io/sdk-react';
+  SDK_NAME === '@builder.io/sdk-react' ||
+  SDK_NAME === '@builder.io/sdk-qwik';
 
 const getIvm = (): IsolatedVMImport => {
   try {
@@ -110,7 +111,7 @@ const getIvm = (): IsolatedVMImport => {
     
     SOLUTION: In a server-only execution path within your application, do one of the following:
   
-    ${SHOULD_MENTION_INITIALIZE_SCRIPT ? '- import and call `initializeNodeRuntime()` from "${SDK_NAME}/node/init".' : ''}
+    ${SHOULD_MENTION_INITIALIZE_SCRIPT ? `- import and call \`initializeNodeRuntime()\` from "${SDK_NAME}/node/init".` : ''}
     - add the following import: \`await import('isolated-vm')\`.
 
     For more information, visit https://builder.io/c/docs/integration-tips#enabling-data-bindings-in-node-environments`;

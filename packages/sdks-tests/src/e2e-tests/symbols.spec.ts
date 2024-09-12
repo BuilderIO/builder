@@ -2,13 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import {
-  excludeGen2,
-  excludeTestFor,
-  checkIsGen1React,
-  checkIsRN,
-  test,
-} from '../helpers/index.js';
+import { excludeGen2, checkIsGen1React, checkIsRN, test } from '../helpers/index.js';
 import type { ServerName } from '../helpers/sdk.js';
 
 /**
@@ -99,7 +93,6 @@ test.describe('Symbols', () => {
   });
 
   test('refresh on locale change', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     // have to use `.skip()` because this test sometimes works in gen2 but flaky
     test.skip(excludeGen2(sdk));
 
@@ -204,7 +197,6 @@ test.describe('Symbols', () => {
     });
 
     test('apiVersion is set to v1', async ({ page, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
       test.fail(excludeGen2(sdk));
       let x = 0;
 
@@ -233,8 +225,7 @@ test.describe('Symbols', () => {
     });
   });
 
-  test('works in nested symbols with inherit', async ({ packageName, page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
+  test('works in nested symbols with inherit', async ({ packageName, page }) => {
     await page.goto('/nested-symbols');
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized

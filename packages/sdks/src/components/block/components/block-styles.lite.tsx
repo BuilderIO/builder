@@ -6,7 +6,6 @@ import {
 import { TARGET } from '../../../constants/target.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
-import { getProcessedBlock } from '../../../functions/get-processed-block.js';
 import { createCssClass } from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
@@ -26,14 +25,7 @@ useMetadata({
 export default function BlockStyles(props: BlockStylesProps) {
   const state = useStore({
     get canShowBlock() {
-      const processedBlock = getProcessedBlock({
-        block: props.block,
-        localState: props.context.localState,
-        rootState: props.context.rootState,
-        rootSetState: props.context.rootSetState,
-        context: props.context.context,
-        shouldEvaluateBindings: true,
-      });
+      const processedBlock = props.block;
       // only render styles for blocks that are visible
       if (checkIsDefined(processedBlock.hide)) {
         return !processedBlock.hide;
@@ -45,14 +37,7 @@ export default function BlockStyles(props: BlockStylesProps) {
     },
 
     get css(): string {
-      const processedBlock = getProcessedBlock({
-        block: props.block,
-        localState: props.context.localState,
-        rootState: props.context.rootState,
-        rootSetState: props.context.rootSetState,
-        context: props.context.context,
-        shouldEvaluateBindings: true,
-      });
+      const processedBlock = props.block;
 
       const styles = processedBlock.responsiveStyles;
 

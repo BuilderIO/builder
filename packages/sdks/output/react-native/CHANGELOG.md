@@ -1,5 +1,67 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 2.0.13
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
+## 2.0.12
+
+### Patch Changes
+
+- 1a69210: Chore: improve performance by caching block processing during renders.
+
+## 2.0.11
+
+### Patch Changes
+
+- 077cae9: strict validation fixes for react native
+
+## 2.0.10
+
+### Patch Changes
+
+- 561e375: Fix: Drag and drop blocks into the correct place and add blocks using the "+Add Block" button
+
+## 2.0.9
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+- f1527ee: Allow gap, rowGap, columnGap in react native strict mode styles
+
+## 2.0.8
+
+### Patch Changes
+
+- e8b80b3: Fix: scoped `isInteractive` prop for RSC SDK only so that it fixes Inner Layout > "Columns" option during visual editing
+
+## 2.0.7
+
+### Patch Changes
+
+- 6a4c1f5: Feature: add optional `strictStyleMode` prop to `<Content>` that will validate and ignore any style that does not work on React Native. The validation logic is identical to the one in the Visual Editor's "Strict React Native Styling" advanced setting.
+- 6a4c1f5: Fix: gracefully handle css sanitization errors.
+
+## 2.0.5
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
+## 2.0.4
+
+### Patch Changes
+
+- 5a6cd39: Fix: ignore animations (avoid crashes when they are used).
+
+## 2.0.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 2.0.2
 
 ### Patch Changes

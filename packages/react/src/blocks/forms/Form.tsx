@@ -66,9 +66,9 @@ class FormComponent extends React.Component<FormProps> {
             }}
           >
             <form
-              validate={this.props.validate}
+              {...(!this.props.validate ? { noValidate: true } : {})}
               ref={ref => (this.ref = ref)}
-              action={!this.props.sendWithJs && this.props.action}
+              action={!this.props.sendWithJs && this.props.action ? this.props.action : undefined}
               method={this.props.method}
               name={this.props.name}
               onSubmit={event => {

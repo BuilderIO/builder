@@ -1,4 +1,4 @@
-export const CONTENT = {
+export const REACTIVE_STATE_CONTENT = {
   id: '6212bd298e3248dab74048c6a10f84ec',
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   lastUpdated: 1674570277771,

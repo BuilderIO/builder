@@ -144,6 +144,25 @@ const targets = target
       'angular',
     ];
 
+/**
+ * @type {Plugin}
+ */
+const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name !== 'ContentComponent') return json;
+
+      json.state.builderContextSignal.code =
+        json.state.builderContextSignal.code.replace(
+          /^\s*{/,
+          '{strictStyleMode: props.strictStyleMode,'
+        );
+
+      return json;
+    },
+  },
+});
+
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -209,13 +228,35 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
+/**
+ * @type {Plugin}
+ */
+const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BuilderImage' || json.name === 'BuilderSymbol') {
+        json.hooks.onMount = json.hooks.onMount.filter(
+          (hook) =>
+            !hook.code.includes(
+              '/** this is a hack to include the input in angular */'
+            )
+        );
+      }
+      return json;
+    },
+  },
+});
+
 // for fixing circular dependencies
+/**
+ * @type {Plugin}
+ */
 const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
       if (
-        code.includes('component-ref, ComponentRef') ||
-        code.includes('repeated-block, RepeatedBlock')
+        code.includes('selector: "component-ref"') ||
+        code.includes('selector: "repeated-block"')
       ) {
         code = code.replace(
           'imports: [CommonModule, Block]',
@@ -234,43 +275,49 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
 const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code.includes('component-ref, ComponentRef')) {
-        // onInit we check for this.isInteractive as its available at that time
-        // and set the Wrapper to InteractiveElement or componentRef
-        code = code.replace(
-          'ngOnInit() {\n',
-          `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`
+      if (code.includes('selector: "component-ref"')) {
+        code = code
+          .replace(
+            '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
+            '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
+          )
+          .replace('</ng-container>', '</ng-container>\n</ng-container>');
+        const ngOnChangesIndex = code.indexOf(
+          'ngOnChanges(changes: SimpleChanges) {'
         );
-        // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
-        code = code.replace(
-          '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
-          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
-        );
-        code = code.replace(
-          '</ng-container>',
-          '</ng-container>\n</ng-container>'
-        );
+
+        if (ngOnChangesIndex > -1) {
+          code = code.replace(
+            'ngOnChanges(changes: SimpleChanges) {',
+            // Add a check to see if the componentOptions have changed
+            `ngOnChanges(changes: SimpleChanges) {
+                if (changes.componentOptions) {
+                  let foundChange = false;
+                  for (const key in changes.componentOptions.previousValue) {
+                    if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
+                      foundChange = true;
+                      break;
+                    }
+                  }
+                  if (!foundChange) {
+                    return;
+                  }
+                }`
+          );
+        } else {
+          throw new Error('ngOnChanges not found in component-ref');
+        }
       }
       return code;
     },
   },
 });
 
-const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
-        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
-        code = code.replace('ngOnInit', 'ngAfterViewInit');
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnChanges() {
-              ${mergedInputsCode}
-            }
-          }
-          `
-        );
+      if (code?.includes('selector: "blocks-wrapper"')) {
+        code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
     },
@@ -471,20 +518,37 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
       if (code.includes('enable-editor')) {
-        code = code.replace(
-          'window.addEventListener("message", this.processMessage);',
-          'window.addEventListener("message", this.processMessage.bind(this));'
+        // find two event listeners and add bind(this) to the fn passed
+        const eventListeners = code.match(
+          /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
-        code = code.replace(
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate
-          );`,
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate.bind(this)
-          );`
+        if (eventListeners && eventListeners.length) {
+          eventListeners.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.addEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.addEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
+        const eventListenersRemove = code.match(
+          /window\.removeEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
+        if (eventListenersRemove && eventListenersRemove.length) {
+          eventListenersRemove.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.removeEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.removeEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
       }
       return code;
     },
@@ -493,43 +557,12 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
 
 // required for registering custom components properly
 const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
-  json: {
-    pre: (json) => {
-      if (json.name === 'ContentComponent') {
-        const builderContextSignalCode =
-          json.state['builderContextSignal'].code;
-        const registeredComponentsCode =
-          json.state['registeredComponents'].code;
-        if (!json.hooks.onInit?.code) {
-          json.hooks.onInit = {
-            code: '',
-          };
-        }
-        json.hooks.onInit.code += `
-          this.builderContextSignal = ${builderContextSignalCode};
-          this.registeredComponents = ${registeredComponentsCode};
-          `;
-      }
-    },
-  },
   code: {
     post: (code) => {
-      if (code.includes('content-component, ContentComponent')) {
+      if (code.includes('selector: "content-component"')) {
         code = code.replaceAll(
           'this.contentSetState',
           'this.contentSetState.bind(this)'
-        );
-      }
-      if (code.includes('content-styles, ContentStyles')) {
-        const injectedStyles = code.match(/injectedStyles = `.*;/s);
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnInit() {
-              this.${injectedStyles}
-            }
-          }
-          `
         );
       }
       return code;
@@ -540,7 +573,7 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
 const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   code: {
     post: (code) => {
-      if (code.includes('builder-symbol, BuilderSymbol')) {
+      if (code.includes('selector: "builder-symbol"')) {
         code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
         code = code.replace(
           'this.setContent();',
@@ -576,7 +609,8 @@ module.exports = {
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
-        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
+        ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
+        ANGULAR_ADD_UNUSED_PROP_TYPES,
       ],
     },
     solid: {
@@ -676,6 +710,7 @@ module.exports = {
         BASE_TEXT_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
+        ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -737,6 +772,30 @@ module.exports = {
               if (json.name === 'CustomCode') {
                 json.refs.elementRef.typeParameter = 'any';
               }
+
+              /**
+               * Fix component name as `Button` is imported from react-native
+               */
+              if (json.name === 'Button') {
+                json.name = 'BuilderButton';
+              }
+            },
+          },
+        }),
+        () => ({
+          code: {
+            post: (code) => {
+              if (
+                code.includes('BlocksWrapper') ||
+                code.includes('EnableEditor')
+              ) {
+                /**
+                 * Replaces `onPress` event handler with `onClick` for React Native
+                 * such that visual editing "+Add Block" works on web target.
+                 */
+                code = code.replace('onPress', 'onClick');
+              }
+              return code;
             },
           },
         }),

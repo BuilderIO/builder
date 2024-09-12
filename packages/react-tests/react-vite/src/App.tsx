@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import '@builder.io/widgets';
 
 builder.init(getAPIKey());
+
 // default to not tracking, and re-enable when appropriate
 builder.canTrack = false;
 
@@ -12,7 +13,7 @@ function App() {
   const [props, setProps] = useState<any>(undefined);
 
   useEffect(() => {
-    getProps({}).then(resp => {
+    getProps({ sdk: 'oldReact' }).then(resp => {
       setProps(resp);
     });
   }, []);
@@ -31,9 +32,18 @@ function App() {
     }
   }, []);
 
+  /**
+   * - certain tests expect the content to only render after the first render
+   * - the `/large-reactive-state-editing` requires the `BuilderComponent` to
+   * be rendered immediately, so that the API request is made.
+   */
   // issues with react types incompatibility (v16 vs v17 vs v18?)
   // @ts-ignore
-  return props ? <BuilderComponent {...props} /> : <div>Content Not Found</div>;
+  return props || window.location.pathname.includes('/large-reactive-state-editing') ? (
+    <BuilderComponent {...props} />
+  ) : (
+    <div>Content Not Found</div>
+  );
 }
 
 export default App;

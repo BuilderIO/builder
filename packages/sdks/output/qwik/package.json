@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.16.2",
+  "version": "0.16.9",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/qwik",
   "repository": {
     "type": "git",
@@ -78,6 +78,11 @@
         "require": "./lib/browser/index.qwik.cjs"
       }
     },
+    "./node/init": {
+      "types": "./types/src/functions/evaluate/node-runtime/init.d.ts",
+      "import": "./lib/node/functions/evaluate/node-runtime/init.qwik.mjs",
+      "require": "./lib/node/functions/evaluate/node-runtime/init.qwik.cjs"
+    },
     "./bundle/edge": {
       "types": "./types/src/index.d.ts",
       "import": "./lib/edge/index.qwik.mjs",
@@ -112,8 +117,8 @@
     "@builder.io/qwik": "^1.5.1",
     "@builder.io/sdks": "workspace:*",
     "@types/node": "latest",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
+    "nx": "^19.6.5",
+    "nx-cloud": "^19.0.0",
     "typescript": "5.5.2",
     "vite": "^4.3.2"
   },

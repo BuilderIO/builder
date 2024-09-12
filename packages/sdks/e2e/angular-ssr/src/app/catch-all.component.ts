@@ -11,20 +11,22 @@ interface BuilderProps {
   apiKey: string;
   model: string;
   content: any;
+  data?: any;
 }
 
 @Component({
   selector: 'catch-all-route',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content-variants
+      <content
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
         [trustedHosts]="trustedHosts"
         [canTrack]="canTrack"
         [customComponents]="customComponents"
-      ></content-variants>
+        [data]="data"
+      ></content>
     </ng-container>
 
     <ng-template #notFound>
@@ -38,6 +40,7 @@ export class CatchAllComponent {
   apiKey: BuilderProps['apiKey'] = 'abcd';
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
+  data: BuilderProps['data'];
 
   customComponents = [
     {
@@ -54,6 +57,7 @@ export class CatchAllComponent {
       this.content = data.content?.content;
       this.canTrack = data.content?.canTrack;
       this.trustedHosts = data.content?.trustedHosts;
+      this.data = data.content?.data;
     });
   }
 }

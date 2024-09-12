@@ -43,52 +43,52 @@ Legend:
 
 ## Builder Blocks
 
-| Builder Blocks | Vue | React-Native | Svelte | Solid | Qwik | React | NextJS |
-| -------------- | --- | ------------ | ------ | ----- | ---- | ----- | ------ |
-| Columns        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Text           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Image          | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Button         | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Video          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Custom Code    | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Section        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Fragment       | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Embed          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Slot           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     |
-| Form           | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     |
-| Input          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     |
-| Select         | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     |
-| SubmitButton   | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     |
+| Builder Blocks | Vue | React-Native | Svelte | Solid | Qwik | React | NextJS | Angular |
+| -------------- | --- | ------------ | ------ | ----- | ---- | ----- | ------ | ------- |
+| Columns        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Text           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Image          | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Button         | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Video          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Custom Code    | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Section        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Fragment       | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Embed          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | 🏗️      |
+| Slot           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
+| Form           | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
+| Input          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
+| Select         | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
+| SubmitButton   | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
 
 ## Builder Widgets
 
-| Builder Widgets | Vue | React-Native | Svelte | Solid | Qwik | React | NextJS |
-| --------------- | --- | ------------ | ------ | ----- | ---- | ----- | ------ |
-| Tabs            | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | 🏗     |
-| Accordion       | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | 🏗️     |
-| Carousel        | 🏗  | 🏗           | 🏗     | 🏗    | 🏗   | 🏗    | 🏗️     |
-| Masonry         | 🏗  | 🏗           | 🏗     | 🏗    | 🏗   | 🏗    | 🏗️     |
+| Builder Widgets | Vue | React-Native | Svelte | Solid | Qwik | React | NextJS | Angular |
+| --------------- | --- | ------------ | ------ | ----- | ---- | ----- | ------ | ------- |
+| Tabs            | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | 🏗     | 🏗      |
+| Accordion       | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗      |
+| Carousel        | 🏗  | 🏗           | 🏗     | 🏗    | 🏗   | 🏗    | 🏗️     | 🏗      |
+| Masonry         | 🏗  | 🏗           | 🏗     | 🏗    | 🏗   | 🏗    | 🏗️     | 🏗      |
 
 ## Features
 
-| Features                       | Qwik | React | NextJS                                   | Vue | React-Native        | Svelte | Solid | Details |
-| ------------------------------ | ---- | ----- | ---------------------------------------- | --- | ------------------- | ------ | ----- | ------- |
-| TypeScript Types               | ✅   | ✅    | ✅                                       | ✅  | 🏗                  | ✅     | 🏗    |         |
-| A/B Tests                      | ✅   | ✅    |                                          | ✅  | ✅                  | ✅     | ✅    |         |
-| A/B Tests with SSG/SSR Support | ✅   | ✅    |                                          | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
-| SSR                            | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
-| Children for Custom Components | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
-| Dynamic Data Bindings          | ✅   | ✅    | ✅ (cannot update bindings after SSR)    | ✅  | ✅                  | ✅     | ✅    |         |
-| View Current Draft             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
-| Symbols                        | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
-| Custom styles                  | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
-| Custom fonts                   | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
-| Heatmaps                       | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
-| Tracking/Analytics             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
-| Animations                     | ✅   | ✅    | 🏗                                       | ✅  | 🏗                  | ✅     | ✅    |         |
-| Custom Actions/Events          | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    |         |
-| Builder's global `state`       | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    |
-| Widgets                        | 🏗   | ✅    | ✅                                       | 🏗  | 🏗                  | 🏗     | 🏗    |         |
-| Global Content Styles          | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
-| CSS Nesting (`&` operator)     | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    |         |
-| Locale Support                 | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    |         |
+| Features                       | Qwik | React | NextJS                                   | Vue | React-Native        | Svelte | Solid | Angular | Details |
+| ------------------------------ | ---- | ----- | ---------------------------------------- | --- | ------------------- | ------ | ----- | ------- | ------- |
+| TypeScript Types               | ✅   | ✅    | ✅                                       | ✅  | 🏗                  | ✅     | 🏗    | ✅      |         |
+| A/B Tests                      | ✅   | ✅    |                                          | ✅  | ✅                  | ✅     | ✅    | 🏗      |         |
+| A/B Tests with SSG/SSR Support | ✅   | ✅    |                                          | ✅  | ❌ (Does not apply) | ✅     | ✅    | 🏗      |         |
+| SSR                            | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
+| Children for Custom Components | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | 🏗      |         |
+| Dynamic Data Bindings          | ✅   | ✅    | ✅ (cannot update bindings after SSR)    | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| View Current Draft             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Symbols                        | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Custom styles                  | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Custom fonts                   | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
+| Heatmaps                       | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Tracking/Analytics             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Animations                     | ✅   | ✅    | 🏗                                       | ✅  | 🏗                  | ✅     | ✅    | 🏗      |         |
+| Custom Actions/Events          | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Builder's global `state`       | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Widgets                        | 🏗   | ✅    | ✅                                       | 🏗  | 🏗                  | 🏗     | 🏗    | 🏗      |         |
+| Global Content Styles          | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
+| CSS Nesting (`&` operator)     | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
+| Locale Support                 | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |

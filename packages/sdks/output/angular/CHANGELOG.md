@@ -1,5 +1,55 @@
 # @builder.io/sdk-angular
 
+## 0.2.12
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
+## 0.2.11
+
+### Patch Changes
+
+- 6003607: Fix: support destructuring out objects in Angular. Fixes slot, nested symbols and element event binding in blocks other than button
+
+## 0.2.10
+
+### Patch Changes
+
+- cb68f66: Fix: update exported `content-variants` selector to `content`
+
+## 0.2.9
+
+### Patch Changes
+
+- 69859d4: serialize functions for registering plugins so you can have showIf on fields as functions
+
+## 0.2.8
+
+### Patch Changes
+
+- e8b80b3: Fix: scoped `isInteractive` prop for RSC SDK only so that it fixes Inner Layout > "Columns" option during visual editing
+
+## 0.2.7
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
+## 0.2.6
+
+### Patch Changes
+
+- 22a3865: Fix: Symbol infinite re-render and editor overlay not showing up.
+- a6c453f: Fix: support Visual Editing for Interactive Elements
+
+## 0.2.5
+
+### Patch Changes
+
+- 53d3cf9: Fix: State inits in Angular which fixes repeat elements, show-if and hide-if and Columns
+- 11e118c: Fix: serialize all functions within registered component info.
+
 ## 0.2.4
 
 ### Patch Changes
