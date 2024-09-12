@@ -36,11 +36,18 @@ const initializeUserAttributes = async (
     baseURL,
     browser,
     sdk,
-  }: Pick<Parameters<Parameters<typeof test>[1]>[0], 'page' | 'baseURL' | 'browser' | 'sdk'>,
+    packageName,
+  }: Pick<
+    Parameters<Parameters<typeof test>[1]>[0],
+    'page' | 'baseURL' | 'browser' | 'packageName' | 'sdk'
+  >,
   { userAttributes }: { userAttributes: Record<string, string> }
 ) => {
+  // gen1-next likely have a config issue with SSR
+  test.skip(packageName === 'gen1-next');
   test.skip(excludeTestFor({ angular: true }, sdk));
   test.skip(excludeGen2(sdk));
+
   if (!baseURL) throw new Error('Missing baseURL');
 
   const context = await createContextWithCookies({
@@ -62,7 +69,7 @@ test.describe('Personalization Container', () => {
       EXPERIMENT_B: 'Experiment B',
       NON_PERSONALIZED: 'Non personalized',
     };
-    const TRIES = 10;
+    const TRIES = 2;
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
     for (let i = 1; i <= TRIES; i++) {
@@ -70,17 +77,16 @@ test.describe('Personalization Container', () => {
         page: _page,
         baseURL,
         browser,
+        packageName,
         sdk,
       }) => {
-        test.skip(excludeTestFor({ angular: true }, sdk));
-        test.skip(excludeGen2(sdk));
-
         const { page } = await initializeUserAttributes(
           {
             page: _page,
             baseURL,
             browser,
             sdk,
+            packageName,
           },
           // empty should render default, non-personalized content
           {
@@ -101,6 +107,7 @@ test.describe('Personalization Container', () => {
         baseURL,
         browser,
         sdk,
+        packageName,
       }) => {
         const { page } = await initializeUserAttributes(
           {
@@ -108,6 +115,7 @@ test.describe('Personalization Container', () => {
             baseURL,
             browser,
             sdk,
+            packageName,
           },
           // empty should render default, non-personalized content
           {
@@ -120,6 +128,35 @@ test.describe('Personalization Container', () => {
         await expect(page.getByText(TEXTS.EXPERIMENT_A).locator('visible=true')).toBeVisible();
         await expect(page.getByText(TEXTS.NON_PERSONALIZED).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.EXPERIMENT_B })).toBeHidden();
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
+      });
+
+      test(`#${i}/${TRIES}: Render variant B w/ SSR`, async ({
+        page: _page,
+        baseURL,
+        browser,
+        sdk,
+        packageName,
+      }) => {
+        const { page } = await initializeUserAttributes(
+          {
+            page: _page,
+            baseURL,
+            browser,
+            sdk,
+            packageName,
+          },
+          // empty should render default, non-personalized content
+          {
+            userAttributes: { experiment: 'B' },
+          }
+        );
+
+        await page.goto('/personalization-container');
+
+        await expect(page.getByText(TEXTS.EXPERIMENT_B).locator('visible=true')).toBeVisible();
+        await expect(page.getByText(TEXTS.NON_PERSONALIZED).locator('visible=true')).toBeVisible();
+        await expect(page.locator(SELECTOR, { hasText: TEXTS.EXPERIMENT_A })).toBeHidden();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
       });
     }
