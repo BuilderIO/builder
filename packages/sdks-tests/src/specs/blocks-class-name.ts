@@ -12,7 +12,7 @@ export const BLOCKS_CLASS_NAME = {
     lastPreviewUrl:
       'http://localhost:5173/blocks?builder.space=b3ef520ea40045149c66fcb6e6a4adec&builder.user.permissions=read%2Ccreate%2Cpublish%2CeditCode%2CeditDesigns%2Cadmin%2CeditLayouts%2CeditLayers&builder.user.role.name=Admin&builder.user.role.id=admin&builder.cachebust=true&builder.preview=page&builder.noCache=true&builder.allowTextEdit=true&__builder_editing__=true&builder.overrides.page=b3ef520ea40045149c66fcb6e6a4adec_dfbbf7e36abc4937b23f5cdf005eb511&builder.overrides.b3ef520ea40045149c66fcb6e6a4adec_dfbbf7e36abc4937b23f5cdf005eb511=b3ef520ea40045149c66fcb6e6a4adec_dfbbf7e36abc4937b23f5cdf005eb511&builder.overrides.page:/blocks=b3ef520ea40045149c66fcb6e6a4adec_dfbbf7e36abc4937b23f5cdf005eb511&builder.options.locale=Default',
     componentsUsed: {
-      TestBuilderBlock: 1,
+      BuilderBlockWithClassName: 1,
     },
     hasLinks: false,
   },
@@ -34,7 +34,7 @@ export const BLOCKS_CLASS_NAME = {
         '@version': 2,
         id: 'builder-be8efea957724511b77b6e6925cba1d4',
         component: {
-          name: 'TestBuilderBlock',
+          name: 'BuilderBlockWithClassName',
           options: {
             content: [
               {

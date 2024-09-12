@@ -85,7 +85,7 @@ function App() {
               }),
             },
             {
-              name: 'TestBuilderBlock',
+              name: 'BuilderBlockWithClassName',
               component: BuilderBlockWithClassName,
               inputs: [
                 {
