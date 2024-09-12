@@ -11,7 +11,6 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
 import { parse as urlParse } from './url';
@@ -118,7 +117,6 @@ function setCookie(name: string, value: string, expires?: Date) {
       (value || '') +
       expiresString +
       '; path=/' +
-      `; domain=${getTopLevelDomain(location.hostname)}` +
       (secure ? '; secure; SameSite=None' : '');
   } catch (err) {
     console.warn('Could not set cookie', err);
@@ -2150,11 +2148,8 @@ export class Builder {
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
-
-    try {
+    if (this.canTrack) {
       this.setCookie(Builder.attributesCookieName, JSON.stringify(this.getUserAttributes()));
-    } catch {
-      // Ignore
     }
 
     this.userAttributesChanged.next(options);
