@@ -1,5 +1,6 @@
 import { AB_TEST_INTERACTIVE } from './ab-test-interactive.js';
 import { CONTENT as abTest } from './ab-test.js';
+import { CONTENT as personalizatContainer } from './personalization-container.js';
 import { ANIMATIONS } from './animations.js';
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
@@ -101,6 +102,7 @@ const PAGES = {
   '/text-eval': textEval,
   '/state-binding': stateBinding,
   '/nested-symbols': nestedSymbols,
+  '/personalization-container': personalizatContainer,
   '/editing-styles': EDITING_STYLES,
   '/video': video,
   '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
@@ -138,7 +140,7 @@ const apiVersionPathToProp = {
 
 export type Path = keyof typeof PAGES;
 
-const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1'];
+const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1', '/personalization-container'];
 const GEN2_ONLY_PATHNAMES: Path[] = [];
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {

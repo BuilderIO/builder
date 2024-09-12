@@ -1706,6 +1706,17 @@ export class Builder {
       this.setTestsFromUrl();
       // TODO: do this on every request send?
       this.getOverridesFromQueryString();
+
+      // cookies used in personalization container script, so need to set before hydration to match script result
+      const userAttrCookie = this.getCookie(Builder.attributesCookieName);
+      if (userAttrCookie) {
+        try {
+          const attributes = JSON.parse(userAttrCookie);
+          this.setUserAttributes(attributes);
+        } catch (err) {
+          console.debug('Error parsing user attributes cookie', err);
+        }
+      }
     }
   }
 
