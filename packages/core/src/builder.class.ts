@@ -11,7 +11,6 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
 import { parse as urlParse } from './url';
@@ -118,7 +117,6 @@ function setCookie(name: string, value: string, expires?: Date) {
       (value || '') +
       expiresString +
       '; path=/' +
-      `; domain=${getTopLevelDomain(location.hostname)}` +
       (secure ? '; secure; SameSite=None' : '');
   } catch (err) {
     console.warn('Could not set cookie', err);
@@ -558,6 +556,8 @@ export interface Input {
   /** @hidden */
   imageHeight?: number;
   /** @hidden */
+  behavior?: string;
+  /** @hidden */
   imageWidth?: number;
   /** @hidden */
   mediaHeight?: number;
@@ -899,6 +899,7 @@ export class Builder {
   static actions: Action[] = [];
   static registry: { [key: string]: any[] } = {};
   static overrideHost: string | undefined;
+  static attributesCookieName = 'builder.userAttributes';
 
   /**
    * @todo `key` property on any info where if a key matches a current
@@ -1705,6 +1706,17 @@ export class Builder {
       this.setTestsFromUrl();
       // TODO: do this on every request send?
       this.getOverridesFromQueryString();
+
+      // cookies used in personalization container script, so need to set before hydration to match script result
+      const userAttrCookie = this.getCookie(Builder.attributesCookieName);
+      if (userAttrCookie) {
+        try {
+          const attributes = JSON.parse(userAttrCookie);
+          this.setUserAttributes(attributes);
+        } catch (err) {
+          console.debug('Error parsing user attributes cookie', err);
+        }
+      }
     }
   }
 
@@ -2147,6 +2159,10 @@ export class Builder {
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
+    if (this.canTrack) {
+      this.setCookie(Builder.attributesCookieName, JSON.stringify(this.getUserAttributes()));
+    }
+
     this.userAttributesChanged.next(options);
   }
 
