@@ -35,7 +35,6 @@ export type BlocksWrapperProps = {
 };
 
 export default function BlocksWrapper(props: BlocksWrapperProps) {
-  console.log('props.className', props.className);
   const blocksWrapperRef = useRef<HTMLDivElement>();
   const state = useStore({
     get className() {
