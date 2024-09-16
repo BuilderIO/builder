@@ -1,7 +1,6 @@
 import {Content, fetchOneEntry} from '@builder.io/sdk-react';
 import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
-import {getProps} from '@sdk/tests';
 import {useNonce} from '@shopify/hydrogen';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
@@ -26,7 +25,7 @@ export const builderLoader: LoaderFunction = async ({params}) => {
 };
 
 export default function BuilderPage() {
-  const builderProps = useLoaderData<ReturnType<typeof getProps>>();
+  const builderProps = useLoaderData<ReturnType<any>>();
 
   const nonce = useNonce();
 
