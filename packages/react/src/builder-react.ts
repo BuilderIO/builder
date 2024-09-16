@@ -51,6 +51,7 @@ export { FormSelect } from './blocks/forms/Select'; // advanced?
 export { TextArea } from './blocks/forms/TextArea';
 export { Img } from './blocks/raw/Img';
 export { RawText } from './blocks/raw/RawText';
+export { PersonalizationContainer } from './blocks/PersonalizationContainer';
 
 export { stringToFunction } from './functions/string-to-function';
 export { useIsPreviewing } from './hooks/useIsPreviewing';
