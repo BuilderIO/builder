@@ -8,6 +8,8 @@
     component: BuilderBlockWithClassName,
     shouldReceiveBuilderProps: {
       builderBlock: true,
+      builderContext: true,
+      builderComponents: true,
     },
     inputs: [
       {
