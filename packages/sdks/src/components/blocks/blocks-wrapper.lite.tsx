@@ -31,17 +31,17 @@ export type BlocksWrapperProps = {
 
   children?: any;
 
-  className?: string;
+  classNameProp?: string;
 };
 
 export default function BlocksWrapper(props: BlocksWrapperProps) {
   const blocksWrapperRef = useRef<HTMLDivElement>();
   const state = useStore({
-    get blocksWrapperClassName() {
+    get className() {
       return (
         'builder-blocks' +
         (!props.blocks?.length ? ' no-blocks' : '') +
-        (props.className ? ' ' + props.className : '')
+        (props.classNameProp ? ' ' + props.classNameProp : '')
       );
     },
     onClick() {
@@ -95,11 +95,11 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
   return (
     <props.BlocksWrapper
       ref={blocksWrapperRef}
-      class={state.blocksWrapperClassName}
+      class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
       {...useTarget({
-        reactNative: { dataSet: { class: state.blocksWrapperClassName } },
+        reactNative: { dataSet: { class: state.className } },
         default: {},
       })}
       style={props.styleProp}

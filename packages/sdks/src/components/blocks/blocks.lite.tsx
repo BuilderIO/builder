@@ -39,7 +39,7 @@ export default function Blocks(props: BlocksProps) {
           props.context?.value?.BlocksWrapperProps ||
           builderContext.value.BlocksWrapperProps,
       })}
-      className={props.className}
+      classNameProp={props.className}
     >
       <Show when={props.blocks}>
         <For each={props.blocks}>
