@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-// import { BuilderBlock } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-builder-block-with-class-name',
   template: `
     <div>
+      <h1>Hi</h1>
       <blocks
         [blocks]="content"
         [parent]="builderBlock?.id"
