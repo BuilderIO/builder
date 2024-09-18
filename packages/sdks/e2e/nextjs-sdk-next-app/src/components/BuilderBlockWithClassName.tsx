@@ -1,6 +1,6 @@
 'use client';
-import type { BuilderBlock } from '@builder.io/sdk-react';
-import { Blocks } from '@builder.io/sdk-react';
+import type { BuilderBlock } from '@builder.io/sdk-react-nextjs';
+import { Blocks } from '@builder.io/sdk-react-nextjs';
 
 interface BuilderBlockWithClassNameProps {
   builderBlock: BuilderBlock;
