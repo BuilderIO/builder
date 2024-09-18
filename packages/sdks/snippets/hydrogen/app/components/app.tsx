@@ -1,23 +1,33 @@
-import {Content, fetchOneEntry} from '@builder.io/sdk-react';
+import {
+  Content,
+  fetchOneEntry,
+  getBuilderSearchParams,
+} from '@builder.io/sdk-react';
 import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {useNonce} from '@shopify/hydrogen';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
-export const builderLoader: LoaderFunction = async ({params}) => {
+export const builderLoader: LoaderFunction = async ({params, request}) => {
   try {
-    const urlPath =
-      '/' +
-      (Array.isArray(params?.page)
-        ? params.page.join('/')
-        : params?.page || '');
+    const pathname = `/${params['*'] || ''}`;
+    const url = new URL(request.url);
 
-    return await fetchOneEntry({
+    let model = 'page';
+    if (params['*'] && params['*'].startsWith('announcements')) {
+      model = 'announcement-bar';
+    }
+
+    const content = await fetchOneEntry({
+      model,
       apiKey: BUILDER_API_KEY,
-      model: 'page',
-      userAttributes: {urlPath},
+      userAttributes: {
+        urlPath: pathname,
+      },
+      options: getBuilderSearchParams(url.searchParams),
     });
+    return {content, model};
   } catch (e) {
     console.error(e);
     return {content: null};
@@ -25,13 +35,20 @@ export const builderLoader: LoaderFunction = async ({params}) => {
 };
 
 export default function BuilderPage() {
-  const builderProps = useLoaderData<ReturnType<any>>();
-
+  const {content, model} = useLoaderData<{content: any; model: string}>();
   const nonce = useNonce();
 
-  return builderProps?.content ? (
-    <Content nonce={nonce} {...builderProps} />
-  ) : (
-    <div>Content Not Found.</div>
+  return (
+    <div>
+      {content && (
+        <Content
+          model={model}
+          apiKey={BUILDER_API_KEY}
+          content={content}
+          nonce={nonce}
+        />
+      )}
+      <div>The rest of your page goes here</div>
+    </div>
   );
 }
