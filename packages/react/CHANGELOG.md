@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 5.0.2
+
+### Patch Changes
+
+- 1118b05: Add built-in personalization container to suppoert block level personalization
+- Updated dependencies [1118b05]
+  - @builder.io/sdk@3.0.2
+
 ## 5.0.1
 
 ### Patch Changes
