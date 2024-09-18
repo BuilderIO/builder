@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { excludeGen1, test } from '../helpers/index.js';
 
-test.describe('Blocks className', () => {
+test.describe.only('Blocks className', () => {
   test('should be present on element with class builder-blocks', async ({
     page,
     sdk,
