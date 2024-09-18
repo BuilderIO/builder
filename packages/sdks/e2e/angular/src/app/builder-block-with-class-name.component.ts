@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-// import { BuilderBlock } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-builder-block-with-class-name',
