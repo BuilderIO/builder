@@ -2,18 +2,25 @@
 import React from 'react';
 import { jsx } from '@emotion/core';
 import appState from '@builder.io/app-context';
-import { AdditionalInfo, CompactView, CompactViewProps, Login, Modal } from '@bynder/compact-view';
+import {
+  AdditionalInfo,
+  CompactView,
+  CompactViewProps,
+  Login,
+  Modal,
+  type selectionMode,
+} from '@bynder/compact-view';
 import { Button, IconButton, Paper, Tooltip, Typography } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { IconCloudUpload } from '@tabler/icons-react';
 import { partial } from 'filesize';
 
 import type {
+  BuilderPluginProps,
   BynderAsset,
+  BynderAssetFile,
   BynderCompactViewProps,
   RenderSinglePreviewProps,
-  SharedProps,
-  SingleSelectProps,
 } from './types';
 import {
   ASSET_FIELD_SELECTION,
@@ -30,43 +37,44 @@ import {
 const filesize = partial({ standard: 'jedec' });
 
 // This component is what handles rendering when the user selects the Bynder plugin
-export const SingleSelect: React.FC<SingleSelectProps & SharedProps> = props => {
-  return <BynderCompactView {...props} mode="SingleSelect" assetTypes={AssetTypes} />;
+// It is recommended for additional versions of this Selector to keep the input type (BynderAssetFile),
+// even if SingleSelect and MultiSelect modes do not return the additionalInfo object
+export const AssetSelector: React.FC<BuilderPluginProps<BynderAssetFile>> = props => {
+  const addProps = {
+    ...props,
+    // The Bynder CompactView mode to use. SingleSelectFile provides DAT and other asset transforms.
+    mode: 'SingleSelectFile' as selectionMode,
+    // Hopefully Builder will provide a way to select these via the plugin interface,
+    // such they are set per input instance. Hardcoded for now.
+    assetTypes: AssetTypes,
+  };
+  return <BynderCompactViewWrapper {...addProps} />;
 };
 
 // A generic component that could be expanded to handle both single and multi-select modes
-export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
+export const BynderCompactViewWrapper = (props: BynderCompactViewProps) => {
   const { value, onChange, context, mode, assetTypes } = props;
   const [isOpen, setIsOpen] = React.useState(false);
 
-  // `value` is a MobX proxy object. Convert back to a usable object with fastClone.
+  // `value` is a MobX proxy object. Convert back to a plain object with fastClone for easier use.
   // Keep a local state value because onChange does not trigger a re-render with a new value object.
   const [internalValue, setInternalValue] = React.useState(fastClone(value));
 
-  const onChangeWrapper = (asset: typeof value) => {
-    // onChange has odd TS typing here
-    onChange(asset as any);
+  const onChangeWrapper = (asset: BynderAssetFile) => {
+    onChange(asset);
     setInternalValue(asset);
   };
 
   // additionalInfo is only returned by Bynder when mode === "SingleSelectFile"
   const onSuccess = (assets: unknown[], additionalInfo: AdditionalInfo) => {
-    if (mode === 'MultiSelect') {
-      onChangeWrapper(assets as BynderAsset[]);
-    } else {
-      onChangeWrapper(assets[0] as BynderAsset);
-    }
-    // Manually close the modal. The onClose prop does not appear to fire.
+    onChangeWrapper({ assets: assets as BynderAsset[], additionalInfo });
+    // Manually close the modal. The onClose prop only fires when the user clicks the close button.
     setIsOpen(false);
   };
 
   const selectedAssets = React.useMemo(() => {
-    if (mode === 'SingleSelect') {
-      const id = (internalValue as BynderAsset)?.id;
-      return id ? [id] : [];
-    } else
-      return internalValue?.length ? (internalValue as BynderAsset[]).map(asset => asset.id) : [];
-  }, [internalValue, mode]);
+    return (internalValue?.assets ?? []).map(asset => asset.id);
+  }, [internalValue]);
 
   // Get the saved Bynder URL from the plugin settings
   const pluginSettings = appState.user.organization.value.settings.plugins?.get(pluginId);
@@ -77,9 +85,10 @@ export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
     onSuccess,
     language: language ?? SupportedLanguages[0],
     mode,
-    assetTypes, // this was breaking for some reason
-    selectedAssets,
+    assetTypes,
+    // selectedAssets, // There is a bug with selectedAssets on the React package that selects the first asset instead of the previously selected one.
   };
+
   // Add the assetFieldSelection prop only if the user has enabled it in advanced settings
   if (pluginSettings?.get(SHOW_ASSET_FIELD_SELECTION)) {
     bynderProps.assetFieldSelection = pluginSettings?.get(ASSET_FIELD_SELECTION);
@@ -89,14 +98,15 @@ export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
     <div>
       {/* Opportunity: show the # of selected items if multi-select? Previews as Chips/list? */}
       {/* {mode === "MultiSelect" && ()} */}
+      {/* If you don't need the DAT or Asset Derivatives, just use SingleSelect */}
+      {/* {mode === "SingleSelect" && ()} */}
 
-      {mode === 'SingleSelect' && (
+      {mode === 'SingleSelectFile' && (
         <RenderSinglePreview
-          asset={internalValue as BynderAsset}
+          value={internalValue}
           onClick={() => setIsOpen(true)}
           onClear={() => {
-            // Cannot set undefined to the MobX proxy object, so set to null
-            onChangeWrapper(null);
+            onChangeWrapper({ assets: [], additionalInfo: undefined });
           }}
           context={context}
         />
@@ -112,16 +122,21 @@ export const BynderCompactView: React.FC<BynderCompactViewProps> = props => {
 };
 
 const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
-  asset,
-  additionalInfo, // TODO: Find a way to incorporate this for "SingleSelectFile" inputs?
+  value,
   onClick,
   onClear,
   context,
 }) => {
+  // Builder provided context for matching the editor theme
   const theme = context.theme;
 
-  const fileName = asset && `${asset?.name}.${asset.extensions[0]}`;
+  const asset = value?.assets?.[0];
+  // Account for translated assets / DAT, when using the "SingleSelectFile" mode.
+  // Fallback to the selected asset if additionalInfo isn't provided.
+  const displayAsset = value?.additionalInfo?.selectedFile ?? asset?.files?.webImage;
+  const thumbnailAsset = value?.additionalInfo?.selectedFile ?? asset?.files?.thumbnail;
 
+  const fileName = asset && `${asset?.name}.${asset.extensions[0]}`;
   return (
     <div
       css={{
@@ -146,7 +161,7 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
               height: 'auto',
               cursor: 'pointer',
             }}
-            onClick={() => window.open(asset.files.webImage.url, '_blank')}
+            onClick={() => window.open(displayAsset?.url, '_blank')}
           >
             <Paper
               css={{
@@ -172,9 +187,9 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
                   objectFit: 'cover',
                   objectPosition: 'center',
                 }}
-                src={asset.files.thumbnail.url}
+                src={thumbnailAsset?.url}
                 // TODO: Error handling when the image fails to load?
-                onError={error => { }}
+                onError={error => {}}
               />
             </Paper>
           </div>
@@ -241,11 +256,11 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
                   },
                 }}
               >
-                <a href={asset.files.webImage.url} target="_blank"></a>
+                <a href={displayAsset?.url} target="_blank"></a>
                 {fileName}
               </Typography>
             </div>
-            {asset.files.webImage.fileSize && (
+            {displayAsset?.fileSize && (
               <div>
                 <Typography
                   css={{
@@ -254,7 +269,7 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
                     marginLeft: 8,
                   }}
                 >
-                  {filesize(asset.files.webImage.fileSize)}
+                  {filesize(displayAsset.fileSize)}
                 </Typography>
               </div>
             )}

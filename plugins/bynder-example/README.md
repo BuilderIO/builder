@@ -1,8 +1,10 @@
 # Example Bynder Plugin for Builder.io
 
+Integrates Bynder's Universal Compact View with Builder as a custom input, using the `SingleSelectFile` mode, which provides asset translations and DAT. It only covers the asset selection workflow, however, and does not provide example components that consume that value (see below)
+
 ## Notes
 This is a starting point, not a complete integration. 
-* The current output is the full Bynder file information object. This may or may not meet your needs.
+* The current output is the full Bynder file information object, the response from the CompactView's `onSuccess()` function. This may or may not meet your needs.
 * The plugin's main setup is configured in the `plugin.ts` file. 
 * UI elements that handle loading the Bynder-provided Universal Compact View asset selector, and rendering the result as a preview in the `ui.tsx` file.
 * Simple utils in `utils.ts`, largely CONSTS for consistency between files.
@@ -10,9 +12,9 @@ This is a starting point, not a complete integration.
 
 ### Using the plugin
 
-To use the Bynder Universal Compact View widget in Builder.io you must create a custom component that leverages the `BynderSingleSelect` custom input type provided by this plugin. If you're not already familiar with creating custom components in Builder.io you can read more [here](https://www.builder.io/c/docs/custom-components-setup).
+To use the Bynder Universal Compact View widget in Builder.io you must create a custom component that leverages the `BynderAsset` custom input type provided by this plugin. If you're not already familiar with creating custom components in Builder.io you can read more [here](https://www.builder.io/c/docs/custom-components-setup).
 
-In your webapp register a custom component with an input of type `BynderSingleSelect`.
+In your webapp register a custom component with an input of type `BynderAsset`.
 
 ```jsx
 // Builder.io React Gen1 SDK example
@@ -40,14 +42,15 @@ Builder.registerComponent(
       'https://unpkg.com/css.gg@2.0.0/icons/svg/image.svg',
     inputs: [{ 
       name: 'bynderAsset', 
-      type: 'BynderSingleSelect' 
+      friendlyName: 'Bynder Asset',
+      type: 'BynderAsset' 
     }],
   }
 )
 ```
 
 ### Opportunities for further improvement:
-* Change mode from "SingleSelect" to "SingleSelectFile" to take advantage of Asset Derivatives and DAT.
+* Provide a Bynder-specific Image component.
 * Create & implement a multi-image select handler, if valuable
 * Per-instance file-type inputs like Builder's file input component
   * This will require an improvement on Builder's side to support
@@ -58,7 +61,7 @@ Builder.registerComponent(
 
 ### Idea: Builder Input replacement
 If completely replacing access to the Builder file input component is desired, you would need to do the following:
-* Change the name key from `"BynderSingleSelect"` to `"file"` when calling `Builder.registerEditor()`
+* Change the name key from `"BynderAsset"` to `"file"` when calling `Builder.registerEditor()`
 * Ensure that the only values being saved in the onChange are the final URL of the image, matching the Builder file input type's format. 
 * This could also be done as a toggle, conditionally changing the plugin's name from one to the other.
 * Alternatively, you can use the Builder menu registration to create custom menus that simply don't include the default file picker. 

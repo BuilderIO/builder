@@ -95,7 +95,7 @@
   "dependencies": {
     "@builder.io/app-context": "^1.0.0",
     "@builder.io/react": "^3.2.9",
-    "@bynder/compact-view": "^4.2.4",
+    "@bynder/compact-view": "^4.3.0",
     "@emotion/core": "^10.0.22",
     "@tabler/icons-react": "^3.10.0",
     "filesize": "^10.1.4",

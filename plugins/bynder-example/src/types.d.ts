@@ -1,33 +1,20 @@
-import { assetType, File } from '@bynder/compact-view';
+import { assetType, File, AdditionalInfo, selectionMode } from '@bynder/compact-view';
 
-export type AdditionalInformation = {
-  selectedFile?: File;
-};
+type BynderAssetFile = { assets?: BynderAsset[]; additionalInfo?: AdditionalInfo };
 
-type MaybeBynderAsset = BynderAsset | null | undefined;
-
-export type SingleSelectProps = {
-  value: MaybeBynderAsset;
-  onChange: (value: MaybeBynderAsset) => void;
-  mode: 'SingleSelect';
-};
-
-type MultiSelectProps = {
-  value: BynderAsset[];
-  onChange: (value: BynderAsset[]) => void;
-  mode: 'MultiSelect';
-};
-
-export type SharedProps = {
+export type BuilderPluginProps<T> = {
+  onChange: (value: T) => void;
+  value: T;
   context: any;
+};
+
+export type BynderCompactViewProps = BuilderPluginProps<BynderAssetFile> & {
+  mode: selectionMode;
   assetTypes?: assetType[];
 };
 
-export type BynderCompactViewProps = (SingleSelectProps | MultiSelectProps) & SharedProps;
-
 export interface RenderSinglePreviewProps {
-  asset?: BynderAsset;
-  additionalInfo?: AdditionalInfo;
+  value?: BynderAssetFile;
   onClick: () => void;
   onClear: () => void;
   context: any;
