@@ -19,17 +19,22 @@ export default defineConfig({
         const outPath = getSdkOutputPath();
         copyFileSync(outPath + '/index.d.ts', outPath + '/index.d.mts');
         renameSync(outPath + '/index.d.ts', outPath + '/index.d.cts');
+        copyFileSync(outPath + '/functions/evaluate/node-runtime/init.d.ts', outPath + '/init.d.mts');
+        copyFileSync(outPath + '/functions/evaluate/node-runtime/init.d.ts', outPath + '/init.d.cts');
       },
     }),
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        init: resolve(__dirname, 'src/functions/evaluate/node-runtime/init.ts')
+      },
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
+      fileName: (format, entryName) => `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['vue', 'node:module'],
+      external: ['vue', 'node:module', 'isolated-vm'],
       output: {
         globals: {
           vue: 'Vue',

@@ -82,6 +82,10 @@
         "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
       }
+    },
+    "./node/init": {
+      "import": "./lib/node/init.mjs",
+      "require": "./lib/node/init.cjs"
     }
   },
   "scripts": {
