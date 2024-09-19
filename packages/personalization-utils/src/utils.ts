@@ -54,7 +54,7 @@ export type Query = {
 };
 import cheerio, { CheerioAPI, Cheerio } from 'cheerio';
 
-export function getTrimmedHtml(html: string, userAttributes: UserAttributes): string {
+export function trimHtml(html: string, userAttributes: UserAttributes): string {
   const $ = cheerio.load(html);
 
   $('.builder-personalization-container').each((_, element) => {

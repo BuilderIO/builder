@@ -1,6 +1,6 @@
-import { getTrimmedHtml } from './utils'; // Update this import to match your file structure
+import { trimHtml } from './utils'; // Update this import to match your file structure
 
-describe('getTrimmedHtml', () => {
+describe('trimHtml', () => {
   const baseHtml = `
     <div class="builder-personalization-container" style="display: block;">
       <template data-variant-id="builder-123-0">
@@ -24,7 +24,7 @@ describe('getTrimmedHtml', () => {
 
   it('should return winning variant content when a variant matches', () => {
     const userAttributes = { itemInCart: 'item1' };
-    const result = getTrimmedHtml(baseHtml, userAttributes);
+    const result = trimHtml(baseHtml, userAttributes);
     expect(result).toContain(
       '<div class="builder-personalization-container" style="display: block;">'
     );
@@ -36,7 +36,7 @@ describe('getTrimmedHtml', () => {
 
   it('should return default content when no variant matches', () => {
     const userAttributes = { itemInCart: 'item3' };
-    const result = getTrimmedHtml(baseHtml, userAttributes);
+    const result = trimHtml(baseHtml, userAttributes);
     expect(result).toContain(
       '<div class="builder-personalization-container" style="display: block;">'
     );
@@ -54,7 +54,7 @@ describe('getTrimmedHtml', () => {
       ${baseHtml.replace('builder-123', 'builder-456')}
     `;
     const userAttributes = { itemInCart: 'item2' };
-    const result = getTrimmedHtml(multipleContainersHtml, userAttributes);
+    const result = trimHtml(multipleContainersHtml, userAttributes);
     const occurrences = (result.match(/Variant 2 Content/g) || []).length;
     expect(occurrences).toBe(2);
     expect(result).toContain('<div class="other-content">Some other content</div>');
@@ -67,7 +67,7 @@ describe('getTrimmedHtml', () => {
       'class="builder-personalization-container extra-class" data-test="value"'
     );
     const userAttributes = { itemInCart: 'item1' };
-    const result = getTrimmedHtml(htmlWithExtraAttributes, userAttributes);
+    const result = trimHtml(htmlWithExtraAttributes, userAttributes);
     expect(result).toContain('class="builder-personalization-container extra-class"');
     expect(result).toContain('data-test="value"');
   });
@@ -75,7 +75,7 @@ describe('getTrimmedHtml', () => {
   it('should not modify content when no personalization container is present', () => {
     const htmlWithoutContainer = '<div>Regular content</div>';
     const userAttributes = { itemInCart: 'item1' };
-    const result = getTrimmedHtml(htmlWithoutContainer, userAttributes);
+    const result = trimHtml(htmlWithoutContainer, userAttributes);
     expect(result).toBe(htmlWithoutContainer);
   });
 
@@ -89,14 +89,14 @@ describe('getTrimmedHtml', () => {
       'var variants = [];'
     );
     const userAttributes = { itemInCart: 'item1' };
-    const result = getTrimmedHtml(htmlWithEmptyVariants, userAttributes);
+    const result = trimHtml(htmlWithEmptyVariants, userAttributes);
     expect(result).toContain('<div>Default Content</div>');
   });
 
   it('should handle malformed JSON in variants', () => {
     const htmlWithMalformedJson = baseHtml.replace('"query":[{', '"query":[{malformed');
     const userAttributes = { itemInCart: 'item1' };
-    const result = getTrimmedHtml(htmlWithMalformedJson, userAttributes);
+    const result = trimHtml(htmlWithMalformedJson, userAttributes);
     expect(result).toContain('<div>Default Content</div>');
   });
 
@@ -127,7 +127,7 @@ describe('getTrimmedHtml', () => {
 
   it('should return the current variant when within date range', () => {
     const userAttributes = { date: '2024-06-15T12:00:00Z' };
-    const result = getTrimmedHtml(baseHtmlWithDates, userAttributes);
+    const result = trimHtml(baseHtmlWithDates, userAttributes);
     expect(result).toContain('<div>Current Variant</div>');
     expect(result).not.toContain('Future Variant');
     expect(result).not.toContain('Past Variant');
@@ -136,7 +136,7 @@ describe('getTrimmedHtml', () => {
 
   it('should return default content when current date is before all variant start dates', () => {
     const userAttributes = { date: '2019-06-15T12:00:00Z' };
-    const result = getTrimmedHtml(baseHtmlWithDates, userAttributes);
+    const result = trimHtml(baseHtmlWithDates, userAttributes);
     expect(result).toContain('<div>Default Content</div>');
     expect(result).not.toContain('Current Variant');
     expect(result).not.toContain('Future Variant');
@@ -145,7 +145,7 @@ describe('getTrimmedHtml', () => {
 
   it('should return default content when current date is after all variant end dates', () => {
     const userAttributes = { date: '2028-06-15T12:00:00Z' };
-    const result = getTrimmedHtml(baseHtmlWithDates, userAttributes);
+    const result = trimHtml(baseHtmlWithDates, userAttributes);
     expect(result).toContain('<div>Default Content</div>');
     expect(result).not.toContain('Current Variant');
     expect(result).not.toContain('Future Variant');
@@ -158,7 +158,7 @@ describe('getTrimmedHtml', () => {
       '"startDate":"2023-01-01T00:00:00Z"'
     );
     const userAttributes = { date: '2024-06-15T12:00:00Z' };
-    const result = getTrimmedHtml(htmlWithOnlyStartDate, userAttributes);
+    const result = trimHtml(htmlWithOnlyStartDate, userAttributes);
     expect(result).toContain('<div>Current Variant</div>');
   });
 
@@ -168,7 +168,7 @@ describe('getTrimmedHtml', () => {
       '"endDate":"2025-12-31T23:59:59Z"'
     );
     const userAttributes = { date: '2024-06-15T12:00:00Z' };
-    const result = getTrimmedHtml(htmlWithOnlyEndDate, userAttributes);
+    const result = trimHtml(htmlWithOnlyEndDate, userAttributes);
     expect(result).toContain('<div>Current Variant</div>');
   });
 });
