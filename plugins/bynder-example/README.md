@@ -22,12 +22,12 @@ import { Builder } from '@builder.io/react'
 
 Builder.registerComponent(
   (props) => {
-    if (!props.bynderAsset) {
+    if (!props.bynderAsset?.assets[0]) {
       return 'Choose an Image' // or render a placeholder image?
     }
 
     // choose the asset derivative name that matches your needs
-    const {url, width, height} = props.bynderAsset.files.webImage
+    const {url, width, height} = props.bynderAsset.assets[0].webImage
     return (
       <img
         src={url}
