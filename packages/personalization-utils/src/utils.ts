@@ -52,10 +52,10 @@ export type Query = {
   operator: QueryOperator;
   value: QueryValue;
 };
-import cheerio, { CheerioAPI, Cheerio } from 'cheerio';
+import { CheerioAPI, Cheerio, load } from 'cheerio';
 
 export function trimHtml(html: string, userAttributes: UserAttributes): string {
-  const $ = cheerio.load(html);
+  const $ = load(html);
 
   $('.builder-personalization-container').each((_, element) => {
     const a = $(element);
