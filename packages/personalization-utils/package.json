@@ -36,6 +36,7 @@
     "typescript": "^4.8.2"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "json-stringify-deterministic": "^1.0.6"
   },
   "peerDependenciesMeta": {
