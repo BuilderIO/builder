@@ -106,7 +106,7 @@ export const BynderCompactViewWrapper = (props: BynderCompactViewProps) => {
           value={internalValue}
           onClick={() => setIsOpen(true)}
           onClear={() => {
-            onChangeWrapper({ assets: [], additionalInfo: undefined });
+            onChangeWrapper({ assets: [] });
           }}
           context={context}
         />
@@ -189,7 +189,7 @@ const RenderSinglePreview: React.FC<RenderSinglePreviewProps> = ({
                 }}
                 src={thumbnailAsset?.url}
                 // TODO: Error handling when the image fails to load?
-                onError={error => {}}
+                onError={error => { }}
               />
             </Paper>
           </div>
