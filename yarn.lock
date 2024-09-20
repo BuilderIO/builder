@@ -13604,6 +13604,61 @@ __metadata:
     typescript: ^5.2.2
     vite: ^5.1.0
     vite-tsconfig-paths: ^4.3.1
+"@snippet/gen1-next@workspace:packages/sdks/snippets/gen1-nextjs":
+  version: 0.0.0-use.local
+  resolution: "@snippet/gen1-next@workspace:packages/sdks/snippets/gen1-nextjs"
+  dependencies:
+    "@builder.io/react": "workspace:*"
+    "@types/node": ^20
+    "@types/react": ^18.3.8
+    "@types/react-dom": ^18.3.0
+    eslint: ^8
+    eslint-config-next: 14.0.3
+    next: 14.1.1
+    nx: ^19.6.5
+    nx-cloud: ^19.0.0
+    react: 18.2.0
+    react-dom: 18.2.0
+    typescript: ^5
+  languageName: unknown
+  linkType: soft
+
+"@snippet/gen1-react@workspace:packages/sdks/snippets/gen1-react":
+  version: 0.0.0-use.local
+  resolution: "@snippet/gen1-react@workspace:packages/sdks/snippets/gen1-react"
+  dependencies:
+    "@builder.io/react": "workspace:*"
+    "@types/react": ^18.3.3
+    "@types/react-dom": ^18.2.17
+    "@vitejs/plugin-react": ^4.0.4
+    nx: ^19.6.5
+    nx-cloud: ^19.0.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-router-dom: ^6.24.1
+    typescript: ^5.1.6
+    vite: ^4.4.8
+  languageName: unknown
+  linkType: soft
+
+"@snippet/gen1-remix@workspace:packages/sdks/snippets/gen1-remix":
+  version: 0.0.0-use.local
+  resolution: "@snippet/gen1-remix@workspace:packages/sdks/snippets/gen1-remix"
+  dependencies:
+    "@builder.io/react": "workspace:*"
+    "@remix-run/dev": ^2.9.2
+    "@remix-run/node": ^2.9.2
+    "@remix-run/react": ^2.9.2
+    "@remix-run/serve": ^2.9.2
+    "@types/react": ^18.2.20
+    "@types/react-dom": ^18.2.7
+    eslint: ^8.27.0
+    isbot: ^4.1.0
+    nx: ^19.6.5
+    nx-cloud: ^19.0.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^5.1.6
   languageName: unknown
   linkType: soft
 
@@ -15381,7 +15436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.2.22, @types/react-dom@npm:^18.2.7":
+"@types/react-dom@npm:^18.2.22, @types/react-dom@npm:^18.2.7, @types/react-dom@npm:^18.3.0":
   version: 18.3.0
   resolution: "@types/react-dom@npm:18.3.0"
   dependencies:
@@ -15447,6 +15502,16 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: f96700c8b5ef18aac3522eac5d367e0603d9d65e2516746c098b9675a36c216973ae804ff3fb9cb3c6f305f58ec8062b589f54f0cfed64354073760998ccc488
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.2.20, @types/react@npm:^18.3.8":
+  version: 18.3.8
+  resolution: "@types/react@npm:18.3.8"
+  dependencies:
+    "@types/prop-types": "*"
+    csstype: ^3.0.2
+  checksum: a2cc2034746cde564a49a9d7f1ae57214bc83adb0daafd4724dc400569adc54c5a489c0e7d8656752b8748908a364d6811e4d7a2adc7f18a7f7179728d20147a
   languageName: node
   linkType: hard
 

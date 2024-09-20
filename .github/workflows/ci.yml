@@ -124,6 +124,9 @@ jobs:
             'solid',
             'react-native',
             'hydrogen',
+            'gen1-react',
+            'gen1-next',
+            'gen1-remix',
           ]
 
     steps:
