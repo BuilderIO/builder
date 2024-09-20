@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/personalization-utils",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Utils for personalization at the edge",
   "main": "./dist/index.js",
   "exports": {
@@ -22,7 +22,8 @@
     "prepublish": "npm run build",
     "test": "jest",
     "prettier": "prettier",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release": "npm run build && npm version $npm_config_version_type --no-git-tag-version && npm publish"
   },
   "files": [
     "dist/**/*",
@@ -31,11 +32,12 @@
   "devDependencies": {
     "@builder.io/sdk": "^1.1.29",
     "jest": "^26.6.3",
-    "next": "^12.2.5",
+    "next": "^14.2.12",
     "ts-jest": "^26.4.4",
     "typescript": "^4.8.2"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "json-stringify-deterministic": "^1.0.6"
   },
   "peerDependenciesMeta": {
@@ -45,6 +47,6 @@
   },
   "peerDependencies": {
     "@builder.io/sdk": "^1.1.20",
-    "next": ">=12"
+    "next": ">=14"
   }
 }
