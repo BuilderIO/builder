@@ -1,3 +1,8 @@
+/**
+ * Quickstart snippet
+ * snippets/hydrogen/app/components/app.tsx
+ */
+
 import {
   Content,
   fetchOneEntry,
