@@ -195,13 +195,14 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                         this.props.slides.map((slide, index) => (
                           // TODO: how make react compatible with plain react components
                           // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-                          <BuilderBlocks
-                            key={index}
-                            parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-                            dataPath={`component.options.slides.${index}.content`}
-                            child
-                            blocks={(slide as any).content || slide}
-                          />
+                          <React.Fragment key={index}>
+                            <BuilderBlocks
+                              parentElementId={this.props.builderBlock && this.props.builderBlock.id}
+                              dataPath={`component.options.slides.${index}.content`}
+                              child
+                              blocks={(slide as any).content || slide}
+                            />
+                          </React.Fragment>
                         ))}
                   </Slider>
                 </div>
