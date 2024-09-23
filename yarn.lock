@@ -3870,7 +3870,7 @@ __metadata:
     react-test-renderer: ^18.2.0
     replace-in-file: ^3.0.0-beta.2
     rimraf: ^2.6.1
-    rollup: ^2.38.5
+    rollup: ^3.29.5
     rollup-plugin-alias: ^1.5.1
     rollup-plugin-commonjs: ^10.1.0
     rollup-plugin-json: ^3.0.0
@@ -4137,7 +4137,7 @@ __metadata:
     node-fetch: ^2.3.0
     nx: ^19.6.5
     nx-cloud: ^19.0.0
-    rollup: ^2.38.5
+    rollup: ^3.29.5
     rollup-plugin-alias: ^1.5.1
     rollup-plugin-commonjs: ^10.1.0
     rollup-plugin-json: ^3.0.0
@@ -43399,7 +43399,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.38.5, rollup@npm:^2.79.1":
+"rollup@npm:^2.79.1":
   version: 2.79.1
   resolution: "rollup@npm:2.79.1"
   dependencies:
@@ -43424,6 +43424,20 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 8bb20a39c8d91130825159c3823eccf4dc2295c9a0a5c4ed851a5bf2167dbf24d9a29f23461a54c955e5506395e6cc188eafc8ab0e20399d7489fb33793b184e
+  languageName: node
+  linkType: hard
+
+"rollup@npm:^3.29.5":
+  version: 3.29.5
+  resolution: "rollup@npm:3.29.5"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: 6f8304e58ac8170a715e61e46c4aa674b2ae2587ed2a712dab58f72e5e54803ae40b485fbe6b3e6a694f4c8f7a59ab936ccf9f6b686c7cfd1f1970fa9ecadf1a
   languageName: node
   linkType: hard
 

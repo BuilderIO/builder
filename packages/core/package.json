@@ -47,7 +47,7 @@
     "jest": "27.4.7",
     "nx": "^19.6.5",
     "nx-cloud": "^19.0.0",
-    "rollup": "^2.38.5",
+    "rollup": "^3.29.5",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^3.0.0",

@@ -67,7 +67,7 @@
     "react-test-renderer": "^18.2.0",
     "replace-in-file": "^3.0.0-beta.2",
     "rimraf": "^2.6.1",
-    "rollup": "^2.38.5",
+    "rollup": "^3.29.5",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^3.0.0",
