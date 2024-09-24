@@ -157,6 +157,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
 Builder.registerComponent(PersonalizationContainer, {
   name: 'PersonalizationContainer',
   noWrap: true,
+  friendlyName: 'Dynamic Container',
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F37229ed30d8c41dfb10b8cca1992053a',
   canHaveChildren: true,
@@ -170,20 +171,24 @@ Builder.registerComponent(PersonalizationContainer, {
         {
           name: 'name',
           type: 'text',
+          localized: false,
         },
         {
           name: 'query',
           friendlyName: 'Targeting rules',
           type: 'BuilderQuery',
           defaultValue: [],
+          localized: false,
         },
         {
           name: 'startDate',
           type: 'date',
+          localized: false,
         },
         {
           name: 'endDate',
           type: 'date',
+          localized: false,
         },
         {
           name: 'blocks',
