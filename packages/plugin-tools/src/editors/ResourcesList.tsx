@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React, { useEffect } from 'react';
-import { action } from 'mobx';
+import { action, toJS } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
 import {
   ResourcePreviewCell,
@@ -69,7 +69,7 @@ const ResourcePreviewById = (
 
 export function PickResourceList(props: PickResourceListProps) {
   const store = useLocalStore(() => ({
-    value: props.value || [], // initialize it directly
+    value: props.value || [],
   }));
 
 
@@ -136,10 +136,12 @@ export function PickResourceList(props: PickResourceListProps) {
                 omitIds={store.value}
                 onChange={action(resource => {
                   if (resource) {
-                    if(store.value){
-                      store.value.push(String(resource.id));
+                    if (!Array.isArray(store.value)) {
+                      store.value = [];
                     }
+                    store.value.push(String(resource.id));
                     props.onChange(store.value);
+                    
                   }
                   close();
                 })}
