@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/hydrogen/app/components/app.tsx
+ * snippets/hydrogen/app/components/AnnouncementBarPage.tsx
  */
 
 import {
@@ -14,12 +14,15 @@ import {useNonce} from '@shopify/hydrogen';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
-export const builderLoader: LoaderFunction = async ({params, request}) => {
+export const announcementsLoader: LoaderFunction = async ({
+  params,
+  request,
+}) => {
   try {
-    const pathname = `/${params['*'] || ''}`;
+    const pathname = `/announcements/${params['*'] || ''}`;
     const url = new URL(request.url);
 
-    const model = 'page';
+    const model = 'announcement-bar';
 
     const content = await fetchOneEntry({
       model,
@@ -29,6 +32,7 @@ export const builderLoader: LoaderFunction = async ({params, request}) => {
       },
       options: getBuilderSearchParams(url.searchParams),
     });
+
     return {content, model};
   } catch (e) {
     console.error(e);
@@ -36,7 +40,7 @@ export const builderLoader: LoaderFunction = async ({params, request}) => {
   }
 };
 
-export default function BuilderPage() {
+export default function AnnouncementBarPage() {
   const {content, model} = useLoaderData<{content: any; model: string}>();
   const nonce = useNonce();
 
