@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 5.0.3
+
+### Patch Changes
+
+- 20953a8: Disable localization on dynamic container inputs
+
 ## 5.0.2
 
 ### Patch Changes

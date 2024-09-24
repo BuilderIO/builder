@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.13
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.2.12
 
 ### Patch Changes
