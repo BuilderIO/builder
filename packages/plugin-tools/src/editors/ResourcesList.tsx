@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React, { useEffect } from 'react';
-import { action, toJS } from 'mobx';
+import { action } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
 import {
   ResourcePreviewCell,
