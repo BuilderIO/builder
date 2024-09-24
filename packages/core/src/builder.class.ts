@@ -2548,14 +2548,6 @@ export class Builder {
       assign(queryParams, params);
     }
 
-    const format = queryParams.format;
-    const isApiCallForCodegen = format === 'solid' || format === 'react';
-    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
-
-    if (!isApiCallForCodegenOrQuery) {
-      delete queryParams.userAttributes;
-    }
-
     if (apiEndpoint === 'content') {
       queryParams.enrich = true;
     }
@@ -2571,9 +2563,7 @@ export class Builder {
     }
 
     let url;
-    if (isApiCallForCodegen) {
-      url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
-    } else if (apiEndpoint === 'query') {
+    if (apiEndpoint === 'query') {
       url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
     } else {
       url = `${host}/api/v3/content/${queue[0].model}`;
@@ -2600,7 +2590,7 @@ export class Builder {
             if (!observer) {
               return;
             }
-            const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
+            const data = apiEndpoint === 'query' ? result[keyName] : result.results;
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer
