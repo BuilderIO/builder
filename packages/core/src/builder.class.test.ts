@@ -560,7 +560,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&limit=10&model=%22${MODEL}%22`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&limit=10&model=%22${MODEL}%22&enrich=true`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -626,7 +626,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&limit=10&model=%22${MODEL}%22`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&limit=10&model=%22${MODEL}%22&enrich=true`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -692,7 +692,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&limit=10&model=%22${MODEL}%22`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&limit=10&model=%22${MODEL}%22&enrich=true`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });

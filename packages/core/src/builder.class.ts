@@ -2555,6 +2555,11 @@ export class Builder {
     if (!isApiCallForCodegenOrQuery) {
       delete queryParams.userAttributes;
     }
+
+    if (apiEndpoint === 'content') {
+      queryParams.enrich = true;
+    }
+
     const queryStr = QueryString.stringifyDeep(queryParams);
 
     const requestOptions = { headers: {} };
