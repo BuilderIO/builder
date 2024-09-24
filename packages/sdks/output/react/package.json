@@ -77,7 +77,8 @@
         "types": "./types/index.d.ts",
         "import": "./lib/browser/index.mjs",
         "require": "./lib/browser/index.cjs"
-      }
+      },
+      "types": "./types/index.d.ts"
     },
     "./node/init": {
       "types": "./types/functions/evaluate/node-runtime/init.d.ts",
