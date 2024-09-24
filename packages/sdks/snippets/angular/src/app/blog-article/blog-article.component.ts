@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Content, fetchOneEntry } from '@builder.io/sdk-angular';
+
 @Component({
   selector: 'app-blog-article',
   standalone: true,
@@ -28,23 +29,16 @@ export class BlogArticleComponent {
 
   async ngOnInit() {
     const handle = 'new-product-line';
-
-    try {
-      const article = await fetchOneEntry({
-        model: 'blog-article',
-        apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
-        options: {
-          includeRefs: true,
-        },
-        query: {
-          'data.handle': handle,
-        },
-      });
-
-      console.log(article);
-      this.article = article;
-    } catch (error) {
-      console.error('Error fetching article:', error);
-    }
+    const article = await fetchOneEntry({
+      model: 'blog-article',
+      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      options: {
+        includeRefs: true,
+      },
+      query: {
+        'data.handle': handle,
+      },
+    });
+    this.article = article;
   }
 }
