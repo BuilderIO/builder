@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.10
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.16.9
 
 ### Patch Changes
