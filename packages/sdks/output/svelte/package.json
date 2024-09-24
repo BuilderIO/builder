@@ -29,7 +29,8 @@
       "edge-light": "./lib/edge/index.js",
       "bun": "./lib/edge/index.js",
       "electron": "./lib/node/index.js",
-      "default": "./lib/browser/index.js"
+      "default": "./lib/browser/index.js",
+      "types": "./lib/browser/index.d.ts"
     },
     "./bundle/edge": "./lib/edge/index.js",
     "./bundle/node": "./lib/node/index.js",

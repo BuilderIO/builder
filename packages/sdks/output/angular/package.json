@@ -95,7 +95,8 @@
         "esm": "./lib/browser/esm2022/builder.io-sdk-angular.mjs",
         "types": "./lib/browser/index.d.ts",
         "default": "./lib/browser/fesm2022/builder.io-sdk-angular.mjs"
-      }
+      },
+      "types": "./lib/node/index.d.ts"
     }
   },
   "main": "lib/node/fesm2022/builder.io-sdk-angular.mjs",
