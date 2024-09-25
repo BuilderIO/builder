@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.14
+
+### Patch Changes
+
+- 8bfd467: Fix: update exported selector to `builder-content` to fix usage of Content component in Angular v18
+
 ## 0.2.13
 
 ### Patch Changes
