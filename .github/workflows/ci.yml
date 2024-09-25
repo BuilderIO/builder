@@ -123,6 +123,7 @@ jobs:
             'sveltekit',
             'solid',
             'react-native',
+            'hydrogen',
           ]
 
     steps:
