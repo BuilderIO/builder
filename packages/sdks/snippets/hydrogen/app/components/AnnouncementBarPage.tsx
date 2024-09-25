@@ -13,6 +13,7 @@ import {useLoaderData} from '@remix-run/react';
 import {useNonce} from '@shopify/hydrogen';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const model = 'announcement-bar';
 
 export const announcementsLoader: LoaderFunction = async ({
   params,
@@ -21,8 +22,6 @@ export const announcementsLoader: LoaderFunction = async ({
   try {
     const pathname = `/announcements/${params['*'] || ''}`;
     const url = new URL(request.url);
-
-    const model = 'announcement-bar';
 
     const content = await fetchOneEntry({
       model,

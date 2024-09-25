@@ -13,13 +13,12 @@ import {useLoaderData} from '@remix-run/react';
 import {useNonce} from '@shopify/hydrogen';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const model = 'page';
 
 export const builderLoader: LoaderFunction = async ({params, request}) => {
   try {
     const pathname = `/${params['*'] || ''}`;
     const url = new URL(request.url);
-
-    const model = 'page';
 
     const content = await fetchOneEntry({
       model,
