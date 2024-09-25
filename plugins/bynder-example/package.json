@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/bynder-plugin",
+  "name": "@builder.io/plugin-bynder",
   "version": "1.0.0",
   "description": "Integrate Bynder's Compact View into Builder.io",
   "author": "madison@builder.io",
