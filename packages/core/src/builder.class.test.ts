@@ -442,62 +442,62 @@ describe('flushGetContentQueue', () => {
     }
   });
 
-  // test("hits codegen url when format is 'solid'", async () => {
-  //   const expectedFormat = 'solid';
+  test("hits codegen url when format is 'solid'", async () => {
+    const expectedFormat = 'solid';
 
-  //   const result = await builder['flushGetContentQueue'](true, [
-  //     {
-  //       model: MODEL,
-  //       format: expectedFormat,
-  //       key: MODEL,
-  //       userAttributes: { respectScheduling: true },
-  //       omit: OMIT,
-  //       fields: 'data',
-  //     },
-  //   ]);
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        model: MODEL,
+        format: expectedFormat,
+        key: MODEL,
+        userAttributes: { respectScheduling: true },
+        omit: OMIT,
+        fields: 'data',
+      },
+    ]);
 
-  //   const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
+    const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
 
-  //   expect(observerNextMock).toBeCalledTimes(1);
-  //   expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
-  //     ...codegenOrQueryApiResult[MODEL][0],
-  //     variationId: expect.any(String),
-  //   });
+    expect(observerNextMock).toBeCalledTimes(1);
+    expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
+      ...codegenOrQueryApiResult[MODEL][0],
+      variationId: expect.any(String),
+    });
 
-  //   expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
-  //   expect(builder['makeFetchApiCall']).toBeCalledWith(
-  //     `https://cdn.builder.io/api/v1/codegen/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=solid&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${MODEL}.model=%22${MODEL}%22`,
-  //     { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
-  //   );
-  // });
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v1/codegen/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=solid&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${MODEL}.model=%22${MODEL}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
 
-  // test("hits codegen url when format is 'react'", async () => {
-  //   const expectedFormat = 'react';
+  test("hits codegen url when format is 'react'", async () => {
+    const expectedFormat = 'react';
 
-  //   const result = await builder['flushGetContentQueue'](true, [
-  //     {
-  //       model: MODEL,
-  //       format: expectedFormat,
-  //       key: MODEL,
-  //       userAttributes: { respectScheduling: true },
-  //       omit: OMIT,
-  //       fields: 'data',
-  //     },
-  //   ]);
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        model: MODEL,
+        format: expectedFormat,
+        key: MODEL,
+        userAttributes: { respectScheduling: true },
+        omit: OMIT,
+        fields: 'data',
+      },
+    ]);
 
-  //   const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
+    const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
 
-  //   expect(observerNextMock).toBeCalledTimes(1);
-  //   expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
-  //     ...codegenOrQueryApiResult[MODEL][0],
-  //     variationId: expect.any(String),
-  //   });
-  //   expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
-  //   expect(builder['makeFetchApiCall']).toBeCalledWith(
-  //     `https://cdn.builder.io/api/v1/codegen/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=react&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${MODEL}.model=%22${MODEL}%22`,
-  //     { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
-  //   );
-  // });
+    expect(observerNextMock).toBeCalledTimes(1);
+    expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
+      ...codegenOrQueryApiResult[MODEL][0],
+      variationId: expect.any(String),
+    });
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v1/codegen/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=react&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${MODEL}.model=%22${MODEL}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
 
   test("hits query url when apiEndpoint is undefined and format is 'html'", async () => {
     const expectedFormat = 'html';
