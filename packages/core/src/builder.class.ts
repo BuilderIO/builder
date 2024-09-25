@@ -2487,7 +2487,7 @@ export class Builder {
 
     for (const options of queue) {
       const format = options.format;
-      const areOptionsForCodegen = format === 'solid' || format === 'react';
+
       if (format) {
         queryParams.format = format;
       }
@@ -2523,7 +2523,7 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (areOptionsForCodegen || apiEndpoint === 'query') {
+          if (apiEndpoint === 'query') {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
