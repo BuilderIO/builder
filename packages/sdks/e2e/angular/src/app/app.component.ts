@@ -21,7 +21,7 @@ interface BuilderProps {
   selector: 'app-root',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content
+      <builder-content
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
@@ -29,7 +29,7 @@ interface BuilderProps {
         [canTrack]="canTrack"
         [customComponents]="customComponents"
         [data]="data"
-      ></content>
+      ></builder-content>
     </ng-container>
 
     <ng-template #notFound>
