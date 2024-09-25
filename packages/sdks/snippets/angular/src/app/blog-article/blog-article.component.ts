@@ -32,9 +32,6 @@ export class BlogArticleComponent {
     const article = await fetchOneEntry({
       model: 'blog-article',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
-      options: {
-        includeRefs: true,
-      },
       query: {
         'data.handle': handle,
       },
