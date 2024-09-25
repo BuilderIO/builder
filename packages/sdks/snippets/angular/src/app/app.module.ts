@@ -21,7 +21,7 @@ import { CatchAllComponent } from './catch-all/catch-all.component';
     BlogArticleComponent,
     RouterModule.forRoot([
       { path: 'announcements/:id', component: AnnouncementBarComponent },
-      { path: 'blogs/:handle', component: BlogArticleComponent },
+      { path: 'blogs/new-product-line', component: BlogArticleComponent },
       { path: '**', component: CatchAllComponent },
     ]),
   ],
