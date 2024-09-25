@@ -2369,6 +2369,24 @@ export class Builder {
     return getFetch()(url, requestOptions);
   }
 
+  private flattenMongoQuery(obj: any, _current?: any, _res: any = {}): { [key: string]: string } {
+    for (const key in obj) {
+      const value = obj[key];
+      const newKey = _current ? _current + '.' + key : key;
+      if (
+        value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !Object.keys(value).find(item => item.startsWith('$'))
+      ) {
+        this.flattenMongoQuery(value, newKey, _res);
+      } else {
+        _res[newKey] = value;
+      }
+    }
+    return _res;
+  }
+
   private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
     if (!this.apiKey) {
       throw new Error(
@@ -2550,6 +2568,13 @@ export class Builder {
 
     if (apiEndpoint === 'content') {
       queryParams.enrich = true;
+      if (queue[0].query) {
+        const flattened = this.flattenMongoQuery({ query: queue[0].query });
+        for (const key in flattened) {
+          queryParams[key] = flattened[key];
+        }
+        delete queryParams.query;
+      }
     }
 
     const queryStr = QueryString.stringifyDeep(queryParams);
@@ -2570,7 +2595,7 @@ export class Builder {
     }
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
-
+    console.log('url', url);
     const promise = this.makeFetchApiCall(url, requestOptions)
       .then(res => res.json())
       .then(
