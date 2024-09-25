@@ -38,11 +38,13 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
   const blocksWrapperRef = useRef<HTMLDivElement>();
   const state = useStore({
     get className() {
-      return (
-        'builder-blocks' +
-        (!props.blocks?.length ? ' no-blocks' : '') +
-        (props.classNameProp ? ' ' + props.classNameProp : '')
-      );
+      return [
+        'builder-blocks',
+        !props.blocks?.length ? 'no-blocks' : '',
+        props.classNameProp,
+      ]
+        .filter(Boolean)
+        .join(' ');
     },
     onClick() {
       if (isEditing() && !props.blocks?.length) {

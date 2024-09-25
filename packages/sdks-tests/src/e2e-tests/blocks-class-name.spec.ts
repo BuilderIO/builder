@@ -10,7 +10,7 @@ test.describe('Blocks className', () => {
     test.skip(excludeGen1(sdk));
     test.skip(packageName === 'react-native');
 
-    await page.goto('/blocks-class-name', { waitUntil: 'networkidle' });
+    await page.goto('/blocks-class-name');
     const countOfBuilderBlocksWithClassName = await page
       .locator('.builder-blocks.test-class-name')
       .count();
