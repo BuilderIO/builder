@@ -87,7 +87,7 @@ npm run start
 
 ### Add the development plugin to Builder.io
 
-From your [Space Settings](https://builder.io/account/space) (click the gear Settings icon in the left menu) click the edit button next to **Plugins**, click the "Add Plugin" and enter the development URL for this plugin in the text field (`http://localhost:1268/plugin.system.js?pluginId=@builder.io/bynder-plugin`) then hit save. The query parameter is necessary for Builder to know what the id of this plugin is, to identify the plugin's settings/configuration. 
+From your [Space Settings](https://builder.io/account/space) (click the gear Settings icon in the left menu) click the edit button next to **Plugins**, click the "Add Plugin" and enter the development URL for this plugin in the text field (`http://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-bynder`) then hit save. The query parameter is necessary for Builder to know what the id of this plugin is, to identify the plugin's settings/configuration. 
 
 Now as you develop you can reload the Builder interface to see the latest version of your plugin. (Plugins are loaded once per session, a refresh is required to see any code changes)
 
