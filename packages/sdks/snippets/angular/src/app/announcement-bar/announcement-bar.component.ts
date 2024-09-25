@@ -11,7 +11,11 @@ import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
   selector: 'app-announcement-bar',
   template: `
     <ng-container *ngIf="content">
-      <content [model]="model" [content]="content" [apiKey]="apiKey"></content>
+      <builder-content
+        [model]="model"
+        [content]="content"
+        [apiKey]="apiKey"
+      ></builder-content>
     </ng-container>
 
     <!-- Your content coming from your app (or also Builder) -->
