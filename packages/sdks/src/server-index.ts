@@ -49,3 +49,4 @@ export {
   fetchEntries,
   fetchOneEntry,
 } from './functions/get-content/index.js';
+export type { GetContentOptions } from './functions/get-content/types.js';
