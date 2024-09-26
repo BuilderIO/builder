@@ -37,10 +37,10 @@ jobs:
         run: yarn workspace @builder.io/sdks eslint
 
       - name: Typecheck
-        run: yarn nx typecheck @builder.io/sdks
+        run: yarn g:nx typecheck @builder.io/sdks
 
       - name: Run tests
-        run: yarn nx test @builder.io/sdks
+        run: yarn g:nx test @builder.io/sdks
 
       - name: Lint changesets
         run: yarn g:changeset version
@@ -89,7 +89,7 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
-        run: yarn nx test @e2e/${{ matrix.e2e-server }}
+        run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
@@ -142,7 +142,7 @@ jobs:
           cache-install-state: true
 
       - name: Run snippets tests
-        run: yarn nx test @snippet/${{ matrix.snippet }}
+        run: yarn g:nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
@@ -173,7 +173,7 @@ jobs:
           cache-install-state: true
 
       - name: Build Core
-        run: yarn nx build @builder.io/sdk
+        run: yarn g:nx build @builder.io/sdk
 
   gen1-react-sdk:
     name: Gen 1 React SDK
@@ -200,7 +200,7 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
-        run: yarn nx test @e2e/${{ matrix.e2e-server }}
+        run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
   build:
     runs-on: ubuntu-latest

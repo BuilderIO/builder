@@ -5,14 +5,12 @@
     "dev": "solid-start dev",
     "build": "solid-start build",
     "serve": "solid-start start",
-    "test": "SERVER_NAME=solid-start yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=solid-start yarn g:nx test:e2e @sdk/tests"
   },
   "type": "module",
   "devDependencies": {
     "@types/node": "^18.17.5",
     "esbuild": "^0.14.54",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "postcss": "^8.4.28",
     "solid-start-node": "^0.3.10",
     "typescript": "^4.9.5",

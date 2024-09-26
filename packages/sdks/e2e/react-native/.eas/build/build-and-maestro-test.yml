@@ -10,7 +10,7 @@ build:
     - run:
         id: build-sdk
         name: Build SDK
-        command: yarn nx build @builder.io/sdk-react-native
+        command: yarn g:nx build @builder.io/sdk-react-native
 
     - eas/resolve_build_config
     - eas/prebuild

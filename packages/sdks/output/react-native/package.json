@@ -101,7 +101,7 @@
     "build-inline-fns": "yarn g:build-inline-fns",
     "build:one": "bob build",
     "/**/": "the command below cannot be run in parallel because build:browser MUST run first.",
-    "build": "nx run-many -p @builder.io/sdk-react-native -t build:browser build:node build:edge --parallel=false",
+    "build": "yarn g:nx run-many -p @builder.io/sdk-react-native -t build:browser build:node build:edge --parallel=false",
     "build:node": "SDK_ENV=node yarn build:one",
     "build:edge": "SDK_ENV=edge yarn build:one",
     "build:browser": "SDK_ENV=browser yarn build:one"
@@ -131,8 +131,6 @@
     "@types/node": "^20.11.16",
     "@types/react-native-video": "^5.0.9",
     "babel-plugin-module-resolver": "^5.0.0",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "react-native-builder-bob": "^0.21.3",
     "react-native-url-polyfill": "^2.0.0",
     "rimraf": "^3.0.2",

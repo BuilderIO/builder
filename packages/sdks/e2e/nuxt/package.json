@@ -7,7 +7,7 @@
     "generate": "nuxt generate",
     "serve": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test": "SERVER_NAME=nuxt yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=nuxt yarn g:nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
@@ -17,9 +17,7 @@
   },
   "devDependencies": {
     "@types/node": "^18",
-    "nuxt": "^3.8.1",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0"
+    "nuxt": "^3.8.1"
   },
   "nx": {
     "targets": {
