@@ -18,13 +18,6 @@ export class BlogArticleComponent {
   model = 'blog-article';
 
   constructor() {
-    this.article = {
-      data: {
-        title: 'Sample Blog Title',
-        blurb: 'This is a sample blurb for the blog article.',
-        image: 'path/to/sample-image.jpg',
-      },
-    };
   }
 
   async ngOnInit() {
