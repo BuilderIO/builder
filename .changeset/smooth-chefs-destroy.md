@@ -2,4 +2,4 @@
 "@builder.io/react": patch
 ---
 
-Fix: embed or custom code video reloading when page orientation changes
+Fix: prevent Embed and Custom Code blocks from re-rendering when page orientation changes
