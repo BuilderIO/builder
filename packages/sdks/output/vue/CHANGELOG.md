@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
 ## 2.0.13
 
 ### Patch Changes

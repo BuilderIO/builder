@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
 ## 2.0.14
 
 ### Patch Changes
