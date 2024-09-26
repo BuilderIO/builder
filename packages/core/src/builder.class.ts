@@ -275,7 +275,10 @@ type AllowEnrich =
   | { apiVersion?: never; enrich?: boolean };
 
 export type GetContentOptions = AllowEnrich & {
-  /* A temporary field that will allow us to gracefully transition from hitting query API to hitting content API */
+  /**
+   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
+   * Defaults to `'query'`.
+   */
   apiEndpoint?: 'content' | 'query';
 
   /** Your public API key (required) */
@@ -2395,8 +2398,8 @@ export class Builder {
     }
 
     if (this.apiVersion) {
-      if (this.apiVersion !== 'v3') {
-        throw new Error(`Invalid apiVersion: expected 'v3', received '${this.apiVersion}'`);
+      if (!['v1', 'v3'].includes(this.apiVersion)) {
+        throw new Error(`Invalid apiVersion: expected 'v1' or 'v3', received '${this.apiVersion}'`);
       }
     } else {
       this.apiVersion = DEFAULT_API_VERSION;
