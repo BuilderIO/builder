@@ -3764,8 +3764,6 @@ __metadata:
   resolution: "@builder.io/packages@workspace:packages"
   dependencies:
     "@changesets/cli": ^2.27.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -3859,8 +3857,6 @@ __metadata:
     jest: ^28.1.3
     jest-environment-jsdom: ^28.1.3
     node-fetch: ^2.6.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     preact: ^10.1.0
     prettier: ^3.2.5
     prompt: ^1.0.0
@@ -3912,6 +3908,11 @@ __metadata:
     octokit: ^2.0.14
     prettier: ^3.2.5
     zx: 7.2.1
+  dependenciesMeta:
+    nx:
+      built: false
+    nx-cloud:
+      built: false
   languageName: unknown
   linkType: soft
 
@@ -3943,8 +3944,6 @@ __metadata:
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
     ng-packagr: ^16.2.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     recast: ^0.23.4
     rimraf: ^3.0.2
     rxjs: ~7.8.0
@@ -3965,8 +3964,6 @@ __metadata:
     "@builder.io/sdks": "workspace:*"
     "@types/node": latest
     isolated-vm: ^5.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     typescript: 5.5.2
     vite: ^4.3.2
   peerDependencies:
@@ -3991,8 +3988,6 @@ __metadata:
     babel-plugin-module-resolver: ^5.0.0
     css-to-react-native: ^3.2.0
     isolated-vm: ^5.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react-native-builder-bob: ^0.21.3
     react-native-storage: ^1.0.1
     react-native-url-polyfill: ^2.0.0
@@ -4018,8 +4013,6 @@ __metadata:
     isolated-vm: ^5.0.0
     lru-cache: ^10.0.0
     next: ">=13.4.20"
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     typescript: ^5.1.6
     vite: ^4.4.9
@@ -4037,8 +4030,6 @@ __metadata:
     "@builder.io/sdks": "workspace:*"
     "@vitejs/plugin-react": ^4.0.4
     isolated-vm: ^5.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     recast: ^0.23.4
     typescript: ^4.9.4
@@ -4056,8 +4047,6 @@ __metadata:
     esbuild: ^0.18.15
     esbuild-plugin-solid: ^0.5.0
     isolated-vm: ^5.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     solid-js: ^1.7.8
     solid-styled-components: ^0.27.6
     tsup: ^7.1.0
@@ -4077,8 +4066,6 @@ __metadata:
     "@sveltejs/kit": ^1.22.4
     "@sveltejs/package": ^2.2.0
     isolated-vm: ^5.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     svelte: ^4.1.2
     svelte-check: ^3.4.6
     svelte-preprocess: ^5.0.4
@@ -4100,8 +4087,6 @@ __metadata:
     "@vue/tsconfig": ^0.1.3
     isolated-vm: ^5.0.0
     npm-run-all: ^4.1.5
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     typescript: ^5.1.6
     vite: ^5.0.12
     vite-plugin-dts: ^3.5.2
@@ -4135,8 +4120,6 @@ __metadata:
     hash-sum: ^2.0.0
     jest: 27.4.7
     node-fetch: ^2.3.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     rollup: ^2.38.5
     rollup-plugin-alias: ^1.5.1
     rollup-plugin-commonjs: ^10.1.0
@@ -4178,8 +4161,6 @@ __metadata:
     isolated-vm: ^5.0.0
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     prettier: ^3.2.5
     prettier-plugin-organize-imports: ^3.2.4
     publint: ^0.2.6
@@ -4587,8 +4568,6 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -4620,8 +4599,6 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -4642,8 +4619,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4660,8 +4635,6 @@ __metadata:
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4685,8 +4658,6 @@ __metadata:
     "@types/react-dom": ^18.0.8
     eslint: ^8.27.0
     isbot: ^3.6.5
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4721,8 +4692,6 @@ __metadata:
     graphql: ^16.6.0
     graphql-tag: ^2.12.6
     isbot: ^3.8.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     prettier: ^2.8.4
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -4744,8 +4713,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4760,8 +4727,6 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@types/node": ^18
     nuxt: ^3.8.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     vue: ^3.3.8
     vue-router: ^4.2.5
   languageName: unknown
@@ -4777,8 +4742,6 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     typescript: ^5.1.6
     vite: ^4.0.3
     vite-tsconfig-paths: 3.5.0
@@ -4816,8 +4779,6 @@ __metadata:
     jest: ^29.7.0
     jest-expo: ~51.0.1
     morgan: ^1.10.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.74.2
@@ -4844,8 +4805,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4867,8 +4826,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -4884,8 +4841,6 @@ __metadata:
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4914,8 +4869,6 @@ __metadata:
     eslint-plugin-react: ^7.33.2
     eslint-plugin-react-hooks: ^4.6.0
     isbot: ^4.1.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
@@ -4934,8 +4887,6 @@ __metadata:
     "@solidjs/router": ^0.8.3
     "@types/node": ^18.17.5
     esbuild: ^0.14.54
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     postcss: ^8.4.28
     solid-js: ^1.8.5
     solid-start: ^0.3.10
@@ -4951,8 +4902,6 @@ __metadata:
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
     "@sdk/tests": "workspace:*"
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     solid-devtools: ^0.29.3
     solid-js: ^1.5.7
     typescript: ^5.1.6
@@ -4969,8 +4918,6 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^2.0.3
     "@tsconfig/svelte": ^4.0.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     svelte: ^3.57.0
     svelte-check: ^3.4.6
     tslib: ^2.5.0
@@ -4987,8 +4934,6 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^2.0.0
     "@sveltejs/kit": ^1.27.7
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     svelte: ^4.2.8
     svelte-check: ^3.6.2
     tslib: ^2.4.1
@@ -5005,8 +4950,6 @@ __metadata:
     "@sdk/tests": "workspace:*"
     "@vitejs/plugin-vue": ^4.2.3
     cross-fetch: ^4.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     typescript: ^5.1.6
     vite: ^4.4.8
     vite-plugin-ssr: ^0.4.133
@@ -12946,8 +12889,6 @@ __metadata:
     "@typescript-eslint/parser": latest
     eslint: ^8.12.0
     eslint-plugin-unused-imports: ^2.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     traverse: ^0.6.7
     typescript: ^5.1.6
     zod: ^3.20.2
@@ -13528,8 +13469,6 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -13560,8 +13499,6 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.1.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     rxjs: ~7.8.0
     tslib: ^2.3.0
     typescript: ~5.1.3
@@ -13596,8 +13533,6 @@ __metadata:
     graphql: ^16.6.0
     graphql-tag: ^2.12.6
     isbot: ^3.8.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     prettier: ^2.8.4
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -13618,8 +13553,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -13632,8 +13565,6 @@ __metadata:
   dependencies:
     "@builder.io/sdk-vue": "workspace:*"
     nuxt: ^3.11.2
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     vue: ^3.4.27
     vue-router: ^4.3.2
   languageName: unknown
@@ -13648,8 +13579,6 @@ __metadata:
     "@builder.io/sdk-qwik": "workspace:*"
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     typescript: ^5.1.6
     vite: ^4.0.3
     vite-tsconfig-paths: 3.5.0
@@ -13680,8 +13609,6 @@ __metadata:
     expo-web-browser: ~13.0.3
     express: ^4.19.2
     morgan: ^1.10.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: 18.2.0
     react-dom: 18.2.0
     react-native: 0.74.2
@@ -13706,8 +13633,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -13725,8 +13650,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18
     react-dom: ^18
     typescript: ^5
@@ -13746,8 +13669,6 @@ __metadata:
     eslint: ^8.57.0
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.6
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-router-dom: ^6.24.1
@@ -13762,8 +13683,6 @@ __metadata:
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
     "@solidjs/router": ^0.13.6
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     solid-js: ^1.8.15
     typescript: ^5.2.2
     vite: ^5.2.0
@@ -13778,8 +13697,6 @@ __metadata:
     "@builder.io/sdk-svelte": "workspace:*"
     "@sveltejs/vite-plugin-svelte": ^3.0.2
     "@tsconfig/svelte": ^5.0.2
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     svelte: ^4.2.12
     svelte-check: ^3.6.7
     svelte-routing: ^2.13.0
@@ -13797,8 +13714,6 @@ __metadata:
     "@sveltejs/adapter-auto": ^3.0.0
     "@sveltejs/kit": ^2.0.0
     "@sveltejs/vite-plugin-svelte": ^3.0.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     svelte: ^4.2.7
     svelte-check: ^3.6.0
     tslib: ^2.4.1
@@ -13817,8 +13732,6 @@ __metadata:
     "@vitejs/plugin-vue": ^5.0.4
     "@vue/tsconfig": ^0.5.1
     npm-run-all2: ^6.1.2
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     typescript: ~5.4.0
     vite: ^5.2.8
     vue: ^3.4.21

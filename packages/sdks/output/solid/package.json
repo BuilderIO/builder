@@ -80,7 +80,7 @@
   "scripts": {
     "release": "npm publish",
     "build-inline-fns": "yarn g:build-inline-fns",
-    "build": "nx run-many -p @builder.io/sdk-solid -t build:node build:edge build:browser",
+    "build": "yarn g:nx run-many -p @builder.io/sdk-solid -t build:node build:edge build:browser",
     "build:one": "tsup",
     "build:node": "SDK_ENV=node yarn build:one",
     "build:edge": "SDK_ENV=edge yarn build:one",
@@ -97,8 +97,6 @@
     "@builder.io/sdks": "workspace:*",
     "esbuild": "^0.18.15",
     "esbuild-plugin-solid": "^0.5.0",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "solid-js": "^1.7.8",
     "tsup": "^7.1.0",
     "tsup-preset-solid": "^2.0.1",

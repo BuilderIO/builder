@@ -91,7 +91,7 @@
     "build-inline-fns": "yarn g:build-inline-fns",
     "types:cjs": "yarn tsc --p ./tsconfig.cjs.json",
     "types:esm": "yarn tsc --p ./tsconfig.esm.json",
-    "build": "nx run-many -p @builder.io/sdk-react-nextjs -t types:cjs types:esm build:node build:edge build:browser",
+    "build": "yarn g:nx run-many -p @builder.io/sdk-react-nextjs -t types:cjs types:esm build:node build:edge build:browser",
     "build:node": "SDK_ENV=node vite build --mode lib",
     "build:edge": "SDK_ENV=edge vite build --mode lib",
     "build:browser": "SDK_ENV=browser vite build --mode lib"
@@ -105,8 +105,6 @@
     "@builder.io/sdks": "workspace:*",
     "@vitejs/plugin-react": "^4.0.4",
     "next": ">=13.4.20",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "react": "^18.2.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.9"

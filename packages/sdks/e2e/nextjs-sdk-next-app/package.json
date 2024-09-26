@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=nextjs-sdk-next-app yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=nextjs-sdk-next-app yarn g:nx test:e2e @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {
@@ -22,8 +22,6 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "^5"
   },
   "nx": {

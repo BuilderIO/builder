@@ -7,7 +7,7 @@
     "dev": "ng run angular-app:serve-ssr",
     "serve": "node dist/angular-app/server/main.js",
     "build": "ng build && ng run angular-app:server",
-    "test": "SERVER_NAME=angular-ssr yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=angular-ssr yarn g:nx test:e2e @sdk/tests",
     "prerender": "ng run angular-app:prerender"
   },
   "private": true,
@@ -44,8 +44,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "~5.1.3"
   }
 }

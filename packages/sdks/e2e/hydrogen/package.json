@@ -8,7 +8,7 @@
     "dev": "shopify hydrogen dev",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .js,.ts,.jsx,.tsx .",
     "typecheck": "tsc --noEmit",
-    "test": "SERVER_NAME=hydrogen yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=hydrogen yarn g:nx test:e2e @sdk/tests",
     "serve": "shopify hydrogen preview",
     "codegen": "shopify hydrogen codegen"
   },
@@ -42,8 +42,6 @@
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.20.0",
     "eslint-plugin-hydrogen": "0.12.2",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "prettier": "^2.8.4",
     "typescript": "^5.2.2",
     "vite": "^5.1.0",

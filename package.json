@@ -30,7 +30,8 @@
     "ci:lint": "prettier --check '**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "update-npm-dependency": "zx ./scripts/update-npm-dependency.mjs",
-    "g:changeset": "changeset"
+    "g:changeset": "changeset",
+    "g:nx": "nx"
   },
   "engines": {
     "yarn": ">= 3.0.0"
@@ -42,5 +43,13 @@
     "@builder.io/react": "workspace:*",
     "@builder.io/sdk": "workspace:*",
     "react-native-builder-bob@^0.21.3": "patch:react-native-builder-bob@npm%3A0.21.3#./.yarn/patches/react-native-builder-bob-npm-0.21.3-71f7168ad6.patch"
+  },
+  "dependenciesMeta": {
+    "nx": {
+      "built": false
+    },
+    "nx-cloud": {
+      "built": false
+    }
   }
 }

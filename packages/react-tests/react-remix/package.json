@@ -5,7 +5,7 @@
     "build": "remix build",
     "dev": "remix dev",
     "serve": "remix-serve build",
-    "test": "SERVER_NAME=gen1-remix yarn nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=gen1-remix yarn g:nx test:e2e @sdk/tests",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -16,8 +16,6 @@
     "@remix-run/serve": "^1.14.3",
     "@sdk/tests": "workspace:*",
     "isbot": "^3.6.5",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

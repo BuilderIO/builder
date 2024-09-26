@@ -5,12 +5,10 @@
   "scripts": {
     "ci:changeset": "changeset status --since=main",
     "fix-core-version": "yarn workspace @builder.io/react fix-core-version",
-    "build:sdks": "yarn nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\*,@builder.io/react",
+    "build:sdks": "yarn g:nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\*,@builder.io/react",
     "ci:release": "yarn build:sdks && yarn run fix-core-version && yarn g:changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.1",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0"
+    "@changesets/cli": "^2.27.1"
   }
 }

@@ -6,7 +6,7 @@
     "serve": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "SERVER_NAME=angular yarn nx test:snippet @sdk/tests"
+    "test": "SERVER_NAME=angular yarn g:nx test:snippet @sdk/tests"
   },
   "private": true,
   "dependencies": {
@@ -34,8 +34,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "~5.1.3"
   }
 }
