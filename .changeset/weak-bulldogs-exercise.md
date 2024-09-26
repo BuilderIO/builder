@@ -1,6 +1,7 @@
 ---
-'@builder.io/sdk': major
-'@builder.io/react': major
+'@builder.io/sdk': patch
+'@builder.io/react': patch
 ---
 
-Adds support for using Content API in gen1 SDK by passing `apiEndpoint` prop to builder.get/getAll
+Adds `apiEndpoint` prop to `builder.get()` and `builder.getAll()` with options `'content'` and `'query'`. It dictates which API endpoint is used for the content fetching.
+Defaults to `'query'`
