@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
 ## 0.2.14
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.11
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
 ## 0.16.10
 
 ### Patch Changes
