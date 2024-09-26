@@ -25,6 +25,9 @@
     "nx-cloud": "^19.0.0",
     "typescript": "^5"
   },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  },
   "nx": {
     "targets": {
       "build": {
