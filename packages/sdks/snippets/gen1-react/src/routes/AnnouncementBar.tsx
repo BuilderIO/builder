@@ -6,13 +6,12 @@
 import { BuilderComponent, builder } from '@builder.io/react';
 import { useEffect, useState } from 'react';
 
-// Put your API key here
 builder.init('ee9f13b4981e489a9a1209887695ef2b');
 
 const MODEL_NAME = 'announcement-bar';
 
 export default function AnnouncementBar() {
-  const [content, setContent] = useState();
+  const [announcementBar, setAnnouncementBar] = useState();
 
   useEffect(() => {
     builder
@@ -20,16 +19,17 @@ export default function AnnouncementBar() {
         url: window.location.pathname,
       })
       .promise()
-      .then((content) => {
-        setContent(content);
+      .then((announcementBar) => {
+        setAnnouncementBar(announcementBar);
       });
   }, []);
 
   return (
     <>
       {/* Render the Builder announcement bar */}
-      <BuilderComponent model={MODEL_NAME} content={content} />
-
+      {announcementBar && (
+        <BuilderComponent model={MODEL_NAME} content={announcementBar} />
+      )}
       {/* content coming from your app (or also Builder) */}
       <div>The rest of your page goes here</div>
     </>

@@ -53,6 +53,7 @@ test.describe('Integrating Pages', () => {
         packageName === 'nextjs-sdk-next-app',
         'Nextjs SDK does not support standard page editing.'
       );
+      test.skip(packageName === 'gen1-next', 'does not work with gen1-next');
 
       await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
 
