@@ -23,7 +23,9 @@ module.exports = {
 
   // Base config
   extends: ['eslint:recommended'],
-
+  rules: {
+    'import/no-unresolved': ['error', { ignore: ['@builder.io/react'] }],
+  },
   overrides: [
     // React
     {

@@ -23,8 +23,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"],
-      "@builder.io/react": ["node_modules/@builder.io/react"]
+      "~/*": ["./app/*"]
     },
 
     // Vite takes care of building everything, not tsc.
