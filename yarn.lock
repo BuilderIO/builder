@@ -5071,7 +5071,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/cache@npm:^10.0.17, @emotion/cache@npm:^10.0.27":
+"@emotion/cache@npm:^10.0.27":
   version: 10.0.29
   resolution: "@emotion/cache@npm:10.0.29"
   dependencies:
@@ -5080,22 +5080,6 @@ __metadata:
     "@emotion/utils": 0.11.3
     "@emotion/weak-memoize": 0.2.5
   checksum: 78b37fb0c2e513c90143a927abef229e995b6738ef8a92ce17abe2ed409b38859ddda7c14d7f4854d6f4e450b6db50231532f53a7fec4903d7ae775b2ae3fd64
-  languageName: node
-  linkType: hard
-
-"@emotion/core@npm:10.0.17":
-  version: 10.0.17
-  resolution: "@emotion/core@npm:10.0.17"
-  dependencies:
-    "@babel/runtime": ^7.5.5
-    "@emotion/cache": ^10.0.17
-    "@emotion/css": ^10.0.14
-    "@emotion/serialize": ^0.11.10
-    "@emotion/sheet": 0.9.3
-    "@emotion/utils": 0.11.2
-  peerDependencies:
-    react: ">=16.3.0"
-  checksum: 5f98253963576612d32ec98c6ce30b88f59cb3754b08dbc2014a67df2dbe6f5db4d43f1a53141823cf1198cf74c93064c4207c156e1267e86521f446e3a4e2f5
   languageName: node
   linkType: hard
 
@@ -5122,7 +5106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/css@npm:^10.0.14, @emotion/css@npm:^10.0.27":
+"@emotion/css@npm:^10.0.27":
   version: 10.0.27
   resolution: "@emotion/css@npm:10.0.27"
   dependencies:
@@ -5170,7 +5154,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/serialize@npm:^0.11.10, @emotion/serialize@npm:^0.11.15, @emotion/serialize@npm:^0.11.16":
+"@emotion/serialize@npm:^0.11.15, @emotion/serialize@npm:^0.11.16":
   version: 0.11.16
   resolution: "@emotion/serialize@npm:0.11.16"
   dependencies:
@@ -5193,13 +5177,6 @@ __metadata:
     "@emotion/utils": ^1.2.1
     csstype: ^3.0.2
   checksum: 71b99f816a9c1d61a87c62cf4928da3894bb62213f3aff38b1ea9790b3368f084af98a3e5453b5055c2f36a7d70318d2fa9955b7b5676c2065b868062375df39
-  languageName: node
-  linkType: hard
-
-"@emotion/sheet@npm:0.9.3":
-  version: 0.9.3
-  resolution: "@emotion/sheet@npm:0.9.3"
-  checksum: 6cd11f7de002addb75c3be158072c864ca6ae5d4c1d0f70cc5c10f0cd65296710eed795ecc635c2447223191b7733ed7eae1adb9d3488bbb03cf785aab48976a
   languageName: node
   linkType: hard
 
@@ -5257,13 +5234,6 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: 700b6e5bbb37a9231f203bb3af11295eed01d73b2293abece0bc2a2237015e944d7b5114d4887ad9a79776504aa51ed2a8b0ddbc117c54495dd01a6b22f93786
-  languageName: node
-  linkType: hard
-
-"@emotion/utils@npm:0.11.2":
-  version: 0.11.2
-  resolution: "@emotion/utils@npm:0.11.2"
-  checksum: b4123e157d07e3c4fd2925478c560450252beb45d50e5b0d28697436897649467d6c1622b611a23c7efb86914c47875d432000d21650dded7e52d8b594c17798
   languageName: node
   linkType: hard
 
@@ -13641,7 +13611,6 @@ __metadata:
   resolution: "@snippet/gen1-remix@workspace:packages/sdks/snippets/gen1-remix"
   dependencies:
     "@builder.io/react": "workspace:*"
-    "@emotion/core": 10.0.17
     "@remix-run/dev": ^2.9.2
     "@remix-run/node": ^2.9.2
     "@remix-run/react": ^2.9.2
