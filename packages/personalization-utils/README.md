@@ -91,7 +91,7 @@ const abTests = {
   'content-id-2': 'variant-b'
 };
 
-const trimmedHTML = trimHtml(fullHTML, { userAttributes, abTests });
+const { html } = trimHtml(fullHTML, { userAttributes, abTests });
 ```
 
 To get the `userAttributes`, you should parse the `builder.userAttributes` cookie. Here's an example of how you might do this:
@@ -130,7 +130,7 @@ function getAbTests(req) {
 
 // Then in your request handler:
 const abTests = getAbTests(req);
-const trimmedHTML = trimHtml(fullHTML, { userAttributes, abTests });
+const { html } = trimHtml(fullHTML, { userAttributes, abTests });
 ```
 
 The `trimHtml` function processes the HTML in the following order:
