@@ -6,9 +6,13 @@ import type {
 import type { BlocksWrapperProps } from './blocks-wrapper.lite';
 
 export type BlocksProps = Partial<
-  Omit<BlocksWrapperProps, 'BlocksWrapper' | 'BlocksWrapperProps'>
+  Omit<
+    BlocksWrapperProps,
+    'BlocksWrapper' | 'BlocksWrapperProps' | 'classNameProp'
+  >
 > & {
   context?: Signal<BuilderContextInterface>;
   registeredComponents?: RegisteredComponents;
   linkComponent?: any;
+  className?: string;
 };

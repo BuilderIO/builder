@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Content } from '@builder.io/sdk-angular';
+import { Blocks, Content } from '@builder.io/sdk-angular';
 import { AppComponent } from './app.component';
+import { BuilderBlockWithClassNameComponent } from './builder-block-with-class-name.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [Content, BrowserModule],
+  declarations: [AppComponent, BuilderBlockWithClassNameComponent],
+  imports: [Blocks, Content, BrowserModule],
   providers: [],
   bootstrap: [AppComponent],
 })
