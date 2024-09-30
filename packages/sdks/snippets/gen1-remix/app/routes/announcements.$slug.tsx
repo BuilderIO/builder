@@ -1,7 +1,7 @@
 /**
  * https://www.builder.io/c/docs/integrate-section-building
  * https://www.builder.io/c/blueprints/announcement-bar
- * app/routes/announcements/$.tsx
+ * snippets/gen1-remix/app/routes/announcements.$announcement.tsx
  */
 import { BuilderComponent, builder } from '@builder.io/react';
 import type { LoaderFunctionArgs } from '@remix-run/node';
@@ -13,7 +13,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const announcementBar = await builder
     .get('announcement-bar', {
       userAttributes: {
-        urlPath: `/${params['*']}`,
+        urlPath: `/announcements/${params.slug ? params.slug : ''}`,
       },
     })
     .toPromise();

@@ -9,7 +9,8 @@
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "test": "SERVER_NAME=gen1-remix yarn nx test:snippet @sdk/tests"
+    "test": "SERVER_NAME=gen1-remix yarn nx test:snippet @sdk/tests",
+    "serve": "remix-serve ./build/server/index.js"
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
