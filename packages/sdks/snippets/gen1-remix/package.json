@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
+    "@emotion/core": "10.0.17",
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
@@ -39,7 +40,17 @@
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
   },
-  "engines": {
-    "node": ">=20.0.0"
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/build/client",
+          "{projectRoot}/build/server"
+        ]
+      }
+    }
   }
 }

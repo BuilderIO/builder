@@ -9,7 +9,6 @@ import { useLoaderData } from '@remix-run/react';
 builder.init('ee9f13b4981e489a9a1209887695ef2b');
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  console.log('params', params);
   const page = await builder
     .get('page', {
       userAttributes: {
