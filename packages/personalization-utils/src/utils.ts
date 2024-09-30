@@ -66,7 +66,7 @@ type TrimHtmlOptions = OptionalXOR<
   'userAttributes' | 'abTests'
 >;
 
-export function trimHtml(html: string, options: TrimHtmlOptions): string {
+export function trimHtml(html: string, options: TrimHtmlOptions): { html: string } {
   let $ = load(html);
   if (options.abTests) {
     Object.entries(options.abTests).forEach(([contentId, winningVariantId]) => {
@@ -84,7 +84,9 @@ export function trimHtml(html: string, options: TrimHtmlOptions): string {
     });
   }
 
-  return $('body').html() || '';
+  return {
+    html: $('body').html() || '',
+  };
 }
 
 function processAbTest($: CheerioAPI, $content: Cheerio<any>, winningVariantId: string) {

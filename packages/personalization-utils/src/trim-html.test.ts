@@ -24,7 +24,7 @@ describe('trimHtml', () => {
 
   it('should return winning variant content when a variant matches', () => {
     const userAttributes = { itemInCart: 'item1' };
-    const result = trimHtml(baseHtml, { userAttributes });
+    const result = trimHtml(baseHtml, { userAttributes }).html;
     expect(result).toContain(
       '<div class="builder-personalization-container" style="display: block;">'
     );
@@ -36,7 +36,7 @@ describe('trimHtml', () => {
 
   it('should return default content when no variant matches', () => {
     const userAttributes = { itemInCart: 'item3' };
-    const result = trimHtml(baseHtml, { userAttributes });
+    const result = trimHtml(baseHtml, { userAttributes }).html;
     expect(result).toContain(
       '<div class="builder-personalization-container" style="display: block;">'
     );
@@ -54,7 +54,7 @@ describe('trimHtml', () => {
       ${baseHtml.replace('builder-123', 'builder-456')}
     `;
     const userAttributes = { itemInCart: 'item2' };
-    const result = trimHtml(multipleContainersHtml, { userAttributes });
+    const result = trimHtml(multipleContainersHtml, { userAttributes }).html;
     const occurrences = (result.match(/Variant 2 Content/g) || []).length;
     expect(occurrences).toBe(2);
     expect(result).toContain('<div class="other-content">Some other content</div>');
@@ -67,7 +67,7 @@ describe('trimHtml', () => {
       'class="builder-personalization-container extra-class" data-test="value"'
     );
     const userAttributes = { itemInCart: 'item1' };
-    const result = trimHtml(htmlWithExtraAttributes, { userAttributes });
+    const result = trimHtml(htmlWithExtraAttributes, { userAttributes }).html;
     expect(result).toContain('class="builder-personalization-container extra-class"');
     expect(result).toContain('data-test="value"');
   });
@@ -75,7 +75,7 @@ describe('trimHtml', () => {
   it('should not modify content when no personalization container is present', () => {
     const htmlWithoutContainer = '<div>Regular content</div>';
     const userAttributes = { itemInCart: 'item1' };
-    const result = trimHtml(htmlWithoutContainer, { userAttributes });
+    const result = trimHtml(htmlWithoutContainer, { userAttributes }).html;
     expect(result).toBe(htmlWithoutContainer);
   });
 
@@ -89,14 +89,14 @@ describe('trimHtml', () => {
       'var variants = [];'
     );
     const userAttributes = { itemInCart: 'item1' };
-    const result = trimHtml(htmlWithEmptyVariants, { userAttributes });
+    const result = trimHtml(htmlWithEmptyVariants, { userAttributes }).html;
     expect(result).toContain('<div>Default Content</div>');
   });
 
   it('should handle malformed JSON in variants', () => {
     const htmlWithMalformedJson = baseHtml.replace('"query":[{', '"query":[{malformed');
     const userAttributes = { itemInCart: 'item1' };
-    const result = trimHtml(htmlWithMalformedJson, { userAttributes });
+    const result = trimHtml(htmlWithMalformedJson, { userAttributes }).html;
     expect(result).toContain('<div>Default Content</div>');
   });
 
@@ -127,7 +127,7 @@ describe('trimHtml', () => {
 
   it('should return the current variant when within date range', () => {
     const userAttributes = { date: '2024-06-15T12:00:00Z' };
-    const result = trimHtml(baseHtmlWithDates, { userAttributes });
+    const result = trimHtml(baseHtmlWithDates, { userAttributes }).html;
     expect(result).toContain('<div>Current Variant</div>');
     expect(result).not.toContain('Future Variant');
     expect(result).not.toContain('Past Variant');
@@ -136,7 +136,7 @@ describe('trimHtml', () => {
 
   it('should return default content when current date is before all variant start dates', () => {
     const userAttributes = { date: '2019-06-15T12:00:00Z' };
-    const result = trimHtml(baseHtmlWithDates, { userAttributes });
+    const result = trimHtml(baseHtmlWithDates, { userAttributes }).html;
     expect(result).toContain('<div>Default Content</div>');
     expect(result).not.toContain('Current Variant');
     expect(result).not.toContain('Future Variant');
@@ -145,7 +145,7 @@ describe('trimHtml', () => {
 
   it('should return default content when current date is after all variant end dates', () => {
     const userAttributes = { date: '2028-06-15T12:00:00Z' };
-    const result = trimHtml(baseHtmlWithDates, { userAttributes });
+    const result = trimHtml(baseHtmlWithDates, { userAttributes }).html;
     expect(result).toContain('<div>Default Content</div>');
     expect(result).not.toContain('Current Variant');
     expect(result).not.toContain('Future Variant');
@@ -158,7 +158,7 @@ describe('trimHtml', () => {
       '"startDate":"2023-01-01T00:00:00Z"'
     );
     const userAttributes = { date: '2024-06-15T12:00:00Z' };
-    const result = trimHtml(htmlWithOnlyStartDate, { userAttributes });
+    const result = trimHtml(htmlWithOnlyStartDate, { userAttributes }).html;
     expect(result).toContain('<div>Current Variant</div>');
   });
 
@@ -168,7 +168,7 @@ describe('trimHtml', () => {
       '"endDate":"2025-12-31T23:59:59Z"'
     );
     const userAttributes = { date: '2024-06-15T12:00:00Z' };
-    const result = trimHtml(htmlWithOnlyEndDate, { abTests: {} });
+    const result = trimHtml(htmlWithOnlyEndDate, { abTests: {} }).html;
     expect(result).toContain('<div>Current Variant</div>');
   });
 
@@ -198,7 +198,7 @@ describe('trimHtml', () => {
       userAttributes: {},
       abTests: { 'test-content-1': 'variant-1' },
     };
-    const result = trimHtml(baseHtmlWithAbTest, options);
+    const result = trimHtml(baseHtmlWithAbTest, options).html;
     expect(result).toContain('Variant 1 Content');
     expect(result).not.toContain('Variant 2 Content');
     expect(result).not.toContain('Default Content');
@@ -211,7 +211,7 @@ describe('trimHtml', () => {
       userAttributes: {},
       abTests: { 'test-content-1': 'non-existent-variant' },
     };
-    const result = trimHtml(baseHtmlWithAbTest, options);
+    const result = trimHtml(baseHtmlWithAbTest, options).html;
     expect(result).toContain('Default Content');
     expect(result).not.toContain('Variant 1 Content');
     expect(result).not.toContain('Variant 2 Content');
@@ -248,7 +248,7 @@ describe('trimHtml', () => {
         'test-content-2': 'variant-a',
       },
     };
-    const result = trimHtml(htmlWithMultipleTests, options);
+    const result = trimHtml(htmlWithMultipleTests, options).html;
     expect(result).toContain('Variant 2 Content');
     expect(result).toContain('Variant A Content');
     expect(result).not.toContain('Variant 1 Content');
@@ -302,7 +302,7 @@ describe('trimHtml', () => {
       userAttributes: { itemInCart: 'item1' },
       abTests: { 'test-content-1': 'variant-2' },
     };
-    const result = trimHtml(htmlWithAbTestAndPersonalization, options);
+    const result = trimHtml(htmlWithAbTestAndPersonalization, options).html;
     expect(result).toContain('Variant 2 Content');
     expect(result).not.toContain('Variant 1 Content');
     expect(result).not.toContain('Default Content');
@@ -317,7 +317,7 @@ describe('trimHtml', () => {
       userAttributes: {},
       abTests: { 'non-existent-content': 'some-variant' },
     };
-    const result = trimHtml(baseHtmlWithAbTest, options);
+    const result = trimHtml(baseHtmlWithAbTest, options).html;
     expect(result).toContain('Default Content');
     expect(result).toContain('<template');
     expect(result).toContain('<script');
