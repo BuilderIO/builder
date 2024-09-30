@@ -1,7 +1,7 @@
 /**
  * https://www.builder.io/c/docs/integrate-section-building
  * https://www.builder.io/c/blueprints/announcement-bar
- * snippets/gen1-remix/app/routes/announcements.$announcement.tsx
+ * snippets/gen1-remix/app/routes/announcements.$slug.tsx
  */
 import { BuilderComponent, builder } from '@builder.io/react';
 import type { LoaderFunctionArgs } from '@remix-run/node';

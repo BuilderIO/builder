@@ -1,7 +1,4 @@
-import { useIsPreviewing } from '@builder.io/react';
-
 export default function FourOhFour() {
-  const isPreviewing = useIsPreviewing();
-  console.log('isPreviewing', isPreviewing);
+  // your 404 page
   return <div>404</div>;
 }
