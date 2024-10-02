@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useRef } from 'react';
 import { Builder, builder, BuilderElement } from '@builder.io/sdk';
 import { useEffect, useState } from 'react';
 import { BuilderBlocks } from '../components/builder-blocks.component';
@@ -7,6 +7,7 @@ import {
   filterWithCustomTargetingScript,
   Query,
 } from '../functions/filter-with-custom-targeting';
+import { BuilderStoreContext } from '../store/builder-store';
 
 export type PersonalizationContainerProps = {
   children: React.ReactNode;
@@ -27,14 +28,50 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   const isBeingHydrated = Boolean(
     Builder.isBrowser && (window as any).__hydrated?.[props.builderBlock?.id!]
   );
+  const rootRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(isBeingHydrated);
   const [update, setUpdate] = useState(0);
+  const builderStore = useContext(BuilderStoreContext);
 
   useEffect(() => {
     setIsClient(true);
     const subscriber = builder.userAttributesChanged.subscribe(() => {
       setUpdate(update + 1);
     });
+
+    if (!(Builder.isEditing || Builder.isPreviewing)) {
+      const variant = filteredVariants[0];
+      // fire a custom event to update the personalization container
+      rootRef.current?.dispatchEvent(
+        new CustomEvent('builder.variantLoaded', {
+          detail: {
+            variant: variant || 'default',
+            content: builderStore.content,
+          },
+          bubbles: true,
+        })
+      );
+
+      // add an intersection observer to fire a builder.variantDisplayed event when the container is in the viewport
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            rootRef.current?.dispatchEvent(
+              new CustomEvent('builder.variantDisplayed', {
+                detail: {
+                  variant: variant || 'default',
+                  content: builderStore.content,
+                },
+                bubbles: true,
+              })
+            );
+          }
+        });
+      });
+
+      observer.observe(rootRef.current!);
+    }
+
     return () => {
       subscriber.unsubscribe();
     };
@@ -100,6 +137,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   return (
     <React.Fragment>
       <div
+        ref={rootRef}
         {...props.attributes}
         style={{
           opacity: isClient ? 1 : 0,
