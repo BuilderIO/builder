@@ -42,7 +42,6 @@ export default defineConfig({
         'node:module',
         'isolated-vm',
         'next/navigation',
-        'lru-cache',
       ],
       output: {
         globals: {

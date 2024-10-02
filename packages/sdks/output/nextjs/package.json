@@ -110,8 +110,7 @@
     "vite": "^4.4.9"
   },
   "dependencies": {
-    "isolated-vm": "^5.0.0",
-    "lru-cache": "^10.0.0"
+    "isolated-vm": "^5.0.0"
   },
   "nx": {
     "targets": {
