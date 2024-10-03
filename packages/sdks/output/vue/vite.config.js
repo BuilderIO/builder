@@ -9,6 +9,8 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
+const SDK_ENV = getSdkEnv();
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -19,8 +21,11 @@ export default defineConfig({
         const outPath = getSdkOutputPath();
         copyFileSync(outPath + '/index.d.ts', outPath + '/index.d.mts');
         renameSync(outPath + '/index.d.ts', outPath + '/index.d.cts');
-        copyFileSync(outPath + '/functions/evaluate/node-runtime/init.d.ts', outPath + '/init.d.mts');
-        copyFileSync(outPath + '/functions/evaluate/node-runtime/init.d.ts', outPath + '/init.d.cts');
+
+        if (SDK_ENV === 'node') {
+          copyFileSync(outPath + '/functions/evaluate/node-runtime/init.d.ts', outPath + '/init.d.mts');
+          copyFileSync(outPath + '/functions/evaluate/node-runtime/init.d.ts', outPath + '/init.d.cts');
+        }
       },
     }),
   ],
@@ -28,7 +33,9 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
-        init: resolve(__dirname, 'src/functions/evaluate/node-runtime/init.ts')
+        ...(SDK_ENV === 'node' ? {
+          init: resolve(__dirname, 'src/functions/evaluate/node-runtime/init.ts')
+        } : {}),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) => `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
@@ -44,7 +51,7 @@ export default defineConfig({
          * Adding CSS imports to server bundles breaks Nuxt, since `.css` is an invalid extension.
          * Instead, users should manually import the CSS file for SSR builds.
          */
-        banner: getSdkEnv() === 'browser' ? 'import "./style.css";' : undefined,
+        banner: SDK_ENV === 'browser' ? 'import "./style.css";' : undefined,
       },
     },
   },
