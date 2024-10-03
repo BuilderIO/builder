@@ -61,6 +61,7 @@ import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-st
 import type { Sdk } from '../helpers/sdk.js';
 import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-binding.js';
 import { CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT } from './children-slot-placement.js';
+import { JS_CODE_WITH_ASSIGN } from './js-code-with-assign.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -78,6 +79,7 @@ export const PAGES = {
   '/columns': columns,
   '/symbols': symbols,
   '/js-code': JS_CODE_CONTENT,
+  '/js-code-with-assign': JS_CODE_WITH_ASSIGN,
   '/symbols-without-content': CONTENT_WITHOUT_SYMBOLS,
   '/symbol-bindings': symbolBindings,
   '/symbol-with-locale': symbolWithLocale,
