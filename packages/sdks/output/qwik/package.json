@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.16.9",
+  "version": "0.16.11",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/qwik",
   "repository": {
     "type": "git",
@@ -76,7 +76,8 @@
         "types": "./types/src/index.d.ts",
         "import": "./lib/browser/index.qwik.mjs",
         "require": "./lib/browser/index.qwik.cjs"
-      }
+      },
+      "types": "./types/src/index.d.ts"
     },
     "./node/init": {
       "types": "./types/src/functions/evaluate/node-runtime/init.d.ts",
@@ -104,7 +105,7 @@
     "build-inline-fns": "yarn g:build-inline-fns",
     "typecheck": "tsc --noEmit",
     "tsc": "tsc",
-    "build": "nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
+    "build": "yarn g:nx run-many -p @builder.io/sdk-qwik -t tsc build:node build:edge build:browser",
     "build:one": "vite build --mode lib",
     "build:node": "SDK_ENV=node yarn build:one",
     "build:edge": "SDK_ENV=edge yarn build:one",
@@ -114,11 +115,9 @@
     "isolated-vm": "^5.0.0"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.5.1",
+    "@builder.io/qwik": "^1.7.3",
     "@builder.io/sdks": "workspace:*",
     "@types/node": "latest",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "5.5.2",
     "vite": "^4.3.2"
   },

@@ -9,7 +9,7 @@
     "build": "expo export -p web",
     "serve": "node server.js",
     "build:ios": "eas build -e development:simulator -p ios --no-wait --local",
-    "test": "SERVER_NAME=react-native yarn nx test:snippet @sdk/tests"
+    "test": "SERVER_NAME=react-native yarn g:nx test:snippet @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",
@@ -41,8 +41,6 @@
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "react-test-renderer": "18.2.0",
     "serve": "^14.2.3",
     "typescript": "~5.3.3"

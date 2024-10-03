@@ -65,12 +65,48 @@ export default function middleware(request) {
 
 ```
 
-Great now that we have the personalized routes ready all we need to do is set the corresponding cookie for any of the targeting attributes we have in builder:
-```ts
-  const audience = await myCDP.identifyAudience(userID);
-  setCookie(`builder.userAttributes.audience`, audience)
+```typescript
+const audience = await myCDP.identifyAudience(userID);
+// this will include the `audience` in all api calls and save it in a cookie `builder.userAttributes`
+builder.setUserAttributes({ audience })
 ```
+
 Once the cookie is set, all builder content matching from now on will weigh in the current audience segment.
 
+## Using trimHtml for Dynamic Containers
 
+The `trimHtml` function is a utility for handling dynamic personalization containers in your HTML content. It's particularly useful for processing personalized content at the edge or in server-side rendering scenarios.
 
+### Usage
+
+```typescript
+import { trimHtml } from '@builder.io/personalization-utils'
+
+const fullHTML = '... your full HTML string with personalization containers ...';
+const userAttributes = {
+  audience: 'segment-a',
+  date: '2023-06-15T12:00:00Z'
+};
+
+const trimmedHTML = trimHtml(fullHTML, userAttributes);
+```
+
+To get the `userAttributes`, you should parse the `builder.userAttributes` cookie. Here's an example of how you might do this:
+
+```typescript
+import { parse } from 'cookie'
+
+function getUserAttributes(req) {
+  const cookies = parse(req.headers.cookie || '');
+  const builderAttributes = cookies['builder.userAttributes'];
+  return builderAttributes ? JSON.parse(builderAttributes) : {};
+}
+
+// Then in your request handler:
+const userAttributes = getUserAttributes(req);
+const trimmedHTML = trimHtml(fullHTML, userAttributes);
+```
+
+The `trimHtml` function processes the HTML, evaluates personalization containers against the provided user attributes, and returns a new HTML string with the appropriate personalized content.
+
+This approach allows you to deliver personalized content while still leveraging edge caching or static site generation, as the personalization logic is applied after the initial HTML is generated.

@@ -6,9 +6,9 @@
 
 ## Build an SDK
 
-`yarn nx build @builder.io/sdk-svelte` (replace `svelte` with the SDK you want to build)
+`yarn g:nx build @builder.io/sdk-svelte` (replace `svelte` with the SDK you want to build)
 
-For Gen1 React SDK, that would be `yarn nx build @builder.io/react`.
+For Gen1 React SDK, that would be `yarn g:nx build @builder.io/react`.
 
 ## Integration Testing
 
@@ -28,17 +28,17 @@ This new test will run against every SDK & framework combination.
 If you want to run the integration tests locally, you can do so by doing the following:
 
 - Go to the server of your choice in [`packages/sdks/e2e`](https://github.com/BuilderIO/builder/tree/main/packages/sdks/e2e) (or [`packages/react-tests`](https://github.com/BuilderIO/builder/tree/main/packages/react-tests) for gen1 react sdk)
-- Run the Playwright tests: `yarn nx test`
+- Run the Playwright tests: `yarn g:nx test`
 
-Alternatively, you can call `yarn nx test @e2e/svelte` from anywhere in the mono-repo (replace `@e2e/svelte` with the name of the server you want to run).
+Alternatively, you can call `yarn g:nx test @e2e/svelte` from anywhere in the mono-repo (replace `@e2e/svelte` with the name of the server you want to run).
 
 NOTE: if you want to run multiple tests, you can call the underlying test command and provide it a comma-separated list of servers to test:
 
 ```bash
-SERVER_NAME=svelte,react,nuxt yarn nx test:e2e @sdk/tests
+SERVER_NAME=svelte,react,nuxt yarn g:nx test:e2e @sdk/tests
 ```
 
-For convenience, there are `yarn nx e2e:run:*` commands that you can use to build and run the tests for a specific SDK.
+For convenience, there are `yarn g:nx e2e:run:*` commands that you can use to build and run the tests for a specific SDK.
 
 ### Snippet tests
 
@@ -46,14 +46,14 @@ Snippet tests are similar to e2e tests:
 
 - servers are located in [`packages/sdks/snippets`](https://github.com/BuilderIO/builder/tree/main/packages/sdks/snippets)
 - tests are located in [`tests/src/snippet-tests`](https://github.com/BuilderIO/builder/tree/main/tests/src/snippet-tests)
-- can be run with `SERVER_NAME=svelte,react,nuxt yarn nx test:snippet @sdk/tests`
+- can be run with `SERVER_NAME=svelte,react,nuxt yarn g:nx test:snippet @sdk/tests`
 
 Snippet tests make real network requests to the Builder API. This means they are flaky and might fail. We prefer to do this so that the snippets can be shared with customers as-is,
 without having to re-write the data-fetching logic.
 
 ### Debug tests
 
-By adding the `--debug` flag (e.g. `yarn nx e2e @e2e/svelte --debug`), you can run the tests in a browser window with an interactive Playwright. This is useful for debugging.
+By adding the `--debug` flag (e.g. `yarn g:nx e2e @e2e/svelte --debug`), you can run the tests in a browser window with an interactive Playwright. This is useful for debugging.
 
 When using the debug flag, it is recommended to add `.only` to the tests you want to debug, so that the others are temporarily ignored by playwright. See:
 
@@ -64,7 +64,7 @@ When using the debug flag, it is recommended to add `.only` to the tests you wan
 
 If you want to run the integration server locally _without_ running any of the Playwright tests, you can do so by running:
 
-- `yarn nx serve @e2e/sveltekit` (replace `@e2e/sveltekit` with the name of the server you want to run)
+- `yarn g:nx serve @e2e/sveltekit` (replace `@e2e/sveltekit` with the name of the server you want to run)
 
 ### Live/real data testing
 
@@ -72,7 +72,7 @@ You can fetch real data from the Builder API instead of using the JSON mock file
 
 ## sym-linking the SDK to your own project
 
-- `yarn nx build` in your SDK folder (e.g. `packages/sdks/output/svelte`, or `packages/react` for gen1 React SDK)
+- `yarn g:nx build` in your SDK folder (e.g. `packages/sdks/output/svelte`, or `packages/react` for gen1 React SDK)
 - `npm link` in your SDK folder
 - `npm link @builder.io/sdk-svelte` in your project folder (e.g. `examples/sveltekit`)
 

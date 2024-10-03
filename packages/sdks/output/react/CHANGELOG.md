@@ -1,5 +1,17 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 2.0.14
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 2.0.13
 
 ### Patch Changes

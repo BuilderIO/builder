@@ -37,10 +37,10 @@ jobs:
         run: yarn workspace @builder.io/sdks eslint
 
       - name: Typecheck
-        run: yarn nx typecheck @builder.io/sdks
+        run: yarn g:nx typecheck @builder.io/sdks
 
       - name: Run tests
-        run: yarn nx test @builder.io/sdks
+        run: yarn g:nx test @builder.io/sdks
 
       - name: Lint changesets
         run: yarn g:changeset version
@@ -89,7 +89,7 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
-        run: yarn nx test @e2e/${{ matrix.e2e-server }}
+        run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
@@ -123,6 +123,7 @@ jobs:
             'sveltekit',
             'solid',
             'react-native',
+            'hydrogen',
           ]
 
     steps:
@@ -141,7 +142,7 @@ jobs:
           cache-install-state: true
 
       - name: Run snippets tests
-        run: yarn nx test @snippet/${{ matrix.snippet }}
+        run: yarn g:nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
@@ -172,7 +173,7 @@ jobs:
           cache-install-state: true
 
       - name: Build Core
-        run: yarn nx build @builder.io/sdk
+        run: yarn g:nx build @builder.io/sdk
 
   gen1-react-sdk:
     name: Gen 1 React SDK
@@ -199,7 +200,42 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
-        run: yarn nx test @e2e/${{ matrix.e2e-server }}
+        run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
+
+  gen1-sdk-snippets:
+    name: Gen 1 SDK Snippets
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        snippet: ['gen1-react', 'gen1-next', 'gen1-remix']
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/yarn-nm-install
+        with:
+          cache-node-modules: true
+          cache-install-state: true
+
+      - name: Run snippets tests
+        run: yarn nx test @snippet/${{ matrix.snippet }}
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.snippet }}-snippet-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
 
   build:
     runs-on: ubuntu-latest

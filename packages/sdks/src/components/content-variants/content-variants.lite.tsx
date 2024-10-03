@@ -28,7 +28,7 @@ useMetadata({
     setUseStoreFirst: true,
   },
   angular: {
-    selector: 'content, content-variants',
+    selector: 'builder-content, content-variants',
   },
 });
 

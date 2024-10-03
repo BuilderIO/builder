@@ -11,7 +11,11 @@ import { type BuilderContent } from '@builder.io/sdk-angular';
   selector: 'app-catchall',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content [model]="model" [content]="content" [apiKey]="apiKey"></content>
+      <builder-content
+        [model]="model"
+        [content]="content"
+        [apiKey]="apiKey"
+      ></builder-content>
     </ng-container>
 
     <ng-template #notFound>
