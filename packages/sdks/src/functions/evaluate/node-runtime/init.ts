@@ -1,3 +1,4 @@
+import { shouldForceBrowserRuntimeInNode } from '../should-force-browser-runtime-in-node.js';
 /**
  * This file:
  * - imports `isolated-vm`, which can only be made from a file that never runs
@@ -28,6 +29,13 @@ import type { IsolateOptions } from 'isolated-vm';
 export const initializeNodeRuntime = (args?: {
   ivmIsolateOptions?: IsolateOptions;
 }) => {
+  /**
+   * skip initialization if we are on an arm64 machine and running node 20
+   */
+  if (shouldForceBrowserRuntimeInNode({ shouldLogWarning: true })) {
+    return;
+  }
+
   const { ivmIsolateOptions } = args || {};
   setIvm(ivm, ivmIsolateOptions);
 };

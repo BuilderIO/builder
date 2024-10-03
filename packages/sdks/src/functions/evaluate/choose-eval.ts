@@ -25,6 +25,6 @@ import { shouldForceBrowserRuntimeInNode } from './should-force-browser-runtime-
  * end up sending the server runtime code to the browser (most notably in dev mode).
  */
 export const chooseBrowserOrServerEval = (args: ExecutorArgs) =>
-  isBrowser() || shouldForceBrowserRuntimeInNode()
+  isBrowser() || shouldForceBrowserRuntimeInNode({ shouldLogWarning: true })
     ? runInBrowser(args)
     : evaluator(args);
