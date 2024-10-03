@@ -97,14 +97,14 @@
     "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
-    "next": ">=13.4.20",
+    "next": ">=14.2.10",
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
     "@vitejs/plugin-react": "^4.0.4",
-    "next": ">=13.4.20",
+    "next": ">=14.2.10",
     "react": "^18.2.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.9"
