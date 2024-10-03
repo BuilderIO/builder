@@ -33,6 +33,14 @@ test.describe('Custom components', () => {
     await customComponentMsgPromise;
   });
 
+  test('children placement is correct', async ({ page, sdk }) => {
+    test.skip(!['angular'].includes(sdk));
+    await page.goto('/children-slot-placement');
+    const h1 = page.locator('h1').first();
+    await expect(h1).toBeVisible();
+    await expect(h1.locator('text=inside an h1').first()).toBeVisible();
+  });
+
   test('do not show component in `page` model when restricted to `test-model`', async ({
     page,
     packageName,
