@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.16
+
+### Patch Changes
+
+- 4c43240: Fix: children placement in dynamic components
+
 ## 0.2.15
 
 ### Patch Changes
