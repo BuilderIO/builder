@@ -3,6 +3,7 @@ import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
+  type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
 import { HelloComponent } from './hello.component';
@@ -47,11 +48,24 @@ export class AppComponent {
   content: BuilderProps['content'];
   data: BuilderProps['data'];
 
-  customComponents = [
+  customComponents: RegisteredComponent[] = [
     {
       component: HelloComponent,
       name: 'Hello',
       inputs: [],
+      defaultChildren: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-ebca7d55d34f4fc9a6536600959cef5d',
+          component: {
+            name: 'Text',
+            options: {
+              text: 'inside an h1',
+            },
+          },
+        },
+      ],
     },
   ];
 

@@ -185,7 +185,7 @@ export default class DynamicRenderer {
 
   constructor(private vcRef: ViewContainerRef) {}
 
-  ngOnInit() {
+  ngAfterContentInit() {
     if (typeof this.TagName === 'string') {
       switch (this.TagName) {
         ${htmlElements.map((el) => `case '${el}': this.TagName = Dynamic${capitalize(el)}; break;`).join('\n        ')}
