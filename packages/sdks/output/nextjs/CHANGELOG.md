@@ -1,5 +1,13 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.12
+
+### Patch Changes
+
+- c58c2f9: misc: inline `lru-cache` dependency
+- c58c2f9: Fix: previewing content while inline editing.
+  Chore: refactored build process to `preserveModules` in output.
+
 ## 0.16.11
 
 ### Patch Changes
