@@ -18,8 +18,8 @@ The best way to test a change is to create a builder content JSON in the editor,
 
 - go to the builder editor and create a content entry that showcases the feature/bug you want to test.
 - download that content's JSON
-- add it to `src/specs/index.ts` as a new test case (see other specs for examples)
-- add a test case for it in `src/e2e-tests` (see other tests for examples)
+- add it to `packages/sdk-tests/src/specs/index.ts` as a new test case (see other specs for examples)
+- add a test case for it in `packages/sdk-tests/src/e2e-tests` (see other tests for examples)
 
 This new test will run against every SDK & framework combination.
 
