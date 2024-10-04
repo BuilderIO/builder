@@ -10,6 +10,8 @@ import { Content } from '@builder.io/sdk-angular';
 import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.component';
 import { announcementBarResolver } from './announcement-bar/announcement-bar.resolver';
 import { AppComponent } from './app.component';
+import { BlogArticleComponent } from './blog-article/blog-article.component';
+import { blogArticleResolver } from './blog-article/blog-article.resolver';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { catchAllResolver } from './catch-all/catch-all.resolver';
 
@@ -24,6 +26,11 @@ import { catchAllResolver } from './catch-all/catch-all.resolver';
         path: 'announcements/:id',
         component: AnnouncementBarComponent,
         resolve: { content: announcementBarResolver },
+      },
+      {
+        path: 'blog/new-product-line',
+        component: BlogArticleComponent,
+        resolve: { article: blogArticleResolver },
       },
       {
         path: '**',
