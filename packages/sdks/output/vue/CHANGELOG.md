@@ -4,27 +4,11 @@
 
 ### Patch Changes
 
-- 01d8496: Feature: add `@builder.io/sdk-vue/node/init` entry point with `initializeNodeRuntime` export that sets the IVM instance.
+- 01d8496: Feature: add `@builder.io/sdk-vue/node/init` entry point with `initializeNodeRuntime` export that sets the `isolated-vm` instance.
 
-  This import should be called in a server-only environment, such as:
+  This import should be called in a server-only environment. For convenience, we offer:
 
-  - For using it manually in your Nuxt Pages, in `pages/[...app].vue` add:
-
-    ```html
-    <!-- pages/[...app].vue -->
-    <script setup>
-      // ...
-
-      if (process.server || import.meta.server) {
-        const { initializeNodeRuntime } = await import('@builder.io/sdk-vue/node/init');
-        initializeNodeRuntime(); // initializes Isolated VM in the server
-      }
-
-      // fetch builder data after
-    </script>
-    ```
-
-  - Exported a new Nuxt plugin (`@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin`) that simplifies setting up the `isolated-vm` in Node.js environments. Here's how you can use it:
+  - a new Nuxt plugin (`@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin`) that takes care of calling `initializeNodeRuntime`:
 
     ```ts
     // nuxt.config.ts
@@ -34,7 +18,7 @@
     });
     ```
 
-  - Updates to `@builder.io/sdk-vue/nuxt` Nuxt module which helps you achieve this in one place:
+  - (Recommended) Updates to `@builder.io/sdk-vue/nuxt` Nuxt module which helps you achieve this in one place:
 
     - added `includeCompiledCss` flag that adds the compiled Builder.io CSS in Nuxt (defaults to `true`)
     - added `initializeNodeRuntime` flag that executes `nuxt-initialize-node-runtime-plugin` plugin (defaults to `false`)
@@ -54,6 +38,8 @@
       ],
     });
     ```
+
+  - If you are not using Nuxt, or would rather initialize `isolated-vm` yourself, you must import and call `initializeNodeRuntime()` in such a way that the function is imported and executed ONLY in the Node runtime, and never in the browser. Failure to do so will result in a build and/or runtime error.
 
 ## 2.0.16
 
