@@ -28,7 +28,7 @@ import { catchAllResolver } from './catch-all/catch-all.resolver';
         resolve: { content: announcementBarResolver },
       },
       {
-        path: 'blog/new-product-line',
+        path: 'blogs/new-product-line',
         component: BlogArticleComponent,
         resolve: { article: blogArticleResolver },
       },
