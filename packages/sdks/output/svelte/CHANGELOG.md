@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 2.0.16
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
 ## 2.0.15
 
 ### Patch Changes
