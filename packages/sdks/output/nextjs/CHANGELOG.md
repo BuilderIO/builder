@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.13
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
 ## 0.16.12
 
 ### Patch Changes

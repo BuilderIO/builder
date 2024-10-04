@@ -1,5 +1,12 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.13
+
+### Patch Changes
+
+- 348de96: Fix: remove node-runtime logic from browser and edge bundles
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
 ## 0.16.11
 
 ### Patch Changes
