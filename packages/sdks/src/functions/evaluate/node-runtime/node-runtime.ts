@@ -95,7 +95,8 @@ export const setIvm = (ivm: IsolatedVMImport, options: IsolateOptions = {}) => {
 const SHOULD_MENTION_INITIALIZE_SCRIPT =
   SDK_NAME === '@builder.io/sdk-react-nextjs' ||
   SDK_NAME === '@builder.io/sdk-react' ||
-  SDK_NAME === '@builder.io/sdk-qwik';
+  SDK_NAME === '@builder.io/sdk-qwik' ||
+  SDK_NAME === '@builder.io/sdk-vue';
 
 const getIvm = (): IsolatedVMImport => {
   try {
