@@ -3,17 +3,11 @@ import type { ApiVersion } from '../types/api-version.js';
 import type { BuilderContent } from '../types/builder-content.js';
 import type { ComponentInfo } from '../types/components.js';
 import type { Dictionary, Nullable } from '../types/typescript.js';
+import type { ComponentReference } from './component-reference-types.js';
 import type { ExtraContextTypes } from './extra-context-types.js';
 
 export type RegisteredComponent = ComponentInfo & {
-  component: /**
-   * Dynamically load components (currently only available for Svelte SDK)
-   */
-  | {
-        load: () => Promise<any>;
-        fallback?: any;
-      }
-    | any;
+  component: ComponentReference;
 };
 
 export type RegisteredComponents = Dictionary<RegisteredComponent>;
