@@ -1,0 +1,51 @@
+.ql-snow .ql-picker.ql-typography {
+  width: 98px;
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item::before {
+  content: 'Normal';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value*='{"tag":"H1","className":""}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"H1","className":""}']::before {
+  content: 'Heading 1';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"H2","className":""}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"H2","className":""}']::before {
+  content: 'Heading 2';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"H3","className":""}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"H3","className":""}']::before {
+  content: 'Heading 3';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"H4","className":""}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"H4","className":""}']::before {
+  content: 'Heading 4';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"H5","className":""}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"H5","className":""}']::before {
+  content: 'Heading 5';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"H6","className":""}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"H6","className":""}']::before {
+  content: 'Heading 6';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"P","className":"small"}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"P","className":"small"}']::before {
+  content: 'Body copy (small)';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"P","className":"medium"}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"P","className":"medium"}']::before {
+  content: 'Body copy (medium)';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"P","className":"large"}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"P","className":"large"}']::before {
+  content: 'Body copy (large)';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"SPAN","className":"small"}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"SPAN","className":"small"}']::before {
+  content: 'Eyebrow (small)';
+}
+.ql-snow .ql-picker.ql-typography .ql-picker-label[data-value='{"tag":"SPAN","className":"large"}']::before,
+.ql-snow .ql-picker.ql-typography .ql-picker-item[data-value='{"tag":"SPAN","className":"large"}']::before {
+  content: 'Eyebrow (large)';
+}
