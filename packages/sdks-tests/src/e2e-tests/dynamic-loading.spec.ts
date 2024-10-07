@@ -41,6 +41,7 @@ test.describe('Dynamic loading of custom components', () => {
 
           if (responseBody?.includes('Not lazy component loaded')) {
             // its bundled and sent in the initial requests
+            // even if we haven't clicked the button
             notLazyComponentRequested = true;
           }
         }
