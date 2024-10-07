@@ -220,7 +220,7 @@ export default defineConfig({
           ? {
               init: './src/functions/evaluate/node-runtime/init.ts',
             }
-        : {}),
+          : {}),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) =>
