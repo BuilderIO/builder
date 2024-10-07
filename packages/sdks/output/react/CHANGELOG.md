@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.19
+
+### Patch Changes
+
+- 9836542: Fix: remove node-runtime logic from browser and edge bundles
+
 ## 2.0.16
 
 ### Patch Changes
