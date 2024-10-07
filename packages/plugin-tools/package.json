@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-tools",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "keywords": [],
   "main": "dist/index.umd.js",

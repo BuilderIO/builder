@@ -1,5 +1,35 @@
 # @builder.io/sdk-angular
 
+## 0.2.17
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 0.2.16
+
+### Patch Changes
+
+- 4c43240: Fix: children placement in dynamic components
+
+## 0.2.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 0.2.14
+
+### Patch Changes
+
+- 8bfd467: Fix: update exported selector to `builder-content` to fix usage of Content component in Angular v18
+
+## 0.2.13
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.2.12
 
 ### Patch Changes

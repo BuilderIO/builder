@@ -51,6 +51,7 @@ const options = {
           'createContext',
           'useContext',
           'Component',
+          'useRef',
           'createElement',
           'forwardRef',
           'Fragment',

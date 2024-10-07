@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 3.0.2
+
+### Patch Changes
+
+- 1118b05: Add built-in personalization container to suppoert block level personalization
+
 ## 3.0.1
 
 ### Patch Changes

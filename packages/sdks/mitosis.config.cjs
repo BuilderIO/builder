@@ -316,7 +316,11 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('selector: "blocks-wrapper"')) {
+      if (
+        code?.includes('selector: "blocks-wrapper"') ||
+        code?.includes('selector: "component-ref"') ||
+        code?.includes('selector: "interactive-element"')
+      ) {
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;

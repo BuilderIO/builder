@@ -4,8 +4,8 @@
  * Note: This logic is only used by the NextJS SDK.
  */
 
-import type { LRUCache } from 'lru-cache';
 import type { BuilderContent } from '../../types/builder-content.js';
+import type { LRUCache } from './helpers.js';
 
 type BuilderLRUCache = LRUCache<string, BuilderContent>;
 

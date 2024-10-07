@@ -1,5 +1,23 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 2.0.16
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 2.0.14
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 2.0.13
 
 ### Patch Changes
