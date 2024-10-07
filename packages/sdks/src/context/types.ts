@@ -6,7 +6,14 @@ import type { Dictionary, Nullable } from '../types/typescript.js';
 import type { ExtraContextTypes } from './extra-context-types.js';
 
 export type RegisteredComponent = ComponentInfo & {
-  component: any;
+  component: /**
+   * Dynamically load components (currently only available for Svelte SDK)
+   */
+  | {
+        load: () => Promise<any>;
+        fallback?: any;
+      }
+    | any;
 };
 
 export type RegisteredComponents = Dictionary<RegisteredComponent>;
