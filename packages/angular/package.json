@@ -44,7 +44,7 @@
   "peerDependencies": {
     "rxjs": ">= 2",
     "tslib": ">= 1.10.0",
-    "zone.js": "0.14.7"
+    "zone.js": "0.14.x"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "18.0.7",
