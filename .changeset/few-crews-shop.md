@@ -8,7 +8,7 @@ To dynamically load your custom component, you can do the following:
 
 ```html
 <script lang="ts">
-  import Loader from './Loader.svelte'; // Fallback loader component
+  import LoadingSpinner from '../../components/LoadingSpinner.svelte'; // Fallback loader component
   import type { RegisteredComponent } from '@builder.io/sdk-svelte';
 
   const customComponents: RegisteredComponent[] = [
@@ -17,7 +17,7 @@ To dynamically load your custom component, you can do the following:
       component: {
         // dynamically loads the custom component only when it needs to be initialized
         load: () => import('../../components/LazyComponent.svelte'),
-        fallback: Loader,
+        fallback: LoadingSpinner,
       },
     },
   ];
