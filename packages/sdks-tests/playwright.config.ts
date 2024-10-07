@@ -81,14 +81,14 @@ export default defineConfig({
     .map(({ packageName, port, portFlag }) => ({
       command: `PORT=${port} yarn workspace @${testType}/${packageName} ${IS_DEV_MODE ? 'dev' : 'serve'} ${portFlag}`,
       port,
-      reuseExistingServer: true,
+      reuseExistingServer: false,
       ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
     }))
     .concat([
       {
         command: `PORT=${EMBEDDER_PORT} yarn workspace @sdk/tests run-embedder`,
         port: EMBEDDER_PORT,
-        reuseExistingServer: true,
+        reuseExistingServer: false,
       },
     ]),
 });
