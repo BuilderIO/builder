@@ -28,7 +28,6 @@ Alternatively, you can pass the component directly, which will pre-bundle it as 
 
 ```html
 <script lang="ts">
-  import Loader from './Loader.svelte'; // Fallback loader component
   import type { RegisteredComponent } from '@builder.io/sdk-svelte';
   import NotLazyComponent from '../../components/NotLazyComponent.svelte';
 
