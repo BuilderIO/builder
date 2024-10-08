@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 2.0.20
+
+### Patch Changes
+
+- ff58662: Fix: remove `@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin` plugin export
+
 ## 2.0.17
 
 ### Patch Changes
@@ -28,7 +34,7 @@
       ],
     });
     ```
-  
+
   - If you prefer to call this manually without using our Nuxt module, you can import and call `initializeNodeRuntime()` from the package `@builder.io/sdk-vue/node/init`. Make sure that this function is imported and executed only in the Node runtime environment, for example:
 
     ```ts
