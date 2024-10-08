@@ -27,7 +27,10 @@ export type { ComponentInfo } from './types/components.js';
  */
 export { isEditing } from './functions/is-editing.js';
 export { isPreviewing } from './functions/is-previewing.js';
-export { createRegisterComponentMessage } from './functions/register-component.js';
+export {
+  createRegisterComponentMessage,
+  registerComponentFromDevTools,
+} from './functions/register-component.js';
 
 export { register } from './functions/register.js';
 export type { InsertMenuConfig, InsertMenuItem } from './functions/register.js';
