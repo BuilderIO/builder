@@ -3,6 +3,8 @@
  * Allows to dynamically import components.
  */
 
+import { onMount, useTarget } from '@builder.io/mitosis';
+
 type AwaiterProps = {
   load: () => Promise<any>;
   props?: any;
@@ -12,5 +14,18 @@ type AwaiterProps = {
 };
 
 export default function Awaiter(props: AwaiterProps) {
+  onMount(() => {
+    useTarget({
+      angular: () => {
+        /** this is a hack to include the input in angular */
+        const _ = {
+          a: props.load,
+          b: props.props,
+          c: props.attributes,
+          d: props.fallback,
+        };
+      },
+    });
+  });
   return <>{props.children}</>;
 }
