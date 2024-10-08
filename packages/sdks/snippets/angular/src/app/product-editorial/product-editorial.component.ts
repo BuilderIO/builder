@@ -20,7 +20,6 @@ import { ProductInfoComponent } from './product-info/product-info.component';
     FooterComponent,
   ],
   template: `
-    <!-- Header -->
     <app-header />
 
     <!-- Product info -->
@@ -36,7 +35,6 @@ import { ProductInfoComponent } from './product-info/product-info.component';
       </builder-content>
     </div>
 
-    <!-- Footer -->
     <app-footer />
   `,
 })
