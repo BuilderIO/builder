@@ -11,7 +11,7 @@
   - (Recommended) Updates to `@builder.io/sdk-vue/nuxt` Nuxt module which helps you achieve this in one place:
 
     - added `includeCompiledCss` flag that adds the compiled Builder.io CSS in Nuxt (defaults to `true`)
-    - added `initializeNodeRuntime` flag that executes `nuxt-initialize-node-runtime-plugin` plugin (defaults to `false`)
+    - added `initializeNodeRuntime` flag that automatically imports and executes `initializeNodeRuntime()` in the server.
 
     ```ts
     // nuxt.config.ts
