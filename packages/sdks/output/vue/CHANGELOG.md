@@ -8,20 +8,10 @@
 
   This import should be called in a server-only environment. For convenience, we offer:
 
-  - a new Nuxt plugin (`@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin`) that takes care of calling `initializeNodeRuntime`:
-
-    ```ts
-    // nuxt.config.ts
-    export default defineNuxtConfig({
-      // ...
-      plugins: ["@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin"],
-    });
-    ```
-
   - (Recommended) Updates to `@builder.io/sdk-vue/nuxt` Nuxt module which helps you achieve this in one place:
 
     - added `includeCompiledCss` flag that adds the compiled Builder.io CSS in Nuxt (defaults to `true`)
-    - added `initializeNodeRuntime` flag that executes `nuxt-initialize-node-runtime-plugin` plugin (defaults to `false`)
+    - added `initializeNodeRuntime` flag that automatically imports and executes `initializeNodeRuntime()` in the server (defaults to `false`)
 
     ```ts
     // nuxt.config.ts
@@ -36,6 +26,18 @@
           },
         ],
       ],
+    });
+    ```
+  
+  - If you prefer to call this manually without using our Nuxt module, you can import and call `initializeNodeRuntime()` from the package `@builder.io/sdk-vue/node/init`. Make sure that this function is imported and executed only in the Node runtime environment, for example:
+
+    ```ts
+    // server/middleware/builder.global.ts
+    export default defineEventHandler(async (event) => {
+      const { initializeNodeRuntime } = await import(
+        "@builder.io/sdk-vue/node/init"
+      );
+      initializeNodeRuntime();
     });
     ```
 

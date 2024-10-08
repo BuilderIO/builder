@@ -26,7 +26,6 @@
   "exports": {
     "./css": "./lib/browser/style.css",
     "./nuxt": "./nuxt.js",
-    "./nuxt-initialize-node-runtime-plugin": "./nuxt-isolated-vm-plugin.js",
     "./bundle/edge": {
       "import": "./lib/edge/index.mjs",
       "require": "./lib/edge/index.cjs"
