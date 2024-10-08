@@ -1,9 +1,10 @@
-import { useMetadata, useStore, type Signal } from '@builder.io/mitosis';
+import { Show, useMetadata, useStore, type Signal } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { Dictionary } from '../../../types/typescript.js';
+import Awaiter from '../../awaiter.lite.jsx';
 
 export type InteractiveElementProps = {
   Wrapper: any;
@@ -51,8 +52,22 @@ export default function InteractiveElement(props: InteractiveElementProps) {
   });
 
   return (
-    <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
-      {props.children}
-    </props.Wrapper>
+    <Show
+      when={props.Wrapper.load}
+      else={
+        <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
+          {props.children}
+        </props.Wrapper>
+      }
+    >
+      <Awaiter
+        load={props.Wrapper.load}
+        fallback={props.Wrapper.fallback}
+        props={props.wrapperProps}
+        attributes={state.attributes}
+      >
+        {props.children}
+      </Awaiter>
+    </Show>
   );
 }
