@@ -23,17 +23,15 @@ import { ProductInfoComponent } from './product-info/product-info.component';
     <app-header />
 
     <!-- Product info -->
-    <div *ngIf="product">
-      <app-product-info [product]="product" />
+    <app-product-info [product]="product" />
 
-      <!-- Builder content -->
-      <builder-content
-        *ngIf="editorial"
-        [content]="editorial"
-        model="product-editorial"
-      >
-      </builder-content>
-    </div>
+    <!-- Builder content -->
+    <builder-content
+      *ngIf="editorial"
+      [content]="editorial"
+      model="product-editorial"
+    >
+    </builder-content>
 
     <app-footer />
   `,

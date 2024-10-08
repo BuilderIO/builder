@@ -17,17 +17,15 @@ test.describe('Product Editorial Page with Real Data', () => {
   test('should render the product info with real data', async ({ page }) => {
     // Wait for the product image element to appear
     const productImage = page.locator('.product-image img');
-    await productImage.waitFor();
+    await expect(productImage).toBeAttached();
+    await expect(productImage).toHaveAttribute('src', /.+/);
+    await expect(productImage).toBeVisible();
 
-    const imgSrc = await productImage.getAttribute('src');
-    expect(imgSrc).toBeTruthy();
-
-    // Retrieve the image properties after it is loaded
-    await productImage.evaluate((img: HTMLImageElement) => ({
-      complete: img.complete,
-      naturalWidth: img.naturalWidth,
-      naturalHeight: img.naturalHeight,
-    }));
+    // Wait for the image to load completely
+    await page.waitForFunction(imgSelector => {
+      const img = document.querySelector(imgSelector) as HTMLImageElement;
+      return img && img.complete && img.naturalWidth > 0;
+    }, '.product-image img');
 
     // Verify the product title, description, price, and rating are displayed
     const productTitle = page.locator('.product-info h2');
