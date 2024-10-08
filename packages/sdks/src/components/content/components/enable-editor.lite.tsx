@@ -20,7 +20,7 @@ import { fetch } from '../../../functions/get-fetch.js';
 import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
-import { createRegisterComponentMessage } from '../../../functions/register-component.js';
+import { sendRegisterComponentMessage } from '../../../functions/register-component.js';
 import { _track } from '../../../functions/track/index.js';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
@@ -291,8 +291,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
       Object.values<ComponentInfo>(
         props.builderContextSignal.value.componentInfos
       ).forEach((registeredComponent) => {
-        const message = createRegisterComponentMessage(registeredComponent);
-        window.parent?.postMessage(message, '*');
+        sendRegisterComponentMessage(registeredComponent);
       });
       window.addEventListener(
         'builder:component:stateChangeListenerActivated',
