@@ -280,10 +280,6 @@ export type GetContentOptions = AllowEnrich & {
    * Defaults to `'query'`.
    */
   apiEndpoint?: 'content' | 'query';
-
-  /** Your public API key (required) */
-  apiKey?: string;
-
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
