@@ -31,7 +31,7 @@ export default defineNuxtModule({
       }
 
       addPlugin({
-        src: '@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin',
+        src: './nuxt-isolated-vm-plugin.js',
         mode: 'server',
       });
     }
