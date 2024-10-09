@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
 
-test.describe.only('JS Code', () => {
+test.describe('JS Code', () => {
   test('initializes correct value from JS Code block', async ({ page }) => {
     await page.goto('/js-code/');
     const menuLocator = page.locator('text=jsCode text');
