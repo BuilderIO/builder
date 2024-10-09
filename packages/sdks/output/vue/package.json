@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "2.0.17",
+  "version": "2.0.20",
   "main": "./lib/node/index.cjs",
   "module": "./lib/node/index.mjs",
   "type": "module",
@@ -26,7 +26,6 @@
   "exports": {
     "./css": "./lib/browser/style.css",
     "./nuxt": "./nuxt.js",
-    "./nuxt-initialize-node-runtime-plugin": "./nuxt-isolated-vm-plugin.js",
     "./bundle/edge": {
       "import": "./lib/edge/index.mjs",
       "require": "./lib/edge/index.cjs"

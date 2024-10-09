@@ -234,7 +234,11 @@ const filterActionAttrBindings = (json, item) => {
 const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'BuilderImage' || json.name === 'BuilderSymbol') {
+      if (
+        json.name === 'BuilderImage' ||
+        json.name === 'BuilderSymbol' ||
+        json.name === 'Awaiter'
+      ) {
         json.hooks.onMount = json.hooks.onMount.filter(
           (hook) =>
             !hook.code.includes(
