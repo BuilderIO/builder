@@ -40,7 +40,7 @@ export const JS_CODE_CONTENT = {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
         actions: {
-          click: 'state.menu.a.b.expanded=!state.menu.a.b.expanded',
+          click: 'state.menu.a.b.expanded=state.menu.a.b.expanded ? undefined : "jsCode text"',
         },
         id: 'builder-54da80f81b584020bd09a4bee2d12cbd',
         meta: {
