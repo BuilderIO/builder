@@ -161,7 +161,22 @@ export default function EnableEditor(props: BuilderEditorProps) {
           context: props.context || {},
           localState: undefined,
           rootState: props.builderContextSignal.value.rootState,
-          rootSetState: props.builderContextSignal.value.rootSetState,
+          rootSetState: (newState) => {
+            useTarget({
+              react: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              reactNative: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              rsc: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              default: () => {
+                props.builderContextSignal.value.rootSetState?.(newState);
+              },
+            });
+          },
           /**
            * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
            */
@@ -440,14 +455,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     state.runHttpRequests();
     state.emitStateUpdate();
   });
-
-  onUpdate(() => {
-    state.evaluateJsCode();
-  }, [props.builderContextSignal.value.content?.data?.jsCode]);
-
-  onUpdate(() => {
-    state.runHttpRequests();
-  }, [props.builderContextSignal.value.content?.data?.httpRequests]);
 
   onUpdate(() => {
     state.emitStateUpdate();
