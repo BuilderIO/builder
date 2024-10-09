@@ -18,10 +18,13 @@ test.describe('JS Code', () => {
     await expect(menuLocator).toBeVisible();
   });
   test('runs code inside Browser.isBrowser', async ({ page, sdk }) => {
-    // doesn't work for these as they are SSR and there is no hydration step
-    // so the code is not run on the client (Builder.isBrowser) block isn't executed
+    // doesn't work for these as they are SSR frameworks without a hydration step.
+    // therefore the code is not run on the client at all and the (Builder.isBrowser) block isn't executed
     test.fail(excludeTestFor(['qwik', 'rsc'], sdk));
+
+    const msgPromise = page.waitForEvent('console', msg => msg.text().includes('hello world'));
+
     await page.goto('/js-content-is-browser');
-    await expect(page.locator('text=2024')).toBeVisible(); // we are getting state.year from the code
+    await msgPromise;
   });
 });

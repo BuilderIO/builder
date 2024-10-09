@@ -163,6 +163,12 @@ export default function EnableEditor(props: BuilderEditorProps) {
           rootState: props.builderContextSignal.value.rootState,
           rootSetState: (newState) => {
             useTarget({
+              vue: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              solid: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
               react: () => {
                 props.builderContextSignal.value.rootState = newState;
               },
