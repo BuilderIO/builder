@@ -44,6 +44,21 @@ export default function Page() {
     builder.apiVersion = props?.apiVersion;
   }
 
+  useEffect(() => {
+    if (
+      window.location.pathname.includes('get-query') ||
+      window.location.pathname.includes('get-content')
+    ) {
+      builder
+        .get('', {
+          ...props,
+          ...props['options'],
+        })
+        .promise()
+        .then();
+    }
+  }, []);
+
   // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
   useEffect(() => {
     if (!params.slug?.includes('can-track-false') && !params.slug?.includes('symbol-tracking')) {
