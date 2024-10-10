@@ -186,6 +186,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
               },
             });
           },
+          isExpression: false,
           /**
            * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
            */
