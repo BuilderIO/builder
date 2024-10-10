@@ -1,5 +1,8 @@
-import { getBuilderGlobals, parseCode } from '../helpers';
-import { runInNode } from './node-runtime';
+import { runInBrowser } from './browser-runtime/browser';
+import { runInEdge } from './edge-runtime/edge-runtime';
+import type { ExecutorArgs } from './helpers';
+import { getBuilderGlobals, parseCode } from './helpers';
+import { runInNode } from './node-runtime/node-runtime';
 
 const DEFAULTS = {
   builder: getBuilderGlobals(),
@@ -10,9 +13,30 @@ const DEFAULTS = {
   rootState: {},
 };
 
+const getEval = () => {
+  switch (process.env.SDK_ENV) {
+    case 'browser':
+      return runInBrowser;
+    case 'node':
+      return runInNode;
+    case 'edge':
+      return runInEdge;
+    default:
+      throw new Error('Invalid SDK_ENV');
+  }
+};
+const evaluateCode = (args: ExecutorArgs) => {
+  try {
+    return getEval()(args);
+  } catch (e: any) {
+    console.error('Failed code evaluation: ' + e.message, args.code);
+    throw e;
+  }
+};
+
 const TESTS = {
   'does simple math': () => {
-    const output = runInNode({
+    const output = evaluateCode({
       ...DEFAULTS,
       code: parseCode('1 + 1', { isExpression: true }),
     });
@@ -20,7 +44,7 @@ const TESTS = {
     expect(output).toBe(2);
   },
   'returns state value': () => {
-    const output = runInNode({
+    const output = evaluateCode({
       ...DEFAULTS,
       code: parseCode('state.foo', { isExpression: true }),
       rootState: {
@@ -31,7 +55,7 @@ const TESTS = {
     expect(output).toBe('bar');
   },
   'returns nested state value': () => {
-    const output = runInNode({
+    const output = evaluateCode({
       ...DEFAULTS,
       code: parseCode('state.foo.bar.baz', { isExpression: true }),
       rootState: {
@@ -46,7 +70,7 @@ const TESTS = {
     expect(output).toBe('qux');
   },
   'returns nested local state value': () => {
-    const output = runInNode({
+    const output = evaluateCode({
       ...DEFAULTS,
       code: parseCode('state.foo[0].bar.baz', { isExpression: true }),
       localState: {
@@ -98,13 +122,13 @@ const TESTS = {
       b?: number;
     } = {};
 
-    const output = runInNode({
+    const output = evaluateCode({
       ...DEFAULTS,
       code: parseCode(
         `
         state.a = 10;
         state.b = state.a + 4;
-        const x = state.b;
+        var x = state.b;
 
         return x
       `,
@@ -124,13 +148,13 @@ const TESTS = {
       b?: number;
     } = {};
 
-    const output = runInNode({
+    const output = evaluateCode({
       ...DEFAULTS,
       code: parseCode(
         `
         state.a = 10;
         state.b = state.a + 4;
-        const x = state.b;
+        var x = state.b;
 
         return x
       `,
@@ -162,7 +186,7 @@ const TESTS = {
   },
 };
 
-describe('node-runtime', () => {
+describe(`evaluate (${process.env.SDK_ENV})`, () => {
   describe('individual evaluations', () => {
     Object.keys(TESTS).forEach((key) => {
       test(key, () => {
