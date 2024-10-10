@@ -16,11 +16,13 @@ import { CatchAllComponent } from './catch-all/catch-all.component';
 import { catchAllResolver } from './catch-all/catch-all.resolver';
 
 @NgModule({
-  declarations: [AppComponent, AnnouncementBarComponent, CatchAllComponent],
+  declarations: [AppComponent],
   // add Content to imports
   imports: [
     Content,
     BrowserModule,
+    AnnouncementBarComponent,
+    CatchAllComponent,
     RouterModule.forRoot([
       {
         path: 'announcements/:id',
