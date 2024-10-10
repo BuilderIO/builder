@@ -26,7 +26,7 @@ test.describe('Reactive State', () => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.skip(excludeTestFor({ vue: true }, sdk), 'TO-DO: Fix this test for Vue');
     await page.goto('/js-code/');
-    const menuLocator = page.locator('text=Content is expanded');
+    const menuLocator = page.locator('text=jsCode text');
     await expect(menuLocator).toBeVisible();
 
     const btn = checkIsRN(sdk) ? page.locator('button') : page.getByRole('button');
