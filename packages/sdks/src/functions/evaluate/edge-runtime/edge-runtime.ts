@@ -1,32 +1,81 @@
-import { logger } from '../../../helpers/logger.js';
-import { set } from '../../set.js';
-import type { ExecutorArgs } from '../helpers.js';
-import { getFunctionArguments } from '../helpers.js';
-import Interpreter from './acorn-interpreter.js';
+import { logger } from '../../../helpers/logger';
+import { flattenState } from '../browser-runtime/browser';
+import type { ExecutorArgs } from '../helpers';
+import { getFunctionArguments } from '../helpers';
+import Interpreter from './acorn-interpreter';
 
-const processCode = (code: string) => {
-  return code
-    .split('\n')
-    .map((line) => {
-      const trimmed = line.trim();
+/**
+ * https://stackoverflow.com/a/46503625
+ */
+function patchInterpreter() {
+  const originalGetProperty = Interpreter.prototype.getProperty;
+  const originalSetProperty = Interpreter.prototype.setProperty;
 
-      // this async wrapper doesn't work in JS-interpreter, so we drop it.
-      if (line.includes('__awaiter')) return undefined;
+  function newGetProperty(obj: any, name: any) {
+    if (obj == null || !obj._connected) {
+      return originalGetProperty.call(this, obj, name);
+    }
 
-      // we find all state setter expressions and append a call to setRootState afterwards
-      const isStateSetter = trimmed.startsWith('state.');
-      if (!isStateSetter) return line;
-      const [lhs, rhs] = trimmed.split('=');
-      const setStr = lhs.replace('state.', '').trim();
-      const setExpr = `setRootState('${setStr}', JSON.stringify(${rhs.trim()}))`;
-      return `
-  ${line}
-  ${setExpr}
-  `;
-    })
-    .filter(Boolean)
-    .join('\n');
+    const value = obj._connected[name];
+    if (typeof value === 'object') {
+      // if the value is an object itself, create another connected object
+      return this.createConnectedObject(value);
+    }
+    return value;
+  }
+  function newSetProperty(
+    obj: any,
+    name: any,
+    value: any,
+    opt_descriptor: any
+  ) {
+    if (obj == null || !obj._connected) {
+      return originalSetProperty.call(this, obj, name, value, opt_descriptor);
+    }
+
+    obj._connected[name] = this.pseudoToNative(value);
+  }
+
+  const getKeys = [];
+  const setKeys = [];
+  for (const key of Object.keys(Interpreter.prototype)) {
+    if (Interpreter.prototype[key] === originalGetProperty) {
+      getKeys.push(key);
+    }
+    if (Interpreter.prototype[key] === originalSetProperty) {
+      setKeys.push(key);
+    }
+  }
+
+  for (const key of getKeys) {
+    Interpreter.prototype[key] = newGetProperty;
+  }
+  for (const key of setKeys) {
+    Interpreter.prototype[key] = newSetProperty;
+  }
+
+  Interpreter.prototype.createConnectedObject = function (obj, setter) {
+    const connectedObject = this.createObject(this.OBJECT);
+    connectedObject._connected = obj;
+    return connectedObject;
+  };
+}
+patchInterpreter();
+
+const stripAwaiter = (code: string) => {
+  // remove anything before 'function main()'
+  return code.replace(
+    /^.*?function main\(\)/,
+    `var __awaiter = function (e, t, n, r) {
+    return r()
+  },
+  __generator = function (e, t) {
+    return t()
+  };
+  function main()`
+  );
 };
+
 const getJSONValName = (val: string) => val + 'JSON';
 export const runInEdge = ({
   builder,
@@ -37,7 +86,11 @@ export const runInEdge = ({
   rootSetState,
   code,
 }: ExecutorArgs) => {
-  const state = { ...rootState, ...localState };
+  const state = flattenState({
+    rootState,
+    localState,
+    rootSetState,
+  });
 
   const properties = getFunctionArguments({
     builder,
@@ -52,11 +105,13 @@ export const runInEdge = ({
   const prependedCode = properties
     .map(([key]) => {
       const jsonValName = getJSONValName(key);
+      if (key === 'state') {
+        return ``;
+      }
       return `var ${key} = ${jsonValName} === undefined ? undefined : JSON.parse(${jsonValName});`;
     })
     .join('\n');
-  const cleanedCode = processCode(code);
-
+  const cleanedCode = stripAwaiter(code);
   if (cleanedCode === '') {
     logger.warn('Skipping evaluation of empty code block.');
     return;
@@ -70,28 +125,24 @@ function theFunction() {
 }
 theFunction();
 `;
-  const setRootState = (prop: string, value: any) => {
-    const newState = set(state, prop, JSON.parse(value));
-    rootSetState?.(newState);
-  };
+
   const initFunc = function (interpreter: any, globalObject: any) {
     /**
      * serialize all function args to JSON strings
      */
     properties.forEach(([key, val]) => {
-      const jsonVal = JSON.stringify(val);
-      interpreter.setProperty(globalObject, getJSONValName(key), jsonVal);
+      if (key === 'state') {
+        interpreter.setProperty(
+          globalObject,
+          key,
+          interpreter.createConnectedObject(val),
+          interpreter.READONLY_DESCRIPTOR
+        );
+      } else {
+        const jsonVal = JSON.stringify(val);
+        interpreter.setProperty(globalObject, getJSONValName(key), jsonVal);
+      }
     });
-
-    /**
-     * Add a JavaScript function "setRootState" to the interpreter's global object, that will be called whenever a
-     * state property is set. This function will update the state object.
-     */
-    interpreter.setProperty(
-      globalObject,
-      'setRootState',
-      interpreter.createNativeFunction(setRootState)
-    );
   };
 
   const myInterpreter = new Interpreter(transformed, initFunc);
