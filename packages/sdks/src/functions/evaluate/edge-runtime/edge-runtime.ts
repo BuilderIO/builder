@@ -18,7 +18,7 @@ const processCode = (code: string) => {
       if (!isStateSetter) return line;
       const [lhs, rhs] = trimmed.split('=');
       const setStr = lhs.replace('state.', '').trim();
-      const setExpr = `setRootState('${setStr}', ${rhs.trim()})`;
+      const setExpr = `setRootState('${setStr}', JSON.stringify(${rhs.trim()}))`;
       return `
   ${line}
   ${setExpr}
@@ -71,7 +71,7 @@ function theFunction() {
 theFunction();
 `;
   const setRootState = (prop: string, value: any) => {
-    const newState = set(state, prop, value);
+    const newState = set(state, prop, JSON.parse(value));
     rootSetState?.(newState);
   };
   const initFunc = function (interpreter: any, globalObject: any) {
