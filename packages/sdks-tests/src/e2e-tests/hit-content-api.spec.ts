@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeGen1, excludeTestFor, test } from '../helpers/index.js';
+import { excludeGen1, test } from '../helpers/index.js';
 
 test.describe('Get Content', () => {
   test('call content API only once - in page', async ({ page, packageName, sdk }) => {
