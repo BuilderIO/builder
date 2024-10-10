@@ -14,7 +14,6 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
 
 @NgModule({
   declarations: [AppComponent],
-  // add Content to imports
   imports: [
     BrowserModule,
     BlogArticleComponent,
