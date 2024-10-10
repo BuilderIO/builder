@@ -170,7 +170,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
                 props.builderContextSignal.value.rootState = newState;
               },
               react: () => {
-                props.builderContextSignal.value.rootState = newState;
+                Object.assign(
+                  props.builderContextSignal.value.rootState,
+                  newState
+                );
               },
               reactNative: () => {
                 props.builderContextSignal.value.rootState = newState;
