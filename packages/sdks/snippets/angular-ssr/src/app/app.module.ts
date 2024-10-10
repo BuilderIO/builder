@@ -13,6 +13,8 @@ import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { blogArticleResolver } from './blog-article/blog-article.resolver';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { catchAllResolver } from './catch-all/catch-all.resolver';
+import { ProductEditorialComponent } from './product-editorial/product-editorial.component';
+import { productEditorialResolver } from './product-editorial/product-editorial.resolver';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +22,7 @@ import { catchAllResolver } from './catch-all/catch-all.resolver';
     BrowserModule,
     AnnouncementBarComponent,
     CatchAllComponent,
+    ProductEditorialComponent,
     RouterModule.forRoot([
       {
         path: 'announcements/:id',
@@ -30,6 +33,11 @@ import { catchAllResolver } from './catch-all/catch-all.resolver';
         path: 'blogs/new-product-line',
         component: BlogArticleComponent,
         resolve: { article: blogArticleResolver },
+      },
+      {
+        path: 'products/:id',
+        component: ProductEditorialComponent,
+        resolve: { productData: productEditorialResolver },
       },
       {
         path: '**',
