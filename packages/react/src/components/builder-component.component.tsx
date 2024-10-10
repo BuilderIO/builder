@@ -443,7 +443,6 @@ export class BuilderComponent extends React.Component<
       update: this.updateState,
     };
 
-    // if (Builder.isBrowser) {
     const key = this.props.apiKey;
     if (key && key !== this.builder.apiKey && !instancesMap.has(key)) {
       // We create a builder instance for each api key to support loading of symbols from other spaces
@@ -456,7 +455,6 @@ export class BuilderComponent extends React.Component<
       const content = (this.inlinedContent as any).content || this.inlinedContent;
       this.onContentLoaded(content?.data, getContentWithInfo(content)!);
     }
-    // }
 
     this.registerCustomComponents();
   }
