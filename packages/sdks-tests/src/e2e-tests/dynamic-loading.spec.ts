@@ -6,22 +6,24 @@ test.describe('Dynamic loading of custom components', () => {
     test.skip(packageName !== 'sveltekit');
     await page.goto('/dynamic-loading');
 
-    let lazyComponentRequested = false;
-
+    let lazyComponentRequestedBeforeClick = false;
     page.on('request', request => {
       if (request.url().includes('LazyComponent')) {
-        lazyComponentRequested = true;
+        lazyComponentRequestedBeforeClick = true;
       }
     });
 
     await page.waitForLoadState('networkidle');
 
-    expect(lazyComponentRequested).toBe(false);
+    expect(lazyComponentRequestedBeforeClick).toBe(false);
+
+    const lazyComponentRequestedAfterClick = page.waitForEvent('request', request =>
+      request.url().includes('LazyComponent')
+    );
 
     const button = page.locator('text=Click me!');
     await button.click();
-
-    expect(lazyComponentRequested).toBe(true);
+    await lazyComponentRequestedAfterClick;
   });
 
   test('NotLazyComponent loads immediately even if not requested', async ({
