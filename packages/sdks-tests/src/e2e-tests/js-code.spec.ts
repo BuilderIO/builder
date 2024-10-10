@@ -21,8 +21,8 @@ test.describe('JS Code', () => {
   });
   test('runs code inside Browser.isBrowser', async ({ page, sdk }) => {
     // doesn't work for these as they are SSR frameworks without a hydration step.
-    // therefore the code is not run on the client at all and the (Builder.isBrowser) block isn't executed
-    test.fail(excludeTestFor(['qwik', 'rsc'], sdk));
+    // therefore jsCode blocks are not run on the client at all
+    test.skip(excludeTestFor(['qwik', 'rsc'], sdk));
 
     const msgPromise = page.waitForEvent('console', msg => msg.text().includes('hello world'));
 
