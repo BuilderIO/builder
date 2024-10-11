@@ -1,8 +1,7 @@
-import { logger } from '../../../helpers/logger';
-import { flattenState } from '../browser-runtime/browser';
-import type { ExecutorArgs } from '../helpers';
-import { getFunctionArguments } from '../helpers';
-import Interpreter from './acorn-interpreter';
+import { logger } from '../../../helpers/logger.js';
+import type { ExecutorArgs } from '../helpers.js';
+import { flattenState, getFunctionArguments } from '../helpers.js';
+import Interpreter from './acorn-interpreter.js';
 
 /**
  * https://stackoverflow.com/a/46503625
@@ -41,8 +40,8 @@ function patchInterpreter() {
     obj._connected[name] = this.pseudoToNative(value);
   }
 
-  const getKeys = [];
-  const setKeys = [];
+  const getKeys: string[] = [];
+  const setKeys: string[] = [];
   for (const key of Object.keys(Interpreter.prototype)) {
     if (Interpreter.prototype[key] === originalGetProperty) {
       getKeys.push(key);
