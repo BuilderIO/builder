@@ -1,5 +1,6 @@
 import {
   Show,
+  onInit,
   setContext,
   useMetadata,
   useState,
@@ -14,7 +15,9 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
+import { evaluate } from '../../functions/evaluate/evaluate.js';
 import { serializeIncludingFunctions } from '../../functions/register-component.js';
+import { logger } from '../../helpers/logger.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
@@ -131,6 +134,52 @@ export default function ContentComponent(props: ContentProps) {
 
   setContext(ComponentsContext, {
     registeredComponents: state.registeredComponents,
+  });
+
+  onInit(() => {
+    if (!props.apiKey) {
+      logger.error(
+        'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
+
+    // run any dynamic JS code attached to content
+    const jsCode = builderContextSignal.value.content?.data?.jsCode;
+    if (!jsCode) return;
+
+    evaluate({
+      code: jsCode,
+      context: props.context || {},
+      localState: undefined,
+      rootState: builderContextSignal.value.rootState,
+      rootSetState: (newState) => {
+        useTarget({
+          vue: () => {
+            builderContextSignal.value.rootState = newState;
+          },
+          solid: () => {
+            builderContextSignal.value.rootState = newState;
+          },
+          react: () => {
+            Object.assign(builderContextSignal.value.rootState, newState);
+          },
+          reactNative: () => {
+            builderContextSignal.value.rootState = newState;
+          },
+          rsc: () => {
+            builderContextSignal.value.rootState = newState;
+          },
+          default: () => {
+            builderContextSignal.value.rootSetState?.(newState);
+          },
+        });
+      },
+      isExpression: false,
+      /**
+       * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
+       */
+      enableCache: false,
+    });
   });
 
   return (

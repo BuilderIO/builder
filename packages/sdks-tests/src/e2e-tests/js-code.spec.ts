@@ -9,10 +9,6 @@ test.describe('JS Code', () => {
   });
   test('runs code in SSR (JS disabled)', async ({ browser, packageName }) => {
     test.fail(!isSSRFramework(packageName));
-    test.fail(
-      packageName === 'nextjs-sdk-next-app',
-      'RSCs are not able to update JSCode during SSR.'
-    );
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
