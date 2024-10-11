@@ -9,6 +9,7 @@ import { getUserAttributes } from '../track/helpers.js';
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
   isExpression?: boolean;
+  enableCache: boolean;
 };
 export type BuilderGlobals = {
   isEditing: boolean | undefined;
