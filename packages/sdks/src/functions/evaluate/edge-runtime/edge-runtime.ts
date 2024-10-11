@@ -11,7 +11,7 @@ function patchInterpreter() {
   const originalGetProperty = Interpreter.prototype.getProperty;
   const originalSetProperty = Interpreter.prototype.setProperty;
 
-  function newGetProperty(obj: any, name: any) {
+  function newGetProperty(this: typeof Interpreter, obj: any, name: any) {
     if (obj == null || !obj._connected) {
       return originalGetProperty.call(this, obj, name);
     }
@@ -28,6 +28,7 @@ function patchInterpreter() {
     return value;
   }
   function newSetProperty(
+    this: typeof Interpreter,
     obj: any,
     name: any,
     value: any,
@@ -58,7 +59,7 @@ function patchInterpreter() {
     Interpreter.prototype[key] = newSetProperty;
   }
 
-  Interpreter.prototype.createConnectedObject = function (obj, setter) {
+  Interpreter.prototype.createConnectedObject = function (obj: any) {
     const connectedObject = this.createObject(this.OBJECT);
     connectedObject._connected = obj;
     return connectedObject;
