@@ -1,4 +1,4 @@
-import { flattenState } from '../helpers';
+import { flattenState } from './helpers';
 
 describe('flatten state', () => {
   it('should behave normally when no PROTO_STATE', () => {
