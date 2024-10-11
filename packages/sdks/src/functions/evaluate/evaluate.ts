@@ -29,7 +29,7 @@ export function evaluate({
    */
   const match = STATE_GETTER_REGEX.exec(code.trim());
   if (match?.groups?.getPath) {
-    return get(rootState, match.groups.getPath.slice(1));
+    return get({ ...rootState, ...localState }, match.groups.getPath.slice(1));
   }
 
   const args: ExecutorArgs = {
