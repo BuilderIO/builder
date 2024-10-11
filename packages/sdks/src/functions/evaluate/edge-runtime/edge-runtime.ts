@@ -66,17 +66,19 @@ function patchInterpreter() {
 }
 patchInterpreter();
 
-const stripAwaiter = (code: string) => {
-  // remove anything before 'function main()'
-  return code.replace(
-    /^.*?function main\(\)/,
-    `var __awaiter = function (e, t, n, r) {
-    return r()
-  },
-  __generator = function (e, t) {
-    return t()
-  };
-  function main()`
+const processCode = (code: string) => {
+  return (
+    code
+      // strip async/await polyfill: remove anything before 'function main()'
+      .replace(
+        /^.*?function main\(\)/,
+        `
+var __awaiter = function (e, t, n, r) {return r()},
+__generator = function (e, t) { return t() };
+function main()`
+      )
+      // replace ?. with .
+      .replace(/\?\./g, '.')
   );
 };
 
@@ -115,7 +117,7 @@ export const runInEdge = ({
       return `var ${key} = ${jsonValName} === undefined ? undefined : JSON.parse(${jsonValName});`;
     })
     .join('\n');
-  const cleanedCode = stripAwaiter(code);
+  const cleanedCode = processCode(code);
   if (cleanedCode === '') {
     logger.warn('Skipping evaluation of empty code block.');
     return;
