@@ -17,6 +17,10 @@ function patchInterpreter() {
     }
 
     const value = obj._connected[name];
+    if (Array.isArray(value)) {
+      return this.nativeToPseudo(value);
+    }
+
     if (typeof value === 'object') {
       // if the value is an object itself, create another connected object
       return this.createConnectedObject(value);
