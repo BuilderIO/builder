@@ -1,8 +1,5 @@
-import { runInBrowser } from './browser-runtime/browser';
-import { runInEdge } from './edge-runtime/edge-runtime';
-import type { ExecutorArgs } from './helpers';
+import { evaluate } from './evaluate';
 import { getBuilderGlobals, parseCode } from './helpers';
-import { runInNode } from './node-runtime/node-runtime';
 
 const DEFAULTS = {
   builder: getBuilderGlobals(),
@@ -13,30 +10,9 @@ const DEFAULTS = {
   rootState: {},
 };
 
-const getEval = () => {
-  switch (process.env.SDK_ENV) {
-    case 'browser':
-      return runInBrowser;
-    case 'node':
-      return runInNode;
-    case 'edge':
-      return runInEdge;
-    default:
-      throw new Error('Invalid SDK_ENV');
-  }
-};
-const evaluateCode = (args: ExecutorArgs) => {
-  try {
-    return getEval()(args);
-  } catch (e: any) {
-    console.error('Failed code evaluation: ' + e.message, args.code);
-    throw e;
-  }
-};
-
 const TESTS = {
   'does simple math': () => {
-    const output = evaluateCode({
+    const output = evaluate({
       ...DEFAULTS,
       code: parseCode('1 + 1', { isExpression: true }),
     });
@@ -44,7 +20,7 @@ const TESTS = {
     expect(output).toBe(2);
   },
   'returns state value': () => {
-    const output = evaluateCode({
+    const output = evaluate({
       ...DEFAULTS,
       code: parseCode('state.foo', { isExpression: true }),
       rootState: {
@@ -55,7 +31,7 @@ const TESTS = {
     expect(output).toBe('bar');
   },
   'returns nested state value': () => {
-    const output = evaluateCode({
+    const output = evaluate({
       ...DEFAULTS,
       code: parseCode('state.foo.bar.baz', { isExpression: true }),
       rootState: {
@@ -70,7 +46,7 @@ const TESTS = {
     expect(output).toBe('qux');
   },
   'returns nested local state value': () => {
-    const output = evaluateCode({
+    const output = evaluate({
       ...DEFAULTS,
       code: parseCode('state.foo[0].bar.baz', { isExpression: true }),
       localState: {
@@ -91,7 +67,7 @@ const TESTS = {
       foo: 'bar',
     };
 
-    runInNode({
+    evaluate({
       ...DEFAULTS,
       code: parseCode('state.foo = "baz"', { isExpression: true }),
       rootState,
@@ -107,7 +83,7 @@ const TESTS = {
       foo: 'bar',
     };
 
-    runInNode({
+    evaluate({
       ...DEFAULTS,
       code: parseCode('state.foo = "baz"', { isExpression: true }),
       rootState,
@@ -122,7 +98,7 @@ const TESTS = {
       b?: number;
     } = {};
 
-    const output = evaluateCode({
+    const output = evaluate({
       ...DEFAULTS,
       code: parseCode(
         `
@@ -148,7 +124,7 @@ const TESTS = {
       b?: number;
     } = {};
 
-    const output = evaluateCode({
+    const output = evaluate({
       ...DEFAULTS,
       code: parseCode(
         `
@@ -173,7 +149,7 @@ const TESTS = {
   'set Array state value (if `rootState` is mutable)': () => {
     const rootState: { a?: number[] } = {};
 
-    evaluateCode({
+    evaluate({
       ...DEFAULTS,
       code: parseCode(`state.a = [10, 43];`, { isExpression: true }),
       rootState,
@@ -190,7 +166,7 @@ const TESTS = {
       list?: string[];
     } = {};
 
-    evaluateCode({
+    evaluate({
       ...DEFAULTS,
       code: parseCode(
         `var __awaiter=function(e,t,n,r){return new(n||(n=Promise))((function(i,a){function o(e){try{l(r.next(e))}catch(e){a(e)}}function u(e){try{l(r.throw(e))}catch(e){a(e)}}function l(e){var t;e.done?i(e.value):(t=e.value,t instanceof n?t:new n((function(e){e(t)}))).then(o,u)}l((r=r.apply(e,t||[])).next())}))},__generator=function(e,t){var n,r,i,a,o={label:0,sent:function(){if(1&i[0])throw i[1];return i[1]},trys:[],ops:[]};return a={next:u(0),throw:u(1),return:u(2)},"function"==typeof Symbol&&(a[Symbol.iterator]=function(){return this}),a;function u(a){return function(u){return function(a){if(n)throw new TypeError("Generator is already executing.");for(;o;)try{if(n=1,r&&(i=2&a[0]?r.return:a[0]?r.throw||((i=r.return)&&i.call(r),0):r.next)&&!(i=i.call(r,a[1])).done)return i;switch(r=0,i&&(a=[2&a[0],i.value]),a[0]){case 0:case 1:i=a;break;case 4:return o.label++,{value:a[1],done:!1};case 5:o.label++,r=a[1],a=[0];continue;case 7:a=o.ops.pop(),o.trys.pop();continue;default:if(!(i=(i=o.trys).length>0&&i[i.length-1])&&(6===a[0]||2===a[0])){o=0;continue}if(3===a[0]&&(!i||a[1]>i[0]&&a[1]<i[3])){o.label=a[1];break}if(6===a[0]&&o.label<i[1]){o.label=i[1],i=a;break}if(i&&o.label<i[2]){o.label=i[2],o.ops.push(a);break}i[2]&&o.ops.pop(),o.trys.pop();continue}a=t.call(e,o)}catch(e){a=[6,e],r=0}finally{n=i=0}if(5&a[0])throw a[1];return{value:a[0]?a[1]:void 0,done:!0}}([a,u])}}};function main(){return __awaiter(this,void 0,void 0,(function(){return __generator(this,(function(e){return state.name="initial Name",state.list=["first","second"],Builder.isServer,Builder.isBrowser,[2]}))}))}var _virtual_index=main();return _virtual_index`,
@@ -210,7 +186,7 @@ const TESTS = {
       list: ['first', 'second'],
     };
 
-    const output = evaluateCode({
+    const output = evaluate({
       ...DEFAULTS,
       code: parseCode(`state.list`, { isExpression: true }),
       rootState,
