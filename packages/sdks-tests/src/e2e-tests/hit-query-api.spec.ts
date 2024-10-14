@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { excludeGen1, test } from '../helpers/index.js';
 
 test.describe('Get Query', () => {
-  test('call query API only once - in page', async ({ page, packageName, sdk }) => {
+  test('call query API only once - in page', async ({ page, sdk }) => {
     test.skip(!excludeGen1(sdk));
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/query/;
