@@ -1,5 +1,66 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 2.0.20
+
+### Patch Changes
+
+- ff58662: Fix: remove `@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin` plugin export
+
+## 2.0.17
+
+### Patch Changes
+
+- 01d8496: Feature: add `@builder.io/sdk-vue/node/init` entry point with `initializeNodeRuntime` export that sets the `isolated-vm` instance.
+
+  This import should be called in a server-only environment. For convenience, we offer:
+
+  - (Recommended) Updates to `@builder.io/sdk-vue/nuxt` Nuxt module which helps you achieve this in one place:
+
+    - added `includeCompiledCss` flag that adds the compiled Builder.io CSS in Nuxt (defaults to `true`)
+    - added `initializeNodeRuntime` flag that automatically imports and executes `initializeNodeRuntime()` in the server (defaults to `false`)
+
+    ```ts
+    // nuxt.config.ts
+    export default defineNuxtConfig({
+      // ...
+      modules: [
+        [
+          "@builder.io/sdk-vue/nuxt",
+          {
+            includeCompiledCss: true, // Includes Builder.io CSS (default: true)
+            initializeNodeRuntime: true, // Initializes isolated VM in Node runtime (default: false)
+          },
+        ],
+      ],
+    });
+    ```
+
+  - If you prefer to call this manually without using our Nuxt module, you can import and call `initializeNodeRuntime()` from the package `@builder.io/sdk-vue/node/init`. Make sure that this function is imported and executed only in the Node runtime environment, for example:
+
+    ```ts
+    // server/middleware/builder.global.ts
+    export default defineEventHandler(async (event) => {
+      const { initializeNodeRuntime } = await import(
+        "@builder.io/sdk-vue/node/init"
+      );
+      initializeNodeRuntime();
+    });
+    ```
+
+  - If you are not using Nuxt, or would rather initialize `isolated-vm` yourself, you must import and call `initializeNodeRuntime()` in such a way that the function is imported and executed ONLY in the Node runtime, and never in the browser. Failure to do so will result in a build and/or runtime error.
+
+## 2.0.16
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
 ## 2.0.13
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.13
+
+### Patch Changes
+
+- 348de96: Fix: remove node-runtime logic from browser and edge bundles
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 0.16.11
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 0.16.10
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.16.9
 
 ### Patch Changes

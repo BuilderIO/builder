@@ -2,7 +2,7 @@
   "name": "@e2e/react-native",
   "main": "expo-router/entry",
   "scripts": {
-    "eas-build-pre-install": "yarn nx build @builder.io/sdk-react-native",
+    "eas-build-pre-install": "yarn g:nx build @builder.io/sdk-react-native",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -14,7 +14,7 @@
     "test:ios": "eas build -e build-and-maestro-test -p ios --no-wait --local",
     "test:ios-remote": "eas build -e build-and-maestro-test -p ios --no-wait",
     "tar:ios": "tar -xzf ios-test-build.tar.gz",
-    "test": "SERVER_NAME=react-native yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=react-native yarn g:nx test:e2e @sdk/tests"
   },
   "jest": {
     "preset": "jest-expo"
@@ -56,8 +56,6 @@
     "jest": "^29.7.0",
     "jest-expo": "~51.0.1",
     "morgan": "^1.10.0",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "react-test-renderer": "18.2.0",
     "serve": "^14.2.3",
     "ts-jest": "^29.1.5",

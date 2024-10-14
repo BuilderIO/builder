@@ -1,5 +1,65 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 2.0.18
+
+### Patch Changes
+
+- 546e0ca: Feat: adds support for dynamically loading Svelte components using the `load` function and an optional `fallback` loader component.
+
+  To dynamically load your custom component, you can do the following:
+
+  ```html
+  <script lang="ts">
+    import LoadingSpinner from "../../components/LoadingSpinner.svelte"; // Fallback loader component
+    import type { RegisteredComponent } from "@builder.io/sdk-svelte";
+
+    const customComponents: RegisteredComponent[] = [
+      {
+        name: "LazyComponent",
+        component: {
+          // dynamically loads the custom component only when it needs to be initialized
+          load: () => import("../../components/LazyComponent.svelte"),
+          fallback: LoadingSpinner,
+        },
+      },
+    ];
+  </script>
+  ```
+
+  Alternatively, you can pass the component directly, which will pre-bundle it as before:
+
+  ```html
+  <script lang="ts">
+    import type { RegisteredComponent } from "@builder.io/sdk-svelte";
+    import NotLazyComponent from "../../components/NotLazyComponent.svelte";
+
+    const customComponents: RegisteredComponent[] = [
+      {
+        name: "NotLazyComponent",
+        component: NotLazyComponent,
+      },
+    ];
+  </script>
+  ```
+
+## 2.0.16
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 2.0.14
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 2.0.13
 
 ### Patch Changes

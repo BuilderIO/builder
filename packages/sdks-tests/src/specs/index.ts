@@ -60,6 +60,9 @@ import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layo
 import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
 import type { Sdk } from '../helpers/sdk.js';
 import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-binding.js';
+import { CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT } from './children-slot-placement.js';
+import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
+import { SSR_BINDING_CONTENT } from './ssr-binding.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -139,6 +142,9 @@ export const PAGES = {
   '/get-content': HTTP_REQUESTS,
   '/get-query': HTTP_REQUESTS,
   '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
+  '/children-slot-placement': CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT,
+  '/dynamic-loading': DYNAMIC_LOADING_CUSTOM_COMPONENTS,
+  '/ssr-binding': SSR_BINDING_CONTENT,
 } as const;
 
 const apiVersionPathToProp = {

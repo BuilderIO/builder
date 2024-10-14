@@ -69,10 +69,10 @@ const ResourcePreviewById = (
 
 export function PickResourceList(props: PickResourceListProps) {
   const store = useLocalStore(() => ({
-    get value() {
-      return props.value || [];
-    },
+    value: props.value || [],
   }));
+
+
   return useObserver(() => {
     return (
       <React.Fragment>
@@ -107,9 +107,10 @@ export function PickResourceList(props: PickResourceListProps) {
                   }}
                   onClick={() => {
                     const res = [
-                      ...props.value!.slice(0, props.value!.indexOf(item)),
-                      ...props.value!.slice(props.value!.indexOf(item) + 1),
+                      ...store.value!.slice(0, store.value!.indexOf(item)),
+                      ...store.value!.slice(store.value!.indexOf(item) + 1),
                     ];
+                    store.value=res;
                     props.onChange(res);
                   }}
                 >
@@ -135,7 +136,12 @@ export function PickResourceList(props: PickResourceListProps) {
                 omitIds={store.value}
                 onChange={action(resource => {
                   if (resource) {
-                    props.onChange([...(store.value || []), String(resource.id)]);
+                    if (!Array.isArray(store.value)) {
+                      store.value = [];
+                    }
+                    store.value.push(String(resource.id));
+                    props.onChange(store.value);
+                    
                   }
                   close();
                 })}

@@ -1,5 +1,31 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.13
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 0.16.12
+
+### Patch Changes
+
+- c58c2f9: misc: inline `lru-cache` dependency
+- c58c2f9: Fix: previewing content while inline editing.
+  Chore: refactored build process to `preserveModules` in output.
+
+## 0.16.11
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 0.16.10
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.16.9
 
 ### Patch Changes

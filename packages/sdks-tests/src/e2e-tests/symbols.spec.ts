@@ -201,8 +201,7 @@ test.describe('Symbols', () => {
     await page.goto('/nested-symbols');
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    // rsc skipped because it fetches the content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next'].includes(packageName));
 
     let selector = '[builder-model="symbol"]';
     if (checkIsRN(sdk)) {

@@ -234,7 +234,11 @@ const filterActionAttrBindings = (json, item) => {
 const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'BuilderImage' || json.name === 'BuilderSymbol') {
+      if (
+        json.name === 'BuilderImage' ||
+        json.name === 'BuilderSymbol' ||
+        json.name === 'Awaiter'
+      ) {
         json.hooks.onMount = json.hooks.onMount.filter(
           (hook) =>
             !hook.code.includes(
@@ -316,7 +320,11 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('selector: "blocks-wrapper"')) {
+      if (
+        code?.includes('selector: "blocks-wrapper"') ||
+        code?.includes('selector: "component-ref"') ||
+        code?.includes('selector: "interactive-element"')
+      ) {
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
