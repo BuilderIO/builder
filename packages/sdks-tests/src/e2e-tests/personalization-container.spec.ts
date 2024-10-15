@@ -38,7 +38,7 @@ const initializeUserAttributes = async (
     sdk,
     packageName,
   }: Pick<
-    Parameters<Parameters<typeof test>[1]>[0],
+    Parameters<Parameters<typeof test>[2]>[0],
     'page' | 'baseURL' | 'browser' | 'packageName' | 'sdk'
   >,
   { userAttributes }: { userAttributes: Record<string, string> }
