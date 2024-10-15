@@ -284,7 +284,6 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
         {store.resourceInfo && (
           <Paper
             css={{
-              marginBottom: 15,
               position: 'relative',
             }}
           >
