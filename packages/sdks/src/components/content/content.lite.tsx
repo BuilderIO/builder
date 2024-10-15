@@ -161,13 +161,13 @@ export default function ContentComponent(props: ContentProps) {
             builderContextSignal.value.rootState = newState;
           },
           react: () => {
-            Object.assign(builderContextSignal.value.rootState, newState);
+            builderContextSignal.value.rootState = newState;
           },
           reactNative: () => {
-            builderContextSignal.value.rootState = newState;
+            Object.assign(builderContextSignal.value.rootState, newState);
           },
           rsc: () => {
-            builderContextSignal.value.rootState = newState;
+            Object.assign(builderContextSignal.value.rootState, newState);
           },
           default: () => {
             builderContextSignal.value.rootSetState?.(newState);
