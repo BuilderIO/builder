@@ -21,11 +21,7 @@ import { ProductInfoComponent } from './product-info/product-info.component';
 
     <app-product-info [product]="product" />
 
-    <builder-content
-      [content]="editorial"
-      model="product-editorial"
-      
-    />
+    <builder-content [content]="editorial" model="product-editorial" />
 
     <app-footer />
   `,
