@@ -19,13 +19,13 @@ import { ProductInfoComponent } from './product-info/product-info.component';
   template: `
     <app-header />
 
-    <!-- Product info  -->
     <app-product-info [product]="product" />
 
     <builder-content
       *ngIf="editorial"
       [content]="editorial"
       model="product-editorial"
+      
     />
 
     <app-footer />
