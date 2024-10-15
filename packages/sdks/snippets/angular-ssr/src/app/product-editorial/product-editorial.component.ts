@@ -22,7 +22,6 @@ import { ProductInfoComponent } from './product-info/product-info.component';
     <app-product-info [product]="product" />
 
     <builder-content
-      *ngIf="editorial"
       [content]="editorial"
       model="product-editorial"
       
