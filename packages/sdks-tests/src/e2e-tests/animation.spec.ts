@@ -9,11 +9,11 @@ test.describe('Animations', () => {
     await page.goto('/animations');
 
     const text = page.locator('[builder-id]').filter({ hasText: 'Enter some text...' });
-    await expect(text).toHaveCSS('transition', 'all 30s cubic-bezier(0, 1.61, 0, 1.15) 0s');
+    await expect(text).toHaveCSS('transition', '30s cubic-bezier(0, 1.61, 0, 1.15)');
     await expect(text).toHaveCSS('opacity', '1');
 
     const img = page.locator('[builder-id="builder-3cb8a3c70fea46ec99a57b336a66320c"]');
-    await expect(img).toHaveCSS('transition', 'all 30s cubic-bezier(0, 1.61, 0, 1.15) 0s');
+    await expect(img).toHaveCSS('transition', '30s cubic-bezier(0, 1.61, 0, 1.15)');
     await expect(img).toHaveCSS('opacity', '1');
   });
 });
