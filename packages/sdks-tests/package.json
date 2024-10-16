@@ -23,7 +23,7 @@
     ".": "./dist/src/index.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.37.1",
+    "@playwright/test": "^1.48.0",
     "@types/traverse": "^0.6.32",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
