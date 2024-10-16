@@ -7,11 +7,15 @@ import NotLazyComponent from '../../components/NotLazyComponent.svelte';
  *
  * Imports must start with `./` or `../`, so we recommend placing all components in a specific directory,
  * and using that to lazy-load the components into Builder.
- * @returns
  */
 const getLazyLoadedComponentImport = (path: string) =>
   import(`../../components/${path}.svelte`);
 
+/**
+ * This helper function guarantees that:
+ * 1. On the server, the component is loaded eagerly.
+ * 2. On the client, the component is loaded lazily.
+ */
 const getComponentLoader = async (path: string) => {
   if (browser) {
     return () => getLazyLoadedComponentImport(path);
