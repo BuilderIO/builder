@@ -63,6 +63,7 @@ import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-bin
 import { CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT } from './children-slot-placement.js';
 import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
 import { SSR_BINDING_CONTENT } from './ssr-binding.js';
+import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -142,6 +143,7 @@ export const PAGES = {
   '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
   '/children-slot-placement': CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT,
   '/dynamic-loading': DYNAMIC_LOADING_CUSTOM_COMPONENTS,
+  '/eager-dynamic-loading': EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
   '/ssr-binding': SSR_BINDING_CONTENT,
 } as const;
 
