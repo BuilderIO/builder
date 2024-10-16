@@ -855,6 +855,9 @@ export function BuilderComponent(info: Partial<Component> = {}) {
 
 // TODO
 type Settings = any;
+type NextOptions = {
+  tags?: Array<string>;
+};
 
 export interface Action {
   name: string;
@@ -2186,7 +2189,8 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
-    } = {}
+    } = {},
+    nextOptions?: NextOptions
   ) {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
@@ -2212,7 +2216,7 @@ export class Builder {
         this.apiVersion = options.apiVersion;
       }
     }
-    return instance.queueGetContent(modelName, options).map(
+    return instance.queueGetContent(modelName, options, nextOptions).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         if (Builder.isStatic) {
@@ -2244,7 +2248,7 @@ export class Builder {
   }
 
   // TODO: entry id in options
-  queueGetContent(modelName: string, options: GetContentOptions = {}) {
+  queueGetContent(modelName: string, options: GetContentOptions = {}, nextOptions?: NextOptions) {
     // TODO: if query do modelName + query
     const key =
       options.key ||
@@ -2358,7 +2362,7 @@ export class Builder {
     }
   }
 
-  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
+  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[], nextOptions?: NextOptions) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content failed, expected apiKey to be defined instead got: ${this.apiKey}`
@@ -2533,12 +2537,18 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = { headers: {} };
+    const requestOptions = { headers: {}, next: {} };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,
         Authorization: `Bearer ${this.authToken}`,
       };
+    }
+
+    if (nextOptions) {
+      requestOptions.next = {
+        ...nextOptions
+      }
     }
 
     const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
@@ -2701,13 +2711,13 @@ export class Builder {
     return Builder.isBrowser && setCookie(name, value, expires);
   }
 
-  getContent(modelName: string, options: GetContentOptions = {}) {
+  getContent(modelName: string, options: GetContentOptions = {}, nextOptions?: NextOptions) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content from model ${modelName} failed, expected apiKey to be defined instead got: ${this.apiKey}`
       );
     }
-    return this.queueGetContent(modelName, options);
+    return this.queueGetContent(modelName, options, nextOptions);
   }
 
   getAll(
@@ -2717,6 +2727,7 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
+      nextOptions?: NextOptions;
     } = {}
   ): Promise<BuilderContent[]> {
     let instance: Builder = this;
@@ -2760,7 +2771,7 @@ export class Builder {
           Builder.isBrowser
             ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
             : undefined,
-      })
+      }, nextOptions)
       .promise();
   }
 }
