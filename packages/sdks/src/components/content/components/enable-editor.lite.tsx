@@ -2,6 +2,7 @@ import type { Signal } from '@builder.io/mitosis';
 import {
   Show,
   onEvent,
+  onInit,
   onMount,
   onUnMount,
   onUpdate,
@@ -160,7 +161,32 @@ export default function EnableEditor(props: BuilderEditorProps) {
           context: props.context || {},
           localState: undefined,
           rootState: props.builderContextSignal.value.rootState,
-          rootSetState: props.builderContextSignal.value.rootSetState,
+          rootSetState: (newState) => {
+            useTarget({
+              vue: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              solid: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              react: () => {
+                Object.assign(
+                  props.builderContextSignal.value.rootState,
+                  newState
+                );
+              },
+              reactNative: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              rsc: () => {
+                props.builderContextSignal.value.rootState = newState;
+              },
+              default: () => {
+                props.builderContextSignal.value.rootSetState?.(newState);
+              },
+            });
+          },
+          isExpression: false,
           /**
            * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
            */
@@ -428,28 +454,17 @@ export default function EnableEditor(props: BuilderEditorProps) {
     }
   });
 
-  onMount(
-    () => {
-      if (!props.apiKey) {
-        logger.error(
-          'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
-        );
-      }
+  onInit(() => {
+    if (!props.apiKey) {
+      logger.error(
+        'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
 
-      state.evaluateJsCode();
-      state.runHttpRequests();
-      state.emitStateUpdate();
-    },
-    { onSSR: true }
-  );
-
-  onUpdate(() => {
     state.evaluateJsCode();
-  }, [props.builderContextSignal.value.content?.data?.jsCode]);
-
-  onUpdate(() => {
     state.runHttpRequests();
-  }, [props.builderContextSignal.value.content?.data?.httpRequests]);
+    state.emitStateUpdate();
+  });
 
   onUpdate(() => {
     state.emitStateUpdate();

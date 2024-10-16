@@ -2,7 +2,7 @@ export const JS_CODE_CONTENT = {
   lastUpdatedBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   folders: [],
   data: {
-    jsCode: 'state.menu={a:{b:{expanded:!0}}}',
+    jsCode: 'state.menu={a:{b:{expanded:"jsCode text"}}}',
     inputs: [],
     newField3: 'testing',
     themeId: false,
@@ -13,12 +13,14 @@ export const JS_CODE_CONTENT = {
         '@version': 2,
         bindings: {
           show: 'var _virtual_index=state.menu.a.b.expanded;return _virtual_index',
+          'component.options.text':
+            'var _virtual_index=state.menu.a.b.expanded;return _virtual_index',
         },
         id: 'builder-165c8701ec8846ddbb2c992aac25ca43',
         component: {
           name: 'Text',
           options: {
-            text: 'Content is expanded',
+            text: '...',
           },
         },
         responsiveStyles: {
@@ -38,7 +40,7 @@ export const JS_CODE_CONTENT = {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
         actions: {
-          click: 'state.menu.a.b.expanded=!state.menu.a.b.expanded',
+          click: 'state.menu.a.b.expanded=state.menu.a.b.expanded ? undefined : "jsCode text"',
         },
         id: 'builder-54da80f81b584020bd09a4bee2d12cbd',
         meta: {
