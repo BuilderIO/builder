@@ -1,15 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  Content,
-  fetchOneEntry,
-  type BuilderContent,
-} from '@builder.io/sdk-angular';
+import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [Content, CommonModule],
+  imports: [CommonModule],
   template: `
     <div *ngIf="productDetails">
       <h1>{{ productDetails.data?.['name'] }}</h1>
