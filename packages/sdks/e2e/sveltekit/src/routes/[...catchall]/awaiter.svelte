@@ -1,15 +1,18 @@
 <script lang="ts">
   import type { SvelteComponent } from 'svelte';
 
-  export let load: () => Promise<{ default: typeof SvelteComponent<any> }>;
+  export let load:
+    | string
+    | (() => Promise<{ default: typeof SvelteComponent<any> }>);
   export let fallback: any;
   export let props: any;
   export let attributes: any;
 
-  const componentImport = typeof load === 'string' ? import(load) : load();
+  const componentImport = () =>
+    typeof load === 'string' ? import(load) : load;
 </script>
 
-{#await componentImport}
+{#await componentImport()}
   {#if fallback}
     <svelte:component this={fallback} />
   {/if}
