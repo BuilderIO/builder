@@ -7,6 +7,20 @@ test.describe('JS Code', () => {
     const menuLocator = page.locator('text=jsCode text');
     await expect(menuLocator).toBeVisible();
   });
+  test('runs code (after client-side navigation)', async ({ page }) => {
+    await page.goto('/');
+
+    const links = page.locator('a');
+
+    const jsCodeLink = await links.filter({ hasText: 'JS Code' });
+
+    await expect(jsCodeLink).toHaveCount(1);
+    await jsCodeLink.click();
+
+    const menuLocator = page.locator('text=jsCode text');
+    await expect(menuLocator).toBeVisible();
+  });
+
   test('runs code in SSR (JS disabled)', async ({ browser, packageName }) => {
     test.fail(!isSSRFramework(packageName));
 
@@ -26,6 +40,20 @@ test.describe('JS Code', () => {
     const msgPromise = page.waitForEvent('console', msg => msg.text().includes('hello world'));
 
     await page.goto('/js-content-is-browser');
+    await msgPromise;
+  });
+
+  test('runs code inside Browser.isBrowser (after client-side navigation)', async ({ page }) => {
+    await page.goto('/');
+    const msgPromise = page.waitForEvent('console', msg => msg.text().includes('hello world'));
+
+    const links = page.locator('a');
+
+    const jsCodeLink = await links.filter({ hasText: 'JS isBrowser code' });
+
+    await expect(jsCodeLink).toHaveCount(1);
+
+    await jsCodeLink.click();
     await msgPromise;
   });
 });
