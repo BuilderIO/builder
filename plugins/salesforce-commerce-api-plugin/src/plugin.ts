@@ -62,6 +62,15 @@ registerCommercePlugin(
         friendlyName: 'Einstein API Site ID',
         type: 'string',
       },
+      {
+        name: 'navDepth',
+        type: 'number',
+        helperText: 'This will be used in category search. If you enter nav depth greater than 3 there could be performance implications',
+      },
+      {
+        name: 'rootCategory',
+        type: 'string', 
+      },
     ],
     ctaText: `Connect your Salesforce Commerce API`,
   },
