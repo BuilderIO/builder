@@ -4061,8 +4061,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.16
-    "@builder.io/mitosis": ^0.5.3
-    "@builder.io/mitosis-cli": ^0.5.3
+    "@builder.io/mitosis": ^0.5.6
+    "@builder.io/mitosis-cli": ^0.5.6
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
