@@ -2727,9 +2727,9 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
-      nextOptions?: NextOptions;
-    } = {}
-  ): Promise<BuilderContent[]> {
+    } = {},
+    nextOptions?: NextOptions
+): Promise<BuilderContent[]> {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(
