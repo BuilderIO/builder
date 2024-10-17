@@ -21,6 +21,7 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
+import { additionalProperties } from 'typedoc/dist/lib/utils/validation';
 
 export type Url = any;
 
@@ -855,9 +856,7 @@ export function BuilderComponent(info: Partial<Component> = {}) {
 
 // TODO
 type Settings = any;
-type NextOptions = {
-  tags?: Array<string>;
-};
+type AdditionalOptions = object;
 
 export interface Action {
   name: string;
@@ -2190,7 +2189,7 @@ export class Builder {
       apiKey?: string;
       authToken?: string;
     } = {},
-    nextOptions?: NextOptions
+    additionalOptions?: AdditionalOptions
   ) {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
@@ -2216,7 +2215,7 @@ export class Builder {
         this.apiVersion = options.apiVersion;
       }
     }
-    return instance.queueGetContent(modelName, options, nextOptions).map(
+    return instance.queueGetContent(modelName, options, additionalOptions).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         if (Builder.isStatic) {
@@ -2248,7 +2247,7 @@ export class Builder {
   }
 
   // TODO: entry id in options
-  queueGetContent(modelName: string, options: GetContentOptions = {}, nextOptions?: NextOptions) {
+  queueGetContent(modelName: string, options: GetContentOptions = {}, additionalOptions?: AdditionalOptions) {
     // TODO: if query do modelName + query
     const key =
       options.key ||
@@ -2362,7 +2361,7 @@ export class Builder {
     }
   }
 
-  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[], nextOptions?: NextOptions) {
+  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[], additionalOptions?: AdditionalOptions) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content failed, expected apiKey to be defined instead got: ${this.apiKey}`
@@ -2537,18 +2536,12 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = { headers: {}, next: {} };
+    const requestOptions = { headers: {}, ...additionalOptions };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,
         Authorization: `Bearer ${this.authToken}`,
       };
-    }
-
-    if (nextOptions) {
-      requestOptions.next = {
-        ...nextOptions
-      }
     }
 
     const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
@@ -2711,13 +2704,13 @@ export class Builder {
     return Builder.isBrowser && setCookie(name, value, expires);
   }
 
-  getContent(modelName: string, options: GetContentOptions = {}, nextOptions?: NextOptions) {
+  getContent(modelName: string, options: GetContentOptions = {}, additionalOptions?: AdditionalOptions) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content from model ${modelName} failed, expected apiKey to be defined instead got: ${this.apiKey}`
       );
     }
-    return this.queueGetContent(modelName, options, nextOptions);
+    return this.queueGetContent(modelName, options, additionalOptions);
   }
 
   getAll(
@@ -2728,7 +2721,7 @@ export class Builder {
       apiKey?: string;
       authToken?: string;
     } = {},
-    nextOptions?: NextOptions
+    additionalOptions?: AdditionalOptions
 ): Promise<BuilderContent[]> {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
@@ -2771,7 +2764,7 @@ export class Builder {
           Builder.isBrowser
             ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
             : undefined,
-      }, nextOptions)
+      }, additionalOptions)
       .promise();
   }
 }
