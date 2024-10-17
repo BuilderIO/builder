@@ -53,30 +53,32 @@ export interface ResourcePreviewCellProps {
   className?: string;
 }
 
-export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
-  useObserver(() => (
-    <ListItem className={props.className} button={props.button} selected={props.selected}>
-      {props.resource.image && (
-        <ListItemAvatar>
-          <Avatar css={{ borderRadius: 4 }} src={props.resource.image.src} />
-        </ListItemAvatar>
-      )}
-      <ListItemText
-        primary={
-          <div
-            css={{
-              maxWidth: 400,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {props.resource.title}
-          </div>
-        }
-      />
-    </ListItem>
-  ));
+export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>{
+return   useObserver(() => (
+  <ListItem className={props.className} button={props.button} selected={props.selected}>
+    {props.resource.image && (
+      <ListItemAvatar>
+        <Avatar css={{ borderRadius: 4 }} src={props.resource.image.src} />
+      </ListItemAvatar>
+    )}
+    <ListItemText
+      primary={
+        <div
+          css={{
+            maxWidth: 400,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {props.resource.title} - {props.resource.id}
+        </div>
+      }
+    />
+  </ListItem>
+));
+}
+
 
 export type ResourcePickerProps = CustomReactEditorProps<Resource> & {
   api: CommerceAPIOperations;
