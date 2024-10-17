@@ -29,7 +29,7 @@ const testLinkComponent = (path: string, totalLinks: number) => {
 
 test.describe('Link Component', () => {
   test.describe('Button', () => {
-    testLinkComponent('/', 8);
+    testLinkComponent('/', 10);
   });
 
   test.describe('Columns', () => {
