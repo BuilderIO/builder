@@ -1,3 +1,37 @@
+import fs from 'fs';
+import os from 'os';
+
+const isNode20 = process.version.startsWith('v20');
+
+const whichOS = (): string => {
+  const platform = os.platform();
+
+  switch (platform) {
+    case 'linux':
+      try {
+        const data = fs.readFileSync('/etc/os-release', 'utf8');
+        const match = data.match(/^NAME="(.+)"$/m);
+        return match ? match[1] : 'Linux (unknown distribution)';
+      } catch (err) {
+        console.warn('Error reading OS information:', err);
+        return 'Linux';
+      }
+    case 'darwin':
+      return 'macOS';
+    case 'win32':
+      return 'Windows';
+    default:
+      return platform;
+  }
+};
+
+const osName = whichOS();
+if (osName.includes('Ubuntu') && isNode20) {
+  console.warn(
+    'WARNING: You are running Node 20 on Ubuntu. This combination is known to cause crashes with `isolated-vm`. See https://github.com/BuilderIO/builder/issues/3605 for more information.'
+  );
+}
+
 import { shouldForceBrowserRuntimeInNode } from '../should-force-browser-runtime-in-node.js';
 /**
  * This file:
