@@ -15,6 +15,18 @@ function App() {
   useEffect(() => {
     getProps({ sdk: 'oldReact' }).then(resp => {
       setProps(resp);
+      if (
+        window.location.pathname.includes('get-query') ||
+        window.location.pathname.includes('get-content')
+      ) {
+        builder
+          .get('', {
+            ...resp,
+            ...resp['options'],
+          })
+          .promise()
+          .then();
+      }
     });
   }, []);
 
