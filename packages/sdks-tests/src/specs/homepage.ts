@@ -152,7 +152,7 @@ export const CONTENT = {
               {
                 '@type': '@builder.io/sdk:Element',
                 '@version': 2,
-                id: 'builder-0ee56d501e83489d8de241aa4ca31db6',
+                id: 'builder-0ee56d501e83489d8de241aa4ca31111',
                 component: {
                   name: 'Core:Button',
                   options: {
@@ -184,7 +184,7 @@ export const CONTENT = {
               {
                 '@type': '@builder.io/sdk:Element',
                 '@version': 2,
-                id: 'builder-0ee56d501e83489d8de241aa4ca31db6',
+                id: 'builder-0ee56d501e83489d8de241aa4ca31lfl',
                 component: {
                   name: 'Core:Button',
                   options: {
