@@ -145,41 +145,42 @@ export default function ContentComponent(props: ContentProps) {
 
     // run any dynamic JS code attached to content
     const jsCode = builderContextSignal.value.content?.data?.jsCode;
-    if (!jsCode) return;
 
-    evaluate({
-      code: jsCode,
-      context: props.context || {},
-      localState: undefined,
-      rootState: builderContextSignal.value.rootState,
-      rootSetState: (newState) => {
-        useTarget({
-          vue: () => {
-            builderContextSignal.value.rootState = newState;
-          },
-          solid: () => {
-            builderContextSignal.value.rootState = newState;
-          },
-          react: () => {
-            Object.assign(builderContextSignal.value.rootState, newState);
-          },
-          reactNative: () => {
-            builderContextSignal.value.rootState = newState;
-          },
-          rsc: () => {
-            builderContextSignal.value.rootState = newState;
-          },
-          default: () => {
-            builderContextSignal.value.rootSetState?.(newState);
-          },
-        });
-      },
-      isExpression: false,
-      /**
-       * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
-       */
-      enableCache: false,
-    });
+    if (jsCode) {
+      evaluate({
+        code: jsCode,
+        context: props.context || {},
+        localState: undefined,
+        rootState: builderContextSignal.value.rootState,
+        rootSetState: (newState) => {
+          useTarget({
+            vue: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            solid: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            react: () => {
+              Object.assign(builderContextSignal.value.rootState, newState);
+            },
+            reactNative: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            rsc: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            default: () => {
+              builderContextSignal.value.rootSetState?.(newState);
+            },
+          });
+        },
+        isExpression: false,
+        /**
+         * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
+         */
+        enableCache: false,
+      });
+    }
   });
 
   return (
