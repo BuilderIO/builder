@@ -855,6 +855,7 @@ export function BuilderComponent(info: Partial<Component> = {}) {
 
 // TODO
 type Settings = any;
+type AdditionalOptions = object;
 
 export interface Action {
   name: string;
@@ -2186,7 +2187,8 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
-    } = {}
+    } = {},
+    additionalOptions?: AdditionalOptions
   ) {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
@@ -2212,7 +2214,7 @@ export class Builder {
         this.apiVersion = options.apiVersion;
       }
     }
-    return instance.queueGetContent(modelName, options).map(
+    return instance.queueGetContent(modelName, options, additionalOptions).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         if (Builder.isStatic) {
@@ -2244,7 +2246,7 @@ export class Builder {
   }
 
   // TODO: entry id in options
-  queueGetContent(modelName: string, options: GetContentOptions = {}) {
+  queueGetContent(modelName: string, options: GetContentOptions = {}, additionalOptions?: AdditionalOptions) {
     // TODO: if query do modelName + query
     const key =
       options.key ||
@@ -2358,7 +2360,7 @@ export class Builder {
     }
   }
 
-  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
+  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[], additionalOptions?: AdditionalOptions) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content failed, expected apiKey to be defined instead got: ${this.apiKey}`
@@ -2533,7 +2535,7 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = { headers: {} };
+    const requestOptions = { headers: {}, ...additionalOptions };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,
@@ -2701,13 +2703,13 @@ export class Builder {
     return Builder.isBrowser && setCookie(name, value, expires);
   }
 
-  getContent(modelName: string, options: GetContentOptions = {}) {
+  getContent(modelName: string, options: GetContentOptions = {}, additionalOptions?: AdditionalOptions) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content from model ${modelName} failed, expected apiKey to be defined instead got: ${this.apiKey}`
       );
     }
-    return this.queueGetContent(modelName, options);
+    return this.queueGetContent(modelName, options, additionalOptions);
   }
 
   getAll(
@@ -2717,8 +2719,9 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
-    } = {}
-  ): Promise<BuilderContent[]> {
+    } = {},
+    additionalOptions?: AdditionalOptions
+): Promise<BuilderContent[]> {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(
@@ -2760,7 +2763,7 @@ export class Builder {
           Builder.isBrowser
             ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
             : undefined,
-      })
+      }, additionalOptions)
       .promise();
   }
 }
