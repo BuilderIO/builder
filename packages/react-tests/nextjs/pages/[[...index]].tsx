@@ -48,6 +48,23 @@ export default function Page(props: PageProps & { apiVersion: any }) {
     if (!router.asPath.includes('can-track-false') && !router.asPath.includes('symbol-tracking')) {
       builder.canTrack = true;
     }
+    if (router.asPath.includes('get-query')) {
+      builder
+        .get('', {
+          ...props,
+          ...props['options'],
+        })
+        .promise()
+        .then();
+    } else if (router.asPath.includes('get-content')) {
+      builder
+        .get('', {
+          ...props,
+          ...props['options'],
+        })
+        .promise()
+        .then();
+    }
   }, []);
 
   if (router.isFallback) {
