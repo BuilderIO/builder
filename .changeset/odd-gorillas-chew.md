@@ -11,4 +11,22 @@
 '@builder.io/react': patch
 ---
 
-Adds a second argument, which is optional, to the type of onChange function for Input interface
+[Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+
+Before:
+
+```ts
+onChange?: 
+  | ((options: Map<string, any>) => void | Promise<void>) 
+  | string;
+```
+
+After:
+
+```ts
+  onChange?:
+    | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+    | string;
+```
+
