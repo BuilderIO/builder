@@ -22,7 +22,6 @@ import { ProductInfoComponent } from './product-info/product-info.component';
   template: `
     <app-header />
 
-    <!-- Product info -->
     <app-product-info [product]="product" />
 
     <builder-content [content]="editorial" model="product-editorial" />
