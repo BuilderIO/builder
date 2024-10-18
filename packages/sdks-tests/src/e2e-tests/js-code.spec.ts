@@ -43,7 +43,16 @@ test.describe('JS Code', () => {
     await msgPromise;
   });
 
-  test('runs code inside Browser.isBrowser (after client-side navigation)', async ({ page }) => {
+  test('runs code inside Browser.isBrowser (after client-side navigation)', async ({
+    page,
+    sdk,
+  }) => {
+    // this isn't really client-side navigation in most frameworks
+    // except for sveltekit I think which automatically hijacks anchor tags
+
+    // therefore this test is not applicable to these frameworks which will ssr the page
+    test.skip(excludeTestFor(['qwik', 'rsc'], sdk));
+
     await page.goto('/');
     const msgPromise = page.waitForEvent('console', msg => msg.text().includes('hello world'));
 
