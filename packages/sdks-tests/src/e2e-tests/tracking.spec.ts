@@ -37,13 +37,12 @@ test.describe('Tracking', () => {
     });
     test('appear by default', async ({ page, context, sdk }) => {
       test.fail(excludeRn(sdk));
-      const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST',
         { timeout: 10000 }
       );
 
-      await navigate;
+      await page.goto('/');
       // By waiting for the tracking POST request, we guarantee that the cookie is now set.
       await trackingRequestPromise;
 
@@ -54,14 +53,13 @@ test.describe('Tracking', () => {
   });
   test.describe('POST data', () => {
     test('POSTs correct impression data', async ({ page, sdk }) => {
-      const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         request =>
           request.url().includes('cdn.builder.io/api/v1/track') && request.method() === 'POST',
         { timeout: 10000 }
       );
+      await page.goto('/');
 
-      await navigate;
       const trackingRequest = await trackingRequestPromise;
 
       const data = trackingRequest.postDataJSON();
@@ -100,7 +98,6 @@ test.describe('Tracking', () => {
 
     test('POSTs correct click data', async ({ page, sdk }) => {
       test.skip(excludeGen1(sdk));
-      await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
           request.url().includes('cdn.builder.io/api/v1/track') &&
@@ -108,6 +105,8 @@ test.describe('Tracking', () => {
           request.postDataJSON().events[0].type === 'click',
         { timeout: 10000 }
       );
+
+      await page.goto('/', { waitUntil: 'networkidle' });
 
       // click on an element
       await page.click('text=SDK Feature testing project');
