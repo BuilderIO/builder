@@ -1,5 +1,15 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 2.0.21
+
+### Patch Changes
+
+- 269db7b: Fix: execute JS code and make http requests on Content initialization (instead of "on mount")
+- 269db7b: Various improvements to edge runtime interpreter:
+
+  - Correctly handle code blocks with async/await polyfills (typically `jsCode` blocks)
+  - Improve handling of getters and setters on `state` values
+
 ## 2.0.20
 
 ### Patch Changes
