@@ -16,7 +16,7 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
         <h1>Acme company</h1>
       </div>
 
-      <app-nav-links [links]="links" *ngIf="links" />
+      <app-nav-links [links]="links" />
 
       <div style="display: flex; gap: 10px;">
         <button>Login</button>
