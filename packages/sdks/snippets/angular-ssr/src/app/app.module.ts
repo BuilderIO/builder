@@ -13,10 +13,10 @@ import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { blogArticleResolver } from './blog-article/blog-article.resolver';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { catchAllResolver } from './catch-all/catch-all.resolver';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { productDetailsResolver } from './product-details/product-details.resolver';
 import { ProductEditorialComponent } from './product-editorial/product-editorial.component';
 import { productEditorialResolver } from './product-editorial/product-editorial.resolver';
-import { productDetailsResolver } from './product-details/product-details.resolver';
-import { ProductDetailsComponent } from './product-details/product-details.component';
 
 @NgModule({
   declarations: [AppComponent],
