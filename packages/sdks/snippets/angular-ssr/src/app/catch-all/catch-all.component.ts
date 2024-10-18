@@ -3,12 +3,15 @@
  * snippets/angular-ssr/src/app/catch-all/catch-all.component.ts
  */
 
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { type BuilderContent } from '@builder.io/sdk-angular';
+import { Content, type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-catchall',
+  standalone: true,
+  imports: [Content, CommonModule],
   template: `
     <ng-container *ngIf="content; else notFound">
       <builder-content

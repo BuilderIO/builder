@@ -54,15 +54,57 @@ export type Query = {
 };
 import { CheerioAPI, Cheerio, load } from 'cheerio';
 
-export function trimHtml(html: string, userAttributes: UserAttributes): string {
-  const $ = load(html);
+type OptionalXOR<T, K extends keyof T> =
+  | ({ [P in K]-?: T[P] } & { [P in Exclude<keyof T, K>]?: T[P] })
+  | ({ [P in K]?: T[P] } & { [P in Exclude<keyof T, K>]-?: T[P] });
 
-  $('.builder-personalization-container').each((_, element) => {
-    const a = $(element);
-    processContainer($, a, userAttributes);
-  });
+type TrimHtmlOptions = OptionalXOR<
+  {
+    userAttributes: UserAttributes;
+    abTests: Record<string, string>;
+  },
+  'userAttributes' | 'abTests'
+>;
 
-  return $('body').html() || '';
+export function trimHtml(html: string, options: TrimHtmlOptions): { html: string } {
+  let $ = load(html);
+  if (options.abTests) {
+    Object.entries(options.abTests).forEach(([contentId, winningVariantId]) => {
+      const $content = $(`.builder-component-${contentId}`);
+      if ($content.length) {
+        processAbTest($, $content, winningVariantId);
+      }
+    });
+    $ = load($.html() || '');
+  }
+
+  if (options.userAttributes) {
+    $('.builder-personalization-container').each((_, element) => {
+      processContainer($, $(element), options.userAttributes!);
+    });
+  }
+
+  return {
+    html: $('body').html() || '',
+  };
+}
+
+function processAbTest($: CheerioAPI, $content: Cheerio<any>, winningVariantId: string) {
+  const $templates = $content.find('template[data-template-variant-id]');
+  const $script = $content.find('script[id^="variants-script-"]');
+
+  if ($templates.length > 0 && $script.length > 0) {
+    const $winningTemplate = $content.find(
+      `template[data-template-variant-id="${winningVariantId}"]`
+    );
+
+    if ($winningTemplate.length) {
+      $content.html($winningTemplate.html() || '');
+    } else {
+      // If winning template not found, keep default content
+      $content.find('template, script').remove();
+    }
+  }
 }
 
 function processContainer($: CheerioAPI, $container: Cheerio<any>, userAttributes: UserAttributes) {

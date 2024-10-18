@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 5.0.5
+
+### Patch Changes
+
+- 0fc86b4: Fix: server-side-rendering of dynamic style bindings
+
 ## 5.0.4
 
 ### Patch Changes
