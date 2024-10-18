@@ -787,7 +787,7 @@ export class BuilderComponent extends React.Component<
   get isPreviewing() {
     return (
       (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing && !this.firstLoad)) &&
-      builder.previewingModel === this.name
+      (builder.previewingModel === this.name || builder.previewingModel === 'BUILDER_STUDIO')
     );
   }
 
