@@ -302,6 +302,7 @@ export type GetContentOptions = AllowEnrich & {
    * If you use the `reference` field to pull in other content without this
    * enabled we will not fetch that content for the final response.
    * @deprecated use `enrich` instead
+   * text for test
    */
   includeRefs?: boolean;
   /**
