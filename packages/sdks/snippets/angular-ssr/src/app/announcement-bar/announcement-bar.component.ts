@@ -4,12 +4,15 @@
  * src/app/announcement-bar/announcement-bar.component.ts
  */
 
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { type BuilderContent } from '@builder.io/sdk-angular';
+import { Content, type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-announcement-bar',
+  standalone: true,
+  imports: [Content, CommonModule],
   template: `
     <ng-container *ngIf="content">
       <builder-content

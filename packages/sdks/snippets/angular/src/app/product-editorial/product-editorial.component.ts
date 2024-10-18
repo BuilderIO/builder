@@ -22,16 +22,9 @@ import { ProductInfoComponent } from './product-info/product-info.component';
   template: `
     <app-header />
 
-    <!-- Product info -->
     <app-product-info [product]="product" />
 
-    <!-- Builder content -->
-    <builder-content
-      *ngIf="editorial"
-      [content]="editorial"
-      model="product-editorial"
-    >
-    </builder-content>
+    <builder-content [content]="editorial" model="product-editorial" />
 
     <app-footer />
   `,
