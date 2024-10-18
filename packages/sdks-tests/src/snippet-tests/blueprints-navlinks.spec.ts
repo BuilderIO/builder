@@ -3,7 +3,7 @@ import { test } from '../helpers/index.js';
 
 test.describe('Nav Bar Components', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular'].includes(packageName));
+    test.skip(!['angular', 'angular-ssr'].includes(packageName));
     // Visit the page where NavBarComponent is rendered
     await page.goto('/landing-page');
   });
