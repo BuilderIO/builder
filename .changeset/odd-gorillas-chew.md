@@ -8,6 +8,7 @@
 '@builder.io/sdk-solid': patch
 '@builder.io/sdk-svelte': patch
 '@builder.io/sdk-vue': patch
+'@builder.io/react': patch
 ---
 
 Adds a second argument, which is optional, to the type of onChange function for Input interface
