@@ -1,5 +1,12 @@
 # @builder.io/sdk
 
+## 3.0.3
+
+### Patch Changes
+
+- d403fca: Adds `apiEndpoint` prop to `builder.get()` and `builder.getAll()` with options `'content'` and `'query'`. It dictates which API endpoint is used for the content fetching.
+  Defaults to `'query'`
+
 ## 3.0.2
 
 ### Patch Changes
