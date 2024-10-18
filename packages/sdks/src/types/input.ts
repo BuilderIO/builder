@@ -121,7 +121,12 @@ export interface Input {
   valueType?: {
     type?: string;
   };
-  onChange?: ((options: Map<string, any>) => void | Promise<void>) | string;
+  onChange?:
+    | ((
+        options: Map<string, any>,
+        previousOptions?: Map<string, any>
+      ) => void | Promise<void>)
+    | string;
 
   meta?: Record<string, any>;
 }
