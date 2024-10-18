@@ -1,5 +1,14 @@
 # @builder.io/react
 
+## 5.0.6
+
+### Patch Changes
+
+- d403fca: Adds `apiEndpoint` prop to `builder.get()` and `builder.getAll()` with options `'content'` and `'query'`. It dictates which API endpoint is used for the content fetching.
+  Defaults to `'query'`
+- Updated dependencies [d403fca]
+  - @builder.io/sdk@3.0.3
+
 ## 5.0.5
 
 ### Patch Changes
