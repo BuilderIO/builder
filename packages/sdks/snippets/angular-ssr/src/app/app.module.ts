@@ -13,6 +13,10 @@ import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { blogArticleResolver } from './blog-article/blog-article.resolver';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { catchAllResolver } from './catch-all/catch-all.resolver';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { navBarResolver } from './nav-bar/nav-bar.resolver';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { productDetailsResolver } from './product-details/product-details.resolver';
 import { ProductEditorialComponent } from './product-editorial/product-editorial.component';
 import { productEditorialResolver } from './product-editorial/product-editorial.resolver';
 
@@ -38,6 +42,16 @@ import { productEditorialResolver } from './product-editorial/product-editorial.
         path: 'products/:id',
         component: ProductEditorialComponent,
         resolve: { productData: productEditorialResolver },
+      },
+      {
+        path: 'product/category/:handle',
+        component: ProductDetailsComponent,
+        resolve: { productDetails: productDetailsResolver },
+      },
+      {
+        path: 'landing-page',
+        component: NavBarComponent,
+        resolve: { navLinks: navBarResolver },
       },
       {
         path: '**',

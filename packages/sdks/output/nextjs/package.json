@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io RSC SDK for NextJS App Directory",
-  "version": "0.16.13",
+  "version": "0.16.14",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/nextjs",
   "repository": {
     "type": "git",
