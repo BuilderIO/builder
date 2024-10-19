@@ -22,7 +22,6 @@ export default function Text(props: TextProps) {
             localState,
             rootState,
             rootSetState,
-            enableCache: false,
           }) as string
       );
     },

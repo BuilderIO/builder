@@ -34,7 +34,6 @@ const initStorage = () => {
     defaultExpires: ONE_DAY * 30,
 
     // cache data in the memory. default is true.
-    enableCache: true,
   });
 
   return storage;
