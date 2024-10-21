@@ -20,6 +20,7 @@ test.describe('JS Code', () => {
     const menuLocator = page.locator('text=jsCode text');
     await expect(menuLocator).toBeVisible();
   });
+
   test('runs code in SSR (JS disabled)', async ({ browser, packageName }) => {
     test.fail(!isSSRFramework(packageName));
 
