@@ -231,7 +231,7 @@ const INVALID_EXPRESSIONS = [
   'var _virtual_index=state.foo.bar + 10;return _virtual_index',
 ];
 
-describe.only('getSimpleExpressionGetPath', () => {
+describe('getSimpleExpressionGetPath', () => {
   VALID_EXPRESSIONS.forEach((expression) => {
     test(`returns the path from "${expression}"`, () => {
       expect(getSimpleExpressionGetPath(expression)).toBeDefined();
