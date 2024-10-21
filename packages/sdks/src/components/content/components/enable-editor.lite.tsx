@@ -341,6 +341,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           angular: () => INJECT_EDITING_HOOK_HERE,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          vue: () => INJECT_EDITING_HOOK_HERE,
           default: () => {
             if (elementRef) {
               elementRef.dispatchEvent(new CustomEvent('initeditingbldr'));
