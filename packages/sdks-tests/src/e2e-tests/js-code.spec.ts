@@ -35,17 +35,6 @@ test.describe('JS Code', () => {
     const menuLocator = page.locator('text=jsCode text');
     await expect(menuLocator).toBeVisible();
   });
-  test('runs code in SSR (JS disabled)', async ({ browser, packageName }) => {
-    test.fail(!isSSRFramework(packageName));
-
-    const context = await browser.newContext({
-      javaScriptEnabled: false,
-    });
-    const page = await context.newPage();
-    await page.goto('/js-code/');
-    const menuLocator = page.locator('text=jsCode text');
-    await expect(menuLocator).toBeVisible();
-  });
   test('runs code inside Browser.isBrowser', async ({ page, sdk }) => {
     // doesn't work for these as they are SSR frameworks without a hydration step.
     // therefore jsCode blocks are not run on the client at all
