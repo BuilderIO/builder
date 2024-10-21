@@ -2,7 +2,7 @@ import './scripts/init-editing';
 
 import { builder, Builder } from '@builder.io/sdk';
 export { BuilderElement } from '@builder.io/sdk';
-import { SDK_VERSION } from 'sdk-version';
+import { SDK_VERSION } from './sdk-version';
 
 Builder.isReact = true;
 Builder.sdkInfo = {

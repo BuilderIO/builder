@@ -1,1 +1,0 @@
-export const SDK_VERSION = 'UNKNOWN_VERSION';

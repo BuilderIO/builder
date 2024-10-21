@@ -1,4 +1,4 @@
-import { SDK_VERSION } from '../../sdk-version';
+import { SDK_VERSION } from '../sdk-version';
 
 if (typeof window !== 'undefined') {
   window.parent?.postMessage(
