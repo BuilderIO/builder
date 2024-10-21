@@ -307,10 +307,26 @@ export default function EnableEditor(props: BuilderEditorProps) {
     'initpreviewingbldr',
     () => {
       const searchParams = new URL(location.href).searchParams;
+      const builderPreviewSearchParams = searchParams.get('builder.preview');
+      if (builderPreviewSearchParams === 'BUILDER_STUDIO') {
+        searchParams.set('builder.preview', props.model || '');
+      }
+
       const searchParamPreviewModel = searchParams.get('builder.preview');
+
+      console.log('searchParamPreviewModel', searchParamPreviewModel);
+
+      if (builderPreviewSearchParams === 'BUILDER_STUDIO') {
+        searchParams.set(
+          `builder.overrides.${searchParamPreviewModel}`,
+          props.content?.id || ''
+        );
+      }
+
       const searchParamPreviewId = searchParams.get(
         `builder.overrides.${searchParamPreviewModel}`
       );
+      console.log('searchParamPreviewId', searchParamPreviewId);
       const previewApiKey =
         searchParams.get('apiKey') || searchParams.get('builder.space');
 
@@ -324,7 +340,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
        * TO-DO: should we only update the state when there is a change?
        **/
       if (
-        searchParamPreviewModel === props.model &&
+        (searchParamPreviewModel === props.model ||
+          searchParamPreviewModel === 'BUILDER_STUDIO') &&
         previewApiKey === props.apiKey &&
         (!props.content || searchParamPreviewId === props.content.id)
       ) {
@@ -333,6 +350,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
         }).then((content) => {
+          console.log('CONTENT', content);
           if (content) {
             state.mergeNewContent(content);
           }

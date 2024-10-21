@@ -7,7 +7,10 @@ import type { GetContentOptions } from './types.js';
 const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
-export const generateContentUrl = (options: GetContentOptions): URL => {
+export const generateContentUrl = (
+  options: GetContentOptions,
+  contentId?: string
+): URL => {
   const {
     limit = 30,
     userAttributes,
@@ -83,7 +86,10 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   // TODO: how to express 'offset' in the url - as direct queryparam or as flattened in options[key] ?
 
   const queryOptions = {
-    ...getBuilderSearchParamsFromWindow(),
+    ...getBuilderSearchParamsFromWindow({
+      model: options.model,
+      contentId: contentId || '',
+    }),
     ...normalizeSearchParams(options.options || {}),
   };
 
@@ -101,5 +107,6 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
       url.searchParams.set(key, JSON.stringify(flattened[key]));
     }
   }
+  console.log('generateContentUrl', url.href);
   return url;
 };

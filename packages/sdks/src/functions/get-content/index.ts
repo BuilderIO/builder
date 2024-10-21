@@ -19,6 +19,7 @@ const checkContentHasResults = (
 export async function fetchOneEntry(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
+  console.log('fetchOneEntry start');
   const allContent = await fetchEntries({ ...options, limit: 1 });
 
   if (allContent) {
@@ -94,9 +95,16 @@ export const _processContentResult = async (
 /**
  * Returns a paginated array of entries that match the given options.
  */
-export async function fetchEntries(options: GetContentOptions) {
+export async function fetchEntries(
+  options: GetContentOptions,
+  contentId?: string
+) {
   try {
-    const url = generateContentUrl(options);
+    const contents = await _fetchContent(options);
+    console.log('contents', contents);
+
+    const url = generateContentUrl(options, contentId);
+    console.log('fetchEntries url = ', url);
     const content = await _fetchContent(options);
 
     if (!checkContentHasResults(content)) {
@@ -106,6 +114,7 @@ export async function fetchEntries(options: GetContentOptions) {
 
     return _processContentResult(options, content);
   } catch (error) {
+    console.log(error);
     logger.error('Error fetching data. ', error);
     return null;
   }
