@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`getSimpleExpressionGetPath > returns the path from "return state.foo.bar" 1`] = `"foo.bar"`;
+
+exports[`getSimpleExpressionGetPath > returns the path from "return state.foo.bar;" 1`] = `"foo.bar"`;
+
+exports[`getSimpleExpressionGetPath > returns the path from "state.foo.bar" 1`] = `"foo.bar"`;
+
+exports[`getSimpleExpressionGetPath > returns the path from "state.foo.bar;" 1`] = `"foo.bar"`;

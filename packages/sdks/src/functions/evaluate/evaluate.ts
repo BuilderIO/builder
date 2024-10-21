@@ -6,7 +6,11 @@ import { getBuilderGlobals, parseCode } from './helpers.js';
 
 type EvalValue = unknown;
 
-const STATE_GETTER_REGEX = /^(return )(\s*)?state(?<getPath>(\.\w+)+)(\s*);?$/;
+const STATE_GETTER_REGEX = /^(return )?(\s*)?state(?<getPath>(\.\w+)+)(\s*);?$/;
+
+export const getSimpleExpressionGetPath = (code: string) => {
+  return STATE_GETTER_REGEX.exec(code.trim())?.groups?.getPath?.slice(1);
+};
 
 export function evaluate({
   code,
@@ -27,9 +31,9 @@ export function evaluate({
    * We try not to take many risks with this optimizations, so we only do it for
    * `state.{path}` expressions.
    */
-  const match = STATE_GETTER_REGEX.exec(code.trim());
-  if (match?.groups?.getPath) {
-    return get({ ...rootState, ...localState }, match.groups.getPath.slice(1));
+  const getPath = getSimpleExpressionGetPath(code.trim());
+  if (getPath) {
+    return get({ ...rootState, ...localState }, getPath);
   }
 
   const args: ExecutorArgs = {

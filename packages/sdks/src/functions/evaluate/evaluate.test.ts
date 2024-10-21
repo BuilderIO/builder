@@ -1,4 +1,4 @@
-import { evaluate } from './evaluate';
+import { evaluate, getSimpleExpressionGetPath } from './evaluate';
 import { getBuilderGlobals, parseCode } from './helpers';
 
 const DEFAULTS = {
@@ -210,6 +210,37 @@ describe(`evaluate (${process.env.SDK_ENV})`, () => {
 
     randomKeys.forEach((key) => {
       TESTS[key as keyof typeof TESTS]();
+    });
+  });
+});
+
+const VALID_EXPRESSIONS = [
+  'return state.foo.bar',
+  'return state.foo.bar;',
+  'state.foo.bar',
+  'state.foo.bar;',
+  'var _virtual_index=state.foo.bar;return _virtual_index',
+  'var _virtual_index=state.foo.bar ;return _virtual_index',
+];
+
+const INVALID_EXPRESSIONS = [
+  'return state.foo.bar + 10',
+  'return state.foo.bar + 10;',
+  'state.foo.bar + 10',
+  'state.foo.bar + 10;',
+  'var _virtual_index=state.foo.bar + 10;return _virtual_index',
+];
+
+describe.only('getSimpleExpressionGetPath', () => {
+  VALID_EXPRESSIONS.forEach((expression) => {
+    test(`returns the path from "${expression}"`, () => {
+      expect(getSimpleExpressionGetPath(expression)).toBeDefined();
+      expect(getSimpleExpressionGetPath(expression)).toMatchSnapshot();
+    });
+  });
+  INVALID_EXPRESSIONS.forEach((expression) => {
+    test(`returns undefined for "${expression}"`, () => {
+      expect(getSimpleExpressionGetPath(expression)).toBeUndefined();
     });
   });
 });
