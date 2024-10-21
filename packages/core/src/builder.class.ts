@@ -280,6 +280,12 @@ export type GetContentOptions = AllowEnrich & {
    * Defaults to `'query'`.
    */
   apiEndpoint?: 'content' | 'query';
+
+  /**
+   * Optional fetch options to be passed as the second argument to the `fetch` function.
+   */
+  fetchOptions?: object;
+
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
@@ -861,7 +867,6 @@ export function BuilderComponent(info: Partial<Component> = {}) {
 
 // TODO
 type Settings = any;
-type AdditionalOptions = object;
 
 export interface Action {
   name: string;
@@ -2193,8 +2198,7 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
-    } = {},
-    additionalOptions?: AdditionalOptions
+    } = {}
   ) {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
@@ -2220,7 +2224,7 @@ export class Builder {
         this.apiVersion = options.apiVersion;
       }
     }
-    return instance.queueGetContent(modelName, options, additionalOptions).map(
+    return instance.queueGetContent(modelName, options).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         if (Builder.isStatic) {
@@ -2252,7 +2256,7 @@ export class Builder {
   }
 
   // TODO: entry id in options
-  queueGetContent(modelName: string, options: GetContentOptions = {}, additionalOptions?: AdditionalOptions) {
+  queueGetContent(modelName: string, options: GetContentOptions = {}) {
     // TODO: if query do modelName + query
     const key =
       options.key ||
@@ -2366,7 +2370,7 @@ export class Builder {
     }
   }
 
-  private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
+  private makeFetchApiCall(url: string, requestOptions: SimplifiedFetchOptions): Promise<any> {
     return getFetch()(url, requestOptions);
   }
 
@@ -2388,7 +2392,7 @@ export class Builder {
     return _res;
   }
 
-  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[], additionalOptions?: AdditionalOptions) {
+  private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content failed, expected apiKey to be defined instead got: ${this.apiKey}`
@@ -2584,10 +2588,10 @@ export class Builder {
 
     const queryStr = QueryString.stringifyDeep(queryParams);
 
-    const requestOptions = { headers: {}, ...additionalOptions };
+    const fetchOptions = { headers: {}, ...queue[0].fetchOptions };
     if (this.authToken) {
-      requestOptions.headers = {
-        ...requestOptions.headers,
+      fetchOptions.headers = {
+        ...fetchOptions.headers,
         Authorization: `Bearer ${this.authToken}`,
       };
     }
@@ -2603,7 +2607,7 @@ export class Builder {
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
-    const promise = this.makeFetchApiCall(url, requestOptions)
+    const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
       .then(
         result => {
@@ -2755,13 +2759,13 @@ export class Builder {
     return Builder.isBrowser && setCookie(name, value, expires);
   }
 
-  getContent(modelName: string, options: GetContentOptions = {}, additionalOptions?: AdditionalOptions) {
+  getContent(modelName: string, options: GetContentOptions = {}) {
     if (!this.apiKey) {
       throw new Error(
         `Fetching content from model ${modelName} failed, expected apiKey to be defined instead got: ${this.apiKey}`
       );
     }
-    return this.queueGetContent(modelName, options, additionalOptions);
+    return this.queueGetContent(modelName, options);
   }
 
   getAll(
@@ -2771,9 +2775,8 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
-    } = {},
-    additionalOptions?: AdditionalOptions
-): Promise<BuilderContent[]> {
+    } = {}
+  ): Promise<BuilderContent[]> {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(
@@ -2815,7 +2818,7 @@ export class Builder {
           Builder.isBrowser
             ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
             : undefined,
-      }, additionalOptions)
+      })
       .promise();
   }
 }
