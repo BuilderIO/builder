@@ -2,8 +2,13 @@ import './scripts/init-editing';
 
 import { builder, Builder } from '@builder.io/sdk';
 export { BuilderElement } from '@builder.io/sdk';
+import { SDK_VERSION } from 'sdk-version';
 
 Builder.isReact = true;
+Builder.sdkInfo = {
+  name: 'react',
+  version: SDK_VERSION,
+};
 
 export { BuilderBlocks } from './components/builder-blocks.component';
 export { BuilderBlock as BuilderBlockComponent } from './components/builder-block.component';
