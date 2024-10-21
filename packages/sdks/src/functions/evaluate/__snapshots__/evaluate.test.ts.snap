@@ -7,3 +7,7 @@ exports[`getSimpleExpressionGetPath > returns the path from "return state.foo.ba
 exports[`getSimpleExpressionGetPath > returns the path from "state.foo.bar" 1`] = `"foo.bar"`;
 
 exports[`getSimpleExpressionGetPath > returns the path from "state.foo.bar;" 1`] = `"foo.bar"`;
+
+exports[`getSimpleExpressionGetPath > returns the path from "var _virtual_index=state.foo.bar ;return _virtual_index" 1`] = `"foo.bar"`;
+
+exports[`getSimpleExpressionGetPath > returns the path from "var _virtual_index=state.foo.bar;return _virtual_index" 1`] = `"foo.bar"`;

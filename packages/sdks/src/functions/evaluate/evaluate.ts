@@ -13,8 +13,19 @@ type EvalValue = unknown;
  */
 const STATE_GETTER_REGEX = /^(return )?(\s*)?state(?<getPath>(\.\w+)+)(\s*);?$/;
 
+/**
+ * Handles multi-level gets on state transpiled by rollup with virtual index.
+ * Format: `var _virtual_index=state.x.y.z;return _virtual_index`
+ * see https://regexr.com/87ai4
+ */
+const VIRTUAL_INDEX_REGEX =
+  /(\s)*var(\s)+_virtual_index(\s)*=(\s)*state(?<getPath>(\.\w+)+)(\s*);?(\s)*return(\s)*_virtual_index(\s)*/;
+
 export const getSimpleExpressionGetPath = (code: string) => {
-  return STATE_GETTER_REGEX.exec(code.trim())?.groups?.getPath?.slice(1);
+  return (
+    STATE_GETTER_REGEX.exec(code.trim())?.groups?.getPath?.slice(1) ||
+    VIRTUAL_INDEX_REGEX.exec(code.trim())?.groups?.getPath?.slice(1)
+  );
 };
 
 export function evaluate({
