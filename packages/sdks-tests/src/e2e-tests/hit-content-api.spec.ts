@@ -20,4 +20,22 @@ test.describe('Get Content', () => {
     await page.goto('/get-content', { waitUntil: 'networkidle' });
     expect(contentApiInvocations).toBe(1);
   });
+  test('passes fetch options', async ({ page, sdk }) => {
+    test.skip(!excludeGen1(sdk));
+
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
+
+    let headers: Record<string, string> = {};
+
+    await page.route(urlMatch, route => {
+      headers = route.request().headers();
+      return route.fulfill({
+        status: 200,
+        json: {},
+      });
+    });
+
+    await page.goto('/with-fetch-options', { waitUntil: 'networkidle' });
+    expect(headers['x-test']).toBe('test');
+  });
 });

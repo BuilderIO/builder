@@ -64,6 +64,18 @@ export default function Page(props: PageProps & { apiVersion: any }) {
         })
         .promise()
         .then();
+    } else if (router.asPath.includes('with-fetch-options')) {
+      builder
+        .get('', {
+          ...props,
+          fetchOptions: {
+            headers: {
+              'x-test': 'test',
+            },
+          },
+        })
+        .promise()
+        .then();
     }
   }, []);
 
