@@ -9,7 +9,7 @@ type EvalValue = unknown;
 /** 
  * handles multi-level gets on state: `state.x.y.z`
  * does not handle bracket notation
- * see regexr.com/87a9j
+ * see https://regexr.com/87a9j
  */
 const STATE_GETTER_REGEX = /^(return )(\s*)?state(?<getPath>(\.\w+)+)(\s*);?$/;
 
