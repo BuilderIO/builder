@@ -32,8 +32,6 @@ const initStorage = () => {
     // expire time, default: 1 day (1000 * 3600 * 24 milliseconds).
     // can be null, which means never expire.
     defaultExpires: ONE_DAY * 30,
-
-    // cache data in the memory. default is true.
   });
 
   return storage;
