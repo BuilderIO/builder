@@ -198,7 +198,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
               localState: undefined,
               rootState: props.builderContextSignal.value.rootState,
               rootSetState: props.builderContextSignal.value.rootSetState,
-              enableCache: true,
             })
           )
         );
