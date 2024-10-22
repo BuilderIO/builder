@@ -276,6 +276,11 @@ type AllowEnrich =
 
 export type GetContentOptions = AllowEnrich & {
   /**
+   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
+   * Defaults to `'query'`.
+   */
+  apiEndpoint?: 'content' | 'query';
+  /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
    *
@@ -379,6 +384,7 @@ export type GetContentOptions = AllowEnrich & {
    * Set to `false` to not cache responses when running on the client.
    */
   cache?: boolean;
+
   /**
    * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
    * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
@@ -624,7 +630,10 @@ export interface Input {
    */
   advanced?: boolean;
   /** @hidden */
-  onChange?: Function | string;
+  onChange?: (
+    options: any,
+    previousOptions?: any
+  ) => Promise<void> | ((options: any, previousOptions?: any) => void) | string | void | undefined;
   /** @hidden */
   code?: boolean;
   /** @hidden */
@@ -2358,6 +2367,28 @@ export class Builder {
     }
   }
 
+  private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
+    return getFetch()(url, requestOptions);
+  }
+
+  private flattenMongoQuery(obj: any, _current?: any, _res: any = {}): { [key: string]: string } {
+    for (const key in obj) {
+      const value = obj[key];
+      const newKey = _current ? _current + '.' + key : key;
+      if (
+        value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !Object.keys(value).find(item => item.startsWith('$'))
+      ) {
+        this.flattenMongoQuery(value, newKey, _res);
+      } else {
+        _res[newKey] = value;
+      }
+    }
+    return _res;
+  }
+
   private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
     if (!this.apiKey) {
       throw new Error(
@@ -2378,6 +2409,8 @@ export class Builder {
     }
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
+
+    const apiEndpoint = queue[0].apiEndpoint || 'query';
 
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
@@ -2473,8 +2506,10 @@ export class Builder {
     }
 
     for (const options of queue) {
-      if (options.format) {
-        queryParams.format = options.format;
+      const format = options.format;
+
+      if (format) {
+        queryParams.format = format;
       }
       // TODO: remove me and make permodel
       if (options.static) {
@@ -2508,9 +2543,13 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          queryParams.options = queryParams.options || {};
-          queryParams.options[options.key!] = queryParams.options[options.key!] || {};
-          queryParams.options[options.key!][key] = JSON.stringify(value);
+          if (apiEndpoint === 'query') {
+            queryParams.options = queryParams.options || {};
+            queryParams.options[options.key!] = queryParams.options[options.key!] || {};
+            queryParams.options[options.key!][key] = JSON.stringify(value);
+          } else {
+            queryParams[key] = JSON.stringify(value);
+          }
         }
       }
     }
@@ -2529,9 +2568,22 @@ export class Builder {
       assign(queryParams, params);
     }
 
-    const queryStr = QueryString.stringifyDeep(queryParams);
-
     const format = queryParams.format;
+    const isApiCallForCodegen = format === 'solid' || format === 'react';
+    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
+
+    if (apiEndpoint === 'content') {
+      queryParams.enrich = true;
+      if (queue[0].query) {
+        const flattened = this.flattenMongoQuery({ query: queue[0].query });
+        for (const key in flattened) {
+          queryParams[key] = flattened[key];
+        }
+        delete queryParams.query;
+      }
+    }
+
+    const queryStr = QueryString.stringifyDeep(queryParams);
 
     const requestOptions = { headers: {} };
     if (this.authToken) {
@@ -2541,15 +2593,18 @@ export class Builder {
       };
     }
 
-    const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
+    let url;
+    if (isApiCallForCodegen) {
+      url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
+    } else if (apiEndpoint === 'query') {
+      url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
+    } else {
+      url = `${host}/api/v3/content/${queue[0].model}`;
+    }
 
-    // NOTE: this is a hack to get around the fact that the codegen endpoint is not yet available in v3
-    const apiVersionBasedOnFn = fn === 'query' ? this.apiVersion : 'v1';
-    const url =
-      `${host}/api/${apiVersionBasedOnFn}/${fn}/${this.apiKey}/${keyNames}` +
-      (queryParams && hasParams ? `?${queryStr}` : '');
+    url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
-    const promise = getFetch()(url, requestOptions)
+    const promise = this.makeFetchApiCall(url, requestOptions)
       .then(res => res.json())
       .then(
         result => {
@@ -2568,7 +2623,7 @@ export class Builder {
             if (!observer) {
               return;
             }
-            const data = result[keyName];
+            const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer
