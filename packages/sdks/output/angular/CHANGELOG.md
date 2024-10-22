@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.20
+
+### Patch Changes
+
+- 4660aa6: Feature: optimize simple `state.*` read access bindings by avoiding runtime-specific eval, and instead fetching the value directly from the state
+
 ## 0.2.19
 
 ### Patch Changes
