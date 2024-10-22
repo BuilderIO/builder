@@ -314,8 +314,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
       const searchParamPreviewModel = searchParams.get('builder.preview');
 
-      console.log('searchParamPreviewModel', searchParamPreviewModel);
-
       if (builderPreviewSearchParams === 'BUILDER_STUDIO') {
         searchParams.set(
           `builder.overrides.${searchParamPreviewModel}`,
@@ -326,7 +324,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
       const searchParamPreviewId = searchParams.get(
         `builder.overrides.${searchParamPreviewModel}`
       );
-      console.log('searchParamPreviewId', searchParamPreviewId);
       const previewApiKey =
         searchParams.get('apiKey') || searchParams.get('builder.space');
 
@@ -350,7 +347,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
         }).then((content) => {
-          console.log('CONTENT', content);
           if (content) {
             state.mergeNewContent(content);
           }

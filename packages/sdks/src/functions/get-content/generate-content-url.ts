@@ -7,10 +7,7 @@ import type { GetContentOptions } from './types.js';
 const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
-export const generateContentUrl = (
-  options: GetContentOptions,
-  contentId?: string
-): URL => {
+export const generateContentUrl = (options: GetContentOptions): URL => {
   const {
     limit = 30,
     userAttributes,
@@ -88,7 +85,6 @@ export const generateContentUrl = (
   const queryOptions = {
     ...getBuilderSearchParamsFromWindow({
       model: options.model,
-      contentId: contentId || '',
     }),
     ...normalizeSearchParams(options.options || {}),
   };
@@ -107,6 +103,5 @@ export const generateContentUrl = (
       url.searchParams.set(key, JSON.stringify(flattened[key]));
     }
   }
-  console.log('generateContentUrl', url.href);
   return url;
 };
