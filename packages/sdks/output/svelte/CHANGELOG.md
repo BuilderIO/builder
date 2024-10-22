@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 2.0.23
+
+### Patch Changes
+
+- 4660aa6: Feature: optimize simple `state.*` read access bindings by avoiding runtime-specific eval, and instead fetching the value directly from the state
+
 ## 2.0.22
 
 ### Patch Changes
