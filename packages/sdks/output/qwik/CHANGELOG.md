@@ -1,5 +1,56 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.15
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+## 0.16.14
+
+### Patch Changes
+
+- 269db7b: Fix: execute JS code and make http requests on Content initialization (instead of "on mount")
+- 269db7b: Various improvements to edge runtime interpreter:
+
+  - Correctly handle code blocks with async/await polyfills (typically `jsCode` blocks)
+  - Improve handling of getters and setters on `state` values
+
+## 0.16.13
+
+### Patch Changes
+
+- 348de96: Fix: remove node-runtime logic from browser and edge bundles
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 0.16.11
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 0.16.10
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.16.9
 
 ### Patch Changes

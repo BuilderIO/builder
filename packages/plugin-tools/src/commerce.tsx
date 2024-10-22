@@ -52,7 +52,7 @@ export const registerCommercePlugin = async (
       const contextProps = {
         resourceName,
         pluginId: config.id,
-        plulginName: config.name,
+        pluginName: config.name,
         api: apiOperations,
       };
       Builder.register('editor.onLoad', onEditorLoad(config, apiOperations, resourceName));

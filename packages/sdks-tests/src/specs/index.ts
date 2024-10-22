@@ -60,6 +60,10 @@ import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layo
 import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
 import type { Sdk } from '../helpers/sdk.js';
 import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-binding.js';
+import { CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT } from './children-slot-placement.js';
+import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
+import { SSR_BINDING_CONTENT } from './ssr-binding.js';
+import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading.js';
 import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
 
 function isBrowser(): boolean {
@@ -137,7 +141,13 @@ export const PAGES = {
   '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
+  '/get-content': HTTP_REQUESTS,
+  '/get-query': HTTP_REQUESTS,
   '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
+  '/children-slot-placement': CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT,
+  '/dynamic-loading': DYNAMIC_LOADING_CUSTOM_COMPONENTS,
+  '/eager-dynamic-loading': EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
+  '/ssr-binding': SSR_BINDING_CONTENT,
   '/blocks-class-name': BLOCKS_CLASS_NAME,
 } as const;
 
@@ -148,7 +158,12 @@ const apiVersionPathToProp = {
 
 export type Path = keyof typeof PAGES;
 
-const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1', '/personalization-container'];
+const GEN1_ONLY_PATHNAMES: Path[] = [
+  '/api-version-v1',
+  '/personalization-container',
+  '/get-query',
+  '/get-content',
+];
 const GEN2_ONLY_PATHNAMES: Path[] = [];
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
@@ -240,6 +255,16 @@ export const getProps = async (args: {
     case '/react-native-strict-style-mode':
       extraProps = {
         strictStyleMode: true,
+      };
+      break;
+    case '/get-content':
+      extraProps = {
+        options: { apiEndpoint: 'content' },
+      };
+      break;
+    case '/get-query':
+      extraProps = {
+        options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
       };
       break;
     case '/symbol-with-repeat-input-binding':

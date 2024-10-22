@@ -71,7 +71,13 @@ export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
               whiteSpace: 'nowrap',
             }}
           >
-            {props.resource.title}
+            {props.resource.title !== 'untitled' ? (
+              <div>
+                {props.resource.title} - {props.resource.id}
+              </div>
+            ) : (
+              props.resource.title
+            )}
           </div>
         }
       />
@@ -284,7 +290,6 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
         {store.resourceInfo && (
           <Paper
             css={{
-              marginBottom: 15,
               position: 'relative',
             }}
           >

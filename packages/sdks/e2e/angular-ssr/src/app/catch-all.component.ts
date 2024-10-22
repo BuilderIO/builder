@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActivatedRoute } from '@angular/router';
+import type { RegisteredComponent } from '@builder.io/sdk-angular';
 import { BuilderBlockWithClassNameComponent } from './builder-block-with-class-name.component';
 import { HelloComponent } from './hello.component';
 
@@ -19,7 +20,7 @@ interface BuilderProps {
   selector: 'catch-all-route',
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content
+      <builder-content
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
@@ -27,7 +28,7 @@ interface BuilderProps {
         [canTrack]="canTrack"
         [customComponents]="customComponents"
         [data]="data"
-      ></content>
+      ></builder-content>
     </ng-container>
 
     <ng-template #notFound>
@@ -43,11 +44,24 @@ export class CatchAllComponent {
   content: BuilderProps['content'];
   data: BuilderProps['data'];
 
-  customComponents = [
+  customComponents: RegisteredComponent[] = [
     {
       component: HelloComponent,
       name: 'Hello',
       inputs: [],
+      defaultChildren: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-ebca7d55d34f4fc9a6536600959cef5d',
+          component: {
+            name: 'Text',
+            options: {
+              text: 'inside an h1',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'BuilderBlockWithClassName',

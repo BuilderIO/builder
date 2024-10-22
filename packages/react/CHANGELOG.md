@@ -1,5 +1,95 @@
 # @builder.io/react
 
+## 5.0.7
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+- Updated dependencies [49d0aa3]
+  - @builder.io/sdk@3.0.4
+
+## 5.0.6
+
+### Patch Changes
+
+- d403fca: Adds `apiEndpoint` prop to `builder.get()` and `builder.getAll()` with options `'content'` and `'query'`. It dictates which API endpoint is used for the content fetching.
+  Defaults to `'query'`
+- Updated dependencies [d403fca]
+  - @builder.io/sdk@3.0.3
+
+## 5.0.5
+
+### Patch Changes
+
+- 0fc86b4: Fix: server-side-rendering of dynamic style bindings
+
+## 5.0.4
+
+### Patch Changes
+
+- bba43e6: This introduces two new custom events to enhance tracking and analytics for personalization container variants:
+
+  1. `builder.variantLoaded`: Fired when a variant is loaded.
+  2. `builder.variantDisplayed`: Fired when a variant becomes visible in the viewport.
+
+  ### Changes
+
+  - Added `builder.variantLoaded` event dispatch when a variant is loaded.
+  - Implemented an Intersection Observer to trigger the `builder.variantDisplayed` event when the variant enters the viewport.
+  - These events are only fired when not in editing or preview mode.
+
+  ### Example Usage
+
+  These events can be listened to for analytics or other custom behaviors:
+
+  ```javascript
+  document.addEventListener("builder.variantLoaded", (event) => {
+    // This will either be a variant object like { name: 'My Variant', query: [...], startDate: ..., endDate: ... }
+    // or the string 'default'
+    console.log("Variant loaded:", event.detail.variant);
+    // This will be the content object like { name: 'My page', id: '...', ... }
+    console.log("Content:", event.detail.content);
+    // Perform analytics or other actions
+  });
+
+  document.addEventListener("builder.variantDisplayed", (event) => {
+    console.log("Variant displayed:", event.detail.variant);
+    console.log("Content:", event.detail.content);
+    // Track impressions or perform other visibility-dependent actions
+  });
+  ```
+
+  ### Benefits
+
+  - Improved tracking capabilities for personalization variants.
+  - Enables more granular analytics for when variants are loaded and actually viewed.
+  - Provides hooks for developers to implement custom behaviors based on variant lifecycle events.
+
+- 8137ce5: Fix: prevent Embed and Custom Code blocks from re-rendering when page orientation changes
+
+## 5.0.3
+
+### Patch Changes
+
+- 20953a8: Disable localization on dynamic container inputs
+
 ## 5.0.2
 
 ### Patch Changes

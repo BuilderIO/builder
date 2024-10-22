@@ -14,9 +14,9 @@ The root of the yarn monorepo is the same as the github repo and called `@builde
 
 ## Nx
 
-Nx is a tool that handles the complexity of building your monorepo when there are a ton of inter-dependencies. By calling `yarn nx build` (instead of `yarn build`), Nx will run all pre-requisite steps so that your `build` command is up-to-date. This vastly simplifies local development & testing.
+Nx is a tool that handles the complexity of building your monorepo when there are a ton of inter-dependencies. By calling `yarn g:nx build` (instead of `yarn build`), Nx will run all pre-requisite steps so that your `build` command is up-to-date. This vastly simplifies local development & testing.
 
-It will also cache the results of each step, so that if you run `yarn nx build` again, it will only run the steps that have changed.
+It will also cache the results of each step, so that if you run `yarn g:nx build` again, it will only run the steps that have changed.
 
 # Gen2 SDKs
 
@@ -37,7 +37,7 @@ Here is the overall picture of what happens during the gen2 SDKs build process:
 - Each individual gen2 SDK is then built using its own build tooling (some use Vite/Rollup, other require more specialized libraries specific to the intended framework).
 - Finally, the integration tests are built and run. Those depend on the SDKs being built first, and also the integration tests (which live under `package/sdks-tests`).
 
-You can visualize all of these relationships by using the Nx graph feature: run `yarn nx graph` anywhere in the mono-repo to launch the graph viewer.
+You can visualize all of these relationships by using the Nx graph feature: run `yarn g:nx graph` anywhere in the mono-repo to launch the graph viewer.
 
 ### SDKs multi bundles
 

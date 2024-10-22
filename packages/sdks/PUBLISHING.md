@@ -14,7 +14,7 @@ The SDKs are meant to be published using the Changeset+Github Action workflow, a
 When testing something, you are free to publish `dev` versions for just one SDK and skip everything mentioned here. Go to the SDK folder of your choice and:
 
 - `yarn version prerelease` to bump the version to the next prerelease (e.g. `0.5.9-1`)
-- `yarn nx release  --tag=dev` to build and release the SDK
+- `yarn g:nx release  --tag=dev` to build and release the SDK
 
 # Steps
 
@@ -45,7 +45,7 @@ yarn g:changeset version
 - release the packages:
 
 ```bash
-yarn nx ci:release
+yarn g:nx ci:release
 ```
 
 ## 5- Update examples (optional)

@@ -3,14 +3,25 @@
  * snippets/angular/src/app/catch-all/catch-all.component.ts
  */
 
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
+import {
+  Content,
+  fetchOneEntry,
+  type BuilderContent,
+} from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-catchall',
+  standalone: true,
+  imports: [Content, CommonModule],
   template: `
     <ng-container *ngIf="content; else notFound">
-      <content [model]="model" [content]="content" [apiKey]="apiKey"></content>
+      <builder-content
+        [model]="model"
+        [content]="content"
+        [apiKey]="apiKey"
+      ></builder-content>
     </ng-container>
 
     <ng-template #notFound>

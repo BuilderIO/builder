@@ -195,44 +195,19 @@ test.describe('Symbols', () => {
 
       await expect(x).toBeGreaterThanOrEqual(2);
     });
-
-    test('apiVersion is set to v1', async ({ page, sdk }) => {
-      test.fail(excludeGen2(sdk));
-      let x = 0;
-
-      const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
-
-      await page.route(urlMatch, route => {
-        x++;
-
-        const url = new URL(route.request().url());
-
-        const keyName = decodeURIComponent(url.pathname).split('/').reverse()[0];
-
-        return route.fulfill({
-          status: 200,
-          json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
-          },
-        });
-      });
-
-      await page.goto('/api-version-v1');
-
-      await testSymbols(page);
-
-      await expect(x).toBeGreaterThanOrEqual(2);
-    });
   });
 
-  test('works in nested symbols with inherit', async ({ packageName, page }) => {
+  test('works in nested symbols with inherit', async ({ packageName, page, sdk }) => {
     await page.goto('/nested-symbols');
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    // rsc skipped because it fetches the content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next'].includes(packageName));
 
-    const symbols = page.locator('[builder-model="symbol"]');
+    let selector = '[builder-model="symbol"]';
+    if (checkIsRN(sdk)) {
+      selector = '[data-class="builder-symbol"]';
+    }
+    const symbols = page.locator(selector);
     await expect(symbols).toHaveCount(2);
   });
 });

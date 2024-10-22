@@ -6,7 +6,7 @@
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vue-tsc --noEmit && vite",
     "serve": "vite preview",
-    "test": "SERVER_NAME=vue yarn nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=vue yarn g:nx test:e2e @sdk/tests"
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
@@ -17,8 +17,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.8",
     "vue-tsc": "^1.8.24"

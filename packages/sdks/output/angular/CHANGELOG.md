@@ -1,5 +1,67 @@
 # @builder.io/sdk-angular
 
+## 0.2.19
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+## 0.2.18
+
+### Patch Changes
+
+- 269db7b: Fix: execute JS code and make http requests on Content initialization (instead of "on mount")
+- 269db7b: Various improvements to edge runtime interpreter:
+
+  - Correctly handle code blocks with async/await polyfills (typically `jsCode` blocks)
+  - Improve handling of getters and setters on `state` values
+
+## 0.2.17
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 0.2.16
+
+### Patch Changes
+
+- 4c43240: Fix: children placement in dynamic components
+
+## 0.2.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 0.2.14
+
+### Patch Changes
+
+- 8bfd467: Fix: update exported selector to `builder-content` to fix usage of Content component in Angular v18
+
+## 0.2.13
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.2.12
 
 ### Patch Changes
