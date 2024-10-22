@@ -1,5 +1,27 @@
 # @builder.io/sdk-angular
 
+## 0.2.19
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
 ## 0.2.18
 
 ### Patch Changes
