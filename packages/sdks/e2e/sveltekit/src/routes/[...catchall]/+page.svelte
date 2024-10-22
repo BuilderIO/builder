@@ -50,7 +50,10 @@
     {#key data.props}
       <Content
         {...data.props}
-        customComponents={[builderBlockWithClassNameCustomComponent]}
+        customComponents={[
+          ...data.customComponents,
+          builderBlockWithClassNameCustomComponent,
+        ]}
       />
     {/key}
   {:else}
