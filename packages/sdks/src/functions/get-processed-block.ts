@@ -89,7 +89,6 @@ const evaluateBindings = ({
       rootState,
       rootSetState,
       context,
-      enableCache: true,
     });
     set(copied, binding, value);
   }

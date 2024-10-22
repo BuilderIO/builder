@@ -636,7 +636,10 @@ export interface Input {
    */
   advanced?: boolean;
   /** @hidden */
-  onChange?: Function | string;
+  onChange?: (
+    options: any,
+    previousOptions?: any
+  ) => Promise<void> | ((options: any, previousOptions?: any) => void) | string | void | undefined;
   /** @hidden */
   code?: boolean;
   /** @hidden */
