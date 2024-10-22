@@ -9,4 +9,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Adds a `className` prop to `Blocks` component in Gen2 SDKs. This will translate to add the same `className` to `BuilderBlocks` component.
+Feature: adds a `className: string` prop to the `Blocks` component used to apply a class to the `div` that wraps each list of blocks.
