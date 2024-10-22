@@ -1,3 +1,4 @@
+import type { Request } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { excludeGen1, test } from '../helpers/index.js';
 
@@ -20,15 +21,15 @@ test.describe('Get Content', () => {
     await page.goto('/get-content', { waitUntil: 'networkidle' });
     expect(contentApiInvocations).toBe(1);
   });
-  test('passes fetch options', async ({ page, sdk }) => {
-    test.skip(!excludeGen1(sdk));
+  test.only('passes fetch options', async ({ page, packageName }) => {
+    test.skip(packageName !== 'gen1-next');
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
 
-    let headers: Record<string, string> = {};
+    let req: Request | undefined = undefined;
 
     await page.route(urlMatch, route => {
-      headers = route.request().headers();
+      req = route.request();
       return route.fulfill({
         status: 200,
         json: {},
@@ -36,6 +37,8 @@ test.describe('Get Content', () => {
     });
 
     await page.goto('/with-fetch-options', { waitUntil: 'networkidle' });
-    expect(headers['x-test']).toBe('test');
+    expect(req).toBeDefined();
+    expect(await req!.postDataJSON()).toEqual({ test: 'test' });
+    expect(req!.method).toBe('POST');
   });
 });

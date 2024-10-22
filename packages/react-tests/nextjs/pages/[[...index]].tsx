@@ -69,9 +69,10 @@ export default function Page(props: PageProps & { apiVersion: any }) {
         .get('', {
           ...props,
           fetchOptions: {
-            headers: {
-              'x-test': 'test',
-            },
+            method: 'POST',
+            body: JSON.stringify({
+              test: 'test',
+            }),
           },
         })
         .promise()
