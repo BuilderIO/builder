@@ -31,13 +31,13 @@ export default function Blocks(props: BlocksProps) {
         rsc: props.context?.value?.BlocksWrapper,
         default:
           props.context?.value?.BlocksWrapper ||
-          builderContext.value.BlocksWrapper,
+          builderContext?.value?.BlocksWrapper,
       })}
       BlocksWrapperProps={useTarget({
         rsc: props.context?.value?.BlocksWrapperProps,
         default:
           props.context?.value?.BlocksWrapperProps ||
-          builderContext.value.BlocksWrapperProps,
+          builderContext?.value?.BlocksWrapperProps,
       })}
     >
       <Show when={props.blocks}>
@@ -54,7 +54,7 @@ export default function Blocks(props: BlocksProps) {
                 rsc: props.registeredComponents,
                 default:
                   props.registeredComponents ||
-                  componentsContext.registeredComponents,
+                  componentsContext?.registeredComponents,
               })}
               linkComponent={props.linkComponent}
             />
