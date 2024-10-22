@@ -2,7 +2,7 @@
 
 ## Getting started
 
-This example relies on enterprise features of Builder, please make sure you have the right space permissions/subscription before starting, if you don't, you can contact help@builder.io with your use case, and we'll set a proof of concept space for you.
+This example relies on enterprise features of Builder, please make sure you have the right space permissions/subscription before starting, if you don't, you can contact support@builder.io with your use case, and we'll set a proof of concept space for you.
 
 ### Install
 
