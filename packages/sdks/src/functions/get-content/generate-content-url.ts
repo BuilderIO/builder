@@ -83,9 +83,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   // TODO: how to express 'offset' in the url - as direct queryparam or as flattened in options[key] ?
 
   const queryOptions = {
-    ...getBuilderSearchParamsFromWindow({
-      model: options.model,
-    }),
+    ...getBuilderSearchParamsFromWindow(),
     ...normalizeSearchParams(options.options || {}),
   };
 

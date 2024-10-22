@@ -289,20 +289,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     'initpreviewingbldr',
     () => {
       const searchParams = new URL(location.href).searchParams;
-      const builderPreviewSearchParams = searchParams.get('builder.preview');
-      if (builderPreviewSearchParams === 'BUILDER_STUDIO') {
-        searchParams.set('builder.preview', props.model || '');
-      }
-
       const searchParamPreviewModel = searchParams.get('builder.preview');
-
-      if (builderPreviewSearchParams === 'BUILDER_STUDIO') {
-        searchParams.set(
-          `builder.overrides.${searchParamPreviewModel}`,
-          props.content?.id || ''
-        );
-      }
-
       const searchParamPreviewId = searchParams.get(
         `builder.overrides.${searchParamPreviewModel}`
       );
@@ -319,8 +306,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
        * TO-DO: should we only update the state when there is a change?
        **/
       if (
-        (searchParamPreviewModel === props.model ||
-          searchParamPreviewModel === 'BUILDER_STUDIO') &&
+        searchParamPreviewModel === props.model &&
         previewApiKey === props.apiKey &&
         (!props.content || searchParamPreviewId === props.content.id)
       ) {
