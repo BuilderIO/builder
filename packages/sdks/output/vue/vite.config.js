@@ -45,6 +45,10 @@ export default defineConfig({
                 __dirname,
                 'src/functions/evaluate/node-runtime/init.ts'
               ),
+              'check-os': resolve(
+                __dirname,
+                'src/functions/evaluate/node-runtime/check-os.ts'
+              ),
             }
           : {}),
       },
@@ -53,7 +57,7 @@ export default defineConfig({
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['vue', 'node:module', 'isolated-vm'],
+      external: ['vue', 'node:module', 'isolated-vm', 'os', 'fs'],
       output: {
         globals: {
           vue: 'Vue',
