@@ -20,7 +20,7 @@ test.describe('Get Content', () => {
     await page.goto('/get-content', { waitUntil: 'networkidle' });
     expect(contentApiInvocations).toBe(1);
   });
-  test.only('passes fetch options', async ({ page, packageName }) => {
+  test('passes fetch options', async ({ page, packageName }) => {
     test.skip(packageName !== 'gen1-next');
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/query/;
