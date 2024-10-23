@@ -13,4 +13,4 @@ This folder is a starting point to connecting your custom data plugins.
     3. add `http://locahost:1268/plugin.system.js?pluginId={{fill this with your package.json id form first bullet point above}}`
     4. now page will refresh to add your plugin code to the app
     5. navigate to any builder content and in the data tab test your data plugin.
- - Once you're done coding make a PR to this repo, or contact us @ help@builder.io if you're interested in building private plugins.
+ - Once you're done coding make a PR to this repo, or contact us @ support@builder.io if you're interested in building private plugins.

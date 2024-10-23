@@ -5,7 +5,7 @@ See [here](src/plugin.tsx) for the React component that powers this plugin
 ## Status
 
 Builder plugins are in beta. If you run into any issues or have questions please
-contact help@builder.io for help
+contact support@builder.io for help
 
 ## Creating a new plugin from this example
 

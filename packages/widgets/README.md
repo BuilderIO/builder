@@ -59,4 +59,4 @@ For more detail, read the official Builder widgets documentation, [Using Widgets
 
 ## Help and troubleshooting
 
-If you have questions or feedback, contact us at <help@builder.io>. We are happy to help!
+If you have questions or feedback, contact us at <support@builder.io>. We are happy to help!
