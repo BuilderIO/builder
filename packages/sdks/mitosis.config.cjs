@@ -593,6 +593,69 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   },
 });
 
+const noWrapHackCode = `  
+  private hasAttributesInput(component): boolean {
+    return !!reflectComponentType(component)?.inputs.find(input => input.propName === 'attributes');
+  }
+
+  private updateAttributes(
+    el: HTMLElement,
+    attributes: { [key: string]: any }
+  ): void {
+    Object.keys(attributes).forEach((attr) => {
+      if (attr === 'class' && attributes[attr]) {
+        const classes = attributes[attr].split(' ');
+        classes.forEach((cls: string) =>
+          this.renderer.addClass(el, cls.trim())
+        );
+      } else if (attributes[attr]) {
+        this.renderer.setAttribute(el, attr, attributes[attr]);
+      } else {
+        this.renderer.removeAttribute(el, attr);
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    if (!this.hasAttributesInput(this.Wrapper)) {
+      const wrapperElement =
+        this.wrapperTemplateRef.elementRef.nativeElement?.nextElementSibling;
+      if (wrapperElement) {
+        this.updateAttributes(wrapperElement, this.attributes);
+      }
+    }
+  }
+`;
+const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "interactive-element"')) {
+        code = code.replace(
+          'constructor(private vcRef: ViewContainerRef) {',
+          'constructor(private vcRef: ViewContainerRef, private renderer: Renderer2) {'
+        );
+        code = code.replace(
+          /import {/,
+          `import {
+          Renderer2,
+          reflectComponentType,
+          `
+        );
+        code = code.replaceAll(
+          'attributes: this.attributes,',
+          '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.attributes } : {})'
+        );
+        const ngOnChangesIndex = code.indexOf('ngOnChanges');
+        code =
+          code.slice(0, ngOnChangesIndex) +
+          noWrapHackCode +
+          code.slice(ngOnChangesIndex);
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -619,6 +682,7 @@ module.exports = {
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
         ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
         ANGULAR_ADD_UNUSED_PROP_TYPES,
+        ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
       ],
     },
     solid: {
