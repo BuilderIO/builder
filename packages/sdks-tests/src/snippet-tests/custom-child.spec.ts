@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
-test.describe('Div with Hero class, background, and text', () => {
+test.describe('Div with Hero class, and text', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
     test.skip(!['react'].includes(packageName));
 
@@ -9,10 +9,7 @@ test.describe('Div with Hero class, background, and text', () => {
     expect(response?.status()).toBeLessThan(400);
   });
 
-  test('should verify builder-block with specific text and styles', async ({
-    page,
-    packageName,
-  }) => {
+  test('should verify builder-block with specific text', async ({ page, packageName }) => {
     test.skip(!['react'].includes(packageName));
 
     await page.goto('/custom-child');
@@ -26,7 +23,7 @@ test.describe('Div with Hero class, background, and text', () => {
     await expect(inlineStyledDiv).toBeVisible();
 
     const inlineText = await inlineStyledDiv.textContent();
-    expect(inlineText?.trim()).toBe("This is a your component's text");
+    expect(inlineText?.trim()).toBe("This is your component's text");
 
     const builderTextDiv = childDivs.nth(1);
     await expect(builderTextDiv).toBeVisible();
