@@ -21,7 +21,6 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
-import { SDK_VERSION } from './sdk-version';
 
 export type Url = any;
 
