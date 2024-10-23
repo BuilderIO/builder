@@ -881,6 +881,7 @@ export interface Action {
 export class Builder {
   static VERSION = SDK_VERSION;
 
+  // hello
   static components: Component[] = [];
   static singletonInstance: Builder;
   /**
