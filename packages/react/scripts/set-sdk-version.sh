@@ -21,17 +21,5 @@ fi
 VERSION=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "\(.*\)"/\1/')
 echo "Found version number: $VERSION"
 
-# create new file content
-NEW_FILE_CONTENT="export const SDK_VERSION = \"$VERSION\""
-
-# find all files named sdk-version.js or sdk-version.ts in the current directory (recursively)
-FILES=$(find . -type f \( -name "sdk-version.js" -o -name "sdk-version.ts" \))
-
-for FILE in $FILES; do
-  echo "Updating $FILE..."
-
-  # replace file content
-  echo $NEW_FILE_CONTENT >$FILE
-
-  echo "Updated $FILE."
-done
+#  find all instances of UNKNOWN_VERSION_TO_REPLACE and replace with the real version
+find dist -type f -exec grep -l "UNKNOWN_VERSION_TO_REPLACE" {} + | xargs sed -i '' "s/UNKNOWN_VERSION_TO_REPLACE/$VERSION/g"

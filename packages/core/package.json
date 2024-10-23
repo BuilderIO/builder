@@ -17,7 +17,7 @@
     "docs:generate": "typedoc",
     "docs:cleanup": "node scripts/cleanup-generated-docs",
     "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
-    "build": "yarn run set-sdk-version && yarn run tsc && rollup -c",
+    "build": "yarn run tsc && rollup -c && yarn set-sdk-version",
     "watch": "rollup -cw",
     "start": "yarn run watch",
     "tsc": "tsc --module commonjs",
