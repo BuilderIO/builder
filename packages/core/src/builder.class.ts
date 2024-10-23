@@ -2,6 +2,7 @@ import './polyfills/custom-event-polyfill';
 import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
+import { version } from '../package.json';
 import { BehaviorSubject } from './classes/observable.class';
 import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
@@ -879,7 +880,11 @@ export interface Action {
 }
 
 export class Builder {
-  static VERSION = SDK_VERSION;
+  /**
+   * @hidden
+   * @deprecated. This is buggy, and always behind by a version.
+   */
+  static VERSION = version;
 
   static components: Component[] = [];
   static singletonInstance: Builder;
