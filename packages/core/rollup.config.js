@@ -4,7 +4,6 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import uglify from 'rollup-plugin-uglify';
 import json from 'rollup-plugin-json';
-import replace from 'rollup-plugin-replace';
 
 import pkg from './package.json';
 
@@ -14,9 +13,6 @@ const basicOptions = {
   context: 'window',
 
   plugins: [
-    replace({
-      UNKNOWN_VERSION: JSON.stringify(pkg.version),
-    }),
     typescript({
       typescript: ts,
       useTsconfigDeclarationDir: true,

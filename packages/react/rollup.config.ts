@@ -25,11 +25,6 @@ const options = {
     include: '../**',
   },
   plugins: [
-    // Add this new replace plugin configuration
-    replace({
-      "export const SDK_VERSION = 'UNKNOWN_VERSION'": `export const SDK_VERSION = '${pkg.version}'`,
-      delimiters: ['', ''],
-    }),
     typescript({
       include: ['*.js+(|x)', '*.ts+(|x)', '**/*.ts+(|x)'],
       tsconfigOverride: {
