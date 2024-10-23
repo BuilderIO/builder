@@ -1,4 +1,5 @@
 import { shouldForceBrowserRuntimeInNode } from '../should-force-browser-runtime-in-node.js';
+import './check-os.js';
 /**
  * This file:
  * - imports `isolated-vm`, which can only be made from a file that never runs
