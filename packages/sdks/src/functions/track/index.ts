@@ -1,6 +1,5 @@
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
-import { getSdkHeaders } from '../../helpers/sdk-headers.js';
 import { getSessionId } from '../../helpers/sessionId.js';
 import { getVisitorId } from '../../helpers/visitorId.js';
 import type { CanTrack } from '../../types/can-track.js';
@@ -126,7 +125,6 @@ export async function _track(eventProps: EventProps) {
     }),
     headers: {
       'content-type': 'application/json',
-      ...getSdkHeaders(),
     },
     mode: 'cors',
   }).catch((err) => {

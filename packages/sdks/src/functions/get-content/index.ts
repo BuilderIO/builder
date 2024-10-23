@@ -3,7 +3,6 @@ import { handleABTesting } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { logger } from '../../helpers/logger.js';
 import { getPreviewContent } from '../../helpers/preview-lru-cache/get.js';
-import { getSdkHeaders } from '../../helpers/sdk-headers.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { fetch } from '../get-fetch.js';
 import { isBrowser } from '../is-browser.js';
@@ -43,15 +42,7 @@ type ContentResponse =
 const _fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options);
   const _fetch = options.fetch ?? fetch;
-
-  const fetchOptions = {
-    ...options.fetchOptions,
-    headers: {
-      ...(options.fetchOptions as any)?.headers,
-      ...getSdkHeaders(),
-    },
-  };
-  const res = await _fetch(url.href, fetchOptions);
+  const res = await _fetch(url.href, options.fetchOptions);
 
   const content = await (res.json() as Promise<ContentResponse>);
   return content;
