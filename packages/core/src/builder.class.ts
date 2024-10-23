@@ -1189,12 +1189,6 @@ export class Builder {
   }
 
   static isReact = false;
-  static sdkInfo = undefined as
-    | {
-        name: string;
-        version: string;
-      }
-    | undefined;
 
   static get Component() {
     return this.component;
