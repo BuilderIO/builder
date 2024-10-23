@@ -594,6 +594,8 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
 });
 
 const noWrapHackCode = `  
+  _listenerFns = new Map<string, () => void>();
+
   private hasAttributesInput(component): boolean {
     return !!reflectComponentType(component)?.inputs.find(input => input.propName === 'attributes');
   }
@@ -603,7 +605,19 @@ const noWrapHackCode = `
     attributes: { [key: string]: any }
   ): void {
     Object.keys(attributes).forEach((attr) => {
-      if (attr === 'class' && attributes[attr]) {
+      if (attr.startsWith("on")) {
+        if (this._listenerFns.has(attr)) {
+          this._listenerFns.get(attr)!();
+        }
+        this._listenerFns.set(
+          attr,
+          this.renderer.listen(
+            el,
+            attr.replace("on", "").toLowerCase(),
+            attributes[attr]
+          )
+        );
+      } else if (attr === 'class' && attributes[attr]) {
         const classes = attributes[attr].split(' ');
         classes.forEach((cls: string) =>
           this.renderer.addClass(el, cls.trim())
@@ -623,6 +637,12 @@ const noWrapHackCode = `
       if (wrapperElement) {
         this.updateAttributes(wrapperElement, this.attributes);
       }
+    }
+  }
+
+  ngOnDestroy() {
+    for (const fn of this._listenerFns.values()) {
+      fn();
     }
   }
 `;
@@ -650,6 +670,11 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
           code.slice(0, ngOnChangesIndex) +
           noWrapHackCode +
           code.slice(ngOnChangesIndex);
+
+        code = code.replace(
+          'ngOnChanges(changes: SimpleChanges) {',
+          'ngOnChanges(changes: SimpleChanges) { if (changes["attributes"] && !this.hasAttributesInput(this.Wrapper)) { this.ngAfterViewInit(); }'
+        );
       }
       return code;
     },
