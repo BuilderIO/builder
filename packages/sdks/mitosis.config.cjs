@@ -622,10 +622,8 @@ const noWrapHackCode = `
         classes.forEach((cls: string) =>
           this.renderer.addClass(el, cls.trim())
         );
-      } else if (attributes[attr]) {
-        this.renderer.setAttribute(el, attr, attributes[attr]);
       } else {
-        this.renderer.removeAttribute(el, attr);
+        this.renderer.setAttribute(el, attr.toLowerCase(), attributes[attr] ?? "");
       }
     });
   }
