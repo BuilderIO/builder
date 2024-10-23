@@ -3,7 +3,6 @@ import { Component, type OnInit } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
-  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import { customHeroInfo } from './custom-hero/custom-hero.component';
@@ -31,8 +30,6 @@ export class CustomChildComponent implements OnInit {
   customHeroInfo = customHeroInfo;
   model = 'page';
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
-
-  isPreviewing = isPreviewing;
 
   async ngOnInit() {
     this.content = await fetchOneEntry({
