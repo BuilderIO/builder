@@ -39,5 +39,3 @@ export const initializeNodeRuntime = (args?: {
   const { ivmIsolateOptions } = args || {};
   setIvm(ivm, ivmIsolateOptions);
 };
-
-export { setIvm };
