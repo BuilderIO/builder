@@ -1236,7 +1236,6 @@ export class Builder {
       body: JSON.stringify({ events }),
       headers: {
         'content-type': 'application/json',
-        ...this.getSdkHeaders(),
       },
       mode: 'cors',
     }).catch(() => {
@@ -2349,7 +2348,7 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, this.addSdkHeaders(options)).then(res => res.json());
+    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
   }
 
   get host() {
