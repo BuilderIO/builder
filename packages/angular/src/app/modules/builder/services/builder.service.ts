@@ -68,7 +68,7 @@ export class BuilderService extends Builder {
     if (!Builder.isBrowser && !this.request) {
       console.warn(
         'No express request set! Builder cannot target appropriately without this, ' +
-          'please contact help@builder.io to learn how to set this as required'
+          'please contact support@builder.io to learn how to set this as required'
       );
     }
   }

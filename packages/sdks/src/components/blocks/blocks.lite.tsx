@@ -29,16 +29,23 @@ export default function Blocks(props: BlocksProps) {
       styleProp={props.styleProp}
       BlocksWrapper={useTarget({
         rsc: props.context?.value?.BlocksWrapper,
-        default:
+        solid:
           props.context?.value?.BlocksWrapper ||
           builderContext.value.BlocksWrapper,
+        default:
+          props.context?.value?.BlocksWrapper ||
+          builderContext?.value?.BlocksWrapper,
       })}
       BlocksWrapperProps={useTarget({
         rsc: props.context?.value?.BlocksWrapperProps,
-        default:
+        solid:
           props.context?.value?.BlocksWrapperProps ||
           builderContext.value.BlocksWrapperProps,
+        default:
+          props.context?.value?.BlocksWrapperProps ||
+          builderContext?.value?.BlocksWrapperProps,
       })}
+      classNameProp={props.className}
     >
       <Show when={props.blocks}>
         <For each={props.blocks}>
@@ -52,9 +59,12 @@ export default function Blocks(props: BlocksProps) {
               })}
               registeredComponents={useTarget({
                 rsc: props.registeredComponents,
-                default:
+                solid:
                   props.registeredComponents ||
                   componentsContext.registeredComponents,
+                default:
+                  props.registeredComponents ||
+                  componentsContext?.registeredComponents,
               })}
               linkComponent={props.linkComponent}
             />

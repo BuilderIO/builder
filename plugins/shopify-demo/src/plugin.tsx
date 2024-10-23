@@ -84,7 +84,7 @@ registerCommercePlugin(
         } catch (e) {
           console.error(e);
           appState.dialogs.alert(
-            'If this problem persists, please contact help@builder.io',
+            'If this problem persists, please contact support@builder.io',
             'Uh oh! An error occured :('
           );
         }
