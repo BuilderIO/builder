@@ -143,6 +143,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <ContentComponent
+        apiBaseUrl={props.apiBaseUrl}
         nonce={props.nonce}
         isNestedRender={props.isNestedRender}
         {...useTarget({
