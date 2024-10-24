@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 5.0.9
+
+### Patch Changes
+
+- 6375b42: Misc: allow react 19 RC releases as a peer dependency (to work with nextjs 15)
+
 ## 5.0.8
 
 ### Patch Changes
