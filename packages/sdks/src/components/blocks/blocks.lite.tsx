@@ -31,7 +31,7 @@ export default function Blocks(props: BlocksProps) {
         rsc: props.context?.value?.BlocksWrapper,
         svelte:
           props.context?.value?.BlocksWrapper ||
-          builderContext?.value?.BlocksWrapper,
+          builderContext.value?.BlocksWrapper,
         default:
           props.context?.value?.BlocksWrapper ||
           builderContext.value.BlocksWrapper,
@@ -40,7 +40,7 @@ export default function Blocks(props: BlocksProps) {
         rsc: props.context?.value?.BlocksWrapperProps,
         svelte:
           props.context?.value?.BlocksWrapperProps ||
-          builderContext?.value?.BlocksWrapperProps,
+          builderContext.value?.BlocksWrapperProps,
         default:
           props.context?.value?.BlocksWrapperProps ||
           builderContext.value.BlocksWrapperProps,
