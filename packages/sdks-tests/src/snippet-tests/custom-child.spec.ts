@@ -26,7 +26,7 @@ test.describe('Div with Hero class, background, and text', () => {
     await expect(inlineStyledDiv).toBeVisible();
 
     const inlineText = await inlineStyledDiv.textContent();
-    expect(inlineText?.trim()).toBe("This is a your component's text");
+    expect(inlineText?.trim()).toBe("This is your component's text");
 
     const builderTextDiv = childDivs.nth(1);
     await expect(builderTextDiv).toBeVisible();
