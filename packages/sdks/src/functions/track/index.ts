@@ -65,6 +65,13 @@ const getTrackingEventData = async ({
   };
 };
 
+export type CustomApiBaseUrl = {
+  /**
+   * Optional override of the `baseUrl` of the Builder API. (Defaults to global `https://cdn.builder.io`)
+   */
+  apiBaseUrl?: string;
+};
+
 type EventProperties = Pick<Event, 'type'> &
   Pick<Event['data'], 'contentId' | 'variationId' | 'metadata'> & {
     /**
@@ -75,7 +82,7 @@ type EventProperties = Pick<Event, 'type'> &
      * (Optional) Any additional (non-metadata) properties to add to the event.
      */
     [index: string]: any;
-  };
+  } & CustomApiBaseUrl;
 
 export type EventProps = EventProperties & CanTrack;
 
@@ -118,7 +125,9 @@ export async function _track(eventProps: EventProps) {
     return;
   }
 
-  return fetch(`https://cdn.builder.io/api/v1/track`, {
+  const baseUrl = eventProps.apiBaseUrl || 'https://cdn.builder.io';
+
+  return fetch(`${baseUrl}/api/v1/track`, {
     method: 'POST',
     body: JSON.stringify({
       events: [await createEvent(eventProps)],
