@@ -29,21 +29,21 @@ export default function Blocks(props: BlocksProps) {
       styleProp={props.styleProp}
       BlocksWrapper={useTarget({
         rsc: props.context?.value?.BlocksWrapper,
-        solid:
-          props.context?.value?.BlocksWrapper ||
-          builderContext.value.BlocksWrapper,
-        default:
+        svelte:
           props.context?.value?.BlocksWrapper ||
           builderContext?.value?.BlocksWrapper,
+        default:
+          props.context?.value?.BlocksWrapper ||
+          builderContext.value.BlocksWrapper,
       })}
       BlocksWrapperProps={useTarget({
         rsc: props.context?.value?.BlocksWrapperProps,
-        solid:
-          props.context?.value?.BlocksWrapperProps ||
-          builderContext.value.BlocksWrapperProps,
-        default:
+        svelte:
           props.context?.value?.BlocksWrapperProps ||
           builderContext?.value?.BlocksWrapperProps,
+        default:
+          props.context?.value?.BlocksWrapperProps ||
+          builderContext.value.BlocksWrapperProps,
       })}
       classNameProp={props.className}
     >
@@ -59,12 +59,12 @@ export default function Blocks(props: BlocksProps) {
               })}
               registeredComponents={useTarget({
                 rsc: props.registeredComponents,
-                solid:
-                  props.registeredComponents ||
-                  componentsContext.registeredComponents,
-                default:
+                svelte:
                   props.registeredComponents ||
                   componentsContext?.registeredComponents,
+                default:
+                  props.registeredComponents ||
+                  componentsContext.registeredComponents,
               })}
               linkComponent={props.linkComponent}
             />
