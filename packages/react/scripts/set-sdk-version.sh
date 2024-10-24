@@ -21,5 +21,5 @@ fi
 VERSION=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "\(.*\)"/\1/')
 echo "Found version number: $VERSION"
 
-#  find all instances of `UNKNOWN_VERSION_TO_REPLACE` within `dist` and replace with the real version
-find dist -type f -exec grep -l "UNKNOWN_VERSION_TO_REPLACE" {} + | xargs sed -i '' "s/UNKNOWN_VERSION_TO_REPLACE/$VERSION/g"
+# Find all instances of `UNKNOWN_VERSION_TO_REPLACE` within `dist` and replace with the real version
+find dist -type f -exec sed -i.bak "s/UNKNOWN_VERSION_TO_REPLACE/$VERSION/g" {} + && find dist -name "*.bak" -type f -delete
