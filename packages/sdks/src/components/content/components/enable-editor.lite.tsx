@@ -21,7 +21,10 @@ import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
-import { _track } from '../../../functions/track/index.js';
+import {
+  _track,
+  type CustomApiBaseUrl,
+} from '../../../functions/track/index.js';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
@@ -61,7 +64,7 @@ type BuilderEditorProps = Omit<
   builderContextSignal: Signal<BuilderContextInterface>;
   setBuilderContextSignal?: (signal: any) => any;
   children?: any;
-};
+} & CustomApiBaseUrl;
 
 export default function EnableEditor(props: BuilderEditorProps) {
   /**
@@ -161,6 +164,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           props.builderContextSignal.value.content?.testVariationId;
         const contentId = props.builderContextSignal.value.content?.id;
         _track({
+          apiBaseUrl: props.apiBaseUrl,
           type: 'click',
           canTrack: getDefaultCanTrack(props.canTrack),
           contentId,
@@ -325,6 +329,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   );
 
   onMount(() => {
+    console.log('onMount');
     if (isBrowser()) {
       if (isEditing()) {
         useTarget({
@@ -371,6 +376,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
 
         _track({
+          apiBaseUrl: props.apiBaseUrl,
           type: 'impression',
           canTrack: true,
           contentId,

@@ -150,4 +150,9 @@ export interface GetContentOptions {
    * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
   fetchOptions?: object;
+
+  /**
+   * Optional override of the `baseUrl` of the Builder API. (Defaults to global `https://cdn.builder.io`)
+   */
+  apiBaseUrl?: string;
 }

@@ -150,6 +150,7 @@ export const PAGES = {
   '/eager-dynamic-loading': EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
   '/ssr-binding': SSR_BINDING_CONTENT,
   '/blocks-class-name': BLOCKS_CLASS_NAME,
+  '/override-base-url': HTTP_REQUESTS,
 } as const;
 
 const apiVersionPathToProp = {
@@ -271,6 +272,11 @@ export const getProps = async (args: {
     case '/symbol-with-repeat-input-binding':
       extraProps = {
         data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
+      };
+      break;
+    case '/override-base-url':
+      extraProps = {
+        apiBaseUrl: 'https://cdn-qa.builder.io',
       };
       break;
     default:

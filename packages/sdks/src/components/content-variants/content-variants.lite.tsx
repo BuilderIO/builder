@@ -7,6 +7,7 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import { TARGET } from '../../constants/target.js';
+import type { CustomApiBaseUrl } from '../../functions/track/index.js';
 import { handleABTestingSync } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import ContentComponent from '../content/content.lite.jsx';
@@ -37,7 +38,7 @@ type VariantsProviderProps = ContentVariantsPrps & {
    * For internal use only. Do not provide this prop.
    */
   isNestedRender?: boolean;
-};
+} & CustomApiBaseUrl;
 
 export default function ContentVariants(props: VariantsProviderProps) {
   onMount(() => {
@@ -109,6 +110,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         <For each={getVariants(props.content)}>
           {(variant) => (
             <ContentComponent
+              apiBaseUrl={props.apiBaseUrl}
               isNestedRender={props.isNestedRender}
               key={variant.testVariationId}
               nonce={props.nonce}

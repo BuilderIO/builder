@@ -24,6 +24,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     staleCacheSeconds,
     sort,
     includeUnpublished,
+    apiBaseUrl,
   } = options;
 
   if (!apiKey) {
@@ -38,10 +39,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
 
   // if we are fetching an array of content, we disable noTraverse for perf reasons.
   const noTraverse = limit !== 1;
+  const baseUrl = apiBaseUrl || 'https://cdn.builder.io';
 
-  const url = new URL(
-    `https://cdn.builder.io/api/${apiVersion}/content/${model}`
-  );
+  const url = new URL(`${baseUrl}/api/${apiVersion}/content/${model}`);
 
   url.searchParams.set('apiKey', apiKey);
   url.searchParams.set('limit', String(limit));
@@ -101,5 +101,6 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
       url.searchParams.set(key, JSON.stringify(flattened[key]));
     }
   }
+  console.log('generateContentUrl', url.href);
   return url;
 };
