@@ -10,6 +10,8 @@ import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.co
 import { AppComponent } from './app.component';
 import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { CatchAllComponent } from './catch-all/catch-all.component';
+import { CustomChildComponent } from './custom-child/custom-child.component';
+import { CustomHeroComponent } from './custom-child/custom-hero/custom-hero.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductEditorialComponent } from './product-editorial/product-editorial.component';
@@ -18,12 +20,15 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    RouterModule,
     AnnouncementBarComponent,
     BlogArticleComponent,
     ProductEditorialComponent,
     ProductDetailsComponent,
     AnnouncementBarComponent,
     NavBarComponent,
+    CustomChildComponent,
+    CustomHeroComponent,
     CatchAllComponent,
     RouterModule.forRoot([
       { path: 'announcements/:id', component: AnnouncementBarComponent },
@@ -31,6 +36,10 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
       { path: 'products/:id', component: ProductEditorialComponent },
       { path: 'product/category/jacket', component: ProductDetailsComponent },
       { path: 'landing-page', component: NavBarComponent },
+      {
+        path: 'custom-child',
+        component: CustomChildComponent,
+      },
       { path: '**', component: CatchAllComponent },
     ]),
   ],
