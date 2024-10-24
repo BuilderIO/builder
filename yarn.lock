@@ -3885,8 +3885,8 @@ __metadata:
     typescript: ^4.7.4
     validate-commit-msg: ^2.12.2
   peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
+    react: ">=16.8.0 || ^19.0.0-rc"
+    react-dom: ">=16.8.0 || ^19.0.0-rc"
   dependenciesMeta:
     node-fetch:
       optional: true
