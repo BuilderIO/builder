@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 3.0.5
+
+### Patch Changes
+
+- 2ae3cc5: Feature: add `fetchOptions` to `options` argument within `.get(modelName, options)` and `.getAll(modelName, options)`, which is passed to the `fetch` function.
+
 ## 3.0.4
 
 ### Patch Changes
