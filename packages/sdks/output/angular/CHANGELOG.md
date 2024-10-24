@@ -1,5 +1,13 @@
 # @builder.io/sdk-angular
 
+## 0.2.21
+
+### Patch Changes
+
+- e4253d6: Fix: accessing Builder Context within `Blocks` (regression from https://github.com/BuilderIO/builder/pull/3658)
+- 3146ba3: Fix: optionally chain access to context value in Blocks
+- c5dd946: Feature: adds a `className: string` prop to the `Blocks` component used to apply a class to the `div` that wraps each list of blocks.
+
 ## 0.2.20
 
 ### Patch Changes
