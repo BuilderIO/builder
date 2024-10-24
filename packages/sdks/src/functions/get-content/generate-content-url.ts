@@ -101,6 +101,5 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
       url.searchParams.set(key, JSON.stringify(flattened[key]));
     }
   }
-  console.log('generateContentUrl', url.href);
   return url;
 };

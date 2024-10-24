@@ -100,7 +100,7 @@ function App() {
       </>
     );
   }
-  console.log('props', props);
+
   return props ? (
     <DataComp pathname={window.location.pathname}>
       {({ data }) => (

@@ -329,7 +329,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
   );
 
   onMount(() => {
-    console.log('onMount');
     if (isBrowser()) {
       if (isEditing()) {
         useTarget({
