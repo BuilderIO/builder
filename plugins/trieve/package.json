@@ -1,0 +1,32 @@
+{
+  "name": "@builder.io/plugin-trieve",
+  "version": "0.0.3",
+  "description": "",
+  "entry": "plugin",
+  "output": "plugin.system.js",
+  "main": "dist/plugin.system.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development"
+  },
+  "author": "Drew Harris <drew.h@trieve.ai>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/preset-react": "^7.25.7",
+    "@builder.io/app-context": "^1.0.0",
+    "@builder.io/react": "^5.0.6",
+    "babel-loader": "^9.2.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
+    "webpack": "^5.95.0",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
