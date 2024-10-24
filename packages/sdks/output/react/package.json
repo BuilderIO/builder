@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "2.0.23",
+  "version": "2.0.24-2",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react",
   "type": "module",
   "repository": {
@@ -85,6 +85,11 @@
       "import": "./lib/node/init.mjs",
       "require": "./lib/node/init.cjs"
     },
+    "./node/setIvm": {
+      "types": "./types/functions/evaluate/node-runtime/setIvm.d.ts",
+      "import": "./lib/node/setIvm.mjs",
+      "require": "./lib/node/setIvm.cjs"
+    },
     "./edge": {
       "types": "./types/index.d.ts",
       "import": "./lib/edge/edge-entry.mjs",
@@ -148,5 +153,6 @@
         ]
       }
     }
-  }
+  },
+  "stableVersion": "2.0.23"
 }
