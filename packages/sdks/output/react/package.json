@@ -116,7 +116,7 @@
     "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16 || ^19.0.0-rc"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0"
