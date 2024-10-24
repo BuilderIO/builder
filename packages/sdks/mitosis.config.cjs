@@ -634,6 +634,7 @@ module.exports = {
       namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
       cssNamespace: getSeededId,
       plugins: [
+        INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         () => ({
           json: {
             // This plugin handles binding our actions to the `v-on:` Vue syntax:
