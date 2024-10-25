@@ -2,7 +2,6 @@ import './polyfills/custom-event-polyfill';
 import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
-import { version } from '../package.json';
 import { BehaviorSubject } from './classes/observable.class';
 import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
@@ -21,6 +20,7 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
+import { SDK_VERSION } from './sdk-version';
 
 export type Url = any;
 
@@ -879,11 +879,7 @@ export interface Action {
 }
 
 export class Builder {
-  /**
-   * @hidden
-   * @deprecated. This is buggy, and always behind by a version.
-   */
-  static VERSION = version;
+  static VERSION = SDK_VERSION;
 
   static components: Component[] = [];
   static singletonInstance: Builder;

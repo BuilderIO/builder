@@ -23,7 +23,8 @@
   "scripts": {
     "docs": "typedoc",
     "lint": "tslint -t codeFrame '../**/*.ts' 'test/**/*.ts'",
-    "build": "rimraf dist && NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts",
+    "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
+    "build": "rimraf dist && NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts && yarn set-sdk-version",
     "build:docs": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest",
