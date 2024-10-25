@@ -181,7 +181,7 @@ export default function ContentComponent(props: ContentProps) {
 
   return (
     <EnableEditor
-      apiBaseUrl={props.apiBaseUrl}
+      apiHost={props.apiHost}
       nonce={props.nonce}
       content={props.content}
       data={props.data}

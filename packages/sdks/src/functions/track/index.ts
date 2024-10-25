@@ -67,9 +67,9 @@ const getTrackingEventData = async ({
 
 export type CustomApiBaseUrl = {
   /**
-   * Optional override of the `baseUrl` of the Builder API. (Defaults to global `https://cdn.builder.io`)
+   * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
    */
-  apiBaseUrl?: string;
+  apiHost?: string;
 };
 
 type EventProperties = Pick<Event, 'type'> &
@@ -125,7 +125,7 @@ export async function _track(eventProps: EventProps) {
     return;
   }
 
-  const baseUrl = eventProps.apiBaseUrl || 'https://cdn.builder.io';
+  const baseUrl = eventProps.apiHost || 'https://cdn.builder.io';
 
   return fetch(`${baseUrl}/api/v1/track`, {
     method: 'POST',

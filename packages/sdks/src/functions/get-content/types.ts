@@ -152,7 +152,7 @@ export interface GetContentOptions {
   fetchOptions?: object;
 
   /**
-   * Optional override of the `baseUrl` of the Builder API. (Defaults to global `https://cdn.builder.io`)
+   * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
    */
-  apiBaseUrl?: string;
+  apiHost?: string;
 }

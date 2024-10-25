@@ -24,7 +24,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     staleCacheSeconds,
     sort,
     includeUnpublished,
-    apiBaseUrl,
+    apiHost,
   } = options;
 
   if (!apiKey) {
@@ -39,7 +39,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
 
   // if we are fetching an array of content, we disable noTraverse for perf reasons.
   const noTraverse = limit !== 1;
-  const baseUrl = apiBaseUrl || 'https://cdn.builder.io';
+  const baseUrl = apiHost || 'https://cdn.builder.io';
 
   const url = new URL(`${baseUrl}/api/${apiVersion}/content/${model}`);
 

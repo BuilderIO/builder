@@ -276,7 +276,7 @@ export const getProps = async (args: {
       break;
     case '/override-base-url':
       extraProps = {
-        apiBaseUrl: 'https://cdn-qa.builder.io',
+        apiHost: 'https://cdn-qa.builder.io',
       };
       break;
     default:
