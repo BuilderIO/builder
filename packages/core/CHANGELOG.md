@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 3.0.7
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
 ## 3.0.6
 
 ### Patch Changes

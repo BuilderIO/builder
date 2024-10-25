@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.22
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
 ## 0.2.21
 
 ### Patch Changes

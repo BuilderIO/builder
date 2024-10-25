@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.16.17",
+  "version": "0.16.18",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/qwik",
   "repository": {
     "type": "git",
