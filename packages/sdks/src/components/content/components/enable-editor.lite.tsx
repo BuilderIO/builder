@@ -21,10 +21,7 @@ import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
-import {
-  _track,
-  type CustomApiBaseUrl,
-} from '../../../functions/track/index.js';
+import { _track } from '../../../functions/track/index.js';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
@@ -64,7 +61,7 @@ type BuilderEditorProps = Omit<
   builderContextSignal: Signal<BuilderContextInterface>;
   setBuilderContextSignal?: (signal: any) => any;
   children?: any;
-} & CustomApiBaseUrl;
+};
 
 export default function EnableEditor(props: BuilderEditorProps) {
   /**

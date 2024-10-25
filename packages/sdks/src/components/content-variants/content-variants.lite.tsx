@@ -7,7 +7,6 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import { TARGET } from '../../constants/target.js';
-import type { CustomApiBaseUrl } from '../../functions/track/index.js';
 import { handleABTestingSync } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import ContentComponent from '../content/content.lite.jsx';
@@ -38,7 +37,12 @@ type VariantsProviderProps = ContentVariantsPrps & {
    * For internal use only. Do not provide this prop.
    */
   isNestedRender?: boolean;
-} & CustomApiBaseUrl;
+
+  /**
+   * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
+   */
+  apiHost?: string;
+};
 
 export default function ContentVariants(props: VariantsProviderProps) {
   onMount(() => {

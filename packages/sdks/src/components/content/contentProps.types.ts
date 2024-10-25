@@ -1,4 +1,3 @@
-import type { CustomApiBaseUrl } from '../../functions/track/index.js';
 import type { EnforcePartials } from '../../types/enforced-partials.js';
 import type { ContentVariantsPrps } from '../content-variants/content-variants.types.js';
 
@@ -17,4 +16,4 @@ export type ContentProps = InternalRenderProps &
      * For internal use only. Do not provide this prop.
      */
     isNestedRender?: boolean;
-  } & CustomApiBaseUrl;
+  };

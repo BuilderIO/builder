@@ -65,13 +65,6 @@ const getTrackingEventData = async ({
   };
 };
 
-export type CustomApiBaseUrl = {
-  /**
-   * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
-   */
-  apiHost?: string;
-};
-
 type EventProperties = Pick<Event, 'type'> &
   Pick<Event['data'], 'contentId' | 'variationId' | 'metadata'> & {
     /**
@@ -82,7 +75,12 @@ type EventProperties = Pick<Event, 'type'> &
      * (Optional) Any additional (non-metadata) properties to add to the event.
      */
     [index: string]: any;
-  } & CustomApiBaseUrl;
+
+    /**
+     * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
+     */
+    apiHost?: string;
+  };
 
 export type EventProps = EventProperties & CanTrack;
 
