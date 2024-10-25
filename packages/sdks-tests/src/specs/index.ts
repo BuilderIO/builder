@@ -65,6 +65,7 @@ import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
 import { SSR_BINDING_CONTENT } from './ssr-binding.js';
 import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading.js';
 import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
+import { NESTED_COLLECTION_REPEATS } from './nested-collection-repeats.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -150,6 +151,7 @@ export const PAGES = {
   '/eager-dynamic-loading': EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
   '/ssr-binding': SSR_BINDING_CONTENT,
   '/blocks-class-name': BLOCKS_CLASS_NAME,
+  '/nested-collection-repeats': NESTED_COLLECTION_REPEATS,
 } as const;
 
 const apiVersionPathToProp = {
