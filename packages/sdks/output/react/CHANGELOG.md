@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.25
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
 ## 2.0.24
 
 ### Patch Changes
