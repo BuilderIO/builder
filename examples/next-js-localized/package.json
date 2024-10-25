@@ -46,7 +46,7 @@
   "dependencies": {
     "@builder.io/react": "^2.0.13",
     "@builder.io/widgets": "^1.2.24",
-    "next": "^12.2.2",
+    "next": "^15.0.1",
     "next-seo": "^5.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
