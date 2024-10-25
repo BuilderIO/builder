@@ -1,5 +1,5 @@
-import { SDK_VERSION } from '../constants/sdk-version';
-import { TARGET } from '../constants/target';
+import { SDK_VERSION } from '../constants/sdk-version.js';
+import { TARGET } from '../constants/target.js';
 
 export const getSdkHeaders = () => ({
   'X-Builder-SDK': TARGET,
