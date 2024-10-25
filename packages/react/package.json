@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "5.0.7",
+  "version": "5.0.9",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -92,8 +92,8 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=16.8.0 || ^19.0.0-rc",
+    "react-dom": ">=16.8.0 || ^19.0.0-rc"
   },
   "dependencies": {
     "@builder.io/sdk": "workspace:*",

@@ -1,4 +1,4 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { registerCommercePlugin } from '@builder.io/plugin-tools';
 import pkg from '../package.json';
 import { getAPI } from './service';
 

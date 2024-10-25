@@ -189,6 +189,13 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
       : typeof props.value === 'string'
       ? props.value
       : props.value?.options?.get(props.resourceName),
+    updateResourceId(newProps: ResourcesPickerButtonProps) {
+      this.resourceId = newProps.handleOnly
+      ? undefined
+      : typeof newProps.value === 'string'
+      ? newProps.value
+      : newProps.value?.options?.get(newProps.resourceName);
+    },
     async getResource() {
       this.error = null;
       this.loading = true;
@@ -254,8 +261,9 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
   }));
 
   useEffect(() => {
+    store.updateResourceId(props);
     store.getResource();
-  }, []);
+  }, [props.value]);
 
   useEffect(() => {
     const hasPreviewFields = Boolean(

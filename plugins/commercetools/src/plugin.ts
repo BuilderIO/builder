@@ -1,5 +1,5 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource';
+import { registerCommercePlugin } from '@builder.io/plugin-tools';
+import { Resource } from '@builder.io/plugin-tools/dist/types/interfaces/resource';
 import pkg from '../package.json';
 import { createRequestBuilder } from '@commercetools/api-request-builder';
 import appState from '@builder.io/app-context';

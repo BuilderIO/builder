@@ -19,7 +19,7 @@ const CustomHero = (props: CustomHeroProps) => {
           borderColor: 'black',
         }}
       >
-        This is a your component's text
+        This is your component's text
       </div>
 
       {props.children}
