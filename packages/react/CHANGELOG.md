@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 5.0.10
+
+### Patch Changes
+
+- b5dd732: Feature: start sending accurate npm package version information to the Visual Editor
+- Updated dependencies [b5dd732]
+  - @builder.io/sdk@3.0.6
+
 ## 5.0.9
 
 ### Patch Changes
