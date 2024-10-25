@@ -280,6 +280,12 @@ export type GetContentOptions = AllowEnrich & {
    * Defaults to `'query'`.
    */
   apiEndpoint?: 'content' | 'query';
+
+  /**
+   * Optional fetch options to be passed as the second argument to the `fetch` function.
+   */
+  fetchOptions?: object;
+
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
@@ -2616,10 +2622,10 @@ export class Builder {
 
     const queryStr = QueryString.stringifyDeep(queryParams);
 
-    const requestOptions = { headers: {} };
+    const fetchOptions = { headers: {}, ...queue[0].fetchOptions };
     if (this.authToken) {
-      requestOptions.headers = {
-        ...requestOptions.headers,
+      fetchOptions.headers = {
+        ...fetchOptions.headers,
         Authorization: `Bearer ${this.authToken}`,
       };
     }
@@ -2635,7 +2641,7 @@ export class Builder {
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
-    const promise = this.makeFetchApiCall(url, requestOptions)
+    const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
       .then(
         result => {
