@@ -2503,6 +2503,9 @@ export class Builder {
       }
     }
 
+    const isApiCallForCodegen =
+      queue[0].options?.format === 'solid' || queue[0].options?.format === 'react';
+
     for (const options of queue) {
       const format = options.format;
 
@@ -2541,7 +2544,7 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (format === 'solid' || format === 'react') {
+          if (isApiCallForCodegen) {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
@@ -2567,7 +2570,6 @@ export class Builder {
     }
 
     const format = queryParams.format;
-    const isApiCallForCodegen = format === 'solid' || format === 'react';
 
     if (!isApiCallForCodegen) {
       queryParams.enrich = true;

@@ -31,7 +31,7 @@ test.describe('Slot', () => {
     await expect(page.locator('text=This is called recursion!')).toBeVisible();
   });
 
-  test('slot should render with symbol (without content)', async ({ page, packageName, sdk }) => {
+  test('slot should render with symbol (without content)', async ({ page, packageName }) => {
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // ssr packages skipped because it fetches the slot content from the server
     test.fail(
