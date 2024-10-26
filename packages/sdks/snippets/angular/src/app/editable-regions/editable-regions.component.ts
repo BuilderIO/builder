@@ -26,7 +26,7 @@ import {
     <div *ngIf="notFound">404</div>
   `,
 })
-export default class EditableRegionComponent implements OnInit {
+export class EditableRegionComponent implements OnInit {
   model = 'page';
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   customComponents = [customColumnsInfo];
