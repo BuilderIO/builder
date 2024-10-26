@@ -74,6 +74,7 @@ export interface BuilderBlock {
   repeat?: {
     collection: string;
     itemName?: string;
+    indexName?: string;
   } | null;
   animations?: BuilderAnimation[];
   style?: Partial<CSSStyleDeclaration>;

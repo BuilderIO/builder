@@ -28,7 +28,7 @@ export const getComponent = ({
   if (!ref) {
     // TODO: Public doc page with more info about this message
     console.warn(`
-      Could not find a registered component named "${componentName}". 
+      Could not find a registered component named "${componentName}".
       If you registered it, is the file that registered it imported by the file that needs to render it?`);
     return undefined;
   } else {
@@ -68,7 +68,7 @@ export const getRepeatItemData = ({
   const collectionName = repeat.collection.split('.').pop();
   const itemNameToUse =
     repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
-
+  const indexToUse = repeat.indexName || `$${itemNameToUse}Index`;
   const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
     context: {
       ...context,
@@ -77,7 +77,7 @@ export const getRepeatItemData = ({
         $index: index,
         $item: item,
         [itemNameToUse]: item,
-        [`$${itemNameToUse}Index`]: index,
+        [indexToUse]: index,
       },
     },
     block: blockWithoutRepeat,
