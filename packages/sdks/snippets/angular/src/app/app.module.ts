@@ -12,10 +12,11 @@ import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { CustomChildComponent } from './custom-child/custom-child.component';
 import { CustomHeroComponent } from './custom-child/custom-hero/custom-hero.component';
+import { CustomColumnsComponent } from './editable-regions/custom-columns/custom-columns.component';
+import EditableRegionComponent from './editable-regions/editable-regions.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductEditorialComponent } from './product-editorial/product-editorial.component';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,6 +30,8 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
     NavBarComponent,
     CustomChildComponent,
     CustomHeroComponent,
+    CustomColumnsComponent,
+    EditableRegionComponent,
     CatchAllComponent,
     RouterModule.forRoot([
       { path: 'announcements/:id', component: AnnouncementBarComponent },
@@ -39,6 +42,10 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
       {
         path: 'custom-child',
         component: CustomChildComponent,
+      },
+      {
+        path: 'editable-region',
+        component: EditableRegionComponent,
       },
       { path: '**', component: CatchAllComponent },
     ]),
