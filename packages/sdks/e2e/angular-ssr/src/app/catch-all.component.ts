@@ -4,6 +4,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { RegisteredComponent } from '@builder.io/sdk-angular';
 import { BuilderBlockWithClassNameComponent } from './builder-block-with-class-name.component';
+import { CustomButtonComponent } from './custom-components/custom-button.component';
+import { CustomCardContentComponent } from './custom-components/custom-card-content.component';
+import { CustomCardFooterComponent } from './custom-components/custom-card-footer.component';
+import { CustomCardTitleComponent } from './custom-components/custom-card-title.component';
+import { CustomCardComponent } from './custom-components/custom-card.component';
 import { HelloComponent } from './hello.component';
 
 interface BuilderProps {
@@ -102,6 +107,36 @@ export class CatchAllComponent {
           ],
         },
       ],
+    },
+    {
+      name: 'CustomButton',
+      component: CustomButtonComponent,
+      noWrap: true,
+      canHaveChildren: true,
+    },
+    {
+      name: 'CustomCard',
+      component: CustomCardComponent,
+      noWrap: true,
+      canHaveChildren: true,
+    },
+    {
+      name: 'CustomCardTitle',
+      component: CustomCardTitleComponent,
+      noWrap: true,
+      canHaveChildren: true,
+    },
+    {
+      name: 'CustomCardFooter',
+      component: CustomCardFooterComponent,
+      noWrap: true,
+      canHaveChildren: true,
+    },
+    {
+      name: 'CustomCardContent',
+      component: CustomCardContentComponent,
+      noWrap: true,
+      canHaveChildren: true,
     },
   ];
 
