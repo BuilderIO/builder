@@ -30,7 +30,7 @@ test.describe('Get Content', () => {
   test('passes fetch options', async ({ page, packageName }) => {
     test.skip(packageName !== 'gen1-next');
 
-    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/query/;
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
     const responsePromise = page.waitForResponse(urlMatch);
 
     await page.goto('/with-fetch-options', { waitUntil: 'networkidle' });
