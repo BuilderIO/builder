@@ -113,6 +113,7 @@ export class CatchAllComponent {
       this.canTrack = data.content?.canTrack;
       this.trustedHosts = data.content?.trustedHosts;
       this.data = data.content?.data;
+      this.model = data.content?.model;
     });
   }
 }
