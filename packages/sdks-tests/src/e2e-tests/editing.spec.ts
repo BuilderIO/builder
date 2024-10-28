@@ -141,6 +141,8 @@ test.describe('Visual Editing', () => {
       model: 'symbol',
     });
 
+    await page.frameLocator('iframe').getByText('something other than the symbol!').waitFor();
+
     const textBlocks = await page
       .frameLocator('iframe')
       .getByText('something other than the symbol!')
