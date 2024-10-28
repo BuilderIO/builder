@@ -59,7 +59,7 @@ test.describe('Symbols', () => {
 
     await testSymbols(page);
   });
-  test('fetch content if not provided', async ({ page, packageName }) => {
+  test('fetch content if not provided', async ({ page, packageName, sdk }) => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
@@ -129,7 +129,7 @@ test.describe('Symbols', () => {
   });
 
   test.describe('apiVersion', () => {
-    test('apiVersion is not set', async ({ page, packageName }) => {
+    test('apiVersion is not set', async ({ page, packageName, sdk }) => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
@@ -161,7 +161,7 @@ test.describe('Symbols', () => {
       expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
     });
 
-    test('apiVersion is set to v3', async ({ page, packageName }) => {
+    test('apiVersion is set to v3', async ({ page, packageName, sdk }) => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
       let headers;
