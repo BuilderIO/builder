@@ -6,6 +6,7 @@ import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
 import { checkIsRN, test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
+import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName }) => {
@@ -114,6 +115,30 @@ test.describe('Visual Editing', () => {
         expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
       }
     }
+  });
+
+  test('nested ContentVariants with same model name should not duplicate content', async ({
+    page,
+    basePort,
+  }) => {
+    await page.goto('/duplicated-content-using-nested-symbols');
+    await launchEmbedderAndWaitForSdk({
+      path: '/duplicated-content-using-nested-symbols',
+      basePort,
+      page,
+    });
+
+    await sendContentUpdateMessage({
+      page,
+      newContent: ADD_A_TEXT_BLOCK,
+      model: 'symbol',
+    });
+
+    const textBlocks = await page
+      .frameLocator('iframe')
+      .getByText('something other than the symbol!')
+      .all();
+    expect(textBlocks.length).toBe(1);
   });
 
   test.describe('fails for empty trusted hosts', () => {
