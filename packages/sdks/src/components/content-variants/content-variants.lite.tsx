@@ -37,11 +37,6 @@ type VariantsProviderProps = ContentVariantsPrps & {
    * For internal use only. Do not provide this prop.
    */
   isNestedRender?: boolean;
-
-  /**
-   * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
-   */
-  apiHost?: string;
 };
 
 export default function ContentVariants(props: VariantsProviderProps) {
