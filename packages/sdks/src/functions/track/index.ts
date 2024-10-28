@@ -75,11 +75,6 @@ type EventProperties = Pick<Event, 'type'> &
      * (Optional) Any additional (non-metadata) properties to add to the event.
      */
     [index: string]: any;
-
-    /**
-     * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
-     */
-    apiHost?: string;
   };
 
 export type EventProps = EventProperties & CanTrack;
@@ -104,7 +99,10 @@ const createEvent = async ({
   },
 });
 
-export async function _track(eventProps: EventProps) {
+export async function _track({
+  apiHost,
+  ...eventProps
+}: EventProps & { apiHost?: string }) {
   if (!eventProps.apiKey) {
     logger.error(
       'Missing API key for track call. Please provide your API key.'
@@ -123,7 +121,7 @@ export async function _track(eventProps: EventProps) {
     return;
   }
 
-  const baseUrl = eventProps.apiHost || 'https://cdn.builder.io';
+  const baseUrl = apiHost || 'https://cdn.builder.io';
 
   delete eventProps.apiHost;
   return fetch(`${baseUrl}/api/v1/track`, {
