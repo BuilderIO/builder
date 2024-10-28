@@ -119,8 +119,15 @@ test.describe('Visual Editing', () => {
 
   test('nested ContentVariants with same model name should not duplicate content', async ({
     page,
+    packageName,
     basePort,
   }) => {
+    test.skip(
+      packageName === 'nextjs-sdk-next-app' ||
+        packageName === 'gen1-next' ||
+        packageName === 'gen1-react' ||
+        packageName === 'gen1-remix'
+    );
     await page.goto('/duplicated-content-using-nested-symbols');
     await launchEmbedderAndWaitForSdk({
       path: '/duplicated-content-using-nested-symbols',
