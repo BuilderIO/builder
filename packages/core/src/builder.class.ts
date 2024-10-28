@@ -2,7 +2,6 @@ import './polyfills/custom-event-polyfill';
 import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
-import { version } from '../package.json';
 import { BehaviorSubject } from './classes/observable.class';
 import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
@@ -21,6 +20,7 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
+import { SDK_VERSION } from './sdk-version';
 
 export type Url = any;
 
@@ -873,11 +873,7 @@ export interface Action {
 }
 
 export class Builder {
-  /**
-   * @hidden
-   * @deprecated. This is buggy, and always behind by a version.
-   */
-  static VERSION = version;
+  static VERSION = SDK_VERSION;
 
   static components: Component[] = [];
   static singletonInstance: Builder;
@@ -1187,6 +1183,12 @@ export class Builder {
   }
 
   static isReact = false;
+  static sdkInfo = undefined as
+    | {
+        name: string;
+        version: string;
+      }
+    | undefined;
 
   static get Component() {
     return this.component;
@@ -1228,6 +1230,7 @@ export class Builder {
       body: JSON.stringify({ events }),
       headers: {
         'content-type': 'application/json',
+        ...this.getSdkHeaders(),
       },
       mode: 'cors',
     }).catch(() => {
@@ -2340,7 +2343,7 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, this.addSdkHeaders(options)).then(res => res.json());
   }
 
   get host() {
@@ -2367,8 +2370,36 @@ export class Builder {
     }
   }
 
-  private makeFetchApiCall(url: string, requestOptions: SimplifiedFetchOptions): Promise<any> {
-    return getFetch()(url, requestOptions);
+  private getSdkHeaders():
+    | {
+        'X-Builder-SDK': string;
+        'X-Builder-SDK-GEN': '1';
+        'X-Builder-SDK-Version': string;
+      }
+    | {} {
+    if (!Builder.sdkInfo) {
+      return {};
+    }
+
+    return {
+      'X-Builder-SDK': Builder.sdkInfo.name,
+      'X-Builder-SDK-GEN': '1',
+      'X-Builder-SDK-Version': Builder.sdkInfo.version,
+    } as const;
+  }
+
+  private addSdkHeaders(fetchOptions: any) {
+    return {
+      ...fetchOptions,
+      headers: {
+        ...fetchOptions.headers,
+        ...this.getSdkHeaders(),
+      },
+    };
+  }
+
+  private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
+    return getFetch()(url, this.addSdkHeaders(requestOptions));
   }
 
   private flattenMongoQuery(obj: any, _current?: any, _res: any = {}): { [key: string]: string } {

@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { excludeGen2, checkIsRN, test } from '../helpers/index.js';
+import { excludeGen2, checkIsRN, test, mapSdkName, getSdkGeneration } from '../helpers/index.js';
 import type { ServerName } from '../helpers/sdk.js';
 
 /**
@@ -63,11 +63,13 @@ test.describe('Symbols', () => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
+    let headers;
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
       x++;
+      headers = route.request().headers();
 
       return route.fulfill({
         status: 200,
@@ -82,6 +84,11 @@ test.describe('Symbols', () => {
     await testSymbols(page);
 
     await expect(x).toBeGreaterThanOrEqual(2);
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
   test('refresh on locale change', async ({ page, sdk }) => {
@@ -89,11 +96,13 @@ test.describe('Symbols', () => {
     test.skip(excludeGen2(sdk));
 
     let x = 0;
+    let headers;
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
       x++;
+      headers = route.request().headers();
 
       return route.fulfill({
         status: 200,
@@ -112,6 +121,11 @@ test.describe('Symbols', () => {
     await expect(page.locator('text=French text')).toBeVisible();
 
     await expect(x).toBeGreaterThanOrEqual(2);
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
   test.describe('apiVersion', () => {
@@ -119,11 +133,13 @@ test.describe('Symbols', () => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
+      let headers;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
       await page.route(urlMatch, route => {
         x++;
+        headers = route.request().headers();
 
         return route.fulfill({
           status: 200,
@@ -138,16 +154,23 @@ test.describe('Symbols', () => {
       await testSymbols(page);
 
       await expect(x).toBeGreaterThanOrEqual(2);
+
+      // Check for new SDK headers
+      expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
     });
 
     test('apiVersion is set to v3', async ({ page, packageName }) => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
+      let headers;
 
       const urlMatch = /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
       await page.route(urlMatch, route => {
         x++;
+        headers = route.request().headers();
 
         return route.fulfill({
           status: 200,
@@ -162,6 +185,11 @@ test.describe('Symbols', () => {
       await testSymbols(page);
 
       await expect(x).toBeGreaterThanOrEqual(2);
+
+      // Check for new SDK headers
+      expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
     });
   });
 
