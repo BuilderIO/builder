@@ -320,11 +320,7 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (
-        code?.includes('selector: "blocks-wrapper"') ||
-        code?.includes('selector: "component-ref"') ||
-        code?.includes('selector: "interactive-element"')
-      ) {
+      if (code?.includes('selector: "blocks-wrapper"')) {
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
@@ -679,6 +675,22 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
   },
 });
 
+const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "component-ref"')) {
+        code = code.replace(
+          /this\.myContent\s*=\s*\[[^\]]*\]/,
+          `const wrapperTemplate = this.vcRef.createEmbeddedView(this.wrapperTemplateRef);
+          wrapperTemplate.detectChanges();
+          this.myContent = [wrapperTemplate.rootNodes]`
+        );
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -706,6 +718,7 @@ module.exports = {
         ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
         ANGULAR_ADD_UNUSED_PROP_TYPES,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
+        ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
       ],
     },
     solid: {
