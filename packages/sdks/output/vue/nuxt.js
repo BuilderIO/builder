@@ -1,4 +1,4 @@
-import { addPlugin, defineNuxtModule } from '@nuxt/kit';
+import { addPlugin, defineNuxtModule, createResolver } from '@nuxt/kit';
 
 export default defineNuxtModule({
   setup(options, nuxt) {
@@ -30,8 +30,9 @@ export default defineNuxtModule({
         };
       }
 
+      const resolver = createResolver(import.meta.url);
       addPlugin({
-        src: './nuxt-isolated-vm-plugin.js',
+        src: resolver.resolve('nuxt-isolated-vm-plugin.js'),
         mode: 'server',
       });
     }

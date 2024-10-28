@@ -109,6 +109,7 @@
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
+    "@nuxt/kit": "^3.13.2",
     "@types/node": "^16.11.47",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/tsconfig": "^0.1.3",
