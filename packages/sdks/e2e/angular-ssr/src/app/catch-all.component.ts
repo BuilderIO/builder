@@ -112,7 +112,6 @@ export class CatchAllComponent {
 
   ngOnInit() {
     this.activatedRoute.data.subscribe((data: any) => {
-      console.log('data', data);
       this.content = data.content?.content;
       this.canTrack = data.content?.canTrack;
       this.trustedHosts = data.content?.trustedHosts;
