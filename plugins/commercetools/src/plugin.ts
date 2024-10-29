@@ -148,15 +148,12 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}`,
-              method: 'POST',
-              body: {
-                request: {
-                  url: `${apiUrl}${requestBuilder.products.byId(id).build()}`,
-                  headers,
-                  method: 'GET',
-                }
-              }
+              url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}&request=${encodeURIComponent(JSON.stringify({
+                url: `${apiUrl}${requestBuilder.products.byId(id).build()}`,
+                headers,
+                method: 'GET',
+              }))}`,
+              method: 'GET',
             },
             options: {
               product: id,
@@ -204,15 +201,12 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}`,
-              method: 'POST',
-              body: {
-                request: {
-                  url: `${apiUrl}${requestBuilder.categories.byId(id).build()}`,
-                  headers,
-                  method: 'GET',
-                }
-              }
+              url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}&request=${encodeURIComponent(JSON.stringify({
+                url: `${apiUrl}${requestBuilder.categories.byId(id).build()}`,
+                headers,
+                method: 'GET',
+              }))}`,
+              method: 'GET',
             },
             options: {
               category: id,
