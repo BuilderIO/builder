@@ -124,7 +124,6 @@ export async function _track({
 
   const baseUrl = apiHost || 'https://cdn.builder.io';
 
-  delete eventProps.apiHost;
   return fetch(`${baseUrl}/api/v1/track`, {
     method: 'POST',
     body: JSON.stringify({
