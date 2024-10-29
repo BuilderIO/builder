@@ -65,6 +65,7 @@ import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
 import { SSR_BINDING_CONTENT } from './ssr-binding.js';
 import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading.js';
 import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
+import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -150,6 +151,7 @@ export const PAGES = {
   '/eager-dynamic-loading': EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
   '/ssr-binding': SSR_BINDING_CONTENT,
   '/blocks-class-name': BLOCKS_CLASS_NAME,
+  '/duplicated-content-using-nested-symbols': DUPLICATED_CONTENT_USING_NESTED_SYMBOLS,
   '/override-base-url': HTTP_REQUESTS,
 } as const;
 
@@ -272,6 +274,11 @@ export const getProps = async (args: {
     case '/symbol-with-repeat-input-binding':
       extraProps = {
         data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
+      };
+      break;
+    case '/duplicated-content-using-nested-symbols':
+      extraProps = {
+        model: 'symbol',
       };
       break;
     case '/override-base-url':

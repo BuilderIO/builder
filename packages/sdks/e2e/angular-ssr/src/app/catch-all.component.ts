@@ -117,6 +117,7 @@ export class CatchAllComponent {
       this.trustedHosts = data.content?.trustedHosts;
       this.data = data.content?.data;
       this.apiHost = data.content?.apiHost;
+      this.model = data.content?.model;
     });
   }
 }

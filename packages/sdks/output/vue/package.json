@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "2.0.24",
+  "version": "2.0.25",
   "main": "./lib/node/index.cjs",
   "module": "./lib/node/index.mjs",
   "type": "module",
@@ -109,6 +109,7 @@
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",
+    "@nuxt/kit": "^3.13.2",
     "@types/node": "^16.11.47",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/tsconfig": "^0.1.3",

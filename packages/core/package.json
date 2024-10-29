@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk",
-  "version": "3.0.5",
+  "version": "3.0.7",
   "unpkg": "./dist/index.browser.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -16,7 +16,8 @@
     "docs": "yarn run docs:generate && yarn run docs:cleanup",
     "docs:generate": "typedoc",
     "docs:cleanup": "node scripts/cleanup-generated-docs",
-    "build": "yarn run tsc && rollup -c",
+    "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
+    "build": "yarn run tsc && rollup -c && yarn set-sdk-version",
     "watch": "rollup -cw",
     "start": "yarn run watch",
     "tsc": "tsc --module commonjs",

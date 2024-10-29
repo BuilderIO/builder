@@ -55,7 +55,6 @@ type BuilderEditorProps = Omit<
   | 'isSsrAbTest'
   | 'blocksWrapper'
   | 'blocksWrapperProps'
-  | 'isNestedRender'
   | 'linkComponent'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
@@ -327,7 +326,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onMount(() => {
     if (isBrowser()) {
-      if (isEditing()) {
+      if (isEditing() && !props.isNestedRender) {
         useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
