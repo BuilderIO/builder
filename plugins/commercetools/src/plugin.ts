@@ -150,7 +150,6 @@ registerCommercePlugin(
             request: {
               url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}&request=${encodeURIComponent(JSON.stringify({
                 url: `${apiUrl}${requestBuilder.products.byId(id).build()}`,
-                headers,
                 method: 'GET',
               }))}`,
               method: 'GET',
@@ -203,7 +202,6 @@ registerCommercePlugin(
             request: {
               url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}&request=${encodeURIComponent(JSON.stringify({
                 url: `${apiUrl}${requestBuilder.categories.byId(id).build()}`,
-                headers,
                 method: 'GET',
               }))}`,
               method: 'GET',
