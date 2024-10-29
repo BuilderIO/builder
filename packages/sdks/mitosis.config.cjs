@@ -589,7 +589,25 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   },
 });
 
-const noWrapHackCode = `  
+/**
+ * This code is used to destructure the `attributes` prop and apply it to the direct child element of the
+ * interactive-element when `noWrap` is set to `true`.
+ *
+ * When using a custom component that doesn’t expect the `attributes` prop and `noWrap` is `true`,
+ * the `attributes` are applied to the root element of the custom component:
+ *
+ * <mat-button {...attributes}>
+ *   ...
+ * </mat-button>
+ *
+ * For custom components that **do** expect the `attributes` prop, it is passed as an `@Input()`,
+ * allowing users to utilize it wherever needed.
+ * For instance, in our Button block, the `attributes` prop is passed to `dynamic-renderer` -> `button`.
+ *
+ * If users want to apply the `attributes` prop at specific locations within their custom components,
+ * they can use it as an `@Input()`.
+ */
+const ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE = `  
   _listenerFns = new Map<string, () => void>();
 
   private hasAttributesInput(component): boolean {
@@ -640,6 +658,12 @@ const noWrapHackCode = `
     }
   }
 `;
+
+/**
+ * Checks if the custom component expects `attributes` prop.
+ * If yes, it passes `attributes` as an `@Input()` to the custom component.
+ * If no, it attaches `attributes` to the direct child element of interactive element.
+ */
 const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
   code: {
     post: (code) => {
@@ -662,7 +686,7 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
         const ngOnChangesIndex = code.indexOf('ngOnChanges');
         code =
           code.slice(0, ngOnChangesIndex) +
-          noWrapHackCode +
+          ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE +
           code.slice(ngOnChangesIndex);
 
         code = code.replace(
@@ -675,6 +699,9 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
   },
 });
 
+/**
+ * Looks for any changes in `component-ref` component's wrapper template and updates it such that it resolves during SSR.
+ */
 const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
   code: {
     post: (code) => {

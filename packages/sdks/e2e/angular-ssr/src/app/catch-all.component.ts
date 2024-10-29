@@ -38,7 +38,7 @@ interface BuilderProps {
 export class CatchAllComponent {
   canTrack: BuilderProps['canTrack'];
   trustedHosts: BuilderProps['trustedHosts'];
-  apiKey: BuilderProps['apiKey'] = 'abcd';
+  apiKey: BuilderProps['apiKey'] = 'ad30f9a246614faaa6a03374f83554c9';
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
   data: BuilderProps['data'];
