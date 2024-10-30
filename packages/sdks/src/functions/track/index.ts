@@ -5,6 +5,7 @@ import { getSessionId } from '../../helpers/sessionId.js';
 import { getVisitorId } from '../../helpers/visitorId.js';
 import type { CanTrack } from '../../types/can-track.js';
 import type { Dictionary } from '../../types/typescript.js';
+import { fetchApi } from '../fetch-api.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { getUserAttributes } from './helpers.js';
@@ -119,7 +120,7 @@ export async function _track(eventProps: EventProps) {
     return;
   }
 
-  return fetch(`https://cdn.builder.io/api/v1/track`, {
+  return fetchApi(`https://cdn.builder.io/api/v1/track`, {
     method: 'POST',
     body: JSON.stringify({
       events: [await createEvent(eventProps)],
@@ -129,7 +130,7 @@ export async function _track(eventProps: EventProps) {
       ...getSdkHeaders(),
     },
     mode: 'cors',
-  }).catch((err) => {
+  }).catch((err: Error) => {
     console.error('Failed to track: ', err);
   });
 }

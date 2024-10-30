@@ -24,6 +24,7 @@ import { filterAttrs } from '../../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
+import { fetchApi } from '../../../functions/fetch-api.js';
 import { setAttrs } from '../../helpers.js';
 
 export type FormProps = BuilderDataProps &
@@ -193,7 +194,7 @@ export default function FormComponent(props: FormProps) {
           props.sendSubmissionsToEmail || ''
         )}&name=${encodeURIComponent(props.name || '')}`;
 
-        fetch(
+        fetchApi(
           props.sendSubmissionsTo === 'email'
             ? formUrl
             : props.action! /* TODO: throw error if no action URL */,
@@ -203,7 +204,7 @@ export default function FormComponent(props: FormProps) {
             method: props.method || 'post',
           }
         ).then(
-          async (res) => {
+          async (res: Response) => {
             let body;
             const contentType = res.headers.get('content-type');
             if (contentType && contentType.indexOf('application/json') !== -1) {
@@ -268,7 +269,7 @@ export default function FormComponent(props: FormProps) {
               }
             }
           },
-          (err) => {
+          (err: Error) => {
             const submitErrorEvent = new CustomEvent('submit:error', {
               detail: {
                 error: err,

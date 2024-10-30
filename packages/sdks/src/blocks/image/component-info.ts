@@ -1,3 +1,4 @@
+import { fetchApi } from '../../functions/fetch-api.js';
 import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
@@ -60,9 +61,9 @@ export const componentInfo: ComponentInfo = {
         const aspectRatio = options.get('aspectRatio');
 
         // For SVG images - don't render as webp, keep them as SVG
-        fetch(value)
-          .then((res) => res.blob())
-          .then((blob) => {
+        fetchApi(value)
+          .then((res: Response) => res.blob())
+          .then((blob: Blob) => {
             if (blob.type.includes('svg')) {
               options.set('noWebp', true);
             }
