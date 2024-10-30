@@ -6,6 +6,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { AdvancedChildComponent } from './advanced-child/advanced-child.component';
+import { CustomTabsComponent } from './advanced-child/custom-tabs/custom-tabs.component';
 import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.component';
 import { AppComponent } from './app.component';
 import { BlogArticleComponent } from './blog-article/blog-article.component';
@@ -32,6 +34,8 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
     CustomHeroComponent,
     CustomColumnsComponent,
     EditableRegionComponent,
+    AdvancedChildComponent,
+    CustomTabsComponent,
     CatchAllComponent,
     RouterModule.forRoot([
       { path: 'announcements/:id', component: AnnouncementBarComponent },
@@ -47,6 +51,7 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
         path: 'editable-region',
         component: EditableRegionComponent,
       },
+      { path: 'advanced-child', component: AdvancedChildComponent },
       { path: '**', component: CatchAllComponent },
     ]),
   ],
