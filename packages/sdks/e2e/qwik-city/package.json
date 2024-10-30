@@ -14,7 +14,7 @@
     "start": "vite --open --mode ssr",
     "qwik": "qwik",
     "test": "SERVER_NAME=qwik-city yarn g:nx test:e2e @sdk/tests",
-    "serve": "yarn run preview"
+    "serve": "yarn run dev"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.5.1",
