@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-commercetools",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -22,6 +22,7 @@
     "prebuild": "rimraf dist",
     "build": "rollup -c rollup.config.ts",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish",
     "start": "SERVE=true rollup -c rollup.config.ts -w",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
@@ -121,7 +122,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@builder.io/plugin-tools": "^0.0.5",
+    "@builder.io/plugin-tools": "^0.0.6",
     "@commercetools/api-request-builder": "^5.6.3"
   }
 }
