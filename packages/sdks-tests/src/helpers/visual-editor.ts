@@ -109,6 +109,8 @@ export const sendPatchUpdatesMessage = async ({
   );
 };
 
+export const cloneContent = (content: BuilderContent) => JSON.parse(JSON.stringify(content));
+
 export const sendPatchOrUpdateMessage = async ({
   page,
   content,

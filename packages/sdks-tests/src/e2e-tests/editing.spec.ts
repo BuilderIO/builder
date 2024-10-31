@@ -4,6 +4,7 @@ import { NEW_TEXT } from '../specs/helpers.js';
 import { CONTENT } from '../specs/homepage.js';
 import { checkIsRN, test } from '../helpers/index.js';
 import {
+  cloneContent,
   launchEmbedderAndWaitForSdk,
   sendContentUpdateMessage,
   sendPatchOrUpdateMessage,
@@ -27,7 +28,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 
     await sendPatchOrUpdateMessage({
       page,
-      content: CONTENT,
+      content: cloneContent(CONTENT),
       model: 'page',
       sdk,
       path: '/data/blocks/0/children/0/component/options/text',
@@ -54,7 +55,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 
     await sendPatchOrUpdateMessage({
       page,
-      content: CONTENT,
+      content: cloneContent(CONTENT),
       model: 'page',
       sdk,
       path: '/data/blocks/0/responsiveStyles/large/backgroundColor',

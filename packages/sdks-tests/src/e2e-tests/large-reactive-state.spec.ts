@@ -1,6 +1,10 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
-import { launchEmbedderAndWaitForSdk, sendPatchOrUpdateMessage } from '../helpers/visual-editor.js';
+import {
+  cloneContent,
+  launchEmbedderAndWaitForSdk,
+  sendPatchOrUpdateMessage,
+} from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
 import type { Sdk } from '../helpers/sdk.js';
 
@@ -92,7 +96,7 @@ test.describe('Large Reactive State', () => {
     });
 
     const startTime = Date.now();
-    const updatedContent = JSON.parse(JSON.stringify(LARGE_REACTIVE_STATE_CONTENT));
+    const updatedContent = cloneContent(LARGE_REACTIVE_STATE_CONTENT);
 
     const numUpdates = 10;
 
