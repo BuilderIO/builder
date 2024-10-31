@@ -276,12 +276,6 @@ type AllowEnrich =
 
 export type GetContentOptions = AllowEnrich & {
   /**
-   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
-   * Defaults to `'query'`.
-   */
-  apiEndpoint?: 'content' | 'query';
-
-  /**
    * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
   fetchOptions?: object;
@@ -2447,8 +2441,6 @@ export class Builder {
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
 
-    const apiEndpoint = queue[0].apiEndpoint || 'query';
-
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
 
@@ -2542,6 +2534,9 @@ export class Builder {
       }
     }
 
+    const isApiCallForCodegen =
+      queue[0].options?.format === 'solid' || queue[0].options?.format === 'react';
+
     for (const options of queue) {
       const format = options.format;
 
@@ -2580,7 +2575,7 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (apiEndpoint === 'query') {
+          if (isApiCallForCodegen) {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
@@ -2606,10 +2601,8 @@ export class Builder {
     }
 
     const format = queryParams.format;
-    const isApiCallForCodegen = format === 'solid' || format === 'react';
-    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
 
-    if (apiEndpoint === 'content') {
+    if (!isApiCallForCodegen) {
       queryParams.enrich = true;
       if (queue[0].query) {
         const flattened = this.flattenMongoQuery({ query: queue[0].query });
@@ -2633,8 +2626,6 @@ export class Builder {
     let url;
     if (isApiCallForCodegen) {
       url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
-    } else if (apiEndpoint === 'query') {
-      url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
     } else {
       url = `${host}/api/v3/content/${queue[0].model}`;
     }
@@ -2660,7 +2651,7 @@ export class Builder {
             if (!observer) {
               return;
             }
-            const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
+            const data = isApiCallForCodegen ? result[keyName] : result.results;
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer

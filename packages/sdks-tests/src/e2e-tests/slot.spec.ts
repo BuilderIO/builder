@@ -31,7 +31,7 @@ test.describe('Slot', () => {
     await expect(page.locator('text=This is called recursion!')).toBeVisible();
   });
 
-  test('slot should render with symbol (without content)', async ({ page, packageName, sdk }) => {
+  test('slot should render with symbol (without content)', async ({ page, packageName }) => {
     // gen1-remix and gen1-next skipped because React.useContext is not recognized
     // ssr packages skipped because it fetches the slot content from the server
     test.fail(
@@ -40,23 +40,15 @@ test.describe('Slot', () => {
 
     let x = 0;
 
-    const urlMatch =
-      sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
       x++;
 
-      const url = new URL(route.request().url());
-
-      const keyName =
-        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
-
       return route.fulfill({
         status: 200,
         json: {
-          [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
         },
       });
     });
