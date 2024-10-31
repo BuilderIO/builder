@@ -19,7 +19,7 @@ import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
 import { FORM } from './form.js';
-import { CONTENT as homepage } from './homepage.js';
+import { HOMEPAGE } from './homepage.js';
 import { HOVER_ANIMATION } from './hover-animation.js';
 import { HTTP_REQUESTS } from './http-requests.js';
 import {
@@ -74,11 +74,11 @@ function isBrowser(): boolean {
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
 export const PAGES = {
-  '/': homepage,
+  '/': HOMEPAGE,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
-  '/can-track-false': homepage,
+  '/can-track-false': HOMEPAGE,
   '/css-nesting': cssNesting,
   '/columns': columns,
   '/symbols': symbols,
@@ -123,7 +123,7 @@ export const PAGES = {
   '/slot': SLOT,
   '/slot-with-symbol': SLOT_WITH_SYMBOL,
   '/slot-without-symbol': SLOT_WITHOUT_SYMBOL,
-  '/no-trusted-hosts': homepage,
+  '/no-trusted-hosts': HOMEPAGE,
   '/editing-styles-no-trusted-hosts': EDITING_STYLES,
   '/animations': ANIMATIONS,
   '/data-preview': DATA_PREVIEW,
@@ -142,7 +142,7 @@ export const PAGES = {
   '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
-  '/with-fetch-options': homepage,
+  '/with-fetch-options': HOMEPAGE,
   '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
   '/children-slot-placement': CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT,
   '/dynamic-loading': DYNAMIC_LOADING_CUSTOM_COMPONENTS,

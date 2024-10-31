@@ -1,4 +1,4 @@
-export const CONTENT = {
+export const HOMEPAGE = {
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   createdDate: 1644861373771,
   data: {

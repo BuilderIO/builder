@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { MODIFIED_COLUMNS } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
-import { CONTENT } from '../specs/homepage.js';
+import { HOMEPAGE } from '../specs/homepage.js';
 import { checkIsRN, test } from '../helpers/index.js';
 import {
   cloneContent,
@@ -11,6 +11,7 @@ import {
 } from '../helpers/visual-editor.js';
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
+import { EDITING_STYLES } from '../specs/editing-styles.js';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
@@ -28,7 +29,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 
     await sendPatchOrUpdateMessage({
       page,
-      content: cloneContent(CONTENT),
+      content: cloneContent(HOMEPAGE),
       model: 'page',
       sdk,
       path: '/data/blocks/0/children/0/component/options/text',
@@ -55,7 +56,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 
     await sendPatchOrUpdateMessage({
       page,
-      content: cloneContent(CONTENT),
+      content: cloneContent(EDITING_STYLES),
       model: 'page',
       sdk,
       path: '/data/blocks/0/responsiveStyles/large/backgroundColor',
