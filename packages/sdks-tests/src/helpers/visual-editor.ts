@@ -109,21 +109,21 @@ export const sendPatchUpdatesMessage = async ({
   );
 };
 
-export const sendUpdateTextMessage = async ({
+export const sendPatchOrUpdateMessage = async ({
   page,
   content,
   model,
   sdk,
   updateFn,
+  path,
 }: {
   page: Page;
   content: BuilderContent;
   model: string;
   sdk: Sdk;
   updateFn: (text: string) => string;
+  path: string;
 }) => {
-  const path = '/data/blocks/0/component/options/columns/0/blocks/0/component/options/text';
-
   const pathParts = path.split('/').filter(Boolean);
   let target: any = content;
   for (let i = 0; i < pathParts.length - 1; i++) {
@@ -131,21 +131,19 @@ export const sendUpdateTextMessage = async ({
   }
 
   const lastKey = pathParts[pathParts.length - 1];
-  const newText = updateFn(target[lastKey]);
-  target[lastKey] = newText;
+
+  const newValue = updateFn(target[lastKey]);
+
+  target[lastKey] = newValue;
 
   if (sdk === 'oldReact') {
     await sendPatchUpdatesMessage({
       page,
-      patches: [{ op: 'replace', path, value: newText }],
+      patches: [{ op: 'replace', path, value: newValue }],
       id: content.id ?? '',
     });
   } else {
-    await sendContentUpdateMessage({
-      page,
-      newContent: content,
-      model,
-    });
+    await sendContentUpdateMessage({ page, newContent: content, model });
   }
 
   return content;

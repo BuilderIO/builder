@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
-import { launchEmbedderAndWaitForSdk, sendUpdateTextMessage } from '../helpers/visual-editor.js';
+import { launchEmbedderAndWaitForSdk, sendPatchOrUpdateMessage } from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
 import type { Sdk } from '../helpers/sdk.js';
 
@@ -97,11 +97,12 @@ test.describe('Large Reactive State', () => {
     const numUpdates = 10;
 
     for (let i = 0; i < numUpdates; i++) {
-      await sendUpdateTextMessage({
+      await sendPatchOrUpdateMessage({
         page,
         content: updatedContent,
         model: 'page',
         sdk,
+        path: '/data/blocks/0/component/options/columns/0/blocks/0/component/options/text',
         updateFn: text => text.replace('Below', 'BelowX'),
       });
     }
