@@ -161,7 +161,11 @@ const apiVersionPathToProp = {
 
 export type Path = keyof typeof PAGES;
 
-const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1', '/personalization-container'];
+const GEN1_ONLY_PATHNAMES: Path[] = [
+  '/api-version-v1',
+  '/personalization-container',
+  '/override-base-url',
+];
 const GEN2_ONLY_PATHNAMES: Path[] = [];
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
