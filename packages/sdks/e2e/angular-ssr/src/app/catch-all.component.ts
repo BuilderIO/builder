@@ -13,6 +13,7 @@ interface BuilderProps {
   model: string;
   content: any;
   data?: any;
+  apiHost?: string;
 }
 
 @Component({
@@ -27,6 +28,7 @@ interface BuilderProps {
         [canTrack]="canTrack"
         [customComponents]="customComponents"
         [data]="data"
+        [apiHost]="apiHost"
       ></builder-content>
     </ng-container>
 
@@ -42,6 +44,7 @@ export class CatchAllComponent {
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
   data: BuilderProps['data'];
+  apiHost: BuilderProps['apiHost'];
 
   customComponents: RegisteredComponent[] = customComponents;
 
@@ -53,6 +56,7 @@ export class CatchAllComponent {
       this.canTrack = data.content?.canTrack;
       this.trustedHosts = data.content?.trustedHosts;
       this.data = data.content?.data;
+      this.apiHost = data.content?.apiHost;
       this.model = data.content?.model;
     });
   }

@@ -2,14 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import {
-  excludeGen2,
-  checkIsGen1React,
-  checkIsRN,
-  test,
-  mapSdkName,
-  getSdkGeneration,
-} from '../helpers/index.js';
+import { excludeGen2, checkIsRN, test, mapSdkName, getSdkGeneration } from '../helpers/index.js';
 import type { ServerName } from '../helpers/sdk.js';
 
 /**
@@ -72,24 +65,16 @@ test.describe('Symbols', () => {
     let x = 0;
     let headers;
 
-    const urlMatch =
-      sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
       x++;
       headers = route.request().headers();
 
-      const url = new URL(route.request().url());
-
-      const keyName =
-        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
-
       return route.fulfill({
         status: 200,
         json: {
-          [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
         },
       });
     });
@@ -113,24 +98,16 @@ test.describe('Symbols', () => {
     let x = 0;
     let headers;
 
-    const urlMatch =
-      sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
       x++;
       headers = route.request().headers();
 
-      const url = new URL(route.request().url());
-
-      const keyName =
-        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
-
       return route.fulfill({
         status: 200,
         json: {
-          [keyName]: [x === 1 ? DEFAULT_TEXT_SYMBOL : FRENCH_TEXT_SYMBOL],
+          results: [x === 1 ? DEFAULT_TEXT_SYMBOL : FRENCH_TEXT_SYMBOL],
         },
       });
     });
@@ -158,24 +135,16 @@ test.describe('Symbols', () => {
       let x = 0;
       let headers;
 
-      const urlMatch = checkIsGen1React(sdk)
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
+      const urlMatch = /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
       await page.route(urlMatch, route => {
         x++;
         headers = route.request().headers();
 
-        const url = new URL(route.request().url());
-
-        const keyName = checkIsGen1React(sdk)
-          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
-          : 'results';
-
         return route.fulfill({
           status: 200,
           json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+            results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
           },
         });
       });
@@ -197,24 +166,16 @@ test.describe('Symbols', () => {
       let x = 0;
       let headers;
 
-      const urlMatch = checkIsGen1React(sdk)
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
+      const urlMatch = /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
       await page.route(urlMatch, route => {
         x++;
         headers = route.request().headers();
 
-        const url = new URL(route.request().url());
-
-        const keyName = checkIsGen1React(sdk)
-          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
-          : 'results';
-
         return route.fulfill({
           status: 200,
           json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+            results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
           },
         });
       });

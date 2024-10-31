@@ -22,13 +22,13 @@ export const launchEmbedderAndWaitForSdk = async ({
   sdk?: Sdk;
 }) => {
   if (sdk === 'oldReact') {
-    await page.route('https://cdn.builder.io/api/v3/query/**', async route => {
+    await page.route('https://cdn.builder.io/api/v3/content/**', async route => {
       const newLocal = PAGES[path as keyof typeof PAGES];
 
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ page: [newLocal] }),
+        body: JSON.stringify({ results: [newLocal] }),
       });
     });
   }

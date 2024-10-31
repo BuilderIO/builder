@@ -143,8 +143,6 @@ export const PAGES = {
   '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
-  '/get-content': HTTP_REQUESTS,
-  '/get-query': HTTP_REQUESTS,
   '/with-fetch-options': homepage,
   '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
   '/children-slot-placement': CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT,
@@ -154,6 +152,7 @@ export const PAGES = {
   '/blocks-class-name': BLOCKS_CLASS_NAME,
   '/duplicated-content-using-nested-symbols': DUPLICATED_CONTENT_USING_NESTED_SYMBOLS,
   '/custom-components-nowrap': CUSTOM_COMPONENTS_NOWRAP,
+  '/override-base-url': HTTP_REQUESTS,
 } as const;
 
 const apiVersionPathToProp = {
@@ -163,12 +162,7 @@ const apiVersionPathToProp = {
 
 export type Path = keyof typeof PAGES;
 
-const GEN1_ONLY_PATHNAMES: Path[] = [
-  '/api-version-v1',
-  '/personalization-container',
-  '/get-query',
-  '/get-content',
-];
+const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1', '/personalization-container'];
 const GEN2_ONLY_PATHNAMES: Path[] = [];
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
@@ -262,16 +256,6 @@ export const getProps = async (args: {
         strictStyleMode: true,
       };
       break;
-    case '/get-content':
-      extraProps = {
-        options: { apiEndpoint: 'content' },
-      };
-      break;
-    case '/get-query':
-      extraProps = {
-        options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
-      };
-      break;
     case '/symbol-with-repeat-input-binding':
       extraProps = {
         data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
@@ -280,6 +264,11 @@ export const getProps = async (args: {
     case '/duplicated-content-using-nested-symbols':
       extraProps = {
         model: 'symbol',
+      };
+      break;
+    case '/override-base-url':
+      extraProps = {
+        apiHost: 'https://cdn-qa.builder.io',
       };
       break;
     default:
