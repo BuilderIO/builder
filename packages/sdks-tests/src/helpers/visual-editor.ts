@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import { EMBEDDER_PORT, GEN1_SDK_LOADED_MSG, GEN2_SDK_LOADED_MSG } from './context.js';
 import type { BuilderContent } from '../specs/types.js';
 import type { Sdk } from './sdk.js';
+import type { Path } from '../specs/index.js';
 import { PAGES } from '../specs/index.js';
 
 const EMBEDDED_SERVER_URL = `http://localhost:${EMBEDDER_PORT}`;
@@ -17,7 +18,7 @@ export const launchEmbedderAndWaitForSdk = async ({
 }: {
   page: Page;
   basePort: number;
-  path: string;
+  path: Path;
   gotoOptions?: Parameters<Page['goto']>[1];
   sdk?: Sdk;
 }) => {

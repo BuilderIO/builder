@@ -75,6 +75,7 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 
 export const PAGES = {
   '/': HOMEPAGE,
+  '/editing': HOMEPAGE,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
@@ -189,6 +190,14 @@ const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
+export const VISUAL_EDITING_PATHNAMES = [
+  '/editing-styles',
+  '/large-reactive-state-editing',
+  '/no-trusted-hosts',
+  '/editing-styles-no-trusted-hosts',
+  '/editing',
+] satisfies Path[];
+
 export const getProps = async (args: {
   sdk?: Sdk;
   pathname?: string;
@@ -223,7 +232,7 @@ export const getProps = async (args: {
 
   let _content = getContentForPathname(pathname);
 
-  if (args.sdk === 'oldReact' && pathname === '/large-reactive-state-editing') {
+  if (args.sdk === 'oldReact' && VISUAL_EDITING_PATHNAMES.includes(pathname as any)) {
     // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
     // which Playwright will intercept and provide the content itself.
     _content = null;

@@ -22,7 +22,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
     );
 
     await launchEmbedderAndWaitForSdk({
-      path: noTrustedHosts ? '/no-trusted-hosts' : '/',
+      path: noTrustedHosts ? '/no-trusted-hosts' : '/editing',
       basePort,
       page,
     });
@@ -51,7 +51,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       basePort,
       page,
     });
-    const btn1 = page.frameLocator('iframe').getByRole('link');
+    const btn1 = page.frameLocator('iframe').getByRole(sdk === 'oldReact' ? 'button' : 'link');
     await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
 
     await sendPatchOrUpdateMessage({
@@ -63,7 +63,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       updateFn: () => 'rgb(19, 67, 92)',
     });
 
-    const btn = page.frameLocator('iframe').getByRole('link');
+    const btn = page.frameLocator('iframe').getByRole(sdk === 'oldReact' ? 'button' : 'link');
     await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
   });
 };
