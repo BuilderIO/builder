@@ -186,11 +186,20 @@ test.describe('Visual Editing', () => {
 
       await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_WIDTHS, model: 'page' });
 
-      const finalWidth = await secondColumn.evaluate(el =>
-        getComputedStyle(el).width.replace('px', '')
-      );
-
-      expect(Number(finalWidth)).toBeGreaterThan(Number(initialWidth));
+      await expect
+        .poll(
+          async () => {
+            const currentWidth = await secondColumn.evaluate(el =>
+              getComputedStyle(el).width.replace('px', '')
+            );
+            return Number(currentWidth);
+          },
+          {
+            message: 'Waiting for column width to increase',
+            timeout: 5000,
+          }
+        )
+        .toBeGreaterThan(Number(initialWidth));
     });
   });
 
