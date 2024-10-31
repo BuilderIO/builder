@@ -65,13 +65,18 @@ type StaticProps = { index: string[] };
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    paths: getAllPathnames('gen2').map((path) => {
-      const output: StaticProps = {
-        index: path === '/' ? [] : path.split('/').filter(Boolean),
-      };
+    paths: getAllPathnames('gen2')
+      /**
+       * for some reason, pre-rendering this route breaks the build on CI only
+       */
+      .filter((path) => path !== '/override-base-url')
+      .map((path) => {
+        const output: StaticProps = {
+          index: path === '/' ? [] : path.split('/').filter(Boolean),
+        };
 
-      return { params: output };
-    }),
+        return { params: output };
+      }),
     fallback: true,
   };
 }
