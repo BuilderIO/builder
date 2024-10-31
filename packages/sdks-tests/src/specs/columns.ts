@@ -1192,6 +1192,7 @@ COLUMNS_WITH_NEW_TEXT.data.blocks[2].children![1]!.component.options.columns![0]
   NEW_TEXT;
 
 export const COLUMNS_WITH_NEW_SPACE = JSON.parse(JSON.stringify(COLUMNS));
+COLUMNS_WITH_NEW_SPACE.data.blocks[2].children![1]!.component.options.stackColumnsAt = 'never'; // to test RN SDK
 COLUMNS_WITH_NEW_SPACE.data.blocks[2].children![1]!.component.options.space = 10;
 
 export const COLUMNS_WITH_NEW_WIDTHS = JSON.parse(JSON.stringify(COLUMNS));

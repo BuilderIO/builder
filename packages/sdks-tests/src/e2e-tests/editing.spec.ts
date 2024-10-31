@@ -150,7 +150,7 @@ test.describe('Visual Editing', () => {
       await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_TEXT, model: 'page' });
       await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
     });
-    test('correctly updates space prop', async ({ page, basePort, packageName }) => {
+    test('correctly updates space prop', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
         packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next' ||
@@ -158,16 +158,20 @@ test.describe('Visual Editing', () => {
           packageName === 'gen1-remix'
       );
 
+      const selector = checkIsRN(sdk)
+        ? '[data-builder-block-name=builder-column]'
+        : '.builder-column';
       await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
-      const secondColumn = page.frameLocator('iframe').locator('.builder-column').nth(1);
+      const secondColumn = page.frameLocator('iframe').locator(selector).nth(1);
 
-      await expect(secondColumn).toHaveCSS('margin-left', '20px');
+      await expect(secondColumn).toHaveCSS('margin-left', checkIsRN(sdk) ? '0px' : '20px');
       await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_SPACE, model: 'page' });
       await expect(secondColumn).toHaveCSS('margin-left', '10px');
     });
     test('correctly updates width props', async ({ page, basePort, packageName }) => {
       test.skip(
-        packageName === 'nextjs-sdk-next-app' ||
+        packageName === 'react-native' ||
+          packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next' ||
           packageName === 'gen1-react' ||
           packageName === 'gen1-remix'
