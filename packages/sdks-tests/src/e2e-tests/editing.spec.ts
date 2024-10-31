@@ -25,7 +25,12 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       path: noTrustedHosts ? '/no-trusted-hosts' : '/editing',
       basePort,
       page,
+      sdk,
     });
+
+    await expect(
+      page.frameLocator('iframe').getByText('SDK Feature testing project')
+    ).toBeVisible();
 
     await sendPatchOrUpdateMessage({
       page,
@@ -50,6 +55,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       path: noTrustedHosts ? '/editing-styles-no-trusted-hosts' : '/editing-styles',
       basePort,
       page,
+      sdk,
     });
     const btn1 = page.frameLocator('iframe').getByRole(sdk === 'oldReact' ? 'button' : 'link');
     await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
@@ -74,6 +80,7 @@ test.describe('Visual Editing', () => {
     page,
     basePort,
     packageName,
+    sdk,
   }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
@@ -82,7 +89,7 @@ test.describe('Visual Editing', () => {
         packageName === 'gen1-remix'
     );
 
-    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
     await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
@@ -104,6 +111,7 @@ test.describe('Visual Editing', () => {
       path: '/editing-box-columns-inner-layout',
       basePort,
       page,
+      sdk,
     });
 
     const firstText = page.frameLocator('iframe').getByText('first');
@@ -141,6 +149,7 @@ test.describe('Visual Editing', () => {
     page,
     packageName,
     basePort,
+    sdk,
   }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
@@ -153,6 +162,7 @@ test.describe('Visual Editing', () => {
       path: '/duplicated-content-using-nested-symbols',
       basePort,
       page,
+      sdk,
     });
 
     await sendContentUpdateMessage({
@@ -176,10 +186,10 @@ test.describe('Visual Editing', () => {
   });
 
   test.describe('Data Models', () => {
-    test('correctly updates', async ({ page, packageName, basePort }) => {
+    test('correctly updates', async ({ page, packageName, basePort, sdk }) => {
       test.skip(packageName !== 'react', 'This test is only implemented for React');
 
-      await launchEmbedderAndWaitForSdk({ path: '/data-preview', basePort, page });
+      await launchEmbedderAndWaitForSdk({ path: '/data-preview', basePort, page, sdk });
 
       await page.frameLocator('iframe').getByText('coffee name: Epoch Chemistry').waitFor();
       await page.frameLocator('iframe').getByText('coffee info: Local coffee brand.').waitFor();

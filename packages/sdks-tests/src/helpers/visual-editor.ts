@@ -20,7 +20,7 @@ export const launchEmbedderAndWaitForSdk = async ({
   basePort: number;
   path: Path;
   gotoOptions?: Parameters<Page['goto']>[1];
-  sdk?: Sdk;
+  sdk: Sdk;
 }) => {
   if (sdk === 'oldReact') {
     await page.route('https://cdn.builder.io/api/v3/content/**', async route => {
