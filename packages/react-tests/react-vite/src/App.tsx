@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';
 
-builder.init(getAPIKey('real'));
+builder.init(getAPIKey());
 
 // default to not tracking, and re-enable when appropriate
 builder.canTrack = false;
