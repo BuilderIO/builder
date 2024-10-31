@@ -1,5 +1,17 @@
 # @builder.io/react
 
+## 6.0.0
+
+### Major Changes
+
+- f4fffe9: Permanently removes the `apiEndpoint` prop from `builder.get()` and `builder.getAll()` which had options `'content'` and `'query'`. Content API is now the only possible API endpoint for content fetching.
+
+### Patch Changes
+
+- Updated dependencies [f4fffe9]
+- Updated dependencies [443a3e3]
+  - @builder.io/sdk@4.0.0
+
 ## 5.0.11
 
 ### Patch Changes

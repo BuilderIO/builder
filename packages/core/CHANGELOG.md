@@ -1,5 +1,15 @@
 # @builder.io/sdk
 
+## 4.0.0
+
+### Major Changes
+
+- f4fffe9: Permanently removes the `apiEndpoint` prop from `builder.get()` and `builder.getAll()` which had options `'content'` and `'query'`. Content API is now the only possible API endpoint for content fetching.
+
+### Patch Changes
+
+- 443a3e3: Types: add jsdoc comments for some Builder SDK types
+
 ## 3.0.7
 
 ### Patch Changes
