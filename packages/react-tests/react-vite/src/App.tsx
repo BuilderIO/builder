@@ -1,4 +1,4 @@
-import { BuilderComponent, builder } from '@builder.io/react';
+import { Builder, BuilderComponent, builder } from '@builder.io/react';
 import { VISUAL_EDITING_PATHNAMES, getAPIKey, getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
@@ -32,6 +32,10 @@ function App() {
 
   if (props?.apiVersion) {
     builder.apiVersion = props?.apiVersion;
+  }
+
+  if (props?.trustedHosts) {
+    Builder.trustedHosts = props.trustedHosts;
   }
 
   // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
