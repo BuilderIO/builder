@@ -109,6 +109,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         <For each={getVariants(props.content)}>
           {(variant) => (
             <ContentComponent
+              apiHost={props.apiHost}
               isNestedRender={props.isNestedRender}
               key={variant.testVariationId}
               nonce={props.nonce}
@@ -141,6 +142,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <ContentComponent
+        apiHost={props.apiHost}
         nonce={props.nonce}
         isNestedRender={props.isNestedRender}
         {...useTarget({

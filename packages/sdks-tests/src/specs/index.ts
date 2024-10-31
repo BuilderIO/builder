@@ -150,6 +150,7 @@ export const PAGES = {
   '/ssr-binding': SSR_BINDING_CONTENT,
   '/blocks-class-name': BLOCKS_CLASS_NAME,
   '/duplicated-content-using-nested-symbols': DUPLICATED_CONTENT_USING_NESTED_SYMBOLS,
+  '/override-base-url': HTTP_REQUESTS,
 } as const;
 
 const apiVersionPathToProp = {
@@ -261,6 +262,11 @@ export const getProps = async (args: {
     case '/duplicated-content-using-nested-symbols':
       extraProps = {
         model: 'symbol',
+      };
+      break;
+    case '/override-base-url':
+      extraProps = {
+        apiHost: 'https://cdn-qa.builder.io',
       };
       break;
     default:

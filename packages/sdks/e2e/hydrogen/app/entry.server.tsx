@@ -12,7 +12,7 @@ export default async function handleRequest(
 ) {
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     // we need to whitelist Builder's CDN for API calls to work.
-    connectSrc: ['https://cdn.builder.io'],
+    connectSrc: ['https://cdn.builder.io', 'https://cdn-qa.builder.io'],
     // we need to whitelist Builder's CDN for image requests to work.
     imgSrc: [
       'https://cdn.builder.io',
