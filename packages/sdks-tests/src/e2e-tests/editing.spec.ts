@@ -1,5 +1,9 @@
 import { expect } from '@playwright/test';
-import { MODIFIED_COLUMNS } from '../specs/columns.js';
+import {
+  COLUMNS_WITH_NEW_SPACE,
+  COLUMNS_WITH_NEW_TEXT,
+  COLUMNS_WITH_NEW_WIDTHS,
+} from '../specs/columns.js';
 import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
@@ -50,23 +54,6 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 
 test.describe('Visual Editing', () => {
   editorTests({ noTrustedHosts: false });
-  test('correctly updates Text block in a Column block', async ({
-    page,
-    basePort,
-    packageName,
-  }) => {
-    test.skip(
-      packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next' ||
-        packageName === 'gen1-react' ||
-        packageName === 'gen1-remix'
-    );
-
-    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
-    await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
-    await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
-  });
-
   test('correctly updates Box -> Columns when used Inner Layout > Columns option', async ({
     page,
     packageName,
@@ -148,6 +135,59 @@ test.describe('Visual Editing', () => {
       .getByText('something other than the symbol!')
       .all();
     expect(textBlocks.length).toBe(1);
+  });
+
+  test.describe('Column block', () => {
+    test('correctly updates nested Text block', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_TEXT, model: 'page' });
+      await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
+    });
+    test('correctly updates space prop', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+      const secondColumn = page.frameLocator('iframe').locator('.builder-column').nth(1);
+
+      await expect(secondColumn).toHaveCSS('margin-left', '20px');
+      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_SPACE, model: 'page' });
+      await expect(secondColumn).toHaveCSS('margin-left', '10px');
+    });
+    test('correctly updates width props', async ({ page, basePort, packageName }) => {
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+      const secondColumn = page.frameLocator('iframe').locator('.builder-column').nth(1);
+
+      const initialWidth = await secondColumn.evaluate(el =>
+        getComputedStyle(el).width.replace('px', '')
+      );
+
+      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_WIDTHS, model: 'page' });
+
+      const finalWidth = await secondColumn.evaluate(el =>
+        getComputedStyle(el).width.replace('px', '')
+      );
+
+      expect(Number(finalWidth)).toBeGreaterThan(Number(initialWidth));
+    });
   });
 
   test.describe('fails for empty trusted hosts', () => {

@@ -2,7 +2,7 @@ import { AB_TEST_INTERACTIVE } from './ab-test-interactive.js';
 import { CONTENT as abTest } from './ab-test.js';
 import { CONTENT as personalizatContainer } from './personalization-container.js';
 import { ANIMATIONS } from './animations.js';
-import { CONTENT as columns } from './columns.js';
+import { COLUMNS } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
 import { CSS_PROPERTIES } from './css-properties.js';
@@ -80,7 +80,7 @@ export const PAGES = {
   '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
   '/can-track-false': homepage,
   '/css-nesting': cssNesting,
-  '/columns': columns,
+  '/columns': COLUMNS,
   '/symbols': symbols,
   '/js-code': JS_CODE_CONTENT,
   '/symbols-without-content': CONTENT_WITHOUT_SYMBOLS,
