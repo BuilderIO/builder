@@ -1,5 +1,12 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.26
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
 ## 2.0.25
 
 ### Patch Changes

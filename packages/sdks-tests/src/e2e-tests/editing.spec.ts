@@ -1,36 +1,53 @@
 import { expect } from '@playwright/test';
 import { MODIFIED_COLUMNS } from '../specs/columns.js';
-import { MODIFIED_EDITING_STYLES } from '../specs/editing-styles.js';
 import { NEW_TEXT } from '../specs/helpers.js';
-import { MODIFIED_HOMEPAGE } from '../specs/homepage.js';
+import { HOMEPAGE } from '../specs/homepage.js';
 import { checkIsRN, test } from '../helpers/index.js';
-import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
+import {
+  cloneContent,
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+  sendPatchOrUpdateMessage,
+} from '../helpers/visual-editor.js';
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
+import { EDITING_STYLES } from '../specs/editing-styles.js';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
-  test('correctly updates Text block', async ({ page, basePort, packageName }) => {
+  test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
-        packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
     );
 
     await launchEmbedderAndWaitForSdk({
-      path: noTrustedHosts ? '/no-trusted-hosts' : '/',
+      path: noTrustedHosts ? '/no-trusted-hosts' : '/editing',
       basePort,
       page,
+      sdk,
     });
-    await sendContentUpdateMessage({ page, newContent: MODIFIED_HOMEPAGE, model: 'page' });
-    await expect(page.frameLocator('iframe').getByText(NEW_TEXT)).toBeVisible();
+
+    await expect(
+      page.frameLocator('iframe').getByText('SDK Feature testing project')
+    ).toBeVisible();
+
+    await sendPatchOrUpdateMessage({
+      page,
+      content: cloneContent(HOMEPAGE),
+      model: 'page',
+      sdk,
+      path: '/data/blocks/0/children/0/component/options/text',
+      updateFn: () => 'foo-bar-new-text',
+    });
+
+    await expect(page.frameLocator('iframe').getByText('foo-bar-new-text')).toBeVisible();
   });
 
-  test('correctly updates Text block styles', async ({ page, packageName, basePort }) => {
+  test('correctly updates Text block styles', async ({ page, packageName, basePort, sdk }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next' ||
-        packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
     );
 
@@ -38,12 +55,21 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
       path: noTrustedHosts ? '/editing-styles-no-trusted-hosts' : '/editing-styles',
       basePort,
       page,
+      sdk,
     });
-    const btn1 = page.frameLocator('iframe').getByRole('link');
+    const btn1 = page.frameLocator('iframe').getByRole(sdk === 'oldReact' ? 'button' : 'link');
     await expect(btn1).toHaveCSS('background-color', 'rgb(184, 35, 35)');
 
-    await sendContentUpdateMessage({ page, newContent: MODIFIED_EDITING_STYLES, model: 'page' });
-    const btn = page.frameLocator('iframe').getByRole('link');
+    await sendPatchOrUpdateMessage({
+      page,
+      content: cloneContent(EDITING_STYLES),
+      model: 'page',
+      sdk,
+      path: '/data/blocks/0/responsiveStyles/large/backgroundColor',
+      updateFn: () => 'rgb(19, 67, 92)',
+    });
+
+    const btn = page.frameLocator('iframe').getByRole(sdk === 'oldReact' ? 'button' : 'link');
     await expect(btn).toHaveCSS('background-color', 'rgb(19, 67, 92)');
   });
 };
@@ -54,6 +80,7 @@ test.describe('Visual Editing', () => {
     page,
     basePort,
     packageName,
+    sdk,
   }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
@@ -62,7 +89,7 @@ test.describe('Visual Editing', () => {
         packageName === 'gen1-remix'
     );
 
-    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page });
+    await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
     await sendContentUpdateMessage({ page, newContent: MODIFIED_COLUMNS, model: 'page' });
     await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
   });
@@ -84,6 +111,7 @@ test.describe('Visual Editing', () => {
       path: '/editing-box-columns-inner-layout',
       basePort,
       page,
+      sdk,
     });
 
     const firstText = page.frameLocator('iframe').getByText('first');
@@ -121,6 +149,7 @@ test.describe('Visual Editing', () => {
     page,
     packageName,
     basePort,
+    sdk,
   }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
@@ -133,6 +162,7 @@ test.describe('Visual Editing', () => {
       path: '/duplicated-content-using-nested-symbols',
       basePort,
       page,
+      sdk,
     });
 
     await sendContentUpdateMessage({
@@ -156,10 +186,10 @@ test.describe('Visual Editing', () => {
   });
 
   test.describe('Data Models', () => {
-    test('correctly updates', async ({ page, packageName, basePort }) => {
+    test('correctly updates', async ({ page, packageName, basePort, sdk }) => {
       test.skip(packageName !== 'react', 'This test is only implemented for React');
 
-      await launchEmbedderAndWaitForSdk({ path: '/data-preview', basePort, page });
+      await launchEmbedderAndWaitForSdk({ path: '/data-preview', basePort, page, sdk });
 
       await page.frameLocator('iframe').getByText('coffee name: Epoch Chemistry').waitFor();
       await page.frameLocator('iframe').getByText('coffee info: Local coffee brand.').waitFor();

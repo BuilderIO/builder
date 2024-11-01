@@ -6,6 +6,7 @@ test.describe('Editable Regions in Custom Components', () => {
     page,
     packageName,
   }) => {
+
     test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
 
     await page.goto('/advanced-child');
@@ -14,7 +15,9 @@ test.describe('Editable Regions in Custom Components', () => {
   });
 
   test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
+
     test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+
 
     await page.goto('/advanced-child');
 
@@ -37,6 +40,7 @@ test.describe('Editable Regions in Custom Components', () => {
 
   test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
     test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+
 
     await page.goto('/advanced-child');
 

@@ -100,7 +100,10 @@ const createEvent = async ({
   },
 });
 
-export async function _track(eventProps: EventProps) {
+export async function _track({
+  apiHost,
+  ...eventProps
+}: EventProps & { apiHost?: string }) {
   if (!eventProps.apiKey) {
     logger.error(
       'Missing API key for track call. Please provide your API key.'
@@ -119,7 +122,9 @@ export async function _track(eventProps: EventProps) {
     return;
   }
 
-  return fetch(`https://cdn.builder.io/api/v1/track`, {
+  const baseUrl = apiHost || 'https://cdn.builder.io';
+
+  return fetch(`${baseUrl}/api/v1/track`, {
     method: 'POST',
     body: JSON.stringify({
       events: [await createEvent(eventProps)],

@@ -33,6 +33,11 @@ export interface ContentVariantsPrps extends ExtraFrameworkProps {
    */
   apiKey: string;
 
+  /**
+   * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
+   */
+  apiHost?: string;
+
   apiVersion?: ApiVersion;
 
   /**
