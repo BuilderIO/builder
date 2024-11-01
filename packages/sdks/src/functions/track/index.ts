@@ -1,5 +1,6 @@
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
+import { getSdkHeaders } from '../../helpers/sdk-headers.js';
 import { getSessionId } from '../../helpers/sessionId.js';
 import { getVisitorId } from '../../helpers/visitorId.js';
 import type { CanTrack } from '../../types/can-track.js';
@@ -99,7 +100,10 @@ const createEvent = async ({
   },
 });
 
-export async function _track(eventProps: EventProps) {
+export async function _track({
+  apiHost,
+  ...eventProps
+}: EventProps & { apiHost?: string }) {
   if (!eventProps.apiKey) {
     logger.error(
       'Missing API key for track call. Please provide your API key.'
@@ -118,13 +122,16 @@ export async function _track(eventProps: EventProps) {
     return;
   }
 
-  return fetch(`https://cdn.builder.io/api/v1/track`, {
+  const baseUrl = apiHost || 'https://cdn.builder.io';
+
+  return fetch(`${baseUrl}/api/v1/track`, {
     method: 'POST',
     body: JSON.stringify({
       events: [await createEvent(eventProps)],
     }),
     headers: {
       'content-type': 'application/json',
+      ...getSdkHeaders(),
     },
     mode: 'cors',
   }).catch((err) => {

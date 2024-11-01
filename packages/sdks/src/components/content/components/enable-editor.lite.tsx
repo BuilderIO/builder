@@ -55,7 +55,6 @@ type BuilderEditorProps = Omit<
   | 'isSsrAbTest'
   | 'blocksWrapper'
   | 'blocksWrapperProps'
-  | 'isNestedRender'
   | 'linkComponent'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
@@ -161,6 +160,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           props.builderContextSignal.value.content?.testVariationId;
         const contentId = props.builderContextSignal.value.content?.id;
         _track({
+          apiHost: props.apiHost,
           type: 'click',
           canTrack: getDefaultCanTrack(props.canTrack),
           contentId,
@@ -326,7 +326,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onMount(() => {
     if (isBrowser()) {
-      if (isEditing()) {
+      if (isEditing() && !props.isNestedRender) {
         useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -371,6 +371,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
 
         _track({
+          apiHost: props.apiHost,
           type: 'impression',
           canTrack: true,
           contentId,

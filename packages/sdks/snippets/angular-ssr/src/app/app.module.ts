@@ -13,6 +13,10 @@ import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { blogArticleResolver } from './blog-article/blog-article.resolver';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { catchAllResolver } from './catch-all/catch-all.resolver';
+import { CustomChildComponent } from './custom-child/custom-child.component';
+import { customChildResolver } from './custom-child/custom-child.resolver';
+import { editableRegionsResolver } from './editable-regions/editable-regions-resolver';
+import { EditableRegionComponent } from './editable-regions/editable-regions.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { navBarResolver } from './nav-bar/nav-bar.resolver';
 import { ProductDetailsComponent } from './product-details/product-details.component';
@@ -52,6 +56,16 @@ import { productEditorialResolver } from './product-editorial/product-editorial.
         path: 'landing-page',
         component: NavBarComponent,
         resolve: { navLinks: navBarResolver },
+      },
+      {
+        path: 'custom-child',
+        component: CustomChildComponent,
+        resolve: { content: customChildResolver },
+      },
+      {
+        path: 'editable-region',
+        component: EditableRegionComponent,
+        resolve: { content: editableRegionsResolver },
       },
       {
         path: '**',

@@ -44,11 +44,11 @@ test.describe('Integrating Pages', () => {
     });
   });
   test.describe('Visual Editor', () => {
-    test('enables editing', async ({ page, basePort }) => {
-      await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
+    test('enables editing', async ({ page, basePort, sdk }) => {
+      await launchEmbedderAndWaitForSdk({ path: '/', basePort, page, sdk });
     });
 
-    test('updates homepage', async ({ page, basePort, packageName }) => {
+    test('updates homepage', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
         packageName === 'nextjs-sdk-next-app',
         'Nextjs SDK does not support standard page editing.'
@@ -58,7 +58,7 @@ test.describe('Integrating Pages', () => {
         'does not work with gen1-next or gen1-remix'
       );
 
-      await launchEmbedderAndWaitForSdk({ path: '/', basePort, page });
+      await launchEmbedderAndWaitForSdk({ path: '/', basePort, page, sdk });
 
       const NEW_TEXT = 'This is a new homepage.';
       const NEW_CONTENT = {

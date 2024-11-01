@@ -181,6 +181,7 @@ export default function ContentComponent(props: ContentProps) {
 
   return (
     <EnableEditor
+      apiHost={props.apiHost}
       nonce={props.nonce}
       content={props.content}
       data={props.data}
@@ -195,6 +196,7 @@ export default function ContentComponent(props: ContentProps) {
       contentWrapper={props.contentWrapper}
       contentWrapperProps={props.contentWrapperProps}
       trustedHosts={props.trustedHosts}
+      isNestedRender={props.isNestedRender}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },

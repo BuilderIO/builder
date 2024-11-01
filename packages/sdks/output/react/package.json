@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "2.0.24-4",
+  "version": "2.0.26",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react",
   "type": "module",
   "repository": {
@@ -121,7 +121,7 @@
     "build:browser": "SDK_ENV=browser vite build --mode lib"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16 || ^19.0.0-rc"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0"

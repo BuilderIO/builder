@@ -1,5 +1,5 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource';
+import { registerCommercePlugin, BuilderRequest, CommerceAPIOperations } from '@builder.io/plugin-tools';
+import { Resource } from '@builder.io/plugin-tools/dist/types/interfaces/resource';
 import pkg from '../package.json';
 import { createRequestBuilder } from '@commercetools/api-request-builder';
 import appState from '@builder.io/app-context';
@@ -79,7 +79,7 @@ registerCommercePlugin(
     ],
     ctaText: `Connect your Commercetools API`,
   },
-  async settings => {
+  async (settings: any): Promise<CommerceAPIOperations> => {
     const clientId = settings.get('clientId');
     const secret = settings.get('secret');
     const scopes = settings.get('scopes');
@@ -143,13 +143,16 @@ registerCommercePlugin(
             .then(res => res.results.map((product: any) => transform(product)));
           return results;
         },
-        getRequestObject(id: string) {
+        getRequestObject(id: string): BuilderRequest {
           const requestBuilder = createRequestBuilder({ projectKey });
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${apiUrl}${requestBuilder.products.byId(id).build()}`,
-              headers,
+              url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}&request=${encodeURIComponent(JSON.stringify({
+                url: `${apiUrl}${requestBuilder.products.byId(id).build()}`,
+                method: 'GET',
+              }))}`,
+              method: 'GET',
             },
             options: {
               product: id,
@@ -192,13 +195,16 @@ registerCommercePlugin(
             .then(res => res.results.map((product: any) => transform(product)));
           return results;
         },
-        getRequestObject(id: string) {
+        getRequestObject(id: string): BuilderRequest {
           const requestBuilder = createRequestBuilder({ projectKey });
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${apiUrl}${requestBuilder.categories.byId(id).build()}`,
-              headers,
+              url: `${appState.config.apiRoot()}/api/v1/plugin-proxy?pluginId=${pkg.name}&apiKey=${appState.user.apiKey}&request=${encodeURIComponent(JSON.stringify({
+                url: `${apiUrl}${requestBuilder.categories.byId(id).build()}`,
+                method: 'GET',
+              }))}`,
+              method: 'GET',
             },
             options: {
               category: id,

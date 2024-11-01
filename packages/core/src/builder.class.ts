@@ -2,7 +2,6 @@ import './polyfills/custom-event-polyfill';
 import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
-import { version } from '../package.json';
 import { BehaviorSubject } from './classes/observable.class';
 import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
@@ -21,6 +20,7 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
+import { SDK_VERSION } from './sdk-version';
 
 export type Url = any;
 
@@ -276,10 +276,10 @@ type AllowEnrich =
 
 export type GetContentOptions = AllowEnrich & {
   /**
-   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
-   * Defaults to `'query'`.
+   * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
-  apiEndpoint?: 'content' | 'query';
+  fetchOptions?: object;
+
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
@@ -873,11 +873,7 @@ export interface Action {
 }
 
 export class Builder {
-  /**
-   * @hidden
-   * @deprecated. This is buggy, and always behind by a version.
-   */
-  static VERSION = version;
+  static VERSION = SDK_VERSION;
 
   static components: Component[] = [];
   static singletonInstance: Builder;
@@ -994,13 +990,19 @@ export class Builder {
   }
 
   static isTrustedHost(hostname: string) {
-    return (
+    const isTrusted =
       this.trustedHosts.findIndex(trustedHost =>
         trustedHost.startsWith('*.')
           ? hostname.endsWith(trustedHost.slice(1))
           : trustedHost === hostname
-      ) > -1
-    );
+      ) > -1;
+
+    return isTrusted;
+  }
+
+  static isTrustedHostForEvent(event: MessageEvent) {
+    const url = parse(event.origin);
+    return url.hostname && Builder.isTrustedHost(url.hostname);
   }
 
   static runAction(action: Action | string) {
@@ -1187,6 +1189,12 @@ export class Builder {
   }
 
   static isReact = false;
+  static sdkInfo = undefined as
+    | {
+        name: string;
+        version: string;
+      }
+    | undefined;
 
   static get Component() {
     return this.component;
@@ -1228,6 +1236,7 @@ export class Builder {
       body: JSON.stringify({ events }),
       headers: {
         'content-type': 'application/json',
+        ...this.getSdkHeaders(),
       },
       mode: 'cors',
     }).catch(() => {
@@ -1855,11 +1864,8 @@ export class Builder {
   private bindMessageListeners() {
     if (isBrowser) {
       addEventListener('message', event => {
-        const url = parse(event.origin);
-        const isRestricted =
-          ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1;
-        const isTrusted = url.hostname && Builder.isTrustedHost(url.hostname);
-        if (isRestricted && !isTrusted) {
+        const isTrusted = Builder.isTrustedHostForEvent(event);
+        if (!isTrusted) {
           return;
         }
 
@@ -2340,7 +2346,7 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, this.addSdkHeaders(options)).then(res => res.json());
   }
 
   get host() {
@@ -2367,8 +2373,36 @@ export class Builder {
     }
   }
 
+  private getSdkHeaders():
+    | {
+        'X-Builder-SDK': string;
+        'X-Builder-SDK-GEN': '1';
+        'X-Builder-SDK-Version': string;
+      }
+    | {} {
+    if (!Builder.sdkInfo) {
+      return {};
+    }
+
+    return {
+      'X-Builder-SDK': Builder.sdkInfo.name,
+      'X-Builder-SDK-GEN': '1',
+      'X-Builder-SDK-Version': Builder.sdkInfo.version,
+    } as const;
+  }
+
+  private addSdkHeaders(fetchOptions: any) {
+    return {
+      ...fetchOptions,
+      headers: {
+        ...fetchOptions.headers,
+        ...this.getSdkHeaders(),
+      },
+    };
+  }
+
   private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
-    return getFetch()(url, requestOptions);
+    return getFetch()(url, this.addSdkHeaders(requestOptions));
   }
 
   private flattenMongoQuery(obj: any, _current?: any, _res: any = {}): { [key: string]: string } {
@@ -2409,8 +2443,6 @@ export class Builder {
     }
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
-
-    const apiEndpoint = queue[0].apiEndpoint || 'query';
 
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
@@ -2505,6 +2537,9 @@ export class Builder {
       }
     }
 
+    const isApiCallForCodegen =
+      queue[0].options?.format === 'solid' || queue[0].options?.format === 'react';
+
     for (const options of queue) {
       const format = options.format;
 
@@ -2543,7 +2578,7 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (apiEndpoint === 'query') {
+          if (isApiCallForCodegen) {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
@@ -2569,10 +2604,8 @@ export class Builder {
     }
 
     const format = queryParams.format;
-    const isApiCallForCodegen = format === 'solid' || format === 'react';
-    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
 
-    if (apiEndpoint === 'content') {
+    if (!isApiCallForCodegen) {
       queryParams.enrich = true;
       if (queue[0].query) {
         const flattened = this.flattenMongoQuery({ query: queue[0].query });
@@ -2585,10 +2618,10 @@ export class Builder {
 
     const queryStr = QueryString.stringifyDeep(queryParams);
 
-    const requestOptions = { headers: {} };
+    const fetchOptions = { headers: {}, ...queue[0].fetchOptions };
     if (this.authToken) {
-      requestOptions.headers = {
-        ...requestOptions.headers,
+      fetchOptions.headers = {
+        ...fetchOptions.headers,
         Authorization: `Bearer ${this.authToken}`,
       };
     }
@@ -2596,15 +2629,13 @@ export class Builder {
     let url;
     if (isApiCallForCodegen) {
       url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
-    } else if (apiEndpoint === 'query') {
-      url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
     } else {
       url = `${host}/api/v3/content/${queue[0].model}`;
     }
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
-    const promise = this.makeFetchApiCall(url, requestOptions)
+    const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
       .then(
         result => {
@@ -2623,7 +2654,7 @@ export class Builder {
             if (!observer) {
               return;
             }
-            const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
+            const data = isApiCallForCodegen ? result[keyName] : result.results;
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer

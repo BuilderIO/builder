@@ -5,6 +5,8 @@ import {
   getBuilderSessionIdCookie,
   checkIsRN,
   test,
+  mapSdkName,
+  getSdkGeneration,
 } from '../helpers/index.js';
 
 test.describe('Tracking', () => {
@@ -63,6 +65,7 @@ test.describe('Tracking', () => {
       const trackingRequest = await trackingRequestPromise;
 
       const data = trackingRequest.postDataJSON();
+      const headers = trackingRequest.headers();
 
       const expected = {
         events: [
@@ -88,6 +91,11 @@ test.describe('Tracking', () => {
       expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
       expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
       expect(data.events[0].data.ownerId).toMatch(/abcd/);
+
+      // Check for new SDK headers
+      expect(headers['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
 
       if (!checkIsRN(sdk)) {
         expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
@@ -115,6 +123,7 @@ test.describe('Tracking', () => {
       const trackingRequest = await trackingRequestPromise;
 
       const data = trackingRequest.postDataJSON();
+      const headers = trackingRequest.headers();
 
       const expected = {
         events: [
@@ -137,6 +146,11 @@ test.describe('Tracking', () => {
       const ID_REGEX = /^[a-f0-9]{32}$/;
 
       expect(data).toMatchObject(expected);
+
+      // Check for new SDK headers
+      expect(headers['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
 
       if (!checkIsRN(sdk)) {
         // check that all the heatmap metadata is present

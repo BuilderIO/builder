@@ -1,5 +1,56 @@
 # @builder.io/react
 
+## 6.0.1
+
+### Patch Changes
+
+- cf33d45: Fix: increase coverage of `trustedHost` check to all messages.
+- Updated dependencies [cf33d45]
+  - @builder.io/sdk@4.0.1
+
+## 6.0.0
+
+### Major Changes
+
+- f4fffe9: Permanently removes the `apiEndpoint` prop from `builder.get()` and `builder.getAll()` which had options `'content'` and `'query'`. Content API is now the only possible API endpoint for content fetching.
+
+### Patch Changes
+
+- Updated dependencies [f4fffe9]
+- Updated dependencies [443a3e3]
+  - @builder.io/sdk@4.0.0
+
+## 5.0.11
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+- Updated dependencies [bfe9d7e]
+  - @builder.io/sdk@3.0.7
+
+## 5.0.10
+
+### Patch Changes
+
+- b5dd732: Feature: start sending accurate npm package version information to the Visual Editor
+- Updated dependencies [b5dd732]
+  - @builder.io/sdk@3.0.6
+
+## 5.0.9
+
+### Patch Changes
+
+- 6375b42: Misc: allow react 19 RC releases as a peer dependency (to work with nextjs 15)
+
+## 5.0.8
+
+### Patch Changes
+
+- 2ae3cc5: Feature: add `fetchOptions` to `options` argument within `.get(modelName, options)` and `.getAll(modelName, options)`, which is passed to the `fetch` function.
+- 54af3bb: Fix: previewing SDK content within the Studio tab of the Builder Visual Editor.
+- Updated dependencies [2ae3cc5]
+  - @builder.io/sdk@3.0.5
+
 ## 5.0.7
 
 ### Patch Changes

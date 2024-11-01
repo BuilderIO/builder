@@ -1,5 +1,39 @@
 # @builder.io/sdk
 
+## 4.0.1
+
+### Patch Changes
+
+- cf33d45: Fix: increase coverage of `trustedHost` check to all messages.
+
+## 4.0.0
+
+### Major Changes
+
+- f4fffe9: Permanently removes the `apiEndpoint` prop from `builder.get()` and `builder.getAll()` which had options `'content'` and `'query'`. Content API is now the only possible API endpoint for content fetching.
+
+### Patch Changes
+
+- 443a3e3: Types: add jsdoc comments for some Builder SDK types
+
+## 3.0.7
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
+## 3.0.6
+
+### Patch Changes
+
+- b5dd732: Feature: start sending accurate npm package version information to the Visual Editor
+
+## 3.0.5
+
+### Patch Changes
+
+- 2ae3cc5: Feature: add `fetchOptions` to `options` argument within `.get(modelName, options)` and `.getAll(modelName, options)`, which is passed to the `fetch` function.
+
 ## 3.0.4
 
 ### Patch Changes

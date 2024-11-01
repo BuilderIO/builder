@@ -19,7 +19,7 @@ import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
 import { FORM } from './form.js';
-import { CONTENT as homepage } from './homepage.js';
+import { HOMEPAGE } from './homepage.js';
 import { HOVER_ANIMATION } from './hover-animation.js';
 import { HTTP_REQUESTS } from './http-requests.js';
 import {
@@ -65,6 +65,7 @@ import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
 import { SSR_BINDING_CONTENT } from './ssr-binding.js';
 import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading.js';
 import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
+import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -73,11 +74,12 @@ function isBrowser(): boolean {
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
 export const PAGES = {
-  '/': homepage,
+  '/': HOMEPAGE,
+  '/editing': HOMEPAGE,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
-  '/can-track-false': homepage,
+  '/can-track-false': HOMEPAGE,
   '/css-nesting': cssNesting,
   '/columns': columns,
   '/symbols': symbols,
@@ -122,7 +124,7 @@ export const PAGES = {
   '/slot': SLOT,
   '/slot-with-symbol': SLOT_WITH_SYMBOL,
   '/slot-without-symbol': SLOT_WITHOUT_SYMBOL,
-  '/no-trusted-hosts': homepage,
+  '/no-trusted-hosts': HOMEPAGE,
   '/editing-styles-no-trusted-hosts': EDITING_STYLES,
   '/animations': ANIMATIONS,
   '/data-preview': DATA_PREVIEW,
@@ -141,14 +143,15 @@ export const PAGES = {
   '/custom-components-models-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/custom-components-models-not-show': CUSTOM_COMPONENTS_MODELS_RESTRICTION,
   '/editing-box-columns-inner-layout': EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
-  '/get-content': HTTP_REQUESTS,
-  '/get-query': HTTP_REQUESTS,
+  '/with-fetch-options': HOMEPAGE,
   '/symbol-with-repeat-input-binding': SYMBOL_WITH_REPEAT_INPUT_BINDING,
   '/children-slot-placement': CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT,
   '/dynamic-loading': DYNAMIC_LOADING_CUSTOM_COMPONENTS,
   '/eager-dynamic-loading': EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
   '/ssr-binding': SSR_BINDING_CONTENT,
   '/blocks-class-name': BLOCKS_CLASS_NAME,
+  '/duplicated-content-using-nested-symbols': DUPLICATED_CONTENT_USING_NESTED_SYMBOLS,
+  '/override-base-url': HTTP_REQUESTS,
 } as const;
 
 const apiVersionPathToProp = {
@@ -158,12 +161,7 @@ const apiVersionPathToProp = {
 
 export type Path = keyof typeof PAGES;
 
-const GEN1_ONLY_PATHNAMES: Path[] = [
-  '/api-version-v1',
-  '/personalization-container',
-  '/get-query',
-  '/get-content',
-];
+const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1', '/personalization-container'];
 const GEN2_ONLY_PATHNAMES: Path[] = [];
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
@@ -191,6 +189,14 @@ export const getAPIKey = (type: 'real' | 'mock' = 'mock'): string =>
 const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
+
+export const VISUAL_EDITING_PATHNAMES = [
+  '/editing-styles',
+  '/large-reactive-state-editing',
+  '/no-trusted-hosts',
+  '/editing-styles-no-trusted-hosts',
+  '/editing',
+] satisfies Path[];
 
 export const getProps = async (args: {
   sdk?: Sdk;
@@ -226,7 +232,7 @@ export const getProps = async (args: {
 
   let _content = getContentForPathname(pathname);
 
-  if (args.sdk === 'oldReact' && pathname === '/large-reactive-state-editing') {
+  if (args.sdk === 'oldReact' && VISUAL_EDITING_PATHNAMES.includes(pathname as any)) {
     // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
     // which Playwright will intercept and provide the content itself.
     _content = null;
@@ -257,19 +263,19 @@ export const getProps = async (args: {
         strictStyleMode: true,
       };
       break;
-    case '/get-content':
-      extraProps = {
-        options: { apiEndpoint: 'content' },
-      };
-      break;
-    case '/get-query':
-      extraProps = {
-        options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
-      };
-      break;
     case '/symbol-with-repeat-input-binding':
       extraProps = {
         data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
+      };
+      break;
+    case '/duplicated-content-using-nested-symbols':
+      extraProps = {
+        model: 'symbol',
+      };
+      break;
+    case '/override-base-url':
+      extraProps = {
+        apiHost: 'https://cdn-qa.builder.io',
       };
       break;
     default:

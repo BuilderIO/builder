@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import { excludeGen2, checkIsGen1React, checkIsRN, test } from '../helpers/index.js';
+import { excludeGen2, checkIsRN, test, mapSdkName, getSdkGeneration } from '../helpers/index.js';
 import type { ServerName } from '../helpers/sdk.js';
 
 /**
@@ -63,24 +63,18 @@ test.describe('Symbols', () => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
+    let headers;
 
-    const urlMatch =
-      sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
       x++;
-
-      const url = new URL(route.request().url());
-
-      const keyName =
-        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
+      headers = route.request().headers();
 
       return route.fulfill({
         status: 200,
         json: {
-          [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
         },
       });
     });
@@ -90,6 +84,11 @@ test.describe('Symbols', () => {
     await testSymbols(page);
 
     await expect(x).toBeGreaterThanOrEqual(2);
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
   test('refresh on locale change', async ({ page, sdk }) => {
@@ -97,24 +96,18 @@ test.describe('Symbols', () => {
     test.skip(excludeGen2(sdk));
 
     let x = 0;
+    let headers;
 
-    const urlMatch =
-      sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
       x++;
-
-      const url = new URL(route.request().url());
-
-      const keyName =
-        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
+      headers = route.request().headers();
 
       return route.fulfill({
         status: 200,
         json: {
-          [keyName]: [x === 1 ? DEFAULT_TEXT_SYMBOL : FRENCH_TEXT_SYMBOL],
+          results: [x === 1 ? DEFAULT_TEXT_SYMBOL : FRENCH_TEXT_SYMBOL],
         },
       });
     });
@@ -128,6 +121,11 @@ test.describe('Symbols', () => {
     await expect(page.locator('text=French text')).toBeVisible();
 
     await expect(x).toBeGreaterThanOrEqual(2);
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
   test.describe('apiVersion', () => {
@@ -135,24 +133,18 @@ test.describe('Symbols', () => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
+      let headers;
 
-      const urlMatch = checkIsGen1React(sdk)
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
+      const urlMatch = /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
       await page.route(urlMatch, route => {
         x++;
-
-        const url = new URL(route.request().url());
-
-        const keyName = checkIsGen1React(sdk)
-          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
-          : 'results';
+        headers = route.request().headers();
 
         return route.fulfill({
           status: 200,
           json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+            results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
           },
         });
       });
@@ -162,29 +154,28 @@ test.describe('Symbols', () => {
       await testSymbols(page);
 
       await expect(x).toBeGreaterThanOrEqual(2);
+
+      // Check for new SDK headers
+      expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
     });
 
     test('apiVersion is set to v3', async ({ page, packageName, sdk }) => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
+      let headers;
 
-      const urlMatch = checkIsGen1React(sdk)
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
-        : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
+      const urlMatch = /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
       await page.route(urlMatch, route => {
         x++;
-
-        const url = new URL(route.request().url());
-
-        const keyName = checkIsGen1React(sdk)
-          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
-          : 'results';
+        headers = route.request().headers();
 
         return route.fulfill({
           status: 200,
           json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+            results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
           },
         });
       });
@@ -194,6 +185,11 @@ test.describe('Symbols', () => {
       await testSymbols(page);
 
       await expect(x).toBeGreaterThanOrEqual(2);
+
+      // Check for new SDK headers
+      expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
     });
   });
 
