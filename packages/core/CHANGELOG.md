@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 4.0.1
+
+### Patch Changes
+
+- cf33d45: Fix: increase coverage of `trustedHost` check to all messages.
+
 ## 4.0.0
 
 ### Major Changes
