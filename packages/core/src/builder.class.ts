@@ -990,13 +990,19 @@ export class Builder {
   }
 
   static isTrustedHost(hostname: string) {
-    return (
+    const isTrusted =
       this.trustedHosts.findIndex(trustedHost =>
         trustedHost.startsWith('*.')
           ? hostname.endsWith(trustedHost.slice(1))
           : trustedHost === hostname
-      ) > -1
-    );
+      ) > -1;
+
+    return isTrusted;
+  }
+
+  static isTrustedHostForEvent(event: MessageEvent) {
+    const url = parse(event.origin);
+    return url.hostname && Builder.isTrustedHost(url.hostname);
   }
 
   static runAction(action: Action | string) {
@@ -1858,11 +1864,8 @@ export class Builder {
   private bindMessageListeners() {
     if (isBrowser) {
       addEventListener('message', event => {
-        const url = parse(event.origin);
-        const isRestricted =
-          ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1;
-        const isTrusted = url.hostname && Builder.isTrustedHost(url.hostname);
-        if (isRestricted && !isTrusted) {
+        const isTrusted = Builder.isTrustedHostForEvent(event);
+        if (!isTrusted) {
           return;
         }
 

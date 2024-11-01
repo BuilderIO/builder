@@ -71,6 +71,7 @@ test.describe('HTTP Requests', () => {
       page,
       basePort,
       path: '/http-requests',
+      sdk,
       gotoOptions: { waitUntil: 'networkidle' },
     });
 

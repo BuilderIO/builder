@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
 import { excludeTestFor, test } from '../helpers/index.js';
 import {
+  cloneContent,
   launchEmbedderAndWaitForSdk,
-  sendContentUpdateMessage,
-  sendPatchUpdatesMessage,
+  sendPatchOrUpdateMessage,
 } from '../helpers/visual-editor.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from '../specs/large-reactive-state.js';
 import type { Sdk } from '../helpers/sdk.js';
@@ -96,39 +96,19 @@ test.describe('Large Reactive State', () => {
     });
 
     const startTime = Date.now();
-    const updatedContent = JSON.parse(JSON.stringify(LARGE_REACTIVE_STATE_CONTENT));
+    const updatedContent = cloneContent(LARGE_REACTIVE_STATE_CONTENT);
 
     const numUpdates = 10;
 
     for (let i = 0; i < numUpdates; i++) {
-      const newText =
-        updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text.replace(
-          'Below',
-          'BelowX'
-        );
-
-      updatedContent.data.blocks[0].component.options.columns[0].blocks[0].component.options.text =
-        newText;
-
-      if (sdk === 'oldReact') {
-        await sendPatchUpdatesMessage({
-          page,
-          patches: [
-            {
-              op: 'replace',
-              path: '/data/blocks/0/component/options/columns/0/blocks/0/component/options/text',
-              value: newText,
-            },
-          ],
-          id: updatedContent.id,
-        });
-      } else {
-        await sendContentUpdateMessage({
-          page,
-          newContent: updatedContent,
-          model: 'page',
-        });
-      }
+      await sendPatchOrUpdateMessage({
+        page,
+        content: updatedContent,
+        model: 'page',
+        sdk,
+        path: '/data/blocks/0/component/options/columns/0/blocks/0/component/options/text',
+        updateFn: text => text.replace('Below', 'BelowX'),
+      });
     }
 
     // Verify the final state
