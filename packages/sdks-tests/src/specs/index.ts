@@ -19,7 +19,7 @@ import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
 import { FORM } from './form.js';
-import { CONTENT as homepage } from './homepage.js';
+import { HOMEPAGE } from './homepage.js';
 import { HOVER_ANIMATION } from './hover-animation.js';
 import { HTTP_REQUESTS } from './http-requests.js';
 import {
@@ -73,11 +73,12 @@ function isBrowser(): boolean {
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
 export const PAGES = {
-  '/': homepage,
+  '/': HOMEPAGE,
+  '/editing': HOMEPAGE,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
-  '/can-track-false': homepage,
+  '/can-track-false': HOMEPAGE,
   '/css-nesting': cssNesting,
   '/columns': columns,
   '/symbols': symbols,
@@ -122,7 +123,7 @@ export const PAGES = {
   '/slot': SLOT,
   '/slot-with-symbol': SLOT_WITH_SYMBOL,
   '/slot-without-symbol': SLOT_WITHOUT_SYMBOL,
-  '/no-trusted-hosts': homepage,
+  '/no-trusted-hosts': HOMEPAGE,
   '/editing-styles-no-trusted-hosts': EDITING_STYLES,
   '/animations': ANIMATIONS,
   '/data-preview': DATA_PREVIEW,
@@ -193,6 +194,14 @@ const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
+export const VISUAL_EDITING_PATHNAMES = [
+  '/editing-styles',
+  '/large-reactive-state-editing',
+  '/no-trusted-hosts',
+  '/editing-styles-no-trusted-hosts',
+  '/editing',
+] satisfies Path[];
+
 export const getProps = async (args: {
   sdk?: Sdk;
   pathname?: string;
@@ -227,7 +236,7 @@ export const getProps = async (args: {
 
   let _content = getContentForPathname(pathname);
 
-  if (args.sdk === 'oldReact' && pathname === '/large-reactive-state-editing') {
+  if (args.sdk === 'oldReact' && VISUAL_EDITING_PATHNAMES.includes(pathname as any)) {
     // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
     // which Playwright will intercept and provide the content itself.
     _content = null;
