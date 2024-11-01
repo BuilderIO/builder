@@ -85,6 +85,11 @@
       "import": "./lib/node/init.mjs",
       "require": "./lib/node/init.cjs"
     },
+    "./node/setIvm": {
+      "types": "./types/functions/evaluate/node-runtime/setIvm.d.ts",
+      "import": "./lib/node/setIvm.mjs",
+      "require": "./lib/node/setIvm.cjs"
+    },
     "./edge": {
       "types": "./types/index.d.ts",
       "import": "./lib/edge/edge-entry.mjs",
@@ -148,5 +153,6 @@
         ]
       }
     }
-  }
+  },
+  "stableVersion": "2.0.23"
 }
