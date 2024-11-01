@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 6.0.1
+
+### Patch Changes
+
+- cf33d45: Fix: increase coverage of `trustedHost` check to all messages.
+- Updated dependencies [cf33d45]
+  - @builder.io/sdk@4.0.1
+
 ## 6.0.0
 
 ### Major Changes
