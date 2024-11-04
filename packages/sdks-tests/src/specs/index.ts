@@ -181,7 +181,7 @@ export type Path = keyof typeof PAGES;
 
 export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
   return Object.entries(PAGES)
-    .filter(([_, page]) => page.target === target || page.target === 'all')
+    .filter(([_, page]) => page.target === target || page.target === 'all' || !page.target)
     .map(([pathname]) => pathname);
 };
 
