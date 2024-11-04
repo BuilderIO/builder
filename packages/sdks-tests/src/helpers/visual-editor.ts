@@ -24,7 +24,7 @@ export const launchEmbedderAndWaitForSdk = async ({
 }) => {
   if (sdk === 'oldReact') {
     await page.route('https://cdn.builder.io/api/v3/content/**', async route => {
-      const contentJSON = PAGES[path as keyof typeof PAGES];
+      const contentJSON = PAGES[path as keyof typeof PAGES].content;
 
       await route.fulfill({
         status: 200,
