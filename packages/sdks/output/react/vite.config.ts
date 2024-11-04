@@ -219,6 +219,7 @@ export default defineConfig({
         ...(SDK_ENV === 'node'
           ? {
               init: './src/functions/evaluate/node-runtime/init.ts',
+              setIvm: './src/functions/evaluate/node-runtime/setIvm.ts',
             }
           : {}),
       },

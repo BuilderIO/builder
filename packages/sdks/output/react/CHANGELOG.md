@@ -1,5 +1,18 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 2.0.27
+
+### Patch Changes
+
+- 800457c: Feature: add `/node/setIvm` export path. It provides a `setIvm` function that can be used to provide the SDK with an instance of the `isolated-vm` module. This is needed in Node.js environments for data bindings to work when `/node/init` can't be used.
+
+## 2.0.26
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
 ## 2.0.25
 
 ### Patch Changes

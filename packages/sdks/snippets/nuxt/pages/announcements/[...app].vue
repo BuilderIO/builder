@@ -17,13 +17,15 @@ const model = 'announcement-bar';
 const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 const canShowAnnouncementBar = ref(false);
 
-const { data: announcement } = await useAsyncData('builderData', () =>
-  fetchOneEntry({
-    model,
-    apiKey,
-    options: getBuilderSearchParams(route.query),
-    userAttributes: { urlPath: route.path },
-  })
+const { data: announcement } = await useAsyncData(
+  `builderData-${model}-${route.path}`,
+  () =>
+    fetchOneEntry({
+      model,
+      apiKey,
+      options: getBuilderSearchParams(route.query),
+      userAttributes: { urlPath: route.path },
+    })
 );
 
 canShowAnnouncementBar.value = announcement.value
