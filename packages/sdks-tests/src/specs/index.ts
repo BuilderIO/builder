@@ -90,12 +90,12 @@ type Page = {
    * network request instead.
    * NOTE: This is why I can only test visual editing for the old SDK when using a non-SSR app
    */
-  isVisualEditingTest?: boolean;
+  isGen1VisualEditingTest?: boolean;
 };
 
 export const PAGES: Record<string, Page> = {
   '/': { content: HOMEPAGE },
-  '/editing': { content: HOMEPAGE, isVisualEditingTest: true },
+  '/editing': { content: HOMEPAGE, isGen1VisualEditingTest: true },
   '/api-version-v3': { content: CONTENT_WITHOUT_SYMBOLS },
   '/api-version-default': { content: CONTENT_WITHOUT_SYMBOLS },
   '/can-track-false': { content: HOMEPAGE },
@@ -125,7 +125,7 @@ export const PAGES: Record<string, Page> = {
   '/large-reactive-state': { content: LARGE_REACTIVE_STATE_CONTENT },
   '/large-reactive-state-editing': {
     content: LARGE_REACTIVE_STATE_CONTENT,
-    isVisualEditingTest: true,
+    isGen1VisualEditingTest: true,
   },
   '/element-events': { content: elementEvents },
   '/external-data': { content: EXTERNAL_DATA },
@@ -137,7 +137,7 @@ export const PAGES: Record<string, Page> = {
   '/state-binding': { content: stateBinding },
   '/nested-symbols': { content: nestedSymbols },
   '/personalization-container': { content: personalizatContainer, target: 'gen1' },
-  '/editing-styles': { content: EDITING_STYLES, isVisualEditingTest: true },
+  '/editing-styles': { content: EDITING_STYLES, isGen1VisualEditingTest: true },
   '/video': { content: video },
   '/repeat-items-bindings': { content: REPEAT_ITEMS_BINDINGS },
   '/input-default-value': { content: INPUT_DEFAULT_VALUE },
@@ -146,8 +146,8 @@ export const PAGES: Record<string, Page> = {
   '/slot': { content: SLOT },
   '/slot-with-symbol': { content: SLOT_WITH_SYMBOL },
   '/slot-without-symbol': { content: SLOT_WITHOUT_SYMBOL },
-  '/no-trusted-hosts': { content: HOMEPAGE, isVisualEditingTest: true },
-  '/editing-styles-no-trusted-hosts': { content: EDITING_STYLES, isVisualEditingTest: true },
+  '/no-trusted-hosts': { content: HOMEPAGE, isGen1VisualEditingTest: true },
+  '/editing-styles-no-trusted-hosts': { content: EDITING_STYLES, isGen1VisualEditingTest: true },
   '/animations': { content: ANIMATIONS },
   '/data-preview': { content: DATA_PREVIEW },
   '/form': { content: FORM },
@@ -235,7 +235,7 @@ export const getProps = async (args: {
 
   let _content = getContentForPathname(pathname);
 
-  if (args.sdk === 'oldReact' && PAGES[pathname]?.isVisualEditingTest) {
+  if (args.sdk === 'oldReact' && PAGES[pathname]?.isGen1VisualEditingTest) {
     // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
     // which Playwright will intercept and provide the content itself.
     _content = null;
