@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.20
+
+### Patch Changes
+
+- c2e7846: Fix: make Column block's state reactive to its `props`
+
 ## 0.16.19
 
 ### Patch Changes
