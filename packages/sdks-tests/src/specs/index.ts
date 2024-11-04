@@ -66,6 +66,7 @@ import { SSR_BINDING_CONTENT } from './ssr-binding.js';
 import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading.js';
 import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
 import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
+import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -151,6 +152,7 @@ export const PAGES = {
   '/ssr-binding': SSR_BINDING_CONTENT,
   '/blocks-class-name': BLOCKS_CLASS_NAME,
   '/duplicated-content-using-nested-symbols': DUPLICATED_CONTENT_USING_NESTED_SYMBOLS,
+  '/custom-components-nowrap': CUSTOM_COMPONENTS_NOWRAP,
   '/override-base-url': HTTP_REQUESTS,
 } as const;
 
