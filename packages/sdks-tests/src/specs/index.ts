@@ -83,6 +83,7 @@ export const PAGES = {
   '/can-track-false': HOMEPAGE,
   '/css-nesting': cssNesting,
   '/columns': COLUMNS,
+  '/columns-editing': COLUMNS,
   '/symbols': symbols,
   '/js-code': JS_CODE_CONTENT,
   '/symbols-without-content': CONTENT_WITHOUT_SYMBOLS,
@@ -198,7 +199,7 @@ export const VISUAL_EDITING_PATHNAMES = [
   '/no-trusted-hosts',
   '/editing-styles-no-trusted-hosts',
   '/editing',
-  '/columns',
+  '/columns-editing',
 ] satisfies Path[];
 
 export const getProps = async (args: {

@@ -170,7 +170,7 @@ test.describe('Visual Editing', () => {
           packageName === 'gen1-remix'
       );
 
-      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
+      await launchEmbedderAndWaitForSdk({ path: '/columns-editing', basePort, page, sdk });
       await sendPatchOrUpdateMessage({
         page,
         content: cloneContent(COLUMNS),
@@ -192,7 +192,7 @@ test.describe('Visual Editing', () => {
       const selector = checkIsRN(sdk)
         ? '[data-builder-block-name=builder-column]'
         : '.builder-column';
-      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
+      await launchEmbedderAndWaitForSdk({ path: '/columns-editing', basePort, page, sdk });
       const secondColumn = page.frameLocator('iframe').locator(selector).nth(1);
 
       await expect(secondColumn).toHaveCSS('margin-left', checkIsRN(sdk) ? '0px' : '20px');
@@ -208,7 +208,7 @@ test.describe('Visual Editing', () => {
           packageName === 'gen1-remix'
       );
 
-      await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
+      await launchEmbedderAndWaitForSdk({ path: '/columns-editing', basePort, page, sdk });
       const secondColumn = page.frameLocator('iframe').locator('.builder-column').nth(1);
 
       const initialWidth = await secondColumn.evaluate(el =>
