@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 2.0.28
+
+### Patch Changes
+
+- c2e7846: Fix: make Column block's state reactive to its `props`
+
 ## 2.0.26
 
 ### Patch Changes

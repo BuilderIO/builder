@@ -1,5 +1,13 @@
 # @builder.io/sdk-angular
 
+## 0.2.24
+
+### Patch Changes
+
+- 067423d: Fix: builder children blocks not being ssred
+- c2e7846: Fix: make Column block's state reactive to its `props`
+- 067423d: Feat: supports `noWrap` for custom components
+
 ## 0.2.23
 
 ### Patch Changes
