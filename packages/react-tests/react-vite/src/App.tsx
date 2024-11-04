@@ -1,9 +1,8 @@
 import { Builder, BuilderComponent, builder } from '@builder.io/react';
-import { getAPIKey, getProps } from '@sdk/tests';
+import { getAPIKey, getProps, PAGES } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';
-import { PAGES } from '@sdk/tests/dist/src/specs';
 
 builder.init(getAPIKey());
 
