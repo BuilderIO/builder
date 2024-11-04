@@ -1,9 +1,5 @@
 import { expect } from '@playwright/test';
-import {
-  COLUMNS_WITH_NEW_SPACE,
-  COLUMNS_WITH_NEW_TEXT,
-  COLUMNS_WITH_NEW_WIDTHS,
-} from '../specs/columns.js';
+import { COLUMNS, COLUMNS_WITH_NEW_SPACE, COLUMNS_WITH_NEW_WIDTHS } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { HOMEPAGE } from '../specs/homepage.js';
 import { checkIsRN, test } from '../helpers/index.js';
@@ -171,12 +167,18 @@ test.describe('Visual Editing', () => {
       test.skip(
         packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next' ||
-          packageName === 'gen1-react' ||
           packageName === 'gen1-remix'
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
-      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_TEXT, model: 'page' });
+      await sendPatchOrUpdateMessage({
+        page,
+        content: cloneContent(COLUMNS),
+        model: 'page',
+        sdk,
+        path: '/data/blocks/2/children/1/component/options/columns/0/blocks/1/component/options/text',
+        updateFn: () => NEW_TEXT,
+      });
       await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
     });
     test('correctly updates space prop', async ({ page, basePort, packageName, sdk }) => {

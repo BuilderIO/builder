@@ -198,6 +198,7 @@ export const VISUAL_EDITING_PATHNAMES = [
   '/no-trusted-hosts',
   '/editing-styles-no-trusted-hosts',
   '/editing',
+  '/columns',
 ] satisfies Path[];
 
 export const getProps = async (args: {
