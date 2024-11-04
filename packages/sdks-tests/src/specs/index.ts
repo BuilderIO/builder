@@ -76,107 +76,105 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 
 type Page = {
   content: BuilderContent;
-  target: 'gen1' | 'gen2' | 'all';
+  /**
+   * The target SDKs that this page should be tested against. This is important because certain frameworks
+   * (like NextJS) will pre-render all possible pages on the server. If a test is not meant to work in a specific app,
+   * then that app will fail to build when attempting to pre-render the page.
+   *
+   * Defaults to `all`.
+   */
+  target?: 'gen1' | 'gen2' | 'all';
+  /**
+   * To test visual editing in Gen 1 SDK, we cannot provide a hardcoded JSON.
+   * Instead, we have to let the SDK fetch the data from the API and mock the
+   * network request instead.
+   * NOTE: This is why I can only test visual editing for the old SDK when using a non-SSR app
+   */
   isVisualEditingTest?: boolean;
 };
 
 export const PAGES: Record<string, Page> = {
-  '/': { content: HOMEPAGE, target: 'all' },
-  '/editing': { content: HOMEPAGE, target: 'all', isVisualEditingTest: true },
-  '/api-version-v3': { content: CONTENT_WITHOUT_SYMBOLS, target: 'all' },
-  '/api-version-default': { content: CONTENT_WITHOUT_SYMBOLS, target: 'all' },
-  '/can-track-false': { content: HOMEPAGE, target: 'all' },
-  '/css-nesting': { content: cssNesting, target: 'all' },
-  '/columns': { content: COLUMNS, target: 'all' },
-  '/symbols': { content: symbols, target: 'all' },
-  '/js-code': { content: JS_CODE_CONTENT, target: 'all' },
-  '/symbols-without-content': { content: CONTENT_WITHOUT_SYMBOLS, target: 'all' },
-  '/symbol-bindings': { content: symbolBindings, target: 'all' },
-  '/symbol-with-locale': { content: symbolWithLocale, target: 'all' },
-  '/link-url': { content: linkUrl, target: 'all' },
-  '/symbol-with-input-binding': { content: symbolWithInputBinding, target: 'all' },
-  '/content-bindings': { content: contentBindings, target: 'all' },
-  '/image': { content: image, target: 'all' },
-  '/image-high-priority': { content: imageHighPriority, target: 'all' },
-  '/image-no-webp': { content: imageNoWebp, target: 'all' },
-  '/data-bindings': { content: dataBindings, target: 'all' },
-  '/data-binding-styles': { content: dataBindingStyles, target: 'all' },
-  '/react-native-strict-style-mode': {
-    content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
-    target: 'all',
+  '/': { content: HOMEPAGE },
+  '/editing': { content: HOMEPAGE, isVisualEditingTest: true },
+  '/api-version-v3': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/api-version-default': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/can-track-false': { content: HOMEPAGE },
+  '/css-nesting': { content: cssNesting },
+  '/columns': { content: COLUMNS },
+  '/symbols': { content: symbols },
+  '/js-code': { content: JS_CODE_CONTENT },
+  '/symbols-without-content': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/symbol-bindings': { content: symbolBindings },
+  '/symbol-with-locale': { content: symbolWithLocale },
+  '/link-url': { content: linkUrl },
+  '/symbol-with-input-binding': { content: symbolWithInputBinding },
+  '/content-bindings': { content: contentBindings },
+  '/image': { content: image },
+  '/image-high-priority': { content: imageHighPriority },
+  '/image-no-webp': { content: imageNoWebp },
+  '/data-bindings': { content: dataBindings },
+  '/data-binding-styles': { content: dataBindingStyles },
+  '/react-native-strict-style-mode': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
+  '/react-native-strict-style-mode-disabled': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
+  '/ab-test': { content: abTest },
+  '/ab-test-interactive': { content: AB_TEST_INTERACTIVE },
+  '/http-requests': { content: HTTP_REQUESTS },
+  '/symbol-ab-test': { content: symbolAbTest },
+  '/custom-breakpoints': { content: customBreakpoints },
+  '/reactive-state': { content: REACTIVE_STATE_CONTENT },
+  '/large-reactive-state': { content: LARGE_REACTIVE_STATE_CONTENT },
+  '/large-reactive-state-editing': {
+    content: LARGE_REACTIVE_STATE_CONTENT,
+    isVisualEditingTest: true,
   },
-  '/react-native-strict-style-mode-disabled': {
-    content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT,
-    target: 'all',
-  },
-  '/ab-test': { content: abTest, target: 'all' },
-  '/ab-test-interactive': { content: AB_TEST_INTERACTIVE, target: 'all' },
-  '/http-requests': { content: HTTP_REQUESTS, target: 'all' },
-  '/symbol-ab-test': { content: symbolAbTest, target: 'all' },
-  '/custom-breakpoints': { content: customBreakpoints, target: 'all' },
-  '/reactive-state': { content: REACTIVE_STATE_CONTENT, target: 'all' },
-  '/large-reactive-state': { content: LARGE_REACTIVE_STATE_CONTENT, target: 'all' },
-  '/large-reactive-state-editing': { content: LARGE_REACTIVE_STATE_CONTENT, target: 'all' },
-  '/element-events': { content: elementEvents, target: 'all' },
-  '/external-data': { content: EXTERNAL_DATA, target: 'all' },
-  '/show-hide-if': { content: SHOW_HIDE_IF, target: 'all' },
-  '/show-hide-if-repeats': { content: SHOW_HIDE_IF_REPEATS, target: 'all' },
-  '/custom-breakpoints-reset': { content: customBreakpointsReset, target: 'all' },
-  '/text-block': { content: textBlock, target: 'all' },
-  '/text-eval': { content: textEval, target: 'all' },
-  '/state-binding': { content: stateBinding, target: 'all' },
-  '/nested-symbols': { content: nestedSymbols, target: 'all' },
+  '/element-events': { content: elementEvents },
+  '/external-data': { content: EXTERNAL_DATA },
+  '/show-hide-if': { content: SHOW_HIDE_IF },
+  '/show-hide-if-repeats': { content: SHOW_HIDE_IF_REPEATS },
+  '/custom-breakpoints-reset': { content: customBreakpointsReset },
+  '/text-block': { content: textBlock },
+  '/text-eval': { content: textEval },
+  '/state-binding': { content: stateBinding },
+  '/nested-symbols': { content: nestedSymbols },
   '/personalization-container': { content: personalizatContainer, target: 'gen1' },
-  '/editing-styles': { content: EDITING_STYLES, target: 'all' },
-  '/video': { content: video, target: 'all' },
-  '/repeat-items-bindings': { content: REPEAT_ITEMS_BINDINGS, target: 'all' },
-  '/input-default-value': { content: INPUT_DEFAULT_VALUE, target: 'all' },
-  '/duplicate-attributes': { content: DUPLICATE_ATTRIBUTES, target: 'all' },
-  '/js-content-is-browser': { content: JS_CONTENT_IS_BROWSER, target: 'all' },
-  '/slot': { content: SLOT, target: 'all' },
-  '/slot-with-symbol': { content: SLOT_WITH_SYMBOL, target: 'all' },
-  '/slot-without-symbol': { content: SLOT_WITHOUT_SYMBOL, target: 'all' },
-  '/no-trusted-hosts': { content: HOMEPAGE, target: 'all' },
-  '/editing-styles-no-trusted-hosts': { content: EDITING_STYLES, target: 'all' },
-  '/animations': { content: ANIMATIONS, target: 'all' },
-  '/data-preview': { content: DATA_PREVIEW, target: 'all' },
-  '/form': { content: FORM, target: 'all' },
-  '/default-styles': { content: DEFAULT_STYLES, target: 'all' },
-  '/css-properties': { content: CSS_PROPERTIES, target: 'all' },
-  '/hover-animation': { content: HOVER_ANIMATION, target: 'all' },
-  '/tabs': { content: TABS, target: 'all' },
-  '/custom-components': { content: CUSTOM_COMPONENTS, target: 'all' },
-  '/basic-styles': { content: BASIC_STYLES, target: 'all' },
-  '/accordion': { content: ACCORDION, target: 'all' },
-  '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME, target: 'all' },
-  '/accordion-grid': { content: ACCORDION_GRID, target: 'all' },
-  '/symbol-tracking': { content: SYMBOL_TRACKING, target: 'all' },
-  '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS, target: 'all' },
-  '/custom-components-models-show': {
-    content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
-    target: 'all',
-  },
-  '/custom-components-models-not-show': {
-    content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
-    target: 'all',
-  },
-  '/editing-box-columns-inner-layout': {
-    content: EDITING_BOX_TO_COLUMN_INNER_LAYOUT,
-    target: 'all',
-  },
-  '/with-fetch-options': { content: HOMEPAGE, target: 'all' },
-  '/symbol-with-repeat-input-binding': { content: SYMBOL_WITH_REPEAT_INPUT_BINDING, target: 'all' },
-  '/children-slot-placement': { content: CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT, target: 'all' },
-  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS, target: 'all' },
-  '/eager-dynamic-loading': { content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS, target: 'all' },
-  '/ssr-binding': { content: SSR_BINDING_CONTENT, target: 'all' },
-  '/blocks-class-name': { content: BLOCKS_CLASS_NAME, target: 'all' },
-  '/duplicated-content-using-nested-symbols': {
-    content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS,
-    target: 'all',
-  },
-  '/custom-components-nowrap': { content: CUSTOM_COMPONENTS_NOWRAP, target: 'all' },
-  '/override-base-url': { content: HTTP_REQUESTS, target: 'all' },
+  '/editing-styles': { content: EDITING_STYLES, isVisualEditingTest: true },
+  '/video': { content: video },
+  '/repeat-items-bindings': { content: REPEAT_ITEMS_BINDINGS },
+  '/input-default-value': { content: INPUT_DEFAULT_VALUE },
+  '/duplicate-attributes': { content: DUPLICATE_ATTRIBUTES },
+  '/js-content-is-browser': { content: JS_CONTENT_IS_BROWSER },
+  '/slot': { content: SLOT },
+  '/slot-with-symbol': { content: SLOT_WITH_SYMBOL },
+  '/slot-without-symbol': { content: SLOT_WITHOUT_SYMBOL },
+  '/no-trusted-hosts': { content: HOMEPAGE, isVisualEditingTest: true },
+  '/editing-styles-no-trusted-hosts': { content: EDITING_STYLES, isVisualEditingTest: true },
+  '/animations': { content: ANIMATIONS },
+  '/data-preview': { content: DATA_PREVIEW },
+  '/form': { content: FORM },
+  '/default-styles': { content: DEFAULT_STYLES },
+  '/css-properties': { content: CSS_PROPERTIES },
+  '/hover-animation': { content: HOVER_ANIMATION },
+  '/tabs': { content: TABS },
+  '/custom-components': { content: CUSTOM_COMPONENTS },
+  '/basic-styles': { content: BASIC_STYLES },
+  '/accordion': { content: ACCORDION },
+  '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
+  '/accordion-grid': { content: ACCORDION_GRID },
+  '/symbol-tracking': { content: SYMBOL_TRACKING },
+  '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
+  '/custom-components-models-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
+  '/custom-components-models-not-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
+  '/editing-box-columns-inner-layout': { content: EDITING_BOX_TO_COLUMN_INNER_LAYOUT },
+  '/with-fetch-options': { content: HOMEPAGE },
+  '/symbol-with-repeat-input-binding': { content: SYMBOL_WITH_REPEAT_INPUT_BINDING },
+  '/children-slot-placement': { content: CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT },
+  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS },
+  '/eager-dynamic-loading': { content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS },
+  '/ssr-binding': { content: SSR_BINDING_CONTENT },
+  '/blocks-class-name': { content: BLOCKS_CLASS_NAME },
+  '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
+  '/custom-components-nowrap': { content: CUSTOM_COMPONENTS_NOWRAP },
+  '/override-base-url': { content: HTTP_REQUESTS },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -208,14 +206,6 @@ export const getAPIKey = (type: 'real' | 'mock' = 'mock'): string =>
 const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
-
-export const VISUAL_EDITING_PATHNAMES = [
-  '/editing-styles',
-  '/large-reactive-state-editing',
-  '/no-trusted-hosts',
-  '/editing-styles-no-trusted-hosts',
-  '/editing',
-] satisfies Path[];
 
 export const getProps = async (args: {
   sdk?: Sdk;
@@ -251,7 +241,7 @@ export const getProps = async (args: {
 
   let _content = getContentForPathname(pathname);
 
-  if (args.sdk === 'oldReact' && VISUAL_EDITING_PATHNAMES.includes(pathname as any)) {
+  if (args.sdk === 'oldReact' && PAGES[pathname]?.isVisualEditingTest) {
     // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
     // which Playwright will intercept and provide the content itself.
     _content = null;
