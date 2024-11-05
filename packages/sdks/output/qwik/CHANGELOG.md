@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.21
+
+### Patch Changes
+
+- a25a805: Fix: build to work in preview mode
+
 ## 0.16.20
 
 ### Patch Changes
