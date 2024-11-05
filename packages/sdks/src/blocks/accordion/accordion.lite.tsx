@@ -177,23 +177,25 @@ export default function Accordion(props: AccordionProps) {
               class={state.getAccordionTitleClassName(index)}
               style={{
                 ...state.accordionTitleStyles,
-                width: props.grid ? props.gridRowWidth : undefined,
-                ...(useTarget({
-                  reactNative: {},
-                  default: {
-                    order:
-                      state.openGridItemOrder !== null
-                        ? convertOrderNumberToString(index)
-                        : convertOrderNumberToString(index + 1),
-                  },
-                }) as any),
+                ...(props.grid && {
+                  width: props.gridRowWidth,
+                  ...(useTarget({
+                    reactNative: {},
+                    default: {
+                      order:
+                        state.openGridItemOrder !== null
+                          ? convertOrderNumberToString(index)
+                          : convertOrderNumberToString(index + 1),
+                    },
+                  }) as any),
+                }),
               }}
               data-index={index}
               onClick={() => state.onClick(index)}
             >
               <Blocks
                 blocks={item.title}
-                path={`items.${index}.title`}
+                path={`component.options.items.${index}.title`}
                 parent={props.builderBlock.id}
                 context={props.builderContext}
                 registeredComponents={props.builderComponents}
@@ -207,7 +209,7 @@ export default function Accordion(props: AccordionProps) {
               >
                 <Blocks
                   blocks={item.detail}
-                  path={`items.${index}.detail`}
+                  path={`component.options.items.${index}.detail`}
                   parent={props.builderBlock.id}
                   context={props.builderContext}
                   registeredComponents={props.builderComponents}
