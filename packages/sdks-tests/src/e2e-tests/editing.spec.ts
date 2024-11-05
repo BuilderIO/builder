@@ -255,6 +255,9 @@ test.describe('Visual Editing', () => {
 
       await expect(page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT)).not.toBeVisible();
 
+      // reset
+      await item1.click();
+
       const accordion = cloneContent(ACCORDION_WITH_NO_DETAIL);
 
       // insert new detail item
@@ -272,6 +275,8 @@ test.describe('Visual Editing', () => {
         newContent: accordion,
         model: 'page',
       });
+
+      await item1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
       await detailElement.waitFor();

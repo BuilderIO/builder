@@ -321,8 +321,5 @@ export const ACCORDION_GRID = {
 
 export const ACCORDION_WITH_NO_DETAIL = {
   ...ACCORDION,
-  data: {
-    ...ACCORDION.data,
-    blocks: ACCORDION.data.blocks.map(block => ({ ...block, detail: [] })),
-  },
 };
+ACCORDION_WITH_NO_DETAIL.data.blocks[0].component.options.items[0].detail = [];
