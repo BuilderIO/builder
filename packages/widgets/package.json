@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -35,7 +35,7 @@
     "commit": "git-cz",
     "release": "npm run build && ALLOW_PUBLISH=true npm publish",
     "release:major": "npm run build && npm version major && ALLOW_PUBLISH=true npm publish",
-    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && ALLOW_PUBLISH=true npm publish",
     "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag nightly",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
     "semantic-release": "semantic-release",
@@ -129,8 +129,8 @@
     "typescript": "^5.4.5",
     "validate-commit-msg": "^2.12.2",
     "next": "^12.1.0",
-    "react": "^17.0.2 || ^18.0.0-0",
-    "react-dom": "^17.0.2 || ^18.0.0-0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "peerDependencies": {
     "preact": "^8.4.2",
@@ -138,9 +138,9 @@
     "preact-context": "^1.1.3",
     "prop-types": "^15.7.2",
     "next": ">=12.1.0",
-    "@builder.io/react": ">=1.1.0",
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "@builder.io/react": ">=5.0.11",
+    "react": ">=16.0.0-0 || ^19.0.0-rc",
+    "react-dom": ">=16.0.0-0 || ^19.0.0-rc"
   },
   "peerDependenciesMeta": {
     "preact": {
