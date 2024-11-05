@@ -17,7 +17,7 @@ test.describe('Accordion', () => {
       await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
     }
   });
-  test('Accordion opens', async ({ page, sdk }) => {
+  test('Accordion opens and item details are visible below the title', async ({ page, sdk }) => {
     test.fail(
       excludeTestFor(
         {
@@ -29,8 +29,21 @@ test.describe('Accordion', () => {
     await page.goto('/accordion');
 
     for (let i = 1; i <= 3; i++) {
-      await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
-      await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible();
+      const itemTitle = page.getByText(`Item ${i}`, { exact: true });
+      await itemTitle.click({ timeout: 10000 });
+
+      const itemDetail = page.getByText(`Inside Item ${i}`, { exact: true });
+      await expect(itemDetail).toBeVisible();
+
+      const titleBox = await itemTitle.boundingBox();
+      const detailBox = await itemDetail.boundingBox();
+
+      expect(detailBox).toBeDefined();
+      expect(titleBox).toBeDefined();
+
+      if (titleBox && detailBox) {
+        expect(detailBox.y).toBeGreaterThan(titleBox.y + titleBox.height);
+      }
     }
   });
   test('Content is hidden when accordion is closed', async ({ page, sdk }) => {
