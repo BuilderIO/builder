@@ -318,3 +318,11 @@ export const ACCORDION_GRID = {
     })),
   },
 };
+
+export const ACCORDION_WITH_NO_DETAIL = {
+  ...ACCORDION,
+  data: {
+    ...ACCORDION.data,
+    blocks: ACCORDION.data.blocks.map(block => ({ ...block, detail: [] })),
+  },
+};

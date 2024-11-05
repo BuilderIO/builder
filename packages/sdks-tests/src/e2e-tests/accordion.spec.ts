@@ -17,7 +17,10 @@ test.describe('Accordion', () => {
       await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
     }
   });
-  test('Accordion opens and item details are visible below the title', async ({ page, sdk }) => {
+  test('Accordion opens and item details are visible in the correct order', async ({
+    page,
+    sdk,
+  }) => {
     test.fail(
       excludeTestFor(
         {
@@ -43,6 +46,16 @@ test.describe('Accordion', () => {
 
       if (titleBox && detailBox) {
         expect(detailBox.y).toBeGreaterThan(titleBox.y + titleBox.height);
+
+        if (i < 3) {
+          const nextItemTitle = page.getByText(`Item ${i + 1}`, { exact: true });
+          const nextTitleBox = await nextItemTitle.boundingBox();
+          expect(nextTitleBox).toBeDefined();
+
+          if (nextTitleBox) {
+            expect(detailBox.y + detailBox.height).toBeLessThan(nextTitleBox.y);
+          }
+        }
       }
     }
   });
