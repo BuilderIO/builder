@@ -1,5 +1,5 @@
 import { Builder, BuilderComponent, builder } from '@builder.io/react';
-import { VISUAL_EDITING_PATHNAMES, getAPIKey, getProps } from '@sdk/tests';
+import { getAPIKey, getProps, PAGES } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';
@@ -48,12 +48,7 @@ function App() {
     }
   }, []);
 
-  /**
-   * - certain tests expect the content to only render after the first render
-   * - the `/large-reactive-state-editing` requires the `BuilderComponent` to
-   * be rendered immediately, so that the API request is made.
-   */
-  return props || VISUAL_EDITING_PATHNAMES.includes(window.location.pathname as any) ? (
+  return props || PAGES[window.location.pathname]?.isVisualEditingTest ? (
     <BuilderComponent {...props} />
   ) : (
     <div>Content Not Found</div>
