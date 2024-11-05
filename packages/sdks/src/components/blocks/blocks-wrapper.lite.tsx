@@ -47,8 +47,11 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
         .join(' ');
     },
     get dataPath() {
+      if (!props.path) {
+        return undefined;
+      }
       const pathPrefix = 'component.options.';
-      return typeof props.path === 'string' && props.path.startsWith(pathPrefix)
+      return props.path.startsWith(pathPrefix)
         ? props.path
         : `${pathPrefix}${props.path || ''}`;
     },
