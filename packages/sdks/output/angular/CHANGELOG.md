@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.25
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
 ## 0.2.24
 
 ### Patch Changes

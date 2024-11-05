@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.22
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
 ## 0.16.21
 
 ### Patch Changes
