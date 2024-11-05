@@ -46,9 +46,9 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
         .filter(Boolean)
         .join(' ');
     },
-    get path() {
+    get dataPath() {
       const pathPrefix = 'component.options.';
-      return props.path?.startsWith(pathPrefix)
+      return typeof props.path === 'string' && props.path.startsWith(pathPrefix)
         ? props.path
         : `${pathPrefix}${props.path || ''}`;
     },
@@ -59,7 +59,7 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
             type: 'builder.clickEmptyBlocks',
             data: {
               parentElementId: props.parent,
-              dataPath: state.path,
+              dataPath: state.dataPath,
             },
           },
           '*'
@@ -73,7 +73,7 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
             type: 'builder.hoverEmptyBlocks',
             data: {
               parentElementId: props.parent,
-              dataPath: state.path,
+              dataPath: state.dataPath,
             },
           },
           '*'
@@ -90,10 +90,12 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
            * React Native strips off custom HTML attributes, so we have to manually set them here
            * to ensure that blocks are correctly dropped into the correct parent.
            */
-          state.path &&
-            blocksWrapperRef.setAttribute('builder-path', state.path);
-          props.parent &&
+          if (state.dataPath) {
+            blocksWrapperRef.setAttribute('builder-path', state.dataPath);
+          }
+          if (props.parent) {
             blocksWrapperRef.setAttribute('builder-parent-id', props.parent);
+          }
         }
       },
       default: () => {},
@@ -104,7 +106,7 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
     <props.BlocksWrapper
       ref={blocksWrapperRef}
       class={state.className}
-      builder-path={state.path}
+      builder-path={state.dataPath}
       builder-parent-id={props.parent}
       {...useTarget({
         reactNative: { dataSet: { class: state.className } },
