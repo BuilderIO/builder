@@ -16,11 +16,11 @@ import builderContext from '../../../context/builder.context.lite.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { evaluate } from '../../../functions/evaluate/index.js';
 import { fastClone } from '../../../functions/fast-clone.js';
-import { fetchApi } from '../../../functions/fetch-api.js';
 import { fetchOneEntry } from '../../../functions/get-content/index.js';
 import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
+import { logFetch } from '../../../functions/log-fetch.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
 import { _track } from '../../../functions/track/index.js';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
@@ -202,13 +202,15 @@ export default function EnableEditor(props: BuilderEditorProps) {
           )
         );
 
-        fetchApi(evaluatedUrl)
-          .then((response: Response) => response.json())
-          .then((json: any) => {
+        logFetch(evaluatedUrl);
+
+        fetch(evaluatedUrl)
+          .then((response) => response.json())
+          .then((json) => {
             state.mergeNewRootState({ [key]: json });
             state.httpReqsData[key] = true;
           })
-          .catch((err: Error) => {
+          .catch((err) => {
             console.error('error fetching dynamic data', url, err);
           })
           .finally(() => {
