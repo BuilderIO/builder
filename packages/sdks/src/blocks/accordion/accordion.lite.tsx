@@ -195,7 +195,7 @@ export default function Accordion(props: AccordionProps) {
             >
               <Blocks
                 blocks={item.title}
-                path={`component.options.items.${index}.title`}
+                path={`items.${index}.title`}
                 parent={props.builderBlock.id}
                 context={props.builderContext}
                 registeredComponents={props.builderComponents}
@@ -209,7 +209,7 @@ export default function Accordion(props: AccordionProps) {
               >
                 <Blocks
                   blocks={item.detail}
-                  path={`component.options.items.${index}.detail`}
+                  path={`items.${index}.detail`}
                   parent={props.builderBlock.id}
                   context={props.builderContext}
                   registeredComponents={props.builderComponents}
