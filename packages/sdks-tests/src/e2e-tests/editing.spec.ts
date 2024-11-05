@@ -263,6 +263,7 @@ test.describe('Visual Editing', () => {
       // insert new detail item
       accordion.data.blocks[0].component.options.items[0].detail = [
         {
+          id: 'some-random-id',
           component: {
             name: 'Text',
             options: { text: NEW_DETAILS_TEXT },
