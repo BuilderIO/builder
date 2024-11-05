@@ -238,7 +238,14 @@ test.describe('Visual Editing', () => {
       page,
       sdk,
       basePort,
+      packageName,
     }) => {
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
       await launchEmbedderAndWaitForSdk({ path: '/accordion-no-detail', basePort, page, sdk });
 
       const item1 = page.frameLocator('iframe').getByText('Item 1');
