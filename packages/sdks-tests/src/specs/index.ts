@@ -52,7 +52,12 @@ import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
 import { BASIC_STYLES } from './basic-styles.js';
-import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.js';
+import {
+  ACCORDION,
+  ACCORDION_GRID,
+  ACCORDION_ONE_AT_A_TIME,
+  ACCORDION_WITH_NO_DETAIL,
+} from './accordion.js';
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
 import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
@@ -160,6 +165,7 @@ export const PAGES: Record<string, Page> = {
   '/accordion': { content: ACCORDION },
   '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
   '/accordion-grid': { content: ACCORDION_GRID },
+  '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
   '/custom-components-models-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },

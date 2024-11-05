@@ -262,7 +262,7 @@ export default function Columns(props: ColumnProps) {
                 qwik: deoptSignal(column.blocks),
                 default: column.blocks,
               })}
-              path={`component.options.columns.${index}.blocks`}
+              path={`columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{
                 flexGrow: useTarget<string | number>({

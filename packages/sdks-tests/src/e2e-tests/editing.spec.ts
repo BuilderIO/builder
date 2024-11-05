@@ -16,6 +16,7 @@ import {
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
+import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
@@ -229,6 +230,68 @@ test.describe('Visual Editing', () => {
           }
         )
         .toBeGreaterThan(Number(initialWidth));
+    });
+  });
+
+  test.describe('Accordion block', () => {
+    test('inserting a new detail item adds it to the correct place in the accordion', async ({
+      page,
+      sdk,
+      basePort,
+      packageName,
+    }) => {
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next' ||
+          packageName === 'gen1-react' ||
+          packageName === 'gen1-remix'
+      );
+      await launchEmbedderAndWaitForSdk({ path: '/accordion-no-detail', basePort, page, sdk });
+
+      const item1 = page.frameLocator('iframe').getByText('Item 1');
+      const NEW_DETAILS_TEXT = 'new detail';
+
+      await item1.click();
+
+      await expect(page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT)).not.toBeVisible();
+
+      // reset
+      await item1.click();
+
+      const accordion = cloneContent(ACCORDION_WITH_NO_DETAIL);
+
+      // insert new detail item
+      accordion.data.blocks[0].component.options.items[0].detail = [
+        {
+          id: 'some-random-id',
+          component: {
+            name: 'Text',
+            options: { text: NEW_DETAILS_TEXT },
+          },
+        },
+      ];
+
+      await sendContentUpdateMessage({
+        page,
+        newContent: accordion,
+        model: 'page',
+      });
+
+      await item1.click();
+
+      const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
+      await detailElement.waitFor();
+
+      const [titleBox, detailBox] = await Promise.all([
+        item1.boundingBox(),
+        detailElement.boundingBox(),
+      ]);
+
+      if (!titleBox || !detailBox) {
+        throw new Error('Title or detail box not found');
+      }
+
+      expect(detailBox.y).toBeGreaterThan(titleBox.y);
     });
   });
 
