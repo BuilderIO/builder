@@ -56,5 +56,5 @@ const Loading = () => (
 //   })
 
 function reload(): any {
-  location.reload(true);
+  location.reload();
 }

@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.16.18",
+  "version": "0.16.22",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/qwik",
   "repository": {
     "type": "git",
@@ -115,7 +115,7 @@
     "isolated-vm": "^5.0.0"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.7.3",
+    "@builder.io/qwik": "^1.5.1",
     "@builder.io/sdks": "workspace:*",
     "@types/node": "latest",
     "typescript": "5.5.2",

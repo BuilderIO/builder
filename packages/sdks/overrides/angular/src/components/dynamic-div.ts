@@ -46,6 +46,7 @@ export default class DynamicDiv {
   @Input() onKeyPress: any;
   @Input() hidden: any;
   @Input('aria-hidden') ariaHidden: any;
+  @Input() className: any;
 
   @ViewChild('v', { read: ElementRef })
   v!: ElementRef;
@@ -62,7 +63,11 @@ export default class DynamicDiv {
     this.setAttributes(el, this.attributes);
     this.setAttributes(el, this.actionAttributes);
     this.setAttributes(el, this.showContentProps);
-    this.setAttribute(el, 'class', this.classProp);
+    this.setAttribute(
+      el,
+      'class',
+      [this.classProp ?? '', this.className ?? ''].join(' ').trim()
+    );
     this.setAttribute(el, 'style', this.style);
     this.setAttribute(el, 'builder-parent-id', this.builderParentId);
     this.setAttribute(el, 'builder-path', this.builderPath);
@@ -99,7 +104,13 @@ export default class DynamicDiv {
         changes.showContentProps.currentValue
       );
     }
-    if (changes.classProp) this.setAttribute(el, 'class', this.classProp);
+    if (changes.classProp || changes.className) {
+      this.setAttribute(
+        el,
+        'class',
+        [this.classProp ?? '', this.className ?? ''].join(' ').trim()
+      );
+    }
     if (changes.style) this.setAttribute(el, 'style', this.style);
     if (changes.builderParentId)
       this.setAttribute(el, 'builder-parent-id', this.builderParentId);

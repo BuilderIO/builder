@@ -32,9 +32,15 @@ useMetadata({
 
 export default function Columns(props: ColumnProps) {
   const state = useStore({
-    gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
-    cols: props.columns || [],
-    stackAt: props.stackColumnsAt || 'tablet',
+    get gutterSize() {
+      return typeof props.space === 'number' ? props.space || 0 : 20;
+    },
+    get cols() {
+      return props.columns || [];
+    },
+    get stackAt() {
+      return props.stackColumnsAt || 'tablet';
+    },
     getTagName(column: Column) {
       return column.link
         ? props.builderLinkComponent ||
@@ -84,12 +90,13 @@ export default function Columns(props: ColumnProps) {
       return state.stackAt === 'never' ? desktopStyle : stackedStyle;
     },
 
-    flexDir:
-      props.stackColumnsAt === 'never'
+    get flexDir(): 'row' | 'column' | 'column-reverse' {
+      return props.stackColumnsAt === 'never'
         ? 'row'
         : props.reverseColumnsWhenStacked
           ? 'column-reverse'
-          : 'column',
+          : 'column';
+    },
 
     columnsCssVars(): Dictionary<string> {
       return useTarget({
@@ -255,7 +262,7 @@ export default function Columns(props: ColumnProps) {
                 qwik: deoptSignal(column.blocks),
                 default: column.blocks,
               })}
-              path={`component.options.columns.${index}.blocks`}
+              path={`columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{
                 flexGrow: useTarget<string | number>({

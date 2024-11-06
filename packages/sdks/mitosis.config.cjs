@@ -320,11 +320,7 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (
-        code?.includes('selector: "blocks-wrapper"') ||
-        code?.includes('selector: "component-ref"') ||
-        code?.includes('selector: "interactive-element"')
-      ) {
+      if (code?.includes('selector: "blocks-wrapper"')) {
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
@@ -594,6 +590,135 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
 });
 
 /**
+ * This code is used to destructure the `attributes` prop and apply it to the direct child element of the
+ * interactive-element when `noWrap` is set to `true`.
+ *
+ * When using a custom component that doesn’t expect the `attributes` prop and `noWrap` is `true`,
+ * the `attributes` are applied to the root element of the custom component:
+ *
+ * <mat-button {...attributes}>
+ *   ...
+ * </mat-button>
+ *
+ * For custom components that **do** expect the `attributes` prop, it is passed as an `@Input()`,
+ * allowing users to utilize it wherever needed.
+ * For instance, in our Button block, the `attributes` prop is passed to `dynamic-renderer` -> `button`.
+ *
+ * If users want to apply the `attributes` prop at specific locations within their custom components,
+ * they can use it as an `@Input()`.
+ */
+const ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE = `  
+  _listenerFns = new Map<string, () => void>();
+
+  private hasAttributesInput(component): boolean {
+    return !!reflectComponentType(component)?.inputs.find(input => input.propName === 'attributes');
+  }
+
+  private updateAttributes(
+    el: HTMLElement,
+    attributes: { [key: string]: any }
+  ): void {
+    Object.keys(attributes).forEach((attr) => {
+      if (attr.startsWith("on")) {
+        if (this._listenerFns.has(attr)) {
+          this._listenerFns.get(attr)!();
+        }
+        this._listenerFns.set(
+          attr,
+          this.renderer.listen(
+            el,
+            attr.replace("on", "").toLowerCase(),
+            attributes[attr]
+          )
+        );
+      } else if (attr === 'class' && attributes[attr]) {
+        const classes = attributes[attr].split(' ');
+        classes.forEach((cls: string) =>
+          this.renderer.addClass(el, cls.trim())
+        );
+      } else {
+        this.renderer.setAttribute(el, attr.toLowerCase(), attributes[attr] ?? "");
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    if (!this.hasAttributesInput(this.Wrapper)) {
+      const wrapperElement =
+        this.wrapperTemplateRef.elementRef.nativeElement?.nextElementSibling;
+      if (wrapperElement) {
+        this.updateAttributes(wrapperElement, this.attributes);
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    for (const fn of this._listenerFns.values()) {
+      fn();
+    }
+  }
+`;
+
+/**
+ * Checks if the custom component expects `attributes` prop.
+ * If yes, it passes `attributes` as an `@Input()` to the custom component.
+ * If no, it attaches `attributes` to the direct child element of interactive element.
+ */
+const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "interactive-element"')) {
+        code = code.replace(
+          'constructor(private vcRef: ViewContainerRef) {',
+          'constructor(private vcRef: ViewContainerRef, private renderer: Renderer2) {'
+        );
+        code = code.replace(
+          /import {/,
+          `import {
+          Renderer2,
+          reflectComponentType,
+          `
+        );
+        code = code.replaceAll(
+          'attributes: this.attributes,',
+          '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.attributes } : {})'
+        );
+        const ngOnChangesIndex = code.indexOf('ngOnChanges');
+        code =
+          code.slice(0, ngOnChangesIndex) +
+          ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE +
+          code.slice(ngOnChangesIndex);
+
+        code = code.replace(
+          'ngOnChanges(changes: SimpleChanges) {',
+          'ngOnChanges(changes: SimpleChanges) { if (changes["attributes"] && !this.hasAttributesInput(this.Wrapper)) { this.ngAfterViewInit(); }'
+        );
+      }
+      return code;
+    },
+  },
+});
+
+/**
+ * Looks for any changes in `component-ref` component's wrapper template and updates it such that it resolves during SSR.
+ */
+const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "component-ref"')) {
+        code = code.replace(
+          /this\.myContent\s*=\s*\[[^\]]*\]/,
+          `const wrapperTemplate = this.vcRef.createEmbeddedView(this.wrapperTemplateRef);
+          wrapperTemplate.detectChanges();
+          this.myContent = [wrapperTemplate.rootNodes]`
+        );
+      }
+      return code;
+    },
+  },
+});
+
+/**
  * @type {MitosisConfig}
  */
 module.exports = {
@@ -619,6 +744,8 @@ module.exports = {
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
         ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
         ANGULAR_ADD_UNUSED_PROP_TYPES,
+        ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
+        ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
       ],
     },
     solid: {

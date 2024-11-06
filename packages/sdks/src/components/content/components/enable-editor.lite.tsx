@@ -161,6 +161,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           props.builderContextSignal.value.content?.testVariationId;
         const contentId = props.builderContextSignal.value.content?.id;
         _track({
+          apiHost: props.apiHost,
           type: 'click',
           canTrack: getDefaultCanTrack(props.canTrack),
           contentId,
@@ -373,6 +374,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
 
         _track({
+          apiHost: props.apiHost,
           type: 'impression',
           canTrack: true,
           contentId,

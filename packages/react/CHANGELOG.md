@@ -1,5 +1,25 @@
 # @builder.io/react
 
+## 6.0.1
+
+### Patch Changes
+
+- cf33d45: Fix: increase coverage of `trustedHost` check to all messages.
+- Updated dependencies [cf33d45]
+  - @builder.io/sdk@4.0.1
+
+## 6.0.0
+
+### Major Changes
+
+- f4fffe9: Permanently removes the `apiEndpoint` prop from `builder.get()` and `builder.getAll()` which had options `'content'` and `'query'`. Content API is now the only possible API endpoint for content fetching.
+
+### Patch Changes
+
+- Updated dependencies [f4fffe9]
+- Updated dependencies [443a3e3]
+  - @builder.io/sdk@4.0.0
+
 ## 5.0.11
 
 ### Patch Changes

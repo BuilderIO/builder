@@ -1,5 +1,24 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 2.0.29
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
+## 2.0.28
+
+### Patch Changes
+
+- c2e7846: Fix: make Column block's state reactive to its `props`
+
+## 2.0.26
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
 ## 2.0.25
 
 ### Patch Changes

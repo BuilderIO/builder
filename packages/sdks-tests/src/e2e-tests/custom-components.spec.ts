@@ -29,12 +29,26 @@ test.describe('Custom components', () => {
       page,
       basePort,
       path: '/custom-components',
+      sdk,
     });
     await customComponentMsgPromise;
   });
 
   test('children placement is correct', async ({ page, sdk }) => {
     test.skip(!['angular'].includes(sdk));
+    await page.goto('/children-slot-placement');
+    const h1 = page.locator('h1').first();
+    await expect(h1).toBeVisible();
+    await expect(h1.locator('text=inside an h1').first()).toBeVisible();
+  });
+
+  test('children content are ssred', async ({ browser, packageName }) => {
+    test.skip(!['angular-ssr'].includes(packageName));
+
+    const context = await browser.newContext({
+      javaScriptEnabled: false,
+    });
+    const page = await context.newPage();
     await page.goto('/children-slot-placement');
     const h1 = page.locator('h1').first();
     await expect(h1).toBeVisible();

@@ -1,5 +1,30 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.16.22
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
+## 0.16.21
+
+### Patch Changes
+
+- a25a805: Fix: build to work in preview mode
+
+## 0.16.20
+
+### Patch Changes
+
+- c2e7846: Fix: make Column block's state reactive to its `props`
+
+## 0.16.19
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
 ## 0.16.18
 
 ### Patch Changes

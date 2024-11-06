@@ -1,5 +1,26 @@
 # @builder.io/sdk-angular
 
+## 0.2.25
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
+## 0.2.24
+
+### Patch Changes
+
+- 067423d: Fix: builder children blocks not being ssred
+- c2e7846: Fix: make Column block's state reactive to its `props`
+- 067423d: Feat: supports `noWrap` for custom components
+
+## 0.2.23
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
 ## 0.2.22
 
 ### Patch Changes

@@ -6,6 +6,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { advancedChildResolver } from './advanced-child/advanced-child-resolver';
+import { AdvancedChildComponent } from './advanced-child/advanced-child.component';
 import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.component';
 import { announcementBarResolver } from './announcement-bar/announcement-bar.resolver';
 import { AppComponent } from './app.component';
@@ -66,6 +68,11 @@ import { productEditorialResolver } from './product-editorial/product-editorial.
         path: 'editable-region',
         component: EditableRegionComponent,
         resolve: { content: editableRegionsResolver },
+      },
+      {
+        path: 'advanced-child',
+        component: AdvancedChildComponent,
+        resolve: { content: advancedChildResolver },
       },
       {
         path: '**',
