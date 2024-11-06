@@ -1,4 +1,4 @@
-import { logger } from '../helpers/logger';
+import { logger } from '../helpers/logger.js';
 
 export function logFetch(url: string) {
   if (String(process.env.DEBUG) == 'true') {
