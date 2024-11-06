@@ -13,6 +13,7 @@ export type PersonalizationContainerProps = {
   children: React.ReactNode;
   previewingIndex: number | null;
   builderBlock?: BuilderElement;
+  builderState: any;
   variants?: [
     {
       query: Query[];
@@ -38,6 +39,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
     const subscriber = builder.userAttributesChanged.subscribe(() => {
       setUpdate(update + 1);
     });
+    let unsubs = [() => subscriber.unsubscribe()];
 
     if (!(Builder.isEditing || Builder.isPreviewing)) {
       const variant = filteredVariants[0];
@@ -70,10 +72,11 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
       });
 
       observer.observe(rootRef.current!);
+      unsubs.push(() => observer.disconnect());
     }
 
     return () => {
-      subscriber.unsubscribe();
+      unsubs.forEach(fn => fn());
     };
   }, []);
 
@@ -103,7 +106,11 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
           <script
             id={`variants-script-${props.builderBlock?.id}`}
             dangerouslySetInnerHTML={{
-              __html: getPersonalizationScript(props.variants, props.builderBlock?.id),
+              __html: getPersonalizationScript(
+                props.variants,
+                props.builderBlock?.id || 'none',
+                props.builderState.state?.locale
+              ),
             }}
           />
           <BuilderBlocks
@@ -127,7 +134,10 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
 
   const filteredVariants = (props.variants || []).filter(variant => {
     return filterWithCustomTargeting(
-      builder.getUserAttributes(),
+      {
+        ...(props.builderState.state?.locale ? { locale: props.builderState.state.locale } : {}),
+        ...builder.getUserAttributes(),
+      },
       variant.query,
       variant.startDate,
       variant.endDate
@@ -241,7 +251,8 @@ Builder.registerComponent(PersonalizationContainer, {
 
 function getPersonalizationScript(
   variants: PersonalizationContainerProps['variants'],
-  blockId?: string
+  blockId: string,
+  locale?: string
 ) {
   return `
       (function() {
@@ -263,6 +274,7 @@ function getPersonalizationScript(
         }
 
         var attributes = JSON.parse(getCookie("${Builder.attributesCookieName}") || "{}");
+        ${locale ? `attributes.locale = "${locale}";` : ''}
         var variants = ${JSON.stringify(variants?.map(v => ({ query: v.query, startDate: v.startDate, endDate: v.endDate })))};
         var winningVariantIndex = variants.findIndex(function(variant) {
           return filterWithCustomTargeting(
