@@ -17,14 +17,14 @@ import type {
   template: `
     <blocks
       [blocks]="column1.blocks"
-      [path]="'component.options.column1.blocks'"
+      [path]="'column1.blocks'"
       [parent]="builderBlock.id"
       [context]="builderContext"
       [registeredComponents]="builderComponents"
     />
     <blocks
       [blocks]="column2.blocks"
-      [path]="'component.options.column2.blocks'"
+      [path]="'column2.blocks'"
       [parent]="builderBlock.id"
       [context]="builderContext"
       [registeredComponents]="builderComponents"

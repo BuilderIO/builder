@@ -28,7 +28,7 @@ import type {
         <ng-container *ngIf="activeTab === i">
           <blocks
             [blocks]="tabList[i].blocks"
-            [path]="'component.options.tabList.' + i + '.blocks'"
+            [path]="'tabList.' + i + '.blocks'"
             [parent]="builderBlock.id"
             [context]="builderContext"
             [registeredComponents]="builderComponents"
