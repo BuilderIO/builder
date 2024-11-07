@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import type {
   BuilderBlock,
   RegisteredComponent,
@@ -21,7 +21,6 @@ import type {
       [parent]="builderBlock.id"
       [context]="builderContext"
       [registeredComponents]="builderComponents"
-      [styleProp]="customStyles"
     />
     <blocks
       [blocks]="column2.blocks"
@@ -29,7 +28,6 @@ import type {
       [parent]="builderBlock.id"
       [context]="builderContext"
       [registeredComponents]="builderComponents"
-      [styleProp]="customStyles"
     />
   `,
 })
@@ -39,15 +37,6 @@ export class CustomColumnsComponent {
   @Input() column2!: { blocks: BuilderBlock[] };
   @Input() builderComponents!: RegisteredComponents;
   @Input() builderContext!: BuilderContextInterface;
-
-  @HostBinding('style') customStyles = {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '10px',
-    padding: '20px',
-    justifyContent: 'space-around',
-    border: '1px solid rgba(26, 115, 232, 1)',
-  };
 }
 
 export const customColumnsInfo: RegisteredComponent = {
