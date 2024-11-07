@@ -12,23 +12,15 @@ interface CustomColumnsProps {
 
 const CustomColumns = (props: CustomColumnsProps) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        border: '10px solid #ccc',
-        padding: '10px',
-      }}
-    >
+    <div>
       <Blocks
-        blocks={props.column1.blocks}
+        blocks={props.column1?.blocks}
         path={`column1.blocks`}
         parent={props.builderBlock.id}
       />
 
       <Blocks
-        blocks={props.column2.blocks}
+        blocks={props.column2?.blocks}
         path={`column2.blocks`}
         parent={props.builderBlock.id}
       />
