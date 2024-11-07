@@ -3,17 +3,11 @@ import {
   BuilderBlock,
   RegisteredComponent,
 } from '@builder.io/sdk-react';
-import {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../../../output/react/types/context/types';
 
 interface CustomColumnsProps {
   column1: { blocks: BuilderBlock[] | undefined };
   column2: { blocks: BuilderBlock[] | undefined };
   builderBlock: BuilderBlock;
-  builderComponents: RegisteredComponents;
-  builderContext: BuilderContextInterface;
 }
 
 const CustomColumns = (props: CustomColumnsProps) => {
@@ -29,18 +23,14 @@ const CustomColumns = (props: CustomColumnsProps) => {
     >
       <Blocks
         blocks={props.column1.blocks}
-        path={`component.options.column1.blocks`}
+        path={`column1.blocks`}
         parent={props.builderBlock.id}
-        context={props.builderContext}
-        registeredComponents={props.builderComponents}
       />
 
       <Blocks
         blocks={props.column2.blocks}
-        path={`component.options.column2.blocks`}
+        path={`column2.blocks`}
         parent={props.builderBlock.id}
-        context={props.builderContext}
-        registeredComponents={props.builderComponents}
       />
     </div>
   );

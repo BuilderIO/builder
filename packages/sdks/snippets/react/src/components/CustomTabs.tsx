@@ -4,24 +4,13 @@ import {
   RegisteredComponent,
 } from '@builder.io/sdk-react';
 import { useState } from 'react';
-import {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '../../../../output/react/types/context/types';
 
 interface TabProps {
   tabList: { tabName: string; blocks: BuilderBlock[] }[];
   builderBlock: BuilderBlock;
-  builderComponents: RegisteredComponents;
-  builderContext: BuilderContextInterface;
 }
 
-export const CustomTabs = ({
-  tabList,
-  builderBlock,
-  builderComponents,
-  builderContext,
-}: TabProps) => {
+export const CustomTabs = ({ tabList, builderBlock }: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
@@ -49,10 +38,8 @@ export const CustomTabs = ({
           >
             <Blocks
               parent={builderBlock?.id}
-              path={`component.options.tabList.${index}.blocks`}
+              path={`tabList.${index}.blocks`}
               blocks={tab.blocks}
-              context={builderContext}
-              registeredComponents={builderComponents}
             />
           </div>
         ))}
