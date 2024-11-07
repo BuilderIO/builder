@@ -4,6 +4,8 @@ import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
   'BUILDER_EVENT: builder.registerComponent Component name: Hello';
+const LAST_COMPONENT_REGISTERED_MESSAGE =
+  'BUILDER_EVENT: builder.registerComponent Component name: BuilderBlockWithClassName';
 
 test.describe('Custom components', () => {
   test('correctly renders custom component', async ({ page, packageName, sdk }) => {
@@ -55,21 +57,44 @@ test.describe('Custom components', () => {
     await expect(h1.locator('text=inside an h1').first()).toBeVisible();
   });
 
-  test('do not show component in `page` model when restricted to `test-model`', async ({
+  test('do not register component in `page` model when restricted to `test-model`', async ({
     page,
+    basePort,
     packageName,
+    sdk,
   }) => {
     test.skip(!['react'].includes(packageName));
-    await page.goto('/custom-components-models-not-show');
-    await expect(page.locator('text=hello World').first()).not.toBeVisible();
+    const consoleMessages: string[] = [];
+    const customComponentMsgPromise = page.waitForEvent('console', msg => {
+      consoleMessages.push(msg.text());
+      return msg.text().includes(LAST_COMPONENT_REGISTERED_MESSAGE);
+    });
+    await launchEmbedderAndWaitForSdk({
+      page,
+      basePort,
+      path: '/custom-components-models-not-show',
+      sdk,
+    });
+    await customComponentMsgPromise;
+    expect(consoleMessages).not.toContain(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE);
   });
 
-  test('show component in `test-model` model when restricted to `test-model`', async ({
+  test('register component in `test-model` model when restricted to `test-model`', async ({
     page,
+    basePort,
     packageName,
+    sdk,
   }) => {
     test.skip(!['react'].includes(packageName));
-    await page.goto('/custom-components-models-show');
-    await expect(page.locator('text=hello World').first()).toBeVisible();
+    const customComponentMsgPromise = page.waitForEvent('console', msg =>
+      msg.text().includes(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE)
+    );
+    await launchEmbedderAndWaitForSdk({
+      page,
+      basePort,
+      path: '/custom-components-models-show',
+      sdk,
+    });
+    await customComponentMsgPromise;
   });
 });
