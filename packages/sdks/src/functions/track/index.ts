@@ -7,6 +7,7 @@ import type { CanTrack } from '../../types/can-track.js';
 import type { Dictionary } from '../../types/typescript.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
+import { logFetch } from '../log-fetch.js';
 import { getUserAttributes } from './helpers.js';
 
 interface Event {
@@ -124,7 +125,11 @@ export async function _track({
 
   const baseUrl = apiHost || 'https://cdn.builder.io';
 
-  return fetch(`${baseUrl}/api/v1/track`, {
+  const url = `${baseUrl}/api/v1/track`;
+
+  logFetch(url);
+
+  return fetch(url, {
     method: 'POST',
     body: JSON.stringify({
       events: [await createEvent(eventProps)],
