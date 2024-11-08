@@ -12,7 +12,7 @@ interface CustomColumnsProps {
 
 const CustomColumns = (props: CustomColumnsProps) => {
   return (
-    <div>
+    <>
       <Blocks
         blocks={props.column1?.blocks}
         path={`column1.blocks`}
@@ -24,7 +24,7 @@ const CustomColumns = (props: CustomColumnsProps) => {
         path={`column2.blocks`}
         parent={props.builderBlock.id}
       />
-    </div>
+    </>
   );
 };
 
