@@ -48,7 +48,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   url.searchParams.set('noTraverse', String(noTraverse));
   url.searchParams.set('includeRefs', String(true));
 
-  let finalLocale = locale || userAttributes?.locale;
+  const finalLocale = locale || userAttributes?.locale;
   let finalUserAttributes = userAttributes;
 
   if (finalLocale) {
