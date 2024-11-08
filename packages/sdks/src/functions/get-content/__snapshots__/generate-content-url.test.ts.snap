@@ -2,6 +2,10 @@
 
 exports[`Generate Content URL > Handles overrides correctly 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
+exports[`Generate Content URL > add options.locale in userAttributes when no locale attribute set 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&locale=en-US&omit=meta.componentsUsed&userAttributes=%7B%22locale%22%3A%22en-US%22%7D"`;
+
+exports[`Generate Content URL > add userAttributes.locale when top-level locale option exist 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&locale=en-US&omit=meta.componentsUsed&userAttributes=%7B%22locale%22%3A%22en-US%22%7D"`;
+
 exports[`Generate Content URL > generate content url when given invalid values of offset, includeUnpublished, cacheSeconds, staleCacheSeconds 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&includeUnpublished=false"`;
 
 exports[`Generate Content URL > generate content url with apiVersion as default 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
@@ -25,3 +29,5 @@ exports[`Generate Content URL > generate content url with limit unset and check 
 exports[`Generate Content URL > generate content url with omit, fields, offset, includeUnpublished, cacheSeconds, staleCacheSeconds and sort combination 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=someId%2C+some.nested.id&fields=id%2C+nested.property&offset=1&includeUnpublished=true&cacheSeconds=5&staleCacheSeconds=10&sort.updatedDate=-1&sort.createdDate=1"`;
 
 exports[`Generate Content URL > generates the proper value for a simple query 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
+
+exports[`Generate Content URL > keep userAttributes.locale unaltered when both are provided 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&locale=en-US&omit=meta.componentsUsed&userAttributes=%7B%22locale%22%3A%22es-ES%22%2C%22foo%22%3A%22bar%22%7D"`;
