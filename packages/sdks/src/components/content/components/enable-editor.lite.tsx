@@ -441,7 +441,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
   }, [props.locale]);
 
   return (
-    <Show when={props.builderContextSignal.value.content}>
+    <Show
+      when={
+        props.builderContextSignal.value.content ||
+        isPreviewing() ||
+        isEditing()
+      }
+    >
       <state.ContentWrapper
         {...useTarget({
           qwik: {
@@ -463,6 +469,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
         className={getWrapperClassName(
           props.content?.testVariationId || props.content?.id
         )}
+        style={{
+          display:
+            !props.builderContextSignal.value.content &&
+            (isPreviewing() || isEditing())
+              ? 'none'
+              : undefined,
+        }}
         {...useTarget({
           reactNative: {
             // currently, we can't set the actual ID here.
