@@ -67,6 +67,7 @@ import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading
 import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
 import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
+import { XSS_EXPLOIT } from './xss-exploit.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -175,6 +176,7 @@ export const PAGES: Record<string, Page> = {
   '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
   '/custom-components-nowrap': { content: CUSTOM_COMPONENTS_NOWRAP },
   '/override-base-url': { content: HTTP_REQUESTS },
+  '/xss-exploit': { content: XSS_EXPLOIT },
 } as const;
 
 export type Path = keyof typeof PAGES;
