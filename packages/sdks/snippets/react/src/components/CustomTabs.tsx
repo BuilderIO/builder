@@ -6,14 +6,14 @@ import {
 import { useState } from 'react';
 
 interface TabProps {
-  tabList: { tabName: string; blocks: BuilderBlock[] }[];
+  tabList?: { tabName: string; blocks: BuilderBlock[] }[];
   builderBlock: BuilderBlock;
 }
 
 export const CustomTabs = ({ tabList, builderBlock }: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
 
-  if (tabList.length === 0) return null;
+  if (!tabList?.length) return null;
 
   return (
     <>
