@@ -73,7 +73,8 @@ export default defineConfig({
        * This provides the package and SDK names to the test as variables to check which exact server the test is running.
        */
       packageName,
-      sdk: SDK_MAP[packageName],
+      sdk: SDK_MAP[packageName].sdk,
+      gen: SDK_MAP[packageName].gen,
     },
   })),
 
