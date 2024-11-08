@@ -24,17 +24,13 @@ import type {
         {{ tab.tabName }}
       </button>
 
-      <ng-container *ngFor="let tab of tabList; let i = index">
-        <ng-container *ngIf="activeTab === i">
-          <blocks
-            [blocks]="tabList[i].blocks"
-            [path]="'tabList.' + i + '.blocks'"
-            [parent]="builderBlock.id"
-            [context]="builderContext"
-            [registeredComponents]="builderComponents"
-          />
-        </ng-container>
-      </ng-container>
+      <blocks
+        [blocks]="tabList[activeTab].blocks"
+        [path]="'tabList.' + activeTab + '.blocks'"
+        [parent]="builderBlock.id"
+        [context]="builderContext"
+        [registeredComponents]="builderComponents"
+      />
     </ng-container>
   `,
 })
