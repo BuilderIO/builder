@@ -35,11 +35,12 @@ const serverNameEnumValues = [
 const ServerNameEnum = z.enum(serverNameEnumValues);
 export type ServerName = z.infer<typeof ServerNameEnum>;
 
-const envServerName = !process.env.SERVER_NAME
+const PROCESS_SERVER_NAME = typeof process !== 'undefined' ? process.env.SERVER_NAME : undefined;
+const envServerName = !PROCESS_SERVER_NAME
   ? []
-  : process.env.SERVER_NAME === 'all'
+  : PROCESS_SERVER_NAME === 'all'
     ? serverNameEnumValues
-    : process.env.SERVER_NAME.split(',');
+    : PROCESS_SERVER_NAME.split(',');
 
 export const serverNames = envServerName.map(str => ServerNameEnum.parse(str)) ?? [];
 
