@@ -13,36 +13,28 @@ interface TabProps {
 export const CustomTabs = ({ tabList, builderBlock }: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
 
+  if (tabList.length === 0) return null;
+
   return (
     <>
-      {tabList?.length > 0 && (
-        <div className="tab-buttons">
-          {tabList.map((tab, index) => (
-            <button
-              key={index}
-              className={`tab-button ${activeTab === index ? 'active' : ''}`}
-              onClick={() => setActiveTab(index)}
-            >
-              {tab.tabName}
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="tab-buttons">
+        {tabList.map((tab, index) => (
+          <button
+            key={index}
+            className={`tab-button ${activeTab === index ? 'active' : ''}`}
+            onClick={() => setActiveTab(index)}
+          >
+            {tab.tabName}
+          </button>
+        ))}
+      </div>
 
       <div className="tab-content">
-        {tabList.map((tab, index) => (
-          <div
-            key={index}
-            className="tab-panel"
-            style={{ display: activeTab === index ? 'block' : 'none' }}
-          >
-            <Blocks
-              parent={builderBlock?.id}
-              path={`tabList.${index}.blocks`}
-              blocks={tab.blocks}
-            />
-          </div>
-        ))}
+        <Blocks
+          parent={builderBlock?.id}
+          path={`tabList[${activeTab}].blocks`}
+          blocks={tabList[activeTab].blocks}
+        />
       </div>
     </>
   );
