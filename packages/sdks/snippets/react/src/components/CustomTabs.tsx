@@ -29,13 +29,11 @@ export const CustomTabs = ({ tabList, builderBlock }: TabProps) => {
         ))}
       </div>
 
-      <div className="tab-content">
-        <Blocks
-          parent={builderBlock?.id}
-          path={`tabList[${activeTab}].blocks`}
-          blocks={tabList[activeTab].blocks}
-        />
-      </div>
+      <Blocks
+        parent={builderBlock?.id}
+        path={`tabList.${activeTab}.blocks`}
+        blocks={tabList[activeTab].blocks}
+      />
     </>
   );
 };
