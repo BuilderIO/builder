@@ -48,7 +48,7 @@ function App() {
     }
   }, []);
 
-  return props || PAGES[window.location.pathname]?.isVisualEditingTest ? (
+  return props || PAGES[window.location.pathname]?.isGen1VisualEditingTest ? (
     <BuilderComponent {...props} />
   ) : (
     <div>Content Not Found</div>
