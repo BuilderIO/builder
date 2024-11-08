@@ -43,12 +43,6 @@ const envServerName = !process.env.SERVER_NAME
 
 export const serverNames = envServerName.map(str => ServerNameEnum.parse(str)) ?? [];
 
-if (serverNames.length === 0) {
-  throw new Error(
-    'SERVER_NAME is required. Please provide a comma-separated list of server names to run.'
-  );
-}
-
 export type Generation = 'gen1' | 'gen2';
 
 /**

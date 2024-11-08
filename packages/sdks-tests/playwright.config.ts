@@ -5,6 +5,12 @@ import { fileURLToPath } from 'url';
 import { EMBEDDER_PORT } from './src/helpers/context.js';
 import { SDK_MAP, serverNames } from './src/helpers/sdk.js';
 
+if (serverNames.length === 0) {
+  throw new Error(
+    'SERVER_NAME is required. Please provide a comma-separated list of server names to run.'
+  );
+}
+
 const getDirName = () => {
   try {
     const __filename = fileURLToPath(import.meta.url);
