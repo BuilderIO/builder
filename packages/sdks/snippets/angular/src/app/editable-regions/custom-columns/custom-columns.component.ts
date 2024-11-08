@@ -15,45 +15,54 @@ import type {
   standalone: true,
   imports: [CommonModule, Blocks],
   template: `
-    <div
-      style="display: flex; flex-direction: row; justify-content: space-around; border: 10px solid #ccc; padding: 10px"
-    >
-      <blocks
-        [blocks]="columns[0].blocks"
-        [path]="'component.options.columns.0.blocks'"
-        [parent]="builderBlock.id"
-        [context]="builderContext"
-        [registeredComponents]="builderComponents"
-      ></blocks>
-      <blocks
-        [blocks]="columns[1].blocks"
-        [path]="'component.options.columns.1.blocks'"
-        [parent]="builderBlock.id"
-        [context]="builderContext"
-        [registeredComponents]="builderComponents"
-      ></blocks>
-    </div>
+    <blocks
+      [blocks]="column1.blocks"
+      [path]="'column1.blocks'"
+      [parent]="builderBlock.id"
+      [context]="builderContext"
+      [registeredComponents]="builderComponents"
+    />
+    <blocks
+      [blocks]="column2.blocks"
+      [path]="'column2.blocks'"
+      [parent]="builderBlock.id"
+      [context]="builderContext"
+      [registeredComponents]="builderComponents"
+    />
   `,
 })
 export class CustomColumnsComponent {
   @Input() builderBlock!: BuilderBlock;
-  @Input() columns: { blocks: BuilderBlock[] }[] = [];
-  @Input() builderComponents: RegisteredComponents = {};
+  @Input() column1!: { blocks: BuilderBlock[] };
+  @Input() column2!: { blocks: BuilderBlock[] };
+  @Input() builderComponents!: RegisteredComponents;
   @Input() builderContext!: BuilderContextInterface;
 }
 
 export const customColumnsInfo: RegisteredComponent = {
-  component: CustomColumnsComponent,
   name: 'MyColumns',
+  component: CustomColumnsComponent,
   inputs: [
     {
-      name: 'columns',
-      type: 'array',
+      name: 'column1',
+      type: 'uiBlocks',
       broadcast: true,
       hideFromUI: true,
-      defaultValue: [{ blocks: [] }, { blocks: [] }],
+      defaultValue: {
+        blocks: [],
+      },
+    },
+    {
+      name: 'column2',
+      type: 'uiBlocks',
+      broadcast: true,
+      hideFromUI: true,
+      defaultValue: {
+        blocks: [],
+      },
     },
   ],
+
   shouldReceiveBuilderProps: {
     builderBlock: true,
     builderComponents: true,
