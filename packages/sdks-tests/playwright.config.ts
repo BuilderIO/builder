@@ -5,6 +5,12 @@ import { fileURLToPath } from 'url';
 import { EMBEDDER_PORT } from './src/helpers/context.js';
 import { SDK_MAP, serverNames } from './src/helpers/sdk.js';
 
+if (serverNames.length === 0) {
+  throw new Error(
+    'SERVER_NAME is required. Please provide a comma-separated list of server names to run.'
+  );
+}
+
 const getDirName = () => {
   try {
     const __filename = fileURLToPath(import.meta.url);
@@ -73,7 +79,8 @@ export default defineConfig({
        * This provides the package and SDK names to the test as variables to check which exact server the test is running.
        */
       packageName,
-      sdk: SDK_MAP[packageName],
+      sdk: SDK_MAP[packageName].sdk,
+      gen: SDK_MAP[packageName].gen,
     },
   })),
 

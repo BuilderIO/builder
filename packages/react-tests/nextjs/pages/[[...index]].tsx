@@ -20,7 +20,7 @@ export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    paths: getAllPathnames('gen1').map(path => {
+    paths: getAllPathnames('gen1-next').map(path => {
       const output: StaticProps = {
         index: path === '/' ? [] : path.split('/').filter(Boolean),
       };

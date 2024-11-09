@@ -510,6 +510,9 @@ export class BuilderComponent extends React.Component<
   }
 
   messageListener = (event: MessageEvent) => {
+    const isTrusted = Builder.isTrustedHostForEvent(event);
+    if (!isTrusted) return;
+
     const info = event.data;
     switch (info.type) {
       case 'builder.configureSdk': {
