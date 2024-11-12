@@ -42,6 +42,7 @@ exports[`Component Registration and Serialization > serializeFn handles differen
     "func3": "return (function func3(x) {
           return x - 1;
         }).apply(this, arguments)",
+    "func4": "return (e => !0 === e.get(\\"isABTest\\")).apply(this, arguments)",
   },
   "inputs": [
     {
