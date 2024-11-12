@@ -56,7 +56,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     finalUserAttributes = {
       locale: finalLocale,
       ...finalUserAttributes,
-    }
+    };
   }
   if (enrich) url.searchParams.set('enrich', String(enrich));
 

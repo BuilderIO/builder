@@ -2202,7 +2202,8 @@ export class Builder {
     } = {}
   ) {
     let instance: Builder = this;
-    let finalLocale = options.locale || options.userAttributes?.locale || this.getUserAttributes().locale;
+    let finalLocale =
+      options.locale || options.userAttributes?.locale || this.getUserAttributes().locale;
     let finalOptions = {
       ...options,
       ...(finalLocale && {
