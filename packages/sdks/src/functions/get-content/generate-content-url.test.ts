@@ -209,4 +209,32 @@ describe('Generate Content URL', () => {
     });
     expect(output).toMatchSnapshot();
   });
+
+  test('add userAttributes.locale when top-level locale option exist', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      locale: 'en-US',
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('add options.locale in userAttributes when no locale attribute set', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      userAttributes: { locale: 'en-US' },
+    });
+    expect(output).toMatchSnapshot();
+  });
+
+  test('preserves both userAttributes.locale and top-level locale when both provided', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      locale: 'en-US',
+      userAttributes: { locale: 'es-ES', foo: 'bar' },
+    });
+    expect(output).toMatchSnapshot();
+  });
 });

@@ -48,7 +48,16 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   url.searchParams.set('noTraverse', String(noTraverse));
   url.searchParams.set('includeRefs', String(true));
 
-  if (locale) url.searchParams.set('locale', locale);
+  const finalLocale = locale || userAttributes?.locale;
+  let finalUserAttributes = userAttributes;
+
+  if (finalLocale) {
+    url.searchParams.set('locale', finalLocale);
+    finalUserAttributes = {
+      locale: finalLocale,
+      ...finalUserAttributes,
+    }
+  }
   if (enrich) url.searchParams.set('enrich', String(enrich));
 
   url.searchParams.set('omit', omit || 'meta.componentsUsed');
@@ -92,8 +101,8 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     url.searchParams.set(key, String(flattened[key]));
   }
 
-  if (userAttributes) {
-    url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
+  if (finalUserAttributes) {
+    url.searchParams.set('userAttributes', JSON.stringify(finalUserAttributes));
   }
   if (query) {
     const flattened = flattenMongoQuery({ query });
