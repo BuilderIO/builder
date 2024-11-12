@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.2.26
+
+### Patch Changes
+
+- 5e88efa: Logs every API URL hit from the SDK whenever `process.env.DEBUG` is set to `true` in the project
+
 ## 0.2.25
 
 ### Patch Changes

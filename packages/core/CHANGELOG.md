@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 4.0.2
+
+### Patch Changes
+
+- dda2ba4: Fix: Restrict event listening to when `isEditing === true`
+
 ## 4.0.1
 
 ### Patch Changes
