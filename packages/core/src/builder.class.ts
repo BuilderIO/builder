@@ -2210,8 +2210,8 @@ export class Builder {
       ...(finalLocale && {
         locale: String(finalLocale),
         userAttributes: {
-          ...options.userAttributes,
           locale: String(finalLocale),
+          ...options.userAttributes,
         },
       }),
     };
