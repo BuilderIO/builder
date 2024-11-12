@@ -228,7 +228,7 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
-  test('keep userAttributes.locale unaltered when both are provided', () => {
+  test('preserves both userAttributes.locale and top-level locale when both provided', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
