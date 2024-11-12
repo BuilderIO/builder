@@ -13,8 +13,12 @@ const serializeFn = (fnValue: Function) => {
   // 1. `function name(args) => {code}`
   // 2. `name(args) => {code}`
   // 3. `(args) => {}`
+  // 4. `args => {}`
+  const isArrowWithoutParens = /^[a-zA-Z0-9_]+\s*=>/i.test(fnStr);
   const appendFunction =
-    !fnStr.startsWith('function') && !fnStr.startsWith('(');
+    !fnStr.startsWith('function') &&
+    !fnStr.startsWith('(') &&
+    !isArrowWithoutParens;
 
   return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
 };

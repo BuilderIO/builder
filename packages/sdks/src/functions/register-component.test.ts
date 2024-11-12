@@ -60,6 +60,8 @@ describe('Component Registration and Serialization', () => {
   });
 
   test('serializeFn handles different function syntaxes', () => {
+    // Using eval and template literal to prevent TypeScript from adding parens
+    const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
     const mockComponentInfo: ComponentInfo = {
       name: 'SyntaxTestComponent',
       inputs: [{ name: 'testInput', type: 'string' }],
@@ -71,6 +73,7 @@ describe('Component Registration and Serialization', () => {
         func3(x: number) {
           return x - 1;
         },
+        func4: fn,
       },
       // Add other required fields as necessary
     };

@@ -46,6 +46,8 @@ describe('serializeIncludingFunctions', () => {
   });
 
   test('serializes arrow functions in inputs', () => {
+    // Using eval and template literal to prevent TypeScript from adding parens
+    const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
     const input = {
       name: 'ArrowComponent',
       inputs: [
@@ -53,6 +55,7 @@ describe('serializeIncludingFunctions', () => {
           name: 'number',
           type: 'number',
           onChange: (value: number) => value * 2,
+          showIf: fn,
         },
       ],
     };
@@ -61,6 +64,9 @@ describe('serializeIncludingFunctions', () => {
 
     expect(typeof result.inputs[0].onChange).toBe('string');
     expect(result.inputs[0].onChange).toContain('value * 2');
+    expect(result.inputs[0].showIf).toBe(
+      `return (e => !0 === e.get(\"isABTest\")).apply(this, arguments)`
+    );
   });
 
   test('does not modify non-function properties', () => {
