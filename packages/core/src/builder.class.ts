@@ -2202,6 +2202,17 @@ export class Builder {
     } = {}
   ) {
     let instance: Builder = this;
+    let finalLocale = options.locale || options.userAttributes?.locale || this.getUserAttributes().locale;
+    let finalOptions = {
+      ...options,
+      ...(finalLocale && {
+        locale: String(finalLocale),
+        userAttributes: {
+          locale: String(finalLocale),
+          ...options.userAttributes,
+        },
+      }),
+    };
     if (!Builder.isBrowser) {
       instance = new Builder(
         options.apiKey || this.apiKey,
@@ -2225,7 +2236,7 @@ export class Builder {
         this.apiVersion = options.apiVersion;
       }
     }
-    return instance.queueGetContent(modelName, options).map(
+    return instance.queueGetContent(modelName, finalOptions).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         if (Builder.isStatic) {
@@ -2473,9 +2484,9 @@ export class Builder {
     }
 
     const pageQueryParams: ParamsMap =
-      typeof location !== 'undefined'
+      (typeof location !== 'undefined'
         ? QueryString.parseDeep(location.search.substr(1))
-        : undefined || {}; // TODO: WHAT about SSR (this.request) ?
+        : undefined) || {}; // TODO: WHAT about SSR (this.request) ?
 
     const userAttributes =
       // FIXME: HACK: only checks first in queue for user attributes overrides, should check all
