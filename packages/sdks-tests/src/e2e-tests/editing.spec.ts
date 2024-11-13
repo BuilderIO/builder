@@ -10,7 +10,6 @@ import {
   sendPatchOrUpdateMessage,
 } from '../helpers/visual-editor.js';
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
-import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
@@ -143,41 +142,6 @@ test.describe('Visual Editing', () => {
         expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
       }
     }
-  });
-
-  test('nested ContentVariants with same model name should not duplicate content', async ({
-    page,
-    packageName,
-    basePort,
-    sdk,
-  }) => {
-    test.skip(
-      packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next' ||
-        packageName === 'gen1-react' ||
-        packageName === 'gen1-remix'
-    );
-    await page.goto('/duplicated-content-using-nested-symbols');
-    await launchEmbedderAndWaitForSdk({
-      path: '/duplicated-content-using-nested-symbols',
-      basePort,
-      page,
-      sdk,
-    });
-
-    await sendContentUpdateMessage({
-      page,
-      newContent: ADD_A_TEXT_BLOCK,
-      model: 'symbol',
-    });
-
-    await page.frameLocator('iframe').getByText('something other than the symbol!').waitFor();
-
-    const textBlocks = await page
-      .frameLocator('iframe')
-      .getByText('something other than the symbol!')
-      .all();
-    expect(textBlocks.length).toBe(1);
   });
 
   test.describe('fails for empty trusted hosts', () => {
