@@ -210,12 +210,6 @@ registerPlugin(
           if(!isEqual(currentLocales?.enum, combinedLocales)){
             appState.user.organization.value.customTargetingAttributes?.get('locale').set('enum', combinedLocales);
           }
-        } else if(appState.hasFeatureFlag('manage-locales-in-smartling') && !isEqual(currentLocales?.enum, smartlingLocales)){
-          // overwrite all builder locales by smartling locales
-            appState.user.organization.value.customTargetingAttributes.set('locale', {
-              type: 'string',
-              enum: smartlingLocales,
-            });
         }
     });
     // create a new action on content to add to job
