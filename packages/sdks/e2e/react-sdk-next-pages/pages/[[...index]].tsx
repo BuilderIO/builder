@@ -65,7 +65,7 @@ type StaticProps = { index: string[] };
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    paths: getAllPathnames('react-sdk-next-pages').map((path) => {
+    paths: getAllPathnames('gen2').map((path) => {
       const output: StaticProps = {
         index: path === '/' ? [] : path.split('/').filter(Boolean),
       };
