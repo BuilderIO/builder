@@ -29,6 +29,7 @@ test.describe('Custom components', () => {
       page,
       basePort,
       path: '/custom-components',
+      sdk,
     });
     await customComponentMsgPromise;
   });

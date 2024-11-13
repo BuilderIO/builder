@@ -1,5 +1,16 @@
 # @builder.io/react
 
+## 5.0.12
+
+### Patch Changes
+
+- af26e42: Fix: Add `trustedHost` checks to all remaining event listeners
+- af26e42: Fix: Restrict event listening to when `isEditing === true`
+- 00d8154: Fix: increase coverage of `trustedHost` check to all messages.
+- Updated dependencies [af26e42]
+- Updated dependencies [00d8154]
+  - @builder.io/sdk@3.0.8
+
 ## 5.0.11
 
 ### Patch Changes

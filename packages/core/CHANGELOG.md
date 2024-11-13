@@ -1,5 +1,12 @@
 # @builder.io/sdk
 
+## 3.0.8
+
+### Patch Changes
+
+- af26e42: Fix: Restrict event listening to when `isEditing === true`
+- 00d8154: Fix: increase coverage of `trustedHost` check to all messages.
+
 ## 3.0.7
 
 ### Patch Changes

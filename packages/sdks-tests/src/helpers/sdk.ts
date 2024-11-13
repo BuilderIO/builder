@@ -35,41 +35,38 @@ const serverNameEnumValues = [
 const ServerNameEnum = z.enum(serverNameEnumValues);
 export type ServerName = z.infer<typeof ServerNameEnum>;
 
-const envServerName = !process.env.SERVER_NAME
+const PROCESS_SERVER_NAME = typeof process !== 'undefined' ? process.env.SERVER_NAME : undefined;
+const envServerName = !PROCESS_SERVER_NAME
   ? []
-  : process.env.SERVER_NAME === 'all'
+  : PROCESS_SERVER_NAME === 'all'
     ? serverNameEnumValues
-    : process.env.SERVER_NAME.split(',');
+    : PROCESS_SERVER_NAME.split(',');
 
 export const serverNames = envServerName.map(str => ServerNameEnum.parse(str)) ?? [];
 
-if (serverNames.length === 0) {
-  throw new Error(
-    'SERVER_NAME is required. Please provide a comma-separated list of server names to run.'
-  );
-}
+export type Generation = 'gen1' | 'gen2';
 
 /**
  * Map of server names to SDKs.
  */
-export const SDK_MAP: Record<ServerName, Sdk> = {
-  'react-native': 'reactNative',
-  solid: 'solid',
-  'solid-start': 'solid',
-  'qwik-city': 'qwik',
-  'react-sdk-next-pages': 'react',
-  react: 'react',
-  remix: 'react',
-  hydrogen: 'react',
-  'react-sdk-next-app': 'react',
-  vue: 'vue',
-  nuxt: 'vue',
-  svelte: 'svelte',
-  sveltekit: 'svelte',
-  'nextjs-sdk-next-app': 'rsc',
-  'gen1-react': 'oldReact',
-  'gen1-next': 'oldReact',
-  'gen1-remix': 'oldReact',
-  angular: 'angular',
-  'angular-ssr': 'angular',
+export const SDK_MAP: Record<ServerName, { sdk: Sdk; gen: Generation }> = {
+  'react-native': { sdk: 'reactNative', gen: 'gen2' },
+  solid: { sdk: 'solid', gen: 'gen2' },
+  'solid-start': { sdk: 'solid', gen: 'gen2' },
+  'qwik-city': { sdk: 'qwik', gen: 'gen2' },
+  'react-sdk-next-pages': { sdk: 'react', gen: 'gen2' },
+  react: { sdk: 'react', gen: 'gen2' },
+  remix: { sdk: 'react', gen: 'gen2' },
+  hydrogen: { sdk: 'react', gen: 'gen2' },
+  'react-sdk-next-app': { sdk: 'react', gen: 'gen2' },
+  vue: { sdk: 'vue', gen: 'gen2' },
+  nuxt: { sdk: 'vue', gen: 'gen2' },
+  svelte: { sdk: 'svelte', gen: 'gen2' },
+  sveltekit: { sdk: 'svelte', gen: 'gen2' },
+  'nextjs-sdk-next-app': { sdk: 'rsc', gen: 'gen2' },
+  'gen1-react': { sdk: 'oldReact', gen: 'gen1' },
+  'gen1-next': { sdk: 'oldReact', gen: 'gen1' },
+  'gen1-remix': { sdk: 'oldReact', gen: 'gen1' },
+  angular: { sdk: 'angular', gen: 'gen2' },
+  'angular-ssr': { sdk: 'angular', gen: 'gen2' },
 };
