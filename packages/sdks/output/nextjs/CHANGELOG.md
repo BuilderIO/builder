@@ -1,5 +1,12 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.16.24
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling
+
 ## 0.16.23
 
 ### Patch Changes
