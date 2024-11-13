@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.2.27
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling
+
 ## 0.2.26
 
 ### Patch Changes

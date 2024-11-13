@@ -1,5 +1,12 @@
 # @builder.io/sdk
 
+## 4.0.3
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling and pass through locale prop to personalization containers when filtering
+
 ## 4.0.2
 
 ### Patch Changes
