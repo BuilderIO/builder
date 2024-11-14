@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 6.0.4
+
+### Patch Changes
+
+- b0ab0f5: Add support for dynamic bindings in responsive styles
+
 ## 6.0.3
 
 ### Patch Changes
