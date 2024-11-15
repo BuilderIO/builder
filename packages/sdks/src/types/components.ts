@@ -159,6 +159,8 @@ export interface ComponentInfo {
      */
     builderLinkComponent?: boolean;
   };
+
+  meta?: { [key: string]: any };
 }
 
 type Permission =
