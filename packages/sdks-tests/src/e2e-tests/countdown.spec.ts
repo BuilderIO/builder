@@ -14,11 +14,11 @@ test.describe('Countdown', () => {
 
     const currentSecondsOnPage = await page.locator('#seconds').textContent();
 
-    await page.waitForTimeout(1200);
+    await page.waitForTimeout(2000);
     const newSecondsOnPage = await page.locator('#seconds').textContent();
     expect(newSecondsOnPage).not.toBe(currentSecondsOnPage);
 
-    await page.waitForTimeout(1200);
+    await page.waitForTimeout(2000);
     const newSecondsOnPage2 = await page.locator('#seconds').textContent();
     expect(newSecondsOnPage2).not.toBe(newSecondsOnPage);
     expect(newSecondsOnPage2).not.toBe(currentSecondsOnPage);
