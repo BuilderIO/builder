@@ -9,4 +9,6 @@
 '@builder.io/sdk-vue': major
 ---
 
-Throw errors when API fails for `fetchEntries`
+Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+Previously, both functions would swallow all errors and return `null`.
