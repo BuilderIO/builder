@@ -28,7 +28,7 @@
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
 		"smui-theme": "^6.0.0-beta.16",
-		"svelte": "^3.49.0",
+		"svelte": "^4.2.19",
 		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.6",
 		"tslib": "^2.3.1",
