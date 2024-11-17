@@ -186,6 +186,8 @@ export const PAGES: Record<string, Page> = {
   },
   '/override-base-url': { content: HTTP_REQUESTS },
   '/xss-exploit': { content: XSS_EXPLOIT },
+  '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -292,6 +294,16 @@ export const getProps = async (args: {
     case '/react-native-strict-style-mode':
       extraProps = {
         strictStyleMode: true,
+      };
+      break;
+    case '/get-content':
+      extraProps = {
+        options: { apiEndpoint: 'content' },
+      };
+      break;
+    case '/get-query':
+      extraProps = {
+        options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
       };
       break;
     case '/symbol-with-repeat-input-binding':
