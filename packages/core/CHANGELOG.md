@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 5.0.0
+
+### Major Changes
+
+- f12f43d: Breaking Change: Use `/query` instead of `/content` for API calls. This change fixes a symbol rendering issue introduced in https://github.com/BuilderIO/builder/pull/3681, which was included in the 4.0.0 release.
+
 ## 4.0.3
 
 ### Patch Changes
