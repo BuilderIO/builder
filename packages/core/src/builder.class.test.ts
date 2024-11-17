@@ -505,7 +505,7 @@ describe('flushGetContentQueue', () => {
     );
   });
 
-  test("hits content url when format is 'html'", async () => {
+  test("hits query url when apiEndpoint is undefined and format is 'html'", async () => {
     const expectedFormat = 'html';
 
     const result = await builder['flushGetContentQueue'](true, [
@@ -516,6 +516,35 @@ describe('flushGetContentQueue', () => {
         userAttributes: { respectScheduling: true },
         omit: OMIT,
         fields: 'data',
+      },
+    ]);
+
+    const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
+
+    expect(observerNextMock).toBeCalledTimes(1);
+    expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
+      ...codegenOrQueryApiResult[MODEL][0],
+      variationId: expect.any(String),
+    });
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/query/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${MODEL}.model=%22${MODEL}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test("hits content url when apiEndpoint is 'content' and format is 'html'", async () => {
+    const expectedFormat = 'html';
+
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        apiEndpoint: 'content',
+        model: MODEL,
+        format: expectedFormat,
+        key: MODEL,
+        userAttributes: { respectScheduling: true },
+        omit: OMIT,
+        fields: 'data',
         limit: 10,
       },
     ]);
@@ -542,7 +571,7 @@ describe('flushGetContentQueue', () => {
     );
   });
 
-  test("hits content url when format is 'amp'", async () => {
+  test("hits query url when apiEndpoint is undefined and format is 'amp'", async () => {
     const expectedFormat = 'amp';
 
     const result = await builder['flushGetContentQueue'](true, [
@@ -553,7 +582,6 @@ describe('flushGetContentQueue', () => {
         userAttributes: { respectScheduling: true },
         omit: OMIT,
         fields: 'data',
-        limit: 10,
       },
     ]);
 
@@ -561,29 +589,22 @@ describe('flushGetContentQueue', () => {
 
     expect(observerNextMock).toBeCalledTimes(1);
     expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
-      ...contentApiResult.results[0],
+      ...codegenOrQueryApiResult[MODEL][0],
       variationId: expect.any(String),
     });
-    expect(observerNextMock.mock.calls[0][0][1]).toStrictEqual({
-      ...contentApiResult.results[1],
-    });
-    expect(observerNextMock.mock.calls[0][0][2]).toStrictEqual({
-      ...contentApiResult.results[2],
-      variationId: expect.any(String),
-    });
-
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&limit=10&model=%22${MODEL}%22&enrich=true`,
+      `https://cdn.builder.io/api/v3/query/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${MODEL}.model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
 
-  test("hits content url when format is 'email'", async () => {
-    const expectedFormat = 'email';
+  test("hits content url when apiEndpoint is 'content' and format is 'amp'", async () => {
+    const expectedFormat = 'amp';
 
     const result = await builder['flushGetContentQueue'](true, [
       {
+        apiEndpoint: 'content',
         model: MODEL,
         format: expectedFormat,
         key: MODEL,
@@ -612,6 +633,138 @@ describe('flushGetContentQueue', () => {
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&limit=10&model=%22${MODEL}%22&enrich=true`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test("hits query url when apiEndpoint is undefined and format is 'email'", async () => {
+    const expectedFormat = 'email';
+
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        model: MODEL,
+        format: expectedFormat,
+        key: MODEL,
+        userAttributes: { respectScheduling: true },
+        omit: OMIT,
+        fields: 'data',
+      },
+    ]);
+
+    const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
+
+    expect(observerNextMock).toBeCalledTimes(1);
+    expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
+      ...codegenOrQueryApiResult[MODEL][0],
+      variationId: expect.any(String),
+    });
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/query/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&options.${MODEL}.model=%22${MODEL}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test("hits query url when apiEndpoint is undefined and format is 'email' and url is passed instead of userAttributes", async () => {
+    const expectedFormat = 'email';
+
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        model: MODEL,
+        format: expectedFormat,
+        key: MODEL,
+        url: '/test-page',
+        omit: OMIT,
+        fields: 'data',
+      },
+    ]);
+
+    const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
+
+    expect(observerNextMock).toBeCalledTimes(1);
+    expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
+      ...codegenOrQueryApiResult[MODEL][0],
+      variationId: expect.any(String),
+    });
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/query/${API_KEY}/${MODEL}?omit=${OMIT}&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2Ftest-page%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&options.${MODEL}.model=%22${MODEL}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test("hits content url when apiEndpoint is 'content' and format is 'email'", async () => {
+    const expectedFormat = 'email';
+
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        apiEndpoint: 'content',
+        model: MODEL,
+        format: expectedFormat,
+        key: MODEL,
+        userAttributes: { respectScheduling: true },
+        omit: OMIT,
+        fields: 'data',
+        limit: 10,
+      },
+    ]);
+
+    const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
+
+    expect(observerNextMock).toBeCalledTimes(1);
+    expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
+      ...contentApiResult.results[0],
+      variationId: expect.any(String),
+    });
+    expect(observerNextMock.mock.calls[0][0][1]).toStrictEqual({
+      ...contentApiResult.results[1],
+    });
+    expect(observerNextMock.mock.calls[0][0][2]).toStrictEqual({
+      ...contentApiResult.results[2],
+      variationId: expect.any(String),
+    });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&limit=10&model=%22${MODEL}%22&enrich=true`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test("hits content url when apiEndpoint is 'content' and format is 'email' and url is passed instead of userAttributes", async () => {
+    const expectedFormat = 'email';
+
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        apiEndpoint: 'content',
+        model: MODEL,
+        format: expectedFormat,
+        key: MODEL,
+        url: '/test-page',
+        omit: OMIT,
+        fields: 'data',
+        limit: 10,
+      },
+    ]);
+
+    const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
+
+    expect(observerNextMock).toBeCalledTimes(1);
+    expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
+      ...contentApiResult.results[0],
+      variationId: expect.any(String),
+    });
+    expect(observerNextMock.mock.calls[0][0][1]).toStrictEqual({
+      ...contentApiResult.results[1],
+    });
+    expect(observerNextMock.mock.calls[0][0][2]).toStrictEqual({
+      ...contentApiResult.results[2],
+      variationId: expect.any(String),
+    });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2Ftest-page%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&limit=10&model=%22${MODEL}%22&enrich=true`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
