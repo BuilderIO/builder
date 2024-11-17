@@ -1,5 +1,16 @@
 # @builder.io/react
 
+## 7.0.0
+
+### Major Changes
+
+- f12f43d: Breaking Change: Use `/query` instead of `/content` for API calls. This change fixes a symbol rendering issue introduced in https://github.com/BuilderIO/builder/pull/3681, which was included in the 6.0.0 release.
+
+### Patch Changes
+
+- Updated dependencies [f12f43d]
+  - @builder.io/sdk@5.0.0
+
 ## 6.0.4
 
 ### Patch Changes
