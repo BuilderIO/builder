@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
 import { EMBEDDER_PORT, GEN1_SDK_LOADED_MSG, GEN2_SDK_LOADED_MSG } from './context.js';
 import type { BuilderContent } from '../specs/types.js';
 import type { Sdk } from './sdk.js';
@@ -23,13 +23,12 @@ export const launchEmbedderAndWaitForSdk = async ({
   sdk: Sdk;
 }) => {
   if (sdk === 'oldReact') {
-    await page.route('https://cdn.builder.io/api/v3/content/**', async route => {
-      const contentJSON = PAGES[path as keyof typeof PAGES].content;
-
+    await page.route('https://cdn.builder.io/api/v3/query/**', async route => {
+      const newLocal = PAGES[path as keyof typeof PAGES].content;
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ results: [contentJSON] }),
+        body: JSON.stringify({ page: [newLocal] }),
       });
     });
   }
