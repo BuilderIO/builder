@@ -276,12 +276,6 @@ type AllowEnrich =
 
 export type GetContentOptions = AllowEnrich & {
   /**
-   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
-   * Defaults to `'query'`.
-   */
-  apiEndpoint?: 'content' | 'query';
-
-  /**
    * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
   fetchOptions?: object;
@@ -1286,6 +1280,18 @@ export class Builder {
     }
   }
 
+  get apiEndpoint() {
+    console.log('DEBUG this.apiEndpoint$.value', this.apiEndpoint$.value);
+    return this.apiEndpoint$.value;
+  }
+
+  set apiEndpoint(apiEndpoint: 'content' | 'query') {
+    if (this.apiEndpoint !== apiEndpoint) {
+      console.log('DEBUG set apiEndpoint', apiEndpoint);
+      this.apiEndpoint$.next('content');
+    }
+  }
+
   get apiVersion() {
     return this.apiVersion$.value;
   }
@@ -1296,6 +1302,11 @@ export class Builder {
     }
   }
 
+  /**
+   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
+   * Defaults to `'query'`.
+   */
+  private apiEndpoint$ = new BehaviorSubject<'content' | 'query'>('query');
   private apiVersion$ = new BehaviorSubject<ApiVersion | undefined>(undefined);
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
@@ -2460,8 +2471,6 @@ export class Builder {
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
 
-    const apiEndpoint = queue[0].apiEndpoint || 'query';
-
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
 
@@ -2593,7 +2602,7 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (apiEndpoint === 'query') {
+          if (this.apiEndpoint === 'query') {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
@@ -2620,9 +2629,9 @@ export class Builder {
 
     const format = queryParams.format;
     const isApiCallForCodegen = format === 'solid' || format === 'react';
-    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
+    const isApiCallForCodegenOrQuery = isApiCallForCodegen || this.apiEndpoint === 'query';
 
-    if (apiEndpoint === 'content') {
+    if (this.apiEndpoint === 'content') {
       queryParams.enrich = true;
       if (queue[0].query) {
         const flattened = this.flattenMongoQuery({ query: queue[0].query });
@@ -2631,6 +2640,10 @@ export class Builder {
         }
         delete queryParams.query;
       }
+    }
+
+    if (this.apiEndpoint === 'content' && queue[0].model === 'symbol') {
+      queryParams['query.id'] = queue[0].entry;
     }
 
     const queryStr = QueryString.stringifyDeep(queryParams);
@@ -2646,13 +2659,15 @@ export class Builder {
     let url;
     if (isApiCallForCodegen) {
       url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
-    } else if (apiEndpoint === 'query') {
+    } else if (this.apiEndpoint === 'query') {
       url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
     } else {
       url = `${host}/api/v3/content/${queue[0].model}`;
     }
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
+
+    console.log('DEBUG url', url);
 
     const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
