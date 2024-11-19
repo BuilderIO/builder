@@ -3,7 +3,7 @@ import { test, verifyTabContent } from '../helpers/index.js';
 
 test.describe('Advanced child sub components', () => {
   test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
-    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr', 'gen1-remix'].includes(packageName));
 
     await page.goto('/advanced-child');
 
