@@ -45,4 +45,19 @@ test.describe('Editable regions in custom components', () => {
     const secondText = await columns.nth(1).textContent();
     expect(secondText?.trim().toLowerCase()).toBe('column 2 text');
   });
+
+  test.describe('Remix gen1 editable regions text validation', () => {
+    test('should display column texts directly on the screen', async ({ page, packageName }) => {
+      test.skip(!['gen1-remix'].includes(packageName));
+
+      await page.goto('/editable-region');
+      await page.waitForLoadState('networkidle');
+
+      const column1Text = page.locator('text=column 1 text');
+      await expect(column1Text).toBeVisible();
+
+      const column2Text = page.locator('text=column 2 text');
+      await expect(column2Text).toBeVisible();
+    });
+  });
 });
