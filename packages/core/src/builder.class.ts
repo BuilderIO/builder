@@ -1288,7 +1288,7 @@ export class Builder {
   set apiEndpoint(apiEndpoint: 'content' | 'query') {
     if (this.apiEndpoint !== apiEndpoint) {
       console.log('DEBUG set apiEndpoint', apiEndpoint);
-      this.apiEndpoint$.next('content');
+      this.apiEndpoint$.next(apiEndpoint);
     }
   }
 
