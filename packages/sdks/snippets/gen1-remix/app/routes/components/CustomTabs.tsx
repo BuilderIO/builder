@@ -10,8 +10,6 @@ type TabProps = {
 export default function CustomTabs({ tabList, builderBlock }: TabProps) {
   const [activeTab, setActiveTab] = useState(0);
 
-  console.log('tabList', tabList);
-  console.log('builderBlock', builderBlock);
   if (!tabList?.length) return null;
 
   return (
