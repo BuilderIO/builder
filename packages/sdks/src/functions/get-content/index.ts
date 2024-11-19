@@ -104,18 +104,13 @@ export const _processContentResult = async (
  * Returns a paginated array of entries that match the given options.
  */
 export async function fetchEntries(options: GetContentOptions) {
-  try {
-    const url = generateContentUrl(options);
-    const content = await _fetchContent(options);
+  const url = generateContentUrl(options);
+  const content = await _fetchContent(options);
 
-    if (!checkContentHasResults(content)) {
-      logger.error('Error fetching data. ', { url, content, options });
-      return null;
-    }
-
-    return _processContentResult(options, content);
-  } catch (error) {
-    logger.error('Error fetching data. ', error);
-    return null;
+  if (!checkContentHasResults(content)) {
+    logger.error('Error fetching data. ', { url, content, options });
+    throw content;
   }
+
+  return _processContentResult(options, content);
 }
