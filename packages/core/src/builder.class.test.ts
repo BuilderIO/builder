@@ -787,21 +787,6 @@ describe('flushGetContentQueue', () => {
       },
     ]);
 
-    // const observerNextMock = builder.observersByKey[MODEL]?.next as jest.Mock;
-
-    // expect(observerNextMock).toBeCalledTimes(1);
-    // expect(observerNextMock.mock.calls[0][0][0]).toStrictEqual({
-    //   ...contentApiResult.results[0],
-    //   variationId: expect.any(String),
-    // });
-    // expect(observerNextMock.mock.calls[0][0][1]).toStrictEqual({
-    //   ...contentApiResult.results[1],
-    // });
-    // expect(observerNextMock.mock.calls[0][0][2]).toStrictEqual({
-    //   ...contentApiResult.results[2],
-    //   variationId: expect.any(String),
-    // });
-
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&limit=10&model=%22${expectedModel}%22&entry=%22${expectedEntryId}%22&enrich=true&query.id=${expectedEntryId}`,
