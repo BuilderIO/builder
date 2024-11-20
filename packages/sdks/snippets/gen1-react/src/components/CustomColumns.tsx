@@ -1,9 +1,8 @@
 import { BuilderBlocks, type BuilderElement } from '@builder.io/react';
-import React from 'react';
 
 type BuilderProps = {
-  column1: { blocks: React.ReactNode };
-  column2: { blocks: React.ReactNode };
+  column1: { blocks: any[] };
+  column2: { blocks: any[] };
   builderBlock: BuilderElement;
 };
 
@@ -11,14 +10,14 @@ const CustomColumns = (props: BuilderProps) => {
   return (
     <>
       <BuilderBlocks
+        parentElementId={props.builderBlock.id}
         dataPath={`column1.blocks`}
         blocks={props.column1?.blocks}
-        parentElementId={props.builderBlock.id}
       />
       <BuilderBlocks
+        parentElementId={props.builderBlock.id}
         dataPath={`column2.blocks`}
         blocks={props.column2?.blocks}
-        parentElementId={props.builderBlock.id}
       />
     </>
   );
