@@ -1,6 +1,6 @@
 // routes/editable-region.tsx
 
-import { Builder, BuilderComponent, builder } from '@builder.io/react';
+import builder, { Builder, BuilderComponent } from '@builder.io/react';
 import { useEffect, useState } from 'react';
 import CustomColumns from '../components/CustomColumns';
 
@@ -30,12 +30,12 @@ Builder.registerComponent(CustomColumns, {
   ],
 });
 
-export default function EditableRegionRoute() {
+export default function EditableRegion() {
   const [content, setContent] = useState<any>(null);
 
   useEffect(() => {
     builder
-      .get('advanced-child', {
+      .get('editable-regions', {
         url: window.location.pathname,
       })
       .promise()
@@ -46,5 +46,5 @@ export default function EditableRegionRoute() {
     return null;
   }
 
-  return <BuilderComponent content={content} model="advanced-child" />;
+  return <BuilderComponent content={content} model="editable-regions" />;
 }

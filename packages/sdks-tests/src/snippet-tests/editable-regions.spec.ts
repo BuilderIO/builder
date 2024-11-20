@@ -6,7 +6,7 @@ test.describe('Editable regions in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react', 'angular', 'angular-ssr', 'gen1-react'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
 
     await page.goto('/editable-region');
     await page.waitForLoadState('networkidle');
@@ -22,7 +22,7 @@ test.describe('Editable regions in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react', 'angular', 'angular-ssr', 'gen1-react'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
 
     await page.goto('/editable-region');
 
@@ -44,5 +44,22 @@ test.describe('Editable regions in custom components', () => {
 
     const secondText = await columns.nth(1).textContent();
     expect(secondText?.trim().toLowerCase()).toBe('column 2 text');
+  });
+
+  test('should render two builder blocks with content using gen1', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['gen1-react'].includes(packageName));
+
+    await page.goto('/editable-region');
+    await page.waitForLoadState('networkidle');
+    const builderDiv = page.locator('div.builder-block').first();
+    await expect(builderDiv).toBeVisible();
+
+    //builderDiv should render two texts: column 1 text and column 2 text without checking for builder-text class
+    const texts = await builderDiv.textContent();
+    expect(texts).toContain('column 1 text');
+    expect(texts).toContain('column 2 text');
   });
 });

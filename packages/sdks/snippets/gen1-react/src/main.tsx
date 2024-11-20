@@ -9,10 +9,6 @@ import IntegratingPages from './routes/IntegratingPages';
 
 const router = createBrowserRouter([
   {
-    path: '/announcements/:id',
-    element: <AnnouncementBar />,
-  },
-  {
     path: '/editable-region',
     element: <EditableRegion />,
   },
@@ -23,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: '/custom-child',
     element: <CustomChild />,
+  },
+  {
+    path: '/announcements/:id',
+    element: <AnnouncementBar />,
   },
   {
     path: '/*',
