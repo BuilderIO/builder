@@ -275,8 +275,6 @@ type AllowEnrich =
   | { apiVersion?: never; enrich?: boolean };
 
 export type GetContentOptions = AllowEnrich & {
-  apiEndpoint?: 'content' | 'query';
-
   /**
    * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
