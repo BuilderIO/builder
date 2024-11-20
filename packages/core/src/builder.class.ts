@@ -1293,19 +1293,20 @@ export class Builder {
   }
 
   get apiEndpoint() {
-    return this.apiEndpoint$;
+    return this.apiEndpoint$.value;
   }
 
-  set apiEndpoint(newApiEndpoint: 'content' | 'query') {
-    this.apiEndpoint$ = newApiEndpoint;
-    console.log('DEBUG SDK set() Api Endpoint is set to ', this.apiEndpoint$);
+  set apiEndpoint(apiEndpoint: 'content' | 'query') {
+    if (this.apiEndpoint !== apiEndpoint) {
+      this.apiEndpoint$.next(apiEndpoint);
+    }
   }
 
   /**
    * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
    * Defaults to `'query'`.
    */
-  private apiEndpoint$: 'content' | 'query' = 'query';
+  private apiEndpoint$ = new BehaviorSubject<'content' | 'query'>('query');
   private apiVersion$ = new BehaviorSubject<ApiVersion | undefined>(undefined);
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
@@ -2239,6 +2240,7 @@ export class Builder {
         options.authToken || this.authToken,
         options.apiVersion || this.apiVersion
       );
+      instance.apiEndpoint = this.apiEndpoint;
       instance.setUserAttributes(this.getUserAttributes());
     } else {
       // NOTE: All these are when .init is not called and the customer
@@ -2342,7 +2344,6 @@ export class Builder {
         const queue = this.getContentQueue.slice();
         this.getContentQueue = [];
         nextTick(() => {
-          console.log('DEBUG getContentQueue', this.apiEndpoint$);
           this.flushGetContentQueue(false, queue);
         });
       } else {
@@ -2600,16 +2601,6 @@ export class Builder {
         'static',
       ];
 
-      if (queue[0].apiEndpoint) {
-        this.apiEndpoint$ = queue[0].apiEndpoint;
-      }
-
-      console.log(
-        'DEBUG flushGetContentQueue this.apiEndpoint =',
-        this.apiEndpoint,
-        this.apiEndpoint$
-      );
-
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
@@ -2673,8 +2664,6 @@ export class Builder {
     }
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
-
-    console.log('DEBUG url', url);
 
     const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
