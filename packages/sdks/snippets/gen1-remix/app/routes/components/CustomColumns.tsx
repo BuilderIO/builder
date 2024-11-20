@@ -1,8 +1,8 @@
 import { BuilderBlocks, BuilderElement } from '@builder.io/react';
 
 interface CustomColumnsProps {
-  column1: { blocks: unknown[] | React.ReactNode };
-  column2: { blocks: unknown[] | React.ReactNode };
+  column1: { blocks: React.ReactNode };
+  column2: { blocks: React.ReactNode };
   builderBlock: BuilderElement;
 }
 
