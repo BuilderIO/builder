@@ -275,6 +275,8 @@ type AllowEnrich =
   | { apiVersion?: never; enrich?: boolean };
 
 export type GetContentOptions = AllowEnrich & {
+  apiEndpoint?: 'content' | 'query';
+
   /**
    * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
@@ -1280,18 +1282,6 @@ export class Builder {
     }
   }
 
-  get apiEndpoint() {
-    console.log('DEBUG this.apiEndpoint$.value', this.apiEndpoint$.value);
-    return this.apiEndpoint$.value;
-  }
-
-  set apiEndpoint(apiEndpoint: 'content' | 'query') {
-    if (this.apiEndpoint !== apiEndpoint) {
-      console.log('DEBUG set apiEndpoint', apiEndpoint);
-      this.apiEndpoint$.next(apiEndpoint);
-    }
-  }
-
   get apiVersion() {
     return this.apiVersion$.value;
   }
@@ -1302,11 +1292,20 @@ export class Builder {
     }
   }
 
+  get apiEndpoint() {
+    return this.apiEndpoint$;
+  }
+
+  set apiEndpoint(newApiEndpoint: 'content' | 'query') {
+    this.apiEndpoint$ = newApiEndpoint;
+    console.log('DEBUG SDK set() Api Endpoint is set to ', this.apiEndpoint$);
+  }
+
   /**
    * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
    * Defaults to `'query'`.
    */
-  private apiEndpoint$ = new BehaviorSubject<'content' | 'query'>('query');
+  private apiEndpoint$: 'content' | 'query' = 'query';
   private apiVersion$ = new BehaviorSubject<ApiVersion | undefined>(undefined);
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
@@ -2343,6 +2342,7 @@ export class Builder {
         const queue = this.getContentQueue.slice();
         this.getContentQueue = [];
         nextTick(() => {
+          console.log('DEBUG getContentQueue', this.apiEndpoint$);
           this.flushGetContentQueue(false, queue);
         });
       } else {
@@ -2599,6 +2599,17 @@ export class Builder {
         'rev',
         'static',
       ];
+
+      if (queue[0].apiEndpoint) {
+        this.apiEndpoint$ = queue[0].apiEndpoint;
+      }
+
+      console.log(
+        'DEBUG flushGetContentQueue this.apiEndpoint =',
+        this.apiEndpoint,
+        this.apiEndpoint$
+      );
+
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
@@ -2640,10 +2651,6 @@ export class Builder {
         }
         delete queryParams.query;
       }
-    }
-
-    if (this.apiEndpoint === 'content' && queue[0].model === 'symbol') {
-      queryParams['query.id'] = queue[0].entry;
     }
 
     const queryStr = QueryString.stringifyDeep(queryParams);
