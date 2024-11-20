@@ -2633,6 +2633,10 @@ export class Builder {
       }
     }
 
+    if (apiEndpoint === 'content' && queue[0].model === 'symbol') {
+      queryParams['query.id'] = queue[0].entry;
+    }
+
     const queryStr = QueryString.stringifyDeep(queryParams);
 
     const fetchOptions = { headers: {}, ...queue[0].fetchOptions };
