@@ -6,7 +6,7 @@ test.describe('Editable regions in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr', 'gen1-react'].includes(packageName));
 
     await page.goto('/editable-region');
     await page.waitForLoadState('networkidle');
@@ -23,7 +23,7 @@ test.describe('Editable regions in custom components', () => {
     packageName,
   }) => {
     test.skip(
-      !['react', 'angular', 'angular-ssr', 'gen1-remix'].includes(packageName)
+      !['react', 'angular', 'angular-ssr', 'gen1-remix', 'gen1-react'].includes(packageName)
     );
 
     await page.goto('/editable-region');
