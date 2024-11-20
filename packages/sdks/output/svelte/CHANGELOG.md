@@ -1,5 +1,13 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 3.0.0
+
+### Major Changes
+
+- 78b8e5d: Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+  Previously, both functions would swallow all errors and return `null`.
+
 ## 2.0.31
 
 ### Patch Changes
