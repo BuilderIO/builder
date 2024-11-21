@@ -1,16 +1,14 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
-test.describe('Countdown', () => {
-  test('correctly updates countdown date', async ({ page }) => {
-    // test.skip(
-    //   packageName === 'nextjs-sdk-next-app' ||
-    //     packageName === 'gen1-next' ||
-    //     packageName === 'gen1-react' ||
-    //     packageName === 'gen1-remix'
-    // );
+test.describe('Symbol with JS Code', () => {
+  test('correctly updates countdown date', async ({ page, sdk }) => {
+    test.fail(
+      sdk === 'qwik' || sdk === 'react' || sdk === 'rsc',
+      'jsCode in symbols does not update global state for these SDKs.'
+    );
 
-    await page.goto(`/countdown`);
+    await page.goto(`/symbol-with-jscode`);
 
     const currentSecondsOnPage = await page.locator('#seconds').textContent();
 
