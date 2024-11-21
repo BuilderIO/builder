@@ -769,7 +769,7 @@ describe('flushGetContentQueue', () => {
     );
   });
 
-  test("hits content url with query.id when model is 'symbol'", async () => {
+  test('hits content url with query.id when id is passed in options.query', async () => {
     const expectedModel = 'symbol';
     const expectedFormat = 'email';
     const expectedEntryId = '123';
@@ -784,6 +784,9 @@ describe('flushGetContentQueue', () => {
         fields: 'data',
         limit: 10,
         entry: expectedEntryId,
+        query: {
+          id: expectedEntryId,
+        },
       },
     ]);
 
