@@ -10,7 +10,7 @@
       "@builder.io/sdk-react-native",
       "@builder.io/sdk-solid"
     ],
-    ["@builder.io/sdk-react-nextjs", "@builder.io/sdk-qwik"]
+    ["@builder.io/sdk-react-nextjs", "@builder.io/sdk-qwik", "@builder.io/sdk-angular"]
   ],
   "fixed": [],
   "access": "public",

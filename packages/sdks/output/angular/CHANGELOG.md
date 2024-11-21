@@ -1,5 +1,13 @@
 # @builder.io/sdk-angular
 
+## 0.17.0
+
+### Minor Changes
+
+- 78b8e5d: Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+  Previously, both functions would swallow all errors and return `null`.
+
 ## 0.2.27
 
 ### Patch Changes
