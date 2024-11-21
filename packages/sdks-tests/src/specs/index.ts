@@ -73,7 +73,7 @@ import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
 import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 import { XSS_EXPLOIT } from './xss-exploit.js';
-import { COUNTDOWN } from './symbol-with-jscode.js';
+import { COUNTDOWN } from './countdown.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
