@@ -160,6 +160,9 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
                     ...(!this.isEditingThisSymbol && {
                       key: builderComponentKey,
                       noEditorUpdates: true,
+                      query: {
+                        id: entry,
+                      },
                     }),
                   }}
                   codegen={!!content?.data?.blocksJs}
