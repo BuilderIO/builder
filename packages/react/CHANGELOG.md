@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 7.0.1
+
+### Patch Changes
+
+- bf8d783: feat: allow symbols to be edited in the context of a parent entry
+
 ## 7.0.0
 
 ### Major Changes
