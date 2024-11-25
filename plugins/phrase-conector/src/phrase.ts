@@ -34,11 +34,12 @@ export class Phrase {
   }
 
   async request(path: string, config?: RequestInit, search = {}) {
+    let privateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
     await this.loaded;
     return fetch(`${this.getBaseUrl(path, search)}`, {
       ...config,
       headers: {
-        Authorization: `Bearer ${this.privateKey}`,
+        Authorization: `Bearer ${privateKey}`,
         'Content-Type': 'application/json',
       },
     }).then(res => res.json());
