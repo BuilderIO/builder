@@ -1,6 +1,7 @@
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import { getTranslationModel } from './model-template';
+import { action } from 'mobx';
 
 export type Project = {
   targetLocales: Array<{ enabled: boolean; localeId: string; description: string }>;
@@ -29,6 +30,11 @@ export class SmartlingApi {
          constructor() {
            this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
            this.init();
+           appState.globalState.orgChanged?.subscribe(
+            action(async () => {
+              await this.init();
+            })
+          );
          }
 
          async init() {

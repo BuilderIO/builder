@@ -1,3 +1,4 @@
+import { action } from 'mobx';
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 
@@ -24,6 +25,11 @@ export class Phrase {
   constructor(private apiHost?: string) {
     this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
     this.init();
+    appState.globalState.orgChanged?.subscribe(
+      action(async () => {
+        await this.init();
+      })
+    );
   }
 
   async init() {
@@ -34,12 +40,11 @@ export class Phrase {
   }
 
   async request(path: string, config?: RequestInit, search = {}) {
-    let privateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
     await this.loaded;
     return fetch(`${this.getBaseUrl(path, search)}`, {
       ...config,
       headers: {
-        Authorization: `Bearer ${privateKey}`,
+        Authorization: `Bearer ${this.privateKey}`,
         'Content-Type': 'application/json',
       },
     }).then(res => res.json());
