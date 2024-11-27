@@ -3,7 +3,7 @@ import { test } from '../helpers/index.js';
 
 test.describe('BlogArticleComponent', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular'].includes(packageName));
+    test.skip(!['angular', 'angular-ssr'].includes(packageName));
     await page.goto('blogs/new-product-line');
   });
 

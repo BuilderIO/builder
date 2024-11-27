@@ -8,6 +8,7 @@ import recast from 'recast';
 import typescriptParser from 'recast/parsers/typescript.js';
 import { defineConfig } from 'vite';
 
+const SDK_ENV = getSdkEnv();
 const SERVER_ENTRY = 'server-entry';
 const BLOCKS_EXPORTS_ENTRY = 'blocks-exports';
 
@@ -37,7 +38,7 @@ export const lazyifyReactComponentsVitePlugin = (): import('vite').Plugin => {
   return {
     name: 'lazify-react-components',
     transform(src, id) {
-      if (getSdkEnv() !== 'edge') return src;
+      if (SDK_ENV !== 'edge') return src;
 
       if (id.includes('blocks-exports.ts')) {
         const ast = parse(src);
@@ -215,7 +216,12 @@ export default defineConfig({
         index: './src/index.ts',
         [SERVER_ENTRY]: './src/server-index.ts',
         [BLOCKS_EXPORTS_ENTRY]: './src/index-helpers/blocks-exports.ts',
-        init: './src/functions/evaluate/node-runtime/init.ts',
+        ...(SDK_ENV === 'node'
+          ? {
+              init: './src/functions/evaluate/node-runtime/init.ts',
+              setIvm: './src/functions/evaluate/node-runtime/setIvm.ts',
+            }
+          : {}),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) =>

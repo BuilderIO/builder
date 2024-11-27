@@ -8,5 +8,7 @@ export async function load({ url }) {
     _processContentResult,
   });
 
-  return { props };
+  return {
+    props,
+  };
 }

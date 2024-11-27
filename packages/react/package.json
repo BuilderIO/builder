@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "5.0.3",
+  "version": "7.0.1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -23,7 +23,8 @@
   "scripts": {
     "docs": "typedoc",
     "lint": "tslint -t codeFrame '../**/*.ts' 'test/**/*.ts'",
-    "build": "rimraf dist && NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts",
+    "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
+    "build": "rimraf dist && NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts && yarn set-sdk-version",
     "build:docs": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest",
@@ -92,8 +93,8 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=16.8.0 || ^19.0.0-rc",
+    "react-dom": ">=16.8.0 || ^19.0.0-rc"
   },
   "dependencies": {
     "@builder.io/sdk": "workspace:*",

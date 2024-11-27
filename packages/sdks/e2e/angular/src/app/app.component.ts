@@ -3,9 +3,10 @@ import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
+  type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
-import { HelloComponent } from './hello.component';
+import { customComponents } from './custom-components';
 
 interface BuilderProps {
   apiVersion: string;
@@ -15,6 +16,7 @@ interface BuilderProps {
   model: string;
   content: any;
   data?: any;
+  apiHost?: string;
 }
 
 @Component({
@@ -29,6 +31,7 @@ interface BuilderProps {
         [canTrack]="canTrack"
         [customComponents]="customComponents"
         [data]="data"
+        [apiHost]="apiHost"
       ></builder-content>
     </ng-container>
 
@@ -46,14 +49,9 @@ export class AppComponent {
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
   data: BuilderProps['data'];
+  apiHost: BuilderProps['apiHost'];
 
-  customComponents = [
-    {
-      component: HelloComponent,
-      name: 'Hello',
-      inputs: [],
-    },
-  ];
+  customComponents: RegisteredComponent[] = customComponents;
 
   async ngOnInit() {
     const urlPath = window.location.pathname || '';
@@ -78,5 +76,6 @@ export class AppComponent {
     this.model = builderProps.model;
     this.apiVersion = builderProps.apiVersion;
     this.data = builderProps.data;
+    this.apiHost = builderProps.apiHost;
   }
 }

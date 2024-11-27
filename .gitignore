@@ -35,6 +35,7 @@ Pods/
 .vercel
 
 .nx/cache
+.nx-cache
 .nx/workspace-data
 
 !packages/sdks/e2e/react-native/.eas/build/*

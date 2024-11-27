@@ -2,9 +2,12 @@
 name: React Native SDK test (Remote)
 
 on:
-  push:
-    branches:
-      - main
+  # disabled until we fix it
+  #   push:
+  #     branches:
+  #       - main
+  # We allow manually dispatching workflow when needed. Most often, this will not be needed.
+  workflow_dispatch:
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}

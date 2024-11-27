@@ -5,6 +5,8 @@ import {
   getBuilderSessionIdCookie,
   checkIsRN,
   test,
+  mapSdkName,
+  getSdkGeneration,
 } from '../helpers/index.js';
 
 test.describe('Tracking', () => {
@@ -37,13 +39,12 @@ test.describe('Tracking', () => {
     });
     test('appear by default', async ({ page, context, sdk }) => {
       test.fail(excludeRn(sdk));
-      const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         req => req.url().includes('cdn.builder.io/api/v1/track') && req.method() === 'POST',
         { timeout: 10000 }
       );
 
-      await navigate;
+      await page.goto('/');
       // By waiting for the tracking POST request, we guarantee that the cookie is now set.
       await trackingRequestPromise;
 
@@ -54,17 +55,17 @@ test.describe('Tracking', () => {
   });
   test.describe('POST data', () => {
     test('POSTs correct impression data', async ({ page, sdk }) => {
-      const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         request =>
           request.url().includes('cdn.builder.io/api/v1/track') && request.method() === 'POST',
         { timeout: 10000 }
       );
+      await page.goto('/');
 
-      await navigate;
       const trackingRequest = await trackingRequestPromise;
 
       const data = trackingRequest.postDataJSON();
+      const headers = trackingRequest.headers();
 
       const expected = {
         events: [
@@ -91,6 +92,11 @@ test.describe('Tracking', () => {
       expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
       expect(data.events[0].data.ownerId).toMatch(/abcd/);
 
+      // Check for new SDK headers
+      expect(headers['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
+
       if (!checkIsRN(sdk)) {
         expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
         expect(data.events[0].data.userAttributes.urlPath).toBe('/');
@@ -100,7 +106,6 @@ test.describe('Tracking', () => {
 
     test('POSTs correct click data', async ({ page, sdk }) => {
       test.skip(excludeGen1(sdk));
-      await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
           request.url().includes('cdn.builder.io/api/v1/track') &&
@@ -109,6 +114,8 @@ test.describe('Tracking', () => {
         { timeout: 10000 }
       );
 
+      await page.goto('/', { waitUntil: 'networkidle' });
+
       // click on an element
       await page.click('text=SDK Feature testing project');
 
@@ -116,6 +123,7 @@ test.describe('Tracking', () => {
       const trackingRequest = await trackingRequestPromise;
 
       const data = trackingRequest.postDataJSON();
+      const headers = trackingRequest.headers();
 
       const expected = {
         events: [
@@ -138,6 +146,11 @@ test.describe('Tracking', () => {
       const ID_REGEX = /^[a-f0-9]{32}$/;
 
       expect(data).toMatchObject(expected);
+
+      // Check for new SDK headers
+      expect(headers['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
 
       if (!checkIsRN(sdk)) {
         // check that all the heatmap metadata is present

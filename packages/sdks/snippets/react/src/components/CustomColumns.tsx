@@ -5,33 +5,26 @@ import {
 } from '@builder.io/sdk-react';
 
 interface CustomColumnsProps {
-  columns: { blocks: BuilderBlock[] | undefined }[];
+  column1: { blocks: BuilderBlock[] | undefined };
+  column2: { blocks: BuilderBlock[] | undefined };
   builderBlock: BuilderBlock;
 }
 
 const CustomColumns = (props: CustomColumnsProps) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        border: '10px solid #ccc',
-        padding: '10px',
-      }}
-    >
+    <>
       <Blocks
-        blocks={props.columns[0]?.blocks}
-        path={`component.options.columns.0.blocks`}
+        blocks={props.column1?.blocks}
+        path={`column1.blocks`}
         parent={props.builderBlock.id}
       />
 
       <Blocks
-        blocks={props.columns[1]?.blocks}
-        path={`component.options.columns.1.blocks`}
+        blocks={props.column2?.blocks}
+        path={`column2.blocks`}
         parent={props.builderBlock.id}
       />
-    </div>
+    </>
   );
 };
 
@@ -40,21 +33,27 @@ export const customColumnsInfo: RegisteredComponent = {
   component: CustomColumns,
   shouldReceiveBuilderProps: {
     builderBlock: true,
+    builderComponents: true,
+    builderContext: true,
   },
   inputs: [
     {
-      name: 'columns',
-      type: 'array',
+      name: 'column1',
+      type: 'uiBlocks',
       broadcast: true,
       hideFromUI: true,
-      defaultValue: [
-        {
-          blocks: [],
-        },
-        {
-          blocks: [],
-        },
-      ],
+      defaultValue: {
+        blocks: [],
+      },
+    },
+    {
+      name: 'column2',
+      type: 'uiBlocks',
+      broadcast: true,
+      hideFromUI: true,
+      defaultValue: {
+        blocks: [],
+      },
     },
   ],
 };

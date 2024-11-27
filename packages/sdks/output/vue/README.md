@@ -13,7 +13,7 @@ NOTE: if you are using Nuxt, you will need to add the SDK's Nuxt module in `nuxt
 ```js
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  module: ['@builder.io/sdk-vue/nuxt'],
+  modules: ['@builder.io/sdk-vue/nuxt'],
 });
 ```
 

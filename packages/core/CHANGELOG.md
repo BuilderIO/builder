@@ -1,5 +1,87 @@
 # @builder.io/sdk
 
+## 5.0.0
+
+### Major Changes
+
+- f12f43d: Breaking Change: Use `/query` instead of `/content` for API calls. This change fixes a symbol rendering issue introduced in https://github.com/BuilderIO/builder/pull/3681, which was included in the 4.0.0 release.
+
+## 4.0.3
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling and pass through locale prop to personalization containers when filtering
+
+## 4.0.2
+
+### Patch Changes
+
+- dda2ba4: Fix: Restrict event listening to when `isEditing === true`
+
+## 4.0.1
+
+### Patch Changes
+
+- cf33d45: Fix: increase coverage of `trustedHost` check to all messages.
+
+## 4.0.0
+
+### Major Changes
+
+- f4fffe9: Permanently removes the `apiEndpoint` prop from `builder.get()` and `builder.getAll()` which had options `'content'` and `'query'`. Content API is now the only possible API endpoint for content fetching.
+
+### Patch Changes
+
+- 443a3e3: Types: add jsdoc comments for some Builder SDK types
+
+## 3.0.7
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
+## 3.0.6
+
+### Patch Changes
+
+- b5dd732: Feature: start sending accurate npm package version information to the Visual Editor
+
+## 3.0.5
+
+### Patch Changes
+
+- 2ae3cc5: Feature: add `fetchOptions` to `options` argument within `.get(modelName, options)` and `.getAll(modelName, options)`, which is passed to the `fetch` function.
+
+## 3.0.4
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+## 3.0.3
+
+### Patch Changes
+
+- d403fca: Adds `apiEndpoint` prop to `builder.get()` and `builder.getAll()` with options `'content'` and `'query'`. It dictates which API endpoint is used for the content fetching.
+  Defaults to `'query'`
+
 ## 3.0.2
 
 ### Patch Changes

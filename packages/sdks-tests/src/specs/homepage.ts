@@ -1,6 +1,4 @@
-import { NEW_TEXT } from './helpers.js';
-
-export const CONTENT = {
+export const HOMEPAGE = {
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   createdDate: 1644861373771,
   data: {
@@ -126,6 +124,70 @@ export const CONTENT = {
                   options: {
                     text: 'Columns (with images)',
                     link: '/columns',
+                  },
+                },
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    flexShrink: '0',
+                    boxSizing: 'border-box',
+                    marginTop: '20px',
+                    appearance: 'none',
+                    paddingTop: '15px',
+                    paddingBottom: '15px',
+                    paddingLeft: '25px',
+                    paddingRight: '25px',
+                    backgroundColor: '#3898EC',
+                    color: 'white',
+                    borderRadius: '4px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                  },
+                },
+              },
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                id: 'builder-0ee56d501e83489d8de241aa4ca31111',
+                component: {
+                  name: 'Core:Button',
+                  options: {
+                    text: 'JS Code',
+                    link: '/js-code',
+                  },
+                },
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    flexShrink: '0',
+                    boxSizing: 'border-box',
+                    marginTop: '20px',
+                    appearance: 'none',
+                    paddingTop: '15px',
+                    paddingBottom: '15px',
+                    paddingLeft: '25px',
+                    paddingRight: '25px',
+                    backgroundColor: '#3898EC',
+                    color: 'white',
+                    borderRadius: '4px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                  },
+                },
+              },
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                id: 'builder-0ee56d501e83489d8de241aa4ca31lfl',
+                component: {
+                  name: 'Core:Button',
+                  options: {
+                    text: 'JS isBrowser code',
+                    link: '/js-content-is-browser',
                   },
                 },
                 responsiveStyles: {
@@ -1014,6 +1076,3 @@ export const CONTENT = {
   firstPublished: 1644861541599,
   rev: 'ooerksctkc',
 };
-
-export const MODIFIED_HOMEPAGE = JSON.parse(JSON.stringify(CONTENT));
-MODIFIED_HOMEPAGE.data.blocks[0].children![0].component!.options.text = NEW_TEXT;

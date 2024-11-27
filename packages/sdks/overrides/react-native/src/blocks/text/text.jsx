@@ -110,7 +110,7 @@ export default function Text(props) {
           localState,
           rootState,
           rootSetState,
-          enableCache: false,
+          
         }).toString()
       );
 

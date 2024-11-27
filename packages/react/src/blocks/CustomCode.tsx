@@ -90,6 +90,10 @@ class CustomCodeComponent extends React.Component<Props> {
     }
   }
 
+  shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+    return nextProps.code !== this.props.code;
+  }
+
   get noReactRender() {
     // Don't render liquid client side
     return Boolean(isShopify && this.props.code?.match(/{[{%]/g));

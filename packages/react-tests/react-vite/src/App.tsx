@@ -1,5 +1,5 @@
-import { BuilderComponent, builder } from '@builder.io/react';
-import { getAPIKey, getProps } from '@sdk/tests';
+import { Builder, BuilderComponent, builder } from '@builder.io/react';
+import { getAPIKey, getProps, PAGES } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';
@@ -15,11 +15,27 @@ function App() {
   useEffect(() => {
     getProps({ sdk: 'oldReact' }).then(resp => {
       setProps(resp);
+      if (
+        window.location.pathname.includes('get-query') ||
+        window.location.pathname.includes('get-content')
+      ) {
+        builder
+          .get('', {
+            ...resp,
+            ...resp['options'],
+          })
+          .promise()
+          .then();
+      }
     });
   }, []);
 
   if (props?.apiVersion) {
     builder.apiVersion = props?.apiVersion;
+  }
+
+  if (props?.trustedHosts) {
+    Builder.trustedHosts = props.trustedHosts;
   }
 
   // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
@@ -32,14 +48,7 @@ function App() {
     }
   }, []);
 
-  /**
-   * - certain tests expect the content to only render after the first render
-   * - the `/large-reactive-state-editing` requires the `BuilderComponent` to
-   * be rendered immediately, so that the API request is made.
-   */
-  // issues with react types incompatibility (v16 vs v17 vs v18?)
-  // @ts-ignore
-  return props || window.location.pathname.includes('/large-reactive-state-editing') ? (
+  return props || PAGES[window.location.pathname]?.isGen1VisualEditingTest ? (
     <BuilderComponent {...props} />
   ) : (
     <div>Content Not Found</div>

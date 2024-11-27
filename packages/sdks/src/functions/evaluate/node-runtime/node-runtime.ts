@@ -86,8 +86,9 @@ let IVM_CONTEXT: Context | null = null;
  * `safeDynamicRequire` trick to import the `isolated-vm` package.
  */
 export const setIvm = (ivm: IsolatedVMImport, options: IsolateOptions = {}) => {
-  IVM_INSTANCE = ivm;
+  if (IVM_INSTANCE) return;
 
+  IVM_INSTANCE = ivm;
   setIsolateContext(options);
 };
 
@@ -95,7 +96,8 @@ export const setIvm = (ivm: IsolatedVMImport, options: IsolateOptions = {}) => {
 const SHOULD_MENTION_INITIALIZE_SCRIPT =
   SDK_NAME === '@builder.io/sdk-react-nextjs' ||
   SDK_NAME === '@builder.io/sdk-react' ||
-  SDK_NAME === '@builder.io/sdk-qwik';
+  SDK_NAME === '@builder.io/sdk-qwik' ||
+  SDK_NAME === '@builder.io/sdk-vue';
 
 const getIvm = (): IsolatedVMImport => {
   try {
@@ -120,6 +122,8 @@ const getIvm = (): IsolatedVMImport => {
 };
 
 function setIsolateContext(options: IsolateOptions = { memoryLimit: 128 }) {
+  if (IVM_CONTEXT) return IVM_CONTEXT;
+
   const ivm = getIvm();
   const isolate = new ivm.Isolate(options);
   const context = isolate.createContextSync();
@@ -142,11 +146,7 @@ function setIsolateContext(options: IsolateOptions = { memoryLimit: 128 }) {
 }
 
 const getIsolateContext = () => {
-  if (IVM_CONTEXT) return IVM_CONTEXT;
-
-  const context = setIsolateContext();
-
-  return context;
+  return setIsolateContext();
 };
 
 export const runInNode = ({

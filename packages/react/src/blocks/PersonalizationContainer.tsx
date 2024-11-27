@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useRef } from 'react';
 import { Builder, builder, BuilderElement } from '@builder.io/sdk';
 import { useEffect, useState } from 'react';
 import { BuilderBlocks } from '../components/builder-blocks.component';
@@ -7,11 +7,13 @@ import {
   filterWithCustomTargetingScript,
   Query,
 } from '../functions/filter-with-custom-targeting';
+import { BuilderStoreContext } from '../store/builder-store';
 
 export type PersonalizationContainerProps = {
   children: React.ReactNode;
   previewingIndex: number | null;
   builderBlock?: BuilderElement;
+  builderState: any;
   variants?: [
     {
       query: Query[];
@@ -27,16 +29,54 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   const isBeingHydrated = Boolean(
     Builder.isBrowser && (window as any).__hydrated?.[props.builderBlock?.id!]
   );
+  const rootRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(isBeingHydrated);
   const [update, setUpdate] = useState(0);
+  const builderStore = useContext(BuilderStoreContext);
 
   useEffect(() => {
     setIsClient(true);
     const subscriber = builder.userAttributesChanged.subscribe(() => {
       setUpdate(update + 1);
     });
+    let unsubs = [() => subscriber.unsubscribe()];
+
+    if (!(Builder.isEditing || Builder.isPreviewing)) {
+      const variant = filteredVariants[0];
+      // fire a custom event to update the personalization container
+      rootRef.current?.dispatchEvent(
+        new CustomEvent('builder.variantLoaded', {
+          detail: {
+            variant: variant || 'default',
+            content: builderStore.content,
+          },
+          bubbles: true,
+        })
+      );
+
+      // add an intersection observer to fire a builder.variantDisplayed event when the container is in the viewport
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            rootRef.current?.dispatchEvent(
+              new CustomEvent('builder.variantDisplayed', {
+                detail: {
+                  variant: variant || 'default',
+                  content: builderStore.content,
+                },
+                bubbles: true,
+              })
+            );
+          }
+        });
+      });
+
+      observer.observe(rootRef.current!);
+      unsubs.push(() => observer.disconnect());
+    }
+
     return () => {
-      subscriber.unsubscribe();
+      unsubs.forEach(fn => fn());
     };
   }, []);
 
@@ -66,7 +106,11 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
           <script
             id={`variants-script-${props.builderBlock?.id}`}
             dangerouslySetInnerHTML={{
-              __html: getPersonalizationScript(props.variants, props.builderBlock?.id),
+              __html: getPersonalizationScript(
+                props.variants,
+                props.builderBlock?.id || 'none',
+                props.builderState.state?.locale
+              ),
             }}
           />
           <BuilderBlocks
@@ -90,7 +134,10 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
 
   const filteredVariants = (props.variants || []).filter(variant => {
     return filterWithCustomTargeting(
-      builder.getUserAttributes(),
+      {
+        ...(props.builderState.state?.locale ? { locale: props.builderState.state.locale } : {}),
+        ...builder.getUserAttributes(),
+      },
       variant.query,
       variant.startDate,
       variant.endDate
@@ -100,6 +147,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   return (
     <React.Fragment>
       <div
+        ref={rootRef}
         {...props.attributes}
         style={{
           opacity: isClient ? 1 : 0,
@@ -203,7 +251,8 @@ Builder.registerComponent(PersonalizationContainer, {
 
 function getPersonalizationScript(
   variants: PersonalizationContainerProps['variants'],
-  blockId?: string
+  blockId: string,
+  locale?: string
 ) {
   return `
       (function() {
@@ -225,6 +274,7 @@ function getPersonalizationScript(
         }
 
         var attributes = JSON.parse(getCookie("${Builder.attributesCookieName}") || "{}");
+        ${locale ? `attributes.locale = "${locale}";` : ''}
         var variants = ${JSON.stringify(variants?.map(v => ({ query: v.query, startDate: v.startDate, endDate: v.endDate })))};
         var winningVariantIndex = variants.findIndex(function(variant) {
           return filterWithCustomTargeting(

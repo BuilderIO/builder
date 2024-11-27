@@ -53,31 +53,37 @@ export interface ResourcePreviewCellProps {
   className?: string;
 }
 
-export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>{
-return   useObserver(() => (
-  <ListItem className={props.className} button={props.button} selected={props.selected}>
-    {props.resource.image && (
-      <ListItemAvatar>
-        <Avatar css={{ borderRadius: 4 }} src={props.resource.image.src} />
-      </ListItemAvatar>
-    )}
-    <ListItemText
-      primary={
-        <div
-          css={{
-            maxWidth: 400,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {props.resource.title} - {props.resource.id}
-        </div>
-      }
-    />
-  </ListItem>
-));
-}
+
+export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
+  useObserver(() => (
+    <ListItem className={props.className} button={props.button} selected={props.selected}>
+      {props.resource.image && (
+        <ListItemAvatar>
+          <Avatar css={{ borderRadius: 4 }} src={props.resource.image.src} />
+        </ListItemAvatar>
+      )}
+      <ListItemText
+        primary={
+          <div
+            css={{
+              maxWidth: 400,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {props.resource.title !== 'untitled' ? (
+              <div>
+                {props.resource.title} - {props.resource.id}
+              </div>
+            ) : (
+              props.resource.title
+            )}
+          </div>
+        }
+      />
+    </ListItem>
+  ));
 
 
 export type ResourcePickerProps = CustomReactEditorProps<Resource> & {
@@ -185,6 +191,13 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
       : typeof props.value === 'string'
       ? props.value
       : props.value?.options?.get(props.resourceName),
+    updateResourceId(newProps: ResourcesPickerButtonProps) {
+      this.resourceId = newProps.handleOnly
+      ? undefined
+      : typeof newProps.value === 'string'
+      ? newProps.value
+      : newProps.value?.options?.get(newProps.resourceName);
+    },
     async getResource() {
       this.error = null;
       this.loading = true;
@@ -250,8 +263,9 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
   }));
 
   useEffect(() => {
+    store.updateResourceId(props);
     store.getResource();
-  }, []);
+  }, [props.value]);
 
   useEffect(() => {
     const hasPreviewFields = Boolean(

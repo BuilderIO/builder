@@ -1,4 +1,4 @@
-import { version } from '../../package.json';
+import { SDK_VERSION } from '../sdk-version';
 
 if (typeof window !== 'undefined') {
   window.parent?.postMessage(
@@ -10,7 +10,7 @@ if (typeof window !== 'undefined') {
         supportsCustomBreakpoints: true,
         supportsGlobalSymbols: true,
         blockLevelPersonalization: true,
-        priorVersion: version,
+        version: SDK_VERSION,
       },
     },
     '*'
