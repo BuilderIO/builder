@@ -646,6 +646,38 @@ test('applyTranslation from content to match snapshot', async () => {
             },
           },
         },
+
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-23e0618256ab40799ecf6504bc57fa1c',
+          meta: {
+            localizedTextInputs: ['title.text'],
+            'transformed.title.text': 'localized',
+          },
+          component: {
+            name: 'myFunComponent',
+            options: {
+              text: 'Hello, Builder!',
+              title: {
+                text: {
+                  '@type': '@builder.io/core:LocalizedValue',
+                  Default: '<p>custom component subField input</p>',
+                },
+              },
+            },
+          },
+          responsiveStyles: {
+            large: {
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              flexShrink: '0',
+              boxSizing: 'border-box',
+              marginTop: '20px',
+            },
+          },
+        },
       ],
     },
   };
@@ -685,6 +717,9 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-5f0b30f48b5a47a7ababc6526b65a17e#children': {
       value: '2. french Properly configuring your gamepad',
     },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text': {
+      value: '<p>french - custom component subField input</p>',
+    },
   };
   const germanTranslations = {
     'metadata.title': { value: 'hallo' },
@@ -720,6 +755,9 @@ test('applyTranslation from content to match snapshot', async () => {
     },
     'blocks.builder-5f0b30f48b5a47a7ababc6526b65a17e#children': {
       value: '2. german Properly configuring your gamepad',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text': {
+      value: '<p>german - custom component subField input</p>',
     },
   };
 

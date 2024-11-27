@@ -218,6 +218,42 @@ Object {
           "translated": true,
         },
       },
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "component": Object {
+          "name": "myFunComponent",
+          "options": Object {
+            "text": "Hello, Builder!",
+            "title": Object {
+              "text": Object {
+                "@type": "@builder.io/core:LocalizedValue",
+                "Default": "<p>custom component subField input</p>",
+                "de": "<p>german - custom component subField input</p>",
+                "fr-FR": "<p>french - custom component subField input</p>",
+              },
+            },
+          },
+        },
+        "id": "builder-23e0618256ab40799ecf6504bc57fa1c",
+        "meta": Object {
+          "localizedTextInputs": Array [
+            "title.text",
+          ],
+          "transformed.title.text": "localized",
+          "translated": true,
+        },
+        "responsiveStyles": Object {
+          "large": Object {
+            "boxSizing": "border-box",
+            "display": "flex",
+            "flexDirection": "column",
+            "flexShrink": "0",
+            "marginTop": "20px",
+            "position": "relative",
+          },
+        },
+      },
     ],
     "seo": Object {
       "@type": "@builder.io/core:LocalizedValue",

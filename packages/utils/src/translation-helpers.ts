@@ -3,7 +3,7 @@ import traverse from 'traverse';
 import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
 import set from 'lodash/set';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
 
@@ -251,7 +251,7 @@ export function applyTranslation(
           symbolInputs.forEach(
             ([symbolInputName, symbolInputValue]: [
               symbolInputName: string,
-              symbolInputValue: any
+              symbolInputValue: any,
             ]) => {
               resolveTranslation({
                 data: el.component?.options?.symbol?.data,
@@ -333,13 +333,11 @@ export function applyTranslation(
 
         keys.forEach(key => {
           if (translation[`blocks.${el.id}#${key}`]) {
-            options = {
-              ...options,
-              [key]: {
-                ...el.component.options[key],
-                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
-              },
-            };
+            set(options, key, {
+              ...(get(options, key) || {}),
+              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
+            });
+
             this.update({
               ...el,
               meta: {
