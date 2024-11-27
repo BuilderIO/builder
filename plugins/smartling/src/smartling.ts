@@ -30,7 +30,7 @@ export class SmartlingApi {
          constructor() {
            this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
            this.init();
-           appState.globalState.orgChanged?.subscribe(
+           appState.globalState.orgSwitched?.subscribe(
             action(async () => {
               await this.init();
             })
