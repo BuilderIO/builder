@@ -328,3 +328,20 @@ Object {
   },
 }
 `;
+
+exports[`getTranslateableFields from carousel content and custom component with subFields to match snapshot 1`] = `
+Object {
+  "blocks.builder-06d3f6da74fb4054ad311afc1dda3675#text": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>I am slide second</p>",
+  },
+  "blocks.builder-0a10ae48b6314221bbb7d06d068d623d#text": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>I am slide 1</p>",
+  },
+  "blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>custom component subField input</p>",
+  },
+}
+`;
