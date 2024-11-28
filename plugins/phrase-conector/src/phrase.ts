@@ -1,3 +1,4 @@
+import { action } from 'mobx';
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 
@@ -24,6 +25,11 @@ export class Phrase {
   constructor(private apiHost?: string) {
     this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
     this.init();
+    appState.globalState.orgSwitched?.subscribe(
+      action(async () => {
+        await this.init();
+      })
+    );
   }
 
   async init() {
