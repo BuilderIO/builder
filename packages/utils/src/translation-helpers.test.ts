@@ -247,6 +247,223 @@ test('getTranslateableFields from plain data model content to match snapshot', a
   expect(result).toMatchSnapshot();
 });
 
+test('getTranslateableFields from carousel content and custom component with subFields to match snapshot', async () => {
+  const content: BuilderContent = {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-c4117a19e7e94354bcd73370ac266c18',
+          component: {
+            name: 'Builder:Carousel',
+            options: {
+              slides: [
+                {
+                  content: [
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      '@version': 2,
+                      id: 'builder-0a10ae48b6314221bbb7d06d068d623d',
+                      meta: {
+                        'transformed.text': 'localized',
+                        localizedTextInputs: ['text'],
+                      },
+                      component: {
+                        name: 'Text',
+                        options: {
+                          text: {
+                            '@type': '@builder.io/core:LocalizedValue',
+                            Default: '<p>I am slide 1</p>',
+                          },
+                        },
+                      },
+                      responsiveStyles: {
+                        large: {
+                          display: 'flex',
+                          flexDirection: 'column',
+                          position: 'relative',
+                          flexShrink: '0',
+                          boxSizing: 'border-box',
+                          marginTop: '20px',
+                          lineHeight: 'normal',
+                          height: 'auto',
+                        },
+                      },
+                    },
+                  ],
+                },
+                {
+                  content: [
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      '@version': 2,
+                      id: 'builder-06d3f6da74fb4054ad311afc1dda3675',
+                      meta: {
+                        'transformed.text': 'localized',
+                        localizedTextInputs: ['text'],
+                      },
+                      component: {
+                        name: 'Text',
+                        options: {
+                          text: {
+                            '@type': '@builder.io/core:LocalizedValue',
+                            Default: '<p>I am slide second</p>',
+                          },
+                        },
+                      },
+                      responsiveStyles: {
+                        large: {
+                          display: 'flex',
+                          flexDirection: 'column',
+                          position: 'relative',
+                          flexShrink: '0',
+                          boxSizing: 'border-box',
+                          marginTop: '20px',
+                          lineHeight: 'normal',
+                          height: 'auto',
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
+              hideDots: false,
+              autoplay: false,
+              autoplaySpeed: 5,
+              prevButton: [
+                {
+                  '@type': '@builder.io/sdk:Element',
+                  '@version': 2,
+                  id: 'builder-04289f83df9542dabeb81b095e2711d0',
+                  component: {
+                    name: 'Image',
+                    options: {
+                      image:
+                        'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fdb2a9827561249aea3817b539aacdcdc',
+                    },
+                  },
+                  responsiveStyles: {
+                    large: {
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'stretch',
+                      flexDirection: 'column',
+                      height: '30px',
+                    },
+                  },
+                },
+              ],
+              nextButton: [
+                {
+                  '@type': '@builder.io/sdk:Element',
+                  '@version': 2,
+                  id: 'builder-9ede08b361e24b40b7fa52e9211debab',
+                  component: {
+                    name: 'Image',
+                    options: {
+                      image:
+                        'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fd909a5b91650499c9e0524cc904eeb77',
+                    },
+                  },
+                  responsiveStyles: {
+                    large: {
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'stretch',
+                      flexDirection: 'column',
+                      height: '30px',
+                    },
+                  },
+                },
+              ],
+              useChildrenForSlides: false,
+              responsive: [
+                {
+                  width: 3000,
+                  slidesToShow: 2,
+                  slidesToScroll: 2,
+                },
+                {
+                  width: 400,
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                },
+              ],
+            },
+          },
+          responsiveStyles: {
+            large: {
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              flexShrink: '0',
+              boxSizing: 'border-box',
+              marginTop: '20px',
+              paddingLeft: '30px',
+              paddingRight: '30px',
+              paddingBottom: '30px',
+            },
+          },
+        },
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-23e0618256ab40799ecf6504bc57fa1c',
+          meta: {
+            localizedTextInputs: ['title.text', 'listItems.0.field1', 'listItems.1.field1'],
+            'transformed.title.text': 'localized',
+          },
+          component: {
+            name: 'myFunComponent',
+            options: {
+              text: 'Hello, Builder!',
+              title: {
+                text: {
+                  '@type': '@builder.io/core:LocalizedValue',
+                  Default: '<p>custom component subField input</p>',
+                },
+              },
+              listItems: [
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1 value</p>',
+                  },
+                  field2: 'field 2 value',
+                },
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1.1 value</p>',
+                  },
+                  field2: 'field 2.1 value',
+                },
+              ],
+            },
+          },
+          responsiveStyles: {
+            large: {
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              flexShrink: '0',
+              boxSizing: 'border-box',
+              marginTop: '20px',
+            },
+          },
+        },
+      ],
+    },
+  };
+  const result = getTranslateableFields(
+    content,
+    'en-US',
+    'Visit https://builder.io/fiddle/... for more details'
+  );
+  expect(result).toMatchSnapshot();
+});
+
 test('applyTranslation from content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
@@ -445,6 +662,54 @@ test('applyTranslation from content to match snapshot', async () => {
             },
           },
         },
+
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-23e0618256ab40799ecf6504bc57fa1c',
+          meta: {
+            localizedTextInputs: ['title.text', 'listItems.0.field1', 'listItems.1.field1'],
+            'transformed.title.text': 'localized',
+          },
+          component: {
+            name: 'myFunComponent',
+            options: {
+              text: 'Hello, Builder!',
+              title: {
+                text: {
+                  '@type': '@builder.io/core:LocalizedValue',
+                  Default: '<p>custom component subField input</p>',
+                },
+              },
+              listItems: [
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1 value</p>',
+                  },
+                  field2: 'field 2 value',
+                },
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1.1 value</p>',
+                  },
+                  field2: 'field 2.1 value',
+                },
+              ],
+            },
+          },
+          responsiveStyles: {
+            large: {
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              flexShrink: '0',
+              boxSizing: 'border-box',
+              marginTop: '20px',
+            },
+          },
+        },
       ],
     },
   };
@@ -484,6 +749,15 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-5f0b30f48b5a47a7ababc6526b65a17e#children': {
       value: '2. french Properly configuring your gamepad',
     },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text': {
+      value: '<p>french - custom component subField input</p>',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.0.field1': {
+      value: '<p>french - text 1 value</p>',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.1.field1': {
+      value: '<p>french - text 1.1 value</p>',
+    },
   };
   const germanTranslations = {
     'metadata.title': { value: 'hallo' },
@@ -519,6 +793,15 @@ test('applyTranslation from content to match snapshot', async () => {
     },
     'blocks.builder-5f0b30f48b5a47a7ababc6526b65a17e#children': {
       value: '2. german Properly configuring your gamepad',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text': {
+      value: '<p>german - custom component subField input</p>',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.0.field1': {
+      value: '<p>german - text 1 value</p>',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.1.field1': {
+      value: '<p>german - text 1.1 value</p>',
     },
   };
 

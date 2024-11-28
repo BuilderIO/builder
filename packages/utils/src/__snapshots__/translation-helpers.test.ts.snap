@@ -218,6 +218,64 @@ Object {
           "translated": true,
         },
       },
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "component": Object {
+          "name": "myFunComponent",
+          "options": Object {
+            "listItems": Array [
+              Object {
+                "field1": Object {
+                  "@type": "@builder.io/core:LocalizedValue",
+                  "Default": "<p>text 1 value</p>",
+                  "de": "<p>german - text 1 value</p>",
+                  "fr-FR": "<p>french - text 1 value</p>",
+                },
+                "field2": "field 2 value",
+              },
+              Object {
+                "field1": Object {
+                  "@type": "@builder.io/core:LocalizedValue",
+                  "Default": "<p>text 1.1 value</p>",
+                  "de": "<p>german - text 1.1 value</p>",
+                  "fr-FR": "<p>french - text 1.1 value</p>",
+                },
+                "field2": "field 2.1 value",
+              },
+            ],
+            "text": "Hello, Builder!",
+            "title": Object {
+              "text": Object {
+                "@type": "@builder.io/core:LocalizedValue",
+                "Default": "<p>custom component subField input</p>",
+                "de": "<p>german - custom component subField input</p>",
+                "fr-FR": "<p>french - custom component subField input</p>",
+              },
+            },
+          },
+        },
+        "id": "builder-23e0618256ab40799ecf6504bc57fa1c",
+        "meta": Object {
+          "localizedTextInputs": Array [
+            "title.text",
+            "listItems.0.field1",
+            "listItems.1.field1",
+          ],
+          "transformed.title.text": "localized",
+          "translated": true,
+        },
+        "responsiveStyles": Object {
+          "large": Object {
+            "boxSizing": "border-box",
+            "display": "flex",
+            "flexDirection": "column",
+            "flexShrink": "0",
+            "marginTop": "20px",
+            "position": "relative",
+          },
+        },
+      },
     ],
     "seo": Object {
       "@type": "@builder.io/core:LocalizedValue",
@@ -325,6 +383,31 @@ Object {
   "metadata.title": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
     "value": "Hello",
+  },
+}
+`;
+
+exports[`getTranslateableFields from carousel content and custom component with subFields to match snapshot 1`] = `
+Object {
+  "blocks.builder-06d3f6da74fb4054ad311afc1dda3675#text": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>I am slide second</p>",
+  },
+  "blocks.builder-0a10ae48b6314221bbb7d06d068d623d#text": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>I am slide 1</p>",
+  },
+  "blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.0.field1": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>text 1 value</p>",
+  },
+  "blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.1.field1": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>text 1.1 value</p>",
+  },
+  "blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "<p>custom component subField input</p>",
   },
 }
 `;
