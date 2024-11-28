@@ -411,7 +411,7 @@ test('getTranslateableFields from carousel content and custom component with sub
           '@version': 2,
           id: 'builder-23e0618256ab40799ecf6504bc57fa1c',
           meta: {
-            localizedTextInputs: ['title.text'],
+            localizedTextInputs: ['title.text', 'listItems.0.field1', 'listItems.1.field1'],
             'transformed.title.text': 'localized',
           },
           component: {
@@ -424,6 +424,22 @@ test('getTranslateableFields from carousel content and custom component with sub
                   Default: '<p>custom component subField input</p>',
                 },
               },
+              listItems: [
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1 value</p>',
+                  },
+                  field2: 'field 2 value',
+                },
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1.1 value</p>',
+                  },
+                  field2: 'field 2.1 value',
+                },
+              ],
             },
           },
           responsiveStyles: {
@@ -652,7 +668,7 @@ test('applyTranslation from content to match snapshot', async () => {
           '@version': 2,
           id: 'builder-23e0618256ab40799ecf6504bc57fa1c',
           meta: {
-            localizedTextInputs: ['title.text'],
+            localizedTextInputs: ['title.text', 'listItems.0.field1', 'listItems.1.field1'],
             'transformed.title.text': 'localized',
           },
           component: {
@@ -665,6 +681,22 @@ test('applyTranslation from content to match snapshot', async () => {
                   Default: '<p>custom component subField input</p>',
                 },
               },
+              listItems: [
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1 value</p>',
+                  },
+                  field2: 'field 2 value',
+                },
+                {
+                  field1: {
+                    '@type': '@builder.io/core:LocalizedValue',
+                    Default: '<p>text 1.1 value</p>',
+                  },
+                  field2: 'field 2.1 value',
+                },
+              ],
             },
           },
           responsiveStyles: {
@@ -720,6 +752,12 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text': {
       value: '<p>french - custom component subField input</p>',
     },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.0.field1': {
+      value: '<p>french - text 1 value</p>',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.1.field1': {
+      value: '<p>french - text 1.1 value</p>',
+    },
   };
   const germanTranslations = {
     'metadata.title': { value: 'hallo' },
@@ -758,6 +796,12 @@ test('applyTranslation from content to match snapshot', async () => {
     },
     'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#title.text': {
       value: '<p>german - custom component subField input</p>',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.0.field1': {
+      value: '<p>german - text 1 value</p>',
+    },
+    'blocks.builder-23e0618256ab40799ecf6504bc57fa1c#listItems.1.field1': {
+      value: '<p>german - text 1.1 value</p>',
     },
   };
 
