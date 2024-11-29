@@ -126,7 +126,7 @@
   },
   "dependencies": {
     "@builder.io/commerce-plugin-tools": "^0.3.0",
-    "@builder.io/utils": "^1.1.22",
+    "@builder.io/utils": "^1.1.23",
     "fast-json-stable-stringify": "^2.1.0",
     "lodash": "^4.17.21",
     "object-hash": "^3.0.0",
