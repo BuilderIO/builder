@@ -340,6 +340,31 @@ export class BuilderBlock extends React.Component<
     }
   }
 
+  isLocalizedField(value: any) {
+    return typeof value === 'object' && value['@type'] === '@builder.io/core:LocalizedValue';
+  }
+
+  containsLocalizedValues(data: Record<string, any>) {
+    if (!data || !Object.getOwnPropertyNames(data).length) {
+      return false;
+    }
+    return Object.values(data).some(this.isLocalizedField);
+  }
+
+  extractLocalizedValues(data: Record<string, any>, locale: string) {
+    if (!data || !Object.getOwnPropertyNames(data).length) {
+      return;
+    }
+    let extractedResult: Record<string, any> = {};
+
+    const ownKeys = Object.getOwnPropertyNames(data);
+    for (const key of ownKeys) {
+      const value = data[key];
+      extractedResult[key] = this.isLocalizedField(value) ? value[locale] : value;
+    }
+    return extractedResult;
+  }
+
   // <!-- Builder Blocks --> in comments hmm
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
     const { child, fieldName } = this.props;
@@ -474,10 +499,26 @@ export class BuilderBlock extends React.Component<
       }
     }
 
-    const innerComponentProperties = (options.component || options.options) && {
+    let innerComponentProperties = (options.component || options.options) && {
       ...options.options,
       ...(options.component.options || options.component.data),
     };
+
+    const hasLocalizedValues = this.containsLocalizedValues(innerComponentProperties);
+
+    if (hasLocalizedValues && !this.privateState.state.locale) {
+      console.error(
+        '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
+      );
+      // send error postMessage to the VE if editing
+    }
+
+    if (hasLocalizedValues && this.privateState.state.locale) {
+      innerComponentProperties = this.extractLocalizedValues(
+        innerComponentProperties,
+        this.privateState.state.locale
+      );
+    }
 
     const isVoid = voidElements.has(TagName);
 
