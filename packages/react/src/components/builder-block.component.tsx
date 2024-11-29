@@ -341,7 +341,9 @@ export class BuilderBlock extends React.Component<
   }
 
   isLocalizedField(value: any) {
-    return typeof value === 'object' && value['@type'] === '@builder.io/core:LocalizedValue';
+    return (
+      value && typeof value === 'object' && value['@type'] === '@builder.io/core:LocalizedValue'
+    );
   }
 
   containsLocalizedValues(data: Record<string, any>) {
