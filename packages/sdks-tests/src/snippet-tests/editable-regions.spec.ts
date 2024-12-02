@@ -29,6 +29,7 @@ test.describe('Editable regions in custom components', () => {
     await page.goto('/editable-region');
 
     const twoColumns = page.locator('div.builder-block').first();
+    console.log('twoColumns', twoColumns);
     await expect(twoColumns).toBeVisible();
 
     const columnTexts = await twoColumns.textContent();

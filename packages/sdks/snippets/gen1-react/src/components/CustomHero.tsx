@@ -1,8 +1,6 @@
-type CustomHeroProps = {
-  children: React.ReactNode;
-};
+import { type PropsWithChildren } from 'react';
 
-const CustomHero = (props: CustomHeroProps) => {
+const CustomHero = (props: PropsWithChildren) => {
   return (
     <>
       <div>This is your component's text</div>
