@@ -11,12 +11,12 @@ const CustomColumns = (props: BuilderProps) => {
     <>
       <BuilderBlocks
         parentElementId={props.builderBlock.id}
-        dataPath={`column1.blocks`}
+        dataPath="column1.blocks"
         blocks={props.column1?.blocks}
       />
       <BuilderBlocks
         parentElementId={props.builderBlock.id}
-        dataPath={`column2.blocks`}
+        dataPath="column2.blocks"
         blocks={props.column2?.blocks}
       />
     </>

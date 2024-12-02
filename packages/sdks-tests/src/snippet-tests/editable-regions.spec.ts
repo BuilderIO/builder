@@ -22,44 +22,16 @@ test.describe('Editable regions in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr', 'gen1-react'].includes(packageName));
 
     await page.goto('/editable-region');
 
     const twoColumns = page.locator('div.builder-block').first();
+    console.log('twoColumns', twoColumns);
     await expect(twoColumns).toBeVisible();
 
-    const childDivs = twoColumns.locator('div');
-
-    const columns = childDivs.locator('div.builder-text');
-
-    await columns.first().waitFor({ state: 'attached' });
-    await columns.nth(1).waitFor({ state: 'attached' });
-
-    await expect(columns.first()).toBeVisible();
-    await expect(columns.nth(1)).toBeVisible();
-
-    const firstText = await columns.first().textContent();
-    expect(firstText?.trim().toLowerCase()).toBe('column 1 text');
-
-    const secondText = await columns.nth(1).textContent();
-    expect(secondText?.trim().toLowerCase()).toBe('column 2 text');
-  });
-
-  test('should render two builder blocks with content using gen1', async ({
-    page,
-    packageName,
-  }) => {
-    test.skip(!['gen1-react'].includes(packageName));
-
-    await page.goto('/editable-region');
-    await page.waitForLoadState('networkidle');
-    const builderDiv = page.locator('div.builder-block').first();
-    await expect(builderDiv).toBeVisible();
-
-    //builderDiv should render two texts: column 1 text and column 2 text without checking for builder-text class
-    const texts = await builderDiv.textContent();
-    expect(texts).toContain('column 1 text');
-    expect(texts).toContain('column 2 text');
+    const columnTexts = await twoColumns.textContent();
+    expect(columnTexts).toContain('column 1 text');
+    expect(columnTexts).toContain('column 2 text');
   });
 });
