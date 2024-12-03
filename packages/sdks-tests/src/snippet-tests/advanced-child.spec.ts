@@ -25,25 +25,30 @@ test.describe('Advanced child sub components', () => {
   });
 
   test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
-    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr', 'gen1-react'].includes(packageName));
 
     await page.goto('/advanced-child');
 
     await page.waitForSelector('button:has-text("Tab 1")');
     await page.waitForSelector('button:has-text("Tab 2")');
 
-    await verifyTabContent(
-      page,
-      'Tab 1',
-      'component.options.tabList.0.blocks',
-      'component.options.tabList.1.blocks'
-    );
+    await page.click('button:has-text("Tab 1")');
 
-    await verifyTabContent(
-      page,
-      'Tab 2',
-      'component.options.tabList.1.blocks',
-      'component.options.tabList.0.blocks'
-    );
+    const tab1Content = await page.waitForSelector('div:has-text("Tab 1 Content")', {
+      state: 'visible',
+    });
+    expect(await tab1Content.isVisible()).toBe(true);
+
+    const tab2ContentHidden = await page.$('div:has-text("Tab 2 content")');
+    expect((await tab2ContentHidden?.isVisible()) ?? false).toBe(false);
+
+    await page.click('button:has-text("Tab 2")');
+    const tab2Content = await page.waitForSelector('div:has-text("Tab 2 content")', {
+      state: 'visible',
+    });
+    expect(await tab2Content.isVisible()).toBe(true);
+
+    const tab1ContentHidden = await page.$('div:has-text("Tab 1 Content")');
+    expect((await tab1ContentHidden?.isVisible()) ?? false).toBe(false);
   });
 });

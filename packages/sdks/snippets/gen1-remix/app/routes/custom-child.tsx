@@ -1,4 +1,9 @@
-import { Builder, builder, BuilderComponent } from '@builder.io/react';
+import {
+  Builder,
+  builder,
+  BuilderComponent,
+  withChildren,
+} from '@builder.io/react';
 
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
@@ -6,9 +11,8 @@ import { CustomHero } from './components/CustomHero';
 
 builder.init('ee9f13b4981e489a9a1209887695ef2b');
 
-Builder.registerComponent(CustomHero, {
+Builder.registerComponent(withChildren(CustomHero), {
   name: 'CustomHero',
-  inputs: [],
   canHaveChildren: true,
   defaultChildren: [
     {
@@ -24,14 +28,15 @@ Builder.registerComponent(CustomHero, {
 });
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+
   const page = await builder
     .get('custom-child', {
       userAttributes: {
-        urlPath: `/${request.url.split('/').pop()}`,
+        urlPath: url.pathname,
       },
     })
     .toPromise();
-
   return { page };
 };
 

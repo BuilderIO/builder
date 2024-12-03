@@ -1,13 +1,9 @@
-import { ReactNode } from 'react';
+import { type PropsWithChildren } from 'react';
 
-interface CustomHeroProps {
-  children: ReactNode;
-}
-
-export const CustomHero = (props: CustomHeroProps) => {
+export const CustomHero = (props: PropsWithChildren) => {
   return (
     <>
-      <div>This is your component&apos;s text</div>
+      <div>This is your component`s text</div>
       {props.children}
     </>
   );
