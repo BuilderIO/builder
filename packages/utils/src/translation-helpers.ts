@@ -3,6 +3,7 @@ import traverse from 'traverse';
 import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
 import set from 'lodash/set';
+import get from 'lodash/get';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
 
@@ -165,11 +166,10 @@ export function getTranslateableFields(
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
           localizedTextInputs
-            .filter(input => el.component?.options?.[input]?.['@type'] === localizedType)
+            .filter(input => get(el.component?.options || {}, `${input}.@type`) === localizedType)
             .forEach(inputKey => {
-              const valueToBeTranslated =
-                el.component.options?.[inputKey]?.[sourceLocaleId] ||
-                el.component.options?.[inputKey]?.Default;
+              const inputValue = get(el.component?.options || {}, inputKey);
+              const valueToBeTranslated = inputValue?.[sourceLocaleId] || inputValue?.Default;
               if (valueToBeTranslated) {
                 results[`blocks.${el.id}#${inputKey}`] = {
                   instructions: el.meta?.instructions || defaultInstructions,
@@ -197,7 +197,7 @@ export function getTranslateableFields(
           symbolInputs.forEach(
             ([symbolInputName, symbolInputValue]: [
               symbolInputName: string,
-              symbolInputValue: any
+              symbolInputValue: any,
             ]) => {
               if (symbolInputName === 'children') {
                 return;
@@ -251,7 +251,7 @@ export function applyTranslation(
           symbolInputs.forEach(
             ([symbolInputName, symbolInputValue]: [
               symbolInputName: string,
-              symbolInputValue: any
+              symbolInputValue: any,
             ]) => {
               resolveTranslation({
                 data: el.component?.options?.symbol?.data,
@@ -333,13 +333,11 @@ export function applyTranslation(
 
         keys.forEach(key => {
           if (translation[`blocks.${el.id}#${key}`]) {
-            options = {
-              ...options,
-              [key]: {
-                ...el.component.options[key],
-                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
-              },
-            };
+            set(options, key, {
+              ...(get(options, key) || {}),
+              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
+            });
+
             this.update({
               ...el,
               meta: {
