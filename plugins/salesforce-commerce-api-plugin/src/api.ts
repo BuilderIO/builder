@@ -90,6 +90,19 @@ export class Api {
     }
   }
 
+  async validateConfig(){
+    try{
+      let res = await this.request(`validate-config`);
+      console.log('log4', res);
+      if(res.errors){
+        throw res.errors;
+      }
+      return res;
+    }catch(e){
+      throw e;
+    }
+  }
+
   getProduct(id: string): Promise<any> {
     if (basicCache.get(id)) {
       return Promise.resolve(basicCache.get(id));

@@ -73,6 +73,16 @@ registerCommercePlugin(
       },
     ],
     ctaText: `Connect your Salesforce Commerce API`,
+    onSave: async () => {
+      const api = new Api(appState.user.apiKey, pkg.name);
+      try{
+        let res = await api.validateConfig();
+        console.log('log2', res);
+      } catch(err){
+        console.log('log3', err);
+        throw err;
+      }
+    }
   },
   async settings => {
     const api = new Api(appState.user.apiKey, pkg.name);
