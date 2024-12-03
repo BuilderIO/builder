@@ -443,6 +443,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
   return (
     <Show
       when={
+        /**
+         * We need to attach this div only when content exists or isPreviewing/isEditing even when content is null,
+         * as we need to set the elementRef and allow previewing and visual editing
+         */
         props.builderContextSignal.value.content ||
         isPreviewing() ||
         isEditing()
@@ -469,6 +473,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
         className={getWrapperClassName(
           props.content?.testVariationId || props.content?.id
         )}
+        // content exists: render the div
+        // content is null but isEditing/isPreviewing: render the empty div with display: 'none' (so that it doesn't take up space)
         style={{
           display:
             !props.builderContextSignal.value.content &&
