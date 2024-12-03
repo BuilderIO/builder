@@ -1,3 +1,7 @@
+import {
+  IMAGE_FILE_TYPES,
+  VIDEO_FILE_TYPES,
+} from '../../constants/file-types.js';
 import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
@@ -14,47 +18,7 @@ export const componentInfo: ComponentInfo = {
     {
       name: 'video',
       type: 'file',
-      allowedFileTypes: [
-        'mp4',
-        'webm',
-        'mkv',
-        'flv',
-        'vob',
-        'ogv',
-        'ogg',
-        'drc',
-        'gif',
-        'gifv',
-        'mng',
-        'avi',
-        'mov',
-        'qt',
-        'mts',
-        'm2ts',
-        'ts',
-        'wmv',
-        'yuv',
-        'rm',
-        'rmvb',
-        'viv',
-        'asf',
-        'amv',
-        'm4p',
-        'mpeg',
-        'mpe',
-        'm2v',
-        'm4v',
-        'svi',
-        '3gp',
-        '3g2',
-        'mxf',
-        'roq',
-        'nsv',
-        'f4v',
-        'f4p',
-        'f4a',
-        'f4b',
-      ],
+      allowedFileTypes: VIDEO_FILE_TYPES,
       bubble: true,
       defaultValue:
         'https://cdn.builder.io/o/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd27731a526464deba0016216f5f9e570%2Fcompressed?apiKey=YJIGb4i01jvw0SRdL5Bt&token=d27731a526464deba0016216f5f9e570&alt=media&optimized=true',
@@ -63,7 +27,7 @@ export const componentInfo: ComponentInfo = {
     {
       name: 'posterImage',
       type: 'file',
-      allowedFileTypes: ['jpeg', 'png'],
+      allowedFileTypes: IMAGE_FILE_TYPES,
       helperText: 'Image to show before the video plays',
     },
     {
