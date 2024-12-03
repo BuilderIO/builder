@@ -1,5 +1,122 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.17.0
+
+### Minor Changes
+
+- 78b8e5d: Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+  Previously, both functions would swallow all errors and return `null`.
+
+## 0.16.24
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling
+
+## 0.16.23
+
+### Patch Changes
+
+- 5e88efa: Logs every API URL hit from the SDK whenever `process.env.DEBUG` is set to `true` in the project
+
+## 0.16.22
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
+## 0.16.21
+
+### Patch Changes
+
+- a25a805: Fix: build to work in preview mode
+
+## 0.16.20
+
+### Patch Changes
+
+- c2e7846: Fix: make Column block's state reactive to its `props`
+
+## 0.16.19
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
+## 0.16.18
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
+## 0.16.17
+
+### Patch Changes
+
+- e4253d6: Fix: accessing Builder Context within `Blocks` (regression from https://github.com/BuilderIO/builder/pull/3658)
+- 3146ba3: Fix: optionally chain access to context value in Blocks
+- c5dd946: Feature: adds a `className: string` prop to the `Blocks` component used to apply a class to the `div` that wraps each list of blocks.
+
+## 0.16.16
+
+### Patch Changes
+
+- 4660aa6: Feature: optimize simple `state.*` read access bindings by avoiding runtime-specific eval, and instead fetching the value directly from the state
+
+## 0.16.15
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+## 0.16.14
+
+### Patch Changes
+
+- 269db7b: Fix: execute JS code and make http requests on Content initialization (instead of "on mount")
+- 269db7b: Various improvements to edge runtime interpreter:
+
+  - Correctly handle code blocks with async/await polyfills (typically `jsCode` blocks)
+  - Improve handling of getters and setters on `state` values
+
+## 0.16.13
+
+### Patch Changes
+
+- 348de96: Fix: remove node-runtime logic from browser and edge bundles
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 0.16.11
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 0.16.10
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.16.9
 
 ### Patch Changes

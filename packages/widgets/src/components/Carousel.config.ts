@@ -79,7 +79,7 @@ export const carouselConfig: any = {
     },
     {
       name: 'hideDots',
-      helperText: 'Show pagination dots',
+      helperText: 'Hide pagination dots',
       type: 'boolean',
       defaultValue: false,
     },

@@ -1,5 +1,128 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 3.0.0
+
+### Major Changes
+
+- 78b8e5d: Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+  Previously, both functions would swallow all errors and return `null`.
+
+## 2.0.31
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling
+
+## 2.0.30
+
+### Patch Changes
+
+- 5e88efa: Logs every API URL hit from the SDK whenever `process.env.DEBUG` is set to `true` in the project
+
+## 2.0.29
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
+## 2.0.28
+
+### Patch Changes
+
+- c2e7846: Fix: make Column block's state reactive to its `props`
+
+## 2.0.27
+
+### Patch Changes
+
+- 800457c: Feature: add `/node/setIvm` export path. It provides a `setIvm` function that can be used to provide the SDK with an instance of the `isolated-vm` module. This is needed in Node.js environments for data bindings to work when `/node/init` can't be used.
+
+## 2.0.26
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
+## 2.0.25
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
+## 2.0.24
+
+### Patch Changes
+
+- e4253d6: Fix: accessing Builder Context within `Blocks` (regression from https://github.com/BuilderIO/builder/pull/3658)
+- ae3d27e: Misc: allow react 19 RC releases as a peer dependency (to work with nextjs 15)
+- 3146ba3: Fix: optionally chain access to context value in Blocks
+- c5dd946: Feature: adds a `className: string` prop to the `Blocks` component used to apply a class to the `div` that wraps each list of blocks.
+
+## 2.0.23
+
+### Patch Changes
+
+- 4660aa6: Feature: optimize simple `state.*` read access bindings by avoiding runtime-specific eval, and instead fetching the value directly from the state
+
+## 2.0.22
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+## 2.0.21
+
+### Patch Changes
+
+- 269db7b: Fix: execute JS code and make http requests on Content initialization (instead of "on mount")
+- 269db7b: Various improvements to edge runtime interpreter:
+
+  - Correctly handle code blocks with async/await polyfills (typically `jsCode` blocks)
+  - Improve handling of getters and setters on `state` values
+
+## 2.0.19
+
+### Patch Changes
+
+- 9836542: Fix: remove node-runtime logic from browser and edge bundles
+
+## 2.0.16
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 2.0.14
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 2.0.13
 
 ### Patch Changes

@@ -214,3 +214,11 @@ export const getClassSelector = (className: string, sdk: Sdk) => {
 const currentFilename = fileURLToPath(import.meta.url);
 const currentDirname = path.dirname(currentFilename);
 export const mockFolderPath = path.join(currentDirname, '..', 'mocks');
+
+export const mapSdkName = (sdk: string): string => {
+  return sdk === 'oldReact' ? 'react' : sdk;
+};
+
+export const getSdkGeneration = (sdk: string): string => {
+  return sdk === 'oldReact' ? '1' : '2';
+};

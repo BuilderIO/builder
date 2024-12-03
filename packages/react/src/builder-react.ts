@@ -2,8 +2,13 @@ import './scripts/init-editing';
 
 import { builder, Builder } from '@builder.io/sdk';
 export { BuilderElement } from '@builder.io/sdk';
+import { SDK_VERSION } from './sdk-version';
 
 Builder.isReact = true;
+Builder.sdkInfo = {
+  name: 'react',
+  version: SDK_VERSION,
+};
 
 export { BuilderBlocks } from './components/builder-blocks.component';
 export { BuilderBlock as BuilderBlockComponent } from './components/builder-block.component';
@@ -51,6 +56,7 @@ export { FormSelect } from './blocks/forms/Select'; // advanced?
 export { TextArea } from './blocks/forms/TextArea';
 export { Img } from './blocks/raw/Img';
 export { RawText } from './blocks/raw/RawText';
+export { PersonalizationContainer } from './blocks/PersonalizationContainer';
 
 export { stringToFunction } from './functions/string-to-function';
 export { useIsPreviewing } from './hooks/useIsPreviewing';

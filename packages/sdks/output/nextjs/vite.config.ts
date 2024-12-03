@@ -1,5 +1,6 @@
 import { viteOutputGenerator } from '@builder.io/sdks/output-generation/index.js';
 import react from '@vitejs/plugin-react';
+import fs from 'node:fs';
 import { defineConfig, Plugin } from 'vite';
 
 const SERVER_ENTRY = 'server-entry';
@@ -42,7 +43,6 @@ export default defineConfig({
         'node:module',
         'isolated-vm',
         'next/navigation',
-        'lru-cache',
       ],
       output: {
         globals: {
@@ -50,25 +50,30 @@ export default defineConfig({
           'react-dom': 'ReactDOM',
           'react/jsx-runtime': 'react/jsx-runtime',
         },
+        preserveModules: true,
         minifyInternalExports: false,
-        manualChunks(id, { getModuleIds, getModuleInfo }) {
-          const moduleInfo = getModuleInfo(id);
-
-          /**
-           * We make sure any code used by the server entry is bundled into it,
-           * so that it doesn't get marked with `use client`.
-           */
-          if (
-            moduleInfo?.importers.some((x) => x.includes('server-index.ts'))
-          ) {
-            return SERVER_ENTRY;
-          }
-        },
+        /**
+         * preserve directives from the original file
+         */
         banner(chunk) {
-          if (chunk.name === BLOCKS_EXPORTS_ENTRY) {
-            return "'use client';";
+          const filePath = chunk.facadeModuleId;
+          if (chunk.importedBindings?.['react']?.includes('createContext')) {
+            return "'use client';\n";
+          } else if (filePath) {
+            const content = fs.readFileSync(filePath, 'utf-8');
+            const DIRECTIVES = [
+              "'use client'",
+              '"use client"',
+              '"use server"',
+              "'use server'",
+            ];
+            const directive = DIRECTIVES.find((directive) =>
+              content.startsWith(directive)
+            );
+            if (directive) {
+              return directive + '\n';
+            }
           }
-
           return '';
         },
       },

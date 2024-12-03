@@ -1,20 +1,9 @@
 import { expect } from '@playwright/test';
-import { findTextInPage, test, verifyTabContent } from '../helpers/index.js';
+import { test, verifyTabContent } from '../helpers/index.js';
 
-test.describe('Editable Regions in Custom Components', () => {
-  test('Registers the custom component and contains a text on initial render', async ({
-    page,
-    packageName,
-  }) => {
-    test.skip(!['react'].includes(packageName));
-
-    await page.goto('/advanced-child');
-
-    await findTextInPage({ page, text: 'Custom Component with editable regions' });
-  });
-
+test.describe('Advanced child sub components', () => {
   test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
 
     await page.goto('/advanced-child');
 
@@ -36,7 +25,7 @@ test.describe('Editable Regions in Custom Components', () => {
   });
 
   test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
 
     await page.goto('/advanced-child');
 
@@ -46,15 +35,15 @@ test.describe('Editable Regions in Custom Components', () => {
     await verifyTabContent(
       page,
       'Tab 1',
-      'component.options.tabList.0.children',
-      'component.options.tabList.1.children'
+      'component.options.tabList.0.blocks',
+      'component.options.tabList.1.blocks'
     );
 
     await verifyTabContent(
       page,
       'Tab 2',
-      'component.options.tabList.1.children',
-      'component.options.tabList.0.children'
+      'component.options.tabList.1.blocks',
+      'component.options.tabList.0.blocks'
     );
   });
 });

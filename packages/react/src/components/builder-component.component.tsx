@@ -443,19 +443,17 @@ export class BuilderComponent extends React.Component<
       update: this.updateState,
     };
 
-    if (Builder.isBrowser) {
-      const key = this.props.apiKey;
-      if (key && key !== this.builder.apiKey && !instancesMap.has(key)) {
-        // We create a builder instance for each api key to support loading of symbols from other spaces
-        const instance = new Builder(key, undefined, undefined, true);
-        instancesMap.set(key, instance);
-      }
+    const key = this.props.apiKey;
+    if (key && key !== this.builder.apiKey && !instancesMap.has(key)) {
+      // We create a builder instance for each api key to support loading of symbols from other spaces
+      const instance = new Builder(key, undefined, undefined, true);
+      instancesMap.set(key, instance);
+    }
 
-      if (this.inlinedContent) {
-        // Sometimes with graphql we get the content as `content.content`
-        const content = (this.inlinedContent as any).content || this.inlinedContent;
-        this.onContentLoaded(content?.data, getContentWithInfo(content)!);
-      }
+    if (this.inlinedContent) {
+      // Sometimes with graphql we get the content as `content.content`
+      const content = (this.inlinedContent as any).content || this.inlinedContent;
+      this.onContentLoaded(content?.data, getContentWithInfo(content)!);
     }
 
     this.registerCustomComponents();
@@ -512,6 +510,9 @@ export class BuilderComponent extends React.Component<
   }
 
   messageListener = (event: MessageEvent) => {
+    const isTrusted = Builder.isTrustedHostForEvent(event);
+    if (!isTrusted) return;
+
     const info = event.data;
     switch (info.type) {
       case 'builder.configureSdk': {
@@ -789,7 +790,7 @@ export class BuilderComponent extends React.Component<
   get isPreviewing() {
     return (
       (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing && !this.firstLoad)) &&
-      builder.previewingModel === this.name
+      (builder.previewingModel === this.name || builder.previewingModel === 'BUILDER_STUDIO')
     );
   }
 
@@ -1398,7 +1399,7 @@ export class BuilderComponent extends React.Component<
     }
 
     // TODO: also throttle on edits maybe
-    if (data && data.jsCode && Builder.isBrowser && !this.options.codegen) {
+    if (data && data.jsCode && !this.options.codegen) {
       // Don't rerun js code when editing and not changed
       let skip = false;
       if (Builder.isEditing) {

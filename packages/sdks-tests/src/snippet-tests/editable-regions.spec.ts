@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
-test.describe('Adding advanced child blocks in custom components', () => {
+test.describe('Editable regions in custom components', () => {
   test('should render a div with two columns with builder-path attr', async ({
     page,
     packageName,
   }) => {
-    test.skip(!['react'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
 
     await page.goto('/editable-region');
     await page.waitForLoadState('networkidle');
@@ -22,7 +22,7 @@ test.describe('Adding advanced child blocks in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react'].includes(packageName));
+    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
 
     await page.goto('/editable-region');
 

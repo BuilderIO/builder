@@ -37,7 +37,7 @@ const initializeAbTest = async (
     packageName,
     browser,
   }: Pick<
-    Parameters<Parameters<typeof test>[1]>[0],
+    Parameters<Parameters<typeof test>[2]>[0],
     'page' | 'baseURL' | 'packageName' | 'browser'
   >,
   { cookieName, cookieValue }: { cookieName: string; cookieValue: string }

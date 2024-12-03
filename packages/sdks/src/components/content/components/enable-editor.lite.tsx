@@ -2,6 +2,7 @@ import type { Signal } from '@builder.io/mitosis';
 import {
   Show,
   onEvent,
+  onInit,
   onMount,
   onUnMount,
   onUpdate,
@@ -16,15 +17,14 @@ import type { BuilderContextInterface } from '../../../context/types.js';
 import { evaluate } from '../../../functions/evaluate/index.js';
 import { fastClone } from '../../../functions/fast-clone.js';
 import { fetchOneEntry } from '../../../functions/get-content/index.js';
-import { fetch } from '../../../functions/get-fetch.js';
 import { isBrowser } from '../../../functions/is-browser.js';
 import { isEditing } from '../../../functions/is-editing.js';
 import { isPreviewing } from '../../../functions/is-previewing.js';
+import { logFetch } from '../../../functions/log-fetch.js';
 import { createRegisterComponentMessage } from '../../../functions/register-component.js';
 import { _track } from '../../../functions/track/index.js';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
-import { logger } from '../../../helpers/logger.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
 import {
@@ -56,7 +56,6 @@ type BuilderEditorProps = Omit<
   | 'isSsrAbTest'
   | 'blocksWrapper'
   | 'blocksWrapperProps'
-  | 'isNestedRender'
   | 'linkComponent'
 > & {
   builderContextSignal: Signal<BuilderContextInterface>;
@@ -151,23 +150,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
         },
       })(event);
     },
-    evaluateJsCode() {
-      // run any dynamic JS code attached to content
-      const jsCode = props.builderContextSignal.value.content?.data?.jsCode;
-      if (jsCode) {
-        evaluate({
-          code: jsCode,
-          context: props.context || {},
-          localState: undefined,
-          rootState: props.builderContextSignal.value.rootState,
-          rootSetState: props.builderContextSignal.value.rootSetState,
-          /**
-           * We don't want to cache the result of the JS code, since it's arbitrary side effect code.
-           */
-          enableCache: false,
-        });
-      }
-    },
     httpReqsData: {} as { [key: string]: boolean },
     httpReqsPending: {} as { [key: string]: boolean },
 
@@ -179,6 +161,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           props.builderContextSignal.value.content?.testVariationId;
         const contentId = props.builderContextSignal.value.content?.id;
         _track({
+          apiHost: props.apiHost,
           type: 'click',
           canTrack: getDefaultCanTrack(props.canTrack),
           contentId,
@@ -216,10 +199,11 @@ export default function EnableEditor(props: BuilderEditorProps) {
               localState: undefined,
               rootState: props.builderContextSignal.value.rootState,
               rootSetState: props.builderContextSignal.value.rootSetState,
-              enableCache: true,
             })
           )
         );
+
+        logFetch(evaluatedUrl);
 
         fetch(evaluatedUrl)
           .then((response) => response.json())
@@ -345,7 +329,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onMount(() => {
     if (isBrowser()) {
-      if (isEditing()) {
+      if (isEditing() && !props.isNestedRender) {
         useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -390,6 +374,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         });
 
         _track({
+          apiHost: props.apiHost,
           type: 'impression',
           canTrack: true,
           contentId,
@@ -428,28 +413,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
     }
   });
 
-  onMount(
-    () => {
-      if (!props.apiKey) {
-        logger.error(
-          'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
-        );
-      }
-
-      state.evaluateJsCode();
-      state.runHttpRequests();
-      state.emitStateUpdate();
-    },
-    { onSSR: true }
-  );
-
-  onUpdate(() => {
-    state.evaluateJsCode();
-  }, [props.builderContextSignal.value.content?.data?.jsCode]);
-
-  onUpdate(() => {
+  onInit(() => {
     state.runHttpRequests();
-  }, [props.builderContextSignal.value.content?.data?.httpRequests]);
+    state.emitStateUpdate();
+  });
 
   onUpdate(() => {
     state.emitStateUpdate();

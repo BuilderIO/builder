@@ -1,5 +1,129 @@
 # @builder.io/sdk-angular
 
+## 0.17.0
+
+### Minor Changes
+
+- 78b8e5d: Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+  Previously, both functions would swallow all errors and return `null`.
+
+## 0.2.27
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling
+
+## 0.2.26
+
+### Patch Changes
+
+- 5e88efa: Logs every API URL hit from the SDK whenever `process.env.DEBUG` is set to `true` in the project
+
+## 0.2.25
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
+## 0.2.24
+
+### Patch Changes
+
+- 067423d: Fix: builder children blocks not being ssred
+- c2e7846: Fix: make Column block's state reactive to its `props`
+- 067423d: Feat: supports `noWrap` for custom components
+
+## 0.2.23
+
+### Patch Changes
+
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
+## 0.2.22
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
+## 0.2.21
+
+### Patch Changes
+
+- e4253d6: Fix: accessing Builder Context within `Blocks` (regression from https://github.com/BuilderIO/builder/pull/3658)
+- 3146ba3: Fix: optionally chain access to context value in Blocks
+- c5dd946: Feature: adds a `className: string` prop to the `Blocks` component used to apply a class to the `div` that wraps each list of blocks.
+
+## 0.2.20
+
+### Patch Changes
+
+- 4660aa6: Feature: optimize simple `state.*` read access bindings by avoiding runtime-specific eval, and instead fetching the value directly from the state
+
+## 0.2.19
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+## 0.2.18
+
+### Patch Changes
+
+- 269db7b: Fix: execute JS code and make http requests on Content initialization (instead of "on mount")
+- 269db7b: Various improvements to edge runtime interpreter:
+
+  - Correctly handle code blocks with async/await polyfills (typically `jsCode` blocks)
+  - Improve handling of getters and setters on `state` values
+
+## 0.2.17
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 0.2.16
+
+### Patch Changes
+
+- 4c43240: Fix: children placement in dynamic components
+
+## 0.2.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 0.2.14
+
+### Patch Changes
+
+- 8bfd467: Fix: update exported selector to `builder-content` to fix usage of Content component in Angular v18
+
+## 0.2.13
+
+### Patch Changes
+
+- a44d73b: Fix: add `types` `exports` key to fix TS types support for projects in `bundler` mode.
+
 ## 0.2.12
 
 ### Patch Changes

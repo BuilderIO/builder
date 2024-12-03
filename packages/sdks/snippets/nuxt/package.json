@@ -3,16 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "SERVER_NAME=nuxt yarn nx test:snippet @sdk/tests",
+    "test": "SERVER_NAME=nuxt yarn g:nx test:snippet @sdk/tests",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "serve": "nuxt preview",
     "postinstall": "nuxt prepare"
-  },
-  "devDependencies": {
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0"
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",

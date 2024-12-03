@@ -120,6 +120,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   };
 
   onWindowMessage = (event: MessageEvent) => {
+    const isTrusted = Builder.isTrustedHostForEvent(event);
+    if (!isTrusted) return;
+
     const message = event.data;
     if (!message) {
       return;
