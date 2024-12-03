@@ -12,7 +12,6 @@ Builder.registerComponent(CustomTabs, {
     {
       name: 'tabList',
       type: 'array',
-      defaultValue: [],
       subFields: [
         {
           name: 'tabName',

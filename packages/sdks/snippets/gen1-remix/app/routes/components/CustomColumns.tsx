@@ -1,24 +1,25 @@
 import { BuilderBlocks, BuilderElement } from '@builder.io/react';
 
 interface CustomColumnsProps {
-  column1: { blocks: React.ReactNode };
-  column2: { blocks: React.ReactNode };
+  column1: React.ReactNode;
+  column2: React.ReactNode;
   builderBlock: BuilderElement;
 }
 
 export const CustomColumns = (props: CustomColumnsProps) => {
+  console.log('props', props);
   return (
     <>
       <BuilderBlocks
         parentElementId={props.builderBlock.id}
-        dataPath="column1.blocks"
-        blocks={props.column1?.blocks}
+        dataPath="column1"
+        blocks={props.column1}
       />
 
       <BuilderBlocks
         parentElementId={props.builderBlock.id}
-        dataPath="column2.blocks"
-        blocks={props.column2?.blocks}
+        dataPath="column2"
+        blocks={props.column2}
       />
     </>
   );
