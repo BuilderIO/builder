@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core';
 import React, { PropsWithChildren } from 'react';
 import { BuilderComponent } from '../components/builder-component.component';
-import { Builder, BuilderElement } from '@builder.io/sdk';
+import { Builder, BuilderElement, builder } from '@builder.io/sdk';
 import hash from 'hash-sum';
 import { NoWrap } from '../components/no-wrap';
 import { BuilderStoreContext } from '../store/builder-store';
@@ -50,6 +50,7 @@ export interface SymbolProps {
 class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
   ref: BuilderComponent | null = null;
   staticRef: HTMLDivElement | null = null;
+  isEditingThisSymbol = false;
 
   get placeholder() {
     return (
@@ -64,6 +65,16 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
     if (this.useStatic && this.staticRef && refs[this.props.builderBlock?.id!]) {
       this.staticRef.parentNode?.replaceChild(refs[this.props.builderBlock?.id!], this.staticRef);
     }
+    Builder.nextTick(() => {
+      const { model, entry } = this.props.symbol || {};
+      // allows editing of symbols in the context of a parent page
+      this.isEditingThisSymbol = Boolean(
+        Builder.isEditing &&
+          model === builder.editingModel &&
+          entry &&
+          location.search.includes(`overrides.${entry}`)
+      );
+    });
   }
 
   get useStatic() {
@@ -97,6 +108,10 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
       showPlaceholder = true;
     }
 
+    if (this.isEditingThisSymbol) {
+      showPlaceholder = false;
+    }
+
     let key = dynamic ? undefined : [model, entry].join(':');
     const dataString = Builder.isEditing ? null : data && size(data) && hash(data);
 
@@ -105,7 +120,9 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
     }
     const attributes = this.props.attributes || {};
     return (
-      <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>
+      <BuilderStoreContext.Consumer
+        key={(model || 'no model') + ':' + (entry || 'no entry' + this.isEditingThisSymbol)}
+      >
         {state => {
           const builderComponentKey = `${key}_${state?.state?.locale || 'Default'}`;
           return (
@@ -139,7 +156,12 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
                   key={builderComponentKey}
-                  options={{ key: builderComponentKey, noEditorUpdates: true }}
+                  options={{
+                    ...(!this.isEditingThisSymbol && {
+                      key: builderComponentKey,
+                      noEditorUpdates: true,
+                    }),
+                  }}
                   codegen={!!content?.data?.blocksJs}
                   hydrate={state.state?._hydrate}
                   builderBlock={this.props.builderBlock}

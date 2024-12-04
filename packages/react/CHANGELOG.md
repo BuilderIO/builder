@@ -1,5 +1,47 @@
 # @builder.io/react
 
+## 7.0.1
+
+### Patch Changes
+
+- bf8d783: feat: allow symbols to be edited in the context of a parent entry
+
+## 7.0.0
+
+### Major Changes
+
+- f12f43d: Breaking Change: Use `/query` instead of `/content` for API calls. This change fixes a symbol rendering issue introduced in https://github.com/BuilderIO/builder/pull/3681, which was included in the 6.0.0 release.
+
+### Patch Changes
+
+- Updated dependencies [f12f43d]
+  - @builder.io/sdk@5.0.0
+
+## 6.0.4
+
+### Patch Changes
+
+- b0ab0f5: Add support for dynamic bindings in responsive styles
+
+## 6.0.3
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling and pass through locale prop to personalization containers when filtering
+- Updated dependencies [9b11521]
+- Updated dependencies [027a07a]
+  - @builder.io/sdk@4.0.3
+
+## 6.0.2
+
+### Patch Changes
+
+- dda2ba4: Fix: Add `trustedHost` checks to all remaining event listeners
+- dda2ba4: Fix: Restrict event listening to when `isEditing === true`
+- Updated dependencies [dda2ba4]
+  - @builder.io/sdk@4.0.2
+
 ## 6.0.1
 
 ### Patch Changes

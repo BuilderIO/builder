@@ -1,5 +1,24 @@
 # @builder.io/sdk
 
+## 5.0.0
+
+### Major Changes
+
+- f12f43d: Breaking Change: Use `/query` instead of `/content` for API calls. This change fixes a symbol rendering issue introduced in https://github.com/BuilderIO/builder/pull/3681, which was included in the 4.0.0 release.
+
+## 4.0.3
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling and pass through locale prop to personalization containers when filtering
+
+## 4.0.2
+
+### Patch Changes
+
+- dda2ba4: Fix: Restrict event listening to when `isEditing === true`
+
 ## 4.0.1
 
 ### Patch Changes

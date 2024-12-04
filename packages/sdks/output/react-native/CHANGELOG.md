@@ -1,5 +1,26 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 3.0.0
+
+### Major Changes
+
+- 78b8e5d: Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+  Previously, both functions would swallow all errors and return `null`.
+
+## 2.0.31
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling
+
+## 2.0.30
+
+### Patch Changes
+
+- 5e88efa: Logs every API URL hit from the SDK whenever `process.env.DEBUG` is set to `true` in the project
+
 ## 2.0.29
 
 ### Patch Changes
