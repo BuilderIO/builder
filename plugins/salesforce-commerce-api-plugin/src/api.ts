@@ -92,12 +92,10 @@ export class Api {
 
   async validateConfig(){
     try{
-      let res = await this.request(`validate-config`);
-      console.log('log4', res);
-      if(res.errors){
-        throw res.errors;
-      }
-      return res;
+       const response = await this.request(`validate-config`);
+       if(response.errors){
+        throw response.errors[0]?.title;
+       }
     }catch(e){
       throw e;
     }

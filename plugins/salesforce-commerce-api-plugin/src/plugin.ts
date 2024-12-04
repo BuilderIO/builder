@@ -74,12 +74,14 @@ registerCommercePlugin(
     ],
     ctaText: `Connect your Salesforce Commerce API`,
     onSave: async () => {
+      appState.snackBar.display({
+        message: 'Validating Config Details...'
+      });
       const api = new Api(appState.user.apiKey, pkg.name);
       try{
-        let res = await api.validateConfig();
-        console.log('log2', res);
-      } catch(err){
-        console.log('log3', err);
+        await api.validateConfig();
+      } catch(err: any){
+        console.log('error in plugin', err)
         throw err;
       }
     }
