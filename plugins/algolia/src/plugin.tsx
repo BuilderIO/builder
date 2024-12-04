@@ -12,13 +12,11 @@ Builder.register('plugin', {
       name: 'algoliaKey',
       type: 'text',
       defaultValue: true,
-      helperText: 'todo add here',
     },
     {
       name: 'algoliaAppId',
       type: 'text',
       defaultValue: true,
-      helperText: 'todo add here',
     },
   ],
 
