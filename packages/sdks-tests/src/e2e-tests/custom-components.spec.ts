@@ -97,4 +97,21 @@ test.describe('Custom components', () => {
     });
     await customComponentMsgPromise;
   });
+  test('do not render component in `page` model when restricted to `test-model`', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react'].includes(packageName));
+    await page.goto('/custom-components-models-not-show');
+    await expect(page.locator('text=hello World').first()).not.toBeVisible();
+  });
+
+  test('render component in `test-model` model when restricted to `test-model`', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react'].includes(packageName));
+    await page.goto('/custom-components-models-show');
+    await expect(page.locator('text=hello World').first()).toBeVisible();
+  });
 });
