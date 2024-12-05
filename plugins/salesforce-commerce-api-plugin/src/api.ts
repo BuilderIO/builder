@@ -91,14 +91,10 @@ export class Api {
   }
 
   async validateConfig(){
-    try{
        const response = await this.request(`validate-config`);
        if(response.errors){
         throw response.errors[0]?.title;
        }
-    }catch(e){
-      throw e;
-    }
   }
 
   getProduct(id: string): Promise<any> {
