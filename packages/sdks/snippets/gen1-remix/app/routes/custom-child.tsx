@@ -4,14 +4,17 @@ import {
   BuilderComponent,
   withChildren,
 } from '@builder.io/react';
-
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { CustomHero } from './components/CustomHero';
 
+import { CustomHero } from './components/CustomHero';
 builder.init('ee9f13b4981e489a9a1209887695ef2b');
 
-Builder.registerComponent(withChildren(CustomHero), {
+// IMPORTANT: withChildren is required to enable child block functionality
+const CustomHeroWithChildren = withChildren(CustomHero);
+
+// Register the component with children
+Builder.registerComponent(CustomHeroWithChildren, {
   name: 'CustomHero',
   canHaveChildren: true,
   defaultChildren: [
@@ -37,11 +40,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       },
     })
     .toPromise();
+
   return { page };
 };
 
 export default function CustomChildPage() {
   const { page } = useLoaderData<typeof loader>();
-
   return <BuilderComponent model="custom-child" content={page} />;
 }
