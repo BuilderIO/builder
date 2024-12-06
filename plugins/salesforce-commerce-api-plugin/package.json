@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-sfcc-commerce-api",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
