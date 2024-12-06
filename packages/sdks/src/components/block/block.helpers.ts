@@ -13,9 +13,11 @@ import type { RepeatData } from './types.js';
 export const getComponent = ({
   block,
   registeredComponents,
+  model,
 }: {
   block: BuilderBlock;
   registeredComponents: RegisteredComponents;
+  model: string;
 }) => {
   const componentName = block.component?.name;
 
@@ -25,7 +27,13 @@ export const getComponent = ({
 
   const ref = registeredComponents[componentName];
 
-  if (!ref) {
+  const isRestricted =
+    model &&
+    ref?.models &&
+    ref.models?.length > 0 &&
+    !ref.models.includes(model);
+
+  if (!ref || isRestricted) {
     // TODO: Public doc page with more info about this message
     console.warn(`
       Could not find a registered component named "${componentName}". 
@@ -112,10 +120,19 @@ export const provideLinkComponent = (
 
 export const provideRegisteredComponents = (
   block: RegisteredComponent | null | undefined,
-  registeredComponents: RegisteredComponents
+  registeredComponents: RegisteredComponents,
+  model: string
 ) => {
-  if (block?.shouldReceiveBuilderProps?.builderComponents)
-    return { builderComponents: registeredComponents };
+  if (block?.shouldReceiveBuilderProps?.builderComponents) {
+    const filteredRegisteredComponents = Object.fromEntries(
+      Object.entries(registeredComponents).filter(([_, component]) => {
+        return component?.models && model
+          ? component.models.includes(model)
+          : true;
+      })
+    );
+    return { builderComponents: filteredRegisteredComponents };
+  }
 
   return {};
 };

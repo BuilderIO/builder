@@ -6,3 +6,9 @@ function Hello() {
 }
 
 export default Hello;
+
+export const fromClientModuleHelloInfo = {
+  name: 'FromClientModuleHello',
+  component: Hello,
+  inputs: [],
+};
