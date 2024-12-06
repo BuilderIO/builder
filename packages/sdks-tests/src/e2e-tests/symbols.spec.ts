@@ -4,10 +4,11 @@ import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-lo
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
 import {
   excludeGen2,
-  excludeTestFor,
   checkIsGen1React,
   checkIsRN,
   test,
+  mapSdkName,
+  getSdkGeneration,
 } from '../helpers/index.js';
 import type { ServerName } from '../helpers/sdk.js';
 
@@ -69,6 +70,7 @@ test.describe('Symbols', () => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
     let x = 0;
+    let headers;
 
     const urlMatch =
       sdk === 'oldReact'
@@ -77,6 +79,7 @@ test.describe('Symbols', () => {
 
     await page.route(urlMatch, route => {
       x++;
+      headers = route.request().headers();
 
       const url = new URL(route.request().url());
 
@@ -96,14 +99,19 @@ test.describe('Symbols', () => {
     await testSymbols(page);
 
     await expect(x).toBeGreaterThanOrEqual(2);
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
   test('refresh on locale change', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     // have to use `.skip()` because this test sometimes works in gen2 but flaky
     test.skip(excludeGen2(sdk));
 
     let x = 0;
+    let headers;
 
     const urlMatch =
       sdk === 'oldReact'
@@ -112,6 +120,7 @@ test.describe('Symbols', () => {
 
     await page.route(urlMatch, route => {
       x++;
+      headers = route.request().headers();
 
       const url = new URL(route.request().url());
 
@@ -135,6 +144,11 @@ test.describe('Symbols', () => {
     await expect(page.locator('text=French text')).toBeVisible();
 
     await expect(x).toBeGreaterThanOrEqual(2);
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
   test.describe('apiVersion', () => {
@@ -142,6 +156,7 @@ test.describe('Symbols', () => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
 
       let x = 0;
+      let headers;
 
       const urlMatch = checkIsGen1React(sdk)
         ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
@@ -149,6 +164,7 @@ test.describe('Symbols', () => {
 
       await page.route(urlMatch, route => {
         x++;
+        headers = route.request().headers();
 
         const url = new URL(route.request().url());
 
@@ -169,11 +185,17 @@ test.describe('Symbols', () => {
       await testSymbols(page);
 
       await expect(x).toBeGreaterThanOrEqual(2);
+
+      // Check for new SDK headers
+      expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
     });
 
     test('apiVersion is set to v3', async ({ page, packageName, sdk }) => {
       test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
       let x = 0;
+      let headers;
 
       const urlMatch = checkIsGen1React(sdk)
         ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
@@ -181,6 +203,7 @@ test.describe('Symbols', () => {
 
       await page.route(urlMatch, route => {
         x++;
+        headers = route.request().headers();
 
         const url = new URL(route.request().url());
 
@@ -201,47 +224,25 @@ test.describe('Symbols', () => {
       await testSymbols(page);
 
       await expect(x).toBeGreaterThanOrEqual(2);
-    });
 
-    test('apiVersion is set to v1', async ({ page, sdk }) => {
-      test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
-      test.fail(excludeGen2(sdk));
-      let x = 0;
-
-      const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
-
-      await page.route(urlMatch, route => {
-        x++;
-
-        const url = new URL(route.request().url());
-
-        const keyName = decodeURIComponent(url.pathname).split('/').reverse()[0];
-
-        return route.fulfill({
-          status: 200,
-          json: {
-            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
-          },
-        });
-      });
-
-      await page.goto('/api-version-v1');
-
-      await testSymbols(page);
-
-      await expect(x).toBeGreaterThanOrEqual(2);
+      // Check for new SDK headers
+      expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
     });
   });
 
   test('works in nested symbols with inherit', async ({ packageName, page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     await page.goto('/nested-symbols');
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    // rsc skipped because it fetches the content from the server
-    test.fail(['gen1-remix', 'gen1-next', 'nextjs-sdk-next-app'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next'].includes(packageName));
 
-    const symbols = page.locator('[builder-model="symbol"]');
+    let selector = '[builder-model="symbol"]';
+    if (checkIsRN(sdk)) {
+      selector = '[data-class="builder-symbol"]';
+    }
+    const symbols = page.locator(selector);
     await expect(symbols).toHaveCount(2);
   });
 });

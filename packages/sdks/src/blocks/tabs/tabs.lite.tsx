@@ -47,7 +47,7 @@ export default function Tabs(props: TabsProps) {
             >
               <Blocks
                 parent={props.builderBlock.id}
-                path={`component.options.tabs.${index}.label`}
+                path={`tabs.${index}.label`}
                 blocks={tab.label}
                 context={props.builderContext}
                 registeredComponents={props.builderComponents}
@@ -62,7 +62,7 @@ export default function Tabs(props: TabsProps) {
         <div>
           <Blocks
             parent={props.builderBlock.id}
-            path={`component.options.tabs.${state.activeTab}.content`}
+            path={`tabs.${state.activeTab}.content`}
             blocks={state.activeTabContent(state.activeTab)}
             context={props.builderContext}
             registeredComponents={props.builderComponents}

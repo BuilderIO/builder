@@ -32,9 +32,15 @@ useMetadata({
 
 export default function Columns(props: ColumnProps) {
   const state = useStore({
-    gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
-    cols: props.columns || [],
-    stackAt: props.stackColumnsAt || 'tablet',
+    get gutterSize() {
+      return typeof props.space === 'number' ? props.space || 0 : 20;
+    },
+    get cols() {
+      return props.columns || [];
+    },
+    get stackAt() {
+      return props.stackColumnsAt || 'tablet';
+    },
     getTagName(column: Column) {
       return column.link
         ? props.builderLinkComponent ||
@@ -84,12 +90,13 @@ export default function Columns(props: ColumnProps) {
       return state.stackAt === 'never' ? desktopStyle : stackedStyle;
     },
 
-    flexDir:
-      props.stackColumnsAt === 'never'
+    get flexDir(): 'row' | 'column' | 'column-reverse' {
+      return props.stackColumnsAt === 'never'
         ? 'row'
         : props.reverseColumnsWhenStacked
           ? 'column-reverse'
-          : 'column',
+          : 'column';
+    },
 
     columnsCssVars(): Dictionary<string> {
       return useTarget({
@@ -164,6 +171,10 @@ export default function Columns(props: ColumnProps) {
     },
 
     columnsStyles(): string {
+      const childColumnDiv = useTarget({
+        angular: `.${props.builderBlock.id}-breakpoints .builder-column:first-of-type`,
+        default: `.${props.builderBlock.id}-breakpoints > .builder-column`,
+      });
       return `
         @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
           .${props.builderBlock.id}-breakpoints {
@@ -171,7 +182,7 @@ export default function Columns(props: ColumnProps) {
             align-items: stretch;
           }
 
-          .${props.builderBlock.id}-breakpoints > .builder-column {
+          ${childColumnDiv} {
             width: var(--column-width-tablet) !important;
             margin-left: var(--column-margin-left-tablet) !important;
           }
@@ -183,7 +194,7 @@ export default function Columns(props: ColumnProps) {
             align-items: stretch;
           }
 
-          .${props.builderBlock.id}-breakpoints > .builder-column {
+          ${childColumnDiv} {
             width: var(--column-width-mobile) !important;
             margin-left: var(--column-margin-left-mobile) !important;
           }
@@ -228,7 +239,11 @@ export default function Columns(props: ColumnProps) {
          * "dynamic" media query values based on custom breakpoints.
          * Adding them directly otherwise leads to Mitosis and TS errors.
          */}
-        <InlinedStyles styles={state.columnsStyles()} id="builderio-columns" />
+        <InlinedStyles
+          styles={state.columnsStyles()}
+          id="builderio-columns"
+          nonce={props.builderContext.value.nonce}
+        />
       </Show>
 
       <For each={props.columns}>
@@ -247,7 +262,7 @@ export default function Columns(props: ColumnProps) {
                 qwik: deoptSignal(column.blocks),
                 default: column.blocks,
               })}
-              path={`component.options.columns.${index}.blocks`}
+              path={`columns.${index}.blocks`}
               parent={props.builderBlock.id}
               styleProp={{
                 flexGrow: useTarget<string | number>({

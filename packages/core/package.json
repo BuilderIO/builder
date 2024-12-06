@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk",
-  "version": "2.2.6",
+  "version": "5.0.0",
   "unpkg": "./dist/index.browser.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -16,7 +16,8 @@
     "docs": "yarn run docs:generate && yarn run docs:cleanup",
     "docs:generate": "typedoc",
     "docs:cleanup": "node scripts/cleanup-generated-docs",
-    "build": "yarn run tsc && rollup -c",
+    "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
+    "build": "yarn run tsc && rollup -c && yarn set-sdk-version",
     "watch": "rollup -cw",
     "start": "yarn run watch",
     "tsc": "tsc --module commonjs",
@@ -45,8 +46,6 @@
     "glob": "^7.2.3",
     "glob-promise": "^4.2.2",
     "jest": "27.4.7",
-    "nx": "16.10.0",
-    "nx-cloud": "16.5.2",
     "rollup": "^2.38.5",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -72,6 +71,5 @@
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
-  },
-  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
+  }
 }

@@ -24,7 +24,7 @@ export default function AnnouncementScreen() {
         urlPath: `/announcements/${slug}`,
       },
     })
-      .then((data) => {
+      .then((data: BuilderContent) => {
         setContent(data);
       })
       .catch((err) => console.error('Error fetching Builder Content: ', err));
@@ -32,15 +32,14 @@ export default function AnnouncementScreen() {
 
   return (
     <View>
-      {content ? (
+      {content && (
         <Content
           apiKey={BUILDER_API_KEY}
           model={MODEL_NAME}
           content={content}
         />
-      ) : (
-        <Text>Announcement Bar not Found</Text>
       )}
+
       {/* Your content coming from your app (or also Builder) */}
       <Text>The rest of your page goes here</Text>
     </View>

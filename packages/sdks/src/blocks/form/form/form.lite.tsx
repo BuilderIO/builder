@@ -24,6 +24,7 @@ import { filterAttrs } from '../../helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
+import { logFetch } from '../../../functions/log-fetch.js';
 import { setAttrs } from '../../helpers.js';
 
 export type FormProps = BuilderDataProps &
@@ -193,16 +194,18 @@ export default function FormComponent(props: FormProps) {
           props.sendSubmissionsToEmail || ''
         )}&name=${encodeURIComponent(props.name || '')}`;
 
-        fetch(
+        const url =
           props.sendSubmissionsTo === 'email'
             ? formUrl
-            : props.action! /* TODO: throw error if no action URL */,
-          {
-            body,
-            headers,
-            method: props.method || 'post',
-          }
-        ).then(
+            : props.action!; /* TODO: throw error if no action URL */
+
+        logFetch(url);
+
+        fetch(url, {
+          body,
+          headers,
+          method: props.method || 'post',
+        }).then(
           async (res) => {
             let body;
             const contentType = res.headers.get('content-type');

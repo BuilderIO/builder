@@ -1,13 +1,12 @@
-// fails because type imports cannot be injected
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
+  type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
-import { HelloComponent } from './hello.component';
+import { customComponents } from './custom-components';
 
 interface BuilderProps {
   apiVersion: string;
@@ -16,19 +15,29 @@ interface BuilderProps {
   apiKey: string;
   model: string;
   content: any;
+  data?: any;
+  apiHost?: string;
 }
 
 @Component({
   selector: 'app-root',
   template: `
-    <content-variants
-      [model]="model"
-      [content]="content"
-      [apiKey]="apiKey"
-      [trustedHosts]="trustedHosts"
-      [canTrack]="canTrack"
-      [customComponents]="customComponents"
-    ></content-variants>
+    <ng-container *ngIf="content; else notFound">
+      <builder-content
+        [model]="model"
+        [content]="content"
+        [apiKey]="apiKey"
+        [trustedHosts]="trustedHosts"
+        [canTrack]="canTrack"
+        [customComponents]="customComponents"
+        [data]="data"
+        [apiHost]="apiHost"
+      ></builder-content>
+    </ng-container>
+
+    <ng-template #notFound>
+      <div>404 - Content not found</div>
+    </ng-template>
   `,
 })
 export class AppComponent {
@@ -39,16 +48,10 @@ export class AppComponent {
   apiKey: BuilderProps['apiKey'] = 'abcd';
   model: BuilderProps['model'] = 'page';
   content: BuilderProps['content'];
+  data: BuilderProps['data'];
+  apiHost: BuilderProps['apiHost'];
 
-  customComponents = [
-    {
-      component: HelloComponent,
-      name: 'Hello',
-      inputs: [],
-    },
-  ];
-
-  constructor(private cdr: ChangeDetectorRef) {}
+  customComponents: RegisteredComponent[] = customComponents;
 
   async ngOnInit() {
     const urlPath = window.location.pathname || '';
@@ -72,7 +75,7 @@ export class AppComponent {
     this.apiKey = builderProps.apiKey;
     this.model = builderProps.model;
     this.apiVersion = builderProps.apiVersion;
-
-    this.cdr.detectChanges();
+    this.data = builderProps.data;
+    this.apiHost = builderProps.apiHost;
   }
 }

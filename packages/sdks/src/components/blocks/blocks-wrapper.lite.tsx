@@ -1,4 +1,10 @@
-import { useMetadata, useStore, useTarget } from '@builder.io/mitosis';
+import {
+  onMount,
+  useMetadata,
+  useRef,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 
@@ -24,12 +30,30 @@ export type BlocksWrapperProps = {
   BlocksWrapperProps: any;
 
   children?: any;
+
+  classNameProp?: string;
 };
 
 export default function BlocksWrapper(props: BlocksWrapperProps) {
+  const blocksWrapperRef = useRef<HTMLDivElement>();
   const state = useStore({
     get className() {
-      return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
+      return [
+        'builder-blocks',
+        !props.blocks?.length ? 'no-blocks' : '',
+        props.classNameProp,
+      ]
+        .filter(Boolean)
+        .join(' ');
+    },
+    get dataPath() {
+      if (!props.path) {
+        return undefined;
+      }
+      const pathPrefix = 'component.options.';
+      return props.path.startsWith(pathPrefix)
+        ? props.path
+        : `${pathPrefix}${props.path || ''}`;
     },
     onClick() {
       if (isEditing() && !props.blocks?.length) {
@@ -38,7 +62,7 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
             type: 'builder.clickEmptyBlocks',
             data: {
               parentElementId: props.parent,
-              dataPath: props.path,
+              dataPath: state.dataPath,
             },
           },
           '*'
@@ -52,7 +76,7 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
             type: 'builder.hoverEmptyBlocks',
             data: {
               parentElementId: props.parent,
-              dataPath: props.path,
+              dataPath: state.dataPath,
             },
           },
           '*'
@@ -61,10 +85,31 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
     },
   });
 
+  onMount(() => {
+    useTarget({
+      reactNative: () => {
+        if (isEditing()) {
+          /**
+           * React Native strips off custom HTML attributes, so we have to manually set them here
+           * to ensure that blocks are correctly dropped into the correct parent.
+           */
+          if (state.dataPath) {
+            blocksWrapperRef.setAttribute('builder-path', state.dataPath);
+          }
+          if (props.parent) {
+            blocksWrapperRef.setAttribute('builder-parent-id', props.parent);
+          }
+        }
+      },
+      default: () => {},
+    });
+  });
+
   return (
     <props.BlocksWrapper
+      ref={blocksWrapperRef}
       class={state.className}
-      builder-path={props.path}
+      builder-path={state.dataPath}
       builder-parent-id={props.parent}
       {...useTarget({
         reactNative: { dataSet: { class: state.className } },

@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-algolia",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -10,7 +10,7 @@
   "files": [
     "dist"
   ],
-  "author": "Builder.io <help@builder.io>",
+  "author": "Builder.io <support@builder.io>",
   "repository": {
     "type": "git",
     "url": ""

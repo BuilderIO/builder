@@ -266,6 +266,10 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       return;
     }
 
+    if (this.props.noWebp) {
+      return;
+    }
+
     // We can auto add srcset for cdn.builder.io and shopify
     // images, otherwise you can supply this prop manually
     if (!(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))) {

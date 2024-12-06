@@ -9,8 +9,7 @@ import {
 } from '../helpers/index.js';
 
 test.describe('Styles', () => {
-  test('data-binding-styles', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Styles not working properly in Angular SDK');
+  test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
     await expect(page.locator(`text="This text should be red..."`)).toHaveCSS(
       'color',
@@ -20,10 +19,6 @@ test.describe('Styles', () => {
 
   test.describe('Style Bindings', () => {
     test('Content', async ({ page, sdk }) => {
-      test.fail(
-        excludeTestFor({ angular: true }, sdk),
-        'Styles not working properly in Angular SDK'
-      );
       await page.goto('/content-bindings');
 
       const expected = {
@@ -36,7 +31,9 @@ test.describe('Styles', () => {
       const FIRST_BLOCK_SELECTOR = checkIsRN(sdk)
         ? // ScrollView adds an extra div wrapper
           `${getClassSelector('builder-blocks', sdk)} > div > div`
-        : `${getClassSelector('builder-blocks', sdk)} > div`;
+        : sdk === 'angular'
+          ? `div[builder-id="builder-1098ca09970149b3bc4cd43643bd0545"]`
+          : `${getClassSelector('builder-blocks', sdk)} > div`;
 
       const locator = page
         .locator(FIRST_BLOCK_SELECTOR)

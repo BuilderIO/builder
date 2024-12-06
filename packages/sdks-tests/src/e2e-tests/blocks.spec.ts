@@ -3,14 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from '../helpers/index.js';
-import {
-  excludeRn,
-  excludeTestFor,
-  checkIsRN,
-  test,
-  isSSRFramework,
-  mockFolderPath,
-} from '../helpers/index.js';
+import { excludeRn, checkIsRN, test, isSSRFramework, mockFolderPath } from '../helpers/index.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk, packageName }) => {
@@ -192,6 +185,35 @@ test.describe('Blocks', () => {
           await expect(image).toHaveAttribute(property, expected[property]);
         }
       }
+    });
+
+    test("SVG Image shouldn't have srcset", async ({ page, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk));
+      test.skip(
+        isSSRFramework(packageName),
+        'SSR frameworks get the images from the server so page.route intercept does not work'
+      );
+      const mockSvgPath = path.join(mockFolderPath, 'sample-svg.svg');
+      const mockSvgBuffer = fs.readFileSync(mockSvgPath);
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes('cdn.builder.io/api/v1/image')) {
+          return route.fulfill({
+            status: 200,
+            contentType: 'image/svg+xml',
+            body: mockSvgBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
+
+      await page.goto('/image-no-webp');
+
+      const img = page.locator('.builder-image');
+
+      await expect(img).not.toHaveAttribute('srcset');
     });
   });
 
@@ -377,10 +399,6 @@ test.describe('Blocks', () => {
               "intermittent success, can't use test.fail()"
             );
 
-            test.fail(
-              (sizeName === 'mobile' || sizeName === 'tablet') &&
-                excludeTestFor({ angular: true }, sdk)
-            );
             await page.setViewportSize(size);
             await page.goto('/columns');
             const columns = checkIsRN(sdk)
@@ -416,10 +434,6 @@ test.describe('Blocks', () => {
 
     test('check different width columns are correctly rendered', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      test.fail(
-        excludeTestFor({ angular: true }, sdk),
-        "Angular SDK columns don't set the width correctly"
-      );
 
       await page.goto('/columns-with-different-widths');
 
@@ -459,10 +473,6 @@ test.describe('Blocks', () => {
 
     test('space is correctly allocated', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
-      test.fail(
-        excludeTestFor({ angular: true }, sdk),
-        "Angular SDK columns don't set the width correctly"
-      );
 
       await page.goto('/columns-with-different-widths');
 

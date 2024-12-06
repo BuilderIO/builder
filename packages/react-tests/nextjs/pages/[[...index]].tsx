@@ -20,7 +20,7 @@ export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    paths: getAllPathnames('gen1').map(path => {
+    paths: getAllPathnames('gen1-next').map(path => {
       const output: StaticProps = {
         index: path === '/' ? [] : path.split('/').filter(Boolean),
       };
@@ -47,6 +47,36 @@ export default function Page(props: PageProps & { apiVersion: any }) {
   useEffect(() => {
     if (!router.asPath.includes('can-track-false') && !router.asPath.includes('symbol-tracking')) {
       builder.canTrack = true;
+    }
+    if (router.asPath.includes('get-query')) {
+      builder
+        .get('', {
+          ...props,
+          ...props['options'],
+        })
+        .promise()
+        .then();
+    } else if (router.asPath.includes('get-content')) {
+      builder
+        .get('', {
+          ...props,
+          ...props['options'],
+        })
+        .promise()
+        .then();
+    } else if (router.asPath.includes('with-fetch-options')) {
+      builder
+        .get('', {
+          ...props,
+          fetchOptions: {
+            method: 'POST',
+            body: JSON.stringify({
+              test: 'test',
+            }),
+          },
+        })
+        .promise()
+        .then();
     }
   }, []);
 

@@ -24,6 +24,7 @@ registerCommercePlugin(
         name: 'clientId',
         type: 'string',
         required: true,
+        friendlyName:'Public Client ID',
       },
       {
         name: 'organizationId',
@@ -61,8 +62,24 @@ registerCommercePlugin(
         friendlyName: 'Einstein API Site ID',
         type: 'string',
       },
+      {
+        name: 'navDepth',
+        type: 'number',
+        helperText: 'This will be used in category search. If you enter nav depth greater than 3 there could be performance implications',
+      },
+      {
+        name: 'rootCategory',
+        type: 'string', 
+      },
     ],
     ctaText: `Connect your Salesforce Commerce API`,
+    onSave: async () => {
+      appState.snackBar.display({
+        message: 'Validating Config Details...'
+      });
+      const api = new Api(appState.user.apiKey, pkg.name);
+      await api.validateConfig();
+    }
   },
   async settings => {
     const api = new Api(appState.user.apiKey, pkg.name);
@@ -96,7 +113,7 @@ registerCommercePlugin(
           return await api.getProduct(id);
         },
         async search(search: string) {
-          return await api.search(search || 'womens');
+          return await api.search(search || '');
         },
         getRequestObject(id: string) {
           return {

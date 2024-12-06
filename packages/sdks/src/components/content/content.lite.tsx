@@ -1,5 +1,6 @@
 import {
   Show,
+  onInit,
   setContext,
   useMetadata,
   useState,
@@ -14,7 +15,9 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
-import { serializeComponentInfo } from '../../functions/register-component.js';
+import { evaluate } from '../../functions/evaluate/evaluate.js';
+import { serializeIncludingFunctions } from '../../functions/register-component.js';
+import { logger } from '../../helpers/logger.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
@@ -53,7 +56,11 @@ export default function ContentComponent(props: ContentProps) {
 
     registeredComponents: [
       ...getDefaultRegisteredComponents(),
-      ...(props.customComponents || []),
+      ...(props.customComponents?.filter(({ models }) => {
+        if (!models?.length) return true;
+        if (!props.model) return true;
+        return models.includes(props.model);
+      }) || []),
     ].reduce<RegisteredComponents>(
       (acc, { component, ...info }) => ({
         ...acc,
@@ -62,7 +69,7 @@ export default function ContentComponent(props: ContentProps) {
             vue: wrapComponentRef(component),
             default: component,
           }),
-          ...serializeComponentInfo(info),
+          ...serializeIncludingFunctions(info),
         },
       }),
       {}
@@ -99,11 +106,15 @@ export default function ContentComponent(props: ContentProps) {
         apiVersion: props.apiVersion,
         componentInfos: [
           ...getDefaultRegisteredComponents(),
-          ...(props.customComponents || []),
+          ...(props.customComponents?.filter(({ models }) => {
+            if (!models?.length) return true;
+            if (!props.model) return true;
+            return models.includes(props.model);
+          }) || []),
         ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
             ...acc,
-            [info.name]: serializeComponentInfo(info),
+            [info.name]: serializeIncludingFunctions(info),
           }),
           {}
         ),
@@ -116,6 +127,7 @@ export default function ContentComponent(props: ContentProps) {
           default: props.blocksWrapper || 'div',
         }),
         BlocksWrapperProps: props.blocksWrapperProps || {},
+        nonce: props.nonce || '',
       },
       { reactive: true }
     );
@@ -124,8 +136,53 @@ export default function ContentComponent(props: ContentProps) {
     registeredComponents: state.registeredComponents,
   });
 
+  onInit(() => {
+    if (!props.apiKey) {
+      logger.error(
+        'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
+
+    // run any dynamic JS code attached to content
+    const jsCode = builderContextSignal.value.content?.data?.jsCode;
+
+    if (jsCode) {
+      evaluate({
+        code: jsCode,
+        context: props.context || {},
+        localState: undefined,
+        rootState: builderContextSignal.value.rootState,
+        rootSetState: (newState) => {
+          useTarget({
+            vue: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            solid: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            react: () => {
+              Object.assign(builderContextSignal.value.rootState, newState);
+            },
+            reactNative: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            rsc: () => {
+              builderContextSignal.value.rootState = newState;
+            },
+            default: () => {
+              builderContextSignal.value.rootSetState?.(newState);
+            },
+          });
+        },
+        isExpression: false,
+      });
+    }
+  });
+
   return (
     <EnableEditor
+      apiHost={props.apiHost}
+      nonce={props.nonce}
       content={props.content}
       data={props.data}
       model={props.model}
@@ -139,11 +196,17 @@ export default function ContentComponent(props: ContentProps) {
       contentWrapper={props.contentWrapper}
       contentWrapperProps={props.contentWrapperProps}
       trustedHosts={props.trustedHosts}
+      isNestedRender={props.isNestedRender}
       {...useTarget({
         // eslint-disable-next-line object-shorthand
         react: { setBuilderContextSignal: setBuilderContextSignal },
-        // eslint-disable-next-line object-shorthand
-        reactNative: { setBuilderContextSignal: setBuilderContextSignal },
+        reactNative: {
+          // eslint-disable-next-line object-shorthand
+          setBuilderContextSignal: setBuilderContextSignal,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          strictStyleMode: props.strictStyleMode,
+        },
         // eslint-disable-next-line object-shorthand
         solid: { setBuilderContextSignal: setBuilderContextSignal },
         default: {},
@@ -153,10 +216,12 @@ export default function ContentComponent(props: ContentProps) {
         <InlinedScript
           scriptStr={state.scriptStr}
           id="builderio-variant-visibility"
+          nonce={props.nonce || ''}
         />
       </Show>
       <Show when={TARGET !== 'reactNative'}>
         <ContentStyles
+          nonce={props.nonce || ''}
           isNestedRender={props.isNestedRender}
           contentId={builderContextSignal.value.content?.id}
           cssCode={builderContextSignal.value.content?.data?.cssCode}

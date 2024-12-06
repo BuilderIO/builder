@@ -4,6 +4,7 @@ import type { ComponentInfo } from '../../types/components.js';
 export const componentInfo: ComponentInfo = {
   shouldReceiveBuilderProps: {
     builderBlock: TARGET === 'reactNative' ? true : false,
+    builderContext: true,
   },
   name: 'Text',
   static: true,

@@ -6,10 +6,11 @@ export default defineComponent({
     return h('style', {
       innerHTML: this.styles,
       'data-id': this.id,
+      nonce: this.nonce,
     });
   },
   name: 'inlined-styles',
 
-  props: ['styles', 'id'],
+  props: ['styles', 'id', 'nonce'],
 });
 </script>

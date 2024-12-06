@@ -1,7 +1,8 @@
 import { AB_TEST_INTERACTIVE } from './ab-test-interactive.js';
 import { CONTENT as abTest } from './ab-test.js';
+import { CONTENT as personalizatContainer } from './personalization-container.js';
 import { ANIMATIONS } from './animations.js';
-import { CONTENT as columns } from './columns.js';
+import { COLUMNS } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
 import { CSS_PROPERTIES } from './css-properties.js';
@@ -18,16 +19,21 @@ import { EDITING_STYLES } from './editing-styles.js';
 import { CONTENT as elementEvents } from './element-events.js';
 import { EXTERNAL_DATA } from './external-data.js';
 import { FORM } from './form.js';
-import { CONTENT as homepage } from './homepage.js';
+import { HOMEPAGE } from './homepage.js';
 import { HOVER_ANIMATION } from './hover-animation.js';
 import { HTTP_REQUESTS } from './http-requests.js';
-import { CONTENT as image, CONTENT_2 as imageHighPriority } from './image.js';
+import {
+  CONTENT as image,
+  CONTENT_2 as imageHighPriority,
+  CONTENT_3 as imageNoWebp,
+} from './image.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
 import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
-import { CONTENT as reactiveState } from './reactive-state.js';
+import { REACTIVE_STATE_CONTENT } from './reactive-state.js';
+import { LARGE_REACTIVE_STATE_CONTENT } from './large-reactive-state.js';
 import { REPEAT_ITEMS_BINDINGS } from './repeat-items-bindings.js';
 import { SHOW_HIDE_IF_REPEATS } from './show-hide-if-repeat.js';
 import { SHOW_HIDE_IF } from './show-hide-if.js';
@@ -41,13 +47,33 @@ import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
 import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
 import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
+import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
 import { BASIC_STYLES } from './basic-styles.js';
-import { ACCORDION, ACCORDION_GRID, ACCORDION_ONE_AT_A_TIME } from './accordion.js';
+import {
+  ACCORDION,
+  ACCORDION_GRID,
+  ACCORDION_ONE_AT_A_TIME,
+  ACCORDION_WITH_NO_DETAIL,
+} from './accordion.js';
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
+import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
+import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layout.js';
+import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
+import { SDK_MAP, type Generation, type Sdk, type ServerName } from '../helpers/sdk.js';
+import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-binding.js';
+import { CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT } from './children-slot-placement.js';
+import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
+import { SSR_BINDING_CONTENT } from './ssr-binding.js';
+import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading.js';
+import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
+import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
+import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
+import { XSS_EXPLOIT } from './xss-exploit.js';
+import { COUNTDOWN } from './countdown.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -55,89 +81,139 @@ function isBrowser(): boolean {
 
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
-const PAGES = {
-  '/': homepage,
-  '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
-  '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
-  '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
-  '/can-track-false': homepage,
-  '/css-nesting': cssNesting,
-  '/columns': columns,
-  '/symbols': symbols,
-  '/js-code': JS_CODE_CONTENT,
-  '/symbols-without-content': CONTENT_WITHOUT_SYMBOLS,
-  '/symbol-bindings': symbolBindings,
-  '/symbol-with-locale': symbolWithLocale,
-  '/link-url': linkUrl,
-  '/symbol-with-input-binding': symbolWithInputBinding,
-  '/content-bindings': contentBindings,
-  '/image': image,
-  '/image-high-priority': imageHighPriority,
-  '/data-bindings': dataBindings,
-  '/data-binding-styles': dataBindingStyles,
-  '/ab-test': abTest,
-  '/ab-test-interactive': AB_TEST_INTERACTIVE,
-  '/http-requests': HTTP_REQUESTS,
-  '/symbol-ab-test': symbolAbTest,
-  '/custom-breakpoints': customBreakpoints,
-  '/reactive-state': reactiveState,
-  '/element-events': elementEvents,
-  '/external-data': EXTERNAL_DATA,
-  '/show-hide-if': SHOW_HIDE_IF,
-  '/show-hide-if-repeats': SHOW_HIDE_IF_REPEATS,
-  '/custom-breakpoints-reset': customBreakpointsReset,
-  '/text-block': textBlock,
-  '/state-binding': stateBinding,
-  '/nested-symbols': nestedSymbols,
-  '/editing-styles': EDITING_STYLES,
-  '/video': video,
-  '/repeat-items-bindings': REPEAT_ITEMS_BINDINGS,
-  '/input-default-value': INPUT_DEFAULT_VALUE,
-  '/duplicate-attributes': DUPLICATE_ATTRIBUTES,
-  '/js-content-is-browser': JS_CONTENT_IS_BROWSER,
-  '/slot': SLOT,
-  '/slot-with-symbol': SLOT_WITH_SYMBOL,
-  '/slot-without-symbol': SLOT_WITHOUT_SYMBOL,
-  '/no-trusted-hosts': homepage,
-  '/editing-styles-no-trusted-hosts': EDITING_STYLES,
-  '/animations': ANIMATIONS,
-  '/data-preview': DATA_PREVIEW,
-  '/form': FORM,
-  '/default-styles': DEFAULT_STYLES,
-  '/css-properties': CSS_PROPERTIES,
-  '/hover-animation': HOVER_ANIMATION,
-  '/tabs': TABS,
-  '/custom-components': CUSTOM_COMPONENTS,
-  '/basic-styles': BASIC_STYLES,
-  '/accordion': ACCORDION,
-  '/accordion-one-at-a-time': ACCORDION_ONE_AT_A_TIME,
-  '/accordion-grid': ACCORDION_GRID,
-  '/symbol-tracking': SYMBOL_TRACKING,
-  '/columns-with-different-widths': COLUMNS_WITH_DIFFERENT_WIDTHS,
-} as const;
+type Page = {
+  content: BuilderContent;
+  /**
+   * The target SDKs that this page should be tested against. This is important because certain frameworks
+   * (like NextJS) will pre-render all possible pages on the server. If a test is not meant to work in a specific app,
+   * then that app will fail to build when attempting to pre-render the page.
+   *
+   * Defaults to `all`.
+   */
+  target?: (Generation | ServerName)[] | Generation | ServerName | 'all';
+  /**
+   * To test visual editing in Gen 1 SDK, we cannot provide a hardcoded JSON.
+   * Instead, we have to let the SDK fetch the data from the API and mock the
+   * network request instead.
+   * NOTE: This is why I can only test visual editing for the old SDK when using a non-SSR app
+   */
+  isGen1VisualEditingTest?: boolean;
+};
 
-const apiVersionPathToProp = {
-  '/api-version-v1': { apiVersion: 'v1' },
-  '/api-version-v3': { apiVersion: 'v3' },
+export const PAGES: Record<string, Page> = {
+  '/': { content: HOMEPAGE },
+  '/editing': { content: HOMEPAGE, isGen1VisualEditingTest: true },
+  '/api-version-v3': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/api-version-default': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/can-track-false': { content: HOMEPAGE },
+  '/css-nesting': { content: cssNesting },
+  '/columns': { content: COLUMNS },
+  '/symbols': { content: symbols },
+  '/js-code': { content: JS_CODE_CONTENT },
+  '/symbols-without-content': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/symbol-bindings': { content: symbolBindings },
+  '/symbol-with-locale': { content: symbolWithLocale },
+  '/link-url': { content: linkUrl },
+  '/symbol-with-input-binding': { content: symbolWithInputBinding },
+  '/content-bindings': { content: contentBindings },
+  '/image': { content: image },
+  '/image-high-priority': { content: imageHighPriority },
+  '/image-no-webp': { content: imageNoWebp },
+  '/data-bindings': { content: dataBindings },
+  '/data-binding-styles': { content: dataBindingStyles },
+  '/react-native-strict-style-mode': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
+  '/react-native-strict-style-mode-disabled': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
+  '/ab-test': { content: abTest },
+  '/ab-test-interactive': { content: AB_TEST_INTERACTIVE },
+  '/http-requests': { content: HTTP_REQUESTS },
+  '/symbol-ab-test': { content: symbolAbTest },
+  '/custom-breakpoints': { content: customBreakpoints },
+  '/reactive-state': { content: REACTIVE_STATE_CONTENT },
+  '/large-reactive-state': { content: LARGE_REACTIVE_STATE_CONTENT },
+  '/large-reactive-state-editing': {
+    content: LARGE_REACTIVE_STATE_CONTENT,
+    isGen1VisualEditingTest: true,
+  },
+  '/element-events': { content: elementEvents },
+  '/external-data': { content: EXTERNAL_DATA },
+  '/show-hide-if': { content: SHOW_HIDE_IF },
+  '/show-hide-if-repeats': { content: SHOW_HIDE_IF_REPEATS },
+  '/custom-breakpoints-reset': { content: customBreakpointsReset },
+  '/text-block': { content: textBlock },
+  '/text-eval': { content: textEval },
+  '/state-binding': { content: stateBinding },
+  '/nested-symbols': { content: nestedSymbols },
+  '/personalization-container': { content: personalizatContainer, target: 'gen1' },
+  '/editing-styles': { content: EDITING_STYLES, isGen1VisualEditingTest: true },
+  '/video': { content: video },
+  '/repeat-items-bindings': { content: REPEAT_ITEMS_BINDINGS },
+  '/input-default-value': { content: INPUT_DEFAULT_VALUE },
+  '/duplicate-attributes': { content: DUPLICATE_ATTRIBUTES },
+  '/js-content-is-browser': { content: JS_CONTENT_IS_BROWSER },
+  '/slot': { content: SLOT },
+  '/slot-with-symbol': { content: SLOT_WITH_SYMBOL },
+  '/slot-without-symbol': { content: SLOT_WITHOUT_SYMBOL },
+  '/no-trusted-hosts': { content: HOMEPAGE, isGen1VisualEditingTest: true },
+  '/editing-styles-no-trusted-hosts': { content: EDITING_STYLES, isGen1VisualEditingTest: true },
+  '/animations': { content: ANIMATIONS },
+  '/data-preview': { content: DATA_PREVIEW },
+  '/form': { content: FORM },
+  '/default-styles': { content: DEFAULT_STYLES },
+  '/css-properties': { content: CSS_PROPERTIES },
+  '/hover-animation': { content: HOVER_ANIMATION },
+  '/tabs': { content: TABS },
+  '/custom-components': { content: CUSTOM_COMPONENTS },
+  '/basic-styles': { content: BASIC_STYLES },
+  '/accordion': { content: ACCORDION },
+  '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
+  '/accordion-grid': { content: ACCORDION_GRID },
+  '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
+  '/symbol-tracking': { content: SYMBOL_TRACKING },
+  '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
+  '/custom-components-models-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
+  '/custom-components-models-not-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
+  '/editing-box-columns-inner-layout': { content: EDITING_BOX_TO_COLUMN_INNER_LAYOUT },
+  '/with-fetch-options': { content: HOMEPAGE },
+  '/symbol-with-repeat-input-binding': { content: SYMBOL_WITH_REPEAT_INPUT_BINDING },
+  '/children-slot-placement': { content: CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT },
+  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS },
+  '/eager-dynamic-loading': { content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS },
+  '/ssr-binding': { content: SSR_BINDING_CONTENT },
+  '/blocks-class-name': { content: BLOCKS_CLASS_NAME },
+  '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
+  '/custom-components-nowrap': {
+    content: CUSTOM_COMPONENTS_NOWRAP,
+    target: ['angular', 'angular-ssr'],
+  },
+  '/override-base-url': { content: HTTP_REQUESTS },
+  '/xss-exploit': { content: XSS_EXPLOIT },
+  '/symbol-with-jscode': { content: COUNTDOWN },
+  '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
 } as const;
 
 export type Path = keyof typeof PAGES;
 
-const GEN1_ONLY_PATHNAMES: Path[] = ['/api-version-v1'];
-const GEN2_ONLY_PATHNAMES: Path[] = [];
+export const getAllPathnames = (target: ServerName): string[] => {
+  return Object.entries(PAGES)
+    .filter(([_, page]) => {
+      const pageTarget = !page.target
+        ? ['all']
+        : Array.isArray(page.target)
+          ? page.target
+          : [page.target];
 
-export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
-  return Object.keys(PAGES).filter(pathname => {
-    if (target === 'gen1') {
-      return !GEN2_ONLY_PATHNAMES.includes(pathname as Path);
-    } else {
-      return !GEN1_ONLY_PATHNAMES.includes(pathname as Path);
-    }
-  });
+      return (
+        pageTarget.includes(target) ||
+        pageTarget.includes(SDK_MAP[target].gen) ||
+        pageTarget.includes('all')
+      );
+    })
+    .map(([pathname]) => pathname);
 };
 
 const getContentForPathname = (pathname: string): BuilderContent | null => {
-  return PAGES[pathname as keyof typeof PAGES] || null;
+  return PAGES[pathname]?.content || null;
 };
 
 // remove trailing slash from pathname if it exists
@@ -145,12 +221,15 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
 const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
-export const getAPIKey = (): string => 'abcd';
+export const getAPIKey = (type: 'real' | 'mock' = 'mock'): string =>
+  type === 'real' ? REAL_API_KEY : 'abcd';
+
 const REAL_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 type ContentResponse = { results: BuilderContent[] };
 
 export const getProps = async (args: {
+  sdk?: Sdk;
   pathname?: string;
   _processContentResult?: (options: any, content: ContentResponse) => Promise<BuilderContent[]>;
   fetchOneEntry?: (opts: any) => Promise<BuilderContent | null>;
@@ -180,36 +259,85 @@ export const getProps = async (args: {
       }),
     };
   }
-  const _content = getContentForPathname(pathname);
 
-  if (!_content) {
-    return null;
+  let _content = getContentForPathname(pathname);
+
+  if (args.sdk === 'oldReact' && PAGES[pathname]?.isGen1VisualEditingTest) {
+    // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
+    // which Playwright will intercept and provide the content itself.
+    _content = null;
   }
 
-  const extraProps =
-    pathname === '/can-track-false' || pathname === '/symbol-tracking'
-      ? {
-          canTrack: false,
-        }
-      : pathname.includes('no-trusted-hosts')
-        ? {
-            trustedHosts: [],
-          }
-        : {};
-
-  const extraApiVersionProp =
-    apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
+  let extraProps = {};
+  switch (pathname) {
+    case '/api-version-v3':
+      extraProps = {
+        apiVersion: 'v3',
+      };
+      break;
+    case '/can-track-false':
+    case '/symbol-tracking':
+      extraProps = {
+        canTrack: false,
+      };
+      break;
+    case '/no-trusted-hosts':
+    case '/editing-styles-no-trusted-hosts':
+      extraProps = {
+        trustedHosts: [],
+      };
+      break;
+    case '/custom-components-models-show':
+      // overrides page model below
+      extraProps = {
+        model: 'test-model',
+      };
+      break;
+    case '/react-native-strict-style-mode':
+      extraProps = {
+        strictStyleMode: true,
+      };
+      break;
+    case '/get-content':
+      extraProps = {
+        options: { apiEndpoint: 'content' },
+      };
+      break;
+    case '/get-query':
+      extraProps = {
+        options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
+      };
+      break;
+    case '/symbol-with-repeat-input-binding':
+      extraProps = {
+        data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
+      };
+      break;
+    case '/duplicated-content-using-nested-symbols':
+      extraProps = {
+        model: 'symbol',
+      };
+      break;
+    case '/override-base-url':
+      extraProps = {
+        apiHost: 'https://cdn-qa.builder.io',
+      };
+      break;
+    default:
+      break;
+  }
 
   const props = {
-    apiKey: getAPIKey(),
+    apiKey: getAPIKey(data),
     model: 'page',
     ...extraProps,
-    ...extraApiVersionProp,
   };
 
-  const content = _processContentResult
-    ? (await _processContentResult(props, { results: [_content] }))[0]
-    : _content;
+  const content = _content
+    ? _processContentResult
+      ? (await _processContentResult(props, { results: [_content] }))[0]
+      : _content
+    : undefined;
 
   return { ...props, content } as any;
 };

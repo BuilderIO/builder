@@ -9,7 +9,6 @@ import { getUserAttributes } from '../track/helpers.js';
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
   isExpression?: boolean;
-  enableCache: boolean;
 };
 export type BuilderGlobals = {
   isEditing: boolean | undefined;
@@ -73,3 +72,49 @@ export const parseCode = (
 
   return useCode;
 };
+
+export function flattenState({
+  rootState,
+  localState,
+  rootSetState,
+}: {
+  rootState: Record<string | symbol, any>;
+  localState: Record<string | symbol, any> | undefined;
+  rootSetState: ((rootState: BuilderRenderState) => void) | undefined;
+}): BuilderRenderState {
+  return new Proxy(rootState, {
+    get: (target, prop) => {
+      if (localState && prop in localState) {
+        return localState[prop];
+      }
+
+      const val = target[prop];
+      if (typeof val === 'object' && val !== null) {
+        return flattenState({
+          rootState: val,
+          localState: undefined,
+          rootSetState: rootSetState
+            ? (subState) => {
+                target[prop] = subState;
+                rootSetState(target);
+              }
+            : undefined,
+        });
+      }
+
+      return val;
+    },
+    set: (target, prop, value) => {
+      if (localState && prop in localState) {
+        throw new Error(
+          'Writing to local state is not allowed as it is read-only.'
+        );
+      }
+
+      target[prop] = value;
+
+      rootSetState?.(target);
+      return true;
+    },
+  });
+}

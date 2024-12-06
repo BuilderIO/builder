@@ -1,5 +1,196 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 3.0.0
+
+### Major Changes
+
+- 78b8e5d: Breaking Change 🧨: `fetchEntries` and `fetchOneEntry` calls will now throw any errors thrown by `fetch`, or any non-success response returned from the Builder API.
+
+  Previously, both functions would swallow all errors and return `null`.
+
+## 2.0.31
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling
+
+## 2.0.30
+
+### Patch Changes
+
+- 5e88efa: Logs every API URL hit from the SDK whenever `process.env.DEBUG` is set to `true` in the project
+
+## 2.0.29
+
+### Patch Changes
+
+- efa4798: Fix: accordion block order of items and visual editing empty blocks
+
+## 2.0.28
+
+### Patch Changes
+
+- c2e7846: Fix: make Column block's state reactive to its `props`
+
+## 2.0.26
+
+### Patch Changes
+
+- 2e2f937: Fix: resolve `nuxt-isolated-vm-plugin.js` import path correctly so that it doesn't check from the root folder
+- 9da4f89: Feature: Adds `apiHost` prop to `Content`. It dictates which API endpoint is used for the content fetching. Defaults to 'https://cdn.builder.io'
+- 185ee23: Fix: duplication of content in the Visual Editor when editing a symbol model that renders another symbol
+
+## 2.0.25
+
+### Patch Changes
+
+- bfe9d7e: Misc: send SDK headers in API requests ( https://github.com/BuilderIO/builder/pull/3659 )
+
+## 2.0.24
+
+### Patch Changes
+
+- e4253d6: Fix: accessing Builder Context within `Blocks` (regression from https://github.com/BuilderIO/builder/pull/3658)
+- 3146ba3: Fix: optionally chain access to context value in Blocks
+- c5dd946: Feature: adds a `className: string` prop to the `Blocks` component used to apply a class to the `div` that wraps each list of blocks.
+
+## 2.0.23
+
+### Patch Changes
+
+- 4660aa6: Feature: optimize simple `state.*` read access bindings by avoiding runtime-specific eval, and instead fetching the value directly from the state
+
+## 2.0.22
+
+### Patch Changes
+
+- 49d0aa3: [Types]: adds a second argument to the `onChange` argument for custom component Inputs called `previousOptions`. It contains the `options` argument in its old state before the current `onChange` event was triggered.
+
+  Before:
+
+  ```ts
+  onChange?:
+    | ((options: Map<string, any>) => void | Promise<void>)
+    | string;
+  ```
+
+  After:
+
+  ```ts
+    onChange?:
+      | ((options: Map<string, any>, previousOptions?: Map<string, any>) => void | Promise<void>)
+      | string;
+  ```
+
+## 2.0.21
+
+### Patch Changes
+
+- 269db7b: Fix: execute JS code and make http requests on Content initialization (instead of "on mount")
+- 269db7b: Various improvements to edge runtime interpreter:
+
+  - Correctly handle code blocks with async/await polyfills (typically `jsCode` blocks)
+  - Improve handling of getters and setters on `state` values
+
+## 2.0.20
+
+### Patch Changes
+
+- ff58662: Fix: remove `@builder.io/sdk-vue/nuxt-initialize-node-runtime-plugin` plugin export
+
+## 2.0.17
+
+### Patch Changes
+
+- 01d8496: Feature: add `@builder.io/sdk-vue/node/init` entry point with `initializeNodeRuntime` export that sets the `isolated-vm` instance.
+
+  This import should be called in a server-only environment. For convenience, we offer:
+
+  - (Recommended) Updates to `@builder.io/sdk-vue/nuxt` Nuxt module which helps you achieve this in one place:
+
+    - added `includeCompiledCss` flag that adds the compiled Builder.io CSS in Nuxt (defaults to `true`)
+    - added `initializeNodeRuntime` flag that automatically imports and executes `initializeNodeRuntime()` in the server (defaults to `false`)
+
+    ```ts
+    // nuxt.config.ts
+    export default defineNuxtConfig({
+      // ...
+      modules: [
+        [
+          "@builder.io/sdk-vue/nuxt",
+          {
+            includeCompiledCss: true, // Includes Builder.io CSS (default: true)
+            initializeNodeRuntime: true, // Initializes isolated VM in Node runtime (default: false)
+          },
+        ],
+      ],
+    });
+    ```
+
+  - If you prefer to call this manually without using our Nuxt module, you can import and call `initializeNodeRuntime()` from the package `@builder.io/sdk-vue/node/init`. Make sure that this function is imported and executed only in the Node runtime environment, for example:
+
+    ```ts
+    // server/middleware/builder.global.ts
+    export default defineEventHandler(async (event) => {
+      const { initializeNodeRuntime } = await import(
+        "@builder.io/sdk-vue/node/init"
+      );
+      initializeNodeRuntime();
+    });
+    ```
+
+  - If you are not using Nuxt, or would rather initialize `isolated-vm` yourself, you must import and call `initializeNodeRuntime()` in such a way that the function is imported and executed ONLY in the Node runtime, and never in the browser. Failure to do so will result in a build and/or runtime error.
+
+## 2.0.16
+
+### Patch Changes
+
+- 348de96: Fix: disable `initializeNodeRuntime()` on arm64 machines running node 20
+
+## 2.0.15
+
+### Patch Changes
+
+- 50778a4: types: export GetContentOptions
+
+## 2.0.13
+
+### Patch Changes
+
+- 51285ea: Fix: repeat items when they are Symbols
+
+## 2.0.8
+
+### Patch Changes
+
+- e8b80b3: Fix: scoped `isInteractive` prop for RSC SDK only so that it fixes Inner Layout > "Columns" option during visual editing
+
+## 2.0.5
+
+### Patch Changes
+
+- 345086b: Fixes data bindings in Text blocks
+
+## 2.0.3
+
+### Patch Changes
+
+- 11e118c: Fix: serialize all functions within registered component info.
+
+## 2.0.2
+
+### Patch Changes
+
+- 4ee499e: Fix: Image block: remove redundant `srcset` for SVG images
+- 14da62f: Fix: restrict custom components to the models that get passed in `models`
+
+## 2.0.1
+
+### Patch Changes
+
+- f6add9e: Feature: Add `nonce` prop to `<Content>`: allows SDK to set `nonce` attribute for its inlined `style` and `script` tags.
+
 ## 2.0.0
 
 ### Major Changes

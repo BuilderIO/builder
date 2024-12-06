@@ -1,36 +1,31 @@
 import { logger } from '../../helpers/logger.js';
+import { get } from '../get.js';
 import { chooseBrowserOrServerEval } from './choose-eval.js';
 import type { EvaluatorArgs, ExecutorArgs } from './helpers.js';
 import { getBuilderGlobals, parseCode } from './helpers.js';
 
 type EvalValue = unknown;
 
-class EvalCache {
-  static cacheLimit = 20;
-  static cache = new Map<string, { value: EvalValue } | undefined>();
+/**
+ * handles multi-level gets on state: `state.x.y.z`
+ * does not handle bracket notation
+ * see https://regexr.com/87a9j
+ */
+const STATE_GETTER_REGEX = /^(return )?(\s*)?state(?<getPath>(\.\w+)+)(\s*);?$/;
 
-  static getCacheKey(args: ExecutorArgs) {
-    return JSON.stringify({
-      ...args,
-      // replace the event with a random number to break cache
-      // thats because we can't serialize the event object due to circular refs in DOM node refs.
-      event: args.event ? Math.random() : undefined,
-    });
-  }
+/**
+ * Handles multi-level gets on state transpiled by rollup with virtual index.
+ * see https://regexr.com/87ai4
+ */
+const VIRTUAL_INDEX_REGEX =
+  /(\s)*var(\s)+_virtual_index(\s)*=(\s)*state(?<getPath>(\.\w+)+)(\s*);?(\s)*return(\s)*_virtual_index(\s)*/;
 
-  static getCachedValue(key: string) {
-    const cachedVal = EvalCache.cache.get(key);
-
-    return cachedVal;
-  }
-
-  static setCachedValue(key: string, value: EvalValue) {
-    if (EvalCache.cache.size > 20) {
-      EvalCache.cache.delete(EvalCache.cache.keys().next().value);
-    }
-    EvalCache.cache.set(key, { value });
-  }
-}
+export const getSimpleExpressionGetPath = (code: string) => {
+  return (
+    STATE_GETTER_REGEX.exec(code.trim())?.groups?.getPath?.slice(1) ||
+    VIRTUAL_INDEX_REGEX.exec(code.trim())?.groups?.getPath?.slice(1)
+  );
+};
 
 export function evaluate({
   code,
@@ -40,10 +35,20 @@ export function evaluate({
   rootSetState,
   event,
   isExpression = true,
-  enableCache,
 }: EvaluatorArgs): EvalValue {
-  if (code === '') {
+  if (code.trim() === '') {
     return undefined;
+  }
+
+  /**
+   * For very simple expressions like "state.foo" we can optimize by skipping
+   * the executor altogether.
+   * We try not to take many risks with this optimizations, so we only do it for
+   * `state.{path}` expressions.
+   */
+  const getPath = getSimpleExpressionGetPath(code.trim());
+  if (getPath) {
+    return get({ ...rootState, ...localState }, getPath);
   }
 
   const args: ExecutorArgs = {
@@ -56,22 +61,8 @@ export function evaluate({
     localState,
   };
 
-  if (enableCache) {
-    const cacheKey = EvalCache.getCacheKey(args);
-    const cachedValue = EvalCache.getCachedValue(cacheKey);
-
-    if (cachedValue) {
-      return cachedValue.value;
-    }
-  }
-
   try {
     const newEval = chooseBrowserOrServerEval(args);
-
-    if (enableCache) {
-      const cacheKey = EvalCache.getCacheKey(args);
-      EvalCache.setCachedValue(cacheKey, newEval);
-    }
     return newEval;
   } catch (e: any) {
     logger.error('Failed code evaluation: ' + e.message, { code });

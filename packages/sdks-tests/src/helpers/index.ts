@@ -102,6 +102,21 @@ export const findTextInPage = async ({ page, text }: { page: Page; text: string 
   await expect(page.locator(`text=${text}`)).toBeVisible();
 };
 
+export const verifyTabContent = async (
+  page: Page,
+  tabButtonText: string,
+  expectedVisibleContent: string,
+  expectedHiddenContent: string
+): Promise<void> => {
+  await page.click(`button:has-text("${tabButtonText}")`);
+
+  const visibleContent = page.locator(`[builder-path="${expectedVisibleContent}"]`);
+  await expect(visibleContent).toBeVisible();
+
+  const hiddenContent = page.locator(`[builder-path="${expectedHiddenContent}"]`);
+  await expect(hiddenContent).not.toBeVisible();
+};
+
 export const checkIsRN = (sdk: Sdk) => sdk === 'reactNative';
 export const checkIsGen1React = (sdk: Sdk) => sdk === 'oldReact';
 
@@ -199,3 +214,11 @@ export const getClassSelector = (className: string, sdk: Sdk) => {
 const currentFilename = fileURLToPath(import.meta.url);
 const currentDirname = path.dirname(currentFilename);
 export const mockFolderPath = path.join(currentDirname, '..', 'mocks');
+
+export const mapSdkName = (sdk: string): string => {
+  return sdk === 'oldReact' ? 'react' : sdk;
+};
+
+export const getSdkGeneration = (sdk: string): string => {
+  return sdk === 'oldReact' ? '1' : '2';
+};

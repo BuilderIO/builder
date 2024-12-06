@@ -11,7 +11,6 @@ test.describe('Show If & Hide If', () => {
 
   test('works on reactive conditions', async ({ page, packageName, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk), 'RSC SDK has no interactivity');
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular SDK does not support this yet');
 
     // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
     test.skip(
@@ -36,7 +35,6 @@ test.describe('Show If & Hide If', () => {
   });
   test('works with repeat elements', async ({ page, packageName, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk), 'RSC SDK has no interactivity');
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular SDK does not support this yet');
 
     // since these are flaky tests, we have to `.skip()` instead of `.fail()`, seeing as they might sometimes pass.
     test.skip(

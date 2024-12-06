@@ -15,7 +15,7 @@ export const BUILDER_PUBLIC_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 export const BUILDER_MODEL = 'announcement-bar';
 
 export const useBuilderContent = routeLoader$(async ({ url }) => {
-  const builderContent = await fetchOneEntry({
+  const announcementBar = await fetchOneEntry({
     model: BUILDER_MODEL,
     apiKey: BUILDER_PUBLIC_API_KEY,
     options: getBuilderSearchParams(url.searchParams),
@@ -24,22 +24,22 @@ export const useBuilderContent = routeLoader$(async ({ url }) => {
     },
   });
 
-  return builderContent;
+  return announcementBar;
 });
 
 export default component$(() => {
-  const content = useBuilderContent();
+  const announcement = useBuilderContent();
+
   return (
     <>
-      {content.value ? (
+      {announcement.value && (
         <Content
           model={BUILDER_MODEL}
-          content={content.value}
+          content={announcement.value}
           apiKey={BUILDER_PUBLIC_API_KEY}
         />
-      ) : (
-        <div>Announcement Bar not Found</div>
       )}
+
       {/* Your content coming from your app (or also Builder) */}
       <div>The rest of your page goes here</div>
     </>

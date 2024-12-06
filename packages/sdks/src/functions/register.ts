@@ -1,6 +1,7 @@
 import type { BuilderBlock } from '../types/builder-block.js';
 import type { DeepPartial } from '../types/deep-partial.js';
 import { isBrowser } from './is-browser.js';
+import { serializeIncludingFunctions } from './register-component.js';
 
 export interface InsertMenuItem {
   name: string;
@@ -21,6 +22,9 @@ const registry: { [key: string]: any[] } = {};
 export function register(type: 'insertMenu', info: InsertMenuConfig): void;
 export function register(type: string, info: any): void;
 export function register(type: string, info: any) {
+  if (type === 'plugin') {
+    info = serializeIncludingFunctions(info);
+  }
   let typeList = registry[type];
   if (!typeList) {
     typeList = registry[type] = [];

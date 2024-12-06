@@ -19,6 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": ["src/assets", "src/favicon.ico"],
             "styles": ["src/styles.css"],
+            "allowedCommonJsDependencies": ["hash-sum"],
             "scripts": []
           },
           "configurations": {
@@ -49,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-test-site:build"
+            "buildTarget": "angular-test-site:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-test-site:build:production"
+              "buildTarget": "angular-test-site:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-test-site:build"
+            "buildTarget": "angular-test-site:build"
           }
         },
         "test": {
@@ -106,7 +107,6 @@
       }
     }
   },
-  "defaultProject": "angular-test-site",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

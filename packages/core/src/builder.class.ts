@@ -2,7 +2,6 @@ import './polyfills/custom-event-polyfill';
 import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
-import { version } from '../package.json';
 import { BehaviorSubject } from './classes/observable.class';
 import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
@@ -11,7 +10,6 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
 import { parse as urlParse } from './url';
@@ -22,6 +20,7 @@ import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
 import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
+import { SDK_VERSION } from './sdk-version';
 
 export type Url = any;
 
@@ -118,7 +117,6 @@ function setCookie(name: string, value: string, expires?: Date) {
       (value || '') +
       expiresString +
       '; path=/' +
-      `; domain=${getTopLevelDomain(location.hostname)}` +
       (secure ? '; secure; SameSite=None' : '');
   } catch (err) {
     console.warn('Could not set cookie', err);
@@ -278,6 +276,17 @@ type AllowEnrich =
 
 export type GetContentOptions = AllowEnrich & {
   /**
+   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
+   * Defaults to `'query'`.
+   */
+  apiEndpoint?: 'content' | 'query';
+
+  /**
+   * Optional fetch options to be passed as the second argument to the `fetch` function.
+   */
+  fetchOptions?: object;
+
+  /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
    *
@@ -381,6 +390,7 @@ export type GetContentOptions = AllowEnrich & {
    * Set to `false` to not cache responses when running on the client.
    */
   cache?: boolean;
+
   /**
    * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
    * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
@@ -558,6 +568,8 @@ export interface Input {
   /** @hidden */
   imageHeight?: number;
   /** @hidden */
+  behavior?: string;
+  /** @hidden */
   imageWidth?: number;
   /** @hidden */
   mediaHeight?: number;
@@ -624,7 +636,10 @@ export interface Input {
    */
   advanced?: boolean;
   /** @hidden */
-  onChange?: Function | string;
+  onChange?: (
+    options: any,
+    previousOptions?: any
+  ) => Promise<void> | ((options: any, previousOptions?: any) => void) | string | void | undefined;
   /** @hidden */
   code?: boolean;
   /** @hidden */
@@ -800,6 +815,8 @@ export interface Component {
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
    */
   requiredPermissions?: Array<Permission>;
+
+  meta?: { [key: string]: any };
 }
 
 type Permission = 'read' | 'publish' | 'editCode' | 'editDesigns' | 'admin' | 'create';
@@ -864,11 +881,7 @@ export interface Action {
 }
 
 export class Builder {
-  /**
-   * @hidden
-   * @deprecated. This is buggy, and always behind by a version.
-   */
-  static VERSION = version;
+  static VERSION = SDK_VERSION;
 
   static components: Component[] = [];
   static singletonInstance: Builder;
@@ -899,6 +912,7 @@ export class Builder {
   static actions: Action[] = [];
   static registry: { [key: string]: any[] } = {};
   static overrideHost: string | undefined;
+  static attributesCookieName = 'builder.userAttributes';
 
   /**
    * @todo `key` property on any info where if a key matches a current
@@ -907,6 +921,10 @@ export class Builder {
   static register(type: 'insertMenu', info: InsertMenuConfig): void;
   static register(type: string, info: any): void;
   static register(type: string, info: any) {
+    if (type === 'plugin') {
+      info = this.serializeIncludingFunctions(info);
+    }
+
     // TODO: all must have name and can't conflict?
     let typeList = this.registry[type];
     if (!typeList) {
@@ -980,13 +998,19 @@ export class Builder {
   }
 
   static isTrustedHost(hostname: string) {
-    return (
+    const isTrusted =
       this.trustedHosts.findIndex(trustedHost =>
         trustedHost.startsWith('*.')
           ? hostname.endsWith(trustedHost.slice(1))
           : trustedHost === hostname
-      ) > -1
-    );
+      ) > -1;
+
+    return isTrusted;
+  }
+
+  static isTrustedHostForEvent(event: MessageEvent) {
+    const url = parse(event.origin);
+    return url.hostname && Builder.isTrustedHost(url.hostname);
   }
 
   static runAction(action: Action | string) {
@@ -1077,44 +1101,35 @@ export class Builder {
     }
   }
 
+  private static serializeIncludingFunctions(info: any) {
+    const serializeFn = (fnValue: Function) => {
+      const fnStr = fnValue.toString().trim();
+
+      // we need to account for a few different fn syntaxes:
+      // 1. `function name(args) => {code}`
+      // 2. `name(args) => {code}`
+      // 3. `(args) => {}`
+      // 4. `args => {}`
+      const isArrowWithoutParens = /^[a-zA-Z0-9_]+\s*=>/i.test(fnStr);
+      const appendFunction =
+        !fnStr.startsWith('function') && !fnStr.startsWith('(') && !isArrowWithoutParens;
+
+      return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
+    };
+
+    return JSON.parse(
+      JSON.stringify(info, (key, value) => {
+        if (typeof value === 'function') {
+          return serializeFn(value);
+        }
+        return value;
+      })
+    );
+  }
+
   private static prepareComponentSpecToSend(spec: Component): Component {
     return {
-      ...spec,
-      ...(spec.inputs && {
-        inputs: spec.inputs.map((input: any) => {
-          // TODO: do for nexted fields too
-          // TODO: probably just convert all functions, not just
-          // TODO: put this in input hooks: { onChange: ..., showIf: ... }
-          const keysToConvertFnToString = ['onChange', 'showIf'];
-
-          for (const key of keysToConvertFnToString) {
-            if (input[key] && typeof input[key] === 'function') {
-              const fn = input[key];
-              input = {
-                ...input,
-                [key]: `return (${fn.toString()}).apply(this, arguments)`,
-              };
-            }
-          }
-
-          return input;
-        }),
-      }),
-      hooks: Object.keys(spec.hooks || {}).reduce(
-        (memo, key) => {
-          const value = spec.hooks && spec.hooks[key];
-          if (!value) {
-            return memo;
-          }
-          if (typeof value === 'string') {
-            memo[key] = value;
-          } else {
-            memo[key] = `return (${value.toString()}).apply(this, arguments)`;
-          }
-          return memo;
-        },
-        {} as { [key: string]: string }
-      ),
+      ...this.serializeIncludingFunctions(spec),
       class: undefined,
     };
   }
@@ -1185,6 +1200,12 @@ export class Builder {
   }
 
   static isReact = false;
+  static sdkInfo = undefined as
+    | {
+        name: string;
+        version: string;
+      }
+    | undefined;
 
   static get Component() {
     return this.component;
@@ -1226,6 +1247,7 @@ export class Builder {
       body: JSON.stringify({ events }),
       headers: {
         'content-type': 'application/json',
+        ...this.getSdkHeaders(),
       },
       mode: 'cors',
     }).catch(() => {
@@ -1652,9 +1674,9 @@ export class Builder {
       this.authToken = authToken;
     }
     if (isBrowser) {
-      this.bindMessageListeners();
-
       if (Builder.isEditing) {
+        this.bindMessageListeners();
+
         parent.postMessage(
           {
             type: 'builder.animatorOptions',
@@ -1713,6 +1735,17 @@ export class Builder {
       this.setTestsFromUrl();
       // TODO: do this on every request send?
       this.getOverridesFromQueryString();
+
+      // cookies used in personalization container script, so need to set before hydration to match script result
+      const userAttrCookie = this.getCookie(Builder.attributesCookieName);
+      if (userAttrCookie) {
+        try {
+          const attributes = JSON.parse(userAttrCookie);
+          this.setUserAttributes(attributes);
+        } catch (err) {
+          console.debug('Error parsing user attributes cookie', err);
+        }
+      }
     }
   }
 
@@ -1725,14 +1758,18 @@ export class Builder {
 
   setTestsFromUrl() {
     const search = this.getLocation().search;
-    const params = QueryString.parseDeep(this.modifySearch(search || '').substr(1));
-    const tests = params.builder && params.builder.tests;
-    if (tests && typeof tests === 'object') {
-      for (const key in tests) {
-        if (tests.hasOwnProperty(key)) {
-          this.setTestCookie(key, tests[key]);
+    try {
+      const params = QueryString.parseDeep(this.modifySearch(search || '').substr(1));
+      const tests = params.builder && params.builder.tests;
+      if (tests && typeof tests === 'object') {
+        for (const key in tests) {
+          if (tests.hasOwnProperty(key)) {
+            this.setTestCookie(key, tests[key]);
+          }
         }
       }
+    } catch (e) {
+      console.debug('Error parsing tests from URL', e);
     }
   }
 
@@ -1753,67 +1790,71 @@ export class Builder {
 
   getOverridesFromQueryString() {
     const location = this.getLocation();
-    const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
-    const { builder } = params;
-    if (builder) {
-      const {
-        userAttributes,
-        overrides,
-        env,
-        host,
-        api,
-        cachebust,
-        noCache,
-        preview,
-        editing,
-        frameEditing,
-        options,
-        params: overrideParams,
-      } = builder;
+    try {
+      const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
+      const { builder } = params;
+      if (builder) {
+        const {
+          userAttributes,
+          overrides,
+          env,
+          host,
+          api,
+          cachebust,
+          noCache,
+          preview,
+          editing,
+          frameEditing,
+          options,
+          params: overrideParams,
+        } = builder;
 
-      if (userAttributes) {
-        this.setUserAttributes(userAttributes);
-      }
+        if (userAttributes) {
+          this.setUserAttributes(userAttributes);
+        }
 
-      if (options) {
-        // picking only locale, includeRefs, and enrich for now
-        this.queryOptions = {
-          ...(options.locale && { locale: options.locale }),
-          ...(options.includeRefs && { includeRefs: options.includeRefs }),
-          ...(options.enrich && { enrich: options.enrich }),
-        };
-      }
+        if (options) {
+          // picking only locale, includeRefs, and enrich for now
+          this.queryOptions = {
+            ...(options.locale && { locale: options.locale }),
+            ...(options.includeRefs && { includeRefs: options.includeRefs }),
+            ...(options.enrich && { enrich: options.enrich }),
+          };
+        }
 
-      if (overrides) {
-        this.overrides = overrides;
-      }
+        if (overrides) {
+          this.overrides = overrides;
+        }
 
-      if (validEnvList.indexOf(env || api) > -1) {
-        this.env = env || api;
-      }
+        if (validEnvList.indexOf(env || api) > -1) {
+          this.env = env || api;
+        }
 
-      if (Builder.isEditing) {
-        const editingModel = frameEditing || editing || preview;
-        if (editingModel && editingModel !== 'true') {
-          this.editingModel = editingModel;
+        if (Builder.isEditing) {
+          const editingModel = frameEditing || editing || preview;
+          if (editingModel && editingModel !== 'true') {
+            this.editingModel = editingModel;
+          }
+        }
+
+        if (cachebust) {
+          this.cachebust = true;
+        }
+
+        if (noCache) {
+          this.noCache = true;
+        }
+
+        if (preview) {
+          this.preview = true;
+        }
+
+        if (params) {
+          this.overrideParams = overrideParams;
         }
       }
-
-      if (cachebust) {
-        this.cachebust = true;
-      }
-
-      if (noCache) {
-        this.noCache = true;
-      }
-
-      if (preview) {
-        this.preview = true;
-      }
-
-      if (params) {
-        this.overrideParams = overrideParams;
-      }
+    } catch (e) {
+      console.debug('Error parsing overrides from URL', e);
     }
   }
 
@@ -1832,204 +1873,196 @@ export class Builder {
   private blockContentLoading = '';
 
   private bindMessageListeners() {
-    if (isBrowser) {
-      addEventListener('message', event => {
-        const url = parse(event.origin);
-        const isRestricted =
-          ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1;
-        const isTrusted = url.hostname && Builder.isTrustedHost(url.hostname);
-        if (isRestricted && !isTrusted) {
-          return;
-        }
+    addEventListener('message', event => {
+      const isTrusted = Builder.isTrustedHostForEvent(event);
+      if (!isTrusted) return;
 
-        const { data } = event;
-        if (data) {
-          switch (data.type) {
-            case 'builder.ping': {
-              window.parent?.postMessage(
-                {
-                  type: 'builder.pong',
-                  data: {},
-                },
-                '*'
-              );
+      const { data } = event;
+      if (data) {
+        switch (data.type) {
+          case 'builder.ping': {
+            window.parent?.postMessage(
+              {
+                type: 'builder.pong',
+                data: {},
+              },
+              '*'
+            );
+            break;
+          }
+          case 'builder.register': {
+            // TODO: possibly do this for all...
+            if (event.source === window) {
               break;
             }
-            case 'builder.register': {
-              // TODO: possibly do this for all...
-              if (event.source === window) {
-                break;
-              }
-              const options = data.data;
-              if (!options) {
-                break;
-              }
-              const { type, info } = options;
-              // TODO: all must have name and can't conflict?
-              let typeList = Builder.registry[type];
-              if (!typeList) {
-                typeList = Builder.registry[type] = [];
-              }
-              typeList.push(info);
-              Builder.registryChange.next(Builder.registry);
+            const options = data.data;
+            if (!options) {
               break;
             }
-            case 'builder.settingsChange': {
-              // TODO: possibly do this for all...
-              if (event.source === window) {
-                break;
-              }
-              const settings = data.data;
-              if (!settings) {
-                break;
-              }
-              Object.assign(Builder.settings, settings);
-              Builder.settingsChange.next(Builder.settings);
+            const { type, info } = options;
+            // TODO: all must have name and can't conflict?
+            let typeList = Builder.registry[type];
+            if (!typeList) {
+              typeList = Builder.registry[type] = [];
+            }
+            typeList.push(info);
+            Builder.registryChange.next(Builder.registry);
+            break;
+          }
+          case 'builder.settingsChange': {
+            // TODO: possibly do this for all...
+            if (event.source === window) {
               break;
             }
-            case 'builder.registerEditor': {
-              // TODO: possibly do this for all...
-              if (event.source === window) {
-                break;
-              }
-              const info = data.data;
-              if (!info) {
-                break;
-              }
-              const hasComponent = !!info.component;
-              Builder.editors.every((thisInfo, index) => {
-                if (info.name === thisInfo.name) {
-                  if (thisInfo.component && !hasComponent) {
-                    return false;
-                  } else {
-                    Builder.editors[index] = thisInfo;
-                  }
+            const settings = data.data;
+            if (!settings) {
+              break;
+            }
+            Object.assign(Builder.settings, settings);
+            Builder.settingsChange.next(Builder.settings);
+            break;
+          }
+          case 'builder.registerEditor': {
+            // TODO: possibly do this for all...
+            if (event.source === window) {
+              break;
+            }
+            const info = data.data;
+            if (!info) {
+              break;
+            }
+            const hasComponent = !!info.component;
+            Builder.editors.every((thisInfo, index) => {
+              if (info.name === thisInfo.name) {
+                if (thisInfo.component && !hasComponent) {
                   return false;
+                } else {
+                  Builder.editors[index] = thisInfo;
                 }
-                return true;
-              });
-              break;
-            }
-            case 'builder.triggerAnimation': {
-              Builder.animator.triggerAnimation(data.data);
-              break;
-            }
-            case 'builder.contentUpdate':
-              const key =
-                data.data.key || data.data.alias || data.data.entry || data.data.modelName;
-              const contentData = data.data.data; // hmmm...
-              const observer = this.observersByKey[key];
-              if (observer && !this.noEditorUpdates[key]) {
-                observer.next([contentData]);
+                return false;
               }
-              break;
+              return true;
+            });
+            break;
+          }
+          case 'builder.triggerAnimation': {
+            Builder.animator.triggerAnimation(data.data);
+            break;
+          }
+          case 'builder.contentUpdate':
+            const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
+            const contentData = data.data.data; // hmmm...
+            const observer = this.observersByKey[key];
+            if (observer && !this.noEditorUpdates[key]) {
+              observer.next([contentData]);
+            }
+            break;
 
-            case 'builder.getComponents':
+          case 'builder.getComponents':
+            window.parent?.postMessage(
+              {
+                type: 'builder.components',
+                data: Builder.components.map(item => Builder.prepareComponentSpecToSend(item)),
+              },
+              '*'
+            );
+            break;
+
+          case 'builder.editingModel':
+            this.editingModel = data.data.model;
+            break;
+
+          case 'builder.registerComponent':
+            const componentData = data.data;
+            Builder.addComponent(componentData);
+            break;
+
+          case 'builder.blockContentLoading':
+            if (typeof data.data.model === 'string') {
+              this.blockContentLoading = data.data.model;
+            }
+            break;
+
+          case 'builder.editingMode':
+            const editingMode = data.data;
+            if (editingMode) {
+              this.editingMode = true;
+              document.body.classList.add('builder-editing');
+            } else {
+              this.editingMode = false;
+              document.body.classList.remove('builder-editing');
+            }
+            break;
+
+          case 'builder.editingPageMode':
+            const editingPageMode = data.data;
+            Builder.editingPage = editingPageMode;
+            break;
+
+          case 'builder.overrideUserAttributes':
+            const userAttributes = data.data;
+            assign(Builder.overrideUserAttributes, userAttributes);
+            this.flushGetContentQueue(true);
+            // TODO: refetch too
+            break;
+
+          case 'builder.overrideTestGroup':
+            const { variationId, contentId } = data.data;
+            if (variationId && contentId) {
+              this.setTestCookie(contentId, variationId);
+              this.flushGetContentQueue(true);
+            }
+            break;
+          case 'builder.evaluate': {
+            const text = data.data.text;
+            const args = data.data.arguments || [];
+            const id = data.data.id;
+            // tslint:disable-next-line:no-function-constructor-with-string-args
+            const fn = new Function(text);
+            let result: any;
+            let error: Error | null = null;
+            try {
+              result = fn.apply(this, args);
+            } catch (err) {
+              error = toError(err);
+            }
+
+            if (error) {
               window.parent?.postMessage(
                 {
-                  type: 'builder.components',
-                  data: Builder.components.map(item => Builder.prepareComponentSpecToSend(item)),
+                  type: 'builder.evaluateError',
+                  data: { id, error: error.message },
                 },
                 '*'
               );
-              break;
-
-            case 'builder.editingModel':
-              this.editingModel = data.data.model;
-              break;
-
-            case 'builder.registerComponent':
-              const componentData = data.data;
-              Builder.addComponent(componentData);
-              break;
-
-            case 'builder.blockContentLoading':
-              if (typeof data.data.model === 'string') {
-                this.blockContentLoading = data.data.model;
-              }
-              break;
-
-            case 'builder.editingMode':
-              const editingMode = data.data;
-              if (editingMode) {
-                this.editingMode = true;
-                document.body.classList.add('builder-editing');
+            } else {
+              if (result && typeof result.then === 'function') {
+                (result as Promise<any>)
+                  .then(finalResult => {
+                    window.parent?.postMessage(
+                      {
+                        type: 'builder.evaluateResult',
+                        data: { id, result: finalResult },
+                      },
+                      '*'
+                    );
+                  })
+                  .catch(console.error);
               } else {
-                this.editingMode = false;
-                document.body.classList.remove('builder-editing');
-              }
-              break;
-
-            case 'builder.editingPageMode':
-              const editingPageMode = data.data;
-              Builder.editingPage = editingPageMode;
-              break;
-
-            case 'builder.overrideUserAttributes':
-              const userAttributes = data.data;
-              assign(Builder.overrideUserAttributes, userAttributes);
-              this.flushGetContentQueue(true);
-              // TODO: refetch too
-              break;
-
-            case 'builder.overrideTestGroup':
-              const { variationId, contentId } = data.data;
-              if (variationId && contentId) {
-                this.setTestCookie(contentId, variationId);
-                this.flushGetContentQueue(true);
-              }
-              break;
-            case 'builder.evaluate': {
-              const text = data.data.text;
-              const args = data.data.arguments || [];
-              const id = data.data.id;
-              // tslint:disable-next-line:no-function-constructor-with-string-args
-              const fn = new Function(text);
-              let result: any;
-              let error: Error | null = null;
-              try {
-                result = fn.apply(this, args);
-              } catch (err) {
-                error = toError(err);
-              }
-
-              if (error) {
                 window.parent?.postMessage(
                   {
-                    type: 'builder.evaluateError',
-                    data: { id, error: error.message },
+                    type: 'builder.evaluateResult',
+                    data: { result, id },
                   },
                   '*'
                 );
-              } else {
-                if (result && typeof result.then === 'function') {
-                  (result as Promise<any>)
-                    .then(finalResult => {
-                      window.parent?.postMessage(
-                        {
-                          type: 'builder.evaluateResult',
-                          data: { id, result: finalResult },
-                        },
-                        '*'
-                      );
-                    })
-                    .catch(console.error);
-                } else {
-                  window.parent?.postMessage(
-                    {
-                      type: 'builder.evaluateResult',
-                      data: { result, id },
-                    },
-                    '*'
-                  );
-                }
               }
-              break;
             }
+            break;
           }
         }
-      });
-    }
+      }
+    });
   }
 
   observersByKey: { [key: string]: BehaviorSubject<BuilderContent[]> | undefined } = {};
@@ -2147,6 +2180,10 @@ export class Builder {
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
+    if (this.canTrack) {
+      this.setCookie(Builder.attributesCookieName, JSON.stringify(this.getUserAttributes()));
+    }
+
     this.userAttributesChanged.next(options);
   }
 
@@ -2173,6 +2210,18 @@ export class Builder {
     } = {}
   ) {
     let instance: Builder = this;
+    let finalLocale =
+      options.locale || options.userAttributes?.locale || this.getUserAttributes().locale;
+    let finalOptions = {
+      ...options,
+      ...(finalLocale && {
+        locale: String(finalLocale),
+        userAttributes: {
+          locale: String(finalLocale),
+          ...options.userAttributes,
+        },
+      }),
+    };
     if (!Builder.isBrowser) {
       instance = new Builder(
         options.apiKey || this.apiKey,
@@ -2196,7 +2245,7 @@ export class Builder {
         this.apiVersion = options.apiVersion;
       }
     }
-    return instance.queueGetContent(modelName, options).map(
+    return instance.queueGetContent(modelName, finalOptions).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         if (Builder.isStatic) {
@@ -2315,10 +2364,7 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, {
-      next: { revalidate: 1, ...options?.next },
-      ...options,
-    } as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, this.addSdkHeaders(options)).then(res => res.json());
   }
 
   get host() {
@@ -2345,6 +2391,56 @@ export class Builder {
     }
   }
 
+  private getSdkHeaders():
+    | {
+        'X-Builder-SDK': string;
+        'X-Builder-SDK-GEN': '1';
+        'X-Builder-SDK-Version': string;
+      }
+    | {} {
+    if (!Builder.sdkInfo) {
+      return {};
+    }
+
+    return {
+      'X-Builder-SDK': Builder.sdkInfo.name,
+      'X-Builder-SDK-GEN': '1',
+      'X-Builder-SDK-Version': Builder.sdkInfo.version,
+    } as const;
+  }
+
+  private addSdkHeaders(fetchOptions: any) {
+    return {
+      ...fetchOptions,
+      headers: {
+        ...fetchOptions.headers,
+        ...this.getSdkHeaders(),
+      },
+    };
+  }
+
+  private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
+    return getFetch()(url, this.addSdkHeaders(requestOptions));
+  }
+
+  private flattenMongoQuery(obj: any, _current?: any, _res: any = {}): { [key: string]: string } {
+    for (const key in obj) {
+      const value = obj[key];
+      const newKey = _current ? _current + '.' + key : key;
+      if (
+        value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !Object.keys(value).find(item => item.startsWith('$'))
+      ) {
+        this.flattenMongoQuery(value, newKey, _res);
+      } else {
+        _res[newKey] = value;
+      }
+    }
+    return _res;
+  }
+
   private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
     if (!this.apiKey) {
       throw new Error(
@@ -2365,6 +2461,8 @@ export class Builder {
     }
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
+
+    const apiEndpoint = queue[0].apiEndpoint || 'query';
 
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
@@ -2397,9 +2495,9 @@ export class Builder {
     }
 
     const pageQueryParams: ParamsMap =
-      typeof location !== 'undefined'
+      (typeof location !== 'undefined'
         ? QueryString.parseDeep(location.search.substr(1))
-        : undefined || {}; // TODO: WHAT about SSR (this.request) ?
+        : undefined) || {}; // TODO: WHAT about SSR (this.request) ?
 
     const userAttributes =
       // FIXME: HACK: only checks first in queue for user attributes overrides, should check all
@@ -2460,8 +2558,10 @@ export class Builder {
     }
 
     for (const options of queue) {
-      if (options.format) {
-        queryParams.format = options.format;
+      const format = options.format;
+
+      if (format) {
+        queryParams.format = format;
       }
       // TODO: remove me and make permodel
       if (options.static) {
@@ -2495,9 +2595,13 @@ export class Builder {
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          queryParams.options = queryParams.options || {};
-          queryParams.options[options.key!] = queryParams.options[options.key!] || {};
-          queryParams.options[options.key!][key] = JSON.stringify(value);
+          if (apiEndpoint === 'query') {
+            queryParams.options = queryParams.options || {};
+            queryParams.options[options.key!] = queryParams.options[options.key!] || {};
+            queryParams.options[options.key!][key] = JSON.stringify(value);
+          } else {
+            queryParams[key] = JSON.stringify(value);
+          }
         }
       }
     }
@@ -2516,27 +2620,43 @@ export class Builder {
       assign(queryParams, params);
     }
 
+    const format = queryParams.format;
+    const isApiCallForCodegen = format === 'solid' || format === 'react';
+    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
+
+    if (apiEndpoint === 'content') {
+      queryParams.enrich = true;
+      if (queue[0].query) {
+        const flattened = this.flattenMongoQuery({ query: queue[0].query });
+        for (const key in flattened) {
+          queryParams[key] = flattened[key];
+        }
+        delete queryParams.query;
+      }
+    }
+
     const queryStr = QueryString.stringifyDeep(queryParams);
 
-    const format = queryParams.format;
-
-    const requestOptions = { headers: {}, next: { revalidate: 1 } };
+    const fetchOptions = { headers: {}, ...queue[0].fetchOptions };
     if (this.authToken) {
-      requestOptions.headers = {
-        ...requestOptions.headers,
+      fetchOptions.headers = {
+        ...fetchOptions.headers,
         Authorization: `Bearer ${this.authToken}`,
       };
     }
 
-    const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
+    let url;
+    if (isApiCallForCodegen) {
+      url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
+    } else if (apiEndpoint === 'query') {
+      url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
+    } else {
+      url = `${host}/api/v3/content/${queue[0].model}`;
+    }
 
-    // NOTE: this is a hack to get around the fact that the codegen endpoint is not yet available in v3
-    const apiVersionBasedOnFn = fn === 'query' ? this.apiVersion : 'v1';
-    const url =
-      `${host}/api/${apiVersionBasedOnFn}/${fn}/${this.apiKey}/${keyNames}` +
-      (queryParams && hasParams ? `?${queryStr}` : '');
+    url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
-    const promise = getFetch()(url, requestOptions)
+    const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
       .then(
         result => {
@@ -2555,7 +2675,7 @@ export class Builder {
             if (!observer) {
               return;
             }
-            const data = result[keyName];
+            const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer

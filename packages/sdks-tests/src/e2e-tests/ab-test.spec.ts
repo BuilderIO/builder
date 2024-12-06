@@ -37,7 +37,7 @@ const initializeAbTest = async (
     packageName,
     browser,
   }: Pick<
-    Parameters<Parameters<typeof test>[1]>[0],
+    Parameters<Parameters<typeof test>[2]>[0],
     'page' | 'baseURL' | 'packageName' | 'browser'
   >,
   { cookieName, cookieValue }: { cookieName: string; cookieValue: string }
@@ -88,7 +88,12 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
+        test.skip(
+          excludeTestFor({ angular: true }, sdk),
+          'A/B tests with SSR are not supported in Angular'
+        );
         const { page } = await initializeAbTest(
           {
             page: _page,
@@ -114,7 +119,12 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
+        test.skip(
+          excludeTestFor({ angular: true }, sdk),
+          'A/B tests with SSR are not supported in Angular'
+        );
         const { page } = await initializeAbTest(
           {
             page: _page,

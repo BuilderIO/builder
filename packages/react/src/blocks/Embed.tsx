@@ -9,6 +9,10 @@ class EmbedComponent extends React.Component<any> {
   scriptsInserted = new Set();
   scriptsRun = new Set();
 
+  shouldComponentUpdate(nextProps: Readonly<any>): boolean {
+    return nextProps.content !== this.props.content;
+  }
+
   componentDidUpdate(prevProps: any) {
     if (this.props.content !== prevProps.content) {
       this.findAndRunScripts();

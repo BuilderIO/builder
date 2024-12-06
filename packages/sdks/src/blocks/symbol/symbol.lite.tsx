@@ -94,7 +94,12 @@ export default function Symbol(props: SymbolProps) {
       reactNative: () => {},
       solid: () => {},
       angular: () => {
-        state.contentToUse = props.symbol?.content;
+        /** this is a hack to include the input in angular */
+        const _ = {
+          a: props.dataOnly,
+          b: props.inheritState,
+          c: props.renderToLiquid,
+        };
       },
 
       default: () => {
@@ -122,6 +127,7 @@ export default function Symbol(props: SymbolProps) {
       })}
     >
       <ContentVariants
+        nonce={props.builderContext.value.nonce}
         isNestedRender
         apiVersion={props.builderContext.value.apiVersion}
         apiKey={props.builderContext.value.apiKey!}

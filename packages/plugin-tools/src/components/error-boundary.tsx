@@ -33,9 +33,9 @@ export const ErrorMessage = () => (
     <a
       css={{ color: 'steelblue', cursor: 'pointer', fontWeight: 'bold' }}
       target="_blank"
-      href="mailto:help@builder.io"
+      href="mailto:support@builder.io"
     >
-      help@builder.io
+      support@builder.io
     </a>{' '}
     if this continues
   </div>

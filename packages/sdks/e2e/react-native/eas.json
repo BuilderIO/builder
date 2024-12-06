@@ -7,31 +7,16 @@
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {},
-    "development:simulator": {
-      "extends": "development",
-      "ios": {
-        "simulator": true
+    "build-and-maestro-test": {
+      "withoutCredentials": true,
+      "config": "build-and-maestro-test.yml",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
       },
-      "env": {
-        "YARN_ENABLE_SCRIPTS": "false"
-      }
-    },
-    "test": {
       "ios": {
-        "simulator": true
-      },
-      "env": {
-        "YARN_ENABLE_SCRIPTS": "false"
-      }
-    },
-    "test_debug": {
-      "ios": {
-        "buildConfiguration": "Debug",
-        "simulator": true
+        "simulator": true,
+        "image": "latest"
       },
       "env": {
         "YARN_ENABLE_SCRIPTS": "false"

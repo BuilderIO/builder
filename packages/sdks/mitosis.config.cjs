@@ -144,6 +144,25 @@ const targets = target
       'angular',
     ];
 
+/**
+ * @type {Plugin}
+ */
+const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name !== 'ContentComponent') return json;
+
+      json.state.builderContextSignal.code =
+        json.state.builderContextSignal.code.replace(
+          /^\s*{/,
+          '{strictStyleMode: props.strictStyleMode,'
+        );
+
+      return json;
+    },
+  },
+});
+
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -209,13 +228,39 @@ const filterActionAttrBindings = (json, item) => {
   });
 };
 
+/**
+ * @type {Plugin}
+ */
+const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
+  json: {
+    post: (json) => {
+      if (
+        json.name === 'BuilderImage' ||
+        json.name === 'BuilderSymbol' ||
+        json.name === 'Awaiter'
+      ) {
+        json.hooks.onMount = json.hooks.onMount.filter(
+          (hook) =>
+            !hook.code.includes(
+              '/** this is a hack to include the input in angular */'
+            )
+        );
+      }
+      return json;
+    },
+  },
+});
+
 // for fixing circular dependencies
+/**
+ * @type {Plugin}
+ */
 const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
   code: {
     post: (code) => {
       if (
-        code.includes('component-ref, ComponentRef') ||
-        code.includes('repeated-block, RepeatedBlock')
+        code.includes('selector: "component-ref"') ||
+        code.includes('selector: "repeated-block"')
       ) {
         code = code.replace(
           'imports: [CommonModule, Block]',
@@ -234,42 +279,49 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
 const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code.includes('component-ref, ComponentRef')) {
-        // onInit we check for this.isInteractive as its available at that time
-        // and set the Wrapper to InteractiveElement or componentRef
-        code = code.replace(
-          'ngOnInit() {\n',
-          `ngOnInit() {\n  this.Wrapper = this.isInteractive ? InteractiveElement : this.componentRef;\n`
+      if (code.includes('selector: "component-ref"')) {
+        code = code
+          .replace(
+            '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
+            '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
+          )
+          .replace('</ng-container>', '</ng-container>\n</ng-container>');
+        const ngOnChangesIndex = code.indexOf(
+          'ngOnChanges(changes: SimpleChanges) {'
         );
-        // we need to wrap the blockChildren in a ngIf to prevent rendering when componentRef is undefined
-        code = code.replace(
-          '<ng-container *ngFor="let child of blockChildren">',
-          '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren">'
-        );
-        code = code.replace(
-          '</ng-container>',
-          '</ng-container>\n</ng-container>'
-        );
+
+        if (ngOnChangesIndex > -1) {
+          code = code.replace(
+            'ngOnChanges(changes: SimpleChanges) {',
+            // Add a check to see if the componentOptions have changed
+            `ngOnChanges(changes: SimpleChanges) {
+                if (changes.componentOptions) {
+                  let foundChange = false;
+                  for (const key in changes.componentOptions.previousValue) {
+                    if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
+                      foundChange = true;
+                      break;
+                    }
+                  }
+                  if (!foundChange) {
+                    return;
+                  }
+                }`
+          );
+        } else {
+          throw new Error('ngOnChanges not found in component-ref');
+        }
       }
       return code;
     },
   },
 });
 
-const ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN = () => ({
+const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   code: {
     post: (code) => {
-      if (code?.includes('blocks-wrapper, BlocksWrapper')) {
-        const mergedInputsCode = code.match(/this.mergedInputs_.* = \{.*\};/s);
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnChanges() {
-              ${mergedInputsCode}
-            }
-          }
-          `
-        );
+      if (code?.includes('selector: "blocks-wrapper"')) {
+        code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
     },
@@ -470,20 +522,37 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
       if (code.includes('enable-editor')) {
-        code = code.replace(
-          'window.addEventListener("message", this.processMessage);',
-          'window.addEventListener("message", this.processMessage.bind(this));'
+        // find two event listeners and add bind(this) to the fn passed
+        const eventListeners = code.match(
+          /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
-        code = code.replace(
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate
-          );`,
-          `window.addEventListener(
-            "builder:component:stateChangeListenerActivated",
-            this.emitStateUpdate.bind(this)
-          );`
+        if (eventListeners && eventListeners.length) {
+          eventListeners.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.addEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.addEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
+        const eventListenersRemove = code.match(
+          /window\.removeEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
         );
+        if (eventListenersRemove && eventListenersRemove.length) {
+          eventListenersRemove.forEach((eventListener) => {
+            const [eventName, fn] = eventListener
+              .replace('window.removeEventListener(', '')
+              .replace(')', '')
+              .split(',');
+            code = code.replace(
+              eventListener,
+              `window.removeEventListener(${eventName}, ${fn}.bind(this))`
+            );
+          });
+        }
       }
       return code;
     },
@@ -494,42 +563,10 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
 const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
   code: {
     post: (code) => {
-      if (code.includes('content-component, ContentComponent')) {
-        const registeredComponentsCode = code.match(
-          /registeredComponents = \[.*\);/s
-        );
-        const builderContextSignalCode = code.match(
-          /builderContextSignal = \{.*\};/s
-        );
-
-        // add them to ngOnInit
-        code = code.replace(
-          // last } before the end of the class
-          /}\n\s*$/,
-          `
-            ngOnInit() {
-              this.${registeredComponentsCode}
-              this.${builderContextSignalCode}
-            }
-          }
-          `
-        );
-
+      if (code.includes('selector: "content-component"')) {
         code = code.replaceAll(
           'this.contentSetState',
           'this.contentSetState.bind(this)'
-        );
-      }
-      if (code.includes('content-styles, ContentStyles')) {
-        const injectedStyles = code.match(/injectedStyles = `.*;/s);
-        code = code.replace(
-          /}\n\s*$/,
-          `
-            ngOnInit() {
-              this.${injectedStyles}
-            }
-          }
-          `
         );
       }
       return code;
@@ -537,37 +574,143 @@ const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
   },
 });
 
-const ANGULAR_FIX_AB_TESTS_INITIALIZATION = () => ({
-  json: {
-    pre: (json) => {
-      if (json.name === 'ContentVariants') {
-        if (json.state['defaultContent']) {
-          json.state['getdefaultContent'] = {
-            code: json.state['defaultContent'].code.replace('get ', 'get'),
-            type: 'method',
-          };
-          json.state['defaultContent'] = {
-            code: 'null',
-            type: 'property',
-          };
-
-          json.hooks.onUpdate.push({
-            code: `if (props.content) { state.defaultContent = state.getdefaultContent(); }`,
-          });
-        }
-      }
-    },
-  },
-});
-
 const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
   code: {
     post: (code) => {
-      if (code.includes('builder-symbol, BuilderSymbol')) {
+      if (code.includes('selector: "builder-symbol"')) {
         code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
         code = code.replace(
           'this.setContent();',
           'if (changes.symbol) { this.setContent(); }'
+        );
+      }
+      return code;
+    },
+  },
+});
+
+/**
+ * This code is used to destructure the `attributes` prop and apply it to the direct child element of the
+ * interactive-element when `noWrap` is set to `true`.
+ *
+ * When using a custom component that doesn’t expect the `attributes` prop and `noWrap` is `true`,
+ * the `attributes` are applied to the root element of the custom component:
+ *
+ * <mat-button {...attributes}>
+ *   ...
+ * </mat-button>
+ *
+ * For custom components that **do** expect the `attributes` prop, it is passed as an `@Input()`,
+ * allowing users to utilize it wherever needed.
+ * For instance, in our Button block, the `attributes` prop is passed to `dynamic-renderer` -> `button`.
+ *
+ * If users want to apply the `attributes` prop at specific locations within their custom components,
+ * they can use it as an `@Input()`.
+ */
+const ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE = `  
+  _listenerFns = new Map<string, () => void>();
+
+  private hasAttributesInput(component): boolean {
+    return !!reflectComponentType(component)?.inputs.find(input => input.propName === 'attributes');
+  }
+
+  private updateAttributes(
+    el: HTMLElement,
+    attributes: { [key: string]: any }
+  ): void {
+    Object.keys(attributes).forEach((attr) => {
+      if (attr.startsWith("on")) {
+        if (this._listenerFns.has(attr)) {
+          this._listenerFns.get(attr)!();
+        }
+        this._listenerFns.set(
+          attr,
+          this.renderer.listen(
+            el,
+            attr.replace("on", "").toLowerCase(),
+            attributes[attr]
+          )
+        );
+      } else if (attr === 'class' && attributes[attr]) {
+        const classes = attributes[attr].split(' ');
+        classes.forEach((cls: string) =>
+          this.renderer.addClass(el, cls.trim())
+        );
+      } else {
+        this.renderer.setAttribute(el, attr.toLowerCase(), attributes[attr] ?? "");
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    if (!this.hasAttributesInput(this.Wrapper)) {
+      const wrapperElement =
+        this.wrapperTemplateRef.elementRef.nativeElement?.nextElementSibling;
+      if (wrapperElement) {
+        this.updateAttributes(wrapperElement, this.attributes);
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    for (const fn of this._listenerFns.values()) {
+      fn();
+    }
+  }
+`;
+
+/**
+ * Checks if the custom component expects `attributes` prop.
+ * If yes, it passes `attributes` as an `@Input()` to the custom component.
+ * If no, it attaches `attributes` to the direct child element of interactive element.
+ */
+const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "interactive-element"')) {
+        code = code.replace(
+          'constructor(private vcRef: ViewContainerRef) {',
+          'constructor(private vcRef: ViewContainerRef, private renderer: Renderer2) {'
+        );
+        code = code.replace(
+          /import {/,
+          `import {
+          Renderer2,
+          reflectComponentType,
+          `
+        );
+        code = code.replaceAll(
+          'attributes: this.attributes,',
+          '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.attributes } : {})'
+        );
+        const ngOnChangesIndex = code.indexOf('ngOnChanges');
+        code =
+          code.slice(0, ngOnChangesIndex) +
+          ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE +
+          code.slice(ngOnChangesIndex);
+
+        code = code.replace(
+          'ngOnChanges(changes: SimpleChanges) {',
+          'ngOnChanges(changes: SimpleChanges) { if (changes["attributes"] && !this.hasAttributesInput(this.Wrapper)) { this.ngAfterViewInit(); }'
+        );
+      }
+      return code;
+    },
+  },
+});
+
+/**
+ * Looks for any changes in `component-ref` component's wrapper template and updates it such that it resolves during SSR.
+ */
+const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "component-ref"')) {
+        code = code.replace(
+          /this\.myContent\s*=\s*\[[^\]]*\]/,
+          `const wrapperTemplate = this.vcRef.createEmbeddedView(this.wrapperTemplateRef);
+          wrapperTemplate.detectChanges();
+          this.myContent = [wrapperTemplate.rootNodes]`
         );
       }
       return code;
@@ -598,9 +741,11 @@ module.exports = {
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
-        ANGULAR_BLOCKS_WRAPPER_MERGED_INPUT_REACTIVITY_PLUGIN,
-        ANGULAR_FIX_AB_TESTS_INITIALIZATION,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
+        ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
+        ANGULAR_ADD_UNUSED_PROP_TYPES,
+        ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
+        ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
       ],
     },
     solid: {
@@ -700,6 +845,7 @@ module.exports = {
         BASE_TEXT_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
+        ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -761,6 +907,30 @@ module.exports = {
               if (json.name === 'CustomCode') {
                 json.refs.elementRef.typeParameter = 'any';
               }
+
+              /**
+               * Fix component name as `Button` is imported from react-native
+               */
+              if (json.name === 'Button') {
+                json.name = 'BuilderButton';
+              }
+            },
+          },
+        }),
+        () => ({
+          code: {
+            post: (code) => {
+              if (
+                code.includes('BlocksWrapper') ||
+                code.includes('EnableEditor')
+              ) {
+                /**
+                 * Replaces `onPress` event handler with `onClick` for React Native
+                 * such that visual editing "+Add Block" works on web target.
+                 */
+                code = code.replace('onPress', 'onClick');
+              }
+              return code;
             },
           },
         }),

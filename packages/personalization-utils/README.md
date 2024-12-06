@@ -8,7 +8,7 @@ npm install @builder.io/personalization-utils
 
 # How to start with personalized rewrites? 
 
- This utility library helps you encode/decode targeting attributes as parts of the URL to allow for caching (or statically generating) render results, it should be used in middleware in combination with a page path handler (for e.g a catch all page `pages/[[...path]].jsx`):
+This utility library helps you encode/decode targeting attributes as parts of the URL to allow for caching (or statically generating) render results, it should be used in middleware in combination with a page path handler (for e.g a catch all page `pages/[[...path]].jsx`):
 
 ```ts
 import { parsePersonalizedURL } from '@builder.io/personalization-utils/next'
@@ -62,15 +62,80 @@ export default function middleware(request) {
   }
   return NextResponse.next();
 }
-
 ```
 
-Great now that we have the personalized routes ready all we need to do is set the corresponding cookie for any of the targeting attributes we have in builder:
-```ts
-  const audience = await myCDP.identifyAudience(userID);
-  setCookie(`builder.userAttributes.audience`, audience)
+```typescript
+const audience = await myCDP.identifyAudience(userID);
+// this will include the `audience` in all api calls and save it in a cookie `builder.userAttributes`
+builder.setUserAttributes({ audience })
 ```
+
 Once the cookie is set, all builder content matching from now on will weigh in the current audience segment.
 
+## Using trimHtml for Dynamic Containers and A/B Tests
 
+The `trimHtml` function is a utility for handling dynamic personalization containers and A/B test variants in your HTML content. It's particularly useful for processing personalized content at the edge or in server-side rendering scenarios.
 
+### Usage
+
+```typescript
+import { trimHtml } from '@builder.io/personalization-utils'
+
+const fullHTML = '... your full HTML string with personalization containers and A/B test variants ...';
+const userAttributes = {
+  audience: 'segment-a',
+  date: '2023-06-15T12:00:00Z'
+};
+const abTests = {
+  'content-id-1': 'variant-a',
+  'content-id-2': 'variant-b'
+};
+
+const { html } = trimHtml(fullHTML, { userAttributes, abTests });
+```
+
+To get the `userAttributes`, you should parse the `builder.userAttributes` cookie. Here's an example of how you might do this:
+
+```typescript
+import { parse } from 'cookie'
+
+function getUserAttributes(req) {
+  const cookies = parse(req.headers.cookie || '');
+  const builderAttributes = cookies['builder.userAttributes'];
+  return builderAttributes ? JSON.parse(builderAttributes) : {};
+}
+
+// Then in your request handler:
+const userAttributes = getUserAttributes(req);
+```
+
+To get the `abTests` data, you can parse the relevant cookies like this:
+
+```typescript
+import { parse } from 'cookie'
+
+function getAbTests(req) {
+  const cookies = parse(req.headers.cookie || '');
+  const abTests = Object.entries(cookies).reduce((acc, [cookieName, cookieValue]) => {
+    if (cookieName.startsWith('builder.tests')) {
+      return {
+        ...acc,
+        [cookieName.split('.').slice(-1)[0]]: cookieValue
+      }
+    }
+    return acc;
+  }, {});
+  return abTests;
+}
+
+// Then in your request handler:
+const abTests = getAbTests(req);
+const { html } = trimHtml(fullHTML, { userAttributes, abTests });
+```
+
+The `trimHtml` function processes the HTML in the following order:
+1. It first applies A/B test variants based on the provided `abTests` object.
+2. Then it evaluates personalization containers against the provided user attributes.
+3. Finally, it returns a new HTML string with the appropriate personalized content and A/B test variants.
+
+This approach allows you to deliver personalized content and A/B test variants while still leveraging edge caching or static site generation, as the personalization and A/B test logic is applied after the initial HTML is generated.

@@ -71,7 +71,13 @@ export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
               whiteSpace: 'nowrap',
             }}
           >
-            {props.resource.title}
+            {props.resource.title !== 'untitled' ? (
+              <div>
+                {props.resource.title} - {props.resource.id}
+              </div>
+            ) : (
+              props.resource.title
+            )}
           </div>
         }
       />
@@ -183,6 +189,13 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
       : typeof props.value === 'string'
       ? props.value
       : props.value?.options?.get(props.resourceName),
+    updateResourceId(newProps: ResourcesPickerButtonProps) {
+      this.resourceId = newProps.handleOnly
+      ? undefined
+      : typeof newProps.value === 'string'
+      ? newProps.value
+      : newProps.value?.options?.get(newProps.resourceName);
+    },
     async getResource() {
       this.error = null;
       this.loading = true;
@@ -248,8 +261,9 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
   }));
 
   useEffect(() => {
+    store.updateResourceId(props);
     store.getResource();
-  }, []);
+  }, [props.value]);
 
   useEffect(() => {
     const hasPreviewFields = Boolean(
@@ -284,7 +298,6 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
         {store.resourceInfo && (
           <Paper
             css={{
-              marginBottom: 15,
               position: 'relative',
             }}
           >

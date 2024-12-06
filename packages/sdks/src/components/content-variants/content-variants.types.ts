@@ -5,8 +5,9 @@ import type {
 import type { ApiVersion } from '../../types/api-version.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
+import type { ExtraFrameworkProps } from './extra-framework-props-types.js';
 
-export interface ContentVariantsPrps {
+export interface ContentVariantsPrps extends ExtraFrameworkProps {
   /**
    * The Builder content JSON to render (required).
    */
@@ -31,6 +32,11 @@ export interface ContentVariantsPrps {
    * Your API Key: needed to enable visual editing, and to dynamically fetch symbols (required).
    */
   apiKey: string;
+
+  /**
+   * Sets the host of Builder API calls. (Defaults to global `https://cdn.builder.io`)
+   */
+  apiHost?: string;
 
   apiVersion?: ApiVersion;
 
@@ -84,4 +90,9 @@ export interface ContentVariantsPrps {
    * List of hosts to allow editing content from.
    */
   trustedHosts?: string[];
+
+  /**
+   * A CSP nonce to use for the SDK's inlined `<script>` and `<style>` tags.
+   */
+  nonce?: string;
 }

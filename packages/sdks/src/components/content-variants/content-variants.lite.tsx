@@ -2,7 +2,6 @@ import {
   For,
   Show,
   onMount,
-  onUpdate,
   useMetadata,
   useStore,
   useTarget,
@@ -27,6 +26,9 @@ useMetadata({
   },
   qwik: {
     setUseStoreFirst: true,
+  },
+  angular: {
+    selector: 'builder-content, content-variants',
   },
 });
 
@@ -82,43 +84,35 @@ export default function ContentVariants(props: VariantsProviderProps) {
     },
   });
 
-  onUpdate(() => {
-    useTarget({
-      angular: () => {
-        if (props.content) {
-          state.shouldRenderVariants = checkShouldRenderVariants({
-            canTrack: props.canTrack,
-            content: props.content,
-          });
-        }
-      },
-    });
-  });
-
   return (
     <>
       <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
         <InlinedScript
           scriptStr={getInitVariantsFnsScriptString()}
           id="builderio-init-variants-fns"
+          nonce={props.nonce || ''}
         />
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
           id="builderio-variants"
           styles={state.hideVariantsStyleString}
+          nonce={props.nonce || ''}
         />
         {/* Sets A/B test cookie for all `RenderContent` to read */}
         <InlinedScript
           id="builderio-variants-visibility"
           scriptStr={state.updateCookieAndStylesScriptStr}
+          nonce={props.nonce || ''}
         />
 
         <For each={getVariants(props.content)}>
           {(variant) => (
             <ContentComponent
+              apiHost={props.apiHost}
               isNestedRender={props.isNestedRender}
               key={variant.testVariationId}
+              nonce={props.nonce}
               content={variant}
               showContent={false}
               model={props.model}
@@ -137,14 +131,25 @@ export default function ContentVariants(props: VariantsProviderProps) {
               contentWrapper={props.contentWrapper}
               contentWrapperProps={props.contentWrapperProps}
               trustedHosts={props.trustedHosts}
+              {...useTarget({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
+                reactNative: { strictStyleMode: props.strictStyleMode },
+                default: {},
+              })}
             />
           )}
         </For>
       </Show>
       <ContentComponent
+        apiHost={props.apiHost}
+        nonce={props.nonce}
         isNestedRender={props.isNestedRender}
         {...useTarget({
           vue: { key: state.shouldRenderVariants.toString() },
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          reactNative: { strictStyleMode: props.strictStyleMode },
           default: {},
         })}
         content={state.defaultContent}
