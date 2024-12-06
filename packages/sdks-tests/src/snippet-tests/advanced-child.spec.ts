@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from '../helpers/index.js';
+import { test, testClickAndVerifyVisibility } from '../helpers/index.js';
 
 test.describe('Advanced child sub components', () => {
   test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
@@ -32,23 +32,10 @@ test.describe('Advanced child sub components', () => {
     await page.waitForSelector('button:has-text("Tab 1")');
     await page.waitForSelector('button:has-text("Tab 2")');
 
-    await page.click('button:has-text("Tab 1")');
+    await testClickAndVerifyVisibility(page, 'Tab 1', 'Tab 1 Content');
+    expect(await page.locator('div').filter({ hasText: 'Tab 2 content' }).isVisible()).toBeFalsy();
 
-    const tab1Content = await page.waitForSelector('div:has-text("Tab 1 Content")', {
-      state: 'visible',
-    });
-    expect(await tab1Content.isVisible()).toBe(true);
-
-    const tab2ContentHidden = await page.$('div:has-text("Tab 2 content")');
-    expect((await tab2ContentHidden?.isVisible()) ?? false).toBe(false);
-
-    await page.click('button:has-text("Tab 2")');
-    const tab2Content = await page.waitForSelector('div:has-text("Tab 2 content")', {
-      state: 'visible',
-    });
-    expect(await tab2Content.isVisible()).toBe(true);
-
-    const tab1ContentHidden = await page.$('div:has-text("Tab 1 Content")');
-    expect((await tab1ContentHidden?.isVisible()) ?? false).toBe(false);
+    await testClickAndVerifyVisibility(page, 'Tab 2', 'Tab 2 content');
+    expect(await page.locator('div').filter({ hasText: 'Tab 1 Content' }).isVisible()).toBeFalsy();
   });
 });

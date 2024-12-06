@@ -7,7 +7,6 @@ interface CustomColumnsProps {
 }
 
 export const CustomColumns = (props: CustomColumnsProps) => {
-  console.log('props', props);
   return (
     <>
       <BuilderBlocks

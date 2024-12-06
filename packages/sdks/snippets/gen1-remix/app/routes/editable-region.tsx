@@ -31,14 +31,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     })
     .toPromise();
 
-  console.log('page', page);
   return { page };
 };
 
 export default function EditableRegionsPage() {
   const { page } = useLoaderData<typeof loader>();
-
-  console.log('page', page);
-
+  
   return <BuilderComponent model="editable-regions" content={page} />;
 }
