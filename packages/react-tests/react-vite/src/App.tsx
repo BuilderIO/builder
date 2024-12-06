@@ -19,6 +19,10 @@ function App() {
         window.location.pathname.includes('get-query') ||
         window.location.pathname.includes('get-content')
       ) {
+        if (resp.apiEndpoint) {
+          builder.apiEndpoint = resp.apiEndpoint;
+          delete resp.apiEndpoint;
+        }
         builder
           .get('', {
             ...resp,

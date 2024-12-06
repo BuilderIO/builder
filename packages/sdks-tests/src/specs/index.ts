@@ -298,7 +298,7 @@ export const getProps = async (args: {
       break;
     case '/get-content':
       extraProps = {
-        options: { apiEndpoint: 'content' },
+        apiEndpoint: 'content',
       };
       break;
     case '/get-query':
