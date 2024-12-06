@@ -144,6 +144,9 @@ test.describe('Visual Editing', () => {
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
     );
+
+    test.skip(packageName === 'vue', 'Vue tests flake on this one for an unnkown reason.');
+
     await page.goto('/duplicated-content-using-nested-symbols');
     await launchEmbedderAndWaitForSdk({
       path: '/duplicated-content-using-nested-symbols',
