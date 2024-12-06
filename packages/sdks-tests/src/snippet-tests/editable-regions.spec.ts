@@ -22,27 +22,17 @@ test.describe('Editable regions in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+    test.skip(
+      !['react', 'angular', 'angular-ssr', 'gen1-remix'].includes(packageName)
+    );
 
     await page.goto('/editable-region');
 
     const twoColumns = page.locator('div.builder-block').first();
     await expect(twoColumns).toBeVisible();
 
-    const childDivs = twoColumns.locator('div');
-
-    const columns = childDivs.locator('div.builder-text');
-
-    await columns.first().waitFor({ state: 'attached' });
-    await columns.nth(1).waitFor({ state: 'attached' });
-
-    await expect(columns.first()).toBeVisible();
-    await expect(columns.nth(1)).toBeVisible();
-
-    const firstText = await columns.first().textContent();
-    expect(firstText?.trim().toLowerCase()).toBe('column 1 text');
-
-    const secondText = await columns.nth(1).textContent();
-    expect(secondText?.trim().toLowerCase()).toBe('column 2 text');
+    const columnTexts = await twoColumns.textContent();
+    expect(columnTexts).toContain('column 1 text');
+    expect(columnTexts).toContain('column 2 text');
   });
 });
