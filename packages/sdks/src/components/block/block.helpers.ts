@@ -126,7 +126,7 @@ export const provideRegisteredComponents = (
   if (block?.shouldReceiveBuilderProps?.builderComponents) {
     const filteredRegisteredComponents = Object.fromEntries(
       Object.entries(registeredComponents).filter(([key]) => {
-        return registeredComponents[key].models && model
+        return registeredComponents[key]?.models && model
           ? registeredComponents[key].models.includes(model)
           : true;
       })
