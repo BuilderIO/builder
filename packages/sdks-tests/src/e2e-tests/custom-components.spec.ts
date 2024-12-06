@@ -114,4 +114,28 @@ test.describe('Custom components', () => {
     await page.goto('/custom-components-models-show');
     await expect(page.locator('text=hello World').first()).toBeVisible();
   });
+
+  test('component receives a registered component if its restricted to a model', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react'].includes(packageName));
+
+    await page.goto('/custom-components-models-show');
+
+    const selector = page.locator('#component-needs-hello');
+    await expect(selector).toContainText('object');
+  });
+
+  test('component does not receive a registered component if its restricted to a model', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react'].includes(packageName));
+
+    await page.goto('/custom-components-models-not-show');
+
+    const selector = page.locator('#component-needs-hello');
+    await expect(selector).toContainText('undefined');
+  });
 });

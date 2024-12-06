@@ -191,7 +191,8 @@ export default function Block(props: BlockProps) {
           ...provideLinkComponent(state.blockComponent, props.linkComponent),
           ...provideRegisteredComponents(
             state.blockComponent,
-            props.registeredComponents
+            props.registeredComponents,
+            props.context.value.model
           ),
         },
         context: useTarget({

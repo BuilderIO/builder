@@ -120,10 +120,19 @@ export const provideLinkComponent = (
 
 export const provideRegisteredComponents = (
   block: RegisteredComponent | null | undefined,
-  registeredComponents: RegisteredComponents
+  registeredComponents: RegisteredComponents,
+  model: string
 ) => {
-  if (block?.shouldReceiveBuilderProps?.builderComponents)
-    return { builderComponents: registeredComponents };
+  if (block?.shouldReceiveBuilderProps?.builderComponents) {
+    const filteredRegisteredComponents = Object.fromEntries(
+      Object.entries(registeredComponents).filter(([key]) => {
+        return registeredComponents[key].models && model
+          ? registeredComponents[key].models.includes(model)
+          : true;
+      })
+    );
+    return { builderComponents: filteredRegisteredComponents };
+  }
 
   return {};
 };
