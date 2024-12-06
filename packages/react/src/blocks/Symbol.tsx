@@ -161,6 +161,11 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
                       key: builderComponentKey,
                       noEditorUpdates: true,
                     }),
+                    ...(entry && {
+                      query: {
+                        id: entry,
+                      },
+                    }),
                   }}
                   codegen={!!content?.data?.blocksJs}
                   hydrate={state.state?._hydrate}
