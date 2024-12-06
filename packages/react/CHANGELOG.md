@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 7.0.2
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+- Updated dependencies [409aec9]
+  - @builder.io/sdk@5.0.1
+
 ## 7.0.1
 
 ### Patch Changes

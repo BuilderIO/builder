@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 3.0.1
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+
 ## 3.0.0
 
 ### Major Changes
