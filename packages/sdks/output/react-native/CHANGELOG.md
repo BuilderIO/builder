@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 3.0.1
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+
 ## 3.0.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 5.0.1
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+
 ## 5.0.0
 
 ### Major Changes

@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react",
   "type": "module",
   "repository": {

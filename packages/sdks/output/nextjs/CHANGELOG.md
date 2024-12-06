@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.17.1
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+
 ## 0.17.0
 
 ### Minor Changes
