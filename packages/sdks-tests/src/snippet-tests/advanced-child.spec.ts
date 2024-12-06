@@ -32,10 +32,12 @@ test.describe('Advanced child sub components', () => {
     await page.waitForSelector('button:has-text("Tab 1")');
     await page.waitForSelector('button:has-text("Tab 2")');
 
-    await testClickAndVerifyVisibility(page, 'Tab 1', 'Tab 1 Content');
+    const Tab1ContentVisible = await testClickAndVerifyVisibility(page, 'Tab 1', 'Tab 1 Content');
+    expect(Tab1ContentVisible).toBe(true);
     expect(await page.locator('div').filter({ hasText: 'Tab 2 content' }).isVisible()).toBeFalsy();
 
-    await testClickAndVerifyVisibility(page, 'Tab 2', 'Tab 2 content');
+    const Tab2ContentVisible = await testClickAndVerifyVisibility(page, 'Tab 2', 'Tab 2 content');
+    expect(Tab2ContentVisible).toBe(true);
     expect(await page.locator('div').filter({ hasText: 'Tab 1 Content' }).isVisible()).toBeFalsy();
   });
 });
