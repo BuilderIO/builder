@@ -10,6 +10,19 @@ import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
+const checkIsComponentRestricted = (
+  component: RegisteredComponent | null | undefined,
+  model: string
+) => {
+  if (!component) return true;
+  if (!model) return false;
+  return (
+    component.models &&
+    component.models.length > 0 &&
+    !component.models.includes(model)
+  );
+};
+
 export const getComponent = ({
   block,
   registeredComponents,
@@ -27,13 +40,7 @@ export const getComponent = ({
 
   const ref = registeredComponents[componentName];
 
-  const isRestricted =
-    model &&
-    ref?.models &&
-    ref.models?.length > 0 &&
-    !ref.models.includes(model);
-
-  if (!ref || isRestricted) {
+  if (!ref || checkIsComponentRestricted(ref, model)) {
     // TODO: Public doc page with more info about this message
     console.warn(`
       Could not find a registered component named "${componentName}". 
@@ -126,9 +133,7 @@ export const provideRegisteredComponents = (
   if (block?.shouldReceiveBuilderProps?.builderComponents) {
     const filteredRegisteredComponents = Object.fromEntries(
       Object.entries(registeredComponents).filter(([_, component]) => {
-        return component?.models && model
-          ? component.models.includes(model)
-          : true;
+        return !checkIsComponentRestricted(component, model);
       })
     );
     return { builderComponents: filteredRegisteredComponents };
