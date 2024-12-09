@@ -18,7 +18,7 @@ test.describe('Div with Hero class, and text', () => {
     const builderBlock = page.locator('div.builder-block').first();
     await expect(builderBlock).toBeVisible();
 
-    const column1Text = page.locator("text=This is your component's text");
+    const column1Text = page.locator('text=This is text from your component');
     await expect(column1Text).toBeVisible();
 
     const column2Text = page.locator('text=This is Builder text');
