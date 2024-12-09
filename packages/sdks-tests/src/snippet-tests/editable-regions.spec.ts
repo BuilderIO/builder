@@ -22,7 +22,9 @@ test.describe('Editable regions in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react', 'angular', 'angular-ssr', 'gen1-remix'].includes(packageName));
+    test.skip(
+      !['react', 'angular', 'angular-ssr', 'gen1-remix', 'gen1-react'].includes(packageName)
+    );
 
     await page.goto('/editable-region');
 
