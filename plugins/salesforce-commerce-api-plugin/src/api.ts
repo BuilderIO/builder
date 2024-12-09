@@ -93,7 +93,7 @@ export class Api {
   async validateConfig(){
        const response = await this.request(`validate-config`);
        if(response.errors){
-        throw response.errors[0]?.title;
+        throw 'We failed to authenticate your access to salesforce commerce api. Please review all plugin fields and make sure they are correct.';
        }
   }
 
