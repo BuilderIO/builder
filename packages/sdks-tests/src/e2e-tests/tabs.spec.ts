@@ -31,7 +31,6 @@ test.describe('Tabs Block', () => {
   });
 
   test('clicking on another tab updates content', async ({ page, sdk }) => {
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     test.fail(excludeTestFor({ rsc: true }, sdk), 'Not handled in RSC.');
 
     await page.goto('/tabs');

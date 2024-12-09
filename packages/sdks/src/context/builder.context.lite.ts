@@ -15,6 +15,7 @@ export default createContext<BuilderContextInterface>(
     BlocksWrapper: 'div',
     BlocksWrapperProps: {},
     nonce: '',
+    model: '',
   },
   { reactive: true }
 );

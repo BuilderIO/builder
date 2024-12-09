@@ -1,5 +1,5 @@
 import BuilderBlockWithClassName from '@/components/BuilderBlockWithClassName';
-import Hello from '@/components/Hello';
+import Hello, { fromClientModuleHelloInfo } from '@/components/Hello';
 import CatFacts from '@/components/MyTextBox/CatFacts';
 import {
   Content,
@@ -95,6 +95,7 @@ export default async function Page(props: MyPageProps) {
           name: 'Hello',
           inputs: [],
         },
+        fromClientModuleHelloInfo,
         {
           ...componentInfo,
           component: MyTextBox,

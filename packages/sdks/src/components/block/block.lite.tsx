@@ -119,6 +119,7 @@ export default function Block(props: BlockProps) {
       return getComponent({
         block: state.processedBlock,
         registeredComponents: props.registeredComponents,
+        model: props.context.value.model,
       });
     },
     get Tag() {
@@ -190,7 +191,8 @@ export default function Block(props: BlockProps) {
           ...provideLinkComponent(state.blockComponent, props.linkComponent),
           ...provideRegisteredComponents(
             state.blockComponent,
-            props.registeredComponents
+            props.registeredComponents,
+            props.context.value.model
           ),
         },
         context: useTarget({
