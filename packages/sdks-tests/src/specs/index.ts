@@ -73,6 +73,7 @@ import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
 import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 import { XSS_EXPLOIT } from './xss-exploit.js';
+import { COUNTDOWN } from './countdown.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -186,6 +187,7 @@ export const PAGES: Record<string, Page> = {
   },
   '/override-base-url': { content: HTTP_REQUESTS },
   '/xss-exploit': { content: XSS_EXPLOIT },
+  '/symbol-with-jscode': { content: COUNTDOWN },
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
 } as const;

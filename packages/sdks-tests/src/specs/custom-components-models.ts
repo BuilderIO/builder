@@ -49,6 +49,25 @@ export const CUSTOM_COMPONENTS_MODELS_RESTRICTION = {
           },
         },
       },
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-c4ecac806b204614a7211b26d269655b',
+        component: {
+          name: 'ComponentNeedsHello',
+          options: {},
+        },
+        responsiveStyles: {
+          large: {
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            flexShrink: '0',
+            boxSizing: 'border-box',
+            marginTop: '20px',
+          },
+        },
+      },
     ],
   },
   metrics: {

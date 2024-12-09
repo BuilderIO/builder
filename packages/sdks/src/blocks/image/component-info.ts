@@ -1,3 +1,4 @@
+import { IMAGE_FILE_TYPES } from '../../constants/file-types.js';
 import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
@@ -18,7 +19,7 @@ export const componentInfo: ComponentInfo = {
       name: 'image',
       type: 'file',
       bubble: true,
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
+      allowedFileTypes: IMAGE_FILE_TYPES,
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a',
