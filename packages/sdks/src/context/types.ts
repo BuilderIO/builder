@@ -44,5 +44,6 @@ export interface BuilderContextInterface
   // Used to recursively store all CSS coming from a parent that would apply to a Text block
   inheritedStyles: Record<string, unknown>;
   nonce: string;
+  model: string;
   canTrack?: boolean;
 }
