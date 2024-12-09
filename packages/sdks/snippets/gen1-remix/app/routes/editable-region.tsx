@@ -36,6 +36,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function EditableRegionsPage() {
   const { page } = useLoaderData<typeof loader>();
-  
+
   return <BuilderComponent model="editable-regions" content={page} />;
 }
