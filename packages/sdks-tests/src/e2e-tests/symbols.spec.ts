@@ -236,7 +236,7 @@ test.describe('Symbols', () => {
     await page.goto('/nested-symbols');
 
     // gen1-remix and gen1-next are also skipped because React.useContext is not recognized
-    test.fail(['gen1-remix', 'gen1-next'].includes(packageName));
+    test.fail(['gen1-remix', 'gen1-next-14'].includes(packageName));
 
     let selector = '[builder-model="symbol"]';
     if (checkIsRN(sdk)) {
