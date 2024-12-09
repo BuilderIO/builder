@@ -10,7 +10,6 @@ Builder.registerComponent(CustomTabs, {
     {
       name: 'tabList',
       type: 'array',
-      defaultValue: [],
       subFields: [
         {
           name: 'tabName',
@@ -19,7 +18,6 @@ Builder.registerComponent(CustomTabs, {
         {
           name: 'blocks',
           type: 'uiBlocks',
-          hideFromUI: true,
           defaultValue: [],
         },
       ],

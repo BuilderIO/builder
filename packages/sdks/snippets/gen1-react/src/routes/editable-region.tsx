@@ -12,20 +12,12 @@ Builder.registerComponent(CustomColumns, {
     {
       name: 'column1',
       type: 'uiBlocks',
-      broadcast: true,
-      hideFromUI: true,
-      defaultValue: {
-        blocks: [],
-      },
+      defaultValue: [],
     },
     {
       name: 'column2',
       type: 'uiBlocks',
-      broadcast: true,
-      hideFromUI: true,
-      defaultValue: {
-        blocks: [],
-      },
+      defaultValue: [],
     },
   ],
 });

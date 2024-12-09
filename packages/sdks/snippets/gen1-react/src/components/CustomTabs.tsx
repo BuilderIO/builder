@@ -28,7 +28,7 @@ const CustomTabs = ({ tabList, builderBlock }: TabProps) => {
 
       <BuilderBlocks
         parentElementId={builderBlock?.id}
-        dataPath={`tabList.${activeTab}.blocks`}
+        dataPath="tabList.${activeTab}.blocks"
         blocks={tabList[activeTab].blocks}
       />
     </>
