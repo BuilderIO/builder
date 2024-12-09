@@ -14,6 +14,7 @@ type BuilderPageProps = ComponentProps<typeof BuilderComponent>;
 
 export function RenderBuilderContent(props: BuilderPageProps) {
   const pathname = usePathname();
+
   useEffect(() => {
     // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
     if (!pathname.includes('can-track-false') && !pathname.includes('symbol-tracking')) {
@@ -42,5 +43,6 @@ export function RenderBuilderContent(props: BuilderPageProps) {
         .then();
     }
   }, []);
+
   return props.content ? <BuilderComponent {...props} /> : <DefaultErrorPage statusCode={404} />;
 }
