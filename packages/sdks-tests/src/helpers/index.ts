@@ -193,6 +193,18 @@ export const getBuilderSessionIdCookie = async ({ context }: { context: BrowserC
   return builderSessionCookie;
 };
 
+export async function testClickAndVerifyVisibility(
+  page: Page,
+  buttonText: string,
+  contentText: string
+) {
+  await page.click(`button:has-text("${buttonText}")`);
+  const content = await page.waitForSelector(`div:has-text("${contentText}")`, {
+    state: 'visible',
+  });
+  return content.isVisible();
+}
+
 export const checkIfIsHydrationErrorMessage = (_text: string) => {
   const text = _text.toLowerCase();
   const isVueHydrationMismatch =
