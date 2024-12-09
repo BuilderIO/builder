@@ -15,6 +15,7 @@ type TestOptions = {
   packageName: ServerName;
   sdk: Sdk;
   basePort: number;
+  ignoreHydrationErrors: boolean;
 };
 
 // https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
@@ -41,7 +42,8 @@ const test = base.extend<TestOptions>({
   packageName: ['DEFAULT' as any, { option: true }],
   sdk: ['DEFAULT' as any, { option: true }],
   basePort: [0, { option: true }],
-  page: async ({ context, page, packageName, sdk }, use) => {
+  ignoreHydrationErrors: [false, { option: true }],
+  page: async ({ context, page, packageName, sdk, ignoreHydrationErrors }, use) => {
     if (packageName === ('DEFAULT' as any)) {
       throw new Error('packageName is required');
     }
@@ -61,7 +63,7 @@ const test = base.extend<TestOptions>({
     /**
      * temporarily disable hydration error checks for hydrogen until we fix them.
      */
-    const shouldCheckForHydrationError = packageName !== 'hydrogen';
+    const shouldCheckForHydrationError = packageName !== 'hydrogen' && !ignoreHydrationErrors;
 
     if (shouldCheckForHydrationError) {
       context.on('console', msg => {

@@ -441,7 +441,17 @@ export default function EnableEditor(props: BuilderEditorProps) {
   }, [props.locale]);
 
   return (
-    <Show when={props.builderContextSignal.value.content}>
+    <Show
+      when={
+        /**
+         * We need to attach this div only when content exists or isPreviewing/isEditing even when content is null,
+         * as we need to set the elementRef and allow previewing and visual editing
+         */
+        props.builderContextSignal.value.content ||
+        isPreviewing() ||
+        isEditing()
+      }
+    >
       <state.ContentWrapper
         {...useTarget({
           qwik: {
@@ -463,6 +473,15 @@ export default function EnableEditor(props: BuilderEditorProps) {
         className={getWrapperClassName(
           props.content?.testVariationId || props.content?.id
         )}
+        // content exists: render the div
+        // content is null but isEditing/isPreviewing: render the empty div with display: 'none' (so that it doesn't take up space)
+        style={{
+          display:
+            !props.builderContextSignal.value.content &&
+            (isPreviewing() || isEditing())
+              ? 'none'
+              : undefined,
+        }}
         {...useTarget({
           reactNative: {
             // currently, we can't set the actual ID here.
