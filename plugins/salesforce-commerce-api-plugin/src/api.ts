@@ -93,7 +93,7 @@ export class Api {
   async validateConfig(){
        const response = await this.request(`validate-config`);
        if(response.errors){
-        throw 'We failed to authenticate your access to Salesforce Commerce Cloud B2C api. Please review all plugin fields and make sure they are correct.';
+        throw 'We failed to authenticate your access to Salesforce Commerce Cloud B2C API. Please review all plugin fields and make sure they are correct.';
        }
   }
 
