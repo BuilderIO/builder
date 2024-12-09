@@ -1,3 +1,4 @@
+import { IMAGE_FILE_TYPES } from '../../constants/file-types.js';
 import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
@@ -12,7 +13,7 @@ export const componentInfo: ComponentInfo = {
       name: 'image',
       bubble: true,
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'gif', 'webp'],
+      allowedFileTypes: IMAGE_FILE_TYPES,
       required: true,
     },
   ],
