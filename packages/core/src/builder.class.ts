@@ -809,6 +809,8 @@ export interface Component {
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
    */
   requiredPermissions?: Array<Permission>;
+
+  meta?: { [key: string]: any };
 }
 
 type Permission = 'read' | 'publish' | 'editCode' | 'editDesigns' | 'admin' | 'create';

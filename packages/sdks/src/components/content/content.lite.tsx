@@ -56,11 +56,7 @@ export default function ContentComponent(props: ContentProps) {
 
     registeredComponents: [
       ...getDefaultRegisteredComponents(),
-      ...(props.customComponents?.filter(({ models }) => {
-        if (!models?.length) return true;
-        if (!props.model) return true;
-        return models.includes(props.model);
-      }) || []),
+      ...(props.customComponents || []),
     ].reduce<RegisteredComponents>(
       (acc, { component, ...info }) => ({
         ...acc,
@@ -106,11 +102,7 @@ export default function ContentComponent(props: ContentProps) {
         apiVersion: props.apiVersion,
         componentInfos: [
           ...getDefaultRegisteredComponents(),
-          ...(props.customComponents?.filter(({ models }) => {
-            if (!models?.length) return true;
-            if (!props.model) return true;
-            return models.includes(props.model);
-          }) || []),
+          ...(props.customComponents || []),
         ].reduce<Dictionary<ComponentInfo>>(
           (acc, { component: _, ...info }) => ({
             ...acc,
@@ -128,6 +120,7 @@ export default function ContentComponent(props: ContentProps) {
         }),
         BlocksWrapperProps: props.blocksWrapperProps || {},
         nonce: props.nonce || '',
+        model: props.model || '',
       },
       { reactive: true }
     );

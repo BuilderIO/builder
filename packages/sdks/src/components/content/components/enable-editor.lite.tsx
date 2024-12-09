@@ -275,8 +275,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
       Object.values<ComponentInfo>(
         props.builderContextSignal.value.componentInfos
       ).forEach((registeredComponent) => {
-        const message = createRegisterComponentMessage(registeredComponent);
-        window.parent?.postMessage(message, '*');
+        if (
+          !props.model ||
+          !registeredComponent.models?.length ||
+          registeredComponent.models.includes(props.model)
+        ) {
+          const message = createRegisterComponentMessage(registeredComponent);
+          window.parent?.postMessage(message, '*');
+        }
       });
       window.addEventListener(
         'builder:component:stateChangeListenerActivated',
