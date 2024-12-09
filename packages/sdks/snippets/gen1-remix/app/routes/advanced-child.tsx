@@ -20,7 +20,6 @@ Builder.registerComponent(CustomTabs, {
         {
           name: 'blocks',
           type: 'uiBlocks',
-          hideFromUI: true,
           defaultValue: [],
         },
       ],
