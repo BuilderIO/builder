@@ -8,6 +8,7 @@ import { BuilderMetaContext } from '../store/builder-meta';
 import { withBuilder } from '../functions/with-builder';
 import { throttle } from '../functions/throttle';
 import { Breakpoints, getSizesForBreakpoints } from '../constants/device-sizes.constant';
+import { IMAGE_FILE_TYPES } from 'src/constants/file-types.constant';
 
 // Taken from (and modified) the shopify theme script repo
 // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
@@ -442,7 +443,7 @@ export const Image = withBuilder(ImageComponent, {
       name: 'image',
       type: 'file',
       bubble: true,
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'webp'],
+      allowedFileTypes: IMAGE_FILE_TYPES,
       required: true,
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a',
