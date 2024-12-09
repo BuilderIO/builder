@@ -9,7 +9,7 @@ test.describe('API Endpoint', () => {
       await findTextInPage({ page, text: 'This is my Symbol!' });
     });
 
-    test('records API calls after page load for nextjs', async ({ page, packageName }) => {
+    test('records API calls after page load', async ({ page, packageName }) => {
       test.skip(packageName !== 'gen1-next');
       // Start monitoring network requests
       const urlMatchForContentAPI = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
