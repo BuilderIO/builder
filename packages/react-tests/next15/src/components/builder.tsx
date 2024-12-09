@@ -9,7 +9,7 @@ import '@builder.io/widgets/dist/lib/builder-widgets-async';
 import { usePathname } from 'next/navigation';
 
 builder.init(getAPIKey());
-
+builder.canTrack = false;
 type BuilderPageProps = ComponentProps<typeof BuilderComponent>;
 
 export function RenderBuilderContent(props: BuilderPageProps) {

@@ -3,6 +3,7 @@ import { RenderBuilderContent } from '../../components/builder';
 import { getAPIKey, getProps } from '@sdk/tests';
 
 builder.init(getAPIKey());
+builder.canTrack = false;
 
 type Next15Params = Promise<{ index: string[] }>;
 
