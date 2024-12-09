@@ -11,7 +11,6 @@ builder.init('ee9f13b4981e489a9a1209887695ef2b');
 const HeroWithBuilderChildren = withChildren(CustomHero);
 Builder.registerComponent(HeroWithBuilderChildren, {
   name: 'CustomHero',
-  inputs: [],
   canHaveChildren: true,
   defaultChildren: [
     {
