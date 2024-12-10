@@ -1,5 +1,20 @@
 # @builder.io/react
 
+## 8.0.0
+
+### Major Changes
+
+- 56f9461: - Adds `apiEndpoint` prop to `builder` instance with permitted values being `'content'` or `'query'`. It dictates which API endpoint is used for fetching Builder content
+  - Breaking Change 🧨: Removes `apiEndpoint` argument from `builder.get()`, `builder.getAll()`, and the `options` prop of `<BuilderContent>` component. NOTE: this argument was not working as expected.
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+- 23b7594: Feat: extend allowed file types of Image and Video Block
+- Updated dependencies [56f9461]
+- Updated dependencies [409aec9]
+  - @builder.io/sdk@6.0.0
+
 ## 7.0.1
 
 ### Patch Changes
