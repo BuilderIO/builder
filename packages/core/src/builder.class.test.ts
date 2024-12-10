@@ -536,9 +536,9 @@ describe('flushGetContentQueue', () => {
   test("hits content url when apiEndpoint is 'content' and format is 'html'", async () => {
     const expectedFormat = 'html';
 
+    builder.apiEndpoint = 'content';
     const result = await builder['flushGetContentQueue'](true, [
       {
-        apiEndpoint: 'content',
         model: MODEL,
         format: expectedFormat,
         key: MODEL,
@@ -602,9 +602,9 @@ describe('flushGetContentQueue', () => {
   test("hits content url when apiEndpoint is 'content' and format is 'amp'", async () => {
     const expectedFormat = 'amp';
 
+    builder.apiEndpoint = 'content';
     const result = await builder['flushGetContentQueue'](true, [
       {
-        apiEndpoint: 'content',
         model: MODEL,
         format: expectedFormat,
         key: MODEL,
@@ -696,9 +696,9 @@ describe('flushGetContentQueue', () => {
   test("hits content url when apiEndpoint is 'content' and format is 'email'", async () => {
     const expectedFormat = 'email';
 
+    builder.apiEndpoint = 'content';
     const result = await builder['flushGetContentQueue'](true, [
       {
-        apiEndpoint: 'content',
         model: MODEL,
         format: expectedFormat,
         key: MODEL,
@@ -734,9 +734,9 @@ describe('flushGetContentQueue', () => {
   test("hits content url when apiEndpoint is 'content' and format is 'email' and url is passed instead of userAttributes", async () => {
     const expectedFormat = 'email';
 
+    builder.apiEndpoint = 'content';
     const result = await builder['flushGetContentQueue'](true, [
       {
-        apiEndpoint: 'content',
         model: MODEL,
         format: expectedFormat,
         key: MODEL,

@@ -5,8 +5,8 @@ import {
 } from '@builder.io/sdk-react';
 
 interface CustomColumnsProps {
-  column1: { blocks: BuilderBlock[] | undefined };
-  column2: { blocks: BuilderBlock[] | undefined };
+  column1: BuilderBlock[];
+  column2: BuilderBlock[];
   builderBlock: BuilderBlock;
 }
 
@@ -14,14 +14,14 @@ const CustomColumns = (props: CustomColumnsProps) => {
   return (
     <>
       <Blocks
-        blocks={props.column1?.blocks}
-        path={`column1.blocks`}
+        blocks={props.column1}
+        path="column1"
         parent={props.builderBlock.id}
       />
 
       <Blocks
-        blocks={props.column2?.blocks}
-        path={`column2.blocks`}
+        blocks={props.column2}
+        path="column2"
         parent={props.builderBlock.id}
       />
     </>
@@ -33,27 +33,17 @@ export const customColumnsInfo: RegisteredComponent = {
   component: CustomColumns,
   shouldReceiveBuilderProps: {
     builderBlock: true,
-    builderComponents: true,
-    builderContext: true,
   },
   inputs: [
     {
       name: 'column1',
       type: 'uiBlocks',
-      broadcast: true,
-      hideFromUI: true,
-      defaultValue: {
-        blocks: [],
-      },
+      defaultValue: [],
     },
     {
       name: 'column2',
       type: 'uiBlocks',
-      broadcast: true,
-      hideFromUI: true,
-      defaultValue: {
-        blocks: [],
-      },
+      defaultValue: [],
     },
   ],
 };
