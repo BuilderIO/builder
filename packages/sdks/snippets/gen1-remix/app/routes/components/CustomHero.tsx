@@ -4,7 +4,7 @@ import { type PropsWithChildren } from 'react';
 export const CustomHero = (props: PropsWithChildren) => {
   return (
     <>
-      <div>This is the text from your component</div>
+      <div>This is text from your component</div>
       {props.children}
     </>
   );

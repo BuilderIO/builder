@@ -6,7 +6,7 @@ import type { RegisteredComponent } from '@builder.io/sdk-angular/lib/node/conte
   selector: 'app-custom-hero',
   standalone: true,
   imports: [CommonModule],
-  template: ` <div>This is the text from your component</div> `,
+  template: ` <div>This is text from your component</div> `,
 })
 export class CustomHeroComponent {}
 
