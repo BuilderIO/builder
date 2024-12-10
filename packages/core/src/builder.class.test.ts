@@ -774,9 +774,9 @@ describe('flushGetContentQueue', () => {
     const expectedFormat = 'email';
     const expectedEntryId = '123';
 
+    builder.apiEndpoint = 'content';
     const result = await builder['flushGetContentQueue'](true, [
       {
-        apiEndpoint: 'content',
         model: expectedModel,
         format: expectedFormat,
         key: expectedModel,
