@@ -45,7 +45,7 @@ const initializeAbTest = async (
   if (!baseURL) throw new Error('Missing baseURL');
 
   // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
-  test.skip(packageName === 'gen1-next-14' || packageName === 'gen1-next-15');
+  test.skip(packageName === 'gen1-next14-pages' || packageName === 'gen1-next15-app');
 
   // RN can't have SSR, we don't support/export it.
   test.skip(packageName === 'react-native');

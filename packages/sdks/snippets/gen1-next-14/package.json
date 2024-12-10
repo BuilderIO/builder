@@ -1,12 +1,12 @@
 {
-  "name": "@snippet/gen1-next-14",
+  "name": "@snippet/gen1-next14-pages",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=gen1-next-14 yarn nx test:snippet @sdk/tests",
+    "test": "SERVER_NAME=gen1-next14-pages yarn nx test:snippet @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {

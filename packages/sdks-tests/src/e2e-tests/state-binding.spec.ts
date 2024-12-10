@@ -9,7 +9,7 @@ test.describe('State binding', () => {
         'Angular Gen2 event binding not working for other blocks than button.'
       );
       // hydration errors
-      test.fail(packageName === 'gen1-next-14' || packageName === 'gen1-remix');
+      test.fail(packageName === 'gen1-next14-pages' || packageName === 'gen1-remix');
 
       // flaky, can't `test.fail()`
       test.skip(

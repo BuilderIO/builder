@@ -83,8 +83,8 @@ test.describe('Large Reactive State', () => {
   }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.skip(
-      packageName === 'gen1-next-14' ||
-        packageName === 'gen1-next-15' ||
+      packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next15-app' ||
         packageName === 'gen1-remix',
       'visual editing is only implemented for gen1 react-vite.'
     );

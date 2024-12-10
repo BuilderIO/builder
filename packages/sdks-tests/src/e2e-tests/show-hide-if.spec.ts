@@ -40,7 +40,7 @@ test.describe('Show If & Hide If', () => {
     test.skip(
       // gen1 SSR breaks here some some reason
       packageName === 'gen1-remix' ||
-        packageName === 'gen1-next-14' ||
+        packageName === 'gen1-next14-pages' ||
         // flaky in vue: takes too long to hydrate, causing button click not to register...
         sdk === 'vue'
     );

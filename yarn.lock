@@ -4619,9 +4619,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/gen1-next-14@workspace:packages/react-tests/next14":
+"@e2e/gen1-next14-pages@workspace:packages/react-tests/next14-pages":
   version: 0.0.0-use.local
-  resolution: "@e2e/gen1-next-14@workspace:packages/react-tests/next14"
+  resolution: "@e2e/gen1-next14-pages@workspace:packages/react-tests/next14-pages"
   dependencies:
     "@builder.io/react": "workspace:*"
     "@builder.io/widgets": ^1.2.24
@@ -4638,9 +4638,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/gen1-next-15@workspace:packages/react-tests/next15":
+"@e2e/gen1-next15-app@workspace:packages/react-tests/next15-app":
   version: 0.0.0-use.local
-  resolution: "@e2e/gen1-next-15@workspace:packages/react-tests/next15"
+  resolution: "@e2e/gen1-next15-app@workspace:packages/react-tests/next15-app"
   dependencies:
     "@builder.io/react": "workspace:*"
     "@builder.io/widgets": ^1.2.24
@@ -14204,9 +14204,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/gen1-next-14@workspace:packages/sdks/snippets/gen1-next-14":
+"@snippet/gen1-next14-pages@workspace:packages/sdks/snippets/gen1-next-14":
   version: 0.0.0-use.local
-  resolution: "@snippet/gen1-next-14@workspace:packages/sdks/snippets/gen1-next-14"
+  resolution: "@snippet/gen1-next14-pages@workspace:packages/sdks/snippets/gen1-next-14"
   dependencies:
     "@builder.io/react": "workspace:*"
     "@types/node": ^20

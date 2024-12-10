@@ -30,8 +30,8 @@ const serverNameEnumValues = [
   'angular-ssr',
   'gen1-react',
   'gen1-remix',
-  'gen1-next-14',
-  'gen1-next-15',
+  'gen1-next14-pages',
+  'gen1-next15-app',
 ] as const;
 const ServerNameEnum = z.enum(serverNameEnumValues);
 export type ServerName = z.infer<typeof ServerNameEnum>;
@@ -66,8 +66,8 @@ export const SDK_MAP: Record<ServerName, { sdk: Sdk; gen: Generation }> = {
   sveltekit: { sdk: 'svelte', gen: 'gen2' },
   'nextjs-sdk-next-app': { sdk: 'rsc', gen: 'gen2' },
   'gen1-react': { sdk: 'oldReact', gen: 'gen1' },
-  'gen1-next-14': { sdk: 'oldReact', gen: 'gen1' },
-  'gen1-next-15': { sdk: 'oldReact', gen: 'gen1' },
+  'gen1-next14-pages': { sdk: 'oldReact', gen: 'gen1' },
+  'gen1-next15-app': { sdk: 'oldReact', gen: 'gen1' },
   'gen1-remix': { sdk: 'oldReact', gen: 'gen1' },
   angular: { sdk: 'angular', gen: 'gen2' },
   'angular-ssr': { sdk: 'angular', gen: 'gen2' },

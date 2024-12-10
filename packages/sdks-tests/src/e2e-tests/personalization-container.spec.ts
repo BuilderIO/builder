@@ -44,7 +44,7 @@ const initializeUserAttributes = async (
   { userAttributes }: { userAttributes: Record<string, string> }
 ) => {
   // gen1-next likely have a config issue with SSR
-  test.skip(packageName === 'gen1-next-14');
+  test.skip(packageName === 'gen1-next14-pages');
   test.skip(excludeTestFor({ angular: true }, sdk));
   test.skip(excludeGen2(sdk));
 

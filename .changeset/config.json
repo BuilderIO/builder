@@ -18,8 +18,8 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@e2e/*",
-    "@e2e/gen1-next-14",
-    "@e2e/gen1-next-15",
+    "@e2e/gen1-next14-pages",
+    "@e2e/gen1-next15-app",
     "@e2e/gen1-remix",
     "@e2e/gen1-react",
     "@snippet/*"
