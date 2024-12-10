@@ -276,12 +276,6 @@ type AllowEnrich =
 
 export type GetContentOptions = AllowEnrich & {
   /**
-   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
-   * Defaults to `'query'`.
-   */
-  apiEndpoint?: 'content' | 'query';
-
-  /**
    * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
   fetchOptions?: object;
@@ -1298,6 +1292,21 @@ export class Builder {
     }
   }
 
+  get apiEndpoint() {
+    return this.apiEndpoint$.value;
+  }
+
+  set apiEndpoint(apiEndpoint: 'content' | 'query') {
+    if (this.apiEndpoint !== apiEndpoint) {
+      this.apiEndpoint$.next(apiEndpoint);
+    }
+  }
+
+  /**
+   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
+   * Defaults to `'query'`.
+   */
+  private apiEndpoint$ = new BehaviorSubject<'content' | 'query'>('query');
   private apiVersion$ = new BehaviorSubject<ApiVersion | undefined>(undefined);
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
@@ -2231,6 +2240,7 @@ export class Builder {
         options.authToken || this.authToken,
         options.apiVersion || this.apiVersion
       );
+      instance.apiEndpoint = this.apiEndpoint;
       instance.setUserAttributes(this.getUserAttributes());
     } else {
       // NOTE: All these are when .init is not called and the customer
@@ -2462,8 +2472,6 @@ export class Builder {
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
 
-    const apiEndpoint = queue[0].apiEndpoint || 'query';
-
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
 
@@ -2592,10 +2600,11 @@ export class Builder {
         'rev',
         'static',
       ];
+
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (apiEndpoint === 'query') {
+          if (this.apiEndpoint === 'query') {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
@@ -2622,9 +2631,9 @@ export class Builder {
 
     const format = queryParams.format;
     const isApiCallForCodegen = format === 'solid' || format === 'react';
-    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
+    const isApiCallForCodegenOrQuery = isApiCallForCodegen || this.apiEndpoint === 'query';
 
-    if (apiEndpoint === 'content') {
+    if (this.apiEndpoint === 'content') {
       queryParams.enrich = true;
       if (queue[0].query) {
         const flattened = this.flattenMongoQuery({ query: queue[0].query });
@@ -2648,7 +2657,7 @@ export class Builder {
     let url;
     if (isApiCallForCodegen) {
       url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
-    } else if (apiEndpoint === 'query') {
+    } else if (this.apiEndpoint === 'query') {
       url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
     } else {
       url = `${host}/api/v3/content/${queue[0].model}`;
