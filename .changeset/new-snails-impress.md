@@ -1,6 +1,6 @@
 ---
-"@builder.io/react": major
-"@builder.io/sdk": major
+'@builder.io/react': patch
+'@builder.io/sdk': patch
 ---
 
 Renders Symbol correctly when apiEndpoint is 'content'
