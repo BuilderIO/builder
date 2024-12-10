@@ -40,6 +40,8 @@ export { track } from './functions/track/index.js';
 
 export { subscribeToEditor } from './helpers/subscribe-to-editor.js';
 
+export { evaluate } from './functions/evaluate/index.js';
+
 /**
  * Content fetching
  */
