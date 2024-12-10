@@ -1,5 +1,13 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.17.1
+
+### Patch Changes
+
+- a66adee: Fix: handle component infos exported from client modules
+- 409aec9: Feat: add `meta` type to custom components
+- 23b7594: Feat: extend allowed file types of Image and Video Block
+
 ## 0.17.0
 
 ### Minor Changes

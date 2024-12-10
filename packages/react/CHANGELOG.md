@@ -1,5 +1,14 @@
 # @builder.io/react
 
+## 7.0.2
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+- 23b7594: Feat: extend allowed file types of Image and Video Block
+- Updated dependencies [409aec9]
+  - @builder.io/sdk@5.0.1
+
 ## 7.0.1
 
 ### Patch Changes
