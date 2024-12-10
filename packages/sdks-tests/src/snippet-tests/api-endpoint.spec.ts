@@ -33,6 +33,8 @@ test.describe('API Endpoint', () => {
       const req = (await responsePromise).request();
       expect(req).toBeDefined();
       expect(req!.method()).toBe('GET');
+      expect(req!.url()).toContain('symbol');
+      expect(req!.url()).toContain('query.id');
       expect(queryApiInvocations).toBe(0);
     });
   });
