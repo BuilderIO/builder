@@ -39,7 +39,7 @@ test.describe('API Endpoint', () => {
     test('records symbol API calls after page load', async ({ page, packageName }) => {
       test.skip(packageName !== 'gen1-next');
       // Start monitoring network requests
-      const urlMatchForContentAPI = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+      const urlMatchForContentAPI = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\//;
       const urlMatchForQueryAPI = /https:\/\/cdn\.builder\.io\/api\/v3\/query/;
 
       let queryApiInvocations = 0;
