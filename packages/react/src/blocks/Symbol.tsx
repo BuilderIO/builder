@@ -161,7 +161,7 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
                       key: builderComponentKey,
                       noEditorUpdates: true,
                     }),
-                    ...(Builder.singletonInstance['apiEndpoint'] === 'content' &&
+                    ...(Builder.singletonInstance.apiEndpoint === 'content' &&
                       entry && {
                         query: {
                           id: entry,
