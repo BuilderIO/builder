@@ -8,7 +8,7 @@ interface CustomHeroProps {
 const CustomHero = (props: CustomHeroProps) => {
   return (
     <>
-      <div>This is text from your component</div>
+      <div>This is the text from your component</div>
 
       {props.children}
     </>
