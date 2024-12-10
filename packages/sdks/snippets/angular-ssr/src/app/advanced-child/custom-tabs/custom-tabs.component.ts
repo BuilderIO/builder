@@ -58,7 +58,6 @@ export const customTabsInfo: RegisteredComponent = {
         {
           name: 'blocks',
           type: 'uiBlocks',
-          hideFromUI: true,
           defaultValue: [],
         },
       ],

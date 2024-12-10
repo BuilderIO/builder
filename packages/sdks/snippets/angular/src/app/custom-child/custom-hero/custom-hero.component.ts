@@ -7,14 +7,13 @@ import type { RegisteredComponent } from '@builder.io/sdk-angular/lib/node/conte
   selector: 'app-custom-hero',
   standalone: true,
   imports: [Content, CommonModule],
-  template: ` <div>This is your component's text</div> `,
+  template: ` <div>This is text from your component</div> `,
 })
 export class CustomHeroComponent {}
 
 export const customHeroInfo: RegisteredComponent = {
   component: CustomHeroComponent,
   name: 'CustomHero',
-  inputs: [],
   canHaveChildren: true,
   defaultChildren: [
     {
