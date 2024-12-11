@@ -41,7 +41,7 @@ test.describe('Get Content', () => {
     expect(await req!.postDataJSON()).toEqual({ test: 'test' });
     expect(req!.method()).toBe('POST');
   });
-  test.only('fetch symbol with query.id', async ({ page, sdk }) => {
+  test('fetch symbol with query.id', async ({ page, sdk }) => {
     test.skip(!excludeGen1(sdk));
 
     let x = 0;
