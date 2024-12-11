@@ -2,6 +2,7 @@ import * as fs from 'fs-extra-promise';
 import { join } from 'path';
 import { merge } from 'lodash';
 import { BuilderElement } from '@builder.io/sdk';
+// @ts-ignore
 import Shopify from '../../js/index';
 
 // TODO: helpers for this

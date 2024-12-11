@@ -42,7 +42,7 @@ const clientOptions = {
   output: [
     {
       format: 'es',
-      file: 'js/index.js',
+      file: 'js/dist/index.js',
       sourcemap: true,
     },
   ],

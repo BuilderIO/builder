@@ -12,7 +12,7 @@ export class CaptureBlock extends React.Component<CaptureBlockProps> {
     const { expression, variableName, builderState } = this.props;
 
     if (expression && builderState?.context?.shopify) {
-      onChange.target(builderState.state)[variableName] =
+      onChange.target(builderState.state)[variableName as string] =
         builderState.context.shopify.liquid.render(expression, builderState.state);
 
       this.ran = true;

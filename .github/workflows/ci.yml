@@ -153,9 +153,14 @@ jobs:
           path: packages/sdks-tests/playwright-report/
           retention-days: 30
 
-  gen1-sdk-core:
-    name: Gen 1 SDK Core
+  gen1:
+    name: Build (Gen 1)
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ['sdk', 'webcomponents', 'shopify']
 
     steps:
       - name: Setup
@@ -173,7 +178,7 @@ jobs:
           cache-install-state: true
 
       - name: Build Core
-        run: yarn g:nx build @builder.io/sdk
+        run: yarn g:nx build @builder.io/${{ matrix.package }}
 
   gen1-react-sdk:
     name: Gen 1 React SDK
@@ -238,12 +243,13 @@ jobs:
           retention-days: 30
 
   build:
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        package: ['webcomponents', 'widgets']
+        package: ['widgets']
 
     steps:
       - uses: actions/checkout@v4

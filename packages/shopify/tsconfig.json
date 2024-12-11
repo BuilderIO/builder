@@ -9,6 +9,7 @@
     "checkJs": false,
     "moduleResolution": "node",
     "strict": true,
+    "noImplicitAny": false,
     "sourceMap": true,
     "experimentalDecorators": true,
     "declaration": true,
