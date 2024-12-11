@@ -1,3 +1,4 @@
+import traverse from 'traverse';
 import type { BuilderBlock } from '../types/builder-block.js';
 
 function isLocalizedField(value: any) {
@@ -12,21 +13,26 @@ function containsLocalizedValues(data: Record<string, any>) {
   if (!data || !Object.getOwnPropertyNames(data).length) {
     return false;
   }
-  return Object.values(data).some(isLocalizedField);
+  let hasLocalizedValues = false;
+  traverse(data).forEach(function (value) {
+    if (isLocalizedField(value)) {
+      hasLocalizedValues = true;
+      this.stop();
+    }
+  });
+  return hasLocalizedValues;
 }
 
 function extractLocalizedValues(data: Record<string, any>, locale: string) {
   if (!data || !Object.getOwnPropertyNames(data).length) {
     return {};
   }
-  const extractedResult: Record<string, any> = {};
 
-  const ownKeys = Object.getOwnPropertyNames(data);
-  for (const key of ownKeys) {
-    const value = data[key];
-    extractedResult[key] = isLocalizedField(value) ? value[locale] : value;
-  }
-  return extractedResult;
+  return traverse(data).map(function (value) {
+    if (isLocalizedField(value)) {
+      this.update(value[locale] ?? undefined);
+    }
+  });
 }
 
 export function resolveLocalizedValues(
