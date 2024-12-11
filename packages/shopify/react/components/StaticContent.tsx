@@ -21,7 +21,7 @@ interface StaticContentProps {
   builderBlock?: BuilderElement;
 }
 
-const StaticContentComponent: React.SFC<StaticContentProps> = props => {
+const StaticContentComponent: React.FC<StaticContentProps> = props => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

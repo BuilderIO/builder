@@ -27,8 +27,8 @@
     "@babel/core": "^7.7.7",
     "@babel/helper-plugin-utils": "^7.0.0",
     "@babel/preset-env": "^7.7.7",
-    "@builder.io/react": "^2.0.4",
-    "@builder.io/sdk": "^1.1.29",
+    "@builder.io/react": "workspace:*",
+    "@builder.io/sdk": "workspace:*",
     "@testing-library/react": "^9.4.0",
     "@types/clean-css": "^4.2.1",
     "@types/csso": "^3.5.1",
@@ -39,7 +39,8 @@
     "@types/lodash": "^4.14.137",
     "@types/node": "^12.7.2",
     "@types/prettier": "^1.18.2",
-    "@types/react": "^16.9.16",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^16.0.7",
     "@types/react-test-renderer": "^16.9.2",
     "babel-jest": "^24.9.0",
     "concurrently": "^5.1.0",
@@ -65,7 +66,7 @@
     "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-uglify": "^6.0.2",
     "ts-jest": "^24.2.0",
-    "typescript": "^3.8.3"
+    "typescript": "^5"
   },
   "dependencies": {
     "@emotion/core": "^10.1.1",
@@ -84,5 +85,8 @@
     "tslib": "^1.10.0",
     "vue-template-compiler": "^2.6.10"
   },
-  "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
+  "gitHead": "f233cba190317de3644fff198e765660205cd7f1",
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  }
 }
