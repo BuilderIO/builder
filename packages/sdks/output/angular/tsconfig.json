@@ -18,6 +18,7 @@
     "strictNullChecks": false,
     "moduleResolution": "node",
     "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "placeholder-runtime": [
         "./src/functions/evaluate/browser-runtime/index.js"

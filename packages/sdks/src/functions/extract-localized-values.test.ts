@@ -1,7 +1,7 @@
-import { clone } from 'traverse';
 import { describe, expect, it } from 'vitest';
 import type { BuilderBlock } from '../types/builder-block';
 import { resolveLocalizedValues } from './extract-localized-values';
+import { fastClone } from './fast-clone';
 
 const mockLocalizedValue = {
   '@type': '@builder.io/core:LocalizedValue',
@@ -28,7 +28,7 @@ const mockBlock: BuilderBlock = {
 describe('Localized Values', () => {
   describe('resolveLocalizedValues', () => {
     it('should resolve localized values when locale is provided', () => {
-      const result = resolveLocalizedValues(clone(mockBlock), 'en-US');
+      const result = resolveLocalizedValues(fastClone(mockBlock), 'en-US');
       expect(result.component?.options.text).toBe('Hello');
       expect(result.component?.options.nonLocalizedField).toBe(
         mockNonLocalizedValue
@@ -36,7 +36,7 @@ describe('Localized Values', () => {
     });
 
     it('should keep original values when no locale is provided', () => {
-      const result = resolveLocalizedValues(clone(mockBlock), undefined);
+      const result = resolveLocalizedValues(fastClone(mockBlock), undefined);
       expect(result.component?.options.text).toEqual(mockLocalizedValue);
       expect(result.component?.options.nonLocalizedField).toBe(
         mockNonLocalizedValue
@@ -78,7 +78,7 @@ describe('Localized Values', () => {
     });
 
     it('should handle non-existent locale', () => {
-      const result = resolveLocalizedValues(clone(mockBlock), 'fr-FR');
+      const result = resolveLocalizedValues(fastClone(mockBlock), 'fr-FR');
       expect(result.component?.options.text).toBeUndefined();
       expect(result.component?.options.nonLocalizedField).toBe(
         mockNonLocalizedValue
