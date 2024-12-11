@@ -33,8 +33,14 @@ export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-// default to not tracking, and re-enable when appropriate
-builder.canTrack = false;
+if (typeof window !== 'undefined') {
+  if (
+    window.location.pathname.includes('can-track-false') ||
+    window.location.pathname.includes('symbol-tracking')
+  ) {
+    builder.canTrack = false;
+  }
+}
 
 export default function Page(props: PageProps & { apiVersion: any }) {
   const router = useRouter();

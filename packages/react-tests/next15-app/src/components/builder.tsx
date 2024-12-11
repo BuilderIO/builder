@@ -3,24 +3,39 @@ import { builder } from '@builder.io/sdk';
 import { BuilderComponent } from '@builder.io/react';
 import DefaultErrorPage from 'next/error';
 import { getAPIKey } from '@sdk/tests';
-import { ComponentProps, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import '@builder.io/widgets/dist/lib/builder-widgets-async';
 import { usePathname } from 'next/navigation';
 
 builder.init(getAPIKey());
-builder.canTrack = false;
-type BuilderPageProps = ComponentProps<typeof BuilderComponent>;
+
+if (typeof window !== 'undefined') {
+  if (
+    window.location.pathname.includes('can-track-false') ||
+    window.location.pathname.includes('symbol-tracking')
+  ) {
+    builder.canTrack = false;
+  }
+}
+
+type BuilderPageProps = any;
 
 export function RenderBuilderContent(props: BuilderPageProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
-    if (!pathname.includes('can-track-false') && !pathname.includes('symbol-tracking')) {
-      builder.canTrack = true;
-    }
-    if (pathname.includes('get-query') || pathname.includes('get-content')) {
+    if (pathname.includes('get-query')) {
+      builder
+        .get('', {
+          ...props,
+          ...props['options'],
+        })
+        .promise()
+        .then();
+    } else if (pathname.includes('get-content')) {
+      builder.apiEndpoint = props.apiEndpoint;
+      delete props.apiEndpoint;
       builder
         .get('', {
           ...props,

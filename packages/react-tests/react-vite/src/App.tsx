@@ -9,6 +9,14 @@ builder.init(getAPIKey());
 // default to not tracking, and re-enable when appropriate
 builder.canTrack = false;
 
+if (
+  typeof window !== 'undefined' &&
+  !window.location.pathname.includes('can-track-false') &&
+  !window.location.pathname.includes('symbol-tracking')
+) {
+  builder.canTrack = true;
+}
+
 function App() {
   const [props, setProps] = useState<any>(undefined);
 
@@ -41,16 +49,6 @@ function App() {
   if (props?.trustedHosts) {
     Builder.trustedHosts = props.trustedHosts;
   }
-
-  // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
-  useEffect(() => {
-    if (
-      !window.location.pathname.includes('can-track-false') &&
-      !window.location.pathname.includes('symbol-tracking')
-    ) {
-      builder.canTrack = true;
-    }
-  }, []);
 
   return props || PAGES[window.location.pathname]?.isGen1VisualEditingTest ? (
     <BuilderComponent {...props} />
