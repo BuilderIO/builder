@@ -1,9 +1,6 @@
 import { expect } from '@playwright/test';
 import { excludeGen1, test, mapSdkName, getSdkGeneration } from '../helpers/index.js';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
-import type { ServerName } from '../helpers/sdk.js';
-
-const SSR_FETCHING_PACKAGES: (ServerName | 'DEFAULT')[] = ['nextjs-sdk-next-app', 'qwik-city'];
 
 test.describe('Get Content', () => {
   test('call content API only once - in page', async ({ page, sdk }) => {
@@ -44,8 +41,7 @@ test.describe('Get Content', () => {
     expect(await req!.postDataJSON()).toEqual({ test: 'test' });
     expect(req!.method()).toBe('POST');
   });
-  test('fetch symbol with query.id', async ({ page, packageName, sdk }) => {
-    test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
+  test.only('fetch symbol with query.id', async ({ page, sdk }) => {
     test.skip(!excludeGen1(sdk));
 
     let x = 0;
