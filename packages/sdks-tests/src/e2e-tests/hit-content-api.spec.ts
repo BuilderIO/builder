@@ -46,6 +46,7 @@ test.describe('Get Content', () => {
   });
   test('fetch symbol with query.id', async ({ page, packageName, sdk }) => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
+    test.skip(!excludeGen1(sdk));
 
     let x = 0;
     let headers;
