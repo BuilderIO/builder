@@ -2634,7 +2634,6 @@ export class Builder {
     const isApiCallForCodegenOrQuery = isApiCallForCodegen || this.apiEndpoint === 'query';
 
     if (this.apiEndpoint === 'content') {
-      queryParams.enrich = true;
       if (queue[0].query) {
         const flattened = this.flattenMongoQuery({ query: queue[0].query });
         for (const key in flattened) {
@@ -2664,6 +2663,8 @@ export class Builder {
     }
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
+
+    console.log('DEBUG', url);
 
     const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
