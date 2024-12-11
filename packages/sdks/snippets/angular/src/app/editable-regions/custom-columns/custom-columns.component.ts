@@ -16,15 +16,15 @@ import type {
   imports: [CommonModule, Blocks],
   template: `
     <blocks
-      [blocks]="column1.blocks"
-      [path]="'column1.blocks'"
+      [blocks]="column1"
+      [path]="'column1'"
       [parent]="builderBlock.id"
       [context]="builderContext"
       [registeredComponents]="builderComponents"
     />
     <blocks
-      [blocks]="column2.blocks"
-      [path]="'column2.blocks'"
+      [blocks]="column2"
+      [path]="'column2'"
       [parent]="builderBlock.id"
       [context]="builderContext"
       [registeredComponents]="builderComponents"
@@ -33,8 +33,8 @@ import type {
 })
 export class CustomColumnsComponent {
   @Input() builderBlock!: BuilderBlock;
-  @Input() column1!: { blocks: BuilderBlock[] };
-  @Input() column2!: { blocks: BuilderBlock[] };
+  @Input() column1!: BuilderBlock[];
+  @Input() column2!: BuilderBlock[];
   @Input() builderComponents!: RegisteredComponents;
   @Input() builderContext!: BuilderContextInterface;
 }
@@ -46,20 +46,12 @@ export const customColumnsInfo: RegisteredComponent = {
     {
       name: 'column1',
       type: 'uiBlocks',
-      broadcast: true,
-      hideFromUI: true,
-      defaultValue: {
-        blocks: [],
-      },
+      defaultValue: [],
     },
     {
       name: 'column2',
       type: 'uiBlocks',
-      broadcast: true,
-      hideFromUI: true,
-      defaultValue: {
-        blocks: [],
-      },
+      defaultValue: [],
     },
   ],
 

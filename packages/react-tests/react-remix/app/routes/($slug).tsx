@@ -49,6 +49,10 @@ export default function Page() {
       window.location.pathname.includes('get-query') ||
       window.location.pathname.includes('get-content')
     ) {
+      if (props.apiEndpoint) {
+        builder.apiEndpoint = props.apiEndpoint;
+        delete props.apiEndpoint;
+      }
       builder
         .get('', {
           ...props,

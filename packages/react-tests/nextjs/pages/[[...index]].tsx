@@ -57,6 +57,8 @@ export default function Page(props: PageProps & { apiVersion: any }) {
         .promise()
         .then();
     } else if (router.asPath.includes('get-content')) {
+      builder.apiEndpoint = props.apiEndpoint;
+      delete props.apiEndpoint;
       builder
         .get('', {
           ...props,

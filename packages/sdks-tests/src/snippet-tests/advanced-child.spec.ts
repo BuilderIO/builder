@@ -1,9 +1,11 @@
 import { expect } from '@playwright/test';
-import { test, verifyTabContent } from '../helpers/index.js';
+import { test, testClickAndVerifyVisibility } from '../helpers/index.js';
 
 test.describe('Advanced child sub components', () => {
   test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
-    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+    test.skip(
+      !['react', 'angular', 'angular-ssr', 'gen1-remix', 'gen1-react'].includes(packageName)
+    );
 
     await page.goto('/advanced-child');
 
@@ -25,25 +27,21 @@ test.describe('Advanced child sub components', () => {
   });
 
   test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
-    test.skip(!['react', 'angular', 'angular-ssr'].includes(packageName));
+    test.skip(
+      !['react', 'angular', 'angular-ssr', 'gen1-remix', 'gen1-react'].includes(packageName)
+    );
 
     await page.goto('/advanced-child');
 
     await page.waitForSelector('button:has-text("Tab 1")');
     await page.waitForSelector('button:has-text("Tab 2")');
 
-    await verifyTabContent(
-      page,
-      'Tab 1',
-      'component.options.tabList.0.blocks',
-      'component.options.tabList.1.blocks'
-    );
+    const Tab1ContentVisible = await testClickAndVerifyVisibility(page, 'Tab 1', 'Tab 1 Content');
+    expect(Tab1ContentVisible).toBe(true);
+    expect(await page.locator('div').filter({ hasText: 'Tab 2 content' }).isVisible()).toBeFalsy();
 
-    await verifyTabContent(
-      page,
-      'Tab 2',
-      'component.options.tabList.1.blocks',
-      'component.options.tabList.0.blocks'
-    );
+    const Tab2ContentVisible = await testClickAndVerifyVisibility(page, 'Tab 2', 'Tab 2 content');
+    expect(Tab2ContentVisible).toBe(true);
+    expect(await page.locator('div').filter({ hasText: 'Tab 1 Content' }).isVisible()).toBeFalsy();
   });
 });
