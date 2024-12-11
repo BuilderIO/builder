@@ -11,6 +11,10 @@ import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-wit
 import { blockToHtmlString } from '../functions/block-to-html-string';
 import { Link } from './Link';
 import { fastClone } from '../functions/utils';
+import {
+  containsLocalizedValues,
+  extractLocalizedValues,
+} from 'src/functions/extract-localized-values';
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : '';
@@ -340,33 +344,6 @@ export class BuilderBlock extends React.Component<
     }
   }
 
-  isLocalizedField(value: any) {
-    return (
-      value && typeof value === 'object' && value['@type'] === '@builder.io/core:LocalizedValue'
-    );
-  }
-
-  containsLocalizedValues(data: Record<string, any>) {
-    if (!data || !Object.getOwnPropertyNames(data).length) {
-      return false;
-    }
-    return Object.values(data).some(this.isLocalizedField);
-  }
-
-  extractLocalizedValues(data: Record<string, any>, locale: string) {
-    if (!data || !Object.getOwnPropertyNames(data).length) {
-      return;
-    }
-    let extractedResult: Record<string, any> = {};
-
-    const ownKeys = Object.getOwnPropertyNames(data);
-    for (const key of ownKeys) {
-      const value = data[key];
-      extractedResult[key] = this.isLocalizedField(value) ? value[locale] : value;
-    }
-    return extractedResult;
-  }
-
   // <!-- Builder Blocks --> in comments hmm
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
     const { child, fieldName } = this.props;
@@ -506,7 +483,7 @@ export class BuilderBlock extends React.Component<
       ...(options.component.options || options.component.data),
     };
 
-    const hasLocalizedValues = this.containsLocalizedValues(innerComponentProperties);
+    const hasLocalizedValues = containsLocalizedValues(innerComponentProperties);
 
     if (hasLocalizedValues && !this.privateState.state.locale) {
       console.warn(
@@ -515,7 +492,7 @@ export class BuilderBlock extends React.Component<
     }
 
     if (hasLocalizedValues && this.privateState.state.locale) {
-      innerComponentProperties = this.extractLocalizedValues(
+      innerComponentProperties = extractLocalizedValues(
         innerComponentProperties,
         this.privateState.state.locale
       );
