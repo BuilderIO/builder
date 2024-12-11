@@ -1,5 +1,9 @@
 import { expect } from '@playwright/test';
 import { excludeGen1, test, mapSdkName, getSdkGeneration } from '../helpers/index.js';
+import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
+import type { ServerName } from '../helpers/sdk.js';
+
+const SSR_FETCHING_PACKAGES: (ServerName | 'DEFAULT')[] = ['nextjs-sdk-next-app', 'qwik-city'];
 
 test.describe('Get Content', () => {
   test('call content API only once - in page', async ({ page, sdk }) => {
@@ -39,5 +43,42 @@ test.describe('Get Content', () => {
     expect(req).toBeDefined();
     expect(await req!.postDataJSON()).toEqual({ test: 'test' });
     expect(req!.method()).toBe('POST');
+  });
+  test('fetch symbol with query.id', async ({ page, packageName, sdk }) => {
+    test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
+
+    let x = 0;
+    let headers;
+
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol/;
+
+    const urls: string[] = [];
+
+    await page.route(urlMatch, route => {
+      x++;
+      headers = route.request().headers();
+
+      const url = new URL(route.request().url());
+      urls.push(url.href);
+      return route.fulfill({
+        status: 200,
+        json: {
+          results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+        },
+      });
+    });
+
+    await page.goto('/get-content-with-symbol');
+
+    await expect(x).toBeGreaterThanOrEqual(2);
+
+    urls.forEach(url => {
+      expect(url).toContain('query.id=');
+    });
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 });
