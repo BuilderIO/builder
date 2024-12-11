@@ -190,6 +190,7 @@ export const PAGES: Record<string, Page> = {
   '/symbol-with-jscode': { content: COUNTDOWN },
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -299,6 +300,7 @@ export const getProps = async (args: {
       };
       break;
     case '/get-content':
+    case '/get-content-with-symbol':
       extraProps = {
         apiEndpoint: 'content',
       };
