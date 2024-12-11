@@ -172,8 +172,11 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
-      - name: Build & Test Core
+      - name: Test Core
         run: yarn g:nx test @builder.io/sdk
+
+      - name: Build Core
+        run: yarn g:nx build @builder.io/sdk
 
   gen1-react-sdk:
     name: Gen 1 React SDK
