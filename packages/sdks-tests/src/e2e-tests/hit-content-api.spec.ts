@@ -65,7 +65,7 @@ test.describe('Get Content', () => {
       });
     });
 
-    await page.goto('/get-content-with-symbol');
+    await page.goto('/get-content-with-symbol', { waitUntil: 'networkidle' });
 
     await expect(x).toBeGreaterThanOrEqual(2);
 

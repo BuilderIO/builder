@@ -19,6 +19,9 @@ function App() {
         window.location.pathname.includes('get-query') ||
         window.location.pathname.includes('get-content')
       ) {
+        if (resp?.apiEndpoint) {
+          builder.apiEndpoint = resp.apiEndpoint;
+        }
         builder
           .get('', {
             ...resp,
@@ -36,7 +39,6 @@ function App() {
 
   if (props?.apiEndpoint) {
     builder.apiEndpoint = props.apiEndpoint;
-    delete props.apiEndpoint;
   }
 
   if (props?.trustedHosts) {
