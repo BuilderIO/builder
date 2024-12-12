@@ -6,12 +6,13 @@ const LOCALE_WARNING =
   '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent';
 
 test.describe('Localization', () => {
-  test('locale is passed from the prop', async ({ page }) => {
+  test('locale is passed from the prop', async ({ page, packageName }) => {
     await page.goto('/localization-locale-passed');
     const text = page.locator(`text=${HI_IN_TEXT}`);
-    const src = await page.locator('.builder-image')?.getAttribute('src');
+    const image =
+      packageName === 'react-native' ? page.locator('img').first() : page.locator('.builder-image');
     await expect(text).toBeVisible();
-    expect(src).toBe(HI_IN_IMAGE);
+    await expect(image).toHaveAttribute('src', HI_IN_IMAGE);
   });
 
   test('locale is not passed from the prop', async ({ page }) => {
