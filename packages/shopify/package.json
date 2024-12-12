@@ -15,11 +15,11 @@
   ],
   "scripts": {
     "build": "tsc --module commonjs && rollup -c rollup.config.js",
-    "start": "npm run watch",
+    "start": "yarn watch",
     "watch": "concurrently 'tsc -w --module commonjs' 'rollup -c rollup.config.js -w'",
-    "release": "npm run build && npm publish",
-    "release:patch": "npm run build && npm version patch && npm publish",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release": "yarn build && npm publish",
+    "release:patch": "yarn build && npm version patch && npm publish",
+    "release:dev": "yarn build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
     "_install": "npm install",
     "test:ci": "jest --maxWorkers=2"
   },
