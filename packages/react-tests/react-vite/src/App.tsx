@@ -3,11 +3,32 @@ import { getAPIKey, getProps, PAGES } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';
+import { ComponentWithLocalizedSubfields } from './components/ComponentWithLocalizedSubfields';
 
 builder.init(getAPIKey());
 
 // default to not tracking, and re-enable when appropriate
 builder.canTrack = false;
+
+Builder.registerComponent(ComponentWithLocalizedSubfields, {
+  name: 'ComponentWithLocalizedSubfields',
+  inputs: [
+    {
+      name: 'texts',
+      type: 'array',
+      subFields: [
+        {
+          name: 'text1',
+          type: 'text',
+        },
+        {
+          name: 'text2',
+          type: 'text',
+        },
+      ],
+    },
+  ],
+});
 
 function App() {
   const [props, setProps] = useState<any>(undefined);

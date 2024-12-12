@@ -21,4 +21,18 @@ test.describe('Localization', () => {
 
     await msgPromise;
   });
+
+  test('subfields to resolve to correct localized value when locale is passed', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react', 'gen1-react'].includes(packageName));
+    await page.goto('/localization-subfields');
+
+    const text1 = page.locator('text=namaste');
+    const text2 = page.locator('text=duniya');
+
+    await expect(text1).toBeVisible();
+    await expect(text2).toBeVisible();
+  });
 });

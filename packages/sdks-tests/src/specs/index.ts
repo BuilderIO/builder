@@ -75,6 +75,7 @@ import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
 import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
+import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -193,6 +194,7 @@ export const PAGES: Record<string, Page> = {
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
   '/localization-locale-passed': { content: LOCALIZATION },
   '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
+  '/localization-subfields': { content: LOCALIZATION_SUBFIELDS },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -327,6 +329,7 @@ export const getProps = async (args: {
       };
       break;
     case '/localization-locale-passed':
+    case '/localization-subfields':
       extraProps = {
         locale: 'hi-IN',
       };
