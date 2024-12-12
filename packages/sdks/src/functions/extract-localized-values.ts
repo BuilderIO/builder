@@ -1,5 +1,5 @@
-import traverse from 'traverse';
 import type { BuilderBlock } from '../types/builder-block.js';
+import { traverse } from './traverse.js';
 
 function isLocalizedField(value: any) {
   return (
@@ -14,10 +14,10 @@ function containsLocalizedValues(data: Record<string, any>) {
     return false;
   }
   let hasLocalizedValues = false;
-  traverse(data).forEach(function (value) {
+  traverse(data, (value) => {
     if (isLocalizedField(value)) {
       hasLocalizedValues = true;
-      this.stop();
+      return;
     }
   });
   return hasLocalizedValues;
@@ -28,11 +28,13 @@ function extractLocalizedValues(data: Record<string, any>, locale: string) {
     return {};
   }
 
-  return traverse(data).map(function (value) {
+  traverse(data, (value, update) => {
     if (isLocalizedField(value)) {
-      this.update(value[locale] ?? undefined);
+      update(value[locale] ?? undefined);
     }
   });
+
+  return data;
 }
 
 export function resolveLocalizedValues(
