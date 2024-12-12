@@ -74,6 +74,7 @@ import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-us
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
+import { LOCALIZATION } from './localization.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -190,6 +191,8 @@ export const PAGES: Record<string, Page> = {
   '/symbol-with-jscode': { content: COUNTDOWN },
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/localization-locale-passed': { content: LOCALIZATION },
+  '/localization-locale-not-passed': { content: LOCALIZATION },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -321,6 +324,11 @@ export const getProps = async (args: {
     case '/override-base-url':
       extraProps = {
         apiHost: 'https://cdn-qa.builder.io',
+      };
+      break;
+    case '/localization-locale-passed':
+      extraProps = {
+        locale: 'hi-IN',
       };
       break;
     default:
