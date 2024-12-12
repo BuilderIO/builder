@@ -15,10 +15,10 @@ test.describe('Localization', () => {
   });
 
   test('locale is not passed from the prop', async ({ page }) => {
+    const msgPromise = page.waitForEvent('console', msg => msg.text().includes(LOCALE_WARNING));
+
     await page.goto('/localization-locale-not-passed');
 
-    await page.waitForEvent('console', event => {
-      return event.args().some(arg => arg.toString().includes(LOCALE_WARNING));
-    });
+    await msgPromise;
   });
 });
