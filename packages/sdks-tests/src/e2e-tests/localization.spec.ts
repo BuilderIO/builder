@@ -9,7 +9,7 @@ test.describe('Localization', () => {
   test('locale is passed from the prop', async ({ page }) => {
     await page.goto('/localization-locale-passed');
     const text = page.locator(`text=${HI_IN_TEXT}`);
-    const src = await page.locator('img')?.getAttribute('src');
+    const src = await page.locator('.builder-image')?.getAttribute('src');
     await expect(text).toBeVisible();
     expect(src).toBe(HI_IN_IMAGE);
   });
