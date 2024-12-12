@@ -40,6 +40,7 @@ const options = {
     // Allow json resolution
     replace({
       'process.env.NODE_ENV': JSON.stringify(SERVE ? 'development' : 'production'),
+      'global.VERSION': JSON.stringify(pkg.version),
     }),
     json(),
     alias({
