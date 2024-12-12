@@ -119,3 +119,7 @@ export const LOCALIZATION = {
   lastUpdatedBy: 'RuGeCLr9ryVt1xRazFYc72uWwIK2',
   folders: [],
 };
+
+export const LOCALIZATION_WITHOUT_LOCALE_PROP = JSON.parse(
+  JSON.stringify(LOCALIZATION)
+) as typeof LOCALIZATION;

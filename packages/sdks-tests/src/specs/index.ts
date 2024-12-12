@@ -74,7 +74,7 @@ import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-us
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
-import { LOCALIZATION } from './localization.js';
+import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -192,7 +192,7 @@ export const PAGES: Record<string, Page> = {
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
   '/localization-locale-passed': { content: LOCALIZATION },
-  '/localization-locale-not-passed': { content: LOCALIZATION },
+  '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
 } as const;
 
 export type Path = keyof typeof PAGES;
