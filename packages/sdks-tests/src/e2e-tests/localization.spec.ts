@@ -15,7 +15,13 @@ test.describe('Localization', () => {
     await expect(image).toHaveAttribute('src', HI_IN_IMAGE);
   });
 
-  test('locale is not passed from the prop', async ({ page }) => {
+  test('locale is not passed from the prop', async ({ page, sdk }) => {
+    test.skip(sdk === 'solid', 'No errors are logged in preview mode for solid');
+    test.skip(
+      sdk === 'qwik' || sdk === 'rsc',
+      'Errors are only logged in the terminal not on browser'
+    );
+
     const msgPromise = page.waitForEvent('console', msg => msg.text().includes(LOCALE_WARNING));
 
     await page.goto('/localization-locale-not-passed');
