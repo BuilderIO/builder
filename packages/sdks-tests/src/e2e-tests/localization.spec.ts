@@ -18,7 +18,11 @@ test.describe('Localization', () => {
   test('locale is not passed from the prop', async ({ page, sdk, packageName }) => {
     test.skip(sdk === 'solid', 'No errors are logged in preview mode for solid');
     test.skip(
-      sdk === 'qwik' || sdk === 'rsc' || sdk === 'vue' || packageName === 'sveltekit',
+      sdk === 'qwik' ||
+        sdk === 'rsc' ||
+        sdk === 'vue' ||
+        packageName === 'sveltekit' ||
+        packageName === 'react-sdk-next-pages',
       'Errors are only logged in the terminal not on browser'
     );
 
