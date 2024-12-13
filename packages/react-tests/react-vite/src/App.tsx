@@ -40,9 +40,8 @@ function App() {
         window.location.pathname.includes('get-query') ||
         window.location.pathname.includes('get-content')
       ) {
-        if (resp.apiEndpoint) {
+        if (resp?.apiEndpoint) {
           builder.apiEndpoint = resp.apiEndpoint;
-          delete resp.apiEndpoint;
         }
         builder
           .get('', {
@@ -57,6 +56,10 @@ function App() {
 
   if (props?.apiVersion) {
     builder.apiVersion = props?.apiVersion;
+  }
+
+  if (props?.apiEndpoint) {
+    builder.apiEndpoint = props.apiEndpoint;
   }
 
   if (props?.trustedHosts) {

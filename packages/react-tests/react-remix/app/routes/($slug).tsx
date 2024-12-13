@@ -44,15 +44,16 @@ export default function Page() {
     builder.apiVersion = props?.apiVersion;
   }
 
+  if (props?.apiEndpoint) {
+    builder.apiEndpoint = props.apiEndpoint;
+    delete props.apiEndpoint;
+  }
+
   useEffect(() => {
     if (
       window.location.pathname.includes('get-query') ||
       window.location.pathname.includes('get-content')
     ) {
-      if (props.apiEndpoint) {
-        builder.apiEndpoint = props.apiEndpoint;
-        delete props.apiEndpoint;
-      }
       builder
         .get('', {
           ...props,
