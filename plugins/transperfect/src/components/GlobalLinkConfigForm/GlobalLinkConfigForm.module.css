@@ -1,0 +1,85 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+    color: #000000;
+    height:100%;
+    width:100%;
+    font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+
+.formContainer {
+    height:100%;
+    max-width:750px;
+}
+
+.form.darkMode {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom:16px;
+}
+
+.label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+ 
+}
+
+.input {
+     width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    font-size: 16px;
+}
+
+.form.darkMode .input {
+    border-color: #555;
+    background-color: #333;
+    color: #fff;
+}
+
+.hint {
+     font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.form.darkMode .hint {
+    color: #aaa;
+}
+
+.button {
+    align-self: flex-start;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.spinnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+ 
