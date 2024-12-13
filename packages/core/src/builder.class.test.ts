@@ -768,4 +768,32 @@ describe('flushGetContentQueue', () => {
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
+
+  test('hits content url with query.id when id is passed in options.query', async () => {
+    const expectedModel = 'symbol';
+    const expectedFormat = 'email';
+    const expectedEntryId = '123';
+
+    builder.apiEndpoint = 'content';
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        model: expectedModel,
+        format: expectedFormat,
+        key: expectedModel,
+        omit: OMIT,
+        fields: 'data',
+        limit: 10,
+        entry: expectedEntryId,
+        query: {
+          id: expectedEntryId,
+        },
+      },
+    ]);
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&limit=10&model=%22${expectedModel}%22&entry=%22${expectedEntryId}%22&enrich=true&query.id=${expectedEntryId}`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
 });
