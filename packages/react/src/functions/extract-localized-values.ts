@@ -25,7 +25,7 @@ export const extractLocalizedValues = (data: Record<string, any>, locale: string
 
   traverse(data, (value, update) => {
     if (isLocalizedField(value)) {
-      update(value[locale] ?? value.Default);
+      update(value[locale] ?? undefined);
     }
   });
 

@@ -483,18 +483,15 @@ export class BuilderBlock extends React.Component<
       ...(options.component.options || options.component.data),
     };
 
-    const hasLocalizedValues = containsLocalizedValues(innerComponentProperties);
-
-    if (hasLocalizedValues && !this.privateState.state.locale) {
-      console.warn(
-        '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
-      );
-    }
-
-    if (hasLocalizedValues && this.privateState.state.locale) {
+    if (containsLocalizedValues(innerComponentProperties)) {
+      if (!this.privateState.state.locale) {
+        console.warn(
+          '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
+        );
+      }
       innerComponentProperties = extractLocalizedValues(
         innerComponentProperties,
-        this.privateState.state.locale
+        this.privateState.state.locale || 'Default'
       );
     }
 

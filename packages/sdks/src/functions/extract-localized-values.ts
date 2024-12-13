@@ -30,7 +30,7 @@ function extractLocalizedValues(data: Record<string, any>, locale: string) {
 
   traverse(data, (value, update) => {
     if (isLocalizedField(value)) {
-      update(value[locale] ?? value.Default);
+      update(value[locale] ?? undefined);
     }
   });
 
@@ -43,22 +43,16 @@ export function resolveLocalizedValues(
 ) {
   if (
     block.component?.options &&
-    containsLocalizedValues(block.component?.options) &&
-    !locale
+    containsLocalizedValues(block.component?.options)
   ) {
-    console.warn(
-      '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
-    );
-  }
-
-  if (
-    block.component?.options &&
-    containsLocalizedValues(block.component?.options) &&
-    locale
-  ) {
+    if (!locale) {
+      console.warn(
+        '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
+      );
+    }
     block.component.options = extractLocalizedValues(
       block.component.options,
-      locale
+      locale || 'Default'
     );
   }
 
