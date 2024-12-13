@@ -52,7 +52,7 @@ export function resolveLocalizedValues(
     }
     block.component.options = extractLocalizedValues(
       block.component.options,
-      locale || 'Default'
+      locale ?? 'Default'
     );
   }
 

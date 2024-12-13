@@ -491,7 +491,7 @@ export class BuilderBlock extends React.Component<
       }
       innerComponentProperties = extractLocalizedValues(
         innerComponentProperties,
-        this.privateState.state.locale || 'Default'
+        this.privateState.state.locale ?? 'Default'
       );
     }
 
