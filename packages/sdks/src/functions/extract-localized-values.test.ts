@@ -35,9 +35,11 @@ describe('Localized Values', () => {
       );
     });
 
-    it('should keep original values when no locale is provided', () => {
+    it('should resolve to Default value when no locale is provided', () => {
       const result = resolveLocalizedValues(fastClone(mockBlock), undefined);
-      expect(result.component?.options.text).toEqual(mockLocalizedValue);
+      expect(result.component?.options.text).toEqual(
+        mockLocalizedValue.Default
+      );
       expect(result.component?.options.nonLocalizedField).toBe(
         mockNonLocalizedValue
       );
