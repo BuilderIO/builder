@@ -9,24 +9,14 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
   standalone: true,
   imports: [CommonModule, NavLinksComponent],
   template: `
-    <nav
-      style="display: flex; justify-content: space-between; align-items: center; padding: 1rem;"
-    >
-      <div class="brand-name">
-        <h1>Acme company</h1>
-      </div>
-
+    <nav>
       <app-nav-links [links]="links" />
-
-      <div style="display: flex; gap: 10px;">
-        <button>Login</button>
-        <button>Register</button>
-      </div>
     </nav>
+    <!-- <RestOfYourPage /> -->
   `,
 })
 export class NavBarComponent implements OnInit {
-  links: BuilderContent = { data: { links: [] } };
+  links: BuilderContent[] = [];
 
   constructor(private route: ActivatedRoute) {}
 
