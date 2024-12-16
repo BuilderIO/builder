@@ -15,6 +15,66 @@ exports[`Component Registration and Serialization > serializeComponentInfo handl
 }
 `;
 
+exports[`Component Registration and Serialization > serializeComponentInfo handles async arrow functions correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async (value) => {
+            return value.toUpperCase();
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles async arrow functions without parenthesis correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async (value) => {
+            return value.toUpperCase();
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles async arrow functions without parenthesis correctly 2`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async (value) => {
+            return value;
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles async functions correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async function(value) {
+            return value.toUpperCase();
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
 exports[`Component Registration and Serialization > serializeComponentInfo handles functions correctly 1`] = `
 {
   "hooks": {

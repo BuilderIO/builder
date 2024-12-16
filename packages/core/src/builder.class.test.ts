@@ -120,6 +120,80 @@ describe('serializeIncludingFunctions', () => {
     expect(typeof result.inputs[2].onChange).toBe('string');
     expect(result.inputs[2].onChange).toContain('v.toLowerCase()');
   });
+
+  test('serializes async functions with parenthesized args in inputs', () => {
+    // Using eval and template literal to prevent TypeScript from adding parens
+    const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
+    const input = {
+      name: 'AsyncArrowComponent',
+      inputs: [
+        {
+          name: 'number',
+          type: 'number',
+          onChange: async function (value: number) {
+            return value * 2;
+          },
+          showIf: fn,
+        },
+      ],
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input);
+
+    expect(typeof result.inputs[0].onChange).toBe('string');
+    expect(result.inputs[0].onChange).toBe(
+      `return (async function(value) {
+            return value * 2;
+          }).apply(this, arguments)`
+    );
+  });
+
+  test('serializes async arrow functions with parenthesized args in inputs', () => {
+    // Using eval and template literal to prevent TypeScript from adding parens
+    const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
+    const input = {
+      name: 'AsyncArrowComponent',
+      inputs: [
+        {
+          name: 'number',
+          type: 'number',
+          onChange: async (value: number) => value * 2,
+          showIf: fn,
+        },
+      ],
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input);
+
+    expect(typeof result.inputs[0].onChange).toBe('string');
+    expect(result.inputs[0].onChange).toBe(
+      'return (async (value) => value * 2).apply(this, arguments)'
+    );
+  });
+
+  test('serializes async arrow functions without parenthesized args in inputs', () => {
+    // Using eval and template literal to prevent TypeScript from adding parens
+    const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
+    const input = {
+      name: 'AsyncArrowComponent',
+      inputs: [
+        {
+          name: 'number',
+          type: 'number',
+          // @ts-expect-error
+          onChange: async value => value * 2,
+          showIf: fn,
+        },
+      ],
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input);
+
+    expect(typeof result.inputs[0].onChange).toBe('string');
+    expect(result.inputs[0].onChange).toBe(
+      'return (async (value) => value * 2).apply(this, arguments)'
+    );
+  });
 });
 
 describe('prepareComponentSpecToSend', () => {
