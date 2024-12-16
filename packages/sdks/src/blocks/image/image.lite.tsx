@@ -24,7 +24,10 @@ export default function Image(props: ImageProps) {
         !url ||
         // We can auto add srcset for cdn.builder.io and shopify
         // images, otherwise you can supply this prop manually
-        !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
+        !(
+          typeof url === 'string' &&
+          (url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
+        )
       ) {
         return props.srcset;
       }
