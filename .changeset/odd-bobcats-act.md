@@ -11,4 +11,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Fix: Serialization function has been modified to correctly serialize async-functions
+Fix: `onChange` functions passed to builder inputs can now receive async functions
