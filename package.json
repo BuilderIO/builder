@@ -10,7 +10,9 @@
     "packages/react-tests/*",
     "packages/sdks/e2e/*",
     "packages/sdks/snippets/*",
-    "packages/sdks/output/*"
+    "packages/sdks/output/*",
+    "packages/webcomponents",
+    "packages/shopify"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
