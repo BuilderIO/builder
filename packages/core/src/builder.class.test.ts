@@ -121,11 +121,60 @@ describe('serializeIncludingFunctions', () => {
     expect(result.inputs[2].onChange).toContain('v.toLowerCase()');
   });
 
+  test('serializes arrow functions with non-parenthesized args in inputs', () => {
+    // Using eval and template literal to prevent TypeScript from adding parens
+    const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
+    const input = {
+      name: 'onChangeComponent',
+      inputs: [
+        {
+          name: 'number',
+          type: 'number',
+          // @ts-expect-error required for this test
+          onChange: value => value * 2,
+          showIf: fn,
+        },
+      ],
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input);
+
+    expect(typeof result.inputs[0].onChange).toBe('string');
+    expect(result.inputs[0].onChange).toBe(`return ((value) => value * 2).apply(this, arguments)`);
+  });
+
+  test('serializes functions with parenthesized args in inputs', () => {
+    // Using eval and template literal to prevent TypeScript from adding parens
+    const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
+    const input = {
+      name: 'onChangeComponent',
+      inputs: [
+        {
+          name: 'number',
+          type: 'number',
+          onChange: function (value: number) {
+            return value * 2;
+          },
+          showIf: fn,
+        },
+      ],
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input);
+
+    expect(typeof result.inputs[0].onChange).toBe('string');
+    expect(result.inputs[0].onChange).toBe(
+      `return (function(value) {
+            return value * 2;
+          }).apply(this, arguments)`
+    );
+  });
+
   test('serializes async functions with parenthesized args in inputs', () => {
     // Using eval and template literal to prevent TypeScript from adding parens
     const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
     const input = {
-      name: 'AsyncArrowComponent',
+      name: 'AsyncOnChangeComponent',
       inputs: [
         {
           name: 'number',
@@ -152,7 +201,7 @@ describe('serializeIncludingFunctions', () => {
     // Using eval and template literal to prevent TypeScript from adding parens
     const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
     const input = {
-      name: 'AsyncArrowComponent',
+      name: 'AsyncOnChangeComponent',
       inputs: [
         {
           name: 'number',
@@ -175,7 +224,7 @@ describe('serializeIncludingFunctions', () => {
     // Using eval and template literal to prevent TypeScript from adding parens
     const fn = eval(`(${`e => !0 === e.get("isABTest")`})`);
     const input = {
-      name: 'AsyncArrowComponent',
+      name: 'AsyncOnChangeComponent',
       inputs: [
         {
           name: 'number',
