@@ -1,0 +1,33 @@
+{
+  "name": "Sample Chrome Extension",
+  "version": "1.0.2",
+  "manifest_version": 2,
+  "description": "Sample Chrome Extension",
+  "homepage_url": "https://builder.io",
+  "icons": {
+    "16": "icons/builder-icon-small.png",
+    "48": "icons/builder-icon-medium.png",
+    "128": "icons/builder-icon-large.png"
+  },
+  "background": {
+    "scripts": [
+      "src/bg/background.js"
+    ],
+    "persistent": true
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+    "https://*/*",
+    "http://*/*",
+    "*://*/*",
+    "webRequest",
+    "webRequestBlocking",
+    "storage"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://*.builder.io/*",
+      "*://localhost:*/*"
+    ]
+  }
+}

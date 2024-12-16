@@ -1,0 +1,44 @@
+{
+  "name": "@builder.io/sample-chrome-extension-manifest-v2",
+  "scripts": {
+    "version": "node tools/version.js",
+    "copy": "rm -rf ./dist && copyfiles ./icons/**/*.png ./icons/**/*.jpg ./src/bg/background.js ./manifest.json ./dist/modern",
+    "copy-final": "copyfiles -f 'copyfiles -f './dist/modern/*.js' ./dist/modern/src' ./dist/modern",
+    "build": "rm -rf .parcel-cache && npm run version && npm run copy",
+    "develop": "nodemon -e js,tsx,png,html,ts --watch src --exec \"NODE_ENV=development rm -rf .parcel-cache && npm run copy && parcel build src/popup/popup.html src/inject/inject.ts --no-optimize --dist-dir 'dist' --public-url './' && yarn copy-final\"",
+    "dev": "yarn develop",
+    "parcel": "parcel",
+    "copyfiles": "copyfiles"
+  },
+  "engines": {
+    "node": "18",
+    "npm": "Please use yarn instead of NPM to install dependencies",
+    "yarn": ">=1.22.4 <2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "typescript": "4.6.3"
+  },
+  "dependencies": {
+    "@parcel/transformer-typescript-tsc": "^2.13.0",
+    "@types/chrome": "^0.0.283",
+    "copyfiles": "^2.2.0",
+    "parcel": "^2.9.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "resolutions": {
+    "ip": "1.1.9"
+  },
+  "targets": {
+    "modern": {
+      "engines": {
+        "browsers": ">= 50%"
+      }
+    },
+    "default": {
+      "context": "browser",
+      "includeNodeModules": true
+    }
+  }
+}
