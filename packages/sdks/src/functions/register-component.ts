@@ -14,9 +14,13 @@ const serializeFn = (fnValue: Function) => {
   // 2. `name(args) => {code}`
   // 3. `(args) => {}`
   // 4. `args => {}`
+  // 5. `async function(args) {code}`
+  // 6. `async (args) => {}`
+  // 7. `async args => {}`
   const isArrowWithoutParens = /^[a-zA-Z0-9_]+\s*=>/i.test(fnStr);
   const appendFunction =
     !fnStr.startsWith('function') &&
+    !fnStr.startsWith('async') &&
     !fnStr.startsWith('(') &&
     !isArrowWithoutParens;
 
