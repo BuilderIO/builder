@@ -17,6 +17,7 @@ interface BuilderProps {
   content: any;
   data?: any;
   apiHost?: string;
+  locale?: string;
 }
 
 @Component({
@@ -32,6 +33,7 @@ interface BuilderProps {
         [customComponents]="customComponents"
         [data]="data"
         [apiHost]="apiHost"
+        [locale]="locale"
       ></builder-content>
     </ng-container>
 
@@ -50,6 +52,7 @@ export class AppComponent {
   content: BuilderProps['content'];
   data: BuilderProps['data'];
   apiHost: BuilderProps['apiHost'];
+  locale: BuilderProps['locale'];
 
   customComponents: RegisteredComponent[] = customComponents;
 
@@ -77,5 +80,6 @@ export class AppComponent {
     this.apiVersion = builderProps.apiVersion;
     this.data = builderProps.data;
     this.apiHost = builderProps.apiHost;
+    this.locale = builderProps.locale;
   }
 }

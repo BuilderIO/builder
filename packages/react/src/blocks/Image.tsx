@@ -263,7 +263,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
 
   getSrcSet(): string | undefined {
     const url = this.image;
-    if (!url) {
+    if (!url || typeof url !== 'string') {
       return;
     }
 
