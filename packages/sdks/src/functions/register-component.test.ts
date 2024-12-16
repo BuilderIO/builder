@@ -50,9 +50,8 @@ describe('Component Registration and Serialization', () => {
           name: 'testInput',
           type: 'string',
           // eslint-disable-next-line
-          // @ts-expect-error
           onChange: async (value) => {
-            // @ts-expect-error
+            // @ts-expect-error required for passing tests
             return value.toUpperCase();
           },
         },
@@ -83,7 +82,7 @@ describe('Component Registration and Serialization', () => {
           name: 'testInput',
           type: 'string',
           // eslint-disable-next-line
-          // @ts-expect-error
+          // @ts-expect-error required for passing tests
           // eslint-disable-next-line object-shorthand
           onChange: async function (value: string) {
             return value.toUpperCase();
@@ -116,7 +115,7 @@ describe('Component Registration and Serialization', () => {
           name: 'testInput',
           type: 'string',
           // eslint-disable-next-line
-          // @ts-expect-error
+          // @ts-expect-error required for passing tests
           // eslint-disable-next-line object-shorthand
           onChange: async (value) => {
             return value;
