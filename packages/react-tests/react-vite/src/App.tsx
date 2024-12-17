@@ -3,6 +3,7 @@ import { getAPIKey, getProps, PAGES } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 
 import '@builder.io/widgets';
+import { ComponentWithLocalizedSubfields } from './components/ComponentWithLocalizedSubfields';
 
 builder.init(getAPIKey());
 
@@ -16,6 +17,25 @@ if (
 ) {
   builder.canTrack = true;
 }
+Builder.registerComponent(ComponentWithLocalizedSubfields, {
+  name: 'ComponentWithLocalizedSubfields',
+  inputs: [
+    {
+      name: 'texts',
+      type: 'array',
+      subFields: [
+        {
+          name: 'text1',
+          type: 'text',
+        },
+        {
+          name: 'text2',
+          type: 'text',
+        },
+      ],
+    },
+  ],
+});
 
 function App() {
   const [props, setProps] = useState<any>(undefined);
@@ -27,9 +47,8 @@ function App() {
         window.location.pathname.includes('get-query') ||
         window.location.pathname.includes('get-content')
       ) {
-        if (resp.apiEndpoint) {
+        if (resp?.apiEndpoint) {
           builder.apiEndpoint = resp.apiEndpoint;
-          delete resp.apiEndpoint;
         }
         builder
           .get('', {
@@ -44,6 +63,10 @@ function App() {
 
   if (props?.apiVersion) {
     builder.apiVersion = props?.apiVersion;
+  }
+
+  if (props?.apiEndpoint) {
+    builder.apiEndpoint = props.apiEndpoint;
   }
 
   if (props?.trustedHosts) {

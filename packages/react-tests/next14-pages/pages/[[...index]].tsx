@@ -49,6 +49,10 @@ export default function Page(props: PageProps & { apiVersion: any }) {
     builder.apiVersion = props?.apiVersion;
   }
 
+  if (props?.apiEndpoint) {
+    builder.apiEndpoint = props.apiEndpoint;
+  }
+
   // only enable tracking if we're not in the `/can-track-false` and `symbol-tracking` test route
   useEffect(() => {
     if (!router.asPath.includes('can-track-false') && !router.asPath.includes('symbol-tracking')) {
@@ -63,8 +67,6 @@ export default function Page(props: PageProps & { apiVersion: any }) {
         .promise()
         .then();
     } else if (router.asPath.includes('get-content')) {
-      builder.apiEndpoint = props.apiEndpoint;
-      delete props.apiEndpoint;
       builder
         .get('', {
           ...props,

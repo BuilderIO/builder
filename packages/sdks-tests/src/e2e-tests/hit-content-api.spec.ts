@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { excludeGen1, test, mapSdkName, getSdkGeneration } from '../helpers/index.js';
+import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
 
 test.describe('Get Content', () => {
   test('call content API only once - in page', async ({ page, sdk }) => {
@@ -39,5 +40,42 @@ test.describe('Get Content', () => {
     expect(req).toBeDefined();
     expect(await req!.postDataJSON()).toEqual({ test: 'test' });
     expect(req!.method()).toBe('POST');
+  });
+  test('fetch symbol with query.id', async ({ page, sdk }) => {
+    test.skip(!excludeGen1(sdk));
+
+    let x = 0;
+    let headers;
+
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol/;
+
+    const urls: string[] = [];
+
+    await page.route(urlMatch, route => {
+      x++;
+      headers = route.request().headers();
+
+      const url = new URL(route.request().url());
+      urls.push(url.href);
+      return route.fulfill({
+        status: 200,
+        json: {
+          results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+        },
+      });
+    });
+
+    await page.goto('/get-content-with-symbol', { waitUntil: 'networkidle' });
+
+    await expect(x).toBeGreaterThanOrEqual(2);
+
+    urls.forEach(url => {
+      expect(url).toContain('query.id=29ab534d62c4406c8500e1cbfa609537');
+    });
+
+    // Check for new SDK headers
+    expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
+    expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+    expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 });

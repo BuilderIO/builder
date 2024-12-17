@@ -172,6 +172,9 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
+      - name: Test Core
+        run: yarn g:nx test @builder.io/sdk
+
       - name: Build Core
         run: yarn g:nx build @builder.io/sdk
 
