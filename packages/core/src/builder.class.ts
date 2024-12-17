@@ -2673,8 +2673,6 @@ export class Builder {
 
     url = url + (queryParams && hasParams ? `?${queryStr}` : '');
 
-    console.log('DEBUG: url', url);
-
     const promise = this.makeFetchApiCall(url, fetchOptions)
       .then(res => res.json())
       .then(
