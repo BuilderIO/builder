@@ -5,7 +5,7 @@
     "copy": "rm -rf ./dist && copyfiles ./icons/**/*.png ./icons/**/*.jpg ./src/bg/background.js ./manifest.json ./dist/modern",
     "copy-final": "copyfiles -f 'copyfiles -f './dist/modern/*.js' ./dist/modern/src' ./dist/modern",
     "build": "rm -rf .parcel-cache && npm run version && npm run copy",
-    "develop": "nodemon -e js,tsx,png,html,ts --watch src --exec \"NODE_ENV=development rm -rf .parcel-cache && npm run copy && parcel build src/popup/popup.html src/inject/inject.ts --no-optimize --dist-dir 'dist' --public-url './' && yarn copy-final\"",
+    "develop": "nodemon -e js,tsx,png,html,ts --watch src --exec \"NODE_ENV=development rm -rf .parcel-cache && npm run copy && yarn copy-final\"",
     "dev": "yarn develop",
     "parcel": "parcel",
     "copyfiles": "copyfiles"
