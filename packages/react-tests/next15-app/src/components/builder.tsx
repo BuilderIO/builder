@@ -24,6 +24,10 @@ type BuilderPageProps = any;
 export function RenderBuilderContent(props: BuilderPageProps) {
   const pathname = usePathname();
 
+  if (props?.apiEndpoint) {
+    builder.apiEndpoint = props.apiEndpoint;
+  }
+
   useEffect(() => {
     if (pathname.includes('get-query')) {
       builder
@@ -34,8 +38,6 @@ export function RenderBuilderContent(props: BuilderPageProps) {
         .promise()
         .then();
     } else if (pathname.includes('get-content')) {
-      builder.apiEndpoint = props.apiEndpoint;
-      delete props.apiEndpoint;
       builder
         .get('', {
           ...props,
