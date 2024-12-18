@@ -10,7 +10,7 @@ test.describe('API Endpoint', () => {
     });
 
     test('records API calls after page load', async ({ page, packageName }) => {
-      test.skip(packageName !== 'gen1-next');
+      test.skip(packageName !== 'gen1-next14-pages' && packageName !== 'gen1-next15-app');
       // Start monitoring network requests
       const urlMatchForContentAPI = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
       const urlMatchForQueryAPI = /https:\/\/cdn\.builder\.io\/api\/v3\/query/;

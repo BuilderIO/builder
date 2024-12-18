@@ -29,7 +29,7 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
   test('passes fetch options', async ({ page, packageName }) => {
-    test.skip(packageName !== 'gen1-next');
+    test.skip(packageName !== 'gen1-next14-pages' && packageName !== 'gen1-next15-app');
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/query/;
     const responsePromise = page.waitForResponse(urlMatch);
