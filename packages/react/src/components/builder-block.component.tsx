@@ -128,6 +128,8 @@ export class BuilderBlock extends React.Component<
   private _errors?: Error[];
   private _logs?: string[];
 
+  hydrated = false;
+
   state = {
     hasError: false,
     updates: 0,
@@ -287,6 +289,7 @@ export class BuilderBlock extends React.Component<
   };
 
   componentDidMount() {
+    this.hydrated = true;
     const block = this.block;
     const animations = block && block.animations;
 
@@ -537,7 +540,7 @@ export class BuilderBlock extends React.Component<
             : ''
         }` +
         (options.class ? ' ' + options.class : '') +
-        (Builder.isEditing && this.privateState.state._spacer?.parent === block.id
+        (this.hydrated && Builder.isEditing && this.privateState.state._spacer?.parent === block.id
           ? ' builder-spacer-parent'
           : ''),
       key: this.id + index,
@@ -557,7 +560,7 @@ export class BuilderBlock extends React.Component<
     // tslint:disable-next-line:comment-format
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
-    if (Builder.isEditing) {
+    if (Builder.isEditing && this.hydrated) {
       // TODO: removed bc JS can add styles inline too?
       (finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
         ? ''
