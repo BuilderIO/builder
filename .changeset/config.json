@@ -16,5 +16,12 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@e2e/*", "@e2e/gen1-next", "@e2e/gen1-remix", "@e2e/gen1-react", "@snippet/*"]
+  "ignore": [
+    "@e2e/*",
+    "@e2e/gen1-next14-pages",
+    "@e2e/gen1-next15-app",
+    "@e2e/gen1-remix",
+    "@e2e/gen1-react",
+    "@snippet/*"
+  ]
 }
