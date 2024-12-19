@@ -185,7 +185,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        e2e-server: ['gen1-react', 'gen1-next', 'gen1-remix']
+        e2e-server: ['gen1-react', 'gen1-next14-pages', 'gen1-next15-app', 'gen1-remix']
 
     steps:
       - name: Setup
@@ -212,7 +212,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        snippet: ['gen1-react', 'gen1-next', 'gen1-remix']
+        snippet: ['gen1-react', 'gen1-next14-pages', 'gen1-remix']
 
     steps:
       - name: Setup

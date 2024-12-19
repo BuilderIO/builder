@@ -20,7 +20,7 @@ export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    paths: getAllPathnames('gen1-next').map(path => {
+    paths: getAllPathnames('gen1-next14-pages').map(path => {
       const output: StaticProps = {
         index: path === '/' ? [] : path.split('/').filter(Boolean),
       };
@@ -33,8 +33,14 @@ export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-// default to not tracking, and re-enable when appropriate
-builder.canTrack = false;
+if (typeof window !== 'undefined') {
+  if (
+    window.location.pathname.includes('can-track-false') ||
+    window.location.pathname.includes('symbol-tracking')
+  ) {
+    builder.canTrack = false;
+  }
+}
 
 export default function Page(props: PageProps & { apiVersion: any }) {
   const router = useRouter();
