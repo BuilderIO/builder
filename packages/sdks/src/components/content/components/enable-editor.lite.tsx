@@ -473,8 +473,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
         className={getWrapperClassName(
           props.content?.testVariationId || props.content?.id
         )}
-        // content exists: render the div
-        // content is null but isEditing/isPreviewing: render the empty div with display: 'none' (so that it doesn't take up space)
+        // content exists: render div and display: undefined
+        // content does not exist but isEditing/isPreviewing: render div and display: 'none'
+        // once inline editing kicks in, it will populate the content and re-render, so display style will be removed
         style={{
           display:
             !props.builderContextSignal.value.content &&
