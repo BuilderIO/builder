@@ -942,6 +942,25 @@ describe('get', () => {
     });
   });
 
+  test('hits content url with includeRefs=false when passed in params', async () => {
+    const expectedModel = 'page';
+
+    const includeRefs = false;
+
+    builder.apiEndpoint = 'content';
+    builder.getLocation = jest.fn(() => ({
+      search: `?builder.params=includeRefs%3D${includeRefs}`,
+    }));
+
+    await builder.get(expectedModel, {});
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&userAttributes=%7B%22device%22%3A%22desktop%22%7D&includeRefs=${includeRefs}&model=%22${expectedModel}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
   test('hits content url with includeRefs=true by default', async () => {
     const expectedModel = 'page';
 
@@ -990,6 +1009,25 @@ describe('getAll', () => {
         },
       });
     });
+  });
+
+  test('hits content url with includeRefs=false when passed in params', async () => {
+    const expectedModel = 'page';
+
+    const includeRefs = false;
+
+    builder.apiEndpoint = 'content';
+    builder.getLocation = jest.fn(() => ({
+      search: `?builder.params=includeRefs%3D${includeRefs}`,
+    }));
+
+    await builder.getAll(expectedModel, {});
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&noTraverse=true&userAttributes=%7B%22device%22%3A%22desktop%22%7D&includeRefs=${includeRefs}&limit=30&model=%22${expectedModel}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
   });
 
   test('hits content url with includeRefs=true by default', async () => {
