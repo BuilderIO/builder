@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk, sendContentUpdateMessage } from '../helpers/visual-editor.js';
 import { CONTENT } from '../specs/text-block.js';
+import type { Sdk } from '../helpers/sdk.js';
 
 test.describe('Editing empty content', () => {
   /**
@@ -14,13 +15,13 @@ test.describe('Editing empty content', () => {
     page,
     sdk,
     basePort,
-    packageName,
   }) => {
-    test.skip(packageName !== 'nuxt');
+    const sdksUsingElementRefApproach = ['svelte', 'vue', 'qwik'] as Sdk[];
+    test.skip(!sdksUsingElementRefApproach.includes(sdk));
 
     await launchEmbedderAndWaitForSdk({
       // special page added only in nuxt e2e that doesn't pass `content`
-      path: '/preview-and-edit-content-empty',
+      path: '/editing-empty-content-element-ref',
       page,
       sdk,
       basePort,

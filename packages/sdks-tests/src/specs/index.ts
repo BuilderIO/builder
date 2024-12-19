@@ -196,6 +196,10 @@ export const PAGES: Record<string, Page> = {
   '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
   '/localization-subfields': { content: LOCALIZATION_SUBFIELDS },
   '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
+  '/editing-empty-content-element-ref': {
+    content: null as unknown as BuilderContent,
+    target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
+  },
 } as const;
 
 export type Path = keyof typeof PAGES;
