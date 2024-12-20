@@ -313,15 +313,27 @@ export default function EnableEditor(props: BuilderEditorProps) {
        *
        * TO-DO: should we only update the state when there is a change?
        **/
+
+      console.log('DEBUG: searchParamPreviewModel', searchParamPreviewModel);
+      console.log('DEBUG: props.model', props.model);
+      console.log('DEBUG: previewApiKey', previewApiKey);
+      console.log('DEBUG: props.apiKey', props.apiKey);
+      console.log('DEBUG: props.content', props.content);
+      console.log('DEBUG: searchParamPreviewId', searchParamPreviewId);
+      console.log('DEBUG: props.content.id', props.content?.id);
       if (
-        searchParamPreviewModel === props.model &&
-        previewApiKey === props.apiKey &&
-        (!props.content || searchParamPreviewId === props.content.id)
+        searchParamPreviewModel === 'BUILDER_STUDIO' ||
+        (searchParamPreviewModel === props.model &&
+          previewApiKey === props.apiKey &&
+          (!props.content || searchParamPreviewId === props.content.id))
       ) {
         fetchOneEntry({
           model: props.model,
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
+          ...(searchParamPreviewModel === 'BUILDER_STUDIO' && props.content
+            ? { query: { id: props.content?.id } }
+            : {}),
         }).then((content) => {
           if (content) {
             state.mergeNewContent(content);
@@ -439,6 +451,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
       state.mergeNewRootState({ locale: props.locale });
     }
   }, [props.locale]);
+
+  console.log('DEBUG enable-editor.lite.tsx props.model', props.model);
 
   return (
     <Show
