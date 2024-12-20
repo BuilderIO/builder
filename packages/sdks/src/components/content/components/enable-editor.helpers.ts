@@ -13,6 +13,10 @@ export const SDKS_USING_ELEMENT_REF_APPROACH = [
   'vue',
 ] as Target[];
 
+/**
+ * We need to attach this div only when content exists or isPreviewing/isEditing even when content is null,
+ * as we need to set the elementRef and allow previewing and visual editing
+ */
 export const needsElementRefDivForEditing =
   SDKS_USING_ELEMENT_REF_APPROACH.includes(TARGET) &&
   (isEditing() || isPreviewing());

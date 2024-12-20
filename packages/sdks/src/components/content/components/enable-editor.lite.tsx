@@ -444,10 +444,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
   return (
     <Show
       when={
-        /**
-         * We need to attach this div only when content exists or isPreviewing/isEditing even when content is null,
-         * as we need to set the elementRef and allow previewing and visual editing
-         */
         props.builderContextSignal.value.content || needsElementRefDivForEditing
       }
     >
