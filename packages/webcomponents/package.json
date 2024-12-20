@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.3.53",
+  "version": "2.0.0",
   "description": "",
   "keywords": [],
   "main": "dist/system/builder-webcomponents-async.js",
@@ -36,6 +36,7 @@
     "precommit": "lint-staged",
     "serve": "http-server -p 8989",
     "develop": "concurrently \"npm run start\" \"npm run serve\"",
+    "release:major": "npm version major && npm run build && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish",
     "release:patch": "npm version patch && npm run build && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish",
     "release:nightly": "npm version prerelease && npm run build && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag nightly",
     "release:dev": "npm version prerelease && npm run build && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag dev",
