@@ -29,6 +29,7 @@ interface BuilderBlocksState {
 
 // TODO: options to set direciotn
 export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBlocksState> {
+  hydrated = false;
   get isRoot() {
     return !this.props.child;
   }
@@ -56,6 +57,10 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
       return this.props.parentElementId;
     }
     return this.props.parent && this.props.parent.id;
+  }
+
+  componentDidMount() {
+    this.hydrated = true;
   }
 
   onClickEmptyBlocks = () => {
@@ -105,8 +110,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
           (this.props.className ? ' ' + this.props.className : '')
         }
         builder-type="blocks"
-        // TODO: only fi in iframe?
-        builder-path={Builder.isIframe ? this.path : undefined}
+        builder-path={Builder.isIframe && this.hydrated ? this.path : undefined}
         builder-parent-id={this.parentId}
         css={
           {
