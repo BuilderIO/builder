@@ -2596,6 +2596,9 @@ export class Builder {
 
       if (this.apiEndpoint === 'content') {
         queryParams.includeRefs = true;
+        if (!('noTraverse' in options)) {
+          queryParams.noTraverse = false;
+        }
       }
 
       const properties: (keyof GetContentOptions)[] = [

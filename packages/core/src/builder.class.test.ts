@@ -689,7 +689,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&includeRefs=true&limit=10&model=%22${MODEL}%22`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&includeRefs=true&noTraverse=false&limit=10&model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -755,7 +755,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&includeRefs=true&limit=10&model=%22${MODEL}%22`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&includeRefs=true&noTraverse=false&limit=10&model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -849,7 +849,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&includeRefs=true&limit=10&model=%22${MODEL}%22`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22respectScheduling%22%3Atrue%7D&includeRefs=true&noTraverse=false&limit=10&model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -887,7 +887,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2Ftest-page%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22${MODEL}%22`,
+      `https://cdn.builder.io/api/v3/content/${MODEL}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2Ftest-page%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&noTraverse=false&limit=10&model=%22${MODEL}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -915,7 +915,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22${expectedModel}%22&entry=%22${expectedEntryId}%22&query.id=${expectedEntryId}`,
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&noTraverse=false&limit=10&model=%22${expectedModel}%22&entry=%22${expectedEntryId}%22&query.id=${expectedEntryId}`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -956,7 +956,7 @@ describe('get', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&userAttributes=%7B%22device%22%3A%22desktop%22%7D&includeRefs=${includeRefs}&model=%22${expectedModel}%22`,
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&userAttributes=%7B%22device%22%3A%22desktop%22%7D&includeRefs=${includeRefs}&noTraverse=false&model=%22${expectedModel}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -969,7 +969,7 @@ describe('get', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&model=%22${expectedModel}%22`,
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&noTraverse=false&model=%22${expectedModel}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -984,7 +984,7 @@ describe('get', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=false&model=%22${expectedModel}%22`,
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=false&noTraverse=false&model=%22${expectedModel}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
