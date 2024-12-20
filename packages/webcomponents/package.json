@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.3.53",
+  "version": "1.3.54-0",
   "description": "",
   "keywords": [],
   "main": "dist/system/builder-webcomponents-async.js",
@@ -21,9 +21,9 @@
     "_unlink": "npm unlink *",
     "_install": "npm install",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && yarn typedoc --out docs src/builder-webcomponents.ts src/builder-webcomponents-lite.ts && yarn build:unpkg:dist",
-    "build:unpkg:dist": "ts-node -O '{\"module\": \"commonjs\"}' tools/make-unpkg-dist.ts",
+    "_prebuild": "rimraf dist",
+    "build": "npm run _prebuild && tsc --module commonjs && rollup -c rollup.config.ts && yarn typedoc --out docs src/builder-webcomponents.ts src/builder-webcomponents-lite.ts && yarn build:unpkg:dist",
+    "build:unpkg:dist": "npm run _prebuild && ts-node -O '{\"module\": \"commonjs\"}' tools/make-unpkg-dist.ts",
     "start": "SERVE=true rollup -c rollup.config.ts -w",
     "test": "jest watch",
     "test:watch": "yarn test -- --watch",
@@ -31,10 +31,10 @@
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "serve": "http-server -p 8989",
     "develop": "concurrently \"yarn start\" \"yarn serve\"",
-    "release:patch": "yarn build && npm version patch && yarn build:unpkg:dist && npm publish",
-    "release:nightly": "yarn build && npm version prerelease && yarn build:unpkg:dist && npm publish --tag nightly",
-    "release:dev": "yarn build && npm version prerelease && yarn build:unpkg:dist && npm publish --tag dev",
-    "release:beta": "yarn build && npm version prerelease && yarn build:unpkg:dist && npm publish --tag beta",
+    "release:patch": "yarn g:nx build && yarn version patch && yarn g:nx build:unpkg:dist && yarn npm publish",
+    "release:nightly": "yarn g:nx build && yarn version prerelease && yarn g:nx build:unpkg:dist && yarn npm publish --tag nightly",
+    "release:dev": "yarn g:nx build && yarn version prerelease && yarn g:nx build:unpkg:dist && yarn npm publish --tag dev",
+    "release:beta": "yarn g:nx build && yarn version prerelease && yarn g:nx build:unpkg:dist && yarn npm publish --tag beta",
     "ci:lint": "yarn lint",
     "ci:build": "yarn build"
   },
@@ -129,5 +129,6 @@
   "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951",
   "installConfig": {
     "hoistingLimits": "workspaces"
-  }
+  },
+  "stableVersion": "1.3.53"
 }
