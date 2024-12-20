@@ -42,7 +42,7 @@ export function toThenable(val: IterableIterator<any> | Thenable | any): Thenabl
     try {
       state = (val as IterableIterator<any>).next(prev);
     } catch (err) {
-      return mkReject(err);
+      return mkReject(err as Error);
     }
 
     if (state.done) return mkResolve(state.value);
@@ -51,7 +51,7 @@ export function toThenable(val: IterableIterator<any> | Thenable | any): Thenabl
       try {
         state = (val as IterableIterator<any>).throw!(err);
       } catch (e) {
-        return mkReject(e);
+        return mkReject(e as Error);
       }
       if (state.done) return mkResolve(state.value);
       return reduce(state.value);
