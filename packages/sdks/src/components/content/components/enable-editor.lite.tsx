@@ -444,7 +444,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
   return (
     <Show
       when={
-        props.builderContextSignal.value.content || needsElementRefDivForEditing
+        props.builderContextSignal.value.content ||
+        needsElementRefDivForEditing()
       }
     >
       <state.ContentWrapper
@@ -474,7 +475,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         style={{
           display:
             !props.builderContextSignal.value.content &&
-            needsElementRefDivForEditing
+            needsElementRefDivForEditing()
               ? 'none'
               : undefined,
         }}
