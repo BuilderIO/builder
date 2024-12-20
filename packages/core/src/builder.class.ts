@@ -2227,6 +2227,11 @@ export class Builder {
     let instance: Builder = this;
     let finalLocale =
       options.locale || options.userAttributes?.locale || this.getUserAttributes().locale;
+
+    if (!('noTraverse' in options)) {
+      options.noTraverse = false;
+    }
+
     let finalOptions = {
       ...options,
       ...(finalLocale && {
@@ -2596,9 +2601,6 @@ export class Builder {
 
       if (this.apiEndpoint === 'content') {
         queryParams.includeRefs = true;
-        if (!('noTraverse' in options)) {
-          queryParams.noTraverse = false;
-        }
       }
 
       const properties: (keyof GetContentOptions)[] = [
