@@ -1,13 +1,19 @@
-import { flatten, flattenMongoQuery } from '../../helpers/flatten.js';
+import {
+  flatten,
+  flattenMongoQuery,
+  unflatten,
+} from '../../helpers/flatten.js';
 import { normalizeSearchParams } from '../../helpers/search/search.js';
 import { DEFAULT_API_VERSION } from '../../types/api-version.js';
 import { getBuilderSearchParamsFromWindow } from '../get-builder-search-params/index.js';
+import { isBrowser } from '../is-browser.js';
 import type { GetContentOptions } from './types.js';
 
 const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
+  console.log('DEBUG: options', options);
   const {
     limit = 30,
     userAttributes,
@@ -96,6 +102,13 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     ...normalizeSearchParams(options.options || {}),
   };
 
+  console.log('DEBUG: queryOptions', queryOptions);
+
+  finalUserAttributes = {
+    ...finalUserAttributes,
+    ...getUserAttributesAsJSON(queryOptions),
+  };
+
   const flattened = flatten(queryOptions);
   for (const key in flattened) {
     url.searchParams.set(key, String(flattened[key]));
@@ -111,4 +124,25 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     }
   }
   return url;
+};
+
+const getUserAttributesFromQueryOptions = (queryOptions: any) => {
+  const newUserAttributes: any = {};
+  for (const key in queryOptions) {
+    if (key.startsWith('userAttributes.')) {
+      newUserAttributes[key] = queryOptions[key];
+      delete queryOptions[key];
+    }
+  }
+  return newUserAttributes;
+};
+
+const getUserAttributesAsJSON = (queryOptions: any) => {
+  if (isBrowser()) {
+    queryOptions['userAttributes.urlPath'] = window.location.pathname;
+  }
+  const queryOptionsForUserAttributes =
+    getUserAttributesFromQueryOptions(queryOptions);
+  const { userAttributes } = unflatten(queryOptionsForUserAttributes);
+  return userAttributes;
 };
