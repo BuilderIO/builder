@@ -942,7 +942,7 @@ describe('get', () => {
     });
   });
 
-  test('hits content url with includeRefs=false when passed in params', async () => {
+  test('hits content url with includeRefs=false when passed in params and noTraverse=false', async () => {
     const expectedModel = 'page';
 
     const includeRefs = false;
@@ -961,7 +961,7 @@ describe('get', () => {
     );
   });
 
-  test('hits content url with includeRefs=true by default', async () => {
+  test('hits content url with includeRefs=true and noTraverse=false by default', async () => {
     const expectedModel = 'page';
 
     builder.apiEndpoint = 'content';
@@ -974,7 +974,7 @@ describe('get', () => {
     );
   });
 
-  test('hits content url with includeRefs=false when passed in options', async () => {
+  test('hits content url with includeRefs=false when passed in options and noTraverse=false by default', async () => {
     const expectedModel = 'page';
 
     builder.apiEndpoint = 'content';
@@ -1011,7 +1011,7 @@ describe('getAll', () => {
     });
   });
 
-  test('hits content url with includeRefs=false when passed in params', async () => {
+  test('hits content url with includeRefs=false when passed in params and noTraverse=true by default', async () => {
     const expectedModel = 'page';
 
     const includeRefs = false;
@@ -1030,7 +1030,7 @@ describe('getAll', () => {
     );
   });
 
-  test('hits content url with includeRefs=true by default', async () => {
+  test('hits content url with includeRefs=true and noTraverse=true by default', async () => {
     const expectedModel = 'page';
 
     builder.apiEndpoint = 'content';
@@ -1043,7 +1043,7 @@ describe('getAll', () => {
     );
   });
 
-  test('hits content url with includeRefs=false when passed in options', async () => {
+  test('hits content url with includeRefs=false when passed in options and noTraverse=true by default', async () => {
     const expectedModel = 'page';
 
     builder.apiEndpoint = 'content';
