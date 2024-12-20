@@ -59,7 +59,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div v-if="props?.content">
+  <div v-if="props">
     <builder-render-content
       v-bind="props"
       :customComponents="registeredComponents"

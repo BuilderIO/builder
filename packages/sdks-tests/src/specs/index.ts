@@ -74,6 +74,8 @@ import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-us
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
+import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
+import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -190,6 +192,14 @@ export const PAGES: Record<string, Page> = {
   '/symbol-with-jscode': { content: COUNTDOWN },
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/localization-locale-passed': { content: LOCALIZATION },
+  '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
+  '/localization-subfields': { content: LOCALIZATION_SUBFIELDS },
+  '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
+  '/editing-empty-content-element-ref': {
+    content: null as unknown as BuilderContent,
+    target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
+  },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -299,6 +309,7 @@ export const getProps = async (args: {
       };
       break;
     case '/get-content':
+    case '/get-content-with-symbol':
       extraProps = {
         apiEndpoint: 'content',
       };
@@ -321,6 +332,12 @@ export const getProps = async (args: {
     case '/override-base-url':
       extraProps = {
         apiHost: 'https://cdn-qa.builder.io',
+      };
+      break;
+    case '/localization-locale-passed':
+    case '/localization-subfields':
+      extraProps = {
+        locale: 'hi-IN',
       };
       break;
     default:

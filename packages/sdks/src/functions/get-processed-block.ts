@@ -3,6 +3,7 @@ import type { BuilderContextInterface } from '../context/types.js';
 import { omit } from '../helpers/omit.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate/index.js';
+import { resolveLocalizedValues } from './extract-localized-values.js';
 import { fastClone } from './fast-clone.js';
 import { set } from './set.js';
 import { transformBlock } from './transform-block.js';
@@ -114,7 +115,12 @@ export function getProcessedBlock({
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
 >): BuilderBlock {
-  const transformedBlock = transformBlock(block);
+  let transformedBlock = resolveLocalizedValues(
+    block,
+    rootState.locale as string | undefined
+  );
+
+  transformedBlock = transformBlock(transformedBlock);
 
   if (shouldEvaluateBindings) {
     return evaluateBindings({
