@@ -2227,6 +2227,11 @@ export class Builder {
     let instance: Builder = this;
     let finalLocale =
       options.locale || options.userAttributes?.locale || this.getUserAttributes().locale;
+
+    if (!('noTraverse' in options)) {
+      options.noTraverse = false;
+    }
+
     let finalOptions = {
       ...options,
       ...(finalLocale && {
@@ -2594,6 +2599,10 @@ export class Builder {
         queryParams.staleCacheSeconds = options.staleCacheSeconds;
       }
 
+      if (this.apiEndpoint === 'content') {
+        queryParams.includeRefs = true;
+      }
+
       const properties: (keyof GetContentOptions)[] = [
         'prerender',
         'extractCss',
@@ -2605,6 +2614,7 @@ export class Builder {
         'entry',
         'rev',
         'static',
+        'includeRefs',
       ];
 
       for (const key of properties) {
@@ -2640,7 +2650,6 @@ export class Builder {
     const isApiCallForCodegenOrQuery = isApiCallForCodegen || this.apiEndpoint === 'query';
 
     if (this.apiEndpoint === 'content') {
-      queryParams.enrich = true;
       if (queue[0].query) {
         const flattened = this.flattenMongoQuery({ query: queue[0].query });
         for (const key in flattened) {
