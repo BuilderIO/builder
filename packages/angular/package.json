@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
