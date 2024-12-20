@@ -40,6 +40,7 @@ import type {
   BuilderComponentStateChange,
   ContentProps,
 } from '../content.types.js';
+import { needsElementRefDivForEditing } from './enable-editor.helpers.js';
 import { getWrapperClassName } from './styles.helpers.js';
 
 useMetadata({
@@ -447,9 +448,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
          * We need to attach this div only when content exists or isPreviewing/isEditing even when content is null,
          * as we need to set the elementRef and allow previewing and visual editing
          */
-        props.builderContextSignal.value.content ||
-        isPreviewing() ||
-        isEditing()
+        props.builderContextSignal.value.content || needsElementRefDivForEditing
       }
     >
       <state.ContentWrapper
@@ -479,7 +478,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         style={{
           display:
             !props.builderContextSignal.value.content &&
-            (isPreviewing() || isEditing())
+            needsElementRefDivForEditing
               ? 'none'
               : undefined,
         }}
