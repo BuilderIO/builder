@@ -4824,9 +4824,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@e2e/react-sdk-next-app@workspace:packages/sdks/e2e/react-sdk-next-app":
+"@e2e/react-sdk-next-14-app@workspace:packages/sdks/e2e/react-sdk-next-14-app":
   version: 0.0.0-use.local
-  resolution: "@e2e/react-sdk-next-app@workspace:packages/sdks/e2e/react-sdk-next-app"
+  resolution: "@e2e/react-sdk-next-14-app@workspace:packages/sdks/e2e/react-sdk-next-14-app"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@sdk/tests": "workspace:*"
