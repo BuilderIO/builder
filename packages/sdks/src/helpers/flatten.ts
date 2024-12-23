@@ -51,3 +51,26 @@ export function flattenMongoQuery(
   }
   return _res;
 }
+
+/**
+ * Unflatten a flat object with dot-separated keys back into a nested object.
+ *
+ * { 'foo.bar': 'baz' } -> { foo: { bar: 'baz' }}
+ */
+export function unflatten(obj: any): any {
+  const result: any = {};
+  for (const key in obj) {
+    const parts = key.split('.');
+    let current = result;
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+      if (i === parts.length - 1) {
+        current[part] = obj[key];
+      } else {
+        current[part] = current[part] || {};
+        current = current[part];
+      }
+    }
+  }
+  return result;
+}
