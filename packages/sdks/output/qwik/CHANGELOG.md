@@ -1,5 +1,15 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.17.1
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+- 23b7594: Feat: extend allowed file types of Image and Video Block
+- ee436bf: Fix: `locale` prop to automatically resolve localized fields
+- 2fc9fc5: Fix: `onChange` functions passed to builder inputs can now receive async functions
+- ebfd876: Fix: allow previewing and visual editing when content is null
+
 ## 0.17.0
 
 ### Minor Changes
