@@ -1,5 +1,19 @@
 # @builder.io/sdk
 
+## 6.0.0
+
+### Major Changes
+
+- 56f9461: - Adds `apiEndpoint` prop to `builder` instance with permitted values being `'content'` or `'query'`. It dictates which API endpoint is used for fetching Builder content
+  - Breaking Change 🧨: Removes `apiEndpoint` argument from `builder.get()`, `builder.getAll()`, and the `options` prop of `<BuilderContent>` component. NOTE: this argument was not working as expected.
+
+### Patch Changes
+
+- 06b1124: Fix: Content API invocations will have `includeRefs` set to `true` by default.
+- 409aec9: Feat: add `meta` type to custom components
+- 40d572d: Renders Symbol correctly when apiEndpoint is 'content'
+- 2fc9fc5: Fix: `onChange` functions passed to builder inputs can now receive async functions
+
 ## 5.0.0
 
 ### Major Changes
