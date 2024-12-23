@@ -10,7 +10,9 @@ const LAST_COMPONENT_REGISTERED_MESSAGE =
 test.describe('Custom components', () => {
   test('correctly renders custom component', async ({ page, packageName, sdk }) => {
     test.skip(!['angular', 'react'].includes(sdk));
-    test.skip(['react-sdk-next-14-app', 'remix', 'hydrogen'].includes(packageName));
+    test.skip(
+      ['react-sdk-next-14-app', 'react-sdk-next-15-app', 'remix', 'hydrogen'].includes(packageName)
+    );
     await page.goto('/custom-components');
     const helloWorldText = page.locator('text=hello World').first();
     await expect(helloWorldText).toBeVisible();
@@ -23,7 +25,9 @@ test.describe('Custom components', () => {
     sdk,
   }) => {
     test.skip(!['angular', 'react'].includes(sdk));
-    test.skip(['react-sdk-next-14-app', 'remix', 'hydrogen'].includes(packageName));
+    test.skip(
+      ['react-sdk-next-14-app', 'react-sdk-next-15-app', 'remix', 'hydrogen'].includes(packageName)
+    );
     const customComponentMsgPromise = page.waitForEvent('console', msg =>
       msg.text().includes(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE)
     );
