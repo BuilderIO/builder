@@ -119,7 +119,6 @@ jobs:
             'qwik-city',
             'nextjs-sdk-next-app',
             'react-sdk-next-14-app',
-            'react-sdk-next-15-app',
             'react-sdk-next-pages',
             'svelte',
             'sveltekit',
