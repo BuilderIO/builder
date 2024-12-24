@@ -63,7 +63,7 @@ export default async function Page(props: PageProps) {
   const builderProps = await getProps({
     pathname: urlPath,
     _processContentResult,
-    options: getBuilderSearchParams((await props.searchParams)),
+    options: getBuilderSearchParams(await props.searchParams),
     fetchOneEntry,
   });
 
