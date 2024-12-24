@@ -14412,9 +14412,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/nextjs-sdk-next-app@workspace:packages/sdks/snippets/nextjs-sdk-next-14-app":
+"@snippet/nextjs-sdk-next-app@workspace:packages/sdks/snippets/nextjs-sdk-next-app":
   version: 0.0.0-use.local
-  resolution: "@snippet/nextjs-sdk-next-app@workspace:packages/sdks/snippets/nextjs-sdk-next-14-app"
+  resolution: "@snippet/nextjs-sdk-next-app@workspace:packages/sdks/snippets/nextjs-sdk-next-app"
   dependencies:
     "@builder.io/sdk-react-nextjs": "workspace:*"
     "@types/node": ^20
@@ -14492,9 +14492,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/react-sdk-next-14-app@workspace:packages/sdks/snippets/react-sdk-next-app":
+"@snippet/react-sdk-next-14-app@workspace:packages/sdks/snippets/react-sdk-next-14-app":
   version: 0.0.0-use.local
-  resolution: "@snippet/react-sdk-next-14-app@workspace:packages/sdks/snippets/react-sdk-next-app"
+  resolution: "@snippet/react-sdk-next-14-app@workspace:packages/sdks/snippets/react-sdk-next-14-app"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@types/node": ^20
