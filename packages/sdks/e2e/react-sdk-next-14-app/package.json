@@ -1,0 +1,36 @@
+{
+  "name": "@e2e/react-sdk-next-14-app",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "SERVER_NAME=react-sdk-next-14-app yarn g:nx test:e2e @sdk/tests",
+    "serve": "yarn start"
+  },
+  "dependencies": {
+    "@builder.io/sdk-react": "workspace:*",
+    "@sdk/tests": "workspace:*",
+    "next": "14.1.1",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "typescript": "^5"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.next"
+        ]
+      }
+    }
+  }
+}
