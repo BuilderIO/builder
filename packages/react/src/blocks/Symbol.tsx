@@ -113,7 +113,7 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
     }
 
     let key = dynamic ? undefined : [model, entry].join(':');
-    const dataString = Builder.isEditing ? null : data && size(data) && hash(data);
+    const dataString = data && size(data) && hash(data);
 
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString;
