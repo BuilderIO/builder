@@ -1,12 +1,12 @@
 {
-  "name": "angular-19-ssr",
+  "name": "@e2e/angular-19-ssr",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "SERVER_NAME=angular-19-ssr yarn g:nx test:e2e @sdk/tests",
     "serve": "node dist/angular-19-ssr/server/server.mjs"
   },
   "private": true,

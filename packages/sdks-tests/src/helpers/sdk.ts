@@ -28,6 +28,7 @@ const serverNameEnumValues = [
   'sveltekit',
   'angular',
   'angular-ssr',
+  'angular-19-ssr',
   'gen1-react',
   'gen1-remix',
   'gen1-next14-pages',
@@ -71,4 +72,5 @@ export const SDK_MAP: Record<ServerName, { sdk: Sdk; gen: Generation }> = {
   'gen1-remix': { sdk: 'oldReact', gen: 'gen1' },
   angular: { sdk: 'angular', gen: 'gen2' },
   'angular-ssr': { sdk: 'angular', gen: 'gen2' },
+  'angular-19-ssr': { sdk: 'angular', gen: 'gen2' },
 };
