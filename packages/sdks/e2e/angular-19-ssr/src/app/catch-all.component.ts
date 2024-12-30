@@ -2,14 +2,16 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import {
-  _processContentResult,
   Content,
+  _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
   type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
+import { firstValueFrom } from 'rxjs';
 import { customComponents } from './custom-components';
 
 interface BuilderProps {
@@ -59,6 +61,26 @@ export class CatchAllComponent {
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private http = inject(HttpClient);
+
+  // Example usage of HttpClient and overriding fetch in fetchOneEntry
+  _httpClientFetch = async (url: string, options: RequestInit) => {
+    return firstValueFrom(
+      this.http.request<any>(options.method || 'GET', url, {
+        body: options.body,
+        headers: options.headers as any,
+        ...options,
+        observe: 'response',
+        responseType: 'json',
+      })
+    ).then((response: HttpResponse<any>) => {
+      return {
+        ok: response.status >= 200 && response.status < 300,
+        status: response.status,
+        json: () => Promise.resolve(response.body),
+      };
+    });
+  };
 
   async ngOnInit() {
     const urlPath = this.router.url.split('?')[0] || '';
@@ -73,7 +95,12 @@ export class CatchAllComponent {
       pathname: urlPath,
       _processContentResult,
       options: getBuilderSearchParams(searchParams),
-      fetchOneEntry,
+      fetchOneEntry: (args) => {
+        return fetchOneEntry({
+          ...args,
+          fetch: this._httpClientFetch,
+        });
+      },
     });
 
     if (!builderProps) {

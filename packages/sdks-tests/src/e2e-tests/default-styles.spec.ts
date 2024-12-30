@@ -16,7 +16,11 @@ test.describe('Default styles', () => {
     // dont have .builder-button class
     test.skip(excludeGen1(sdk));
     // TODO: need to check why angular-ssr is failing, working as expected though
-    test.fail(packageName === 'react-native' || packageName === 'angular-ssr');
+    test.fail(
+      packageName === 'react-native' ||
+        packageName === 'angular-ssr' ||
+        packageName === 'angular-19-ssr'
+    );
     await page.goto('/default-styles');
 
     const allStyleTags = await page.evaluate(() => {

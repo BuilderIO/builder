@@ -48,7 +48,7 @@ test.describe('Angular noWrap', () => {
     await testNoWrapPage(page);
   });
   test('correctly ssrs', async ({ browser, packageName }) => {
-    test.skip(!['angular-ssr'].includes(packageName));
+    test.skip(!['angular-ssr', 'angular-19-ssr'].includes(packageName));
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
