@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 import { CatchAllComponent } from './catch-all.component';
 
 export const routes: Routes = [
