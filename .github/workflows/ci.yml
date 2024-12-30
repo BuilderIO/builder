@@ -72,6 +72,7 @@ jobs:
             'nuxt',
             'angular',
             'angular-ssr',
+            'angular-19-ssr',
           ]
 
     steps:
