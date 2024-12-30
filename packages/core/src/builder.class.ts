@@ -2630,18 +2630,15 @@ export class Builder {
         }
       }
     }
+    if (this.preview && this.previewingModel === queue?.[0]?.model) {
+      queryParams.preview = 'true';
+    }
+    const hasParams = Object.keys(queryParams).length > 0;
 
     // TODO: option to force dev or qa api here
     const host = this.host;
 
     const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
-
-    const isSymbol = keyNames.includes('symbol');
-
-    if (this.preview && !isSymbol) {
-      queryParams.preview = 'true';
-    }
-    const hasParams = Object.keys(queryParams).length > 0;
 
     if (this.overrideParams) {
       const params = omit(QueryString.parse(this.overrideParams), 'apiKey');
