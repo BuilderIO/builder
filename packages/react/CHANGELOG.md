@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 8.0.1
+
+### Patch Changes
+
+- 94fdaee: In symbol content-input, the editor wasn't able to clear the image unless page is realoaded. So this is fixed by removing "Builder.isEditing" check so a new "dataString" is generated with evry new data.
+  Issue ticket - https://builder-io.atlassian.net/browse/ENG-6884
+
 ## 8.0.0
 
 ### Major Changes
