@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- 94fdaee: In symbol content-input, fixed editor which wasn't able to clear the image unless page is realoaded.
+- 94fdaee: Fix: clearing image from content input not reflecting in symbols without page refresh.
 
 ## 8.0.0
 
