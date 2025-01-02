@@ -718,6 +718,41 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
   },
 });
 
+const ANGULAR_TEXT_MARK_SAFE_HTML = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "builder-text"')) {
+        code =
+          `import { DomSanitizer } from "@angular/platform-browser";\n` + code;
+
+        const constructorIndex = code.indexOf('constructor');
+
+        if (constructorIndex === -1) {
+          // not found
+          const ngOnInitIndex = code.indexOf('ngOnInit');
+          code =
+            code.slice(0, ngOnInitIndex) +
+            `constructor(protected sanitizer: DomSanitizer) {}\n` +
+            code.slice(ngOnInitIndex);
+        } else {
+          throw new Error(
+            'constructor found which should not be here. If you see this, please fix the ANGULAR_TEXT_MARK_SAFE_HTML Plugin.'
+          );
+        }
+
+        const variableName = code.match(/\[innerHTML\]="([^"]+)"/)?.[1];
+        if (variableName) {
+          code = code.replace(
+            `[innerHTML]="${variableName}"`,
+            `[innerHTML]="sanitizer.bypassSecurityTrustHtml(${variableName})"`
+          );
+        }
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -746,6 +781,7 @@ module.exports = {
         ANGULAR_ADD_UNUSED_PROP_TYPES,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
+        ANGULAR_TEXT_MARK_SAFE_HTML,
       ],
     },
     solid: {
