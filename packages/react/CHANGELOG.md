@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.0.1
+
+### Patch Changes
+
+- 94fdaee: Fix: clearing image from content input not reflecting in symbols without page refresh.
+
 ## 8.0.0
 
 ### Major Changes
