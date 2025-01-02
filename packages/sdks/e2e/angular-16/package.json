@@ -1,12 +1,12 @@
 {
-  "name": "@snippet/angular",
+  "name": "@e2e/angular-16",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "serve": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "SERVER_NAME=angular yarn g:nx test:snippet @sdk/tests"
+    "test": "SERVER_NAME=angular-16 yarn g:nx test:e2e @sdk/tests"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "@builder.io/sdk-angular": "workspace:*",
+    "@sdk/tests": "workspace:*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

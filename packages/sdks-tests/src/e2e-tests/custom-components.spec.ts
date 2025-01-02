@@ -9,7 +9,7 @@ const LAST_COMPONENT_REGISTERED_MESSAGE =
 
 test.describe('Custom components', () => {
   test('correctly renders custom component', async ({ page, packageName, sdk }) => {
-    test.skip(!['angular', 'react'].includes(sdk));
+    test.skip(!['angular-16', 'react'].includes(sdk));
     test.skip(
       ['react-sdk-next-14-app', 'react-sdk-next-15-app', 'remix', 'hydrogen'].includes(packageName)
     );
@@ -24,7 +24,7 @@ test.describe('Custom components', () => {
     packageName,
     sdk,
   }) => {
-    test.skip(!['angular', 'react'].includes(sdk));
+    test.skip(!['angular-16', 'react'].includes(sdk));
     test.skip(
       ['react-sdk-next-14-app', 'react-sdk-next-15-app', 'remix', 'hydrogen'].includes(packageName)
     );
@@ -41,7 +41,7 @@ test.describe('Custom components', () => {
   });
 
   test('children placement is correct', async ({ page, sdk }) => {
-    test.skip(!['angular'].includes(sdk));
+    test.skip(!['angular-16'].includes(sdk));
     await page.goto('/children-slot-placement');
     const h1 = page.locator('h1').first();
     await expect(h1).toBeVisible();
@@ -50,7 +50,7 @@ test.describe('Custom components', () => {
 
   test('children content are ssred', async ({ browser, packageName }) => {
     test.skip(
-      !['angular-ssr', 'angular-19-ssr'].includes(packageName),
+      !['angular-16-ssr', 'angular-19-ssr'].includes(packageName),
       'Only run this for Angular SSR and Angular 19 SSR'
     );
 

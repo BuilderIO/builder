@@ -43,12 +43,12 @@ const testNoWrapPage = async (page: Page) => {
 
 test.describe('Angular noWrap', () => {
   test('correctly renders', async ({ page, sdk }) => {
-    test.skip(!['angular'].includes(sdk));
+    test.skip(!['angular-16'].includes(sdk));
 
     await testNoWrapPage(page);
   });
   test('correctly ssrs', async ({ browser, packageName }) => {
-    test.skip(!['angular-ssr', 'angular-19-ssr'].includes(packageName));
+    test.skip(!['angular-16-ssr', 'angular-19-ssr'].includes(packageName));
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
@@ -57,7 +57,7 @@ test.describe('Angular noWrap', () => {
     await testNoWrapPage(page);
   });
   test('style values are applied to the direct child element', async ({ page, sdk }) => {
-    test.skip(!['angular'].includes(sdk));
+    test.skip(!['angular-16'].includes(sdk));
 
     await page.goto('/custom-components-nowrap');
 
@@ -78,7 +78,7 @@ test.describe('Angular noWrap', () => {
     expect(isButtonParentInteractiveElement).toBe(true);
   });
   test('border radius is applied to the card itself', async ({ page, sdk }) => {
-    test.skip(!['angular'].includes(sdk));
+    test.skip(!['angular-16'].includes(sdk));
     await page.goto('/custom-components-nowrap');
     const cards = await page.locator('div[custom-card]').all();
 
@@ -95,7 +95,7 @@ test.describe('Angular noWrap', () => {
     }
   });
   test('correctly works with event bindings', async ({ page, sdk }) => {
-    test.skip(!['angular'].includes(sdk));
+    test.skip(!['angular-16'].includes(sdk));
     await page.goto('/custom-components-nowrap');
 
     const incrementButton = page.locator('text=increment');

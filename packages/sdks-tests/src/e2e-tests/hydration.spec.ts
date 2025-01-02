@@ -24,7 +24,7 @@ test.describe('Hydration', () => {
 
   test('No mismatch on A/B test content', async ({ page, packageName }) => {
     test.skip(
-      packageName === 'angular-ssr' || packageName === 'angular-19-ssr',
+      packageName === 'angular-16-ssr' || packageName === 'angular-19-ssr',
       'Angular SSR does not support A/B tests'
     );
     await page.goto('/ab-test-interactive');

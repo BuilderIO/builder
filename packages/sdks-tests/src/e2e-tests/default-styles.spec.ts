@@ -18,7 +18,7 @@ test.describe('Default styles', () => {
     // TODO: need to check why angular-ssr is failing, working as expected though
     test.fail(
       packageName === 'react-native' ||
-        packageName === 'angular-ssr' ||
+        packageName === 'angular-16-ssr' ||
         packageName === 'angular-19-ssr'
     );
     await page.goto('/default-styles');
