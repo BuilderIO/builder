@@ -6,7 +6,7 @@
     "serve": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "SERVER_NAME=angular yarn g:nx test:snippet @sdk/tests"
+    "test": "SERVER_NAME=angular-16 yarn g:nx test:snippet @sdk/tests"
   },
   "private": true,
   "dependencies": {
