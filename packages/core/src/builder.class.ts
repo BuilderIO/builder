@@ -2630,7 +2630,7 @@ export class Builder {
         }
       }
     }
-    if (this.preview) {
+    if (this.preview && this.previewingModel === queue?.[0]?.model) {
       queryParams.preview = 'true';
     }
     const hasParams = Object.keys(queryParams).length > 0;
