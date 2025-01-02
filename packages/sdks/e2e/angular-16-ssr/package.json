@@ -1,5 +1,5 @@
 {
-  "name": "@e2e/angular-ssr",
+  "name": "@e2e/angular-16-ssr",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -7,7 +7,7 @@
     "dev": "ng run angular-app:serve-ssr",
     "serve": "node dist/angular-app/server/main.js",
     "build": "ng build && ng run angular-app:server",
-    "test": "SERVER_NAME=angular-ssr yarn g:nx test:e2e @sdk/tests",
+    "test": "SERVER_NAME=angular-16-ssr yarn g:nx test:e2e @sdk/tests",
     "prerender": "ng run angular-app:prerender"
   },
   "private": true,

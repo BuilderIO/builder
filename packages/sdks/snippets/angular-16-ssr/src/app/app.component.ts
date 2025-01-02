@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/angular-ssr/src/app/app.component.ts
+ * snippets/angular-16-ssr/src/app/app.component.ts
  */
 
 import { Component } from '@angular/core';

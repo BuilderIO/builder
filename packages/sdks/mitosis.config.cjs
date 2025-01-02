@@ -719,6 +719,25 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
 });
 
 /**
+ * Angular doesn't support hydration for components created dynamically.
+ */
+const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "content-component"')) {
+        const componentDecorator = code.match(/@Component\s*\({/)[0];
+        const componentDecoratorWithHost = componentDecorator.replace(
+          /@Component\s*\({/,
+          `@Component({\n\thost: { ngSkipHydration: "true" },`
+        );
+        code = code.replace(componentDecorator, componentDecoratorWithHost);
+      }
+      return code;
+    },
+  },
+});
+
+/**
  * @type {MitosisConfig}
  */
 module.exports = {
@@ -746,6 +765,7 @@ module.exports = {
         ANGULAR_ADD_UNUSED_PROP_TYPES,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
+        ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
       ],
     },
     solid: {

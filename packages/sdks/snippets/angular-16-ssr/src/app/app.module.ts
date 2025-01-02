@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/angular-ssr/src/app/app.module.ts
+ * snippets/angular-16-ssr/src/app/app.module.ts
  */
 
 import { NgModule } from '@angular/core';

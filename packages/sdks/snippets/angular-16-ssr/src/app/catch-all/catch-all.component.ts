@@ -1,6 +1,6 @@
 /**
  * Quickstart snippet
- * snippets/angular-ssr/src/app/catch-all/catch-all.component.ts
+ * snippets/angular-16-ssr/src/app/catch-all/catch-all.component.ts
  */
 
 import { CommonModule } from '@angular/common';

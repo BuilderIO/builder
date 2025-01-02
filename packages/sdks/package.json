@@ -50,7 +50,7 @@
     "e2e:run:react": "SERVER_NAME=react,react-sdk-next-pages,react-sdk-next-14-app,react-sdk-next-15-app yarn g:nx test:e2e @sdk/tests",
     "e2e:run:nextjs": "SERVER_NAME=nextjs-sdk-next-app yarn g:nx test:e2e @sdk/tests",
     "e2e:run:vue": "SERVER_NAME=vue,nuxt yarn g:nx test:e2e @sdk/tests",
-    "e2e:run:angular": "SERVER_NAME=angular,angular-ssr yarn g:nx test:e2e @sdk/tests",
+    "e2e:run:angular": "SERVER_NAME=angular-16,angular-16-ssr,angular-19-ssr yarn g:nx test:e2e @sdk/tests",
     "loop": "bash ./scripts/loop-command.sh",
     "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
