@@ -9,7 +9,7 @@
 
 ### Patch Changes
 
-- 06b1124: Fix: Content API invocations will have `includeRefs` set to `true` by default.
+- 06b1124: Fix: remove `enrich=true` default option passed to the API and instead use `includeRefs=true` as default
 - 409aec9: Feat: add `meta` type to custom components
 - 40d572d: Renders Symbol correctly when apiEndpoint is 'content'
 - 2fc9fc5: Fix: `onChange` functions passed to builder inputs can now receive async functions
