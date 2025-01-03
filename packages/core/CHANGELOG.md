@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.0.1
+
+### Patch Changes
+
+- c822422: Fix: symbols will now show published content instead of preview/autosave content while editing a page
+
 ## 6.0.0
 
 ### Major Changes

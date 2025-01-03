@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 8.0.2
+
+### Patch Changes
+
+- c822422: Fix: symbols will now show published content instead of preview/autosave content while editing a page
+- Updated dependencies [c822422]
+  - @builder.io/sdk@6.0.1
+
 ## 8.0.1
 
 ### Patch Changes
