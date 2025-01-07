@@ -2,7 +2,7 @@
 
 ## About
 
-This is an early preview of our Builder.io SDK for React native. See [App.tsx](./App.tsx) for usage. The visual editing is powered by [react-native-web](https://github.com/necolas/react-native-web). This example uses [Expo](https://expo.io/), but Expo is not required for using Builder.io with React Native
+This is an early preview of our Builder.io SDK for React native. See [[page].jsx](./app/[page].jsx) for usage. The visual editing is powered by [react-native-web](https://github.com/necolas/react-native-web). This example uses [Expo](https://expo.io/), but Expo is not required for using Builder.io with React Native
 
 ## Getting Started
 
@@ -18,8 +18,8 @@ Check out this short video recording on how to get started: https://www.loom.com
 For text instructions:
 
 - log into `builder.io`
-- copy your API key and paste it into `BUILDER_API_KEY` in `App.tsx`
-- open the Visual Editor for the model named "page" (or change [App.tsx](./App.tsx) to be `model="your-model-name"`)
+- copy your API key and paste it into `BUILDER_API_KEY` in `[page].jsx`
+- open the Visual Editor for the model named "page" (or change [[page].jsx](./app/[page].jsx) to be `model="your-model-name"`)
 - enter `http://localhost:19006` in the URL bar to the top right of the preview in Builder
 - drag a component into the layers tab, and it will appear in the Editor!
 
