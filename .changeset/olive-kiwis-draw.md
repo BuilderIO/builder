@@ -9,4 +9,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-Move Text Block's inline bindings evaluation outside of component. This allows customers to use inline bindings in their custom Text Block implementations.
+Move Text Block's inline bindings (e.g. `Hello {{state.name}}`) evaluation outside of component. This allows customers to use inline bindings in their custom Text Block implementations.
