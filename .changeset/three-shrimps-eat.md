@@ -8,4 +8,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Fix: add keys for Fragment inside Accordion JSX loop
+Fix: add `key` prop for loop inside Accordion Block,
