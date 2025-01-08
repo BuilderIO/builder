@@ -40,6 +40,7 @@ import type {
   BuilderComponentStateChange,
   ContentProps,
 } from '../content.types.js';
+import { needsElementRefDivForEditing } from './enable-editor.helpers.js';
 import { getWrapperClassName } from './styles.helpers.js';
 
 useMetadata({
@@ -275,8 +276,14 @@ export default function EnableEditor(props: BuilderEditorProps) {
       Object.values<ComponentInfo>(
         props.builderContextSignal.value.componentInfos
       ).forEach((registeredComponent) => {
-        const message = createRegisterComponentMessage(registeredComponent);
-        window.parent?.postMessage(message, '*');
+        if (
+          !props.model ||
+          !registeredComponent.models?.length ||
+          registeredComponent.models.includes(props.model)
+        ) {
+          const message = createRegisterComponentMessage(registeredComponent);
+          window.parent?.postMessage(message, '*');
+        }
       });
       window.addEventListener(
         'builder:component:stateChangeListenerActivated',
@@ -435,7 +442,12 @@ export default function EnableEditor(props: BuilderEditorProps) {
   }, [props.locale]);
 
   return (
-    <Show when={props.builderContextSignal.value.content}>
+    <Show
+      when={
+        props.builderContextSignal.value.content ||
+        needsElementRefDivForEditing()
+      }
+    >
       <state.ContentWrapper
         {...useTarget({
           qwik: {
@@ -457,6 +469,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
         className={getWrapperClassName(
           props.content?.testVariationId || props.content?.id
         )}
+        // content exists: render div and display: undefined
+        // content does not exist but isEditing/isPreviewing: render div and display: 'none'
+        // once inline editing kicks in, it will populate the content and re-render, so display style will be removed
+        style={{
+          display:
+            !props.builderContextSignal.value.content &&
+            needsElementRefDivForEditing()
+              ? 'none'
+              : undefined,
+        }}
         {...useTarget({
           reactNative: {
             // currently, we can't set the actual ID here.

@@ -1,5 +1,44 @@
 # @builder.io/sdk
 
+## 6.0.1
+
+### Patch Changes
+
+- c822422: Fix: symbols will now show published content instead of preview/autosave content while editing a page
+
+## 6.0.0
+
+### Major Changes
+
+- 56f9461: - Adds `apiEndpoint` prop to `builder` instance with permitted values being `'content'` or `'query'`. It dictates which API endpoint is used for fetching Builder content
+  - Breaking Change 🧨: Removes `apiEndpoint` argument from `builder.get()`, `builder.getAll()`, and the `options` prop of `<BuilderContent>` component. NOTE: this argument was not working as expected.
+
+### Patch Changes
+
+- 06b1124: Fix: remove `enrich=true` default option passed to the API and instead use `includeRefs=true` as default
+- 409aec9: Feat: add `meta` type to custom components
+- 40d572d: Renders Symbol correctly when apiEndpoint is 'content'
+- 2fc9fc5: Fix: `onChange` functions passed to builder inputs can now receive async functions
+
+## 5.0.0
+
+### Major Changes
+
+- f12f43d: Breaking Change: Use `/query` instead of `/content` for API calls. This change fixes a symbol rendering issue introduced in https://github.com/BuilderIO/builder/pull/3681, which was included in the 4.0.0 release.
+
+## 4.0.3
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling and pass through locale prop to personalization containers when filtering
+
+## 4.0.2
+
+### Patch Changes
+
+- dda2ba4: Fix: Restrict event listening to when `isEditing === true`
+
 ## 4.0.1
 
 ### Patch Changes

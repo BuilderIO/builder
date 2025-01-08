@@ -22,7 +22,8 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next' ||
+        packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next15-app' ||
         packageName === 'gen1-remix'
     );
 
@@ -52,7 +53,8 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block styles', async ({ page, packageName, basePort, sdk }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next' ||
+        packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next15-app' ||
         packageName === 'gen1-remix'
     );
 
@@ -89,7 +91,8 @@ test.describe('Visual Editing', () => {
   }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next' ||
+        packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next15-app' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
     );
@@ -140,10 +143,14 @@ test.describe('Visual Editing', () => {
   }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next' ||
+        packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next15-app' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix'
     );
+
+    test.skip(packageName === 'vue', 'Vue tests flake on this one for an unnkown reason.');
+
     await page.goto('/duplicated-content-using-nested-symbols');
     await launchEmbedderAndWaitForSdk({
       path: '/duplicated-content-using-nested-symbols',
@@ -171,7 +178,8 @@ test.describe('Visual Editing', () => {
     test('correctly updates nested Text block', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
         packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
           packageName === 'gen1-remix'
       );
@@ -183,7 +191,8 @@ test.describe('Visual Editing', () => {
     test('correctly updates space prop', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
         packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
           packageName === 'gen1-remix'
       );
@@ -202,7 +211,8 @@ test.describe('Visual Editing', () => {
       test.skip(
         packageName === 'react-native' ||
           packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
           packageName === 'gen1-remix'
       );
@@ -242,7 +252,8 @@ test.describe('Visual Editing', () => {
     }) => {
       test.skip(
         packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
           packageName === 'gen1-remix'
       );

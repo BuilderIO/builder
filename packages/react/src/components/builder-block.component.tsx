@@ -11,6 +11,10 @@ import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-wit
 import { blockToHtmlString } from '../functions/block-to-html-string';
 import { Link } from './Link';
 import { fastClone } from '../functions/utils';
+import {
+  containsLocalizedValues,
+  extractLocalizedValues,
+} from 'src/functions/extract-localized-values';
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : '';
@@ -19,6 +23,31 @@ const kebabCaseToCamelCase = (str = '') =>
   str.replace(/-([a-z])/g, match => match[1].toUpperCase());
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 };
+
+// Deep clone a block but without cloning any child blocks
+export function deepCloneWithConditions<T = any>(obj: T): T {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item: any) => deepCloneWithConditions(item)) as T;
+  }
+
+  if ((obj as any)['@type'] === '@builder.io/sdk:Element') {
+    return obj;
+  }
+
+  const clonedObj: any = {};
+
+  for (const key in obj) {
+    if (key !== 'meta' && Object.prototype.hasOwnProperty.call(obj, key)) {
+      clonedObj[key] = deepCloneWithConditions(obj[key]);
+    }
+  }
+
+  return clonedObj;
+}
 
 const voidElements = new Set([
   'area',
@@ -99,6 +128,8 @@ export class BuilderBlock extends React.Component<
   private _errors?: Error[];
   private _logs?: string[];
 
+  hydrated = false;
+
   state = {
     hasError: false,
     updates: 0,
@@ -135,7 +166,7 @@ export class BuilderBlock extends React.Component<
     return this.props.block;
   }
 
-  get emotionCss() {
+  emotionCss(responsiveStyles: BuilderElement['responsiveStyles']) {
     let initialAnimationStepStyles: any;
     const { block } = this;
     const animation = block.animations && block.animations[0];
@@ -148,15 +179,14 @@ export class BuilderBlock extends React.Component<
     }
 
     const reversedNames = sizeNames.slice().reverse();
-    const self = this.block;
     const styles: any = {};
-    if (self.responsiveStyles) {
+    if (responsiveStyles) {
       for (const size of reversedNames) {
         if (size === 'large') {
           if (!this.props.emailMode) {
             styles[`&.builder-block`] = Object.assign(
               {},
-              self.responsiveStyles[size],
+              responsiveStyles[size],
               initialAnimationStepStyles
             );
           }
@@ -165,7 +195,7 @@ export class BuilderBlock extends React.Component<
             this.privateState.context.builderContent?.meta?.breakpoints || {}
           );
           styles[`@media only screen and (max-width: ${sizesPerBreakpoints[size].max}px)`] = {
-            '&.builder-block': self.responsiveStyles[size],
+            '&.builder-block': responsiveStyles[size],
           };
         }
       }
@@ -211,11 +241,6 @@ export class BuilderBlock extends React.Component<
   }
 
   onWindowMessage = (event: MessageEvent) => {
-    const isTrusted = Builder.isTrustedHostForEvent(event);
-    if (!isTrusted) {
-      return;
-    }
-
     const message = event.data;
     if (!message) {
       return;
@@ -264,6 +289,7 @@ export class BuilderBlock extends React.Component<
   };
 
   componentDidMount() {
+    this.hydrated = true;
     const block = this.block;
     const animations = block && block.animations;
 
@@ -376,9 +402,9 @@ export class BuilderBlock extends React.Component<
     const TextTag: any = 'span';
 
     let options: any = {
-      // Attributes?
       ...block.properties,
-      style: {}, // this.styles
+      style: {},
+      responsiveStyles: fastClone(block.responsiveStyles || {}),
     };
 
     options = {
@@ -387,7 +413,7 @@ export class BuilderBlock extends React.Component<
     };
 
     if (block.component) {
-      options.component = fastClone(block.component);
+      options.component = deepCloneWithConditions(block.component);
     }
 
     // Binding should be properties to href or href?
@@ -455,10 +481,22 @@ export class BuilderBlock extends React.Component<
       }
     }
 
-    const innerComponentProperties = (options.component || options.options) && {
+    let innerComponentProperties = (options.component || options.options) && {
       ...options.options,
       ...(options.component.options || options.component.data),
     };
+
+    if (containsLocalizedValues(innerComponentProperties)) {
+      if (!this.privateState.state.locale) {
+        console.warn(
+          '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
+        );
+      }
+      innerComponentProperties = extractLocalizedValues(
+        innerComponentProperties,
+        this.privateState.state.locale ?? 'Default'
+      );
+    }
 
     const isVoid = voidElements.has(TagName);
 
@@ -494,7 +532,7 @@ export class BuilderBlock extends React.Component<
     }
 
     const finalOptions: { [key: string]: string } = {
-      ...omit(options, ['class', 'component', 'attr']),
+      ...omit(options, ['class', 'component', 'attr', 'responsiveStyles']),
       [typeof TagName === 'string' && !TagName.includes('-') ? 'className' : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component && !(['Image', 'Video', 'Banner'].indexOf(componentName) > -1)
@@ -502,7 +540,7 @@ export class BuilderBlock extends React.Component<
             : ''
         }` +
         (options.class ? ' ' + options.class : '') +
-        (Builder.isEditing && this.privateState.state._spacer?.parent === block.id
+        (this.hydrated && Builder.isEditing && this.privateState.state._spacer?.parent === block.id
           ? ' builder-spacer-parent'
           : ''),
       key: this.id + index,
@@ -522,7 +560,7 @@ export class BuilderBlock extends React.Component<
     // tslint:disable-next-line:comment-format
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
-    if (Builder.isEditing) {
+    if (Builder.isEditing && this.hydrated) {
       // TODO: removed bc JS can add styles inline too?
       (finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
         ? ''
@@ -561,7 +599,7 @@ export class BuilderBlock extends React.Component<
         <ClassNames>
           {({ css, cx }) => {
             if (!this.props.emailMode) {
-              const addClass = ' ' + css(this.emotionCss);
+              const addClass = ' ' + css(this.emotionCss(options.responsiveStyles));
               if (finalOptions.class) {
                 finalOptions.class += addClass;
               }

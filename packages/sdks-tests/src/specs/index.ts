@@ -63,7 +63,7 @@ import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.j
 import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
 import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layout.js';
 import { REACT_NATIVE_STRICT_STYLE_MODE_CONTENT } from './react-native-strict-style-mode.js';
-import type { Sdk } from '../helpers/sdk.js';
+import { SDK_MAP, type Generation, type Sdk, type ServerName } from '../helpers/sdk.js';
 import { SYMBOL_WITH_REPEAT_INPUT_BINDING } from './symbol-with-repeat-input-binding.js';
 import { CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT } from './children-slot-placement.js';
 import { DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './dynamic-loading.js';
@@ -72,6 +72,10 @@ import { EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS } from './eager-dynamic-loading
 import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
 import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
+import { XSS_EXPLOIT } from './xss-exploit.js';
+import { COUNTDOWN } from './countdown.js';
+import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
+import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -88,7 +92,7 @@ type Page = {
    *
    * Defaults to `all`.
    */
-  target?: 'gen1' | 'gen2' | 'all';
+  target?: (Generation | ServerName)[] | Generation | ServerName | 'all';
   /**
    * To test visual editing in Gen 1 SDK, we cannot provide a hardcoded JSON.
    * Instead, we have to let the SDK fetch the data from the API and mock the
@@ -179,15 +183,42 @@ export const PAGES: Record<string, Page> = {
   '/ssr-binding': { content: SSR_BINDING_CONTENT },
   '/blocks-class-name': { content: BLOCKS_CLASS_NAME },
   '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
-  '/custom-components-nowrap': { content: CUSTOM_COMPONENTS_NOWRAP },
+  '/custom-components-nowrap': {
+    content: CUSTOM_COMPONENTS_NOWRAP,
+    target: ['angular', 'angular-ssr'],
+  },
   '/override-base-url': { content: HTTP_REQUESTS },
+  '/xss-exploit': { content: XSS_EXPLOIT },
+  '/symbol-with-jscode': { content: COUNTDOWN },
+  '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/localization-locale-passed': { content: LOCALIZATION },
+  '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
+  '/localization-subfields': { content: LOCALIZATION_SUBFIELDS },
+  '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
+  '/editing-empty-content-element-ref': {
+    content: null as unknown as BuilderContent,
+    target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
+  },
 } as const;
 
 export type Path = keyof typeof PAGES;
 
-export const getAllPathnames = (target: 'gen1' | 'gen2'): string[] => {
+export const getAllPathnames = (target: ServerName): string[] => {
   return Object.entries(PAGES)
-    .filter(([_, page]) => page.target === target || page.target === 'all' || !page.target)
+    .filter(([_, page]) => {
+      const pageTarget = !page.target
+        ? ['all']
+        : Array.isArray(page.target)
+          ? page.target
+          : [page.target];
+
+      return (
+        pageTarget.includes(target) ||
+        pageTarget.includes(SDK_MAP[target].gen) ||
+        pageTarget.includes('all')
+      );
+    })
     .map(([pathname]) => pathname);
 };
 
@@ -277,6 +308,17 @@ export const getProps = async (args: {
         strictStyleMode: true,
       };
       break;
+    case '/get-content':
+    case '/get-content-with-symbol':
+      extraProps = {
+        apiEndpoint: 'content',
+      };
+      break;
+    case '/get-query':
+      extraProps = {
+        options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
+      };
+      break;
     case '/symbol-with-repeat-input-binding':
       extraProps = {
         data: { products: [{ header: 'title1' }, { header: 'title2' }, { header: 'title3' }] },
@@ -290,6 +332,12 @@ export const getProps = async (args: {
     case '/override-base-url':
       extraProps = {
         apiHost: 'https://cdn-qa.builder.io',
+      };
+      break;
+    case '/localization-locale-passed':
+    case '/localization-subfields':
+      extraProps = {
+        locale: 'hi-IN',
       };
       break;
     default:

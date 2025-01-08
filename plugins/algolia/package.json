@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-algolia",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -24,6 +24,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch && npm publish",
     "start": "SERVE=true concurrently 'rollup -c rollup.config.ts -w' 'tsc -w'",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
@@ -113,7 +114,7 @@
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
-    "typescript": "^3.0.3"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "@builder.io/mobx-state-tree": "^3.14.2",

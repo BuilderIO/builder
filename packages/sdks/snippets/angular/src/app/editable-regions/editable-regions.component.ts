@@ -5,15 +5,12 @@ import {
   fetchOneEntry,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
-import {
-  CustomColumnsComponent,
-  customColumnsInfo,
-} from './custom-columns/custom-columns.component';
+import { customColumnsInfo } from './custom-columns/custom-columns.component';
 
 @Component({
   selector: 'app-editable-region',
   standalone: true,
-  imports: [CommonModule, Content, CustomColumnsComponent],
+  imports: [CommonModule, Content],
   template: `
     <div *ngIf="content">
       <builder-content

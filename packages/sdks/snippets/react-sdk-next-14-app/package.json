@@ -1,32 +1,28 @@
 {
-  "name": "@snippet/gen1-next",
+  "name": "@snippet/react-sdk-next-14-app",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=gen1-next yarn nx test:snippet @sdk/tests",
+    "test": "SERVER_NAME=react-sdk-next-14-app yarn g:nx test:snippet @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {
-    "@builder.io/react": "workspace:*",
+    "@builder.io/sdk-react": "workspace:*",
     "next": "14.1.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18.3.8",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "^5"
-  },
-  "installConfig": {
-    "hoistingLimits": "workspaces"
   },
   "nx": {
     "targets": {

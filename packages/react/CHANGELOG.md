@@ -1,5 +1,84 @@
 # @builder.io/react
 
+## 8.0.2
+
+### Patch Changes
+
+- c822422: Fix: symbols will now show published content instead of preview/autosave content while editing a page
+- Updated dependencies [c822422]
+  - @builder.io/sdk@6.0.1
+
+## 8.0.1
+
+### Patch Changes
+
+- 94fdaee: Fix: clearing image from content input not reflecting in symbols without page refresh.
+
+## 8.0.0
+
+### Major Changes
+
+- 56f9461: - Adds `apiEndpoint` prop to `builder` instance with permitted values being `'content'` or `'query'`. It dictates which API endpoint is used for fetching Builder content
+  - Breaking Change 🧨: Removes `apiEndpoint` argument from `builder.get()`, `builder.getAll()`, and the `options` prop of `<BuilderContent>` component. NOTE: this argument was not working as expected.
+
+### Patch Changes
+
+- 06b1124: Fix: remove `enrich=true` default option passed to the API and instead use `includeRefs=true` as default
+- a8009ba: Fix: hydration errors in Next v15 while a user is editing
+- 409aec9: Feat: add `meta` type to custom components
+- 40d572d: Renders Symbol correctly when apiEndpoint is 'content'
+- 23b7594: Feat: extend allowed file types of Image and Video Block
+- ee436bf: Fix: `locale` prop to automatically resolve localized fields
+- 2fc9fc5: Fix: `onChange` functions passed to builder inputs can now receive async functions
+- Updated dependencies [06b1124]
+- Updated dependencies [56f9461]
+- Updated dependencies [409aec9]
+- Updated dependencies [40d572d]
+- Updated dependencies [2fc9fc5]
+  - @builder.io/sdk@6.0.0
+
+## 7.0.1
+
+### Patch Changes
+
+- bf8d783: feat: allow symbols to be edited in the context of a parent entry
+
+## 7.0.0
+
+### Major Changes
+
+- f12f43d: Breaking Change: Use `/query` instead of `/content` for API calls. This change fixes a symbol rendering issue introduced in https://github.com/BuilderIO/builder/pull/3681, which was included in the 6.0.0 release.
+
+### Patch Changes
+
+- Updated dependencies [f12f43d]
+  - @builder.io/sdk@5.0.0
+
+## 6.0.4
+
+### Patch Changes
+
+- b0ab0f5: Add support for dynamic bindings in responsive styles
+
+## 6.0.3
+
+### Patch Changes
+
+- 9b11521: fix serializing single arg arrow functions that some compilers emit
+- 027a07a: fix: standardize locale handling and pass through locale prop to personalization containers when filtering
+- Updated dependencies [9b11521]
+- Updated dependencies [027a07a]
+  - @builder.io/sdk@4.0.3
+
+## 6.0.2
+
+### Patch Changes
+
+- dda2ba4: Fix: Add `trustedHost` checks to all remaining event listeners
+- dda2ba4: Fix: Restrict event listening to when `isEditing === true`
+- Updated dependencies [dda2ba4]
+  - @builder.io/sdk@4.0.2
+
 ## 6.0.1
 
 ### Patch Changes

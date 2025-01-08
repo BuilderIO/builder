@@ -7,6 +7,8 @@ import {
 import { getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
 import BuilderBlockWithClassName from './components/BuilderBlockWithClassName';
+import ComponentNeedsHello from './components/ComponentNeedsHello';
+import { componentWithLocalizedSubfieldsInfo } from './components/ComponentWithLocalizedSubfields';
 import Hello from './components/Hello';
 
 const builderBlockWithClassNameCustomComponent = {
@@ -123,7 +125,15 @@ function App() {
                 models: ['test-model'],
               }),
             },
+            {
+              name: 'ComponentNeedsHello',
+              component: ComponentNeedsHello,
+              shouldReceiveBuilderProps: {
+                builderComponents: true,
+              },
+            },
             builderBlockWithClassNameCustomComponent,
+            componentWithLocalizedSubfieldsInfo,
           ]}
         />
       )}

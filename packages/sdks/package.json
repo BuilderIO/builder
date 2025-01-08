@@ -47,7 +47,7 @@
     "e2e:run:react-native": "SERVER_NAME=react-native yarn g:nx test:e2e @sdk/tests",
     "e2e:run:solid": "SERVER_NAME=solid,solid-start yarn g:nx test:e2e @sdk/tests",
     "e2e:run:qwik": "SERVER_NAME=qwik-city yarn g:nx test:e2e @sdk/tests",
-    "e2e:run:react": "SERVER_NAME=react,react-sdk-next-pages,react-sdk-next-app yarn g:nx test:e2e @sdk/tests",
+    "e2e:run:react": "SERVER_NAME=react,react-sdk-next-pages,react-sdk-next-14-app,react-sdk-next-15-app yarn g:nx test:e2e @sdk/tests",
     "e2e:run:nextjs": "SERVER_NAME=nextjs-sdk-next-app yarn g:nx test:e2e @sdk/tests",
     "e2e:run:vue": "SERVER_NAME=vue,nuxt yarn g:nx test:e2e @sdk/tests",
     "e2e:run:angular": "SERVER_NAME=angular,angular-ssr yarn g:nx test:e2e @sdk/tests",

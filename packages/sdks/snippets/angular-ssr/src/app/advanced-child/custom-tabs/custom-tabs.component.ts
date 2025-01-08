@@ -15,46 +15,28 @@ import type {
   standalone: true,
   imports: [CommonModule, Blocks],
   template: `
-    <div>
-      <h2>Custom Component with editable regions</h2>
+    <ng-container *ngIf="tabList?.length">
+      <button
+        *ngFor="let tab of tabList; let i = index"
+        [class.active]="activeTab === i"
+        (click)="activeTab = i"
+      >
+        {{ tab.tabName }}
+      </button>
 
-      <div>
-        <button
-          *ngFor="let tab of tabList; let i = index"
-          [class.active]="activeTab === i"
-          (click)="activeTab = i"
-        >
-          {{ tab.tabName }}
-        </button>
-      </div>
-
-      <div *ngIf="tabList?.length">
-        <div *ngFor="let tab of tabList; let i = index">
-          <div [style.display]="activeTab === i ? 'block' : 'none'">
-            <blocks
-              [blocks]="tabList[i].children"
-              [path]="'component.options.tabList.' + i + '.children'"
-              [parent]="builderBlock.id"
-              [context]="builderContext"
-              [registeredComponents]="builderComponents"
-            ></blocks>
-          </div>
-        </div>
-      </div>
-    </div>
+      <blocks
+        [blocks]="tabList[activeTab].blocks"
+        [path]="'tabList.' + activeTab + '.blocks'"
+        [parent]="builderBlock.id"
+        [context]="builderContext"
+        [registeredComponents]="builderComponents"
+      />
+    </ng-container>
   `,
-  styles: [
-    `
-      .active {
-        background-color: #e0e0e0;
-        font-weight: bold;
-      }
-    `,
-  ],
 })
 export class CustomTabsComponent {
   @Input() builderBlock!: BuilderBlock;
-  @Input() tabList: { tabName: string; children: BuilderBlock[] }[] = [];
+  @Input() tabList: { tabName: string; blocks: BuilderBlock[] }[] = [];
   @Input() builderComponents: RegisteredComponents = {};
   @Input() builderContext!: BuilderContextInterface;
 
@@ -76,35 +58,7 @@ export const customTabsInfo: RegisteredComponent = {
         {
           name: 'blocks',
           type: 'uiBlocks',
-          hideFromUI: true,
-          defaultValue: [
-            {
-              '@type': '@builder.io/sdk:Element',
-              component: {
-                name: 'Text',
-                options: {
-                  text: 'This is editable block within the builder editor',
-                },
-              },
-              responsiveStyles: {
-                large: {
-                  display: 'flex',
-                  flexDirection: 'column',
-                  position: 'relative',
-                  flexShrink: '0',
-                  boxSizing: 'border-box',
-                  marginTop: '8px',
-                  lineHeight: 'normal',
-                  height: '200px',
-                  textAlign: 'left',
-                  minHeight: '200px',
-                },
-                small: {
-                  height: '200px',
-                },
-              },
-            },
-          ],
+          defaultValue: [],
         },
       ],
     },

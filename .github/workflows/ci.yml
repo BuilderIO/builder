@@ -65,7 +65,8 @@ jobs:
             'remix',
             'hydrogen',
             'react-sdk-next-pages',
-            'react-sdk-next-app',
+            'react-sdk-next-14-app',
+            'react-sdk-next-15-app',
             'nextjs-sdk-next-app',
             'vue',
             'nuxt',
@@ -117,7 +118,7 @@ jobs:
             'angular-ssr',
             'qwik-city',
             'nextjs-sdk-next-app',
-            'react-sdk-next-app',
+            'react-sdk-next-14-app',
             'react-sdk-next-pages',
             'svelte',
             'sveltekit',
@@ -172,6 +173,9 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
+      - name: Test Core
+        run: yarn g:nx test @builder.io/sdk
+
       - name: Build Core
         run: yarn g:nx build @builder.io/sdk
 
@@ -182,7 +186,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        e2e-server: ['gen1-react', 'gen1-next', 'gen1-remix']
+        e2e-server: ['gen1-react', 'gen1-next14-pages', 'gen1-next15-app', 'gen1-remix']
 
     steps:
       - name: Setup
@@ -209,7 +213,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        snippet: ['gen1-react', 'gen1-next', 'gen1-remix']
+        snippet: ['gen1-react', 'gen1-next14-pages', 'gen1-remix']
 
     steps:
       - name: Setup

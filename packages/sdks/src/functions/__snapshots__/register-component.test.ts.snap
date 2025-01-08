@@ -15,6 +15,79 @@ exports[`Component Registration and Serialization > serializeComponentInfo handl
 }
 `;
 
+exports[`Component Registration and Serialization > serializeComponentInfo handles arrow functions without parenthesis correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return ((value) => value.toUpperCase()).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles async arrow functions correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async (value) => {
+            return value.toUpperCase();
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles async arrow functions without parenthesis correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async (value) => {
+            return value.toUpperCase();
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles async arrow functions without parenthesis correctly 2`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async (value) => {
+            return value;
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
+exports[`Component Registration and Serialization > serializeComponentInfo handles async functions correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (async function(value) {
+            return value.toUpperCase();
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
 exports[`Component Registration and Serialization > serializeComponentInfo handles functions correctly 1`] = `
 {
   "hooks": {
@@ -32,6 +105,21 @@ exports[`Component Registration and Serialization > serializeComponentInfo handl
 }
 `;
 
+exports[`Component Registration and Serialization > serializeComponentInfo handles functions with parenthesis correctly 1`] = `
+{
+  "inputs": [
+    {
+      "name": "testInput",
+      "onChange": "return (function(value) {
+            return value.toUpperCase();
+          }).apply(this, arguments)",
+      "type": "string",
+    },
+  ],
+  "name": "TestComponent",
+}
+`;
+
 exports[`Component Registration and Serialization > serializeFn handles different function syntaxes 1`] = `
 {
   "hooks": {
@@ -42,6 +130,7 @@ exports[`Component Registration and Serialization > serializeFn handles differen
     "func3": "return (function func3(x) {
           return x - 1;
         }).apply(this, arguments)",
+    "func4": "return (e => !0 === e.get(\\"isABTest\\")).apply(this, arguments)",
   },
   "inputs": [
     {
