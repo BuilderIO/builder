@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import type { RegisteredComponent } from '@builder.io/sdk-angular/lib/node/context/types';
+import type { RegisteredComponent } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-custom-hero',
