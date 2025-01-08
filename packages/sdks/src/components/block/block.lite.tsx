@@ -98,7 +98,6 @@ export default function Block(props: BlockProps) {
             rootState: props.context.value.rootState,
             rootSetState: props.context.value.rootSetState,
             context: props.context.value.context,
-            shouldEvaluateBindings: true,
           });
 
       useTarget({
