@@ -27,20 +27,30 @@ test.describe('Symbol with JS Code', () => {
 
     // Wait for the countdown to show a new value less than the previous value
     await expect
-      .poll(async () => {
-        secondCountdownValue = await getTime();
-        return secondCountdownValue < firstCountdownValue;
-      })
+      .poll(
+        async () => {
+          secondCountdownValue = await getTime();
+          return secondCountdownValue < firstCountdownValue;
+        },
+        {
+          message: 'Make sure the countdown eventually updates correctly',
+        }
+      )
       .toBe(true);
 
     // repeat the process to ensure the countdown is updating correctly
     await expect
-      .poll(async () => {
-        if (!secondCountdownValue) throw new Error('firstCheckTime is undefined');
+      .poll(
+        async () => {
+          if (!secondCountdownValue) throw new Error('firstCheckTime is undefined');
 
-        const thirdCountdownValue = await getTime();
-        return thirdCountdownValue < secondCountdownValue;
-      })
+          const thirdCountdownValue = await getTime();
+          return thirdCountdownValue < secondCountdownValue;
+        },
+        {
+          message: 'Make sure the countdown eventually updates correctly',
+        }
+      )
       .toBe(true);
   });
 });
