@@ -720,6 +720,8 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
 
 /**
  * Angular doesn't support hydration for components created dynamically.
+ * Refer: https://angular.dev/errors/NG0503
+ * GitHub issue: https://github.com/angular/angular/issues/51798
  */
 const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
   code: {
