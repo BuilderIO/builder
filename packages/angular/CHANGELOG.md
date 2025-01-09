@@ -1,3 +1,7 @@
+## 5.0.0
+- update `@builder.io/sdk` to `^5.0.0` and `@builder.io/webcomponents` to `^2.0.0`
+- send SDK name and version information to Content Editor when editing content.
+
 ## 4.0.0
 
 - BREAKING CHANGE: Update Angular support to Angular 18. This means that the SDK might no longer work with previous versions of Angular.

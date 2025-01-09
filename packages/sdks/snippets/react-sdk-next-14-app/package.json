@@ -1,5 +1,5 @@
 {
-  "name": "@snippet/react-sdk-next-app",
+  "name": "@snippet/react-sdk-next-14-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=react-sdk-next-app yarn g:nx test:snippet @sdk/tests",
+    "test": "SERVER_NAME=react-sdk-next-14-app yarn g:nx test:snippet @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {
