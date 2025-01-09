@@ -329,7 +329,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           (!props.content || searchParamPreviewId === props.content.id))
       ) {
         fetchOneEntry({
-          model: props.model,
+          model: props.model || '',
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
           ...(searchParamPreviewModel === 'BUILDER_STUDIO' && props.content

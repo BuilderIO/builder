@@ -140,6 +140,7 @@ const getUserAttributesFromQueryOptions = (queryOptions: any) => {
 const getUserAttributesAsJSON = (queryOptions: any) => {
   if (isBrowser()) {
     queryOptions['userAttributes.urlPath'] = window.location.pathname;
+    queryOptions['userAttributes.host'] = window.location.host;
   }
   const queryOptionsForUserAttributes =
     getUserAttributesFromQueryOptions(queryOptions);
