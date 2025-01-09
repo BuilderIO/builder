@@ -30,10 +30,17 @@ test.describe('Symbol with JS Code', () => {
       .poll(
         async () => {
           secondCountdownValue = await getTime();
+          test.info().annotations.push({
+            type: 'performance',
+            description: `secondCountdownValue: ${secondCountdownValue}, firstCountdownValue: ${firstCountdownValue}`,
+          });
           return secondCountdownValue < firstCountdownValue;
         },
         {
           message: 'Make sure the countdown eventually updates correctly',
+          // retry every 500ms for 10 seconds
+          intervals: [500],
+          timeout: 10000,
         }
       )
       .toBe(true);
@@ -45,10 +52,17 @@ test.describe('Symbol with JS Code', () => {
           if (!secondCountdownValue) throw new Error('firstCheckTime is undefined');
 
           const thirdCountdownValue = await getTime();
+          test.info().annotations.push({
+            type: 'performance',
+            description: `thirdCountdownValue: ${thirdCountdownValue}, secondCountdownValue: ${secondCountdownValue}`,
+          });
           return thirdCountdownValue < secondCountdownValue;
         },
         {
           message: 'Make sure the countdown eventually updates correctly',
+          // retry every 500ms for 10 seconds
+          intervals: [500],
+          timeout: 10000,
         }
       )
       .toBe(true);
