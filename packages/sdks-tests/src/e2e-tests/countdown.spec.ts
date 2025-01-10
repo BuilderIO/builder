@@ -11,14 +11,20 @@ test.describe('Symbol with JS Code', () => {
     await page.goto(`/symbol-with-jscode`);
 
     const getTime = async () => {
-      const secondsOnPage = (await page.locator('#seconds').textContent())?.trim();
-      const minutesOnPage = (await page.locator('#minutes').textContent())?.trim();
-      const hoursOnPage = (await page.locator('#hours').textContent())?.trim();
-      const daysOnPage = (await page.locator('#days').textContent())?.trim();
+      const secondsOnPageLocator = page.locator('#seconds');
+      const minutesOnPageLocator = page.locator('#minutes');
+      const hoursOnPageLocator = page.locator('#hours');
+      const daysOnPageLocator = page.locator('#days');
 
-      if (!daysOnPage || !hoursOnPage || !minutesOnPage || !secondsOnPage) {
-        throw new Error('Countdown values are not visible');
-      }
+      await expect(secondsOnPageLocator).toBeVisible();
+      await expect(minutesOnPageLocator).toBeVisible();
+      await expect(hoursOnPageLocator).toBeVisible();
+      await expect(daysOnPageLocator).toBeVisible();
+
+      const secondsOnPage = (await secondsOnPageLocator.textContent())?.trim();
+      const minutesOnPage = (await minutesOnPageLocator.textContent())?.trim();
+      const hoursOnPage = (await hoursOnPageLocator.textContent())?.trim();
+      const daysOnPage = (await daysOnPageLocator.textContent())?.trim();
 
       return `${daysOnPage}:${hoursOnPage}:${minutesOnPage}:${secondsOnPage}`;
     };
