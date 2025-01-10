@@ -445,8 +445,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     }
   }, [props.locale]);
 
-  console.log('DEBUG enable-editor.lite.tsx props.model', props.model);
-
   return (
     <Show
       when={
