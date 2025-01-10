@@ -116,25 +116,6 @@ export function getProcessedBlock({
 
   transformedBlock = transformBlock(transformedBlock);
 
-  if (
-    transformedBlock.component?.name === 'Text' &&
-    transformedBlock.component.options?.text &&
-    typeof transformedBlock.component.options.text === 'string'
-  ) {
-    transformedBlock.component.options.text =
-      transformedBlock.component.options.text.replace(
-        /{{([^}]+)}}/g,
-        (_match: string, group: string) =>
-          evaluate({
-            code: group,
-            context,
-            localState,
-            rootState,
-            rootSetState,
-          }) as string
-      );
-  }
-
   return evaluateBindings({
     block: transformedBlock,
     localState,

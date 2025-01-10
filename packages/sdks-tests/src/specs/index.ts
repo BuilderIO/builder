@@ -282,7 +282,7 @@ export const getProps = async (args: {
   let _content = getContentForPathname(pathname);
 
   if (args.sdk === 'oldReact' && PAGES[pathname]?.isGen1VisualEditingTest) {
-    // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
+    // `null` on purpose to enable editing. This causes the gen1 SDK to make a network request.
     // which Playwright will intercept and provide the content itself.
     _content = null;
   }

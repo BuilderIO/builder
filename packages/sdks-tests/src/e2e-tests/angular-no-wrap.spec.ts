@@ -41,7 +41,7 @@ const testNoWrapPage = async (page: Page) => {
   }
 };
 
-test.describe('Angular noWrap', () => {
+test.describe.only('Angular noWrap', () => {
   test('correctly renders', async ({ page, sdk }) => {
     test.skip(!['angular'].includes(sdk));
 

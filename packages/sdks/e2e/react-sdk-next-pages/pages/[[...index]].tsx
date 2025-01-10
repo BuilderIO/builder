@@ -1,5 +1,5 @@
 import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
-import { Content, _processContentResult } from '@builder.io/sdk-react';
+import { Content } from '@builder.io/sdk-react';
 import { getAllPathnames, getProps } from '@sdk/tests';
 import type {
   GetStaticPathsResult,
@@ -12,10 +12,7 @@ import Hello from '../components/Hello';
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
   const pathname = x.params?.index ? `/${x.params.index.join('/')}` : '/';
-  const props = await getProps({
-    pathname,
-    _processContentResult,
-  });
+  const props = await getProps({ pathname });
 
   if (pathname === '/override-base-url') {
     console.log('static props', {
