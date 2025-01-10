@@ -16,11 +16,32 @@ test.describe('Symbol with JS Code', () => {
       const hoursOnPage = (await page.locator('#hours').textContent())?.trim();
       const daysOnPage = (await page.locator('#days').textContent())?.trim();
 
+      if (!daysOnPage || !hoursOnPage || !minutesOnPage || !secondsOnPage) {
+        throw new Error('Countdown values are not visible');
+      }
+
       return `${daysOnPage}:${hoursOnPage}:${minutesOnPage}:${secondsOnPage}`;
     };
 
     // Wait for the countdown to start. Initial time value is 0:0:0:0
-    await expect.poll(async () => await getTime()).not.toBe('0:0:0:0');
+    await expect
+      .poll(
+        async () => {
+          const time = await getTime();
+          test.info().annotations.push({
+            type: 'performance',
+            description: `time: ${time}`,
+          });
+          return time !== '0:0:0:0';
+        },
+        {
+          message: 'Make sure the countdown begins',
+          // retry every 500ms for 10 seconds
+          intervals: [500],
+          timeout: 10000,
+        }
+      )
+      .toBe(true);
 
     const firstCountdownValue = await getTime();
     let secondCountdownValue: string | undefined = undefined;
@@ -37,7 +58,7 @@ test.describe('Symbol with JS Code', () => {
           return secondCountdownValue < firstCountdownValue;
         },
         {
-          message: 'Make sure the countdown eventually updates correctly',
+          message: 'Make sure the countdown updates once',
           // retry every 500ms for 10 seconds
           intervals: [500],
           timeout: 10000,
@@ -59,7 +80,7 @@ test.describe('Symbol with JS Code', () => {
           return thirdCountdownValue < secondCountdownValue;
         },
         {
-          message: 'Make sure the countdown eventually updates correctly',
+          message: 'Make sure the countdown updates a second time',
           // retry every 500ms for 10 seconds
           intervals: [500],
           timeout: 10000,
