@@ -76,6 +76,7 @@ import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
 import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
 import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
+import { cloneContent } from '../helpers/visual-editor.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -196,7 +197,13 @@ export const PAGES: Record<string, Page> = {
     content: CUSTOM_COMPONENTS_NOWRAP,
     target: ['angular', 'angular-ssr'],
   },
-  '/override-base-url': { content: HTTP_REQUESTS },
+  /**
+   * For some reason, the `HTTP_REQUESTS` content is missing some values when
+   * used in the react-next-pages e2e test.
+   *
+   * This is a workaround to clone the content in case it's accidentally mutated by some other test.
+   */
+  '/override-base-url': { content: cloneContent(HTTP_REQUESTS) },
   '/xss-exploit': { content: XSS_EXPLOIT },
   '/symbol-with-jscode': { content: COUNTDOWN },
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
