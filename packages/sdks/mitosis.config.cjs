@@ -718,22 +718,36 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
   },
 });
 
-const ANGULAR_TEXT_MARK_SAFE_HTML = () => ({
+const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
   code: {
     post: (code) => {
-      if (code.includes('selector: "builder-text"')) {
+      if (
+        code.includes('selector: "builder-text"') ||
+        code.includes('selector: "builder-embed"') ||
+        code.includes('selector: "custom-code"')
+      ) {
         code =
-          `import { DomSanitizer } from "@angular/platform-browser";\n` + code;
+          `import { DomSanitizer } from "@angular/platform-browser";\nimport { ChangeDetectionStrategy } from "@angular/core";\n` +
+          code;
 
+        // add changeDetection: ChangeDetectionStrategy.OnPush
+        const changeDetectionIndex = code.indexOf('selector:');
+        if (changeDetectionIndex !== -1) {
+          code =
+            code.slice(0, changeDetectionIndex) +
+            `changeDetection: ChangeDetectionStrategy.OnPush,\n` +
+            code.slice(changeDetectionIndex);
+        }
+
+        // add constructor with sanitizer
         const constructorIndex = code.indexOf('constructor');
-
         if (constructorIndex === -1) {
           // not found
-          const ngOnInitIndex = code.indexOf('ngOnInit');
+          const ngOnChangesIndex = code.indexOf('ngOnChanges');
           code =
-            code.slice(0, ngOnInitIndex) +
+            code.slice(0, ngOnChangesIndex) +
             `constructor(protected sanitizer: DomSanitizer) {}\n` +
-            code.slice(ngOnInitIndex);
+            code.slice(ngOnChangesIndex);
         } else {
           throw new Error(
             'constructor found which should not be here. If you see this, please fix the ANGULAR_TEXT_MARK_SAFE_HTML Plugin.'
@@ -781,7 +795,7 @@ module.exports = {
         ANGULAR_ADD_UNUSED_PROP_TYPES,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
-        ANGULAR_TEXT_MARK_SAFE_HTML,
+        ANGULAR_MARK_SAFE_INNER_HTML,
       ],
     },
     solid: {
