@@ -54,7 +54,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   url.searchParams.set('includeRefs', String(true));
 
   const finalLocale = locale || userAttributes?.locale;
-  let finalUserAttributes: any = userAttributes;
+  let finalUserAttributes: Record<string, any> = userAttributes || {};
 
   if (finalLocale) {
     url.searchParams.set('locale', finalLocale);
@@ -138,9 +138,11 @@ const getUserAttributesAsJSON = (queryOptions: any) => {
   if (isBrowser() && queryOptions['preview'] === 'BUILDER_STUDIO') {
     queryOptions['userAttributes.urlPath'] = window.location.pathname;
     queryOptions['userAttributes.host'] = window.location.host;
+
+    const queryOptionsForUserAttributes =
+      getUserAttributesFromQueryOptions(queryOptions);
+    const { userAttributes } = unflatten(queryOptionsForUserAttributes);
+    return userAttributes;
   }
-  const queryOptionsForUserAttributes =
-    getUserAttributesFromQueryOptions(queryOptions);
-  const { userAttributes } = unflatten(queryOptionsForUserAttributes);
-  return userAttributes;
+  return {};
 };
