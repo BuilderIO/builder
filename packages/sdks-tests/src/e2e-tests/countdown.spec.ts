@@ -11,10 +11,10 @@ test.describe('Symbol with JS Code', () => {
     await page.goto(`/symbol-with-jscode`);
 
     const getTime = async () => {
-      const secondsOnPage = await page.locator('#seconds').textContent();
-      const minutesOnPage = await page.locator('#minutes').textContent();
-      const hoursOnPage = await page.locator('#hours').textContent();
-      const daysOnPage = await page.locator('#days').textContent();
+      const secondsOnPage = (await page.locator('#seconds').textContent())?.trim();
+      const minutesOnPage = (await page.locator('#minutes').textContent())?.trim();
+      const hoursOnPage = (await page.locator('#hours').textContent())?.trim();
+      const daysOnPage = (await page.locator('#days').textContent())?.trim();
 
       return `${daysOnPage}:${hoursOnPage}:${minutesOnPage}:${secondsOnPage}`;
     };
