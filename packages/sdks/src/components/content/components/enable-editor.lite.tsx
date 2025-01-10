@@ -314,14 +314,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
        *
        * TO-DO: should we only update the state when there is a change?
        **/
-
-      console.log('DEBUG: searchParamPreviewModel', searchParamPreviewModel);
-      console.log('DEBUG: props.model', props.model);
-      console.log('DEBUG: previewApiKey', previewApiKey);
-      console.log('DEBUG: props.apiKey', props.apiKey);
-      console.log('DEBUG: props.content', props.content);
-      console.log('DEBUG: searchParamPreviewId', searchParamPreviewId);
-      console.log('DEBUG: props.content.id', props.content?.id);
       if (
         searchParamPreviewModel === 'BUILDER_STUDIO' ||
         (searchParamPreviewModel === props.model &&

@@ -13,7 +13,6 @@ const isPositiveNumber = (thing: unknown) =>
   typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
-  console.log('DEBUG: options', options);
   const {
     limit = 30,
     userAttributes,
@@ -101,8 +100,6 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     ...getBuilderSearchParamsFromWindow(),
     ...normalizeSearchParams(options.options || {}),
   };
-
-  console.log('DEBUG: queryOptions', queryOptions);
 
   finalUserAttributes = {
     ...finalUserAttributes,

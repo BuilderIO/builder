@@ -42,7 +42,6 @@ type ContentResponse =
 
 const _fetchContent = async (options: GetContentOptions) => {
   const url = generateContentUrl(options);
-  console.log('DEBUG: _fetchContent url', url);
   const _fetch = options.fetch ?? fetch;
 
   const fetchOptions = {
