@@ -76,7 +76,6 @@ import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
 import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
 import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
-import { cloneContent } from '../helpers/visual-editor.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -203,7 +202,7 @@ export const PAGES: Record<string, Page> = {
    *
    * This is a workaround to clone the content in case it's accidentally mutated by some other test.
    */
-  '/override-base-url': { content: cloneContent(HTTP_REQUESTS) },
+  '/override-base-url': { content: JSON.parse(JSON.stringify(HTTP_REQUESTS)) },
   '/xss-exploit': { content: XSS_EXPLOIT },
   '/symbol-with-jscode': { content: COUNTDOWN },
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
