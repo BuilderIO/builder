@@ -324,8 +324,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           model: props.model || '',
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
-          ...(searchParamPreviewModel === 'BUILDER_STUDIO' && props.content
-            ? { query: { id: props.content?.id } }
+          ...(searchParamPreviewModel === 'BUILDER_STUDIO' &&
+          props.context?.symbolId
+            ? { query: { id: props.context.symbolId } }
             : {}),
         }).then((content) => {
           if (content) {
