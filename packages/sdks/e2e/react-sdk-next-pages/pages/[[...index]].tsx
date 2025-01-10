@@ -11,11 +11,22 @@ import { builderBlockWithClassNameCustomComponent } from '../components/BuilderB
 import Hello from '../components/Hello';
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
+  const pathname = x.params?.index ? `/${x.params.index.join('/')}` : '/';
+  const props = await getProps({
+    pathname,
+    _processContentResult,
+  });
+
+  if (pathname === '/override-base-url') {
+    console.log('static props', {
+      textComponent: props?.content?.data?.blocks?.[0]?.component,
+      pathname,
+      props: JSON.stringify(props, null, 2),
+    });
+  }
+
   return {
-    props: await getProps({
-      pathname: x.params?.index ? `/${x.params.index.join('/')}` : '/',
-      _processContentResult,
-    }),
+    props,
   };
 }
 
