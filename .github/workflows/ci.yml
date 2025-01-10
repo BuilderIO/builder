@@ -226,6 +226,15 @@ jobs:
       - name: Run E2E tests
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v3
+        # Only upload the report if the tests failed
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.e2e-server }}-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
+
   gen1-sdk-snippets:
     name: Gen 1 SDK Snippets
     runs-on: ubuntu-latest
