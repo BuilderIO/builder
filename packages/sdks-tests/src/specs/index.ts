@@ -86,7 +86,7 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 type Page = {
   content: BuilderContent;
   /**
-   * The target SDKs that this page should be tested against. This is important because certain frameworks
+   * The e2e servers that this page should be tested against. This is important because certain frameworks
    * (like NextJS) will pre-render all possible pages on the server. If a test is not meant to work in a specific app,
    * then that app will fail to build when attempting to pre-render the page.
    *
@@ -172,14 +172,23 @@ export const PAGES: Record<string, Page> = {
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
-  '/custom-components-models-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
-  '/custom-components-models-not-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
+  '/custom-components-models-show': {
+    content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+    target: ['react'],
+  },
+  '/custom-components-models-not-show': {
+    content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+    target: ['react'],
+  },
   '/editing-box-columns-inner-layout': { content: EDITING_BOX_TO_COLUMN_INNER_LAYOUT },
   '/with-fetch-options': { content: HOMEPAGE },
   '/symbol-with-repeat-input-binding': { content: SYMBOL_WITH_REPEAT_INPUT_BINDING },
   '/children-slot-placement': { content: CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT },
-  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS },
-  '/eager-dynamic-loading': { content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS },
+  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS, target: ['sveltekit'] },
+  '/eager-dynamic-loading': {
+    content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
+    target: ['sveltekit'],
+  },
   '/ssr-binding': { content: SSR_BINDING_CONTENT },
   '/blocks-class-name': { content: BLOCKS_CLASS_NAME },
   '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
@@ -194,7 +203,7 @@ export const PAGES: Record<string, Page> = {
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
   '/localization-locale-passed': { content: LOCALIZATION },
   '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
-  '/localization-subfields': { content: LOCALIZATION_SUBFIELDS },
+  '/localization-subfields': { content: LOCALIZATION_SUBFIELDS, target: ['react', 'gen1-react'] },
   '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
   '/editing-empty-content-element-ref': {
     content: null as unknown as BuilderContent,
