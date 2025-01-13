@@ -30,7 +30,7 @@ test.describe('Styles', () => {
 
       const FIRST_BLOCK_SELECTOR = checkIsRN(sdk)
         ? // ScrollView adds an extra div wrapper
-          `${getClassSelector('builder-blocks', sdk)} > div > div`
+          `${getClassSelector('builder-blocks', sdk)} > div > div > div > div > div`
         : sdk === 'angular'
           ? `div[builder-id="builder-1098ca09970149b3bc4cd43643bd0545"]`
           : `${getClassSelector('builder-blocks', sdk)} > div`;
@@ -60,7 +60,7 @@ test.describe('Styles', () => {
       };
 
       // RN SDK does not use ScrollView in Symbol
-      const FIRST_BLOCK_SYMBOL_SELECTOR = `${getClassSelector('builder-blocks', sdk)} > div`;
+      const FIRST_BLOCK_SYMBOL_SELECTOR = `${getClassSelector('builder-blocks', sdk)} > div > div > div`;
 
       const locator = page
         .locator(FIRST_BLOCK_SYMBOL_SELECTOR)
