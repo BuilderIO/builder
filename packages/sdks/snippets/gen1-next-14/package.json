@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "SERVER_NAME=gen1-next14-pages yarn nx test:snippet @sdk/tests",
+    "test": "SERVER_NAME=gen1-next14-pages yarn g:nx test:snippet @sdk/tests",
     "serve": "yarn start"
   },
   "dependencies": {
@@ -21,8 +21,6 @@
     "@types/react-dom": "^18.3.0",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "^5"
   },
   "installConfig": {

@@ -98,7 +98,6 @@ export default function Block(props: BlockProps) {
             rootState: props.context.value.rootState,
             rootSetState: props.context.value.rootSetState,
             context: props.context.value.context,
-            shouldEvaluateBindings: true,
           });
 
       useTarget({
@@ -185,7 +184,10 @@ export default function Block(props: BlockProps) {
         blockChildren: state.processedBlock.children ?? [],
         componentRef: state.blockComponent?.component,
         componentOptions: {
-          ...getBlockComponentOptions(state.processedBlock),
+          ...getBlockComponentOptions(
+            state.processedBlock,
+            props.context.value
+          ),
           ...provideBuilderBlock(state.blockComponent, state.processedBlock),
           ...provideBuilderContext(state.blockComponent, props.context),
           ...provideLinkComponent(state.blockComponent, props.linkComponent),
