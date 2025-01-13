@@ -9,7 +9,7 @@
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "test": "SERVER_NAME=gen1-remix yarn nx test:snippet @sdk/tests",
+    "test": "SERVER_NAME=gen1-remix yarn g:nx test:snippet @sdk/tests",
     "serve": "remix-serve ./build/server/index.js"
   },
   "dependencies": {
@@ -34,8 +34,6 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"

@@ -14319,8 +14319,6 @@ __metadata:
     eslint: ^8
     eslint-config-next: 14.0.3
     next: 14.1.1
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: 18.2.0
     react-dom: 18.2.0
     typescript: ^5
@@ -14335,8 +14333,6 @@ __metadata:
     "@types/react": ^18.3.3
     "@types/react-dom": ^18.2.17
     "@vitejs/plugin-react": ^4.0.4
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-router-dom: ^6.24.1
@@ -14366,8 +14362,6 @@ __metadata:
     eslint-plugin-react: ^7.33.2
     eslint-plugin-react-hooks: ^4.6.0
     isbot: ^4.1.0
-    nx: ^19.6.5
-    nx-cloud: ^19.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
