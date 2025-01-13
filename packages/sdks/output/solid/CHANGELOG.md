@@ -1,5 +1,14 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 3.0.2
+
+### Patch Changes
+
+- e0dc757: Fix: previewing content within the Studio tab of the Builder Visual Editor.
+- b1bd65a: Fix: export types `RegisteredComponents` and `BuilderContextInterface`.
+- b1bd65a: Move Text Block's inline bindings (e.g. `Hello {{state.name}}`) evaluation outside of component. This allows customers to use inline bindings in their custom Text Block implementations.
+- b1bd65a: Remove noisy console log in edge runtime (for empty code block evaluation)
+
 ## 3.0.1
 
 ### Patch Changes
