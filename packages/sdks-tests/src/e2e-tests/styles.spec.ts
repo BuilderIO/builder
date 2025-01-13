@@ -60,7 +60,7 @@ test.describe('Styles', () => {
       };
 
       // RN SDK does not use ScrollView in Symbol
-      const FIRST_BLOCK_SYMBOL_SELECTOR = `${getClassSelector('builder-blocks', sdk)} > div > div > div`;
+      const FIRST_BLOCK_SYMBOL_SELECTOR = checkIsRN(sdk) ? `${getClassSelector('builder-blocks', sdk)} > div > div > div` : `${getClassSelector('builder-blocks', sdk)} > div`;
 
       const locator = page
         .locator(FIRST_BLOCK_SYMBOL_SELECTOR)
