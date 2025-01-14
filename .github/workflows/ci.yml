@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -77,6 +81,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -130,6 +138,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -161,6 +173,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -191,6 +207,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -206,6 +226,15 @@ jobs:
       - name: Run E2E tests
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v3
+        # Only upload the report if the tests failed
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.e2e-server }}-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
+
   gen1-sdk-snippets:
     name: Gen 1 SDK Snippets
     runs-on: ubuntu-latest
@@ -218,6 +247,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4

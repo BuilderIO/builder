@@ -1,8 +1,7 @@
+import { RenderHTML } from '@builder.io/react-native-render-html';
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
-import { RenderHTML } from '@builder.io/react-native-render-html';
 import BuilderContext from '../../context/builder.context';
-import { evaluate } from '../../functions/evaluate/index.js';
 
 /**
  * @typedef {{}} BuilderBlock
@@ -90,38 +89,17 @@ function getCss(block, inheritedStyles) {
 /**
  *
  * @param {{ text: string; builderBlock: BuilderBlock, builderContext: BuilderContext}} props
- * @returns 
+ * @returns
  */
 export default function Text(props) {
   const { width } = useWindowDimensions();
   const context = React.useContext(BuilderContext);
-  const {
-    context: contextContext,
-    localState,
-    rootState,
-    rootSetState,
-  } = context;
-
-  const processedText = String(props.text?.toString() || '').replace(
-        /{{([^}]+)}}/g, 
-        (match, group) => evaluate({
-          code: group,
-          context: contextContext,
-          localState,
-          rootState,
-          rootSetState,
-          
-        }).toString()
-      );
 
   return (
     <RenderHTML
       contentWidth={width}
       source={{
-        html: `<div style="${getCss(
-          props.builderBlock,
-          context.inheritedStyles
-        )}">${processedText}</div>`,
+        html: `<div style="${getCss(props.builderBlock, context.inheritedStyles)}">${props.text?.toString() || ''}</div>`,
       }}
     />
   );
