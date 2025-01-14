@@ -5157,7 +5157,7 @@ __metadata:
     "@builder.io/sdk-svelte": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@sveltejs/adapter-auto": ^3.2.5
-    "@sveltejs/kit": ^2.7.1
+    "@sveltejs/kit": ^2.8.3
     svelte: ^4.2.19
     svelte-check: ^4.0.5
     tslib: ^2.4.1
@@ -14910,9 +14910,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "@sveltejs/kit@npm:2.7.1"
+"@sveltejs/kit@npm:^2.8.3":
+  version: 2.8.3
+  resolution: "@sveltejs/kit@npm:2.8.3"
   dependencies:
     "@types/cookie": ^0.6.0
     cookie: ^0.6.0
@@ -14932,7 +14932,7 @@ __metadata:
     vite: ^5.0.3
   bin:
     svelte-kit: svelte-kit.js
-  checksum: c0e573c15eb641761921182a1e14e88ee9c298fc75ed5596b8d3fef4fc5d9f71cfb5a554a24fd1b86e36b07b013fc0551c7bfef7908c522336925d4172a37c2b
+  checksum: aebc023329eb2841381996004526d3eb1319071431a7da6ff95c2238cc1a03fe015d7a851345bbe1d5f9e09a4e234e630d1bfd6bf18d45d2cb527e56eb13e35b
   languageName: node
   linkType: hard
 
