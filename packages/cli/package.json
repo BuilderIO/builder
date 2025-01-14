@@ -28,6 +28,11 @@
     "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish",
     "release:minor": "npm run build && npm version minor --no-git-tag-version && npm publish"
   },
+  "pkg": {
+    "assets": [
+      "node_modules/figlet/fonts/Standard.flf"
+    ]
+  },
   "devDependencies": {
     "@types/cli-progress": "^3.8.0",
     "@types/fs-extra": "^9.0.5",
@@ -36,7 +41,7 @@
     "ava": "^2.2.0",
     "cpy-cli": "^4.1.0",
     "nodemon": "^2.0.6",
-    "pkg": "^4.4.9",
+    "pkg": "^5.8.1",
     "rimraf": "^2.6.3",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
