@@ -19,15 +19,14 @@ export interface Input {
   /** @hidden */
   autoFocus?: boolean;
   subFields?: Input[];
-
   /**
-   * When input is of `type` `object`, use this field
-   * to collapse multiple inputs by default and preserve screen space.
+   * When input is of `type` `object`, use this field to collapse multiple inputs
+   * in the Visual Editor by default and preserve screen space.
    */
   folded?: boolean;
   /**
    * When input is of `type` `object`, provide guidance in the Visual Editor
-   * to the user on how to use this input.
+   * on how to edit this object's contents.
    */
   keysHelperText?: string;
   /**
