@@ -1,5 +1,13 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 3.0.3
+
+### Patch Changes
+
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+- bee361e: Fix: add `key` prop for loop inside Accordion Block.
+
 ## 3.0.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.17.3
+
+### Patch Changes
+
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+- bee361e: Fix: add `key` prop for loop inside Accordion Block.
+
 ## 0.17.2
 
 ### Patch Changes

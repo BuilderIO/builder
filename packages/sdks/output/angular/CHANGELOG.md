@@ -1,5 +1,15 @@
 # @builder.io/sdk-angular
 
+## 0.17.3
+
+### Patch Changes
+
+- e9d9953: Fix: mark text as safe to remove the Angular stripping/warning message
+- e9d9953: Fix: Embed and Custom Code block to support embedding iframes
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+- bee361e: Fix: add `key` prop for loop inside Accordion Block.
+
 ## 0.17.2
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @builder.io/sdk
 
+## 6.0.2
+
+### Patch Changes
+
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+
 ## 6.0.1
 
 ### Patch Changes
