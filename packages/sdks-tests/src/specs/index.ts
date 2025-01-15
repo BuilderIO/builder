@@ -76,6 +76,7 @@ import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
 import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
 import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
+import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -215,6 +216,7 @@ export const PAGES: Record<string, Page> = {
     content: null as unknown as BuilderContent,
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
+  '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
 } as const;
 
 export type Path = keyof typeof PAGES;
