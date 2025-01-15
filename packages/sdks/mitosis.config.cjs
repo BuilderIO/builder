@@ -720,12 +720,8 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
 
 const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
   code: {
-    post: (code) => {
-      if (
-        code.includes('selector: "builder-text"') ||
-        code.includes('selector: "builder-embed"') ||
-        code.includes('selector: "custom-code"')
-      ) {
+    post: (code, json) => {
+      if (['BuilderText', 'BuilderEmbed', 'CustomCode'].includes(json.name)) {
         code =
           `import { DomSanitizer } from "@angular/platform-browser";\nimport { ChangeDetectionStrategy } from "@angular/core";\n` +
           code;
