@@ -247,7 +247,7 @@ export function UploadImagePage(props: any) {
           <input
             type="file"
             id="file-upload"
-            accept="image/*"
+            accept=".jpeg"
             onChange={handleFileInput}
             style={{
               display: 'none'
