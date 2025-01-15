@@ -315,14 +315,19 @@ export default function EnableEditor(props: BuilderEditorProps) {
        * TO-DO: should we only update the state when there is a change?
        **/
       if (
-        searchParamPreviewModel === props.model &&
-        previewApiKey === props.apiKey &&
-        (!props.content || searchParamPreviewId === props.content.id)
+        searchParamPreviewModel === 'BUILDER_STUDIO' ||
+        (searchParamPreviewModel === props.model &&
+          previewApiKey === props.apiKey &&
+          (!props.content || searchParamPreviewId === props.content.id))
       ) {
         fetchOneEntry({
-          model: props.model,
+          model: props.model || '',
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
+          ...(searchParamPreviewModel === 'BUILDER_STUDIO' &&
+          props.context?.symbolId
+            ? { query: { id: props.context.symbolId } }
+            : {}),
         }).then((content) => {
           if (content) {
             state.mergeNewContent(content);

@@ -2,13 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import type {
   BuilderBlock,
+  BuilderContextInterface,
   RegisteredComponent,
+  RegisteredComponents,
 } from '@builder.io/sdk-angular';
 import { Blocks } from '@builder.io/sdk-angular';
-import type {
-  BuilderContextInterface,
-  RegisteredComponents,
-} from '@builder.io/sdk-angular/lib/node/context/types';
 
 @Component({
   selector: 'app-custom-tabs',

@@ -7,7 +7,7 @@
     "tsc": "tsc",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "test": "SERVER_NAME=gen1-react yarn nx test:snippet @sdk/tests"
+    "test": "SERVER_NAME=gen1-react yarn g:nx test:snippet @sdk/tests"
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
@@ -19,8 +19,6 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.0.4",
-    "nx": "^19.6.5",
-    "nx-cloud": "^19.0.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.8"
   }

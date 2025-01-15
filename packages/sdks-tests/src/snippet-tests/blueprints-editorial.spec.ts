@@ -21,6 +21,9 @@ test.describe('Product Editorial Page with Real Data', () => {
     await expect(productImage).toHaveAttribute('src', /.+/);
     await expect(productImage).toBeVisible();
 
+    // mark test as slow because it takes a while to load the image.
+    test.slow();
+
     // Wait for the image to load completely
     await page.waitForFunction(imgSelector => {
       const img = document.querySelector(imgSelector) as HTMLImageElement;
