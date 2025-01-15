@@ -2,4 +2,4 @@
 "@builder.io/react": patch
 ---
 
-Fixed issue with dynamic symbols not rendering properly on visual editor
+Fix: Dynamic symbols not rendering properly in Visual Editor.
