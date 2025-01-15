@@ -1,0 +1,1 @@
+export const APP_URL = 'https://kwh-plugin-demo-be.vercel.app'
