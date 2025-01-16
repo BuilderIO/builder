@@ -57,7 +57,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
   const state = useStore({
     shouldRenderVariants: checkShouldRenderVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
-      hasVariants: Boolean(props.content?.variations?.length),
+      content: props.content,
     }),
     get updateCookieAndStylesScriptStr() {
       return getUpdateCookieAndStylesScript(

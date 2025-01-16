@@ -1,11 +1,9 @@
 import { For, onMount, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
-import { checkShouldRenderVariants } from '../../components/content-variants/helpers.js';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
 import { isEditing } from '../../functions/is-editing.js';
-import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { userAttributesSubscriber } from '../../helpers/user-attributes.js';
 import { getPersonalizationScript } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
@@ -21,10 +19,7 @@ export default function PersonalizationContainer(
 ) {
   const state = useStore({
     isMounted: false,
-    shouldRenderVariants: checkShouldRenderVariants({
-      canTrack: getDefaultCanTrack(props.builderContext.value?.canTrack),
-      hasVariants: Boolean(props.variants?.length),
-    }),
+    shouldRenderVariants: typeof window === 'undefined',
     get filteredVariants() {
       return (props.variants || []).filter((variant) => {
         return filterWithCustomTargeting(
