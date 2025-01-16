@@ -2,6 +2,10 @@ import type { ComponentInfo } from '../../types/components.js';
 
 export const componentInfo: ComponentInfo = {
   name: 'PersonalizationContainer',
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderContext: true,
+  },
   noWrap: true,
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F37229ed30d8c41dfb10b8cca1992053a',
