@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.0.4
+
+### Patch Changes
+
+- b0aeaaa: Fix: Dynamic symbols not rendering properly in Visual Editor.
+
 ## 8.0.3
 
 ### Patch Changes
