@@ -1,8 +1,11 @@
 import { For, onMount, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
+import { checkShouldRenderVariants } from '../../components/content-variants/helpers.js';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
+import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
 import { isEditing } from '../../functions/is-editing.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { userAttributesSubscriber } from '../../helpers/user-attributes.js';
 import { getPersonalizationScript } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
@@ -17,7 +20,11 @@ export default function PersonalizationContainer(
   props: PersonalizationContainerProps
 ) {
   const state = useStore({
-    isClient: false,
+    isMounted: false,
+    shouldRenderVariants: checkShouldRenderVariants({
+      canTrack: getDefaultCanTrack(props.builderContext.value?.canTrack),
+      hasVariants: Boolean(props.variants?.length),
+    }),
     get filteredVariants() {
       return (props.variants || []).filter((variant) => {
         return filterWithCustomTargeting(
@@ -36,40 +43,53 @@ export default function PersonalizationContainer(
     get winningVariant() {
       return state.filteredVariants[0];
     },
+    get hideVariantsStyleString() {
+      return (props.variants || [])
+        .map(
+          (_, index) =>
+            `[data-variant-id="${props.builderBlock?.id}-${index}"] { display: none; } `
+        )
+        .join('');
+    },
   });
 
   onMount(() => {
-    state.isClient = true;
+    state.isMounted = true;
   });
 
   return (
     <div
       {...props.attributes}
       style={{
-        opacity: state.isClient ? 1 : 0,
+        opacity: state.isMounted || state.shouldRenderVariants ? 1 : 0,
         transition: 'opacity 0.2s ease-in-out',
         ...(props.attributes?.style || {}),
       }}
-      class={`builder-personalization-container ${props.attributes?.class || ''} ${
-        state.isClient ? '' : 'builder-personalization-container-loading'
-      }`}
+      class={`builder-personalization-container ${props.attributes?.class || ''}`}
     >
-      <InlinedScript
-        nonce={props.builderContext.value?.nonce || ''}
-        scriptStr={getPersonalizationScript(
-          props.variants,
-          props.builderBlock?.id || 'none',
-          props.builderContext.value?.rootState?.locale as string | undefined
-        )}
-        id={`variants-script-${props.builderBlock?.id}`}
-      />
       <Show
-        when={typeof window !== 'undefined'}
+        when={!state.shouldRenderVariants}
         else={
           <>
+            <InlinedScript
+              nonce={props.builderContext.value?.nonce || ''}
+              scriptStr={getPersonalizationScript(
+                props.variants,
+                props.builderBlock?.id || 'none',
+                props.builderContext.value?.rootState?.locale as
+                  | string
+                  | undefined
+              )}
+              id={`variants-script-${props.builderBlock?.id}`}
+            />
+            <InlinedStyles
+              nonce={props.builderContext.value?.nonce || ''}
+              styles={state.hideVariantsStyleString}
+              id={`variants-styles-${props.builderBlock?.id}`}
+            />
             <For each={props.variants}>
               {(variant, index) => (
-                <template
+                <div
                   key={index}
                   data-variant-id={`${props.builderBlock?.id}-${index}`}
                 >
@@ -78,7 +98,7 @@ export default function PersonalizationContainer(
                     parent={props.builderBlock?.id}
                     path={`component.options.variants.${index}.blocks`}
                   />
-                </template>
+                </div>
               )}
             </For>
             {props.children}
@@ -95,7 +115,7 @@ export default function PersonalizationContainer(
             <Show
               when={
                 (isEditing() && typeof props.previewingIndex !== 'number') ||
-                !state.isClient ||
+                !state.isMounted ||
                 !state.filteredVariants.length
               }
               else={

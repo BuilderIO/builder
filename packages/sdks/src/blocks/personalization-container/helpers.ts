@@ -21,7 +21,7 @@ export function getPersonalizationScript(
         }
         function removeVariants() {
           variants.forEach(function (template, index) {
-            document.querySelector('template[data-variant-id="' + "${blockId}" + index + '"]').remove();
+            document.querySelector('div[data-variant-id="' + "${blockId}-" + index + '"]').remove();
           });
           document.getElementById('variants-script-${blockId}').remove();
         }
@@ -46,7 +46,7 @@ export function getPersonalizationScript(
             });
         }
         if (winningVariantIndex !== -1) {
-          var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}" + winningVariantIndex + '"]');
+          var winningVariant = document.querySelector('div[data-variant-id="' + "${blockId}-" + winningVariantIndex + '"]');
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);

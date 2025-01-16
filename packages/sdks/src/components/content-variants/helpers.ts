@@ -26,12 +26,14 @@ export const getVariants = (content: Nullable<BuilderContent>) =>
 
 export const checkShouldRenderVariants = ({
   canTrack,
-  content,
+  // content,
+  hasVariants,
 }: {
   canTrack: Nullable<boolean>;
-  content: Nullable<BuilderContent>;
+  hasVariants: boolean;
+  // content: Nullable<BuilderContent>;
 }) => {
-  const hasVariants = getVariants(content).length > 0;
+  // const hasVariants = getVariants(content).length > 0;
 
   /**
    * We cannot SSR in React-Native.
