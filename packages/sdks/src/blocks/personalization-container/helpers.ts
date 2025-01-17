@@ -1,7 +1,6 @@
 import { filterWithCustomTargetingScript } from '../../functions/filter-with-custom-targeting';
-import { USER_ATTRIBUTES_COOKIE_NAME } from '../../helpers/user-attributes.js';
+import { USER_ATTRIBUTES_COOKIE_NAME } from '../../helpers/user-attributes';
 import type { PersonalizationContainerProps } from './personalization-container.types';
-
 export function getPersonalizationScript(
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
@@ -21,14 +20,22 @@ export function getPersonalizationScript(
         }
         function removeVariants() {
           variants.forEach(function (template, index) {
+            console.log("removing variant", "${blockId}-" + index);
             document.querySelector('div[data-variant-id="' + "${blockId}-" + index + '"]').remove();
           });
+          console.log("removing variants script");
           document.getElementById('variants-script-${blockId}').remove();
         }
 
         var attributes = JSON.parse(getCookie("${USER_ATTRIBUTES_COOKIE_NAME}") || "{}");
         ${locale ? `attributes.locale = "${locale}";` : ''}
-        var variants = ${JSON.stringify(variants?.map((v) => ({ query: v.query, startDate: v.startDate, endDate: v.endDate })))};
+        var variants = ${JSON.stringify(
+          variants?.map((v) => ({
+            query: v.query,
+            startDate: v.startDate,
+            endDate: v.endDate,
+          }))
+        )};
         var winningVariantIndex = variants.findIndex(function(variant) {
           return filterWithCustomTargeting(
             attributes,
@@ -47,10 +54,11 @@ export function getPersonalizationScript(
         }
         if (winningVariantIndex !== -1) {
           var winningVariant = document.querySelector('div[data-variant-id="' + "${blockId}-" + winningVariantIndex + '"]');
+          console.log("winningVariant", winningVariant);
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
-            newParent.appendChild(winningVariant.content.firstChild);
+            newParent.appendChild(winningVariant.firstChild);
             parentNode.parentNode.replaceChild(newParent, parentNode);
             if (isDebug) {
               console.debug('PersonalizationContainer', 'Winning variant Replaced:', winningVariant);
