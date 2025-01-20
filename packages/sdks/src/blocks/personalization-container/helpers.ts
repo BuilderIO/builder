@@ -8,6 +8,10 @@ export function getPersonalizationScript(
 ) {
   return `
       (function() {
+         if (!navigator.cookieEnabled) {
+            return;
+          } 
+
         function getCookie(name) {
           var nameEQ = name + "=";
           var ca = document.cookie.split(';');
@@ -21,10 +25,11 @@ export function getPersonalizationScript(
         function removeVariants() {
           variants.forEach(function (template, index) {
             console.log("removing variant", "${blockId}-" + index);
-            document.querySelector('div[data-variant-id="' + "${blockId}-" + index + '"]').remove();
+            document.querySelector('template[data-variant-id="' + "${blockId}-" + index + '"]').remove();
           });
           console.log("removing variants script");
-          document.getElementById('variants-script-${blockId}').remove();
+          document.querySelector('script[data-id="variants-script-${blockId}"]').remove();
+          document.querySelector('style[data-id="variants-styles-${blockId}"]').remove();
         }
 
         var attributes = JSON.parse(getCookie("${USER_ATTRIBUTES_COOKIE_NAME}") || "{}");
@@ -53,12 +58,13 @@ export function getPersonalizationScript(
             });
         }
         if (winningVariantIndex !== -1) {
-          var winningVariant = document.querySelector('div[data-variant-id="' + "${blockId}-" + winningVariantIndex + '"]');
+          var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}-" + winningVariantIndex + '"]');
           console.log("winningVariant", winningVariant);
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
-            newParent.appendChild(winningVariant.firstChild);
+            newParent.appendChild(winningVariant.content.firstChild);
+            newParent.appendChild(winningVariant.content.lastChild);
             parentNode.parentNode.replaceChild(newParent, parentNode);
             if (isDebug) {
               console.debug('PersonalizationContainer', 'Winning variant Replaced:', winningVariant);

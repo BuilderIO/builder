@@ -1,4 +1,10 @@
-import { For, onMount, Show, useMetadata, useStore } from '@builder.io/mitosis';
+import {
+  For,
+  Fragment,
+  Show,
+  useMetadata,
+  useStore,
+} from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
@@ -18,7 +24,6 @@ export default function PersonalizationContainer(
   props: PersonalizationContainerProps
 ) {
   const state = useStore({
-    isMounted: false,
     get filteredVariants() {
       return (props.variants || []).filter((variant) => {
         return filterWithCustomTargeting(
@@ -47,69 +52,66 @@ export default function PersonalizationContainer(
     },
   });
 
-  onMount(() => {
-    state.isMounted = true;
-  });
-
   return (
-    <div
-      {...props.attributes}
-      style={{
-        opacity: 1,
-        transition: 'opacity 0.2s ease-in-out',
-        ...(props.attributes?.style || {}),
-      }}
-      class={`builder-personalization-container ${props.attributes?.class || ''}`}
-    >
-      <For each={props.variants}>
-        {(variant, index) => (
-          <div
-            key={index}
-            data-variant-id={`${props.builderBlock?.id}-${index}`}
-          >
-            <Blocks
-              blocks={variant.blocks}
-              parent={props.builderBlock?.id}
-              path={`component.options.variants.${index}.blocks`}
-            />
-          </div>
-        )}
-      </For>
-      <Show
-        when={
-          isEditing() &&
-          typeof props.previewingIndex === 'number' &&
-          props.previewingIndex < (props.variants?.length || 0)
-        }
-        else={
-          <Show
-            when={
-              (isEditing() && typeof props.previewingIndex !== 'number') ||
-              !state.isMounted ||
-              !state.filteredVariants.length
-            }
-            else={
+    <Fragment>
+      <div
+        {...props.attributes}
+        style={{
+          opacity: 1,
+          transition: 'opacity 0.2s ease-in-out',
+          ...(props.attributes?.style || {}),
+        }}
+        class={`builder-personalization-container ${props.attributes?.class || ''}`}
+      >
+        <Show when={typeof window === 'undefined'}>
+          <For each={props.variants}>
+            {(variant, index) => (
+              <template
+                key={index}
+                data-variant-id={`${props.builderBlock?.id}-${index}`}
+              >
+                <Blocks
+                  blocks={variant.blocks}
+                  parent={props.builderBlock?.id}
+                  path={`component.options.variants.${index}.blocks`}
+                />
+              </template>
+            )}
+          </For>
+        </Show>
+        <Show
+          when={
+            isEditing() &&
+            typeof props.previewingIndex === 'number' &&
+            props.previewingIndex < (props.variants?.length || 0)
+          }
+          else={
+            <Show
+              when={!isEditing() && state.winningVariant}
+              else={
+                <Blocks
+                  blocks={props.builderBlock?.children}
+                  parent={props.builderBlock?.id}
+                />
+              }
+            >
               <Blocks
-                key={`variant-${props.variants?.indexOf(state.winningVariant)}`}
-                blocks={state.winningVariant.blocks}
+                blocks={state.winningVariant?.blocks}
                 parent={props.builderBlock?.id}
                 path={`component.options.variants.${props.variants?.indexOf(
                   state.winningVariant
                 )}.blocks`}
               />
-            }
-          >
-            {props.children}
-          </Show>
-        }
-      >
-        <Blocks
-          key={`preview-${props.previewingIndex}`}
-          blocks={props.variants?.[Number(props.previewingIndex)]?.blocks}
-          parent={props.builderBlock?.id}
-          path={`component.options.variants.${props.previewingIndex}.blocks`}
-        />
-      </Show>
+            </Show>
+          }
+        >
+          <Blocks
+            blocks={props.variants?.[Number(props.previewingIndex)]?.blocks}
+            parent={props.builderBlock?.id}
+            path={`component.options.variants.${props.previewingIndex}.blocks`}
+          />
+        </Show>
+      </div>
       <InlinedStyles
         nonce={props.builderContext.value?.nonce || ''}
         styles={state.hideVariantsStyleString}
@@ -124,6 +126,14 @@ export default function PersonalizationContainer(
         )}
         id={`variants-script-${props.builderBlock?.id}`}
       />
-    </div>
+      <InlinedScript
+        nonce={props.builderContext.value?.nonce || ''}
+        scriptStr={`
+     window.__hydrated = window.__hydrated || {};
+     window.__hydrated['${props.builderBlock?.id}'] = true;
+    `.replace(/\s+/g, ' ')}
+        id={`hydrated-script-${props.builderBlock?.id}`}
+      />
+    </Fragment>
   );
 }

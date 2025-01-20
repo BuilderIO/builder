@@ -144,6 +144,16 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
     );
   });
 
+  console.log(
+    'here',
+    Builder.isBrowser,
+    Builder.isEditing,
+    Builder.isServer,
+    props.previewingIndex,
+    filteredVariants.length,
+    isClient
+  );
+
   return (
     <React.Fragment>
       <div
@@ -156,7 +166,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         }}
         className={`builder-personalization-container ${
           props.attributes.className
-        } ${isClient ? '' : 'builder-personalization-container-loading'}`}
+        }${isClient ? '' : ' builder-personalization-container-loading'}`}
       >
         {/* If editing a specific varient */}
         {Builder.isEditing &&
@@ -298,6 +308,14 @@ function getPersonalizationScript(
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
             newParent.appendChild(winningVariant.content.firstChild);
+            console.log('newParent', {
+              parentNode: parentNode,
+              newParent: newParent,
+              winningVariant: winningVariant,
+              firstChild: winningVariant.content.firstChild,
+              lastChild: winningVariant.content.lastChild,
+              content: winningVariant.content,
+            });
             parentNode.parentNode.replaceChild(newParent, parentNode);
             if (isDebug) {
               console.debug('PersonalizationContainer', 'Winning variant Replaced:', winningVariant);

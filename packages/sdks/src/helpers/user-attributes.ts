@@ -1,3 +1,4 @@
+import { isBrowser } from '../functions/is-browser.js';
 import { getCookieSync, setCookie } from './cookie.js';
 
 export interface UserAttributes {
@@ -11,6 +12,9 @@ export function createUserAttributesSubscriber() {
   const subscribers = new Set<(attrs: UserAttributes) => void>();
   return {
     setUserAttributes(newAttrs: UserAttributes) {
+      if (!isBrowser()) {
+        return;
+      }
       const userAttributes: UserAttributes = {
         ...this.getUserAttributes(),
         ...newAttrs,
@@ -23,6 +27,9 @@ export function createUserAttributesSubscriber() {
       subscribers.forEach((callback) => callback(userAttributes));
     },
     getUserAttributes() {
+      if (!isBrowser()) {
+        return {};
+      }
       return JSON.parse(
         getCookieSync({ name: USER_ATTRIBUTES_COOKIE_NAME, canTrack }) || '{}'
       );
