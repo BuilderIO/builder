@@ -43,11 +43,6 @@ export default function PersonalizationContainer(
     <Fragment>
       <div
         {...props.attributes}
-        style={{
-          opacity: 1,
-          transition: 'opacity 0.2s ease-in-out',
-          ...(props.attributes?.style || {}),
-        }}
         class={`builder-personalization-container ${props.attributes?.class || ''}`}
       >
         <Show when={typeof window === 'undefined'}>
