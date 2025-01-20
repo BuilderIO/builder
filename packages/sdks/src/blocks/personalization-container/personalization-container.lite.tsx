@@ -1,4 +1,4 @@
-import { For, Fragment, Show, useStore } from '@builder.io/mitosis';
+import { For, Fragment, onMount, Show, useStore } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
@@ -12,6 +12,7 @@ export default function PersonalizationContainer(
   props: PersonalizationContainerProps
 ) {
   const state = useStore({
+    isHydrated: false,
     get filteredVariants() {
       return (props.variants || []).filter((variant) => {
         return filterWithCustomTargeting(
@@ -38,6 +39,10 @@ export default function PersonalizationContainer(
         )
         .join('');
     },
+  });
+
+  onMount(() => {
+    state.isHydrated = true;
   });
 
   return (
@@ -80,6 +85,7 @@ export default function PersonalizationContainer(
         </Show>
         <Show
           when={
+            state.isHydrated &&
             isEditing() &&
             typeof props.previewingIndex === 'number' &&
             props.previewingIndex < (props.variants?.length || 0) &&
