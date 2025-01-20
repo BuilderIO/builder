@@ -126,14 +126,6 @@ export default function PersonalizationContainer(
         )}
         id={`variants-script-${props.builderBlock?.id}`}
       />
-      <InlinedScript
-        nonce={props.builderContext.value?.nonce || ''}
-        scriptStr={`
-     window.__hydrated = window.__hydrated || {};
-     window.__hydrated['${props.builderBlock?.id}'] = true;
-    `.replace(/\s+/g, ' ')}
-        id={`hydrated-script-${props.builderBlock?.id}`}
-      />
     </Fragment>
   );
 }
