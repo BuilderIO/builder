@@ -1,4 +1,3 @@
-import { logger } from '../../../helpers/logger.js';
 import type { ExecutorArgs } from '../helpers.js';
 import { flattenState, getFunctionArguments } from '../helpers.js';
 import Interpreter from './acorn-interpreter.js';
@@ -118,10 +117,7 @@ export const runInEdge = ({
     })
     .join('\n');
   const cleanedCode = processCode(code);
-  if (cleanedCode === '') {
-    logger.warn('Skipping evaluation of empty code block.');
-    return;
-  }
+  if (cleanedCode === '') return;
 
   const transformed = `
 function theFunction() {

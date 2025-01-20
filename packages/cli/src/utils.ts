@@ -2,6 +2,7 @@ import fse from 'fs-extra';
 import traverse from 'traverse';
 import { ChildProcess, spawn } from 'child_process';
 import path from 'path';
+import commander from 'commander';
 
 const childrenProcesses: ChildProcess[] = [];
 
@@ -18,6 +19,14 @@ export const readAsJson = async (path: string) => {
     throw e;
   }
 };
+
+export const intParam = (value: any, previous: any) => { 
+  const parsedValue = parseInt(value, 10);
+  if (isNaN(parsedValue)) {
+    throw new commander.InvalidArgumentError('Not a number.');
+  }
+  return parsedValue;
+}
 
 export const getDirectories = async (source: string) =>
   (await fse.readdir(source, { withFileTypes: true })).filter(dirent => dirent.isDirectory());

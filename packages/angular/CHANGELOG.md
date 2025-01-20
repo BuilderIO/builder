@@ -1,3 +1,7 @@
+## 5.0.1
+
+- Bump peer dependency `zone.js` to `0.14.x` for more leniency.
+
 ## 5.0.0
 - update `@builder.io/sdk` to `^5.0.0` and `@builder.io/webcomponents` to `^2.0.0`
 - send SDK name and version information to Content Editor when editing content.

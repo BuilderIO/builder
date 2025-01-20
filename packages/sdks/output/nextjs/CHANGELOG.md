@@ -1,5 +1,21 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.17.3
+
+### Patch Changes
+
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+
+## 0.17.2
+
+### Patch Changes
+
+- e0dc757: Fix: previewing content within the Studio tab of the Builder Visual Editor.
+- b1bd65a: Fix: export types `RegisteredComponents` and `BuilderContextInterface`.
+- b1bd65a: Move Text Block's inline bindings (e.g. `Hello {{state.name}}`) evaluation outside of component. This allows customers to use inline bindings in their custom Text Block implementations.
+- b1bd65a: Remove noisy console log in edge runtime (for empty code block evaluation)
+
 ## 0.17.1
 
 ### Patch Changes

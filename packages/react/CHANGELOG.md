@@ -1,5 +1,21 @@
 # @builder.io/react
 
+## 8.0.4
+
+### Patch Changes
+
+- b0aeaaa: Fix: Dynamic symbols not rendering properly in Visual Editor.
+
+## 8.0.3
+
+### Patch Changes
+
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+- Updated dependencies [306f8d5]
+- Updated dependencies [306f8d5]
+  - @builder.io/sdk@6.0.2
+
 ## 8.0.2
 
 ### Patch Changes

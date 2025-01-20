@@ -6,7 +6,7 @@ import { createWebhook } from './create-web-hook';
 
 Builder.register('plugin', {
   id: pluginId,
-  name: 'Shopify Algolia',
+  name: 'Algolia',
   settings: [
     {
       name: 'algoliaKey',
