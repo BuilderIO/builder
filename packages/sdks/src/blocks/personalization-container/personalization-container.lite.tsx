@@ -1,17 +1,43 @@
-import { For, Fragment, onMount, Show, useStore } from '@builder.io/mitosis';
+import {
+  For,
+  Fragment,
+  onMount,
+  Show,
+  useMetadata,
+  useStore,
+} from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
 import { isEditing } from '../../functions/is-editing.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { userAttributesSubscriber } from '../../helpers/user-attributes.js';
-import { getPersonalizationScript } from './helpers.js';
+import {
+  checkShouldRenderVariants,
+  getPersonalizationScript,
+} from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
+
+useMetadata({
+  rsc: {
+    componentType: 'client',
+  },
+});
 
 export default function PersonalizationContainer(
   props: PersonalizationContainerProps
 ) {
   const state = useStore({
+    scriptStr: getPersonalizationScript(
+      props.variants,
+      props.builderBlock?.id || 'none',
+      props.builderContext.value?.rootState?.locale as string | undefined
+    ),
+    shouldRenderVariants: checkShouldRenderVariants(
+      props.variants,
+      getDefaultCanTrack(props.builderContext.value?.canTrack)
+    ),
     isHydrated: false,
     get filteredVariants() {
       return (props.variants || []).filter((variant) => {
@@ -51,7 +77,7 @@ export default function PersonalizationContainer(
         {...props.attributes}
         class={`builder-personalization-container ${props.attributes?.class || ''}`}
       >
-        <Show when={typeof window === 'undefined'}>
+        <Show when={state.shouldRenderVariants}>
           <For each={props.variants}>
             {(variant, index) => (
               <template
@@ -73,13 +99,7 @@ export default function PersonalizationContainer(
           />
           <InlinedScript
             nonce={props.builderContext.value?.nonce || ''}
-            scriptStr={getPersonalizationScript(
-              props.variants,
-              props.builderBlock?.id || 'none',
-              props.builderContext.value?.rootState?.locale as
-                | string
-                | undefined
-            )}
+            scriptStr={state.scriptStr}
             id={`variants-script-${props.builderBlock?.id}`}
           />
         </Show>

@@ -1,6 +1,27 @@
-import { filterWithCustomTargetingScript } from '../../functions/filter-with-custom-targeting';
-import { USER_ATTRIBUTES_COOKIE_NAME } from '../../helpers/user-attributes';
-import type { PersonalizationContainerProps } from './personalization-container.types';
+import { TARGET } from '../../constants/target.js';
+import { filterWithCustomTargetingScript } from '../../functions/filter-with-custom-targeting.js';
+import { isBrowser } from '../../functions/is-browser.js';
+import { USER_ATTRIBUTES_COOKIE_NAME } from '../../helpers/user-attributes.js';
+import type { PersonalizationContainerProps } from './personalization-container.types.js';
+
+export function checkShouldRenderVariants(
+  variants: PersonalizationContainerProps['variants'],
+  canTrack: boolean
+) {
+  const hasVariants = variants && variants.length > 0;
+
+  if (TARGET === 'reactNative') return false;
+
+  if (!hasVariants) return false;
+  if (!canTrack) return false;
+
+  if (TARGET === 'vue' || TARGET === 'svelte') return true;
+
+  if (isBrowser()) return false;
+
+  return true;
+}
+
 export function getPersonalizationScript(
   variants: PersonalizationContainerProps['variants'],
   blockId: string,

@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeGen2, test } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
 const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
@@ -35,7 +35,6 @@ const initializeUserAttributes = async (
     page: _page,
     baseURL,
     browser,
-    sdk,
     packageName,
   }: Pick<
     Parameters<Parameters<typeof test>[2]>[0],
@@ -47,7 +46,6 @@ const initializeUserAttributes = async (
   test.skip(packageName === 'gen1-next14-pages');
   // gen1-remix started failing on this test for an unknown reason.
   test.skip(packageName === 'gen1-remix');
-  test.skip(excludeGen2(sdk));
 
   if (!baseURL) throw new Error('Missing baseURL');
 
