@@ -298,14 +298,6 @@ function getPersonalizationScript(
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
             newParent.appendChild(winningVariant.content.firstChild);
-            console.log('newParent', {
-              parentNode: parentNode,
-              newParent: newParent,
-              winningVariant: winningVariant,
-              firstChild: winningVariant.content.firstChild,
-              lastChild: winningVariant.content.lastChild,
-              content: winningVariant.content,
-            });
             parentNode.parentNode.replaceChild(newParent, parentNode);
             if (isDebug) {
               console.debug('PersonalizationContainer', 'Winning variant Replaced:', winningVariant);
