@@ -1,10 +1,4 @@
-import {
-  For,
-  Fragment,
-  Show,
-  useMetadata,
-  useStore,
-} from '@builder.io/mitosis';
+import { For, Fragment, Show, useStore } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
@@ -12,12 +6,6 @@ import { filterWithCustomTargeting } from '../../functions/filter-with-custom-ta
 import { userAttributesSubscriber } from '../../helpers/user-attributes.js';
 import { getPersonalizationScript } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
-
-useMetadata({
-  rsc: {
-    componentType: 'client',
-  },
-});
 
 export default function PersonalizationContainer(
   props: PersonalizationContainerProps
