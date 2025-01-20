@@ -9,7 +9,6 @@ import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
-import { isEditing } from '../../functions/is-editing.js';
 import { userAttributesSubscriber } from '../../helpers/user-attributes.js';
 import { getPersonalizationScript } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
@@ -78,16 +77,31 @@ export default function PersonalizationContainer(
               </template>
             )}
           </For>
+          <InlinedStyles
+            nonce={props.builderContext.value?.nonce || ''}
+            styles={state.hideVariantsStyleString}
+            id={`variants-styles-${props.builderBlock?.id}`}
+          />
+          <InlinedScript
+            nonce={props.builderContext.value?.nonce || ''}
+            scriptStr={getPersonalizationScript(
+              props.variants,
+              props.builderBlock?.id || 'none',
+              props.builderContext.value?.rootState?.locale as
+                | string
+                | undefined
+            )}
+            id={`variants-script-${props.builderBlock?.id}`}
+          />
         </Show>
         <Show
           when={
-            isEditing() &&
             typeof props.previewingIndex === 'number' &&
             props.previewingIndex < (props.variants?.length || 0)
           }
           else={
             <Show
-              when={!isEditing() && state.winningVariant}
+              when={state.winningVariant}
               else={
                 <Blocks
                   blocks={props.builderBlock?.children}
@@ -112,20 +126,6 @@ export default function PersonalizationContainer(
           />
         </Show>
       </div>
-      <InlinedStyles
-        nonce={props.builderContext.value?.nonce || ''}
-        styles={state.hideVariantsStyleString}
-        id={`variants-styles-${props.builderBlock?.id}`}
-      />
-      <InlinedScript
-        nonce={props.builderContext.value?.nonce || ''}
-        scriptStr={getPersonalizationScript(
-          props.variants,
-          props.builderBlock?.id || 'none',
-          props.builderContext.value?.rootState?.locale as string | undefined
-        )}
-        id={`variants-script-${props.builderBlock?.id}`}
-      />
     </Fragment>
   );
 }
