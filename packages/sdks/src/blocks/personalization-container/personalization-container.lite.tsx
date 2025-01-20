@@ -3,6 +3,7 @@ import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
+import { isEditing } from '../../functions/is-editing.js';
 import { userAttributesSubscriber } from '../../helpers/user-attributes.js';
 import { getPersonalizationScript } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
@@ -79,8 +80,10 @@ export default function PersonalizationContainer(
         </Show>
         <Show
           when={
+            isEditing() &&
             typeof props.previewingIndex === 'number' &&
-            props.previewingIndex < (props.variants?.length || 0)
+            props.previewingIndex < (props.variants?.length || 0) &&
+            !state.filteredVariants.length
           }
           else={
             <Show
