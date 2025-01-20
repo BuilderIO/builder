@@ -144,16 +144,6 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
     );
   });
 
-  console.log(
-    'here',
-    Builder.isBrowser,
-    Builder.isEditing,
-    Builder.isServer,
-    props.previewingIndex,
-    filteredVariants.length,
-    isClient
-  );
-
   return (
     <React.Fragment>
       <div
