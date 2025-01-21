@@ -1,6 +1,5 @@
 import {
   For,
-  Fragment,
   onMount,
   onUnMount,
   Show,
@@ -126,73 +125,71 @@ export default function PersonalizationContainer(
   });
 
   return (
-    <Fragment>
-      <div
-        ref={rootRef}
-        {...props.attributes}
-        class={`builder-personalization-container ${props.attributes?.class || ''}`}
-      >
-        <Show when={state.shouldRenderVariants}>
-          <For each={props.variants}>
-            {(variant, index) => (
-              <template
-                key={index}
-                data-variant-id={`${props.builderBlock?.id}-${index}`}
-              >
-                <Blocks
-                  blocks={variant.blocks}
-                  parent={props.builderBlock?.id}
-                  path={`component.options.variants.${index}.blocks`}
-                />
-              </template>
-            )}
-          </For>
-          <InlinedStyles
-            nonce={props.builderContext.value?.nonce || ''}
-            styles={state.hideVariantsStyleString}
-            id={`variants-styles-${props.builderBlock?.id}`}
-          />
-          <InlinedScript
-            nonce={props.builderContext.value?.nonce || ''}
-            scriptStr={state.scriptStr}
-            id={`variants-script-${props.builderBlock?.id}`}
-          />
-        </Show>
-        <Show
-          when={
-            state.isHydrated &&
-            isEditing() &&
-            typeof props.previewingIndex === 'number' &&
-            props.previewingIndex < (props.variants?.length || 0) &&
-            !state.filteredVariants.length
-          }
-          else={
-            <Show
-              when={state.winningVariant}
-              else={
-                <Blocks
-                  blocks={props.builderBlock?.children}
-                  parent={props.builderBlock?.id}
-                />
-              }
+    <div
+      ref={rootRef}
+      {...props.attributes}
+      class={`builder-personalization-container ${props.attributes?.class || ''}`}
+    >
+      <Show when={state.shouldRenderVariants}>
+        <For each={props.variants}>
+          {(variant, index) => (
+            <template
+              key={index}
+              data-variant-id={`${props.builderBlock?.id}-${index}`}
             >
               <Blocks
-                blocks={state.winningVariant?.blocks}
+                blocks={variant.blocks}
                 parent={props.builderBlock?.id}
-                path={`component.options.variants.${props.variants?.indexOf(
-                  state.winningVariant
-                )}.blocks`}
+                path={`component.options.variants.${index}.blocks`}
               />
-            </Show>
-          }
-        >
-          <Blocks
-            blocks={props.variants?.[Number(props.previewingIndex)]?.blocks}
-            parent={props.builderBlock?.id}
-            path={`component.options.variants.${props.previewingIndex}.blocks`}
-          />
-        </Show>
-      </div>
-    </Fragment>
+            </template>
+          )}
+        </For>
+        <InlinedStyles
+          nonce={props.builderContext.value?.nonce || ''}
+          styles={state.hideVariantsStyleString}
+          id={`variants-styles-${props.builderBlock?.id}`}
+        />
+        <InlinedScript
+          nonce={props.builderContext.value?.nonce || ''}
+          scriptStr={state.scriptStr}
+          id={`variants-script-${props.builderBlock?.id}`}
+        />
+      </Show>
+      <Show
+        when={
+          state.isHydrated &&
+          isEditing() &&
+          typeof props.previewingIndex === 'number' &&
+          props.previewingIndex < (props.variants?.length || 0) &&
+          !state.filteredVariants.length
+        }
+        else={
+          <Show
+            when={state.winningVariant}
+            else={
+              <Blocks
+                blocks={props.builderBlock?.children}
+                parent={props.builderBlock?.id}
+              />
+            }
+          >
+            <Blocks
+              blocks={state.winningVariant?.blocks}
+              parent={props.builderBlock?.id}
+              path={`component.options.variants.${props.variants?.indexOf(
+                state.winningVariant
+              )}.blocks`}
+            />
+          </Show>
+        }
+      >
+        <Blocks
+          blocks={props.variants?.[Number(props.previewingIndex)]?.blocks}
+          parent={props.builderBlock?.id}
+          path={`component.options.variants.${props.previewingIndex}.blocks`}
+        />
+      </Show>
+    </div>
   );
 }
