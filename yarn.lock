@@ -4153,7 +4153,7 @@ __metadata:
     "@types/node": latest
     isolated-vm: ^5.0.0
     typescript: 5.5.2
-    vite: ^4.3.2
+    vite: ^4.5.6
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
   languageName: unknown
@@ -4202,7 +4202,7 @@ __metadata:
     next: ">=13.4.20"
     react: ^18.2.0
     typescript: ^5.1.6
-    vite: ^4.4.9
+    vite: ^4.5.6
   peerDependencies:
     next: ">=13.4.20"
     react: ">=18.2.0"
@@ -4220,7 +4220,7 @@ __metadata:
     react: ^18.2.0
     recast: ^0.23.4
     typescript: ^4.9.4
-    vite: ^4.4.9
+    vite: ^4.5.6
   peerDependencies:
     react: ">=16 || ^19.0.0-rc"
   languageName: unknown
@@ -4258,7 +4258,7 @@ __metadata:
     svelte-preprocess: ^5.0.4
     tslib: ^2.3.1
     typescript: ^5.1.6
-    vite: ^4.4.8
+    vite: ^4.5.6
   peerDependencies:
     svelte: ^4.1.2
   languageName: unknown
@@ -4844,7 +4844,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
-    vite: ^4.4.8
+    vite: ^4.5.6
   languageName: unknown
   linkType: soft
 
@@ -4949,7 +4949,7 @@ __metadata:
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
     typescript: ^5.1.6
-    vite: ^4.0.3
+    vite: ^4.5.6
     vite-tsconfig-paths: 3.5.0
   languageName: unknown
   linkType: soft
@@ -5068,7 +5068,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
-    vite: ^4.4.8
+    vite: ^4.5.6
   languageName: unknown
   linkType: soft
 
@@ -5116,7 +5116,7 @@ __metadata:
     solid-start: ^0.3.10
     solid-start-node: ^0.3.10
     typescript: ^4.9.5
-    vite: ^4.4.9
+    vite: ^4.5.6
   languageName: unknown
   linkType: soft
 
@@ -5146,7 +5146,7 @@ __metadata:
     svelte-check: ^3.4.6
     tslib: ^2.5.0
     typescript: ^5.1.6
-    vite: ^4.3.2
+    vite: ^4.5.6
   languageName: unknown
   linkType: soft
 
@@ -5175,7 +5175,7 @@ __metadata:
     "@vitejs/plugin-vue": ^4.2.3
     cross-fetch: ^4.0.0
     typescript: ^5.1.6
-    vite: ^4.4.8
+    vite: ^4.5.6
     vite-plugin-ssr: ^0.4.133
     vue: ^3.2.37
     vue-tsc: ^1.8.24
@@ -14312,7 +14312,7 @@ __metadata:
     react-dom: ^18.2.0
     react-router-dom: ^6.24.1
     typescript: ^5.1.6
-    vite: ^4.4.8
+    vite: ^4.5.6
   languageName: unknown
   linkType: soft
 
@@ -14419,7 +14419,7 @@ __metadata:
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
     typescript: ^5.1.6
-    vite: ^4.0.3
+    vite: ^4.5.6
     vite-tsconfig-paths: 3.5.0
   languageName: unknown
   linkType: soft
@@ -53079,7 +53079,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0 || ^4.0.0, vite@npm:^4.0.3, vite@npm:^4.1.4, vite@npm:^4.3.2, vite@npm:^4.4.8, vite@npm:^4.4.9, vite@npm:^4.5.0":
+"vite@npm:^3.0.0 || ^4.0.0, vite@npm:^4.1.4, vite@npm:^4.5.0":
   version: 4.5.0
   resolution: "vite@npm:4.5.0"
   dependencies:
@@ -53154,6 +53154,46 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 4c5883b721b6ec406419e61d0b3fae8528e80f8c2eb20c087c7b1b76daec3665a0a49c83cd8ac7fdda6089625094b70c6a132daa5edc650c515ddc9f5eed44f0
+  languageName: node
+  linkType: hard
+
+"vite@npm:^4.5.6":
+  version: 4.5.9
+  resolution: "vite@npm:4.5.9"
+  dependencies:
+    esbuild: ^0.18.10
+    fsevents: ~2.3.2
+    postcss: ^8.4.27
+    rollup: ^3.27.1
+  peerDependencies:
+    "@types/node": ">= 14"
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: ebe21bd4aab9e4dac38e77971c9c506f1df28dbf1afb7962894edeeac3a8a57fdc547708fa977ba798c4666f3204ec36a164110a9377fe78b7efa894b7b6c5ff
   languageName: node
   linkType: hard
 
