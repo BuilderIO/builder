@@ -7,7 +7,7 @@ export interface UserAttributes {
 
 export const USER_ATTRIBUTES_COOKIE_NAME = 'builder.userAttributes';
 
-export function createUserAttributesSubscriber() {
+export function createUserAttributesService() {
   let canTrack = true;
   const subscribers = new Set<(attrs: UserAttributes) => void>();
   return {
@@ -46,8 +46,8 @@ export function createUserAttributesSubscriber() {
   };
 }
 
-export const userAttributesSubscriber = createUserAttributesSubscriber();
+export const userAttributesService = createUserAttributesService();
 
 export const setClientUserAttributes = (attributes: UserAttributes) => {
-  userAttributesSubscriber.setUserAttributes(attributes);
+  userAttributesService.setUserAttributes(attributes);
 };

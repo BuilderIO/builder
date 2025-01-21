@@ -1,8 +1,8 @@
 import { checkIsDefined } from './nullable.js';
-import { userAttributesSubscriber } from './user-attributes.js';
+import { userAttributesService } from './user-attributes.js';
 
 export const getDefaultCanTrack = (canTrack?: boolean) => {
   const result = checkIsDefined(canTrack) ? canTrack : true;
-  userAttributesSubscriber.setCanTrack(result);
+  userAttributesService.setCanTrack(result);
   return result;
 };

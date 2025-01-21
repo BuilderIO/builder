@@ -12,7 +12,7 @@ import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
-import { userAttributesSubscriber } from '../../helpers/user-attributes.js';
+import { userAttributesService } from '../../helpers/user-attributes.js';
 import {
   checkShouldRenderVariants,
   getPersonalizationScript,
@@ -29,6 +29,7 @@ export default function PersonalizationContainer(
   props: PersonalizationContainerProps
 ) {
   const state = useStore({
+    userAttributes: userAttributesService.getUserAttributes(),
     scriptStr: getPersonalizationScript(
       props.variants,
       props.builderBlock?.id || 'none',
@@ -46,7 +47,7 @@ export default function PersonalizationContainer(
             ...(props.builderContext.value?.rootState?.locale
               ? { locale: props.builderContext.value?.rootState?.locale }
               : {}),
-            ...(userAttributesSubscriber.getUserAttributes() as any),
+            ...(state.userAttributes as any),
           },
           variant.query,
           variant.startDate,
@@ -69,6 +70,16 @@ export default function PersonalizationContainer(
 
   onMount(() => {
     state.isHydrated = true;
+
+    const unsub = userAttributesService.subscribeOnUserAttributesChange(
+      (attrs) => {
+        state.userAttributes = attrs;
+      }
+    );
+
+    return () => {
+      unsub();
+    };
   });
 
   return (
