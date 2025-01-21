@@ -84,33 +84,36 @@ export default function PersonalizationContainer(
 
     if (!(isEditing() || isPreviewing())) {
       const variant = state.filteredVariants[0];
-      rootRef?.dispatchEvent(
-        new CustomEvent('builder.variantLoaded', {
-          detail: {
-            variant: variant || 'default',
-            content: props.builderContext.value?.content,
-          },
-          bubbles: true,
-        })
-      );
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            rootRef?.dispatchEvent(
-              new CustomEvent('builder.variantDisplayed', {
-                detail: {
-                  variant: variant || 'default',
-                  content: props.builderContext.value?.content,
-                },
-                bubbles: true,
-              })
-            );
-          }
+      if (rootRef) {
+        rootRef.dispatchEvent(
+          new CustomEvent('builder.variantLoaded', {
+            detail: {
+              variant: variant || 'default',
+              content: props.builderContext.value?.content,
+            },
+            bubbles: true,
+          })
+        );
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && rootRef) {
+              rootRef.dispatchEvent(
+                new CustomEvent('builder.variantDisplayed', {
+                  detail: {
+                    variant: variant || 'default',
+                    content: props.builderContext.value?.content,
+                  },
+                  bubbles: true,
+                })
+              );
+            }
+          });
         });
-      });
 
-      observer.observe(rootRef);
+        observer.observe(rootRef);
+      }
     }
 
     state.unsubscriber = unsub;
