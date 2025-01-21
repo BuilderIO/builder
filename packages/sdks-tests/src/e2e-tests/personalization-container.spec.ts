@@ -60,7 +60,7 @@ const initializeUserAttributes = async (
   return { page };
 };
 
-test.describe.only('Personalization Container', () => {
+test.describe('Personalization Container', () => {
   test.describe('entire page', () => {
     const TEXTS = {
       DEFAULT_CONTENT: 'Default',
