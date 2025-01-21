@@ -225,7 +225,10 @@ export const PAGES: Record<string, Page> = {
     content: null as unknown as BuilderContent,
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
-  '/variant-containers': { content: VARIANT_CONTAINERS, target: 'react-sdk-next-15-app' },
+  '/variant-containers': {
+    content: VARIANT_CONTAINERS,
+    target: ['react-sdk-next-15-app', 'gen1-next15-app'],
+  },
 } as const;
 
 export type Path = keyof typeof PAGES;
