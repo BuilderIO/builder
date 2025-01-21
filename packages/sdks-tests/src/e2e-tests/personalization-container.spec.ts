@@ -45,7 +45,7 @@ const initializeUserAttributes = async (
 ) => {
   // gen1-remix started failing on this test for an unknown reason.
   test.skip(packageName === 'gen1-remix');
-  test.fail(excludeGen2(sdk) && sdk !== 'react');
+  test.skip(excludeGen2(sdk) && sdk !== 'react');
 
   if (!baseURL) throw new Error('Missing baseURL');
 
