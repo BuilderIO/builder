@@ -76,6 +76,7 @@ import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
 import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
 import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
+import { VARIANT_CONTAINERS } from './variant-containers.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -145,7 +146,16 @@ export const PAGES: Record<string, Page> = {
   '/text-eval': { content: textEval },
   '/state-binding': { content: stateBinding },
   '/nested-symbols': { content: nestedSymbols },
-  '/personalization-container': { content: personalizatContainer, target: 'gen1' },
+  '/personalization-container': {
+    content: personalizatContainer,
+    target: [
+      'gen1',
+      'react',
+      'react-sdk-next-14-app',
+      'react-sdk-next-15-app',
+      'react-sdk-next-pages',
+    ],
+  },
   '/editing-styles': { content: EDITING_STYLES, isGen1VisualEditingTest: true },
   '/video': { content: video },
   '/repeat-items-bindings': { content: REPEAT_ITEMS_BINDINGS },
@@ -215,6 +225,7 @@ export const PAGES: Record<string, Page> = {
     content: null as unknown as BuilderContent,
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
+  '/variant-containers': { content: VARIANT_CONTAINERS, target: 'react-sdk-next-15-app' },
 } as const;
 
 export type Path = keyof typeof PAGES;

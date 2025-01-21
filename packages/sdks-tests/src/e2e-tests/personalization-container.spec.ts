@@ -160,4 +160,16 @@ test.describe('Personalization Container', () => {
       });
     }
   });
+
+  test('setClientUserAttributes and builder.setUserAttributes sets cookie and renders variant after the first render', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(!['react-sdk-next-15-app', 'gen1-next15-app'].includes(packageName));
+    await page.goto('/variant-containers');
+
+    await expect(page.getByText('My tablet content')).toBeVisible();
+    await expect(page.getByText('My mobile content updated')).not.toBeVisible();
+    await expect(page.getByText('My default content')).not.toBeVisible();
+  });
 });

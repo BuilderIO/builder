@@ -17,6 +17,12 @@ if (typeof window !== 'undefined') {
   ) {
     builder.canTrack = false;
   }
+
+  if (window.location.pathname.includes('variant-containers')) {
+    builder.setUserAttributes({
+      device: 'tablet',
+    });
+  }
 }
 
 type BuilderPageProps = any;
@@ -61,5 +67,16 @@ export function RenderBuilderContent(props: BuilderPageProps) {
     }
   }, []);
 
-  return props.content ? <BuilderComponent {...props} /> : <DefaultErrorPage statusCode={404} />;
+  const extraContent = pathname.includes('variant-containers') ? (
+    <button onClick={() => builder.setUserAttributes({ device: 'mobile' })}>click me</button>
+  ) : null;
+
+  return props.content ? (
+    <>
+      <BuilderComponent {...props} />
+      {extraContent}
+    </>
+  ) : (
+    <DefaultErrorPage statusCode={404} />
+  );
 }
