@@ -5,6 +5,7 @@ import {
   onUnMount,
   Show,
   useMetadata,
+  useRef,
   useStore,
 } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
@@ -12,6 +13,7 @@ import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
 import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
 import { isEditing } from '../../functions/is-editing.js';
+import { isPreviewing } from '../../functions/is-previewing.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { userAttributesService } from '../../helpers/user-attributes.js';
 import {
@@ -29,6 +31,7 @@ useMetadata({
 export default function PersonalizationContainer(
   props: PersonalizationContainerProps
 ) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const state = useStore({
     userAttributes: userAttributesService.getUserAttributes(),
     scriptStr: getPersonalizationScript(
@@ -79,6 +82,37 @@ export default function PersonalizationContainer(
       }
     );
 
+    if (!(isEditing() || isPreviewing())) {
+      const variant = state.filteredVariants[0];
+      rootRef?.dispatchEvent(
+        new CustomEvent('builder.variantLoaded', {
+          detail: {
+            variant: variant || 'default',
+            content: props.builderContext.value?.content,
+          },
+          bubbles: true,
+        })
+      );
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            rootRef?.dispatchEvent(
+              new CustomEvent('builder.variantDisplayed', {
+                detail: {
+                  variant: variant || 'default',
+                  content: props.builderContext.value?.content,
+                },
+                bubbles: true,
+              })
+            );
+          }
+        });
+      });
+
+      observer.observe(rootRef);
+    }
+
     state.unsubscriber = unsub;
   });
 
@@ -91,6 +125,7 @@ export default function PersonalizationContainer(
   return (
     <Fragment>
       <div
+        ref={rootRef}
         {...props.attributes}
         class={`builder-personalization-container ${props.attributes?.class || ''}`}
       >
