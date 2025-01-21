@@ -163,6 +163,76 @@ const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
   },
 });
 
+const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'Blocks') {
+        json.imports.push({
+          imports: { memo: 'memo' },
+          path: 'react',
+        });
+        
+        json.hooks.init = {
+          code: `
+            ${json.hooks.init?.code || ''}
+            const renderItem = React.useCallback(({ item }: { item: any }) => (
+              <Block
+                block={item}
+                linkComponent={props.linkComponent}
+                context={props.context || builderContext}
+                registeredComponents={
+                  props.registeredComponents || componentsContext?.registeredComponents
+                }
+              />
+            ), [
+              props.linkComponent,
+              props.context,
+              props.registeredComponents,
+              builderContext,
+              componentsContext?.registeredComponents
+            ]);
+          
+            // Memoize keyExtractor
+            const keyExtractor = React.useCallback((item: any) => 
+              item.id.toString()
+            , []);
+          `,
+        };
+        
+        json.children[0].children[0].children[0] = {
+          '@type': '@builder.io/mitosis/node',
+          name: 'FlatList',
+          meta: {},
+          scope: {},
+          properties: {},
+          bindings: {
+            data: { code: 'props.blocks', type: 'single' },
+            renderItem: { code: 'renderItem', type: 'single' },
+            keyExtractor: { code: 'keyExtractor', type: 'single' },
+            removeClippedSubviews: { code: 'true', type: 'single' },
+            maxToRenderPerBatch: { code: '10', type: 'single' },
+            windowSize: { code: '5', type: 'single' },
+            initialNumToRender: { code: '5', type: 'single' }
+          },
+          children: []
+        }
+      }
+      return json;
+    },
+  },
+  code: {
+    post: (code, json) => {
+      if (json.name === 'Blocks') {
+        return code.replace(
+          'export default Blocks',
+          'export default memo(Blocks)'
+        );
+      }
+      return code;
+    },
+  },
+});
+
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -892,6 +962,7 @@ module.exports = {
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN,
+        MEMOIZING_BLOCKS_COMPONENT_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
