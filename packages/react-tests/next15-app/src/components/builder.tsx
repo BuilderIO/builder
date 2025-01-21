@@ -67,16 +67,5 @@ export function RenderBuilderContent(props: BuilderPageProps) {
     }
   }, []);
 
-  const extraContent = pathname.includes('variant-containers') ? (
-    <button onClick={() => builder.setUserAttributes({ device: 'mobile' })}>click me</button>
-  ) : null;
-
-  return props.content ? (
-    <>
-      <BuilderComponent {...props} />
-      {extraContent}
-    </>
-  ) : (
-    <DefaultErrorPage statusCode={404} />
-  );
+  return props.content ? <BuilderComponent {...props} /> : <DefaultErrorPage statusCode={404} />;
 }
