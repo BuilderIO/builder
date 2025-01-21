@@ -38,10 +38,14 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Slot, ...slotComponentInfo },
     { component: Symbol, ...symbolComponentInfo },
     { component: Text, ...textComponentInfo },
-    {
-      component: PersonalizationContainer,
-      ...personalizationContainerComponentInfo,
-    },
+    ...(TARGET === 'react'
+      ? [
+          {
+            component: PersonalizationContainer,
+            ...personalizationContainerComponentInfo,
+          },
+        ]
+      : []),
     ...(TARGET === 'rsc'
       ? []
       : [

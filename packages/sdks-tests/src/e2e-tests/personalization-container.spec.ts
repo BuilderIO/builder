@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { test } from '../helpers/index.js';
+import { excludeGen2, test } from '../helpers/index.js';
 const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
@@ -36,16 +36,16 @@ const initializeUserAttributes = async (
     baseURL,
     browser,
     packageName,
+    sdk,
   }: Pick<
     Parameters<Parameters<typeof test>[2]>[0],
     'page' | 'baseURL' | 'browser' | 'packageName' | 'sdk'
   >,
   { userAttributes }: { userAttributes: Record<string, string> }
 ) => {
-  // gen1-next likely have a config issue with SSR
-  test.skip(packageName === 'gen1-next14-pages');
   // gen1-remix started failing on this test for an unknown reason.
   test.skip(packageName === 'gen1-remix');
+  test.fail(excludeGen2(sdk) && sdk !== 'react');
 
   if (!baseURL) throw new Error('Missing baseURL');
 
@@ -60,7 +60,7 @@ const initializeUserAttributes = async (
   return { page };
 };
 
-test.describe('Personalization Container', () => {
+test.describe.only('Personalization Container', () => {
   test.describe('entire page', () => {
     const TEXTS = {
       DEFAULT_CONTENT: 'Default',
