@@ -31,13 +31,13 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   );
   const rootRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(isBeingHydrated);
-  const [update, setUpdate] = useState(0);
+  const [_, setUpdate] = useState(0);
   const builderStore = useContext(BuilderStoreContext);
 
   useEffect(() => {
     setIsClient(true);
     const subscriber = builder.userAttributesChanged.subscribe(() => {
-      setUpdate(update + 1);
+      setUpdate(prev => prev + 1);
     });
     let unsubs = [() => subscriber.unsubscribe()];
 
