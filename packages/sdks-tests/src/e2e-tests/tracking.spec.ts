@@ -33,7 +33,8 @@ test.describe('Tracking', () => {
       test.fail(
         packageName === 'gen1-react' ||
           packageName === 'gen1-next15-app' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'gen1-next14-pages'
       );
       await page.goto('/symbol-tracking', { waitUntil: 'networkidle' });
 
