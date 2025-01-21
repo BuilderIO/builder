@@ -36,7 +36,7 @@ export default function PersonalizationContainer(
       props.builderBlock?.id || 'none',
       props.builderContext.value?.rootState?.locale as string | undefined
     ),
-    unsub: null as null | (() => void),
+    unsubscriber: null as null | (() => void),
     shouldRenderVariants: checkShouldRenderVariants(
       props.variants,
       getDefaultCanTrack(props.builderContext.value?.canTrack)
@@ -79,12 +79,12 @@ export default function PersonalizationContainer(
       }
     );
 
-    state.unsub = unsub;
+    state.unsubscriber = unsub;
   });
 
   onUnMount(() => {
-    if (state.unsub) {
-      state.unsub();
+    if (state.unsubscriber) {
+      state.unsubscriber();
     }
   });
 
