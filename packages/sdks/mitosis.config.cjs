@@ -718,6 +718,51 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
   },
 });
 
+const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
+  code: {
+    post: (code, json) => {
+      if (['BuilderText', 'BuilderEmbed', 'CustomCode'].includes(json.name)) {
+        code =
+          `import { DomSanitizer } from "@angular/platform-browser";\nimport { ChangeDetectionStrategy } from "@angular/core";\n` +
+          code;
+
+        // add changeDetection: ChangeDetectionStrategy.OnPush
+        const changeDetectionIndex = code.indexOf('selector:');
+        if (changeDetectionIndex !== -1) {
+          code =
+            code.slice(0, changeDetectionIndex) +
+            `changeDetection: ChangeDetectionStrategy.OnPush,\n` +
+            code.slice(changeDetectionIndex);
+        }
+
+        // add constructor with sanitizer
+        const constructorIndex = code.indexOf('constructor');
+        if (constructorIndex === -1) {
+          // not found
+          const ngOnChangesIndex = code.indexOf('ngOnChanges');
+          code =
+            code.slice(0, ngOnChangesIndex) +
+            `constructor(protected sanitizer: DomSanitizer) {}\n` +
+            code.slice(ngOnChangesIndex);
+        } else {
+          throw new Error(
+            'constructor found which should not be here. If you see this, please fix the ANGULAR_TEXT_MARK_SAFE_HTML Plugin.'
+          );
+        }
+
+        const variableName = code.match(/\[innerHTML\]="([^"]+)"/)?.[1];
+        if (variableName) {
+          code = code.replace(
+            `[innerHTML]="${variableName}"`,
+            `[innerHTML]="sanitizer.bypassSecurityTrustHtml(${variableName})"`
+          );
+        }
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -746,6 +791,7 @@ module.exports = {
         ANGULAR_ADD_UNUSED_PROP_TYPES,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
+        ANGULAR_MARK_SAFE_INNER_HTML,
       ],
     },
     solid: {

@@ -112,7 +112,7 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
       showPlaceholder = false;
     }
 
-    let key = dynamic ? undefined : [model, entry].join(':');
+    let key = dynamic ? this.props.builderBlock?.id : [model, entry].join(':');
     const dataString = data && size(data) && hash(data);
 
     if (key && dataString && dataString.length < 300) {
