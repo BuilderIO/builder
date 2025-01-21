@@ -8,8 +8,6 @@ test.describe('State binding', () => {
         excludeTestFor({ angular: true }, sdk),
         'Angular Gen2 event binding not working for other blocks than button.'
       );
-      // hydration errors
-      test.fail(packageName === 'gen1-next14-pages');
 
       // flaky, can't `test.fail()`
       test.skip(
