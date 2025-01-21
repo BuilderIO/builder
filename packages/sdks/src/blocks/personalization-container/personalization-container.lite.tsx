@@ -17,6 +17,7 @@ import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { userAttributesService } from '../../helpers/user-attributes.js';
 import {
   checkShouldRenderVariants,
+  getBlocksToRender,
   getPersonalizationScript,
 } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
@@ -38,7 +39,7 @@ export default function PersonalizationContainer(
       props.builderBlock?.id || 'none',
       props.builderContext.value?.rootState?.locale as string | undefined
     ),
-    unsubscriber: null as null | (() => void),
+    unsubscribers: [] as (() => void)[],
     shouldRenderVariants: checkShouldRenderVariants(
       props.variants,
       getDefaultCanTrack(props.builderContext.value?.canTrack)
@@ -59,8 +60,14 @@ export default function PersonalizationContainer(
         );
       });
     },
-    get winningVariant() {
-      return state.filteredVariants[0];
+    get blocksToRender() {
+      return getBlocksToRender({
+        variants: props.variants,
+        fallbackBlocks: props.builderBlock?.children,
+        isHydrated: state.isHydrated,
+        filteredVariants: state.filteredVariants,
+        previewingIndex: props.previewingIndex,
+      });
     },
     get hideVariantsStyleString() {
       return (props.variants || [])
@@ -115,13 +122,11 @@ export default function PersonalizationContainer(
       }
     }
 
-    state.unsubscriber = unsub;
+    state.unsubscribers.push(unsub);
   });
 
   onUnMount(() => {
-    if (state.unsubscriber) {
-      state.unsubscriber();
-    }
+    state.unsubscribers.forEach((unsub) => unsub());
   });
 
   return (
@@ -156,40 +161,11 @@ export default function PersonalizationContainer(
           id={`variants-script-${props.builderBlock?.id}`}
         />
       </Show>
-      <Show
-        when={
-          state.isHydrated &&
-          isEditing() &&
-          typeof props.previewingIndex === 'number' &&
-          props.previewingIndex < (props.variants?.length || 0) &&
-          !state.filteredVariants.length
-        }
-        else={
-          <Show
-            when={state.winningVariant}
-            else={
-              <Blocks
-                blocks={props.builderBlock?.children}
-                parent={props.builderBlock?.id}
-              />
-            }
-          >
-            <Blocks
-              blocks={state.winningVariant?.blocks}
-              parent={props.builderBlock?.id}
-              path={`component.options.variants.${props.variants?.indexOf(
-                state.winningVariant
-              )}.blocks`}
-            />
-          </Show>
-        }
-      >
-        <Blocks
-          blocks={props.variants?.[Number(props.previewingIndex)]?.blocks}
-          parent={props.builderBlock?.id}
-          path={`component.options.variants.${props.previewingIndex}.blocks`}
-        />
-      </Show>
+      <Blocks
+        blocks={state.blocksToRender.blocks}
+        parent={props.builderBlock?.id}
+        path={state.blocksToRender.path}
+      />
     </div>
   );
 }
