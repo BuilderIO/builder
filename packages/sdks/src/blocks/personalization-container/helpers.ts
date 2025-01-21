@@ -45,10 +45,8 @@ export function getPersonalizationScript(
         }
         function removeVariants() {
           variants.forEach(function (template, index) {
-            console.log("removing variant", "${blockId}-" + index);
             document.querySelector('template[data-variant-id="' + "${blockId}-" + index + '"]').remove();
           });
-          console.log("removing variants script");
           document.querySelector('script[data-id="variants-script-${blockId}"]').remove();
           document.querySelector('style[data-id="variants-styles-${blockId}"]').remove();
         }
@@ -80,7 +78,6 @@ export function getPersonalizationScript(
         }
         if (winningVariantIndex !== -1) {
           var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}-" + winningVariantIndex + '"]');
-          console.log("winningVariant", winningVariant);
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
