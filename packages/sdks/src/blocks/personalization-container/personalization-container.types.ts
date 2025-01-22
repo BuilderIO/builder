@@ -1,6 +1,6 @@
-import type { Query } from '../../functions/filter-with-custom-targeting.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { BuilderDataProps } from '../../types/builder-props.js';
+import type { Query } from './helpers/inlined-fns.js';
 
 export type PersonalizationContainerProps = {
   children?: any;

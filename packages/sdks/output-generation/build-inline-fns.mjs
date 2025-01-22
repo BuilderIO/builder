@@ -30,21 +30,23 @@ const buildInlineFns = async () => {
     sync: true,
   });
 
-  if (foundFiles.length > 1) {
+  if (foundFiles.length !== 2) {
     throw new Error(
-      'Multiple inline functions files found. Expected only one file named `inlined-fns.ts` containing stringified function exports.'
+      `Number of inline functions files found ${foundFiles.length} is not equal to 2. Expected only two files named \`inlined-fns.ts\` containing stringified function exports.`
     );
   }
 
-  const inlineFnsFile = foundFiles[0];
+  const inlineFnsFiles = foundFiles.map((file) => {
+    if (!file || !fs.existsSync(file)) {
+      throw new Error(
+        'No inline functions file found. Expected a file named `inlined-fns.ts` containing stringified function exports.'
+      );
+    }
 
-  if (!inlineFnsFile || !fs.existsSync(inlineFnsFile)) {
-    throw new Error(
-      'No inline functions file found. Expected a file named `inlined-fns.ts` containing stringified function exports.'
-    );
-  }
+    console.log(`Found inline functions file at: "${file}".`);
 
-  console.log(`Found inline functions file at: "${inlineFnsFile}".`);
+    return file;
+  });
 
   /**
    *
@@ -61,64 +63,66 @@ const buildInlineFns = async () => {
     return true;
   };
 
-  const newFile = babel.transformFileSync(inlineFnsFile, {
-    plugins: [
-      [tsPlugin, { isTSX: true }],
-      /** @returns {InlinePlugin} */
-      () => ({
-        visitor: {
-          MemberExpression(path, _context) {
-            if (!checkIsToStringExport(path)) return;
+  for (const inlineFnsFile of inlineFnsFiles) {
+    const newFile = babel.transformFileSync(inlineFnsFile, {
+      plugins: [
+        [tsPlugin, { isTSX: true }],
+        /** @returns {InlinePlugin} */
+        () => ({
+          visitor: {
+            MemberExpression(path, _context) {
+              if (!checkIsToStringExport(path)) return;
 
-            const nameOfFn = path.node.object.name;
+              const nameOfFn = path.node.object.name;
 
-            const program = path.findParent((p) => p.isProgram());
+              const program = path.findParent((p) => p.isProgram());
 
-            /**
-             * @type {babel.NodePath<babel.types.FunctionDeclaration> | null}
-             */
-            let fnNode = null;
+              /**
+               * @type {babel.NodePath<babel.types.FunctionDeclaration> | null}
+               */
+              let fnNode = null;
 
-            program.traverse({
-              FunctionDeclaration(path) {
-                if (nameOfFn !== path.node.id.name) return;
+              program.traverse({
+                FunctionDeclaration(path) {
+                  if (nameOfFn !== path.node.id.name) return;
 
-                fnNode = path;
-              },
-            });
+                  fnNode = path;
+                },
+              });
 
-            if (!fnNode)
-              throw new Error('No function node found for ' + nameOfFn);
+              if (!fnNode)
+                throw new Error('No function node found for ' + nameOfFn);
 
-            const generated = generate.default(fnNode.node).code;
-            const stringifiedNode = babel.transformSync(generated, {
-              filename: 'generated.js',
-              configFile: false,
-              babelrc: false,
-              comments: false,
-              presets: [[tsPreset, { isTSX: true, allExtensions: true }]],
-            }).code;
+              const generated = generate.default(fnNode.node).code;
+              const stringifiedNode = babel.transformSync(generated, {
+                filename: 'generated.js',
+                configFile: false,
+                babelrc: false,
+                comments: false,
+                presets: [[tsPreset, { isTSX: true, allExtensions: true }]],
+              }).code;
 
-            const parentToReplace = path.findParent((p) =>
-              t.isVariableDeclarator(p.parent)
-            );
+              const parentToReplace = path.findParent((p) =>
+                t.isVariableDeclarator(p.parent)
+              );
 
-            parentToReplace.replaceWith(t.stringLiteral(stringifiedNode));
+              parentToReplace.replaceWith(t.stringLiteral(stringifiedNode));
 
-            /**
-             * @type {babel.NodePath<babel.types.FunctionDeclaration>}
-             */
-            const k = fnNode;
-            k.remove();
+              /**
+               * @type {babel.NodePath<babel.types.FunctionDeclaration>}
+               */
+              const k = fnNode;
+              k.remove();
+            },
           },
-        },
-      }),
-    ],
-  });
+        }),
+      ],
+    });
 
-  console.log('Writing inline functions to file...');
+    console.log('Writing inline functions to file...');
 
-  fs.writeFileSync(inlineFnsFile, newFile.code);
+    fs.writeFileSync(inlineFnsFile, newFile.code);
+  }
 
   console.log('Done building inline functions.');
 };

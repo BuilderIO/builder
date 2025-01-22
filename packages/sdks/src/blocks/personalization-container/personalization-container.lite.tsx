@@ -10,13 +10,13 @@ import {
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
 import InlinedStyles from '../../components/inlined-styles.lite.jsx';
-import { filterWithCustomTargeting } from '../../functions/filter-with-custom-targeting.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { userAttributesService } from '../../helpers/user-attributes.js';
 import {
   checkShouldRenderVariants,
+  filterWithCustomTargeting,
   getBlocksToRender,
   getPersonalizationScript,
 } from './helpers.js';

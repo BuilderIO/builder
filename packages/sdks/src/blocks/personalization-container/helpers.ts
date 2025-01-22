@@ -1,10 +1,37 @@
 import { TARGET } from '../../constants/target.js';
-import { filterWithCustomTargetingScript } from '../../functions/filter-with-custom-targeting.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
-import { USER_ATTRIBUTES_COOKIE_NAME } from '../../helpers/user-attributes.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import {
+  FILTER_WITH_CUSTOM_TARGETING_SCRIPT,
+  PERSONALIZATION_SCRIPT,
+} from './helpers/inlined-fns.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
+
+export type UserAttributes = {
+  date?: string | Date;
+  urlPath?: string;
+  [key: string]: any;
+};
+
+type QueryOperator =
+  | 'is'
+  | 'isNot'
+  | 'contains'
+  | 'startsWith'
+  | 'endsWith'
+  | 'greaterThan'
+  | 'lessThan'
+  | 'greaterThanOrEqualTo'
+  | 'lessThanOrEqualTo';
+
+type QueryValue = string | number | boolean | Array<string | number | boolean>;
+
+export type Query = {
+  property: string;
+  operator: QueryOperator;
+  value: QueryValue;
+};
 
 export function checkShouldRenderVariants(
   variants: PersonalizationContainerProps['variants'],
@@ -74,76 +101,22 @@ export function getBlocksToRender(options: {
   };
 }
 
-export function getPersonalizationScript(
+export const getPersonalizationScript = (
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
   locale?: string
-) {
+) => {
   return `
-      (function() {
-         if (!navigator.cookieEnabled) {
-            return;
-          } 
+    ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
+    ${PERSONALIZATION_SCRIPT}
+    getPersonalizedVariant(${JSON.stringify(variants)}, "${blockId}"${locale ? `, "${locale}"` : ''})
+  `;
+};
 
-        function getCookie(name) {
-          var nameEQ = name + "=";
-          var ca = document.cookie.split(';');
-          for(var i=0;i < ca.length;i++) {
-              var c = ca[i];
-              while (c.charAt(0)==' ') c = c.substring(1,c.length);
-              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-          }
-          return null;
-        }
-        function removeVariants() {
-          variants.forEach(function (template, index) {
-            document.querySelector('template[data-variant-id="' + "${blockId}-" + index + '"]').remove();
-          });
-          document.querySelector('script[data-id="variants-script-${blockId}"]').remove();
-          document.querySelector('style[data-id="variants-styles-${blockId}"]').remove();
-        }
-
-        var attributes = JSON.parse(getCookie("${USER_ATTRIBUTES_COOKIE_NAME}") || "{}");
-        ${locale ? `attributes.locale = "${locale}";` : ''}
-        var variants = ${JSON.stringify(
-          variants?.map((v) => ({
-            query: v.query,
-            startDate: v.startDate,
-            endDate: v.endDate,
-          }))
-        )};
-        var winningVariantIndex = variants.findIndex(function(variant) {
-          return filterWithCustomTargeting(
-            attributes,
-            variant.query,
-            variant.startDate,
-            variant.endDate
-          );
-        });
-        var isDebug = location.href.includes('builder.debug=true');
-        if (isDebug) {
-          console.debug('PersonalizationContainer', {
-            attributes: attributes,
-            variants: variants,
-            winningVariantIndex: winningVariantIndex,
-            });
-        }
-        if (winningVariantIndex !== -1) {
-          var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}-" + winningVariantIndex + '"]');
-          if (winningVariant) {
-            var parentNode = winningVariant.parentNode;
-            var newParent = parentNode.cloneNode(false);
-            newParent.appendChild(winningVariant.content.firstChild);
-            newParent.appendChild(winningVariant.content.lastChild);
-            parentNode.parentNode.replaceChild(newParent, parentNode);
-            if (isDebug) {
-              console.debug('PersonalizationContainer', 'Winning variant Replaced:', winningVariant);
-            }
-          }
-        } else if (variants.length > 0) {
-          removeVariants();
-        }
-        ${filterWithCustomTargetingScript}
-      })();
-    `.replace(/\s+/g, ' ');
-}
+/**
+ * Converts the minified .toString() back to the original function.
+ * This is to done to maintain single `filterWithCustomTargeting` function.
+ */
+export const filterWithCustomTargeting = new Function(
+  `return ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}`
+)();
