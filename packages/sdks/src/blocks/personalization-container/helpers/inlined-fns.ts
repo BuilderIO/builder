@@ -4,7 +4,7 @@
  */
 
 import type { Query, UserAttributes } from '../helpers.js';
-import { type PersonalizationContainerProps } from '../personalization-container.types';
+import { type PersonalizationContainerProps } from '../personalization-container.types.js';
 
 function getPersonalizedVariant(
   variants: PersonalizationContainerProps['variants'],
