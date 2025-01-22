@@ -107,9 +107,11 @@ export const getPersonalizationScript = (
   locale?: string
 ) => {
   return `
+  (function() {
     ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
     ${PERSONALIZATION_SCRIPT}
     getPersonalizedVariant(${JSON.stringify(variants)}, "${blockId}"${locale ? `, "${locale}"` : ''})
+  })();
   `;
 };
 
