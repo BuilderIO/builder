@@ -108,11 +108,16 @@ const buildInlineFns = async () => {
 
               parentToReplace.replaceWith(t.stringLiteral(stringifiedNode));
 
-              /**
-               * @type {babel.NodePath<babel.types.FunctionDeclaration>}
-               */
-              const k = fnNode;
-              k.remove();
+              // Only remove the function if it's not directly exported
+              const exportParent = fnNode.findParent((p) =>
+                p.isExportNamedDeclaration()
+              );
+              if (
+                !exportParent ||
+                !t.isFunctionDeclaration(exportParent.node.declaration)
+              ) {
+                fnNode.remove();
+              }
             },
           },
         }),

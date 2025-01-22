@@ -115,10 +115,4 @@ export const getPersonalizationScript = (
   `;
 };
 
-/**
- * Converts the minified .toString() back to the original function.
- * This is to done to maintain single `filterWithCustomTargeting` function.
- */
-export const filterWithCustomTargeting = new Function(
-  `return ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}`
-)();
+export { filterWithCustomTargeting } from './helpers/inlined-fns.js';
