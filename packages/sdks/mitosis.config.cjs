@@ -166,12 +166,18 @@ const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
 const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
   json: {
     post: (json) => {
+      if (json.name === 'Block') {
+        json.imports.push({
+          imports: { memo: 'memo' },
+          path: 'react',
+        });
+      }
       if (json.name === 'Blocks') {
         json.imports.push({
           imports: { memo: 'memo' },
           path: 'react',
         });
-        
+
         json.hooks.init = {
           code: `
             ${json.hooks.init?.code || ''}
@@ -198,7 +204,7 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
             , []);
           `,
         };
-        
+
         json.children[0].children[0].children[0] = {
           '@type': '@builder.io/mitosis/node',
           name: 'FlatList',
@@ -212,10 +218,10 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
             removeClippedSubviews: { code: 'true', type: 'single' },
             maxToRenderPerBatch: { code: '10', type: 'single' },
             windowSize: { code: '5', type: 'single' },
-            initialNumToRender: { code: '5', type: 'single' }
+            initialNumToRender: { code: '5', type: 'single' },
           },
-          children: []
-        }
+          children: [],
+        };
       }
       return json;
     },
@@ -226,6 +232,12 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
         return code.replace(
           'export default Blocks',
           'export default memo(Blocks)'
+        );
+      }
+      if (json.name === 'Block') {
+        return code.replace(
+          'export default Block',
+          'export default memo(Block)'
         );
       }
       return code;
