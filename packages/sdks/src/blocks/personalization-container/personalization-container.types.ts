@@ -1,6 +1,6 @@
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { BuilderDataProps } from '../../types/builder-props.js';
-import type { Query } from './helpers/inlined-fns.js';
+import type { Query } from './helpers.js';
 
 export type PersonalizationContainerProps = {
   children?: any;
