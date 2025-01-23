@@ -70,7 +70,7 @@ Since Qwik doesn't have hydration, there is no problem with keeping extra DOM el
 </style>
 <div id="losing-var-1" hidden aria-hidden="true" />
 <div id="winning-variant" />
-<div id="loasing-var-2" hidden aria-hidden="true" />
+<div id="losing-var-2" hidden aria-hidden="true" />
 ```
 
 We need to update the styles and HTML attributes to hide the correct variants.
@@ -94,7 +94,7 @@ The intended CSR will first look like this:
 </style>
 <div id="losing-var-1" hidden aria-hidden="true" />
 <div id="winning-variant" />
-<div id="loasing-var-2" hidden aria-hidden="true" />
+<div id="losing-var-2" hidden aria-hidden="true" />
 ```
 
 followed right after by:
@@ -122,7 +122,7 @@ The intended CSR will first look like this:
 </style>
 <div id="losing-var-1" hidden aria-hidden="true" />
 <div id="winning-variant" />
-<div id="loasing-var-2" hidden aria-hidden="true" />
+<div id="losing-var-2" hidden aria-hidden="true" />
 ```
 
 followed right after by:
@@ -130,7 +130,7 @@ followed right after by:
 ```html
 <div id="losing-var-1" hidden aria-hidden="true" />
 <div id="winning-variant" />
-<div id="loasing-var-2" hidden aria-hidden="true" />
+<div id="losing-var-2" hidden aria-hidden="true" />
 ```
 
 ### CSR Modifications
