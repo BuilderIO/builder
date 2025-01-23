@@ -19,7 +19,7 @@ View the [Builder.io developer docs](https://www.builder.io/c/docs/developers) f
 
 - To understand the overall architecture of the project, read our [ARCHITECTURE](./docs/ARCHITECTURE.md) guide.
 - To contribute, read our [DEVELOP](./docs/DEVELOP.md) guide.
-- To publish, read our [PUBLISHING](./docs/PUBLISHING.md) guide.
+- To publish, read our [PUBLISHING](./PUBLISHING.md) guide.
 
 ## Fetch
 
