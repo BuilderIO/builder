@@ -1,5 +1,35 @@
 # @builder.io/react
 
+## 8.0.4
+
+### Patch Changes
+
+- b0aeaaa: Fix: Dynamic symbols not rendering properly in Visual Editor.
+
+## 8.0.3
+
+### Patch Changes
+
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+- Updated dependencies [306f8d5]
+- Updated dependencies [306f8d5]
+  - @builder.io/sdk@6.0.2
+
+## 8.0.2
+
+### Patch Changes
+
+- c822422: Fix: symbols will now show published content instead of preview/autosave content while editing a page
+- Updated dependencies [c822422]
+  - @builder.io/sdk@6.0.1
+
+## 8.0.1
+
+### Patch Changes
+
+- 94fdaee: Fix: clearing image from content input not reflecting in symbols without page refresh.
+
 ## 8.0.0
 
 ### Major Changes
@@ -9,7 +39,7 @@
 
 ### Patch Changes
 
-- 06b1124: Fix: Content API invocations will have `includeRefs` set to `true` by default.
+- 06b1124: Fix: remove `enrich=true` default option passed to the API and instead use `includeRefs=true` as default
 - a8009ba: Fix: hydration errors in Next v15 while a user is editing
 - 409aec9: Feat: add `meta` type to custom components
 - 40d572d: Renders Symbol correctly when apiEndpoint is 'content'

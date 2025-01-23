@@ -549,6 +549,17 @@ export interface Input {
   autoFocus?: boolean;
   subFields?: readonly Input[];
   /**
+   * When input is of `type` `object`, use this field to collapse multiple inputs
+   * in the Visual Editor by default and preserve screen space.
+   */
+  folded?: boolean;
+  /**
+   * When input is of `type` `object`, provide guidance in the Visual Editor
+   * on how to edit this object's contents.
+   */
+  keysHelperText?: string;
+
+  /**
    * Additional text to render in the UI to give guidance on how to use this
    *
    * @example
@@ -2630,7 +2641,7 @@ export class Builder {
         }
       }
     }
-    if (this.preview) {
+    if (this.preview && this.previewingModel === queue?.[0]?.model) {
       queryParams.preview = 'true';
     }
     const hasParams = Object.keys(queryParams).length > 0;

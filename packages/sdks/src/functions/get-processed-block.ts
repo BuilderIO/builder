@@ -100,17 +100,11 @@ const evaluateBindings = ({
 export function getProcessedBlock({
   block,
   context,
-  shouldEvaluateBindings,
   localState,
   rootState,
   rootSetState,
 }: {
   block: BuilderBlock;
-  /**
-   * In some cases, we want to avoid evaluating bindings and only want framework-specific block transformation. It is
-   * also sometimes too early to consider bindings, e.g. when we might be looking at a repeated block.
-   */
-  shouldEvaluateBindings: boolean;
 } & Pick<
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
@@ -122,15 +116,11 @@ export function getProcessedBlock({
 
   transformedBlock = transformBlock(transformedBlock);
 
-  if (shouldEvaluateBindings) {
-    return evaluateBindings({
-      block: transformedBlock,
-      localState,
-      rootState,
-      rootSetState,
-      context,
-    });
-  } else {
-    return transformedBlock;
-  }
+  return evaluateBindings({
+    block: transformedBlock,
+    localState,
+    rootState,
+    rootSetState,
+    context,
+  });
 }

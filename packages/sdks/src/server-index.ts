@@ -17,7 +17,11 @@ export type { ContentVariantsPrps as ContentProps } from './components/content-v
 /**
  * General Builder types
  */
-export type { RegisteredComponent } from './context/types.js';
+export type {
+  BuilderContextInterface,
+  RegisteredComponent,
+  RegisteredComponents,
+} from './context/types.js';
 export type { BuilderBlock } from './types/builder-block.js';
 export type { BuilderContent } from './types/builder-content.js';
 export type { ComponentInfo } from './types/components.js';
