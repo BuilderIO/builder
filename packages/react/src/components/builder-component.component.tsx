@@ -103,9 +103,11 @@ if (globalThis.fetch) fetch = globalThis.fetch;
 fetch ??= require('node-fetch');
 
 const sizeMap = {
+  xlarge: 'xlarge',
   desktop: 'large',
   tablet: 'medium',
   mobile: 'small',
+  xsmall: 'xsmall',
 };
 
 const fetchCache: { [key: string]: any } = {};
