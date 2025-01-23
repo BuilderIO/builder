@@ -93,14 +93,7 @@ export default function Symbol(props: SymbolProps) {
       react: () => {},
       reactNative: () => {},
       solid: () => {},
-      angular: () => {
-        /** this is a hack to include the input in angular */
-        const _ = {
-          a: props.dataOnly,
-          b: props.inheritState,
-          c: props.renderToLiquid,
-        };
-      },
+      angular: () => {},
 
       default: () => {
         state.setContent();
