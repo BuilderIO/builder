@@ -660,6 +660,21 @@ const ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE = `
 `;
 
 /**
+ * Filters props to only include those explicitly defined as @Input() in the Angular component.
+ * This prevents "Input property X is not annotated with @Input()" errors that occur when passing
+ * unused props, since Mitosis only annotates props actually used by the component.
+ */
+const FN_TO_FILTER_PROPS_THAT_WRAPPER_NEEDS = `
+  private filterPropsThatWrapperNeeds(allProps: any) {
+    const definedPropNames = reflectComponentType(this.Wrapper).inputs.map(prop => prop.propName);
+    return definedPropNames.reduce((acc, propName) => {
+      acc[propName] = allProps[propName];
+      return acc;
+    }, {});
+  }
+`;
+
+/**
  * Checks if the custom component expects `attributes` prop.
  * If yes, it passes `attributes` as an `@Input()` to the custom component.
  * If no, it attaches `attributes` to the direct child element of interactive element.
@@ -683,10 +698,18 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
           'attributes: this.attributes,',
           '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.attributes } : {})'
         );
+
+        // extract the props that Wrapper needs
+        code = code.replaceAll(
+          '...this.wrapperProps',
+          '...this.filterPropsThatWrapperNeeds(this.wrapperProps)'
+        );
+
         const ngOnChangesIndex = code.indexOf('ngOnChanges');
         code =
           code.slice(0, ngOnChangesIndex) +
           ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE +
+          FN_TO_FILTER_PROPS_THAT_WRAPPER_NEEDS +
           code.slice(ngOnChangesIndex);
 
         code = code.replace(
