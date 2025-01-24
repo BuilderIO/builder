@@ -78,7 +78,7 @@ Legend:
 | A/B Tests                      | ✅   | ✅    |                                          | ✅  | ✅                  | ✅     | ✅    | 🏗      |         |
 | A/B Tests with SSG/SSR Support | ✅   | ✅    |                                          | ✅  | ❌ (Does not apply) | ✅     | ✅    | 🏗      |         |
 | SSR                            | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
-| Children for Custom Components | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | 🏗      |         |
+| Children for Custom Components | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Dynamic Data Bindings          | ✅   | ✅    | ✅ (cannot update bindings after SSR)    | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | View Current Draft             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Symbols                        | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
@@ -86,7 +86,7 @@ Legend:
 | Custom fonts                   | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
 | Heatmaps                       | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Tracking/Analytics             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
-| Animations                     | ✅   | ✅    | 🏗                                       | ✅  | 🏗                  | ✅     | ✅    | 🏗      |         |
+| Animations                     | ✅   | ✅    | 🏗                                       | ✅  | 🏗                  | ✅     | ✅    | ✅      |         |
 | Custom Actions/Events          | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Builder's global `state`       | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Widgets                        | 🏗   | ✅    | ✅                                       | 🏗  | 🏗                  | 🏗     | 🏗    | 🏗      |         |
