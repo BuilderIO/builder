@@ -21,14 +21,9 @@ const sizes = {
     max: 991,
   },
   large: {
-    min: 990,
-    default: 991,
+    min: 992,
+    default: 993,
     max: 1200,
-  },
-  xlarge: {
-    min: 1201,
-    default: 1400,
-    max: 2000,
   },
   getWidthForSize(size: Size) {
     return this[size].default;
@@ -40,7 +35,7 @@ const sizes = {
         return size;
       }
     }
-    return 'xlarge';
+    return 'large';
   },
 };
 export type Sizes = typeof sizes;

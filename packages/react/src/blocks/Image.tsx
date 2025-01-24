@@ -144,11 +144,6 @@ export const getSizes = (
       generatedSizes.push(widthAndQuery);
     }
 
-    if (block.responsiveStyles?.xlarge?.width) {
-      const width = block.responsiveStyles.xlarge.width.replace('%', 'vw');
-      generatedSizes.push(width);
-    }
-
     if (block.responsiveStyles?.large?.width) {
       const width = block.responsiveStyles.large.width.replace('%', 'vw');
       generatedSizes.push(width);

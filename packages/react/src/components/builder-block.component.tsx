@@ -181,34 +181,16 @@ export class BuilderBlock extends React.Component<
     const reversedNames = sizeNames.slice().reverse();
     const styles: any = {};
     if (responsiveStyles) {
-      const contentHasLargeBreakpoint = Boolean(
-        this.privateState.context.builderContent?.meta?.breakpoints?.large
-      );
       const contentHasXSmallBreakpoint = Boolean(
         this.privateState.context.builderContent?.meta?.breakpoints?.xsmall
       );
       for (const size of reversedNames) {
-        if (!contentHasLargeBreakpoint && size === 'xlarge') {
-          // Only apply xlarge styles if xlarge breakpoint is enabled on content
-          continue;
-        }
-
         if (!contentHasXSmallBreakpoint && size === 'xsmall') {
           // Only apply xsmall styles if xsmall breakpoint is enabled on content
           continue;
         }
 
-        if (size === 'xlarge') {
-          if (!this.props.emailMode) {
-            styles[`&.builder-block`] = Object.assign(
-              {},
-              // apply large styles first so they act as fallback styles for xlarge
-              responsiveStyles.large || {},
-              responsiveStyles[size],
-              initialAnimationStepStyles
-            );
-          }
-        } else if (size === 'large' && !contentHasLargeBreakpoint) {
+        if (size === 'large') {
           if (!this.props.emailMode) {
             styles[`&.builder-block`] = Object.assign(
               {},

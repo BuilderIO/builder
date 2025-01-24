@@ -27,7 +27,6 @@ export interface BuilderElement {
     medium?: SerializableCSSStyleDeclaration;
     small?: SerializableCSSStyleDeclaration;
     xsmall?: SerializableCSSStyleDeclaration;
-    xlarge?: SerializableCSSStyleDeclaration;
   };
   component?: {
     name: string;
