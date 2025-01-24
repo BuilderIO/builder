@@ -666,7 +666,7 @@ export class BuilderBlock extends React.Component<
 
   get id(): string {
     const { block } = this;
-    if (!block.id?.startsWith('builder')) {
+    if (block.id && !block.id.startsWith('builder')) {
       return 'builder-' + block.id;
     }
     return block.id || '';
