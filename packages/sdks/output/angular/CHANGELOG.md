@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.17.4
+
+### Patch Changes
+
+- 84b6986: Fix: `@Input` not annotated errors in console
+- e07fcf0: Fix: hydration errors in angular ssr v17+ apps by skipping hydration from Content level for now as Angular doesn't support hydrating elements created dynamically
+
 ## 0.17.3
 
 ### Patch Changes
