@@ -1,7 +1,7 @@
 import { fastClone } from '../functions/utils';
 
-export type Size = 'large' | 'medium' | 'small' | 'xsmall' | 'xlarge';
-export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large', 'xlarge'];
+export type Size = 'large' | 'medium' | 'small' | 'xsmall';
+export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
 
 // TODO: put in @builder.io/core
 const sizes = {
@@ -44,7 +44,6 @@ export interface Breakpoints {
   xsmall?: number;
   small?: number;
   medium?: number;
-  large?: number;
 }
 
 export const getSizesForBreakpoints = (breakpoints: Breakpoints) => {
@@ -57,7 +56,7 @@ export const getSizesForBreakpoints = (breakpoints: Breakpoints) => {
     return newSizes;
   }
 
-  const { xsmall, small, medium, large } = breakpoints;
+  const { xsmall, small, medium } = breakpoints;
 
   if (xsmall) {
     const xsmallMin = Math.floor(xsmall / 2);
@@ -83,15 +82,6 @@ export const getSizesForBreakpoints = (breakpoints: Breakpoints) => {
       max: medium,
       min: mediumMin,
       default: mediumMin + 1,
-    };
-  }
-
-  if (large) {
-    const largeMin = newSizes.medium.max + 1;
-    newSizes.large = {
-      max: large ?? 2000,
-      min: largeMin,
-      default: largeMin + 1,
     };
   }
 
