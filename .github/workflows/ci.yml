@@ -102,7 +102,7 @@ jobs:
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -159,7 +159,7 @@ jobs:
         run: yarn g:nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -228,7 +228,7 @@ jobs:
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -268,7 +268,7 @@ jobs:
         run: yarn nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
           name: ${{ matrix.snippet }}-snippet-playwright-report
