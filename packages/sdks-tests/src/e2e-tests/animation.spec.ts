@@ -5,7 +5,6 @@ test.describe('Animations', () => {
   test('renders animations', async ({ page, sdk }) => {
     test.fail(checkIsRN(sdk), 'TO-DO: React Native Animation API not implemented.');
     test.fail(excludeTestFor({ rsc: true }, sdk), 'Interactivity failure.');
-    test.fail(excludeTestFor({ angular: true }, sdk), 'Angular Gen2 SDK not implemented.');
     await page.goto('/animations');
 
     const text = page.locator('[builder-id]').filter({ hasText: 'Enter some text...' });

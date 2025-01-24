@@ -235,6 +235,22 @@ export default function Block(props: BlockProps) {
   onMount(() => {
     useTarget({
       reactNative: () => {},
+      angular: () => {
+        const blockId = state.processedBlock.id;
+        const animations = state.processedBlock.animations;
+        if (animations && blockId) {
+          // in Angular, the DynamicDiv sets attributes (builder-id) on the element late (ngAfterViewInit)
+          // so we need to wait for them to be attached to the DOM before calling this else we'll not find the element
+          requestAnimationFrame(() => {
+            bindAnimations(
+              animations.map((animation) => ({
+                ...animation,
+                elementId: blockId,
+              }))
+            );
+          });
+        }
+      },
       default: () => {
         const blockId = state.processedBlock.id;
         const animations = state.processedBlock.animations;
