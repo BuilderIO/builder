@@ -318,9 +318,7 @@ export default function FormComponent(props: FormProps) {
         default: props.attributes,
       })}
     >
-      <Show when={props.builderBlock && props.builderBlock.children}>
-        {props.children}
-      </Show>
+      {props.children}
 
       <Show when={state.submissionState() === 'error'}>
         <Blocks
