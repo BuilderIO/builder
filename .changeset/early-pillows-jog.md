@@ -1,5 +1,5 @@
 ---
-"@builder.io/sdk-react-native": major
+"@builder.io/sdk-react-native": patch
 ---
 
 - Enchanced performance: Implemented memoization for the Blocks components
