@@ -1,5 +1,13 @@
 # @builder.io/sdk-angular
 
+## 0.17.5
+
+### Patch Changes
+
+- 648c37f: Fix: support Builder's block animations.
+- 3eb5b99: Fix: add `display: contents` to InlinedScript and InlinedStyles components so that they don't affect flex styles
+- eb3d1af: Fix: Form block rendering children multiple times
+
 ## 0.17.4
 
 ### Patch Changes
