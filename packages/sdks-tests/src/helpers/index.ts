@@ -81,6 +81,15 @@ const test = base.extend<TestOptions>({
       });
     }
 
+    if (sdk === 'angular') {
+      page.on('console', msg => {
+        const originalText = msg.text();
+        if (originalText.includes('NG0303')) {
+          throw new Error('Angular input not annotated error detected: ' + originalText);
+        }
+      });
+    }
+
     await use(page);
   },
 });
