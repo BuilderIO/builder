@@ -19,7 +19,7 @@ View the [Builder.io developer docs](https://www.builder.io/c/docs/developers) f
 
 - To understand the overall architecture of the project, read our [ARCHITECTURE](./docs/ARCHITECTURE.md) guide.
 - To contribute, read our [DEVELOP](./docs/DEVELOP.md) guide.
-- To publish, read our [PUBLISHING](./docs/PUBLISHING.md) guide.
+- To publish, read our [PUBLISHING](./PUBLISHING.md) guide.
 
 ## Fetch
 
@@ -54,12 +54,12 @@ Legend:
 | Custom Code    | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
 | Section        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
 | Fragment       | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Embed          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | 🏗️      |
+| Embed          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
 | Slot           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Form           | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
-| Input          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
-| Select         | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
-| SubmitButton   | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | 🏗️      |
+| Form           | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
+| Input          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
+| Select         | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
+| SubmitButton   | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
 
 ## Builder Widgets
 
@@ -78,7 +78,7 @@ Legend:
 | A/B Tests                      | ✅   | ✅    |                                          | ✅  | ✅                  | ✅     | ✅    | 🏗      |         |
 | A/B Tests with SSG/SSR Support | ✅   | ✅    |                                          | ✅  | ❌ (Does not apply) | ✅     | ✅    | 🏗      |         |
 | SSR                            | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
-| Children for Custom Components | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | 🏗      |         |
+| Children for Custom Components | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Dynamic Data Bindings          | ✅   | ✅    | ✅ (cannot update bindings after SSR)    | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | View Current Draft             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Symbols                        | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
@@ -86,7 +86,7 @@ Legend:
 | Custom fonts                   | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
 | Heatmaps                       | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Tracking/Analytics             | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
-| Animations                     | ✅   | ✅    | 🏗                                       | ✅  | 🏗                  | ✅     | ✅    | 🏗      |         |
+| Animations                     | ✅   | ✅    | 🏗                                       | ✅  | 🏗                  | ✅     | ✅    | ✅      |         |
 | Custom Actions/Events          | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Builder's global `state`       | ✅   | ✅    | ✅ (cannot update `state` interactively) | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
 | Widgets                        | 🏗   | ✅    | ✅                                       | 🏗  | 🏗                  | 🏗     | 🏗    | 🏗      |         |

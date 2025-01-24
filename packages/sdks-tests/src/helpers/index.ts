@@ -15,6 +15,7 @@ type TestOptions = {
   packageName: ServerName;
   sdk: Sdk;
   basePort: number;
+  ignoreHydrationErrors: boolean;
 };
 
 // https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
@@ -41,7 +42,8 @@ const test = base.extend<TestOptions>({
   packageName: ['DEFAULT' as any, { option: true }],
   sdk: ['DEFAULT' as any, { option: true }],
   basePort: [0, { option: true }],
-  page: async ({ context, page, packageName, sdk }, use) => {
+  ignoreHydrationErrors: [false, { option: true }],
+  page: async ({ context, page, packageName, sdk, ignoreHydrationErrors }, use) => {
     if (packageName === ('DEFAULT' as any)) {
       throw new Error('packageName is required');
     }
@@ -61,7 +63,7 @@ const test = base.extend<TestOptions>({
     /**
      * temporarily disable hydration error checks for hydrogen until we fix them.
      */
-    const shouldCheckForHydrationError = packageName !== 'hydrogen';
+    const shouldCheckForHydrationError = packageName !== 'hydrogen' && !ignoreHydrationErrors;
 
     if (shouldCheckForHydrationError) {
       context.on('console', msg => {
@@ -75,6 +77,15 @@ const test = base.extend<TestOptions>({
         const originalText = msg.text();
         if (checkIfIsHydrationErrorMessage(originalText)) {
           throw new Error('Hydration error detected: ' + originalText);
+        }
+      });
+    }
+
+    if (sdk === 'angular') {
+      page.on('console', msg => {
+        const originalText = msg.text();
+        if (originalText.includes('NG0303')) {
+          throw new Error('Angular input not annotated error detected: ' + originalText);
         }
       });
     }
@@ -93,7 +104,7 @@ export const isSSRFramework = (packageName: ServerName | 'DEFAULT') => {
     packageName === 'react' ||
     packageName === 'svelte' ||
     packageName === 'react-native' ||
-    packageName === 'angular' ||
+    packageName === 'angular-16' ||
     packageName === 'gen1-react';
   return !isNonSSR;
 };
@@ -190,6 +201,18 @@ export const getBuilderSessionIdCookie = async ({ context }: { context: BrowserC
   const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
   return builderSessionCookie;
 };
+
+export async function testClickAndVerifyVisibility(
+  page: Page,
+  buttonText: string,
+  contentText: string
+) {
+  await page.click(`button:has-text("${buttonText}")`);
+  const content = await page.waitForSelector(`div:has-text("${contentText}")`, {
+    state: 'visible',
+  });
+  return content.isVisible();
+}
 
 export const checkIfIsHydrationErrorMessage = (_text: string) => {
   const text = _text.toLowerCase();

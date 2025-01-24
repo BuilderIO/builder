@@ -3,7 +3,7 @@ import { test } from '../helpers/index.js';
 
 test.describe('Product Editorial Page with Real Data', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular', 'angular-ssr'].includes(packageName));
+    test.skip(!['angular-16', 'angular-16-ssr'].includes(packageName));
     // Navigate to the product editorial page
     await page.goto('/products/1');
   });
@@ -20,6 +20,9 @@ test.describe('Product Editorial Page with Real Data', () => {
     await expect(productImage).toBeAttached();
     await expect(productImage).toHaveAttribute('src', /.+/);
     await expect(productImage).toBeVisible();
+
+    // mark test as slow because it takes a while to load the image.
+    test.slow();
 
     // Wait for the image to load completely
     await page.waitForFunction(imgSelector => {

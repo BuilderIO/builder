@@ -132,7 +132,7 @@ export interface ComponentInfo {
     /**
      * Whether or not the component should receive the `builderBlock` prop, containing the current Builder block being rendered.
      *
-     * Defaults to `true`.
+     * Defaults to `false`.
      */
     builderBlock?: boolean;
 
@@ -141,7 +141,7 @@ export interface ComponentInfo {
      * The Builder Context contains a lot of data relevant to the current `Content` render.
      * You can see more information [here](https://github.com/BuilderIO/builder/blob/main/packages/sdks/src/context/types.ts).
      *
-     * Defaults to `true`.
+     * Defaults to `false`.
      */
     builderContext?: boolean;
 
@@ -159,6 +159,8 @@ export interface ComponentInfo {
      */
     builderLinkComponent?: boolean;
   };
+
+  meta?: { [key: string]: any };
 }
 
 type Permission =

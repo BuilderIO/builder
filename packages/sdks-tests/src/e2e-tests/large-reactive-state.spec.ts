@@ -47,7 +47,7 @@ test.describe('Large Reactive State', () => {
 
   test('performance check for large state updates', async ({ page, sdk, packageName }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
-    test.fail(packageName === 'gen1-remix', 'hydration mismatch');
+    test.skip(packageName === 'gen1-remix', 'hydration mismatch');
     test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');
 
     await page.goto('/large-reactive-state');
@@ -83,7 +83,9 @@ test.describe('Large Reactive State', () => {
   }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.skip(
-      packageName === 'gen1-next' || packageName === 'gen1-remix',
+      packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next15-app' ||
+        packageName === 'gen1-remix',
       'visual editing is only implemented for gen1 react-vite.'
     );
     test.skip(excludeSdksWithoutCachedProcessedBlock(sdk), 'Not implemented');

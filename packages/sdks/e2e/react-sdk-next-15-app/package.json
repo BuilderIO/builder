@@ -1,0 +1,40 @@
+{
+  "name": "@e2e/react-sdk-next-15-app",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "SERVER_NAME=react-sdk-next-15-app yarn g:nx test:e2e @sdk/tests",
+    "serve": "yarn start"
+  },
+  "dependencies": {
+    "@builder.io/sdk-react": "workspace:*",
+    "@sdk/tests": "workspace:*",
+    "next": "15.1.2",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "eslint": "^8",
+    "eslint-config-next": "15.1.2",
+    "typescript": "^5"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.next"
+        ]
+      }
+    }
+  },
+  "resolutions": {
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2"
+  }
+}

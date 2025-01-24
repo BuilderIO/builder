@@ -1,0 +1,37 @@
+{
+  "name": "@e2e/gen1-next15-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "SERVER_NAME=gen1-next15-app yarn g:nx test:e2e @sdk/tests",
+    "serve": "yarn start"
+  },
+  "dependencies": {
+    "@builder.io/react": "workspace:*",
+    "@builder.io/widgets": "^1.2.24",
+    "@sdk/tests": "workspace:*",
+    "next": "15.0.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
+    "eslint": "^8",
+    "typescript": "^5"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.next"
+        ]
+      }
+    }
+  }
+}

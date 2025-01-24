@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "7.0.1",
+  "version": "8.0.5",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -66,7 +66,7 @@
     "react-test-renderer": "^18.2.0",
     "replace-in-file": "^3.0.0-beta.2",
     "rimraf": "^2.6.1",
-    "rollup": "^2.38.5",
+    "rollup": "^2.79.2",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^3.0.0",

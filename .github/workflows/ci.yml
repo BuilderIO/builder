@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -65,17 +69,23 @@ jobs:
             'remix',
             'hydrogen',
             'react-sdk-next-pages',
-            'react-sdk-next-app',
+            'react-sdk-next-14-app',
+            'react-sdk-next-15-app',
             'nextjs-sdk-next-app',
             'vue',
             'nuxt',
-            'angular',
-            'angular-ssr',
+            'angular-16',
+            'angular-16-ssr',
+            'angular-19-ssr',
           ]
 
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -92,7 +102,7 @@ jobs:
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -113,11 +123,11 @@ jobs:
             'vue',
             'nuxt',
             'react',
-            'angular',
-            'angular-ssr',
+            'angular-16',
+            'angular-16-ssr',
             'qwik-city',
             'nextjs-sdk-next-app',
-            'react-sdk-next-app',
+            'react-sdk-next-14-app',
             'react-sdk-next-pages',
             'svelte',
             'sveltekit',
@@ -129,6 +139,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -145,7 +159,7 @@ jobs:
         run: yarn g:nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -160,6 +174,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -172,6 +190,9 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
+      - name: Test Core
+        run: yarn g:nx test @builder.io/sdk
+
       - name: Build Core
         run: yarn g:nx build @builder.io/sdk
 
@@ -182,11 +203,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        e2e-server: ['gen1-react', 'gen1-next', 'gen1-remix']
+        e2e-server: ['gen1-react', 'gen1-next14-pages', 'gen1-next15-app', 'gen1-remix']
 
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -202,6 +227,15 @@ jobs:
       - name: Run E2E tests
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        # Only upload the report if the tests failed
+        if: ${{ failure() }}
+        with:
+          name: ${{ matrix.e2e-server }}-playwright-report
+          path: packages/sdks-tests/playwright-report/
+          retention-days: 30
+
   gen1-sdk-snippets:
     name: Gen 1 SDK Snippets
     runs-on: ubuntu-latest
@@ -209,11 +243,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        snippet: ['gen1-react', 'gen1-next', 'gen1-remix']
+        snippet: ['gen1-react', 'gen1-next14-pages', 'gen1-remix']
 
     steps:
       - name: Setup
         uses: actions/checkout@v4
+        # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
+        # https://stackoverflow.com/a/78153130
+        with:
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -230,7 +268,7 @@ jobs:
         run: yarn nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
           name: ${{ matrix.snippet }}-snippet-playwright-report

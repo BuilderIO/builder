@@ -20,6 +20,13 @@ interface Props {
   template: ``,
   standalone: true,
   imports: [CommonModule],
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
 })
 export default class InlinedScript {
   @Input() scriptStr!: Props['scriptStr'];

@@ -276,12 +276,6 @@ type AllowEnrich =
 
 export type GetContentOptions = AllowEnrich & {
   /**
-   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
-   * Defaults to `'query'`.
-   */
-  apiEndpoint?: 'content' | 'query';
-
-  /**
    * Optional fetch options to be passed as the second argument to the `fetch` function.
    */
   fetchOptions?: object;
@@ -555,6 +549,17 @@ export interface Input {
   autoFocus?: boolean;
   subFields?: readonly Input[];
   /**
+   * When input is of `type` `object`, use this field to collapse multiple inputs
+   * in the Visual Editor by default and preserve screen space.
+   */
+  folded?: boolean;
+  /**
+   * When input is of `type` `object`, provide guidance in the Visual Editor
+   * on how to edit this object's contents.
+   */
+  keysHelperText?: string;
+
+  /**
    * Additional text to render in the UI to give guidance on how to use this
    *
    * @example
@@ -815,6 +820,8 @@ export interface Component {
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
    */
   requiredPermissions?: Array<Permission>;
+
+  meta?: { [key: string]: any };
 }
 
 type Permission = 'read' | 'publish' | 'editCode' | 'editDesigns' | 'admin' | 'create';
@@ -1108,9 +1115,15 @@ export class Builder {
       // 2. `name(args) => {code}`
       // 3. `(args) => {}`
       // 4. `args => {}`
+      // 5. `async function(args) {code}`
+      // 6. `async (args) => {}`
+      // 7. `async args => {}`
       const isArrowWithoutParens = /^[a-zA-Z0-9_]+\s*=>/i.test(fnStr);
       const appendFunction =
-        !fnStr.startsWith('function') && !fnStr.startsWith('(') && !isArrowWithoutParens;
+        !fnStr.startsWith('function') &&
+        !fnStr.startsWith('async') &&
+        !fnStr.startsWith('(') &&
+        !isArrowWithoutParens;
 
       return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
     };
@@ -1296,6 +1309,21 @@ export class Builder {
     }
   }
 
+  get apiEndpoint() {
+    return this.apiEndpoint$.value;
+  }
+
+  set apiEndpoint(apiEndpoint: 'content' | 'query') {
+    if (this.apiEndpoint !== apiEndpoint) {
+      this.apiEndpoint$.next(apiEndpoint);
+    }
+  }
+
+  /**
+   * Dictates which API endpoint is used when fetching content. Allows `'content'` and `'query'`.
+   * Defaults to `'query'`.
+   */
+  private apiEndpoint$ = new BehaviorSubject<'content' | 'query'>('query');
   private apiVersion$ = new BehaviorSubject<ApiVersion | undefined>(undefined);
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
@@ -2210,6 +2238,11 @@ export class Builder {
     let instance: Builder = this;
     let finalLocale =
       options.locale || options.userAttributes?.locale || this.getUserAttributes().locale;
+
+    if (!('noTraverse' in options)) {
+      options.noTraverse = false;
+    }
+
     let finalOptions = {
       ...options,
       ...(finalLocale && {
@@ -2229,6 +2262,7 @@ export class Builder {
         options.authToken || this.authToken,
         options.apiVersion || this.apiVersion
       );
+      instance.apiEndpoint = this.apiEndpoint;
       instance.setUserAttributes(this.getUserAttributes());
     } else {
       // NOTE: All these are when .init is not called and the customer
@@ -2460,8 +2494,6 @@ export class Builder {
 
     const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
 
-    const apiEndpoint = queue[0].apiEndpoint || 'query';
-
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
 
@@ -2578,6 +2610,10 @@ export class Builder {
         queryParams.staleCacheSeconds = options.staleCacheSeconds;
       }
 
+      if (this.apiEndpoint === 'content') {
+        queryParams.includeRefs = true;
+      }
+
       const properties: (keyof GetContentOptions)[] = [
         'prerender',
         'extractCss',
@@ -2589,11 +2625,13 @@ export class Builder {
         'entry',
         'rev',
         'static',
+        'includeRefs',
       ];
+
       for (const key of properties) {
         const value = options[key];
         if (value !== undefined) {
-          if (apiEndpoint === 'query') {
+          if (this.apiEndpoint === 'query') {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[options.key!] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
@@ -2603,7 +2641,7 @@ export class Builder {
         }
       }
     }
-    if (this.preview) {
+    if (this.preview && this.previewingModel === queue?.[0]?.model) {
       queryParams.preview = 'true';
     }
     const hasParams = Object.keys(queryParams).length > 0;
@@ -2620,10 +2658,9 @@ export class Builder {
 
     const format = queryParams.format;
     const isApiCallForCodegen = format === 'solid' || format === 'react';
-    const isApiCallForCodegenOrQuery = isApiCallForCodegen || apiEndpoint === 'query';
+    const isApiCallForCodegenOrQuery = isApiCallForCodegen || this.apiEndpoint === 'query';
 
-    if (apiEndpoint === 'content') {
-      queryParams.enrich = true;
+    if (this.apiEndpoint === 'content') {
       if (queue[0].query) {
         const flattened = this.flattenMongoQuery({ query: queue[0].query });
         for (const key in flattened) {
@@ -2646,7 +2683,7 @@ export class Builder {
     let url;
     if (isApiCallForCodegen) {
       url = `${host}/api/v1/codegen/${this.apiKey}/${keyNames}`;
-    } else if (apiEndpoint === 'query') {
+    } else if (this.apiEndpoint === 'query') {
       url = `${host}/api/v3/query/${this.apiKey}/${keyNames}`;
     } else {
       url = `${host}/api/v3/content/${queue[0].model}`;

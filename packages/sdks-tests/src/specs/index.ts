@@ -73,6 +73,10 @@ import { BLOCKS_CLASS_NAME } from './blocks-class-name.js';
 import { DUPLICATED_CONTENT_USING_NESTED_SYMBOLS } from './duplicated-content-using-nested-symbols.js';
 import { CUSTOM_COMPONENTS_NOWRAP } from './custom-components-nowrap.js';
 import { XSS_EXPLOIT } from './xss-exploit.js';
+import { COUNTDOWN } from './countdown.js';
+import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
+import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
+import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -83,7 +87,7 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 type Page = {
   content: BuilderContent;
   /**
-   * The target SDKs that this page should be tested against. This is important because certain frameworks
+   * The e2e servers that this page should be tested against. This is important because certain frameworks
    * (like NextJS) will pre-render all possible pages on the server. If a test is not meant to work in a specific app,
    * then that app will fail to build when attempting to pre-render the page.
    *
@@ -169,25 +173,50 @@ export const PAGES: Record<string, Page> = {
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
-  '/custom-components-models-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
-  '/custom-components-models-not-show': { content: CUSTOM_COMPONENTS_MODELS_RESTRICTION },
+  '/custom-components-models-show': {
+    content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+    target: ['react'],
+  },
+  '/custom-components-models-not-show': {
+    content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
+    target: ['react'],
+  },
   '/editing-box-columns-inner-layout': { content: EDITING_BOX_TO_COLUMN_INNER_LAYOUT },
   '/with-fetch-options': { content: HOMEPAGE },
   '/symbol-with-repeat-input-binding': { content: SYMBOL_WITH_REPEAT_INPUT_BINDING },
   '/children-slot-placement': { content: CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT },
-  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS },
-  '/eager-dynamic-loading': { content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS },
+  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS, target: ['sveltekit'] },
+  '/eager-dynamic-loading': {
+    content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
+    target: ['sveltekit'],
+  },
   '/ssr-binding': { content: SSR_BINDING_CONTENT },
   '/blocks-class-name': { content: BLOCKS_CLASS_NAME },
   '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
   '/custom-components-nowrap': {
     content: CUSTOM_COMPONENTS_NOWRAP,
-    target: ['angular', 'angular-ssr'],
+    target: ['angular-16', 'angular-16-ssr', 'angular-19-ssr'],
   },
-  '/override-base-url': { content: HTTP_REQUESTS },
+  /**
+   * For some reason, the `HTTP_REQUESTS` content is missing some values when
+   * used in the react-next-pages e2e test.
+   *
+   * This is a workaround to clone the content in case it's accidentally mutated by some other test.
+   */
+  '/override-base-url': { content: JSON.parse(JSON.stringify(HTTP_REQUESTS)) },
   '/xss-exploit': { content: XSS_EXPLOIT },
+  '/symbol-with-jscode': { content: COUNTDOWN },
   '/get-content': { content: HTTP_REQUESTS, target: 'gen1' },
   '/get-query': { content: HTTP_REQUESTS, target: 'gen1' },
+  '/localization-locale-passed': { content: LOCALIZATION },
+  '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
+  '/localization-subfields': { content: LOCALIZATION_SUBFIELDS, target: ['react', 'gen1-react'] },
+  '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
+  '/editing-empty-content-element-ref': {
+    content: null as unknown as BuilderContent,
+    target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
+  },
+  '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -261,7 +290,7 @@ export const getProps = async (args: {
   let _content = getContentForPathname(pathname);
 
   if (args.sdk === 'oldReact' && PAGES[pathname]?.isGen1VisualEditingTest) {
-    // `undefined` on purpose to enable editing. This causes the gen1 SDK to make a network request.
+    // `null` on purpose to enable editing. This causes the gen1 SDK to make a network request.
     // which Playwright will intercept and provide the content itself.
     _content = null;
   }
@@ -297,8 +326,9 @@ export const getProps = async (args: {
       };
       break;
     case '/get-content':
+    case '/get-content-with-symbol':
       extraProps = {
-        options: { apiEndpoint: 'content' },
+        apiEndpoint: 'content',
       };
       break;
     case '/get-query':
@@ -319,6 +349,12 @@ export const getProps = async (args: {
     case '/override-base-url':
       extraProps = {
         apiHost: 'https://cdn-qa.builder.io',
+      };
+      break;
+    case '/localization-locale-passed':
+    case '/localization-subfields':
+      extraProps = {
+        locale: 'hi-IN',
       };
       break;
     default:

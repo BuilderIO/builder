@@ -1,5 +1,32 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.17.3
+
+### Patch Changes
+
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+- bee361e: Fix: add `key` prop for loop inside Accordion Block.
+
+## 0.17.2
+
+### Patch Changes
+
+- e0dc757: Fix: previewing content within the Studio tab of the Builder Visual Editor.
+- b1bd65a: Fix: export types `RegisteredComponents` and `BuilderContextInterface`.
+- b1bd65a: Move Text Block's inline bindings (e.g. `Hello {{state.name}}`) evaluation outside of component. This allows customers to use inline bindings in their custom Text Block implementations.
+- b1bd65a: Remove noisy console log in edge runtime (for empty code block evaluation)
+
+## 0.17.1
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+- 23b7594: Feat: extend allowed file types of Image and Video Block
+- ee436bf: Fix: `locale` prop to automatically resolve localized fields
+- 2fc9fc5: Fix: `onChange` functions passed to builder inputs can now receive async functions
+- ebfd876: Fix: allow previewing and visual editing when content is null
+
 ## 0.17.0
 
 ### Minor Changes

@@ -1,5 +1,48 @@
 # @builder.io/sdk-angular
 
+## 0.17.5
+
+### Patch Changes
+
+- 648c37f: Fix: support Builder's block animations.
+- 3eb5b99: Fix: add `display: contents` to InlinedScript and InlinedStyles components so that they don't affect flex styles
+- eb3d1af: Fix: Form block rendering children multiple times
+
+## 0.17.4
+
+### Patch Changes
+
+- 84b6986: Fix: `@Input` not annotated errors in console
+- e07fcf0: Fix: hydration errors in angular ssr v17+ apps by skipping hydration from Content level for now as Angular doesn't support hydrating elements created dynamically
+
+## 0.17.3
+
+### Patch Changes
+
+- e9d9953: Fix: mark text as safe to remove the Angular stripping/warning message
+- e9d9953: Fix: Embed and Custom Code block to support embedding iframes
+- 306f8d5: Fix: add missing `folded` and `keysHelperText` types to custom component `Input`
+- 306f8d5: Types: add `firstPublished` to BuilderContent
+- bee361e: Fix: add `key` prop for loop inside Accordion Block.
+
+## 0.17.2
+
+### Patch Changes
+
+- e0dc757: Fix: previewing content within the Studio tab of the Builder Visual Editor.
+- b1bd65a: Fix: export types `RegisteredComponents` and `BuilderContextInterface`.
+- b1bd65a: Move Text Block's inline bindings (e.g. `Hello {{state.name}}`) evaluation outside of component. This allows customers to use inline bindings in their custom Text Block implementations.
+- b1bd65a: Remove noisy console log in edge runtime (for empty code block evaluation)
+
+## 0.17.1
+
+### Patch Changes
+
+- 409aec9: Feat: add `meta` type to custom components
+- 23b7594: Feat: extend allowed file types of Image and Video Block
+- ee436bf: Fix: `locale` prop to automatically resolve localized fields
+- 2fc9fc5: Fix: `onChange` functions passed to builder inputs can now receive async functions
+
 ## 0.17.0
 
 ### Minor Changes

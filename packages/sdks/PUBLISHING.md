@@ -28,8 +28,6 @@ yarn g:changeset
 
 Follow the CLI instructions to create a changeset.
 
-**NOTE:** If your changes do not impact all SDKs, you will need to run `yarn g:changeset add --empty` afterwards to create another empty changeset for each SDK that was not impacted.
-
 ## 2- Bump package versions & Release
 
 Once you merge your PR changes, a workflow will automaically create a PR for you with the version bump. Once this PR is merged, the SDKs will be published to NPM.

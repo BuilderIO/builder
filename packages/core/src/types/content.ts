@@ -22,6 +22,7 @@ export interface BuilderContent extends BuilderContentVariation {
   published?: 'published' | 'draft' | 'archived';
   modelId?: string;
   priority?: number;
+  firstPublished?: number;
   lastUpdated?: number;
   startDate?: number;
   endDate?: number;

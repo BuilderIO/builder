@@ -3,6 +3,7 @@ import type { BuilderContextInterface } from '../context/types.js';
 import { omit } from '../helpers/omit.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate/index.js';
+import { resolveLocalizedValues } from './extract-localized-values.js';
 import { fastClone } from './fast-clone.js';
 import { set } from './set.js';
 import { transformBlock } from './transform-block.js';
@@ -99,32 +100,27 @@ const evaluateBindings = ({
 export function getProcessedBlock({
   block,
   context,
-  shouldEvaluateBindings,
   localState,
   rootState,
   rootSetState,
 }: {
   block: BuilderBlock;
-  /**
-   * In some cases, we want to avoid evaluating bindings and only want framework-specific block transformation. It is
-   * also sometimes too early to consider bindings, e.g. when we might be looking at a repeated block.
-   */
-  shouldEvaluateBindings: boolean;
 } & Pick<
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
 >): BuilderBlock {
-  const transformedBlock = transformBlock(block);
+  let transformedBlock = resolveLocalizedValues(
+    block,
+    rootState.locale as string | undefined
+  );
 
-  if (shouldEvaluateBindings) {
-    return evaluateBindings({
-      block: transformedBlock,
-      localState,
-      rootState,
-      rootSetState,
-      context,
-    });
-  } else {
-    return transformedBlock;
-  }
+  transformedBlock = transformBlock(transformedBlock);
+
+  return evaluateBindings({
+    block: transformedBlock,
+    localState,
+    rootState,
+    rootSetState,
+    context,
+  });
 }

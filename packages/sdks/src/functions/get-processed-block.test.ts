@@ -24,7 +24,6 @@ test('Can process bindings', () => {
     rootState: { test: 'hello' },
     rootSetState: undefined,
     localState: undefined,
-    shouldEvaluateBindings: true,
   });
   expect(processed).not.toEqual(block);
   expect(processed.properties?.foo).toEqual('baz');

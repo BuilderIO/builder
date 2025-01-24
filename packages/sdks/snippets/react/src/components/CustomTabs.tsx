@@ -43,8 +43,6 @@ export const customTabsInfo: RegisteredComponent = {
   name: 'TabFields',
   shouldReceiveBuilderProps: {
     builderBlock: true,
-    builderComponents: true,
-    builderContext: true,
   },
   inputs: [
     {
@@ -58,7 +56,6 @@ export const customTabsInfo: RegisteredComponent = {
         {
           name: 'blocks',
           type: 'uiBlocks',
-          hideFromUI: true,
           defaultValue: [],
         },
       ],

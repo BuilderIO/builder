@@ -5,6 +5,11 @@ const importShopifyJs = () => import('@builder.io/shopify/js');
 const importWidgets = () => import('@builder.io/widgets');
 
 Builder.isStatic = true;
+Builder.sdkInfo = {
+  name: 'webcomponents',
+  // @ts-ignore
+  version: global.VERSION,
+};
 
 function wrapInDiv(el: HTMLElement) {
   const newDiv = document.createElement('div');

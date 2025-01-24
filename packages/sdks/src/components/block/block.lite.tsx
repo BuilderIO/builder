@@ -98,7 +98,6 @@ export default function Block(props: BlockProps) {
             rootState: props.context.value.rootState,
             rootSetState: props.context.value.rootSetState,
             context: props.context.value.context,
-            shouldEvaluateBindings: true,
           });
 
       useTarget({
@@ -119,6 +118,7 @@ export default function Block(props: BlockProps) {
       return getComponent({
         block: state.processedBlock,
         registeredComponents: props.registeredComponents,
+        model: props.context.value.model,
       });
     },
     get Tag() {
@@ -184,13 +184,17 @@ export default function Block(props: BlockProps) {
         blockChildren: state.processedBlock.children ?? [],
         componentRef: state.blockComponent?.component,
         componentOptions: {
-          ...getBlockComponentOptions(state.processedBlock),
+          ...getBlockComponentOptions(
+            state.processedBlock,
+            props.context.value
+          ),
           ...provideBuilderBlock(state.blockComponent, state.processedBlock),
           ...provideBuilderContext(state.blockComponent, props.context),
           ...provideLinkComponent(state.blockComponent, props.linkComponent),
           ...provideRegisteredComponents(
             state.blockComponent,
-            props.registeredComponents
+            props.registeredComponents,
+            props.context.value.model
           ),
         },
         context: useTarget({
@@ -231,6 +235,22 @@ export default function Block(props: BlockProps) {
   onMount(() => {
     useTarget({
       reactNative: () => {},
+      angular: () => {
+        const blockId = state.processedBlock.id;
+        const animations = state.processedBlock.animations;
+        if (animations && blockId) {
+          // in Angular, the DynamicDiv sets attributes (builder-id) on the element late (ngAfterViewInit)
+          // so we need to wait for them to be attached to the DOM before calling this else we'll not find the element
+          requestAnimationFrame(() => {
+            bindAnimations(
+              animations.map((animation) => ({
+                ...animation,
+                elementId: blockId,
+              }))
+            );
+          });
+        }
+      },
       default: () => {
         const blockId = state.processedBlock.id;
         const animations = state.processedBlock.animations;

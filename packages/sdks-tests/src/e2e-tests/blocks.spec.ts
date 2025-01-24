@@ -494,4 +494,30 @@ test.describe('Blocks', () => {
       expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
     });
   });
+
+  test.describe('Embed', () => {
+    test('should render embed', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/embed-and-custom-code');
+
+      await expect(page.locator('.builder-embed iframe')).toBeVisible();
+
+      const iframe = page.locator('.builder-embed iframe');
+      const src = await iframe.getAttribute('src');
+      expect(src).toContain('https://www.youtube.com/embed/oU3H581uCsA');
+    });
+  });
+
+  test.describe('Custom Code', () => {
+    test('should render custom code', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/embed-and-custom-code');
+
+      await expect(page.locator('.builder-custom-code iframe')).toBeVisible();
+
+      const iframe = page.locator('.builder-custom-code iframe');
+      const src = await iframe.getAttribute('src');
+      expect(src).toContain('https://www.youtube.com/embed/oU3H581uCsA');
+    });
+  });
 });

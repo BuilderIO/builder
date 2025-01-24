@@ -11,11 +11,20 @@ test.describe('Form', () => {
 
     const form = page.locator('form');
     await expect(form).toHaveCount(1);
+
+    await expect(page.locator('input')).toHaveCount(2);
     await expect(form.locator('input')).toHaveCount(2);
+
+    await expect(page.locator('button')).toHaveCount(1);
     await expect(form.locator('button')).toHaveCount(1);
+
+    await expect(page.locator('select')).toHaveCount(1);
     await expect(form.locator('select')).toHaveCount(1);
     await expect(form.locator('select').first().locator('option')).toHaveCount(3);
+
+    await expect(page.locator('textarea')).toHaveCount(1);
     await expect(form.locator('textarea')).toHaveCount(1);
+
     expect(await form.locator('button').first().innerText()).toBe('Submit');
   });
 

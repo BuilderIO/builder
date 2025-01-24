@@ -11,6 +11,10 @@ import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-wit
 import { blockToHtmlString } from '../functions/block-to-html-string';
 import { Link } from './Link';
 import { fastClone } from '../functions/utils';
+import {
+  containsLocalizedValues,
+  extractLocalizedValues,
+} from 'src/functions/extract-localized-values';
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : '';
@@ -123,6 +127,8 @@ export class BuilderBlock extends React.Component<
   private _asyncRequests?: RequestOrPromise[];
   private _errors?: Error[];
   private _logs?: string[];
+
+  hydrated = false;
 
   state = {
     hasError: false,
@@ -283,6 +289,7 @@ export class BuilderBlock extends React.Component<
   };
 
   componentDidMount() {
+    this.hydrated = true;
     const block = this.block;
     const animations = block && block.animations;
 
@@ -474,10 +481,22 @@ export class BuilderBlock extends React.Component<
       }
     }
 
-    const innerComponentProperties = (options.component || options.options) && {
+    let innerComponentProperties = (options.component || options.options) && {
       ...options.options,
       ...(options.component.options || options.component.data),
     };
+
+    if (containsLocalizedValues(innerComponentProperties)) {
+      if (!this.privateState.state.locale) {
+        console.warn(
+          '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
+        );
+      }
+      innerComponentProperties = extractLocalizedValues(
+        innerComponentProperties,
+        this.privateState.state.locale ?? 'Default'
+      );
+    }
 
     const isVoid = voidElements.has(TagName);
 
@@ -521,7 +540,7 @@ export class BuilderBlock extends React.Component<
             : ''
         }` +
         (options.class ? ' ' + options.class : '') +
-        (Builder.isEditing && this.privateState.state._spacer?.parent === block.id
+        (this.hydrated && Builder.isEditing && this.privateState.state._spacer?.parent === block.id
           ? ' builder-spacer-parent'
           : ''),
       key: this.id + index,
@@ -541,7 +560,7 @@ export class BuilderBlock extends React.Component<
     // tslint:disable-next-line:comment-format
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
-    if (Builder.isEditing) {
+    if (Builder.isEditing && this.hydrated) {
       // TODO: removed bc JS can add styles inline too?
       (finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
         ? ''
@@ -645,12 +664,12 @@ export class BuilderBlock extends React.Component<
     );
   }
 
-  get id() {
+  get id(): string {
     const { block } = this;
-    if (!block.id!.startsWith('builder')) {
+    if (block.id && !block.id.startsWith('builder')) {
       return 'builder-' + block.id;
     }
-    return block.id!;
+    return block.id || '';
   }
 
   contents(state: BuilderBlockState) {

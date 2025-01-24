@@ -163,6 +163,88 @@ const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
   },
 });
 
+const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'Block') {
+        json.imports.push({
+          imports: { memo: 'memo' },
+          path: 'react',
+        });
+      }
+      if (json.name === 'Blocks') {
+        json.imports.push({
+          imports: { memo: 'memo' },
+          path: 'react',
+        });
+
+        json.hooks.init = {
+          code: `
+            ${json.hooks.init?.code || ''}
+            const renderItem = React.useCallback(({ item }: { item: any }) => (
+              <Block
+                block={item}
+                linkComponent={props.linkComponent}
+                context={props.context || builderContext}
+                registeredComponents={
+                  props.registeredComponents || componentsContext?.registeredComponents
+                }
+              />
+            ), [
+              props.linkComponent,
+              props.context,
+              props.registeredComponents,
+              builderContext,
+              componentsContext?.registeredComponents
+            ]);
+          
+            // Memoize keyExtractor
+            const keyExtractor = React.useCallback((item: any) => 
+              item.id.toString()
+            , []);
+          `,
+        };
+
+        json.children[0].children[0].children[0] = {
+          '@type': '@builder.io/mitosis/node',
+          name: 'FlatList',
+          meta: {},
+          scope: {},
+          properties: {},
+          bindings: {
+            data: { code: 'props.blocks', type: 'single' },
+            renderItem: { code: 'renderItem', type: 'single' },
+            keyExtractor: { code: 'keyExtractor', type: 'single' },
+            removeClippedSubviews: { code: 'true', type: 'single' },
+            maxToRenderPerBatch: { code: '10', type: 'single' },
+            windowSize: { code: '5', type: 'single' },
+            initialNumToRender: { code: '5', type: 'single' },
+          },
+          children: [],
+        };
+      }
+      return json;
+    },
+  },
+  code: {
+    post: (code, json) => {
+      if (json.name === 'Blocks') {
+        return code.replace(
+          'export default Blocks',
+          'export default memo(Blocks)'
+        );
+      }
+      if (json.name === 'Block') {
+        return code.replace(
+          'export default Block',
+          'export default memo(Block)'
+        );
+      }
+      return code;
+    },
+  },
+});
+
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -234,11 +316,7 @@ const filterActionAttrBindings = (json, item) => {
 const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
   json: {
     post: (json) => {
-      if (
-        json.name === 'BuilderImage' ||
-        json.name === 'BuilderSymbol' ||
-        json.name === 'Awaiter'
-      ) {
+      if (json.name === 'Awaiter') {
         json.hooks.onMount = json.hooks.onMount.filter(
           (hook) =>
             !hook.code.includes(
@@ -660,6 +738,21 @@ const ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE = `
 `;
 
 /**
+ * Filters props to only include those explicitly defined as @Input() in the Angular component.
+ * This prevents "Input property X is not annotated with @Input()" errors that occur when passing
+ * unused props, since Mitosis only annotates props actually used by the component.
+ */
+const FN_TO_FILTER_PROPS_THAT_WRAPPER_NEEDS = `
+  private filterPropsThatWrapperNeeds(allProps: any) {
+    const definedPropNames = reflectComponentType(this.Wrapper).inputs.map(prop => prop.propName);
+    return definedPropNames.reduce((acc, propName) => {
+      acc[propName] = allProps[propName];
+      return acc;
+    }, {});
+  }
+`;
+
+/**
  * Checks if the custom component expects `attributes` prop.
  * If yes, it passes `attributes` as an `@Input()` to the custom component.
  * If no, it attaches `attributes` to the direct child element of interactive element.
@@ -683,10 +776,18 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
           'attributes: this.attributes,',
           '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.attributes } : {})'
         );
+
+        // extract the props that Wrapper needs
+        code = code.replaceAll(
+          '...this.wrapperProps',
+          '...this.filterPropsThatWrapperNeeds(this.wrapperProps)'
+        );
+
         const ngOnChangesIndex = code.indexOf('ngOnChanges');
         code =
           code.slice(0, ngOnChangesIndex) +
           ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE +
+          FN_TO_FILTER_PROPS_THAT_WRAPPER_NEEDS +
           code.slice(ngOnChangesIndex);
 
         code = code.replace(
@@ -712,6 +813,72 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
           wrapperTemplate.detectChanges();
           this.myContent = [wrapperTemplate.rootNodes]`
         );
+      }
+      return code;
+    },
+  },
+});
+
+const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
+  code: {
+    post: (code, json) => {
+      if (['BuilderText', 'BuilderEmbed', 'CustomCode'].includes(json.name)) {
+        code =
+          `import { DomSanitizer } from "@angular/platform-browser";\nimport { ChangeDetectionStrategy } from "@angular/core";\n` +
+          code;
+
+        // add changeDetection: ChangeDetectionStrategy.OnPush
+        const changeDetectionIndex = code.indexOf('selector:');
+        if (changeDetectionIndex !== -1) {
+          code =
+            code.slice(0, changeDetectionIndex) +
+            `changeDetection: ChangeDetectionStrategy.OnPush,\n` +
+            code.slice(changeDetectionIndex);
+        }
+
+        // add constructor with sanitizer
+        const constructorIndex = code.indexOf('constructor');
+        if (constructorIndex === -1) {
+          // not found
+          const ngOnChangesIndex = code.indexOf('ngOnChanges');
+          code =
+            code.slice(0, ngOnChangesIndex) +
+            `constructor(protected sanitizer: DomSanitizer) {}\n` +
+            code.slice(ngOnChangesIndex);
+        } else {
+          throw new Error(
+            'constructor found which should not be here. If you see this, please fix the ANGULAR_TEXT_MARK_SAFE_HTML Plugin.'
+          );
+        }
+
+        const variableName = code.match(/\[innerHTML\]="([^"]+)"/)?.[1];
+        if (variableName) {
+          code = code.replace(
+            `[innerHTML]="${variableName}"`,
+            `[innerHTML]="sanitizer.bypassSecurityTrustHtml(${variableName})"`
+          );
+        }
+      }
+      return code;
+    },
+  },
+});
+
+/**
+ * Angular doesn't support hydration for components created dynamically.
+ * Refer: https://angular.dev/errors/NG0503
+ * GitHub issue: https://github.com/angular/angular/issues/51798
+ */
+const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('selector: "content-component"')) {
+        const componentDecorator = code.match(/@Component\s*\({/)[0];
+        const componentDecoratorWithHost = componentDecorator.replace(
+          /@Component\s*\({/,
+          `@Component({\n\thost: { ngSkipHydration: "true" },`
+        );
+        code = code.replace(componentDecorator, componentDecoratorWithHost);
       }
       return code;
     },
@@ -746,6 +913,8 @@ module.exports = {
         ANGULAR_ADD_UNUSED_PROP_TYPES,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
+        ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
+        ANGULAR_MARK_SAFE_INNER_HTML,
       ],
     },
     solid: {
@@ -846,6 +1015,7 @@ module.exports = {
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN,
+        MEMOIZING_BLOCKS_COMPONENT_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
