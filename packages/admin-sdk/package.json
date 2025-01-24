@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/admin-sdk",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Builder.io Admin API SDK",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
@@ -24,28 +24,28 @@
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
   },
   "devDependencies": {
-    "@types/cli-progress": "^3.8.0",
-    "@types/fs-extra": "^9.0.5",
-    "@types/node": "12.19.8",
-    "@types/node-fetch": "^2.5.7",
-    "ava": "^5.2.0",
-    "nodemon": "^2.0.6",
-    "pkg": "^4.4.9",
+    "@types/cli-progress": "^3.11.6",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.10.7",
+    "@types/node-fetch": "^2.6.12",
+    "ava": "^6.2.0",
+    "nodemon": "^3.1.9",
+    "pkg": "^5.8.1",
     "rimraf": "^2.6.3",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@types/traverse": "^0.6.32",
-    "chalk": "^4.1.0",
+    "@types/traverse": "^0.6.37",
+    "chalk": "^5.4.1",
     "clear": "^0.1.0",
-    "cli-progress": "^3.8.2",
-    "commander": "^2.20.3",
-    "figlet": "^1.5.0",
-    "fs-extra": "^9.0.1",
+    "cli-progress": "^3.12.0",
+    "commander": "^13.0.0",
+    "figlet": "^1.8.0",
+    "fs-extra": "^11.3.0",
     "graphql-typed-client": "^1.7.4",
-    "lodash": "^4.17.20",
-    "node-fetch": "^2.6.1",
-    "traverse": "^0.6.6"
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2",
+    "traverse": "^0.6.11"
   }
 }
