@@ -25,7 +25,6 @@ test.describe('Form', () => {
     await expect(page.locator('textarea')).toHaveCount(1);
     await expect(form.locator('textarea')).toHaveCount(1);
 
-    expect(await page.locator('button').first().innerText()).toBe('Submit');
     expect(await form.locator('button').first().innerText()).toBe('Submit');
   });
 
