@@ -14,6 +14,13 @@ interface Props {
   template: ``,
   standalone: true,
   imports: [CommonModule],
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
 })
 export default class InlinedStyles {
   @Input() styles!: Props['styles'];
