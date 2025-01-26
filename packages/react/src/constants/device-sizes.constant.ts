@@ -21,8 +21,8 @@ const sizes = {
     max: 991,
   },
   large: {
-    min: 992,
-    default: 993,
+    min: 990,
+    default: 991,
     max: 1200,
   },
   getWidthForSize(size: Size) {
