@@ -67,23 +67,30 @@ export const getSizesForBreakpoints = (breakpoints: Breakpoints) => {
     };
   }
 
-  if (small) {
-    const smallMin = Math.floor(small / 2);
-    newSizes.small = {
-      max: small,
-      min: smallMin,
-      default: smallMin + 1,
-    };
+  if (!small || !medium) {
+    return newSizes;
   }
 
-  if (medium) {
-    const mediumMin = newSizes.small.max + 1;
-    newSizes.medium = {
-      max: medium,
-      min: mediumMin,
-      default: mediumMin + 1,
-    };
-  }
+  const smallMin = xsmall ? newSizes.xsmall.max + 1 : Math.floor(small / 2);
+  newSizes.small = {
+    max: small,
+    min: smallMin,
+    default: smallMin + 1,
+  };
+
+  const mediumMin = newSizes.small.max + 1;
+  newSizes.medium = {
+    max: medium,
+    min: mediumMin,
+    default: mediumMin + 1,
+  };
+
+  const largeMin = newSizes.medium.max + 1;
+  newSizes.large = {
+    max: 1200,
+    min: largeMin,
+    default: largeMin + 1,
+  };
 
   return newSizes;
 };
