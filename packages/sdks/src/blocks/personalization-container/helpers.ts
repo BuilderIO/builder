@@ -51,7 +51,13 @@ export function checkShouldRenderVariants(
   return true;
 }
 
-export function getBlocksToRender(options: {
+export function getBlocksToRender({
+  variants,
+  previewingIndex,
+  isHydrated,
+  filteredVariants,
+  fallbackBlocks,
+}: {
   variants: PersonalizationContainerProps['variants'];
   previewingIndex?: number | null;
   isHydrated: boolean;
@@ -61,44 +67,36 @@ export function getBlocksToRender(options: {
   blocks: BuilderBlock[];
   path: string | undefined;
 } {
-  const {
-    variants,
-    previewingIndex,
-    isHydrated,
-    filteredVariants,
-    fallbackBlocks,
-  } = options;
-
-  const isPreviewingVariant =
-    isHydrated &&
-    isEditing() &&
-    typeof previewingIndex === 'number' &&
-    previewingIndex < (variants?.length || 0) &&
-    !filteredVariants?.length;
-
-  // If we're editing a specific variant
-  if (isPreviewingVariant) {
-    const variant = variants![previewingIndex];
-    return {
-      blocks: variant.blocks,
-      path: `component.options.variants.${previewingIndex}.blocks`,
-    };
-  }
-
-  const winningVariant = filteredVariants?.[0];
-  // Show the variant matching the current user attributes
-  if (winningVariant) {
-    return {
-      blocks: winningVariant.blocks,
-      path: `component.options.variants.${variants?.indexOf(winningVariant)}.blocks`,
-    };
-  }
-
-  // If we're not editing a specific variant or we're on the server and there are no matching variants show the default
-  return {
-    blocks: fallbackBlocks || [],
-    path: undefined,
+  const fallback = {
+    blocks: fallbackBlocks ?? [],
+    path: 'this.children',
   };
+
+  if (isHydrated && isEditing()) {
+    // If editing a specific variant
+    if (
+      typeof previewingIndex === 'number' &&
+      previewingIndex < (variants?.length ?? 0)
+    ) {
+      const variant = variants![previewingIndex];
+      return {
+        blocks: variant.blocks,
+        path: `component.options.variants.${previewingIndex}.blocks`,
+      };
+    }
+    // Otherwise we're editing the default variant
+    return fallback;
+  }
+
+  // If not editing, check if there's a winning variant
+  const winningVariant = filteredVariants?.[0];
+  return winningVariant
+    ? {
+        blocks: winningVariant.blocks,
+        path: `component.options.variants.${variants?.indexOf(winningVariant)}.blocks`,
+      }
+    : // else return the default variant
+      fallback;
 }
 
 export const getPersonalizationScript = (
