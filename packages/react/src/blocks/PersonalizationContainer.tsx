@@ -161,7 +161,8 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         }${isClient ? '' : ' builder-personalization-container-loading'}`}
       >
         {/* If editing a specific varient */}
-        {Builder.isEditing &&
+        {isHydrated &&
+        Builder.isEditing &&
         typeof props.previewingIndex === 'number' &&
         props.previewingIndex < (props.variants?.length || 0) ? (
           <BuilderBlocks
