@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.0.5
+
+### Patch Changes
+
+- 37c9341: fix: add builder block id only if its present
+
 ## 8.0.4
 
 ### Patch Changes

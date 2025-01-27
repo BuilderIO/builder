@@ -81,6 +81,15 @@ const test = base.extend<TestOptions>({
       });
     }
 
+    if (sdk === 'angular') {
+      page.on('console', msg => {
+        const originalText = msg.text();
+        if (originalText.includes('NG0303')) {
+          throw new Error('Angular input not annotated error detected: ' + originalText);
+        }
+      });
+    }
+
     await use(page);
   },
 });
@@ -95,7 +104,7 @@ export const isSSRFramework = (packageName: ServerName | 'DEFAULT') => {
     packageName === 'react' ||
     packageName === 'svelte' ||
     packageName === 'react-native' ||
-    packageName === 'angular' ||
+    packageName === 'angular-16' ||
     packageName === 'gen1-react';
   return !isNonSSR;
 };

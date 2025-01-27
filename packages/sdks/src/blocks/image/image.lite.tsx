@@ -1,10 +1,4 @@
-import {
-  onMount,
-  Show,
-  useMetadata,
-  useStore,
-  useTarget,
-} from '@builder.io/mitosis';
+import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import { getSrcSet } from './image.helpers.js';
 import type { ImageProps } from './image.types.js';
@@ -72,20 +66,6 @@ export default function Image(props: ImageProps) {
     },
   });
 
-  onMount(() => {
-    useTarget({
-      angular: () => {
-        /** this is a hack to include the input in angular */
-        const _ = {
-          a: props.lockAspectRatio,
-          b: props.width,
-          c: props.height,
-          d: props.lazy,
-          e: props.attributes,
-        };
-      },
-    });
-  });
   return (
     <>
       <picture>

@@ -1,5 +1,13 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 3.0.4
+
+### Patch Changes
+
+- 12b35b2: - Enchanced performance: Implemented memoization for the Blocks components
+  - Flatlist usage: Configured Flatlist for smoother rendering of block components
+    These changes aims to improve UI responsiveness and reduce rendering overhead
+
 ## 3.0.3
 
 ### Patch Changes

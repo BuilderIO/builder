@@ -74,8 +74,9 @@ jobs:
             'nextjs-sdk-next-app',
             'vue',
             'nuxt',
-            'angular',
-            'angular-ssr',
+            'angular-16',
+            'angular-16-ssr',
+            'angular-19-ssr',
           ]
 
     steps:
@@ -101,7 +102,7 @@ jobs:
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -122,8 +123,8 @@ jobs:
             'vue',
             'nuxt',
             'react',
-            'angular',
-            'angular-ssr',
+            'angular-16',
+            'angular-16-ssr',
             'qwik-city',
             'nextjs-sdk-next-app',
             'react-sdk-next-14-app',
@@ -158,7 +159,7 @@ jobs:
         run: yarn g:nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -227,7 +228,7 @@ jobs:
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         # Only upload the report if the tests failed
         if: ${{ failure() }}
         with:
@@ -267,7 +268,7 @@ jobs:
         run: yarn nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
           name: ${{ matrix.snippet }}-snippet-playwright-report

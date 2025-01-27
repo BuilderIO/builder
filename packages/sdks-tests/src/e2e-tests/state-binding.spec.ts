@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
 
 test.describe('State binding', () => {
   test.describe('inside repeater', () => {
-    test('writing to state should update binding', async ({ page, packageName, sdk }) => {
+    test('writing to state should update binding', async ({ page, packageName }) => {
       test.fail(
-        excludeTestFor({ angular: true }, sdk),
-        'Angular Gen2 event binding not working for other blocks than button.'
+        packageName === 'angular-16-ssr' || packageName === 'angular-16',
+        'Angular Gen2 event binding not working properly for repeat blocks.'
       );
 
       // flaky, can't `test.fail()`

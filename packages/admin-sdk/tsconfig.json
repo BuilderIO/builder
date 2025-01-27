@@ -8,6 +8,12 @@
     "strict": true,
     "allowJs": true,
     "resolveJsonModule": true,
-    "declaration": true
-  }
+    "declaration": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

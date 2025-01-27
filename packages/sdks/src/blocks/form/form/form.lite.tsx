@@ -1,12 +1,10 @@
 import {
-  For,
   Show,
   useMetadata,
   useRef,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import Block from '../../../components/block/block.lite.jsx';
 import Blocks from '../../../components/blocks/blocks.lite.jsx';
 
 import { getEnv } from '../../../functions/get-env.js';
@@ -47,6 +45,7 @@ export type FormProps = BuilderDataProps &
     sendingMessage?: BuilderBlock[];
     resetFormOnSubmit?: boolean;
     errorMessagePath?: string;
+    children?: any;
   };
 
 export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
@@ -319,19 +318,7 @@ export default function FormComponent(props: FormProps) {
         default: props.attributes,
       })}
     >
-      <Show when={props.builderBlock && props.builderBlock.children}>
-        <For each={props.builderBlock?.children}>
-          {(block, idx) => (
-            <Block
-              key={`form-block-${idx}`}
-              block={block}
-              context={props.builderContext}
-              registeredComponents={props.builderComponents}
-              linkComponent={props.builderLinkComponent}
-            />
-          )}
-        </For>
-      </Show>
+      {props.children}
 
       <Show when={state.submissionState() === 'error'}>
         <Blocks
