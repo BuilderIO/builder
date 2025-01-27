@@ -2,4 +2,4 @@
 '@builder.io/react': patch
 ---
 
-Fix: hydration mismatch error and reactivity to update variant when userAttributes in the cookie updates
+Fix: hydration mismatch error and reactivity of Personalization Containers when `userAttributes` cookie value is updated.

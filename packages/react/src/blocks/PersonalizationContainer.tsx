@@ -31,11 +31,13 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   );
   const rootRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(isBeingHydrated);
+  const [isHydrated, setIsHydrated] = useState(false);
   const [_, setUpdate] = useState(0);
   const builderStore = useContext(BuilderStoreContext);
 
   useEffect(() => {
     setIsClient(true);
+    setIsHydrated(true);
     const subscriber = builder.userAttributesChanged.subscribe(() => {
       setUpdate(prev => prev + 1);
     });
@@ -169,7 +171,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             child
           />
         ) : // If editing the default or we're on the server and there are no matching variants show the default
-        (Builder.isEditing && typeof props.previewingIndex !== 'number') ||
+        (isHydrated && Builder.isEditing && typeof props.previewingIndex !== 'number') ||
           !isClient ||
           !filteredVariants.length ? (
           <BuilderBlocks
