@@ -89,14 +89,18 @@ export function getBlocksToRender({
   }
 
   // If not editing, check if there's a winning variant
-  const winningVariant = filteredVariants?.[0];
-  return winningVariant
-    ? {
+  if (isBrowser()) {
+    const winningVariant = filteredVariants?.[0];
+    if (winningVariant) {
+      return {
         blocks: winningVariant.blocks,
         path: `component.options.variants.${variants?.indexOf(winningVariant)}.blocks`,
-      }
-    : // else return the default variant
-      fallback;
+      };
+    }
+  }
+
+  // If no winning variant and we are on the server, return the default variant
+  return fallback;
 }
 
 export const getPersonalizationScript = (
