@@ -233,19 +233,39 @@ export const PAGES: Record<string, Page> = {
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
   '/variant-containers': {
     content: VARIANT_CONTAINERS,
-    target: ['react-sdk-next-15-app', 'gen1-next15-app', 'react-sdk-next-pages'],
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
   },
   '/variant-containers-with-previewing-index-0': {
     content: VARIANT_CONTAINERS,
-    target: ['react-sdk-next-15-app', 'gen1-next15-app', 'react-sdk-next-pages'],
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
   },
   '/variant-containers-with-previewing-index-1': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1,
-    target: ['react-sdk-next-15-app', 'gen1-next15-app', 'react-sdk-next-pages'],
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
   },
   '/variant-containers-with-previewing-index-undefined': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
-    target: ['react-sdk-next-15-app', 'gen1-next15-app', 'react-sdk-next-pages'],
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
   },
 } as const;
 
