@@ -107,104 +107,18 @@ const IMPORT_USE_ON_DOCUMENT_PLUGIN = () => ({
       return json;
     },
   },
-});
-
-const REPLACE_USE_ON_WITH_USE_ON_DOCUMENT_PLUGIN = () => ({
   code: {
     post: (code, json) => {
-      if (json.name === 'EnableEditor') {
-        code = code.replace(
-          `
-  useOn(
-    "qvisible",
-    $((event, element) => {
-      if (isBrowser()) {
-        if (isEditing() && !props.isNestedRender) {
-          if (element) {
-            element.dispatchEvent(new CustomEvent("initeditingbldr"));
-          }
-        }
-        const shouldTrackImpression =
-          element.attributes.getNamedItem("shouldTrack")?.value === "true";
-        if (shouldTrackImpression) {
-          const variationId =
-            element.attributes.getNamedItem("variationId")?.value;
-          const contentId = element.attributes.getNamedItem("contentId")?.value;
-          const apiKeyProp = element.attributes.getNamedItem("apiKey")?.value;
-          _track({
-            apiHost: props.apiHost,
-            type: "impression",
-            canTrack: true,
-            contentId,
-            apiKey: apiKeyProp!,
-            variationId: variationId !== contentId ? variationId : undefined,
-          });
-        }
-
-        /**
-         * Override normal content in preview mode.
-         * We ignore this when editing, since the edited content is already being sent from the editor via post messages.
-         */
-        if (isPreviewing() && !isEditing()) {
-          if (element) {
-            element.dispatchEvent(new CustomEvent("initpreviewingbldr"));
-          }
-        }
+      if (json.name === 'EnableEditor'){
+        code = code.replace(`useOn(
+    "qvisible"`, `useOnDocument(
+    "readystatechange"`)
       }
-    }) as Parameters<typeof useOn>[1]
-  );
-  `,
-          `
-  useOnDocument(
-    "readystatechange",
-    $((event) => {
-      if (document.readyState === "complete" && typeof window !== "undefined") {
-        const element = document.querySelector("div");
-  
-        if (element) {
-          if (isEditing() && !props.isNestedRender) {
-            element.dispatchEvent(new CustomEvent("initeditingbldr"));
-          }
-  
-          const shouldTrackImpression =
-            element.attributes.getNamedItem("shouldTrack")?.value === "true";
-          if (shouldTrackImpression) {
-            const variationId =
-              element.attributes.getNamedItem("variationId")?.value;
-            const contentId = element.attributes.getNamedItem("contexntId")?.value;
-            const apiKeyProp = element.attributes.getNamedItem("apiKey")?.value;
-  
-            _track({
-              apiHost: props.apiHost,
-              type: "impression",
-              canTrack: true,
-              contentId,
-              apiKey: apiKeyProp!,
-              variationId: variationId !== contentId ? variationId : undefined,
-            });
-          }
-  
-          if (isPreviewing() && !isEditing()) {
-            element.dispatchEvent(new CustomEvent("initpreviewingbldr"));
-          }
-        }
-      }
-    })
-  );
-  `
-        );
-        code = code.replaceAll('useOn(', 'useOnDocument(');
-
-        code = code.replaceAll(
-          'as Parameters<typeof useOn>[1]',
-          'as Parameters<typeof useOnDocument>[1]'
-        );
-      }
-
-      return code;
-    },
-  },
+      return code
+    }
+  }
 });
+
 const REMOVE_MAGIC_PLUGIN = () => ({
   json: {
     post: (json) => {
@@ -1220,7 +1134,7 @@ module.exports = {
       typescript: true,
       plugins: [
         FETCHPRIORITY_CAMELCASE_PLUGIN,
-        REPLACE_USE_ON_WITH_USE_ON_DOCUMENT_PLUGIN,
+        // REPLACE_USE_ON_WITH_USE_ON_DOCUMENT_PLUGIN,
         IMPORT_USE_ON_DOCUMENT_PLUGIN,
         /**
          * cleanup `onMount` hooks
