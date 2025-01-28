@@ -1,6 +1,7 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeGen2, test } from '../helpers/index.js';
+import { excludeGen2, isSSRFramework, test } from '../helpers/index.js';
+import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
@@ -165,11 +166,66 @@ test.describe('Personalization Container', () => {
     page,
     packageName,
   }) => {
+    // here we are checking specifically for winning variant content by setting the user attributes
     test.skip(!['react-sdk-next-15-app', 'gen1-next15-app'].includes(packageName));
     await page.goto('/variant-containers');
 
+    // content 1
     await expect(page.getByText('My tablet content')).toBeVisible();
     await expect(page.getByText('My mobile content updated')).not.toBeVisible();
     await expect(page.getByText('My default content')).not.toBeVisible();
+
+    // content 2 - this has no targeting set, so the first variant should be the winning variant
+    await expect(page.getByText('Tablet content 2')).toBeVisible();
+  });
+
+  test('only default variants are ssred on the server', async ({ browser, packageName, sdk }) => {
+    test.skip(!isSSRFramework(packageName));
+    test.skip(!['react', 'oldReact'].includes(sdk));
+
+    const context = await browser.newContext({
+      javaScriptEnabled: false,
+    });
+
+    const page = await context.newPage();
+
+    await page.goto('/variant-containers');
+
+    await expect(page.getByText('My default content')).toBeVisible();
+    await expect(page.getByText('Default content 2')).toBeVisible();
+  });
+
+  test.describe('visual editing', () => {
+    test('correctly shows the variant that is being currently edited', async ({
+      page,
+      sdk,
+      basePort,
+    }) => {
+      test.skip(!['react', 'oldReact'].includes(sdk));
+
+      const paths = [
+        '/variant-containers-with-previewing-index-0',
+        '/variant-containers-with-previewing-index-1',
+        '/variant-containers-with-previewing-index-undefined',
+      ];
+
+      const expectedTexts = [
+        'My tablet content',
+        'My mobile content updated',
+        'My default content',
+      ];
+
+      for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+        await launchEmbedderAndWaitForSdk({
+          path,
+          page,
+          sdk,
+          basePort,
+        });
+
+        await expect(page.frameLocator('iframe').getByText(expectedTexts[i])).toBeVisible();
+      }
+    });
   });
 });

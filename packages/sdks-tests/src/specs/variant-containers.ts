@@ -140,6 +140,73 @@ export const VARIANT_CONTAINERS = {
           },
         ],
       },
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-f90383ccd64745ada9399da4f492b466',
+        component: {
+          name: 'PersonalizationContainer',
+          options: {
+            variants: [
+              {
+                blocks: [
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
+                    id: 'builder-80fc5f0d3cf04d44aaa7d241cd382dc5',
+                    component: {
+                      name: 'Text',
+                      options: {
+                        text: 'Tablet content 2',
+                      },
+                    },
+                    responsiveStyles: {
+                      large: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        position: 'relative',
+                        flexShrink: '0',
+                        boxSizing: 'border-box',
+                        marginTop: '20px',
+                        lineHeight: 'normal',
+                        height: 'auto',
+                      },
+                    },
+                  },
+                ],
+                query: [],
+                name: 'tablet variant',
+              },
+            ],
+            previewingIndex: 0,
+          },
+        },
+        children: [
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            id: 'builder-0ebe0aeb60414c5cad19ba33e85f3f4b',
+            component: {
+              name: 'Text',
+              options: {
+                text: 'Default content 2',
+              },
+            },
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                flexShrink: '0',
+                boxSizing: 'border-box',
+                marginTop: '20px',
+                lineHeight: 'normal',
+                height: 'auto',
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   metrics: {
@@ -153,4 +220,32 @@ export const VARIANT_CONTAINERS = {
   createdBy: 'RuGeCLr9ryVt1xRazFYc72uWwIK2',
   lastUpdatedBy: 'RuGeCLr9ryVt1xRazFYc72uWwIK2',
   folders: [],
+};
+
+export const VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1 = {
+  ...VARIANT_CONTAINERS,
+  data: {
+    ...VARIANT_CONTAINERS.data,
+    blocks: VARIANT_CONTAINERS.data.blocks.map(block => ({
+      ...block,
+      component: {
+        ...block.component,
+        options: { ...block.component.options, previewingIndex: 1 },
+      },
+    })),
+  },
+};
+
+export const VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED = {
+  ...VARIANT_CONTAINERS,
+  data: {
+    ...VARIANT_CONTAINERS.data,
+    blocks: VARIANT_CONTAINERS.data.blocks.map(block => ({
+      ...block,
+      component: {
+        ...block.component,
+        options: { ...block.component.options, previewingIndex: null },
+      },
+    })),
+  },
 };
