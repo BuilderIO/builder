@@ -88,7 +88,7 @@ export function getBlocksToRender({
     return fallback;
   }
 
-  // If not editing, check if there's a winning variant
+  // If we're on the browser, check if there's a winning variant
   if (isBrowser()) {
     const winningVariant = filteredVariants?.[0];
     if (winningVariant) {
@@ -99,7 +99,7 @@ export function getBlocksToRender({
     }
   }
 
-  // If no winning variant and we are on the server, return the default variant
+  // If no winning variant or we are on the server, return the default variant
   return fallback;
 }
 
