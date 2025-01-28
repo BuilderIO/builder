@@ -182,6 +182,8 @@ test.describe('Personalization Container', () => {
   test('only default variants are ssred on the server', async ({ browser, packageName, sdk }) => {
     test.skip(!isSSRFramework(packageName));
     test.skip(!['react', 'oldReact'].includes(sdk));
+    // Cannot read properties of null (reading 'useContext')
+    test.skip(packageName === 'gen1-remix');
 
     const context = await browser.newContext({
       javaScriptEnabled: false,
@@ -200,8 +202,11 @@ test.describe('Personalization Container', () => {
       page,
       sdk,
       basePort,
+      packageName,
     }) => {
       test.skip(!['react', 'oldReact'].includes(sdk));
+      // Cannot read properties of null (reading 'useContext')
+      test.skip(packageName === 'gen1-remix');
 
       const paths = [
         '/variant-containers-with-previewing-index-0',
