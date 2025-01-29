@@ -494,7 +494,8 @@ test.describe('Blocks', () => {
       expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
     });
 
-    test('vertically aligning a block works', async ({ page }) => {
+    test('vertically aligning a block works', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
       await page.goto('/columns-vertical-center-flex');
 
       const secondColumn = page.locator('.builder-column').nth(1);

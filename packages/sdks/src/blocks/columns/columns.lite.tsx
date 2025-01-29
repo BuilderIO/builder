@@ -41,6 +41,19 @@ export default function Columns(props: ColumnProps) {
     get stackAt() {
       return props.stackColumnsAt || 'tablet';
     },
+    get blocksStyle() {
+      return useTarget({
+        solid: {
+          'flex-grow': '1',
+        },
+        reactNative: {
+          flexGrow: 1,
+        },
+        default: {
+          flexGrow: '1',
+        },
+      });
+    },
     getTagName(column: Column) {
       return column.link
         ? props.builderLinkComponent ||
@@ -264,12 +277,7 @@ export default function Columns(props: ColumnProps) {
               })}
               path={`columns.${index}.blocks`}
               parent={props.builderBlock.id}
-              styleProp={{
-                flexGrow: useTarget<string | number>({
-                  reactNative: 1,
-                  default: '1',
-                }),
-              }}
+              styleProp={state.blocksStyle}
               context={props.builderContext}
               registeredComponents={props.builderComponents}
               linkComponent={props.builderLinkComponent}
