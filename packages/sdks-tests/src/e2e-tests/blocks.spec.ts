@@ -494,12 +494,26 @@ test.describe('Blocks', () => {
       expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
     });
 
-    test('vertically aligning a block gets correctly rendered', async ({ page }) => {
+    test('vertically aligning a block works', async ({ page }) => {
       await page.goto('/columns-vertical-center-flex');
 
-      const textBlock = page.locator('text=Enter some text...');
+      const secondColumn = page.locator('.builder-column').nth(1);
 
-      await expect(textBlock).toBeVisible();
+      const childDiv = secondColumn.locator('div.builder-blocks');
+      await expect(childDiv).toHaveCSS('flex-grow', '1');
+
+      // check if it's actually vertically centered
+      const columnBox = await secondColumn.boundingBox();
+      const textBox = await secondColumn.locator('.builder-text').boundingBox();
+
+      if (!columnBox || !textBox) {
+        throw new Error('Could not get bounding boxes');
+      }
+
+      const textCenter = textBox.y + textBox.height / 2;
+      const columnCenter = columnBox.y + columnBox.height / 2;
+
+      expect(textCenter).toBeCloseTo(columnCenter, 1);
     });
   });
 
