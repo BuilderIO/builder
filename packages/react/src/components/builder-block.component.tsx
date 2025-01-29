@@ -187,7 +187,6 @@ export class BuilderBlock extends React.Component<
       for (const size of reversedNames) {
         if (!contentHasXSmallBreakpoint && size === 'xsmall') {
           // Only apply xsmall styles if xsmall breakpoint is enabled on content
-          // TODO: remove this once xsmall is made GA
           continue;
         }
 

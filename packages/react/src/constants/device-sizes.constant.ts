@@ -87,7 +87,7 @@ export const getSizesForBreakpoints = (breakpoints: Breakpoints) => {
 
   const largeMin = newSizes.medium.max + 1;
   newSizes.large = {
-    max: largeMin + 1,
+    max: 2000, // TODO: decide upper limit
     min: largeMin,
     default: largeMin + 1,
   };
