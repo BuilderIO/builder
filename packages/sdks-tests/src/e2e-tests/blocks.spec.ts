@@ -493,6 +493,14 @@ test.describe('Blocks', () => {
       expect(secondColumnSpace).toBeCloseTo((400 / 3) * 2, 1);
       expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
     });
+
+    test('vertically aligning a block gets correctly rendered', async ({ page }) => {
+      await page.goto('/columns-vertical-center-flex');
+
+      const textBlock = page.locator('text=Enter some text...');
+
+      await expect(textBlock).toBeVisible();
+    });
   });
 
   test.describe('Embed', () => {
