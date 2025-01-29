@@ -3,4 +3,4 @@
 "@builder.io/sdk": patch
 ---
 
-feat: add "xsmall" breakpoint for content styles
+feat: Add support for "xsmall" breakpoint size in content entries.
