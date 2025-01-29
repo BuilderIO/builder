@@ -23,14 +23,14 @@ export default function Video(props: VideoProps) {
         ...state.videoProps,
       };
     },
+    lazyVideoObserver: undefined as IntersectionObserver | undefined
   });
 
   const videoRef = useRef<HTMLVideoElement>(null);
-  let lazyVideoObserver: IntersectionObserver | undefined;
 
   onMount(() => {
     if(props.lazyLoad){
-      lazyVideoObserver = new IntersectionObserver(function(entries) {
+      const oberver = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
           if (!entry.isIntersecting) return;
 
@@ -49,21 +49,22 @@ export default function Video(props: VideoProps) {
               });
 
               videoElement.load();
-              lazyVideoObserver?.unobserve(videoElement);
+              oberver.unobserve(videoElement);
             } catch (error) {
               console.error('Error loading lazy video:', error);
             }
         });
       });
       if (videoRef && 'tagName' in videoRef) {
-        lazyVideoObserver.observe(videoRef);
+        oberver.observe(videoRef);
       }
+      state.lazyVideoObserver = oberver
     }
   })
 
   onUnMount(()=>{
-    if(lazyVideoObserver){
-      lazyVideoObserver.disconnect();
+    if(state.lazyVideoObserver){
+      state.lazyVideoObserver.disconnect();
     }
   });
 
