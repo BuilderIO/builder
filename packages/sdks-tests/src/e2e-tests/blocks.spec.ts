@@ -244,28 +244,24 @@ test.describe('Blocks', () => {
         {
           width: '152px',
           'object-fit': 'cover',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
         {
           width: '1249px',
           'object-fit': 'contain',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
         {
           width: '744px',
           'object-fit': 'cover',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
         {
           width: '152px',
           'object-fit': 'cover',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
