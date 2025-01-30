@@ -2,4 +2,4 @@
 "@builder.io/sdk": patch
 ---
 
-chore:added modal-name and api-key in sdkInfo-event
+chore: send `apiKey` and `model` to Visual Editor to improve editing experience.
