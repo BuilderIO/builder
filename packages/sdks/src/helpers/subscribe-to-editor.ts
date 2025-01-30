@@ -5,12 +5,14 @@ import { setupBrowserForEditing } from '../scripts/init-editing.js';
 import type { BuilderAnimation } from '../types/builder-block.js';
 import type { BuilderContent } from '../types/builder-content.js';
 import { logger } from './logger.js';
+import type { Dictionary } from '../types/typescript';
 
 type ContentListener = Required<
   Pick<ContentProps, 'model' | 'trustedHosts'>
 > & {
   callbacks: {
     contentUpdate: (updatedContent: BuilderContent) => void;
+    stateUpdate: (newState: Dictionary<string>) => void;
     animation: (updatedContent: BuilderAnimation) => void;
     configureSdk: (updatedContent: any) => void;
   };
@@ -36,6 +38,12 @@ export const createEditorListener = ({
         }
         case 'builder.triggerAnimation': {
           callbacks.animation(data.data);
+          break;
+        }
+        case 'builder.resetState': {
+          if (data?.data?.state) {
+            callbacks.stateUpdate(data.data.state);
+          }
           break;
         }
         case 'builder.contentUpdate': {
@@ -100,6 +108,7 @@ export const subscribeToEditor: SubscribeToEditor = (
       contentUpdate: callback,
       animation: () => {},
       configureSdk: () => {},
+      stateUpdate: () => {},
     },
     model,
     trustedHosts: options?.trustedHosts,
