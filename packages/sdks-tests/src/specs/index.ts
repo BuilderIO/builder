@@ -217,6 +217,7 @@ export const PAGES: Record<string, Page> = {
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
+  '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
 } as const;
 
 export type Path = keyof typeof PAGES;

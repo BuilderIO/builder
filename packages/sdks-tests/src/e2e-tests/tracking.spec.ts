@@ -23,6 +23,22 @@ test.describe('Tracking', () => {
       const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
+    test('do not appear if canTrack=false before builder.init() is invoked', async ({
+      page,
+      context,
+      packageName,
+    }) => {
+      // TO-DO: figure out why Remix fails this test
+      test.fail(packageName === 'gen1-remix');
+
+      // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
+      // which guarantees that the cookie was set or not.
+      await page.goto('/can-track-false-pre-init', { waitUntil: 'networkidle' });
+
+      const cookies = await context.cookies();
+      const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
+      expect(builderSessionCookie).toBeUndefined();
+    });
     test('do not appear if canTrack=false (for Symbols)', async ({
       page,
       context,
