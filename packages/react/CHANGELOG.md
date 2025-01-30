@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 8.0.7
+
+### Patch Changes
+
+- 58fb07e: Fix: ability to set `builder.canTrack` before calling `builder.init()`
+- Updated dependencies [58fb07e]
+  - @builder.io/sdk@6.0.4
+
 ## 8.0.6
 
 ### Patch Changes
