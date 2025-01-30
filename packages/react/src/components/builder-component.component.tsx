@@ -106,6 +106,7 @@ const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
   mobile: 'small',
+  xsmall: 'xsmall',
 };
 
 const fetchCache: { [key: string]: any } = {};
