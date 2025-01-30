@@ -109,14 +109,17 @@ const IMPORT_USE_ON_DOCUMENT_PLUGIN = () => ({
   },
   code: {
     post: (code, json) => {
-      if (json.name === 'EnableEditor'){
-        code = code.replace(`useOn(
-    "qvisible"`, `useOnDocument(
-    "readystatechange"`)
+      if (json.name === 'EnableEditor') {
+        code = code.replace(
+          `useOn(
+    "qvisible"`,
+          `useOnDocument(
+    "readystatechange"`
+        );
       }
-      return code
-    }
-  }
+      return code;
+    },
+  },
 });
 
 const REMOVE_MAGIC_PLUGIN = () => ({
@@ -1134,7 +1137,6 @@ module.exports = {
       typescript: true,
       plugins: [
         FETCHPRIORITY_CAMELCASE_PLUGIN,
-        // REPLACE_USE_ON_WITH_USE_ON_DOCUMENT_PLUGIN,
         IMPORT_USE_ON_DOCUMENT_PLUGIN,
         /**
          * cleanup `onMount` hooks
