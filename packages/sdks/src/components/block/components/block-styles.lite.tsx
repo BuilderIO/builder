@@ -46,6 +46,10 @@ export default function BlockStyles(props: BlockStylesProps) {
         content?.meta?.breakpoints || {}
       );
 
+      const contentHasXSmallBreakpoint = Boolean(
+        content?.meta?.breakpoints?.xsmall
+      );
+
       const largeStyles = styles?.large;
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
@@ -82,16 +86,17 @@ export default function BlockStyles(props: BlockStylesProps) {
           })
         : '';
 
-      const xsmallStylesClass = xsmallStyles
-        ? createCssClass({
-            className,
-            styles: xsmallStyles,
-            mediaQuery: getMaxWidthQueryForSize(
-              'xsmall',
-              sizesWithUpdatedBreakpoints
-            ),
-          })
-        : '';
+      const xsmallStylesClass =
+        xsmallStyles && contentHasXSmallBreakpoint
+          ? createCssClass({
+              className,
+              styles: xsmallStyles,
+              mediaQuery: getMaxWidthQueryForSize(
+                'xsmall',
+                sizesWithUpdatedBreakpoints
+              ),
+            })
+          : '';
 
       const hoverAnimation =
         processedBlock.animations &&

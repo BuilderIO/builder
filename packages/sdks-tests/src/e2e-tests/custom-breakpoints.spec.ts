@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { expectStylesForElement, checkIsRN, test, excludeGen2 } from '../helpers/index.js';
+import { expectStylesForElement, checkIsRN, test } from '../helpers/index.js';
 
 test.describe('Custom Breakpoints', () => {
   /* set breakpoint config in content -
@@ -114,8 +114,7 @@ breakpoints: {
       }
     });
 
-    test('extra small mobile size', async ({ page, sdk }) => {
-      test.skip(excludeGen2(sdk));
+    test('extra small mobile size', async ({ page }) => {
       await page.setViewportSize({ width: 320, height: 1000 });
       await page.goto('/custom-breakpoints');
 
@@ -261,8 +260,7 @@ breakpoints: {
       }
     });
 
-    test('extra small mobile size', async ({ page, sdk }) => {
-      test.skip(excludeGen2(sdk));
+    test('extra small mobile size', async ({ page }) => {
       await page.setViewportSize({ width: 320, height: 1000 });
       await page.goto('/custom-breakpoints-reset');
 
