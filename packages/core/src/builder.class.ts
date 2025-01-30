@@ -1294,6 +1294,7 @@ export class Builder {
   }
 
   set canTrack(canTrack) {
+    this.hasOverriddenCanTrack = true;
     if (this.canTrack !== canTrack) {
       this.canTrack$.next(canTrack);
     }
@@ -1326,6 +1327,7 @@ export class Builder {
   private apiEndpoint$ = new BehaviorSubject<'content' | 'query'>('query');
   private apiVersion$ = new BehaviorSubject<ApiVersion | undefined>(undefined);
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
+  private hasOverriddenCanTrack = false;
   private apiKey$ = new BehaviorSubject<string | null>(null);
   private authToken$ = new BehaviorSubject<string | null>(null);
 
@@ -2119,7 +2121,9 @@ export class Builder {
     if (res) {
       this.response = res;
     }
-    this.canTrack = canTrack;
+    if (!this.hasOverriddenCanTrack) {
+      this.canTrack = canTrack;
+    }
     this.apiKey = apiKey;
     if (authToken) {
       this.authToken = authToken;
