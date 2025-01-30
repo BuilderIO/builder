@@ -32,6 +32,8 @@ export const setupBrowserForEditing = (
     includeRefs?: boolean;
     locale?: string;
     trustedHosts?: string[];
+    modelName?: string;
+    apiKey?: string;
   } = {}
 ) => {
   if (isSetupForEditing) {
@@ -50,6 +52,8 @@ export const setupBrowserForEditing = (
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
           supportsCustomBreakpoints: true,
+          modelName:options.modelName,
+          apiKey:options.apiKey,
         },
       },
       '*'
