@@ -49,7 +49,7 @@ export default function BlockStyles(props: BlockStylesProps) {
       const largeStyles = styles?.large;
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
-
+      const xsmallStyles = styles?.xsmall;
       const className = processedBlock.id;
 
       if (!className) {
@@ -82,6 +82,17 @@ export default function BlockStyles(props: BlockStylesProps) {
           })
         : '';
 
+      const xsmallStylesClass = xsmallStyles
+        ? createCssClass({
+            className,
+            styles: xsmallStyles,
+            mediaQuery: getMaxWidthQueryForSize(
+              'xsmall',
+              sizesWithUpdatedBreakpoints
+            ),
+          })
+        : '';
+
       const hoverAnimation =
         processedBlock.animations &&
         processedBlock.animations.find((item) => item.trigger === 'hover');
@@ -108,6 +119,7 @@ export default function BlockStyles(props: BlockStylesProps) {
         largeStylesClass,
         mediumStylesClass,
         smallStylesClass,
+        xsmallStylesClass,
         hoverStylesClass,
       ].join(' ');
     },
