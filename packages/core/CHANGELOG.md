@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.0.3
+
+### Patch Changes
+
+- b1ad88c: feat: Add support for "xsmall" breakpoint size in content entries.
+
 ## 6.0.2
 
 ### Patch Changes
