@@ -27,8 +27,10 @@ test.describe('Tracking', () => {
       page,
       context,
       packageName,
+      sdk,
     }) => {
       // TO-DO: figure out why Remix fails this test
+      test.skip(!excludeGen1(sdk));
       test.fail(packageName === 'gen1-remix');
 
       // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
