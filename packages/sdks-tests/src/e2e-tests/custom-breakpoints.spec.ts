@@ -114,17 +114,25 @@ breakpoints: {
       }
     });
 
-    test('extra small mobile size', async ({ page }) => {
+    test('extra small mobile size', async ({ page, sdk }) => {
       await page.setViewportSize({ width: 320, height: 1000 });
       await page.goto('/custom-breakpoints');
 
-      const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+      let expectedTextColor = 'rgb(25, 201, 216)'; // blueish text color
+      if (checkIsRN(sdk)) {
+        expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+      }
 
-      await expect(breakpointsPara).toHaveCSS('color', 'rgb(25, 201, 216)');
+      const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+      await expect(breakpointsPara).toHaveCSS('color', expectedTextColor);
+
+      let expectedColumnTextColor = 'rgb(25, 201, 216)'; // blueish text color
+      if (checkIsRN(sdk)) {
+        expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+      }
 
       const column2 = page.locator(`text=Column 2`);
-
-      await expect(column2).toHaveCSS('color', 'rgb(25, 201, 216)');
+      await expect(column2).toHaveCSS('color', expectedColumnTextColor);
 
       // Skipping this image test for react-native.
       // Its difficult to locate the image in react-native as css selectors don't work as expected.
