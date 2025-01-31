@@ -23,6 +23,8 @@ app.disable('x-powered-by');
 
 process.env.NODE_ENV = 'production';
 
+console.log('client build', CLIENT_BUILD_DIR, SERVER_BUILD_DIR)
+
 app.use(
   express.static(CLIENT_BUILD_DIR, {
     maxAge: '1h',

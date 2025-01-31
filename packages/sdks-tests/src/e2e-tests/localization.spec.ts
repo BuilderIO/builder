@@ -10,7 +10,7 @@ test.describe('Localization', () => {
     await page.goto('/localization-locale-passed');
     const text = page.locator(`text=${HI_IN_TEXT}`);
     const image =
-      packageName === 'react-native' ? page.locator('img').first() : page.locator('.builder-image');
+    packageName === 'react-native-74' || packageName === 'react-native-76-fabric' ? page.locator('img').first() : page.locator('.builder-image');
     await expect(text).toBeVisible();
     await expect(image).toHaveAttribute('src', HI_IN_IMAGE);
   });

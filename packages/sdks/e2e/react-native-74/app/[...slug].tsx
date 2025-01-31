@@ -22,6 +22,8 @@ export default function HomeScreen() {
     });
   }, []);
 
+  console.log('props', props)
+
   return (
     <View
       style={{

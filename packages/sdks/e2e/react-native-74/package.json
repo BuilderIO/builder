@@ -1,5 +1,5 @@
 {
-  "name": "@e2e/react-native",
+  "name": "@e2e/react-native-74",
   "main": "expo-router/entry",
   "scripts": {
     "eas-build-pre-install": "yarn g:nx build @builder.io/sdk-react-native",
@@ -14,7 +14,7 @@
     "test:ios": "eas build -e build-and-maestro-test -p ios --no-wait --local",
     "test:ios-remote": "eas build -e build-and-maestro-test -p ios --no-wait",
     "tar:ios": "tar -xzf ios-test-build.tar.gz",
-    "test": "SERVER_NAME=react-native yarn g:nx test:e2e @sdk/tests"
+    "test": "SERVER_NAME=react-native-74 yarn g:nx test:e2e @sdk/tests"
   },
   "jest": {
     "preset": "jest-expo"
