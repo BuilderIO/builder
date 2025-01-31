@@ -489,6 +489,29 @@ test.describe('Blocks', () => {
       expect(secondColumnSpace).toBeCloseTo((400 / 3) * 2, 1);
       expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
     });
+
+    test('vertically aligning a block works', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/columns-vertical-center-flex');
+
+      const secondColumn = page.locator('.builder-column').nth(1);
+
+      const childDiv = secondColumn.locator('div.builder-blocks');
+      await expect(childDiv).toHaveCSS('flex-grow', '1');
+
+      // check if it's actually vertically centered
+      const columnBox = await secondColumn.boundingBox();
+      const textBox = await secondColumn.locator('.builder-text').boundingBox();
+
+      if (!columnBox || !textBox) {
+        throw new Error('Could not get bounding boxes');
+      }
+
+      const textCenter = textBox.y + textBox.height / 2;
+      const columnCenter = columnBox.y + columnBox.height / 2;
+
+      expect(textCenter).toBeCloseTo(columnCenter, 1);
+    });
   });
 
   test.describe('Embed', () => {
