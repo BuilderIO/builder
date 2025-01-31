@@ -11,4 +11,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-feat: add additional breakpoint xsmall support for gen-2 sdks
+feat: Add support for `xsmall` additional breakpoint.
