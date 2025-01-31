@@ -82,6 +82,7 @@ import {
   VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
 } from './variant-containers.js';
 import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
+import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -267,6 +268,8 @@ export const PAGES: Record<string, Page> = {
       'gen1-next14-pages',
     ],
   },
+  '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
+  '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
 } as const;
 
 export type Path = keyof typeof PAGES;

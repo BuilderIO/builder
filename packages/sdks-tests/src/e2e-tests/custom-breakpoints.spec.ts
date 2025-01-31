@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { expectStylesForElement, checkIsRN, test } from '../helpers/index.js';
+import { expectStylesForElement, checkIsRN, test, excludeGen2 } from '../helpers/index.js';
 
 test.describe('Custom Breakpoints', () => {
   /* set breakpoint config in content -
@@ -113,6 +113,37 @@ breakpoints: {
         });
       }
     });
+
+    test('extra small mobile size', async ({ page, sdk }) => {
+      test.skip(excludeGen2(sdk));
+      await page.setViewportSize({ width: 320, height: 1000 });
+      await page.goto('/custom-breakpoints');
+
+      const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+
+      await expect(breakpointsPara).toHaveCSS('color', 'rgb(25, 201, 216)');
+
+      const column2 = page.locator(`text=Column 2`);
+
+      await expect(column2).toHaveCSS('color', 'rgb(25, 201, 216)');
+
+      // Skipping this image test for react-native.
+      // Its difficult to locate the image in react-native as css selectors don't work as expected.
+      if (!checkIsRN) {
+        const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+        const expectedImageCss: Record<string, string> = {
+          display: 'flex',
+          width: '156px',
+          'max-width': '250px',
+        };
+
+        await expectStylesForElement({
+          locator: image,
+          expected: expectedImageCss,
+        });
+      }
+    });
   });
 
   test.describe('when reset', () => {
@@ -202,6 +233,37 @@ breakpoints: {
 
     test('small mobile size', async ({ page }) => {
       await page.setViewportSize({ width: 640, height: 1000 });
+      await page.goto('/custom-breakpoints-reset');
+
+      const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+
+      await expect(breakpointsPara).toHaveCSS('color', 'rgb(65, 117, 5)');
+
+      const column2 = page.locator(`text=Column 2`);
+
+      await expect(column2).toHaveCSS('color', 'rgb(126, 211, 33)');
+
+      // Skipping this image test for react-native.
+      // Its difficult to locate the image in react-native as css selectors don't work as expected.
+      if (!checkIsRN) {
+        const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+        const expectedImageCss: Record<string, string> = {
+          display: 'flex',
+          width: '156px',
+          'max-width': '250px',
+        };
+
+        await expectStylesForElement({
+          locator: image,
+          expected: expectedImageCss,
+        });
+      }
+    });
+
+    test('extra small mobile size', async ({ page, sdk }) => {
+      test.skip(excludeGen2(sdk));
+      await page.setViewportSize({ width: 320, height: 1000 });
       await page.goto('/custom-breakpoints-reset');
 
       const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);

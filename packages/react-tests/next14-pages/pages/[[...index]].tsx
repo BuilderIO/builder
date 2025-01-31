@@ -1,4 +1,4 @@
-import { BuilderComponent, builder } from '@builder.io/react';
+import { Builder, BuilderComponent, builder } from '@builder.io/react';
 import { getAPIKey, getAllPathnames, getProps } from '@sdk/tests';
 import type { GetStaticPathsResult, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import DefaultErrorPage from 'next/error';
@@ -7,6 +7,13 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import '@builder.io/widgets/dist/lib/builder-widgets-async';
+
+if (typeof window !== 'undefined') {
+  const pathname = window.location.pathname;
+  if (pathname.includes('can-track-false-pre-init')) {
+    builder.canTrack = false;
+  }
+}
 
 builder.init(getAPIKey());
 

@@ -1,6 +1,11 @@
 # Example Bynder Plugin for Builder.io
 
-Integrates Bynder's Universal Compact View with Builder as a custom input, using the `SingleSelectFile` mode, which provides asset translations and DAT. It only covers the asset selection workflow, however, and does not provide example components that consume that value (see below)
+Integrates Bynder's Universal Compact View with Builder as a custom input, using the `SingleSelectFile` mode, which provides asset translations and DAT. It only covers the asset selection workflow, however, and does not provide example components that consume that value (see below).
+
+To install the plugin in your Builder.io Space:
+* Navigate to Settings -> Plugins, and click the Edit button
+* Click "Add Plugin" button, and enter `@builder.io/plugin-bynder` into the input field.
+* An "Edit Plugin Settings" button will appear below, which will prompt you for your Bynder Portal Domain and preferred locale. 
 
 ## Notes
 This is a starting point, not a complete integration. 
@@ -12,9 +17,9 @@ This is a starting point, not a complete integration.
 
 ### Using the plugin
 
-To use the Bynder Universal Compact View widget in Builder.io you must create a custom component that leverages the `BynderAsset` custom input type provided by this plugin. If you're not already familiar with creating custom components in Builder.io you can read more [here](https://www.builder.io/c/docs/custom-components-setup).
+To use the Bynder Universal Compact View widget in Builder.io you must create a custom component or data model input that leverages the `BynderAsset` custom input type provided by this plugin. If you're not already familiar with creating custom components in Builder.io you can read more [here](https://www.builder.io/c/docs/custom-components-setup).
 
-In your webapp register a custom component with an input of type `BynderAsset`.
+In your webapp register a custom component with an input of type `BynderAsset`. The following example is a basic image component, but we recommend implementing your frontend-framework's best-practice image component instead. 
 
 ```jsx
 // Builder.io React Gen1 SDK example
@@ -50,10 +55,10 @@ Builder.registerComponent(
 ```
 
 ### Opportunities for further improvement:
-* Provide a Bynder-specific Image component.
-* Create & implement a multi-image select handler, if valuable
-* Per-instance file-type inputs like Builder's file input component
-  * This will require an improvement on Builder's side to support
+* Provide a Bynder-specific Image component to render the Asset JSON.
+* Create & implement a multi-image select handler, if valuable.
+* Per-instance file-type inputs like Builder's file input component.
+  * This will require an improvement on Builder's plugin side to support.
   * In the meantime, extending `BynderSingleSelect` by creating per-asset-type pickers would be the recommendation.
 * Bynder's React NPM Package Bug:
   * Passing in the currently selected value does not appear to maintain the selection, despite passing in the assetID as defined in Bynder's docs.

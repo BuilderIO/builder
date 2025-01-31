@@ -5,6 +5,13 @@ import { useEffect, useState } from 'react';
 import '@builder.io/widgets';
 import { ComponentWithLocalizedSubfields } from './components/ComponentWithLocalizedSubfields';
 
+if (typeof window !== 'undefined') {
+  const pathname = window.location.pathname;
+  if (pathname.includes('can-track-false-pre-init')) {
+    builder.canTrack = false;
+  }
+}
+
 builder.init(getAPIKey());
 
 // default to not tracking, and re-enable when appropriate
