@@ -2,4 +2,4 @@
 "@builder.io/react": patch
 ---
 
-chore:added modal-name and api-key in sdkInjected-event
+chore: send `apiKey` to Visual Editor to improve editing experience.
