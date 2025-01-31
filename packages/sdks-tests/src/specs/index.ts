@@ -219,6 +219,7 @@ export const PAGES: Record<string, Page> = {
   },
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
+  '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
 } as const;
 
 export type Path = keyof typeof PAGES;

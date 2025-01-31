@@ -1,5 +1,22 @@
 # @builder.io/react
 
+## 8.0.7
+
+### Patch Changes
+
+- 58fb07e: Fix: ability to set `builder.canTrack` before calling `builder.init()`
+- Updated dependencies [58fb07e]
+  - @builder.io/sdk@6.0.4
+
+## 8.0.6
+
+### Patch Changes
+
+- 2cf49b4: Fix: Removed z-index from video component as its hiding the child elements
+- b1ad88c: feat: Add support for "xsmall" breakpoint size in content entries.
+- Updated dependencies [b1ad88c]
+  - @builder.io/sdk@6.0.3
+
 ## 8.0.5
 
 ### Patch Changes

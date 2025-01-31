@@ -8,6 +8,7 @@ if (typeof window !== 'undefined') {
         value: true,
         supportsPatchUpdates: 'v4',
         supportsCustomBreakpoints: true,
+        supportsXSmallBreakpoint: true,
         supportsGlobalSymbols: true,
         blockLevelPersonalization: true,
         version: SDK_VERSION,

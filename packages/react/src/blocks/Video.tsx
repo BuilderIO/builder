@@ -132,7 +132,6 @@ class VideoComponent extends React.Component<
             height: '100%',
             objectFit: this.props.fit,
             objectPosition: this.props.position,
-            zIndex: 2,
             // Hack to get object fit to work as expected and not have the video
             // overflow
             borderRadius: 1,
