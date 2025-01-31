@@ -197,6 +197,19 @@ test.describe('Personalization Container', () => {
     await expect(page.getByText('Default content 2')).toBeVisible();
   });
 
+  test('root style attribute is correctly set', async ({ page, sdk, packageName }) => {
+    test.skip(!['react', 'oldReact'].includes(sdk));
+    // Cannot read properties of null (reading 'useContext')
+    test.skip(packageName === 'gen1-remix');
+
+    await page.goto('/variant-containers');
+
+    const secondPersonalizationContainer = page
+      .locator('.builder-personalization-container')
+      .nth(1);
+    await expect(secondPersonalizationContainer).toHaveCSS('background-color', 'rgb(255, 0, 0)');
+  });
+
   test.describe('visual editing', () => {
     test('correctly shows the variant that is being currently edited', async ({
       page,

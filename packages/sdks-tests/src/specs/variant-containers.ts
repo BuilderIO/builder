@@ -206,6 +206,11 @@ export const VARIANT_CONTAINERS = {
             },
           },
         ],
+        responsiveStyles: {
+          large: {
+            backgroundColor: 'red',
+          },
+        },
       },
     ],
   },

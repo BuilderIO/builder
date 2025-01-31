@@ -133,7 +133,9 @@ export default function PersonalizationContainer(
     <div
       ref={rootRef}
       {...props.attributes}
-      class={`builder-personalization-container ${props.attributes?.class || ''}`}
+      class={`builder-personalization-container ${props.builderBlock?.id} ${
+        props.attributes?.class || ''
+      }`}
     >
       <Show when={state.shouldRenderVariants}>
         <For each={props.variants}>
