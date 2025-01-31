@@ -77,6 +77,7 @@ import { COUNTDOWN } from './countdown.js';
 import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
 import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
 import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
+import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -217,6 +218,7 @@ export const PAGES: Record<string, Page> = {
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
+  '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
 } as const;
 
 export type Path = keyof typeof PAGES;
