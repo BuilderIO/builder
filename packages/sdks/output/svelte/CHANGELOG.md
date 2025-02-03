@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 3.0.5
+
+### Patch Changes
+
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 3.0.3
 
 ### Patch Changes
