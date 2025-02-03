@@ -17,6 +17,12 @@ if (typeof window !== 'undefined') {
   ) {
     builder.canTrack = false;
   }
+
+  if (window.location.pathname.includes('variant-containers')) {
+    builder.setUserAttributes({
+      device: 'tablet',
+    });
+  }
 }
 
 type BuilderPageProps = any;

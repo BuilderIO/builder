@@ -31,13 +31,15 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
   );
   const rootRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(isBeingHydrated);
-  const [update, setUpdate] = useState(0);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [_, setUpdate] = useState(0);
   const builderStore = useContext(BuilderStoreContext);
 
   useEffect(() => {
     setIsClient(true);
+    setIsHydrated(true);
     const subscriber = builder.userAttributesChanged.subscribe(() => {
-      setUpdate(update + 1);
+      setUpdate(prev => prev + 1);
     });
     let unsubs = [() => subscriber.unsubscribe()];
 
@@ -156,10 +158,11 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         }}
         className={`builder-personalization-container ${
           props.attributes.className
-        } ${isClient ? '' : 'builder-personalization-container-loading'}`}
+        }${isClient ? '' : ' builder-personalization-container-loading'}`}
       >
         {/* If editing a specific varient */}
-        {Builder.isEditing &&
+        {isHydrated &&
+        Builder.isEditing &&
         typeof props.previewingIndex === 'number' &&
         props.previewingIndex < (props.variants?.length || 0) ? (
           <BuilderBlocks
@@ -169,7 +172,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             child
           />
         ) : // If editing the default or we're on the server and there are no matching variants show the default
-        (Builder.isEditing && typeof props.previewingIndex !== 'number') ||
+        (isHydrated && Builder.isEditing && typeof props.previewingIndex !== 'number') ||
           !isClient ||
           !filteredVariants.length ? (
           <BuilderBlocks
