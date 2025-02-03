@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.17.6
+
+### Patch Changes
+
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 0.17.3
 
 ### Patch Changes

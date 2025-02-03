@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.17.6
+
+### Patch Changes
+
+- 91a7117: Fix: vertically aligning child block of columns block
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 0.17.5
 
 ### Patch Changes

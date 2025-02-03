@@ -13,3 +13,5 @@ export { default as Content } from '../components/content-variants/index.js';
  * Builder Context
  */
 export { BuilderContext } from '../context/index.js';
+
+export { setClientUserAttributes } from '../helpers/user-attributes.js';

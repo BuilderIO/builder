@@ -1,5 +1,17 @@
 # @builder.io/sdk
 
+## 6.0.4
+
+### Patch Changes
+
+- 58fb07e: Fix: ability to set `builder.canTrack` before calling `builder.init()`
+
+## 6.0.3
+
+### Patch Changes
+
+- b1ad88c: feat: Add support for "xsmall" breakpoint size in content entries.
+
 ## 6.0.2
 
 ### Patch Changes
