@@ -5,7 +5,7 @@ const SDK_INJECTED_MESSAGE =
   'BUILDER_EVENT: builder.sdkInjected modelName: page apiKey: abcd';
     
 test.describe('SDK', () => {
-  test.only('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
+  test('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
     test.skip(excludeGen2(sdk));
     const msgPromise = page.waitForEvent('console',  msg => msg.text().includes(SDK_INJECTED_MESSAGE));
 
