@@ -32,6 +32,8 @@ const server = (req, res) => {
       switch (event.data.type) {
         case 'builder.registerComponent':
           return 'Component name: ' + event.data.data.name;
+           case 'builder.sdkInjected':
+          return 'modelName: ' + event.data.data.modelName + ' apiKey: ' + event.data.data.apiKey;
         default:
           return '';
       }
