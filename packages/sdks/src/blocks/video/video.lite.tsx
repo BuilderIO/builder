@@ -55,7 +55,7 @@ export default function Video(props: VideoProps) {
             }
         });
       });
-      if (videoRef && 'tagName' in videoRef) {
+      if (videoRef) {
         oberver.observe(videoRef);
       }
       state.lazyVideoObserver = oberver

@@ -865,6 +865,29 @@ const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
 });
 
 /**
+ * Angular allows DOM manipulation in `ngAfterViewInit` hook.
+ * This plugin moves the DOM code from `ngOnInit` to `ngAfterViewInit` hook.
+ */
+
+const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
+  code: {
+    post: (code,json) => {
+      if(json.name === 'BuilderVideo'){
+        const startIndex = code.indexOf('if (this.lazyLoad) {');
+        const endIndex = code.indexOf('this.lazyVideoObserver = oberver;')+34;
+        const codeToMove = code.slice(startIndex, endIndex+9);
+
+        code = code.slice(0,startIndex)+ code.slice(endIndex+9);
+
+        const ngAfterViewInitIndex = code.indexOf('this.setAttributes(this.elRef1?.nativeElement, this.node_2_source);')+67;
+        code = code.slice(0,ngAfterViewInitIndex+1)+ codeToMove + code.slice(ngAfterViewInitIndex+1);
+      }
+      return code;
+    },
+  },
+});
+
+/**
  * Angular doesn't support hydration for components created dynamically.
  * Refer: https://angular.dev/errors/NG0503
  * GitHub issue: https://github.com/angular/angular/issues/51798
@@ -915,6 +938,7 @@ module.exports = {
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
         ANGULAR_MARK_SAFE_INNER_HTML,
+        ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT
       ],
     },
     solid: {
