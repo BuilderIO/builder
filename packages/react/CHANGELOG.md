@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.0.8
+
+### Patch Changes
+
+- abe5cba: Fix: hydration mismatch error and reactivity of Personalization Containers when `userAttributes` cookie value is updated.
+
 ## 8.0.7
 
 ### Patch Changes
