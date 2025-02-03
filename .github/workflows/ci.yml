@@ -133,8 +133,7 @@ jobs:
             'svelte',
             'sveltekit',
             'solid',
-            'react-native-74',
-            'react-native-76-fabric',
+            'react-native',
             'hydrogen',
           ]
 
