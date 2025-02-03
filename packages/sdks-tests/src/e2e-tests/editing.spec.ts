@@ -6,7 +6,7 @@ import {
 } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { HOMEPAGE } from '../specs/homepage.js';
-import { checkIsRN, test } from '../helpers/index.js';
+import { checkIsRN, test ,excludeGen2} from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -17,6 +17,9 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+
+const SDK_INJECTED_MESSAGE =
+  'BUILDER_EVENT: builder.sdkInjected modelName: page apiKey: abcd';
 
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
@@ -330,4 +333,20 @@ test.describe('Visual Editing', () => {
       await page.frameLocator('iframe').getByText('coffee info: Another coffee brand.').waitFor();
     });
   });
+
+  test.describe('SDK', () => {
+    test('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
+      test.skip(excludeGen2(sdk));
+      const msgPromise = page.waitForEvent('console',  msg => msg.text().includes(SDK_INJECTED_MESSAGE));
+  
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/editing',
+        sdk,
+      });
+      await msgPromise;
+    });
+  });
+  
 });
