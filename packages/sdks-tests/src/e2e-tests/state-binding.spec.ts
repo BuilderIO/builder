@@ -13,8 +13,8 @@ test.describe('State binding', () => {
 
       // flaky, can't `test.fail()`
       test.skip(
-        packageName === 'react-native-74' || 
-        packageName === 'react-native-76-fabric' ||
+        packageName === 'react-native-74' ||
+          packageName === 'react-native-76-fabric' ||
           packageName === 'solid' ||
           packageName === 'solid-start' ||
           packageName === 'svelte' ||

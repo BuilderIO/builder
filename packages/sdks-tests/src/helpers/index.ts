@@ -103,7 +103,7 @@ export const isSSRFramework = (packageName: ServerName | 'DEFAULT') => {
     packageName === 'solid' ||
     packageName === 'react' ||
     packageName === 'svelte' ||
-    packageName === 'react-native-74' || 
+    packageName === 'react-native-74' ||
     packageName === 'react-native-76-fabric' ||
     packageName === 'angular-16' ||
     packageName === 'gen1-react';

@@ -209,8 +209,8 @@ test.describe('Visual Editing', () => {
     });
     test('correctly updates width props', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
-        packageName === 'react-native-74' || 
-        packageName === 'react-native-76-fabric' ||
+        packageName === 'react-native-74' ||
+          packageName === 'react-native-76-fabric' ||
           packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||

@@ -17,8 +17,8 @@ test.describe('Default styles', () => {
     test.skip(excludeGen1(sdk));
     // TODO: need to check why angular-ssr is failing, working as expected though
     test.fail(
-      packageName === 'react-native-74' || 
-      packageName === 'react-native-76-fabric' ||
+      packageName === 'react-native-74' ||
+        packageName === 'react-native-76-fabric' ||
         packageName === 'angular-16-ssr' ||
         packageName === 'angular-19-ssr'
     );
