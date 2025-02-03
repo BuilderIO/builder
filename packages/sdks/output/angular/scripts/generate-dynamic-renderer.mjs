@@ -157,7 +157,8 @@ const generateComponents = () => {
           TagName;
           inputs: {
             attributes: attributes,
-            actionAttributes: actionAttributes
+            actionAttributes: actionAttributes,
+            tagName: TagName
           };
           content: myContent
         "
@@ -190,6 +191,7 @@ export default class DynamicRenderer {
       switch (this.TagName) {
         ${htmlElements.map((el) => `case '${el}': this.TagName = Dynamic${capitalize(el)}; break;`).join('\n        ')}
         default:
+          this.TagName = DynamicUnknownElement
           break;
       }
     }
@@ -201,6 +203,49 @@ export default class DynamicRenderer {
   htmlElements.forEach((tagName) => {
     dynamicRendererCode += dynamicComponentTemplate(tagName) + '\n';
   });
+
+  dynamicRendererCode += `
+@Component({
+    selector: 'dynamic-unknown-element',
+    template: '',
+    standalone: true
+  })
+
+  export class DynamicUnknownElement {
+    @Input() tagName!: string;
+    @Input() attributes: any;
+    @Input() actionAttributes: any;
+  
+    private _element!: HTMLElement;
+    private _listenerFns = new Map<string, () => void>();
+  
+    constructor(private hostRef: ElementRef, private renderer: Renderer2) {}
+  
+    ngOnInit() {
+      this._element = this.renderer.createElement(this.tagName);
+      this.renderer.appendChild(this.hostRef.nativeElement, this._element);
+      this.setAttributes(this._element, this.attributes);
+    }
+  
+    ngOnDestroy() {
+      this._listenerFns.forEach((fn) => fn());
+    }
+  
+    setAttributes(el: any, attributes: any) {
+      if (!attributes) return;
+      Object.keys(attributes).forEach((key) => {
+        if (key.startsWith('on')) {
+          if (this._listenerFns.has(key)) {
+            this._listenerFns.get(key)!();
+          }
+          const eventType = key.replace('on', '').toLowerCase();
+          this._listenerFns.set(key, this.renderer.listen(el, eventType, attributes[key]));
+        } else {
+          this.renderer.setAttribute(el, key, attributes[key] ?? '');
+        }
+      });
+    }
+  }`
 
   fs.writeFileSync(PATH_TO_DYNAMIC_RENDERER, dynamicRendererCode);
 
