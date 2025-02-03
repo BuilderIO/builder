@@ -18047,9 +18047,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snippet/react-native@workspace:packages/sdks/snippets/react-native":
+"@snippet/react-native@workspace:packages/sdks/snippets/react-native-74":
   version: 0.0.0-use.local
-  resolution: "@snippet/react-native@workspace:packages/sdks/snippets/react-native"
+  resolution: "@snippet/react-native@workspace:packages/sdks/snippets/react-native-74"
   dependencies:
     "@babel/core": ^7.20.0
     "@builder.io/sdk-react-native": "workspace:*"
