@@ -870,19 +870,19 @@ const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
  */
 
 const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
-  code: {
-    post: (code,json) => {
-      if(json.name === 'BuilderVideo'){
-        const startIndex = code.indexOf('if (this.lazyLoad) {');
-        const endIndex = code.indexOf('this.lazyVideoObserver = oberver;')+34;
-        const codeToMove = code.slice(startIndex, endIndex+9);
+  json: {
+    post: (json) => {
+      if (json.name === 'BuilderVideo') {
+        json.compileContext = {
+          angular: {
+            hooks: {
+              ngAfterViewInit: json.hooks.onMount[0],
+            },
+          },
+        };
 
-        code = code.slice(0,startIndex)+ code.slice(endIndex+9);
-
-        const ngAfterViewInitIndex = code.indexOf('this.setAttributes(this.elRef1?.nativeElement, this.node_2_source);')+67;
-        code = code.slice(0,ngAfterViewInitIndex+1)+ codeToMove + code.slice(ngAfterViewInitIndex+1);
+        delete json.hooks.onMount;
       }
-      return code;
     },
   },
 });
