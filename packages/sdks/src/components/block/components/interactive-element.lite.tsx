@@ -32,8 +32,8 @@ useMetadata({
  */
 export default function InteractiveElement(props: InteractiveElementProps) {
   const state = useStore({
-    get attributes() {
-      return props.includeBlockProps
+    get wrappedPropsWithAttributes() {
+      const attributes = props.includeBlockProps
         ? {
             ...getBlockProperties({
               block: props.block,
@@ -48,6 +48,11 @@ export default function InteractiveElement(props: InteractiveElementProps) {
             }),
           }
         : {};
+
+      return {
+        ...props.wrapperProps,
+        ...attributes,
+      };
     },
   });
 
@@ -55,7 +60,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
+        <props.Wrapper {...state.wrappedPropsWithAttributes}>
           {props.children}
         </props.Wrapper>
       }
@@ -63,8 +68,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       <Awaiter
         load={props.Wrapper.load}
         fallback={props.Wrapper.fallback}
-        props={props.wrapperProps}
-        attributes={state.attributes}
+        props={state.wrappedPropsWithAttributes}
       >
         {props.children}
       </Awaiter>

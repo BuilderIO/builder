@@ -4,7 +4,6 @@
   export let load: () => Promise<{ default: typeof SvelteComponent<any> }>;
   export let fallback: any;
   export let props: any;
-  export let attributes: any;
 
   const componentImport = typeof load === 'string' ? import(load) : load();
 </script>
@@ -14,7 +13,7 @@
     <svelte:component this={fallback} />
   {/if}
 {:then { default: Component }}
-  <svelte:component this={Component} {...props} {attributes}>
+  <svelte:component this={Component} {...props}>
     <slot />
   </svelte:component>
 {/await}
