@@ -1158,7 +1158,6 @@ module.exports = {
                   `useOnDocument(
     "readystatechange"`
                 );
-                console.log('use on document', code)
               }
               return code;
             },
