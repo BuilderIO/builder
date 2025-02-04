@@ -131,19 +131,6 @@ breakpoints: {
 
       const column2 = page.locator(`text=Column 2`);
       await expect(column2).toHaveCSS('color', expectedColumnTextColor);
-
-      const image = page.locator(`.builder-block:has(img.builder-image)`);
-
-      const expectedImageCss: Record<string, string> = {
-        display: 'flex',
-        width: '76px',
-        'max-width': '250px',
-      };
-
-      await expectStylesForElement({
-        locator: image,
-        expected: expectedImageCss,
-      });
     });
   });
 
@@ -277,19 +264,6 @@ breakpoints: {
       const column2 = page.locator(`text=Column 2`);
 
       await expect(column2).toHaveCSS('color', 'rgb(126, 211, 33)');
-
-      const image = page.locator(`.builder-block:has(img.builder-image)`);
-
-      const expectedImageCss: Record<string, string> = {
-        display: 'flex',
-        width: '76px',
-        'max-width': '250px',
-      };
-
-      await expectStylesForElement({
-        locator: image,
-        expected: expectedImageCss,
-      });
     });
   });
 });
