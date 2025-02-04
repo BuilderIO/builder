@@ -3,7 +3,7 @@ import { excludeTestFor, test } from '../helpers/index.js';
 
 test.describe('Duplicate Attributes', () => {
   test('wrapped block has no duplicate attributes', async ({ page, packageName, sdk }) => {
-    test.fail(
+    test.expect(
       excludeTestFor({ angular: true }, sdk),
       'attributes not spread out so cant set footer'
     );
