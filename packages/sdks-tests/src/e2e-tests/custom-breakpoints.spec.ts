@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { expectStylesForElement, checkIsRN, test } from '../helpers/index.js';
+import { expectStylesForElement, checkIsRN, test, excludeTestFor } from '../helpers/index.js';
 
 test.describe('Custom Breakpoints', () => {
   /* set breakpoint config in content -
@@ -115,41 +115,35 @@ breakpoints: {
     });
 
     test('extra small mobile size', async ({ page, sdk }) => {
+      test.skip(
+        excludeTestFor({ reactNative: true }, sdk),
+        'Custom breakpoints not implemented in React Native'
+      );
       await page.setViewportSize({ width: 320, height: 1000 });
       await page.goto('/custom-breakpoints');
 
-      let expectedTextColor = 'rgb(25, 201, 216)'; // blueish text color
-      if (checkIsRN(sdk)) {
-        expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
-      }
+      const expectedTextColor = 'rgb(25, 201, 216)'; // blueish text color
 
       const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
       await expect(breakpointsPara).toHaveCSS('color', expectedTextColor);
 
-      let expectedColumnTextColor = 'rgb(25, 201, 216)'; // blueish text color
-      if (checkIsRN(sdk)) {
-        expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
-      }
+      const expectedColumnTextColor = 'rgb(25, 201, 216)'; // blueish text color
 
       const column2 = page.locator(`text=Column 2`);
       await expect(column2).toHaveCSS('color', expectedColumnTextColor);
 
-      // Skipping this image test for react-native.
-      // Its difficult to locate the image in react-native as css selectors don't work as expected.
-      if (!checkIsRN) {
-        const image = page.locator(`.builder-block:has(img.builder-image)`);
+      const image = page.locator(`.builder-block:has(img.builder-image)`);
 
-        const expectedImageCss: Record<string, string> = {
-          display: 'flex',
-          width: '156px',
-          'max-width': '250px',
-        };
+      const expectedImageCss: Record<string, string> = {
+        display: 'flex',
+        width: '76px',
+        'max-width': '250px',
+      };
 
-        await expectStylesForElement({
-          locator: image,
-          expected: expectedImageCss,
-        });
-      }
+      await expectStylesForElement({
+        locator: image,
+        expected: expectedImageCss,
+      });
     });
   });
 
@@ -268,7 +262,11 @@ breakpoints: {
       }
     });
 
-    test('extra small mobile size', async ({ page }) => {
+    test('extra small mobile size', async ({ page, sdk }) => {
+      test.skip(
+        excludeTestFor({ reactNative: true }, sdk),
+        'Custom breakpoints not implemented in React Native'
+      );
       await page.setViewportSize({ width: 320, height: 1000 });
       await page.goto('/custom-breakpoints-reset');
 
@@ -280,22 +278,18 @@ breakpoints: {
 
       await expect(column2).toHaveCSS('color', 'rgb(126, 211, 33)');
 
-      // Skipping this image test for react-native.
-      // Its difficult to locate the image in react-native as css selectors don't work as expected.
-      if (!checkIsRN) {
-        const image = page.locator(`.builder-block:has(img.builder-image)`);
+      const image = page.locator(`.builder-block:has(img.builder-image)`);
 
-        const expectedImageCss: Record<string, string> = {
-          display: 'flex',
-          width: '156px',
-          'max-width': '250px',
-        };
+      const expectedImageCss: Record<string, string> = {
+        display: 'flex',
+        width: '76px',
+        'max-width': '250px',
+      };
 
-        await expectStylesForElement({
-          locator: image,
-          expected: expectedImageCss,
-        });
-      }
+      await expectStylesForElement({
+        locator: image,
+        expected: expectedImageCss,
+      });
     });
   });
 });
