@@ -332,7 +332,7 @@ test.describe('Visual Editing', () => {
   });
 
   test.describe('SDK', () => {
-    test.only('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
+    test('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
       test.skip(excludeGen1(sdk));
       let consoleMsg = '';
       const msgPromise = page.waitForEvent('console',  msg => {
