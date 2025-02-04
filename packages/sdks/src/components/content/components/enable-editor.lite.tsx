@@ -341,6 +341,19 @@ export default function EnableEditor(props: BuilderEditorProps) {
     true
   );
 
+  /**
+   * To initialize previewing and editing, SDKs need to send and receive events
+   * to/from visual editor.
+   * - in React/hydration frameworks, we just shove all that code into `useEffect(() => {}, [])` (onMount)
+   * - in Qwik, we have no hydration step. And we want to avoid eagerly executing code as much as possible
+   *
+   * Our workaround for Qwik is:
+   *
+   * - instead of `useVisibleTask$()`, we listen to`useOn('qvisible')` which will have a reference to the root element of the component.
+   *   - never use `props.*` or `state.*` inside of the event handler for `'qvisible'`. This guarantees that we are not making the user download a ton of data.
+   *   - instead, of you need any data, set it as a data attribute on the root element, and then read those attributes via the element ref (2nd argument of qvisible event handler).
+   *   - move heavy editing and previwing logic behind `customEvent` dispatches, guaranteeing that production qwik sdk load time will be perfect (no hydration, no eager code besides tracking impression)
+   */
   onMount(() => {
     if (isBrowser()) {
       if (isEditing() && !props.isNestedRender) {
