@@ -6,15 +6,8 @@ export interface Breakpoints {
   small: number;
   medium: number;
 }
-
-type BuilderContentVariationData<Name extends string> = Name extends 'foo'
-  ? { bar: boolean }
-  : Name extends 'bar'
-    ? { abc: string }
-    : Record<string, never>;
-
-export interface BuilderContentVariation<Name extends string = string> {
-  data?: BuilderContentVariationData<Name> & {
+export interface BuilderContentVariation {
+  data?: {
     title?: string;
     blocks?: BuilderBlock[];
     inputs?: Input[];
@@ -24,7 +17,7 @@ export interface BuilderContentVariation<Name extends string = string> {
     httpRequests?: { [key: string]: string };
     [key: string]: any;
   };
-  name?: Name;
+  name?: string;
   testRatio?: number;
   id?: string;
   meta?: {
