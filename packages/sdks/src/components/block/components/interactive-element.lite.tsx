@@ -51,7 +51,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
 
       return {
         ...props.wrapperProps,
-        ...attributes,
+        ...(attributes ? { attributes } : {}),
       };
     },
   });
