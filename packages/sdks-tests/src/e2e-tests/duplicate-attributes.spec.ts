@@ -7,7 +7,7 @@ test.describe('Duplicate Attributes', () => {
       excludeTestFor({ angular: true }, sdk),
       'attributes not spread out so cant set footer'
     );
-    test.skip(packageName === 'react-native');
+    test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
     await page.goto('/duplicate-attributes');
 
     const footer = await page.locator('footer');

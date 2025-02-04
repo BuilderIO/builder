@@ -235,18 +235,18 @@
   These events can be listened to for analytics or other custom behaviors:
 
   ```javascript
-  document.addEventListener("builder.variantLoaded", (event) => {
+  document.addEventListener('builder.variantLoaded', event => {
     // This will either be a variant object like { name: 'My Variant', query: [...], startDate: ..., endDate: ... }
     // or the string 'default'
-    console.log("Variant loaded:", event.detail.variant);
+    console.log('Variant loaded:', event.detail.variant);
     // This will be the content object like { name: 'My page', id: '...', ... }
-    console.log("Content:", event.detail.content);
+    console.log('Content:', event.detail.content);
     // Perform analytics or other actions
   });
 
-  document.addEventListener("builder.variantDisplayed", (event) => {
-    console.log("Variant displayed:", event.detail.variant);
-    console.log("Content:", event.detail.content);
+  document.addEventListener('builder.variantDisplayed', event => {
+    console.log('Variant displayed:', event.detail.variant);
+    console.log('Content:', event.detail.content);
     // Track impressions or perform other visibility-dependent actions
   });
   ```
@@ -291,7 +291,7 @@
 
   ```js
   userAttributes: {
-    stringWithStrs: ["a", "c"];
+    stringWithStrs: ['a', 'c'];
   }
   ```
 
@@ -307,7 +307,7 @@
 
   ```js
   userAttributes: {
-    stringWithNums: ["1", "2"];
+    stringWithNums: ['1', '2'];
   }
   ```
 
@@ -517,10 +517,10 @@
 In case you feel the need to use our older API Version `v1`, reach out to us at support@builder.io first. But you can override the default by setting `apiVersion` explicitly to `v1` as follows:
 
 ```js
-import { builder } from "@builder.io/react";
+import { builder } from '@builder.io/react';
 
-builder.init("YOUR_BUILDER_PUBLIC_KEY");
-builder.apiVersion = "v1";
+builder.init('YOUR_BUILDER_PUBLIC_KEY');
+builder.apiVersion = 'v1';
 ```
 
 More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
@@ -532,10 +532,10 @@ More details on the Builder API Versions visit [this link](https://www.builder.i
 You can set the apiVersion using `builder.init` or `builder.apiVersion`:
 
 ```js
-import { builder } from "@builder.io/react";
+import { builder } from '@builder.io/react';
 
-builder.init("YOUR_BUILDER_PUBLIC_KEY");
-builder.apiVersion = "v3";
+builder.init('YOUR_BUILDER_PUBLIC_KEY');
+builder.apiVersion = 'v3';
 ```
 
 ## 2.0.16
