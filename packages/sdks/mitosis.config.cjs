@@ -881,12 +881,16 @@ const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
           },
         };
 
-        delete json.hooks.onMount;
+        json.compileContext.angular.hooks.ngAfterViewInit.code =
+          json.compileContext.angular.hooks.ngAfterViewInit.code
+            .replace('props.', 'this.')
+            .replace('state.', 'this.');
+
+        json.hooks.onMount = [];
       }
     },
   },
 });
-
 /**
  * Angular doesn't support hydration for components created dynamically.
  * Refer: https://angular.dev/errors/NG0503
