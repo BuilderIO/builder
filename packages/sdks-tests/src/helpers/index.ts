@@ -37,6 +37,16 @@ async function screenshotOnFailure(
   }
 }
 
+const isIgnorableError = (error: Error) => {
+  return error.message.includes(
+    /**
+     * This error started appearing recently across all frameworks.
+     * It is most likely some playwright browser issue and not something we can fix in our code.
+     */
+    "Failed to execute 'observe' on 'PressureObserver': Access to the feature \"compute pressure\" is disallowed by permissions policy"
+  );
+};
+
 const test = base.extend<TestOptions>({
   // this is provided by `playwright.config.ts`
   packageName: ['DEFAULT' as any, { option: true }],
@@ -52,10 +62,14 @@ const test = base.extend<TestOptions>({
     }
 
     context.on('weberror', err => {
+      if (isIgnorableError(err.error())) return;
+
       console.error(err.error());
       throw new Error('Test failed due to error thrown in browser: ' + err.error());
     });
     page.on('pageerror', err => {
+      if (isIgnorableError(err)) return;
+
       console.error(err);
       throw new Error('Test failed due to error thrown in browser: ' + err);
     });
