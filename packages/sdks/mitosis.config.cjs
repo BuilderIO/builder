@@ -95,33 +95,6 @@ ${restOfCode.join('\n').replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
   },
 });
 
-const IMPORT_USE_ON_DOCUMENT_PLUGIN = () => ({
-  json: {
-    post: (json) => {
-      if (json.name !== 'EnableEditor') return;
-      json.imports.push({
-        imports: { useOnDocument: 'useOnDocument' },
-        path: '@builder.io/qwik',
-      });
-
-      return json;
-    },
-  },
-  code: {
-    post: (code, json) => {
-      if (json.name === 'EnableEditor') {
-        code = code.replace(
-          `useOn(
-    "qvisible"`,
-          `useOnDocument(
-    "readystatechange"`
-        );
-      }
-      return code;
-    },
-  },
-});
-
 const REMOVE_MAGIC_PLUGIN = () => ({
   json: {
     post: (json) => {
@@ -1137,7 +1110,6 @@ module.exports = {
       typescript: true,
       plugins: [
         FETCHPRIORITY_CAMELCASE_PLUGIN,
-        IMPORT_USE_ON_DOCUMENT_PLUGIN,
         /**
          * cleanup `onMount` hooks
          * - rmv unnecessary ones
@@ -1160,13 +1132,35 @@ module.exports = {
                   json.hooks.onEvent.push({
                     code: hook.code.replaceAll('elementRef', 'element'),
                     eventArgName: 'event',
-                    eventName: 'qvisible',
+                    eventName: 'readystatechange',
                     isRoot: true,
                     refName: 'element',
                     elementArgName: 'element',
                   });
                 });
               }
+            },
+            post: (json) => {
+              if (json.name !== 'EnableEditor') return;
+              json.imports.push({
+                imports: { useOnDocument: 'useOnDocument' },
+                path: '@builder.io/qwik',
+              });
+              return json;
+            },
+          },
+          code: {
+            post: (code, json) => {
+              if (json.name === 'EnableEditor') {
+                code = code.replaceAll(
+                  `useOn(
+    "readystatechange"`,
+                  `useOnDocument(
+    "readystatechange"`
+                );
+                console.log('use on document', code)
+              }
+              return code;
             },
           },
         }),
