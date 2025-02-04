@@ -8,7 +8,7 @@ test.describe('Blocks className', () => {
     packageName,
   }) => {
     test.skip(excludeGen1(sdk));
-    test.skip(packageName === 'react-native');
+    test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
 
     await page.goto('/blocks-class-name');
     const countOfBuilderBlocksWithClassName = await page

@@ -76,7 +76,13 @@ import { XSS_EXPLOIT } from './xss-exploit.js';
 import { COUNTDOWN } from './countdown.js';
 import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.js';
 import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
+import {
+  VARIANT_CONTAINERS,
+  VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1,
+  VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
+} from './variant-containers.js';
 import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
+import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -146,7 +152,16 @@ export const PAGES: Record<string, Page> = {
   '/text-eval': { content: textEval },
   '/state-binding': { content: stateBinding },
   '/nested-symbols': { content: nestedSymbols },
-  '/personalization-container': { content: personalizatContainer, target: 'gen1' },
+  '/personalization-container': {
+    content: personalizatContainer,
+    target: [
+      'gen1',
+      'react',
+      'react-sdk-next-14-app',
+      'react-sdk-next-15-app',
+      'react-sdk-next-pages',
+    ],
+  },
   '/editing-styles': { content: EDITING_STYLES, isGen1VisualEditingTest: true },
   '/video': { content: video },
   '/repeat-items-bindings': { content: REPEAT_ITEMS_BINDINGS },
@@ -217,6 +232,43 @@ export const PAGES: Record<string, Page> = {
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
+  '/variant-containers': {
+    content: VARIANT_CONTAINERS,
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
+  },
+  '/variant-containers-with-previewing-index-0': {
+    content: VARIANT_CONTAINERS,
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
+  },
+  '/variant-containers-with-previewing-index-1': {
+    content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1,
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
+  },
+  '/variant-containers-with-previewing-index-undefined': {
+    content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
+    target: [
+      'react-sdk-next-15-app',
+      'gen1-next15-app',
+      'react-sdk-next-pages',
+      'gen1-next14-pages',
+    ],
+  },
+  '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
 } as const;
 

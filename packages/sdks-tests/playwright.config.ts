@@ -22,7 +22,8 @@ const getDirName = () => {
 };
 
 const things = serverNames.map((packageName, i) => {
-  const isReactNative = packageName === 'react-native';
+  const isReactNative =
+    packageName === 'react-native-74' || packageName === 'react-native-76-fabric';
   const port = 1111 + i;
   const portFlag = isReactNative ? `-l ${port}` : `--port=${port}`;
 
@@ -89,7 +90,9 @@ export default defineConfig({
       command: `PORT=${port} yarn workspace @${testType}/${packageName} ${IS_DEV_MODE ? 'dev' : 'serve'} ${portFlag}`,
       port,
       reuseExistingServer: false,
-      ...(packageName === 'react-native' ? { timeout: 120 * 1000 } : {}),
+      ...(packageName === 'react-native-74' || packageName === 'react-native-76-fabric'
+        ? { timeout: 120 * 1000 }
+        : {}),
     }))
     .concat([
       {

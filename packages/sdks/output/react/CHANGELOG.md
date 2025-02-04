@@ -1,5 +1,29 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 3.0.6
+
+### Patch Changes
+
+- abe5cba: Feat: exports `setClientUserAttributes` helper that can be used to set and update Builder's user attributes cookie. This cookie is used by Builder's Personalization Containers to decide which variant to render.
+
+  Usage example:
+
+  ```ts
+  import { setClientUserAttributes } from "@builder.io/sdk-react";
+
+  setClientUserAttributes({
+    device: "tablet",
+  });
+  ```
+
+- abe5cba: Feat: support of Variant Containers or Block level personalization
+
+## 3.0.5
+
+### Patch Changes
+
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 3.0.3
 
 ### Patch Changes

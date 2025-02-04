@@ -51,6 +51,7 @@ export const setupBrowserForEditing = (
           supportsAddBlockScoping: true,
           supportsCustomBreakpoints: true,
           supportsXSmallBreakpoint: true,
+          blockLevelPersonalization: true,
         },
       },
       '*'

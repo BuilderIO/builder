@@ -12,7 +12,8 @@ export type Sdk =
   | 'angular';
 
 const serverNameEnumValues = [
-  'react-native',
+  'react-native-74',
+  'react-native-76-fabric',
   'solid',
   'solid-start',
   'qwik-city',
@@ -53,7 +54,8 @@ export type Generation = 'gen1' | 'gen2';
  * Map of server names to SDKs.
  */
 export const SDK_MAP: Record<ServerName, { sdk: Sdk; gen: Generation }> = {
-  'react-native': { sdk: 'reactNative', gen: 'gen2' },
+  'react-native-74': { sdk: 'reactNative', gen: 'gen2' },
+  'react-native-76-fabric': { sdk: 'reactNative', gen: 'gen2' },
   solid: { sdk: 'solid', gen: 'gen2' },
   'solid-start': { sdk: 'solid', gen: 'gen2' },
   'qwik-city': { sdk: 'qwik', gen: 'gen2' },
