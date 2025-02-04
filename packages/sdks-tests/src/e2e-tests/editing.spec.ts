@@ -18,9 +18,6 @@ import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbo
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
 
-const SDK_INJECTED_MESSAGE =
-  'BUILDER_EVENT: builder.sdkInjected modelName: page apiKey: abcd';
-
 const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
     test.skip(
@@ -337,8 +334,14 @@ test.describe('Visual Editing', () => {
   test.describe('SDK', () => {
     test('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
       test.skip(excludeGen2(sdk));
-      const msgPromise = page.waitForEvent('console',  msg => msg.text().includes(SDK_INJECTED_MESSAGE));
-  
+      let consoleMsg = '';
+      const msgPromise = page.waitForEvent('console',  msg => {
+        if(msg.text().includes('BUILDER_EVENT: builder.sdkInjected')){
+          consoleMsg = msg.text();
+          return true;
+        }
+        return false;
+      });
       await launchEmbedderAndWaitForSdk({
         page,
         basePort,
@@ -346,6 +349,9 @@ test.describe('Visual Editing', () => {
         sdk,
       });
       await msgPromise;
+
+      expect(consoleMsg).toContain('modelName: page');
+      expect(consoleMsg).toContain('apiKey: abcd');
     });
   });
   
