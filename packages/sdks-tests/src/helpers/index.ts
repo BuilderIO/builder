@@ -45,19 +45,19 @@ const test = base.extend<TestOptions>({
   ignoreHydrationErrors: [false, { option: true }],
   page: async ({ context, page, packageName, sdk, ignoreHydrationErrors }, use) => {
     if (packageName === ('DEFAULT' as any)) {
-      throw new Error('packageName is required');
+      throw new Error('`packageName` is required but was not provided.');
     }
     if (sdk === ('DEFAULT' as any)) {
-      throw new Error('sdk is required');
+      throw new Error('`sdk` is required but was not provided.');
     }
 
     context.on('weberror', err => {
       console.error(err.error());
-      throw new Error('Failing test due to error in browser: ' + err.error());
+      throw new Error('Test failed due to error thrown in browser: ' + err.error());
     });
     page.on('pageerror', err => {
       console.error(err);
-      throw new Error('Failing test due to error in browser: ' + err);
+      throw new Error('Test failed due to error thrown in browser: ' + err);
     });
 
     /**
@@ -80,7 +80,6 @@ const test = base.extend<TestOptions>({
         }
       });
     }
-
     if (sdk === 'angular') {
       page.on('console', msg => {
         const originalText = msg.text();
@@ -88,8 +87,14 @@ const test = base.extend<TestOptions>({
           throw new Error('Angular input not annotated error detected: ' + originalText);
         }
       });
+    } else if (sdk === 'vue') {
+      page.on('console', msg => {
+        const originalText = msg.text();
+        if (originalText.toLowerCase().includes('[vue warn]:')) {
+          throw new Error('Vue warning detected: ' + originalText);
+        }
+      });
     }
-
     await use(page);
   },
 });
@@ -218,6 +223,7 @@ export const checkIfIsHydrationErrorMessage = (_text: string) => {
   const text = _text.toLowerCase();
   const isVueHydrationMismatch =
     text.includes('[vue warn]') && (text.includes('hydration') || text.includes('mismatch'));
+
   const isReactHydrationMismatch =
     text.includes('did not expect server') ||
     text.includes('content does not match') ||
