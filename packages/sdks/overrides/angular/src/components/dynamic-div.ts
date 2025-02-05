@@ -68,7 +68,7 @@ export default class DynamicDiv {
       'class',
       [this.classProp ?? '', this.className ?? ''].join(' ').trim()
     );
-    this.setAttribute(el, 'style', this.style);
+    this.handleStyleProp(el, this.style);
     this.setAttribute(el, 'builder-parent-id', this.builderParentId);
     this.setAttribute(el, 'builder-path', this.builderPath);
     this.setAttribute(el, 'builder-model', this.builderModel);
@@ -111,7 +111,7 @@ export default class DynamicDiv {
         [this.classProp ?? '', this.className ?? ''].join(' ').trim()
       );
     }
-    if (changes.style) this.setAttribute(el, 'style', this.style);
+    if (changes.style) this.handleStyleProp(el, this.style);
     if (changes.builderParentId)
       this.setAttribute(el, 'builder-parent-id', this.builderParentId);
     if (changes.builderPath)
@@ -154,6 +154,16 @@ export default class DynamicDiv {
   private setAttribute(el: HTMLElement, key: string, value: any) {
     if (value) {
       this.renderer.setAttribute(el, key, value);
+    }
+  }
+
+  private handleStyleProp(el: HTMLElement, style: any) {
+    if (typeof style === 'object') {
+      Object.entries(style).forEach(([key, value]) => {
+        this.renderer.setStyle(el, key, value);
+      });
+    } else {
+      this.renderer.setAttribute(el, 'style', style);
     }
   }
 

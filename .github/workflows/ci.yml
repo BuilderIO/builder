@@ -61,7 +61,8 @@ jobs:
           [
             'svelte',
             'sveltekit',
-            'react-native',
+            'react-native-74',
+            'react-native-76-fabric',
             'solid',
             'solid-start',
             'qwik-city',
@@ -132,7 +133,7 @@ jobs:
             'svelte',
             'sveltekit',
             'solid',
-            'react-native',
+            'react-native-74',
             'hydrogen',
           ]
 
