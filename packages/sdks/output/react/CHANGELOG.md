@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 3.0.7
+
+### Patch Changes
+
+- 7d01119: feat: Add support for `xsmall` additional breakpoint.
+
 ## 3.0.6
 
 ### Patch Changes
