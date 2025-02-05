@@ -114,7 +114,7 @@ breakpoints: {
       }
     });
 
-    test('extra small mobile size', async ({ page, sdk }) => {
+    test('extra small mobile size', async ({ page, sdk, packageName }) => {
       test.skip(
         excludeTestFor({ reactNative: true }, sdk),
         'Custom breakpoints not implemented in React Native'
@@ -131,6 +131,19 @@ breakpoints: {
 
       const column2 = page.locator(`text=Column 2`);
       await expect(column2).toHaveCSS('color', expectedColumnTextColor);
+
+      const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+      const expectedImageCss: Record<string, string> = {
+        display: 'flex',
+        width: packageName === 'hydrogen' ? '80px' : '76px',
+        'max-width': '250px',
+      };
+
+      await expectStylesForElement({
+        locator: image,
+        expected: expectedImageCss,
+      });
     });
   });
 
@@ -249,7 +262,7 @@ breakpoints: {
       }
     });
 
-    test('extra small mobile size', async ({ page, sdk }) => {
+    test('extra small mobile size', async ({ page, sdk, packageName }) => {
       test.skip(
         excludeTestFor({ reactNative: true }, sdk),
         'Custom breakpoints not implemented in React Native'
@@ -264,6 +277,19 @@ breakpoints: {
       const column2 = page.locator(`text=Column 2`);
 
       await expect(column2).toHaveCSS('color', 'rgb(126, 211, 33)');
+
+      const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+      const expectedImageCss: Record<string, string> = {
+        display: 'flex',
+        width: packageName === 'hydrogen' ? '80px' : '76px',
+        'max-width': '250px',
+      };
+
+      await expectStylesForElement({
+        locator: image,
+        expected: expectedImageCss,
+      });
     });
   });
 });
