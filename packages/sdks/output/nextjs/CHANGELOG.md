@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.17.8
+
+### Patch Changes
+
+- 7d01119: feat: Add support for `xsmall` additional breakpoint.
+
 ## 0.17.7
 
 ### Patch Changes
