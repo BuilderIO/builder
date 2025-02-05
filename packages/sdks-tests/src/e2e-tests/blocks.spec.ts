@@ -342,11 +342,12 @@ test.describe('Blocks', () => {
       await expect(videoLocator).not.toBeInViewport();
       expect(videoRequestMade).toBeFalsy();
 
+      const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL))
       await videoLocator.scrollIntoViewIfNeeded()
       await page.waitForTimeout(1000); // allow time for the network request
 
       await expect(videoLocator).toBeInViewport();
-      expect(videoRequestMade).toBeTruthy();
+      await requestPromise;
     });
   });
 
