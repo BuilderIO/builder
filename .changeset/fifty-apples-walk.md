@@ -1,12 +1,21 @@
 ---
-"@builder.io/sdk-angular": patch
-"@builder.io/sdk-react-nextjs": patch
-"@builder.io/sdk-qwik": patch
-"@builder.io/sdk-react": patch
-"@builder.io/sdk-react-native": patch
-"@builder.io/sdk-solid": patch
-"@builder.io/sdk-svelte": patch
-"@builder.io/sdk-vue": patch
+"@builder.io/sdk-angular": major
+"@builder.io/sdk-react-nextjs": major
+"@builder.io/sdk-qwik": major
+"@builder.io/sdk-react": major
+"@builder.io/sdk-react-native": major
+"@builder.io/sdk-solid": major
+"@builder.io/sdk-svelte": major
+"@builder.io/sdk-vue": major
 ---
 
-chore: send `apiKey` and `model` to Visual Editor to improve editing experience.
+- BREAKING CHANGE :firecracker: : updated subscribeToEditor arguments:
+from:
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+to:
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
