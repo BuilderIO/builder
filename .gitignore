@@ -38,4 +38,4 @@ Pods/
 .nx-cache
 .nx/workspace-data
 
-!packages/sdks/e2e/react-native/.eas/build/*
+!packages/sdks/e2e/react-native-74/.eas/build/*

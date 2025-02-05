@@ -1,5 +1,5 @@
 import { fastClone } from '../functions/fast-clone.js';
-export type SizeName = 'large' | 'medium' | 'small';
+export type SizeName = 'large' | 'medium' | 'small' | 'xsmall';
 
 interface Size {
   min: number;
@@ -8,8 +8,13 @@ interface Size {
 }
 
 const SIZES: Record<SizeName, Size> = {
+  xsmall: {
+    min: 0,
+    default: 160,
+    max: 320,
+  },
   small: {
-    min: 320,
+    min: 321,
     default: 321,
     max: 640,
   },
@@ -29,18 +34,34 @@ export const getMaxWidthQueryForSize = (size: SizeName, sizeValues = SIZES) =>
   `@media (max-width: ${sizeValues[size].max}px)`;
 
 interface Breakpoints {
+  xsmall?: number;
   small?: number;
   medium?: number;
 }
 
-export const getSizesForBreakpoints = ({ small, medium }: Breakpoints) => {
+export const getSizesForBreakpoints = (breakpoints: Breakpoints) => {
   const newSizes = fastClone(SIZES); // Note: this helps to get a deep clone of fields like small, medium etc
+
+  if (!breakpoints) {
+    return newSizes;
+  }
+
+  const { xsmall, small, medium } = breakpoints;
+
+  if (xsmall) {
+    const xsmallMin = Math.floor(xsmall / 2);
+    newSizes.xsmall = {
+      max: xsmall,
+      min: xsmallMin,
+      default: xsmallMin + 1,
+    };
+  }
 
   if (!small || !medium) {
     return newSizes;
   }
 
-  const smallMin = Math.floor(small / 2);
+  const smallMin = xsmall ? newSizes.xsmall.max + 1 : Math.floor(small / 2);
   newSizes.small = {
     max: small,
     min: smallMin,

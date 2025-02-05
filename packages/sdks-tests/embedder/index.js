@@ -33,6 +33,7 @@ const server = (req, res) => {
         case 'builder.registerComponent':
           return 'Component name: ' + event.data.data.name;
         case 'builder.sdkInfo':
+        case 'builder.sdkInjected':
           return 'modelName: ' + event.data.data.modelName + ' apiKey: ' + event.data.data.apiKey;
         default:
           return '';
