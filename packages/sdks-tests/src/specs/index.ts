@@ -4,6 +4,7 @@ import { CONTENT as personalizatContainer } from './personalization-container.js
 import { ANIMATIONS } from './animations.js';
 import { COLUMNS } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
+import { CONTENT as contentInputBindings } from './content-input-bindings.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
 import { CSS_PROPERTIES } from './css-properties.js';
 import {
@@ -119,6 +120,7 @@ export const PAGES: Record<string, Page> = {
   '/link-url': { content: linkUrl },
   '/symbol-with-input-binding': { content: symbolWithInputBinding },
   '/content-bindings': { content: contentBindings },
+  '/content-input-bindings': { content: contentInputBindings },
   '/image': { content: image },
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },

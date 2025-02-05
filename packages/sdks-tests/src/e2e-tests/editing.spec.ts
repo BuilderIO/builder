@@ -11,6 +11,7 @@ import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
   sendContentUpdateMessage,
+  sendNewStateMessage,
   sendPatchOrUpdateMessage,
 } from '../helpers/visual-editor.js';
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
@@ -328,6 +329,29 @@ test.describe('Visual Editing', () => {
       });
       await page.frameLocator('iframe').getByText('coffee name: Anchored Coffee').waitFor();
       await page.frameLocator('iframe').getByText('coffee info: Another coffee brand.').waitFor();
+    });
+  });
+
+  test.describe('Content Input', () => {
+    test('correctly updates', async ({ page, basePort, sdk }) => {
+      await launchEmbedderAndWaitForSdk({ path: '/content-input-bindings', basePort, page, sdk });
+      await page.frameLocator('iframe').getByText('Bye').waitFor();
+
+      await sendNewStateMessage({
+        page,
+        newState: {
+          booleanToggle: true,
+        },
+      });
+      await page.frameLocator('iframe').getByText('Hello').waitFor();
+
+      await sendNewStateMessage({
+        page,
+        newState: {
+          booleanToggle: false,
+        },
+      });
+      await page.frameLocator('iframe').getByText('Bye').waitFor();
     });
   });
 });
