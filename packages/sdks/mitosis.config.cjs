@@ -1132,13 +1132,34 @@ module.exports = {
                   json.hooks.onEvent.push({
                     code: hook.code.replaceAll('elementRef', 'element'),
                     eventArgName: 'event',
-                    eventName: 'qvisible',
+                    eventName: 'readystatechange',
                     isRoot: true,
                     refName: 'element',
                     elementArgName: 'element',
                   });
                 });
               }
+            },
+            post: (json) => {
+              if (json.name !== 'EnableEditor') return;
+              json.imports.push({
+                imports: { useOnDocument: 'useOnDocument' },
+                path: '@builder.io/qwik',
+              });
+              return json;
+            },
+          },
+          code: {
+            post: (code, json) => {
+              if (json.name === 'EnableEditor') {
+                code = code.replaceAll(
+                  `useOn(
+    "readystatechange"`,
+                  `useOnDocument(
+    "readystatechange"`
+                );
+              }
+              return code;
             },
           },
         }),

@@ -6,7 +6,7 @@ import {
 } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { HOMEPAGE } from '../specs/homepage.js';
-import { checkIsRN, excludeGen1, test } from '../helpers/index.js';
+import { checkIsRN, test, excludeGen1, excludeGen2  } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -18,7 +18,13 @@ import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbo
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
 
-const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
+const editorTests = ({
+  noTrustedHosts,
+  editorIsInViewPort,
+}: {
+  noTrustedHosts: boolean;
+  editorIsInViewPort?: boolean;
+}) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
@@ -27,8 +33,16 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
         packageName === 'gen1-remix'
     );
 
+    if (!editorIsInViewPort) {
+      test.skip(sdk !== 'qwik', 'This is Qwik only test');
+    }
+
     await launchEmbedderAndWaitForSdk({
-      path: noTrustedHosts ? '/no-trusted-hosts' : '/editing',
+      path: noTrustedHosts
+        ? '/no-trusted-hosts'
+        : editorIsInViewPort
+          ? '/editing'
+          : '/editing-with-top-padding',
       basePort,
       page,
       sdk,
@@ -82,7 +96,7 @@ const editorTests = ({ noTrustedHosts }: { noTrustedHosts: boolean }) => {
 };
 
 test.describe('Visual Editing', () => {
-  editorTests({ noTrustedHosts: false });
+  editorTests({ noTrustedHosts: false, editorIsInViewPort: false });
   test('correctly updates Box -> Columns when used Inner Layout > Columns option', async ({
     page,
     packageName,
@@ -209,7 +223,8 @@ test.describe('Visual Editing', () => {
     });
     test('correctly updates width props', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
-        packageName === 'react-native' ||
+        packageName === 'react-native-74' ||
+          packageName === 'react-native-76-fabric' ||
           packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
@@ -333,6 +348,28 @@ test.describe('Visual Editing', () => {
 
   test.describe('SDK', () => {
     test('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
+      test.skip(excludeGen2(sdk));
+      let consoleMsg = '';
+      const msgPromise = page.waitForEvent('console', msg => {
+        if (msg.text().includes('BUILDER_EVENT: builder.sdkInjected')) {
+          consoleMsg = msg.text();
+          return true;
+        }
+        return false;
+      });
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/editing',
+        sdk,
+      });
+      await msgPromise;
+
+      expect(consoleMsg).toContain('modelName: page');
+      expect(consoleMsg).toContain('apiKey: abcd');
+    });
+        
+   test('should inject correct SDK data into iframe for gen-2', async ({ page, basePort, sdk }) => {
       test.skip(excludeGen1(sdk));
       let consoleMsg = '';
       const msgPromise = page.waitForEvent('console',  msg => {

@@ -44,7 +44,7 @@
     "typecheck:watch": "yarn run typecheck --watch",
     "ci:lint:sdks": "yarn run prettier --check && yarn run eslint",
     "e2e:run:svelte": "SERVER_NAME=svelte,sveltekit yarn g:nx test:e2e @sdk/tests",
-    "e2e:run:react-native": "SERVER_NAME=react-native yarn g:nx test:e2e @sdk/tests",
+    "e2e:run:react-native": "SERVER_NAME=react-native-74,react-native-76-fabric yarn g:nx test:e2e @sdk/tests",
     "e2e:run:solid": "SERVER_NAME=solid,solid-start yarn g:nx test:e2e @sdk/tests",
     "e2e:run:qwik": "SERVER_NAME=qwik-city yarn g:nx test:e2e @sdk/tests",
     "e2e:run:react": "SERVER_NAME=react,react-sdk-next-pages,react-sdk-next-14-app,react-sdk-next-15-app yarn g:nx test:e2e @sdk/tests",

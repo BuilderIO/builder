@@ -39,7 +39,10 @@ test.describe('HTTP Requests', () => {
 
   test('call proxy API only once - in editor', async ({ page, basePort, packageName, sdk }) => {
     test.skip(excludeGen1(sdk));
-    test.skip(packageName === 'react-native', 'editor tests not supported in react-native');
+    test.skip(
+      packageName === 'react-native-74' || packageName === 'react-native-76-fabric',
+      'editor tests not supported in react-native'
+    );
     test.skip(
       packageName === 'nextjs-sdk-next-app',
       'editor tests not supported in nextjs-sdk-next-app'

@@ -61,6 +61,9 @@ export default component$(() => {
   const contentProps = useBuilderContentLoader();
   return (
     <>
+      {contentProps.value.addTopPadding && (
+        <div style={{ marginTop: '2000px' }} class="builder-margin-element" />
+      )}
       {contentProps.value ? (
         <Content
           {...(contentProps.value as any)}

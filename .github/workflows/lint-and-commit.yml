@@ -1,4 +1,3 @@
-
 ---
 name: Auto lint & commit 🤖
 
@@ -9,9 +8,9 @@ on:
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
-permissions: 
+permissions:
   contents: write
-  
+
 jobs:
   auto-lint-and-commit:
     name: Auto lint & commit 🤖
@@ -41,7 +40,7 @@ jobs:
       - name: Run eslint
         run: yarn workspace @builder.io/sdks lint
 
-      - name: "Import GPG key"
+      - name: 'Import GPG key'
         id: import-gpg
         uses: crazy-max/ghaction-import-gpg@v6
         with:
@@ -54,16 +53,14 @@ jobs:
         id: auto-commit-action
         with:
           commit_message: Apply linting changes
-          commit_author: "${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>"
+          commit_author: '${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>'
           commit_user_name: ${{ steps.import-gpg.outputs.name }}
           commit_user_email: ${{ steps.import-gpg.outputs.email }}
-     
-    
-      - name: "Run if changes have been detected"
+
+      - name: 'Run if changes have been detected'
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
         run: echo "Committed linting changes."
-    
-      - name: "Run if no changes have been detected"
+
+      - name: 'Run if no changes have been detected'
         if: steps.auto-commit-action.outputs.changes_detected == 'false'
         run: echo "No linting changes to commit."
-  

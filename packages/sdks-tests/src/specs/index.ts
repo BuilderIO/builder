@@ -112,6 +112,7 @@ type Page = {
 export const PAGES: Record<string, Page> = {
   '/': { content: HOMEPAGE },
   '/editing': { content: HOMEPAGE, isGen1VisualEditingTest: true },
+  '/editing-with-top-padding': { content: HOMEPAGE, isGen1VisualEditingTest: true },
   '/api-version-v3': { content: CONTENT_WITHOUT_SYMBOLS },
   '/api-version-default': { content: CONTENT_WITHOUT_SYMBOLS },
   '/can-track-false': { content: HOMEPAGE },
@@ -408,6 +409,11 @@ export const getProps = async (args: {
     case '/localization-subfields':
       extraProps = {
         locale: 'hi-IN',
+      };
+      break;
+    case '/editing-with-top-padding':
+      extraProps = {
+        addTopPadding: true,
       };
       break;
     default:
