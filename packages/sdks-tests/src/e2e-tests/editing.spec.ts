@@ -6,7 +6,7 @@ import {
 } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { HOMEPAGE } from '../specs/homepage.js';
-import { checkIsRN, test } from '../helpers/index.js';
+import { checkIsRN, test ,excludeGen2} from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -345,4 +345,29 @@ test.describe('Visual Editing', () => {
       await page.frameLocator('iframe').getByText('coffee info: Another coffee brand.').waitFor();
     });
   });
+
+  test.describe('SDK', () => {
+    test('should inject correct SDK data into iframe', async ({ page, basePort, sdk }) => {
+      test.skip(excludeGen2(sdk));
+      let consoleMsg = '';
+      const msgPromise = page.waitForEvent('console',  msg => {
+        if(msg.text().includes('BUILDER_EVENT: builder.sdkInjected')){
+          consoleMsg = msg.text();
+          return true;
+        }
+        return false;
+      });
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/editing',
+        sdk,
+      });
+      await msgPromise;
+
+      expect(consoleMsg).toContain('modelName: page');
+      expect(consoleMsg).toContain('apiKey: abcd');
+    });
+  });
+  
 });
