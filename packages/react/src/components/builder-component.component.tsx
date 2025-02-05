@@ -734,7 +734,10 @@ export class BuilderComponent extends React.Component<
 
     if (Builder.isIframe) {
       window.parent?.postMessage(
-        { type: 'builder.sdkInjected', data: { modelName: this.name, apiKey: this.props.apiKey || builder.apiKey } },
+        {
+          type: 'builder.sdkInjected',
+          data: { modelName: this.name, apiKey: this.props.apiKey || builder.apiKey },
+        },
         '*'
       );
     }

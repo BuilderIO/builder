@@ -81,9 +81,10 @@ function App() {
   }
 
   return PAGES[window.location.pathname]?.isGen1VisualEditingTest ? (
-    <BuilderComponent model='page' {...props} />
+    <BuilderComponent model="page" {...props} />
+  ) : props ? (
+    <BuilderComponent {...props} />
   ) : (
-    props ? <BuilderComponent {...props} /> : 
     <div>Content Not Found</div>
   );
 }
