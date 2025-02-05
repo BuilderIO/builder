@@ -34,6 +34,11 @@ jobs:
           cache-install-state: true
 
       - name: Build and test
-        run: yarn workspace @e2e/react-native test:ios-remote
+        run: yarn workspace @e2e/react-native-74 test:ios-remote
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
+
+      - name: Build and test RN Fabric
+        run: yarn workspace @e2e/react-native-76-fabric test:ios-remote
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_ACCESS_TOKEN }}
