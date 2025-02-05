@@ -46,10 +46,14 @@ export default function BlockStyles(props: BlockStylesProps) {
         content?.meta?.breakpoints || {}
       );
 
+      const contentHasXSmallBreakpoint = Boolean(
+        content?.meta?.breakpoints?.xsmall
+      );
+
       const largeStyles = styles?.large;
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
-
+      const xsmallStyles = styles?.xsmall;
       const className = processedBlock.id;
 
       if (!className) {
@@ -82,6 +86,18 @@ export default function BlockStyles(props: BlockStylesProps) {
           })
         : '';
 
+      const xsmallStylesClass =
+        xsmallStyles && contentHasXSmallBreakpoint
+          ? createCssClass({
+              className,
+              styles: xsmallStyles,
+              mediaQuery: getMaxWidthQueryForSize(
+                'xsmall',
+                sizesWithUpdatedBreakpoints
+              ),
+            })
+          : '';
+
       const hoverAnimation =
         processedBlock.animations &&
         processedBlock.animations.find((item) => item.trigger === 'hover');
@@ -108,6 +124,7 @@ export default function BlockStyles(props: BlockStylesProps) {
         largeStylesClass,
         mediumStylesClass,
         smallStylesClass,
+        xsmallStylesClass,
         hoverStylesClass,
       ].join(' ');
     },
