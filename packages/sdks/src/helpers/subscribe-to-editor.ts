@@ -64,18 +64,18 @@ type SubscribeToEditor = (
    */
   model: string,
   /**
+    * Builder API Key to use for the editor.
+    */
+  apiKey: string,
+  /**
    * The callback function to call when the content is updated.
    */
   callback: (updatedContent: BuilderContent) => void,
-  /**
-   * Extra options for the listener.
-   */
-  options?: {
-    /**
-     * List of hosts to allow editing content from.
-     */
-    trustedHosts?: string[] | undefined;
-  }
+   /**
+    * List of hosts to allow editing content from.
+    */
+   trustedHosts?: string[] | undefined
+  
 ) => () => void;
 
 /**
@@ -84,8 +84,9 @@ type SubscribeToEditor = (
  */
 export const subscribeToEditor: SubscribeToEditor = (
   model,
+  apiKey,
   callback,
-  options
+  trustedHosts,
 ) => {
   if (!isBrowser) {
     logger.warn(
@@ -93,7 +94,10 @@ export const subscribeToEditor: SubscribeToEditor = (
     );
     return () => {};
   }
-  setupBrowserForEditing();
+  setupBrowserForEditing({
+    modelName: model,
+    apiKey,
+  });
 
   const listener = createEditorListener({
     callbacks: {
@@ -102,7 +106,7 @@ export const subscribeToEditor: SubscribeToEditor = (
       configureSdk: () => {},
     },
     model,
-    trustedHosts: options?.trustedHosts,
+    trustedHosts,
   });
 
   window.addEventListener('message', listener);

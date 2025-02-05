@@ -272,7 +272,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         ...(props.locale ? { locale: props.locale } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
         ...(props.trustedHosts ? { trustedHosts: props.trustedHosts } : {}),
-        modelName:props.model,
+        modelName:props.model ?? '',
         apiKey:props.apiKey,
       });
       Object.values<ComponentInfo>(

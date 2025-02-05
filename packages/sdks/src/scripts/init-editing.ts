@@ -28,13 +28,13 @@ export const registerInsertMenu = () => {
 let isSetupForEditing = false;
 export const setupBrowserForEditing = (
   options: {
+    modelName: string;
+    apiKey: string;
     enrich?: boolean;
     includeRefs?: boolean;
     locale?: string;
     trustedHosts?: string[];
-    modelName?: string;
-    apiKey?: string;
-  } = {}
+  }
 ) => {
   if (isSetupForEditing) {
     return;
