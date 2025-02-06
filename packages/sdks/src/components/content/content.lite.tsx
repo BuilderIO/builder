@@ -120,7 +120,7 @@ export default function ContentComponent(props: ContentProps) {
         }),
         BlocksWrapperProps: props.blocksWrapperProps || {},
         nonce: props.nonce || '',
-        model: props.model || '',
+        model: props.model,
       },
       { reactive: true }
     );
