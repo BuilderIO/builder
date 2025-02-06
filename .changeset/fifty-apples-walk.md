@@ -9,7 +9,9 @@
 "@builder.io/sdk-vue": major
 ---
 
-- BREAKING CHANGE :firecracker: : updated subscribeToEditor arguments:
+- BREAKING CHANGE 🧨 : updated subscribeToEditor arguments:
+    - arguments are now passed as an named argument object
+    - `apiKey` is now required field
 from:
     subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
 to:
