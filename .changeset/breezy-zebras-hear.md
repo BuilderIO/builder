@@ -9,4 +9,4 @@
 "@builder.io/sdk-qwik": patch
 ---
 
-fix: changes to content state via inputs are not triggering updates in the editor
+Fix: Updating input values while in the Content Editor not triggering changes in the iframe.
