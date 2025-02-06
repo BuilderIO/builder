@@ -127,7 +127,7 @@ export const PAGES: Record<string, Page> = {
   '/link-url': { content: linkUrl },
   '/symbol-with-input-binding': { content: symbolWithInputBinding },
   '/content-bindings': { content: contentBindings },
-  '/content-input-bindings': { content: contentInputBindings },
+  '/content-input-bindings': { content: contentInputBindings, isGen1VisualEditingTest: true },
   '/image': { content: image },
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },
