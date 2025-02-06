@@ -12,12 +12,14 @@
 - BREAKING CHANGE 🧨 : updated subscribeToEditor arguments:
     - arguments are now passed as an named argument object
     - `apiKey` is now required field
-from:
-    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
-to:
-    subscribeToEditor({
-        apiKey: '...',
-        model: '...',
-        trustedHosts: ['...'],
-        callback: () => { ... }
-    })
+
+    Argument change -
+    from:
+        subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+    to:
+        subscribeToEditor({
+            apiKey: '...',
+            model: '...',
+            trustedHosts: ['...'],
+            callback: () => { ... }
+        })
