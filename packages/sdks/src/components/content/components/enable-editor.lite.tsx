@@ -25,6 +25,7 @@ import { createRegisterComponentMessage } from '../../../functions/register-comp
 import { _track } from '../../../functions/track/index.js';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
+import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
 import {
@@ -385,9 +386,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
       });
 
       if (shouldTrackImpression) {
-        const variationId = useTarget({
-          qwik: elementRef.attributes.getNamedItem('variationId')?.value,
-          default: props.builderContextSignal.value.content?.testVariationId,
+        const winningVariantId = getCookieSync({
+          name: `builder.tests.${props.builderContextSignal.value.content?.id}`,
+          canTrack: true,
         });
         const contentId = useTarget({
           qwik: elementRef.attributes.getNamedItem('contentId')?.value,
@@ -404,7 +405,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
           canTrack: true,
           contentId,
           apiKey: apiKeyProp!,
-          variationId: variationId !== contentId ? variationId : undefined,
+          variationId:
+            winningVariantId !== contentId ? winningVariantId : undefined,
         });
       }
 

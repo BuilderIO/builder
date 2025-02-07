@@ -134,6 +134,16 @@ test.describe('A/B tests', () => {
             cookieValue: VARIANT_ID,
           }
         );
+        await page.route('**/track**', async route => {
+          const url = route.request().url();
+          if (url.includes('cdn.builder.io/api/v1/track')) {
+            const payload = route.request().postDataJSON();
+            if (!payload.events || !payload.events[0].data.variationId) {
+              throw new Error('Missing variationId in track request payload');
+            }
+          }
+          await route.continue();
+        });
 
         await page.goto('/ab-test');
 
