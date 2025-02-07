@@ -174,22 +174,23 @@ registerPlugin(
         }
       },
     });
-    registerContentAction({
-      label: 'Request an updated translation',
-      showIf(content, model) {
-        return (
-          content.published === 'published' &&
-          content.meta?.get('translationStatus') === 'pending' &&
-          content.meta.get('translationRevisionLatest') &&
-          content.meta.get('translationRevision') !== content.meta.get('translationRevisionLatest')
-        );
-      },
-      async onClick(content) {
-        appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
-        // TODO
-        appState.globalState.hideGlobalBlockingLoading();
-      },
-    });
+    //TODO
+    // registerContentAction({
+    //   label: 'Request an updated translation',
+    //   showIf(content, model) {
+    //     return (
+    //       content.published === 'published' &&
+    //       content.meta?.get('translationStatus') === 'pending' &&
+    //       content.meta.get('translationRevisionLatest') &&
+    //       content.meta.get('translationRevision') !== content.meta.get('translationRevisionLatest')
+    //     );
+    //   },
+    //   async onClick(content) {
+    //     appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
+    //     // TODO
+    //     appState.globalState.hideGlobalBlockingLoading();
+    //   },
+    // });
 
     registerContentAction({
       label: 'Apply Translation',
