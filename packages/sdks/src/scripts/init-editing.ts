@@ -50,6 +50,8 @@ export const setupBrowserForEditing = (
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
           supportsCustomBreakpoints: true,
+          supportsXSmallBreakpoint: TARGET === 'reactNative' ? false : true,
+          blockLevelPersonalization: true,
         },
       },
       '*'

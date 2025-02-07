@@ -26,7 +26,6 @@
   <img alt="Animation of Builder.io Visual Editor" src="https://github.com/user-attachments/assets/6972696e-bfb5-4c6d-b987-ea6a07816655" >
 </p>
 
-
 ## How the Builder.io platform works
 
 Builder connects to your existing site or app and allows you to visually generate code (using your existing components) from either Figma designs or our drag and drop editor, and then export that code or publish those updates via our [SDKs](https://www.builder.io/c/docs/developers).
@@ -37,12 +36,9 @@ Read about [how Builder works](https://www.builder.io/c/docs/how-builder-works-t
   <img alt="How it works" src="https://github.com/user-attachments/assets/7ef9ca00-22f2-49b7-9b29-1df1eb7daba7" />
 </p>
 
-
-
 ## Try it out!
 
 [Sign up for a free account](https://builder.io/signup) to dive right in.
-
 
 ## What's in this repository?
 

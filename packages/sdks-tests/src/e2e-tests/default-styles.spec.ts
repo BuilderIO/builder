@@ -17,7 +17,8 @@ test.describe('Default styles', () => {
     test.skip(excludeGen1(sdk));
     // TODO: need to check why angular-ssr is failing, working as expected though
     test.fail(
-      packageName === 'react-native' ||
+      packageName === 'react-native-74' ||
+        packageName === 'react-native-76-fabric' ||
         packageName === 'angular-16-ssr' ||
         packageName === 'angular-19-ssr'
     );
@@ -40,7 +41,7 @@ test.describe('Default styles', () => {
   });
 
   test('button should have default styles', async ({ page, packageName }) => {
-    test.fail(packageName === 'react-native');
+    test.fail(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
 
     await page.goto('/default-styles');
     const button = page.locator('text=Click me!');
