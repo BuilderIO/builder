@@ -92,7 +92,7 @@ export default function Video(props: VideoProps) {
         poster={props.posterImage}
         class="builder-video"
       >
-        <source type="video/mp4" {...props.lazyLoad ? { 'data-src': props.video } : { src: props.video }} />
+        <source type="video/mp4" {...(props.lazyLoad ? { 'data-src': props.video } : { src: props.video })} />
       </video>
       {/* preserve aspect ratio trick. Only applies when there are no children meant to fit the content width. */}
       <Show
