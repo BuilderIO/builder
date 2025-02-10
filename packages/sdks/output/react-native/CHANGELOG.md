@@ -7,20 +7,22 @@
 - 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
 
 Example:
-    - from:
-    ```ts
-        subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
-    ```
-    - to:
-    ```ts
-        subscribeToEditor({
-            apiKey: '...',
-            model: '...',
-            trustedHosts: ['...'],
-            callback: () => { ... }
-        })
-    ```
+    
+- from:
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
 
+- to:
+
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
 
 - 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
 
