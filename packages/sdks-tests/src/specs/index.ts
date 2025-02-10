@@ -82,6 +82,7 @@ import {
   VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
 } from './variant-containers.js';
 import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
+import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
 
 function isBrowser(): boolean {
@@ -233,6 +234,7 @@ export const PAGES: Record<string, Page> = {
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
+  '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
   '/variant-containers': {
     content: VARIANT_CONTAINERS,
     target: [

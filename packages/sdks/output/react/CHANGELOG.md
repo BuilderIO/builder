@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 3.0.8
+
+### Patch Changes
+
+- 58ee59e: Fix: added lazy loading to video element
+
 ## 3.0.7
 
 ### Patch Changes

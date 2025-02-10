@@ -1,4 +1,11 @@
-import { Show, useMetadata, useStore } from '@builder.io/mitosis';
+import {
+  Show,
+  onMount,
+  onUnMount,
+  useMetadata,
+  useRef,
+  useStore,
+} from '@builder.io/mitosis';
 import type { VideoProps } from './video.types.js';
 
 useMetadata({
@@ -23,13 +30,58 @@ export default function Video(props: VideoProps) {
         ...state.videoProps,
       };
     },
+    lazyVideoObserver: undefined as IntersectionObserver | undefined,
+  });
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  onMount(() => {
+    if (props.lazyLoad) {
+      const oberver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+
+          const videoElement = entry.target as HTMLVideoElement;
+          try {
+            // Convert HTMLCollection to Array and filter for source elements
+            Array.from(videoElement.children)
+              .filter(
+                (child): child is HTMLSourceElement =>
+                  child instanceof HTMLElement && child.tagName === 'SOURCE'
+              )
+              .forEach((source) => {
+                const src = source.dataset.src;
+                if (src) {
+                  source.src = src;
+                }
+              });
+
+            videoElement.load();
+            oberver.unobserve(videoElement);
+          } catch (error) {
+            console.error('Error loading lazy video:', error);
+          }
+        });
+      });
+      if (videoRef) {
+        oberver.observe(videoRef);
+      }
+      state.lazyVideoObserver = oberver;
+    }
+  });
+
+  onUnMount(() => {
+    if (state.lazyVideoObserver) {
+      state.lazyVideoObserver.disconnect();
+    }
   });
 
   return (
     <div style={{ position: 'relative' }}>
       <video
         {...state.spreadProps}
-        preload={props.preload || 'metadata'}
+        ref={videoRef}
+        preload={props.lazyLoad ? 'none' : props.preload || 'metadata'}
         style={{
           width: '100%',
           height: '100%',
@@ -45,11 +97,15 @@ export default function Video(props: VideoProps) {
               }
             : null),
         }}
-        src={props.video || 'no-src'}
         poster={props.posterImage}
         class="builder-video"
       >
-        {!props.lazyLoad && <source type="video/mp4" src={props.video} />}
+        <source
+          type="video/mp4"
+          {...(props.lazyLoad
+            ? { 'data-src': props.video }
+            : { src: props.video })}
+        />
       </video>
       {/* preserve aspect ratio trick. Only applies when there are no children meant to fit the content width. */}
       <Show
