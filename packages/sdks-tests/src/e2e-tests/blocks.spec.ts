@@ -313,6 +313,41 @@ test.describe('Blocks', () => {
         await expect(textBlock).toHaveText('asfgasgasgasg some test');
       }
     });
+
+    test('video lazy load', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      const mockVideoPath = path.join(mockFolderPath, 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
+      let videoRequestMade = false;
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          videoRequestMade = true;
+
+          return route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
+
+      await page.goto('/video-lazy-load');
+      const videoLocator = page.locator('video'); 
+
+      await expect(videoLocator).not.toBeInViewport();
+      expect(videoRequestMade).toBeFalsy();
+
+      const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL))
+      await videoLocator.scrollIntoViewIfNeeded()
+
+      await expect(videoLocator).toBeInViewport();
+      await requestPromise;
+    });
   });
 
   test.describe('Columns', () => {
