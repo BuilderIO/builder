@@ -1,6 +1,7 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
+
 const SELECTOR = 'div[builder-content-id]';
 
 const createContextWithCookies = async ({
@@ -85,12 +86,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
-        test.skip(
-          excludeTestFor({ angular: true }, sdk),
-          'A/B tests with SSR are not supported in Angular'
-        );
         const { page } = await initializeAbTest(
           {
             page: _page,
@@ -116,12 +112,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
-        test.skip(
-          excludeTestFor({ angular: true }, sdk),
-          'A/B tests with SSR are not supported in Angular'
-        );
         const { page } = await initializeAbTest(
           {
             page: _page,
@@ -164,12 +155,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
-        test.skip(
-          excludeTestFor({ angular: true }, sdk),
-          'Nested symbols are not supported in Angular'
-        );
         const { page } = await initializeAbTest(
           {
             page: _page,
@@ -198,12 +184,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
-        test.skip(
-          excludeTestFor({ angular: true }, sdk),
-          'Nested symbols are not supported in Angular'
-        );
         const { page } = await initializeAbTest(
           {
             page: _page,

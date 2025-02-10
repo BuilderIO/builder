@@ -79,8 +79,10 @@ function updateCookiesAndStyles(
 
   const winningVariantId = getAndSetVariantId();
 
-  const styleEl = document.currentScript
-    ?.previousElementSibling as HTMLStyleElement;
+  const styleEl =
+    document.currentScript?.parentElement?.previousElementSibling?.querySelector(
+      'style'
+    ) as HTMLStyleElement;
 
   /**
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
