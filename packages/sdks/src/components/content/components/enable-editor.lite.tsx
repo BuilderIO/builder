@@ -279,7 +279,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
         props.builderContextSignal.value.componentInfos
       ).forEach((registeredComponent) => {
         if (
-          !props.model ||
           !registeredComponent.models?.length ||
           registeredComponent.models.includes(props.model)
         ) {
@@ -323,7 +322,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           (!props.content || searchParamPreviewId === props.content.id))
       ) {
         fetchOneEntry({
-          model: props.model || '',
+          model: props.model,
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
           ...(searchParamPreviewModel === 'BUILDER_STUDIO' &&
