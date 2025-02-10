@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.17.9
+
+### Patch Changes
+
+- 58ee59e: Fix: added lazy loading to video element
+
 ## 0.17.8
 
 ### Patch Changes
