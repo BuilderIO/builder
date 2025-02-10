@@ -58,42 +58,50 @@ export const createEditorListener = ({
   };
 };
 
-type SubscribeToEditor = (
+type SubscribeToEditor = ({ 
+  model,
+  apiKey,
+  callback,
+  trustedHosts,
+}:{
   /**
    * The Builder `model` to subscribe to
    */
-  model: string,
+  model: string;
+  /**
+   * Builder API Key to use for the editor.
+   */
+  apiKey: string;
   /**
    * The callback function to call when the content is updated.
    */
-  callback: (updatedContent: BuilderContent) => void,
-  /**
-   * Extra options for the listener.
-   */
-  options?: {
-    /**
-     * List of hosts to allow editing content from.
-     */
-    trustedHosts?: string[] | undefined;
-  }
-) => () => void;
+  callback: (updatedContent: BuilderContent) => void;
+   /**
+    * List of hosts to allow editing content from.
+    */
+  trustedHosts?: string[] | undefined;
+}) => () => void;
 
 /**
  * Subscribes to the Builder editor and listens to `content` updates of a certain `model`.
  * Sends the updated `content` to the `callback` function.
  */
-export const subscribeToEditor: SubscribeToEditor = (
+export const subscribeToEditor: SubscribeToEditor = ({
   model,
+  apiKey,
   callback,
-  options
-) => {
+  trustedHosts
+}) => {
   if (!isBrowser) {
     logger.warn(
       '`subscribeToEditor` only works in the browser. It currently seems to be running on the server.'
     );
     return () => {};
   }
-  setupBrowserForEditing();
+  setupBrowserForEditing({
+    modelName: model,
+    apiKey,
+  });
 
   const listener = createEditorListener({
     callbacks: {
@@ -102,7 +110,7 @@ export const subscribeToEditor: SubscribeToEditor = (
       configureSdk: () => {},
     },
     model,
-    trustedHosts: options?.trustedHosts,
+    trustedHosts,
   });
 
   window.addEventListener('message', listener);
