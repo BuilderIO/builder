@@ -7,11 +7,14 @@
 - 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
 
 Example:
-    - from:
+    
+- from:
 ```ts
     subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
 ```
-    - to:
+
+- to:
+
 ```ts
     subscribeToEditor({
         apiKey: '...',
