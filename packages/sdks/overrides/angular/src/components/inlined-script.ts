@@ -1,14 +1,7 @@
 import { CommonModule } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import {
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  PLATFORM_ID,
-  Renderer2,
-} from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 interface Props {
   scriptStr: string;
@@ -36,7 +29,6 @@ export default class InlinedScript {
 
   constructor(
     private renderer: Renderer2,
-    @Inject(PLATFORM_ID) private platformId: any,
     private elRef: ElementRef
   ) {}
 
