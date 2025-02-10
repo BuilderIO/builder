@@ -9,17 +9,21 @@
 "@builder.io/sdk-vue": major
 ---
 
-- BREAKING CHANGE 🧨 : updated subscribeToEditor arguments:
-    - arguments are now passed as an named argument object
-    - `apiKey` is now required field
+- BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments:
+    - arguments are now passed as a named argument object
+    - `apiKey` is now a required field
 
-    Argument change -
-    from:
+Example:
+    - from:
+    ```ts
         subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
-    to:
+    ```
+    - to:
+    ```ts
         subscribeToEditor({
             apiKey: '...',
             model: '...',
             trustedHosts: ['...'],
             callback: () => { ... }
         })
+    ```
