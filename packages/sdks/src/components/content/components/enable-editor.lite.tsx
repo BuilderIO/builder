@@ -384,12 +384,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
           props.builderContextSignal.value.content &&
           getDefaultCanTrack(props.canTrack),
       });
+      const winningVariantId = getCookieSync({
+        name: `builder.tests.${props.builderContextSignal.value.content?.id}`,
+        canTrack: true,
+      });
+      const variationId = useTarget({
+        qwik: elementRef.attributes.getNamedItem('variationId')?.value,
+        default: props.builderContextSignal.value.content?.testVariationId,
+      });
 
-      if (shouldTrackImpression) {
-        const winningVariantId = getCookieSync({
-          name: `builder.tests.${props.builderContextSignal.value.content?.id}`,
-          canTrack: true,
-        });
+      if (shouldTrackImpression && variationId === winningVariantId) {
         const contentId = useTarget({
           qwik: elementRef.attributes.getNamedItem('contentId')?.value,
           default: props.builderContextSignal.value.content?.id,
