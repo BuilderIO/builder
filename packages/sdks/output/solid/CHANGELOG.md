@@ -8,18 +8,18 @@
 
 Example:
     - from:
-    ```ts
-        subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
-    ```
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
     - to:
-    ```ts
-        subscribeToEditor({
-            apiKey: '...',
-            model: '...',
-            trustedHosts: ['...'],
-            callback: () => { ... }
-        })
-    ```
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
 
 - 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
 
