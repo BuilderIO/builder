@@ -65,6 +65,8 @@ type VariantData = {
 const getIsHydrationTarget = (target: Target) =>
   target === 'react' || target === 'reactNative';
 
+const isAngularSDK = TARGET === 'angular';
+
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
 export const getInitVariantsFnsScriptString = () => `
@@ -77,7 +79,7 @@ export const getUpdateCookieAndStylesScript = (
   contentId: string
 ) => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME}(
-    "${contentId}",${JSON.stringify(variants)}, ${isHydrationTarget}
+    "${contentId}",${JSON.stringify(variants)}, ${isHydrationTarget}, ${isAngularSDK}
   )`;
 
 export const getUpdateVariantVisibilityScript = ({
@@ -88,5 +90,5 @@ export const getUpdateVariantVisibilityScript = ({
   contentId: string;
 }) =>
   `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(
-    "${variationId}", "${contentId}", ${isHydrationTarget}
+    "${variationId}", "${contentId}", ${isHydrationTarget}, ${isAngularSDK}
   )`;

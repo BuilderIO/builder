@@ -15,7 +15,8 @@ type VariantData = {
 function updateCookiesAndStyles(
   contentId: string,
   variants: VariantData[],
-  isHydrationTarget: boolean
+  isHydrationTarget: boolean,
+  isAngularSDK: boolean
 ) {
   function getAndSetVariantId(): string {
     function setCookie(name: string, value: string, days?: number) {
@@ -79,10 +80,18 @@ function updateCookiesAndStyles(
 
   const winningVariantId = getAndSetVariantId();
 
-  const styleEl =
-    document.currentScript?.parentElement?.previousElementSibling?.querySelector(
+  let styleEl = document.currentScript
+    ?.previousElementSibling as HTMLStyleElement;
+
+  if (isAngularSDK) {
+    /**
+     * Angular SDK uses a different DOM structure, so we need to find the style element differently
+     * styles are inside - <inlined-styles> <style> ... </style></inlined-styles>
+     */
+    styleEl = document.currentScript?.parentElement?.querySelector(
       'style'
     ) as HTMLStyleElement;
+  }
 
   /**
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
@@ -113,7 +122,8 @@ function updateCookiesAndStyles(
 function updateVariantVisibility(
   variantContentId: string,
   defaultContentId: string,
-  isHydrationTarget: boolean
+  isHydrationTarget: boolean,
+  isAngularSDK: boolean
 ) {
   if (!navigator.cookieEnabled) {
     return;
@@ -133,6 +143,12 @@ function updateVariantVisibility(
   const winningVariant = getCookie(cookieName);
 
   const parentDiv = document.currentScript?.parentElement;
+
+  if (isAngularSDK) {
+    /**
+     * handle
+     */
+  }
 
   const isDefaultContent = variantContentId === defaultContentId;
   const isWinningVariant = winningVariant === variantContentId;
