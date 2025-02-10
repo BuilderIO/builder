@@ -76,9 +76,11 @@ export const sendContentUpdateMessage = async ({
 export const sendNewStateMessage = async ({
   page,
   newState,
+  model,
 }: {
   page: Page;
   newState: Record<string, any>;
+  model: string;
 }) => {
   await page.evaluate(
     msgData => {
@@ -90,12 +92,13 @@ export const sendNewStateMessage = async ({
           type: 'builder.resetState',
           data: {
               state: msgData.newState,
+              model: msgData.model,
           },
         },
         '*'
       );
     },
-    { newState }
+    { newState , model }
   );
 };
 

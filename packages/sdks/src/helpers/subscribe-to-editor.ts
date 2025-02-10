@@ -5,7 +5,7 @@ import { setupBrowserForEditing } from '../scripts/init-editing.js';
 import type { BuilderAnimation } from '../types/builder-block.js';
 import type { BuilderContent } from '../types/builder-content.js';
 import { logger } from './logger.js';
-import type { Dictionary } from '../types/typescript';
+import type { Dictionary } from '../types/typescript.js';
 
 type ContentListener = Required<
   Pick<ContentProps, 'model' | 'trustedHosts'>

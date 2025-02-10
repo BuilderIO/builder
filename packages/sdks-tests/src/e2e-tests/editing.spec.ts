@@ -388,6 +388,7 @@ test.describe('Visual Editing', () => {
         newState: {
           booleanToggle: true,
         },
+        model: 'page',
       });
       await page.frameLocator('iframe').getByText('Hello').waitFor();
 
@@ -396,6 +397,7 @@ test.describe('Visual Editing', () => {
         newState: {
           booleanToggle: false,
         },
+        model: 'page',
       });
       await page.frameLocator('iframe').getByText('Bye').waitFor();
     });
