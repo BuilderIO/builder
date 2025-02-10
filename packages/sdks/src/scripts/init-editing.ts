@@ -26,16 +26,14 @@ export const registerInsertMenu = () => {
 };
 
 let isSetupForEditing = false;
-export const setupBrowserForEditing = (
-  options: {
-    modelName: string;
-    apiKey: string;
-    enrich?: boolean;
-    includeRefs?: boolean;
-    locale?: string;
-    trustedHosts?: string[];
-  }
-) => {
+export const setupBrowserForEditing = (options: {
+  modelName: string;
+  apiKey: string;
+  enrich?: boolean;
+  includeRefs?: boolean;
+  locale?: string;
+  trustedHosts?: string[];
+}) => {
   if (isSetupForEditing) {
     return;
   }
@@ -52,8 +50,8 @@ export const setupBrowserForEditing = (
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
           supportsCustomBreakpoints: true,
-          modelName:options.modelName,
-          apiKey:options.apiKey,
+          modelName: options.modelName,
+          apiKey: options.apiKey,
           supportsXSmallBreakpoint: TARGET === 'reactNative' ? false : true,
           blockLevelPersonalization: true,
         },

@@ -58,12 +58,12 @@ export const createEditorListener = ({
   };
 };
 
-type SubscribeToEditor = ({ 
+type SubscribeToEditor = ({
   model,
   apiKey,
   callback,
   trustedHosts,
-}:{
+}: {
   /**
    * The Builder `model` to subscribe to
    */
@@ -76,9 +76,9 @@ type SubscribeToEditor = ({
    * The callback function to call when the content is updated.
    */
   callback: (updatedContent: BuilderContent) => void;
-   /**
-    * List of hosts to allow editing content from.
-    */
+  /**
+   * List of hosts to allow editing content from.
+   */
   trustedHosts?: string[] | undefined;
 }) => () => void;
 
@@ -90,7 +90,7 @@ export const subscribeToEditor: SubscribeToEditor = ({
   model,
   apiKey,
   callback,
-  trustedHosts
+  trustedHosts,
 }) => {
   if (!isBrowser) {
     logger.warn(
