@@ -344,7 +344,6 @@ test.describe('Blocks', () => {
 
       const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL))
       await videoLocator.scrollIntoViewIfNeeded()
-      await page.waitForTimeout(1000); // allow time for the network request
 
       await expect(videoLocator).toBeInViewport();
       await requestPromise;
