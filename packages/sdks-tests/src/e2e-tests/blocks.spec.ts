@@ -337,13 +337,13 @@ test.describe('Blocks', () => {
       });
 
       await page.goto('/video-lazy-load');
-      const videoLocator = page.locator('video'); 
+      const videoLocator = page.locator('video');
 
       await expect(videoLocator).not.toBeInViewport();
       expect(videoRequestMade).toBeFalsy();
 
-      const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL))
-      await videoLocator.scrollIntoViewIfNeeded()
+      const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL));
+      await videoLocator.scrollIntoViewIfNeeded();
 
       await expect(videoLocator).toBeInViewport();
       await requestPromise;

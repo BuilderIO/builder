@@ -3,7 +3,7 @@ import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
-import {VIDEO_CDN_URL} from '../../../../sdks-tests/src/specs/video'
+import {VIDEO_CDN_URL} from '../../../../sdks-tests/src/specs/video';
 
 export default async function handleRequest(
   request: Request,
