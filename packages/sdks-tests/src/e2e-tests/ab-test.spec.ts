@@ -78,7 +78,6 @@ test.describe('A/B tests', () => {
 
     const TRIES = 10;
 
-    // Manually run tests 10 times to ensure we don't have any flakiness.
     for (let i = 1; i <= TRIES; i++) {
       test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
         page: _page,
@@ -104,7 +103,29 @@ test.describe('A/B tests', () => {
           }
         );
 
-        await page.goto('/ab-test');
+        let trackCalls = 0;
+
+        await page.route('**/track**', async route => {
+          const url = route.request().url();
+          if (url.includes('cdn.builder.io/api/v1/track')) {
+            trackCalls += 1;
+            const payload = route.request().postDataJSON();
+            console.log('payload', JSON.stringify(payload));
+            if (payload.events[0].data.variationId) {
+              throw new Error('Unexpected variationId in track request payload for default variant');
+            }
+            if (payload.events[0].data.contentId !== CONTENT_ID) {
+              throw new Error('ContentId does not match expected default contentId');
+            }
+          }
+          await route.continue();
+        });
+
+        await page.goto('/ab-test', { waitUntil: 'networkidle' });
+
+        if (trackCalls > 0) {
+          expect(trackCalls).toBe(1);
+        }
 
         await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
@@ -134,18 +155,24 @@ test.describe('A/B tests', () => {
             cookieValue: VARIANT_ID,
           }
         );
+        let trackCalls = 0;
         await page.route('**/track**', async route => {
           const url = route.request().url();
           if (url.includes('cdn.builder.io/api/v1/track')) {
+            trackCalls += 1;
             const payload = route.request().postDataJSON();
-            if (!payload.events || !payload.events[0].data.variationId) {
+            if (!payload.events || payload.events[0].data.variationId !== VARIANT_ID) {
               throw new Error('Missing variationId in track request payload');
             }
           }
           await route.continue();
         });
 
-        await page.goto('/ab-test');
+        await page.goto('/ab-test', { waitUntil: 'networkidle' });
+
+        if (trackCalls > 0) {
+          expect(trackCalls).toBe(1);
+        }
 
         await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
