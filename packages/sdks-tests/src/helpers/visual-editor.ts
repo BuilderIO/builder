@@ -91,14 +91,14 @@ export const sendNewStateMessage = async ({
         {
           type: 'builder.resetState',
           data: {
-              state: msgData.newState,
-              model: msgData.model,
+            state: msgData.newState,
+            model: msgData.model,
           },
         },
         '*'
       );
     },
-    { newState , model }
+    { newState, model }
   );
 };
 

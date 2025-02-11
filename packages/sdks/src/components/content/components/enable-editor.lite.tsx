@@ -150,7 +150,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           stateUpdate: (newState) => {
             state.mergeNewRootState(newState);
-          }
+          },
         },
       })(event);
     },

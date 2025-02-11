@@ -4,8 +4,8 @@ import { isFromTrustedHost } from '../functions/is-from-trusted-host.js';
 import { setupBrowserForEditing } from '../scripts/init-editing.js';
 import type { BuilderAnimation } from '../types/builder-block.js';
 import type { BuilderContent } from '../types/builder-content.js';
-import { logger } from './logger.js';
 import type { Dictionary } from '../types/typescript.js';
+import { logger } from './logger.js';
 
 type ContentListener = Required<
   Pick<ContentProps, 'model' | 'trustedHosts'>

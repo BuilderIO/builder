@@ -401,9 +401,9 @@ test.describe('Visual Editing', () => {
     test('correctly updates', async ({ page, packageName, basePort, sdk }) => {
       test.skip(
         packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next14-pages' ||
-        packageName === 'gen1-next15-app' ||
-        packageName === 'gen1-remix'
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
+          packageName === 'gen1-remix'
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/content-input-bindings', basePort, page, sdk });
