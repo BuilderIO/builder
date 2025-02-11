@@ -110,9 +110,10 @@ test.describe('A/B tests', () => {
           if (url.includes('cdn.builder.io/api/v1/track')) {
             trackCalls += 1;
             const payload = route.request().postDataJSON();
-            console.log('payload', JSON.stringify(payload));
             if (payload.events[0].data.variationId) {
-              throw new Error('Unexpected variationId in track request payload for default variant');
+              throw new Error(
+                'Unexpected variationId in track request payload for default variant'
+              );
             }
             if (payload.events[0].data.contentId !== CONTENT_ID) {
               throw new Error('ContentId does not match expected default contentId');
