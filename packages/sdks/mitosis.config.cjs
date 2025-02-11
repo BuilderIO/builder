@@ -1180,11 +1180,18 @@ module.exports = {
           code: {
             post: (code, json) => {
               if (json.name === 'EnableEditor') {
+                code = code.replace('const elementRef = useSignal<Element>();', 'const elementRef = useSignal<Element>();\nconst hasExecuted = useSignal(false);');
                 code = code.replaceAll(
                   `useOn(
-    "readystatechange"`,
+    "readystatechange",
+    $((event, element) => {
+      if (isBrowser()) {`,
                   `useOnDocument(
-    "readystatechange"`
+    "readystatechange",
+    $((event, element) => {
+      if (hasExecuted.value) return;
+      if (isBrowser()) {
+        hasExecuted.value = true;`,
                 );
               }
               return code;
