@@ -41,8 +41,11 @@ export const createEditorListener = ({
           break;
         }
         case 'builder.resetState': {
-          if (data?.data?.state) {
-            callbacks.stateUpdate(data.data.state);
+          const messageContent = data.data;
+          const modelName = messageContent.model;
+          const newState = messageContent?.state;
+          if (modelName === model && newState) {
+            callbacks.stateUpdate(newState);
           }
           break;
         }
