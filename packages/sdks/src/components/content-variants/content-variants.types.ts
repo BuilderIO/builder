@@ -11,12 +11,12 @@ export interface ContentVariantsPrps extends ExtraFrameworkProps {
   /**
    * The Builder content JSON to render (required).
    */
-  content?: Nullable<BuilderContent>;
+  content: Nullable<BuilderContent>;
 
   /**
    * The Builder content `model` to render (required).
    */
-  model?: string;
+  model: string;
 
   /**
    * Additional data to inject into your Builder content (optional).

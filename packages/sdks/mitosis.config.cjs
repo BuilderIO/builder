@@ -865,6 +865,33 @@ const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
 });
 
 /**
+ * Angular allows DOM manipulation in `ngAfterViewInit` hook.
+ * This plugin moves the DOM code from `ngOnInit` to `ngAfterViewInit` hook.
+ */
+
+const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BuilderVideo') {
+        json.compileContext = {
+          angular: {
+            hooks: {
+              ngAfterViewInit: json.hooks.onMount[0],
+            },
+          },
+        };
+
+        json.compileContext.angular.hooks.ngAfterViewInit.code =
+          json.compileContext.angular.hooks.ngAfterViewInit.code
+            .replace('props.', 'this.')
+            .replace('state.', 'this.');
+
+        json.hooks.onMount = [];
+      }
+    },
+  },
+});
+/**
  * Angular doesn't support hydration for components created dynamically.
  * Refer: https://angular.dev/errors/NG0503
  * GitHub issue: https://github.com/angular/angular/issues/51798
@@ -915,6 +942,7 @@ module.exports = {
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
         ANGULAR_MARK_SAFE_INNER_HTML,
+        ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT,
       ],
     },
     solid: {
@@ -1132,13 +1160,34 @@ module.exports = {
                   json.hooks.onEvent.push({
                     code: hook.code.replaceAll('elementRef', 'element'),
                     eventArgName: 'event',
-                    eventName: 'qvisible',
+                    eventName: 'readystatechange',
                     isRoot: true,
                     refName: 'element',
                     elementArgName: 'element',
                   });
                 });
               }
+            },
+            post: (json) => {
+              if (json.name !== 'EnableEditor') return;
+              json.imports.push({
+                imports: { useOnDocument: 'useOnDocument' },
+                path: '@builder.io/qwik',
+              });
+              return json;
+            },
+          },
+          code: {
+            post: (code, json) => {
+              if (json.name === 'EnableEditor') {
+                code = code.replaceAll(
+                  `useOn(
+    "readystatechange"`,
+                  `useOnDocument(
+    "readystatechange"`
+                );
+              }
+              return code;
             },
           },
         }),

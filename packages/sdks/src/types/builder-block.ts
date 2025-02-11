@@ -43,7 +43,6 @@ export interface BuilderBlock {
     large?: Partial<CSSStyleDeclaration>;
     medium?: Partial<CSSStyleDeclaration>;
     small?: Partial<CSSStyleDeclaration>;
-    /** @deprecated */
     xsmall?: Partial<CSSStyleDeclaration>;
   };
   component?: {

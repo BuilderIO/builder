@@ -313,6 +313,41 @@ test.describe('Blocks', () => {
         await expect(textBlock).toHaveText('asfgasgasgasg some test');
       }
     });
+
+    test('video lazy load', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      const mockVideoPath = path.join(mockFolderPath, 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
+      let videoRequestMade = false;
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          videoRequestMade = true;
+
+          return route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
+
+      await page.goto('/video-lazy-load');
+      const videoLocator = page.locator('video');
+
+      await expect(videoLocator).not.toBeInViewport();
+      expect(videoRequestMade).toBeFalsy();
+
+      const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL));
+      await videoLocator.scrollIntoViewIfNeeded();
+
+      await expect(videoLocator).toBeInViewport();
+      await requestPromise;
+    });
   });
 
   test.describe('Columns', () => {
@@ -488,6 +523,29 @@ test.describe('Blocks', () => {
       expect(firstColumnSpace).toBeCloseTo(400 / 3, 1);
       expect(secondColumnSpace).toBeCloseTo((400 / 3) * 2, 1);
       expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
+    });
+
+    test('vertically aligning a block works', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/columns-vertical-center-flex');
+
+      const secondColumn = page.locator('.builder-column').nth(1);
+
+      const childDiv = secondColumn.locator('div.builder-blocks');
+      await expect(childDiv).toHaveCSS('flex-grow', '1');
+
+      // check if it's actually vertically centered
+      const columnBox = await secondColumn.boundingBox();
+      const textBox = await secondColumn.locator('.builder-text').boundingBox();
+
+      if (!columnBox || !textBox) {
+        throw new Error('Could not get bounding boxes');
+      }
+
+      const textCenter = textBox.y + textBox.height / 2;
+      const columnCenter = columnBox.y + columnBox.height / 2;
+
+      expect(textCenter).toBeCloseTo(columnCenter, 1);
     });
   });
 

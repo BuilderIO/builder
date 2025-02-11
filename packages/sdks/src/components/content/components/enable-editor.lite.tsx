@@ -149,6 +149,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           contentUpdate: (newContent) => {
             state.mergeNewContent(newContent);
           },
+          stateUpdate: (newState) => {
+            state.mergeNewRootState(newState);
+          },
         },
       })(event);
     },
@@ -273,12 +276,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
         ...(props.locale ? { locale: props.locale } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
         ...(props.trustedHosts ? { trustedHosts: props.trustedHosts } : {}),
+        modelName: props.model ?? '',
+        apiKey: props.apiKey,
       });
       Object.values<ComponentInfo>(
         props.builderContextSignal.value.componentInfos
       ).forEach((registeredComponent) => {
         if (
-          !props.model ||
           !registeredComponent.models?.length ||
           registeredComponent.models.includes(props.model)
         ) {
@@ -322,7 +326,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           (!props.content || searchParamPreviewId === props.content.id))
       ) {
         fetchOneEntry({
-          model: props.model || '',
+          model: props.model,
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
           ...(searchParamPreviewModel === 'BUILDER_STUDIO' &&

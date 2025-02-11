@@ -1,5 +1,66 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.0
+
+### Minor Changes
+
+- 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
+
+Example:
+    
+- from:
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
+
+- to:
+
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
+
+- 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
+
+## 0.17.9
+
+### Patch Changes
+
+- 58ee59e: Fix: added lazy loading to video element
+
+## 0.17.8
+
+### Patch Changes
+
+- 44da970: Fix: Content editor hangs if not in the iframe viewport.
+- 7d01119: feat: Add support for `xsmall` additional breakpoint.
+
+## 0.17.7
+
+### Patch Changes
+
+- abe5cba: Feat: exports `setClientUserAttributes` helper that can be used to set and update Builder's user attributes cookie. This cookie is used by Builder's Personalization Containers to decide which variant to render.
+
+  Usage example:
+
+  ```ts
+  import { setClientUserAttributes } from "@builder.io/sdk-qwik";
+
+  setClientUserAttributes({
+    device: "tablet",
+  });
+  ```
+
+## 0.17.6
+
+### Patch Changes
+
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 0.17.3
 
 ### Patch Changes

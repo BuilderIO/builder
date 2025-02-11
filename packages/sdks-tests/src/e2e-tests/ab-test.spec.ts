@@ -45,7 +45,7 @@ const initializeAbTest = async (
   if (!baseURL) throw new Error('Missing baseURL');
 
   // RN can't have SSR, we don't support/export it.
-  test.skip(packageName === 'react-native');
+  test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
 
   /**
    * This test is flaky on `nextjs-sdk-next-app` and `qwik-city`. Most likely because it is the very first test that runs.

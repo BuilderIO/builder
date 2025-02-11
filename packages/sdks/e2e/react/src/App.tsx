@@ -42,9 +42,11 @@ function App() {
     getProps({ _processContentResult, fetchOneEntry }).then(setProps);
 
     if (window.location.pathname === '/data-preview') {
-      const unsubscribe = subscribeToEditor('coffee', (content) =>
-        setProps({ content })
-      );
+      const unsubscribe = subscribeToEditor({
+        model: 'coffee',
+        apiKey: 'abcd',
+        callback: (content) => setProps({ content }),
+      });
 
       return () => {
         unsubscribe();

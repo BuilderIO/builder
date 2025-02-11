@@ -264,12 +264,17 @@ export default function Columns(props: ColumnProps) {
               })}
               path={`columns.${index}.blocks`}
               parent={props.builderBlock.id}
-              styleProp={{
-                flexGrow: useTarget<string | number>({
-                  reactNative: 1,
-                  default: '1',
-                }),
-              }}
+              styleProp={useTarget({
+                solid: {
+                  'flex-grow': '1',
+                },
+                reactNative: {
+                  flexGrow: 1,
+                },
+                default: {
+                  flexGrow: '1',
+                },
+              })}
               context={props.builderContext}
               registeredComponents={props.builderComponents}
               linkComponent={props.builderLinkComponent}

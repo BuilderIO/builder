@@ -135,7 +135,7 @@ export default function Symbol(props: SymbolProps) {
           ...state.contentToUse?.data?.state,
         }}
         canTrack={props.builderContext.value.canTrack}
-        model={props.symbol?.model}
+        model={props.symbol?.model ?? ''}
         content={state.contentToUse}
         linkComponent={props.builderLinkComponent}
         blocksWrapper={state.blocksWrapper}

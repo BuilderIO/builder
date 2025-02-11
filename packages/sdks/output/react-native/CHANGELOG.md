@@ -1,5 +1,53 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.0.0
+
+### Major Changes
+
+- 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
+
+Example:
+    
+- from:
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
+
+- to:
+
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
+
+- 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
+
+## 3.0.6
+
+### Patch Changes
+
+- abe5cba: Feat: exports `setClientUserAttributes` helper that can be used to set and update Builder's user attributes cookie. This cookie is used by Builder's Personalization Containers to decide which variant to render.
+
+  Usage example:
+
+  ```ts
+  import { setClientUserAttributes } from "@builder.io/sdk-react-native";
+
+  setClientUserAttributes({
+    device: "tablet",
+  });
+  ```
+
+## 3.0.5
+
+### Patch Changes
+
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 3.0.4
 
 ### Patch Changes

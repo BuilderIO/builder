@@ -1,5 +1,66 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 4.0.0
+
+### Major Changes
+
+- 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
+
+Example:
+    
+- from:
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
+
+- to:
+
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
+
+- 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
+
+## 3.0.8
+
+### Patch Changes
+
+- 58ee59e: Fix: added lazy loading to video element
+
+## 3.0.7
+
+### Patch Changes
+
+- 7d01119: feat: Add support for `xsmall` additional breakpoint.
+
+## 3.0.6
+
+### Patch Changes
+
+- abe5cba: Feat: exports `setClientUserAttributes` helper that can be used to set and update Builder's user attributes cookie. This cookie is used by Builder's Personalization Containers to decide which variant to render.
+
+  Usage example:
+
+  ```ts
+  import { setClientUserAttributes } from "@builder.io/sdk-solid";
+
+  setClientUserAttributes({
+    device: "tablet",
+  });
+  ```
+
+## 3.0.5
+
+### Patch Changes
+
+- 91a7117: Fix: vertically aligning child block of columns block
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 3.0.3
 
 ### Patch Changes
