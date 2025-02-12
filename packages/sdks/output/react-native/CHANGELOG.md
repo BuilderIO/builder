@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.0.1
+
+### Patch Changes
+
+- 80247eb: Fix: Updating input values while in the Content Editor not triggering changes in the iframe.
+
 ## 4.0.0
 
 ### Major Changes
@@ -7,8 +13,9 @@
 - 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
 
 Example:
-    
+
 - from:
+
 ```ts
     subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
 ```
