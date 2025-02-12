@@ -22,7 +22,9 @@ test.describe('LivePreviewBlogData Component', () => {
     await expect(blogPreview).toContainText('Authored by: John Doe');
     await expect(blogPreview).toContainText('Handle: john_doe');
 
-    const expectedDate = new Date().toDateString();
+    const expectedDate = new Date().toDateString().split(' ').slice(0, 4).join(' ');
+
+    console.log('expectedDate', expectedDate);
 
     const actualText = await blogPreview.textContent();
 

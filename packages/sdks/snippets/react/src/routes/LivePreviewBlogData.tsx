@@ -58,7 +58,10 @@ function LivePreviewBlogData() {
         <div>Blog Title: {content?.data?.title}</div>
         <div>Authored by: {content?.data?.author}</div>
         <div>Handle: {content?.data?.handle}</div>
-        <div>Published date: {content?.data?.publishedDate}</div>
+        <div>
+          Published date:{' '}
+          {content?.data?.publishedDate.split(' ').slice(0, 4).join(' ')}
+        </div>
       </div>
 
       {/* You can render builder content here and they must be published to be visible */}
