@@ -9,6 +9,7 @@ import {
   setContext,
   useMetadata,
   useRef,
+  useState,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
@@ -70,6 +71,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
    * This var name is hard-coded in some Mitosis Plugins. Do not change.
    */
   const elementRef = useRef<HTMLDivElement>();
+  let [hasExecuted, setHasExecuted] = useState<boolean>(false);
   const state = useStore({
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
@@ -358,7 +360,17 @@ export default function EnableEditor(props: BuilderEditorProps) {
    *   - move heavy editing and previwing logic behind `customEvent` dispatches, guaranteeing that production qwik sdk load time will be perfect (no hydration, no eager code besides tracking impression)
    */
   onMount(() => {
+    useTarget({
+      qwik: () => {
+        if (hasExecuted) return;
+      },
+    });
     if (isBrowser()) {
+      useTarget({
+        qwik: () => {
+          setHasExecuted(true);
+        },
+      });
       if (isEditing() && !props.isNestedRender) {
         useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

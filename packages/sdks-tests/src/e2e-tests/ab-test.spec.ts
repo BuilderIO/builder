@@ -124,9 +124,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test', { waitUntil: 'networkidle' });
 
-        if (trackCalls > 0) {
-          expect(trackCalls).toBe(1);
-        }
+        expect(trackCalls).toBe(1);
 
         await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.VARIANT_1 })).toBeHidden();
@@ -171,9 +169,7 @@ test.describe('A/B tests', () => {
 
         await page.goto('/ab-test', { waitUntil: 'networkidle' });
 
-        if (trackCalls > 0) {
-          expect(trackCalls).toBe(1);
-        }
+        expect(trackCalls).toBe(1);
 
         await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
