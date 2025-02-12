@@ -71,7 +71,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
    * This var name is hard-coded in some Mitosis Plugins. Do not change.
    */
   const elementRef = useRef<HTMLDivElement>();
-  let [hasExecuted, setHasExecuted] = useState<boolean>(false);
+  const [hasExecuted, setHasExecuted] = useState<boolean>(false);
   const state = useStore({
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
