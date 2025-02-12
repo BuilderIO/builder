@@ -51,6 +51,7 @@ registerCommercePlugin(
             (await client.product.fetchQuery({
               query: search ? `title:*${search}*` : '',
               sortKey: 'TITLE',
+              first: 250
             })) || [];
           return sources.map((src: any) => {
             return {
