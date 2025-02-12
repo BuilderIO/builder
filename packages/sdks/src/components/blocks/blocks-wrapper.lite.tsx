@@ -50,10 +50,13 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
       if (!props.path) {
         return undefined;
       }
+      const thisPrefix = 'this.';
       const pathPrefix = 'component.options.';
-      return props.path.startsWith(pathPrefix)
-        ? props.path
-        : `${pathPrefix}${props.path || ''}`;
+      return props.path.startsWith(thisPrefix)
+        ? props.path.replace(thisPrefix, '')
+        : props.path.startsWith(pathPrefix)
+          ? props.path
+          : `${pathPrefix}${props.path || ''}`;
     },
     onClick() {
       if (isEditing() && !props.blocks?.length) {

@@ -3,6 +3,7 @@ import type { Input } from './input.js';
 import type { Nullable } from './typescript.js';
 
 export interface Breakpoints {
+  xsmall?: number;
   small: number;
   medium: number;
 }

@@ -3,7 +3,8 @@ import { test } from '../helpers/index.js';
 
 test.describe('Duplicate Attributes', () => {
   test('wrapped block has no duplicate attributes', async ({ page, packageName }) => {
-    test.skip(packageName === 'react-native');
+    test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
+
     await page.goto('/duplicate-attributes');
 
     const footer = await page.locator('footer');

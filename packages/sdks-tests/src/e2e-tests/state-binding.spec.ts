@@ -8,12 +8,11 @@ test.describe('State binding', () => {
         packageName === 'angular-16-ssr' || packageName === 'angular-16',
         'Angular Gen2 event binding not working properly for repeat blocks.'
       );
-      // hydration errors
-      test.fail(packageName === 'gen1-next14-pages');
 
       // flaky, can't `test.fail()`
       test.skip(
-        packageName === 'react-native' ||
+        packageName === 'react-native-74' ||
+          packageName === 'react-native-76-fabric' ||
           packageName === 'solid' ||
           packageName === 'solid-start' ||
           packageName === 'svelte' ||

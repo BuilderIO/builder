@@ -42,5 +42,6 @@ builder.canTrack = false;
 View all options for `builder.get` [here](./docs/interfaces/GetContentOptions.md)
 
 Learn more about how to use the Builder core SDK:
+
 - [Content API](https://www.builder.io/c/docs/content-api)
 - [Querying Cheatsheet](https://www.builder.io/c/docs/querying)
