@@ -8,4 +8,4 @@
 "@builder.io/sdk-svelte": patch
 ---
 
-Fix: Ensure `/track` call validation handles default and variant scenarios correctly.
+Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
