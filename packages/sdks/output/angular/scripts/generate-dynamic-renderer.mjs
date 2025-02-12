@@ -76,6 +76,7 @@ const dynamicComponentTemplate = (tagName) => {
 export class Dynamic${capitalize(tagName)} {
   @Input() attributes!: any;
   @Input() actionAttributes?: any;
+  @Input() tagName!: string;
 
   @ViewChild('v', { read: ElementRef }) v!: ElementRef;
 
@@ -132,7 +133,8 @@ const generateComponents = () => {
             TagName;
             inputs: {
               attributes: attributes,
-              actionAttributes: actionAttributes
+              actionAttributes: actionAttributes,
+              tagName: tagName
             };
             content: myContent
           "
@@ -144,7 +146,8 @@ const generateComponents = () => {
             TagName;
             inputs: {
               attributes: attributes,
-              actionAttributes: actionAttributes
+              actionAttributes: actionAttributes,
+              tagName: tagName
             };
             content: myContent
           "
@@ -158,7 +161,7 @@ const generateComponents = () => {
           inputs: {
             attributes: attributes,
             actionAttributes: actionAttributes,
-            tagName: TagName
+            tagName: tagName
           };
           content: myContent
         "
@@ -175,6 +178,7 @@ export default class DynamicRenderer {
   @Input() TagName!: any;
   @Input() attributes!: any;
   @Input() actionAttributes!: any;
+  @Input() tagName : string;
 
   @ViewChild('tagnameTemplate', { static: true }) tagnameTemplateRef!: TemplateRef<any>;
 
@@ -191,6 +195,7 @@ export default class DynamicRenderer {
       switch (this.TagName) {
         ${htmlElements.map((el) => `case '${el}': this.TagName = Dynamic${capitalize(el)}; break;`).join('\n        ')}
         default:
+          this.tagName = this.TagName;
           this.TagName = DynamicUnknownElement
           break;
       }

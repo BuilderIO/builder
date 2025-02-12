@@ -78,6 +78,7 @@ import { LOCALIZATION, LOCALIZATION_WITHOUT_LOCALE_PROP } from './localization.j
 import { LOCALIZATION_SUBFIELDS } from './localization-subfields.js';
 import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
+import { DYNAMIC_UNKNOWN_ELEMENT } from './dynamic-unknown-element.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -220,6 +221,7 @@ export const PAGES: Record<string, Page> = {
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
+  '/dynamic-unknown-element': { content: DYNAMIC_UNKNOWN_ELEMENT },
 } as const;
 
 export type Path = keyof typeof PAGES;
