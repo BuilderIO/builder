@@ -1,5 +1,12 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.2
+
+### Patch Changes
+
+- 1396fb4: Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
+- 1396fb4: Fix: duplicate `/track` impression calls.
+
 ## 0.18.1
 
 ### Patch Changes
