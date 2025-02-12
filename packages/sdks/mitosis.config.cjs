@@ -840,11 +840,14 @@ const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
         const constructorIndex = code.indexOf('constructor');
         if (constructorIndex === -1) {
           // not found
-          const ngOnChangesIndex = code.indexOf('ngOnChanges');
+          const hookIndex =
+            json.name !== 'BuilderText'
+              ? code.indexOf('ngAfterViewInit')
+              : code.indexOf('ngOnChanges');
           code =
-            code.slice(0, ngOnChangesIndex) +
+            code.slice(0, hookIndex) +
             `constructor(protected sanitizer: DomSanitizer) {}\n` +
-            code.slice(ngOnChangesIndex);
+            code.slice(hookIndex);
         } else {
           throw new Error(
             'constructor found which should not be here. If you see this, please fix the ANGULAR_TEXT_MARK_SAFE_HTML Plugin.'
@@ -868,29 +871,36 @@ const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
  * Angular allows DOM manipulation in `ngAfterViewInit` hook.
  * This plugin moves the DOM code from `ngOnInit` to `ngAfterViewInit` hook.
  */
-
 const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'BuilderVideo') {
+      if (['BuilderVideo', 'CustomCode', 'BuilderEmbed'].includes(json.name)) {
         json.compileContext = {
           angular: {
             hooks: {
-              ngAfterViewInit: json.hooks.onMount[0],
+              ngAfterViewInit:
+                json.name === 'BuilderEmbed'
+                  ? json.hooks.onUpdate[0]
+                  : json.hooks.onMount[0],
             },
           },
         };
 
         json.compileContext.angular.hooks.ngAfterViewInit.code =
           json.compileContext.angular.hooks.ngAfterViewInit.code
-            .replace('props.', 'this.')
-            .replace('state.', 'this.');
+            .replaceAll('props.', 'this.')
+            .replaceAll('state.', 'this.');
 
-        json.hooks.onMount = [];
+        if (json.name === 'BuilderEmbed') {
+          json.hooks.onUpdate = [];
+        } else {
+          json.hooks.onMount = [];
+        }
       }
     },
   },
 });
+
 /**
  * Angular doesn't support hydration for components created dynamically.
  * Refer: https://angular.dev/errors/NG0503
