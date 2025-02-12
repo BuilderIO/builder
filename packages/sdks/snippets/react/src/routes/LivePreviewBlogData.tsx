@@ -40,7 +40,6 @@ function LivePreviewBlogData() {
         setContent(content);
       },
     });
-
     //unsubscribe from live updates
     return () => {
       unsubscribe();
