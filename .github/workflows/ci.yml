@@ -282,7 +282,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ['webcomponents', 'widgets', 'angular']
+        package: ['webcomponents', 'widgets']
 
     steps:
       - uses: actions/checkout@v4
