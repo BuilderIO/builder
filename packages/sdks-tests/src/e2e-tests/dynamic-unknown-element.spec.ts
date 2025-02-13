@@ -2,8 +2,8 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
 test.describe('Unknown Element', () => {
-  test('unknown element is rendered', async ({ page, packageName }) => {
-    test.skip(packageName === 'react-native');
+  test('unknown element is rendered', async ({ page, sdk }) => {
+    test.skip(sdk === 'react-native');
     await page.goto('/dynamic-unknown-element');
 
     const testTagName = await page.locator('test');
