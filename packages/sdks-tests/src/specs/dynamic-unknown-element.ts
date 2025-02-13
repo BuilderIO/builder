@@ -8,7 +8,7 @@ export const DYNAMIC_UNKNOWN_ELEMENT ={
           "@version": 2,
           "tagName": "test",
           "id": "builder-493100cea9504d56886045462b65b481",
-          "component": { "name": "Text", "options": { "text": "111111" } },
+          "component": { "name": "Text", "options": { "text": "testing text" } },
           "responsiveStyles": {
             "large": {
               "display": "flex",
