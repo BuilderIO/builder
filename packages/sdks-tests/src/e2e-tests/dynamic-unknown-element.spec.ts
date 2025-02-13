@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
 test.describe('Unknown Element', () => {
-  test.only('unknown element is rendered', async ({ page, packageName }) => {
+  test('unknown element is rendered', async ({ page, packageName }) => {
     test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
     await page.goto('/dynamic-unknown-element');
 
