@@ -1,6 +1,5 @@
 import {
   BuilderContent,
-  Content,
   fetchOneEntry,
   subscribeToEditor,
 } from '@builder.io/sdk-react';
@@ -17,6 +16,7 @@ function LivePreviewBlogData() {
     fetchOneEntry({
       model: 'blog-data',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+
       userAttributes: {
         urlPath: slug,
       },
@@ -61,15 +61,6 @@ function LivePreviewBlogData() {
           Published date:{' '}
           {content?.data?.publishedDate.split(' ').slice(0, 4).join(' ')}
         </div>
-      </div>
-
-      {/* You can render builder content here and they must be published to be visible */}
-      <div className="builder-blocks">
-        <Content
-          model="page"
-          apiKey="ee9f13b4981e489a9a1209887695ef2b"
-          content={content}
-        />
       </div>
     </>
   );
