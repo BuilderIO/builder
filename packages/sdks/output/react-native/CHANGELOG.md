@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.0.2
+
+### Patch Changes
+
+- 1396fb4: Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
+
 ## 4.0.1
 
 ### Patch Changes
