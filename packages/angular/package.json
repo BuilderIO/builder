@@ -24,6 +24,7 @@
     "_build": "ng build --configuration production",
     "build": "npm run package && rm dist/package.json",
     "lint": "ng lint",
+    "ci:build": "npm run build",
     "e2e": "ng e2e",
     "package": "ng-packagr -p ng-package.js && npm run set-sdk-version",
     "develop:package": "chokidar 'src/**/*.html' 'src/**/*.css' 'src/**/*.ts' | ng-packagr -p ng-package.js",
