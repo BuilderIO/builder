@@ -1,10 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
-import {
-  launchEmbedderAndWaitForSdk,
-  sendContentUpdateMessage,
-  sendPatchOrUpdateMessage,
-} from '../helpers/visual-editor.js';
+import { launchEmbedderAndWaitForSdk, sendPatchOrUpdateMessage } from '../helpers/visual-editor.js';
 
 test.describe('LivePreviewBlogData Component', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
