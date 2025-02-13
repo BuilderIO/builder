@@ -2,4 +2,4 @@
 "@builder.io/sdk-angular": patch
 ---
 
-FIX: fallback UI in dynamic renderer
+Fix: handle the rendering of unknown HTML elements.
