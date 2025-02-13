@@ -280,9 +280,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           // if (this._context.loading || result.length > viewRef.context.results.length) {
           this._context.loading = false;
           const search = this.builder.getLocation().search || '';
-          console.log('search', search);
           // TODO: how handle singleton vs multiple
-          if (!match && search && search.includes('builder.preview=' + this._context.model)) {
+          if (!match && search.includes('builder.preview=' + this._context.model)) {
             match = {
               id: 'preview',
               name: 'Preview',
