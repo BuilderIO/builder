@@ -210,47 +210,51 @@ export default class DynamicRenderer {
   });
 
   dynamicRendererCode += `
-@Component({
-    selector: 'dynamic-unknown-element',
-    template: '',
-    standalone: true
-  })
+  @Component({
+      selector: 'dynamic-unknown-element',
+      template: '<ng-content></ng-content>',
+      standalone: true
+    })
 
-  export class DynamicUnknownElement {
-    @Input() tagName!: string;
-    @Input() attributes: any;
-    @Input() actionAttributes: any;
-  
-    private _element!: HTMLElement;
-    private _listenerFns = new Map<string, () => void>();
-  
-    constructor(private hostRef: ElementRef, private renderer: Renderer2) {}
-  
-    ngOnInit() {
+    export class DynamicUnknownElement {
+      @Input() tagName: string;
+      @Input() attributes: any;
+      @Input() actionAttributes: any;
+    
+      private _element!: HTMLElement;
+      private _listenerFns = new Map<string, () => void>();
+    
+      constructor(private hostRef: ElementRef, private renderer: Renderer2) {}
+    
+     ngOnInit() {
       this._element = this.renderer.createElement(this.tagName);
       this.renderer.appendChild(this.hostRef.nativeElement, this._element);
       this.setAttributes(this._element, this.attributes);
     }
-  
-    ngOnDestroy() {
-      this._listenerFns.forEach((fn) => fn());
+
+    ngAfterViewInit(){
+      this.renderer.appendChild(this.hostRef.nativeElement.children[1], this.hostRef.nativeElement.children[0]);
     }
-  
-    setAttributes(el: any, attributes: any) {
-      if (!attributes) return;
-      Object.keys(attributes).forEach((key) => {
-        if (key.startsWith('on')) {
-          if (this._listenerFns.has(key)) {
-            this._listenerFns.get(key)!();
+    
+      ngOnDestroy() {
+        this._listenerFns.forEach((fn) => fn());
+      }
+    
+      setAttributes(el: any, attributes: any) {
+        if (!attributes) return;
+        Object.keys(attributes).forEach((key) => {
+          if (key.startsWith('on')) {
+            if (this._listenerFns.has(key)) {
+              this._listenerFns.get(key)!();
+            }
+            const eventType = key.replace('on', '').toLowerCase();
+            this._listenerFns.set(key, this.renderer.listen(el, eventType, attributes[key]));
+          } else {
+            this.renderer.setAttribute(el, key, attributes[key] ?? '');
           }
-          const eventType = key.replace('on', '').toLowerCase();
-          this._listenerFns.set(key, this.renderer.listen(el, eventType, attributes[key]));
-        } else {
-          this.renderer.setAttribute(el, key, attributes[key] ?? '');
-        }
-      });
-    }
-  }`
+        });
+      }
+    }`
 
   fs.writeFileSync(PATH_TO_DYNAMIC_RENDERER, dynamicRendererCode);
 
