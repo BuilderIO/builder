@@ -86,6 +86,7 @@ registerCommercePlugin(
           return client.collection.fetchQuery({
             query: search ? `title:*${search}*` : '',
             sortKey: 'TITLE',
+            first: 250
           });
         },
 
