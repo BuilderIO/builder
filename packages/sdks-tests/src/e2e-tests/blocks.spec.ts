@@ -579,7 +579,7 @@ test.describe('Blocks', () => {
       await page.goto('/custom-code-dom-update');
 
       await expect(page.locator('#myPara')).toHaveText('hello');
-      await expect(page.locator('#myPara')).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+      await expect(page.locator('#myPara')).toHaveCSS('background-color', 'rgb(0, 128, 0)');
     });
   });
 });
