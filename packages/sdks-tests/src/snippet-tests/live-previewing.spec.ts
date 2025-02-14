@@ -14,7 +14,6 @@ test.describe('LivePreviewBlogData Component', () => {
     test.skip(!['react'].includes(packageName));
 
     await page.goto('/live-preview');
-    await page.waitForLoadState('networkidle');
 
     const blogPreview = page.locator('.blog-data-preview');
     await expect(blogPreview).toBeVisible();
@@ -37,9 +36,8 @@ test.describe('LivePreviewBlogData Component', () => {
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/live-preview', basePort, page, sdk });
-      await page.waitForLoadState('networkidle');
 
-      const initialContent = {
+      const INITIAL_CONTENT = {
         data: {
           title: 'Welcome to Builder.io',
           author: 'John Doe',
@@ -48,18 +46,18 @@ test.describe('LivePreviewBlogData Component', () => {
         },
       };
       await expect(
-        page.frameLocator('iframe').getByText(`Blog Title: ${initialContent.data.title}`)
+        page.frameLocator('iframe').getByText(`Blog Title: ${INITIAL_CONTENT.data.title}`)
       ).toBeVisible();
       await expect(
-        page.frameLocator('iframe').getByText(`Authored by: ${initialContent.data.author}`)
+        page.frameLocator('iframe').getByText(`Authored by: ${INITIAL_CONTENT.data.author}`)
       ).toBeVisible();
       await expect(
-        page.frameLocator('iframe').getByText(`Handle: ${initialContent.data.handle}`)
+        page.frameLocator('iframe').getByText(`Handle: ${INITIAL_CONTENT.data.handle}`)
       ).toBeVisible();
       await expect(
         page
           .frameLocator('iframe')
-          .getByText(`Published date: ${initialContent.data.publishedDate}`)
+          .getByText(`Published date: ${INITIAL_CONTENT.data.publishedDate}`)
       ).toBeVisible();
 
       const UPDATED_CONTENT = {
@@ -70,7 +68,6 @@ test.describe('LivePreviewBlogData Component', () => {
           publishedDate: `${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
         },
       };
-
 
       await sendPatchOrUpdateMessage({
         page,
