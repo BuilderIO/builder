@@ -573,5 +573,13 @@ test.describe('Blocks', () => {
       const src = await iframe.getAttribute('src');
       expect(src).toContain('https://www.youtube.com/embed/oU3H581uCsA');
     });
+
+    test('should update DOM when custom code is rendered', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/custom-code-dom-update');
+
+      await expect(page.locator('#myPara')).toHaveText('hello');
+      await expect(page.locator('#myPara')).toHaveCSS('background-color', 'rgb(0, 255, 0)');
+    });
   });
 });
