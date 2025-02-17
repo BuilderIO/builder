@@ -928,6 +928,17 @@ const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
   },
 });
 
+const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
+  code: {
+    post: (code, json) => {
+      if (json.name === 'CustomCode') {
+        code = code.replace('useTask$(', 'useVisibleTask$(');
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -1167,7 +1178,7 @@ module.exports = {
                 return;
               }
 
-              if (['EnableEditor', 'CustomCode'].includes(json.name)) {
+              if (['EnableEditor'].includes(json.name)) {
                 json.hooks.onMount.forEach((hook, i) => {
                   if (hook.onSSR) return;
 
@@ -1207,6 +1218,7 @@ module.exports = {
             },
           },
         }),
+        QWIK_ONUPDATE_TO_USEVISIBLETASK,
       ],
     },
     svelte: {
