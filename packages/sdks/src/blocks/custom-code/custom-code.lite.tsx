@@ -1,4 +1,5 @@
 import {
+  onMount,
   onUpdate,
   useMetadata,
   useRef,
@@ -23,6 +24,11 @@ export default function CustomCode(props: CustomCodeProps) {
   const state = useStore({
     scriptsInserted: [] as string[],
     scriptsRun: [] as string[],
+    isHydrated: false,
+  });
+
+  onMount(() => {
+    state.isHydrated = true;
   });
 
   onUpdate(() => {
@@ -30,7 +36,8 @@ export default function CustomCode(props: CustomCodeProps) {
     if (
       !elementRef ||
       !elementRef?.getElementsByTagName ||
-      typeof window === 'undefined'
+      typeof window === 'undefined' ||
+      !state.isHydrated
     ) {
       return;
     }
@@ -76,7 +83,7 @@ export default function CustomCode(props: CustomCodeProps) {
         }
       }
     }
-  }, [props.code]);
+  }, [props.code, state.isHydrated]);
 
   return (
     <div
