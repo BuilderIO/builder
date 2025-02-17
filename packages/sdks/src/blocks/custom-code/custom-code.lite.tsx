@@ -27,7 +27,11 @@ export default function CustomCode(props: CustomCodeProps) {
 
   onUpdate(() => {
     // TODO: Move this function to standalone one in '@builder.io/utils'
-    if (!elementRef?.getElementsByTagName || typeof window === 'undefined') {
+    if (
+      !elementRef ||
+      !elementRef?.getElementsByTagName ||
+      typeof window === 'undefined'
+    ) {
       return;
     }
 
