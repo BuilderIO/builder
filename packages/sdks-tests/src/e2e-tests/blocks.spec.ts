@@ -3,7 +3,14 @@ import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from '../helpers/index.js';
-import { excludeRn, checkIsRN, test, isSSRFramework, mockFolderPath } from '../helpers/index.js';
+import {
+  excludeRn,
+  checkIsRN,
+  test,
+  isSSRFramework,
+  mockFolderPath,
+  checkIsGen1React,
+} from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -590,6 +597,7 @@ test.describe('Blocks', () => {
 
     test('visual editing updates dom in real time', async ({ page, sdk, basePort }) => {
       test.skip(checkIsRN(sdk));
+      test.skip(checkIsGen1React(sdk));
 
       await launchEmbedderAndWaitForSdk({
         page,
