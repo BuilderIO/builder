@@ -875,16 +875,19 @@ const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
   json: {
     post: (json) => {
       if (['BuilderVideo', 'CustomCode', 'BuilderEmbed'].includes(json.name)) {
-        const hookToUse = ['CustomCode', 'BuilderEmbed'].includes(json.name)
+        const COMPONENT_TYPES_THAT_USE_ONUPDATE = [
+          'CustomCode',
+          'BuilderEmbed',
+        ];
+        const hookToUse = COMPONENT_TYPES_THAT_USE_ONUPDATE.includes(json.name)
           ? 'ngAfterViewChecked'
           : 'ngAfterViewInit';
         json.compileContext = {
           angular: {
             hooks: {
-              [hookToUse]:
-                json.name === 'BuilderEmbed'
-                  ? json.hooks.onUpdate[0]
-                  : json.hooks.onMount[0],
+              [hookToUse]: COMPONENT_TYPES_THAT_USE_ONUPDATE.includes(json.name)
+                ? json.hooks.onUpdate[0]
+                : json.hooks.onMount[0],
             },
           },
         };
@@ -894,7 +897,7 @@ const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
             .replaceAll('props.', 'this.')
             .replaceAll('state.', 'this.');
 
-        if (json.name === 'BuilderEmbed') {
+        if (COMPONENT_TYPES_THAT_USE_ONUPDATE.includes(json.name)) {
           json.hooks.onUpdate = [];
         } else {
           json.hooks.onMount = [];

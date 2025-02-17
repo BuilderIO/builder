@@ -1,5 +1,5 @@
 import {
-  onMount,
+  onUpdate,
   useMetadata,
   useRef,
   useStore,
@@ -25,7 +25,7 @@ export default function CustomCode(props: CustomCodeProps) {
     scriptsRun: [] as string[],
   });
 
-  onMount(() => {
+  onUpdate(() => {
     // TODO: Move this function to standalone one in '@builder.io/utils'
     if (!elementRef?.getElementsByTagName || typeof window === 'undefined') {
       return;
@@ -72,7 +72,7 @@ export default function CustomCode(props: CustomCodeProps) {
         }
       }
     }
-  });
+  }, [props.code]);
 
   return (
     <div
