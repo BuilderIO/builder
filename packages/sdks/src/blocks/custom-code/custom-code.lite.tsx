@@ -1,4 +1,10 @@
-import { onMount, useMetadata, useRef, useStore } from '@builder.io/mitosis';
+import {
+  onMount,
+  useMetadata,
+  useRef,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 
 useMetadata({
   rsc: {
@@ -49,8 +55,18 @@ export default function CustomCode(props: CustomCodeProps) {
           continue;
         }
         try {
-          state.scriptsRun.push(script.innerText);
-          new Function(script.innerText)();
+          useTarget({
+            angular: () => {
+              requestAnimationFrame(() => {
+                state.scriptsRun.push(script.innerText);
+                new Function(script.innerText)();
+              });
+            },
+            default: () => {
+              state.scriptsRun.push(script.innerText);
+              new Function(script.innerText)();
+            },
+          });
         } catch (error) {
           console.warn('`CustomCode`: Error running script:', error);
         }
