@@ -4,6 +4,12 @@ import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from '../helpers/index.js';
 import { excludeRn, checkIsRN, test, isSSRFramework, mockFolderPath } from '../helpers/index.js';
+import {
+  cloneContent,
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+} from '../helpers/visual-editor.js';
+import { CUSTOM_CODE_DOM_UPDATE } from '../specs/custom-code-dom-update.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk, packageName }) => {
@@ -580,6 +586,33 @@ test.describe('Blocks', () => {
 
       await expect(page.locator('#myPara')).toHaveText('hello');
       await expect(page.locator('#myPara')).toHaveCSS('background-color', 'rgb(0, 128, 0)');
+    });
+
+    test('visual editing updates dom in real time', async ({ page, sdk, basePort }) => {
+      test.skip(checkIsRN(sdk));
+
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/custom-code-dom-update',
+        sdk,
+      });
+      await page.frameLocator('iframe').getByText('hello').waitFor();
+      await expect(page.frameLocator('iframe').getByText('hello')).toHaveCSS(
+        'background-color',
+        'rgb(0, 128, 0)'
+      );
+
+      const newCodeContent = cloneContent(CUSTOM_CODE_DOM_UPDATE) as typeof CUSTOM_CODE_DOM_UPDATE;
+      newCodeContent.data.blocks[0].component.options.code =
+        "<p id=\"myPara\">Hello there, I am custom HTML code!</p>\n\n<script>\n  const myPara = document.querySelector('#myPara');\n\n  console.log('here', myPara, myPara.innerHTML)\n\n  myPara.innerHTML = 'world'\n\n myPara.style.backgroundColor = 'red';\n</script>\n";
+
+      await sendContentUpdateMessage({ page, newContent: newCodeContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('world').waitFor();
+      await expect(page.frameLocator('iframe').getByText('world')).toHaveCSS(
+        'background-color',
+        'rgb(255, 0, 0)'
+      );
     });
   });
 });

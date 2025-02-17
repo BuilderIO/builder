@@ -842,7 +842,7 @@ const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
           // not found
           const hookIndex =
             json.name !== 'BuilderText'
-              ? code.indexOf('ngAfterViewInit')
+              ? code.indexOf('ngAfterViewChecked')
               : code.indexOf('ngOnChanges');
           code =
             code.slice(0, hookIndex) +
@@ -875,10 +875,13 @@ const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
   json: {
     post: (json) => {
       if (['BuilderVideo', 'CustomCode', 'BuilderEmbed'].includes(json.name)) {
+        const hookToUse = ['CustomCode', 'BuilderEmbed'].includes(json.name)
+          ? 'ngAfterViewChecked'
+          : 'ngAfterViewInit';
         json.compileContext = {
           angular: {
             hooks: {
-              ngAfterViewInit:
+              [hookToUse]:
                 json.name === 'BuilderEmbed'
                   ? json.hooks.onUpdate[0]
                   : json.hooks.onMount[0],
@@ -886,8 +889,8 @@ const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
           },
         };
 
-        json.compileContext.angular.hooks.ngAfterViewInit.code =
-          json.compileContext.angular.hooks.ngAfterViewInit.code
+        json.compileContext.angular.hooks[hookToUse].code =
+          json.compileContext.angular.hooks[hookToUse].code
             .replaceAll('props.', 'this.')
             .replaceAll('state.', 'this.');
 
