@@ -6,6 +6,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { isEditing } from '../../functions/is-editing';
 
 useMetadata({
   rsc: {
@@ -24,7 +25,6 @@ export default function CustomCode(props: CustomCodeProps) {
   const state = useStore({
     scriptsInserted: [] as string[],
     scriptsRun: [] as string[],
-    firstLoad: true,
     runScripts: () => {
       if (
         !elementRef ||
@@ -80,14 +80,15 @@ export default function CustomCode(props: CustomCodeProps) {
 
   onMount(() => {
     state.runScripts();
-    state.firstLoad = false;
   });
 
   onUpdate(() => {
-    if (!state.firstLoad) {
-      state.runScripts();
+    if (isEditing()) {
+      setTimeout(() => {
+        state.runScripts();
+      }, 0);
     }
-  }, [props.code, state.firstLoad]);
+  }, [props.code]);
 
   return (
     <div
