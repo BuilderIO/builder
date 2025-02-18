@@ -88,9 +88,10 @@ function updateCookiesAndStyles(
      * Angular SDK uses a different DOM structure, so we need to find the style element differently
      * styles are inside - <inlined-styles> <style> ... </style></inlined-styles>
      */
-    styleEl = document.currentScript?.parentElement?.querySelector(
-      'style'
-    ) as HTMLStyleElement;
+    styleEl =
+      document.currentScript?.parentElement?.previousElementSibling?.querySelector(
+        'style'
+      ) as HTMLStyleElement;
   }
 
   /**
