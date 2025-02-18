@@ -842,7 +842,7 @@ const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
           // not found
           const hookIndex =
             json.name !== 'BuilderText'
-              ? code.indexOf('ngAfterViewChecked')
+              ? code.indexOf('ngAfterViewInit')
               : code.indexOf('ngOnChanges');
           code =
             code.slice(0, hookIndex) +
@@ -875,33 +875,43 @@ const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
   json: {
     post: (json) => {
       if (['BuilderVideo', 'CustomCode', 'BuilderEmbed'].includes(json.name)) {
-        const COMPONENT_TYPES_THAT_USE_ONUPDATE = [
-          'CustomCode',
-          'BuilderEmbed',
-        ];
-        const hookToUse = COMPONENT_TYPES_THAT_USE_ONUPDATE.includes(json.name)
-          ? 'ngAfterViewChecked'
-          : 'ngAfterViewInit';
+        let hooks = {};
+
+        if (json.name === 'BuilderVideo') {
+          hooks.ngAfterViewInit = json.hooks.onMount[0];
+        }
+        if (json.name === 'CustomCode') {
+          hooks.ngAfterViewInit = json.hooks.onMount[0];
+          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
+        }
+        if (json.name === 'BuilderEmbed') {
+          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
+        }
+
         json.compileContext = {
           angular: {
-            hooks: {
-              [hookToUse]: COMPONENT_TYPES_THAT_USE_ONUPDATE.includes(json.name)
-                ? json.hooks.onUpdate[0]
-                : json.hooks.onMount[0],
-            },
+            hooks,
           },
         };
 
-        json.compileContext.angular.hooks[hookToUse].code =
-          json.compileContext.angular.hooks[hookToUse].code
-            .replaceAll('props.', 'this.')
-            .replaceAll('state.', 'this.');
-
-        if (COMPONENT_TYPES_THAT_USE_ONUPDATE.includes(json.name)) {
-          json.hooks.onUpdate = [];
-        } else {
-          json.hooks.onMount = [];
+        if (hooks.ngAfterViewInit) {
+          json.compileContext.angular.hooks.ngAfterViewInit.code =
+            json.compileContext.angular.hooks.ngAfterViewInit.code
+              .replaceAll('props.', 'this.')
+              .replaceAll('state.', 'this.');
         }
+
+        if (hooks.ngAfterViewChecked) {
+          json.compileContext.angular.hooks.ngAfterViewChecked.code =
+            json.compileContext.angular.hooks.ngAfterViewChecked.code
+              .replaceAll('props.', 'this.')
+              .replaceAll('state.', 'this.');
+        }
+
+        if (json.name === 'CustomCode' || json.name === 'BuilderEmbed') {
+          json.hooks.onUpdate = [];
+        }
+        json.hooks.onMount = [];
       }
     },
   },

@@ -6,6 +6,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { isEditing } from '../../functions/is-editing.js';
 
 useMetadata({
   rsc: {
@@ -22,6 +23,7 @@ export default function CustomCode(props: CustomCodeProps) {
   const elementRef = useRef<HTMLDivElement>();
 
   const state = useStore({
+    timeoutId: null as NodeJS.Timeout | null,
     scriptsInserted: [] as string[],
     scriptsRun: [] as string[],
     isHydrated: false,
@@ -81,10 +83,19 @@ export default function CustomCode(props: CustomCodeProps) {
 
   onMount(() => {
     state.isHydrated = true;
+    state.runScripts();
   });
 
   onUpdate(() => {
-    state.runScripts();
+    if (isEditing()) {
+      if (state.timeoutId) {
+        clearTimeout(state.timeoutId);
+      } else {
+        state.timeoutId = setTimeout(() => {
+          state.runScripts();
+        }, 10);
+      }
+    }
   }, [props.code, state.isHydrated]);
 
   return (
