@@ -25,7 +25,6 @@ export default function CustomCode(props: CustomCodeProps) {
   const state = useStore({
     scriptsInserted: [] as string[],
     scriptsRun: [] as string[],
-    isHydrated: false,
     runScripts: () => {
       if (
         !elementRef ||
