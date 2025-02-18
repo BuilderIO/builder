@@ -1,3 +1,7 @@
+### 2.0.2
+- update `@builder.io/react` to `^8.0.9`
+- send WC SDK version to Content Editor.
+
 ### 2.0.1
 - update `@builder.io/sdk` to `^6.0.4` and `@builder.io/react` to `^8.0.7`
 - add check around builder block id so that widgets and blocks do not crash.
