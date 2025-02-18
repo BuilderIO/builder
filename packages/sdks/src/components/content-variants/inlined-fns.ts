@@ -122,8 +122,7 @@ function updateCookiesAndStyles(
 function updateVariantVisibility(
   variantContentId: string,
   defaultContentId: string,
-  isHydrationTarget: boolean,
-  isAngularSDK: boolean
+  isHydrationTarget: boolean
 ) {
   if (!navigator.cookieEnabled) {
     return;
@@ -143,12 +142,6 @@ function updateVariantVisibility(
   const winningVariant = getCookie(cookieName);
 
   const parentDiv = document.currentScript?.parentElement;
-
-  if (isAngularSDK) {
-    /**
-     * handle
-     */
-  }
 
   const isDefaultContent = variantContentId === defaultContentId;
   const isWinningVariant = winningVariant === variantContentId;

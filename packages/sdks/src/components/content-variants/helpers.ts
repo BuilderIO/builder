@@ -90,5 +90,5 @@ export const getUpdateVariantVisibilityScript = ({
   contentId: string;
 }) =>
   `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(
-    "${variationId}", "${contentId}", ${isHydrationTarget}, ${isAngularSDK}
+    "${variationId}", "${contentId}", ${isHydrationTarget}
   )`;
