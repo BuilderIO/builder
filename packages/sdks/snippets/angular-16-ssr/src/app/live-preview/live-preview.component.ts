@@ -9,39 +9,34 @@ import { subscribeToEditor } from '@builder.io/sdk-angular';
   selector: 'app-live-preview',
   imports: [CommonModule],
   template: `
+    <div *ngIf="loading" class="loading-message">Loading Data...</div>
     <div *ngIf="!loading && content" class="blog-data-preview">
       <div>Blog Title: {{ content.data?.title }}</div>
       <div>Authored by: {{ content.data?.['author'] }}</div>
       <div>Handle: {{ content.data?.['handle'] }}</div>
       <div>
         Published date:
-        {{
-          content.data?.['publishedDate']?.split(' ')?.slice(0, 4)?.join(' ')
-        }}
+        {{ getFormattedDate(content.data?.['publishedDate']) }}
       </div>
     </div>
-
-    <div *ngIf="error" class="error-message">{{ error }}</div>
-    <div *ngIf="loading">Loading Data...</div>
+    <div *ngIf="!loading && !content" class="no-data-message">No Data.</div>
   `,
 })
 export class LivePreviewComponent implements OnInit, OnDestroy {
   content: BuilderContent | null = null;
   loading = true;
-  error: string | null = null;
 
   private unsubscribeFn?: () => void;
 
   constructor(private route: ActivatedRoute) {}
 
+  getFormattedDate(dateString: string | null): string {
+    return dateString ? new Date(dateString).toDateString() : '';
+  }
+
   ngOnInit(): void {
-    this.content = this.route.snapshot.data['content'];
+    this.content = this.route.snapshot.data['content'] || null;
     this.loading = false;
-
-    if (!this.content) {
-      this.error = 'Content not found.';
-    }
-
     this.unsubscribeFn = subscribeToEditor({
       model: 'blog-data',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
