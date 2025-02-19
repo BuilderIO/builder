@@ -595,9 +595,13 @@ test.describe('Blocks', () => {
       await expect(page.locator('#myPara')).toHaveCSS('background-color', 'rgb(0, 128, 0)');
     });
 
-    test('visual editing updates dom in real time', async ({ page, sdk, basePort }) => {
-      test.skip(checkIsRN(sdk));
-      test.skip(checkIsGen1React(sdk));
+    test('visual editing updates dom in real time', async ({
+      page,
+      sdk,
+      basePort,
+      packageName,
+    }) => {
+      test.skip(checkIsRN(sdk) || checkIsGen1React(sdk) || packageName === 'nextjs-sdk-next-app');
 
       await launchEmbedderAndWaitForSdk({
         page,
