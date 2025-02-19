@@ -160,10 +160,11 @@ test.describe('Visual Editing', () => {
       sdk,
     });
 
-    await expect(page.frameLocator('iframe').getByText('Click me!')).toHaveCSS(
-      'margin-top',
-      '20px'
-    );
+    const buttonLocator = checkIsRN(sdk)
+      ? page.frameLocator('iframe').getByText('Click me!').locator('..')
+      : page.frameLocator('iframe').getByText('Click me!');
+
+    await expect(buttonLocator).toHaveCSS('margin-top', '20px');
     const newContent = cloneContent(EDITING_STYLES);
     delete newContent.data.blocks[0].responsiveStyles.large.marginTop;
 
@@ -173,7 +174,7 @@ test.describe('Visual Editing', () => {
       model: 'page',
     });
 
-    await expect(page.frameLocator('iframe').getByText('Click me!')).toHaveCSS('margin-top', '0px');
+    await expect(buttonLocator).toHaveCSS('margin-top', '0px');
   });
 
   test('nested ContentVariants with same model name should not duplicate content', async ({
