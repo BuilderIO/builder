@@ -46,20 +46,24 @@ if (process.client) {
 }
 
 const publishedDate = computed(() => {
-  if (!content.value?.data?.publishedDate) return ''
-  return content.value.data.publishedDate.split(' ').slice(0, 4).join(' ')
+  return content.value?.data?.publishedDate ? new Date(content.value?.data?.publishedDate).toDateString() : ''
 })
 </script>
 
 <template>
   <div>
     <div v-if="pending">Loading Data...</div>
-
-    <div class="blog-data-preview">
-      <div>Blog Title: {{ content?.data?.title }}</div>
-      <div>Authored by: {{ content?.data?.author }}</div>
-      <div>Handle: {{ content?.data?.handle }}</div>
+    
+    <div v-else-if="content" class="blog-data-preview">
+      <div>Blog Title: {{ content.data?.title }}</div>
+      <div>Authored by: {{ content.data?.author }}</div>
+      <div>Handle: {{ content.data?.handle }}</div>
       <div>Published date: {{ publishedDate }}</div>
+    </div>
+
+    <div v-else class="no-data-message">
+      No Data.
     </div>
   </div>
 </template>
+

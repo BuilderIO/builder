@@ -65,7 +65,7 @@ test.describe('LivePreviewBlogData Component', () => {
           title: 'Welcome to Visual Editor',
           author: 'Jane Doe',
           handle: 'jane_doe',
-          publishedDate: `${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
+          publishedDate: `${new Date().toDateString()}`,
         },
       };
 
