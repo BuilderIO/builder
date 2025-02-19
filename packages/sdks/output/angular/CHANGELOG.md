@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.18.3
+
+### Patch Changes
+
+- 527c115: Feat: A/B tests support
+
 ## 0.18.2
 
 ### Patch Changes
