@@ -1,0 +1,28 @@
+{
+  "name": "@builder.io/plugin-commercelayer",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/plugin.system.js",
+  "unpkg": "dist/plugin.system.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "start": "SERVE=true rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript -w"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/node": "^20.11.19",
+    "rollup": "^4.12.0",
+    "rollup-plugin-esbuild": "^6.1.1",
+    "rollup-plugin-serve": "^1.1.1",
+    "tsx": "^4.7.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@builder.io/plugin-tools": "^0.0.6"
+  }
+}
