@@ -85,6 +85,7 @@ import {
 import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
 import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
+import { DYNAMIC_UNKNOWN_ELEMENT } from './dynamic-unknown-element.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -275,6 +276,7 @@ export const PAGES: Record<string, Page> = {
   },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
+  '/dynamic-unknown-element': { content: DYNAMIC_UNKNOWN_ELEMENT },
 } as const;
 
 export type Path = keyof typeof PAGES;

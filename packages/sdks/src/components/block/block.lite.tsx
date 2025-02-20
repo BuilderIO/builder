@@ -146,7 +146,7 @@ export default function Block(props: BlockProps) {
          * eslint-disable-next-line @typescript-eslint/ban-ts-comment
          * @ts-ignore */
         reactNative: View,
-        angular: DynamicDiv,
+        angular: props.block.tagName || DynamicDiv,
         default: props.block.tagName || 'div',
       });
     },
