@@ -44,7 +44,7 @@ export default function CustomCode(props: CustomCodeProps) {
           if (state.scriptsInserted.includes(script.src)) {
             continue;
           }
-          state.scriptsInserted.push(script.src);
+          state.scriptsInserted = [...state.scriptsInserted, script.src];
           const newScript = document.createElement('script');
           newScript.async = true;
           newScript.src = script.src;
@@ -69,7 +69,7 @@ export default function CustomCode(props: CustomCodeProps) {
                 });
               },
               default: () => {
-                state.scriptsRun.push(script.innerText);
+                state.scriptsRun = [...state.scriptsRun, script.innerText];
                 new Function(script.innerText)();
               },
             });

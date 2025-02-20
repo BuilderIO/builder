@@ -606,7 +606,7 @@ test.describe('Blocks', () => {
       packageName,
     }) => {
       test.skip(checkIsRN(sdk) || checkIsGen1React(sdk) || packageName === 'nextjs-sdk-next-app');
-      test.skip(
+      test.fail(
         packageName === 'react-sdk-next-14-app' || packageName === 'react-sdk-next-15-app',
         'works correctly in the visual editor but failing here for unknown reason'
       );
