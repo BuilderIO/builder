@@ -22,7 +22,38 @@ class TextComponent extends React.Component<TextProps> {
     if (this.textRef && !/{{([^}]+)}}/.test(this.props.text)) {
       this.textRef.innerHTML = this.props.text;
     }
+
+    if (this.textRef) {
+      this.textRef.addEventListener('keydown', this.handleKeyDown);
+    }
   }
+
+  handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent default Enter behavior
+
+      const selection = window.getSelection();
+      if (!selection || !selection.rangeCount) return;
+
+      const range = selection.getRangeAt(0);
+      const newNode = document.createElement(event.shiftKey ? 'br' : 'p');
+
+      if (!event.shiftKey) {
+        // For <p> tags, add a line break to avoid collapsing
+        newNode.innerHTML = '<br>';
+      }
+
+      // Insert the new element at the caret position
+      range.deleteContents();
+      range.insertNode(newNode);
+
+      // Move caret after the newly inserted element
+      range.setStartAfter(newNode);
+      range.setEndAfter(newNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  };
 
   evalExpression(expression: string, state: any) {
     // Don't interpolate when inline editing
