@@ -1,9 +1,18 @@
-import { onUpdate, useMetadata, useRef, useStore } from '@builder.io/mitosis';
+import {
+  onUpdate,
+  useMetadata,
+  useRef,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import { isJsScript } from './helpers.js';
 
 useMetadata({
   rsc: {
     componentType: 'client',
+  },
+  angular: {
+    changeDetection: 'OnPush',
   },
 });
 
@@ -34,8 +43,18 @@ export default function Embed(props: EmbedProps) {
           !state.scriptsRun.includes(script.innerText)
         ) {
           try {
-            state.scriptsRun.push(script.innerText);
-            new Function(script.innerText)();
+            useTarget({
+              angular: () => {
+                requestAnimationFrame(() => {
+                  state.scriptsRun.push(script.innerText);
+                  new Function(script.innerText)();
+                });
+              },
+              default: () => {
+                state.scriptsRun.push(script.innerText);
+                new Function(script.innerText)();
+              },
+            });
           } catch (error) {
             console.warn('`Embed`: Error running script:', error);
           }
