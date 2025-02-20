@@ -87,9 +87,21 @@ export default function CustomCode(props: CustomCodeProps) {
 
   onUpdate(() => {
     if (isEditing()) {
-      setTimeout(() => {
-        state.runScripts();
-      }, 0);
+      useTarget({
+        svelte: () => {
+          setTimeout(() => {
+            state.runScripts();
+          }, 0);
+        },
+        vue: () => {
+          setTimeout(() => {
+            state.runScripts();
+          }, 0);
+        },
+        default: () => {
+          state.runScripts();
+        },
+      });
     }
   }, [props.code]);
 
