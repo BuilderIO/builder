@@ -26,8 +26,8 @@ const generateComponents = () => {
   selector: 'dynamic-renderer, DynamicRenderer',
   template: \`
     <ng-template #tagnameTemplate><ng-content></ng-content></ng-template>
-    <ng-container *ngIf="!isEmptyElement(TagName)">
-      <ng-container *ngIf="useTypeOf(TagName) === 'string'">
+    <ng-container *ngIf="!isEmptyElement(tagName)">
+      <ng-container *ngIf="useTypeOf(tagName) === 'string'">
         <ng-container
           *ngComponentOutlet="
             TagName;
@@ -40,7 +40,7 @@ const generateComponents = () => {
           "
         ></ng-container>
       </ng-container>
-      <ng-container *ngIf="!(useTypeOf(TagName) === 'string')">
+      <ng-container *ngIf="!(useTypeOf(tagName) === 'string')">
         <ng-container
           *ngComponentOutlet="
             TagName;
@@ -53,7 +53,7 @@ const generateComponents = () => {
         ></ng-container>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="!!isEmptyElement(TagName)">
+    <ng-container *ngIf="!!isEmptyElement(tagName)">
       <ng-container
         *ngComponentOutlet="
           TagName;
@@ -89,10 +89,8 @@ export default class DynamicRenderer {
   constructor(private vcRef: ViewContainerRef) {}
 
   ngOnInit() {
-    if (typeof this.TagName === 'string') {
-      this.tagName = this.TagName;
-      this.TagName = DynamicElement
-    }
+    this.tagName = this.TagName;
+    this.TagName = DynamicElement
     this.myContent = [this.vcRef.createEmbeddedView(this.tagnameTemplateRef).rootNodes];
   }
 }
