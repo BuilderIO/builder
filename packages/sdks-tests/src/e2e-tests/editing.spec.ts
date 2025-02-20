@@ -6,7 +6,7 @@ import {
 } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { HOMEPAGE } from '../specs/homepage.js';
-import { checkIsRN, test, excludeGen1, excludeGen2 } from '../helpers/index.js';
+import { checkIsRN, test, excludeGen1, excludeGen2, checkIsGen1React } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -148,6 +148,33 @@ test.describe('Visual Editing', () => {
         expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
       }
     }
+  });
+
+  test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
+    test.skip(packageName === 'nextjs-sdk-next-app' || checkIsGen1React(sdk));
+
+    await launchEmbedderAndWaitForSdk({
+      path: '/editing-styles',
+      basePort,
+      page,
+      sdk,
+    });
+
+    const buttonLocator = checkIsRN(sdk)
+      ? page.frameLocator('iframe').getByText('Click me!').locator('..')
+      : page.frameLocator('iframe').getByText('Click me!');
+
+    await expect(buttonLocator).toHaveCSS('margin-top', '20px');
+    const newContent = cloneContent(EDITING_STYLES);
+    delete newContent.data.blocks[0].responsiveStyles.large.marginTop;
+
+    await sendContentUpdateMessage({
+      page,
+      newContent,
+      model: 'page',
+    });
+
+    await expect(buttonLocator).toHaveCSS('margin-top', '0px');
   });
 
   test('nested ContentVariants with same model name should not duplicate content', async ({

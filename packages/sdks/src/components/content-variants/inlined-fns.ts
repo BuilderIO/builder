@@ -15,7 +15,8 @@ type VariantData = {
 function updateCookiesAndStyles(
   contentId: string,
   variants: VariantData[],
-  isHydrationTarget: boolean
+  isHydrationTarget: boolean,
+  isAngularSDK: boolean
 ) {
   function getAndSetVariantId(): string {
     function setCookie(name: string, value: string, days?: number) {
@@ -79,8 +80,19 @@ function updateCookiesAndStyles(
 
   const winningVariantId = getAndSetVariantId();
 
-  const styleEl = document.currentScript
+  let styleEl = document.currentScript
     ?.previousElementSibling as HTMLStyleElement;
+
+  if (isAngularSDK) {
+    /**
+     * Angular SDK uses a different DOM structure, so we need to find the style element differently
+     * styles are inside - <inlined-styles> <style> ... </style></inlined-styles>
+     */
+    styleEl =
+      document.currentScript?.parentElement?.previousElementSibling?.querySelector(
+        'style'
+      ) as HTMLStyleElement;
+  }
 
   /**
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.

@@ -158,6 +158,7 @@ export default class DynamicDiv {
   }
 
   private handleStyleProp(el: HTMLElement, style: any) {
+    if (!style) return;
     if (typeof style === 'object') {
       Object.entries(style).forEach(([key, value]) => {
         this.renderer.setStyle(el, key, value);

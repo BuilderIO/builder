@@ -600,6 +600,12 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
       if (code.includes('enable-editor')) {
+        /**
+         * we need to wait till the children content of enable-editor is fully loaded before rendering
+         * else the content that are behind any conditional logic will get rendered outside of the enable-editor
+         */
+        code = code.replace('ngOnInit', 'ngAfterContentInit');
+
         // find two event listeners and add bind(this) to the fn passed
         const eventListeners = code.match(
           /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
