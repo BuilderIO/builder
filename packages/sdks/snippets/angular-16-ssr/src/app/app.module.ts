@@ -19,6 +19,8 @@ import { CustomChildComponent } from './custom-child/custom-child.component';
 import { customChildResolver } from './custom-child/custom-child.resolver';
 import { editableRegionsResolver } from './editable-regions/editable-regions-resolver';
 import { EditableRegionComponent } from './editable-regions/editable-regions.component';
+import { LivePreviewComponent } from './live-preview/live-preview.component';
+import { livePreviewResolver } from './live-preview/live-preview.resolver';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { navBarResolver } from './nav-bar/nav-bar.resolver';
 import { ProductDetailsComponent } from './product-details/product-details.component';
@@ -73,6 +75,11 @@ import { productEditorialResolver } from './product-editorial/product-editorial.
         path: 'advanced-child',
         component: AdvancedChildComponent,
         resolve: { content: advancedChildResolver },
+      },
+      {
+        path: 'live-preview',
+        component: LivePreviewComponent,
+        resolve: { content: livePreviewResolver },
       },
       {
         path: '**',
