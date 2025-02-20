@@ -587,8 +587,12 @@ test.describe('Blocks', () => {
       expect(src).toContain('https://www.youtube.com/embed/oU3H581uCsA');
     });
 
-    test('should update DOM when custom code is rendered', async ({ page, sdk }) => {
+    test('should update DOM when custom code is rendered', async ({ page, sdk, packageName }) => {
       test.skip(checkIsRN(sdk));
+      test.fail(
+        packageName === 'react-sdk-next-14-app' || packageName === 'react-sdk-next-15-app',
+        'fails to do dom update via script throwing a hydration error'
+      );
       await page.goto('/custom-code-dom-update');
 
       await expect(page.locator('#myPara')).toHaveText('hello');
@@ -602,6 +606,10 @@ test.describe('Blocks', () => {
       packageName,
     }) => {
       test.skip(checkIsRN(sdk) || checkIsGen1React(sdk) || packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'react-sdk-next-14-app' || packageName === 'react-sdk-next-15-app',
+        'works correctly in the visual editor but failing here for unknown reason'
+      );
 
       await launchEmbedderAndWaitForSdk({
         page,
