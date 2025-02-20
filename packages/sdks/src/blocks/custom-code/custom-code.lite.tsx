@@ -12,6 +12,9 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
+  angular: {
+    changeDetection: 'OnPush',
+  },
 });
 
 export interface CustomCodeProps {
