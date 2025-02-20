@@ -47,7 +47,6 @@ const generateComponents = () => {
             inputs: {
               attributes: attributes,
               actionAttributes: actionAttributes,
-              tagName: tagName
             };
             content: myContent
           "
@@ -61,7 +60,6 @@ const generateComponents = () => {
           inputs: {
             attributes: attributes,
             actionAttributes: actionAttributes,
-            tagName: tagName
           };
           content: myContent
         "
