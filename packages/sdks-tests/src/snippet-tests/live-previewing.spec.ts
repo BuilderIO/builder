@@ -4,14 +4,14 @@ import { launchEmbedderAndWaitForSdk, sendPatchOrUpdateMessage } from '../helper
 
 test.describe('LivePreviewBlogData Component', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
+    test.skip(!['react', 'vue', 'nuxt'].includes(packageName));
 
     const response = await page.goto('/live-preview');
     expect(response?.status()).toBeLessThan(400);
   });
 
   test('should display blog details correctly', async ({ page, packageName }) => {
-    test.skip(!['react'].includes(packageName));
+    test.skip(!['react', 'vue', 'nuxt'].includes(packageName));
 
     await page.goto('/live-preview');
 
@@ -31,7 +31,7 @@ test.describe('LivePreviewBlogData Component', () => {
         packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-remix' ||
-          !['react'].includes(packageName),
+          !['react', 'vue', 'nuxt'].includes(packageName),
         'Skipping test: incompatible package or framework.'
       );
 
@@ -65,7 +65,7 @@ test.describe('LivePreviewBlogData Component', () => {
           title: 'Welcome to Visual Editor',
           author: 'Jane Doe',
           handle: 'jane_doe',
-          publishedDate: `${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
+          publishedDate: `${new Date().toDateString()}`,
         },
       };
 
