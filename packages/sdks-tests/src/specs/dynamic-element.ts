@@ -1,4 +1,4 @@
-export const DYNAMIC_UNKNOWN_ELEMENT ={
+export const DYNAMIC_ELEMENT ={
     "data": {
       "title": "angular-test-1",
       "themeId": false,

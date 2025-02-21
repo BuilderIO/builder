@@ -2,9 +2,9 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
 test.describe('Unknown Element', () => {
-  test('unknown element is rendered', async ({ page, sdk }) => {
+  test.only('unknown element is rendered', async ({ page, sdk }) => {
     test.skip(sdk !== 'angular');
-    await page.goto('/dynamic-unknown-element');
+    await page.goto('/dynamic-element');
 
     const tagNameLocator = await page.locator('test');
     const tagNameId = await tagNameLocator.getAttribute('builder-id');
