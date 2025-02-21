@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
 test.describe('Unknown Element', () => {
-  test.only('unknown element is rendered', async ({ page, sdk }) => {
+  test('unknown element is rendered', async ({ page, sdk }) => {
     test.skip(sdk !== 'angular');
     await page.goto('/dynamic-element');
 
