@@ -90,7 +90,9 @@ export default class DynamicRenderer {
 
   ngOnInit() {
     this.tagName = this.TagName;
-    this.TagName = DynamicElement
+    if(typeof this.TagName === 'string'){
+      this.TagName = DynamicElement
+    }
     this.myContent = [this.vcRef.createEmbeddedView(this.tagnameTemplateRef).rootNodes];
   }
 }
@@ -114,13 +116,17 @@ export default class DynamicRenderer {
       constructor(private hostRef: ElementRef, private renderer: Renderer2) {}
     
       ngOnInit() {
-        this._element = this.renderer.createElement(this.tagName);
-        this.renderer.appendChild(this.hostRef.nativeElement, this._element);
-        this.setAttributes(this._element, this.attributes);
+        if(this.tagName){
+          this._element = this.renderer.createElement(this.tagName);
+          this.renderer.appendChild(this.hostRef.nativeElement, this._element);
+          this.setAttributes(this._element, this.attributes);
+        }
       }
 
       ngAfterViewInit(){
-        this.renderer.appendChild(this.hostRef.nativeElement.children[1], this.hostRef.nativeElement.children[0]);
+        if(this.hostRef.nativeElement.children.length > 1){
+          this.renderer.appendChild(this.hostRef.nativeElement.children[1], this.hostRef.nativeElement.children[0]);
+        }
       }
     
       ngOnDestroy() {
