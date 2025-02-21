@@ -9,21 +9,16 @@ import { subscribeToEditor } from '@builder.io/sdk-angular';
   selector: 'app-live-preview',
   imports: [CommonModule],
   template: `
-    <div *ngIf="loading" class="loading-message">Loading Data...</div>
+    <div *ngIf="loading">Loading Data...</div>
     <div *ngIf="!loading && content" class="blog-data-preview">
       <div>Blog Title: {{ content.data?.title }}</div>
       <div>Authored by: {{ content.data?.['author'] }}</div>
       <div>Handle: {{ content.data?.['handle'] }}</div>
-      <div>
-        Published date:
-        {{ getFormattedDate(content.data?.['publishedDate']) }}
-      </div>
     </div>
-    <div *ngIf="!loading && !content" class="no-data-message">No Data.</div>
   `,
 })
 export class LivePreviewComponent implements OnInit, OnDestroy {
-  content: BuilderContent | null = null;
+  content: BuilderContent | undefined = undefined;
   loading = true;
 
   private unsubscribeFn?: () => void;
@@ -35,7 +30,7 @@ export class LivePreviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.content = this.route.snapshot.data['content'] || null;
+    this.content = this.route.snapshot.data['content'] || undefined;
     this.loading = false;
     this.unsubscribeFn = subscribeToEditor({
       model: 'blog-data',
