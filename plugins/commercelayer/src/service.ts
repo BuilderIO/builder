@@ -114,8 +114,9 @@ export const transformProduct = (product: Product) => ({
   type: 'product',
   title: product.attributes.name,
   handle: product.attributes.code,
-  description: product.attributes.description,
-  image: product.attributes.image_url
+  image: {
+    src: product.attributes.image_url
+  }
 })
 
 export const getProductByHandle = async (handle: string, accessToken: string, baseEndpoint: string): Promise<Product> => {

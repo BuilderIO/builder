@@ -1,7 +1,7 @@
 import { registerCommercePlugin, BuilderRequest, CommerceAPIOperations } from '@builder.io/plugin-tools'
 import appState from '@builder.io/app-context'
 import pkg from '../package.json'
-import { authenticateClient, getOrganizationInfo, getProduct, searchProducts, getProductByHandle } from './service'
+import { authenticateClient, getOrganizationInfo, getProduct, searchProducts, getProductByHandle, transformProduct } from './service'
 
 registerCommercePlugin(
 {
@@ -33,40 +33,16 @@ registerCommercePlugin(
         product: {
           async findById(id: string) {
             const product = await getProduct(id, auth.accessToken, baseEndpoint)
-            return {
-              id: product.id,
-              type: 'product',
-              title: product.attributes.name,
-              handle: product.attributes.code,
-              image: {
-                src: product.attributes.image_url
-              }
-            }
+            return transformProduct(product)
           },
           async findByHandle(handle: string) {
             const product = await getProductByHandle(handle, auth.accessToken, baseEndpoint)
-            return {
-              id: product.id,
-              type: 'product',
-              title: product.attributes.name,
-              handle: product.attributes.code,
-              image: {
-                src: product.attributes.image_url
-              }
-            }
+            return transformProduct(product)
           },
           
           async search(search: string) {
             const products = await searchProducts(search, auth.accessToken, baseEndpoint)
-            return products.map(product => ({
-              id: product.id,
-              type: 'product',
-              title: product.attributes.name,
-              handle: product.attributes.code,
-              image: {
-                src: product.attributes.image_url
-              }
-            }))
+            return products.map(transformProduct)
           },
           getRequestObject(id: string): BuilderRequest {
             return {
