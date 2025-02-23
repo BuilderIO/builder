@@ -6,14 +6,13 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import {
-  CustomTabsComponent,
   customTabsInfo,
 } from './custom-tabs/custom-tabs.component';
 
 @Component({
   selector: 'app-advanced-child',
   standalone: true,
-  imports: [CommonModule, Content, CustomTabsComponent],
+  imports: [CommonModule, Content],
   template: `
     <div *ngIf="content">
       <builder-content
