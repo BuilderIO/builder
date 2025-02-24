@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.18.4
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+- 887c6e0: Fix: `nativeElement` not found issue in Custom Code and Embed Blocks
+
 ## 0.18.3
 
 ### Patch Changes
