@@ -30,5 +30,18 @@
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/build/client",
+          "{projectRoot}/build/server"
+        ]
+      }
+    }
   }
 }
