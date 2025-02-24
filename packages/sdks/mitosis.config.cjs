@@ -600,6 +600,12 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
       if (code.includes('enable-editor')) {
+        /**
+         * we need to wait till the children content of enable-editor is fully loaded before rendering
+         * else the content that are behind any conditional logic will get rendered outside of the enable-editor
+         */
+        code = code.replace('ngOnInit', 'ngAfterContentInit');
+
         // find two event listeners and add bind(this) to the fn passed
         const eventListeners = code.match(
           /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
@@ -819,47 +825,52 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
   },
 });
 
-const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
-  code: {
-    post: (code, json) => {
-      if (['BuilderText', 'BuilderEmbed', 'CustomCode'].includes(json.name)) {
-        code =
-          `import { DomSanitizer } from "@angular/platform-browser";\nimport { ChangeDetectionStrategy } from "@angular/core";\n` +
-          code;
+/**
+ * Angular allows DOM manipulation in `ngAfterViewInit` hook.
+ * This plugin moves the DOM code from `ngOnInit` to `ngAfterViewInit` hook.
+ */
+const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
+  json: {
+    post: (json) => {
+      if (['BuilderVideo', 'CustomCode', 'BuilderEmbed'].includes(json.name)) {
+        let hooks = {};
 
-        // add changeDetection: ChangeDetectionStrategy.OnPush
-        const changeDetectionIndex = code.indexOf('selector:');
-        if (changeDetectionIndex !== -1) {
-          code =
-            code.slice(0, changeDetectionIndex) +
-            `changeDetection: ChangeDetectionStrategy.OnPush,\n` +
-            code.slice(changeDetectionIndex);
+        if (json.name === 'BuilderVideo') {
+          hooks.ngAfterViewInit = json.hooks.onMount[0];
+        }
+        if (json.name === 'CustomCode') {
+          hooks.ngAfterViewInit = json.hooks.onMount[0];
+          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
+        }
+        if (json.name === 'BuilderEmbed') {
+          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
         }
 
-        // add constructor with sanitizer
-        const constructorIndex = code.indexOf('constructor');
-        if (constructorIndex === -1) {
-          // not found
-          const ngOnChangesIndex = code.indexOf('ngOnChanges');
-          code =
-            code.slice(0, ngOnChangesIndex) +
-            `constructor(protected sanitizer: DomSanitizer) {}\n` +
-            code.slice(ngOnChangesIndex);
-        } else {
-          throw new Error(
-            'constructor found which should not be here. If you see this, please fix the ANGULAR_TEXT_MARK_SAFE_HTML Plugin.'
-          );
+        json.compileContext = {
+          angular: {
+            hooks,
+          },
+        };
+
+        if (hooks.ngAfterViewInit) {
+          json.compileContext.angular.hooks.ngAfterViewInit.code =
+            json.compileContext.angular.hooks.ngAfterViewInit.code
+              .replaceAll('props.', 'this.')
+              .replaceAll('state.', 'this.');
         }
 
-        const variableName = code.match(/\[innerHTML\]="([^"]+)"/)?.[1];
-        if (variableName) {
-          code = code.replace(
-            `[innerHTML]="${variableName}"`,
-            `[innerHTML]="sanitizer.bypassSecurityTrustHtml(${variableName})"`
-          );
+        if (hooks.ngAfterViewChecked) {
+          json.compileContext.angular.hooks.ngAfterViewChecked.code =
+            json.compileContext.angular.hooks.ngAfterViewChecked.code
+              .replaceAll('props.', 'this.')
+              .replaceAll('state.', 'this.');
         }
+
+        if (json.name === 'CustomCode' || json.name === 'BuilderEmbed') {
+          json.hooks.onUpdate = [];
+        }
+        json.hooks.onMount = [];
       }
-      return code;
     },
   },
 });
@@ -879,6 +890,17 @@ const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
           `@Component({\n\thost: { ngSkipHydration: "true" },`
         );
         code = code.replace(componentDecorator, componentDecoratorWithHost);
+      }
+      return code;
+    },
+  },
+});
+
+const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
+  code: {
+    post: (code, json) => {
+      if (json.name === 'CustomCode') {
+        code = code.replace('useTask$(', 'useVisibleTask$(');
       }
       return code;
     },
@@ -914,7 +936,7 @@ module.exports = {
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
-        ANGULAR_MARK_SAFE_INNER_HTML,
+        ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT,
       ],
     },
     solid: {
@@ -1123,7 +1145,7 @@ module.exports = {
                 return;
               }
 
-              if (['EnableEditor', 'CustomCode'].includes(json.name)) {
+              if (['EnableEditor'].includes(json.name)) {
                 json.hooks.onMount.forEach((hook, i) => {
                   if (hook.onSSR) return;
 
@@ -1163,6 +1185,7 @@ module.exports = {
             },
           },
         }),
+        QWIK_ONUPDATE_TO_USEVISIBLETASK,
       ],
     },
     svelte: {

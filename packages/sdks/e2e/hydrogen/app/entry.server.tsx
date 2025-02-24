@@ -3,6 +3,7 @@ import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
+import {VIDEO_CDN_URL} from '../../../../sdks-tests/src/specs/video';
 
 export default async function handleRequest(
   request: Request,
@@ -23,6 +24,7 @@ export default async function handleRequest(
     scriptSrc: ["'unsafe-eval'", 'http://localhost:*'],
     // we need to allow Builder's visual editor to embed the app in an iframe.
     frameAncestors: ['https://builder.io', 'http://localhost:*'],
+    mediaSrc: [VIDEO_CDN_URL],
   });
 
   const body = await renderToReadableStream(

@@ -9,6 +9,7 @@ import {
   setContext,
   useMetadata,
   useRef,
+  useState,
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
@@ -25,6 +26,7 @@ import { createRegisterComponentMessage } from '../../../functions/register-comp
 import { _track } from '../../../functions/track/index.js';
 import { getInteractionPropertiesForEvent } from '../../../functions/track/interaction.js';
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
+import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
 import {
@@ -69,6 +71,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
    * This var name is hard-coded in some Mitosis Plugins. Do not change.
    */
   const elementRef = useRef<HTMLDivElement>();
+  const [hasExecuted, setHasExecuted] = useState<boolean>(false);
   const state = useStore({
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
@@ -147,6 +150,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           contentUpdate: (newContent) => {
             state.mergeNewContent(newContent);
+          },
+          stateUpdate: (newState) => {
+            state.mergeNewRootState(newState);
           },
         },
       })(event);
@@ -272,12 +278,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
         ...(props.locale ? { locale: props.locale } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
         ...(props.trustedHosts ? { trustedHosts: props.trustedHosts } : {}),
+        modelName: props.model ?? '',
+        apiKey: props.apiKey,
       });
       Object.values<ComponentInfo>(
         props.builderContextSignal.value.componentInfos
       ).forEach((registeredComponent) => {
         if (
-          !props.model ||
           !registeredComponent.models?.length ||
           registeredComponent.models.includes(props.model)
         ) {
@@ -321,7 +328,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           (!props.content || searchParamPreviewId === props.content.id))
       ) {
         fetchOneEntry({
-          model: props.model || '',
+          model: props.model,
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
           ...(searchParamPreviewModel === 'BUILDER_STUDIO' &&
@@ -353,7 +360,17 @@ export default function EnableEditor(props: BuilderEditorProps) {
    *   - move heavy editing and previwing logic behind `customEvent` dispatches, guaranteeing that production qwik sdk load time will be perfect (no hydration, no eager code besides tracking impression)
    */
   onMount(() => {
+    useTarget({
+      qwik: () => {
+        if (hasExecuted) return;
+      },
+    });
     if (isBrowser()) {
+      useTarget({
+        qwik: () => {
+          setHasExecuted(true);
+        },
+      });
       if (isEditing() && !props.isNestedRender) {
         useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -383,12 +400,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
           props.builderContextSignal.value.content &&
           getDefaultCanTrack(props.canTrack),
       });
+      const winningVariantId = getCookieSync({
+        name: `builder.tests.${props.builderContextSignal.value.content?.id}`,
+        canTrack: true,
+      });
+      const variationId = useTarget({
+        qwik: elementRef.attributes.getNamedItem('variationId')?.value,
+        default: props.builderContextSignal.value.content?.testVariationId,
+      });
 
-      if (shouldTrackImpression) {
-        const variationId = useTarget({
-          qwik: elementRef.attributes.getNamedItem('variationId')?.value,
-          default: props.builderContextSignal.value.content?.testVariationId,
-        });
+      if (shouldTrackImpression && variationId === winningVariantId) {
         const contentId = useTarget({
           qwik: elementRef.attributes.getNamedItem('contentId')?.value,
           default: props.builderContextSignal.value.content?.id,
@@ -404,7 +425,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
           canTrack: true,
           contentId,
           apiKey: apiKeyProp!,
-          variationId: variationId !== contentId ? variationId : undefined,
+          variationId:
+            winningVariantId !== contentId ? winningVariantId : undefined,
         });
       }
 

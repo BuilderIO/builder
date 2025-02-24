@@ -1,13 +1,7 @@
-import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import {
-  Component,
-  Inject,
-  Input,
-  PLATFORM_ID,
-  Renderer2,
-} from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 interface Props {
   scriptStr: string;
@@ -35,17 +29,14 @@ export default class InlinedScript {
 
   constructor(
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId: string
+    private elRef: ElementRef
   ) {}
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      const script = this.renderer.createElement('script');
-      script.innerHTML = this.scriptStr;
-      this.renderer.setAttribute(script, 'data-id', this.id);
-      this.renderer.setAttribute(script, 'nonce', this.nonce);
-      this.renderer.appendChild(this.document.body, script);
-    }
+    const script = this.renderer.createElement('script');
+    script.text = this.scriptStr;
+    this.renderer.setAttribute(script, 'data-id', this.id);
+    this.renderer.setAttribute(script, 'nonce', this.nonce);
+    this.renderer.appendChild(this.elRef.nativeElement, script);
   }
 }

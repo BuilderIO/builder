@@ -6,11 +6,12 @@ import {
 } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { HOMEPAGE } from '../specs/homepage.js';
-import { checkIsRN, test, excludeGen2 } from '../helpers/index.js';
+import { checkIsRN, test, excludeGen1, excludeGen2, checkIsGen1React } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
   sendContentUpdateMessage,
+  sendNewStateMessage,
   sendPatchOrUpdateMessage,
 } from '../helpers/visual-editor.js';
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
@@ -147,6 +148,33 @@ test.describe('Visual Editing', () => {
         expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
       }
     }
+  });
+
+  test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
+    test.skip(packageName === 'nextjs-sdk-next-app' || checkIsGen1React(sdk));
+
+    await launchEmbedderAndWaitForSdk({
+      path: '/editing-styles',
+      basePort,
+      page,
+      sdk,
+    });
+
+    const buttonLocator = checkIsRN(sdk)
+      ? page.frameLocator('iframe').getByText('Click me!').locator('..')
+      : page.frameLocator('iframe').getByText('Click me!');
+
+    await expect(buttonLocator).toHaveCSS('margin-top', '20px');
+    const newContent = cloneContent(EDITING_STYLES);
+    delete newContent.data.blocks[0].responsiveStyles.large.marginTop;
+
+    await sendContentUpdateMessage({
+      page,
+      newContent,
+      model: 'page',
+    });
+
+    await expect(buttonLocator).toHaveCSS('margin-top', '0px');
   });
 
   test('nested ContentVariants with same model name should not duplicate content', async ({
@@ -367,6 +395,64 @@ test.describe('Visual Editing', () => {
 
       expect(consoleMsg).toContain('modelName: page');
       expect(consoleMsg).toContain('apiKey: abcd');
+    });
+
+    test('should inject correct SDK data into iframe for gen-2', async ({
+      page,
+      basePort,
+      sdk,
+    }) => {
+      test.skip(excludeGen1(sdk));
+      let consoleMsg = '';
+      const msgPromise = page.waitForEvent('console', msg => {
+        if (msg.text().includes('BUILDER_EVENT: builder.sdkInfo')) {
+          consoleMsg = msg.text();
+          return true;
+        }
+        return false;
+      });
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/editing',
+        sdk,
+      });
+      await msgPromise;
+
+      expect(consoleMsg).toContain('modelName: page');
+      expect(consoleMsg).toContain('apiKey: abcd');
+    });
+  });
+
+  test.describe('Content Input', () => {
+    test('correctly updates', async ({ page, packageName, basePort, sdk }) => {
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/content-input-bindings', basePort, page, sdk });
+      await page.frameLocator('iframe').getByText('Bye').waitFor();
+
+      await sendNewStateMessage({
+        page,
+        newState: {
+          booleanToggle: true,
+        },
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('Hello').waitFor();
+
+      await sendNewStateMessage({
+        page,
+        newState: {
+          booleanToggle: false,
+        },
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('Bye').waitFor();
     });
   });
 });
