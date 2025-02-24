@@ -31,4 +31,5 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 Questions, feedback? Let us know over in our [forum](https://forum.builder.io)!
 
-**_NOTE:_**  This is not the recommended way to use the Builder.io Angular SDK. Please see the [angular-gen2](../angular-gen2) example.
+**NOTE**
+  This is not the recommended way to use the Builder.io Angular SDK. Please see the [angular-gen2](../angular-gen2) example.
