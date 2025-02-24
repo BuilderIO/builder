@@ -5,6 +5,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { logger } from '../../helpers/logger.js';
 import { isJsScript } from './helpers.js';
 
 useMetadata({
@@ -56,7 +57,7 @@ export default function Embed(props: EmbedProps) {
               },
             });
           } catch (error) {
-            console.warn('`Embed`: Error running script:', error);
+            logger.warn('[BUILDER.IO] `Embed`: Error running script:', error);
           }
         }
       }

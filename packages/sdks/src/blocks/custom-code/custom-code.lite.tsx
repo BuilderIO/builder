@@ -7,6 +7,7 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
+import { logger } from '../../helpers/logger.js';
 
 useMetadata({
   rsc: {
@@ -74,7 +75,10 @@ export default function CustomCode(props: CustomCodeProps) {
               },
             });
           } catch (error) {
-            console.warn('`CustomCode`: Error running script:', error);
+            logger.warn(
+              '[BUILDER.IO] `CustomCode`: Error running script:',
+              error
+            );
           }
         }
       }
