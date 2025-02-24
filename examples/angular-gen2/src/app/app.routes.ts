@@ -1,5 +1,5 @@
 import type { Routes } from '@angular/router';
-import { CatchAllComponent } from '../../../../packages/sdks/e2e/angular-19-ssr/src/app/catch-all.component';
+import { CatchAllComponent } from './catch-all.component';
 
 export const routes: Routes = [
   {
