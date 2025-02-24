@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 4.0.3
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+
 ## 4.0.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.4
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+
 ## 0.18.2
 
 ### Patch Changes
