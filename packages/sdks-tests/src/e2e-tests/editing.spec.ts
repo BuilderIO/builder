@@ -18,7 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
-import { NEW_TEXT_BLOCK_ADDED_CONTENT } from '../specs/new-block-add.js';
+import { NEW_BLOCK_ADD } from '../specs/new-block-add.js';
 
 const editorTests = ({
   noTrustedHosts,
@@ -461,9 +461,20 @@ test.describe('Visual Editing', () => {
     test.skip(checkIsGen1React(sdk));
     await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
 
+    const newContent = cloneContent(NEW_BLOCK_ADD);
+    newContent.data.blocks.push({
+      '@type': '@builder.io/sdk:Element',
+      '@version': 2,
+      id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+      component: {
+        name: 'Text',
+        options: { text: 'new text' },
+      },
+    });
+
     await sendContentUpdateMessage({
       page,
-      newContent: NEW_TEXT_BLOCK_ADDED_CONTENT,
+      newContent,
       model: 'page',
     });
     await page.frameLocator('iframe').getByText('new text').waitFor();
@@ -493,9 +504,20 @@ test.describe('Visual Editing', () => {
     test.skip(checkIsGen1React(sdk));
     await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
 
+    const newContent = cloneContent(NEW_BLOCK_ADD);
+    newContent.data.blocks.push({
+      '@type': '@builder.io/sdk:Element',
+      '@version': 2,
+      id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+      component: {
+        name: 'Text',
+        options: { text: 'new text' },
+      },
+    });
+
     await sendContentUpdateMessage({
       page,
-      newContent: NEW_TEXT_BLOCK_ADDED_CONTENT,
+      newContent,
       model: 'page',
     });
     await page.frameLocator('iframe').getByText('new text').waitFor();
@@ -508,7 +530,7 @@ test.describe('Visual Editing', () => {
     const newTextBlock = await page.frameLocator('iframe').getByText('new text').all();
     expect(newTextBlock.length).toBe(1);
 
-    const updatedContent = cloneContent(NEW_TEXT_BLOCK_ADDED_CONTENT);
+    const updatedContent = cloneContent(NEW_BLOCK_ADD);
     updatedContent.data.blocks = updatedContent.data.blocks.pop();
 
     await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });

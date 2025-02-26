@@ -64,17 +64,3 @@ export const NEW_BLOCK_ADD = {
   lastUpdatedBy: 'RuGeCLr9ryVt1xRazFYc72uWwIK2',
   folders: [],
 };
-
-export const NEW_TEXT_BLOCK_ADDED_CONTENT = JSON.parse(JSON.stringify(NEW_BLOCK_ADD));
-
-NEW_TEXT_BLOCK_ADDED_CONTENT.data.blocks.push({
-  '@type': '@builder.io/sdk:Element',
-  '@version': 2,
-  id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
-  component: {
-    name: 'Text',
-    options: {
-      text: 'new text',
-    },
-  },
-});
