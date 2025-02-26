@@ -18,7 +18,7 @@ import { subscribeToEditor } from '@builder.io/sdk-angular';
   `,
 })
 export class LivePreviewComponent implements OnInit, OnDestroy {
-  content: BuilderContent | undefined = undefined;
+  content: BuilderContent | null = null;
   loading = true;
 
   private unsubscribeFn?: () => void;
@@ -30,7 +30,7 @@ export class LivePreviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.content = this.route.snapshot.data['content'] || undefined;
+    this.content = this.route.snapshot.data['content'];
     this.loading = false;
     this.unsubscribeFn = subscribeToEditor({
       model: 'blog-data',

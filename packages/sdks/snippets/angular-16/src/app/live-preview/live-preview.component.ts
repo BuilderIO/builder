@@ -20,25 +20,20 @@ import { fetchOneEntry, subscribeToEditor } from '@builder.io/sdk-angular';
   `,
 })
 export class LivePreviewComponent implements OnInit, OnDestroy {
-  content: BuilderContent | undefined = undefined;
-  loading = false;
+  content: BuilderContent | null = null;
+  loading = true;
 
   private unsubscribeFn?: () => void;
   private router = inject(Router);
 
-  getFormattedDate(dateString: string | null): string {
-    return dateString ? new Date(dateString).toDateString() : '';
-  }
-
   ngOnInit(): void {
-    this.loading = true;
     fetchOneEntry({
       model: 'blog-data',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
       userAttributes: { urlPath: this.router.url },
     })
       .then((data) => {
-        this.content = data || undefined;
+        this.content = data;
       })
       .finally(() => {
         this.loading = false;
