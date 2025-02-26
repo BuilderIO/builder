@@ -95,6 +95,8 @@ export class CatchAllComponent {
       pathname: urlPath,
       _processContentResult,
       options: getBuilderSearchParams(searchParams),
+      // data: 'real',
+      // apiKey: 'ad30f9a246614faaa6a03374f83554c9',
       fetchOneEntry: (args) => {
         return fetchOneEntry({
           ...args,

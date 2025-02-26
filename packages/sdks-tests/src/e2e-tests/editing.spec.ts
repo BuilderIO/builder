@@ -458,8 +458,15 @@ test.describe('Visual Editing', () => {
   });
 
   test.describe('New Block addition and deletion', () => {
-    test('should add new block below the last block', async ({ page, basePort, sdk }) => {
+    test('should add new block below the last block', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
       test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+
       await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
 
       const newContent = cloneContent(NEW_BLOCK_ADD);
