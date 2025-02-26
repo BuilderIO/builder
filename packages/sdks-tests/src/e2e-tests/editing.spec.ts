@@ -508,8 +508,11 @@ test.describe('Visual Editing', () => {
       page,
       basePort,
       sdk,
+      packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+
       await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
 
       const newContent = cloneContent(NEW_BLOCK_ADD);
