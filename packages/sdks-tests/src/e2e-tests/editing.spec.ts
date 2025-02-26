@@ -18,6 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { NEW_TEXT_BLOCK_ADDED_CONTENT } from '../specs/new-block-add.js';
 
 const editorTests = ({
   noTrustedHosts,
@@ -454,5 +455,69 @@ test.describe('Visual Editing', () => {
       });
       await page.frameLocator('iframe').getByText('Bye').waitFor();
     });
+  });
+
+  test('should add new block below the last block', async ({ page, basePort, sdk }) => {
+    test.skip(checkIsGen1React(sdk));
+    await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+    await sendContentUpdateMessage({
+      page,
+      newContent: NEW_TEXT_BLOCK_ADDED_CONTENT,
+      model: 'page',
+    });
+    await page.frameLocator('iframe').getByText('new text').waitFor();
+
+    const textBlocks = await page
+      .frameLocator('iframe')
+      .getByText('some text already published')
+      .all();
+    expect(textBlocks.length).toBe(1);
+    const newTextBlockBox = await page.frameLocator('iframe').getByText('new text').boundingBox();
+    expect(newTextBlockBox).toBeDefined();
+    const textBlockBox = await textBlocks[0].boundingBox();
+    expect(textBlockBox).toBeDefined();
+
+    if (!newTextBlockBox || !textBlockBox) {
+      throw new Error('New text block or text block not found');
+    }
+
+    expect(newTextBlockBox.y).toBeGreaterThan(textBlockBox.y);
+  });
+
+  test('deleting a newly added block should remove it from the DOM', async ({
+    page,
+    basePort,
+    sdk,
+  }) => {
+    test.skip(checkIsGen1React(sdk));
+    await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+    await sendContentUpdateMessage({
+      page,
+      newContent: NEW_TEXT_BLOCK_ADDED_CONTENT,
+      model: 'page',
+    });
+    await page.frameLocator('iframe').getByText('new text').waitFor();
+
+    const textBlocks = await page
+      .frameLocator('iframe')
+      .getByText('some text already published')
+      .all();
+    expect(textBlocks.length).toBe(1);
+    const newTextBlock = await page.frameLocator('iframe').getByText('new text').all();
+    expect(newTextBlock.length).toBe(1);
+
+    const updatedContent = cloneContent(NEW_TEXT_BLOCK_ADDED_CONTENT);
+    updatedContent.data.blocks = updatedContent.data.blocks.pop();
+
+    await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
+    await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
+
+    const textBlocksAfterDelete = await page
+      .frameLocator('iframe')
+      .getByText('some text already published')
+      .all();
+    expect(textBlocksAfterDelete.length).toBe(1);
   });
 });
