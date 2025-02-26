@@ -1,5 +1,17 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.18.2
+
+### Patch Changes
+
+- 1396fb4: Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
+
+## 0.18.1
+
+### Patch Changes
+
+- 80247eb: Fix: Updating input values while in the Content Editor not triggering changes in the iframe.
+
 ## 0.18.0
 
 ### Minor Changes
@@ -7,8 +19,9 @@
 - 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
 
 Example:
-    
+
 - from:
+
 ```ts
     subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -24,6 +24,7 @@
     "_build": "ng build --configuration production",
     "build": "npm run package && rm dist/package.json",
     "lint": "ng lint",
+    "ci:build": "npm run build",
     "e2e": "ng e2e",
     "package": "ng-packagr -p ng-package.js && npm run set-sdk-version",
     "develop:package": "chokidar 'src/**/*.html' 'src/**/*.css' 'src/**/*.ts' | ng-packagr -p ng-package.js",
@@ -39,7 +40,7 @@
   "dependencies": {
     "@angular/ssr": "^18.0.7",
     "@builder.io/sdk": "^5.0.0",
-    "express": "^4.21.2"
+    "express": "^4.18.2"
   },
   "peerDependencies": {
     "rxjs": ">= 2",
@@ -47,7 +48,7 @@
     "zone.js": "0.14.x"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "18.2.12",
+    "@angular-devkit/build-angular": "18.2.14",
     "@angular/cli": "18.0.7",
     "@angular/common": "18.0.6",
     "@angular/compiler-cli": "18.0.6",
@@ -68,7 +69,7 @@
     "babel-loader": "^8.2.3",
     "chokidar-cli": "^3.0.0",
     "codelyzer": "^6.0.0",
-    "express": "^4.21.2",
+    "express": "^4.19.2",
     "jasmine-core": "^3.3.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^6.0.0",

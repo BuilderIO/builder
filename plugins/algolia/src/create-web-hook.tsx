@@ -7,6 +7,10 @@ export const createWebhook = async (model: any) => {
   const algoliaAppId = pluginSettings.get('algoliaAppId');
   const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pluginId);
 
+  if (!pluginPrivateKey) {
+    return;
+  }
+
   const newWebhook = {
     meta: {
       pluginId,
@@ -24,14 +28,19 @@ export const createWebhook = async (model: any) => {
   };
 
   // if we have an existing algolia webhook on this model then we need to replace it with the new one
-  let existingAlgoliaHookIndex;
+  let existingAlgoliaHookIndex = -1; // Use -1 instead of null
+
   for (let i = 0; i < model.webhooks.length; i++) {
     const currentHookPath = model.webhooks[i].url?.split('?')[0];
     const newHookPath = newWebhook.url.split('?')[0];
-    existingAlgoliaHookIndex = currentHookPath === newHookPath ? i : null;
+
+    if (currentHookPath === newHookPath) {
+      existingAlgoliaHookIndex = i;
+      break; // Exit loop early once a match is found
+    }
   }
 
-  if (existingAlgoliaHookIndex) {
+  if (existingAlgoliaHookIndex >= 0) {
     model.webhooks[existingAlgoliaHookIndex] = newWebhook;
   } else {
     model.webhooks.push(newWebhook);

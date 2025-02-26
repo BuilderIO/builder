@@ -1,5 +1,23 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 4.0.3
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+
+## 4.0.2
+
+### Patch Changes
+
+- 1396fb4: Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
+
+## 4.0.1
+
+### Patch Changes
+
+- 80247eb: Fix: Updating input values while in the Content Editor not triggering changes in the iframe.
+
 ## 4.0.0
 
 ### Major Changes
@@ -7,8 +25,9 @@
 - 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
 
 Example:
-    
+
 - from:
+
 ```ts
     subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
 ```
