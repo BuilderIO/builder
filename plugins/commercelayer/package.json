@@ -1,14 +1,39 @@
 {
   "name": "@builder.io/plugin-commercelayer",
-  "private": true,
-  "version": "0.0.1",
-  "type": "module",
+  "version": "0.0.4",
+  "description": "Commerce Layer plugin for Builder.io",
+  "keywords": [],
   "main": "dist/plugin.system.js",
   "unpkg": "dist/plugin.system.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Ahmed Felfel <ahmed@builder.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuilderIO/builder"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "prebuild": "rimraf dist",
     "build": "rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript",
-    "start": "SERVE=true rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript -w"
+    "start": "SERVE=true rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript -w",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish",
+    "test": "jest --coverage",
+    "test:watch": "jest --coverage --watch",
+    "test:prod": "npm run lint && npm run test -- --no-cache",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
@@ -20,7 +45,8 @@
     "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-serve": "^1.1.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "rimraf": "^2.6.2"
   },
   "dependencies": {
     "@builder.io/plugin-tools": "^0.0.6"
