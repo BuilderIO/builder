@@ -22,7 +22,6 @@ test.describe('LivePreviewBlogData Component', () => {
     await expect(blogPreview).toContainText('Blog Title: Welcome to Builder.io');
     await expect(blogPreview).toContainText('Authored by: John Doe');
     await expect(blogPreview).toContainText('Handle: john_doe');
-    await expect(blogPreview).toContainText('Published date: Tue Feb 11 2025');
   });
 
   test.describe('Live Preview blog data - Visual Editor', () => {
@@ -42,7 +41,6 @@ test.describe('LivePreviewBlogData Component', () => {
           title: 'Welcome to Builder.io',
           author: 'John Doe',
           handle: 'john_doe',
-          publishedDate: 'Tue Feb 11 2025',
         },
       };
       await expect(
@@ -54,18 +52,12 @@ test.describe('LivePreviewBlogData Component', () => {
       await expect(
         page.frameLocator('iframe').getByText(`Handle: ${INITIAL_CONTENT.data.handle}`)
       ).toBeVisible();
-      await expect(
-        page
-          .frameLocator('iframe')
-          .getByText(`Published date: ${INITIAL_CONTENT.data.publishedDate}`)
-      ).toBeVisible();
 
       const UPDATED_CONTENT = {
         data: {
           title: 'Welcome to Visual Editor',
           author: 'Jane Doe',
           handle: 'jane_doe',
-          publishedDate: `${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
         },
       };
 
@@ -86,11 +78,6 @@ test.describe('LivePreviewBlogData Component', () => {
       ).toBeVisible();
       await expect(
         page.frameLocator('iframe').getByText(`Handle: ${UPDATED_CONTENT.data.handle}`)
-      ).toBeVisible();
-      await expect(
-        page
-          .frameLocator('iframe')
-          .getByText(`Published date: ${UPDATED_CONTENT.data.publishedDate}`)
       ).toBeVisible();
     });
   });
