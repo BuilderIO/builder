@@ -10,7 +10,10 @@ test.describe('Unknown Element', () => {
     const tagNameId = await tagNameLocator.getAttribute('builder-id');
 
     expect(tagNameId).toBe('builder-493100cea9504d56886045462b65b481');
-    await expect(tagNameLocator).toHaveAttribute('class','builder-493100cea9504d56886045462b65b481 builder-block');
+    await expect(tagNameLocator).toHaveAttribute(
+      'class',
+      'builder-493100cea9504d56886045462b65b481 builder-block'
+    );
     await expect(tagNameLocator).toHaveText('testing text');
   });
 });
