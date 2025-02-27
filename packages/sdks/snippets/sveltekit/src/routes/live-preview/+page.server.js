@@ -12,6 +12,6 @@ export const load = async ({ url }) => {
   });
 
   return {
-    content: content ?? null,
+    content,
   };
 };

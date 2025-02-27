@@ -4,7 +4,7 @@
   import type { BuilderContent } from '@builder.io/sdk-svelte';
   let content: BuilderContent | null = null;
   let isLoading = true;
-  let unsubscribe: (() => void) | null = null;
+  let unsubscribe: () => void = () => {};
 
   let urlPath = window.location.pathname;
 
@@ -34,9 +34,7 @@
   });
 
   onDestroy(() => {
-    if (unsubscribe) {
-      unsubscribe();
-    }
+    unsubscribe();
   });
 </script>
 
