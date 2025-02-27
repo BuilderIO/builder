@@ -1,9 +1,4 @@
-import {
-  component$,
-  useSignal,
-  useTask$,
-  useVisibleTask$,
-} from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import type { BuilderContent } from '@builder.io/sdk-qwik';
 import {
@@ -21,19 +16,13 @@ export const useBuilderContent = routeLoader$(async ({ url }) => {
       urlPath: url.pathname,
     },
   });
-  return data ?? null;
+  return data;
 });
 
 export default component$(() => {
-  const { value } = useBuilderContent();
+  const builderContent = useBuilderContent();
 
-  const content = useSignal<BuilderContent | null>(null);
-  useTask$(({ track }) => {
-    const data = track(() => value);
-    if (data !== undefined) {
-      content.value = data;
-    }
-  });
+  const content = useSignal<BuilderContent | null>(builderContent.value);
 
   useVisibleTask$(() => {
     const unsubscribe = subscribeToEditor({
@@ -44,7 +33,7 @@ export default component$(() => {
       },
     });
     return () => {
-      unsubscribe?.();
+      unsubscribe();
     };
   });
 
