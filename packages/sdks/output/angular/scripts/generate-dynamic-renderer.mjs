@@ -211,9 +211,9 @@ export default class DynamicRenderer {
 }
 `;
 
-htmlElements.forEach((tagName) => {
-  dynamicRendererCode += dynamicComponentTemplate(tagName) + '\n';
-});
+  htmlElements.forEach((tagName) => {
+    dynamicRendererCode += dynamicComponentTemplate(tagName) + '\n';
+  });
 
   dynamicRendererCode += `
   @Component({
@@ -264,7 +264,7 @@ htmlElements.forEach((tagName) => {
           }
         });
       }
-    }`
+    }`;
 
   fs.writeFileSync(PATH_TO_DYNAMIC_RENDERER, dynamicRendererCode);
 
