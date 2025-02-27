@@ -1,13 +1,10 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from '../helpers/index.js';
+import { test } from '../helpers/index.js';
 
 test.describe('Duplicate Attributes', () => {
-  test('wrapped block has no duplicate attributes', async ({ page, packageName, sdk }) => {
-    test.fail(
-      excludeTestFor({ angular: true }, sdk),
-      'attributes not spread out so cant set footer'
-    );
+  test('wrapped block has no duplicate attributes', async ({ page, packageName }) => {
     test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
+
     await page.goto('/duplicate-attributes');
 
     const footer = await page.locator('footer');
