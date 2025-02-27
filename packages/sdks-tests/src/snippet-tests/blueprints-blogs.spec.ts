@@ -18,7 +18,7 @@ test.describe('BlogArticleComponent', () => {
   });
 
   test('should display article image', async ({ page }) => {
-    const imgSrc = await page.locator('img').getAttribute('src');
+    const imgSrc = await page.locator('img').nth(0).getAttribute('src');
     expect(imgSrc).toBeTruthy();
   });
 
