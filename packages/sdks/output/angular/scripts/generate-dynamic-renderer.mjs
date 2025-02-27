@@ -131,7 +131,7 @@ const generateComponents = () => {
           "
         ></ng-container>
       </ng-container>
-      <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getClassName() === 'DynamicElement'">
+      <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getDynamicTagName() !== ''">
         <ng-container
           *ngComponentOutlet="
             TagName;
@@ -144,7 +144,7 @@ const generateComponents = () => {
           "
         ></ng-container>
       </ng-container>
-       <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getClassName() === ''">
+       <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getDynamicTagName() === ''">
         <ng-container
           *ngComponentOutlet="
             TagName;
@@ -180,19 +180,18 @@ export default class DynamicRenderer {
   @Input() TagName!: any;
   @Input() attributes!: any;
   @Input() actionAttributes!: any;
-  @Input() tagName : string;
+  @Input() tagName : string = '';
 
   @ViewChild('tagnameTemplate', { static: true }) tagnameTemplateRef!: TemplateRef<any>;
 
-  className: string = '';
   myContent?: any[][];
 
   useTypeOf(obj: any): string {
     return typeof obj;
   }
 
-  getClassName(): string {
-    return this.className;
+  getDynamicTagName(): string {
+    return this.tagName;
   }
 
   constructor(private vcRef: ViewContainerRef) {}
@@ -204,7 +203,6 @@ export default class DynamicRenderer {
         default:
           this.tagName = this.TagName;
           this.TagName = DynamicElement;
-          this.className = 'DynamicElement';
           break;
       }
     }
