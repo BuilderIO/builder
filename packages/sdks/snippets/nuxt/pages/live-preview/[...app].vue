@@ -1,34 +1,40 @@
 <script setup lang="ts">
-import { computed, watchEffect, onMounted, onUnmounted } from 'vue'
-import { useAsyncData, useRoute } from '#app'
-import { fetchOneEntry, subscribeToEditor } from '@builder.io/sdk-vue'
+import { computed, watchEffect, onMounted, onUnmounted } from 'vue';
+import { useAsyncData, useRoute } from '#app';
+import { fetchOneEntry, subscribeToEditor } from '@builder.io/sdk-vue';
 
-const slug = computed(() => useRoute().path)
+const slug = computed(() => useRoute().path);
 
-const { data: content, pending, refresh } = await useAsyncData('livePreview', () =>
-  fetchOneEntry({
-    model: 'blog-data',
-    apiKey: "ee9f13b4981e489a9a1209887695ef2b",
-    userAttributes: { urlPath: slug.value }
-  }), 
+const {
+  data: content,
+  pending,
+  refresh,
+} = await useAsyncData(
+  'livePreview',
+  () =>
+    fetchOneEntry({
+      model: 'blog-data',
+      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      userAttributes: { urlPath: slug.value },
+    }),
   { server: true }
-)
+);
 
 watch(slug, async () => {
-  await refresh()
-})
+  await refresh();
+});
 
-let unsubscribe: (() => void) | null = null
+let unsubscribe: (() => void) | null = null;
 
 onMounted(() => {
   unsubscribe = subscribeToEditor({
     model: 'blog-data',
-    apiKey: "ee9f13b4981e489a9a1209887695ef2b",
+    apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
     callback: (updatedContent) => (content.value = updatedContent),
-  })
-})
+  });
+});
 
-onUnmounted(() => unsubscribe?.())
+onUnmounted(() => unsubscribe?.());
 </script>
 
 <template>

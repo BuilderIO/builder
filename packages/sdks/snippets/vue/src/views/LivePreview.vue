@@ -8,54 +8,54 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { fetchOneEntry, subscribeToEditor } from '@builder.io/sdk-vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { fetchOneEntry, subscribeToEditor } from '@builder.io/sdk-vue';
 
-const content = ref<any>(null)
-const loading = ref(true)
+const content = ref<any>(null);
+const loading = ref(true);
 
-const route = useRoute()
+const route = useRoute();
 
 async function fetchContent() {
-  loading.value = true
+  loading.value = true;
   try {
     const data = await fetchOneEntry({
       model: 'blog-data',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
       userAttributes: { urlPath: route.path },
-    })
-    content.value = data
+    });
+    content.value = data;
   } catch (err) {
-    console.error('Error fetching Builder content:', err)
+    console.error('Error fetching Builder content:', err);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
-let unsubscribe: (() => void) | undefined
+let unsubscribe: (() => void) | undefined;
 
 onMounted(() => {
-  fetchContent()
+  fetchContent();
   unsubscribe = subscribeToEditor({
     model: 'blog-data',
     apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
     callback: (updatedContent) => {
-      content.value = updatedContent
+      content.value = updatedContent;
     },
-  })
-})
+  });
+});
 
 watch(
   () => route.path,
   () => {
-    fetchContent()
+    fetchContent();
   }
-)
+);
 
 onBeforeUnmount(() => {
   if (unsubscribe) {
-    unsubscribe()
+    unsubscribe();
   }
-})
+});
 </script>
