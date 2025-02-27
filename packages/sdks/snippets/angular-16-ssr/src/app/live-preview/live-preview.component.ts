@@ -21,29 +21,25 @@ export class LivePreviewComponent implements OnInit, OnDestroy {
   content: BuilderContent | null = null;
   loading = true;
 
-  private unsubscribeFn?: () => void;
+  private unsubscribeFn: () => void = () => {};
 
   constructor(private route: ActivatedRoute) {}
-
-  getFormattedDate(dateString: string | null): string {
-    return dateString ? new Date(dateString).toDateString() : '';
-  }
 
   ngOnInit(): void {
     this.content = this.route.snapshot.data['content'];
     this.loading = false;
-    this.unsubscribeFn = subscribeToEditor({
-      model: 'blog-data',
-      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
-      callback: (updatedContent) => {
-        this.content = updatedContent;
-      },
-    });
+    if (typeof window !== 'undefined') {
+      this.unsubscribeFn = subscribeToEditor({
+        model: 'blog-data',
+        apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+        callback: (updatedContent) => {
+          this.content = updatedContent;
+        },
+      });
+    }
   }
 
   ngOnDestroy(): void {
-    if (this.unsubscribeFn) {
-      this.unsubscribeFn();
-    }
+    this.unsubscribeFn();
   }
 }
