@@ -1,7 +1,6 @@
 import { builder } from '@builder.io/react';
 import { useEffect, useState } from 'react';
 import queries from './queries';
-import './style.css';
 
 builder.init('ee9f13b4981e489a9a1209887695ef2b');
 

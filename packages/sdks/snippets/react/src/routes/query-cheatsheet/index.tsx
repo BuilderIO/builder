@@ -1,7 +1,6 @@
 import { BuilderContent } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
 import queries from './queries';
-import './style.css';
 
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
