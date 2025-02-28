@@ -7,7 +7,7 @@ import {
 } from '../helpers/visual-editor.js';
 import { DYNAMIC_BUTTON } from '../specs/dynamic-button.js';
 
-test.describe.only('Dynamic Button', () => {
+test.describe('Dynamic Button', () => {
   test('should render a button', async ({ page, sdk, basePort }) => {
     test.skip(sdk !== 'angular');
 
