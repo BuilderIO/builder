@@ -8,21 +8,23 @@
 
   let urlPath = window.location.pathname;
 
-  onMount(async () => {
-    try {
-      const data = await fetchOneEntry({
-        model: 'blog-data',
-        apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
-        userAttributes: {
-          urlPath,
-        },
+  onMount(() => {
+    fetchOneEntry({
+      model: 'blog-data',
+      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      userAttributes: {
+        urlPath,
+      },
+    })
+      .then((data) => {
+        content = data;
+      })
+      .catch((err) => {
+        console.error('Error fetching Builder content:', err);
+      })
+      .finally(() => {
+        isLoading = false;
       });
-      content = data;
-    } catch (err) {
-      console.error('Error fetching Builder content:', err);
-    }
-
-    isLoading = false;
 
     unsubscribe = subscribeToEditor({
       model: 'blog-data',
@@ -31,10 +33,8 @@
         content = updatedContent;
       },
     });
-  });
 
-  onDestroy(() => {
-    unsubscribe();
+    return () => unsubscribe();
   });
 </script>
 
