@@ -8,27 +8,19 @@
   };
 
   let content: BuilderContent | null = data.content;
-  let isLoading = !content;
-
-  let unsubscribe: () => void = () => {};
 
   onMount(() => {
-    unsubscribe = subscribeToEditor({
+    let unsubscribe = subscribeToEditor({
       model: 'blog-data',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
       callback(updatedContent) {
         content = updatedContent;
-        isLoading = false;
       },
     });
 
     return () => unsubscribe();
   });
 </script>
-
-{#if isLoading && !content}
-  <div>Loading...</div>
-{/if}
 
 {#if content}
   <div class="blog-data-preview">

@@ -5,8 +5,7 @@
 
   let content: BuilderContent | null = null;
   let isLoading = true;
-  let unsubscribe: () => void = () => {};
-
+  
   let urlPath = window.location.pathname;
 
   onMount(() => {
@@ -27,7 +26,7 @@
         isLoading = false;
       });
 
-    unsubscribe = subscribeToEditor({
+    let unsubscribe = subscribeToEditor({
       model: 'blog-data',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
       callback(updatedContent) {
