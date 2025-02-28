@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
   import { fetchOneEntry, subscribeToEditor } from '@builder.io/sdk-svelte';
   import type { BuilderContent } from '@builder.io/sdk-svelte';
+
   let content: BuilderContent | null = null;
   let isLoading = true;
   let unsubscribe: () => void = () => {};

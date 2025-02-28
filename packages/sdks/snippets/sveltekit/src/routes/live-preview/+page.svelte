@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { BuilderContent } from '@builder.io/sdk-svelte';
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount } from 'svelte';
   import { subscribeToEditor } from '@builder.io/sdk-svelte';
 
   export let data: {
