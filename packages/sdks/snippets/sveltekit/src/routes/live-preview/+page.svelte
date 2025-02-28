@@ -10,7 +10,7 @@
   let content: BuilderContent | null = data.content;
   let isLoading = !content;
 
-  let unsubscribe: (() => void) | null = null;
+  let unsubscribe: () => void = () => {};
 
   onMount(() => {
     unsubscribe = subscribeToEditor({
@@ -22,13 +22,7 @@
       },
     });
 
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  });
-
-  onDestroy(() => {
-    if (unsubscribe) unsubscribe();
+    return () => unsubscribe();
   });
 </script>
 
