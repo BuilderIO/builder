@@ -400,6 +400,14 @@ const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
     post: (code) => {
       if (code?.includes('selector: "blocks-wrapper"')) {
         code = code.replace('ngOnInit', 'ngAfterContentInit');
+        const ngOnChangesIndex = code.indexOf('ngOnChanges');
+        if (ngOnChangesIndex > -1) {
+          code = code.replace(/^\s*\/\/\s*@ts-expect-error.*$/gm, '');
+          code = code.replace(
+            'ngOnChanges(changes: SimpleChanges) {',
+            'ngAfterContentChecked() {if (this.shouldUpdate) { this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes]; }}\nngOnChanges(changes: SimpleChanges) {'
+          );
+        }
       }
       return code;
     },
@@ -677,7 +685,7 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
  * This code is used to destructure the `attributes` prop and apply it to the direct child element of the
  * interactive-element when `noWrap` is set to `true`.
  *
- * When using a custom component that doesn’t expect the `attributes` prop and `noWrap` is `true`,
+ * When using a custom component that doesn't expect the `attributes` prop and `noWrap` is `true`,
  * the `attributes` are applied to the root element of the custom component:
  *
  * <mat-button {...attributes}>
