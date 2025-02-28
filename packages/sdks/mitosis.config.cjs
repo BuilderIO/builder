@@ -405,7 +405,12 @@ const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
           code = code.replace(/^\s*\/\/\s*@ts-expect-error.*$/gm, '');
           code = code.replace(
             'ngOnChanges(changes: SimpleChanges) {',
-            'ngAfterContentChecked() {if (this.shouldUpdate) { this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes]; }}\nngOnChanges(changes: SimpleChanges) {'
+            `ngAfterContentChecked() {
+              if (this.shouldUpdate) {
+                this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes];
+                this.shouldUpdate = false;
+              }
+            }\nngOnChanges(changes: SimpleChanges) {`
           );
         }
       }
