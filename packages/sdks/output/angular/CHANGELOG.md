@@ -1,5 +1,24 @@
 # @builder.io/sdk-angular
 
+## 0.18.5
+
+### Patch Changes
+
+- 02fab2b: Fix: handle the rendering of unknown HTML elements.
+
+## 0.18.4
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+- 887c6e0: Fix: `nativeElement` not found issue in Custom Code and Embed Blocks
+
+## 0.18.3
+
+### Patch Changes
+
+- 527c115: Feat: A/B tests support
+
 ## 0.18.2
 
 ### Patch Changes
