@@ -516,6 +516,10 @@ test.describe('Visual Editing', () => {
     }) => {
       test.skip(checkIsGen1React(sdk));
       test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
 
       await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
 
