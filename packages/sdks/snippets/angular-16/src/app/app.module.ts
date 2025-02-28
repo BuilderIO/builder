@@ -16,6 +16,7 @@ import { CustomChildComponent } from './custom-child/custom-child.component';
 import { CustomHeroComponent } from './custom-child/custom-hero/custom-hero.component';
 import { CustomColumnsComponent } from './editable-regions/custom-columns/custom-columns.component';
 import { EditableRegionComponent } from './editable-regions/editable-regions.component';
+import { LivePreviewComponent } from './live-preview/live-preview.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductEditorialComponent } from './product-editorial/product-editorial.component';
@@ -36,6 +37,7 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
     EditableRegionComponent,
     AdvancedChildComponent,
     CustomTabsComponent,
+    LivePreviewComponent,
     CatchAllComponent,
     RouterModule.forRoot([
       { path: 'announcements/:id', component: AnnouncementBarComponent },
@@ -52,6 +54,7 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
         component: EditableRegionComponent,
       },
       { path: 'advanced-child', component: AdvancedChildComponent },
+      { path: 'live-preview', component: LivePreviewComponent },
       { path: '**', component: CatchAllComponent },
     ]),
   ],
