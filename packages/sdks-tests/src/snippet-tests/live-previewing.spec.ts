@@ -5,18 +5,17 @@ import { launchEmbedderAndWaitForSdk, sendPatchOrUpdateMessage } from '../helper
 test.describe('LivePreviewBlogData Component', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte'].includes(
+      !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(
         packageName
       )
     );
-
     const response = await page.goto('/live-preview');
     expect(response?.status()).toBeLessThan(400);
   });
 
   test('should display blog details correctly', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte'].includes(
+      !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(
         packageName
       )
     );
@@ -38,9 +37,7 @@ test.describe('LivePreviewBlogData Component', () => {
         packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-remix' ||
-          !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte'].includes(
-            packageName
-          ),
+          !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(packageName),
         'Skipping test: incompatible package or framework.'
       );
 
