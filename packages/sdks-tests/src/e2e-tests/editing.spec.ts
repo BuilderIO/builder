@@ -18,6 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { NEW_BLOCK_ADD } from '../specs/new-block-add.js';
 
 const editorTests = ({
   noTrustedHosts,
@@ -453,6 +454,98 @@ test.describe('Visual Editing', () => {
         model: 'page',
       });
       await page.frameLocator('iframe').getByText('Bye').waitFor();
+    });
+  });
+
+  test.describe('New Block addition and deletion', () => {
+    test('should add new block below the last block', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+      const newContent = cloneContent(NEW_BLOCK_ADD);
+      newContent.data.blocks.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const textBlocks = await page
+        .frameLocator('iframe')
+        .getByText('some text already published')
+        .all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page.frameLocator('iframe').getByText('new text').boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeGreaterThan(textBlockBox.y);
+    });
+
+    test('deleting a newly added block should remove it from the DOM', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+      const newContent = cloneContent(NEW_BLOCK_ADD);
+      newContent.data.blocks.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const updatedContent = cloneContent(NEW_BLOCK_ADD);
+      updatedContent.data.blocks.pop();
+
+      await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
     });
   });
 });
