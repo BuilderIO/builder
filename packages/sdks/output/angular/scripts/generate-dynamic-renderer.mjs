@@ -76,6 +76,7 @@ const dynamicComponentTemplate = (tagName) => {
 export class Dynamic${capitalize(tagName)} {
   @Input() attributes!: any;
   @Input() actionAttributes?: any;
+  @Input() tagName?: string;
   @ViewChild('v', { read: ElementRef }) v!: ElementRef;
   _listenerFns = new Map<string, () => void>();
   constructor(private renderer: Renderer2) {}
@@ -121,7 +122,7 @@ const generateComponents = () => {
       <ng-container *ngIf="useTypeOf(TagName) === 'string'">
         <ng-container
           *ngComponentOutlet="
-            TagName;
+            getComponentType(TagName);
             inputs: {
               attributes: attributes,
               actionAttributes: actionAttributes,
@@ -196,14 +197,21 @@ export default class DynamicRenderer {
 
   constructor(private vcRef: ViewContainerRef) {}
 
+  private tagComponentMap: { [key: string]: any } = {
+    ${htmlElements.map((el) => `'${el}': Dynamic${capitalize(el)}`).join(',\n    ')}
+  };
+
+  getComponentType(tagName: string): any {
+    return this.tagComponentMap[tagName] || null;
+  }
+
   ngOnInit() {
     if (typeof this.TagName === 'string') {
-      switch (this.TagName) {
-        ${htmlElements.map((el) => `case '${el}': this.TagName = Dynamic${capitalize(el)}; break;`).join('\n        ')}
-        default:
-          this.tagName = this.TagName;
-          this.TagName = DynamicElement;
-          break;
+      if (this.tagComponentMap[this.TagName]) {
+        this.TagName = this.tagComponentMap[this.TagName];
+      } else {
+        this.tagName = this.TagName;
+        this.TagName = DynamicElement;
       }
     }
     this.myContent = [this.vcRef.createEmbeddedView(this.tagnameTemplateRef).rootNodes];
