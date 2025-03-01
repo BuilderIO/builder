@@ -4,14 +4,21 @@ import { launchEmbedderAndWaitForSdk, sendPatchOrUpdateMessage } from '../helper
 
 test.describe('LivePreviewBlogData Component', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
-    test.skip(!['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(packageName));
-  
+    test.skip(
+      !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(
+        packageName
+      )
+    );
     const response = await page.goto('/live-preview');
     expect(response?.status()).toBeLessThan(400);
   });
 
   test('should display blog details correctly', async ({ page, packageName }) => {
-    test.skip(!['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(packageName));
+    test.skip(
+      !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(
+        packageName
+      )
+    );
 
     await page.goto('/live-preview');
 
