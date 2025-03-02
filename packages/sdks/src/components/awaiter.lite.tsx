@@ -8,7 +8,6 @@ import { onMount, useTarget } from '@builder.io/mitosis';
 type AwaiterProps = {
   load: () => Promise<any>;
   props?: any;
-  attributes?: any;
   fallback?: any;
   children?: any;
 };
@@ -21,7 +20,6 @@ export default function Awaiter(props: AwaiterProps) {
         const _ = {
           a: props.load,
           b: props.props,
-          c: props.attributes,
           d: props.fallback,
         };
       },
