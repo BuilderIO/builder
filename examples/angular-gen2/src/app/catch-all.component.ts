@@ -60,7 +60,7 @@ export class CatchAllComponent {
       model: 'page',
       apiKey: this.apiKey,
       options: getBuilderSearchParams(new URLSearchParams(window.location.search)),
-      userAttributes: { urlPath },
+      userAttributes: { urlPath: window.location.pathname },
     });
 
     if (!builderContent) {
