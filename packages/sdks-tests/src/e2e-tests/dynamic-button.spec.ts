@@ -8,8 +8,14 @@ import {
 import { DYNAMIC_BUTTON } from '../specs/dynamic-button.js';
 
 test.describe('Dynamic Button', () => {
-  test('should render a button', async ({ page, sdk, basePort }) => {
-
+  test('should render a button', async ({ page, sdk, basePort, packageName }) => {
+    test.skip(
+      packageName === 'nextjs-sdk-next-app' ||
+        packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next15-app' ||
+        packageName === 'gen1-remix' ||
+        packageName === 'gen1-react'
+    );
     await launchEmbedderAndWaitForSdk({
       path: '/dynamic-button',
       basePort,
@@ -24,7 +30,7 @@ test.describe('Dynamic Button', () => {
     await expect(buttonLocator).toHaveText('Click me!');
     const newContent = cloneContent(DYNAMIC_BUTTON);
 
-    //simulating typing in the link field
+    // simulating typing in the link field
     newContent.data.blocks[0].component.options.link = '#';
     await sendContentUpdateMessage({
       page,

@@ -1,6 +1,6 @@
 export const DYNAMIC_BUTTON = {
   data: {
-    title: 'angular-sdk-test',
+    title: 'dynamic-button-sdk-test',
     themeId: false,
     blocks: [
       {
