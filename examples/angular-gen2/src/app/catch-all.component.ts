@@ -59,7 +59,7 @@ export class CatchAllComponent {
     const builderContent = await fetchOneEntry({
       model: 'page',
       apiKey: this.apiKey,
-      options: getBuilderSearchParams(searchParams),
+      options: getBuilderSearchParams(new URLSearchParams(window.location.search)),
       userAttributes: { urlPath },
     });
 
