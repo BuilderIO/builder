@@ -3,12 +3,13 @@ import { checkIsRN, test } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
-  sendContentUpdateMessage,
+  sendPatchOrUpdateMessage,
 } from '../helpers/visual-editor.js';
 import { DYNAMIC_BUTTON } from '../specs/dynamic-button.js';
 
 test.describe('Dynamic Button', () => {
   test('should render a button', async ({ page, sdk, basePort, packageName }) => {
+    test.fail(sdk === 'svelte', 'Not showing the href attribute in Svelte');
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next14-pages' ||
@@ -31,25 +32,31 @@ test.describe('Dynamic Button', () => {
     const newContent = cloneContent(DYNAMIC_BUTTON);
 
     // simulating typing in the link field
-    newContent.data.blocks[0].component.options.link = '#';
-    await sendContentUpdateMessage({
+    await sendPatchOrUpdateMessage({
       page,
-      newContent,
+      content: cloneContent(DYNAMIC_BUTTON),
       model: 'page',
+      sdk,
+      updateFn: () => '#',
+      path: '/data/blocks/0/component/options/link',
     });
 
-    newContent.data.blocks[0].component.options.link = '#g';
-    await sendContentUpdateMessage({
+    await sendPatchOrUpdateMessage({
       page,
-      newContent,
+      content: newContent,
       model: 'page',
+      sdk,
+      updateFn: () => '#g',
+      path: '/data/blocks/0/component/options/link',
     });
 
-    newContent.data.blocks[0].component.options.link = '#go';
-    await sendContentUpdateMessage({
+    await sendPatchOrUpdateMessage({
       page,
-      newContent,
+      content: newContent,
       model: 'page',
+      sdk,
+      updateFn: () => '#go',
+      path: '/data/blocks/0/component/options/link',
     });
 
     const updatedButtonLocator = checkIsRN(sdk) ? page.frameLocator('iframe').locator('a') : page
