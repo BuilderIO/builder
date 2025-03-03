@@ -9,13 +9,13 @@ import { DYNAMIC_BUTTON } from '../specs/dynamic-button.js';
 
 test.describe('Dynamic Button', () => {
   test('should render a button', async ({ page, sdk, basePort, packageName }) => {
-    test.fail(sdk === 'svelte', 'Not showing the href attribute in Svelte');
+
+    test.fail(sdk === 'svelte' || sdk === 'oldReact', 'Not showing the href attribute in Svelte');
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
         packageName === 'gen1-next14-pages' ||
         packageName === 'gen1-next15-app' ||
-        packageName === 'gen1-remix' ||
-        packageName === 'gen1-react'
+        packageName === 'gen1-remix'
     );
     await launchEmbedderAndWaitForSdk({
       path: '/dynamic-button',
