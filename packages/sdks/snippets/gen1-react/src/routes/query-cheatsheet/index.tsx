@@ -10,15 +10,6 @@ interface Row {
   data: string;
 }
 
-type QueryFunction = (params: {
-  key: string;
-  sort?: { name: number };
-}) => Promise<object>;
-
-interface Queries {
-  [key: string]: QueryFunction;
-}
-
 interface QueryResults {
   [key: `$${string}`]: object;
 }
@@ -38,7 +29,7 @@ const queryKeys = [
   '$nor',
   '$exists',
   '$type',
-  '$elemMatch', // ???
+  '$elemMatch',
   '$regex',
   '$options',
 ];
@@ -50,16 +41,13 @@ export default function QueryCheatsheet() {
 
   useEffect(() => {
     function fetchContent() {
-      const fns: Queries = queries;
-
       // Array of requests
-      const requests = queryKeys
-        .filter((key) => key in fns)
-        .map((key) =>
-          fns[key]({ key, sort: { name: 1 } }).then((val: unknown) => ({
-            [key]: val,
-          }))
-        );
+      const requests = queryKeys.map((key) => {
+        const queryFn = queries[key as keyof typeof queries];
+        return queryFn({ key, sort: { name: 1 } }).then((val) => ({
+          [key]: val,
+        }));
+      });
 
       return Promise.all(requests).then((response) => {
         const results = response.reduce((acc: object, query: object) => {

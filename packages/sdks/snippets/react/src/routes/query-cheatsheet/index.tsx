@@ -1,4 +1,3 @@
-import { BuilderContent } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
 import queries from './queries';
 
@@ -10,65 +9,56 @@ interface Row {
   data: string;
 }
 
-type QueryFunction = (options: {
-  apiKey: string;
-  key: string;
-  sort?: { name: number };
-}) => Promise<BuilderContent | null>;
-
-interface Queries {
-  [key: string]: QueryFunction;
-}
-
 interface QueryResults {
   [key: `$${string}`]: object;
 }
 
 const queryKeys = [
-  '$eq',
-  '$gt',
-  '$gte',
-  '$in',
-  '$lt',
-  '$lte',
-  '$ne',
-  '$nin',
-  '$and',
-  '$not',
-  '$or',
-  '$nor',
-  '$exists',
-  '$type',
-  '$elemMatch', // ???
-  '$regex',
-  '$options',
+  { key: '$eq', model: 'product' },
+  { key: '$gt', model: 'product' },
+  { key: '$gte', model: 'product' },
+  { key: '$in', model: 'contact-record' },
+  { key: '$lt', model: 'product' },
+  { key: '$lte', model: 'product' },
+  { key: '$ne', model: 'contact-record' },
+  { key: '$nin', model: 'contact-record' },
+  { key: '$and', model: 'product' },
+  { key: '$not', model: 'contact-record' },
+  { key: '$or', model: 'contact-record' },
+  { key: '$nor', model: 'product' },
+  { key: '$exists', model: 'contact-record' },
+  { key: '$type', model: 'contact-record' },
+  { key: '$elemMatch', model: 'contact-record' },
+  { key: '$regex', model: 'contact-record' },
+  { key: '$options', model: 'contact-record' },
 ];
 
 export default function QueryCheatsheet() {
   const [queryResults, setQueryResults] = useState(
-    queryKeys.reduce((acc, key) => ({ ...acc, [key]: {} }), {}) as QueryResults
+    queryKeys.reduce(
+      (acc, query) => ({ ...acc, [query.key]: {} }),
+      {}
+    ) as QueryResults
   );
 
   useEffect(() => {
     function fetchContent() {
-      const fns: Queries = queries;
-
       // Array of requests
-      const requests = queryKeys
-        .filter((key) => key in fns)
-        .map((key) =>
-          fns[key]({ key, sort: { name: 1 }, apiKey: BUILDER_API_KEY }).then(
-            (val: unknown) => ({
-              [key]: val,
-            })
-          )
-        );
+      const requests = queryKeys.map((query) => {
+        const { key, model } = query;
+        const queryFn = queries[key as keyof typeof queries];
+        return queryFn({
+          model,
+          sort: { name: 1 },
+          apiKey: BUILDER_API_KEY,
+        }).then((val) => ({ [key]: val }));
+      });
 
       return Promise.all(requests).then((response) => {
         const results = response.reduce((acc: object, query: object) => {
           return { ...acc, ...query };
-        }, {}) as QueryResults;
-        setQueryResults(results);
+        }, {});
+        setQueryResults(results as QueryResults);
       });
     }
 
