@@ -7,6 +7,7 @@ import CustomChild from './routes/custom-child';
 import EditableRegion from './routes/editable-region';
 import IntegratingPages from './routes/IntegratingPages';
 import QueryCheatsheet from './routes/query-cheatsheet';
+import TargetedPage from './routes/targeted-page';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: '/query-cheatsheet',
     element: <QueryCheatsheet />,
+  },
+  {
+    path: '/targeted-page',
+    element: <TargetedPage />,
   },
   {
     path: '/*',
