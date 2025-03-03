@@ -9,9 +9,16 @@ test.describe('LivePreviewBlogData Component', () => {
         packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-remix' ||
-          !['react', 'vue', 'nuxt', 'angular-16', 'angular-16-ssr', 'sveltekit', 'svelte', 'qwik-city'].includes(
-            packageName
-          ),
+          ![
+            'react',
+            'vue',
+            'nuxt',
+            'angular-16',
+            'angular-16-ssr',
+            'sveltekit',
+            'svelte',
+            'qwik-city',
+          ].includes(packageName),
         'Skipping test: incompatible package or framework.'
       );
 
