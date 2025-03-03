@@ -11,17 +11,6 @@ import {
 
 import { environment } from '../environments/environment';
 
-interface BuilderProps {
-  apiVersion: string;
-  canTrack?: boolean;
-  trustedHosts?: undefined;
-  apiKey: string;
-  model: string;
-  content: any;
-  data?: any;
-  apiHost?: string;
-  locale?: string;
-}
 
 @Component({
   selector: 'catch-all-route',
