@@ -48,13 +48,6 @@ export class CatchAllComponent {
     private router = inject(Router);
 
   async ngOnInit() {
-    const urlPath = this.router.url.split('?')[0] || '';
-
-    const queryParams = this.route.snapshot.queryParams;
-    const searchParams = new URLSearchParams();
-    Object.entries(queryParams).forEach(([key, value]) => {
-      searchParams.append(key, value as string);
-    });
 
     const builderContent = await fetchOneEntry({
       model: this.model,
