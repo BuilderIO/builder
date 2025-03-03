@@ -13,6 +13,7 @@ import EditableRegionRoute from './routes/custom-components/editable-region.tsx'
 import IntegratingPages from './routes/IntegratingPages.tsx';
 import LivePreviewBlogData from './routes/LivePreviewBlogData.js';
 import QueryCheatsheet from './routes/query-cheatsheet/index.tsx';
+import TargetedPage from './routes/targeted-page/index.tsx';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: '/marketing-event',
     element: <Hero />,
+  },
+  {
+    path: '/targeted-page',
+    element: <TargetedPage />,
   },
   { path: '/home', element: <Homepage /> },
   {
