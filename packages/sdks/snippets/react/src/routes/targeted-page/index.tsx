@@ -1,4 +1,8 @@
-import { Content } from '@builder.io/sdk-react';
+import {
+  BuilderContent,
+  Content,
+  GetContentOptions,
+} from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -12,12 +16,17 @@ import noTargetRequest from './no-target-request';
 const MODEL = 'targeted-page';
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
+type RequestFunction = (
+  url: string,
+  options: GetContentOptions
+) => Promise<BuilderContent | null>;
+
 export default function TargetedPage() {
-  const [content, setContent] = useState();
+  const [content, setContent] = useState<BuilderContent | null>();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const fnMap: { [key: string]: any } = {
+    const fnMap: { [key: string]: RequestFunction } = {
       desktop: desktopRequest,
       mobile: mobileRequest,
       'mens-fashion': customTargetingRequest,
@@ -36,7 +45,7 @@ export default function TargetedPage() {
 
       setContent(content);
 
-      if (content?.data.title) {
+      if (content?.data?.title) {
         document.title = content.data.title;
       }
     }
