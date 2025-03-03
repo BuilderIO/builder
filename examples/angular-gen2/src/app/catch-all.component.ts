@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
@@ -7,9 +6,7 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 
-
 import { environment } from '../environments/environment';
-
 
 @Component({
   selector: 'catch-all-route',
@@ -32,11 +29,7 @@ export class CatchAllComponent {
     apiKey = environment.builderApiKey;
     content: BuilderContent | null = null;
 
-    private route = inject(ActivatedRoute);
-    private router = inject(Router);
-
   async ngOnInit() {
-
     const builderContent = await fetchOneEntry({
       model: this.model,
       apiKey: this.apiKey,
