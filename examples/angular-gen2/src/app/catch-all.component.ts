@@ -57,7 +57,7 @@ export class CatchAllComponent {
     });
 
     const builderContent = await fetchOneEntry({
-      model: 'page',
+      model: this.model,
       apiKey: this.apiKey,
       options: getBuilderSearchParams(new URLSearchParams(window.location.search)),
       userAttributes: { urlPath: window.location.pathname },
