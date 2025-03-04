@@ -1,9 +1,11 @@
 import { builder } from '@builder.io/react';
+import type { GetContentOptions } from '@builder.io/sdk';
 
-export default async ({ model, urlPath }: { model: string; urlPath: string }) =>
-  builder.get(model, {
+export default function targetedRequest({ model, url }: GetContentOptions) {
+  return builder.get(model!, {
     userAttributes: {
       isLoggedIn: true,
-      urlPath,
+      urlPath: url,
     },
   });
+}
