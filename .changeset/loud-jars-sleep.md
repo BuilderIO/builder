@@ -2,4 +2,4 @@
 "@builder.io/sdk-angular": patch
 ---
 
-Resolved assertion error encountered when dynamically switching components
+Fix: crashes when visually editing blocks (encountered when SDK dynamically switched HTML elements)
