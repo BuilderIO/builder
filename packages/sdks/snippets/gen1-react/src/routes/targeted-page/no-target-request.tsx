@@ -1,6 +1,8 @@
 import { builder } from '@builder.io/react';
+import type { GetContentOptions } from '@builder.io/sdk';
 
-export default ({ model, urlPath }: { model: string; urlPath: string }) =>
-  builder.get(model, {
-    url: urlPath,
+export default function targetedRequest({ model, url }: GetContentOptions) {
+  return builder.get(model!, {
+    url,
   });
+}

@@ -1,6 +1,6 @@
 import { fetchOneEntry, GetContentOptions } from '@builder.io/sdk-react';
 
-export default function request(
+export default function targetedRequest(
   urlPath: string,
   { apiKey, model }: GetContentOptions
 ) {
