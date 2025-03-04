@@ -18,6 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { CUSTOM_COMPONENT_NO_DEFAULT_VALUE } from '../specs/custom-component-no-default-value.js';
 
 const editorTests = ({
   noTrustedHosts,
@@ -149,6 +150,16 @@ test.describe('Visual Editing', () => {
       }
     }
   });
+
+  test.only('correctly updating custom components when default value is not set', async ({ page, basePort, sdk }) => {
+
+    await launchEmbedderAndWaitForSdk({ path: '/custom-components-no-default-value', basePort, page, sdk });
+    const newContent = cloneContent(CUSTOM_COMPONENT_NO_DEFAULT_VALUE);
+    newContent.data.blocks[0].component.options.text = "Hello";
+    await sendContentUpdateMessage({ page, newContent, model: 'page' });
+    const helloWorldText = page.frameLocator('iframe').locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]')
+    await expect(helloWorldText).toHaveText('Hello');
+  })
 
   test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
     test.skip(packageName === 'nextjs-sdk-next-app' || checkIsGen1React(sdk));

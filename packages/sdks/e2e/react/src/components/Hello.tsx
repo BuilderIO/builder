@@ -1,5 +1,5 @@
 function Hello() {
-  return <div>hello World</div>;
+  return <div>hello</div>;
 }
 
 export default Hello;

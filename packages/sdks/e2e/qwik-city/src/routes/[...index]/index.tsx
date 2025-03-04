@@ -1,8 +1,10 @@
 import { component$ } from '@builder.io/qwik';
-import { routeLoader$ } from '@builder.io/qwik-city';
+import { routeLoader$, useLocation } from '@builder.io/qwik-city';
 import { Content, _processContentResult } from '@builder.io/sdk-qwik';
 import { getProps } from '@sdk/tests';
 import BuilderBlockWithClassName from '~/components/BuilderBlockWithClassName';
+import { Description } from '~/components/Description';
+import { Hello } from '~/components/Hello';
 
 const builderBlockWithClassNameCustomComponent = {
   name: 'BuilderBlockWithClassName',
@@ -67,7 +69,23 @@ export default component$(() => {
       {contentProps.value ? (
         <Content
           {...(contentProps.value as any)}
-          customComponents={[builderBlockWithClassNameCustomComponent]}
+          customComponents={[{
+            name: 'Hello',
+            component: Hello,
+            inputs: [],
+          },
+          {
+            name: 'Description',
+            component: Description,
+            inputs: [
+              {
+                name: 'text',
+                type: 'string',
+                defaultValue: 'Hello',
+              },
+            ],
+          },
+          builderBlockWithClassNameCustomComponent]}
         />
       ) : (
         <div>Content Not Found</div>
