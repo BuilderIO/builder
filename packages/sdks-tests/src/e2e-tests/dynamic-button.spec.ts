@@ -9,7 +9,6 @@ import { DYNAMIC_BUTTON } from '../specs/dynamic-button.js';
 
 test.describe('Dynamic Button', () => {
   test('should render a button', async ({ page, sdk, basePort, packageName }) => {
-
     test.fail(sdk === 'svelte' || sdk === 'oldReact', 'Not showing the href attribute in Svelte');
     test.skip(
       packageName === 'nextjs-sdk-next-app' ||
@@ -24,10 +23,12 @@ test.describe('Dynamic Button', () => {
       sdk,
     });
 
-    const buttonLocator = checkIsRN(sdk) ? page.frameLocator('iframe').locator('button') : page
-    .frameLocator('iframe')
-    .locator('[builder-id="builder-b53d1cc2bcbb481b869207fdd97ee1db"]');
-    
+    const buttonLocator = checkIsRN(sdk)
+      ? page.frameLocator('iframe').locator('button')
+      : page
+          .frameLocator('iframe')
+          .locator('[builder-id="builder-b53d1cc2bcbb481b869207fdd97ee1db"]');
+
     await expect(buttonLocator).toHaveText('Click me!');
     const newContent = cloneContent(DYNAMIC_BUTTON);
 
@@ -59,12 +60,14 @@ test.describe('Dynamic Button', () => {
       path: '/data/blocks/0/component/options/link',
     });
 
-    const updatedButtonLocator = checkIsRN(sdk) ? page.frameLocator('iframe').locator('a') : page
-      .frameLocator('iframe')
-      .locator('[builder-id="builder-b53d1cc2bcbb481b869207fdd97ee1db"]');
+    const updatedButtonLocator = checkIsRN(sdk)
+      ? page.frameLocator('iframe').locator('a')
+      : page
+          .frameLocator('iframe')
+          .locator('[builder-id="builder-b53d1cc2bcbb481b869207fdd97ee1db"]');
 
     await expect(updatedButtonLocator).toBeVisible();
-    
+
     await expect(updatedButtonLocator).toHaveAttribute('href', '#go');
   });
 });
