@@ -7,24 +7,15 @@ export default function ProductDetails() {
   );
 
   useEffect(() => {
-    let isMounted = true;
-    const fetchProductDetails = async () => {
-      const productData = await fetchOneEntry({
-        model: 'product-details',
-        apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
-        query: {
-          'data.handle': 'jacket',
-        },
-      });
-      if (isMounted) {
-        setProductDetails(productData);
-      }
-    };
-    fetchProductDetails();
-
-    return () => {
-      isMounted = false;
-    };
+    fetchOneEntry({
+      model: 'product-details',
+      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      query: {
+        'data.handle': 'jacket',
+      },
+    }).then((productData) => {
+      setProductDetails(productData);
+    });
   }, []);
 
   if (!productDetails) {
