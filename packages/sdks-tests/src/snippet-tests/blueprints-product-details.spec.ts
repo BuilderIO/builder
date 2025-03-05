@@ -3,7 +3,9 @@ import { test } from '../helpers/index.js';
 
 test.describe('Product Details Component', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr', 'vue', 'nuxt', 'svelte'].includes(packageName));
+    test.skip(
+      !['angular-16', 'angular-16-ssr', 'vue', 'nuxt', 'svelte', 'sveltekit'].includes(packageName)
+    );
     // Visit the page where ProductDetailsComponent is rendered
     await page.goto('/product/category/jacket');
   });
