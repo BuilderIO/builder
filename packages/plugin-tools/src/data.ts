@@ -25,7 +25,7 @@ export type ResourceType = {
   icon?: string;
   description?: string;
   inputs?: () => Partial<Input>[];
-  toUrl: (options: Record<string, any>) => string | Promise<string> | Promise<BuilderRequest>;
+  toUrl: (options: Record<string, any>) => string | BuilderRequest | Promise<string> | Promise<BuilderRequest>;
   canPickEntries?: boolean;
 };
 
