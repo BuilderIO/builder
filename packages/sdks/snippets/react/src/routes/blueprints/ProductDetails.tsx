@@ -1,5 +1,5 @@
 import { BuilderContent, fetchOneEntry } from '@builder.io/sdk-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function ProductDetails() {
   const [productDetails, setProductDetails] = useState<BuilderContent | null>(
