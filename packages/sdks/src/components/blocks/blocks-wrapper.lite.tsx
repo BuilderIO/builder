@@ -1,5 +1,6 @@
 import {
   onMount,
+  onUpdate,
   useMetadata,
   useRef,
   useStore,
@@ -37,6 +38,7 @@ export type BlocksWrapperProps = {
 export default function BlocksWrapper(props: BlocksWrapperProps) {
   const blocksWrapperRef = useRef<HTMLDivElement>();
   const state = useStore({
+    shouldUpdate: false,
     get className() {
       return [
         'builder-blocks',
@@ -107,6 +109,18 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
       default: () => {},
     });
   });
+
+  onUpdate(() => {
+    useTarget({
+      angular: () => {
+        // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+        if (changes['blocks']) {
+          state.shouldUpdate = true;
+        }
+      },
+      default: () => {},
+    });
+  }, [props.blocks]);
 
   return (
     <props.BlocksWrapper
