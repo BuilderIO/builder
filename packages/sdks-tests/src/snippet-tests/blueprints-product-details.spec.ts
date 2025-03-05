@@ -13,6 +13,7 @@ test.describe('Product Details Component', () => {
         'sveltekit',
         'qwik-city',
         'react-sdk-next-14-app',
+        'react-sdk-next-pages',
       ].includes(packageName)
     );
     // Visit the page where ProductDetailsComponent is rendered
