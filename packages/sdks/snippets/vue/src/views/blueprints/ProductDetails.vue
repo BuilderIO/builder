@@ -2,17 +2,16 @@
     <div v-if="!productDetails">
       <p>Loading product details...</p>
     </div>
-  
     <div v-else>
-      <h1>{{ productDetails.data?.name }}</h1>
+      <h1>{{ productDetails.data.name }}</h1>
       <img
-        :src="productDetails.data?.image"
-        :alt="productDetails.data?.name"
+        :src="productDetails.data.image"
+        :alt="productDetails.data.name"
         width="400"
         height="500"
       />
-      <p>{{ productDetails.data?.collection?.value?.data?.copy }}</p>
-      <p>Price: {{ productDetails.data?.collection?.value?.data?.price }}</p>
+      <p>{{ productDetails.data.collection.value.data.copy }}</p>
+      <p>Price: {{ productDetails.data.collection.value.data.price }}</p>
     </div>
   </template>
   
