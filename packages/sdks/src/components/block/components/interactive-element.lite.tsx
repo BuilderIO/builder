@@ -55,7 +55,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
+        <props.Wrapper key={`wrapper-${JSON.stringify(props.block.component?.options)}`} {...props.wrapperProps} attributes={state.attributes}>
           {props.children}
         </props.Wrapper>
       }
