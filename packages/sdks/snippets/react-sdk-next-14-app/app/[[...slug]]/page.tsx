@@ -3,12 +3,7 @@
  * snippets/nextjs-app-dir-client/app/[[...slug]].tsx
  * Uses @builder.io/sdk-react
  */
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-  isPreviewing,
-} from '@builder.io/sdk-react';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 
 interface PageProps {
   params: {
@@ -23,7 +18,6 @@ export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
   const content = await fetchOneEntry({
-    options: getBuilderSearchParams(props.searchParams),
     apiKey: PUBLIC_API_KEY,
     model: 'page',
     userAttributes: { urlPath },
@@ -32,12 +26,8 @@ export default async function Page(props: PageProps) {
   const canShowContent = content || isPreviewing(props.searchParams);
 
   if (!canShowContent) {
-    return (
-      <>
-        <h1>404</h1>
-        <p>Make sure you have your content published at Builder.io.</p>
-      </>
-    );
+    return <p>Not Found</p>;
   }
+
   return <Content content={content} apiKey={PUBLIC_API_KEY} model="page" />;
 }

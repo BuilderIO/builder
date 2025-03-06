@@ -20,7 +20,7 @@ onMounted(async () => {
   content.value = await fetchOneEntry({
     model,
     apiKey,
-    options: getBuilderSearchParams(new URL(location.href).searchParams),
+
     userAttributes: {
       urlPath: window.location.pathname,
     },
