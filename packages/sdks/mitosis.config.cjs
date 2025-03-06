@@ -1195,6 +1195,17 @@ module.exports = {
     "readystatechange"`
                 );
               }
+              if (json.name === 'InteractiveElement') {
+                console.log('code', code);
+                code = code.replace(`<props.Wrapper {...props.wrapperProps} attributes={attributes.value}>
+            <Slot></Slot>
+          </props.Wrapper>`, 
+                `<props.Wrapper key={'wrapper-'+JSON.stringify(props.block.component?.options)} {...props.wrapperProps} attributes={attributes.value}>
+            <Slot></Slot>
+          </props.Wrapper>`)
+                
+                //key={`wrapper-${JSON.stringify(props.block.component?.options)}`}
+              }
               return code;
             },
           },

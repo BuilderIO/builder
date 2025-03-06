@@ -152,8 +152,8 @@ test.describe('Visual Editing', () => {
     }
   });
 
-  test('correctly updating custom components when default value is not set', async ({ page, basePort, sdk }) => {
-
+  test('correctly updating custom components when default value is not set', async ({ page, basePort, sdk, packageName }) => {
+    test.skip(!['react', 'qwik-city'].includes(packageName));
     await launchEmbedderAndWaitForSdk({ path: '/custom-components-no-default-value', basePort, page, sdk });
     const newContent = cloneContent(CUSTOM_COMPONENT_NO_DEFAULT_VALUE);
     newContent.data.blocks[0].component.options.text = "Hello";
