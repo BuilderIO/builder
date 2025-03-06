@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik';
-import { routeLoader$, useLocation } from '@builder.io/qwik-city';
+import { routeLoader$ } from '@builder.io/qwik-city';
 import { Content, _processContentResult } from '@builder.io/sdk-qwik';
 import { getProps } from '@sdk/tests';
 import BuilderBlockWithClassName from '~/components/BuilderBlockWithClassName';
