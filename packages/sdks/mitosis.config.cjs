@@ -396,24 +396,44 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 });
 
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BlocksWrapper') {
+        json.hooks.onUpdate.forEach((hook) => {
+          hook.code = hook.code.replace(/^\s*\/\/\s*@ts-expect-error.*$/gm, '');
+        });
+        /**
+         * Since the angular SDK manually handles the creation of the dynamic blocks and attaching them as children of BlocksWrapper in the DOM
+         * it must also manually handle their re-renders on content change in the visual editor.
+         *
+         * <blocks-wrapper> -> inserts blocks as children dynamically
+         *  {each <block />} -> we need to re-render blocks when props.blocks update while visual editing
+         * </blocks-wrapper>
+         *
+         * `ngAfterContentChecked` runs after children were checked for changes, which is the earliest point we can safely append new blocks,
+         * and re-paint the DOM else the new children blocks are not present in the existing array, therefore pushed to the top of the list.
+         */
+        json.compileContext = {
+          angular: {
+            hooks: {
+              ngAfterContentChecked: {
+                code: `if (this.shouldUpdate) {
+                  this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes];
+                  this.shouldUpdate = false;
+                }`,
+              },
+            },
+          },
+        };
+      }
+      return json;
+    },
+  },
   code: {
-    post: (code) => {
-      if (code?.includes('selector: "blocks-wrapper"')) {
+    post: (code, json) => {
+      if (json.name === 'BlocksWrapper') {
+        // insert children only after they are fully initialized
         code = code.replace('ngOnInit', 'ngAfterContentInit');
-        const ngOnChangesIndex = code.indexOf('ngOnChanges');
-        if (ngOnChangesIndex > -1) {
-          code = code.replace(/^\s*\/\/\s*@ts-expect-error.*$/gm, '');
-          code = code.replace(
-            'ngOnChanges(changes: SimpleChanges) {',
-            // trigger a re-render of the view when blocks got updated and the new children content has been fully initialized
-            `ngAfterContentChecked() {
-              if (this.shouldUpdate) {
-                this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes];
-                this.shouldUpdate = false;
-              }
-            }\nngOnChanges(changes: SimpleChanges) {`
-          );
-        }
       }
       return code;
     },
