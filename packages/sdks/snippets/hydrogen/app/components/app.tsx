@@ -26,7 +26,6 @@ export const builderLoader: LoaderFunction = async ({params, request}) => {
       userAttributes: {
         urlPath: pathname,
       },
-      options: getBuilderSearchParams(url.searchParams),
     });
     return {content, model};
   } catch (e) {

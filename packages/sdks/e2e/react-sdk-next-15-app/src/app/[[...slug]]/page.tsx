@@ -4,7 +4,6 @@ import {
   Content,
   _processContentResult,
   fetchOneEntry,
-  getBuilderSearchParams,
 } from '@builder.io/sdk-react';
 import { getProps } from '@sdk/tests';
 
@@ -22,7 +21,6 @@ export default async function Page(props: PageProps) {
   const builderProps = await getProps({
     pathname: urlPath,
     _processContentResult,
-    options: getBuilderSearchParams(await props.searchParams),
     fetchOneEntry,
   });
 
