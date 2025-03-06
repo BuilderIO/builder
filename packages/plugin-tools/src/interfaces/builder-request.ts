@@ -5,7 +5,7 @@ export interface BuilderRequest {
     query?: { [key: string]: string };
     headers?: { [key: string]: string };
     method?: 'GET' | 'POST';
-    data?: any;
+    body?: any;
   };
   options?: { [key: string]: any };
   bindings?: { [key: string]: string };
