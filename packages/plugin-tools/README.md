@@ -115,6 +115,90 @@ registerCommercePlugin(
 ```
 
 ### Data Plugin
+#### With `toURL()` returning a string
+```ts
+import { registerDataPlugin } from '@builder.io/plugin-tools';
+
+registerDataPlugin(
+  {
+    name: 'Foobar',
+    id: '@builder.io/plugin-foobar',
+    settings: [
+      {
+        name: 'foo',
+        friendlyName: 'Lorem Ipsum',
+        type: 'string',
+        required: true,
+        helperText:
+          'Lorem Ipsum',
+      }
+    ],
+    ctaText: `Connect FooBar`,
+  },
+  async settings => {
+    const spaceId = settings.get('spaceId')?.trim();
+    return {
+      async getResourceTypes() {
+        return [
+          {
+          name: 'Resource 1',
+          id: `resource-1`,
+          canPickEntries: true,
+          // inputs are the query parameter definitions for your public API
+          inputs: () => {
+            return [
+              {
+                name: 'include',
+                friendlyName: 'Retrieve linked assets level',
+                advanced: true,
+                defaultValue: 2,
+                // contentful api restricts include to be between 0 and 10
+                min: 0,
+                max: 10,
+                type: 'number',
+              },
+              {
+                name: 'limit',
+                defaultValue: 10,
+                // contentful api restricts limit to be between 0 and 100
+                min: 0,
+                max: 100,
+                type: 'number',
+              },
+
+              {
+                name: 'order',
+                friendlyName: 'Order By'
+                type: 'string',
+                enum: ['a', 'b']
+              },
+            ];
+          },
+          toUrl: (options: any) => {
+            // by entry
+            // https://cdn.contentful.com/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}?access_token={access_token}
+            if (options.entry) {
+              return `https://public.example.com/spacs/${spaceId}/resource/${options.entry}`
+            }
+            // by query
+            const params = qs.stringify(options,
+              { allowDots: true, skipNulls: true }
+            );
+            return  `https://public.example.com/spaces/${spaceId}/search?${params}`
+            );
+          },
+          }
+        ]
+      },
+      async getEntriesByResourceType(typeId: string, options) {
+        const results = await fetch(`https://public.example.com/spaces/${spaceId}?${qs.stringify(options)}`)
+      },
+    };
+  }
+);
+```
+
+#### With `toUrl()` returning a `BuilderRequest`
 
 ```ts
 import {
@@ -178,33 +262,24 @@ registerDataPlugin(
               ];
             },
             toUrl: (options: any) => {
-              // by graphql
-              if (options.graphQLRequestBody) {
-                const builderRequest: BuilderRequest = {
-                  "@type": "@builder.io/core:Request",
-                  request: {
-                    url: "https://fakestoreapi.com/graphql",
-                    method: "POST",
-                    data: {
-                      query: "{ query($id: String!) { spaces(id: $id) { id name } }",
-                      variables: { id: options.graphQLRequestBody.spaceId },
-                    },
-                  },
-                };
-                return builderRequest;
-              }
-
-              // by entry
-              // https://cdn.contentful.com/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}?access_token={access_token}
-              if (options.entry) {
-                return `https://public.example.com/spacs/${spaceId}/resource/${options.entry}`;
-              }
-              // by query
               const params = qs.stringify(options, {
                 allowDots: true,
                 skipNulls: true,
               });
-              return `https://public.example.com/spaces/${spaceId}/search?${params}`;
+              
+              const builderRequest: BuilderRequest = {
+                "@type": "@builder.io/core:Request",
+                request: {
+                  url: "https://fakestoreapi.com/graphql",
+                  method: "POST",
+                  query: params,
+                  data: {
+                    query: "{ query($id: String!) { spaces(id: $id) { id name } }",
+                    variables: { id: options.graphQLRequestBody.spaceId },
+                  },
+                },
+              };
+              return builderRequest;
             },
           },
         ];
