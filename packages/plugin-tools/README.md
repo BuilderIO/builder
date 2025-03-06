@@ -275,7 +275,7 @@ registerDataPlugin(
                   query: params,
                   data: {
                     query: "{ query($id: String!) { spaces(id: $id) { id name } }",
-                    variables: { id: options.graphQLRequestBody.spaceId },
+                    variables: { id: options.spaceId },
                   },
                 },
               };
