@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.18.6
+
+### Patch Changes
+
+- f4ff27d: Fix: crashes when visually editing blocks (encountered when SDK dynamically switched HTML elements)
+- 6eb90b3: Fix: new blocks getting added at the top while visual editing
+
 ## 0.18.5
 
 ### Patch Changes
