@@ -14,6 +14,7 @@ test.describe('Product Details Component', () => {
         'qwik-city',
         'react-sdk-next-14-app',
         'react-sdk-next-pages',
+        'hydrogen',
       ].includes(packageName)
     );
     // Visit the page where ProductDetailsComponent is rendered
