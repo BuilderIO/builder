@@ -10,6 +10,7 @@ import { builderBlockWithClassNameCustomComponent } from './components/BuilderBl
 import ComponentNeedsHello from './components/ComponentNeedsHello';
 import { componentWithLocalizedSubfieldsInfo } from './components/ComponentWithLocalizedSubfields';
 import Hello from './components/Hello';
+import { Description } from './components/Description';
 
 const DataComp = (props: {
   pathname: string;
@@ -87,6 +88,17 @@ function App() {
               ) && {
                 models: ['test-model'],
               }),
+            },
+            {
+              name: 'Description',
+              component: Description,
+              inputs: [
+                {
+                  name: 'text',
+                  type: 'string',
+                  defaultValue: 'Hello',
+                },
+              ],
             },
             {
               name: 'ComponentNeedsHello',
