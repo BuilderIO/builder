@@ -6,6 +6,7 @@
   import CatchAll from './components/CatchAll.svelte';
   import AnnouncementBar from './components/AnnouncementBar.svelte';
   import LivePreview from './components/LivePreview.svelte';
+  import ProductDetails from './components/blueprints/ProductDetails.svelte';
   export let url = '';
 </script>
 
@@ -16,5 +17,6 @@
 <Router {url}>
   <Route path="/announcements/:id" component={AnnouncementBar} />
   <Route path="/live-preview" component={LivePreview} />
+  <Route path="/product/category/:handle" component={ProductDetails} />
   <Route path="/*" component={CatchAll} />
 </Router>
