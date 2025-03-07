@@ -1203,8 +1203,6 @@ module.exports = {
                 `<props.Wrapper key={'wrapper-'+JSON.stringify(props.block.component?.options)} {...props.wrapperProps} attributes={attributes.value}>
             <Slot></Slot>
           </props.Wrapper>`)
-                
-                //key={`wrapper-${JSON.stringify(props.block.component?.options)}`}
               }
               return code;
             },
