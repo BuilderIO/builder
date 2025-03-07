@@ -2,6 +2,7 @@ import { Builder } from '@builder.io/sdk';
 import { Input } from '@builder.io/sdk';
 import appState from '@builder.io/app-context';
 import { ReactNode } from 'react';
+import { BuilderRequest } from './interfaces/builder-request';
 
 interface OnSaveActions {
   updateSettings(partal: Record<string, any>): Promise<void>;
@@ -24,7 +25,7 @@ export type ResourceType = {
   icon?: string;
   description?: string;
   inputs?: () => Partial<Input>[];
-  toUrl: (options: Record<string, any>) => string | Promise<string>;
+  toUrl: (options: Record<string, any>) => string | BuilderRequest | Promise<string> | Promise<BuilderRequest>;
   canPickEntries?: boolean;
 };
 
