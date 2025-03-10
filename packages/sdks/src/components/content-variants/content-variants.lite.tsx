@@ -93,6 +93,11 @@ export default function ContentVariants(props: VariantsProviderProps) {
           id="builderio-init-variants-fns"
           nonce={props.nonce || ''}
         />
+        <InlinedScript
+          nonce={props.nonce || ''}
+          scriptStr={getInitPersonalizationVariantsFnsScriptString()}
+          id="builderio-init-personalization-variants-fns"
+        />
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
@@ -105,11 +110,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
           id="builderio-variants-visibility"
           scriptStr={state.updateCookieAndStylesScriptStr}
           nonce={props.nonce || ''}
-        />
-        <InlinedScript
-          nonce={props.nonce || ''}
-          scriptStr={getInitPersonalizationVariantsFnsScriptString()}
-          id="builderio-init-personalization-variants-fns"
         />
 
         <For each={getVariants(props.content)}>
