@@ -1,6 +1,6 @@
 ---
 name: Technical Discussion
-about: ''
+about: 'Open a technical discussion around Builder's OSS libraries'
 title: ''
 labels: ''
 assignees: ''
