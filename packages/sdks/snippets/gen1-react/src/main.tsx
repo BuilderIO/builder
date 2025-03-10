@@ -6,6 +6,7 @@ import AnnouncementBar from './routes/AnnouncementBar';
 import CustomChild from './routes/custom-child';
 import EditableRegion from './routes/editable-region';
 import IntegratingPages from './routes/IntegratingPages';
+import QueryCheatsheet from './routes/query-cheatsheet';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/announcements/:id',
     element: <AnnouncementBar />,
+  },
+  {
+    path: '/query-cheatsheet',
+    element: <QueryCheatsheet />,
   },
   {
     path: '/*',
