@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     element: <LivePreviewBlogData />,
   },
   {
-    path: '/product/category/jacket',
+    path: '/product/category/:handle',
     element: <ProductDetails />,
   },
   {

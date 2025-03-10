@@ -1,22 +1,25 @@
 import { BuilderContent, fetchOneEntry } from '@builder.io/sdk-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
   const [productDetails, setProductDetails] = useState<BuilderContent | null>(
     null
   );
 
+  const { handle } = useParams();
+
   useEffect(() => {
     fetchOneEntry({
       model: 'product-details',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
       query: {
-        'data.handle': 'jacket',
+        'data.handle': handle,
       },
     }).then((productData) => {
       setProductDetails(productData);
     });
-  }, []);
+  }, [handle]);
 
   if (!productDetails) {
     return <p>Loading product details...</p>;
