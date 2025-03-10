@@ -1,8 +1,8 @@
 <template>
-  <div class="custom-container">
+  <section>
     <div>This is text from your component</div>
     <!-- The slot will render any child blocks from Builder -->
-    <slot />
-  </div>
+    <slot class="custom-hero-component" />
+  </section>
 </template>
 
