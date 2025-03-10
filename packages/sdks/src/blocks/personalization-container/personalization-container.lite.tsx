@@ -138,36 +138,48 @@ export default function PersonalizationContainer(
       }`}
     >
       <Show when={state.shouldRenderVariants}>
-        <For each={props.variants}>
-          {(variant, index) => (
-            <template
-              key={index}
-              data-variant-id={`${props.builderBlock?.id}-${index}`}
-            >
-              <Blocks
-                blocks={variant.blocks}
-                parent={props.builderBlock?.id}
-                path={`component.options.variants.${index}.blocks`}
-              />
-            </template>
-          )}
-        </For>
         <InlinedStyles
           nonce={props.builderContext.value?.nonce || ''}
           styles={state.hideVariantsStyleString}
           id={`variants-styles-${props.builderBlock?.id}`}
         />
-        <InlinedScript
-          nonce={props.builderContext.value?.nonce || ''}
-          scriptStr={state.scriptStr}
-          id={`variants-script-${props.builderBlock?.id}`}
-        />
+        <For each={props.variants}>
+          {(variant, index) => (
+            <Blocks
+              extraAttributesForBlocksWrapper={{
+                'aria-hidden': true,
+                hidden: true,
+                'data-variant-id': `${props.builderBlock?.id}-${index}`,
+              }}
+              blocks={variant.blocks}
+              parent={props.builderBlock?.id}
+              path={`component.options.variants.${index}.blocks`}
+            >
+              <InlinedScript
+                nonce={props.builderContext.value?.nonce || ''}
+                scriptStr={state.scriptStr}
+                id={`variants-script-${props.builderBlock?.id}-${index}`}
+              />
+            </Blocks>
+          )}
+        </For>
       </Show>
       <Blocks
         blocks={state.blocksToRender.blocks}
         parent={props.builderBlock?.id}
         path={state.blocksToRender.path}
-      />
+        extraAttributesForBlocksWrapper={{
+          'data-variant-id': `${props.builderBlock?.id}`,
+        }}
+      >
+        <Show when={state.shouldRenderVariants}>
+          <InlinedScript
+            nonce={props.builderContext.value?.nonce || ''}
+            scriptStr={state.scriptStr}
+            id={`variants-script-${props.builderBlock?.id}-default`}
+          />
+        </Show>
+      </Blocks>
     </div>
   );
 }

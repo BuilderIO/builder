@@ -103,18 +103,21 @@ export function getBlocksToRender({
   return fallback;
 }
 
+export const getInitPersonalizationVariantsFnsScriptString = () => {
+  return `
+  window.filterWithCustomTargeting = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
+  window.builderIoPersonalization = ${PERSONALIZATION_SCRIPT}
+  `;
+};
+
+const isHydrationTarget = TARGET === 'react';
+
 export const getPersonalizationScript = (
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
   locale?: string
 ) => {
-  return `
-  (function() {
-    ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
-    ${PERSONALIZATION_SCRIPT}
-    getPersonalizedVariant(${JSON.stringify(variants)}, "${blockId}"${locale ? `, "${locale}"` : ''})
-  })();
-  `;
+  return `window.builderIoPersonalization(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
 };
 
 export { filterWithCustomTargeting } from './helpers/inlined-fns.js';

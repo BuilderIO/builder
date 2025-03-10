@@ -9,6 +9,7 @@ import { type PersonalizationContainerProps } from '../personalization-container
 function getPersonalizedVariant(
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
+  isHydrationTarget: boolean,
   locale?: string
 ) {
   if (!navigator.cookieEnabled) {
@@ -26,29 +27,13 @@ function getPersonalizedVariant(
     return null;
   }
 
-  function removeVariants() {
-    variants?.forEach(function (_, index) {
-      document
-        .querySelector(
-          'template[data-variant-id="' + blockId + '-' + index + '"]'
-        )
-        ?.remove();
-    });
-    document
-      .querySelector('script[data-id="variants-script-' + blockId + '"]')
-      ?.remove();
-    document
-      .querySelector('style[data-id="variants-styles-' + blockId + '"]')
-      ?.remove();
-  }
-
   const attributes = JSON.parse(getCookie('builder.userAttributes') || '{}');
   if (locale) {
     attributes.locale = locale;
   }
 
   const winningVariantIndex = variants?.findIndex(function (variant) {
-    return filterWithCustomTargeting(
+    return (window as any).filterWithCustomTargeting(
       attributes,
       variant.query,
       variant.startDate,
@@ -56,37 +41,32 @@ function getPersonalizedVariant(
     );
   });
 
-  const isDebug = location.href.includes('builder.debug=true');
-  if (isDebug) {
-    console.debug('PersonalizationContainer', {
-      attributes,
-      variants,
-      winningVariantIndex,
-    });
+  // Get the parent div containing this script
+  const parentDiv = document.currentScript?.parentElement;
+  const variantId = parentDiv?.getAttribute('data-variant-id');
+  const isDefaultVariant = variantId === `${blockId}`;
+  const isWinningVariant =
+    winningVariantIndex !== -1 &&
+    variantId === `${blockId}-${winningVariantIndex}`;
+
+  // Show/hide variants based on winning status
+  if (isWinningVariant && !isDefaultVariant) {
+    parentDiv?.removeAttribute('hidden');
+    parentDiv?.removeAttribute('aria-hidden');
+  } else if (!isWinningVariant && isDefaultVariant) {
+    parentDiv?.setAttribute('hidden', 'true');
+    parentDiv?.setAttribute('aria-hidden', 'true');
   }
 
-  if (winningVariantIndex !== -1) {
-    const winningVariant = document.querySelector(
-      'template[data-variant-id="' + blockId + '-' + winningVariantIndex + '"]'
-    ) as HTMLTemplateElement;
-    if (winningVariant) {
-      const parentNode = winningVariant.parentNode;
-      if (parentNode) {
-        const newParent = parentNode.cloneNode(false) as Node;
-        newParent.appendChild(winningVariant.content.firstChild as Node);
-        newParent.appendChild(winningVariant.content.lastChild as Node);
-        parentNode.parentNode?.replaceChild(newParent, parentNode);
-      }
-      if (isDebug) {
-        console.debug(
-          'PersonalizationContainer',
-          'Winning variant Replaced:',
-          winningVariant
-        );
-      }
+  // For hydration frameworks, remove non-winning variants and the script tag
+  if (isHydrationTarget) {
+    if (!isWinningVariant) {
+      parentDiv?.remove();
     }
-  } else if (variants && variants.length > 0) {
-    removeVariants();
+    const thisScript = document.currentScript;
+    if (thisScript) {
+      thisScript.remove();
+    }
   }
 }
 
