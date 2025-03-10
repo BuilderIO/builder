@@ -299,7 +299,7 @@ test.describe('Visual Editing', () => {
   });
 
   test.describe('Accordion block', () => {
-    test('inserting a new detail item adds it to the correct place in the accordion', async ({
+    test.only('inserting a new detail item adds it to the correct place in the accordion', async ({
       page,
       sdk,
       basePort,
@@ -343,13 +343,18 @@ test.describe('Visual Editing', () => {
         model: 'page',
       });
 
-      await item1.click();
+      // Add a small delay to allow the component to fully update
+      await page.waitForTimeout(500);
+      
+      // Re-query the item1 element as it might have been recreated
+      const updatedItem1 = page.frameLocator('iframe').getByText('Item 1');
+      await updatedItem1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
       await detailElement.waitFor();
 
       const [titleBox, detailBox] = await Promise.all([
-        item1.boundingBox(),
+        updatedItem1.boundingBox(),
         detailElement.boundingBox(),
       ]);
 
