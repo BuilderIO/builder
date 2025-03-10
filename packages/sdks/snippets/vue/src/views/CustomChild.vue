@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div v-if="notFound && !isPreviewing()">404 - Not Found</div>
-
+    <div v-if="loading">Loading...</div>
+    <div v-else-if="!content && !isPreviewing()">404 - Not Found</div>
     <Content
       v-else
       :content="content"
-      :model="pageModel"
-      :apiKey="apiKey"
+      model="page"
+      apiKey="ee9f13b4981e489a9a1209887695ef2b"
       :customComponents="[customHeroInfo]"
     />
   </div>
@@ -14,38 +14,25 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import {
-  Content,
-  fetchOneEntry,
-  isPreviewing,
-  type BuilderContent
-} from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing, type BuilderContent } from '@builder.io/sdk-vue';
+import customHeroInfo from '@/components/custom-components/custom-hero/CustomHeroInfo';
+import { useRoute } from 'vue-router';
 
-import { customHeroInfo } from '@/components/custom-components/custom-hero/CustomHeroInfo';
-
-const pageModel = 'page';
-const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
-
+const route = useRoute();
 const content = ref<BuilderContent | null>(null);
-const notFound = ref(false);
+const loading = ref(true);
 
-onMounted(async () => {
-  try {
-    const fetchedContent = await fetchOneEntry({
-      model: pageModel,
-      apiKey,
-      userAttributes: {
-        urlPath: window.location.pathname,
-      },
+onMounted(() => {
+  fetchOneEntry({
+    model: 'page',
+    apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+    userAttributes: { urlPath: route.path }
+  })
+    .then(result => {
+      content.value = result;
+    })
+    .finally(() => {
+      loading.value = false;
     });
-    if (fetchedContent) {
-      content.value = fetchedContent;
-    } else {
-      notFound.value = true;
-    }
-  } catch (err) {
-    console.error('Oops: ', err);
-  }
 });
 </script>
-

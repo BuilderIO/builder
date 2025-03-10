@@ -1,11 +1,8 @@
 <template>
-  <div>
+  <div class="custom-container">
     <div>This is text from your component</div>
-    <!-- Slot to render Builder Content as children -->
+    <!-- The slot will render any child blocks from Builder -->
     <slot />
   </div>
 </template>
 
-<script setup lang="ts">
-
-</script>
