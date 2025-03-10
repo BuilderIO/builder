@@ -137,12 +137,12 @@ export default function PersonalizationContainer(
         props.attributes?.className || ''
       }`}
     >
+      <InlinedStyles
+        nonce={props.builderContext.value?.nonce || ''}
+        styles={state.hideVariantsStyleString}
+        id={`variants-styles-${props.builderBlock?.id}`}
+      />
       <Show when={state.shouldRenderVariants}>
-        <InlinedStyles
-          nonce={props.builderContext.value?.nonce || ''}
-          styles={state.hideVariantsStyleString}
-          id={`variants-styles-${props.builderBlock?.id}`}
-        />
         <For each={props.variants}>
           {(variant, index) => (
             <Blocks

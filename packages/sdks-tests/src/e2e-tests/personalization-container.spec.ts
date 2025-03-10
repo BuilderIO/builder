@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeGen2, isSSRFramework, test } from '../helpers/index.js';
+import { isSSRFramework, test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 const SELECTOR = 'div[builder-content-id]';
 
@@ -46,7 +46,6 @@ const initializeUserAttributes = async (
 ) => {
   // gen1-remix started failing on this test for an unknown reason.
   test.skip(packageName === 'gen1-remix');
-  test.skip(excludeGen2(sdk) && sdk !== 'react');
 
   if (!baseURL) throw new Error('Missing baseURL');
 
