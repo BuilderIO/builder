@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { test } from '../helpers/index.js';
+import { checkIsGen1React, test } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -259,6 +259,8 @@ test.describe('A/B tests', () => {
       basePort,
       browser,
     }) => {
+      test.skip(checkIsGen1React(sdk));
+
       const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
       const COOKIE_NAME = `builder.tests.${CONTENT_ID}` as const;
       const TEXTS = {
