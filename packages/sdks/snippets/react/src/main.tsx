@@ -8,6 +8,8 @@ import CustomChildRoute from './routes/custom-components/custom-child.tsx';
 import EditableRegionRoute from './routes/custom-components/editable-region.tsx';
 import IntegratingPages from './routes/IntegratingPages.tsx';
 import LivePreviewBlogData from './routes/LivePreviewBlogData.js';
+import QueryCheatsheet from './routes/query-cheatsheet/index.tsx';
+
 const router = createBrowserRouter([
   {
     path: '/announcements/:id',
@@ -30,8 +32,13 @@ const router = createBrowserRouter([
     element: <LivePreviewBlogData />,
   },
   {
+
     path: '/product/category/:handle',
     element: <ProductDetails />,
+  },
+  {
+    path: '/query-cheatsheet',
+    element: <QueryCheatsheet />,
   },
   {
     path: '/*',

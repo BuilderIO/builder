@@ -87,7 +87,9 @@ import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
 import { DYNAMIC_ELEMENT } from './dynamic-element.js';
 import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
+import { NEW_BLOCK_ADD } from './new-block-add.js';
 
+import { DYNAMIC_BUTTON } from './dynamic-button.js';
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
@@ -279,6 +281,8 @@ export const PAGES: Record<string, Page> = {
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
   '/dynamic-element': { content: DYNAMIC_ELEMENT },
   '/custom-code-dom-update': { content: CUSTOM_CODE_DOM_UPDATE },
+  '/new-block-add': { content: NEW_BLOCK_ADD },
+  '/dynamic-button': { content: DYNAMIC_BUTTON },
 } as const;
 
 export type Path = keyof typeof PAGES;
