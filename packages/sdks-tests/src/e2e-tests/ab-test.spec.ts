@@ -299,7 +299,20 @@ test.describe('A/B tests', () => {
         model: 'page',
       });
 
-      await page.frameLocator('iframe').getByText(TEXTS.VARIANT_1).waitFor();
+      const variant1s = await page
+        .frameLocator('iframe')
+        .getByText(TEXTS.VARIANT_1)
+        .elementHandles();
+
+      let visibleVariant1 = null;
+      for (const variant1 of variant1s) {
+        if (await variant1.isVisible()) {
+          visibleVariant1 = variant1;
+          break;
+        }
+      }
+
+      expect(visibleVariant1).not.toBeNull();
     });
   });
 });
