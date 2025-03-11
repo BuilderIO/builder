@@ -64,3 +64,19 @@ export const NEW_BLOCK_ADD = {
   lastUpdatedBy: 'RuGeCLr9ryVt1xRazFYc72uWwIK2',
   folders: [],
 };
+
+export const NEW_BLOCK_ADD_2 = {
+  ...NEW_BLOCK_ADD,
+  data: {
+    ...NEW_BLOCK_ADD.data,
+    blocks: [
+      ...NEW_BLOCK_ADD.data.blocks,
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: { name: 'Text', options: { text: 'end text' } },
+      },
+    ],
+  },
+};
