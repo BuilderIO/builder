@@ -28,12 +28,7 @@ export default function ProductDetails() {
   return (
     <div className="product-details">
       <h1>{productDetails.data?.name}</h1>
-      <img
-        src={productDetails.data?.image}
-        alt={productDetails.data?.name}
-        width="400"
-        height="500"
-      />
+      <img src={productDetails.data?.image} alt={productDetails.data?.name} />
       <p>{productDetails.data?.collection.value.data.copy}</p>
       <p>Price: {productDetails.data?.collection.value.data.price}</p>
     </div>
