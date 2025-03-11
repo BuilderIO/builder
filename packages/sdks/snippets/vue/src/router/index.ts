@@ -3,6 +3,7 @@ import CustomChild from '@/views/CustomChild.vue';
 import EditableRegions from '@/views/EditableRegions.vue';
 import LivePreview from '@/views/LivePreview.vue';
 import QuickStart from '@/views/QuickStart.vue';
+import AdvancedChild from '@/views/AdvancedChild.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -16,6 +17,11 @@ const router = createRouter({
       path: '/editable-region',
       name: 'EditableRegions',
       component: EditableRegions,
+    },
+    {
+      path: '/advanced-child',
+      name: 'AdvancedChild',
+      component: AdvancedChild,
     },
     // will match everything and put it under `route.params.pathMatch`
     { path: '/:pathMatch(.*)*', component: QuickStart },
