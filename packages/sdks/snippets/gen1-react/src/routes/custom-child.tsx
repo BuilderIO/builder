@@ -2,6 +2,7 @@ import builder, {
   Builder,
   BuilderComponent,
   withChildren,
+  type BuilderContent,
 } from '@builder.io/react';
 import React, { useEffect, useState } from 'react';
 import CustomHero from '../components/CustomHero';
@@ -26,7 +27,7 @@ Builder.registerComponent(HeroWithBuilderChildren, {
 });
 
 function CustomChild() {
-  const [content, setContent] = useState<any>(null);
+  const [content, setContent] = useState<BuilderContent | null>(null);
   useEffect(() => {
     builder
       .get('custom-child', {

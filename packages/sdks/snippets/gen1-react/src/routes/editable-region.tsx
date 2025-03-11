@@ -1,6 +1,9 @@
 // routes/editable-region.tsx
-
-import builder, { Builder, BuilderComponent } from '@builder.io/react';
+import builder, {
+  Builder,
+  BuilderComponent,
+  type BuilderContent,
+} from '@builder.io/react';
 import { useEffect, useState } from 'react';
 import CustomColumns from '../components/CustomColumns';
 
@@ -23,7 +26,7 @@ Builder.registerComponent(CustomColumns, {
 });
 
 export default function EditableRegion() {
-  const [content, setContent] = useState<any>(null);
+  const [content, setContent] = useState<BuilderContent | null>(null);
 
   useEffect(() => {
     builder

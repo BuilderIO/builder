@@ -1,4 +1,8 @@
-import builder, { Builder, BuilderComponent } from '@builder.io/react';
+import builder, {
+  Builder,
+  BuilderComponent,
+  type BuilderContent,
+} from '@builder.io/react';
 import { useEffect, useState } from 'react';
 import CustomTabs from '../components/CustomTabs';
 
@@ -26,7 +30,7 @@ Builder.registerComponent(CustomTabs, {
 });
 
 export default function AdvancedChild() {
-  const [content, setContent] = useState<any>(null);
+  const [content, setContent] = useState<BuilderContent | null>(null);
 
   useEffect(() => {
     builder

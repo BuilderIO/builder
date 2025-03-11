@@ -1,9 +1,9 @@
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { fetchOneEntry } from '@builder.io/sdk-angular';
+import { BuilderContent, fetchOneEntry } from '@builder.io/sdk-angular';
 
-export const productEditorialResolver: ResolveFn<any> = async (
-  route: ActivatedRouteSnapshot
-) => {
+export const productEditorialResolver: ResolveFn<
+  BuilderContent | null
+> = async (route: ActivatedRouteSnapshot) => {
   const productId = route.paramMap.get('id');
   const urlPath = `/products/${productId}`;
 

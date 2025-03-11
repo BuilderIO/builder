@@ -3,9 +3,9 @@ import {
   ResolveFn,
   RouterStateSnapshot,
 } from '@angular/router';
-import { fetchOneEntry } from '@builder.io/sdk-angular';
+import { BuilderContent, fetchOneEntry } from '@builder.io/sdk-angular';
 
-export const editableRegionsResolver: ResolveFn<any> = async (
+export const editableRegionsResolver: ResolveFn<BuilderContent | null> = async (
   _route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {

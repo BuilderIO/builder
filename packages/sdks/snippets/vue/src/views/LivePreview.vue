@@ -10,9 +10,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { fetchOneEntry, subscribeToEditor } from '@builder.io/sdk-vue';
+import {
+  type BuilderContent,
+  fetchOneEntry,
+  subscribeToEditor,
+} from '@builder.io/sdk-vue';
 
-const content = ref<any>(null);
+const content = ref<BuilderContent | null>(null);
 const loading = ref(true);
 
 const route = useRoute();
