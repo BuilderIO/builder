@@ -5,7 +5,7 @@
     <Content
       v-else
       :content="content"
-      model="page"
+      model="custom-child"
       apiKey="ee9f13b4981e489a9a1209887695ef2b"
       :customComponents="[customHeroInfo]"
     />
@@ -24,7 +24,7 @@ const loading = ref(true);
 
 onMounted(() => {
   fetchOneEntry({
-    model: 'page',
+    model: 'custom-child',
     apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
     userAttributes: { urlPath: route.path }
   })
