@@ -3,7 +3,7 @@ import type { RegisteredComponent } from '@builder.io/sdk-vue';
 
 export const CustomColumnsInfo: RegisteredComponent = {
   component: CustomColumns,
-  name: 'Two Column Layout',
+  name: 'My Columns',
   inputs: [
     {
       name: 'leftContent',
