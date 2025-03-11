@@ -1,4 +1,11 @@
-import { Show, useMetadata, useStore, useTarget, onUpdate, type Signal } from '@builder.io/mitosis';
+import {
+  Show,
+  onUpdate,
+  useMetadata,
+  useStore,
+  useTarget,
+  type Signal,
+} from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
@@ -23,7 +30,7 @@ useMetadata({
   },
   rsc: {
     componentType: 'client',
-  }
+  },
 });
 
 /**
@@ -59,7 +66,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       qwik: () => {
         // Track wrapperProps changes
         if (props.wrapperProps) {
-          Object.keys(props.wrapperProps).forEach(key => {
+          Object.keys(props.wrapperProps).forEach((key) => {
             // Store current value to detect changes
             const currentValue = props.wrapperProps[key];
 
@@ -69,7 +76,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
             }
           });
         }
-        
+
         // Also track block component options changes
         if (props.block?.component?.options) {
           const optionsStr = JSON.stringify(props.block.component.options);
@@ -87,15 +94,15 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper 
-          {...props.wrapperProps} 
-          attributes={state.attributes}
+        <props.Wrapper
           {...useTarget({
             qwik: {
-              key: `wrapper-${state.forceRenderCount}`,
+              key: 'wrapper-' + state.forceRenderCount,
             },
             default: {},
           })}
+          {...props.wrapperProps}
+          attributes={state.attributes}
         >
           {props.children}
         </props.Wrapper>

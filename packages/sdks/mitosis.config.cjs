@@ -1196,10 +1196,16 @@ module.exports = {
                 );
               }
               if (json.name === 'InteractiveElement') {
-                code = code.replace(`<props.Wrapper {...props.wrapperProps} attributes={attributes.value}>
+                code = code.replace(`<props.Wrapper
+            {...{
+              key: "wrapper-" + state.forceRenderCount,
+            }}
+            {...props.wrapperProps}
+            attributes={attributes.value}
+          >
             <Slot></Slot>
           </props.Wrapper>`, 
-                `<props.Wrapper key={'wrapper-'+state.forceRenderCount)} {...props.wrapperProps} attributes={attributes.value}>
+                `<props.Wrapper key={'wrapper-'+state.forceRenderCount} {...props.wrapperProps} attributes={attributes.value}>
             <Slot></Slot>
           </props.Wrapper>`)
               }
