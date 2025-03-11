@@ -910,6 +910,25 @@ const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
   },
 });
 
+// Temporary fix to make the visual editing work for AB tests in Angular SDK
+// getters in angular run on every change detection
+const ANGULAR_AB_TEST_VE_CORRECT_VARIANT = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name === 'ContentVariants') {
+        json.state['defaultContent'].code = json.state[
+          'defaultContent'
+        ].code.replace('get ', '');
+        json.state['defaultContent'].type = 'method';
+        // as we are "pre" modifying the json, this will create a new state property for this
+        json.children[0].children[2].bindings['content'].code =
+          'state.defaultContent()';
+      }
+      return json;
+    },
+  },
+});
+
 const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   code: {
     post: (code, json) => {
@@ -951,6 +970,7 @@ module.exports = {
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
         ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT,
+        ANGULAR_AB_TEST_VE_CORRECT_VARIANT,
       ],
     },
     solid: {

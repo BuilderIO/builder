@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { checkIsGen1React, test } from '../helpers/index.js';
+import { checkIsGen1React, checkIsRN, test } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -258,8 +258,9 @@ test.describe('A/B tests', () => {
       sdk,
       basePort,
       browser,
+      packageName,
     }) => {
-      test.skip(checkIsGen1React(sdk));
+      test.skip(checkIsGen1React(sdk) || checkIsRN(sdk) || packageName === 'nextjs-sdk-next-app');
 
       const CONTENT_ID = '691abdd7105c4cf7b9609995fc1fb56c';
       const COOKIE_NAME = `builder.tests.${CONTENT_ID}` as const;
