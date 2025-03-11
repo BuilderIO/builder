@@ -287,7 +287,10 @@ test.describe('A/B tests', () => {
         sdk,
       });
 
-      await page.frameLocator('iframe').getByText(TEXTS.DEFAULT_CONTENT).waitFor();
+      await page
+        .frameLocator('iframe')
+        .getByText(TEXTS.DEFAULT_CONTENT)
+        .waitFor({ state: 'visible' });
 
       const newContent = cloneContent(
         AB_TEST_CONTENT.variations['661775df8c2c41d6afc0aa1b5fd1dd61']
@@ -299,6 +302,11 @@ test.describe('A/B tests', () => {
         page,
         model: 'page',
       });
+
+      await page
+        .frameLocator('iframe')
+        .getByText(TEXTS.DEFAULT_CONTENT)
+        .waitFor({ state: 'hidden' });
 
       const variant1s = await page
         .frameLocator('iframe')
