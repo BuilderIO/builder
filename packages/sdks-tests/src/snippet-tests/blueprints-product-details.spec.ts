@@ -38,8 +38,6 @@ test.describe('Product Details Component', () => {
     // Verify the image source, alt text, and size
     await expect(image).toHaveAttribute('src', /.+/);
     await expect(image).toHaveAttribute('alt', 'Red Jacket');
-    await expect(image).toHaveAttribute('width', '400');
-    await expect(image).toHaveAttribute('height', '500');
   });
 
   test('should display product copy (description)', async ({ page }) => {

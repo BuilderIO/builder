@@ -1,43 +1,36 @@
 import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-react';
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 
-export default function ProductCategoryPage({
-  productDetails,
-}: {
-  productDetails: BuilderContent;
-}) {
-  return (
-    <div className="product-details">
-      <h1>{productDetails.data?.name}</h1>
-      <Image
-        src={productDetails.data?.image}
-        alt={productDetails.data?.name}
-        width="400"
-        height="500"
-        priority={true}
-      />
-      <p>{productDetails.data?.collection.value.data.copy}</p>
-      <p>Price: {productDetails.data?.collection.value.data.price}</p>
-    </div>
-  );
-}
-
-export const getServerSideProps = async (context: {
-  params: { handle: string };
-}) => {
-  const { handle } = context.params;
-
+export const getServerSideProps = (async ({ params }) => {
   const productDetails = await fetchOneEntry({
     model: 'product-details',
     apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
     query: {
-      'data.handle': handle,
+      'data.handle': params?.handle,
     },
   });
 
-  return {
-    props: {
-      productDetails,
-    },
-  };
-};
+  return { props: { productDetails } };
+}) satisfies GetServerSideProps<{
+  productDetails: BuilderContent | null;
+}>;
+
+export default function ProductCategoryPage({
+  productDetails,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  return (
+    productDetails && (
+      <div className="product-details">
+        <h1>{productDetails.data?.name}</h1>
+        <Image
+          src={productDetails.data?.image}
+          alt={productDetails.data?.name}
+          priority={true}
+        />
+        <p>{productDetails.data?.collection.value.data.copy}</p>
+        <p>Price: {productDetails.data?.collection.value.data.price}</p>
+      </div>
+    )
+  );
+}

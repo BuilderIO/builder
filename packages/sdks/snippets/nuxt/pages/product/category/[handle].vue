@@ -11,7 +11,6 @@ const { data: productDetails, pending } = await useAsyncData('product-details', 
     },
   }),
 )
-
 </script>
 
 <template>
@@ -19,7 +18,7 @@ const { data: productDetails, pending } = await useAsyncData('product-details', 
 
   <div v-if="productDetails?.data">
     <h1>{{ productDetails.data.name }}</h1>
-    <img :src="productDetails.data.image" :alt="productDetails.data.name" width="400" height="500" />
+    <img :src="productDetails.data.image" :alt="productDetails.data.name" />
     <p>{{ productDetails.data.collection.value.data.copy }}</p>
     <p>Price: {{ productDetails.data.collection.value.data.price }}</p>
   </div>

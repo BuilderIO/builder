@@ -15,21 +15,17 @@ export default async function ProductDetailsPage({
   });
 
   return (
-    <>
-      {productDetails && (
-        <div className="product-details">
-          <h1>{productDetails.data?.name}</h1>
-          <Image
-            src={`${productDetails.data?.image}`}
-            alt={productDetails.data?.name}
-            width={400}
-            height={500}
-            priority={true}
-          />
-          <p>{productDetails.data?.collection.value.data.copy}</p>
-          <p>Price: {productDetails.data?.collection.value.data.price}</p>
-        </div>
-      )}
-    </>
+    productDetails && (
+      <div className="product-details">
+        <h1>{productDetails.data?.name}</h1>
+        <Image
+          src={`${productDetails.data?.image}`}
+          alt={productDetails.data?.name}
+          priority={true}
+        />
+        <p>{productDetails.data?.collection.value.data.copy}</p>
+        <p>Price: {productDetails.data?.collection.value.data.price}</p>
+      </div>
+    )
   );
 }
