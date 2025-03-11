@@ -17,7 +17,7 @@ export default component$(() => {
 
   return (
     productResource.value && (
-      <div class="product-details">
+      <div class="product-details-page">
         <h1>{productResource.value.data?.name}</h1>
         <img
           src={productResource.value.data?.image}

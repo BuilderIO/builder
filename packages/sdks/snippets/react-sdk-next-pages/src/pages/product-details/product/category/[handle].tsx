@@ -21,7 +21,7 @@ export default function ProductCategoryPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     productDetails && (
-      <div className="product-details">
+      <div className="product-details-page">
         <h1>{productDetails.data?.name}</h1>
         <Image
           src={productDetails.data?.image}

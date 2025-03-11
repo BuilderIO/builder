@@ -17,8 +17,10 @@
 {#if !productDetails}
   <p>Loading product details...</p>
 {:else}
-  <h1>{productDetails.data?.name}</h1>
-  <img src={productDetails.data?.image} alt={productDetails.data?.name} />
-  <p>{productDetails.data?.collection.value.data.copy}</p>
-  <p>Price: {productDetails.data?.collection.value.data.price}</p>
+  <div class="product-details-page">
+    <h1>{productDetails.data?.name}</h1>
+    <img src={productDetails.data?.image} alt={productDetails.data?.name} />
+    <p>{productDetails.data?.collection.value.data.copy}</p>
+    <p>Price: {productDetails.data?.collection.value.data.price}</p>
+  </div>
 {/if}

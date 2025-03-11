@@ -2,7 +2,7 @@
     <div v-if="!productDetails">
       <p>Loading product details...</p>
     </div>
-    <div v-else>
+    <div class="product-details-page" v-else>
       <h1>{{ productDetails.data?.['name'] }}</h1>
       <img
         :src="productDetails.data?.['image']"
@@ -13,7 +13,7 @@
     </div>
   </template>
   
-  <script lang="ts" setup>
+  <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { fetchOneEntry, BuilderContent } from '@builder.io/sdk-vue'
   
