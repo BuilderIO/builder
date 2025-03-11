@@ -23,8 +23,6 @@ export const customTabsInfo: RegisteredComponent = {
   ],
   shouldReceiveBuilderProps: {
     builderBlock: true,
-    builderComponents: true,
-    builderContext: true,
   },
 };
 

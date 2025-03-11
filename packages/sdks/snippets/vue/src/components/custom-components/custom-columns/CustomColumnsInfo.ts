@@ -3,7 +3,7 @@ import type { RegisteredComponent } from '@builder.io/sdk-vue';
 
 export const CustomColumnsInfo: RegisteredComponent = {
   component: CustomColumns,
-  name: 'MyColumns',
+  name: 'MyColumns', // you can define your custom name for the component
   inputs: [
     {
       name: 'leftContent',
@@ -15,27 +15,10 @@ export const CustomColumnsInfo: RegisteredComponent = {
       type: 'uiBlocks',
       defaultValue: [],
     },
-    {
-      name: 'leftWidth',
-      type: 'number',
-      defaultValue: 1,
-    },
-    {
-      name: 'rightWidth',
-      type: 'number',
-      defaultValue: 1,
-    },
-    {
-      name: 'gap',
-      type: 'number',
-      defaultValue: 20,
-    },
   ],
 
   shouldReceiveBuilderProps: {
     builderBlock: true,
-    builderComponents: true,
-    builderContext: true,
   },
 };
 

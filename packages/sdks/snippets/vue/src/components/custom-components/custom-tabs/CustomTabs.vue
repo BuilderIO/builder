@@ -12,28 +12,26 @@
       <Blocks
         :blocks="tabList[activeTab].blocks"
         :path="`tabList.${activeTab}.blocks`"
-        :parent="props.builderBlock?.id"
+        :parent="builderBlock.id"
       />
     </div>
   </template>
   
   <script setup lang="ts">
-  import { ref, computed, defineProps } from 'vue';
+  import { ref, defineProps } from 'vue';
   import { Blocks, type BuilderBlock } from '@builder.io/sdk-vue';
-  
+
+  const activeTab = ref(0);
+
   interface TabItem {
     tabName: string;
     blocks: BuilderBlock[];
   }
 
-  const props = defineProps({
-    builderBlock: Object,
-    tabList: Array<TabItem>
-  });
-  
-  const tabList = computed(() => props.tabList || []);
-  
-  const activeTab = ref(0);
+  const { builderBlock, tabList } = defineProps<{
+    builderBlock: BuilderBlock,
+    tabList: TabItem[]
+  }>();
   
   </script>
   

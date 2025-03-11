@@ -35,7 +35,5 @@
         loading.value = false;
       });
   });
-
-  console.log('EditableRegions', content.value);
   </script>
   
