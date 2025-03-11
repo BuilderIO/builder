@@ -1,5 +1,105 @@
 # @builder.io/sdk-angular
 
+## 0.18.6
+
+### Patch Changes
+
+- f4ff27d: Fix: crashes when visually editing blocks (encountered when SDK dynamically switched HTML elements)
+- 6eb90b3: Fix: new blocks getting added at the top while visual editing
+
+## 0.18.5
+
+### Patch Changes
+
+- 02fab2b: Fix: handle the rendering of unknown HTML elements.
+
+## 0.18.4
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+- 887c6e0: Fix: `nativeElement` not found issue in Custom Code and Embed Blocks
+
+## 0.18.3
+
+### Patch Changes
+
+- 527c115: Feat: A/B tests support
+
+## 0.18.2
+
+### Patch Changes
+
+- 1396fb4: Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
+
+## 0.18.1
+
+### Patch Changes
+
+- 80247eb: Fix: Updating input values while in the Content Editor not triggering changes in the iframe.
+
+## 0.18.0
+
+### Minor Changes
+
+- 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
+
+Example:
+
+- from:
+
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
+
+- to:
+
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
+
+- 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
+
+## 0.17.9
+
+### Patch Changes
+
+- 58ee59e: Fix: added lazy loading to video element
+
+## 0.17.8
+
+### Patch Changes
+
+- 7d01119: feat: Add support for `xsmall` additional breakpoint.
+
+## 0.17.7
+
+### Patch Changes
+
+- abe5cba: Feat: exports `setClientUserAttributes` helper that can be used to set and update Builder's user attributes cookie. This cookie is used by Builder's Personalization Containers to decide which variant to render.
+
+  Usage example:
+
+  ```ts
+  import { setClientUserAttributes } from "@builder.io/sdk-angular";
+
+  setClientUserAttributes({
+    device: "tablet",
+  });
+  ```
+
+## 0.17.6
+
+### Patch Changes
+
+- 91a7117: Fix: vertically aligning child block of columns block
+- 2f73837: Fix: Removed z-index from Video block, which caused it to hide its children elements.
+
 ## 0.17.5
 
 ### Patch Changes

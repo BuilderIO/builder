@@ -1,0 +1,52 @@
+{
+  "name": "@snippet/react-native-74",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "build": "expo export -p web",
+    "serve": "node server.js",
+    "build:ios": "eas build -e development:simulator -p ios --no-wait --local",
+    "test": "SERVER_NAME=react-native-74 yarn g:nx test:snippet @sdk/tests"
+  },
+  "dependencies": {
+    "@builder.io/sdk-react-native": "workspace:*",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-navigation/native": "^6.0.2",
+    "@sdk/tests": "workspace:*",
+    "expo": "~51.0.14",
+    "expo-constants": "~16.0.2",
+    "expo-dev-client": "~4.0.18",
+    "expo-font": "~12.0.7",
+    "expo-linking": "~6.3.1",
+    "expo-router": "~3.5.16",
+    "expo-splash-screen": "~0.27.5",
+    "expo-status-bar": "~1.12.1",
+    "expo-system-ui": "~3.0.6",
+    "expo-web-browser": "~13.0.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.2",
+    "react-native-gesture-handler": "~2.16.1",
+    "react-native-safe-area-context": "4.10.1",
+    "react-native-screens": "3.31.1",
+    "react-native-web": "~0.19.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "^18.3.3",
+    "@types/react-test-renderer": "^18.0.7",
+    "compression": "^1.7.4",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "react-test-renderer": "18.2.0",
+    "serve": "^14.2.3",
+    "typescript": "~5.3.3"
+  },
+  "private": true,
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  }
+}

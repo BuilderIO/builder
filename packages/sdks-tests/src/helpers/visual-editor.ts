@@ -73,6 +73,35 @@ export const sendContentUpdateMessage = async ({
   );
 };
 
+export const sendNewStateMessage = async ({
+  page,
+  newState,
+  model,
+}: {
+  page: Page;
+  newState: Record<string, any>;
+  model: string;
+}) => {
+  await page.evaluate(
+    msgData => {
+      const contentWindow = document.querySelector('iframe')?.contentWindow;
+      if (!contentWindow) throw new Error('Could not find iframe');
+
+      contentWindow.postMessage(
+        {
+          type: 'builder.resetState',
+          data: {
+            state: msgData.newState,
+            model: msgData.model,
+          },
+        },
+        '*'
+      );
+    },
+    { newState, model }
+  );
+};
+
 type Patch = {
   op: 'replace' | 'add' | 'remove';
   path: string;

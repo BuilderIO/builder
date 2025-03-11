@@ -44,7 +44,7 @@
     "typecheck:watch": "yarn run typecheck --watch",
     "ci:lint:sdks": "yarn run prettier --check && yarn run eslint",
     "e2e:run:svelte": "SERVER_NAME=svelte,sveltekit yarn g:nx test:e2e @sdk/tests",
-    "e2e:run:react-native": "SERVER_NAME=react-native yarn g:nx test:e2e @sdk/tests",
+    "e2e:run:react-native": "SERVER_NAME=react-native-74,react-native-76-fabric yarn g:nx test:e2e @sdk/tests",
     "e2e:run:solid": "SERVER_NAME=solid,solid-start yarn g:nx test:e2e @sdk/tests",
     "e2e:run:qwik": "SERVER_NAME=qwik-city yarn g:nx test:e2e @sdk/tests",
     "e2e:run:react": "SERVER_NAME=react,react-sdk-next-pages,react-sdk-next-14-app,react-sdk-next-15-app yarn g:nx test:e2e @sdk/tests",
@@ -57,8 +57,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.5.24",
-    "@builder.io/mitosis-cli": "^0.5.24",
+    "@builder.io/mitosis": "^0.6.1",
+    "@builder.io/mitosis-cli": "^0.6.1",
     "isolated-vm": "^5.0.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",

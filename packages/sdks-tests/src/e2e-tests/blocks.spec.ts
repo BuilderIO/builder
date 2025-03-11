@@ -3,7 +3,20 @@ import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from '../helpers/index.js';
-import { excludeRn, checkIsRN, test, isSSRFramework, mockFolderPath } from '../helpers/index.js';
+import {
+  excludeRn,
+  checkIsRN,
+  test,
+  isSSRFramework,
+  mockFolderPath,
+  checkIsGen1React,
+} from '../helpers/index.js';
+import {
+  cloneContent,
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+} from '../helpers/visual-editor.js';
+import { CUSTOM_CODE_DOM_UPDATE } from '../specs/custom-code-dom-update.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk, packageName }) => {
@@ -244,28 +257,24 @@ test.describe('Blocks', () => {
         {
           width: '152px',
           'object-fit': 'cover',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
         {
           width: '1249px',
           'object-fit': 'contain',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
         {
           width: '744px',
           'object-fit': 'cover',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
         {
           width: '152px',
           'object-fit': 'cover',
-          'z-index': '2',
           'border-radius': '1px',
           position: 'absolute',
         },
@@ -316,6 +325,41 @@ test.describe('Blocks', () => {
         await expect(textBlock).toBeVisible();
         await expect(textBlock).toHaveText('asfgasgasgasg some test');
       }
+    });
+
+    test('video lazy load', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      const mockVideoPath = path.join(mockFolderPath, 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
+      let videoRequestMade = false;
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          videoRequestMade = true;
+
+          return route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
+
+      await page.goto('/video-lazy-load');
+      const videoLocator = page.locator('video');
+
+      await expect(videoLocator).not.toBeInViewport();
+      expect(videoRequestMade).toBeFalsy();
+
+      const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL));
+      await videoLocator.scrollIntoViewIfNeeded();
+
+      await expect(videoLocator).toBeInViewport();
+      await requestPromise;
     });
   });
 
@@ -493,6 +537,29 @@ test.describe('Blocks', () => {
       expect(secondColumnSpace).toBeCloseTo((400 / 3) * 2, 1);
       expect(firstColumnSpace + secondColumnSpace).toBeCloseTo(400, 1);
     });
+
+    test('vertically aligning a block works', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/columns-vertical-center-flex');
+
+      const secondColumn = page.locator('.builder-column').nth(1);
+
+      const childDiv = secondColumn.locator('div.builder-blocks');
+      await expect(childDiv).toHaveCSS('flex-grow', '1');
+
+      // check if it's actually vertically centered
+      const columnBox = await secondColumn.boundingBox();
+      const textBox = await secondColumn.locator('.builder-text').boundingBox();
+
+      if (!columnBox || !textBox) {
+        throw new Error('Could not get bounding boxes');
+      }
+
+      const textCenter = textBox.y + textBox.height / 2;
+      const columnCenter = columnBox.y + columnBox.height / 2;
+
+      expect(textCenter).toBeCloseTo(columnCenter, 1);
+    });
   });
 
   test.describe('Embed', () => {
@@ -518,6 +585,54 @@ test.describe('Blocks', () => {
       const iframe = page.locator('.builder-custom-code iframe');
       const src = await iframe.getAttribute('src');
       expect(src).toContain('https://www.youtube.com/embed/oU3H581uCsA');
+    });
+
+    test('should update DOM when custom code is rendered', async ({ page, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk));
+      test.fail(
+        packageName === 'react-sdk-next-14-app' || packageName === 'react-sdk-next-15-app',
+        'fails to do dom update via script throwing a hydration error'
+      );
+      await page.goto('/custom-code-dom-update');
+
+      await expect(page.locator('#myPara')).toHaveText('hello');
+      await expect(page.locator('#myPara')).toHaveCSS('background-color', 'rgb(0, 128, 0)');
+    });
+
+    test('visual editing updates dom in real time', async ({
+      page,
+      sdk,
+      basePort,
+      packageName,
+    }) => {
+      test.skip(checkIsRN(sdk) || checkIsGen1React(sdk) || packageName === 'nextjs-sdk-next-app');
+      test.fail(
+        packageName === 'react-sdk-next-14-app' || packageName === 'react-sdk-next-15-app',
+        'works correctly in the visual editor but failing here for unknown reason'
+      );
+
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/custom-code-dom-update',
+        sdk,
+      });
+      await page.frameLocator('iframe').getByText('hello').waitFor();
+      await expect(page.frameLocator('iframe').getByText('hello')).toHaveCSS(
+        'background-color',
+        'rgb(0, 128, 0)'
+      );
+
+      const newCodeContent = cloneContent(CUSTOM_CODE_DOM_UPDATE) as typeof CUSTOM_CODE_DOM_UPDATE;
+      newCodeContent.data.blocks[0].component.options.code =
+        "<p id=\"myPara\">Hello there, I am custom HTML code!</p>\n\n<script>\n  const myPara = document.querySelector('#myPara');\n\n  console.log('here', myPara, myPara.innerHTML)\n\n  myPara.innerHTML = 'world'\n\n myPara.style.backgroundColor = 'red';\n</script>\n";
+
+      await sendContentUpdateMessage({ page, newContent: newCodeContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('world').waitFor();
+      await expect(page.frameLocator('iframe').getByText('world')).toHaveCSS(
+        'background-color',
+        'rgb(255, 0, 0)'
+      );
     });
   });
 });

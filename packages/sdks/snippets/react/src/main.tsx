@@ -6,6 +6,8 @@ import AdvancedChildRoute from './routes/custom-components/advanced-child.tsx';
 import CustomChildRoute from './routes/custom-components/custom-child.tsx';
 import EditableRegionRoute from './routes/custom-components/editable-region.tsx';
 import IntegratingPages from './routes/IntegratingPages.tsx';
+import LivePreviewBlogData from './routes/LivePreviewBlogData.js';
+import QueryCheatsheet from './routes/query-cheatsheet/index.tsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
   {
     path: '/advanced-child',
     element: <AdvancedChildRoute />,
+  },
+  {
+    path: '/live-preview',
+    element: <LivePreviewBlogData />,
+  },
+  {
+    path: '/query-cheatsheet',
+    element: <QueryCheatsheet />,
   },
   {
     path: '/*',

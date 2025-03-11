@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeGen1, test } from '../helpers/index.js';
+import { checkIsRN, excludeGen1, test } from '../helpers/index.js';
 
 // is a subset - if this selector is there then others would've also been added
 const DEFAULT_STYLES = `.builder-button {
@@ -10,17 +10,11 @@ const DEFAULT_STYLES = `.builder-button {
 test.describe('Default styles', () => {
   test('default styles should be present only once and not inside nested content', async ({
     page,
-    packageName,
     sdk,
   }) => {
     // dont have .builder-button class
     test.skip(excludeGen1(sdk));
-    // TODO: need to check why angular-ssr is failing, working as expected though
-    test.fail(
-      packageName === 'react-native' ||
-        packageName === 'angular-16-ssr' ||
-        packageName === 'angular-19-ssr'
-    );
+    test.fail(checkIsRN(sdk));
     await page.goto('/default-styles');
 
     const allStyleTags = await page.evaluate(() => {
@@ -40,7 +34,7 @@ test.describe('Default styles', () => {
   });
 
   test('button should have default styles', async ({ page, packageName }) => {
-    test.fail(packageName === 'react-native');
+    test.fail(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
 
     await page.goto('/default-styles');
     const button = page.locator('text=Click me!');

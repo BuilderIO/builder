@@ -1,3 +1,8 @@
+## 5.0.2
+
+- update `@builder.io/webcomponents` to `^2.0.2`
+- send Angular SDK information to Visual Editor
+
 ## 5.0.1
 
 - Bump peer dependency `zone.js` to `0.14.x` for more leniency.

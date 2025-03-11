@@ -106,6 +106,7 @@ const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
   mobile: 'small',
+  xsmall: 'xsmall',
 };
 
 const fetchCache: { [key: string]: any } = {};
@@ -733,7 +734,10 @@ export class BuilderComponent extends React.Component<
 
     if (Builder.isIframe) {
       window.parent?.postMessage(
-        { type: 'builder.sdkInjected', data: { modelName: this.name } },
+        {
+          type: 'builder.sdkInjected',
+          data: { modelName: this.name, apiKey: this.props.apiKey || builder.apiKey },
+        },
         '*'
       );
     }
