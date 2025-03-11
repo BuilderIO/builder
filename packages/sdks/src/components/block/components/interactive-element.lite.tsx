@@ -1,4 +1,4 @@
-import { Show, useMetadata, useStore, type Signal } from '@builder.io/mitosis';
+import { Show, useMetadata, useStore, useTarget, onUpdate, type Signal } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
@@ -23,7 +23,7 @@ useMetadata({
   },
   rsc: {
     componentType: 'client',
-  },
+  }
 });
 
 /**
@@ -32,6 +32,8 @@ useMetadata({
  */
 export default function InteractiveElement(props: InteractiveElementProps) {
   const state = useStore({
+    forceRenderCount: 0,
+    trackedProps: {} as Record<string, any>,
     get attributes() {
       return props.includeBlockProps
         ? {
@@ -51,11 +53,50 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     },
   });
 
+  // Use onUpdate to track prop changes (Mitosis equivalent of useEffect/useTask)
+  onUpdate(() => {
+    useTarget({
+      qwik: () => {
+        // Track wrapperProps changes
+        if (props.wrapperProps) {
+          Object.keys(props.wrapperProps).forEach(key => {
+            // Store current value to detect changes
+            const currentValue = props.wrapperProps[key];
+
+            if (state.trackedProps[key] !== currentValue) {
+              state.trackedProps[key] = currentValue;
+              state.forceRenderCount++;
+            }
+          });
+        }
+        
+        // Also track block component options changes
+        if (props.block?.component?.options) {
+          const optionsStr = JSON.stringify(props.block.component.options);
+          if (state.trackedProps._optionsStr !== optionsStr) {
+            state.trackedProps._optionsStr = optionsStr;
+            state.forceRenderCount++;
+          }
+        }
+      },
+      default: () => {},
+    });
+  }, [props.wrapperProps, props.block?.component?.options]);
+
   return (
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
+        <props.Wrapper 
+          {...props.wrapperProps} 
+          attributes={state.attributes}
+          {...useTarget({
+            qwik: {
+              key: `wrapper-${state.forceRenderCount}`,
+            },
+            default: {},
+          })}
+        >
           {props.children}
         </props.Wrapper>
       }

@@ -48,6 +48,25 @@ const builderBlockWithClassNameCustomComponent = {
   ],
 };
 
+const CUSTOM_COMPONENT = [
+  {
+  name: 'Hello',
+  component: Hello,
+  inputs: [],
+},
+{
+  name: 'Description',
+  component: Description,
+  inputs: [
+    {
+      name: 'text',
+      type: 'string',
+      defaultValue: 'Hello',
+    },
+  ],
+  },
+];
+
 export const useBuilderContentLoader = routeLoader$(async (event) => {
   const data = await getProps({
     pathname: event.url.pathname,
@@ -69,22 +88,8 @@ export default component$(() => {
       {contentProps.value ? (
         <Content
           {...(contentProps.value as any)}
-          customComponents={[{
-            name: 'Hello',
-            component: Hello,
-            inputs: [],
-          },
-          {
-            name: 'Description',
-            component: Description,
-            inputs: [
-              {
-                name: 'text',
-                type: 'string',
-                defaultValue: 'Hello',
-              },
-            ],
-          },
+          customComponents={[
+            ...CUSTOM_COMPONENT,
           builderBlockWithClassNameCustomComponent]}
         />
       ) : (
