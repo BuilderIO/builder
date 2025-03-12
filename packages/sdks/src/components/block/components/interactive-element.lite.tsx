@@ -40,7 +40,6 @@ useMetadata({
 export default function InteractiveElement(props: InteractiveElementProps) {
   const state = useStore({
     forceRenderCount: 0,
-    trackedProps: {} as Record<string, any>,
     get attributes() {
       return props.includeBlockProps
         ? {
@@ -64,27 +63,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
   onUpdate(() => {
     useTarget({
       qwik: () => {
-        // Track wrapperProps changes
-        if (props.wrapperProps) {
-          Object.keys(props.wrapperProps).forEach((key) => {
-            // Store current value to detect changes
-            const currentValue = props.wrapperProps[key];
-
-            if (state.trackedProps[key] !== currentValue) {
-              state.trackedProps[key] = currentValue;
-              state.forceRenderCount++;
-            }
-          });
-        }
-
-        // Also track block component options changes
-        if (props.block?.component?.options) {
-          const optionsStr = JSON.stringify(props.block.component.options);
-          if (state.trackedProps._optionsStr !== optionsStr) {
-            state.trackedProps._optionsStr = optionsStr;
-            state.forceRenderCount++;
-          }
-        }
+        state.forceRenderCount = state.forceRenderCount + 1;
       },
       default: () => {},
     });
@@ -94,16 +73,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper
-          {...useTarget({
-            qwik: {
-              key: 'wrapper-' + state.forceRenderCount,
-            },
-            default: {},
-          })}
-          {...props.wrapperProps}
-          attributes={state.attributes}
-        >
+        <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
           {props.children}
         </props.Wrapper>
       }
