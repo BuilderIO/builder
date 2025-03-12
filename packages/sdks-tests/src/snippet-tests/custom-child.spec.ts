@@ -4,9 +4,15 @@ import { test } from '../helpers/index.js';
 test.describe('Div with Hero class, and text', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue'].includes(
-        packageName
-      )
+      ![
+        'react',
+        'angular-16',
+        'angular-16-ssr',
+        'gen1-remix',
+        'gen1-react',
+        'vue',
+        'nuxt',
+      ].includes(packageName)
     );
 
     const response = await page.goto('/custom-child');
@@ -15,9 +21,15 @@ test.describe('Div with Hero class, and text', () => {
 
   test('should verify builder-block with specific text', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue'].includes(
-        packageName
-      )
+      ![
+        'react',
+        'angular-16',
+        'angular-16-ssr',
+        'gen1-remix',
+        'gen1-react',
+        'vue',
+        'nuxt',
+      ].includes(packageName)
     );
 
     await page.goto('/custom-child');
