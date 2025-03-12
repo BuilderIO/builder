@@ -23,7 +23,7 @@ const { data: announcement } = await useAsyncData(
     fetchOneEntry({
       model,
       apiKey,
-      options: getBuilderSearchParams(route.query),
+
       userAttributes: { urlPath: route.path },
     })
 );

@@ -3,11 +3,7 @@
  * snippets/hydrogen/app/components/AnnouncementBarPage.tsx
  */
 
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-} from '@builder.io/sdk-react';
+import {Content, fetchOneEntry} from '@builder.io/sdk-react';
 import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {useNonce} from '@shopify/hydrogen';
@@ -29,7 +25,6 @@ export const announcementsLoader: LoaderFunction = async ({
       userAttributes: {
         urlPath: pathname,
       },
-      options: getBuilderSearchParams(url.searchParams),
     });
 
     return {content, model};

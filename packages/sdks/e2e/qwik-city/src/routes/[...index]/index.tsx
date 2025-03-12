@@ -59,6 +59,7 @@ export const useBuilderContentLoader = routeLoader$(async (event) => {
 
 export default component$(() => {
   const contentProps = useBuilderContentLoader();
+
   return (
     <>
       {contentProps.value.addTopPadding && (
