@@ -19,6 +19,7 @@ import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbo
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
 import { NEW_BLOCK_ADD } from '../specs/new-block-add.js';
+import { NESTED_SYMBOL_CONTENT } from '../specs/nested-symbol.js';
 
 const editorTests = ({
   noTrustedHosts,
@@ -547,5 +548,21 @@ test.describe('Visual Editing', () => {
       await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
       await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
     });
+  });
+
+  test.only('Symbol should update the data when nested values are updated', async ({ page, basePort, sdk }) => {
+    await launchEmbedderAndWaitForSdk({ path: '/nested-symbol', basePort, page, sdk });
+
+    const newContent = cloneContent(NESTED_SYMBOL_CONTENT);
+
+    await sendPatchOrUpdateMessage({
+      page,
+      content: newContent,
+      model: 'page',
+      sdk,
+      path: '/data/blocks/0/component/options/symbol/data/language/1/code',
+      updateFn: () => 'AFK',
+    });
+    await page.frameLocator('iframe').getByText('AFK').waitFor();
   });
 });

@@ -83,16 +83,10 @@ export default function Symbol(props: SymbolProps) {
         }
       });
     },
-    shouldForceRender() {
-      console.log('shouldForceRender', props.symbol);
-      return false;
-    },
   });
 
   onUpdate(() => {
-    if (state.shouldForceRender()) {
-      state.forceRenderCount = state.forceRenderCount + 1;
-    }
+    state.forceRenderCount = state.forceRenderCount + 1;
 
     state.setContent();
   }, [props.symbol]);

@@ -90,6 +90,7 @@ import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
 import { NEW_BLOCK_ADD } from './new-block-add.js';
 
 import { DYNAMIC_BUTTON } from './dynamic-button.js';
+import { NESTED_SYMBOL_CONTENT } from './nested-symbol.js';
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
@@ -137,6 +138,7 @@ export const PAGES: Record<string, Page> = {
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },
   '/data-bindings': { content: dataBindings },
+  '/nested-symbol': { content: NESTED_SYMBOL_CONTENT },
   '/data-binding-styles': { content: dataBindingStyles },
   '/react-native-strict-style-mode': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
   '/react-native-strict-style-mode-disabled': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
