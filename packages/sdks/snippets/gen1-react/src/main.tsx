@@ -8,6 +8,7 @@ import EditableRegion from './routes/editable-region';
 import IntegratingPages from './routes/IntegratingPages';
 import QueryCheatsheet from './routes/query-cheatsheet';
 import TargetedPage from './routes/targeted-page';
+import TargetedPageSetAttributes from './routes/targeted-page/set-attributes';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: '/targeted-page',
     element: <TargetedPage />,
+  },
+  {
+    path: '/targeted-page-set-attributes',
+    element: <TargetedPageSetAttributes />,
   },
   {
     path: '/*',
