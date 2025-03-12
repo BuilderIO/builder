@@ -1,15 +1,11 @@
 import { fetchOneEntry, GetContentOptions } from '@builder.io/sdk-react';
 
-export default function targetedRequest(
-  urlPath: string,
-  { apiKey, model }: GetContentOptions
-) {
+export default function targetedRequest(options: GetContentOptions) {
   return fetchOneEntry({
-    apiKey,
-    model,
+    ...options,
     userAttributes: {
       audience: ['mens-fashion'],
-      urlPath,
+      ...options.userAttributes,
     },
   });
 }

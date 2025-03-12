@@ -17,7 +17,6 @@ const MODEL = 'targeted-page';
 const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
 type RequestFunction = (
-  url: string,
   options: GetContentOptions
 ) => Promise<BuilderContent | null>;
 
@@ -38,10 +37,14 @@ export default function TargetedPage() {
       const options = {
         apiKey: BUILDER_API_KEY,
         model: MODEL,
+        userAttributes: {
+          urlPath: window.location.pathname,
+        },
       };
+
       const target: string = searchParams.get('target') || '';
       const targetFn = target ? fnMap[target] : noTargetRequest;
-      const content = await targetFn(window.location.pathname, options);
+      const content = await targetFn(options);
 
       setContent(content);
 

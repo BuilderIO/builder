@@ -1,11 +1,14 @@
 import { builder } from '@builder.io/react';
 import type { GetContentOptions } from '@builder.io/sdk';
 
-export default function targetedRequest({ model, url }: GetContentOptions) {
-  return builder.get(model!, {
+export default function targetedRequest(
+  modelName: string,
+  options: GetContentOptions
+) {
+  return builder.get(modelName, {
     userAttributes: {
       audience: ['mens-fashion'],
-      urlPath: url,
     },
+    ...options,
   });
 }
