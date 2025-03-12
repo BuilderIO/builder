@@ -29,13 +29,12 @@ export default function TargetedPage() {
 
   useEffect(() => {
     async function fetchContent() {
-      const options: { model: string; url: string } = {
-        model: MODEL,
-        url: window.location.pathname,
-      };
       const target: string = searchParams.get('target') || '';
       const targetFn = target ? fnMap[target] : noTargetRequest;
-      const content = await targetFn(options);
+
+      const content = await targetFn(MODEL, {
+        url: window.location.pathname,
+      });
 
       setContent(content);
       setNotFound(!content);
@@ -50,6 +49,8 @@ export default function TargetedPage() {
   if (notFound && !isPreviewingInBuilder) {
     return <FourOhFour />;
   }
+
+  console.log('...', builder.getUserAttributes());
 
   return (
     <>

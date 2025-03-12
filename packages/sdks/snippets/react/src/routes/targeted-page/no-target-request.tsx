@@ -1,15 +1,12 @@
 import { fetchOneEntry, GetContentOptions } from '@builder.io/sdk-react';
 
-export default function targetedRequest(
-  urlPath: string,
-  { apiKey, model }: GetContentOptions
-) {
+export default function targetedRequest(options: GetContentOptions) {
   return fetchOneEntry({
-    apiKey,
-    model,
+    ...options,
     userAttributes: {
       device: 'desktop',
-      urlPath,
+      urlPath: options.userAttributes?.urlPath,
+      ...options.userAttributes, // Include additional userAttributes
     },
   });
 }
