@@ -1,29 +1,16 @@
 <script lang="ts">
-  import { Blocks } from '@builder.io/sdk-svelte';
-  import type { BuilderBlock } from '@builder.io/sdk-svelte';
-
-  interface TabItem {
-    tabName: string;
-    blocks: BuilderBlock[];
-  }
+  import { Blocks, type BuilderBlock } from '@builder.io/sdk-svelte';
 
   export let builderBlock: BuilderBlock;
-  export let tabList: TabItem[] = [];
+  export let tabList: Array<{ tabName: string; blocks: BuilderBlock[] }>;
 
   let activeTab = 0;
-
-  function handleTabClick(index: number) {
-    activeTab = index;
-  }
 </script>
 
-{#if tabList && tabList.length}
+{#if tabList.length}
   <div class="dynamics-slots">
     {#each tabList as tab, index}
-      <button
-        class:active={activeTab === index}
-        on:click={() => handleTabClick(index)}
-      >
+      <button on:click={() => (activeTab = index)}>
         {tab.tabName}
       </button>
     {/each}
