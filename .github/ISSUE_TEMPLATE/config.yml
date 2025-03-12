@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Builder Support
+    url: https://www.builder.io/c/docs/help-and-support
+    about: Document on how to contact Builder support
+  - name: Builder Forum
+    url: https://forum.builder.io/
+    about: Forum for technical discussions and support
