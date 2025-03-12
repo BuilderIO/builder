@@ -646,7 +646,7 @@ test.describe('Visual Editing', () => {
     });
   });
 
-  test.only('Symbol should update the data when nested values are updated', async ({ page, basePort, sdk }) => {
+  test('Symbol should update the data when nested values are updated', async ({ page, basePort, sdk }) => {
     await launchEmbedderAndWaitForSdk({ path: '/nested-symbol', basePort, page, sdk });
 
     const newContent = cloneContent(NESTED_SYMBOL_CONTENT);
