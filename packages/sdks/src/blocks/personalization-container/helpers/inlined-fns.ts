@@ -42,8 +42,15 @@ function getPersonalizedVariant(
   });
 
   // Get the parent div containing this script
-  const parentDiv = document.currentScript?.parentElement;
-  const variantId = parentDiv?.getAttribute('data-variant-id');
+  // const parentDiv = document.currentScript?.parentElement;
+  const blocksStyle = document.currentScript?.previousElementSibling;
+  const blocksDiv = blocksStyle?.previousElementSibling;
+  console.log('blocksDiv', {
+    parentDiv: blocksDiv?.outerHTML,
+    previousElementSibling: blocksStyle?.previousElementSibling?.outerHTML,
+    nextElementSibling: blocksStyle?.nextElementSibling?.outerHTML,
+  });
+  const variantId = blocksDiv?.getAttribute('data-variant-id');
   const isDefaultVariant = variantId === `${blockId}`;
   const isWinningVariant =
     winningVariantIndex !== -1 &&
@@ -51,17 +58,19 @@ function getPersonalizedVariant(
 
   // Show/hide variants based on winning status
   if (isWinningVariant && !isDefaultVariant) {
-    parentDiv?.removeAttribute('hidden');
-    parentDiv?.removeAttribute('aria-hidden');
+    blocksDiv?.removeAttribute('hidden');
+    blocksDiv?.removeAttribute('aria-hidden');
+    blocksDiv?.removeAttribute('data-variant-id');
   } else if (!isWinningVariant && isDefaultVariant) {
-    parentDiv?.setAttribute('hidden', 'true');
-    parentDiv?.setAttribute('aria-hidden', 'true');
+    blocksDiv?.setAttribute('hidden', 'true');
+    blocksDiv?.setAttribute('aria-hidden', 'true');
   }
 
   // For hydration frameworks, remove non-winning variants and the script tag
   if (isHydrationTarget) {
     if (!isWinningVariant) {
-      parentDiv?.remove();
+      blocksDiv?.remove();
+      blocksStyle?.remove();
     }
     const thisScript = document.currentScript;
     if (thisScript) {
