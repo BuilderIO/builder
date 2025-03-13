@@ -960,6 +960,21 @@ const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   },
 });
 
+const QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'InteractiveElement') {
+        console.log('json', JSON.stringify(json, null, 2));
+        json.children[0].meta.else.bindings['key'] = {
+          code: "'wrapper-' + state.forceRenderCount",
+          bindingType: "expression",
+          type: "single"
+        };
+      }
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -1235,18 +1250,11 @@ module.exports = {
     "readystatechange"`
                 );
               }
-              if (json.name === 'InteractiveElement') {
-                code = code.replace(`<props.Wrapper {...props.wrapperProps} attributes={attributes.value}>
-            <Slot></Slot>
-          </props.Wrapper>`, 
-                `<props.Wrapper key={'wrapper-'+state.forceRenderCount} {...props.wrapperProps} attributes={attributes.value}>
-            <Slot></Slot>
-          </props.Wrapper>`)
-              }
               return code;
             },
           },
         }),
+        QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE,
         QWIK_ONUPDATE_TO_USEVISIBLETASK,
       ],
     },

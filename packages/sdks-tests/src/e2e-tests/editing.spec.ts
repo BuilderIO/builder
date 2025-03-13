@@ -343,8 +343,9 @@ test.describe('Visual Editing', () => {
         model: 'page',
       });
 
-      // Add a small delay to allow the component to fully update
-      await page.waitForTimeout(500);
+      await expect(
+        page.frameLocator('iframe').getByText('Item 1')
+      ).toBeVisible({ timeout: 5000 });
       
       // Re-query the item1 element as it might have been recreated
       const updatedItem1 = page.frameLocator('iframe').getByText('Item 1');
