@@ -15,4 +15,5 @@ export type BlocksProps = Partial<
   registeredComponents?: RegisteredComponents;
   linkComponent?: any;
   className?: string;
+  extraAttributesForBlocksWrapper?: Record<string, any>;
 };

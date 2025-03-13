@@ -5,6 +5,7 @@ import type { BuilderBlock } from '../../types/builder-block.js';
 import {
   FILTER_WITH_CUSTOM_TARGETING_SCRIPT,
   PERSONALIZATION_SCRIPT,
+  UPDATE_VISIBILITY_STYLES_SCRIPT,
 } from './helpers/inlined-fns.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
 
@@ -103,18 +104,30 @@ export function getBlocksToRender({
   return fallback;
 }
 
+export const getInitPersonalizationVariantsFnsScriptString = () => {
+  return `
+  window.filterWithCustomTargeting = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
+  window.builderIoPersonalization = ${PERSONALIZATION_SCRIPT}
+  window.updateVisibilityStylesScript = ${UPDATE_VISIBILITY_STYLES_SCRIPT}
+  `;
+};
+
+const isHydrationTarget = TARGET === 'react';
+
 export const getPersonalizationScript = (
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
   locale?: string
 ) => {
-  return `
-  (function() {
-    ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
-    ${PERSONALIZATION_SCRIPT}
-    getPersonalizedVariant(${JSON.stringify(variants)}, "${blockId}"${locale ? `, "${locale}"` : ''})
-  })();
-  `;
+  return `window.builderIoPersonalization(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
+};
+
+export const getUpdateVisibilityStylesScript = (
+  variants: PersonalizationContainerProps['variants'],
+  blockId: string,
+  locale?: string
+) => {
+  return `window.updateVisibilityStylesScript(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
 };
 
 export { filterWithCustomTargeting } from './helpers/inlined-fns.js';
