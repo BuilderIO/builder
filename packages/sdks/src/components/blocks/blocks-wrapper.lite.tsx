@@ -133,20 +133,21 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
         reactNative: { dataSet: { class: state.className } },
         default: {},
       })}
-      style={props.styleProp}
-      // eslint-disable-next-line @builder.io/mitosis/css-no-vars
-      css={useTarget({
-        // react native's ScrollView can't accept `alignItems` in styles.
-        reactNative: {
-          display: 'flex',
-          flexDirection: 'column',
-        },
-        default: {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-        },
-      })}
+      style={{
+        ...useTarget({
+          // react native's ScrollView can't accept `alignItems` in styles.
+          reactNative: {
+            display: 'flex',
+            flexDirection: 'column',
+          },
+          default: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+          },
+        }),
+        ...props.styleProp,
+      }}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onClick={(event: any) => state.onClick()}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

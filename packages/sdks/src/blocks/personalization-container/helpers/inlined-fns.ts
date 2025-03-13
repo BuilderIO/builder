@@ -15,6 +15,7 @@ function getPersonalizedVariant(
   if (!navigator.cookieEnabled) {
     return;
   }
+  console.log('calling getPersonalizedVariant');
 
   function getCookie(name: string) {
     const nameEQ = name + '=';
@@ -41,21 +42,23 @@ function getPersonalizedVariant(
     );
   });
 
-  // Get the parent div containing this script
-  // const parentDiv = document.currentScript?.parentElement;
-  const blocksStyle = document.currentScript?.previousElementSibling;
-  const blocksDiv = blocksStyle?.previousElementSibling;
+  const blocksDiv = document.currentScript?.previousElementSibling;
   const variantId = blocksDiv?.getAttribute('data-variant-id');
+  console.log('variantId', variantId, {
+    blocksDiv: blocksDiv?.outerHTML,
+  });
 
   let isDefaultVariant = false;
   if (!variantId) {
     isDefaultVariant = true;
   }
-
+  console.log('isDefaultVariant', isDefaultVariant);
   const isWinningVariant =
     (winningVariantIndex !== -1 &&
       variantId === `${blockId}-${winningVariantIndex}`) ||
     (winningVariantIndex === -1 && isDefaultVariant);
+
+  console.log('isWinningVariant', isWinningVariant);
 
   // Show/hide variants based on winning status
   if (isWinningVariant && !isDefaultVariant) {
@@ -70,11 +73,12 @@ function getPersonalizedVariant(
   // For hydration frameworks, remove non-winning variants and the script tag
   if (isHydrationTarget) {
     if (!isWinningVariant) {
+      console.log('removing blocksDiv');
       blocksDiv?.remove();
-      blocksStyle?.remove();
     }
     const thisScript = document.currentScript;
     if (thisScript) {
+      console.log('removing thisScript');
       thisScript.remove();
     }
   }
