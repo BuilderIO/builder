@@ -5,6 +5,7 @@ import type { BuilderBlock } from '../../types/builder-block.js';
 import {
   FILTER_WITH_CUSTOM_TARGETING_SCRIPT,
   PERSONALIZATION_SCRIPT,
+  UPDATE_VISIBILITY_STYLES_SCRIPT,
 } from './helpers/inlined-fns.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
 
@@ -107,6 +108,7 @@ export const getInitPersonalizationVariantsFnsScriptString = () => {
   return `
   window.filterWithCustomTargeting = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
   window.builderIoPersonalization = ${PERSONALIZATION_SCRIPT}
+  window.updateVisibilityStylesScript = ${UPDATE_VISIBILITY_STYLES_SCRIPT}
   `;
 };
 
@@ -118,6 +120,14 @@ export const getPersonalizationScript = (
   locale?: string
 ) => {
   return `window.builderIoPersonalization(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
+};
+
+export const getUpdateVisibilityStylesScript = (
+  variants: PersonalizationContainerProps['variants'],
+  blockId: string,
+  locale?: string
+) => {
+  return `window.updateVisibilityStylesScript(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
 };
 
 export { filterWithCustomTargeting } from './helpers/inlined-fns.js';

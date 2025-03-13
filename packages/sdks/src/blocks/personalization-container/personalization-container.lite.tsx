@@ -20,6 +20,7 @@ import {
   filterWithCustomTargeting,
   getBlocksToRender,
   getPersonalizationScript,
+  getUpdateVisibilityStylesScript,
 } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
 
@@ -36,6 +37,11 @@ export default function PersonalizationContainer(
   const state = useStore({
     userAttributes: userAttributesService.getUserAttributes(),
     scriptStr: getPersonalizationScript(
+      props.variants,
+      props.builderBlock?.id || 'none',
+      props.builderContext.value?.rootState?.locale as string | undefined
+    ),
+    updateVisibilityStylesScript: getUpdateVisibilityStylesScript(
       props.variants,
       props.builderBlock?.id || 'none',
       props.builderContext.value?.rootState?.locale as string | undefined
@@ -150,12 +156,17 @@ export default function PersonalizationContainer(
         props.attributes?.className || ''
       }`}
     >
-      <InlinedStyles
-        nonce={props.builderContext.value?.nonce || ''}
-        styles={state.hideVariantsStyleString}
-        id={`variants-styles-${props.builderBlock?.id}`}
-      />
       <Show when={state.shouldRenderVariants}>
+        <InlinedStyles
+          nonce={props.builderContext.value?.nonce || ''}
+          styles={state.hideVariantsStyleString}
+          id={`variants-styles-${props.builderBlock?.id}`}
+        />
+        <InlinedScript
+          nonce={props.builderContext.value?.nonce || ''}
+          scriptStr={state.updateVisibilityStylesScript}
+          id={`variants-visibility-script-${props.builderBlock?.id}`}
+        />
         <For each={props.variants}>
           {(variant, index) => (
             <>
@@ -168,6 +179,8 @@ export default function PersonalizationContainer(
                 blocks={variant.blocks}
                 parent={props.builderBlock?.id}
                 path={`component.options.variants.${index}.blocks`}
+                context={props.builderContext}
+                registeredComponents={props.builderComponents}
               />
               <InlinedScript
                 nonce={props.builderContext.value?.nonce || ''}
@@ -182,6 +195,8 @@ export default function PersonalizationContainer(
         blocks={state.blocksToRender.blocks}
         parent={props.builderBlock?.id}
         path={state.blocksToRender.path}
+        context={props.builderContext}
+        registeredComponents={props.builderComponents}
       />
       <Show when={state.shouldRenderVariants}>
         <InlinedScript

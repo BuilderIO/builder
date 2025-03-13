@@ -188,6 +188,67 @@ export function filterWithCustomTargeting(
   });
 }
 
+export function updateVisibilityStylesScript(
+  variants: PersonalizationContainerProps['variants'],
+  blockId: string,
+  isHydrationTarget: boolean,
+  locale?: string
+) {
+  function getCookie(name: string) {
+    const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+  const visibilityStylesEl = document.querySelector(
+    `[data-id="variants-styles-${blockId}"]`
+  );
+
+  if (!visibilityStylesEl) {
+    return;
+  }
+
+  if (isHydrationTarget) {
+    visibilityStylesEl.remove();
+    const currentScript = document.currentScript;
+    if (currentScript) {
+      currentScript.remove();
+    }
+  } else {
+    const attributes = JSON.parse(getCookie('builder.userAttributes') || '{}');
+    if (locale) {
+      attributes.locale = locale;
+    }
+    const winningVariantIndex = variants?.findIndex(function (variant) {
+      return (window as any).filterWithCustomTargeting(
+        attributes,
+        variant.query,
+        variant.startDate,
+        variant.endDate
+      );
+    });
+    console.log('winningVariantIndex', winningVariantIndex);
+    if (winningVariantIndex !== -1) {
+      const newStyleStr =
+        variants
+          ?.map((_, index) => {
+            const displayProperty =
+              index === winningVariantIndex ? 'block' : 'none';
+            return `div[data-variant-id="${blockId}-${index}"] { display: ${displayProperty}; } `;
+          })
+          .join('') || '';
+      visibilityStylesEl.innerHTML = newStyleStr;
+      console.log('newStyleStr', newStyleStr);
+    }
+  }
+}
+
 export const PERSONALIZATION_SCRIPT = getPersonalizedVariant.toString();
 export const FILTER_WITH_CUSTOM_TARGETING_SCRIPT =
   filterWithCustomTargeting.toString();
+export const UPDATE_VISIBILITY_STYLES_SCRIPT =
+  updateVisibilityStylesScript.toString();
