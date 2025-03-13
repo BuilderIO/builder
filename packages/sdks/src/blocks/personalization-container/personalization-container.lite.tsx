@@ -73,7 +73,7 @@ export default function PersonalizationContainer(
       return (props.variants || [])
         .map(
           (_, index) =>
-            `[data-variant-id="${props.builderBlock?.id}-${index}"] { display: none; } `
+            `div[data-variant-id="${props.builderBlock?.id}-${index}"] { display: none; } `
         )
         .join('');
     },
