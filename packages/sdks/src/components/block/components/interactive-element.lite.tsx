@@ -1,4 +1,11 @@
-import { Show, useMetadata, useStore, type Signal } from '@builder.io/mitosis';
+import {
+  Show,
+  onUpdate,
+  useMetadata,
+  useStore,
+  useTarget,
+  type Signal,
+} from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
@@ -32,6 +39,7 @@ useMetadata({
  */
 export default function InteractiveElement(props: InteractiveElementProps) {
   const state = useStore({
+    forceRenderCount: 0,
     get attributes() {
       return props.includeBlockProps
         ? {
@@ -50,6 +58,16 @@ export default function InteractiveElement(props: InteractiveElementProps) {
         : {};
     },
   });
+
+  // Use onUpdate to track prop changes (Mitosis equivalent of useEffect/useTask)
+  onUpdate(() => {
+    useTarget({
+      qwik: () => {
+        state.forceRenderCount = state.forceRenderCount + 1;
+      },
+      default: () => {},
+    });
+  }, [props.wrapperProps, props.block?.component?.options]);
 
   return (
     <Show

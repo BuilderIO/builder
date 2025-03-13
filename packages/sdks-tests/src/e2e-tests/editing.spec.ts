@@ -18,6 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { CUSTOM_COMPONENT_NO_DEFAULT_VALUE } from '../specs/custom-component-no-default-value.js';
 import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
 
 const editorTests = ({
@@ -150,6 +151,16 @@ test.describe('Visual Editing', () => {
       }
     }
   });
+
+  test('correctly updating custom components when default value is not set', async ({ page, basePort, sdk, packageName }) => {
+    test.skip(!['react', 'qwik-city'].includes(packageName));
+    await launchEmbedderAndWaitForSdk({ path: '/custom-components-no-default-value', basePort, page, sdk });
+    const newContent = cloneContent(CUSTOM_COMPONENT_NO_DEFAULT_VALUE);
+    newContent.data.blocks[0].component.options.text = "Hello";
+    await sendContentUpdateMessage({ page, newContent, model: 'page' });
+    const helloWorldText = page.frameLocator('iframe').locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]')
+    await expect(helloWorldText).toHaveText('Hello');
+  })
 
   test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
     test.skip(packageName === 'nextjs-sdk-next-app' || checkIsGen1React(sdk));
@@ -332,13 +343,19 @@ test.describe('Visual Editing', () => {
         model: 'page',
       });
 
-      await item1.click();
+      await expect(
+        page.frameLocator('iframe').getByText('Item 1')
+      ).toBeVisible({ timeout: 5000 });
+      
+      // Re-query the item1 element as it might have been recreated
+      const updatedItem1 = page.frameLocator('iframe').getByText('Item 1');
+      await updatedItem1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
       await detailElement.waitFor();
 
       const [titleBox, detailBox] = await Promise.all([
-        item1.boundingBox(),
+        updatedItem1.boundingBox(),
         detailElement.boundingBox(),
       ]);
 
