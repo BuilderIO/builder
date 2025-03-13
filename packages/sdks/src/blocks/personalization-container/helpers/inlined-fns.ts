@@ -53,8 +53,9 @@ function getPersonalizedVariant(
   }
 
   const isWinningVariant =
-    winningVariantIndex !== -1 &&
-    variantId === `${blockId}-${winningVariantIndex}`;
+    (winningVariantIndex !== -1 &&
+      variantId === `${blockId}-${winningVariantIndex}`) ||
+    (winningVariantIndex === -1 && isDefaultVariant);
 
   // Show/hide variants based on winning status
   if (isWinningVariant && !isDefaultVariant) {
