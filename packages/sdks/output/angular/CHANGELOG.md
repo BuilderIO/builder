@@ -1,5 +1,19 @@
 # @builder.io/sdk-angular
 
+## 0.18.7
+
+### Patch Changes
+
+- 4eaad61: Refactor: code changes for the new blocks getting added on the top fix, adds thorough comments and uses mitosis's compileContext to introduce the `ngAfterContentChecked` hook
+- b38c8fb: Fix: show the correct A/B test variant content while visual editing or toggling between variants
+
+## 0.18.6
+
+### Patch Changes
+
+- f4ff27d: Fix: crashes when visually editing blocks (encountered when SDK dynamically switched HTML elements)
+- 6eb90b3: Fix: new blocks getting added at the top while visual editing
+
 ## 0.18.5
 
 ### Patch Changes

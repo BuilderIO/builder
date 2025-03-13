@@ -396,9 +396,43 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 });
 
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BlocksWrapper') {
+        json.hooks.onUpdate.forEach((hook) => {
+          hook.code = hook.code.replace(/^\s*\/\/\s*@ts-expect-error.*$/gm, '');
+        });
+        /**
+         * Since the angular SDK manually handles the creation of the dynamic blocks and attaching them as children of BlocksWrapper in the DOM
+         * it must also manually handle their re-renders on content change in the visual editor.
+         *
+         * <blocks-wrapper> -> inserts blocks as children dynamically
+         *  {each <block />} -> we need to re-render blocks when props.blocks update while visual editing
+         * </blocks-wrapper>
+         *
+         * `ngAfterContentChecked` runs after children were checked for changes, which is the earliest point we can safely append new blocks,
+         * and re-paint the DOM else the new children blocks are not present in the existing array, therefore pushed to the top of the list.
+         */
+        json.compileContext = {
+          angular: {
+            hooks: {
+              ngAfterContentChecked: {
+                code: `if (this.shouldUpdate) {
+                  this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes];
+                  this.shouldUpdate = false;
+                }`,
+              },
+            },
+          },
+        };
+      }
+      return json;
+    },
+  },
   code: {
-    post: (code) => {
-      if (code?.includes('selector: "blocks-wrapper"')) {
+    post: (code, json) => {
+      if (json.name === 'BlocksWrapper') {
+        // insert children only after they are fully initialized
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
@@ -677,7 +711,7 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
  * This code is used to destructure the `attributes` prop and apply it to the direct child element of the
  * interactive-element when `noWrap` is set to `true`.
  *
- * When using a custom component that doesn’t expect the `attributes` prop and `noWrap` is `true`,
+ * When using a custom component that doesn't expect the `attributes` prop and `noWrap` is `true`,
  * the `attributes` are applied to the root element of the custom component:
  *
  * <mat-button {...attributes}>
@@ -896,6 +930,25 @@ const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
   },
 });
 
+// Temporary fix to make the visual editing work for AB tests in Angular SDK
+// getters in angular run on every change detection
+const ANGULAR_AB_TEST_VE_CORRECT_VARIANT = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name === 'ContentVariants') {
+        json.state['defaultContent'].code = json.state[
+          'defaultContent'
+        ].code.replace('get ', '');
+        json.state['defaultContent'].type = 'method';
+        // as we are "pre" modifying the json, this will create a new state property for this
+        json.children[0].children[2].bindings['content'].code =
+          'state.defaultContent()';
+      }
+      return json;
+    },
+  },
+});
+
 const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   code: {
     post: (code, json) => {
@@ -937,6 +990,7 @@ module.exports = {
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
         ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT,
+        ANGULAR_AB_TEST_VE_CORRECT_VARIANT,
       ],
     },
     solid: {

@@ -7,6 +7,7 @@ test.describe('Product Details Component', () => {
       ![
         'angular-16',
         'angular-16-ssr',
+        'react',
         'vue',
         'nuxt',
         'svelte',
