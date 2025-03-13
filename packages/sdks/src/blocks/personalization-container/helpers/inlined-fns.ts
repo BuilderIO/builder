@@ -46,7 +46,12 @@ function getPersonalizedVariant(
   const blocksStyle = document.currentScript?.previousElementSibling;
   const blocksDiv = blocksStyle?.previousElementSibling;
   const variantId = blocksDiv?.getAttribute('data-variant-id');
-  const isDefaultVariant = variantId === `${blockId}`;
+
+  let isDefaultVariant = false;
+  if (!variantId) {
+    isDefaultVariant = true;
+  }
+
   const isWinningVariant =
     winningVariantIndex !== -1 &&
     variantId === `${blockId}-${winningVariantIndex}`;
