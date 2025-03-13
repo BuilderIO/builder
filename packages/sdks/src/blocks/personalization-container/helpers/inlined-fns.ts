@@ -45,11 +45,6 @@ function getPersonalizedVariant(
   // const parentDiv = document.currentScript?.parentElement;
   const blocksStyle = document.currentScript?.previousElementSibling;
   const blocksDiv = blocksStyle?.previousElementSibling;
-  console.log('blocksDiv', {
-    parentDiv: blocksDiv?.outerHTML,
-    previousElementSibling: blocksStyle?.previousElementSibling?.outerHTML,
-    nextElementSibling: blocksStyle?.nextElementSibling?.outerHTML,
-  });
   const variantId = blocksDiv?.getAttribute('data-variant-id');
   const isDefaultVariant = variantId === `${blockId}`;
   const isWinningVariant =
