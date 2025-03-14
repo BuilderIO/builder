@@ -18,6 +18,7 @@ export interface ImgProps {
   imgSrc?: string; // TODO(misko): I think this is unused
   image?: string;
   altText?: string;
+  title?: string;
   backgroundSize?: 'cover' | 'contain';
   backgroundPosition?:
     | 'center'
@@ -40,6 +41,7 @@ export default function ImgComponent(props: ImgProps) {
       }}
       key={(isEditing() && props.imgSrc) || 'default-key'}
       alt={props.altText}
+      title={props.title}
       src={props.imgSrc || props.image}
       {...useTarget({
         vue: filterAttrs(props.attributes, 'v-on:', false),

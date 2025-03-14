@@ -325,6 +325,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   } as any)
                 : null)}
               alt={this.props.altText}
+              title={this.props.title}
               key={
                 Builder.isEditing
                   ? (typeof this.image === 'string' && this.image.split('?')[0]) || undefined
@@ -547,6 +548,11 @@ export const Image = withBuilder(ImageComponent, {
       name: 'altText',
       type: 'string',
       helperText: 'Text to display when the user has images off',
+    },
+    {
+      name: 'title',
+      type: 'string',
+      helperText: 'Text to display when hovering over the asset',
     },
     {
       name: 'highPriority',
