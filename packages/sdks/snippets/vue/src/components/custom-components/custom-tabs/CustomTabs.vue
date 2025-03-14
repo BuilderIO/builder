@@ -23,14 +23,12 @@
 
   const activeTab = ref(0);
 
-  interface TabItem {
-    tabName: string;
-    blocks: BuilderBlock[];
-  }
-
   const { builderBlock, tabList } = defineProps<{
     builderBlock: BuilderBlock,
-    tabList: TabItem[]
+    tabList: {
+        tabName: string;
+        blocks: BuilderBlock[];
+    }[]
   }>();
   
   </script>
