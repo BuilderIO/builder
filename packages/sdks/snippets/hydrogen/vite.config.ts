@@ -15,6 +15,11 @@ export default defineConfig({
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
       },
+      routes(defineRoutes) {
+        return defineRoutes((route) => {
+          route('/product/category/:handle', 'routes/category.$handle.tsx');
+        });
+      },
     }),
     tsconfigPaths({
       root: './',

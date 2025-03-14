@@ -3,7 +3,21 @@ import { test } from '../helpers/index.js';
 
 test.describe('Product Details Component', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr', 'react'].includes(packageName));
+    test.skip(
+      ![
+        'angular-16',
+        'angular-16-ssr',
+        'react',
+        'vue',
+        'nuxt',
+        'svelte',
+        'sveltekit',
+        'qwik-city',
+        'react-sdk-next-14-app',
+        'react-sdk-next-pages',
+        'hydrogen',
+      ].includes(packageName)
+    );
     // Visit the page where ProductDetailsComponent is rendered
     await page.goto('/product/category/jacket');
   });
