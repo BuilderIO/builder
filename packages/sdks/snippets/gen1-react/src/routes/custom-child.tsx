@@ -2,9 +2,9 @@ import builder, {
   Builder,
   BuilderComponent,
   withChildren,
-  type BuilderContent,
 } from '@builder.io/react';
-import React, { useEffect, useState } from 'react';
+import { type BuilderContent } from '@builder.io/sdk';
+import { useEffect, useState } from 'react';
 import CustomHero from '../components/CustomHero';
 
 builder.init('ee9f13b4981e489a9a1209887695ef2b');

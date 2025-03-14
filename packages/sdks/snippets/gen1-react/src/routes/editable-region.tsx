@@ -1,9 +1,5 @@
-// routes/editable-region.tsx
-import builder, {
-  Builder,
-  BuilderComponent,
-  type BuilderContent,
-} from '@builder.io/react';
+import builder, { Builder, BuilderComponent } from '@builder.io/react';
+import { type BuilderContent } from '@builder.io/sdk';
 import { useEffect, useState } from 'react';
 import CustomColumns from '../components/CustomColumns';
 
