@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { fetchOneEntry } from '@builder.io/sdk-angular';
+import { BuilderContent, fetchOneEntry } from '@builder.io/sdk-angular';
 
-export const productDetailsResolver: ResolveFn<any> = async (
+export const productDetailsResolver: ResolveFn<BuilderContent | null> = async (
   route: ActivatedRouteSnapshot
 ) => {
   const handle = route.paramMap.get('handle') || 'jacket';
