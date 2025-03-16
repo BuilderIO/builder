@@ -1,4 +1,4 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { registerCommercePlugin } from '@builder.io/plugin-tools';
 import pkg from '../package.json';
 import { EmporixClient } from './utils/emporix-client';
 
@@ -26,10 +26,13 @@ registerCommercePlugin(
     ctaText: `Connect Emporix Digital Commerce Platform`,
   },
 
-  settings => {
+  (settings: { get: (key: string) => string | undefined }) => {
     // Get public key input from user
     const tenant = settings.get('tenant')?.trim();
     const storefrontApiKey = settings.get('storefrontApiKey')?.trim();
+    if (!tenant || !storefrontApiKey) {
+      throw new Error('Tenant and Storefront API Key are required');
+    }
     const emporixClient = new EmporixClient(tenant, storefrontApiKey);
 
     const transformProduct = (resource: any) => ({

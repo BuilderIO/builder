@@ -50,11 +50,22 @@ export class EmporixClient {
   }
 
   async getProduct(id: string) {
-    const response = await this._executeRequest(
-      `https://api.emporix.io/product/${this._tenant}/products/${id}`,
-      {}
-    );
-    return await response.json();
+    try {
+      const response = await this._executeRequest(
+        `https://api.emporix.io/product/${this._tenant}/products/${id}`,
+        {}
+      );
+      
+      if (!response.ok) {
+        console.error(`Failed to fetch product ${id}: ${response.status} ${response.statusText}`);
+        return { id, name: `Product ${id}`, error: true };
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error(`Error fetching product ${id}:`, error);
+      return { id, name: `Product ${id}`, error: true };
+    }
   }
 
   getProductUrl(id: string) {
