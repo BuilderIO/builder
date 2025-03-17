@@ -15,7 +15,7 @@
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import { fetchOneEntry, BuilderContent } from '@builder.io/sdk-vue'
+  import { fetchOneEntry, typeBuilderContent } from '@builder.io/sdk-vue'
   
   const productDetails = ref<BuilderContent | null>(null);
   
