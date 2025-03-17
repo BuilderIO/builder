@@ -349,7 +349,7 @@ test.describe('Visual Editing', () => {
       await updatedItem1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
-      await detailElement.waitFor();
+      await expect(detailElement).toBeVisible();
 
       const [titleBox, detailBox] = await Promise.all([
         updatedItem1.boundingBox(),
