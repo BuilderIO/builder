@@ -1,9 +1,9 @@
 import { ResolveFn, RouterStateSnapshot } from '@angular/router';
 
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { fetchOneEntry } from '@builder.io/sdk-angular';
+import { BuilderContent, fetchOneEntry } from '@builder.io/sdk-angular';
 
-export const advancedChildResolver: ResolveFn<any> = async (
+export const advancedChildResolver: ResolveFn<BuilderContent | null> = async (
   _route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {

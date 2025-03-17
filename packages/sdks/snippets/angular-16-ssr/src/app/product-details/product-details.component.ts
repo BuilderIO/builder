@@ -13,8 +13,6 @@ import { BuilderContent } from '@builder.io/sdk-angular';
       <img
         [src]="productDetails.data?.['image']"
         [alt]="productDetails.data?.['name']"
-        width="400"
-        height="500"
       />
       <p>{{ productDetails.data?.['collection'].value.data.copy }}</p>
       <p>
