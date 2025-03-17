@@ -1,8 +1,8 @@
 // app/components/CustomHero.tsx
-import React from 'react';
+import {type PropsWithChildren} from 'react';
 import type {RegisteredComponent} from '@builder.io/sdk-react';
 
-export function CustomHero({children}: {children?: React.ReactNode}) {
+export function CustomHero({children}: PropsWithChildren) {
   return (
     <>
       <div>This is text from your component</div>
