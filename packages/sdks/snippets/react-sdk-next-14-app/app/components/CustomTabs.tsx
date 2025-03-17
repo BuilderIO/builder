@@ -1,28 +1,25 @@
 'use client';
 import type { BuilderBlock, RegisteredComponent } from '@builder.io/sdk-react';
 import { Blocks } from '@builder.io/sdk-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
+interface TabItem {
+  tabName: string;
+  blocks: BuilderBlock[];
+}
 
 interface CustomTabsProps {
-  tabList: {
-    tabName: string;
-    blocks: BuilderBlock[];
-  }[];
+  tabList?: TabItem[];
   builderBlock: BuilderBlock;
 }
 
-export const CustomTabs = ({ tabList, builderBlock }: CustomTabsProps) => {
+export function CustomTabs({ tabList, builderBlock }: CustomTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   if (!tabList?.length) return null;
 
   return (
-    <div className="custom-tabs">
+    <>
       {tabList.map((tab, index) => (
         <button
           key={index}
@@ -32,16 +29,15 @@ export const CustomTabs = ({ tabList, builderBlock }: CustomTabsProps) => {
           {tab.tabName}
         </button>
       ))}
-      {isClient && (
-        <Blocks
-          parent={builderBlock.id}
-          path={`tabList.${activeTab}.blocks`}
-          blocks={tabList[activeTab].blocks}
-        />
-      )}
-    </div>
+
+      <Blocks
+        parent={builderBlock.id}
+        path={`tabList.${activeTab}.blocks`}
+        blocks={tabList[activeTab].blocks}
+      />
+    </>
   );
-};
+}
 
 export const customTabsInfo: RegisteredComponent = {
   name: 'TabFields',

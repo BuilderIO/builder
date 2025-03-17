@@ -4,9 +4,15 @@ import { test, testClickAndVerifyVisibility } from '../helpers/index.js';
 test.describe('Advanced child sub components', () => {
   test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'qwik-city'].includes(
-        packageName
-      )
+      ![
+        'react',
+        'angular-16',
+        'angular-16-ssr',
+        'gen1-remix',
+        'gen1-react',
+        'qwik-city',
+        'react-sdk-next-14-app',
+      ].includes(packageName)
     );
 
     await page.goto('/advanced-child');
@@ -30,9 +36,15 @@ test.describe('Advanced child sub components', () => {
 
   test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'qwik-city'].includes(
-        packageName
-      )
+      ![
+        'react',
+        'angular-16',
+        'angular-16-ssr',
+        'gen1-remix',
+        'gen1-react',
+        'qwik-city',
+        'react-sdk-next-14-app',
+      ].includes(packageName)
     );
 
     await page.goto('/advanced-child');
