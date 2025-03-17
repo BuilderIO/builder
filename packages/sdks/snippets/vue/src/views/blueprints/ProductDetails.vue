@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!productDetails">
+    <div v-if="!productDetails?.data">
       <p>Loading product details...</p>
     </div>
     <div class="product-details-page" v-else>
