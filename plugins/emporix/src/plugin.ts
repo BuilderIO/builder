@@ -8,7 +8,7 @@ const pluginId = pkg.name;
 registerCommercePlugin(
   {
     id: pluginId,
-    name: pkg.name,
+    name: 'Emporix',
     settings: [
       {
         type: 'text',

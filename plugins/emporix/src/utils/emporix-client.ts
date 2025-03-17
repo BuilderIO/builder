@@ -46,7 +46,7 @@ export class EmporixClient {
       `https://api.emporix.io/product/${this._tenant}/products?q=name:~${search}`,
       {}
     );
-    return await response.json();
+    return response.json();
   }
 
   async getProduct(id: string) {
@@ -61,7 +61,7 @@ export class EmporixClient {
         return { id, name: `Product ${id}`, error: true };
       }
       
-      return await response.json();
+      return response.json();
     } catch (error) {
       console.error(`Error fetching product ${id}:`, error);
       return { id, name: `Product ${id}`, error: true };
@@ -103,7 +103,7 @@ export class EmporixClient {
       `https://api.emporix.io/category/${this._tenant}/categories/${id}`,
       { 'X-Version': 'v2' }
     );
-    return await response.json();
+    return response.json();
   }
 
   async getCategoryByCode(code: string) {
@@ -111,7 +111,7 @@ export class EmporixClient {
       `https://api.emporix.io/category/${this._tenant}/categories?code=${code}`,
       { 'X-Version': 'v2' }
     );
-    return await response.json();
+    return response.json();
   }
 
   getCategoryUrl(id: string) {
