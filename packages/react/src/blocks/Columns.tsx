@@ -99,17 +99,7 @@ class ColumnsComponent extends React.Component<any> {
         <div
           className="builder-columns"
           css={{
-            display: 'flex',
-            ...(this.props.stackColumnsAt !== 'never' && {
-              [`@media (max-width: ${
-                this.props.stackColumnsAt !== 'tablet'
-                  ? breakpointSizes.small.max
-                  : breakpointSizes.medium.max
-              }px)`]: {
-                flexDirection: this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column',
-                alignItems: 'stretch',
-              },
-            }),
+            display: 'flex'
           }}
         >
           {columns.map((col, index) => {
