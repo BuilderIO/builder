@@ -704,9 +704,6 @@ export const CONTENT = {
     lastPreviewUrl:
       'https://preview.builder.codes?model=page&previewing=truehttp://localhost:3000/symbols&apiKey=f1a790f8c3204b3b8c5c1795aeac4660&builder.space=f1a790f8c3204b3b8c5c1795aeac4660&builder.cachebust=true&builder.preview=page&builder.noCache=true&__builder_editing__=true&builder.overrides.page=2a23baae19a64031b8dd17e8fd8adc47&builder.overrides.2a23baae19a64031b8dd17e8fd8adc47=2a23baae19a64031b8dd17e8fd8adc47&builder.overrides.page:/=2a23baae19a64031b8dd17e8fd8adc47',
     needsHydration: true,
-    componentsUsed: {
-      Hello: 1,
-    },
   },
   modelId: '240a12053d674735ac2a384dcdc561b5',
   name: 'Symbols',
