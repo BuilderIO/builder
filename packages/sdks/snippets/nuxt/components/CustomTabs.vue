@@ -25,10 +25,10 @@
       
   const { builderBlock, tabList } = defineProps<{
     builderBlock: BuilderBlock,
-    tabList: tabList: {
+    tabList: {
       tabName: string;
       blocks: BuilderBlock[];
-    }[]
+    }
   }>();
   
   </script>
