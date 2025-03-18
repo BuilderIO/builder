@@ -12,7 +12,8 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'vue',
         'nuxt',
-        'qwik-city'
+        'qwik-city',
+        'hydrogen'
       ].includes(packageName)
     );
 
@@ -45,7 +46,8 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'vue',
         'nuxt',
-        'qwik-city'
+        'qwik-city',
+        'hydrogen'
       ].includes(packageName)
     );
 

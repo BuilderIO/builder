@@ -23,11 +23,9 @@ test.describe('Editable regions in custom components', () => {
     packageName,
   }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue', 'nuxt', 'qwik-city'].includes(
+      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue', 'nuxt', 'qwik-city', 'hydrogen'].includes(
         packageName
       )
-    );
-
     await page.goto('/editable-region');
 
     const twoColumns = page.locator('div.builder-block').first();
