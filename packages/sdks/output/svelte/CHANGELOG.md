@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 4.0.4
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 4.0.3
 
 ### Patch Changes
