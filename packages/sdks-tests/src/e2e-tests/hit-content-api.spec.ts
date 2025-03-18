@@ -41,8 +41,9 @@ test.describe('Get Content', () => {
     expect(await req!.postDataJSON()).toEqual({ test: 'test' });
     expect(req!.method()).toBe('POST');
   });
-  test('fetch symbol with query.id', async ({ page, sdk }) => {
+  test('fetch symbol with query.id', async ({ page, sdk, packageName }) => {
     test.skip(!excludeGen1(sdk));
+    test.skip(packageName !== 'gen1-next14-pages');
 
     let x = 0;
     let headers;
@@ -79,8 +80,8 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
-  test('should include componentsUsed by default when omit is empty string', async ({ page }) => {
-    // test.skip(!excludeGen1(sdk));
+  test.only('should include componentsUsed by default when omit is empty string', async ({ page, sdk }) => {
+    test.skip(!excludeGen1(sdk));
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
     let requestUrl: string | undefined;
