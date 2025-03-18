@@ -30,4 +30,10 @@ exports[`Generate Content URL > generate content url with omit, fields, offset, 
 
 exports[`Generate Content URL > generates the proper value for a simple query 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
+exports[`Generate Content URL > handles undefined, null, and empty string as omit parameter values > omit-empty-string 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit="`;
+
+exports[`Generate Content URL > handles undefined, null, and empty string as omit parameter values > omit-null 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=name"`;
+
+exports[`Generate Content URL > handles undefined, null, and empty string as omit parameter values > omit-undefined 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed"`;
+
 exports[`Generate Content URL > preserves both userAttributes.locale and top-level locale when both provided 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&locale=en-US&omit=meta.componentsUsed&userAttributes=%7B%22locale%22%3A%22es-ES%22%2C%22foo%22%3A%22bar%22%7D"`;
