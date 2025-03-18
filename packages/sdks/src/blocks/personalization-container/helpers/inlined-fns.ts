@@ -42,16 +42,13 @@ function getPersonalizedVariant(
     );
   });
 
-  const blocksDiv = document.currentScript?.previousElementSibling;
-  const variantId = blocksDiv?.getAttribute('data-variant-id');
+  const parentDiv = document.currentScript?.parentElement;
+  const variantId = parentDiv?.getAttribute('data-variant-id');
   console.log('variantId', variantId, {
-    blocksDiv: blocksDiv?.outerHTML,
+    parentDiv: parentDiv?.outerHTML,
   });
 
-  let isDefaultVariant = false;
-  if (!variantId) {
-    isDefaultVariant = true;
-  }
+  const isDefaultVariant = variantId === `${blockId}-default`;
   console.log('isDefaultVariant', isDefaultVariant);
   const isWinningVariant =
     (winningVariantIndex !== -1 &&
@@ -62,19 +59,24 @@ function getPersonalizedVariant(
 
   // Show/hide variants based on winning status
   if (isWinningVariant && !isDefaultVariant) {
-    blocksDiv?.removeAttribute('hidden');
-    blocksDiv?.removeAttribute('aria-hidden');
-    blocksDiv?.removeAttribute('data-variant-id');
+    parentDiv?.removeAttribute('hidden');
+    parentDiv?.removeAttribute('aria-hidden');
+    console.log('removing hidden attribute', {
+      parentDiv: parentDiv?.outerHTML,
+    });
   } else if (!isWinningVariant && isDefaultVariant) {
-    blocksDiv?.setAttribute('hidden', 'true');
-    blocksDiv?.setAttribute('aria-hidden', 'true');
+    parentDiv?.setAttribute('hidden', 'true');
+    parentDiv?.setAttribute('aria-hidden', 'true');
+    console.log('setting hidden attribute', {
+      parentDiv: parentDiv?.outerHTML,
+    });
   }
 
   // For hydration frameworks, remove non-winning variants and the script tag
   if (isHydrationTarget) {
     if (!isWinningVariant) {
-      console.log('removing blocksDiv');
-      blocksDiv?.remove();
+      console.log('removing parentDiv');
+      parentDiv?.remove();
     }
     const thisScript = document.currentScript;
     if (thisScript) {
@@ -233,16 +235,16 @@ export function updateVisibilityStylesScript(
     });
     console.log('winningVariantIndex', winningVariantIndex);
     if (winningVariantIndex !== -1) {
-      const newStyleStr =
+      let newStyleStr =
         variants
+          ?.filter((_, index) => index !== winningVariantIndex)
           ?.map((_, index) => {
-            const displayProperty =
-              index === winningVariantIndex ? 'block' : 'none';
-            return `div[data-variant-id="${blockId}-${index}"] { display: ${displayProperty}; } `;
+            return `div[data-variant-id="${blockId}-${index}"] { display: none !important; } `;
           })
           .join('') || '';
+      newStyleStr += `div[data-variant-id="${blockId}-default"] { display: none !important; } `;
       visibilityStylesEl.innerHTML = newStyleStr;
-      console.log('newStyleStr', newStyleStr);
+      console.log('newStyleStr', { newStyleStr });
     }
   }
 }

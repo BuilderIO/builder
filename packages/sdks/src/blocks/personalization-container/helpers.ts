@@ -73,32 +73,32 @@ export function getBlocksToRender({
     path: 'this.children',
   };
 
-  if (isHydrated && isEditing()) {
-    // If editing a specific variant
-    if (
-      typeof previewingIndex === 'number' &&
-      previewingIndex < (variants?.length ?? 0)
-    ) {
-      const variant = variants![previewingIndex];
-      return {
-        blocks: variant.blocks,
-        path: `component.options.variants.${previewingIndex}.blocks`,
-      };
-    }
-    // Otherwise we're editing the default variant
-    return fallback;
-  }
+  // if (isHydrated && isEditing()) {
+  //   // If editing a specific variant
+  //   if (
+  //     typeof previewingIndex === 'number' &&
+  //     previewingIndex < (variants?.length ?? 0)
+  //   ) {
+  //     const variant = variants![previewingIndex];
+  //     return {
+  //       blocks: variant.blocks,
+  //       path: `component.options.variants.${previewingIndex}.blocks`,
+  //     };
+  //   }
+  //   // Otherwise we're editing the default variant
+  //   return fallback;
+  // }
 
-  // If we're on the browser, check if there's a winning variant
-  if (isBrowser()) {
-    const winningVariant = filteredVariants?.[0];
-    if (winningVariant) {
-      return {
-        blocks: winningVariant.blocks,
-        path: `component.options.variants.${variants?.indexOf(winningVariant)}.blocks`,
-      };
-    }
-  }
+  // // If we're on the browser, check if there's a winning variant
+  // if (isBrowser()) {
+  //   const winningVariant = filteredVariants?.[0];
+  //   if (winningVariant) {
+  //     return {
+  //       blocks: winningVariant.blocks,
+  //       path: `component.options.variants.${variants?.indexOf(winningVariant)}.blocks`,
+  //     };
+  //   }
+  // }
 
   // If no winning variant or we are on the server, return the default variant
   return fallback;

@@ -42,6 +42,7 @@ export default function Blocks(props: BlocksProps) {
       classNameProp={props.className}
       extraAttributesForBlocksWrapper={props.extraAttributesForBlocksWrapper}
     >
+      {props.children}
       <Show when={props.blocks}>
         <For each={props.blocks}>
           {(block) => (
