@@ -397,13 +397,6 @@ export const getProps = async (args: {
         apiEndpoint: 'content',
       };
       break;
-    case '/get-content-with-omit':
-      extraProps = {
-        apiEndpoint: 'content',
-        omit: '',
-        apiKey: REAL_API_KEY,
-      };
-      break;
     case '/get-query':
       extraProps = {
         options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },

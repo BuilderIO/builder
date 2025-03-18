@@ -35,7 +35,7 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
-  test('handles undefined, null, and empty string as omit parameter values', () => {
+  test('handles undefined, defined, and empty string as omit parameter values', () => {
     // Test with undefined (should default to 'meta.componentsUsed')
     const outputUndefined = generateContentUrl({
       apiKey: testKey,
