@@ -345,7 +345,8 @@ test.describe('Visual Editing', () => {
       
       // Re-query the item1 element as it might have been recreated
       const updatedItem1 = page.frameLocator('iframe').getByText('Item 1');
-      await expect(updatedItem1).toBeVisible();      
+      await expect(updatedItem1).toBeVisible();
+      await expect(updatedItem1).toBeEnabled();
       await updatedItem1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
