@@ -32,7 +32,7 @@ exports[`Generate Content URL > generates the proper value for a simple query 1`
 
 exports[`Generate Content URL > handles empty string as omit parameter values > omit-empty-string 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit="`;
 
-exports[`Generate Content URL > handles defined string as omit parameter values > omit-null 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=name"`;
+exports[`Generate Content URL > handles defined string as omit parameter values > omit-defined 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=name"`;
 
 exports[`Generate Content URL > handles undefined as omit parameter values > omit-undefined 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed"`;
 

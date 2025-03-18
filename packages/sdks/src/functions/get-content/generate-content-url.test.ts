@@ -36,29 +36,26 @@ describe('Generate Content URL', () => {
   });
 
   test('handles undefined, defined, and empty string as omit parameter values', () => {
-    // Test with undefined (should default to 'meta.componentsUsed')
     const outputUndefined = generateContentUrl({
       apiKey: testKey,
       model: testModel,
       omit: undefined,
     });
-    expect(outputUndefined).toMatchSnapshot('omit-undefined');
+    expect(outputUndefined).toMatchSnapshot();
 
-    // Test with null (should default to 'meta.componentsUsed')
-    const outputNull = generateContentUrl({
+    const outputDefined = generateContentUrl({
       apiKey: testKey,
       model: testModel,
       omit: 'name',
     });
-    expect(outputNull).toMatchSnapshot('omit-null');
+    expect(outputDefined).toMatchSnapshot();
 
-    // Test with empty string (should set empty string as omit value)
     const outputEmptyString = generateContentUrl({
       apiKey: testKey,
       model: testModel,
       omit: '',
     });
-    expect(outputEmptyString).toMatchSnapshot('omit-empty-string');
+    expect(outputEmptyString).toMatchSnapshot();
   });
 
   test('generate content url with apiVersion as default', () => {
