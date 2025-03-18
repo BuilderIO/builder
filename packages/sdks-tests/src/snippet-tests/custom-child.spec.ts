@@ -12,6 +12,8 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-react',
         'vue',
         'nuxt',
+        'svelte',
+        'sveltekit',
         'qwik-city',
         'hydrogen'
       ].includes(packageName)
@@ -31,6 +33,8 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-react',
         'vue',
         'nuxt',
+        'svelte',
+        'sveltekit',
         'qwik-city',
         'hydrogen'
       ].includes(packageName)

@@ -12,6 +12,8 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'vue',
         'nuxt',
+        'svelte',
+        'sveltekit',
         'qwik-city',
         'hydrogen'
       ].includes(packageName)
@@ -46,6 +48,8 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'vue',
         'nuxt',
+        'svelte',
+        'sveltekit',
         'qwik-city',
         'hydrogen'
       ].includes(packageName)
