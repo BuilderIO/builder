@@ -74,6 +74,9 @@ function getPersonalizedVariant(
 
   // For hydration frameworks, remove non-winning variants and the script tag
   if (isHydrationTarget) {
+    if (isWinningVariant) {
+      parentDiv?.setAttribute('data-variant-id', `${blockId}-default`);
+    }
     if (!isWinningVariant) {
       console.log('removing parentDiv');
       parentDiv?.remove();

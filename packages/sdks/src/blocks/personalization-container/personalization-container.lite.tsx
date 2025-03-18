@@ -159,58 +159,72 @@ export default function PersonalizationContainer(
 
   return (
     <div ref={rootRef} {...state.attrs}>
-      <Show when={state.shouldRenderVariants}>
-        <InlinedStyles
-          nonce={props.builderContext.value?.nonce || ''}
-          styles={state.hideVariantsStyleString}
-          id={`variants-styles-${props.builderBlock?.id}`}
-        />
-        <InlinedScript
-          nonce={props.builderContext.value?.nonce || ''}
-          scriptStr={state.updateVisibilityStylesScript}
-          id={`variants-visibility-script-${props.builderBlock?.id}`}
-        />
-        <For each={props.variants}>
-          {(variant, index) => (
-            <Blocks
-              extraAttributesForBlocksWrapper={{
-                'aria-hidden': true,
-                hidden: true,
-                'data-variant-id': `${props.builderBlock?.id}-${index}`,
-              }}
-              blocks={variant.blocks}
-              parent={props.builderBlock?.id}
-              path={`component.options.variants.${index}.blocks`}
-              context={props.builderContext}
-              registeredComponents={props.builderComponents}
-            >
-              <InlinedScript
-                nonce={props.builderContext.value?.nonce || ''}
-                scriptStr={state.scriptStr}
-                id={`variants-script-${props.builderBlock?.id}-${index}`}
-              />
-            </Blocks>
-          )}
-        </For>
+      <Show when={state.isHydrated}>
+        <Blocks
+          blocks={state.blocksToRender.blocks}
+          parent={props.builderBlock?.id}
+          path={state.blocksToRender.path}
+          context={props.builderContext}
+          registeredComponents={props.builderComponents}
+          extraAttributesForBlocksWrapper={{
+            'data-variant-id': `${props.builderBlock?.id}-default`,
+          }}
+        ></Blocks>
       </Show>
-      <Blocks
-        blocks={state.blocksToRender.blocks}
-        parent={props.builderBlock?.id}
-        path={state.blocksToRender.path}
-        context={props.builderContext}
-        registeredComponents={props.builderComponents}
-        extraAttributesForBlocksWrapper={{
-          'data-variant-id': `${props.builderBlock?.id}-default`,
-        }}
-      >
+      <Show when={!state.isHydrated}>
         <Show when={state.shouldRenderVariants}>
+          <InlinedStyles
+            nonce={props.builderContext.value?.nonce || ''}
+            styles={state.hideVariantsStyleString}
+            id={`variants-styles-${props.builderBlock?.id}`}
+          />
           <InlinedScript
             nonce={props.builderContext.value?.nonce || ''}
-            scriptStr={state.scriptStr}
-            id={`variants-script-${props.builderBlock?.id}-default`}
+            scriptStr={state.updateVisibilityStylesScript}
+            id={`variants-visibility-script-${props.builderBlock?.id}`}
           />
+          <For each={props.variants}>
+            {(variant, index) => (
+              <Blocks
+                extraAttributesForBlocksWrapper={{
+                  'aria-hidden': true,
+                  hidden: true,
+                  'data-variant-id': `${props.builderBlock?.id}-${index}`,
+                }}
+                blocks={variant.blocks}
+                parent={props.builderBlock?.id}
+                path={`component.options.variants.${index}.blocks`}
+                context={props.builderContext}
+                registeredComponents={props.builderComponents}
+              >
+                <InlinedScript
+                  nonce={props.builderContext.value?.nonce || ''}
+                  scriptStr={state.scriptStr}
+                  id={`variants-script-${props.builderBlock?.id}-${index}`}
+                />
+              </Blocks>
+            )}
+          </For>
         </Show>
-      </Blocks>
+        <Blocks
+          blocks={state.blocksToRender.blocks}
+          parent={props.builderBlock?.id}
+          path={state.blocksToRender.path}
+          context={props.builderContext}
+          registeredComponents={props.builderComponents}
+          extraAttributesForBlocksWrapper={{
+            'data-variant-id': `${props.builderBlock?.id}-default`,
+          }}
+        >
+          <Show when={state.shouldRenderVariants}>
+            <InlinedScript
+              nonce={props.builderContext.value?.nonce || ''}
+              scriptStr={state.scriptStr}
+              id={`variants-script-${props.builderBlock?.id}-default`}
+            />
+          </Show>
+        </Blocks>
+      </Show>
     </div>
   );
 }
