@@ -5,8 +5,8 @@
       <Content
         v-else
         :content="content"
-        model="editable-regions"
-        apiKey="ee9f13b4981e489a9a1209887695ef2b"
+        :model="model"
+        :apiKey="apikey"
         :customComponents="[CustomColumnsInfo]"
       />
     </div>
@@ -15,6 +15,7 @@
   <script setup lang="ts">
   import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
   import CustomColumnsInfo from '../components/CustomColumnsInfo';
+  import { useRoute } from 'nuxt/app';
 
   const route = useRoute();
   const model = 'editable-regions';
