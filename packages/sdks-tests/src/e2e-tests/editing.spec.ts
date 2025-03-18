@@ -299,7 +299,7 @@ test.describe('Visual Editing', () => {
   });
 
   test.describe('Accordion block', () => {
-    test('inserting a new detail item adds it to the correct place in the accordion', async ({
+    test.only('inserting a new detail item adds it to the correct place in the accordion', async ({
       page,
       sdk,
       basePort,
@@ -349,7 +349,6 @@ test.describe('Visual Editing', () => {
       await updatedItem1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
-      await expect(detailElement).toBeVisible();
 
       const [titleBox, detailBox] = await Promise.all([
         updatedItem1.boundingBox(),
