@@ -10,8 +10,10 @@ test.describe('Div with Hero class, and text', () => {
         'angular-16-ssr',
         'gen1-remix',
         'gen1-react',
-        'hydrogen',
+        'svelte',
+        'sveltekit',
         'qwik-city',
+        'hydrogen'
       ].includes(packageName)
     );
 
@@ -27,8 +29,10 @@ test.describe('Div with Hero class, and text', () => {
         'angular-16-ssr',
         'gen1-remix',
         'gen1-react',
-        'hydrogen',
+        'svelte',
+        'sveltekit',
         'qwik-city',
+        'hydrogen'
       ].includes(packageName)
     );
 
