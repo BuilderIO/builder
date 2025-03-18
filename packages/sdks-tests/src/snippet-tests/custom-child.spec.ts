@@ -13,7 +13,7 @@ test.describe('Div with Hero class, and text', () => {
         'svelte',
         'sveltekit',
         'qwik-city',
-        'hydrogen'
+        'hydrogen',
       ].includes(packageName)
     );
 
@@ -32,7 +32,7 @@ test.describe('Div with Hero class, and text', () => {
         'svelte',
         'sveltekit',
         'qwik-city',
-        'hydrogen'
+        'hydrogen',
       ].includes(packageName)
     );
 

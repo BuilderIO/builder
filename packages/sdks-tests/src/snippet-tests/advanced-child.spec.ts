@@ -13,7 +13,7 @@ test.describe('Advanced child sub components', () => {
         'svelte',
         'sveltekit',
         'qwik-city',
-        'hydrogen'
+        'hydrogen',
       ].includes(packageName)
     );
 
@@ -47,7 +47,7 @@ test.describe('Advanced child sub components', () => {
         'svelte',
         'sveltekit',
         'qwik-city',
-        'hydrogen'
+        'hydrogen',
       ].includes(packageName)
     );
 

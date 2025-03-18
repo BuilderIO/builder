@@ -34,7 +34,7 @@ test.describe('Editable regions in custom components', () => {
         'svelte',
         'sveltekit',
         'qwik-city',
-        'hydrogen'
+        'hydrogen',
       ].includes(packageName)
     );
 
