@@ -1,12 +1,14 @@
-import replace from 'rollup-plugin-replace';
+import replace from '@rollup/plugin-replace';
 import serve from 'rollup-plugin-serve';
 import esbuild from 'rollup-plugin-esbuild';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import { readFileSync } from 'fs';
+
 const SERVE = process.env.SERVE === 'true';
 
-const pkg = require('./package.json');
+// Use ESM style imports
+const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8'));
 
 const libraryName = 'plugin';
 
@@ -34,10 +36,10 @@ export default {
   plugins: [
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      preventAssignment: true
     }),
     json(),
     nodeResolve({ mainFields: ['module', 'browser'] }),
-    commonjs(),
     esbuild(),
 
     ...(SERVE

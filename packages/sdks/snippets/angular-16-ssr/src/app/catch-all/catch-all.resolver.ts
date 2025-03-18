@@ -1,7 +1,11 @@
 import type { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { fetchOneEntry, getBuilderSearchParams } from '@builder.io/sdk-angular';
+import {
+  BuilderContent,
+  fetchOneEntry,
+  getBuilderSearchParams,
+} from '@builder.io/sdk-angular';
 
-export const catchAllResolver: ResolveFn<any> = (
+export const catchAllResolver: ResolveFn<BuilderContent | null> = (
   route: ActivatedRouteSnapshot
 ) => {
   const urlPath = `/${route.url.join('/')}`;

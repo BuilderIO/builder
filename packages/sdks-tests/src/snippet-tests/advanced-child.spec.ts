@@ -12,6 +12,7 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'svelte',
         'sveltekit',
+        'qwik-city'
       ].includes(packageName)
     );
 
@@ -36,6 +37,7 @@ test.describe('Advanced child sub components', () => {
 
   test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
     test.skip(
+
       ![
         'react',
         'angular-16',
@@ -44,6 +46,7 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'svelte',
         'sveltekit',
+        'qwik-city'
       ].includes(packageName)
     );
 

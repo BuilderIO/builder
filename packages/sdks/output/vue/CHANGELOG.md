@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 4.0.4
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 4.0.3
 
 ### Patch Changes

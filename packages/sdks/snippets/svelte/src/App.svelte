@@ -9,6 +9,8 @@
   import CustomChild from './components/custom-child/CustomChild.svelte';
   import EditableRegions from './components/editable-regions/EditableRegions.svelte';
   import AdvancedChild from './components/advanced-child/AdvancedChild.svelte';
+  import ProductDetails from './components/blueprints/ProductDetails.svelte';
+
   export let url = '';
 </script>
 
@@ -22,5 +24,6 @@
   <Route path="/custom-child" component={CustomChild} />
   <Route path="/editable-region" component={EditableRegions} />
   <Route path="/advanced-child" component={AdvancedChild} />
+  <Route path="/product/category/:handle" component={ProductDetails} />
   <Route path="/*" component={CatchAll} />
 </Router>
