@@ -6,12 +6,12 @@ export const CustomColumnsInfo: RegisteredComponent = {
   name: 'MyColumns', // you can define your custom name for the component
   inputs: [
     {
-      name: 'leftContent',
+      name: 'column1',
       type: 'uiBlocks',
       defaultValue: [],
     },
     {
-      name: 'rightContent',
+      name: 'column2',
       type: 'uiBlocks',
       defaultValue: [],
     },
