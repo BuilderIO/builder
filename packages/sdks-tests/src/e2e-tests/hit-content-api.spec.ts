@@ -80,7 +80,7 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
-  test.only('should include componentsUsed by default when omit is empty string', async ({ page, sdk, packageName }) => {
+  test('should include componentsUsed by default when omit is empty string', async ({ page, sdk, packageName }) => {
     test.skip(!excludeGen1(sdk));
     test.skip(packageName === 'gen1-next14-pages');
 
