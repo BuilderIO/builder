@@ -58,6 +58,21 @@ export default function PersonalizationContainer(
       getDefaultCanTrack(props.builderContext.value?.canTrack)
     ),
     isHydrated: false,
+    get attrs() {
+      return {
+        ...useTarget({
+          vue: filterAttrs(props.attributes, 'v-on:', false),
+          svelte: filterAttrs(props.attributes, 'on:', false),
+          default: props.attributes,
+        }),
+        ...useTarget({
+          vue: filterAttrs(props.attributes, 'v-on:', true),
+          svelte: filterAttrs(props.attributes, 'on:', true),
+          default: {},
+        }),
+        [getClassPropName()]: `builder-personalization-container ${props.attributes[getClassPropName()] || ''}`,
+      };
+    },
     get filteredVariants() {
       return (props.variants || []).filter((variant) => {
         return filterWithCustomTargeting(
@@ -143,22 +158,7 @@ export default function PersonalizationContainer(
   });
 
   return (
-    <div
-      ref={rootRef}
-      {...useTarget({
-        vue: filterAttrs(props.attributes, 'v-on:', false),
-        svelte: filterAttrs(props.attributes, 'on:', false),
-        default: props.attributes,
-      })}
-      {...useTarget({
-        vue: filterAttrs(props.attributes, 'v-on:', true),
-        svelte: filterAttrs(props.attributes, 'on:', true),
-        default: {},
-      })}
-      class={`builder-personalization-container ${
-        props.attributes?.[getClassPropName()] || ''
-      }`}
-    >
+    <div ref={rootRef} {...state.attrs}>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
           nonce={props.builderContext.value?.nonce || ''}
