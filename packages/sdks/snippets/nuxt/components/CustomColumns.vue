@@ -2,23 +2,23 @@
     <!-- Left Column -->
       <Blocks
         :parent="builderBlock.id"
-        :path="'leftContent'"
-        :blocks="leftContent"
+        :path="'column1'"
+        :blocks="column1"
       />
     <!-- Right Column -->
       <Blocks
         :parent="builderBlock.id"
-        :path="'rightContent'"
-        :blocks="rightContent"
+        :path="'column2'"
+        :blocks="column2"
       />
   </template>
     
   <script setup lang="ts">
   import { Blocks, type BuilderBlock } from '@builder.io/sdk-vue';
   
-  const { leftContent, rightContent, builderBlock } = defineProps<{
-    leftContent: BuilderBlock[];
-    rightContent: BuilderBlock[];
+  const { column1, column2, builderBlock } = defineProps<{
+    column1: BuilderBlock[];
+    column2: BuilderBlock[];
     builderBlock: BuilderBlock;
   }>();
   </script>
