@@ -401,6 +401,7 @@ export const getProps = async (args: {
       extraProps = {
         apiEndpoint: 'content',
         omit: '',
+        apiKey: REAL_API_KEY,
       };
       break;
     case '/get-query':

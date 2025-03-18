@@ -54,6 +54,18 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (window.location.pathname === '/get-content-with-omit' && props) {
+      fetchOneEntry({
+        model: 'page',
+        userAttributes: {
+          urlPath: window.location.pathname,
+        },
+        ...props,
+      });
+    }
+  }, [props]);
+
   if (window.location.pathname === '/data-preview') {
     if (!props?.content) {
       return <div>Loading...</div>;
