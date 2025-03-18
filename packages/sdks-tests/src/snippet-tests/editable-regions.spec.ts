@@ -23,7 +23,7 @@ test.describe('Editable regions in custom components', () => {
     packageName,
   }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue', 'nuxt', 'qwik-city', 'hydrogen', 'svelte', 'sveltekit',].includes(
+      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue', 'nuxt', 'qwik-city', 'hydrogen', 'svelte', 'sveltekit'].includes(
         packageName
       )
     await page.goto('/editable-region');
