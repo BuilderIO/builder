@@ -33,7 +33,8 @@ test.describe('Editable regions in custom components', () => {
         'gen1-react',
         'svelte',
         'sveltekit',
-        'qwik-city'
+        'qwik-city',
+        'hydrogen'
       ].includes(packageName)
     );
 
