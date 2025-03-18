@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { useAsyncData } from '#app'
-import { fetchOneEntry } from '@builder.io/sdk-vue'
-import { useRoute } from 'nuxt/app'
+import { useAsyncData } from '#app';
+import { fetchOneEntry } from '@builder.io/sdk-vue';
+import { useRoute } from 'nuxt/app';
 
 const route = useRoute();
-const { data: productDetails, pending } = await useAsyncData('product-details', () =>
-  fetchOneEntry({
-    model: 'product-details',
-    apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
-    query: {
-      'data.handle': route.params.handle,
-    },
-  }),
-)
+const { data: productDetails, pending } = await useAsyncData(
+  'product-details',
+  () =>
+    fetchOneEntry({
+      model: 'product-details',
+      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      query: {
+        'data.handle': route.params.handle,
+      },
+    })
+);
 </script>
 
 <template>
