@@ -253,7 +253,7 @@ test.describe('Blocks', () => {
 
       await page.goto('/image');
 
-      const img = page.locator('.builder-image').nth(1);
+      const img = page.getByTitle('title test');
       await expect(img).toHaveAttribute('title', 'title test');
     });
   });
