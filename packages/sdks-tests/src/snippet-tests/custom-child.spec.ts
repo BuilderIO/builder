@@ -4,7 +4,7 @@ import { test } from '../helpers/index.js';
 test.describe('Div with Hero class, and text', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'qwik-city'].includes(
+      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'hydrogen', 'qwik-city'].includes(
         packageName
       )
     );
@@ -15,7 +15,7 @@ test.describe('Div with Hero class, and text', () => {
 
   test('should verify builder-block with specific text', async ({ page, packageName }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'qwik-city'].includes(
+      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'hydrogen', 'qwik-city'].includes(
         packageName
       )
     );
