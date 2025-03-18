@@ -80,7 +80,7 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
-  test.only('should include componentsUsed by default when omit is empty string', async ({ page, sdk }) => {
+  test('should include componentsUsed by default when omit is empty string', async ({ page, sdk }) => {
     test.skip(!excludeGen1(sdk));
 
     const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
