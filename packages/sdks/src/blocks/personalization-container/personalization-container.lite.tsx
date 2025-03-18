@@ -6,6 +6,7 @@ import {
   useMetadata,
   useRef,
   useStore,
+  useTarget,
 } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
@@ -14,6 +15,7 @@ import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { userAttributesService } from '../../helpers/user-attributes.js';
+import { filterAttrs } from '../helpers.js';
 import {
   checkShouldRenderVariants,
   filterWithCustomTargeting,
@@ -22,6 +24,11 @@ import {
   getUpdateVisibilityStylesScript,
 } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
+/**
+ * This import is used by the Svelte SDK. Do not remove.
+ */
+import { getClassPropName } from '../../functions/get-class-prop-name.js';
+import { setAttrs } from '../helpers.js';
 
 useMetadata({
   rsc: {
@@ -138,9 +145,18 @@ export default function PersonalizationContainer(
   return (
     <div
       ref={rootRef}
-      {...props.attributes}
+      {...useTarget({
+        vue: filterAttrs(props.attributes, 'v-on:', false),
+        svelte: filterAttrs(props.attributes, 'on:', false),
+        default: props.attributes,
+      })}
+      {...useTarget({
+        vue: filterAttrs(props.attributes, 'v-on:', true),
+        svelte: filterAttrs(props.attributes, 'on:', true),
+        default: {},
+      })}
       class={`builder-personalization-container ${
-        props.attributes?.className || ''
+        props.attributes?.[getClassPropName()] || ''
       }`}
     >
       <Show when={state.shouldRenderVariants}>
