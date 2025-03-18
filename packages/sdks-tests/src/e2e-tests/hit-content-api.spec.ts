@@ -78,4 +78,65 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
+
+  test('should include componentsUsed by default when omit is empty string', async ({ page, sdk }) => {
+    test.skip(!excludeGen1(sdk));
+
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
+    let requestUrl: string | undefined;
+
+    await page.route(urlMatch, async route => {
+      requestUrl = route.request().url();
+      console.log('Request URL:', requestUrl);
+      return route.fulfill({
+        status: 200,
+        json: {
+          meta: {
+            componentsUsed: {
+              MyFunComponent: 1,
+            },
+          }
+        }
+      });
+    });
+
+    await page.goto('/get-content-with-omit', { waitUntil: 'networkidle' });
+
+    // Add null check before assertions
+    expect(requestUrl).toBeDefined();
+    expect(requestUrl!).not.toContain('omit=meta.componentsUsed');
+    expect(requestUrl!.includes('omit=')).toBeTruthy();
+    expect(new URL(requestUrl!).searchParams.get('omit')).toBe('');
+  });
+
+  test('should handle omit parameter correctly in fetchOneEntry - gen2', async ({ page, sdk }) => {
+    test.skip(excludeGen1(sdk));
+
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
+    let requestUrl: string | undefined;
+
+    await page.route(urlMatch, async route => {
+      requestUrl = route.request().url();
+      console.log('Request URL:', requestUrl);
+
+      return route.fulfill({
+        status: 200,
+        json: {
+          meta: {
+            componentsUsed: {
+              MyFunComponent: 1
+            },
+          }
+        }
+      });
+    });
+
+    // Test case 1: With empty omit string
+    await page.goto('/fetch-one-entry-empty-omit', { waitUntil: 'networkidle' });
+    
+    expect(requestUrl).toBeDefined();
+    const emptyOmitUrl = new URL(requestUrl!);
+    expect(emptyOmitUrl.searchParams.get('omit')).toBe('');
+    
+  });
 });

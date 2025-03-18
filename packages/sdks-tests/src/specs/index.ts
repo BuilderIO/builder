@@ -283,6 +283,8 @@ export const PAGES: Record<string, Page> = {
   '/custom-code-dom-update': { content: CUSTOM_CODE_DOM_UPDATE },
   '/new-block-add': { content: NEW_BLOCK_ADD },
   '/dynamic-button': { content: DYNAMIC_BUTTON },
+  '/fetch-one-entry-empty-omit': { content: CUSTOM_COMPONENTS },
+  '/get-content-with-omit': { content: HTTP_REQUESTS },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -397,6 +399,19 @@ export const getProps = async (args: {
         apiEndpoint: 'content',
       };
       break;
+    case '/get-content-with-omit':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: '',
+      };
+      break;
+    case '/fetch-one-entry-empty-omit':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: '',
+      };
+      break;
+    
     case '/get-query':
       extraProps = {
         options: { apiEndpoint: 'query', format: 'html', model: 'abcd', key: 'abcd' },
