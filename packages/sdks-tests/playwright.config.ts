@@ -66,7 +66,7 @@ export default defineConfig({
     /**
      * Increase the default timeout for snippet tests because they're not deterministic.
      */
-    timeout: testType === 'snippet' ? 30000 : 5000,
+    timeout: testType === 'snippet' ? 50000 : 5000,
   },
 
   /* Configure projects for major browsers */

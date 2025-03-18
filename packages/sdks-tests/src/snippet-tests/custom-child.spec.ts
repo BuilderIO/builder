@@ -12,6 +12,7 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-react',
         'vue',
         'nuxt',
+        'qwik-city'
       ].includes(packageName)
     );
 
@@ -29,6 +30,7 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-react',
         'vue',
         'nuxt',
+        'qwik-city'
       ].includes(packageName)
     );
 

@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.0.10
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 8.0.9
 
 ### Patch Changes

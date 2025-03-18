@@ -23,7 +23,7 @@ test.describe('Editable regions in custom components', () => {
     packageName,
   }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue', 'nuxt'].includes(
+      !['react', 'angular-16', 'angular-16-ssr', 'gen1-remix', 'gen1-react', 'vue', 'nuxt', 'qwik-city'].includes(
         packageName
       )
     );

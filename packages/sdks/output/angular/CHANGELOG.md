@@ -1,5 +1,18 @@
 # @builder.io/sdk-angular
 
+## 0.18.8
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
+## 0.18.7
+
+### Patch Changes
+
+- 4eaad61: Refactor: code changes for the new blocks getting added on the top fix, adds thorough comments and uses mitosis's compileContext to introduce the `ngAfterContentChecked` hook
+- b38c8fb: Fix: show the correct A/B test variant content while visual editing or toggling between variants
+
 ## 0.18.6
 
 ### Patch Changes
