@@ -1,4 +1,5 @@
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
+import React from 'react';
 import { customHeroInfo } from '../components/CustomHero';
 
 const MODEL_NAME = 'custom-child';
