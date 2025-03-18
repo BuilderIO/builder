@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { fetchOneEntry, Content, isPreviewing } from '@builder.io/sdk-vue';
 import CustomHeroInfo from '../components/CustomHeroInfo';
+import { useRoute } from 'nuxt/app';
 
 const route = useRoute();
 const model = 'custom-child';

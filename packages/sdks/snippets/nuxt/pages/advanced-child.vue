@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
   import CustomTabsInfo from '../components/CustomTabsInfo';
+  import { useRoute } from 'nuxt/app';
 
   const route = useRoute();
   const model = 'advanced-child';
