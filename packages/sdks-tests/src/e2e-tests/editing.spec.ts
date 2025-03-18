@@ -299,7 +299,7 @@ test.describe('Visual Editing', () => {
   });
 
   test.describe('Accordion block', () => {
-    test.only('inserting a new detail item adds it to the correct place in the accordion', async ({
+    test('inserting a new detail item adds it to the correct place in the accordion', async ({
       page,
       sdk,
       basePort,
