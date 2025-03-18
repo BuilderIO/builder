@@ -181,7 +181,7 @@ test.describe('Personalization Container', () => {
 
   test('only default variants are ssred on the server', async ({ browser, packageName, sdk }) => {
     test.skip(!isSSRFramework(packageName));
-    test.skip(!['react', 'oldReact'].includes(sdk));
+    test.skip(sdk === 'reactNative');
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -198,7 +198,7 @@ test.describe('Personalization Container', () => {
   });
 
   test('root style attribute is correctly set', async ({ page, sdk, packageName }) => {
-    test.skip(!['react', 'oldReact'].includes(sdk));
+    test.skip(sdk === 'reactNative');
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -217,7 +217,7 @@ test.describe('Personalization Container', () => {
       basePort,
       packageName,
     }) => {
-      test.skip(!['react', 'oldReact'].includes(sdk));
+      test.skip(sdk === 'reactNative');
       // Cannot read properties of null (reading 'useContext')
       test.skip(packageName === 'gen1-remix');
 

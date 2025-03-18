@@ -6,6 +6,7 @@ import {
   useMetadata,
   useRef,
   useStore,
+  useTarget,
 } from '@builder.io/mitosis';
 import Blocks from '../../components/blocks/blocks.lite.jsx';
 import InlinedScript from '../../components/inlined-script.lite.jsx';
@@ -86,6 +87,17 @@ export default function PersonalizationContainer(
   });
 
   onMount(() => {
+    /**
+     * For Solid/Svelte: we unmount the non-winning variants post-hydration.
+     */
+    useTarget({
+      solid: () => {
+        state.shouldRenderVariants = false;
+      },
+      svelte: () => {
+        state.shouldRenderVariants = false;
+      },
+    });
     state.isHydrated = true;
 
     const unsub = userAttributesService.subscribeOnUserAttributesChange(
