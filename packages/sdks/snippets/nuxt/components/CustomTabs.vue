@@ -22,15 +22,13 @@
   import { Blocks, type BuilderBlock } from '@builder.io/sdk-vue';
 
   const activeTab = ref(0);
-
-  interface TabItem {
-    tabName: string;
-    blocks: BuilderBlock[];
-  }
-
+      
   const { builderBlock, tabList } = defineProps<{
     builderBlock: BuilderBlock,
-    tabList: TabItem[]
+    tabList: tabList: {
+      tabName: string;
+      blocks: BuilderBlock[];
+    }[]
   }>();
   
   </script>
