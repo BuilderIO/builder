@@ -206,9 +206,8 @@ export function updateVisibilityStylesScript(
     }
     return null;
   }
-  const visibilityStylesEl = document.querySelector(
-    `[data-id="variants-styles-${blockId}"]`
-  );
+  const visibilityStylesEl = document.currentScript
+    ?.previousElementSibling as HTMLStyleElement;
 
   if (!visibilityStylesEl) {
     return;
@@ -237,8 +236,8 @@ export function updateVisibilityStylesScript(
     if (winningVariantIndex !== -1) {
       let newStyleStr =
         variants
-          ?.filter((_, index) => index !== winningVariantIndex)
           ?.map((_, index) => {
+            if (index === winningVariantIndex) return '';
             return `div[data-variant-id="${blockId}-${index}"] { display: none !important; } `;
           })
           .join('') || '';
