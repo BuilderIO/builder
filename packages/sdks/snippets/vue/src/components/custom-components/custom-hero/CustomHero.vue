@@ -5,4 +5,3 @@
     <slot />
   </section>
 </template>
-
