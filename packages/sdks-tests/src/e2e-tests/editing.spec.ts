@@ -19,6 +19,7 @@ import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbo
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
 import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
+import { SECTION_CHILDREN } from '../specs/section-children.js';
 
 const editorTests = ({
   noTrustedHosts,
@@ -642,6 +643,55 @@ test.describe('Visual Editing', () => {
 
       await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
       await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
+    });
+  });
+
+  test.describe('New Block addition and deletion with components using props.children / slots', () => {
+    test('should add new block below the last block', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const textBlocks = await page.frameLocator('iframe').getByText('text 1').all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page.frameLocator('iframe').getByText('new text').boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeGreaterThan(textBlockBox.y);
     });
   });
 });
