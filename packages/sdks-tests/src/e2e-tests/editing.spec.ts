@@ -680,7 +680,7 @@ test.describe('Visual Editing', () => {
       });
       await page.frameLocator('iframe').getByText('new text').waitFor();
 
-      const textBlocks = await page.frameLocator('iframe').getByText('text 1').all();
+      const textBlocks = await page.frameLocator('iframe').getByText('text 2').all();
       expect(textBlocks.length).toBe(1);
       const newTextBlockBox = await page.frameLocator('iframe').getByText('new text').boundingBox();
       expect(newTextBlockBox).toBeDefined();
@@ -692,6 +692,136 @@ test.describe('Visual Editing', () => {
       }
 
       expect(newTextBlockBox.y).toBeGreaterThan(textBlockBox.y);
+    });
+
+    test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+
+      newContent.data.blocks[0].children.splice(1, 0, {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: { name: 'Text', options: { text: 'add to middle' } },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to middle').waitFor();
+
+      const topTextBlockBox = await page.frameLocator('iframe').getByText('text 1').boundingBox();
+      const endTextBlockBox = await page.frameLocator('iframe').getByText('text 2').boundingBox();
+      const middleTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to middle')
+        .boundingBox();
+
+      expect(middleTextBlockBox).toBeDefined();
+      expect(topTextBlockBox).toBeDefined();
+      expect(endTextBlockBox).toBeDefined();
+
+      if (!middleTextBlockBox || !topTextBlockBox || !endTextBlockBox) {
+        throw new Error('Middle text block or text block not found');
+      }
+
+      expect(middleTextBlockBox.y).toBeGreaterThan(topTextBlockBox.y);
+      expect(middleTextBlockBox.y).toBeLessThan(endTextBlockBox.y);
+    });
+
+    test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.unshift({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'add to top' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to top').waitFor();
+
+      const textBlocks = await page.frameLocator('iframe').getByText('text 1').all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to top')
+        .boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeLessThan(textBlockBox.y);
+    });
+
+    test('deleting a newly added block should remove it from the DOM', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const updatedContent = cloneContent(SECTION_CHILDREN);
+      updatedContent.data.blocks[0].children.pop();
+
+      await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
     });
   });
 });

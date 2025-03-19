@@ -61,6 +61,29 @@ export const SECTION_CHILDREN = {
               },
             },
           },
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            id: 'builder-f1ef479d4fc24c3db13f67f5972bbfa4',
+            component: {
+              name: 'Text',
+              options: {
+                text: 'text 2',
+              },
+            },
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                flexShrink: '0',
+                boxSizing: 'border-box',
+                marginTop: '20px',
+                lineHeight: 'normal',
+                height: 'auto',
+              },
+            },
+          },
         ],
         responsiveStyles: {
           large: {
