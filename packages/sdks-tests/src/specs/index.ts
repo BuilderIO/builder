@@ -283,6 +283,7 @@ export const PAGES: Record<string, Page> = {
   '/custom-code-dom-update': { content: CUSTOM_CODE_DOM_UPDATE },
   '/new-block-add': { content: NEW_BLOCK_ADD },
   '/dynamic-button': { content: DYNAMIC_BUTTON },
+
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -402,6 +403,17 @@ export const getProps = async (args: {
         apiEndpoint: 'content',
         omit: '',
       };
+      break;
+    case '/get-content-with-omit-name':
+        extraProps = {
+          apiEndpoint: 'content',
+          omit: 'name',
+        };
+      break;
+    case '/get-content-default':
+        extraProps = {
+          apiEndpoint: 'content',
+        };
       break;
     case '/get-query':
       extraProps = {

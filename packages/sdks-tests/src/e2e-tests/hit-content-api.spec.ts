@@ -80,7 +80,7 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
-  test('should include componentsUsed by default when omit is empty string', async ({ page, sdk, packageName }) => {
+  test('should NOT omit componentsUsed when omit parameter is explicitly set to empty string', async ({ page, sdk, packageName }) => {
     test.skip(!excludeGen1(sdk));
     test.skip(packageName === 'gen1-next14-pages');
 
@@ -108,5 +108,58 @@ test.describe('Get Content', () => {
     expect(requestUrl!).not.toContain('omit=meta.componentsUsed');
     expect(requestUrl!.includes('omit=')).toBeTruthy();
     expect(new URL(requestUrl!).searchParams.get('omit')).toBe('');
+  });
+
+  test('should omit the specified field when omit parameter has a defined value for gen1', async ({ page, sdk, packageName }) => {
+    test.skip(!excludeGen1(sdk));
+    test.skip(packageName === 'gen1-next14-pages');
+
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
+    let requestUrl: string | undefined;
+
+    await page.route(urlMatch, async route => {
+      requestUrl = route.request().url();
+      return route.fulfill({
+        status: 200,
+        json: {
+          meta: {
+            componentsUsed: {
+              MyFunComponent: 1,
+            },
+          }
+        }
+      });
+    });
+
+    await page.goto('/get-content-with-omit-name', { waitUntil: 'networkidle' });
+
+    expect(requestUrl).toBeDefined();
+    expect(requestUrl!).toContain('omit=name');
+    expect(new URL(requestUrl!).searchParams.get('omit')).toBe('name');
+  });
+
+  test('should use default omit value when omit parameter is undefined', async ({ page, sdk, packageName }) => {
+    test.skip(!excludeGen1(sdk));
+    test.skip(packageName === 'gen1-next14-pages');
+
+    const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content/;
+    let requestUrl: string | undefined;
+
+    await page.route(urlMatch, async route => {
+      requestUrl = route.request().url();
+      return route.fulfill({
+        status: 200,
+        json: {
+          results: [{ id: 'test-content' }],
+        }
+      });
+    });
+
+    await page.goto('/get-content-default', { waitUntil: 'networkidle' });
+
+    expect(requestUrl).toBeDefined();
+    
+    const omitValue = new URL(requestUrl!).searchParams.get('omit');
+    expect(['', null, undefined, 'meta.componentsUsed']).toContain(omitValue);
   });
 });
