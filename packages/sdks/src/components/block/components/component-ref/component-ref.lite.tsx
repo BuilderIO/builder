@@ -1,5 +1,6 @@
 import {
   For,
+  onUpdate,
   Show,
   useMetadata,
   useStore,
@@ -28,6 +29,7 @@ useMetadata({
  */
 export default function ComponentRef(props: ComponentProps) {
   const state = useStore({
+    shouldUpdate: false,
     Wrapper: props.isInteractive
       ? useTarget({
           vue: wrapComponentRef(InteractiveElement),
@@ -35,6 +37,44 @@ export default function ComponentRef(props: ComponentProps) {
         })
       : props.componentRef,
   });
+
+  onUpdate(() => {
+    useTarget({
+      angular: () => {
+        if (
+          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+          !changes['blockChildren']?.isFirstChange() &&
+          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+          JSON.stringify(changes['blockChildren']?.previousValue) !==
+            // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+            JSON.stringify(changes['blockChildren']?.currentValue)
+        ) {
+          state.shouldUpdate = true;
+        }
+        // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+        if (changes.componentOptions) {
+          let foundChange = false;
+          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+          for (const key in changes.componentOptions.previousValue) {
+            if (
+              // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+              changes.componentOptions.previousValue[key] !==
+              // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+              changes.componentOptions.currentValue[key]
+            ) {
+              foundChange = true;
+              break;
+            }
+          }
+          if (!foundChange) {
+            return;
+          }
+        }
+      },
+      default: () => {},
+    });
+  }, [props.componentOptions, props.blockChildren]);
+
   return (
     <Show when={props.componentRef}>
       <state.Wrapper

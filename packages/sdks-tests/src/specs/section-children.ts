@@ -64,7 +64,7 @@ export const SECTION_CHILDREN = {
           {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
-            id: 'builder-f1ef479d4fc24c3db13f67f5972bbfa4',
+            id: 'builder-ed79c46cb43848548933175fadb75344',
             component: {
               name: 'Text',
               options: {

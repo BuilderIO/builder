@@ -364,31 +364,6 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
             '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
           )
           .replace('</ng-container>', '</ng-container>\n</ng-container>');
-        const ngOnChangesIndex = code.indexOf(
-          'ngOnChanges(changes: SimpleChanges) {'
-        );
-
-        if (ngOnChangesIndex > -1) {
-          code = code.replace(
-            'ngOnChanges(changes: SimpleChanges) {',
-            // Add a check to see if the componentOptions have changed
-            `ngOnChanges(changes: SimpleChanges) {
-                if (changes.componentOptions) {
-                  let foundChange = false;
-                  for (const key in changes.componentOptions.previousValue) {
-                    if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
-                      foundChange = true;
-                      break;
-                    }
-                  }
-                  if (!foundChange) {
-                    return;
-                  }
-                }`
-          );
-        } else {
-          throw new Error('ngOnChanges not found in component-ref');
-        }
       }
       return code;
     },
@@ -398,9 +373,12 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'BlocksWrapper') {
+      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
         json.hooks.onUpdate.forEach((hook) => {
-          hook.code = hook.code.replace(/^\s*\/\/\s*@ts-expect-error.*$/gm, '');
+          hook.code = hook.code.replaceAll(
+            /^\s*\/\/\s*@ts-expect-error.*$/gm,
+            ''
+          );
         });
         /**
          * Since the angular SDK manually handles the creation of the dynamic blocks and attaching them as children of BlocksWrapper in the DOM
@@ -413,12 +391,16 @@ const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
          * `ngAfterContentChecked` runs after children were checked for changes, which is the earliest point we can safely append new blocks,
          * and re-paint the DOM else the new children blocks are not present in the existing array, therefore pushed to the top of the list.
          */
+        const templateRefName =
+          json.name === 'BlocksWrapper'
+            ? 'blockswrapperTemplateRef'
+            : 'wrapperTemplateRef';
         json.compileContext = {
           angular: {
             hooks: {
               ngAfterContentChecked: {
                 code: `if (this.shouldUpdate) {
-                  this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes];
+                  this.myContent = [this.vcRef.createEmbeddedView(this.${templateRefName}).rootNodes];
                   this.shouldUpdate = false;
                 }`,
               },
@@ -431,7 +413,7 @@ const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   },
   code: {
     post: (code, json) => {
-      if (json.name === 'BlocksWrapper') {
+      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
         // insert children only after they are fully initialized
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
