@@ -207,9 +207,9 @@ export default function PersonalizationContainer(
           </For>
         </Show>
         <Blocks
-          blocks={props.builderBlock?.children}
+          blocks={state.blocksToRender.blocks}
           parent={props.builderBlock?.id}
-          path={'this.children'}
+          path={state.blocksToRender.path}
           context={props.builderContext}
           registeredComponents={props.builderComponents}
           extraAttributesForBlocksWrapper={{
