@@ -21,7 +21,7 @@
   import { ref, defineProps } from 'vue';
   import { Blocks, type BuilderBlock } from '@builder.io/sdk-vue';
 
-  const activeTab = ref<number>(0);
+  const activeTab = ref(0);
 
   const { builderBlock, tabList } = defineProps<{
     builderBlock: BuilderBlock,
