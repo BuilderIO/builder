@@ -223,6 +223,7 @@ export default function Columns(props: ColumnProps) {
       css={{
         display: 'flex',
         lineHeight: 'normal',
+        height: '100%',
       }}
       style={state.columnsCssVars()}
       {...useTarget({

@@ -100,6 +100,7 @@ class ColumnsComponent extends React.Component<any> {
           className="builder-columns"
           css={{
             display: 'flex',
+            height: '100%',
             ...(this.props.stackColumnsAt !== 'never' && {
               [`@media (max-width: ${
                 this.props.stackColumnsAt !== 'tablet'
