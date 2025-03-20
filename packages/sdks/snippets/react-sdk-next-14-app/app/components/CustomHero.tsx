@@ -1,9 +1,9 @@
 'use client';
 
 import type { RegisteredComponent } from '@builder.io/sdk-react';
-import React from 'react';
+import type { PropsWithChildren } from 'react';
 
-const CustomHero = ({ children }: { children?: React.ReactNode }) => {
+const CustomHero = ({ children }: PropsWithChildren) => {
   return (
     <>
       <div>This is text from your component</div>
