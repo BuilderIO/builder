@@ -1,22 +1,27 @@
 'use client';
-import type { BuilderBlock, RegisteredComponent } from '@builder.io/sdk-react';
+import type {
+  BuilderBlock,
+  RegisteredComponent,
+  RegisteredComponents,
+} from '@builder.io/sdk-react';
 import { Blocks } from '@builder.io/sdk-react';
 import React, { useState } from 'react';
 
-interface TabItem {
-  tabName: string;
-  blocks: BuilderBlock[];
-}
-
-interface CustomTabsProps {
-  tabList?: TabItem[];
+type CustomTabsProps = {
+  tabList: {
+    tabName: string;
+    blocks: BuilderBlock[];
+  }[];
   builderBlock: BuilderBlock;
-}
+  builderComponents: RegisteredComponents;
+};
 
-export function CustomTabs({ tabList, builderBlock }: CustomTabsProps) {
+export function CustomTabs({
+  tabList,
+  builderBlock,
+  builderComponents,
+}: CustomTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
-
-  if (!tabList?.length) return null;
 
   return (
     <>
@@ -34,6 +39,7 @@ export function CustomTabs({ tabList, builderBlock }: CustomTabsProps) {
         parent={builderBlock.id}
         path={`tabList.${activeTab}.blocks`}
         blocks={tabList[activeTab].blocks}
+        registeredComponents={builderComponents}
       />
     </>
   );
@@ -42,7 +48,7 @@ export function CustomTabs({ tabList, builderBlock }: CustomTabsProps) {
 export const customTabsInfo: RegisteredComponent = {
   name: 'TabFields',
   component: CustomTabs,
-  shouldReceiveBuilderProps: { builderBlock: true },
+  shouldReceiveBuilderProps: { builderBlock: true, builderComponents: true },
   inputs: [
     {
       name: 'tabList',
