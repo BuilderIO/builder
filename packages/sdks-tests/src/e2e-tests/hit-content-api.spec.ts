@@ -80,16 +80,19 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
   });
 
-  test('should NOT omit componentsUsed when omit parameter is explicitly set to empty string', async ({ page, sdk }) => {
+  test('should NOT omit componentsUsed when omit parameter is explicitly set to empty string', async ({
+    page,
+    sdk,
+  }) => {
     test.skip(!excludeGen1(sdk));
 
     let builderRequestPromise: Promise<string> | undefined = undefined;
     let requestUrl: string | undefined;
-    
+
     const builderApiRegex = /https:\/\/cdn\.builder\.io\/api\/v3\//;
-    
+
     await page.goto('/get-content-with-omit');
-    
+
     builderRequestPromise = new Promise<string>(resolve => {
       page.on('request', request => {
         const url = request.url();
@@ -99,26 +102,30 @@ test.describe('Get Content', () => {
         }
       });
     });
-    
+
     await page.reload({ waitUntil: 'networkidle' });
     await builderRequestPromise;
-    
+
     expect(requestUrl).toBeDefined();
     expect(requestUrl!).not.toContain('omit=meta.componentsUsed');
     expect(requestUrl!.includes('omit=')).toBeTruthy();
     expect(new URL(requestUrl!).searchParams.get('omit')).toBe('');
   });
 
-  test('should omit the specified field when omit parameter has a defined value for gen1', async ({ page, sdk, packageName }) => {
+  test('should omit the specified field when omit parameter has a defined value for gen1', async ({
+    page,
+    sdk,
+    packageName,
+  }) => {
     test.skip(!excludeGen1(sdk));
 
     let builderRequestPromise: Promise<string> | undefined = undefined;
     let requestUrl: string | undefined;
-    
+
     const builderApiRegex = /https:\/\/cdn\.builder\.io\/api\/v3\//;
-    
+
     await page.goto('/get-content-with-omit-name');
-    
+
     builderRequestPromise = new Promise<string>(resolve => {
       page.on('request', request => {
         const url = request.url();
@@ -128,7 +135,7 @@ test.describe('Get Content', () => {
         }
       });
     });
-    
+
     await page.reload({ waitUntil: 'networkidle' });
     await builderRequestPromise;
 
@@ -142,11 +149,11 @@ test.describe('Get Content', () => {
 
     let builderRequestPromise: Promise<string> | undefined = undefined;
     let requestUrl: string | undefined;
-    
+
     const builderApiRegex = /https:\/\/cdn\.builder\.io\/api\/v3\//;
-    
+
     await page.goto('/get-content-default');
-    
+
     builderRequestPromise = new Promise<string>(resolve => {
       page.on('request', request => {
         const url = request.url();
@@ -156,7 +163,7 @@ test.describe('Get Content', () => {
         }
       });
     });
-    
+
     await page.reload({ waitUntil: 'networkidle' });
     await builderRequestPromise;
 
