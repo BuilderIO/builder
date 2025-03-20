@@ -115,7 +115,6 @@ test.describe('Get Content', () => {
   test('should omit the specified field when omit parameter has a defined value for gen1', async ({
     page,
     sdk,
-    packageName,
   }) => {
     test.skip(!excludeGen1(sdk));
 
