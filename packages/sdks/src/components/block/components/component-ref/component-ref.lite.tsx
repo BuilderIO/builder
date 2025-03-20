@@ -41,13 +41,22 @@ export default function ComponentRef(props: ComponentProps) {
   onUpdate(() => {
     useTarget({
       angular: () => {
+        /**
+         * The getter in <Block /> runs on every change detection, and returns us a new empty array in ngOnChanges
+         * so we need to check if the values aren't two different empty arrays and if the values are actually different.
+         * We only want to update the view if the values are different as it's an expensive operation.
+         */
         if (
           // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
           !changes['blockChildren']?.isFirstChange() &&
           // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-          JSON.stringify(changes['blockChildren']?.previousValue) !==
+          changes['blockChildren']?.previousValue?.length !== 0 &&
+          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+          changes['blockChildren']?.currentValue?.length !== 0 &&
+          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
+          changes['blockChildren']?.previousValue !==
             // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-            JSON.stringify(changes['blockChildren']?.currentValue)
+            changes['blockChildren']?.currentValue
         ) {
           state.shouldUpdate = true;
         }
