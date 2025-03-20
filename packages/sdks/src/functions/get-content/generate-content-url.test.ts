@@ -35,6 +35,33 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
+  test('handles empty string as omit parameter values', () => {
+    const outputEmptyString = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      omit: '',
+    });
+    expect(outputEmptyString).toMatchSnapshot();
+  });
+
+  test('handles undefined as omit parameter values', () => {
+    const outputUndefined = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      omit: undefined,
+    });
+    expect(outputUndefined).toMatchSnapshot();
+  });
+
+  test('handles defined as omit parameter values', () => {
+    const outputDefined = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      omit: 'name',
+    });
+    expect(outputDefined).toMatchSnapshot();
+  });
+
   test('generate content url with apiVersion as default', () => {
     const output = generateContentUrl({
       apiKey: testKey,

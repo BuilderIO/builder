@@ -65,7 +65,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
   if (enrich) url.searchParams.set('enrich', String(enrich));
 
-  url.searchParams.set('omit', omit || 'meta.componentsUsed');
+  url.searchParams.set('omit', omit ?? 'meta.componentsUsed');
 
   if (fields) {
     url.searchParams.set('fields', fields);
