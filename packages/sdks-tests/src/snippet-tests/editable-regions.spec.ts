@@ -6,7 +6,11 @@ test.describe('Editable regions in custom components', () => {
     page,
     packageName,
   }) => {
-    test.skip(!['react', 'angular-16', 'angular-16-ssr'].includes(packageName));
+    test.skip(
+      !['react', 'angular-16', 'angular-16-ssr', 'vue', 'nuxt', 'svelte', 'sveltekit'].includes(
+        packageName
+      )
+    );
 
     await page.goto('/editable-region');
     await page.waitForLoadState('networkidle');
@@ -31,6 +35,12 @@ test.describe('Editable regions in custom components', () => {
         'gen1-react',
         'qwik-city',
         'react-sdk-next-14-app',
+        'vue',
+        'nuxt',
+        'qwik-city',
+        'hydrogen',
+        'svelte',
+        'sveltekit',
       ].includes(packageName)
     );
 

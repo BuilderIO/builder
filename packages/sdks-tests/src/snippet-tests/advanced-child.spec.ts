@@ -12,6 +12,12 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'qwik-city',
         'react-sdk-next-14-app',
+        'vue',
+        'nuxt',
+        'svelte',
+        'sveltekit',
+        'qwik-city',
+        'hydrogen',
       ].includes(packageName)
     );
 
@@ -44,6 +50,12 @@ test.describe('Advanced child sub components', () => {
         'gen1-react',
         'qwik-city',
         'react-sdk-next-14-app',
+        'vue',
+        'nuxt',
+        'svelte',
+        'sveltekit',
+        'qwik-city',
+        'hydrogen',
       ].includes(packageName)
     );
 

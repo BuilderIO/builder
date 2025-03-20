@@ -12,6 +12,12 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-react',
         'qwik-city',
         'react-sdk-next-14-app',
+        'vue',
+        'nuxt',
+        'svelte',
+        'sveltekit',
+        'qwik-city',
+        'hydrogen',
       ].includes(packageName)
     );
 
@@ -29,6 +35,12 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-react',
         'qwik-city',
         'react-sdk-next-14-app',
+        'vue',
+        'nuxt',
+        'svelte',
+        'sveltekit',
+        'qwik-city',
+        'hydrogen',
       ].includes(packageName)
     );
 

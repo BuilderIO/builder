@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.8
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 0.18.4
 
 ### Patch Changes
