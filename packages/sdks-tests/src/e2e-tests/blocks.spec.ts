@@ -596,10 +596,12 @@ test.describe('Blocks', () => {
       test.skip(checkIsRN(sdk));
       await page.goto('/columns-vertical-centering');
 
-      const columns = page.locator('.builder-columns').locator('..');
+      const columnsParent = page.locator(
+        'xpath=//div[contains(@class, "builder-columns")]/ancestor::div[1]'
+      );
 
-      const columnBox = await columns.boundingBox();
-      const textBoxes = await columns.locator('.builder-text').all();
+      const columnBox = await columnsParent.boundingBox();
+      const textBoxes = await columnsParent.locator('.builder-text').all();
 
       if (!columnBox || !textBoxes) {
         throw new Error('Could not get bounding boxes');
