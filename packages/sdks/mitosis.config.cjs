@@ -813,8 +813,8 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
           `
         );
         code = code.replaceAll(
-          'attributes: this.attributes,',
-          '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.attributes } : {})'
+          'attributes: this.wrappedPropsWithAttributes.attributes,',
+          '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.wrappedPropsWithAttributes.attributes } : {})'
         );
 
         // extract the props that Wrapper needs
