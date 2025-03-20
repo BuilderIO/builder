@@ -589,7 +589,7 @@ test.describe('Blocks', () => {
       expect(textCenter).toBeCloseTo(columnCenter, 1);
     });
 
-    test('blocks are centered vertically when all blocks are individually centered and columns has a height of 100%', async ({
+    test('blocks are centered vertically when all blocks are individually centered and columns has a fixed height', async ({
       page,
       sdk,
     }) => {
