@@ -11,4 +11,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Fix: meta.componentsUsed was incorrectly omitted by default when using fetchOneEntry.
+Fix: correctly set default value for `meta.componentsUsed` in Content API calls.
