@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.18.9
+
+### Patch Changes
+
+- 8c0d646: Fix: New child blocks getting added at the top while visual editing. This issue occurred with components that use children for rendering, for example - Section.
+
 ## 0.18.8
 
 ### Patch Changes
