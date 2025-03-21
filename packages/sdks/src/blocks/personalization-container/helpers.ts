@@ -9,6 +9,8 @@ import {
 } from './helpers/inlined-fns.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
 
+export const DEFAULT_INDEX = 'default';
+
 export type UserAttributes = {
   date?: string | Date;
   urlPath?: string;
@@ -34,6 +36,12 @@ export type Query = {
   value: QueryValue;
 };
 
+type BlocksToRenderReturnType = {
+  blocks: BuilderBlock[];
+  path: string;
+  index: number | typeof DEFAULT_INDEX;
+};
+
 export function checkShouldRenderVariants(
   variants: PersonalizationContainerProps['variants'],
   canTrack: boolean
@@ -45,7 +53,7 @@ export function checkShouldRenderVariants(
   if (!hasVariants) return false;
   if (!canTrack) return false;
 
-  if (TARGET === 'vue' || TARGET === 'svelte') return true;
+  if (TARGET === 'vue') return true;
 
   if (isBrowser()) return false;
 
@@ -64,13 +72,11 @@ export function getBlocksToRender({
   isHydrated: boolean;
   filteredVariants: PersonalizationContainerProps['variants'];
   fallbackBlocks?: BuilderBlock[];
-}): {
-  blocks: BuilderBlock[];
-  path: string | undefined;
-} {
-  const fallback = {
+}): BlocksToRenderReturnType {
+  const fallback: BlocksToRenderReturnType = {
     blocks: fallbackBlocks ?? [],
     path: 'this.children',
+    index: DEFAULT_INDEX,
   };
 
   if (isHydrated && isEditing()) {
@@ -79,11 +85,14 @@ export function getBlocksToRender({
       typeof previewingIndex === 'number' &&
       previewingIndex < (variants?.length ?? 0)
     ) {
-      const variant = variants![previewingIndex];
-      return {
-        blocks: variant.blocks,
-        path: `component.options.variants.${previewingIndex}.blocks`,
-      };
+      const variant = variants?.[previewingIndex];
+      if (variant) {
+        return {
+          blocks: variant.blocks,
+          path: `component.options.variants.${previewingIndex}.blocks`,
+          index: previewingIndex,
+        };
+      }
     }
     // Otherwise we're editing the default variant
     return fallback;
@@ -92,11 +101,15 @@ export function getBlocksToRender({
   // If we're on the browser, check if there's a winning variant
   if (isBrowser()) {
     const winningVariant = filteredVariants?.[0];
-    if (winningVariant) {
-      return {
-        blocks: winningVariant.blocks,
-        path: `component.options.variants.${variants?.indexOf(winningVariant)}.blocks`,
-      };
+    if (winningVariant && variants) {
+      const variantIndex = variants.indexOf(winningVariant);
+      if (variantIndex !== -1) {
+        return {
+          blocks: winningVariant.blocks,
+          path: `component.options.variants.${variantIndex}.blocks`,
+          index: variantIndex,
+        };
+      }
     }
   }
 
@@ -112,7 +125,7 @@ export const getInitPersonalizationVariantsFnsScriptString = () => {
   `;
 };
 
-const isHydrationTarget = TARGET === 'react';
+const isHydrationTarget = TARGET === 'react' || TARGET === 'svelte';
 
 export const getPersonalizationScript = (
   variants: PersonalizationContainerProps['variants'],
