@@ -9,11 +9,13 @@ import { type PersonalizationContainerProps } from '../personalization-container
 function getPersonalizedVariant(
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
+  isHydrationTarget: boolean,
   locale?: string
 ) {
   if (!navigator.cookieEnabled) {
     return;
   }
+  console.log('calling getPersonalizedVariant');
 
   function getCookie(name: string) {
     const nameEQ = name + '=';
@@ -26,29 +28,13 @@ function getPersonalizedVariant(
     return null;
   }
 
-  function removeVariants() {
-    variants?.forEach(function (_, index) {
-      document
-        .querySelector(
-          'template[data-variant-id="' + blockId + '-' + index + '"]'
-        )
-        ?.remove();
-    });
-    document
-      .querySelector('script[data-id="variants-script-' + blockId + '"]')
-      ?.remove();
-    document
-      .querySelector('style[data-id="variants-styles-' + blockId + '"]')
-      ?.remove();
-  }
-
   const attributes = JSON.parse(getCookie('builder.userAttributes') || '{}');
   if (locale) {
     attributes.locale = locale;
   }
 
   const winningVariantIndex = variants?.findIndex(function (variant) {
-    return filterWithCustomTargeting(
+    return (window as any).filterWithCustomTargeting(
       attributes,
       variant.query,
       variant.startDate,
@@ -56,37 +42,50 @@ function getPersonalizedVariant(
     );
   });
 
-  const isDebug = location.href.includes('builder.debug=true');
-  if (isDebug) {
-    console.debug('PersonalizationContainer', {
-      attributes,
-      variants,
-      winningVariantIndex,
+  const parentDiv = document.currentScript?.parentElement;
+  const variantId = parentDiv?.getAttribute('data-variant-id');
+  console.log('variantId', variantId, {
+    parentDiv: parentDiv?.outerHTML,
+  });
+
+  const isDefaultVariant = variantId === `${blockId}-default`;
+  console.log('isDefaultVariant', isDefaultVariant);
+  const isWinningVariant =
+    (winningVariantIndex !== -1 &&
+      variantId === `${blockId}-${winningVariantIndex}`) ||
+    (winningVariantIndex === -1 && isDefaultVariant);
+
+  console.log('isWinningVariant', isWinningVariant);
+
+  // Show/hide variants based on winning status
+  if (isWinningVariant && !isDefaultVariant) {
+    parentDiv?.removeAttribute('hidden');
+    parentDiv?.removeAttribute('aria-hidden');
+    console.log('removing hidden attribute', {
+      parentDiv: parentDiv?.outerHTML,
+    });
+  } else if (!isWinningVariant && isDefaultVariant) {
+    parentDiv?.setAttribute('hidden', 'true');
+    parentDiv?.setAttribute('aria-hidden', 'true');
+    console.log('setting hidden attribute', {
+      parentDiv: parentDiv?.outerHTML,
     });
   }
 
-  if (winningVariantIndex !== -1) {
-    const winningVariant = document.querySelector(
-      'template[data-variant-id="' + blockId + '-' + winningVariantIndex + '"]'
-    ) as HTMLTemplateElement;
-    if (winningVariant) {
-      const parentNode = winningVariant.parentNode;
-      if (parentNode) {
-        const newParent = parentNode.cloneNode(false) as Node;
-        newParent.appendChild(winningVariant.content.firstChild as Node);
-        newParent.appendChild(winningVariant.content.lastChild as Node);
-        parentNode.parentNode?.replaceChild(newParent, parentNode);
-      }
-      if (isDebug) {
-        console.debug(
-          'PersonalizationContainer',
-          'Winning variant Replaced:',
-          winningVariant
-        );
-      }
+  // For hydration frameworks, remove non-winning variants and the script tag
+  if (isHydrationTarget) {
+    if (isWinningVariant) {
+      parentDiv?.setAttribute('data-variant-id', `${blockId}-default`);
     }
-  } else if (variants && variants.length > 0) {
-    removeVariants();
+    if (!isWinningVariant) {
+      console.log('removing parentDiv');
+      parentDiv?.remove();
+    }
+    const thisScript = document.currentScript;
+    if (thisScript) {
+      console.log('removing thisScript');
+      thisScript.remove();
+    }
   }
 }
 
@@ -194,6 +193,66 @@ export function filterWithCustomTargeting(
   });
 }
 
+export function updateVisibilityStylesScript(
+  variants: PersonalizationContainerProps['variants'],
+  blockId: string,
+  isHydrationTarget: boolean,
+  locale?: string
+) {
+  function getCookie(name: string) {
+    const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+  const visibilityStylesEl = document.currentScript
+    ?.previousElementSibling as HTMLStyleElement;
+
+  if (!visibilityStylesEl) {
+    return;
+  }
+
+  if (isHydrationTarget) {
+    visibilityStylesEl.remove();
+    const currentScript = document.currentScript;
+    if (currentScript) {
+      currentScript.remove();
+    }
+  } else {
+    const attributes = JSON.parse(getCookie('builder.userAttributes') || '{}');
+    if (locale) {
+      attributes.locale = locale;
+    }
+    const winningVariantIndex = variants?.findIndex(function (variant) {
+      return (window as any).filterWithCustomTargeting(
+        attributes,
+        variant.query,
+        variant.startDate,
+        variant.endDate
+      );
+    });
+    console.log('winningVariantIndex', winningVariantIndex);
+    if (winningVariantIndex !== -1) {
+      let newStyleStr =
+        variants
+          ?.map((_, index) => {
+            if (index === winningVariantIndex) return '';
+            return `div[data-variant-id="${blockId}-${index}"] { display: none !important; } `;
+          })
+          .join('') || '';
+      newStyleStr += `div[data-variant-id="${blockId}-default"] { display: none !important; } `;
+      visibilityStylesEl.innerHTML = newStyleStr;
+      console.log('newStyleStr', { newStyleStr });
+    }
+  }
+}
+
 export const PERSONALIZATION_SCRIPT = getPersonalizedVariant.toString();
 export const FILTER_WITH_CUSTOM_TARGETING_SCRIPT =
   filterWithCustomTargeting.toString();
+export const UPDATE_VISIBILITY_STYLES_SCRIPT =
+  updateVisibilityStylesScript.toString();

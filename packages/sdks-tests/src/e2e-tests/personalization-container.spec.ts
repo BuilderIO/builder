@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeGen2, isSSRFramework, test } from '../helpers/index.js';
+import { isSSRFramework, test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 const SELECTOR = 'div[builder-content-id]';
 
@@ -46,7 +46,7 @@ const initializeUserAttributes = async (
 ) => {
   // gen1-remix started failing on this test for an unknown reason.
   test.skip(packageName === 'gen1-remix');
-  test.skip(excludeGen2(sdk) && sdk !== 'react');
+  test.skip(sdk === 'reactNative');
 
   if (!baseURL) throw new Error('Missing baseURL');
 
@@ -181,7 +181,7 @@ test.describe('Personalization Container', () => {
 
   test('only default variants are ssred on the server', async ({ browser, packageName, sdk }) => {
     test.skip(!isSSRFramework(packageName));
-    test.skip(!['react', 'oldReact'].includes(sdk));
+    test.skip(sdk === 'reactNative');
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -198,7 +198,7 @@ test.describe('Personalization Container', () => {
   });
 
   test('root style attribute is correctly set', async ({ page, sdk, packageName }) => {
-    test.skip(!['react', 'oldReact'].includes(sdk));
+    test.skip(sdk === 'reactNative');
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -217,7 +217,7 @@ test.describe('Personalization Container', () => {
       basePort,
       packageName,
     }) => {
-      test.skip(!['react', 'oldReact'].includes(sdk));
+      test.skip(sdk === 'reactNative');
       // Cannot read properties of null (reading 'useContext')
       test.skip(packageName === 'gen1-remix');
 
