@@ -126,6 +126,11 @@ export const componentInfo: ComponentInfo = {
       helperText: 'Text to display when the user has images off',
     },
     {
+      name: 'title',
+      type: 'string',
+      helperText: 'Text to display when hovering over the asset',
+    },
+    {
       name: 'height',
       type: 'number',
       hideFromUI: true,
