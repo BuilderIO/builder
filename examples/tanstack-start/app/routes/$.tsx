@@ -26,8 +26,6 @@ export const Route = createFileRoute('/$')({
                 options: {
                     // This is important for preview mode
                     includeUnpublished: isInPreviewMode,
-                    // Pass query params to Builder
-                    query: Object.fromEntries(searchParamsObj.entries())
                 }
             })
             
