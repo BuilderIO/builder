@@ -1,3 +1,4 @@
+// app/advanced-child/page.tsx
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import { customTabsInfo } from '../components/CustomTabs';
 

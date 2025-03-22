@@ -1,3 +1,4 @@
+// app/custom-child/page.tsx
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import React from 'react';
 import { customHeroInfo } from '../components/CustomHero';

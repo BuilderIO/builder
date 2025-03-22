@@ -1,3 +1,4 @@
+// app/editable-region/page.tsx
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import { customColumnsInfo } from '../components/CustomColumns';
 
