@@ -35,6 +35,7 @@ test.describe('Editable regions in custom components', () => {
         'gen1-react',
         'qwik-city',
         'react-sdk-next-14-app',
+        'react-sdk-next-14-pages',
         'vue',
         'nuxt',
         'qwik-city',
