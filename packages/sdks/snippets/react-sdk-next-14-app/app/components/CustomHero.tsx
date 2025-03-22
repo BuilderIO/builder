@@ -1,3 +1,4 @@
+// app/components/CustomHero.tsx
 'use client';
 
 import type { RegisteredComponent } from '@builder.io/sdk-react';

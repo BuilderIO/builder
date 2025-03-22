@@ -1,3 +1,5 @@
+// app/components/CustomTabs.tsx
+
 'use client';
 import type {
   BuilderBlock,

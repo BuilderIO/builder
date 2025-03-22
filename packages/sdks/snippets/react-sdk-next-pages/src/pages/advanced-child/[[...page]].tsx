@@ -1,3 +1,5 @@
+// src/pages/advanced-child/[[...page]].tsx
+
 import {
   Content,
   fetchOneEntry,

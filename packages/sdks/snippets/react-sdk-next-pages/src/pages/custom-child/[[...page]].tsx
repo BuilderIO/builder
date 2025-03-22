@@ -1,3 +1,5 @@
+// src/pages/custom-child/[[...page]].tsx
+
 import {
   Content,
   fetchOneEntry,

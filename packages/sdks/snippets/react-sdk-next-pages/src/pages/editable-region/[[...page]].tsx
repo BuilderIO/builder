@@ -1,4 +1,5 @@
-// pages/editable-regions.tsx
+// src/pages/editable-region/[[...page]].tsx
+
 import { customColumnsInfo } from '@/components/CustomColumns';
 import {
   Content,
