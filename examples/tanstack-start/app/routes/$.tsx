@@ -3,7 +3,7 @@ import { Test } from '../components/test'
 import { RenderBuilderContent } from '../components/builder'
 import { fetchOneEntry, isPreviewing } from '@builder.io/sdk-react'
 import { BUILDER_API_KEY } from '../utils/builder-init'
-import { customComponents } from '../builder_registery'
+import { customComponents } from '../builder_registry'
 
 export const Route = createFileRoute('/$')({
     loader: async ({params, location}) => {
