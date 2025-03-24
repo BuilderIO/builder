@@ -44,6 +44,7 @@ test.describe('Editable regions in custom components', () => {
         'gen1-next15-app',
         'angular-19-ssr',
         'gen1-next14-pages',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 

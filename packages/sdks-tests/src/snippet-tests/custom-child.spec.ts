@@ -12,6 +12,7 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-next15-app',
         'angular-19-ssr',
         'gen1-next14-pages',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 
@@ -29,6 +30,7 @@ test.describe('Div with Hero class, and text', () => {
         'gen1-next15-app',
         'angular-19-ssr',
         'gen1-next14-pages',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 

@@ -12,6 +12,7 @@ test.describe('Advanced child sub components', () => {
         'angular-19-ssr',
         'gen1-next14-pages',
         'gen1-next15-app',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 
@@ -44,6 +45,7 @@ test.describe('Advanced child sub components', () => {
         'gen1-next15-app',
         'angular-19-ssr',
         'gen1-next14-pages',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 
