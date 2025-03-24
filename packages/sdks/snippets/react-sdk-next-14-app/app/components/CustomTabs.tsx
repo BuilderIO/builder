@@ -7,7 +7,7 @@ import type {
   RegisteredComponents,
 } from '@builder.io/sdk-react';
 import { Blocks } from '@builder.io/sdk-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 type CustomTabsProps = {
   tabList: {

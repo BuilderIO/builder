@@ -7,7 +7,6 @@ import {
   type RegisteredComponent,
   type RegisteredComponents,
 } from '@builder.io/sdk-react';
-import React from 'react';
 
 type CustomColumnsProps = {
   column1: BuilderBlock[];

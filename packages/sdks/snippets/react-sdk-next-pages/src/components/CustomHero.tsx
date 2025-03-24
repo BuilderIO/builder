@@ -2,7 +2,6 @@
 'use client';
 import type { RegisteredComponent } from '@builder.io/sdk-react';
 import type { PropsWithChildren } from 'react';
-import React from 'react';
 
 export function CustomHero({ children }: PropsWithChildren) {
   return (

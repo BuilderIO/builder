@@ -4,6 +4,7 @@ import { customColumnsInfo } from '@/components/CustomColumns';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -26,7 +27,7 @@ export const getServerSideProps = (async ({ resolvedUrl }) => {
 export default function EditableRegionsPage({
   content,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (!content) {
+  if (!content && !isPreviewing()) {
     return <div>404</div>;
   }
   return (

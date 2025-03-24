@@ -12,7 +12,7 @@ export default async function Page() {
     userAttributes: { urlPath: '/advanced-child' },
   });
 
-  if (!content && isPreviewing()) {
+  if (!content && !isPreviewing()) {
     return <div>404</div>;
   }
 

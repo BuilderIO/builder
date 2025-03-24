@@ -13,7 +13,7 @@ export default async function Page() {
     userAttributes: { urlPath: '/custom-child' },
   });
 
-  if (!content && isPreviewing()) {
+  if (!content && !isPreviewing()) {
     return <div>404</div>;
   }
 

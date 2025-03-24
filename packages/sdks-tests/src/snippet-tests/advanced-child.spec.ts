@@ -4,21 +4,14 @@ import { test, testClickAndVerifyVisibility } from '../helpers/index.js';
 test.describe('Advanced child sub components', () => {
   test('Display two buttons with label Tab 1 and Tab 2', async ({ page, packageName }) => {
     test.skip(
-      ![
-        'react',
-        'angular-16',
-        'angular-16-ssr',
-        'gen1-remix',
-        'gen1-react',
-        'qwik-city',
-        'react-sdk-next-14-app',
-        'react-sdk-next-14-pages',
-        'vue',
-        'nuxt',
-        'svelte',
-        'sveltekit',
-        'qwik-city',
-        'hydrogen',
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'angular-19-ssr',
+        'gen1-next14-pages',
+        'gen1-next15-app',
       ].includes(packageName)
     );
 
@@ -43,21 +36,14 @@ test.describe('Advanced child sub components', () => {
 
   test('Display content for the clicked tab and hide the other', async ({ page, packageName }) => {
     test.skip(
-      ![
-        'react',
-        'angular-16',
-        'angular-16-ssr',
-        'gen1-remix',
-        'gen1-react',
-        'qwik-city',
-        'react-sdk-next-14-app',
-        'react-sdk-next-pages',
-        'vue',
-        'nuxt',
-        'svelte',
-        'sveltekit',
-        'qwik-city',
-        'hydrogen',
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'gen1-next15-app',
+        'angular-19-ssr',
+        'gen1-next14-pages',
       ].includes(packageName)
     );
 

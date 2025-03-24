@@ -12,7 +12,7 @@ export default async function Page() {
     userAttributes: { urlPath: '/editable-region' },
   });
 
-  if (!content && isPreviewing()) {
+  if (!content && !isPreviewing()) {
     return <div>404</div>;
   }
 
