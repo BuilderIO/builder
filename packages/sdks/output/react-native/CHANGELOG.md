@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.0.5
+
+### Patch Changes
+
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
 ## 4.0.2
 
 ### Patch Changes
