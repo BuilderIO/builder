@@ -88,8 +88,10 @@ import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js'
 import { DYNAMIC_ELEMENT } from './dynamic-element.js';
 import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
 import { NEW_BLOCK_ADD } from './new-block-add.js';
-
 import { DYNAMIC_BUTTON } from './dynamic-button.js';
+import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
+import { SECTION_CHILDREN } from './section-children.js';
+
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
@@ -283,6 +285,8 @@ export const PAGES: Record<string, Page> = {
   '/custom-code-dom-update': { content: CUSTOM_CODE_DOM_UPDATE },
   '/new-block-add': { content: NEW_BLOCK_ADD },
   '/dynamic-button': { content: DYNAMIC_BUTTON },
+  '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
+  '/section-children': { content: SECTION_CHILDREN },
 } as const;
 
 export type Path = keyof typeof PAGES;

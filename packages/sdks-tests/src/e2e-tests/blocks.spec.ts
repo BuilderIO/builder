@@ -588,6 +588,40 @@ test.describe('Blocks', () => {
 
       expect(textCenter).toBeCloseTo(columnCenter, 1);
     });
+
+    test('blocks are centered vertically when all blocks are individually centered and columns has a fixed height', async ({
+      page,
+      sdk,
+    }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/columns-vertical-centering');
+
+      const columnsParent = page.locator(
+        'xpath=//div[contains(@class, "builder-columns")]/ancestor::div[1]'
+      );
+
+      const columnBox = await columnsParent.boundingBox();
+      const textBoxes = await columnsParent.locator('.builder-text').all();
+
+      if (!columnBox || !textBoxes) {
+        throw new Error('Could not get bounding boxes');
+      }
+
+      const columnCenter = columnBox.y + columnBox.height / 2;
+
+      const textCenters = await Promise.all(
+        textBoxes.map(async textBox => {
+          const textBoxBox = await textBox.boundingBox();
+          if (!textBoxBox) {
+            throw new Error('Could not get bounding box');
+          }
+          return textBoxBox.y + textBoxBox.height / 2;
+        })
+      );
+
+      expect(textCenters[0]).toBeCloseTo(columnCenter, 1);
+      expect(textCenters[1]).toBeCloseTo(columnCenter, 1);
+    });
   });
 
   test.describe('Embed', () => {
