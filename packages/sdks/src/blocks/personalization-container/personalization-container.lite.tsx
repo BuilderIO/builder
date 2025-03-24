@@ -25,6 +25,7 @@ import {
   getBlocksToRender,
   getPersonalizationScript,
   getUpdateVisibilityStylesScript,
+  SDKS_REQUIRING_RESET_APPROACH,
 } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
 /**
@@ -161,7 +162,12 @@ export default function PersonalizationContainer(
 
   return (
     <div ref={rootRef} {...state.attrs}>
-      <Show when={state.shouldResetVariants && TARGET === 'vue'}>
+      <Show
+        when={
+          state.shouldResetVariants &&
+          SDKS_REQUIRING_RESET_APPROACH.includes(TARGET)
+        }
+      >
         <Blocks
           blocks={state.blocksToRender.blocks}
           parent={props.builderBlock?.id}
@@ -175,7 +181,9 @@ export default function PersonalizationContainer(
       </Show>
       <Show
         when={
-          (!state.shouldResetVariants && TARGET === 'vue') || TARGET !== 'vue'
+          (!state.shouldResetVariants &&
+            SDKS_REQUIRING_RESET_APPROACH.includes(TARGET)) ||
+          !SDKS_REQUIRING_RESET_APPROACH.includes(TARGET)
         }
       >
         <Show when={state.shouldRenderVariants}>
