@@ -15,7 +15,6 @@ function getPersonalizedVariant(
   if (!navigator.cookieEnabled) {
     return;
   }
-  console.log('calling getPersonalizedVariant');
 
   function getCookie(name: string) {
     const nameEQ = name + '=';
@@ -44,46 +43,28 @@ function getPersonalizedVariant(
 
   const parentDiv = document.currentScript?.parentElement;
   const variantId = parentDiv?.getAttribute('data-variant-id');
-  console.log('variantId', variantId, {
-    parentDiv: parentDiv?.outerHTML,
-  });
-
   const isDefaultVariant = variantId === `${blockId}-default`;
-  console.log('isDefaultVariant', isDefaultVariant);
   const isWinningVariant =
     (winningVariantIndex !== -1 &&
       variantId === `${blockId}-${winningVariantIndex}`) ||
     (winningVariantIndex === -1 && isDefaultVariant);
 
-  console.log('isWinningVariant', isWinningVariant);
-
   // Show/hide variants based on winning status
   if (isWinningVariant && !isDefaultVariant) {
     parentDiv?.removeAttribute('hidden');
     parentDiv?.removeAttribute('aria-hidden');
-    console.log('removing hidden attribute', {
-      parentDiv: parentDiv?.outerHTML,
-    });
   } else if (!isWinningVariant && isDefaultVariant) {
     parentDiv?.setAttribute('hidden', 'true');
     parentDiv?.setAttribute('aria-hidden', 'true');
-    console.log('setting hidden attribute', {
-      parentDiv: parentDiv?.outerHTML,
-    });
   }
 
   // For hydration frameworks, remove non-winning variants and the script tag
   if (isHydrationTarget) {
-    if (isWinningVariant) {
-      parentDiv?.setAttribute('data-variant-id', `${blockId}-default`);
-    }
     if (!isWinningVariant) {
-      console.log('removing parentDiv');
       parentDiv?.remove();
     }
     const thisScript = document.currentScript;
     if (thisScript) {
-      console.log('removing thisScript');
       thisScript.remove();
     }
   }
@@ -235,7 +216,7 @@ export function updateVisibilityStylesScript(
         variant.endDate
       );
     });
-    console.log('winningVariantIndex', winningVariantIndex);
+
     if (winningVariantIndex !== -1) {
       let newStyleStr =
         variants
@@ -246,7 +227,6 @@ export function updateVisibilityStylesScript(
           .join('') || '';
       newStyleStr += `div[data-variant-id="${blockId}-default"] { display: none !important; } `;
       visibilityStylesEl.innerHTML = newStyleStr;
-      console.log('newStyleStr', { newStyleStr });
     }
   }
 }
