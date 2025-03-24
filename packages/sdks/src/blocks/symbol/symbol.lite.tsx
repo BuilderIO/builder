@@ -70,8 +70,9 @@ export default function Symbol(props: SymbolProps) {
           builderContextValue: props.builderContext.value,
         }))) as Nullable<BuilderContent>,
     }),
+    symbolEntry: props.symbol?.entry,
     setContent() {
-      if (state.contentToUse) return;
+      if (state.contentToUse && state.symbolEntry === props.symbol?.entry) return;
 
       fetchSymbolContent({
         symbol: props.symbol,
