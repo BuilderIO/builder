@@ -21,6 +21,8 @@ test.describe('BlogArticleComponent', () => {
         'sveltekit',
         'nextjs-sdk-next-app',
         'angular-19-ssr',
+        'react-sdk-next-pages',
+        'react-sdk-next-14-app',
       ].includes(packageName)
     );
     await page.goto('blogs/new-product-line');
