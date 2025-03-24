@@ -2,6 +2,7 @@ import { TARGET } from '../../constants/target.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type { Target } from '../../types/targets.js';
 import {
   FILTER_WITH_CUSTOM_TARGETING_SCRIPT,
   PERSONALIZATION_SCRIPT,
@@ -41,6 +42,15 @@ type BlocksToRenderReturnType = {
   path: string;
   index: number | typeof DEFAULT_INDEX;
 };
+
+/**
+ * SDKs that support Variant Containers
+ */
+export const TARGETS_SUPPORTING_PERSONALIZATION = [
+  'react',
+  'vue',
+  'svelte',
+] as Target[];
 
 export function checkShouldRenderVariants(
   variants: PersonalizationContainerProps['variants'],

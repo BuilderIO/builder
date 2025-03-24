@@ -2,7 +2,10 @@ import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { isSSRFramework, test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
+import { Sdk } from '../helpers/sdk.js';
+
 const SELECTOR = 'div[builder-content-id]';
+const TARGETS_SUPPORTING_PERSONALIZATION = ['react', 'vue', 'svelte'] as Sdk[];
 
 const createContextWithCookies = async ({
   cookies,
@@ -46,7 +49,7 @@ const initializeUserAttributes = async (
 ) => {
   // gen1-remix started failing on this test for an unknown reason.
   test.skip(packageName === 'gen1-remix');
-  test.skip(sdk === 'reactNative');
+  test.skip(!TARGETS_SUPPORTING_PERSONALIZATION.includes(sdk));
 
   if (!baseURL) throw new Error('Missing baseURL');
 
@@ -181,7 +184,7 @@ test.describe('Personalization Container', () => {
 
   test('only default variants are ssred on the server', async ({ browser, packageName, sdk }) => {
     test.skip(!isSSRFramework(packageName));
-    test.skip(sdk === 'reactNative');
+    test.skip(!TARGETS_SUPPORTING_PERSONALIZATION.includes(sdk));
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -198,7 +201,7 @@ test.describe('Personalization Container', () => {
   });
 
   test('root style attribute is correctly set', async ({ page, sdk, packageName }) => {
-    test.skip(sdk === 'reactNative');
+    test.skip(!TARGETS_SUPPORTING_PERSONALIZATION.includes(sdk));
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -217,7 +220,7 @@ test.describe('Personalization Container', () => {
       basePort,
       packageName,
     }) => {
-      test.skip(sdk === 'reactNative');
+      test.skip(!TARGETS_SUPPORTING_PERSONALIZATION.includes(sdk));
       // Cannot read properties of null (reading 'useContext')
       test.skip(packageName === 'gen1-remix');
 
