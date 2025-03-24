@@ -167,6 +167,6 @@ test.describe('Get Content', () => {
     await builderRequestPromise;
 
     const omitValue = new URL(requestUrl!).searchParams.get('omit');
-    expect(['', null, undefined, 'meta.componentsUsed']).toContain(omitValue);
+    expect(omitValue).toBe('meta.componentsUsed');
   });
 });
