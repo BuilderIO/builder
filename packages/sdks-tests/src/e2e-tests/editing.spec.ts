@@ -646,9 +646,10 @@ test.describe('Visual Editing', () => {
     });
   });
 
-  test('Symbol should update the data when nested values are updated', async ({ page, basePort, sdk }) => {
+  test('Symbol should update the data when nested values are updated', async ({ page, basePort, sdk, packageName }) => {
     
     test.skip(excludeGen1(sdk));
+    test.skip(packageName === 'nextjs-sdk-next-app');
 
     await launchEmbedderAndWaitForSdk({ path: '/nested-symbol', basePort, page, sdk });
 

@@ -27,7 +27,6 @@ useMetadata({
 
 export default function Symbol(props: SymbolProps) {
   const state = useStore({
-    forceRenderCount: 0,
     get blocksWrapper() {
       return useTarget({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -86,8 +85,6 @@ export default function Symbol(props: SymbolProps) {
   });
 
   onUpdate(() => {
-    state.forceRenderCount = state.forceRenderCount + 1;
-
     state.setContent();
   }, [props.symbol]);
 
@@ -106,7 +103,6 @@ export default function Symbol(props: SymbolProps) {
 
   return (
     <div
-      key={`symbol-${state.forceRenderCount}`}
       {...useTarget({
         vue: filterAttrs(props.attributes, 'v-on:', false),
         svelte: filterAttrs(props.attributes, 'on:', false),
