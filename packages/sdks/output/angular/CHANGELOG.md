@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.18.8
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 0.18.7
 
 ### Patch Changes

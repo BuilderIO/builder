@@ -10,6 +10,7 @@ export interface ImageProps {
   height?: number;
   width?: number;
   altText?: string;
+  title?: string;
   backgroundSize?: 'cover' | 'contain';
   backgroundPosition?: string;
   srcset?: string;
