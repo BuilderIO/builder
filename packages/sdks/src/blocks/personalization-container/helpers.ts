@@ -46,7 +46,7 @@ type BlocksToRenderReturnType = {
 /**
  * SDKs that support Variant Containers
  */
-export const TARGETS_SUPPORTING_PERSONALIZATION = [
+export const SDKS_SUPPORTING_PERSONALIZATION = [
   'react',
   'vue',
   'svelte',
