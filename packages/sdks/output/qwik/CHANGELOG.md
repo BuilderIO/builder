@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.9
+
+### Patch Changes
+
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
 ## 0.18.8
 
 ### Patch Changes
