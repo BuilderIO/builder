@@ -1,10 +1,8 @@
 import type { BuilderContent } from '../../types/builder-content.js';
-export async function postPreviewContent({
-  key,
-  value,
-}: {
+export async function postPreviewContent(_opts: {
   key: string;
   value: BuilderContent;
+  url: string;
 }) {
-  return { [key]: value };
+  return null;
 }
