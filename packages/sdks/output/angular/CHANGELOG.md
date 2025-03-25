@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.18.10
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
 ## 0.18.9
 
 ### Patch Changes
