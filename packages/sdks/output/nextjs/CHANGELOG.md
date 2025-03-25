@@ -1,5 +1,12 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.18.10
+
+### Patch Changes
+
+- 6a17ed8: Fix: reduce network roundtrips for updates when visually editing
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
 ## 0.18.9
 
 ### Patch Changes
