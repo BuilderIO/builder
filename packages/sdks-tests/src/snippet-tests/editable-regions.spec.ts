@@ -7,9 +7,18 @@ test.describe('Editable regions in custom components', () => {
     packageName,
   }) => {
     test.skip(
-      !['react', 'angular-16', 'angular-16-ssr', 'vue', 'nuxt', 'svelte', 'sveltekit'].includes(
-        packageName
-      )
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'gen1-next15-app',
+        'angular-19-ssr',
+        'gen1-next14-pages',
+        'gen1-remix',
+        'gen1-react',
+        'nextjs-sdk-next-app',
+      ].includes(packageName)
     );
 
     await page.goto('/editable-region');
@@ -27,18 +36,15 @@ test.describe('Editable regions in custom components', () => {
     packageName,
   }) => {
     test.skip(
-      ![
-        'react',
-        'angular-16',
-        'angular-16-ssr',
-        'gen1-remix',
-        'gen1-react',
-        'vue',
-        'nuxt',
-        'qwik-city',
-        'hydrogen',
-        'svelte',
-        'sveltekit',
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'gen1-next15-app',
+        'angular-19-ssr',
+        'gen1-next14-pages',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 
