@@ -43,6 +43,7 @@ export default defineConfig({
         'node:module',
         'isolated-vm',
         'next/navigation',
+        'next/cache',
       ],
       output: {
         globals: {
