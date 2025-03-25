@@ -7,7 +7,6 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import React from 'react';
 import { customTabsInfo } from '../../components/CustomTabs';
 
 const MODEL_NAME = 'advanced-child';

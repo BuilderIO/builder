@@ -8,7 +8,6 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import React from 'react';
 
 const MODEL_NAME = 'editable-regions';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';

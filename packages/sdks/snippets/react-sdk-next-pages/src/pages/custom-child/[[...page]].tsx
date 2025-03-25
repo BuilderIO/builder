@@ -7,7 +7,6 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import React from 'react';
 import { customHeroInfo } from '../../components/CustomHero';
 
 const MODEL_NAME = 'custom-child';

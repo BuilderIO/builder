@@ -26,7 +26,7 @@ export function CustomTabs({
 
   return (
     <>
-      {tabList.map((tab, index) => (
+      {tabList?.map((tab, index) => (
         <button
           key={index}
           onClick={() => setActiveTab(index)}
@@ -40,7 +40,7 @@ export function CustomTabs({
         parent={builderBlock.id}
         path={`tabList.${activeTab}.blocks`}
         blocks={tabList[activeTab].blocks}
-        registeredComponents={builderComponents}
+        registeredComponents={builderComponents} // Required: pass builderComponents to avoid hydration error and "Component not found" error
       />
     </>
   );
@@ -49,7 +49,10 @@ export function CustomTabs({
 export const customTabsInfo: RegisteredComponent = {
   name: 'TabFields',
   component: CustomTabs,
-  shouldReceiveBuilderProps: { builderBlock: true, builderComponents: true },
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderComponents: true, // Required: Helps pass registered components to <Blocks/> component
+  },
   inputs: [
     {
       name: 'tabList',

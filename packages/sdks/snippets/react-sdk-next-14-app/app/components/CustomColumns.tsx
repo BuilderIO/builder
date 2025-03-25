@@ -27,13 +27,13 @@ export function CustomColumns({
         blocks={column1}
         path="column1"
         parent={builderBlock.id}
-        registeredComponents={builderComponents}
+        registeredComponents={builderComponents} // Required: Helps pass registered components to <Blocks/> component
       />
       <Blocks
         blocks={column2}
         path="column2"
         parent={builderBlock.id}
-        registeredComponents={builderComponents}
+        registeredComponents={builderComponents} // Required: Helps pass registered components to <Blocks/> component
       />
     </>
   );
@@ -42,7 +42,10 @@ export function CustomColumns({
 export const customColumnsInfo: RegisteredComponent = {
   name: 'MyColumns',
   component: CustomColumns,
-  shouldReceiveBuilderProps: { builderBlock: true, builderComponents: true },
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+    builderComponents: true, // Required: Helps pass registered components to <Blocks/> component
+  },
   inputs: [
     { name: 'column1', type: 'uiBlocks', defaultValue: [] },
     { name: 'column2', type: 'uiBlocks', defaultValue: [] },
