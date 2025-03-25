@@ -16,7 +16,7 @@ export default function Awaiter(props: AwaiterProps) {
   onMount(() => {
     useTarget({
       angular: () => {
-        /** this is a hack to include the input in angular */
+        /** this is a hack to include unused props */
         const _ = {
           a: props.load,
           b: props.props,

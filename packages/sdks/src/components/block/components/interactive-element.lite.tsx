@@ -71,12 +71,10 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       else={
         <props.Wrapper
           {...useTarget({
-            default: state.wrappedPropsWithAttributes,
-            angular: {
-              ...props.wrapperProps,
-              attributes: state.attributes,
-            },
+            default: props.wrapperProps,
+            vue: state.wrappedPropsWithAttributes,
           })}
+          attributes={state.attributes}
         >
           {props.children}
         </props.Wrapper>

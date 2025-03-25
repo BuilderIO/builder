@@ -108,6 +108,12 @@ const test = base.extend<TestOptions>({
           throw new Error('Vue warning detected: ' + originalText);
         }
       });
+      context.on('console', msg => {
+        const originalText = msg.text();
+        if (originalText.toLowerCase().includes('[vue warn]:')) {
+          throw new Error('Vue warning detected: ' + originalText);
+        }
+      });
     }
     await use(page);
   },
