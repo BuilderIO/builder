@@ -56,7 +56,7 @@ export const SDKS_SUPPORTING_PERSONALIZATION = [
  * After hydration, we reset the tree
  * These SDKs handle Personalization Container in a special way:
  * - first, the inlined script will help us add `display: none`, `aria-hidden: true` and `hidden: true` to the non-winning variants
- * - then, on mount / when the component is hydrated - we re-hydrate the tree again with only the winning variant and deleting the entire tree
+ * - then, on mount / when the component is hydrated - we reset the tree with only the winning variant and deleting the entire tree
  *
  * This helps us to avoid flicker and show the correct / winning variant initially and then once we've hydrated we show the winning variant
  * and keep a track of the cookies to update to the correct variant dynamically when the cookie updates.
