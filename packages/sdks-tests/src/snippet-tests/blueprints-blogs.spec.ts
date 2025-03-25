@@ -16,7 +16,6 @@ test.describe('BlogArticleComponent', () => {
         'react',
         'qwik-city',
         'hydrogen',
-        'sveltekit',
         'nextjs-sdk-next-app',
         'angular-19-ssr',
         'react-sdk-next-pages',
