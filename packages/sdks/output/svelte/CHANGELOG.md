@@ -1,5 +1,74 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 4.0.6
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
+## 4.0.5
+
+### Patch Changes
+
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
+## 4.0.4
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
+## 4.0.3
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+
+## 4.0.2
+
+### Patch Changes
+
+- 1396fb4: Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
+
+## 4.0.1
+
+### Patch Changes
+
+- 80247eb: Fix: Updating input values while in the Content Editor not triggering changes in the iframe.
+
+## 4.0.0
+
+### Major Changes
+
+- 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
+
+Example:
+
+- from:
+
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
+
+- to:
+
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
+
+- 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
+
+## 3.0.8
+
+### Patch Changes
+
+- 58ee59e: Fix: added lazy loading to video element
+
 ## 3.0.7
 
 ### Patch Changes

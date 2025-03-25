@@ -76,16 +76,12 @@ const dynamicComponentTemplate = (tagName) => {
 export class Dynamic${capitalize(tagName)} {
   @Input() attributes!: any;
   @Input() actionAttributes?: any;
-
+  @Input() tagName?: string;
   @ViewChild('v', { read: ElementRef }) v!: ElementRef;
-
   _listenerFns = new Map<string, () => void>();
-
   constructor(private renderer: Renderer2) {}
-
   setAttributes(el: any, value: any, changes?: any) {
     if (!el) return;
-
     const target = changes ? changes : value;
     Object.keys(target).forEach((key) => {
       if (key.startsWith('on')) {
@@ -98,17 +94,14 @@ export class Dynamic${capitalize(tagName)} {
       }
     });
   }
-
   ngAfterViewInit() {
     this.setAttributes(this.v?.nativeElement, this.attributes);
   }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.attributes) {
       this.setAttributes(this.v?.nativeElement, this.attributes, changes.attributes.currentValue);
     }
   }
-
   ngOnDestroy() {
     this._listenerFns.forEach(fn => fn());
   }
@@ -129,22 +122,36 @@ const generateComponents = () => {
       <ng-container *ngIf="useTypeOf(TagName) === 'string'">
         <ng-container
           *ngComponentOutlet="
-            TagName;
+            getComponentType(TagName);
             inputs: {
               attributes: attributes,
-              actionAttributes: actionAttributes
+              actionAttributes: actionAttributes,
+              tagName: tagName
             };
             content: myContent
           "
         ></ng-container>
       </ng-container>
-      <ng-container *ngIf="!(useTypeOf(TagName) === 'string')">
+      <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getDynamicTagName() !== ''">
         <ng-container
           *ngComponentOutlet="
             TagName;
             inputs: {
               attributes: attributes,
-              actionAttributes: actionAttributes
+              actionAttributes: actionAttributes,
+              tagName: tagName
+            };
+            content: myContent
+          "
+        ></ng-container>
+      </ng-container>
+       <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getDynamicTagName() === ''">
+        <ng-container
+          *ngComponentOutlet="
+            TagName;
+            inputs: {
+              attributes: attributes,
+              actionAttributes: actionAttributes,
             };
             content: myContent
           "
@@ -157,7 +164,7 @@ const generateComponents = () => {
           TagName;
           inputs: {
             attributes: attributes,
-            actionAttributes: actionAttributes
+            actionAttributes: actionAttributes,
           };
           content: myContent
         "
@@ -174,6 +181,7 @@ export default class DynamicRenderer {
   @Input() TagName!: any;
   @Input() attributes!: any;
   @Input() actionAttributes!: any;
+  @Input() tagName : string = '';
 
   @ViewChild('tagnameTemplate', { static: true }) tagnameTemplateRef!: TemplateRef<any>;
 
@@ -183,14 +191,27 @@ export default class DynamicRenderer {
     return typeof obj;
   }
 
+  getDynamicTagName(): string {
+    return this.tagName;
+  }
+
   constructor(private vcRef: ViewContainerRef) {}
+
+  private tagComponentMap: { [key: string]: any } = {
+    ${htmlElements.map((el) => `'${el}': Dynamic${capitalize(el)}`).join(',\n    ')}
+  };
+
+  getComponentType(tagName: string): any {
+    return this.tagComponentMap[tagName] || null;
+  }
 
   ngOnInit() {
     if (typeof this.TagName === 'string') {
-      switch (this.TagName) {
-        ${htmlElements.map((el) => `case '${el}': this.TagName = Dynamic${capitalize(el)}; break;`).join('\n        ')}
-        default:
-          break;
+      if (this.tagComponentMap[this.TagName]) {
+        this.TagName = this.tagComponentMap[this.TagName];
+      } else {
+        this.tagName = this.TagName;
+        this.TagName = DynamicElement;
       }
     }
     this.myContent = [this.vcRef.createEmbeddedView(this.tagnameTemplateRef).rootNodes];
@@ -201,6 +222,57 @@ export default class DynamicRenderer {
   htmlElements.forEach((tagName) => {
     dynamicRendererCode += dynamicComponentTemplate(tagName) + '\n';
   });
+
+  dynamicRendererCode += `
+  @Component({
+      selector: 'dynamic-element',
+      template: '<ng-content></ng-content>',
+      standalone: true
+    })
+
+    export class DynamicElement {
+      @Input() tagName: string;
+      @Input() attributes: any;
+      @Input() actionAttributes: any;
+    
+      private _element!: HTMLElement;
+      private _listenerFns = new Map<string, () => void>();
+    
+      constructor(private hostRef: ElementRef, private renderer: Renderer2) {}
+    
+      ngOnInit() {
+        if(this.tagName){
+          this._element = this.renderer.createElement(this.tagName);
+          this.renderer.appendChild(this.hostRef.nativeElement, this._element);
+          this.setAttributes(this._element, this.attributes);
+        }
+      }
+
+      ngAfterViewInit(){
+        if(this.hostRef.nativeElement.children.length > 1){
+          this.renderer.appendChild(this.hostRef.nativeElement.children[1], this.hostRef.nativeElement.children[0]);
+        }
+      }
+    
+      ngOnDestroy() {
+        this._listenerFns.forEach((fn) => fn());
+      }
+    
+      setAttributes(el: any, attributes: any) {
+        if (!attributes) return;
+        Object.keys(attributes).forEach((key) => {
+          if (key.startsWith('on')) {
+            if (this._listenerFns.has(key)) {
+              this._listenerFns.get(key)!();
+            }
+            const eventType = key.replace('on', '').toLowerCase();
+            this._listenerFns.set(key, this.renderer.listen(el, eventType, attributes[key]));
+          } else {
+            this.renderer.setAttribute(el, key, attributes[key] ?? '');
+          }
+        });
+      }
+    }`;
 
   fs.writeFileSync(PATH_TO_DYNAMIC_RENDERER, dynamicRendererCode);
 

@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "target": "esnext",
-    "module": "esnext",
     "resolveJsonModule": true,
     "jsx": "react",
     "skipLibCheck": true,
-    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "lib": ["es2020", "dom"],
     "strict": true,
     "sourceMap": true,
     "declaration": true,
@@ -15,7 +15,12 @@
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node"]
   },
-  "include": ["src"]
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
+  "include": ["src", "rollup.config.ts"]
 }

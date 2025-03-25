@@ -4,6 +4,7 @@ import { CONTENT as personalizatContainer } from './personalization-container.js
 import { ANIMATIONS } from './animations.js';
 import { COLUMNS } from './columns.js';
 import { CONTENT as contentBindings } from './content-bindings.js';
+import { CONTENT as contentInputBindings } from './content-input-bindings.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
 import { CSS_PROPERTIES } from './css-properties.js';
 import {
@@ -82,7 +83,14 @@ import {
   VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
 } from './variant-containers.js';
 import { EMBED_AND_CUSTOM_CODE } from './embed-and-custom-code.js';
+import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
+import { DYNAMIC_ELEMENT } from './dynamic-element.js';
+import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
+import { NEW_BLOCK_ADD } from './new-block-add.js';
+import { DYNAMIC_BUTTON } from './dynamic-button.js';
+import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
+import { SECTION_CHILDREN } from './section-children.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -126,6 +134,7 @@ export const PAGES: Record<string, Page> = {
   '/link-url': { content: linkUrl },
   '/symbol-with-input-binding': { content: symbolWithInputBinding },
   '/content-bindings': { content: contentBindings },
+  '/content-input-bindings': { content: contentInputBindings, isGen1VisualEditingTest: true },
   '/image': { content: image },
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },
@@ -233,6 +242,7 @@ export const PAGES: Record<string, Page> = {
     target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
   },
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
+  '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
   '/variant-containers': {
     content: VARIANT_CONTAINERS,
     target: [
@@ -271,6 +281,12 @@ export const PAGES: Record<string, Page> = {
   },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
+  '/dynamic-element': { content: DYNAMIC_ELEMENT },
+  '/custom-code-dom-update': { content: CUSTOM_CODE_DOM_UPDATE },
+  '/new-block-add': { content: NEW_BLOCK_ADD },
+  '/dynamic-button': { content: DYNAMIC_BUTTON },
+  '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
+  '/section-children': { content: SECTION_CHILDREN },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -381,6 +397,23 @@ export const getProps = async (args: {
       break;
     case '/get-content':
     case '/get-content-with-symbol':
+      extraProps = {
+        apiEndpoint: 'content',
+      };
+      break;
+    case '/get-content-with-omit':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: '',
+      };
+      break;
+    case '/get-content-with-omit-name':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: 'name',
+      };
+      break;
+    case '/get-content-default':
       extraProps = {
         apiEndpoint: 'content',
       };

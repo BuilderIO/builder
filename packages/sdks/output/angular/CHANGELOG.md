@@ -1,5 +1,102 @@
 # @builder.io/sdk-angular
 
+## 0.18.10
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
+## 0.18.9
+
+### Patch Changes
+
+- 8c0d646: Fix: New child blocks getting added at the top while visual editing. This issue occurred with components that use children for rendering, for example - Section.
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
+## 0.18.8
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
+## 0.18.7
+
+### Patch Changes
+
+- 4eaad61: Refactor: code changes for the new blocks getting added on the top fix, adds thorough comments and uses mitosis's compileContext to introduce the `ngAfterContentChecked` hook
+- b38c8fb: Fix: show the correct A/B test variant content while visual editing or toggling between variants
+
+## 0.18.6
+
+### Patch Changes
+
+- f4ff27d: Fix: crashes when visually editing blocks (encountered when SDK dynamically switched HTML elements)
+- 6eb90b3: Fix: new blocks getting added at the top while visual editing
+
+## 0.18.5
+
+### Patch Changes
+
+- 02fab2b: Fix: handle the rendering of unknown HTML elements.
+
+## 0.18.4
+
+### Patch Changes
+
+- 887c6e0: Fix: visual editing Custom Code block reflects code updates in real time
+- 887c6e0: Fix: `nativeElement` not found issue in Custom Code and Embed Blocks
+
+## 0.18.3
+
+### Patch Changes
+
+- 527c115: Feat: A/B tests support
+
+## 0.18.2
+
+### Patch Changes
+
+- 1396fb4: Fix: duplicate `/track` call validation handles default and variant scenarios correctly.
+
+## 0.18.1
+
+### Patch Changes
+
+- 80247eb: Fix: Updating input values while in the Content Editor not triggering changes in the iframe.
+
+## 0.18.0
+
+### Minor Changes
+
+- 5ed08fc: - BREAKING CHANGE 🧨 : updated `subscribeToEditor` arguments: - arguments are now passed as a named argument object - `apiKey` is now a required field
+
+Example:
+
+- from:
+
+```ts
+    subscribeToEditor('page', () => { ... }, options: {trustedHosts:['...']})
+```
+
+- to:
+
+```ts
+    subscribeToEditor({
+        apiKey: '...',
+        model: '...',
+        trustedHosts: ['...'],
+        callback: () => { ... }
+    })
+```
+
+- 10a5754: BREAKING CHANGE 🧨: `model` and `content` are now required props for `<Content>`.
+
+## 0.17.9
+
+### Patch Changes
+
+- 58ee59e: Fix: added lazy loading to video element
+
 ## 0.17.8
 
 ### Patch Changes

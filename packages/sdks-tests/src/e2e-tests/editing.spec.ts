@@ -6,17 +6,20 @@ import {
 } from '../specs/columns.js';
 import { NEW_TEXT } from '../specs/helpers.js';
 import { HOMEPAGE } from '../specs/homepage.js';
-import { checkIsRN, test, excludeGen2 } from '../helpers/index.js';
+import { checkIsRN, test, excludeGen1, excludeGen2, checkIsGen1React } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
   sendContentUpdateMessage,
+  sendNewStateMessage,
   sendPatchOrUpdateMessage,
 } from '../helpers/visual-editor.js';
 import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.js';
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
+import { SECTION_CHILDREN } from '../specs/section-children.js';
 
 const editorTests = ({
   noTrustedHosts,
@@ -147,6 +150,33 @@ test.describe('Visual Editing', () => {
         expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
       }
     }
+  });
+
+  test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
+    test.skip(packageName === 'nextjs-sdk-next-app' || checkIsGen1React(sdk));
+
+    await launchEmbedderAndWaitForSdk({
+      path: '/editing-styles',
+      basePort,
+      page,
+      sdk,
+    });
+
+    const buttonLocator = checkIsRN(sdk)
+      ? page.frameLocator('iframe').getByText('Click me!').locator('..')
+      : page.frameLocator('iframe').getByText('Click me!');
+
+    await expect(buttonLocator).toHaveCSS('margin-top', '20px');
+    const newContent = cloneContent(EDITING_STYLES);
+    delete newContent.data.blocks[0].responsiveStyles.large.marginTop;
+
+    await sendContentUpdateMessage({
+      page,
+      newContent,
+      model: 'page',
+    });
+
+    await expect(buttonLocator).toHaveCSS('margin-top', '0px');
   });
 
   test('nested ContentVariants with same model name should not duplicate content', async ({
@@ -367,6 +397,431 @@ test.describe('Visual Editing', () => {
 
       expect(consoleMsg).toContain('modelName: page');
       expect(consoleMsg).toContain('apiKey: abcd');
+    });
+
+    test('should inject correct SDK data into iframe for gen-2', async ({
+      page,
+      basePort,
+      sdk,
+    }) => {
+      test.skip(excludeGen1(sdk));
+      let consoleMsg = '';
+      const msgPromise = page.waitForEvent('console', msg => {
+        if (msg.text().includes('BUILDER_EVENT: builder.sdkInfo')) {
+          consoleMsg = msg.text();
+          return true;
+        }
+        return false;
+      });
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/editing',
+        sdk,
+      });
+      await msgPromise;
+
+      expect(consoleMsg).toContain('modelName: page');
+      expect(consoleMsg).toContain('apiKey: abcd');
+    });
+  });
+
+  test.describe('Content Input', () => {
+    test('correctly updates', async ({ page, packageName, basePort, sdk }) => {
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
+          packageName === 'gen1-remix'
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/content-input-bindings', basePort, page, sdk });
+      await page.frameLocator('iframe').getByText('Bye').waitFor();
+
+      await sendNewStateMessage({
+        page,
+        newState: {
+          booleanToggle: true,
+        },
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('Hello').waitFor();
+
+      await sendNewStateMessage({
+        page,
+        newState: {
+          booleanToggle: false,
+        },
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('Bye').waitFor();
+    });
+  });
+
+  test.describe('New Block addition and deletion', () => {
+    test('should add new block below the last block', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+      const newContent = cloneContent(NEW_BLOCK_ADD);
+      newContent.data.blocks.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const textBlocks = await page
+        .frameLocator('iframe')
+        .getByText('some text already published')
+        .all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page.frameLocator('iframe').getByText('new text').boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeGreaterThan(textBlockBox.y);
+    });
+
+    test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+      const newContent = cloneContent(NEW_BLOCK_ADD_2);
+
+      newContent.data.blocks.splice(1, 0, {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: { name: 'Text', options: { text: 'add to middle' } },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to middle').waitFor();
+
+      const topTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('some text already published')
+        .boundingBox();
+      const endTextBlockBox = await page.frameLocator('iframe').getByText('end text').boundingBox();
+      const middleTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to middle')
+        .boundingBox();
+
+      expect(middleTextBlockBox).toBeDefined();
+      expect(topTextBlockBox).toBeDefined();
+      expect(endTextBlockBox).toBeDefined();
+
+      if (!middleTextBlockBox || !topTextBlockBox || !endTextBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(middleTextBlockBox.y).toBeGreaterThan(topTextBlockBox.y);
+      expect(middleTextBlockBox.y).toBeLessThan(endTextBlockBox.y);
+    });
+
+    test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+      const newContent = cloneContent(NEW_BLOCK_ADD);
+      newContent.data.blocks.unshift({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'add to top' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to top').waitFor();
+
+      const textBlocks = await page
+        .frameLocator('iframe')
+        .getByText('some text already published')
+        .all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to top')
+        .boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeLessThan(textBlockBox.y);
+    });
+
+    test('deleting a newly added block should remove it from the DOM', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/new-block-add', basePort, page, sdk });
+
+      const newContent = cloneContent(NEW_BLOCK_ADD);
+      newContent.data.blocks.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const updatedContent = cloneContent(NEW_BLOCK_ADD);
+      updatedContent.data.blocks.pop();
+
+      await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
+    });
+  });
+
+  test.describe('New Block addition and deletion with components using props.children / slots', () => {
+    test('should add new block below the last block', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const textBlocks = await page.frameLocator('iframe').getByText('text 2').all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page.frameLocator('iframe').getByText('new text').boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeGreaterThan(textBlockBox.y);
+    });
+
+    test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+
+      newContent.data.blocks[0].children.splice(1, 0, {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: { name: 'Text', options: { text: 'add to middle' } },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to middle').waitFor();
+
+      const topTextBlockBox = await page.frameLocator('iframe').getByText('text 1').boundingBox();
+      const endTextBlockBox = await page.frameLocator('iframe').getByText('text 2').boundingBox();
+      const middleTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to middle')
+        .boundingBox();
+
+      expect(middleTextBlockBox).toBeDefined();
+      expect(topTextBlockBox).toBeDefined();
+      expect(endTextBlockBox).toBeDefined();
+
+      if (!middleTextBlockBox || !topTextBlockBox || !endTextBlockBox) {
+        throw new Error('Middle text block or text block not found');
+      }
+
+      expect(middleTextBlockBox.y).toBeGreaterThan(topTextBlockBox.y);
+      expect(middleTextBlockBox.y).toBeLessThan(endTextBlockBox.y);
+    });
+
+    test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.unshift({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'add to top' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to top').waitFor();
+
+      const textBlocks = await page.frameLocator('iframe').getByText('text 1').all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to top')
+        .boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeLessThan(textBlockBox.y);
+    });
+
+    test('deleting a newly added block should remove it from the DOM', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const updatedContent = cloneContent(SECTION_CHILDREN);
+      updatedContent.data.blocks[0].children.pop();
+
+      await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
     });
   });
 });

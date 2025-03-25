@@ -87,6 +87,7 @@ export const CONTENT = {
             width: 1880,
             aspectRatio: 0.19,
             altText: 'alt text test',
+            title: 'title test',
           },
         },
         responsiveStyles: {
@@ -289,6 +290,7 @@ export const CONTENT_2 = {
             width: 1880,
             aspectRatio: 0.19,
             altText: 'alt text test',
+            title: 'title test',
           },
         },
         responsiveStyles: {

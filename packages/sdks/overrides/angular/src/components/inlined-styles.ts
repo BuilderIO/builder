@@ -1,7 +1,7 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Component, Inject, Input, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 interface Props {
   styles: string;
@@ -31,7 +31,7 @@ export default class InlinedStyles {
 
   constructor(
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document
+    private elRef: ElementRef
   ) {}
 
   ngOnChanges(changes) {
@@ -46,7 +46,7 @@ export default class InlinedStyles {
           this.renderer.createText(this.styles)
         );
         this.renderer.setAttribute(this.styleElement, 'nonce', this.nonce);
-        this.renderer.appendChild(this.document.head, this.styleElement);
+        this.renderer.appendChild(this.elRef.nativeElement, this.styleElement);
       }
     }
   }

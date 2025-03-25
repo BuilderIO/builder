@@ -11,6 +11,19 @@ Builder.sdkInfo = {
   version: global.VERSION,
 };
 
+if (typeof window !== 'undefined') {
+  window.parent?.postMessage(
+    {
+      type: 'builder.isWcGen1Sdk',
+      data: {
+        // @ts-ignore
+        version: global.VERSION,
+      },
+    },
+    '*'
+  );
+}
+
 function wrapInDiv(el: HTMLElement) {
   const newDiv = document.createElement('div');
   const currentChildren = Array.from(el.children);

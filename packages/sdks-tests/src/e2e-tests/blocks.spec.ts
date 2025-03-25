@@ -3,7 +3,20 @@ import fs from 'fs';
 import path from 'path';
 import { VIDEO_CDN_URL } from '../specs/video.js';
 import type { ExpectedStyles } from '../helpers/index.js';
-import { excludeRn, checkIsRN, test, isSSRFramework, mockFolderPath } from '../helpers/index.js';
+import {
+  excludeRn,
+  checkIsRN,
+  test,
+  isSSRFramework,
+  mockFolderPath,
+  checkIsGen1React,
+} from '../helpers/index.js';
+import {
+  cloneContent,
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+} from '../helpers/visual-editor.js';
+import { CUSTOM_CODE_DOM_UPDATE } from '../specs/custom-code-dom-update.js';
 
 test.describe('Blocks', () => {
   test('Text', async ({ page, sdk, packageName }) => {
@@ -215,6 +228,34 @@ test.describe('Blocks', () => {
 
       await expect(img).not.toHaveAttribute('srcset');
     });
+
+    test('Image title attribute', async ({ page, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk));
+      test.skip(
+        isSSRFramework(packageName),
+        'SSR frameworks get the images from the server so page.route intercept does not work'
+      );
+      const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
+      const mockImgBuffer = fs.readFileSync(mockImgPath);
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes('cdn.builder.io/api/v1/image')) {
+          return route.fulfill({
+            status: 200,
+            contentType: 'image/png',
+            body: mockImgBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
+
+      await page.goto('/image');
+
+      const img = page.getByTitle('title test');
+      await expect(img).toHaveAttribute('title', 'title test');
+    });
   });
 
   test.describe('Video', () => {
@@ -312,6 +353,41 @@ test.describe('Blocks', () => {
         await expect(textBlock).toBeVisible();
         await expect(textBlock).toHaveText('asfgasgasgasg some test');
       }
+    });
+
+    test('video lazy load', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      const mockVideoPath = path.join(mockFolderPath, 'video.mp4');
+      const mockVideoBuffer = fs.readFileSync(mockVideoPath);
+      let videoRequestMade = false;
+
+      await page.route('**/*', route => {
+        const request = route.request();
+        if (request.url().includes(VIDEO_CDN_URL)) {
+          videoRequestMade = true;
+
+          return route.fulfill({
+            status: 200,
+            contentType: 'video/mp4',
+            body: mockVideoBuffer,
+          });
+        } else {
+          return route.continue();
+        }
+      });
+
+      await page.goto('/video-lazy-load');
+      const videoLocator = page.locator('video');
+
+      await expect(videoLocator).not.toBeInViewport();
+      expect(videoRequestMade).toBeFalsy();
+
+      const requestPromise = page.waitForRequest(request => request.url().includes(VIDEO_CDN_URL));
+      await videoLocator.scrollIntoViewIfNeeded();
+
+      await expect(videoLocator).toBeInViewport();
+      await requestPromise;
     });
   });
 
@@ -512,6 +588,40 @@ test.describe('Blocks', () => {
 
       expect(textCenter).toBeCloseTo(columnCenter, 1);
     });
+
+    test('blocks are centered vertically when all blocks are individually centered and columns has a fixed height', async ({
+      page,
+      sdk,
+    }) => {
+      test.skip(checkIsRN(sdk));
+      await page.goto('/columns-vertical-centering');
+
+      const columnsParent = page.locator(
+        'xpath=//div[contains(@class, "builder-columns")]/ancestor::div[1]'
+      );
+
+      const columnBox = await columnsParent.boundingBox();
+      const textBoxes = await columnsParent.locator('.builder-text').all();
+
+      if (!columnBox || !textBoxes) {
+        throw new Error('Could not get bounding boxes');
+      }
+
+      const columnCenter = columnBox.y + columnBox.height / 2;
+
+      const textCenters = await Promise.all(
+        textBoxes.map(async textBox => {
+          const textBoxBox = await textBox.boundingBox();
+          if (!textBoxBox) {
+            throw new Error('Could not get bounding box');
+          }
+          return textBoxBox.y + textBoxBox.height / 2;
+        })
+      );
+
+      expect(textCenters[0]).toBeCloseTo(columnCenter, 1);
+      expect(textCenters[1]).toBeCloseTo(columnCenter, 1);
+    });
   });
 
   test.describe('Embed', () => {
@@ -537,6 +647,54 @@ test.describe('Blocks', () => {
       const iframe = page.locator('.builder-custom-code iframe');
       const src = await iframe.getAttribute('src');
       expect(src).toContain('https://www.youtube.com/embed/oU3H581uCsA');
+    });
+
+    test('should update DOM when custom code is rendered', async ({ page, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk));
+      test.fail(
+        packageName === 'react-sdk-next-14-app' || packageName === 'react-sdk-next-15-app',
+        'fails to do dom update via script throwing a hydration error'
+      );
+      await page.goto('/custom-code-dom-update');
+
+      await expect(page.locator('#myPara')).toHaveText('hello');
+      await expect(page.locator('#myPara')).toHaveCSS('background-color', 'rgb(0, 128, 0)');
+    });
+
+    test('visual editing updates dom in real time', async ({
+      page,
+      sdk,
+      basePort,
+      packageName,
+    }) => {
+      test.skip(checkIsRN(sdk) || checkIsGen1React(sdk) || packageName === 'nextjs-sdk-next-app');
+      test.fail(
+        packageName === 'react-sdk-next-14-app' || packageName === 'react-sdk-next-15-app',
+        'works correctly in the visual editor but failing here for unknown reason'
+      );
+
+      await launchEmbedderAndWaitForSdk({
+        page,
+        basePort,
+        path: '/custom-code-dom-update',
+        sdk,
+      });
+      await page.frameLocator('iframe').getByText('hello').waitFor();
+      await expect(page.frameLocator('iframe').getByText('hello')).toHaveCSS(
+        'background-color',
+        'rgb(0, 128, 0)'
+      );
+
+      const newCodeContent = cloneContent(CUSTOM_CODE_DOM_UPDATE) as typeof CUSTOM_CODE_DOM_UPDATE;
+      newCodeContent.data.blocks[0].component.options.code =
+        "<p id=\"myPara\">Hello there, I am custom HTML code!</p>\n\n<script>\n  const myPara = document.querySelector('#myPara');\n\n  console.log('here', myPara, myPara.innerHTML)\n\n  myPara.innerHTML = 'world'\n\n myPara.style.backgroundColor = 'red';\n</script>\n";
+
+      await sendContentUpdateMessage({ page, newContent: newCodeContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('world').waitFor();
+      await expect(page.frameLocator('iframe').getByText('world')).toHaveCSS(
+        'background-color',
+        'rgb(255, 0, 0)'
+      );
     });
   });
 });

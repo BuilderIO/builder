@@ -364,31 +364,6 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
             '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
           )
           .replace('</ng-container>', '</ng-container>\n</ng-container>');
-        const ngOnChangesIndex = code.indexOf(
-          'ngOnChanges(changes: SimpleChanges) {'
-        );
-
-        if (ngOnChangesIndex > -1) {
-          code = code.replace(
-            'ngOnChanges(changes: SimpleChanges) {',
-            // Add a check to see if the componentOptions have changed
-            `ngOnChanges(changes: SimpleChanges) {
-                if (changes.componentOptions) {
-                  let foundChange = false;
-                  for (const key in changes.componentOptions.previousValue) {
-                    if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
-                      foundChange = true;
-                      break;
-                    }
-                  }
-                  if (!foundChange) {
-                    return;
-                  }
-                }`
-          );
-        } else {
-          throw new Error('ngOnChanges not found in component-ref');
-        }
       }
       return code;
     },
@@ -396,9 +371,50 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 });
 
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
+        json.hooks.onUpdate.forEach((hook) => {
+          hook.code = hook.code.replaceAll(
+            /^\s*\/\/\s*@ts-expect-error.*$/gm,
+            ''
+          );
+        });
+        /**
+         * Since the angular SDK manually handles the creation of the dynamic blocks and attaching them as children of BlocksWrapper in the DOM
+         * it must also manually handle their re-renders on content change in the visual editor.
+         *
+         * <blocks-wrapper> -> inserts blocks as children dynamically
+         *  {each <block />} -> we need to re-render blocks when props.blocks update while visual editing
+         * </blocks-wrapper>
+         *
+         * `ngAfterContentChecked` runs after children were checked for changes, which is the earliest point we can safely append new blocks,
+         * and re-paint the DOM else the new children blocks are not present in the existing array, therefore pushed to the top of the list.
+         */
+        const templateRefName =
+          json.name === 'BlocksWrapper'
+            ? 'blockswrapperTemplateRef'
+            : 'wrapperTemplateRef';
+        json.compileContext = {
+          angular: {
+            hooks: {
+              ngAfterContentChecked: {
+                code: `if (this.shouldUpdate) {
+                  this.myContent = [this.vcRef.createEmbeddedView(this.${templateRefName}).rootNodes];
+                  this.shouldUpdate = false;
+                }`,
+              },
+            },
+          },
+        };
+      }
+      return json;
+    },
+  },
   code: {
-    post: (code) => {
-      if (code?.includes('selector: "blocks-wrapper"')) {
+    post: (code, json) => {
+      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
+        // insert children only after they are fully initialized
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
       return code;
@@ -600,6 +616,12 @@ const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
   code: {
     post: (code) => {
       if (code.includes('enable-editor')) {
+        /**
+         * we need to wait till the children content of enable-editor is fully loaded before rendering
+         * else the content that are behind any conditional logic will get rendered outside of the enable-editor
+         */
+        code = code.replace('ngOnInit', 'ngAfterContentInit');
+
         // find two event listeners and add bind(this) to the fn passed
         const eventListeners = code.match(
           /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
@@ -671,7 +693,7 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
  * This code is used to destructure the `attributes` prop and apply it to the direct child element of the
  * interactive-element when `noWrap` is set to `true`.
  *
- * When using a custom component that doesn’t expect the `attributes` prop and `noWrap` is `true`,
+ * When using a custom component that doesn't expect the `attributes` prop and `noWrap` is `true`,
  * the `attributes` are applied to the root element of the custom component:
  *
  * <mat-button {...attributes}>
@@ -819,47 +841,52 @@ const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
   },
 });
 
-const ANGULAR_MARK_SAFE_INNER_HTML = () => ({
-  code: {
-    post: (code, json) => {
-      if (['BuilderText', 'BuilderEmbed', 'CustomCode'].includes(json.name)) {
-        code =
-          `import { DomSanitizer } from "@angular/platform-browser";\nimport { ChangeDetectionStrategy } from "@angular/core";\n` +
-          code;
+/**
+ * Angular allows DOM manipulation in `ngAfterViewInit` hook.
+ * This plugin moves the DOM code from `ngOnInit` to `ngAfterViewInit` hook.
+ */
+const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
+  json: {
+    post: (json) => {
+      if (['BuilderVideo', 'CustomCode', 'BuilderEmbed'].includes(json.name)) {
+        let hooks = {};
 
-        // add changeDetection: ChangeDetectionStrategy.OnPush
-        const changeDetectionIndex = code.indexOf('selector:');
-        if (changeDetectionIndex !== -1) {
-          code =
-            code.slice(0, changeDetectionIndex) +
-            `changeDetection: ChangeDetectionStrategy.OnPush,\n` +
-            code.slice(changeDetectionIndex);
+        if (json.name === 'BuilderVideo') {
+          hooks.ngAfterViewInit = json.hooks.onMount[0];
+        }
+        if (json.name === 'CustomCode') {
+          hooks.ngAfterViewInit = json.hooks.onMount[0];
+          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
+        }
+        if (json.name === 'BuilderEmbed') {
+          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
         }
 
-        // add constructor with sanitizer
-        const constructorIndex = code.indexOf('constructor');
-        if (constructorIndex === -1) {
-          // not found
-          const ngOnChangesIndex = code.indexOf('ngOnChanges');
-          code =
-            code.slice(0, ngOnChangesIndex) +
-            `constructor(protected sanitizer: DomSanitizer) {}\n` +
-            code.slice(ngOnChangesIndex);
-        } else {
-          throw new Error(
-            'constructor found which should not be here. If you see this, please fix the ANGULAR_TEXT_MARK_SAFE_HTML Plugin.'
-          );
+        json.compileContext = {
+          angular: {
+            hooks,
+          },
+        };
+
+        if (hooks.ngAfterViewInit) {
+          json.compileContext.angular.hooks.ngAfterViewInit.code =
+            json.compileContext.angular.hooks.ngAfterViewInit.code
+              .replaceAll('props.', 'this.')
+              .replaceAll('state.', 'this.');
         }
 
-        const variableName = code.match(/\[innerHTML\]="([^"]+)"/)?.[1];
-        if (variableName) {
-          code = code.replace(
-            `[innerHTML]="${variableName}"`,
-            `[innerHTML]="sanitizer.bypassSecurityTrustHtml(${variableName})"`
-          );
+        if (hooks.ngAfterViewChecked) {
+          json.compileContext.angular.hooks.ngAfterViewChecked.code =
+            json.compileContext.angular.hooks.ngAfterViewChecked.code
+              .replaceAll('props.', 'this.')
+              .replaceAll('state.', 'this.');
         }
+
+        if (json.name === 'CustomCode' || json.name === 'BuilderEmbed') {
+          json.hooks.onUpdate = [];
+        }
+        json.hooks.onMount = [];
       }
-      return code;
     },
   },
 });
@@ -879,6 +906,36 @@ const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
           `@Component({\n\thost: { ngSkipHydration: "true" },`
         );
         code = code.replace(componentDecorator, componentDecoratorWithHost);
+      }
+      return code;
+    },
+  },
+});
+
+// Temporary fix to make the visual editing work for AB tests in Angular SDK
+// getters in angular run on every change detection
+const ANGULAR_AB_TEST_VE_CORRECT_VARIANT = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name === 'ContentVariants') {
+        json.state['defaultContent'].code = json.state[
+          'defaultContent'
+        ].code.replace('get ', '');
+        json.state['defaultContent'].type = 'method';
+        // as we are "pre" modifying the json, this will create a new state property for this
+        json.children[0].children[2].bindings['content'].code =
+          'state.defaultContent()';
+      }
+      return json;
+    },
+  },
+});
+
+const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
+  code: {
+    post: (code, json) => {
+      if (json.name === 'CustomCode') {
+        code = code.replace('useTask$(', 'useVisibleTask$(');
       }
       return code;
     },
@@ -914,7 +971,8 @@ module.exports = {
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
-        ANGULAR_MARK_SAFE_INNER_HTML,
+        ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT,
+        ANGULAR_AB_TEST_VE_CORRECT_VARIANT,
       ],
     },
     solid: {
@@ -1123,7 +1181,7 @@ module.exports = {
                 return;
               }
 
-              if (['EnableEditor', 'CustomCode'].includes(json.name)) {
+              if (['EnableEditor'].includes(json.name)) {
                 json.hooks.onMount.forEach((hook, i) => {
                   if (hook.onSSR) return;
 
@@ -1163,6 +1221,7 @@ module.exports = {
             },
           },
         }),
+        QWIK_ONUPDATE_TO_USEVISIBLETASK,
       ],
     },
     svelte: {
