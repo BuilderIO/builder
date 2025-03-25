@@ -29,7 +29,7 @@
   <div class="content">
     <h1>{article.data.title}</h1>
     <p>{article.data.blurb}</p>
-    <img src={article.data.image} />
+    <img src={article.data.image} alt={article.data.title} />
     <Content {model} content={article} {apiKey} />
   </div>
 {/if}

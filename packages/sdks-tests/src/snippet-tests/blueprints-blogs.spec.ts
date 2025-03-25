@@ -14,7 +14,6 @@ test.describe('BlogArticleComponent', () => {
         'gen1-remix',
         'gen1-react',
         'react',
-        'qwik-city',
         'hydrogen',
         'nextjs-sdk-next-app',
         'angular-19-ssr',
