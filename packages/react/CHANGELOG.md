@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.0.11
+
+### Patch Changes
+
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
 ## 8.0.10
 
 ### Patch Changes
