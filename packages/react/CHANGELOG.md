@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 8.0.12
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+- Updated dependencies [ff56386]
+  - @builder.io/sdk@6.0.5
+
 ## 8.0.11
 
 ### Patch Changes
