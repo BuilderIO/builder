@@ -2503,7 +2503,7 @@ export class Builder {
 
     const queryParams: ParamsMap = {
       // TODO: way to force a request to be in a separate queue. or just lower queue limit to be 1 by default
-      omit: queue[0].omit || 'meta.componentsUsed',
+      omit: queue[0].omit ?? 'meta.componentsUsed',
       apiKey: this.apiKey,
       ...queue[0].options,
       ...this.queryOptions,
