@@ -3,7 +3,7 @@ import { test } from '../helpers/index.js';
 
 test.describe('BlogArticleComponent', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr', 'react'].includes(packageName));
+    test.skip(!['angular-16', 'angular-16-ssr', 'vue'].includes(packageName));
     await page.goto('blogs/new-product-line');
   });
 
