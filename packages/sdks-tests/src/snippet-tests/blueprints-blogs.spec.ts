@@ -13,7 +13,6 @@ test.describe('BlogArticleComponent', () => {
         'gen1-next14-pages',
         'gen1-remix',
         'gen1-react',
-        'react',
         'nextjs-sdk-next-app',
         'angular-19-ssr',
         'react-sdk-next-pages',
