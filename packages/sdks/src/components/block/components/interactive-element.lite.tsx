@@ -1,4 +1,10 @@
-import { Show, useMetadata, useStore, type Signal } from '@builder.io/mitosis';
+import {
+  Show,
+  useMetadata,
+  useStore,
+  useTarget,
+  type Signal,
+} from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
@@ -32,8 +38,8 @@ useMetadata({
  */
 export default function InteractiveElement(props: InteractiveElementProps) {
   const state = useStore({
-    get wrappedPropsWithAttributes() {
-      const attributes = props.includeBlockProps
+    get attributes() {
+      return props.includeBlockProps
         ? {
             ...getBlockProperties({
               block: props.block,
@@ -48,10 +54,13 @@ export default function InteractiveElement(props: InteractiveElementProps) {
             }),
           }
         : {};
-
+    },
+    get wrappedPropsWithAttributes() {
       return {
         ...props.wrapperProps,
-        ...(attributes ? { attributes } : {}),
+        ...(Object.keys(state.attributes).length > 0
+          ? { attributes: state.attributes }
+          : {}),
       };
     },
   });
@@ -60,7 +69,15 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper {...state.wrappedPropsWithAttributes}>
+        <props.Wrapper
+          {...useTarget({
+            default: state.wrappedPropsWithAttributes,
+            angular: {
+              ...props.wrapperProps,
+              attributes: state.attributes,
+            },
+          })}
+        >
           {props.children}
         </props.Wrapper>
       }
