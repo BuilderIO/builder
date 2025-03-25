@@ -3,7 +3,28 @@ import { test } from '../helpers/index.js';
 
 test.describe('BlogArticleComponent', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr'].includes(packageName));
+    test.skip(
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'gen1-next15-app',
+        'gen1-next14-pages',
+        'gen1-remix',
+        'gen1-react',
+        'vue',
+        'nuxt',
+        'qwik-city',
+        'hydrogen',
+        'svelte',
+        'sveltekit',
+        'nextjs-sdk-next-app',
+        'angular-19-ssr',
+        'react-sdk-next-pages',
+        'react-sdk-next-14-app',
+      ].includes(packageName)
+    );
     await page.goto('blogs/new-product-line');
   });
 
