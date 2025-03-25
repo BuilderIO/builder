@@ -80,6 +80,7 @@ export default function Symbol(props: SymbolProps) {
       }).then((newContent) => {
         if (newContent) {
           state.contentToUse = newContent;
+          state.symbolEntry = props.symbol?.entry;
         }
       });
     },
