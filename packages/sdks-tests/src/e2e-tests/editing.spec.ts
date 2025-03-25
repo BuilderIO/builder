@@ -652,7 +652,7 @@ test.describe('Visual Editing', () => {
     test.skip(excludeGen1(sdk));
     test.skip(packageName === 'nextjs-sdk-next-app');
 
-    await launchEmbedderAndWaitForSdk({ path: '/nested-symbol', basePort, page, sdk });
+    await launchEmbedderAndWaitForSdk({ path: '/symbols-with-list-content-input', basePort, page, sdk });
 
     const newContent = cloneContent(SYMBOLS_WITH_LIST_CONTENT_INPUT);
 
