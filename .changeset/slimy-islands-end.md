@@ -11,4 +11,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Fix: correctly set default value for `meta.componentsUsed` in Content API calls.
+Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
