@@ -1024,7 +1024,7 @@ module.exports = {
             },
           },
         }),
-        // VUE_FIX_EXTRA_ATTRS_PLUGIN,
+        VUE_FIX_EXTRA_ATTRS_PLUGIN,
       ],
       api: 'options',
       asyncComponentImports: false,
