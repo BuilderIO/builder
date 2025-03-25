@@ -1,4 +1,4 @@
-export const NESTED_SYMBOL_CONTENT = {
+export const SYMBOLS_WITH_LIST_CONTENT_INPUT = {
   data: {
     title: 'react-sdk',
     themeId: false,

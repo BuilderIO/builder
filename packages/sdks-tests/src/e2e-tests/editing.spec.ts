@@ -18,7 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
-import { NESTED_SYMBOL_CONTENT } from '../specs/nested-symbol.js';
+import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from '../specs/symbols-with-list-content-input.js';
 import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
 import { SECTION_CHILDREN } from '../specs/section-children.js';
 
@@ -654,7 +654,7 @@ test.describe('Visual Editing', () => {
 
     await launchEmbedderAndWaitForSdk({ path: '/nested-symbol', basePort, page, sdk });
 
-    const newContent = cloneContent(NESTED_SYMBOL_CONTENT);
+    const newContent = cloneContent(SYMBOLS_WITH_LIST_CONTENT_INPUT);
 
     await sendPatchOrUpdateMessage({
       page,
