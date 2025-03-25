@@ -408,15 +408,15 @@ export const getProps = async (args: {
       };
       break;
     case '/get-content-with-omit-name':
-        extraProps = {
-          apiEndpoint: 'content',
-          omit: 'name',
-        };
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: 'name',
+      };
       break;
     case '/get-content-default':
-        extraProps = {
-          apiEndpoint: 'content',
-        };
+      extraProps = {
+        apiEndpoint: 'content',
+      };
       break;
     case '/get-query':
       extraProps = {
