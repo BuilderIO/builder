@@ -946,6 +946,15 @@ const VUE_FIX_EXTRA_ATTRS_PLUGIN = () => ({
     pre: (json) => {
       if (json.name === 'InteractiveElement') {
         delete json.children[0].meta.else.bindings.attributes;
+
+        // we can't use `useTarget` to conditionally do the spread for some reason.
+        // There's a bug somewhere in Mitosis, so we do it in this plugin manually.
+        delete json.children[0].meta.else.bindings['props.wrapperProps'];
+        json.children[0].meta.else.bindings['props.vueWrapperProps'] = {
+          code: 'props.vueWrapperProps',
+          type: 'spread',
+          spreadType: 'normal',
+        };
       }
 
       return json;

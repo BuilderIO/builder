@@ -55,24 +55,21 @@ export default function InteractiveElement(props: InteractiveElementProps) {
           }
         : {};
     },
+    get vueWrapperProps() {
+      return {
+        ...props.wrapperProps,
+        ...(Object.keys(state.attributes).length > 0
+          ? { attributes: state.attributes }
+          : {}),
+      };
+    },
   });
 
   return (
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper
-          {...useTarget({
-            default: props.wrapperProps,
-            vue: {
-              ...props.wrapperProps,
-              ...(Object.keys(state.attributes).length > 0
-                ? { attributes: state.attributes }
-                : {}),
-            },
-          })}
-          attributes={state.attributes}
-        >
+        <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
           {props.children}
         </props.Wrapper>
       }
