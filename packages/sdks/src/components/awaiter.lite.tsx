@@ -10,6 +10,7 @@ type AwaiterProps = {
   props?: any;
   fallback?: any;
   children?: any;
+  attributes?: any;
 };
 
 export default function Awaiter(props: AwaiterProps) {
@@ -20,6 +21,7 @@ export default function Awaiter(props: AwaiterProps) {
         const _ = {
           a: props.load,
           b: props.props,
+          c: props.attributes,
           d: props.fallback,
         };
       },

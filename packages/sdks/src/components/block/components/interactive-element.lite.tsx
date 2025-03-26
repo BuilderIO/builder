@@ -55,14 +55,6 @@ export default function InteractiveElement(props: InteractiveElementProps) {
           }
         : {};
     },
-    get wrappedPropsWithAttributes() {
-      return {
-        ...props.wrapperProps,
-        ...(Object.keys(state.attributes).length > 0
-          ? { attributes: state.attributes }
-          : {}),
-      };
-    },
   });
 
   return (
@@ -72,7 +64,12 @@ export default function InteractiveElement(props: InteractiveElementProps) {
         <props.Wrapper
           {...useTarget({
             default: props.wrapperProps,
-            vue: state.wrappedPropsWithAttributes,
+            vue: {
+              ...props.wrapperProps,
+              ...(Object.keys(state.attributes).length > 0
+                ? { attributes: state.attributes }
+                : {}),
+            },
           })}
           attributes={state.attributes}
         >
@@ -83,7 +80,8 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       <Awaiter
         load={props.Wrapper.load}
         fallback={props.Wrapper.fallback}
-        props={state.wrappedPropsWithAttributes}
+        props={props.wrapperProps}
+        attributes={state.attributes}
       >
         {props.children}
       </Awaiter>
