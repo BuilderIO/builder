@@ -5,6 +5,7 @@
   export let fallback: any;
   export let props: any;
   export let attributes: any;
+
   const componentImport = typeof load === 'string' ? import(load) : load();
 </script>
 
