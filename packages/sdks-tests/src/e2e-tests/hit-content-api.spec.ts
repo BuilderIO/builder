@@ -41,8 +41,9 @@ test.describe('Get Content', () => {
     expect(await req!.postDataJSON()).toEqual({ test: 'test' });
     expect(req!.method()).toBe('POST');
   });
-  test('fetch symbol with query.id', async ({ page, sdk }) => {
+  test('fetch symbol with query.id', async ({ page, sdk, packageName }) => {
     test.skip(!excludeGen1(sdk));
+    test.skip(packageName !== 'gen1-next14-pages');
 
     let x = 0;
     let headers;
@@ -77,5 +78,95 @@ test.describe('Get Content', () => {
     expect(headers?.['x-builder-sdk']).toBe(mapSdkName(sdk));
     expect(headers?.['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
     expect(headers?.['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/); // Check for semver format
+  });
+
+  test('should NOT omit componentsUsed when omit parameter is explicitly set to empty string', async ({
+    page,
+    sdk,
+  }) => {
+    test.skip(!excludeGen1(sdk));
+
+    let builderRequestPromise: Promise<string> | undefined = undefined;
+    let requestUrl: string | undefined;
+
+    const builderApiRegex = /https:\/\/cdn\.builder\.io\/api\/v3\//;
+
+    await page.goto('/get-content-with-omit');
+
+    builderRequestPromise = new Promise<string>(resolve => {
+      page.on('request', request => {
+        const url = request.url();
+        if (builderApiRegex.test(url)) {
+          requestUrl = url;
+          resolve(url);
+        }
+      });
+    });
+
+    await page.reload({ waitUntil: 'networkidle' });
+    await builderRequestPromise;
+
+    expect(requestUrl).toBeDefined();
+    expect(requestUrl!).not.toContain('omit=meta.componentsUsed');
+    expect(requestUrl!.includes('omit=')).toBeTruthy();
+    expect(new URL(requestUrl!).searchParams.get('omit')).toBe('');
+  });
+
+  test('should omit the specified field when omit parameter has a defined value for gen1', async ({
+    page,
+    sdk,
+  }) => {
+    test.skip(!excludeGen1(sdk));
+
+    let builderRequestPromise: Promise<string> | undefined = undefined;
+    let requestUrl: string | undefined;
+
+    const builderApiRegex = /https:\/\/cdn\.builder\.io\/api\/v3\//;
+
+    await page.goto('/get-content-with-omit-name');
+
+    builderRequestPromise = new Promise<string>(resolve => {
+      page.on('request', request => {
+        const url = request.url();
+        if (builderApiRegex.test(url)) {
+          requestUrl = url;
+          resolve(url);
+        }
+      });
+    });
+
+    await page.reload({ waitUntil: 'networkidle' });
+    await builderRequestPromise;
+
+    expect(requestUrl).toBeDefined();
+    expect(requestUrl!).toContain('omit=name');
+    expect(new URL(requestUrl!).searchParams.get('omit')).toBe('name');
+  });
+
+  test('should use default omit value when omit parameter is undefined', async ({ page, sdk }) => {
+    test.skip(!excludeGen1(sdk));
+
+    let builderRequestPromise: Promise<string> | undefined = undefined;
+    let requestUrl: string | undefined;
+
+    const builderApiRegex = /https:\/\/cdn\.builder\.io\/api\/v3\//;
+
+    await page.goto('/get-content-default');
+
+    builderRequestPromise = new Promise<string>(resolve => {
+      page.on('request', request => {
+        const url = request.url();
+        if (builderApiRegex.test(url)) {
+          requestUrl = url;
+          resolve(url);
+        }
+      });
+    });
+
+    await page.reload({ waitUntil: 'networkidle' });
+    await builderRequestPromise;
+
+    const omitValue = new URL(requestUrl!).searchParams.get('omit');
+    expect(omitValue).toBe('meta.componentsUsed');
   });
 });

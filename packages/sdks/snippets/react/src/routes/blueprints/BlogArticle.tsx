@@ -11,9 +11,9 @@ const model = 'blog-article';
 const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export default function BlogArticle() {
-  const [article, setArticle] = useState<BuilderContent | null>();
+  const [article, setArticle] = useState<BuilderContent | null>(null);
   const { handle } = useParams();
-  console.log(article);
+
   useEffect(() => {
     fetchOneEntry({
       model,
