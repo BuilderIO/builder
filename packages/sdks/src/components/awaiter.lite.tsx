@@ -8,9 +8,9 @@ import { onMount, useTarget } from '@builder.io/mitosis';
 type AwaiterProps = {
   load: () => Promise<any>;
   props?: any;
+  attributes?: any;
   fallback?: any;
   children?: any;
-  attributes?: any;
 };
 
 export default function Awaiter(props: AwaiterProps) {
