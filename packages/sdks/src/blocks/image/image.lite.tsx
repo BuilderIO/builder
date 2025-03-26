@@ -80,6 +80,12 @@ export default function Image(props: ImageProps) {
           a: props.lazy,
         };
       },
+      angular: () => {
+        /** this is a hack to include unused props */
+        const _ = {
+          a: props.lazy,
+        };
+      },
     });
   });
   return (
