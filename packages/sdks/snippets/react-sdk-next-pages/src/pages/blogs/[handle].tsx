@@ -27,11 +27,11 @@ export default function BlogArticlePage({
     return <div>404</div>;
   }
   return (
-    article && (
+    article?.data && (
       <div className="content">
-        <h1>{article.data?.title}</h1>
-        <p>{article.data?.blurb}</p>
-        <img src={article.data?.image} alt={article.data?.title} />
+        <h1>{article.data.title}</h1>
+        <p>{article.data.blurb}</p>
+        <img src={article.data.image} alt={article.data.title} />
         <Content model={MODEL_NAME} content={article} apiKey={API_KEY} />
       </div>
     )

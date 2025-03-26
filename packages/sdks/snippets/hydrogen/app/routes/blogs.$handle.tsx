@@ -1,5 +1,5 @@
 import type {LoaderFunctionArgs} from '@remix-run/node';
-import {json, useLoaderData} from '@remix-run/react';
+import {useLoaderData} from '@remix-run/react';
 import {fetchOneEntry, Content, isPreviewing} from '@builder.io/sdk-react';
 
 const MODEL = 'blog-article';
