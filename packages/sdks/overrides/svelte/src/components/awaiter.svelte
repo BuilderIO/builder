@@ -13,7 +13,7 @@
     <svelte:component this={fallback} />
   {/if}
 {:then { default: Component }}
-  <svelte:component this={Component} {...props} {...attributes}>
+  <svelte:component this={Component} {...props} {attributes}>
     <slot />
   </svelte:component>
 {/await}
