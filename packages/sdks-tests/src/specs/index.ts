@@ -91,7 +91,7 @@ import { NEW_BLOCK_ADD } from './new-block-add.js';
 import { DYNAMIC_BUTTON } from './dynamic-button.js';
 import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
 import { SECTION_CHILDREN } from './section-children.js';
-import { GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE } from './get-content-symbol-update-entry.js';
+import { MAIN_CONTENT } from './get-content-symbol-update-entry.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -288,7 +288,7 @@ export const PAGES: Record<string, Page> = {
   '/dynamic-button': { content: DYNAMIC_BUTTON },
   '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
   '/section-children': { content: SECTION_CHILDREN },
-  '/symbol-update-entries': { content: GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE },
+  '/symbol-update-entries': { content: MAIN_CONTENT },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -398,7 +398,6 @@ export const getProps = async (args: {
       };
       break;
     case '/get-content':
-    case '/symbol-update-entries':
     case '/get-content-with-symbol':
       extraProps = {
         apiEndpoint: 'content',

@@ -23,6 +23,7 @@ import { SECTION_CHILDREN } from '../specs/section-children.js';
 import {
   GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE,
   GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO,
+  MAIN_CONTENT
 } from '../specs/get-content-symbol-update-entry.js';
 const editorTests = ({
   noTrustedHosts,
@@ -829,7 +830,7 @@ test.describe('Visual Editing', () => {
   });
 });
 
-test('Symbol should update the data when nested values are updated', async ({
+test.only('Symbol should update the data when nested values are updated', async ({
   page,
   sdk,
   packageName,
@@ -844,15 +845,14 @@ test('Symbol should update the data when nested values are updated', async ({
 
   await page.route(urlMatch, route => {
     fetchCount++;
-    console.log('route', fetchCount);
     const url = new URL(route.request().url());
     symbolRequests.push(url);
-
+    console.log('fetchCount', fetchCount);
     return route.fulfill({
       status: 200,
       json: {
         results: [
-          fetchCount === 0
+          fetchCount === 1
             ? GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE
             : GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO,
         ],
@@ -861,15 +861,14 @@ test('Symbol should update the data when nested values are updated', async ({
   });
 
   await launchEmbedderAndWaitForSdk({ path: '/symbol-update-entries', basePort, page, sdk });
-  
-  const newContent = cloneContent(GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE);
 
-  await sendContentUpdateMessage({ page, newContent, model: 'page' });
+  const newContent = cloneContent(MAIN_CONTENT);
+
   await page.frameLocator('iframe').getByText('Green Potato').waitFor();
 
   newContent.data.blocks[0].component.options.symbol.entry = 'aa024e6851e94b49b99f41a2294fd423';
-
   await sendContentUpdateMessage({ page, newContent, model: 'page' });
 
   await page.frameLocator('iframe').getByText('Red tomato').waitFor();
+  expect(fetchCount).toBe(2);
 });
