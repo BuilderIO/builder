@@ -15,8 +15,6 @@ test.describe('BlogArticleComponent', () => {
         'gen1-react',
         'nextjs-sdk-next-app',
         'angular-19-ssr',
-        'react-sdk-next-pages',
-        'react-sdk-next-14-app',
       ].includes(packageName)
     );
     await page.goto('blogs/new-product-line');
@@ -28,7 +26,7 @@ test.describe('BlogArticleComponent', () => {
   });
 
   test('should display article blurb', async ({ page }) => {
-    const blurb = await page.locator('p').textContent();
+    const blurb = await page.locator('p').first().textContent();
     expect(blurb).toContain('This is a sample blurb for the blog article.');
   });
 
