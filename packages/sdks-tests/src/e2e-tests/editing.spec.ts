@@ -847,7 +847,6 @@ test('Symbol should update the data when nested values are updated', async ({
     fetchCount++;
     const url = new URL(route.request().url());
     symbolRequests.push(url);
-    console.log('fetchCount', fetchCount);
     return route.fulfill({
       status: 200,
       json: {
