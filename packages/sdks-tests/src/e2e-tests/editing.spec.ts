@@ -830,7 +830,7 @@ test.describe('Visual Editing', () => {
   });
 });
 
-test.only('Symbol should update the data when nested values are updated', async ({
+test('Symbol should update the data when nested values are updated', async ({
   page,
   sdk,
   packageName,
