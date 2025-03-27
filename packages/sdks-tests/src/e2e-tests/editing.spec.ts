@@ -310,7 +310,8 @@ test.describe('Visual Editing', () => {
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'qwik-city'
       );
       await launchEmbedderAndWaitForSdk({ path: '/accordion-no-detail', basePort, page, sdk });
 
