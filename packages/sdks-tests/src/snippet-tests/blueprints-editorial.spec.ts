@@ -17,7 +17,6 @@ test.describe('Product Editorial Page with Real Data', () => {
         'react-sdk-next-15-app',
         'nextjs-sdk-next-app',
         'react',
-        'nuxt',
         'svelte',
         'sveltekit',
         'angular-19-ssr',
