@@ -1,4 +1,10 @@
-import { Show, useMetadata, useStore, type Signal } from '@builder.io/mitosis';
+import {
+  Show,
+  useMetadata,
+  useStore,
+  useTarget,
+  type Signal,
+} from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
@@ -49,13 +55,27 @@ export default function InteractiveElement(props: InteractiveElementProps) {
           }
         : {};
     },
+    get targetWrapperProps() {
+      return useTarget({
+        default: props.wrapperProps,
+        vue: {
+          ...props.wrapperProps,
+          ...(Object.keys(state.attributes).length > 0
+            ? { attributes: state.attributes }
+            : {}),
+        },
+      });
+    },
   });
 
   return (
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper {...props.wrapperProps} attributes={state.attributes}>
+        <props.Wrapper
+          {...state.targetWrapperProps}
+          attributes={state.attributes}
+        >
           {props.children}
         </props.Wrapper>
       }
