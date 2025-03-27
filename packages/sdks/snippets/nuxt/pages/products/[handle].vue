@@ -17,12 +17,13 @@ import ProductInfo from '@/components/ProductInfo.vue'
 
 const apiKey = 'ee9f13b4981e489a9a1209887695ef2b'
 const model = 'product-editorial'
-const {params} = useRoute()
+const route = useRoute()
+
 
 const { 
   data: product,
 } = useAsyncData('product', () => 
-  $fetch(`https://fakestoreapi.com/products/${params.handle}`)
+  $fetch(`https://fakestoreapi.com/products/${route.params.handle}`)
 )
 
 const { 
