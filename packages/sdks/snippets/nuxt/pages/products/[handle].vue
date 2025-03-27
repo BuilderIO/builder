@@ -2,8 +2,8 @@
   <div v-if="!product && !editorial && !isPreviewing()">404</div>
   <div v-else>
     <ProductHeader />
-    <ProductInfo v-if="product" :product="product" />
-    <Content v-if="editorial" :model="model" :content="editorial" :apiKey="apiKey" />
+    <ProductInfo :product="product" />
+    <Content :model="model" :content="editorial" :apiKey="apiKey" />
     <ProductFooter />
   </div>
 </template>
