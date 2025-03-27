@@ -163,8 +163,6 @@ export const provideBuilderContext = (
 };
 
 export const generateKey = (index: number) => {
-  if (TARGET === 'qwik') {
-    return `${index}-${Date.now()}`;
-  }
+  //This does not handle the case in Qwik
   return index.toString();
 };
