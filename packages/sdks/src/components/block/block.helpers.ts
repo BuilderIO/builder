@@ -9,7 +9,6 @@ import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getStyle } from '../../functions/get-style.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
-import { TARGET } from '../../constants/target.js';
 
 const checkIsComponentRestricted = (
   component: RegisteredComponent | null | undefined,
