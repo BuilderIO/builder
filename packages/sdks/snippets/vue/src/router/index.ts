@@ -5,6 +5,7 @@ import EditableRegions from '@/views/EditableRegions.vue';
 import LivePreview from '@/views/LivePreview.vue';
 import QuickStart from '@/views/QuickStart.vue';
 import ProductDetails from '@/views/blueprints/ProductDetails.vue';
+import ProductEditorial from '@/views/blueprints/ProductEditorial.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -23,6 +24,7 @@ const router = createRouter({
       component: AdvancedChild,
     },
     { path: '/product/category/:handle', component: ProductDetails },
+    { path: '/products/:id', component: ProductEditorial },
     // will match everything and put it under `route.params.pathMatch`
     { path: '/:pathMatch(.*)*', component: QuickStart },
   ],
