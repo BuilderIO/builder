@@ -647,12 +647,24 @@ test.describe('Visual Editing', () => {
     });
   });
 
-  test('Symbol should update the data when nested values are updated', async ({ page, basePort, sdk, packageName }) => {
-
-    test.skip(sdk === 'qwik', 'Qwik fails to update the data when nested values are updated. Need to raise another PR.');
+  test('Symbol should update the data when nested values are updated', async ({
+    page,
+    basePort,
+    sdk,
+    packageName,
+  }) => {
+    test.skip(
+      sdk === 'qwik',
+      'Qwik fails to update the data when nested values are updated. Need to raise another PR.'
+    );
     test.skip(excludeGen1(sdk) || packageName === 'nextjs-sdk-next-app');
 
-    await launchEmbedderAndWaitForSdk({ path: '/symbols-with-list-content-input', basePort, page, sdk });
+    await launchEmbedderAndWaitForSdk({
+      path: '/symbols-with-list-content-input',
+      basePort,
+      page,
+      sdk,
+    });
 
     const newContent = cloneContent(SYMBOLS_WITH_LIST_CONTENT_INPUT);
 
