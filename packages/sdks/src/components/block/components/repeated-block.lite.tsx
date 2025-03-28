@@ -1,4 +1,4 @@
-import { setContext, useMetadata, useState } from '@builder.io/mitosis';
+import { setContext, useMetadata, useState, onUpdate } from '@builder.io/mitosis';
 import BuilderContext from '../../../context/builder.context.lite.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import type { BlockProps } from '../block.lite.jsx';
@@ -32,6 +32,10 @@ export default function RepeatedBlock(props: Props) {
   const [store] = useState(props.repeatContext, { reactive: true });
 
   setContext(BuilderContext, store);
+
+  onUpdate(() => {
+    store.value = props.repeatContext;
+  }, [props.repeatContext]);
 
   return (
     <Block
