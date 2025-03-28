@@ -1,5 +1,6 @@
 import {
   Show,
+  onUpdate,
   useMetadata,
   useStore,
   useTarget,
@@ -38,6 +39,7 @@ useMetadata({
  */
 export default function InteractiveElement(props: InteractiveElementProps) {
   const state = useStore({
+    forceRenderCount: 0,
     get attributes() {
       return props.includeBlockProps
         ? {
@@ -67,6 +69,16 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       });
     },
   });
+
+  // Use onUpdate to track prop changes (Mitosis equivalent of useEffect/useTask)
+  onUpdate(() => {
+    useTarget({
+      qwik: () => {
+        state.forceRenderCount = state.forceRenderCount + 1;
+      },
+      default: () => {},
+    });
+  }, [props.wrapperProps, props.block?.component?.options]);
 
   return (
     <Show
