@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.11
+
+### Patch Changes
+
+- e12cff4: Fix: stop passing `builderContext` to Text block
+
 ## 0.18.10
 
 ### Patch Changes
