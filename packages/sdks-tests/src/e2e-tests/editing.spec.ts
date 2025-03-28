@@ -21,7 +21,11 @@ import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
 import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from '../specs/symbols-with-list-content-input.js';
 import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
 import { SECTION_CHILDREN } from '../specs/section-children.js';
-
+import {
+  GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE,
+  GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO,
+  MAIN_CONTENT
+} from '../specs/get-content-symbol-update-entry.js';
 const editorTests = ({
   noTrustedHosts,
   editorIsInViewPort,
@@ -858,4 +862,46 @@ test.describe('Visual Editing', () => {
       await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
     });
   });
+});
+
+test('Symbol should update the data when nested values are updated', async ({
+  page,
+  sdk,
+  packageName,
+  basePort
+}) => {
+  test.skip(excludeGen1(sdk));
+  test.skip(packageName === 'nextjs-sdk-next-app');
+
+  let fetchCount = 0;
+  const symbolRequests: URL[] = [];
+  const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol/;
+
+  await page.route(urlMatch, route => {
+    fetchCount++;
+    const url = new URL(route.request().url());
+    symbolRequests.push(url);
+    return route.fulfill({
+      status: 200,
+      json: {
+        results: [
+          fetchCount === 1
+            ? GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE
+            : GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO,
+        ],
+      },
+    });
+  });
+
+  await launchEmbedderAndWaitForSdk({ path: '/symbol-update-entries', basePort, page, sdk });
+
+  const newContent = cloneContent(MAIN_CONTENT);
+
+  await page.frameLocator('iframe').getByText('Green Potato').waitFor();
+
+  newContent.data.blocks[0].component.options.symbol.entry = 'aa024e6851e94b49b99f41a2294fd423';
+  await sendContentUpdateMessage({ page, newContent, model: 'page' });
+
+  await page.frameLocator('iframe').getByText('Red tomato').waitFor();
+  expect(fetchCount).toBe(2);
 });
