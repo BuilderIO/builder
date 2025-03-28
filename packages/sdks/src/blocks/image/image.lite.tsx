@@ -1,4 +1,10 @@
-import { Show, useMetadata, useStore } from '@builder.io/mitosis';
+import {
+  Show,
+  onMount,
+  useMetadata,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import { getSrcSet } from './image.helpers.js';
 import type { ImageProps } from './image.types.js';
@@ -66,6 +72,16 @@ export default function Image(props: ImageProps) {
     },
   });
 
+  onMount(() => {
+    useTarget({
+      vue: () => {
+        /** this is a hack to include unused props */
+        const _ = {
+          a: props.lazy,
+        };
+      },
+    });
+  });
   return (
     <>
       <picture>
@@ -76,6 +92,7 @@ export default function Image(props: ImageProps) {
           loading={props.highPriority ? 'eager' : 'lazy'}
           fetchpriority={props.highPriority ? 'high' : 'auto'}
           alt={props.altText}
+          title={props.title}
           role={props.altText ? undefined : 'presentation'}
           css={{
             opacity: '1',

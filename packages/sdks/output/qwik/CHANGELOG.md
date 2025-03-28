@@ -1,5 +1,23 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.10
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
+## 0.18.9
+
+### Patch Changes
+
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
+## 0.18.8
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 0.18.4
 
 ### Patch Changes

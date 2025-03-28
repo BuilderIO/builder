@@ -7,7 +7,7 @@ const rng = seedrandom('vue-sdk-seed');
  * @typedef {import('@builder.io/mitosis').MitosisNode} MitosisNode
  * @typedef {import('@builder.io/mitosis').StateValue} StateValue
  * @typedef {import('@builder.io/mitosis').MitosisConfig} MitosisConfig
- * @typedef {import('@builder.io/mitosis').Plugin} Plugin
+ * @typedef {import('@builder.io/mitosis').MitosisPlugin} Plugin
  * @typedef {import('@builder.io/mitosis').OnMountHook} OnMountHook
  */
 
@@ -313,17 +313,13 @@ const filterActionAttrBindings = (json, item) => {
 /**
  * @type {Plugin}
  */
-const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
+const REMOVE_UNUSED_PROPS_HACK_PLUGIN = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'Awaiter') {
-        json.hooks.onMount = json.hooks.onMount.filter(
-          (hook) =>
-            !hook.code.includes(
-              '/** this is a hack to include the input in angular */'
-            )
-        );
-      }
+      json.hooks.onMount = json.hooks.onMount.filter(
+        (hook) =>
+          !hook.code.includes('/** this is a hack to include unused props */')
+      );
       return json;
     },
   },
@@ -364,31 +360,6 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
             '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
           )
           .replace('</ng-container>', '</ng-container>\n</ng-container>');
-        const ngOnChangesIndex = code.indexOf(
-          'ngOnChanges(changes: SimpleChanges) {'
-        );
-
-        if (ngOnChangesIndex > -1) {
-          code = code.replace(
-            'ngOnChanges(changes: SimpleChanges) {',
-            // Add a check to see if the componentOptions have changed
-            `ngOnChanges(changes: SimpleChanges) {
-                if (changes.componentOptions) {
-                  let foundChange = false;
-                  for (const key in changes.componentOptions.previousValue) {
-                    if (changes.componentOptions.previousValue[key] !== changes.componentOptions.currentValue[key]) {
-                      foundChange = true;
-                      break;
-                    }
-                  }
-                  if (!foundChange) {
-                    return;
-                  }
-                }`
-          );
-        } else {
-          throw new Error('ngOnChanges not found in component-ref');
-        }
       }
       return code;
     },
@@ -398,9 +369,12 @@ const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
 const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'BlocksWrapper') {
+      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
         json.hooks.onUpdate.forEach((hook) => {
-          hook.code = hook.code.replace(/^\s*\/\/\s*@ts-expect-error.*$/gm, '');
+          hook.code = hook.code.replaceAll(
+            /^\s*\/\/\s*@ts-expect-error.*$/gm,
+            ''
+          );
         });
         /**
          * Since the angular SDK manually handles the creation of the dynamic blocks and attaching them as children of BlocksWrapper in the DOM
@@ -413,12 +387,16 @@ const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
          * `ngAfterContentChecked` runs after children were checked for changes, which is the earliest point we can safely append new blocks,
          * and re-paint the DOM else the new children blocks are not present in the existing array, therefore pushed to the top of the list.
          */
+        const templateRefName =
+          json.name === 'BlocksWrapper'
+            ? 'blockswrapperTemplateRef'
+            : 'wrapperTemplateRef';
         json.compileContext = {
           angular: {
             hooks: {
               ngAfterContentChecked: {
                 code: `if (this.shouldUpdate) {
-                  this.myContent = [this.vcRef.createEmbeddedView(this.blockswrapperTemplateRef).rootNodes];
+                  this.myContent = [this.vcRef.createEmbeddedView(this.${templateRefName}).rootNodes];
                   this.shouldUpdate = false;
                 }`,
               },
@@ -431,7 +409,7 @@ const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   },
   code: {
     post: (code, json) => {
-      if (json.name === 'BlocksWrapper') {
+      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
         // insert children only after they are fully initialized
         code = code.replace('ngOnInit', 'ngAfterContentInit');
       }
@@ -819,8 +797,8 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
 
         // extract the props that Wrapper needs
         code = code.replaceAll(
-          '...this.wrapperProps',
-          '...this.filterPropsThatWrapperNeeds(this.wrapperProps)'
+          '...this.targetWrapperProps',
+          '...this.filterPropsThatWrapperNeeds(this.targetWrapperProps)'
         );
 
         const ngOnChangesIndex = code.indexOf('ngOnChanges');
@@ -975,6 +953,21 @@ const QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE = () 
 });
 
 /**
+ * @type {Plugin}
+ */
+const VUE_FIX_EXTRA_ATTRS_PLUGIN = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name === 'InteractiveElement') {
+        delete json.children[0].meta.else.bindings.attributes;
+      }
+
+      return json;
+    },
+  },
+});
+
+/**
  * @type {MitosisConfig}
  */
 module.exports = {
@@ -999,7 +992,7 @@ module.exports = {
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
         ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
-        ANGULAR_ADD_UNUSED_PROP_TYPES,
+        REMOVE_UNUSED_PROPS_HACK_PLUGIN,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
@@ -1020,6 +1013,7 @@ module.exports = {
       namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
       cssNamespace: getSeededId,
       plugins: [
+        REMOVE_UNUSED_PROPS_HACK_PLUGIN,
         () => ({
           json: {
             // This plugin handles binding our actions to the `v-on:` Vue syntax:
@@ -1044,6 +1038,7 @@ module.exports = {
             },
           },
         }),
+        VUE_FIX_EXTRA_ATTRS_PLUGIN,
       ],
       api: 'options',
       asyncComponentImports: false,
