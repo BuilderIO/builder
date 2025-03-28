@@ -1,8 +1,11 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeGen2, isSSRFramework, test } from '../helpers/index.js';
+import { isSSRFramework, test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
+import type { Sdk } from '../helpers/sdk.js';
+
 const SELECTOR = 'div[builder-content-id]';
+const SDKS_SUPPORTING_PERSONALIZATION = ['react', 'vue', 'svelte'] as Sdk[];
 
 const createContextWithCookies = async ({
   cookies,
@@ -46,7 +49,7 @@ const initializeUserAttributes = async (
 ) => {
   // gen1-remix started failing on this test for an unknown reason.
   test.skip(packageName === 'gen1-remix');
-  test.skip(excludeGen2(sdk) && sdk !== 'react');
+  test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
 
   if (!baseURL) throw new Error('Missing baseURL');
 
@@ -167,7 +170,9 @@ test.describe('Personalization Container', () => {
     packageName,
   }) => {
     // here we are checking specifically for winning variant content by setting the user attributes
-    test.skip(!['react-sdk-next-15-app', 'gen1-next15-app'].includes(packageName));
+    test.skip(
+      !['react-sdk-next-15-app', 'gen1-next15-app', 'nuxt', 'sveltekit'].includes(packageName)
+    );
     await page.goto('/variant-containers');
 
     // content 1
@@ -181,7 +186,7 @@ test.describe('Personalization Container', () => {
 
   test('only default variants are ssred on the server', async ({ browser, packageName, sdk }) => {
     test.skip(!isSSRFramework(packageName));
-    test.skip(!['react', 'oldReact'].includes(sdk));
+    test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -198,7 +203,7 @@ test.describe('Personalization Container', () => {
   });
 
   test('root style attribute is correctly set', async ({ page, sdk, packageName }) => {
-    test.skip(!['react', 'oldReact'].includes(sdk));
+    test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
     // Cannot read properties of null (reading 'useContext')
     test.skip(packageName === 'gen1-remix');
 
@@ -217,7 +222,7 @@ test.describe('Personalization Container', () => {
       basePort,
       packageName,
     }) => {
-      test.skip(!['react', 'oldReact'].includes(sdk));
+      test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
       // Cannot read properties of null (reading 'useContext')
       test.skip(packageName === 'gen1-remix');
 

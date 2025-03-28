@@ -1,6 +1,15 @@
 <script lang="ts">
-  import { Content } from '@builder.io/sdk-svelte';
+  import { Content, setClientUserAttributes } from '@builder.io/sdk-svelte';
   import BuilderBlockWithClassName from '../../components/BuilderBlockWithClassName.svelte';
+
+  if (typeof window !== 'undefined') {
+    if (window.location.pathname === '/variant-containers') {
+      setClientUserAttributes({
+        device: 'tablet',
+      });
+    }
+  }
+
   // this data comes from the function in `+page.server.ts`, which runs on the server only
   export let data;
   const builderBlockWithClassNameCustomComponent = {

@@ -1,8 +1,19 @@
 <script setup lang="ts">
-import { Content } from '@builder.io/sdk-vue';
+import {
+  Content,
+  _processContentResult,
+  setClientUserAttributes,
+} from '@builder.io/sdk-vue';
 import BuilderBlockWithClassName from '../components/BuilderBlockWithClassName.vue';
 import { getProps } from '@sdk/tests';
-import { _processContentResult } from '@builder.io/sdk-vue';
+
+if (typeof window !== 'undefined') {
+  if (window.location.pathname === '/variant-containers') {
+    setClientUserAttributes({
+      device: 'tablet',
+    });
+  }
+}
 
 const route = useRoute();
 
