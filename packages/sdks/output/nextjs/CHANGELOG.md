@@ -1,5 +1,12 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.18.11
+
+### Patch Changes
+
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
 ## 0.18.10
 
 ### Patch Changes
