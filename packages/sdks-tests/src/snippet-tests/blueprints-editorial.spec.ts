@@ -3,15 +3,35 @@ import { test } from '../helpers/index.js';
 
 test.describe('Product Editorial Page with Real Data', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr'].includes(packageName));
-    // Navigate to the product editorial page
+    test.skip(
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'qwik-city',
+        'react-sdk-next-pages',
+        'remix',
+        'hydrogen',
+        'react-sdk-next-14-app',
+        'react-sdk-next-15-app',
+        'nextjs-sdk-next-app',
+        'vue',
+        'nuxt',
+        'svelte',
+        'sveltekit',
+        'angular-19-ssr',
+        'gen1-react',
+        'gen1-remix',
+        'gen1-next14-pages',
+        'gen1-next15-app',
+      ].includes(packageName)
+    );
     await page.goto('/products/1');
   });
 
   test('should render the header component', async ({ page }) => {
-    const header = page.locator('app-header');
-    await expect(header).toBeVisible();
-    await expect(header.locator('h1')).toHaveText('Acme Corp');
+    await expect(page.locator('h1')).toHaveText('Acme Corp');
   });
 
   test('should render the product info with real data', async ({ page }) => {
@@ -31,29 +51,19 @@ test.describe('Product Editorial Page with Real Data', () => {
     }, '.product-image img');
 
     // Verify the product title, description, price, and rating are displayed
-    const productTitle = page.locator('.product-info h2');
-    const productDescription = page.locator('.product-info p').nth(0);
-    const productPrice = page.locator('.product-info p').nth(1);
-    const productRating = page.locator('.product-info p').nth(2);
-
-    await expect(productTitle).toBeVisible();
-    await expect(productDescription).toBeVisible();
-    await expect(productPrice).toBeVisible();
-    await expect(productRating).toBeVisible();
+    await expect(page.locator('h2')).toBeVisible();
+    await expect(page.locator('p').nth(0)).toBeVisible();
+    await expect(page.locator('p').nth(1)).toBeVisible();
+    await expect(page.locator('p').nth(2)).toBeVisible();
   });
 
   test('should render the editorial content with real data', async ({ page }) => {
-    const editorialContent = page.locator('builder-content');
-    await expect(editorialContent).toBeVisible();
-
-    // Verify that the editorial content contains some text (as the real data may vary)
-    const editorialText = editorialContent.locator('div').nth(1);
-    await expect(editorialText).toBeVisible();
+    // verify that the editorial content is visible and has some text (as the real data may vary)
+    await expect(page.locator('.builder-blocks')).toBeVisible();
+    await expect(page.locator('.builder-blocks')).toHaveText(/.+/);
   });
 
   test('should render the footer component', async ({ page }) => {
-    const footer = page.locator('app-footer');
-    await expect(footer).toBeVisible();
-    await expect(footer.locator('p')).toHaveText('© 2024 Acme Corp. All rights reserved.');
+    await expect(page.getByText('© 2024 Acme Corp. All rights reserved.')).toBeVisible();
   });
 });
