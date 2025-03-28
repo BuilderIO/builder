@@ -48,7 +48,7 @@ const builderBlockWithClassNameCustomComponent = {
   ],
 };
 
-const CUSTOM_COMPONENT = [
+const CUSTOM_COMPONENTS = [
   {
   name: 'Hello',
   component: Hello,
@@ -89,7 +89,7 @@ export default component$(() => {
         <Content
           {...(contentProps.value as any)}
           customComponents={[
-            ...CUSTOM_COMPONENT,
+            ...CUSTOM_COMPONENTS,
           builderBlockWithClassNameCustomComponent]}
         />
       ) : (

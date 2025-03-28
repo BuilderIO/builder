@@ -9,7 +9,7 @@ const LAST_COMPONENT_REGISTERED_MESSAGE =
 
 test.describe('Custom components', () => {
   test('correctly renders custom component', async ({ page, packageName, sdk }) => {
-    test.skip(!['angular', 'react', 'qwik-city'].includes(sdk));
+    test.skip(!['angular', 'react', 'qwik'].includes(sdk));
     test.skip(
       ['react-sdk-next-14-app', 'react-sdk-next-15-app', 'remix', 'hydrogen'].includes(packageName)
     );
