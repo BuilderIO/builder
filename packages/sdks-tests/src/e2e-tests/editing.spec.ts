@@ -154,7 +154,7 @@ test.describe('Visual Editing', () => {
     }
   });
 
-  test.only('correctly updating custom components when default value is not set', async ({ page, basePort, sdk, packageName }) => {
+  test('correctly updating custom components when default value is not set', async ({ page, basePort, sdk, packageName }) => {
     test.skip(!['react', 'qwik-city'].includes(packageName));
     await launchEmbedderAndWaitForSdk({ path: '/custom-components-no-default-value', basePort, page, sdk });
 
