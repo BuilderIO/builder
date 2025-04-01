@@ -19,20 +19,22 @@ export default function ProductEditorial() {
   const { id } = useParams();
 
   useEffect(() => {
-    Promise.all([
-      fetch(`https://fakestoreapi.com/products/${id}`).then((res) =>
-        res.json()
-      ),
-      fetchOneEntry({
-        model: MODEL_NAME,
-        apiKey: API_KEY,
-        userAttributes: { urlPath: window.location.pathname },
-      }),
-    ]).then(([productData, editorialData]) => {
-      setProduct(productData);
+    fetch(`https://fakestoreapi.com/products/${id}`)
+      .then((res) => res.json())
+      .then((productData) => {
+        setProduct(productData);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    fetchOneEntry({
+      model: MODEL_NAME,
+      apiKey: API_KEY,
+      userAttributes: { urlPath: window.location.pathname },
+    }).then((editorialData) => {
       setEditorial(editorialData);
     });
-  }, [id]);
+  }, []);
 
   if (!isPreviewing() && !product && !editorial) return <div>404</div>;
 
