@@ -689,6 +689,11 @@ test.describe('Visual Editing', () => {
 
     const newContent = cloneContent(SYMBOLS_WITH_LIST_CONTENT_INPUT);
 
+    //for testing purposes
+    if (sdk === 'vue') {
+      await page.waitForTimeout(500);
+    }
+
     await sendPatchOrUpdateMessage({
       page,
       content: newContent,
@@ -698,7 +703,13 @@ test.describe('Visual Editing', () => {
       updateFn: () => 'AFK',
     });
 
-    await page.frameLocator('iframe').getByText('AFK').waitFor();
+    //for testing purposes
+    if (sdk === 'vue') {
+      await page.waitForTimeout(100);
+      await page.frameLocator('iframe').locator('text=AFK').waitFor({ state: 'attached' });
+    } else {
+      await page.frameLocator('iframe').getByText('AFK').waitFor();
+    }
   });
 
   test.describe('New Block addition and deletion with components using props.children / slots', () => {
