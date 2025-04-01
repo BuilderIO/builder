@@ -1,5 +1,17 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.0.7
+
+### Patch Changes
+
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
+## 4.0.6
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
 ## 4.0.5
 
 ### Patch Changes

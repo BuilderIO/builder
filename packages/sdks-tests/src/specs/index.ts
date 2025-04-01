@@ -89,6 +89,7 @@ import { DYNAMIC_ELEMENT } from './dynamic-element.js';
 import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
 import { NEW_BLOCK_ADD } from './new-block-add.js';
 import { DYNAMIC_BUTTON } from './dynamic-button.js';
+import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from './symbols-with-list-content-input.js';
 import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
 import { SECTION_CHILDREN } from './section-children.js';
 import { MAIN_CONTENT } from './get-content-symbol-update-entry.js';
@@ -140,6 +141,7 @@ export const PAGES: Record<string, Page> = {
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },
   '/data-bindings': { content: dataBindings },
+  '/symbols-with-list-content-input': { content: SYMBOLS_WITH_LIST_CONTENT_INPUT },
   '/data-binding-styles': { content: dataBindingStyles },
   '/react-native-strict-style-mode': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
   '/react-native-strict-style-mode-disabled': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
@@ -399,6 +401,23 @@ export const getProps = async (args: {
       break;
     case '/get-content':
     case '/get-content-with-symbol':
+      extraProps = {
+        apiEndpoint: 'content',
+      };
+      break;
+    case '/get-content-with-omit':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: '',
+      };
+      break;
+    case '/get-content-with-omit-name':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: 'name',
+      };
+      break;
+    case '/get-content-default':
       extraProps = {
         apiEndpoint: 'content',
       };

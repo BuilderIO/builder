@@ -18,6 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from '../specs/symbols-with-list-content-input.js';
 import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
 import { SECTION_CHILDREN } from '../specs/section-children.js';
 import {
@@ -648,6 +649,39 @@ test.describe('Visual Editing', () => {
       await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
       await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
     });
+  });
+
+  test('Symbol should update the data when nested values are updated', async ({
+    page,
+    basePort,
+    sdk,
+    packageName,
+  }) => {
+    test.skip(
+      sdk === 'qwik',
+      'Qwik fails to update the data when nested values are updated. Need to raise another PR.'
+    );
+    test.skip(excludeGen1(sdk) || packageName === 'nextjs-sdk-next-app');
+
+    await launchEmbedderAndWaitForSdk({
+      path: '/symbols-with-list-content-input',
+      basePort,
+      page,
+      sdk,
+    });
+
+    const newContent = cloneContent(SYMBOLS_WITH_LIST_CONTENT_INPUT);
+
+    await sendPatchOrUpdateMessage({
+      page,
+      content: newContent,
+      model: 'page',
+      sdk,
+      path: '/data/blocks/0/component/options/symbol/data/language/1/code',
+      updateFn: () => 'AFK',
+    });
+
+    await page.frameLocator('iframe').getByText('AFK').waitFor();
   });
 
   test.describe('New Block addition and deletion with components using props.children / slots', () => {

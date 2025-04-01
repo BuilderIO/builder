@@ -1,5 +1,19 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 4.0.7
+
+### Patch Changes
+
+- e12cff4: Fix: extra props warnings
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
+## 4.0.6
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
 ## 4.0.5
 
 ### Patch Changes

@@ -160,3 +160,8 @@ export const provideBuilderContext = (
 
   return {};
 };
+
+export const generateKey = (index: number) => {
+  //This does not handle the case in Qwik
+  return index.toString();
+};

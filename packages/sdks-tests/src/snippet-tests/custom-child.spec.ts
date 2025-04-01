@@ -4,18 +4,15 @@ import { test } from '../helpers/index.js';
 test.describe('Div with Hero class, and text', () => {
   test('should render the page without 404', async ({ page, packageName }) => {
     test.skip(
-      ![
-        'react',
-        'angular-16',
-        'angular-16-ssr',
-        'gen1-remix',
-        'gen1-react',
-        'vue',
-        'nuxt',
-        'svelte',
-        'sveltekit',
-        'qwik-city',
-        'hydrogen',
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'gen1-next15-app',
+        'angular-19-ssr',
+        'gen1-next14-pages',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 
@@ -25,18 +22,15 @@ test.describe('Div with Hero class, and text', () => {
 
   test('should verify builder-block with specific text', async ({ page, packageName }) => {
     test.skip(
-      ![
-        'react',
-        'angular-16',
-        'angular-16-ssr',
-        'gen1-remix',
-        'gen1-react',
-        'vue',
-        'nuxt',
-        'svelte',
-        'sveltekit',
-        'qwik-city',
-        'hydrogen',
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'gen1-next15-app',
+        'angular-19-ssr',
+        'gen1-next14-pages',
+        'nextjs-sdk-next-app',
       ].includes(packageName)
     );
 
