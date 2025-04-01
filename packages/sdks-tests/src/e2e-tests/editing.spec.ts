@@ -154,14 +154,18 @@ test.describe('Visual Editing', () => {
     }
   });
 
-  test('correctly updating custom components when default value is not set', async ({ page, basePort, sdk, packageName }) => {
+  test.only('correctly updating custom components when default value is not set', async ({ page, basePort, sdk, packageName }) => {
     test.skip(!['react', 'qwik-city'].includes(packageName));
     await launchEmbedderAndWaitForSdk({ path: '/custom-components-no-default-value', basePort, page, sdk });
+
+    const defaultText = page.frameLocator('iframe').locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]')
+    await expect(defaultText).toBeEmpty();
+
     const newContent = cloneContent(CUSTOM_COMPONENT_NO_DEFAULT_VALUE);
-    newContent.data.blocks[0].component.options.text = "Hello";
+    newContent.data.blocks[0].component.options.text = "FOO";
     await sendContentUpdateMessage({ page, newContent, model: 'page' });
-    const helloWorldText = page.frameLocator('iframe').locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]')
-    await expect(helloWorldText).toHaveText('Hello');
+    const updatedText = page.frameLocator('iframe').locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]')
+    await expect(updatedText).toHaveText('FOO');
   })
 
   test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
