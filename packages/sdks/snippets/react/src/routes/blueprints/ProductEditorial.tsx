@@ -8,13 +8,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductFooter from '../../components/ProductFooter';
 import ProductHeader from '../../components/ProductHeader';
-import ProductInfo from '../../components/ProductInfo';
+import ProductInfo, { type Product } from '../../components/ProductInfo';
 
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'product-editorial';
 
 export default function ProductEditorial() {
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [editorial, setEditorial] = useState<BuilderContent | null>(null);
   const { id } = useParams();
 
