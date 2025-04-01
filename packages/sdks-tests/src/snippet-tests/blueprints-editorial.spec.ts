@@ -11,7 +11,6 @@ test.describe('Product Editorial Page with Real Data', () => {
         'solid-start',
         'react-sdk-next-pages',
         'remix',
-        'hydrogen',
         'react-sdk-next-14-app',
         'react-sdk-next-15-app',
         'nextjs-sdk-next-app',

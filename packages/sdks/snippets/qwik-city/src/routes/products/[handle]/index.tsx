@@ -9,11 +9,11 @@ import { ProductInfo, type Product } from '~/components/ProductInfo';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'product-editorial';
 
-export const useEditorial = routeLoader$(async ({ url }) => {
+export const useEditorial = routeLoader$(async ({ params }) => {
   return fetchOneEntry({
     model: MODEL_NAME,
     apiKey: API_KEY,
-    userAttributes: { urlPath: url.pathname },
+    userAttributes: { urlPath: params.pathname },
   });
 });
 
@@ -27,7 +27,7 @@ export default component$(() => {
   const editorial = useEditorial();
   const productData = useProductData();
 
-  if (!isPreviewing() && (!editorial.value || !productData.value)) {
+  if (!isPreviewing() && !editorial.value && !productData.value) {
     return <div>404</div>;
   }
 

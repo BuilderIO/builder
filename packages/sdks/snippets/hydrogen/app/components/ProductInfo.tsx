@@ -1,11 +1,10 @@
-import { component$ } from '@builder.io/qwik';
+import {Image} from '@shopify/hydrogen';
 
 export type Product = {
   id: number;
   title: string;
   price: number;
   description: string;
-  category: string;
   image: string;
   rating: {
     rate: number;
@@ -13,21 +12,22 @@ export type Product = {
   };
 };
 
-export const ProductInfo = component$(({ product }: { product: Product }) => {
-  console.log('product', product);
+export default function ProductInfo({product}: {product: Product}) {
   if (!product) return null;
+  console.log(product);
+
   return (
-    <div>
-      <div class="product-image">
+    <>
+      <div className="product-image">
         <img src={product.image} alt={product.title} />
       </div>
-      <div class="product-info">
+      <div className="product-info">
         <h2>{product.title}</h2>
         <p>{product.description}</p>
         <p>Price: {product.price} $</p>
         <p>Rating: {product.rating?.rate} / 5</p>
         <button>Buy now</button>
       </div>
-    </div>
+    </>
   );
-});
+}
