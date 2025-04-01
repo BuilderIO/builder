@@ -679,7 +679,7 @@ test.describe('Visual Editing', () => {
       'Qwik fails to update the data when nested values are updated. Need to raise another PR.'
     );
     // Loom for reference: https://www.loom.com/share/b951939394ca4758b4a362725016d30b?sid=c54d90f5-121a-4652-877e-5abb6ddd2605
-    test.skip(sdk === 'vue', 'Vue fails to update the data when nested values are updated. But it works manually');
+    test.skip(sdk === 'vue', `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`);
     test.skip(excludeGen1(sdk) || packageName === 'nextjs-sdk-next-app');
 
     await launchEmbedderAndWaitForSdk({
