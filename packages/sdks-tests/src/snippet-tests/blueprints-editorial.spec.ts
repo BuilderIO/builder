@@ -9,7 +9,6 @@ test.describe('Product Editorial Page with Real Data', () => {
         'react-native-76-fabric',
         'solid',
         'solid-start',
-        'qwik-city',
         'react-sdk-next-pages',
         'remix',
         'hydrogen',
