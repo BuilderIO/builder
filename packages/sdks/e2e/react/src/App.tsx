@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 import { builderBlockWithClassNameCustomComponent } from './components/BuilderBlockWithClassName';
 import ComponentNeedsHello from './components/ComponentNeedsHello';
 import { componentWithLocalizedSubfieldsInfo } from './components/ComponentWithLocalizedSubfields';
-import Hello from './components/Hello';
 import { Description } from './components/Description';
+import Hello from './components/Hello';
 
 const DataComp = (props: {
   pathname: string;
