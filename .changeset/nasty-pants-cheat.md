@@ -8,4 +8,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Fix: Ensures the latest content loads when the symbol entry changes.
+Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
