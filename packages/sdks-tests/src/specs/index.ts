@@ -87,6 +87,7 @@ import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
 import { DYNAMIC_ELEMENT } from './dynamic-element.js';
 import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
+import { CUSTOM_COMPONENT_NO_DEFAULT_VALUE } from './custom-component-no-default-value.js';
 import { NEW_BLOCK_ADD } from './new-block-add.js';
 import { DYNAMIC_BUTTON } from './dynamic-button.js';
 import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from './symbols-with-list-content-input.js';
@@ -200,6 +201,7 @@ export const PAGES: Record<string, Page> = {
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
+  '/custom-components-no-default-value': { content: CUSTOM_COMPONENT_NO_DEFAULT_VALUE },
   '/custom-components-models-show': {
     content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
     target: ['react'],
