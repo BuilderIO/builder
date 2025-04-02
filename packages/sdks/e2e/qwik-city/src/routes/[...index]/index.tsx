@@ -50,20 +50,20 @@ const builderBlockWithClassNameCustomComponent = {
 
 const CUSTOM_COMPONENTS = [
   {
-  name: 'Hello',
-  component: Hello,
-  inputs: [],
-},
-{
-  name: 'Description',
-  component: Description,
-  inputs: [
-    {
-      name: 'text',
-      type: 'string',
-      defaultValue: 'Hello',
-    },
-  ],
+    name: 'Hello',
+    component: Hello,
+    inputs: [],
+  },
+  {
+    name: 'Description',
+    component: Description,
+    inputs: [
+      {
+        name: 'text',
+        type: 'string',
+        defaultValue: 'Hello',
+      },
+    ],
   },
 ];
 
@@ -90,7 +90,8 @@ export default component$(() => {
           {...(contentProps.value as any)}
           customComponents={[
             ...CUSTOM_COMPONENTS,
-          builderBlockWithClassNameCustomComponent]}
+            builderBlockWithClassNameCustomComponent,
+          ]}
         />
       ) : (
         <div>Content Not Found</div>
