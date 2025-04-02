@@ -1,5 +1,12 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 4.0.7
+
+### Patch Changes
+
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
 ## 4.0.6
 
 ### Patch Changes
