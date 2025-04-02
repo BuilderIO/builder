@@ -25,7 +25,7 @@ import { SECTION_CHILDREN } from '../specs/section-children.js';
 import {
   GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE,
   GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO,
-  MAIN_CONTENT
+  MAIN_CONTENT,
 } from '../specs/get-content-symbol-update-entry.js';
 const editorTests = ({
   noTrustedHosts,
@@ -913,7 +913,10 @@ test('Symbol should update the data when entry is updated', async ({
   basePort,
 }) => {
   test.skip(excludeGen1(sdk));
-  test.skip(packageName === 'nextjs-sdk-next-app' || packageName === 'remix', 'This both packages are SSR hence getting symbol not found error');
+  test.skip(
+    packageName === 'nextjs-sdk-next-app' || packageName === 'remix',
+    'This both packages are SSR hence getting symbol not found error'
+  );
   test.skip(packageName === 'qwik-city', 'Qwik-city API not getting called');
   const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol/;
   await page.route(urlMatch, route => {
@@ -940,4 +943,4 @@ test('Symbol should update the data when entry is updated', async ({
   newContent.data.blocks[0].component.options.symbol.entry = 'aa024e6851e94b49b99f41a2294fd423';
   await sendContentUpdateMessage({ page, newContent, model: 'page' });
   await page.frameLocator('iframe').getByText('Red tomato').waitFor();
-})
+});
