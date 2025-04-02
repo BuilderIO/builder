@@ -93,7 +93,7 @@ import { DYNAMIC_BUTTON } from './dynamic-button.js';
 import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from './symbols-with-list-content-input.js';
 import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
 import { SECTION_CHILDREN } from './section-children.js';
-import { MAIN_CONTENT } from './get-content-symbol-update-entry.js';
+import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -292,7 +292,7 @@ export const PAGES: Record<string, Page> = {
   '/dynamic-button': { content: DYNAMIC_BUTTON },
   '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
   '/section-children': { content: SECTION_CHILDREN },
-  '/symbol-update-entries': { content: MAIN_CONTENT },
+  '/symbol-update-entries': { content: SYMBOL_UPDATE_ENTRIES },
 } as const;
 
 export type Path = keyof typeof PAGES;
