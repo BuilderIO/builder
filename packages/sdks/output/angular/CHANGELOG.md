@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.18.12
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
 ## 0.18.11
 
 ### Patch Changes

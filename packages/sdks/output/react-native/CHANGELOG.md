@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.0.8
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
 ## 4.0.7
 
 ### Patch Changes
