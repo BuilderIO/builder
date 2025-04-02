@@ -1,4 +1,3 @@
-
 export const GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE = {
   data: {
     blocks: [
@@ -21,9 +20,8 @@ export const GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE = {
         },
       },
     ],
-  }
-}
-
+  },
+};
 
 export const MAIN_CONTENT = {
   data: {
@@ -81,5 +79,5 @@ export const GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO = {
         },
       },
     ],
-  }
-}
+  },
+};

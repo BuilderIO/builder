@@ -72,7 +72,8 @@ export default function Symbol(props: SymbolProps) {
     }),
     symbolEntry: props.symbol?.entry,
     setContent() {
-      if (state.contentToUse && state.symbolEntry === props.symbol?.entry) return;
+      if (state.contentToUse && state.symbolEntry === props.symbol?.entry)
+        return;
 
       fetchSymbolContent({
         symbol: props.symbol,
