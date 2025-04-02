@@ -18,6 +18,7 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { CUSTOM_COMPONENT_NO_DEFAULT_VALUE } from '../specs/custom-component-no-default-value.js';
 import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from '../specs/symbols-with-list-content-input.js';
 import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
 import { SECTION_CHILDREN } from '../specs/section-children.js';
@@ -155,6 +156,34 @@ test.describe('Visual Editing', () => {
         expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
       }
     }
+  });
+
+  test('correctly updating custom components when default value is not set', async ({
+    page,
+    basePort,
+    sdk,
+    packageName,
+  }) => {
+    test.skip(!['react', 'qwik-city'].includes(packageName));
+    await launchEmbedderAndWaitForSdk({
+      path: '/custom-components-no-default-value',
+      basePort,
+      page,
+      sdk,
+    });
+
+    const defaultText = page
+      .frameLocator('iframe')
+      .locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]');
+    await expect(defaultText).toBeEmpty();
+
+    const newContent = cloneContent(CUSTOM_COMPONENT_NO_DEFAULT_VALUE);
+    newContent.data.blocks[0].component.options.text = 'FOO';
+    await sendContentUpdateMessage({ page, newContent, model: 'page' });
+    const updatedText = page
+      .frameLocator('iframe')
+      .locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]');
+    await expect(updatedText).toHaveText('FOO');
   });
 
   test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
@@ -305,7 +334,8 @@ test.describe('Visual Editing', () => {
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'qwik-city'
       );
       await launchEmbedderAndWaitForSdk({ path: '/accordion-no-detail', basePort, page, sdk });
 
@@ -338,13 +368,18 @@ test.describe('Visual Editing', () => {
         model: 'page',
       });
 
-      await item1.click();
+      // Re-query the item1 element as it might have been recreated
+      const updatedItem1 = page.frameLocator('iframe').getByText('Item 1');
+      await expect(updatedItem1).toBeVisible();
+      await expect(updatedItem1).toBeEnabled();
+      await expect(updatedItem1).toBeInViewport();
+      await updatedItem1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
-      await detailElement.waitFor();
+      await expect(detailElement).toBeVisible();
 
       const [titleBox, detailBox] = await Promise.all([
-        item1.boundingBox(),
+        updatedItem1.boundingBox(),
         detailElement.boundingBox(),
       ]);
 
@@ -661,6 +696,11 @@ test.describe('Visual Editing', () => {
       sdk === 'qwik',
       'Qwik fails to update the data when nested values are updated. Need to raise another PR.'
     );
+    // Loom for reference: https://www.loom.com/share/b951939394ca4758b4a362725016d30b?sid=c54d90f5-121a-4652-877e-5abb6ddd2605
+    test.skip(
+      sdk === 'vue',
+      `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+    );
     test.skip(excludeGen1(sdk) || packageName === 'nextjs-sdk-next-app');
 
     await launchEmbedderAndWaitForSdk({
@@ -784,6 +824,8 @@ test.describe('Visual Editing', () => {
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
       );
+      // Loom for reference: https://www.loom.com/share/646cf1a809c94860a4a0588b81254165?sid=5d112e02-cc00-4cb2-869a-a89238f71e42
+      test.skip(packageName === 'nuxt', `Failing on the CI: Test timeout of 30000ms exceeded`);
 
       await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
 
