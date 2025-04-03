@@ -1,5 +1,12 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.12
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+- dfbc6e5: Fix: Default values for custom components now update correctly in the editor.
+
 ## 0.18.11
 
 ### Patch Changes
