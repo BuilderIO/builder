@@ -12,6 +12,10 @@ import type { PersonalizationContainerProps } from './personalization-container.
 
 export const DEFAULT_INDEX = 'default';
 
+const FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME = 'filterWithCustomTargeting';
+const BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME = 'builderIoPersonalization';
+const UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME = 'updateVisibilityStylesScript';
+
 export type UserAttributes = {
   date?: string | Date;
   urlPath?: string;
@@ -140,9 +144,9 @@ export function getBlocksToRender({
 
 export const getInitPersonalizationVariantsFnsScriptString = () => {
   return `
-  window.filterWithCustomTargeting = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
-  window.builderIoPersonalization = ${PERSONALIZATION_SCRIPT}
-  window.updateVisibilityStylesScript = ${UPDATE_VISIBILITY_STYLES_SCRIPT}
+  window.${FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME} = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
+  window.${BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME} = ${PERSONALIZATION_SCRIPT}
+  window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VISIBILITY_STYLES_SCRIPT}
   `;
 };
 
@@ -153,7 +157,7 @@ export const getPersonalizationScript = (
   blockId: string,
   locale?: string
 ) => {
-  return `window.builderIoPersonalization(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
+  return `window.${BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME}(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
 };
 
 export const getUpdateVisibilityStylesScript = (
@@ -161,7 +165,7 @@ export const getUpdateVisibilityStylesScript = (
   blockId: string,
   locale?: string
 ) => {
-  return `window.updateVisibilityStylesScript(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
+  return `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
 };
 
 export { filterWithCustomTargeting } from './helpers/inlined-fns.js';

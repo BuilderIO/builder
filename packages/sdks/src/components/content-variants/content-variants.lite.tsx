@@ -6,7 +6,10 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
-import { getInitPersonalizationVariantsFnsScriptString } from '../../blocks/personalization-container/helpers.js';
+import {
+  SDKS_SUPPORTING_PERSONALIZATION,
+  getInitPersonalizationVariantsFnsScriptString,
+} from '../../blocks/personalization-container/helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { handleABTestingSync } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
@@ -93,11 +96,13 @@ export default function ContentVariants(props: VariantsProviderProps) {
           id="builderio-init-variants-fns"
           nonce={props.nonce || ''}
         />
-        <InlinedScript
-          nonce={props.nonce || ''}
-          scriptStr={getInitPersonalizationVariantsFnsScriptString()}
-          id="builderio-init-personalization-variants-fns"
-        />
+        {SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET) && (
+          <InlinedScript
+            nonce={props.nonce || ''}
+            scriptStr={getInitPersonalizationVariantsFnsScriptString()}
+            id="builderio-init-personalization-variants-fns"
+          />
+        )}
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles
