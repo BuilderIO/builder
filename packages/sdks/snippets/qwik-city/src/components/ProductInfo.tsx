@@ -14,7 +14,6 @@ export type Product = {
 };
 
 export const ProductInfo = component$(({ product }: { product: Product }) => {
-  console.log('product', product);
   if (!product) return null;
   return (
     <div>

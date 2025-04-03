@@ -14,7 +14,6 @@ export type Product = {
 
 export default function ProductInfo({product}: {product: Product}) {
   if (!product) return null;
-  console.log(product);
 
   return (
     <>
