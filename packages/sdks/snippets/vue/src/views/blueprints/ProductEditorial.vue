@@ -17,6 +17,7 @@
   import ProductFooter from '@/components/product-editorial/ProductFooter.vue';
   import ProductInfo from '@/components/product-editorial/ProductInfo.vue';
   import { useRoute } from 'vue-router';
+
   const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   const modelName = 'product-editorial';
   
@@ -25,21 +26,20 @@
   const {params} = useRoute();
 
   onMounted(() => {
-    function getContent() {
-      fetch(`https://fakestoreapi.com/products/${params.id}`)
-        .then((res) => res.json())
-        .then((productData) => {
-          fetchOneEntry({
-            model: modelName,
-            apiKey: apiKey,
-            userAttributes: { urlPath: window.location.pathname },
-          }).then((editorialData) => {
-            product.value = productData;
-            editorial.value = editorialData;
-          });
-        });
-    }
-    getContent();
+    fetch(`https://fakestoreapi.com/products/${params.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        product.value = data;
+      })
+
+    fetchOneEntry({
+      model: modelName,
+      apiKey: apiKey,
+      userAttributes: { urlPath: window.location.pathname },
+    })
+      .then((data) => {
+        editorial.value = data;
+      })
   });
 
   </script>
