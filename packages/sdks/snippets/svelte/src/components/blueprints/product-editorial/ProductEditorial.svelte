@@ -17,25 +17,23 @@
   let editorial: BuilderContent | null = null;
 
   onMount(() => {
-    Promise.all([
-      fetch(`https://fakestoreapi.com/products/${handle}`).then((res) =>
-        res.json()
-      ),
-      fetchOneEntry({
-        model: modelName,
-        apiKey: API_KEY,
-        userAttributes: { urlPath: window.location.pathname },
-      }),
-    ])
-      .then(([productData, editorialData]) => {
-        product = productData;
-        editorial = editorialData;
-      })
-      .catch((error) => console.error('Error fetching data:', error));
+    fetch(`https://fakestoreapi.com/products/${handle}`)
+      .then((res) => res.json())
+      .then((data) => {
+        product = data;
+      });
+
+    fetchOneEntry({
+      model: modelName,
+      apiKey: API_KEY,
+      userAttributes: { urlPath: window.location.pathname },
+    }).then((data) => {
+      editorial = data;
+    });
   });
 </script>
 
-{#if !product && !editorial && !isPreviewing()}
+{#if !product && !editorial && isPreviewing()}
   <p>404</p>
 {:else}
   <ProductHeader />
