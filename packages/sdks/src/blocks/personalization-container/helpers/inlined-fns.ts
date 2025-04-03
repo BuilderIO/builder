@@ -61,6 +61,11 @@ function getPersonalizedVariant(
   // For hydration frameworks, remove non-winning variants and the script tag
   if (isHydrationTarget) {
     if (!isWinningVariant) {
+      // as we use css prop in react it creates a new style element outside, we need to remove it
+      const itsStyleEl = parentDiv?.previousElementSibling as HTMLStyleElement;
+      if (itsStyleEl) {
+        itsStyleEl.remove();
+      }
       parentDiv?.remove();
     }
     const thisScript = document.currentScript;
