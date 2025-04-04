@@ -174,7 +174,8 @@ export default function PersonalizationContainer(
           path={state.blocksToRender.path}
           context={props.builderContext}
           registeredComponents={props.builderComponents}
-          extraAttributesForBlocksWrapper={{
+          BlocksWrapperProps={{
+            ...props.builderContext.value?.BlocksWrapperProps,
             'data-variant-id': `${props.builderBlock?.id}-${state.blocksToRender.index}`,
           }}
         ></Blocks>
@@ -201,7 +202,8 @@ export default function PersonalizationContainer(
             {(variant, index) => (
               <Blocks
                 key={`${props.builderBlock?.id}-${index}`}
-                extraAttributesForBlocksWrapper={{
+                BlocksWrapperProps={{
+                  ...props.builderContext.value?.BlocksWrapperProps,
                   'aria-hidden': true,
                   hidden: true,
                   'data-variant-id': `${props.builderBlock?.id}-${index}`,
@@ -227,7 +229,8 @@ export default function PersonalizationContainer(
           path={state.blocksToRender.path}
           context={props.builderContext}
           registeredComponents={props.builderComponents}
-          extraAttributesForBlocksWrapper={{
+          BlocksWrapperProps={{
+            ...props.builderContext.value?.BlocksWrapperProps,
             'data-variant-id': `${props.builderBlock?.id}-${state.blocksToRender.index}`,
           }}
         >

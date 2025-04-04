@@ -33,14 +33,16 @@ export default function Blocks(props: BlocksProps) {
           props.context?.value?.BlocksWrapper ||
           builderContext.value?.BlocksWrapper,
       })}
-      BlocksWrapperProps={useTarget({
-        rsc: props.context?.value?.BlocksWrapperProps,
-        default:
-          props.context?.value?.BlocksWrapperProps ||
-          builderContext.value?.BlocksWrapperProps,
-      })}
+      BlocksWrapperProps={
+        props.BlocksWrapperProps ||
+        useTarget({
+          rsc: props.context?.value?.BlocksWrapperProps,
+          default:
+            props.context?.value?.BlocksWrapperProps ||
+            builderContext.value?.BlocksWrapperProps,
+        })
+      }
       classNameProp={props.className}
-      extraAttributesForBlocksWrapper={props.extraAttributesForBlocksWrapper}
     >
       {props.children}
       <Show when={props.blocks}>

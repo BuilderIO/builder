@@ -26,21 +26,25 @@ export type BlocksWrapperProps = {
    */
   BlocksWrapper: any;
   /**
-   * Props that are passed down from the top-level Content component and used through context.
-   * These are global blocks wrapper props that are passed to all the blocks.
-   * Usage: `<Content blocksWrapperProps={{ style: { backgroundColor: 'red' } }} />`
+   * Props to be applied to the wrapping element of blocks. Can be set in two ways:
+   * 1. Globally via `<Content blocksWrapperProps={{...}}/>` - applies to all blocks wrappers in the Content
+   * 2. Locally via `<Blocks BlocksWrapperProps={{...}}/>` - applies only to this specific blocks instance and overrides global props
+   *
+   * For merging both global and local props, spread the context props before adding your own:
+   * ```
+   * <Blocks
+   *   BlocksWrapperProps={{
+   *     ...props.builderContext.BlocksWrapperProps,
+   *     'data-test-id': 'my-test-id'
+   *   }}
+   * />
+   * ```
    */
   BlocksWrapperProps: any;
 
   children?: any;
 
   classNameProp?: string;
-  /**
-   * Additional props that are provided directly to a specific Blocks component instance.
-   * Used to provide custom attributes to a specific Blocks wrapper instance.
-   * Usage: `<Blocks extraAttributesForBlocksWrapper={{ 'data-test': 'my-test-id' }} />`
-   */
-  extraAttributesForBlocksWrapper?: Record<string, any>;
 };
 
 export default function BlocksWrapper(props: BlocksWrapperProps) {
@@ -161,7 +165,6 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onKeyPress={(event: any) => state.onClick()}
       {...props.BlocksWrapperProps}
-      {...props.extraAttributesForBlocksWrapper}
     >
       {props.children}
     </props.BlocksWrapper>
