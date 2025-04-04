@@ -34,7 +34,7 @@ export type BlocksWrapperProps = {
    * ```
    * <Blocks
    *   BlocksWrapperProps={{
-   *     ...props.builderContext.BlocksWrapperProps,
+   *     ...builderContext.BlocksWrapperProps,
    *     'data-test-id': 'my-test-id'
    *   }}
    * />
