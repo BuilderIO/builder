@@ -69,6 +69,7 @@ The component injects two scripts during SSR:
 ### Variant Reset
 
 For SDKs requiring the reset approach (Vue, Svelte):
+
 1. First render shows the winning variant and hides the non-winning variants
 2. After hydration, component state is updated to trigger re-render with only the winning variant
 
@@ -98,4 +99,4 @@ The Personalization Container dispatches two custom events:
 
 ## Related Documentation
 
-For more detailed information on how SSR A/B testing works, refer to the [SSR A/B Testing documentation](./SSR_AB_TEST.md). 
+For more detailed information on how SSR A/B testing works, refer to the [SSR A/B Testing documentation](./SSR_AB_TEST.md).
