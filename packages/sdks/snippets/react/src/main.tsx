@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AnnouncementBar from './routes/AnnouncementBar.tsx';
+import BlogArticle from './routes/blueprints/BlogArticle.tsx';
 import ProductDetails from './routes/blueprints/ProductDetails.tsx';
 import AdvancedChildRoute from './routes/custom-components/advanced-child.tsx';
 import CustomChildRoute from './routes/custom-components/custom-child.tsx';
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: '/query-cheatsheet',
     element: <QueryCheatsheet />,
+  },
+  {
+    path: '/blogs/:handle',
+    element: <BlogArticle />,
   },
   {
     path: '/*',

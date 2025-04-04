@@ -1,5 +1,24 @@
 # @builder.io/sdk-angular
 
+## 0.18.12
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
+## 0.18.11
+
+### Patch Changes
+
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
+## 0.18.10
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
 ## 0.18.9
 
 ### Patch Changes
