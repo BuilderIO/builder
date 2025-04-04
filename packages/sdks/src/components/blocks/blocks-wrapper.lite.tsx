@@ -26,13 +26,20 @@ export type BlocksWrapperProps = {
    */
   BlocksWrapper: any;
   /**
-   * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+   * Props that are passed down from the top-level Content component and used through context.
+   * These are global blocks wrapper props that are passed to all the blocks.
+   * Usage: `<Content blocksWrapperProps={{ style: { backgroundColor: 'red' } }} />`
    */
   BlocksWrapperProps: any;
 
   children?: any;
 
   classNameProp?: string;
+  /**
+   * Additional props that are provided directly to a specific Blocks component instance.
+   * Used to provide custom attributes to a specific Blocks wrapper instance.
+   * Usage: `<Blocks extraAttributesForBlocksWrapper={{ 'data-test': 'my-test-id' }} />`
+   */
   extraAttributesForBlocksWrapper?: Record<string, any>;
 };
 

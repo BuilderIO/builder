@@ -975,30 +975,6 @@ const VUE_FIX_EXTRA_ATTRS_PLUGIN = () => ({
 });
 
 /**
- * Updates the placement of the style element in the BlocksWrapper component. Injects it at the top of the fragment.
- * This is necessary because when we run the inlined script, we only have access to previous sibling elements for deletion.
- */
-const UPDATE_PLACEMENT_OF_STYLE_ELEMENT_IN_BLOCKS_WRAPPER = () => ({
-  code: {
-    post: (code, json) => {
-      if (json.name === 'BlocksWrapper') {
-        const styleElement = code.match(/<style[\s\S]*?<\/style>/)?.[0];
-        const fragment = code.match(/<>[\s\S]*?<\/>/)?.[0];
-
-        if (styleElement && fragment) {
-          const fragmentContentWithoutStyle = fragment
-            .replace(/^<>|<\/>$/g, '')
-            .replace(/<style[\s\S]*?<\/style>/g, '');
-          const newFragment = `<>${styleElement}${fragmentContentWithoutStyle}</>`;
-          code = code.replace(fragment, newFragment);
-        }
-      }
-      return code;
-    },
-  },
-});
-
-/**
  * @type {MitosisConfig}
  */
 module.exports = {
@@ -1081,9 +1057,9 @@ module.exports = {
         FETCHPRIORITY_CAMELCASE_PLUGIN,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
-        UPDATE_PLACEMENT_OF_STYLE_ELEMENT_IN_BLOCKS_WRAPPER,
       ],
       stylesType: 'style-tag',
+      styleTagsPlacement: 'top',
     },
     rsc: {
       explicitImportFileExtension: true,

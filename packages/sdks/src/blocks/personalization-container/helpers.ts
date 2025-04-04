@@ -114,7 +114,7 @@ export function getBlocksToRender({
       if (variant) {
         return {
           blocks: variant.blocks,
-          path: `component.options.variants.${previewingIndex}.blocks`,
+          path: `variants.${previewingIndex}.blocks`,
           index: previewingIndex,
         };
       }
@@ -131,7 +131,7 @@ export function getBlocksToRender({
       if (variantIndex !== -1) {
         return {
           blocks: winningVariant.blocks,
-          path: `component.options.variants.${variantIndex}.blocks`,
+          path: `variants.${variantIndex}.blocks`,
           index: variantIndex,
         };
       }

@@ -39,18 +39,9 @@ const initializeUserAttributes = async (
     page: _page,
     baseURL,
     browser,
-    packageName,
-    sdk,
-  }: Pick<
-    Parameters<Parameters<typeof test>[2]>[0],
-    'page' | 'baseURL' | 'browser' | 'packageName' | 'sdk'
-  >,
+  }: Pick<Parameters<Parameters<typeof test>[2]>[0], 'page' | 'baseURL' | 'browser'>,
   { userAttributes }: { userAttributes: Record<string, string> }
 ) => {
-  // gen1-remix started failing on this test for an unknown reason.
-  test.skip(packageName === 'gen1-remix');
-  test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
-
   if (!baseURL) throw new Error('Missing baseURL');
 
   const context = await createContextWithCookies({
@@ -65,6 +56,11 @@ const initializeUserAttributes = async (
 };
 
 test.describe('Personalization Container', () => {
+  test.beforeEach(({ sdk, packageName }) => {
+    test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
+    test.skip(packageName === 'gen1-remix');
+  });
+
   test.describe('entire page', () => {
     const TEXTS = {
       DEFAULT_CONTENT: 'Default',
@@ -76,20 +72,12 @@ test.describe('Personalization Container', () => {
 
     // Manually run tests 10 times to ensure we don't have any flakiness.
     for (let i = 1; i <= TRIES; i++) {
-      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
-        page: _page,
-        baseURL,
-        browser,
-        packageName,
-        sdk,
-      }) => {
+      test(`#${i}/${TRIES}: Render default w/ SSR`, async ({ page: _page, baseURL, browser }) => {
         const { page } = await initializeUserAttributes(
           {
             page: _page,
             baseURL,
             browser,
-            sdk,
-            packageName,
           },
           // empty should render default, non-personalized content
           {
@@ -105,20 +93,12 @@ test.describe('Personalization Container', () => {
         await expect(page.locator(SELECTOR, { hasText: TEXTS.EXPERIMENT_B })).toBeHidden();
       });
 
-      test(`#${i}/${TRIES}: Render variant A w/ SSR`, async ({
-        page: _page,
-        baseURL,
-        browser,
-        sdk,
-        packageName,
-      }) => {
+      test(`#${i}/${TRIES}: Render variant A w/ SSR`, async ({ page: _page, baseURL, browser }) => {
         const { page } = await initializeUserAttributes(
           {
             page: _page,
             baseURL,
             browser,
-            sdk,
-            packageName,
           },
           // empty should render default, non-personalized content
           {
@@ -134,20 +114,12 @@ test.describe('Personalization Container', () => {
         await expect(page.locator(SELECTOR, { hasText: TEXTS.DEFAULT_CONTENT })).toBeHidden();
       });
 
-      test(`#${i}/${TRIES}: Render variant B w/ SSR`, async ({
-        page: _page,
-        baseURL,
-        browser,
-        sdk,
-        packageName,
-      }) => {
+      test(`#${i}/${TRIES}: Render variant B w/ SSR`, async ({ page: _page, baseURL, browser }) => {
         const { page } = await initializeUserAttributes(
           {
             page: _page,
             baseURL,
             browser,
-            sdk,
-            packageName,
           },
           // empty should render default, non-personalized content
           {
@@ -184,12 +156,8 @@ test.describe('Personalization Container', () => {
     await expect(page.getByText('Tablet content 2')).toBeVisible();
   });
 
-  test('only default variants are ssred on the server', async ({ browser, packageName, sdk }) => {
+  test('only default variants are ssred on the server', async ({ browser, packageName }) => {
     test.skip(!isSSRFramework(packageName));
-    test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
-    // Cannot read properties of null (reading 'useContext')
-    test.skip(packageName === 'gen1-remix');
-
     const context = await browser.newContext({
       javaScriptEnabled: false,
     });
@@ -202,11 +170,7 @@ test.describe('Personalization Container', () => {
     await expect(page.getByText('Default content 2')).toBeVisible();
   });
 
-  test('root style attribute is correctly set', async ({ page, sdk, packageName }) => {
-    test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
-    // Cannot read properties of null (reading 'useContext')
-    test.skip(packageName === 'gen1-remix');
-
+  test('root style attribute is correctly set', async ({ page }) => {
     await page.goto('/variant-containers');
 
     const secondPersonalizationContainer = page
@@ -220,12 +184,7 @@ test.describe('Personalization Container', () => {
       page,
       sdk,
       basePort,
-      packageName,
     }) => {
-      test.skip(!SDKS_SUPPORTING_PERSONALIZATION.includes(sdk));
-      // Cannot read properties of null (reading 'useContext')
-      test.skip(packageName === 'gen1-remix');
-
       const paths = [
         '/variant-containers-with-previewing-index-0',
         '/variant-containers-with-previewing-index-1',
