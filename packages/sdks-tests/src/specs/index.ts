@@ -250,39 +250,15 @@ export const PAGES: Record<string, Page> = {
   '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
   '/variant-containers': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-0': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-1': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-undefined': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
