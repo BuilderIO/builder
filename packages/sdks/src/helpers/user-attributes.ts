@@ -56,10 +56,11 @@ export function createUserAttributesService() {
 let _userAttributesService: ReturnType<typeof createUserAttributesService>;
 
 if (isBrowser() && TARGET === 'qwik') {
-  if (!(window as any).__USER_ATTRIBUTES_SERVICE__) {
-    (window as any).__USER_ATTRIBUTES_SERVICE__ = createUserAttributesService();
+  if (!(window as any).__BUILDER_USER_ATTRIBUTES_SERVICE__) {
+    (window as any).__BUILDER_USER_ATTRIBUTES_SERVICE__ =
+      createUserAttributesService();
   }
-  _userAttributesService = (window as any).__USER_ATTRIBUTES_SERVICE__;
+  _userAttributesService = (window as any).__BUILDER_USER_ATTRIBUTES_SERVICE__;
 } else {
   _userAttributesService = createUserAttributesService();
 }
