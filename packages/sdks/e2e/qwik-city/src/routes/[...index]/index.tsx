@@ -89,7 +89,6 @@ export default component$(() => {
     'qinit',
     $(() => {
       if (window.location.pathname === '/variant-containers/') {
-        console.log('setting device to tablet');
         setClientUserAttributes({
           device: 'tablet',
         });
