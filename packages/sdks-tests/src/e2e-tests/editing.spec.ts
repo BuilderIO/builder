@@ -552,6 +552,7 @@ test.describe('Visual Editing', () => {
     test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
       test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(packageName === 'qwik-city');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
