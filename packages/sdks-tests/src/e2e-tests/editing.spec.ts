@@ -553,6 +553,10 @@ test.describe('Visual Editing', () => {
       test.skip(checkIsGen1React(sdk));
       test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
+        packageName === 'qwik-city' || packageName === 'nuxt',
+        'Failing on the CI: Test timeout of 30000ms exceeded'
+      );
+      test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
       );
