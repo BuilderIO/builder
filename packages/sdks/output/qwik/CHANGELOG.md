@@ -1,5 +1,36 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.13
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<Blocks />` component. This allows overriding global props set via `<Content />` with specific props for individual Blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```tsx
+  // Set global props, applies to all <Blocks />
+  <Content blocksWrapperProps={{ style: { padding: 10 } }} />
+
+  // Override global props
+  <Blocks BlocksWrapperProps={{ style: { backgroundColor: 'red' } }} />
+
+  // Merge global and local props
+  <Blocks
+    BlocksWrapperProps={{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' } // applies both bg color and padding
+    }}
+  />
+  ```
+
+## 0.18.12
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+- dfbc6e5: Fix: Default values for custom components now update correctly in the editor.
+
 ## 0.18.11
 
 ### Patch Changes

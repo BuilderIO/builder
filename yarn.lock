@@ -5544,11 +5544,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.7.3":
-  version: 0.7.3
-  resolution: "@builder.io/mitosis-cli@npm:0.7.3"
+"@builder.io/mitosis-cli@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@builder.io/mitosis-cli@npm:0.9.2"
   dependencies:
-    "@builder.io/mitosis": 0.7.3
+    "@builder.io/mitosis": 0.9.2
     debug: ^4.3.4
     dedent: ^0.7.0
     esbuild: ^0.12.16
@@ -5561,13 +5561,13 @@ __metadata:
     ts-morph: ^19.0.0
   bin:
     mitosis: bin/mitosis
-  checksum: 9971cc4eed1c00cbd6e8d613a72b4d028be4205296d07b9c4bf381248b86ef1a09c74e29828f34560b7de2aec70765057495e10544c317f467746e4701153a06
+  checksum: 271e351f63ef4066d0945f7677e8184ecb578faf276c8b6652d30bccaf1c0b0ca51f92650434f8a8d9d848d83dba70214c6795c7d8a30c6a60ceea5afd298197
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.7.3, @builder.io/mitosis@npm:^0.7.3":
-  version: 0.7.3
-  resolution: "@builder.io/mitosis@npm:0.7.3"
+"@builder.io/mitosis@npm:0.9.2, @builder.io/mitosis@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@builder.io/mitosis@npm:0.9.2"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -5592,7 +5592,7 @@ __metadata:
     svelte-preprocess: ^5.0.3
     ts-morph: ^19.0.0
     typescript: ^5.3.2
-  checksum: 6edbe375f8dfb121ab12eb694bc57bfae93bd6cb5a04d661cb8d9aa8f780e7dec6063553ca01657d54fcf0d9c3cdc07685685c924c06b811a4652cfbd0fd0e44
+  checksum: 8bf8398cff0e2dbc32561863dd82677fae83f670f52d46aa18812d8e21c441474ceed167f259e50c6f7ea51e840cb2f991f50c094465455498059af33f0da762
   languageName: node
   linkType: hard
 
@@ -5815,7 +5815,7 @@ __metadata:
     "@types/node": latest
     isolated-vm: ^5.0.0
     typescript: 5.5.2
-    vite: ^4.5.6
+    vite: ^4.5.11
   peerDependencies:
     "@builder.io/qwik": ">=1.0.0"
   languageName: unknown
@@ -5864,7 +5864,7 @@ __metadata:
     next: ">=13.4.20"
     react: ^18.2.0
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
   peerDependencies:
     next: ">=13.4.20"
     react: ">=18.2.0"
@@ -5882,7 +5882,7 @@ __metadata:
     react: ^18.2.0
     recast: ^0.23.4
     typescript: ^4.9.4
-    vite: ^4.5.6
+    vite: ^4.5.11
   peerDependencies:
     react: ">=16 || ^19.0.0-rc"
   languageName: unknown
@@ -5920,7 +5920,7 @@ __metadata:
     svelte-preprocess: ^5.0.4
     tslib: ^2.3.1
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
   peerDependencies:
     svelte: ^4.1.2
   languageName: unknown
@@ -5997,8 +5997,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.16
-    "@builder.io/mitosis": ^0.7.3
-    "@builder.io/mitosis-cli": ^0.7.3
+    "@builder.io/mitosis": ^0.9.2
+    "@builder.io/mitosis-cli": ^0.9.2
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
@@ -6560,7 +6560,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
   languageName: unknown
   linkType: soft
 
@@ -6665,7 +6665,7 @@ __metadata:
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
     vite-tsconfig-paths: 3.5.0
   languageName: unknown
   linkType: soft
@@ -6833,7 +6833,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
   languageName: unknown
   linkType: soft
 
@@ -6881,7 +6881,7 @@ __metadata:
     solid-start: ^0.3.10
     solid-start-node: ^0.3.10
     typescript: ^4.9.5
-    vite: ^4.5.6
+    vite: ^4.5.11
   languageName: unknown
   linkType: soft
 
@@ -6911,7 +6911,7 @@ __metadata:
     svelte-check: ^3.4.6
     tslib: ^2.5.0
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
   languageName: unknown
   linkType: soft
 
@@ -6940,7 +6940,7 @@ __metadata:
     "@vitejs/plugin-vue": ^4.2.3
     cross-fetch: ^4.0.0
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
     vite-plugin-ssr: ^0.4.133
     vue: ^3.2.37
     vue-tsc: ^1.8.24
@@ -17935,7 +17935,7 @@ __metadata:
     react-dom: ^18.2.0
     react-router-dom: ^6.24.1
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
   languageName: unknown
   linkType: soft
 
@@ -18042,7 +18042,7 @@ __metadata:
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
     typescript: ^5.1.6
-    vite: ^4.5.6
+    vite: ^4.5.11
     vite-tsconfig-paths: 3.5.0
   languageName: unknown
   linkType: soft
@@ -60176,9 +60176,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.5.6":
-  version: 4.5.9
-  resolution: "vite@npm:4.5.9"
+"vite@npm:^4.5.11":
+  version: 4.5.12
+  resolution: "vite@npm:4.5.12"
   dependencies:
     esbuild: ^0.18.10
     fsevents: ~2.3.2
@@ -60212,7 +60212,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: ebe21bd4aab9e4dac38e77971c9c506f1df28dbf1afb7962894edeeac3a8a57fdc547708fa977ba798c4666f3204ec36a164110a9377fe78b7efa894b7b6c5ff
+  checksum: d8cea25b0da07f4a1838e07dd87cf1e7a34a69175e88ce9e87fd5bfd00e75593c2589b0d9badccbee8dbb2051f7aff4a0c0ac45c8dfe85af0e4ebed3b062a3ed
   languageName: node
   linkType: hard
 
