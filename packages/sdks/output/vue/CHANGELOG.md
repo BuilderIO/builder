@@ -1,5 +1,45 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 4.0.9
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<Blocks />` component. This allows overriding global props set via `<Content />` with specific props for individual Blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```vue
+  <!-- Set global props, applies to all <Blocks /> -->
+  <Content :blocksWrapperProps="{ style: { padding: '10px' } }" />
+
+  <!-- Override global props -->
+  <Blocks :BlocksWrapperProps="{ style: { backgroundColor: 'red' } }" />
+
+  <!-- Merge global and local props -->
+  <Blocks
+    :BlocksWrapperProps="{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' }, // applies both bg color and padding
+    }"
+  />
+  ```
+
+- 8d5274f: Feat: support of Variant Containers and block level personalization
+
+## 4.0.8
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
+## 4.0.7
+
+### Patch Changes
+
+- e12cff4: Fix: extra props warnings
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
 ## 4.0.6
 
 ### Patch Changes

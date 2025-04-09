@@ -20,6 +20,7 @@ import type { BuilderBlock } from '../../types/builder-block.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
 import { bindAnimations } from './animator.js';
 import {
+  generateKey,
   getComponent,
   getInheritedStyles,
   getRepeatItemData,
@@ -278,7 +279,7 @@ export default function Block(props: BlockProps) {
               <For each={state.repeatItem}>
                 {(data, index) => (
                   <RepeatedBlock
-                    key={index}
+                    key={generateKey(index)}
                     repeatContext={data.context}
                     block={data.block}
                     registeredComponents={props.registeredComponents}
@@ -310,7 +311,7 @@ export default function Block(props: BlockProps) {
             <For each={state.repeatItem}>
               {(data, index) => (
                 <RepeatedBlock
-                  key={index}
+                  key={generateKey(index)}
                   repeatContext={data.context}
                   block={data.block}
                   registeredComponents={props.registeredComponents}

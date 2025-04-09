@@ -7,7 +7,7 @@ const rng = seedrandom('vue-sdk-seed');
  * @typedef {import('@builder.io/mitosis').MitosisNode} MitosisNode
  * @typedef {import('@builder.io/mitosis').StateValue} StateValue
  * @typedef {import('@builder.io/mitosis').MitosisConfig} MitosisConfig
- * @typedef {import('@builder.io/mitosis').Plugin} Plugin
+ * @typedef {import('@builder.io/mitosis').MitosisPlugin} Plugin
  * @typedef {import('@builder.io/mitosis').OnMountHook} OnMountHook
  */
 
@@ -205,7 +205,13 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
           `,
         };
 
-        json.children[0].children[0].children[0] = {
+        if (json.children[0].children[1].children[0].name !== 'For') {
+          throw new Error(
+            'Blocks component must have a For block that will get converted to a FlatList'
+          );
+        }
+
+        json.children[0].children[1].children[0] = {
           '@type': '@builder.io/mitosis/node',
           name: 'FlatList',
           meta: {},
@@ -313,17 +319,13 @@ const filterActionAttrBindings = (json, item) => {
 /**
  * @type {Plugin}
  */
-const ANGULAR_ADD_UNUSED_PROP_TYPES = () => ({
+const REMOVE_UNUSED_PROPS_HACK_PLUGIN = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'Awaiter') {
-        json.hooks.onMount = json.hooks.onMount.filter(
-          (hook) =>
-            !hook.code.includes(
-              '/** this is a hack to include the input in angular */'
-            )
-        );
-      }
+      json.hooks.onMount = json.hooks.onMount.filter(
+        (hook) =>
+          !hook.code.includes('/** this is a hack to include unused props */')
+      );
       return json;
     },
   },
@@ -801,8 +803,8 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
 
         // extract the props that Wrapper needs
         code = code.replaceAll(
-          '...this.wrapperProps',
-          '...this.filterPropsThatWrapperNeeds(this.wrapperProps)'
+          '...this.targetWrapperProps',
+          '...this.filterPropsThatWrapperNeeds(this.targetWrapperProps)'
         );
 
         const ngOnChangesIndex = code.indexOf('ngOnChanges');
@@ -942,6 +944,36 @@ const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   },
 });
 
+const QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE =
+  () => ({
+    json: {
+      post: (json) => {
+        if (json.name === 'InteractiveElement') {
+          json.children[0].meta.else.bindings['key'] = {
+            code: "'wrapper-' + state.forceRenderCount",
+            bindingType: 'expression',
+            type: 'single',
+          };
+        }
+      },
+    },
+  });
+
+/**
+ * @type {Plugin}
+ */
+const VUE_FIX_EXTRA_ATTRS_PLUGIN = () => ({
+  json: {
+    pre: (json) => {
+      if (json.name === 'InteractiveElement') {
+        delete json.children[0].meta.else.bindings.attributes;
+      }
+
+      return json;
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -967,7 +999,7 @@ module.exports = {
         ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
         ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
-        ANGULAR_ADD_UNUSED_PROP_TYPES,
+        REMOVE_UNUSED_PROPS_HACK_PLUGIN,
         ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
         ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
         ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
@@ -988,6 +1020,7 @@ module.exports = {
       namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
       cssNamespace: getSeededId,
       plugins: [
+        REMOVE_UNUSED_PROPS_HACK_PLUGIN,
         () => ({
           json: {
             // This plugin handles binding our actions to the `v-on:` Vue syntax:
@@ -1012,6 +1045,7 @@ module.exports = {
             },
           },
         }),
+        VUE_FIX_EXTRA_ATTRS_PLUGIN,
       ],
       api: 'options',
       asyncComponentImports: false,
@@ -1025,6 +1059,7 @@ module.exports = {
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
       ],
       stylesType: 'style-tag',
+      styleTagsPlacement: 'top',
     },
     rsc: {
       explicitImportFileExtension: true,
@@ -1221,6 +1256,7 @@ module.exports = {
             },
           },
         }),
+        QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE,
         QWIK_ONUPDATE_TO_USEVISIBLETASK,
       ],
     },
