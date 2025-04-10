@@ -77,6 +77,9 @@ export default function FormComponent(props: FormProps) {
     submissionState(): FormState {
       return (isEditing() && props.previewState) || state.formState;
     },
+    errorResponse(responseData: any) {
+      return JSON.stringify(responseData, null, 2);
+    },
     onSubmit(event: any) {
       const sendWithJsProp =
         props.sendWithJs || props.sendSubmissionsTo === 'email';
@@ -341,7 +344,7 @@ export default function FormComponent(props: FormProps) {
           class="builder-form-error-text"
           css={{ padding: '10px', color: 'red', textAlign: 'center' }}
         >
-          {JSON.stringify(state.responseData, null, 2)}
+          {state.errorResponse(state.responseData)}
         </pre>
       </Show>
 

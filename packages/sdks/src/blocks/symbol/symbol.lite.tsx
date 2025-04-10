@@ -45,6 +45,9 @@ export default function Symbol(props: SymbolProps) {
         default: 'div',
       });
     },
+    get customComponents() {
+      return Object.values(props.builderComponents);
+    },
     get className() {
       return [
         ...useTarget({
@@ -128,7 +131,7 @@ export default function Symbol(props: SymbolProps) {
           ...props.builderContext.value.context,
           symbolId: props.builderBlock?.id,
         }}
-        customComponents={Object.values(props.builderComponents)}
+        customComponents={state.customComponents}
         data={{
           ...props.symbol?.data,
           ...props.builderContext.value.localState,
