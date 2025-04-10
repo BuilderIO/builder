@@ -18,8 +18,6 @@ test.describe('Nav Bar Components', () => {
         'gen1-remix',
         'gen1-next14-pages',
         'gen1-next15-app',
-        'svelte',
-        'sveltekit',
         'react-sdk-14-app',
         'react-sdk-next-pages',
         'hydrogen',
