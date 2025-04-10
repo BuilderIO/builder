@@ -13,6 +13,7 @@ import { isEditing } from '../../../server-index.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import Awaiter from '../../awaiter.lite.jsx';
+import LiveEdit from '../../live-edit.lite.jsx';
 
 export type InteractiveElementProps = {
   Wrapper: any;
@@ -96,9 +97,9 @@ export default function InteractiveElement(props: InteractiveElementProps) {
             </props.Wrapper>
           }
         >
-          <div>
-            <p>This is a placeholder for the interactive element.</p>
-          </div>
+          <LiveEdit component={props.Wrapper} id={props.block.id || ''}>
+            {props.children}
+          </LiveEdit>
         </Show>
       }
     >
