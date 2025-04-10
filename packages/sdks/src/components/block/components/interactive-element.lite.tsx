@@ -9,6 +9,7 @@ import {
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
+import { isEditing } from '../../../server-index.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import Awaiter from '../../awaiter.lite.jsx';
@@ -84,12 +85,21 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper
-          {...state.targetWrapperProps}
-          attributes={state.attributes}
+        <Show
+          when={isEditing()}
+          else={
+            <props.Wrapper
+              {...props.wrapperProps}
+              attributes={state.attributes}
+            >
+              {props.children}
+            </props.Wrapper>
+          }
         >
-          {props.children}
-        </props.Wrapper>
+          <div>
+            <p>This is a placeholder for the interactive element.</p>
+          </div>
+        </Show>
       }
     >
       <Awaiter
