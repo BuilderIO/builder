@@ -6,7 +6,7 @@ export default function ProductHero() {
 
   useEffect(() => {
     fetchOneEntry({
-      model: 'hero',
+      model: 'collection-hero',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
       userAttributes: { urlPath: window.location.pathname },
     }).then((data) => {
@@ -22,7 +22,7 @@ export default function ProductHero() {
       {productHero && (
         <Content
           content={productHero}
-          model="hero"
+          model="collection-hero"
           apiKey="ee9f13b4981e489a9a1209887695ef2b"
         />
       )}

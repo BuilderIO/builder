@@ -29,12 +29,12 @@ test.describe('Hero Section', () => {
         'gen1-next15-app',
       ].includes(packageName)
     );
-    await page.goto('/event');
+    await page.goto('/marketing-event');
   });
 
   test('should display the hero section with title and call-to-action', async ({ page }) => {
     await page.waitForLoadState('networkidle');
-    
+
     const heading = page.getByText('Find the best shoes in town');
     await expect(heading).toBeVisible();
 

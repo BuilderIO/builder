@@ -51,7 +51,7 @@ const router = createBrowserRouter([
     element: <ProductEditorial />,
   },
   {
-    path: '/event',
+    path: '/marketing-event',
     element: <Hero />,
   },
   {
