@@ -985,6 +985,7 @@ module.exports = {
       typescript: true,
       state: 'class-properties',
       api: 'signals',
+      defaultExportComponents: true,
       plugins: [
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
         // ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
