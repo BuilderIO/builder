@@ -3,7 +3,29 @@ import { test } from '../helpers/index.js';
 
 test.describe('Nav Bar Components', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr', 'vue'].includes(packageName));
+    test.skip(
+      [
+        'react-native-74',
+        'react-native-76-fabric',
+        'solid',
+        'solid-start',
+        'remix',
+        'react-sdk-next-15-app',
+        'nextjs-sdk-next-app',
+        'react',
+        'angular-19-ssr',
+        'gen1-react',
+        'gen1-remix',
+        'gen1-next14-pages',
+        'gen1-next15-app',
+        'svelte',
+        'sveltekit',
+        'react-sdk-14-app',
+        'react-sdk-next-pages',
+        'hydrogen',
+        'qwik-city',
+      ].includes(packageName)
+    );
     // Visit the page where NavBarComponent is rendered
     await page.goto('/landing-page');
   });
@@ -26,7 +48,7 @@ test.describe('Nav Bar Components', () => {
     });
 
     test('should contain NavLinksComponent', async ({ page }) => {
-      const navLinksComponent = page.getByRole('navigation');
+      const navLinksComponent = page.getByRole('list');
       await expect(navLinksComponent).toBeVisible();
     });
   });
