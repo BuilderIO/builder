@@ -6,6 +6,7 @@ type LiveEditProps = {
   children: any;
   id: string;
   component: any;
+  attributes: any;
 };
 
 

@@ -202,7 +202,6 @@ export default function ContentComponent(props: ContentProps) {
         },
         // eslint-disable-next-line object-shorthand
         solid: { setBuilderContextSignal: setBuilderContextSignal },
-        rsc: { setBuilderContextSignal: state.contentSetState },
         default: {},
       })}
     >
