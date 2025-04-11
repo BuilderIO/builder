@@ -1,6 +1,6 @@
-import { useContext, useStore } from "@builder.io/mitosis";
-import type { BuilderBlock, BuilderContent } from "../server-index.js";
-import { BuilderContext } from "../context/index.js";
+import { onMount, useContext, useStore, useTarget } from '@builder.io/mitosis';
+import { BuilderContext } from '../context/index.js';
+import type { BuilderBlock, BuilderContent } from '../server-index.js';
 
 type LiveEditProps = {
   children: any;
@@ -9,41 +9,60 @@ type LiveEditProps = {
   attributes: any;
 };
 
-
 export default function LiveEdit(props: LiveEditProps) {
   const context = useContext(BuilderContext);
 
   const state = useStore({
-  /**
-   * Recursively searches for a block by ID.
-   *
-   * @param blocks The blocks to search through.
-   * @param id The ID of the block to search for.
-   * @returns The block if found, otherwise null.
-   */
-    _findBlockById(blocks: BuilderBlock[] | undefined, id: string): BuilderBlock | null {
-        if (!blocks) return null;
-        for (const block of blocks) {
-          if (block.id === id) return block;
-  
-          if (block.children) {
-            const child = this._findBlockById(block.children, id);
-            if (child) return child;
-          }
+    /**
+     * Recursively searches for a block by ID.
+     *
+     * @param blocks The blocks to search through.
+     * @param id The ID of the block to search for.
+     * @returns The block if found, otherwise null.
+     */
+    _findBlockById(
+      blocks: BuilderBlock[] | undefined,
+      id: string
+    ): BuilderBlock | null {
+      if (!blocks) return null;
+      for (const block of blocks) {
+        if (block.id === id) return block;
+
+        if (block.children) {
+          const child = this._findBlockById(block.children, id);
+          if (child) return child;
         }
-        return null;
+      }
+      return null;
     },
-    findBlockById(content: BuilderContent, id: string){
-        return this._findBlockById(content.data?.blocks, id);
+    findBlockById(content: BuilderContent, id: string) {
+      return this._findBlockById(content.data?.blocks, id);
     },
     get block() {
-        return this.findBlockById(context.value.content!, props.id);
+      return this.findBlockById(context.value.content!, props.id);
     },
     get options() {
-        return this.block?.component?.options || {};
+      return this.block?.component?.options || {};
     },
-  })
+  });
 
+  onMount(() => {
+    useTarget({
+      angular: () => {
+        /** this is a hack to include unused props */
+        const _ = {
+          a: props.id,
+          b: props.component,
+          c: props.attributes,
+          d: props.children,
+        };
+      },
+    });
+  });
 
-  return <props.component {...props} {...state.options} />;
+  return (
+    <props.component {...state.options} {...props.attributes}>
+      {props.children}
+    </props.component>
+  );
 }
