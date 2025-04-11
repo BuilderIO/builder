@@ -17,7 +17,6 @@ test.describe('Homepage', () => {
         'react-sdk-next-15-app',
         'nextjs-sdk-next-app',
         'react',
-        'nuxt',
         'svelte',
         'sveltekit',
         'angular-16',
