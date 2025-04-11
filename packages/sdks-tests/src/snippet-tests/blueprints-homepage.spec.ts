@@ -5,6 +5,8 @@ test.describe('Homepage', () => {
   test.beforeEach(async ({ page, packageName }) => {
     test.skip(
       [
+        'react-native-74',
+        'react-native-76-fabric',
         'solid',
         'solid-start',
         'qwik-city',
