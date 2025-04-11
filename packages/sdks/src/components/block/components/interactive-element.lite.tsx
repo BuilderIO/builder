@@ -9,9 +9,11 @@ import {
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
+import { isEditing } from '../../../server-index.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import Awaiter from '../../awaiter.lite.jsx';
+import LiveEdit from '../../live-edit.lite.jsx';
 
 export type InteractiveElementProps = {
   Wrapper: any;
@@ -84,12 +86,21 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper
-          {...state.targetWrapperProps}
-          attributes={state.attributes}
+        <Show
+          when={useTarget({ rsc: isEditing(), default: false })}
+          else={
+            <props.Wrapper
+              {...props.wrapperProps}
+              attributes={state.attributes}
+            >
+              {props.children}
+            </props.Wrapper>
+          }
         >
-          {props.children}
-        </props.Wrapper>
+          <LiveEdit component={props.Wrapper} id={props.block.id || ''} attributes={state.attributes}>
+            {props.children}
+          </LiveEdit>
+        </Show>
       }
     >
       <Awaiter

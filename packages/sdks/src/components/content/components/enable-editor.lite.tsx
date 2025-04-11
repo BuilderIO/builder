@@ -28,7 +28,7 @@ import { getInteractionPropertiesForEvent } from '../../../functions/track/inter
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
-import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
+import { createEditorListener, type EditType } from '../../../helpers/subscribe-to-editor.js';
 import {
   registerInsertMenu,
   setupBrowserForEditing,
@@ -72,6 +72,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
    */
   const elementRef = useRef<HTMLDivElement>();
   const [hasExecuted, setHasExecuted] = useState<boolean>(false);
+  const [contextValue, setContextValue] = useState<any>(props.builderContextSignal.value);
   const state = useStore({
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
@@ -85,7 +86,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         props.builderContextSignal.value.rootState = combinedState;
       }
     },
-    mergeNewContent(newContent: BuilderContent) {
+    mergeNewContent(newContent: BuilderContent, editType?: EditType) {
       const newContentValue = {
         ...props.builderContextSignal.value.content,
         ...newContent,
@@ -104,11 +105,17 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
       useTarget({
         rsc: () => {
-          postPreviewContent({
-            value: newContentValue,
-            key: newContentValue.id!,
-            url: window.location.pathname,
-          });
+          console.log('DEBUG: SDK: RECEIEVED editType: ', editType);
+
+          if (editType === 'server') {
+            postPreviewContent({
+              value: newContentValue,
+              key: newContentValue.id!,
+              url: window.location.pathname,
+            });
+          } else {
+            setContextValue({...contextValue, content: newContentValue});
+          }
         },
         default: () => {
           props.builderContextSignal.value.content = newContentValue;
@@ -145,8 +152,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
           animation: (animation) => {
             triggerAnimation(animation);
           },
-          contentUpdate: (newContent) => {
-            state.mergeNewContent(newContent);
+          contentUpdate: (newContent, editType) => {
+            state.mergeNewContent(newContent, editType);
           },
           stateUpdate: (newState) => {
             state.mergeNewRootState(newState);
@@ -242,7 +249,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     },
   });
 
-  setContext(builderContext, props.builderContextSignal);
+  setContext(builderContext, contextValue)
 
   onUpdate(() => {
     useTarget({

@@ -770,6 +770,11 @@ export interface Component {
   models?: readonly string[];
 
   /**
+   * Whether the component is a React Server Component
+   */
+  isRSC?: boolean;
+
+  /**
    * Specify restrictions direct children must match
    */
   childRequirements?: {
