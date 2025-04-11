@@ -18,12 +18,10 @@ export default function Home() {
   }
 
   return (
-    <div className="content">
-      <Content
-        model="homepage"
-        content={content}
-        apiKey="ee9f13b4981e489a9a1209887695ef2b"
-      />
-    </div>
+    <Content
+      model="homepage"
+      content={content}
+      apiKey="ee9f13b4981e489a9a1209887695ef2b"
+    />
   );
 }
