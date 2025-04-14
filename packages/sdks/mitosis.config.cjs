@@ -1077,17 +1077,25 @@ module.exports = {
                 json.state.contentToUse.code =
                   json.state.contentToUse?.code.replace('async () => ', '');
               } else if (json.name === 'EnableEditor') {
+
+                json.context.set = {
+                  "../../../context/builder.context.lite.js:default": {
+                    "name": "builderContext",
+                    "ref": "contextValue"
+                  }
+                }
+
                 json.imports.push({
                   path: 'next/navigation',
                   imports: {
                     useRouter: 'useRouter',
                   },
                 });
-
                 json.hooks.init = {
                   code: `const router = useRouter();`,
                 };
               }
+
               return json;
             },
           },

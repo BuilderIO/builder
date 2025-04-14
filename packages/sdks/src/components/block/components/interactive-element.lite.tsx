@@ -14,6 +14,7 @@ import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import Awaiter from '../../awaiter.lite.jsx';
 import LiveEdit from '../../live-edit.lite.jsx';
+import { TARGET } from '../../../constants/target.js';
 
 export type InteractiveElementProps = {
   Wrapper: any;
@@ -87,7 +88,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       when={props.Wrapper.load}
       else={
         <Show
-          when={useTarget({ rsc: isEditing(), default: false })}
+          when={TARGET === 'rsc' && isEditing()}
           else={
             <props.Wrapper
               {...props.wrapperProps}

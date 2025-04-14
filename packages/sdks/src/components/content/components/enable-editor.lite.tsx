@@ -28,7 +28,7 @@ import { getInteractionPropertiesForEvent } from '../../../functions/track/inter
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
-import { createEditorListener, type EditType } from '../../../helpers/subscribe-to-editor.js';
+import { createEditorListener, type EditType} from '../../../helpers/subscribe-to-editor.js';
 import {
   registerInsertMenu,
   setupBrowserForEditing,
@@ -105,7 +105,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
       useTarget({
         rsc: () => {
-          console.log('DEBUG: SDK: RECEIEVED editType: ', editType);
+          // console.log('DEBUG: SDK: RECEIEVED editType: ', editType);
 
           if (editType === 'server') {
             postPreviewContent({
@@ -249,7 +249,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     },
   });
 
-  setContext(builderContext, contextValue)
+  setContext(builderContext, props.builderContextSignal)
 
   onUpdate(() => {
     useTarget({
