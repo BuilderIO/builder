@@ -803,7 +803,7 @@ const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
 
         // extract the props that Wrapper needs
         code = code.replaceAll(
-          '...this.targetWrapperProps',
+          '...this.wrapperProps',
           '...this.filterPropsThatWrapperNeeds(this.targetWrapperProps)'
         );
 
