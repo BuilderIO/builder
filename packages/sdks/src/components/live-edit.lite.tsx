@@ -3,10 +3,10 @@ import { BuilderContext } from '../context/index.js';
 import type { BuilderBlock, BuilderContent } from '../server-index.js';
 
 type LiveEditProps = {
-  children: any;
-  id: string;
-  component: any;
-  attributes: any;
+  children?: any;
+  id?: any;
+  component?: any;
+  attributes?: any;
 };
 
 export default function LiveEdit(props: LiveEditProps) {
