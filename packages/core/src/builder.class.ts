@@ -732,7 +732,7 @@ export interface Component {
    * }
    * ```
    */
-  defaultStyles?: { [key: string]: string };
+  defaultStyles?: Record<string, string | Record<string, string>>;
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
    * withChildren(YourComponent) like here
