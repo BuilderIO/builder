@@ -6,13 +6,16 @@ import {
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
 
+const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const MODEL_NAME = 'homepage';
+
 export default function Homepage() {
   const [content, setContent] = useState<BuilderContent | null>(null);
 
   useEffect(() => {
     fetchOneEntry({
-      model: 'homepage',
-      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      model: MODEL_NAME,
+      apiKey: BUILDER_API_KEY,
     }).then((content) => setContent(content));
   }, []);
 
@@ -21,10 +24,6 @@ export default function Homepage() {
   }
 
   return (
-    <Content
-      apiKey="ee9f13b4981e489a9a1209887695ef2b"
-      model="homepage"
-      content={content}
-    />
+    <Content apiKey={BUILDER_API_KEY} model={MODEL_NAME} content={content} />
   );
 }
