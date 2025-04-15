@@ -2,4 +2,4 @@
 "@builder.io/sdk": patch
 ---
 
-fix: updated defaultStyles type
+fix: updated defaultStyles example

@@ -725,14 +725,18 @@ export interface Component {
    * @example
    * ```js
    * defaultStyles: {
-   *   // large (default) breakpoint
-   *   large: {
-   *     backgroundColor: 'black'
-   *   },
+   *  appearance: 'none',
+   *  paddingTop: '15px',
+   *  paddingBottom: '15px',
+   *  paddingLeft: '25px',
+   *  paddingRight: '25px',
+   *  backgroundColor: '#000000',
+   *  color: 'white',
+   *  borderRadius: '4px',
    * }
    * ```
    */
-  defaultStyles?: Record<string, string | Record<string, string>>;
+  defaultStyles?: Record<string, string>;
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
    * withChildren(YourComponent) like here
