@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.18.14
+
+### Patch Changes
+
+- f59d992: Feat: support of Variant Containers and block level personalization
+
 ## 0.18.13
 
 ### Patch Changes
