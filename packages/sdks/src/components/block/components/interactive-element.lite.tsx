@@ -91,14 +91,14 @@ export default function InteractiveElement(props: InteractiveElementProps) {
           when={TARGET === 'rsc' && isEditing()}
           else={
             <props.Wrapper
-              {...props.wrapperProps}
+              {...state.targetWrapperProps}
               attributes={state.attributes}
             >
               {props.children}
             </props.Wrapper>
           }
         >
-          <LiveEdit component={props.Wrapper} id={props.block.id || ''} attributes={state.attributes}>
+          <LiveEdit Wrapper={props.Wrapper} id={props.block.id || ''} attributes={state.attributes}>
             {props.children}
           </LiveEdit>
         </Show>

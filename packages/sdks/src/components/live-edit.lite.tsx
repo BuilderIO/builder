@@ -5,7 +5,7 @@ import type { BuilderBlock, BuilderContent } from '../server-index.js';
 type LiveEditProps = {
   children?: any;
   id?: any;
-  component?: any;
+  Wrapper?: any;
   attributes?: any;
 };
 
@@ -52,17 +52,17 @@ export default function LiveEdit(props: LiveEditProps) {
         /** this is a hack to include unused props */
         const _ = {
           a: props.id,
-          b: props.component,
+          b: props.Wrapper,
           c: props.attributes,
           d: props.children,
         };
       },
     });
   });
-
+  
   return (
-    <props.component {...state.options} {...props.attributes}>
+    <props.Wrapper {...state.options} attributes={props.attributes}>
       {props.children}
-    </props.component>
+    </props.Wrapper>
   );
 }
