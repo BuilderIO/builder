@@ -105,8 +105,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
       useTarget({
         rsc: () => {
-          // console.log('DEBUG: SDK: RECEIEVED editType: ', editType);
-
           if (editType === 'server') {
             postPreviewContent({
               value: newContentValue,
@@ -249,7 +247,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
     },
   });
 
-  setContext(builderContext, props.builderContextSignal)
+  setContext(builderContext, props.builderContextSignal);
 
   onUpdate(() => {
     useTarget({

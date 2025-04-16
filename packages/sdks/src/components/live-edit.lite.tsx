@@ -16,11 +16,23 @@ export default function LiveEdit(props: LiveEditProps) {
     /**
      * Recursively searches for a block by ID.
      *
-     * @param blocks The blocks to search through.
+     * @param content The Builder content to search through.
      * @param id The ID of the block to search for.
      * @returns The block if found, otherwise null.
      */
-    _findBlockById(
+    findBlockById(content: BuilderContent, id: string): BuilderBlock | null {
+      return this.findBlockInTree(content.data?.blocks, id);
+    },
+
+    /**
+     * Helper function to recursively search through block tree.
+     * 
+     * @param blocks The blocks to search through.
+     * @param id The ID of the block to search for.
+     * @returns The block if found, otherwise null.
+     * @private This is an internal implementation detail.
+     */
+    findBlockInTree(
       blocks: BuilderBlock[] | undefined,
       id: string
     ): BuilderBlock | null {
@@ -29,18 +41,17 @@ export default function LiveEdit(props: LiveEditProps) {
         if (block.id === id) return block;
 
         if (block.children) {
-          const child = this._findBlockById(block.children, id);
+          const child = this.findBlockInTree(block.children, id);
           if (child) return child;
         }
       }
       return null;
     },
-    findBlockById(content: BuilderContent, id: string) {
-      return this._findBlockById(content.data?.blocks, id);
-    },
+
     get block() {
       return this.findBlockById(context.value.content!, props.id);
     },
+
     get options() {
       return this.block?.component?.options || {};
     },
