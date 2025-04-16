@@ -187,6 +187,21 @@ export default function FormComponent(props: FormProps) {
 
         state.formState = 'sending';
 
+        if (
+          props.sendSubmissionsTo === 'email' &&
+          (props.sendSubmissionsToEmail === 'your@email.com' ||
+            props.sendSubmissionsToEmail === '')
+        ) {
+          const message =
+            'SubmissionsToEmail is required when sendSubmissionsTo is set to email';
+          console.error(message);
+          state.formState = 'error';
+          state.mergeNewRootState({
+            formErrorMessage: message,
+          });
+          return;
+        }
+
         const formUrl = `${
           getEnv() === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
         }/api/v1/form-submit?apiKey=${props.builderContext.value.apiKey}&to=${btoa(
@@ -214,21 +229,37 @@ export default function FormComponent(props: FormProps) {
               body = await res.text();
             }
 
-            if (!res.ok && props.errorMessagePath) {
-              /* TODO: allow supplying an error formatter function */
-              let message = get(body, props.errorMessagePath);
+            if (!res.ok) {
+              const submitErrorEvent = new CustomEvent('submit:error', {
+                detail: {
+                  error: body,
+                  status: res.status,
+                },
+              });
 
-              if (message) {
-                if (typeof message !== 'string') {
-                  /* TODO: ideally convert json to yaml so it woul dbe like
-                   error: - email has been taken */
-                  message = JSON.stringify(message);
+              if (formRef?.nativeElement) {
+                formRef?.nativeElement.dispatchEvent(submitErrorEvent);
+                if (submitErrorEvent.defaultPrevented) {
+                  return;
                 }
-                state.formErrorMessage = message;
-                state.mergeNewRootState({
-                  formErrorMessage: message,
-                });
               }
+              state.responseData = body;
+              state.formState = 'error';
+
+              let message = props.errorMessagePath
+                ? get(body, props.errorMessagePath)
+                : body.message || body.error || body;
+
+              if (typeof message !== 'string') {
+                message = JSON.stringify(message);
+              }
+
+              state.formErrorMessage = message;
+              state.mergeNewRootState({
+                formErrorMessage: message,
+              });
+
+              return;
             }
 
             state.responseData = body;
