@@ -13,6 +13,7 @@ import { omit } from './functions/omit.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
 import { parse as urlParse } from './url';
+import { CSSProperties } from 'react';
 
 // Do not change this to a require! It throws runtime errors - rollup
 // will preserve the `require` and throw runtime errors
@@ -736,7 +737,7 @@ export interface Component {
    * }
    * ```
    */
-  defaultStyles?: Record<string, string>;
+  defaultStyles?: CSSProperties;
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
    * withChildren(YourComponent) like here
