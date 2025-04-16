@@ -14,7 +14,7 @@
     "@builder.io/react": "workspace:*",
     "@builder.io/widgets": "^1.2.24",
     "@sdk/tests": "workspace:*",
-    "next": "15.0.4",
+    "next": "15.2.4",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
