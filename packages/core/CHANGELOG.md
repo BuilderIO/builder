@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.0.6
+
+### Patch Changes
+
+- 6d4e36b: fix: updated defaultStyles example
+
 ## 6.0.5
 
 ### Patch Changes
