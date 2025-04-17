@@ -46,4 +46,38 @@ test.describe('Form', () => {
     await expect(form.locator('select')).toHaveAttribute('required');
     await expect(form.locator('textarea')).toHaveAttribute('required');
   });
+
+  test('form submission', async ({ page, sdk }) => {
+    test.skip(
+      excludeTestFor({ reactNative: true, rsc: true }, sdk),
+      'Form not implemented in React Native and NextJS SDKs.'
+    );
+
+    await page.goto('/form');
+
+    const form = page.locator('form');
+    await expect(form).toHaveCount(1);
+
+    const inputs = await form.locator('input').all();
+    await inputs[0].fill('Test Name');
+    await inputs[1].fill('test@example.com');
+    await page.locator('select').selectOption('20-30');
+    await page.locator('textarea').fill('Test message');
+
+    // Create console listener before clicking submit
+    const consoleMessages: string[] = [];
+    page.on('console', msg => {
+      if (msg.type() === 'error') {
+        consoleMessages.push(msg.text());
+      }
+    });
+
+    // Submit the form
+    await form.locator('button').click();
+
+    // Verify error message was logged
+    expect(consoleMessages).toContain(
+      'SubmissionsToEmail is required when sendSubmissionsTo is set to email'
+    );
+  });
 });
