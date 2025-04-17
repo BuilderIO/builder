@@ -190,7 +190,7 @@ export default function FormComponent(props: FormProps) {
         if (
           props.sendSubmissionsTo === 'email' &&
           (props.sendSubmissionsToEmail === 'your@email.com' ||
-            props.sendSubmissionsToEmail === '')
+            !props.sendSubmissionsToEmail)
         ) {
           const message =
             'SubmissionsToEmail is required when sendSubmissionsTo is set to email';
