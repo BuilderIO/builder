@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "unpkg": "./dist/index.browser.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
