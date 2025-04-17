@@ -725,10 +725,14 @@ export interface Component {
    * @example
    * ```js
    * defaultStyles: {
-   *   // large (default) breakpoint
-   *   large: {
-   *     backgroundColor: 'black'
-   *   },
+   *  appearance: 'none',
+   *  paddingTop: '15px',
+   *  paddingBottom: '15px',
+   *  paddingLeft: '25px',
+   *  paddingRight: '25px',
+   *  backgroundColor: '#000000',
+   *  color: 'white',
+   *  borderRadius: '4px',
    * }
    * ```
    */
