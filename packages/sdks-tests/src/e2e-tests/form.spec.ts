@@ -47,7 +47,7 @@ test.describe('Form', () => {
     await expect(form.locator('textarea')).toHaveAttribute('required');
   });
 
-  test.only('form submission', async ({ page, sdk }) => {
+  test('form submission', async ({ page, sdk }) => {
     test.skip(
       excludeTestFor({ reactNative: true, rsc: true }, sdk),
       'Form not implemented in React Native and NextJS SDKs.'
