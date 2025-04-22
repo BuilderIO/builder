@@ -9,4 +9,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-error handling in form
+Fix: Error handling on form submission
