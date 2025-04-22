@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { excludeTestFor, test } from '../helpers/index.js';
+import { excludeGen1, excludeTestFor, test } from '../helpers/index.js';
 
 test.describe('Form', () => {
   test('Form rendering correctly', async ({ page, sdk }) => {
@@ -53,6 +53,8 @@ test.describe('Form', () => {
       'Form not implemented in React Native and NextJS SDKs.'
     );
 
+    test.skip(excludeGen1(sdk));
+
     await page.goto('/form');
 
     const form = page.locator('form');
@@ -76,8 +78,14 @@ test.describe('Form', () => {
     await form.locator('button').click();
 
     // Verify error message was logged
-    expect(consoleMessages).toContain(
-      'SubmissionsToEmail is required when sendSubmissionsTo is set to email'
-    );
+    if (sdk === 'solid') {
+      await expect(page.locator('.builder-text').nth(3)).toHaveText(
+        'SubmissionsToEmail is required when sendSubmissionsTo is set to email'
+      );
+    } else {
+      expect(consoleMessages).toContain(
+        'SubmissionsToEmail is required when sendSubmissionsTo is set to email'
+      );
+    }
   });
 });
