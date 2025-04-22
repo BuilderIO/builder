@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 4.0.10
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
 ## 4.0.9
 
 ### Patch Changes
