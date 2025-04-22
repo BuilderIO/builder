@@ -44,8 +44,8 @@ test.describe('Hero Section', () => {
   });
 
   test('should display hero image', async ({ page }) => {
-    const productImage = page.getByRole('presentation');
-    await expect(productImage).toBeVisible();
-    await expect(productImage).toHaveAttribute('src', /.+/);
+    const imgInPicture = page.locator('picture img');
+    await expect(imgInPicture).toBeVisible();
+    await expect(imgInPicture).toHaveAttribute('src', /.+/);
   });
 });
