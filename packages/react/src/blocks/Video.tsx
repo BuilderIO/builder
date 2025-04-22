@@ -2,7 +2,6 @@
 import { jsx } from '@emotion/core';
 import React, { PropsWithChildren } from 'react';
 
-import { throttle } from '../functions/throttle';
 import { withChildren } from '../functions/with-children';
 import { Builder } from '@builder.io/sdk';
 import { IMAGE_FILE_TYPES, VIDEO_FILE_TYPES } from 'src/constants/file-types.constant';
@@ -30,12 +29,9 @@ class VideoComponent extends React.Component<
 > {
   video: HTMLVideoElement | null = null;
   containerRef: HTMLElement | null = null;
-
-  scrollListener: null | ((e: Event) => void) = null;
+  lazyVideoObserver: IntersectionObserver | null = null;
 
   get lazyLoad() {
-    // Default is true, must be explicitly turned off to not have this behavior
-    // as it's highly recommended for performance and bandwidth optimization
     return this.props.lazyLoad !== false;
   }
 
@@ -46,8 +42,6 @@ class VideoComponent extends React.Component<
   updateVideo() {
     const video = this.video;
     if (video) {
-      // There are some issues with boolean attributes and media elements
-      // see: https://github.com/facebook/react/issues/10389
       const boolProps: Array<'muted' | 'playsInline' | 'autoPlay'> = [
         'muted',
         'playsInline',
@@ -72,43 +66,33 @@ class VideoComponent extends React.Component<
     this.updateVideo();
 
     if (this.lazyLoad && Builder.isBrowser) {
-      // TODO: have a way to consolidate all listeners into one timer
-      // to avoid excessive reflows
-      const listener = throttle(
-        (event: Event) => {
-          if (this.containerRef) {
-            const rect = this.containerRef.getBoundingClientRect();
-            const buffer = window.innerHeight / 2;
-            if (rect.top < window.innerHeight + buffer) {
-              this.setState(state => ({
-                ...state,
-                load: true,
-              }));
-              window.removeEventListener('scroll', listener);
-              this.scrollListener = null;
-            }
-          }
-        },
-        400,
-        {
-          leading: false,
-          trailing: true,
-        }
-      );
-      this.scrollListener = listener;
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
 
-      window.addEventListener('scroll', listener, {
-        capture: true,
-        passive: true,
+          this.setState(state => ({
+            ...state,
+            load: true,
+          }));
+
+          if (this.lazyVideoObserver) {
+            this.lazyVideoObserver.disconnect();
+            this.lazyVideoObserver = null;
+          }
+        });
       });
-      listener();
+
+      if (this.containerRef) {
+        observer.observe(this.containerRef);
+        this.lazyVideoObserver = observer;
+      }
     }
   }
 
   componentWillUnmount() {
-    if (Builder.isBrowser && this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener);
-      this.scrollListener = null;
+    if (this.lazyVideoObserver) {
+      this.lazyVideoObserver.disconnect();
+      this.lazyVideoObserver = null;
     }
   }
 
@@ -116,7 +100,6 @@ class VideoComponent extends React.Component<
     const { aspectRatio, children } = this.props;
     return (
       <div ref={ref => (this.containerRef = ref)} css={{ position: 'relative' }}>
-        {/* TODO: option to load the whole thing (inc. poster image) or just video */}
         <video
           key={this.props.video || 'no-src'}
           poster={this.props.posterImage}
@@ -132,8 +115,6 @@ class VideoComponent extends React.Component<
             height: '100%',
             objectFit: this.props.fit,
             objectPosition: this.props.position,
-            // Hack to get object fit to work as expected and not have the video
-            // overflow
             borderRadius: 1,
             ...(aspectRatio
               ? {
