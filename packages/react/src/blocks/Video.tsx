@@ -32,6 +32,8 @@ class VideoComponent extends React.Component<
   lazyVideoObserver: IntersectionObserver | null = null;
 
   get lazyLoad() {
+    // Default is true, must be explicitly turned off to not have this behavior
+    // as it's highly recommended for performance and bandwidth optimization
     return this.props.lazyLoad !== false;
   }
 
@@ -42,6 +44,8 @@ class VideoComponent extends React.Component<
   updateVideo() {
     const video = this.video;
     if (video) {
+      // There are some issues with boolean attributes and media elements
+      // see: https://github.com/facebook/react/issues/10389
       const boolProps: Array<'muted' | 'playsInline' | 'autoPlay'> = [
         'muted',
         'playsInline',
@@ -100,6 +104,7 @@ class VideoComponent extends React.Component<
     const { aspectRatio, children } = this.props;
     return (
       <div ref={ref => (this.containerRef = ref)} css={{ position: 'relative' }}>
+        {/* TODO: option to load the whole thing (inc. poster image) or just video */}
         <video
           key={this.props.video || 'no-src'}
           poster={this.props.posterImage}
@@ -115,6 +120,8 @@ class VideoComponent extends React.Component<
             height: '100%',
             objectFit: this.props.fit,
             objectPosition: this.props.position,
+            // Hack to get object fit to work as expected and not have the video
+            // overflow
             borderRadius: 1,
             ...(aspectRatio
               ? {
