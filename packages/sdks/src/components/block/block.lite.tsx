@@ -33,6 +33,7 @@ import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
 import ComponentRef from './components/component-ref/component-ref.lite.jsx';
+import LiveEditBlockStyles from './components/live-edit-block-styles.lite.jsx';
 import RepeatedBlock from './components/repeated-block.lite.jsx';
 
 export type BlockProps = {
@@ -269,7 +270,17 @@ export default function Block(props: BlockProps) {
 
   return (
     <Show when={state.canShowBlock}>
-      <BlockStyles block={state.processedBlock} context={props.context.value} />
+      <Show
+        when={TARGET === 'rsc'}
+        else={
+          <BlockStyles
+            block={state.processedBlock}
+            context={props.context.value}
+          />
+        }
+      >
+        <LiveEditBlockStyles id={props.block.id} />
+      </Show>
       <Show
         when={!state.blockComponent?.noWrap}
         else={
