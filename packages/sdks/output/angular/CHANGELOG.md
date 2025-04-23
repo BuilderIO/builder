@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.18.15
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
 ## 0.18.13
 
 ### Patch Changes
