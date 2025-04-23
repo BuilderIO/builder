@@ -8,16 +8,13 @@ import { getProcessedBlock } from '../../../functions/get-processed-block.js';
 import { createCssClass } from '../../../helpers/css.js';
 import { findBlockById } from '../../../helpers/find-block.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
-import type {
-  BuilderContextInterface,
-} from '../../../server-index.js';
 import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
 import { TARGET } from '../../../constants/target.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
+import type { BuilderBlock } from '../../../server-index.js';
 
 type LiveEditBlockStylesProps = {
   id?: any;
-  context?: BuilderContextInterface;
 };
 
 useMetadata({
@@ -27,13 +24,13 @@ useMetadata({
 })
 
 export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
-  const context = useContext(BuilderContext);
+  const contextProvider = useContext(BuilderContext);
 
   const state = useStore({
     get block() {
-      return findBlockById(context.value.content!, props.id);
+      return findBlockById(contextProvider.value.content!, props.id);
     },
-    get processedBlock() {
+    get processedBlock(): BuilderBlock | null {
       const foundBlock = this.block;
       if (!foundBlock) {
         return null;
@@ -42,10 +39,10 @@ export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
         ? foundBlock
         : getProcessedBlock({
             block: foundBlock,
-            localState: context.value.localState,
-            rootState: context.value.rootState,
-            rootSetState: context.value.rootSetState,
-            context: context.value.context,
+            localState: contextProvider.value.localState,
+            rootState: contextProvider.value.rootState,
+            rootSetState: contextProvider.value.rootSetState,
+            context: contextProvider.value.context,
           });
 
       return blockToUse;
@@ -63,7 +60,7 @@ export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
     get css(): string {
       const styles = this.processedBlock?.responsiveStyles;
 
-      const content = context.value.content;
+      const content = contextProvider.value.content;
       const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(
         content?.meta?.breakpoints || {}
       );
