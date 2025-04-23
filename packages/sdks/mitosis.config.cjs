@@ -340,10 +340,42 @@ const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
           'imports: [CommonModule, Block]',
           'imports: [CommonModule, forwardRef(() => Block)]'
         );
-        code = code.replace(
-          '} from "@angular/core";',
-          `${code.includes('repeated-block') ? ',' : ''}forwardRef } from "@angular/core";`
+
+        // First try to match multiline imports
+        const multilineImport = code.match(
+          /import\s*{[\s\S]*?}[\s\S]*?from\s*["']@angular\/core["'];/
         );
+
+        if (multilineImport) {
+          // Extract the content inside braces
+          const importContent = multilineImport[0].match(/{[\s\S]*?}/)[0];
+          const cleanedContent = importContent.replace(/[{}]/g, '').trim();
+
+          // Check if forwardRef is already imported
+          if (!cleanedContent.includes('forwardRef')) {
+            // Add forwardRef to the import
+            const newImport = multilineImport[0].replace(
+              importContent,
+              `{ ${cleanedContent}${cleanedContent.endsWith(',') ? ' ' : ', '}forwardRef }`
+            );
+
+            code = code.replace(multilineImport[0], newImport);
+          }
+        } else {
+          // Fallback to single line import matching
+          const singleLineImport = code.match(
+            /import\s+{(.*?)}\s+from\s+["']@angular\/core["'];/
+          );
+
+          if (singleLineImport) {
+            const importedItems = singleLineImport[1].trim();
+
+            if (!importedItems.includes('forwardRef')) {
+              const newImport = `import { ${importedItems}${importedItems.endsWith(',') ? ' ' : ', '}forwardRef } from "@angular/core";`;
+              code = code.replace(singleLineImport[0], newImport);
+            }
+          }
+        }
       }
       return code;
     },
