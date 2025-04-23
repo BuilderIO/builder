@@ -15,7 +15,7 @@ import type {
 } from '../../context/types.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
-import { isPreviewing } from '../../server-index.js';
+import { isEditing, isPreviewing } from '../../server-index.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
 import { bindAnimations } from './animator.js';
@@ -35,6 +35,7 @@ import type { ComponentProps } from './components/component-ref/component-ref.he
 import ComponentRef from './components/component-ref/component-ref.lite.jsx';
 import LiveEditBlockStyles from './components/live-edit-block-styles.lite.jsx';
 import RepeatedBlock from './components/repeated-block.lite.jsx';
+import StyleWrapper from './components/style-wrapper.lite.jsx';
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -270,17 +271,11 @@ export default function Block(props: BlockProps) {
 
   return (
     <Show when={state.canShowBlock}>
-      <Show
-        when={TARGET === 'rsc'}
-        else={
-          <BlockStyles
-            block={state.processedBlock}
-            context={props.context.value}
-          />
-        }
-      >
-        <LiveEditBlockStyles id={props.block.id} />
-      </Show>
+      <StyleWrapper
+        block={state.processedBlock}
+        context={props.context.value}
+        id={props.block.id}
+      />
       <Show
         when={!state.blockComponent?.noWrap}
         else={
