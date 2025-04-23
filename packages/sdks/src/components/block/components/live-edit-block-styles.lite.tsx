@@ -154,7 +154,7 @@ export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
       <InlinedStyles
         styles={state.css}
         id="builderio-block"
-        nonce={context.value.nonce}
+        nonce={contextProvider.value.nonce}
       />
     </Show>
   )
