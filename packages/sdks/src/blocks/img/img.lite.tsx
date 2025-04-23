@@ -37,7 +37,7 @@ export default function ImgComponent(props: ImgProps) {
     get srcSetToUse(): string | undefined {
       const url = props.imgSrc || props.image;
       if (!url || typeof url !== 'string') {
-        return;
+        return undefined;
       }
 
       // We can auto add srcset for cdn.builder.io images
