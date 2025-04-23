@@ -42,7 +42,7 @@ export default function ImgComponent(props: ImgProps) {
 
       // We can auto add srcset for cdn.builder.io images
       if (!url.match(/builder\.io/)) {
-        return;
+        return undefined;
       }
 
       return getSrcSet(url);
