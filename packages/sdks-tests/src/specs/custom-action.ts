@@ -2,9 +2,7 @@
 export const CUSTOM_ACTION = {
   data: {
     title: 'Builder + React Demo Page',
-    httpRequests: {
-        "test2": "https://cdn.builder.io/api/v3/content/test-2?apiKey=d6513b26861a47cfb6d3476138c7e0b9&includeRefs=true&fields=data&limit=10"
-      },
+    httpRequests: {},
       customFonts: [
         {
           variants: [

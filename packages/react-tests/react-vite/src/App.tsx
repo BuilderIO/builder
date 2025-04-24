@@ -58,7 +58,7 @@ if (typeof window !== 'undefined') {
       },
     ],
     action:  (options:Record<string, any>) => {
-      return`console.log("@@@@@ function") `
+      return`console.log("function call") `
     },
   });
 }
