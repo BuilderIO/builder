@@ -3,6 +3,7 @@ import React from 'react';
 import { BuilderElement } from '@builder.io/sdk';
 import { withBuilder } from '../../functions/with-builder';
 import { IMAGE_FILE_TYPES } from 'src/constants/file-types.constant';
+import { getSrcSet } from '../Image';
 
 export interface ImgProps {
   attributes?: any;
@@ -13,15 +14,25 @@ export interface ImgProps {
 // TODO: srcset, alt text input, object size/position input, etc
 
 class ImgComponent extends React.Component<ImgProps> {
+  getSrcSet(): string | undefined {
+    const url = this.props.image;
+    if (!url || typeof url !== 'string') {
+      return;
+    }
+
+    // We can auto add srcset for cdn.builder.io images
+    if (!url.match(/builder\.io/)) {
+      return;
+    }
+
+    return getSrcSet(url);
+  }
+
   render() {
     const attributes = this.props.attributes || {};
+    const srcset = this.getSrcSet();
     return (
-      <img
-        {...this.props.attributes}
-        src={this.props.image || attributes.src}
-        // TODO: generate this
-        // srcSet={this.props.image || attributes.srcSet || attributes.srcset}
-      />
+      <img {...this.props.attributes} src={this.props.image || attributes.src} srcSet={srcset} />
     );
   }
 }
