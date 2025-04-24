@@ -52,6 +52,7 @@ import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
+import { CUSTOM_ACTION } from './custom-action.js';
 import { BASIC_STYLES } from './basic-styles.js';
 import {
   ACCORDION,
@@ -195,6 +196,7 @@ export const PAGES: Record<string, Page> = {
   '/hover-animation': { content: HOVER_ANIMATION },
   '/tabs': { content: TABS },
   '/custom-components': { content: CUSTOM_COMPONENTS },
+  '/custom-action': { content: CUSTOM_ACTION },
   '/basic-styles': { content: BASIC_STYLES },
   '/accordion': { content: ACCORDION },
   '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
