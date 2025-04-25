@@ -1018,6 +1018,9 @@ export class Builder {
   }
 
   static isTrustedHostForEvent(event: MessageEvent) {
+    if (event.origin === 'null') {
+      return false;
+    }
     const url = parse(event.origin);
     return url.hostname && Builder.isTrustedHost(url.hostname);
   }
