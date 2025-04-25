@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 4.1.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
 ## 4.0.10
 
 ### Patch Changes
