@@ -9,6 +9,7 @@ import { default as Fragment } from '../blocks/fragment/index.js';
 import { componentInfo as imageComponentInfo } from '../blocks/image/component-info.js';
 import { default as Image } from '../blocks/image/index.js';
 import { componentInfo as personalizationContainerComponentInfo } from '../blocks/personalization-container/component-info.js';
+import { SDKS_SUPPORTING_PERSONALIZATION } from '../blocks/personalization-container/helpers.js';
 import { default as PersonalizationContainer } from '../blocks/personalization-container/index.js';
 import { componentInfo as sectionComponentInfo } from '../blocks/section/component-info.js';
 import { default as Section } from '../blocks/section/index.js';
@@ -38,7 +39,7 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Slot, ...slotComponentInfo },
     { component: Symbol, ...symbolComponentInfo },
     { component: Text, ...textComponentInfo },
-    ...(TARGET === 'react'
+    ...(SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET)
       ? [
           {
             component: PersonalizationContainer,

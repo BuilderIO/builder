@@ -93,3 +93,4 @@ Legend:
 | Global Content Styles          | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
 | CSS Nesting (`&` operator)     | ✅   | ✅    | ✅                                       | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅      |         |
 | Locale Support                 | ✅   | ✅    | ✅                                       | ✅  | ✅                  | ✅     | ✅    | ✅      |         |
+| Variant Containers             | ✅   | ✅    | 🏗                                       | ✅  | 🏗                  | ✅     | 🏗    | 🏗      |         |

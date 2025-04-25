@@ -1,5 +1,76 @@
 # @builder.io/sdk-angular
 
+## 0.18.15
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
+## 0.18.13
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<blocks>` component. This allows overriding global props set via `<builder-content>` with specific props for individual blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```html
+  <!-- Set global props, applies to all blocks -->
+  <builder-content
+    [blocksWrapperProps]="{ style: { padding: '10px' } }"
+  ></builder-content>
+
+  <!-- Override global props -->
+  <blocks [BlocksWrapperProps]="{ style: { backgroundColor: 'red' } }"></blocks>
+
+  <!-- Merge global and local props -->
+  <blocks
+    [BlocksWrapperProps]="{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' } // applies both bg color and padding
+    }"
+  ></blocks>
+  ```
+
+## 0.18.12
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
+## 0.18.11
+
+### Patch Changes
+
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
+## 0.18.10
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
+## 0.18.9
+
+### Patch Changes
+
+- 8c0d646: Fix: New child blocks getting added at the top while visual editing. This issue occurred with components that use children for rendering, for example - Section.
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
+## 0.18.8
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
+## 0.18.7
+
+### Patch Changes
+
+- 4eaad61: Refactor: code changes for the new blocks getting added on the top fix, adds thorough comments and uses mitosis's compileContext to introduce the `ngAfterContentChecked` hook
+- b38c8fb: Fix: show the correct A/B test variant content while visual editing or toggling between variants
+
 ## 0.18.6
 
 ### Patch Changes

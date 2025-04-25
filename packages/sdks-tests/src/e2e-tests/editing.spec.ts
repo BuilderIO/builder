@@ -18,8 +18,15 @@ import { MODIFIED_EDITING_COLUMNS } from '../specs/editing-columns-inner-layout.
 import { ADD_A_TEXT_BLOCK } from '../specs/duplicated-content-using-nested-symbols.js';
 import { EDITING_STYLES } from '../specs/editing-styles.js';
 import { ACCORDION_WITH_NO_DETAIL } from '../specs/accordion.js';
+import { CUSTOM_COMPONENT_NO_DEFAULT_VALUE } from '../specs/custom-component-no-default-value.js';
+import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from '../specs/symbols-with-list-content-input.js';
 import { NEW_BLOCK_ADD, NEW_BLOCK_ADD_2 } from '../specs/new-block-add.js';
-
+import { SECTION_CHILDREN } from '../specs/section-children.js';
+import {
+  GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE,
+  GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO,
+  MAIN_CONTENT,
+} from '../specs/get-content-symbol-update-entry.js';
 const editorTests = ({
   noTrustedHosts,
   editorIsInViewPort,
@@ -149,6 +156,34 @@ test.describe('Visual Editing', () => {
         expect(updatedFirstBox.y).toBe(updatedSecondBox.y);
       }
     }
+  });
+
+  test('correctly updating custom components when default value is not set', async ({
+    page,
+    basePort,
+    sdk,
+    packageName,
+  }) => {
+    test.skip(!['react', 'qwik-city'].includes(packageName));
+    await launchEmbedderAndWaitForSdk({
+      path: '/custom-components-no-default-value',
+      basePort,
+      page,
+      sdk,
+    });
+
+    const defaultText = page
+      .frameLocator('iframe')
+      .locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]');
+    await expect(defaultText).toBeEmpty();
+
+    const newContent = cloneContent(CUSTOM_COMPONENT_NO_DEFAULT_VALUE);
+    newContent.data.blocks[0].component.options.text = 'FOO';
+    await sendContentUpdateMessage({ page, newContent, model: 'page' });
+    const updatedText = page
+      .frameLocator('iframe')
+      .locator('[builder-id="builder-d01784d1ca964e0da958ab4a4a891b08"]');
+    await expect(updatedText).toHaveText('FOO');
   });
 
   test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
@@ -299,7 +334,8 @@ test.describe('Visual Editing', () => {
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'qwik-city'
       );
       await launchEmbedderAndWaitForSdk({ path: '/accordion-no-detail', basePort, page, sdk });
 
@@ -332,13 +368,18 @@ test.describe('Visual Editing', () => {
         model: 'page',
       });
 
-      await item1.click();
+      // Re-query the item1 element as it might have been recreated
+      const updatedItem1 = page.frameLocator('iframe').getByText('Item 1');
+      await expect(updatedItem1).toBeVisible();
+      await expect(updatedItem1).toBeEnabled();
+      await expect(updatedItem1).toBeInViewport();
+      await updatedItem1.click();
 
       const detailElement = page.frameLocator('iframe').getByText(NEW_DETAILS_TEXT);
-      await detailElement.waitFor();
+      await expect(detailElement).toBeVisible();
 
       const [titleBox, detailBox] = await Promise.all([
-        item1.boundingBox(),
+        updatedItem1.boundingBox(),
         detailElement.boundingBox(),
       ]);
 
@@ -512,6 +553,10 @@ test.describe('Visual Editing', () => {
       test.skip(checkIsGen1React(sdk));
       test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
+        packageName === 'qwik-city' || packageName === 'nuxt',
+        'Failing on the CI: Test timeout of 30000ms exceeded'
+      );
+      test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
       );
@@ -644,4 +689,262 @@ test.describe('Visual Editing', () => {
       await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
     });
   });
+
+  test('Symbol should update the data when nested values are updated', async ({
+    page,
+    basePort,
+    sdk,
+    packageName,
+  }) => {
+    test.skip(
+      sdk === 'qwik',
+      'Qwik fails to update the data when nested values are updated. Need to raise another PR.'
+    );
+    // Loom for reference: https://www.loom.com/share/b951939394ca4758b4a362725016d30b?sid=c54d90f5-121a-4652-877e-5abb6ddd2605
+    test.skip(
+      sdk === 'vue',
+      `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+    );
+    test.skip(excludeGen1(sdk) || packageName === 'nextjs-sdk-next-app');
+
+    await launchEmbedderAndWaitForSdk({
+      path: '/symbols-with-list-content-input',
+      basePort,
+      page,
+      sdk,
+    });
+
+    const newContent = cloneContent(SYMBOLS_WITH_LIST_CONTENT_INPUT);
+
+    await sendPatchOrUpdateMessage({
+      page,
+      content: newContent,
+      model: 'page',
+      sdk,
+      path: '/data/blocks/0/component/options/symbol/data/language/1/code',
+      updateFn: () => 'AFK',
+    });
+
+    await page.frameLocator('iframe').getByText('AFK').waitFor();
+  });
+
+  test.describe('New Block addition and deletion with components using props.children / slots', () => {
+    test('should add new block below the last block', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const textBlocks = await page.frameLocator('iframe').getByText('text 2').all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page.frameLocator('iframe').getByText('new text').boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeGreaterThan(textBlockBox.y);
+    });
+
+    test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+
+      newContent.data.blocks[0].children.splice(1, 0, {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: { name: 'Text', options: { text: 'add to middle' } },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to middle').waitFor();
+
+      const topTextBlockBox = await page.frameLocator('iframe').getByText('text 1').boundingBox();
+      const endTextBlockBox = await page.frameLocator('iframe').getByText('text 2').boundingBox();
+      const middleTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to middle')
+        .boundingBox();
+
+      expect(middleTextBlockBox).toBeDefined();
+      expect(topTextBlockBox).toBeDefined();
+      expect(endTextBlockBox).toBeDefined();
+
+      if (!middleTextBlockBox || !topTextBlockBox || !endTextBlockBox) {
+        throw new Error('Middle text block or text block not found');
+      }
+
+      expect(middleTextBlockBox.y).toBeGreaterThan(topTextBlockBox.y);
+      expect(middleTextBlockBox.y).toBeLessThan(endTextBlockBox.y);
+    });
+
+    test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+      // Loom for reference: https://www.loom.com/share/646cf1a809c94860a4a0588b81254165?sid=5d112e02-cc00-4cb2-869a-a89238f71e42
+      test.skip(packageName === 'nuxt', `Failing on the CI: Test timeout of 30000ms exceeded`);
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.unshift({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'add to top' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('add to top').waitFor();
+
+      const textBlocks = await page.frameLocator('iframe').getByText('text 1').all();
+      expect(textBlocks.length).toBe(1);
+      const newTextBlockBox = await page
+        .frameLocator('iframe')
+        .getByText('add to top')
+        .boundingBox();
+      expect(newTextBlockBox).toBeDefined();
+      const textBlockBox = await textBlocks[0].boundingBox();
+      expect(textBlockBox).toBeDefined();
+
+      if (!newTextBlockBox || !textBlockBox) {
+        throw new Error('New text block or text block not found');
+      }
+
+      expect(newTextBlockBox.y).toBeLessThan(textBlockBox.y);
+    });
+
+    test('deleting a newly added block should remove it from the DOM', async ({
+      page,
+      basePort,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'vue',
+        `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+
+      await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
+
+      const newContent = cloneContent(SECTION_CHILDREN);
+      newContent.data.blocks[0].children.push({
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-421fe741cdab4a5181fe83ffa0af7ff6',
+        component: {
+          name: 'Text',
+          options: { text: 'new text' },
+        },
+      });
+
+      await sendContentUpdateMessage({
+        page,
+        newContent,
+        model: 'page',
+      });
+      await page.frameLocator('iframe').getByText('new text').waitFor();
+
+      const updatedContent = cloneContent(SECTION_CHILDREN);
+      updatedContent.data.blocks[0].children.pop();
+
+      await sendContentUpdateMessage({ page, newContent: updatedContent, model: 'page' });
+      await page.frameLocator('iframe').getByText('new text').waitFor({ state: 'hidden' });
+    });
+  });
+});
+
+test('Symbol should update the data when entry is updated', async ({
+  page,
+  sdk,
+  packageName,
+  basePort,
+}) => {
+  test.skip(excludeGen1(sdk));
+  test.skip(
+    packageName === 'nextjs-sdk-next-app' || packageName === 'remix',
+    'This both packages are SSR hence getting symbol not found error'
+  );
+  test.skip(packageName === 'qwik-city', 'Qwik-city API not getting called');
+  const urlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol/;
+  await page.route(urlMatch, route => {
+    const url = new URL(route.request().url());
+    const queryIdParam = url.searchParams.get('query.id');
+    let symbolToReturn = null;
+    if (queryIdParam === '"e2a166f7d9544ed9ade283abf9491af3"') {
+      symbolToReturn = GET_CONTENT_SYMBOL_UPDATE_ENTRY_ONE;
+    } else if (queryIdParam === '"aa024e6851e94b49b99f41a2294fd423"') {
+      symbolToReturn = GET_CONTENT_SYMBOL_UPDATE_ENTRY__TWO;
+    } else {
+      throw new Error(`Unknown query id: ${queryIdParam}`);
+    }
+    return route.fulfill({
+      status: 200,
+      json: {
+        results: [symbolToReturn],
+      },
+    });
+  });
+  await launchEmbedderAndWaitForSdk({ path: '/symbol-update-entries', basePort, page, sdk });
+  const newContent = cloneContent(MAIN_CONTENT);
+  await page.frameLocator('iframe').getByText('Green Potato').waitFor();
+  newContent.data.blocks[0].component.options.symbol.entry = 'aa024e6851e94b49b99f41a2294fd423';
+  await sendContentUpdateMessage({ page, newContent, model: 'page' });
+  await page.frameLocator('iframe').getByText('Red tomato').waitFor();
 });

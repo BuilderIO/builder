@@ -725,10 +725,14 @@ export interface Component {
    * @example
    * ```js
    * defaultStyles: {
-   *   // large (default) breakpoint
-   *   large: {
-   *     backgroundColor: 'black'
-   *   },
+   *  appearance: 'none',
+   *  paddingTop: '15px',
+   *  paddingBottom: '15px',
+   *  paddingLeft: '25px',
+   *  paddingRight: '25px',
+   *  backgroundColor: '#000000',
+   *  color: 'white',
+   *  borderRadius: '4px',
    * }
    * ```
    */
@@ -2503,7 +2507,7 @@ export class Builder {
 
     const queryParams: ParamsMap = {
       // TODO: way to force a request to be in a separate queue. or just lower queue limit to be 1 by default
-      omit: queue[0].omit || 'meta.componentsUsed',
+      omit: queue[0].omit ?? 'meta.componentsUsed',
       apiKey: this.apiKey,
       ...queue[0].options,
       ...this.queryOptions,

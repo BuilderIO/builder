@@ -1,8 +1,14 @@
-import { component$ } from '@builder.io/qwik';
+import { $, component$, useOnDocument } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import { Content, _processContentResult } from '@builder.io/sdk-qwik';
+import {
+  Content,
+  _processContentResult,
+  setClientUserAttributes,
+} from '@builder.io/sdk-qwik';
 import { getProps } from '@sdk/tests';
 import BuilderBlockWithClassName from '~/components/BuilderBlockWithClassName';
+import { Description } from '~/components/Description';
+import { Hello } from '~/components/Hello';
 
 const builderBlockWithClassNameCustomComponent = {
   name: 'BuilderBlockWithClassName',
@@ -46,6 +52,25 @@ const builderBlockWithClassNameCustomComponent = {
   ],
 };
 
+const CUSTOM_COMPONENTS = [
+  {
+    name: 'Hello',
+    component: Hello,
+    inputs: [],
+  },
+  {
+    name: 'Description',
+    component: Description,
+    inputs: [
+      {
+        name: 'text',
+        type: 'string',
+        defaultValue: 'Hello',
+      },
+    ],
+  },
+];
+
 export const useBuilderContentLoader = routeLoader$(async (event) => {
   const data = await getProps({
     pathname: event.url.pathname,
@@ -59,6 +84,18 @@ export const useBuilderContentLoader = routeLoader$(async (event) => {
 
 export default component$(() => {
   const contentProps = useBuilderContentLoader();
+
+  useOnDocument(
+    'qinit',
+    $(() => {
+      if (window.location.pathname === '/variant-containers/') {
+        setClientUserAttributes({
+          device: 'tablet',
+        });
+      }
+    })
+  );
+
   return (
     <>
       {contentProps.value.addTopPadding && (
@@ -67,7 +104,10 @@ export default component$(() => {
       {contentProps.value ? (
         <Content
           {...(contentProps.value as any)}
-          customComponents={[builderBlockWithClassNameCustomComponent]}
+          customComponents={[
+            ...CUSTOM_COMPONENTS,
+            builderBlockWithClassNameCustomComponent,
+          ]}
         />
       ) : (
         <div>Content Not Found</div>

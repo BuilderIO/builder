@@ -1,5 +1,61 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.18.15
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
+## 0.18.13
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<Blocks />` component. This allows overriding global props set via `<Content />` with specific props for individual Blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```tsx
+  // Set global props, applies to all <Blocks />
+  <Content blocksWrapperProps={{ style: { padding: 10 } }} />
+
+  // Override global props
+  <Blocks BlocksWrapperProps={{ style: { backgroundColor: 'red' } }} />
+
+  // Merge global and local props
+  <Blocks
+    BlocksWrapperProps={{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' } // applies both bg color and padding
+    }}
+  />
+  ```
+
+## 0.18.11
+
+### Patch Changes
+
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
+## 0.18.10
+
+### Patch Changes
+
+- 6a17ed8: Fix: reduce network roundtrips for updates when visually editing
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
+## 0.18.9
+
+### Patch Changes
+
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
+## 0.18.8
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 0.18.2
 
 ### Patch Changes

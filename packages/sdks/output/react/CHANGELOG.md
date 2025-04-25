@@ -1,5 +1,68 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 4.0.10
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
+## 4.0.9
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<Blocks />` component. This allows overriding global props set via `<Content />` with specific props for individual Blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```tsx
+  // Set global props, applies to all <Blocks />
+  <Content blocksWrapperProps={{ style: { padding: 10 } }} />
+
+  // Override global props
+  <Blocks BlocksWrapperProps={{ style: { backgroundColor: 'red' } }} />
+
+  // Merge global and local props
+  <Blocks
+    BlocksWrapperProps={{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' } // applies both bg color and padding
+    }}
+  />
+  ```
+
+- 8d5274f: Refactor: variant containers approach, now uses global level scripts and avoids re-initialization
+
+## 4.0.8
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
+## 4.0.7
+
+### Patch Changes
+
+- e12cff4: Fix: stop passing `builderContext` to Text block
+- 5fd34ca: Fix: list-type inputs within symbols were not updating in the preview
+
+## 4.0.6
+
+### Patch Changes
+
+- ff56386: Fix: correctly set default value for `omit` field as `meta.componentsUsed` in Content API calls and preserve empty string
+
+## 4.0.5
+
+### Patch Changes
+
+- 93999c0: Fix: centering items inside columns when columns has a fixed height
+
+## 4.0.4
+
+### Patch Changes
+
+- 372746e: Feat: add title option for images
+
 ## 4.0.3
 
 ### Patch Changes

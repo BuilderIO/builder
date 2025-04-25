@@ -87,9 +87,14 @@ import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
 import { DYNAMIC_ELEMENT } from './dynamic-element.js';
 import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
+import { CUSTOM_COMPONENT_NO_DEFAULT_VALUE } from './custom-component-no-default-value.js';
 import { NEW_BLOCK_ADD } from './new-block-add.js';
-
 import { DYNAMIC_BUTTON } from './dynamic-button.js';
+import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from './symbols-with-list-content-input.js';
+import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
+import { SECTION_CHILDREN } from './section-children.js';
+import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
+
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
@@ -137,6 +142,7 @@ export const PAGES: Record<string, Page> = {
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },
   '/data-bindings': { content: dataBindings },
+  '/symbols-with-list-content-input': { content: SYMBOLS_WITH_LIST_CONTENT_INPUT },
   '/data-binding-styles': { content: dataBindingStyles },
   '/react-native-strict-style-mode': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
   '/react-native-strict-style-mode-disabled': { content: REACT_NATIVE_STRICT_STYLE_MODE_CONTENT },
@@ -196,6 +202,7 @@ export const PAGES: Record<string, Page> = {
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
+  '/custom-components-no-default-value': { content: CUSTOM_COMPONENT_NO_DEFAULT_VALUE },
   '/custom-components-models-show': {
     content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
     target: ['react'],
@@ -243,39 +250,15 @@ export const PAGES: Record<string, Page> = {
   '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
   '/variant-containers': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-0': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-1': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-undefined': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
@@ -283,6 +266,9 @@ export const PAGES: Record<string, Page> = {
   '/custom-code-dom-update': { content: CUSTOM_CODE_DOM_UPDATE },
   '/new-block-add': { content: NEW_BLOCK_ADD },
   '/dynamic-button': { content: DYNAMIC_BUTTON },
+  '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
+  '/section-children': { content: SECTION_CHILDREN },
+  '/symbol-update-entries': { content: SYMBOL_UPDATE_ENTRIES },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -393,6 +379,23 @@ export const getProps = async (args: {
       break;
     case '/get-content':
     case '/get-content-with-symbol':
+      extraProps = {
+        apiEndpoint: 'content',
+      };
+      break;
+    case '/get-content-with-omit':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: '',
+      };
+      break;
+    case '/get-content-with-omit-name':
+      extraProps = {
+        apiEndpoint: 'content',
+        omit: 'name',
+      };
+      break;
+    case '/get-content-default':
       extraProps = {
         apiEndpoint: 'content',
       };
