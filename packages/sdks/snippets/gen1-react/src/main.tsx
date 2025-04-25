@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AdvancedChild from './routes/advanced-child';
 import AnnouncementBar from './routes/AnnouncementBar';
 import CustomChild from './routes/custom-child';
+import CustomAction from './routes/custom-action';
 import EditableRegion from './routes/editable-region';
 import IntegratingPages from './routes/IntegratingPages';
 import QueryCheatsheet from './routes/query-cheatsheet';
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/custom-child',
     element: <CustomChild />,
+  },
+  {
+    path: '/custom-action',
+    element: <CustomAction />,
   },
   {
     path: '/announcements/:id',

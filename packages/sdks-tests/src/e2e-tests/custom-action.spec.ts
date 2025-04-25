@@ -2,7 +2,7 @@ import { test,excludeGen2 } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 
-const HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE =
+const CUSTOM_ACTION_LOADED_MESSAGE =
   'BUILDER_EVENT: builder.registerAction';
 
 test.describe('Custom actions', () => {
@@ -16,9 +16,8 @@ test.describe('Custom actions', () => {
     test.skip(
       packageName !== 'gen1-react'
     );
-    const customComponentMsgPromise = page.waitForEvent('console', msg =>{
-      console.log('@@@@@ msg', msg);
-      return msg.text().includes(HELLO_CUSTOM_COMPONENT_LOADED_MESSAGE)}
+    const customActionMsgPromise = page.waitForEvent('console', msg =>
+       msg.text().includes(CUSTOM_ACTION_LOADED_MESSAGE)
     );
     await launchEmbedderAndWaitForSdk({
       page,
@@ -26,6 +25,6 @@ test.describe('Custom actions', () => {
       path: '/custom-action',
       sdk,
     });
-    await customComponentMsgPromise;
+    await customActionMsgPromise;
   });
 });

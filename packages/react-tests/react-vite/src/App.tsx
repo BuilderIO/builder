@@ -57,7 +57,7 @@ if (typeof window !== 'undefined') {
         helperText: "Action name",
       },
     ],
-    action:  (options:Record<string, any>) => {
+    action:  () => {
       return`console.log("function call") `
     },
   });
