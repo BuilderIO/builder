@@ -1,5 +1,17 @@
 # @builder.io/react
 
+## 8.1.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+### Patch Changes
+
+- c8d7674: Stricter trusted origin check
+- Updated dependencies [c8d7674]
+  - @builder.io/sdk@6.0.7
+
 ## 8.0.13
 
 ### Patch Changes
