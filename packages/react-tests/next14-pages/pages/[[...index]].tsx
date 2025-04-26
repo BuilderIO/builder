@@ -95,6 +95,22 @@ export default function Page(props: PageProps & { apiVersion: any }) {
         .promise()
         .then();
     }
+    Builder.registerAction({
+      name: "test-action",
+      kind: 'function',
+      id: 'test-action-id',
+      inputs:[
+        {
+          name: "actionName",
+          type: "string",
+          required: true,
+          helperText: "Action name",
+        },
+      ],
+      action: () => {
+        return `console.log("function call")`
+      },
+    });
   }, []);
 
   if (router.isFallback) {

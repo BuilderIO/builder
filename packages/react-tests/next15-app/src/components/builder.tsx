@@ -1,5 +1,5 @@
 'use client';
-import { builder } from '@builder.io/sdk';
+import { builder, Builder} from '@builder.io/sdk';
 import { BuilderComponent } from '@builder.io/react';
 import DefaultErrorPage from 'next/error';
 import { getAPIKey } from '@sdk/tests';
@@ -65,6 +65,22 @@ export function RenderBuilderContent(props: BuilderPageProps) {
         .promise()
         .then();
     }
+    Builder.registerAction({
+      name: "test-action",
+      kind: 'function',
+      id: 'test-action-id',
+      inputs:[
+        {
+          name: "actionName",
+          type: "string",
+          required: true,
+          helperText: "Action name",
+        },
+      ],
+      action: () => {
+        return `console.log("function call")`
+      },
+    });
   }, []);
 
   return props.content ? <BuilderComponent {...props} /> : <DefaultErrorPage statusCode={404} />;
