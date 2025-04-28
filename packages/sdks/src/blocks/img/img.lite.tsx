@@ -51,6 +51,7 @@ export default function ImgComponent(props: ImgProps) {
 
   return (
     <img
+      loading="lazy"
       style={{
         objectFit: props.backgroundSize || 'cover',
         objectPosition: props.backgroundPosition || 'center',
