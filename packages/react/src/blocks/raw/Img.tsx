@@ -32,7 +32,12 @@ class ImgComponent extends React.Component<ImgProps> {
     const attributes = this.props.attributes || {};
     const srcset = this.getSrcSet();
     return (
-      <img {...this.props.attributes} src={this.props.image || attributes.src} srcSet={srcset} />
+      <img
+        loading="lazy"
+        {...this.props.attributes}
+        src={this.props.image || attributes.src}
+        srcSet={srcset}
+      />
     );
   }
 }
