@@ -8,9 +8,10 @@
     "release": "npm publish",
     "build-inline-fns": "yarn g:build-inline-fns",
     "generate-dynamic-renderer": "node ./scripts/generate-dynamic-renderer.mjs",
-    "build": "yarn g:nx run-many -p @builder.io/sdk-angular -t build:node build:browser --parallel=false",
+    "build": "yarn g:nx run-many -p @builder.io/sdk-angular -t build:node build:browser build:edge --parallel=false",
     "build:node": "cross-env SDK_ENV=node node ./scripts/multi-build.mjs",
-    "build:browser": "cross-env SDK_ENV=browser node ./scripts/multi-build.mjs"
+    "build:browser": "cross-env SDK_ENV=browser node ./scripts/multi-build.mjs",
+    "build:edge": "cross-env SDK_ENV=edge node ./scripts/multi-build.mjs"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0",
