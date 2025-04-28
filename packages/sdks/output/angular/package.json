@@ -94,7 +94,31 @@
         "types": "./lib/browser/index.d.ts",
         "default": "./lib/browser/fesm2022/builder.io-sdk-angular.mjs"
       },
+      "edge": {
+        "esm2022": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+        "esm": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+        "types": "./lib/edge/index.d.ts",
+        "default": "./lib/edge/fesm2022/builder.io-sdk-angular.mjs"
+      },
+      "edge-routine": {
+        "esm2022": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+        "esm": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+        "types": "./lib/edge/index.d.ts",
+        "default": "./lib/edge/fesm2022/builder.io-sdk-angular.mjs"
+      },
+      "netlify": {
+        "esm2022": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+        "esm": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+        "types": "./lib/edge/index.d.ts",
+        "default": "./lib/edge/fesm2022/builder.io-sdk-angular.mjs"
+      },
       "types": "./lib/node/index.d.ts"
+    },
+    "./bundle/edge": {
+      "esm2022": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+      "esm": "./lib/edge/esm2022/builder.io-sdk-angular.mjs",
+      "types": "./lib/edge/index.d.ts",
+      "default": "./lib/edge/fesm2022/builder.io-sdk-angular.mjs"
     }
   },
   "main": "lib/node/fesm2022/builder.io-sdk-angular.mjs",
