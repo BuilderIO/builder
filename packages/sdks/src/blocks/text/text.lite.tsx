@@ -1,4 +1,5 @@
 import { useMetadata } from '@builder.io/mitosis';
+import { resolveLocalizedText } from '../helpers.js';
 import type { TextProps } from './text.types.js';
 
 useMetadata({
@@ -14,7 +15,7 @@ export default function Text(props: TextProps) {
         /* NOTE: This class name must be "builder-text" for inline editing to work in the Builder editor */
         'builder-text'
       }
-      innerHTML={props.text?.toString() || ''}
+      innerHTML={resolveLocalizedText(props.text, props.locale)}
       style={{ outline: 'none' }}
     />
   );
