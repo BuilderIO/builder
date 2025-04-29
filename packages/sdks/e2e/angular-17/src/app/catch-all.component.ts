@@ -1,7 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// fails because type imports cannot be injected
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import {
   Content,
@@ -112,4 +110,4 @@ export class CatchAllComponent {
     this.apiHost = builderProps.apiHost;
     this.locale = builderProps.locale;
   }
-}
+} 

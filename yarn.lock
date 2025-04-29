@@ -6213,6 +6213,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@e2e/angular-17@workspace:packages/sdks/e2e/angular-17":
+  version: 0.0.0-use.local
+  resolution: "@e2e/angular-17@workspace:packages/sdks/e2e/angular-17"
+  dependencies:
+    "@angular-devkit/build-angular": ^17.3.8
+    "@angular/animations": ^17.3.0
+    "@angular/cli": ^17.3.8
+    "@angular/common": ^17.3.0
+    "@angular/compiler": ^17.3.0
+    "@angular/compiler-cli": ^17.3.0
+    "@angular/core": ^17.3.0
+    "@angular/forms": ^17.3.0
+    "@angular/platform-browser": ^17.3.0
+    "@angular/platform-browser-dynamic": ^17.3.0
+    "@angular/router": ^17.3.0
+    "@builder.io/sdk-angular": "workspace:*"
+    "@sdk/tests": "workspace:*"
+    "@types/jasmine": ~5.1.0
+    "@types/node": ^18.18.0
+    jasmine-core: ~5.1.0
+    karma: ~6.4.0
+    karma-chrome-launcher: ~3.2.0
+    karma-coverage: ~2.2.0
+    karma-jasmine: ~5.1.0
+    karma-jasmine-html-reporter: ~2.1.0
+    rxjs: ~7.8.0
+    tslib: ^2.3.0
+    typescript: ~5.4.2
+    zone.js: ~0.14.3
+  languageName: unknown
+  linkType: soft
+
 "@e2e/angular-19-ssr@workspace:packages/sdks/e2e/angular-19-ssr":
   version: 0.0.0-use.local
   resolution: "@e2e/angular-19-ssr@workspace:packages/sdks/e2e/angular-19-ssr"

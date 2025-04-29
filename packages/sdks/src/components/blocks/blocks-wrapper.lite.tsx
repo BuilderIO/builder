@@ -1,6 +1,5 @@
 import {
   onMount,
-  onUpdate,
   useMetadata,
   useRef,
   useStore,
@@ -109,18 +108,6 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
       default: () => {},
     });
   });
-
-  onUpdate(() => {
-    useTarget({
-      angular: () => {
-        // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-        if (changes['blocks']) {
-          state.shouldUpdate = true;
-        }
-      },
-      default: () => {},
-    });
-  }, [props.blocks]);
 
   return (
     <props.BlocksWrapper
