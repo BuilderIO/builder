@@ -58,8 +58,8 @@ export const resolveLocalizedText = (
   text: string | Record<string, string> | undefined,
   locale?: string
 ): string => {
-  if (!text) return '';
-  if (typeof text === 'string') return text;
-  if (locale && text[locale]) return text[locale];
-  return text.Default || '';
+  if (typeof text === 'object') {
+    if (locale && text[locale]) return text[locale];
+  }
+  return text?.toString() || '';
 };
