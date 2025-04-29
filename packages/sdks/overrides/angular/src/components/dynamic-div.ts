@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   ElementRef,
-  Input,
   Renderer2,
-  ViewChild,
+  input,
+  viewChild,
 } from '@angular/core';
 
 @Component({
@@ -14,8 +14,8 @@ import {
   template: `
     <div
       #v
-      (click)="onClick && onClick($event)"
-      (mouseenter)="onMouseEnter && onMouseEnter($event)"
+      (click)="onClick() && onClick()($event)"
+      (mouseenter)="onMouseEnter() && onMouseEnter()($event)"
     >
       <ng-content></ng-content>
     </div>
@@ -28,57 +28,56 @@ import {
   ],
 })
 export default class DynamicDiv {
-  @Input() attributes: any;
-  @Input() actionAttributes: any;
-  @Input() BlockWrapperProps: any;
-  @Input('builder-path') builderPath: any;
-  @Input('builder-parent-id') builderParentId: any;
-  @Input() BlocksWrapperProps: any;
-  @Input() contentWrapperProps: any;
-  @Input('builder-model') builderModel: any;
-  @Input('builder-content-id') builderContentId: any;
-  @Input() ref: any;
-  @Input('class') classProp: any;
-  @Input() style: any;
-  @Input() showContentProps: any;
-  @Input() onClick: any;
-  @Input() onMouseEnter: any;
-  @Input() onKeyPress: any;
-  @Input() hidden: any;
-  @Input('aria-hidden') ariaHidden: any;
-  @Input() className: any;
+  attributes = input<any>(undefined);
+  actionAttributes = input<any>(undefined);
+  BlockWrapperProps = input<any>(undefined);
+  builderPath = input<any>(undefined, { alias: 'builder-path' });
+  builderParentId = input<any>(undefined, { alias: 'builder-parent-id' });
+  BlocksWrapperProps = input<any>(undefined);
+  contentWrapperProps = input<any>(undefined);
+  builderModel = input<any>(undefined, { alias: 'builder-model' });
+  builderContentId = input<any>(undefined, { alias: 'builder-content-id' });
+  ref = input<any>(undefined);
+  classProp = input<any>(undefined, { alias: 'class' });
+  style = input<any>(undefined);
+  showContentProps = input<any>(undefined);
+  onClick = input<any>(undefined);
+  onMouseEnter = input<any>(undefined);
+  onKeyPress = input<any>(undefined);
+  hidden = input<any>(undefined);
+  ariaHidden = input<any>(undefined, { alias: 'aria-hidden' });
+  className = input<any>(undefined);
 
-  @ViewChild('v', { read: ElementRef })
-  v!: ElementRef;
+  v = viewChild<ElementRef>('v');
 
   private _listenerFns = new Map<string, () => void>();
 
   constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
-    const el = this.v?.nativeElement;
+    const el = this.v()?.nativeElement;
     if (!el) {
       return;
     }
-    this.setAttributes(el, this.attributes);
-    this.setAttributes(el, this.actionAttributes);
-    this.setAttributes(el, this.showContentProps);
+    this.setAttributes(el, this.attributes());
+    this.setAttributes(el, this.actionAttributes());
+    this.setAttributes(el, this.showContentProps());
     this.setAttribute(
       el,
       'class',
-      [this.classProp ?? '', this.className ?? ''].join(' ').trim()
+      [this.classProp() ?? '', this.className() ?? ''].join(' ').trim()
     );
-    this.handleStyleProp(el, this.style);
-    this.setAttribute(el, 'builder-parent-id', this.builderParentId);
-    this.setAttribute(el, 'builder-path', this.builderPath);
-    this.setAttribute(el, 'builder-model', this.builderModel);
-    this.setAttribute(el, 'builder-content-id', this.builderContentId);
-    this.setAttribute(el, 'hidden', this.hidden);
-    this.setAttribute(el, 'aria-hidden', this.ariaHidden);
+    this.handleStyleProp(el, this.style());
+    this.setAttribute(el, 'builder-parent-id', this.builderParentId());
+    this.setAttribute(el, 'builder-path', this.builderPath());
+    this.setAttribute(el, 'builder-model', this.builderModel());
+    this.setAttribute(el, 'builder-content-id', this.builderContentId());
+    this.setAttribute(el, 'hidden', this.hidden());
+    this.setAttribute(el, 'aria-hidden', this.ariaHidden());
   }
 
   ngOnChanges(changes) {
-    const el = this.v?.nativeElement;
+    const el = this.v()?.nativeElement;
     if (!el) {
       return;
     }
@@ -88,19 +87,23 @@ export default class DynamicDiv {
     }
 
     if (changes.attributes) {
-      this.setAttributes(el, this.attributes, changes.attributes.currentValue);
+      this.setAttributes(
+        el,
+        this.attributes(),
+        changes.attributes.currentValue
+      );
     }
     if (changes.actionAttributes) {
       this.setAttributes(
         el,
-        this.actionAttributes,
+        this.actionAttributes(),
         changes.actionAttributes.currentValue
       );
     }
     if (changes.showContentProps) {
       this.setAttributes(
         el,
-        this.showContentProps,
+        this.showContentProps(),
         changes.showContentProps.currentValue
       );
     }
@@ -108,21 +111,21 @@ export default class DynamicDiv {
       this.setAttribute(
         el,
         'class',
-        [this.classProp ?? '', this.className ?? ''].join(' ').trim()
+        [this.classProp() ?? '', this.className() ?? ''].join(' ').trim()
       );
     }
-    if (changes.style) this.handleStyleProp(el, this.style);
+    if (changes.style) this.handleStyleProp(el, this.style());
     if (changes.builderParentId)
-      this.setAttribute(el, 'builder-parent-id', this.builderParentId);
+      this.setAttribute(el, 'builder-parent-id', this.builderParentId());
     if (changes.builderPath)
-      this.setAttribute(el, 'builder-path', this.builderPath);
+      this.setAttribute(el, 'builder-path', this.builderPath());
     if (changes.builderModel)
-      this.setAttribute(el, 'builder-model', this.builderModel);
+      this.setAttribute(el, 'builder-model', this.builderModel());
     if (changes.builderContentId)
-      this.setAttribute(el, 'builder-content-id', this.builderContentId);
-    if (changes.hidden) this.setAttribute(el, 'hidden', this.hidden);
+      this.setAttribute(el, 'builder-content-id', this.builderContentId());
+    if (changes.hidden) this.setAttribute(el, 'hidden', this.hidden());
     if (changes.ariaHidden)
-      this.setAttribute(el, 'aria-hidden', this.ariaHidden);
+      this.setAttribute(el, 'aria-hidden', this.ariaHidden());
   }
 
   private setAttributes(el: any, value: any, changes?: any) {
