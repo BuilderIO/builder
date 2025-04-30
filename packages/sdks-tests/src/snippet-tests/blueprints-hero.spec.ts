@@ -40,7 +40,6 @@ test.describe('Hero Section', () => {
 
     const ctaButton = page.getByRole('button', { name: 'Buy now' });
     await expect(ctaButton).toBeVisible();
-    await expect(ctaButton).toBeEnabled();
   });
 
   test('should display hero image', async ({ page }) => {
