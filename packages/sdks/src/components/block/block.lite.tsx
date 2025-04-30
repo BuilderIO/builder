@@ -197,7 +197,6 @@ export default function Block(props: BlockProps) {
             props.registeredComponents,
             props.context.value.model
           ),
-          locale: props.context.value.rootState.locale,
         },
         context: useTarget({
           reactNative: {

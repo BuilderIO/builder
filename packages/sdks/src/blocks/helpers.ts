@@ -53,13 +53,3 @@ export function setAttrs(
     },
   };
 }
-
-export const resolveLocalizedText = (
-  text: string | Record<string, string> | undefined,
-  locale?: string
-): string => {
-  if (typeof text === 'object') {
-    if (locale && text[locale]) return text[locale];
-  }
-  return text?.toString() || '';
-};

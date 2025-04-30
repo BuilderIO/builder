@@ -79,7 +79,6 @@ const evaluateBindings = ({
   if (!block.bindings) {
     return block;
   }
-
   const copied = getCopy(block);
 
   for (const binding in block.bindings) {
@@ -93,7 +92,6 @@ const evaluateBindings = ({
     });
     set(copied, binding, value);
   }
-
   return copied;
 };
 
@@ -109,18 +107,17 @@ export function getProcessedBlock({
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
 >): BuilderBlock {
-  let transformedBlock = resolveLocalizedValues(
-    block,
-    rootState.locale as string | undefined
-  );
-
-  transformedBlock = transformBlock(transformedBlock);
-
-  return evaluateBindings({
-    block: transformedBlock,
+  let transformedBlock = evaluateBindings({
+    block: block,
     localState,
     rootState,
     rootSetState,
     context,
   });
+  transformedBlock = transformBlock(transformedBlock);
+  let localizedBlock = resolveLocalizedValues(
+    block,
+    rootState.locale as string | undefined
+  );
+  return localizedBlock;
 }
