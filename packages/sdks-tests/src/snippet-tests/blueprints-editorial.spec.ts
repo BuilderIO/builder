@@ -2,8 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
 test.describe('Product Editorial Page with Real Data', () => {
-  test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr'].includes(packageName));
+  test.beforeEach(async ({ page }) => {
     // Navigate to the product editorial page
     await page.goto('/products/1');
   });

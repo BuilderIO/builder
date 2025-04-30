@@ -50,7 +50,7 @@ test.describe('Custom components', () => {
 
   test('children content are ssred', async ({ browser, packageName }) => {
     test.skip(
-      !['angular-16-ssr', 'angular-19-ssr'].includes(packageName),
+      !['angular-19-ssr'].includes(packageName),
       'Only run this for Angular SSR and Angular 19 SSR'
     );
 
