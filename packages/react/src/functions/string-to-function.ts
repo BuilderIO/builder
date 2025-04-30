@@ -209,7 +209,12 @@ export const makeFn = (code: string, useReturn: boolean, args?: string[]) => {
             }
             const val = obj.getSync(key);
             if (typeof val?.copySync === 'function') {
+              try {
                 return JSON.parse(stringify(val));
+              } catch (e) {
+               log('Error:', e);
+                return refToProxy(val);
+              }
             }
             return val;
         },
