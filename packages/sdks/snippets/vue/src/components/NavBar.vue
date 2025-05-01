@@ -10,4 +10,3 @@
   import type { BuilderContent } from '@builder.io/sdk-vue';
   const props = defineProps<{ links: BuilderContent | null }>();
   </script>
-  

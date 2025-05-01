@@ -4,24 +4,22 @@ import {type LoaderFunction} from '@remix-run/server-runtime';
 import {useLoaderData} from '@remix-run/react';
 
 export const loader: LoaderFunction = async () => {
-  const content = await fetchOneEntry({
+  const links = await fetchOneEntry({
     model: 'navigation-links',
     apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
   });
 
-  return {content};
+  return {links};
 };
 export default function NavLinksRoute() {
-  const {content} = useLoaderData<typeof loader>();
+  const {links} = useLoaderData<typeof loader>();
 
   return (
     <nav>
       <h1>Acme company</h1>
-
       {/* NavBar component with links from Builder.io */}
-      {content && <NavBar links={content} />}
+      {links && <NavBar links={links} />}
       {/* Auth buttons */}
-
       <div className="auth-buttons">
         <button>Login</button>
         <button>Register</button>

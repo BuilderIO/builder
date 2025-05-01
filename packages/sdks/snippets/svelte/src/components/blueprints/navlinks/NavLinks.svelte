@@ -23,6 +23,8 @@
     <NavBar {links} />
   {/if}
   <!-- Auth buttons -->
-  <button>Login</button>
-  <button>Register</button>
+  <div class="auth-buttons">
+    <button>Login</button>
+    <button>Register</button>
+  </div>
 </nav>

@@ -10,13 +10,13 @@ export default async function NavLinksPage() {
   return (
     <nav>
       <h1>Acme company</h1>
-
       {/* NavBar component with links from Builder.io */}
       {links && <NavBar links={links} />}
-
       {/* Auth buttons */}
-      <button>Login</button>
-      <button>Register</button>
+      <div className="auth-buttons">
+        <button>Login</button>
+        <button>Register</button>
+      </div>
     </nav>
   );
 }

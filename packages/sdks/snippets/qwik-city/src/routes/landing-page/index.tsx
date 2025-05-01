@@ -15,10 +15,8 @@ export default component$(() => {
   return (
     <nav>
       <h1>Acme company</h1>
-
       {/* NavBar component with links from Builder.io */}
       {links.value && <NavBar links={links.value} />}
-
       {/* Auth buttons */}
       <div class="auth-buttons">
         <button>Login</button>

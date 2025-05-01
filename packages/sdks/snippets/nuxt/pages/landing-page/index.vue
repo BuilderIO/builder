@@ -23,5 +23,3 @@
       </div>
     </nav>
   </template>
-
-  
