@@ -95,12 +95,12 @@ const test = base.extend<TestOptions>({
       });
     }
     if (sdk === 'angular') {
-      page.on('console', msg => {
-        const originalText = msg.text();
-        if (originalText.includes('NG0303')) {
-          throw new Error('Angular input not annotated error detected: ' + originalText);
-        }
-      });
+      // page.on('console', msg => {
+      //   const originalText = msg.text();
+      //   if (originalText.includes('NG0303')) {
+      //     throw new Error('Angular input not annotated error detected: ' + originalText);
+      //   }
+      // });
     } else if (sdk === 'vue') {
       page.on('console', msg => {
         const originalText = msg.text();

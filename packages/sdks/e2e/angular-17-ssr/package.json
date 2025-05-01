@@ -1,13 +1,14 @@
 {
-  "name": "@e2e/angular-17",
+  "name": "@e2e/angular-17-ssr",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "SERVER_NAME=angular-17 yarn g:nx test:e2e @sdk/tests",
-    "serve": "ng serve"
+    "test": "SERVER_NAME=angular-17-ssr yarn g:nx test:e2e @sdk/tests",
+    "serve:ssr:angular-17-ssr": "node dist/angular-17-ssr/server/server.mjs",
+    "serve": "node dist/angular-17-ssr/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -18,9 +19,12 @@
     "@angular/forms": "^17.3.0",
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
+    "@angular/platform-server": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@angular/ssr": "^17.3.8",
     "@builder.io/sdk-angular": "workspace:*",
     "@sdk/tests": "workspace:*",
+    "express": "^4.18.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -29,6 +33,7 @@
     "@angular-devkit/build-angular": "^17.3.8",
     "@angular/cli": "^17.3.8",
     "@angular/compiler-cli": "^17.3.0",
+    "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "jasmine-core": "~5.1.0",
