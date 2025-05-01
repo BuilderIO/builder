@@ -224,7 +224,7 @@ export const PAGES: Record<string, Page> = {
   '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
   '/custom-components-nowrap': {
     content: CUSTOM_COMPONENTS_NOWRAP,
-    target: ['angular-17', 'angular-19-ssr'],
+    target: ['angular-17', 'angular-17-ssr', 'angular-19-ssr'],
   },
   /**
    * For some reason, the `HTTP_REQUESTS` content is missing some values when
