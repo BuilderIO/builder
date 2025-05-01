@@ -1,5 +1,5 @@
 // Safe version that works in both client and server
-export const BUILDER_API_KEY = 'jdGaMusrVpYgdcAnAtgn'
+export const BUILDER_API_KEY = '3abba43a11524bf289a58c742805ce9c'
 
 // Server-only code that won't be included in client bundles
 if (typeof process !== 'undefined' && process.env.NODE_ENV) {
