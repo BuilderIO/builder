@@ -1,6 +1,7 @@
-import { useMetadata, useTarget } from '@builder.io/mitosis';
+import { useMetadata, useStore, useTarget } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing.js';
 import { filterAttrs } from '../helpers.js';
+import { getSrcSet } from '../image/image.helpers.js';
 /**
  * This import is used by the Svelte SDK. Do not remove.
  */
@@ -32,8 +33,25 @@ export interface ImgProps {
 }
 
 export default function ImgComponent(props: ImgProps) {
+  const state = useStore({
+    get srcSetToUse(): string | undefined {
+      const url = props.imgSrc || props.image;
+      if (!url || typeof url !== 'string') {
+        return undefined;
+      }
+
+      // We can auto add srcset for cdn.builder.io images
+      if (!url.match(/builder\.io/)) {
+        return undefined;
+      }
+
+      return getSrcSet(url);
+    },
+  });
+
   return (
     <img
+      loading="lazy"
       style={{
         objectFit: props.backgroundSize || 'cover',
         objectPosition: props.backgroundPosition || 'center',
@@ -41,6 +59,7 @@ export default function ImgComponent(props: ImgProps) {
       key={(isEditing() && props.imgSrc) || 'default-key'}
       alt={props.altText}
       src={props.imgSrc || props.image}
+      srcSet={state.srcSetToUse}
       {...useTarget({
         vue: filterAttrs(props.attributes, 'v-on:', false),
         svelte: filterAttrs(props.attributes, 'on:', false),

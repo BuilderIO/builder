@@ -1,5 +1,17 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.19.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+## 0.18.15
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
 ## 0.18.13
 
 ### Patch Changes
