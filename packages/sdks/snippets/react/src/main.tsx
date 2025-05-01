@@ -54,9 +54,8 @@ const router = createBrowserRouter([
   {
     path: '/marketing-event',
     element: <Hero />,
-    path: '/home',
-    element: <Homepage />,
   },
+  { path: '/home', element: <Homepage /> },
   {
     path: '/*',
     element: <IntegratingPages />,
