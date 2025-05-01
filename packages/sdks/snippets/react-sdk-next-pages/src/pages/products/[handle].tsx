@@ -13,6 +13,9 @@ const MODEL_NAME = 'product-editorial';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export const getServerSideProps = (async ({ params, resolvedUrl }) => {
+  if (!params || typeof params.handle !== 'string') {
+    return { notFound: true };
+  }
   const editorialContent = await fetchOneEntry({
     model: MODEL_NAME,
     apiKey: API_KEY,
