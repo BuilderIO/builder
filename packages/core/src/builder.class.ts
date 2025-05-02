@@ -931,7 +931,7 @@ export class Builder {
   static register(type: string, info: any): void;
   static register(type: string, info: any) {
     if (type === 'plugin') {
-      info = this.serializeIncludingFunctions(info);
+      info = this.serializeIncludingFunctions(info, true);
     }
 
     // TODO: all must have name and can't conflict?
@@ -1113,7 +1113,7 @@ export class Builder {
     }
   }
 
-  private static serializeIncludingFunctions(info: any) {
+  private static serializeIncludingFunctions(info: any, isForPlugin?: boolean) {
     const serializeFn = (fnValue: Function) => {
       const fnStr = fnValue.toString().trim();
 
@@ -1135,14 +1135,21 @@ export class Builder {
       return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
     };
 
-    return JSON.parse(
+    const objToReturn = JSON.parse(
       JSON.stringify(info, (key, value) => {
-        if (typeof value === 'function') {
+        const shouldNotSerializeFn = isForPlugin && key === 'onSave';
+        if (typeof value === 'function' && !shouldNotSerializeFn) {
           return serializeFn(value);
         }
         return value;
       })
     );
+
+    if (isForPlugin) {
+      objToReturn.onSave = info.onSave;
+    }
+
+    return objToReturn;
   }
 
   private static prepareComponentSpecToSend(spec: Component): Component {
