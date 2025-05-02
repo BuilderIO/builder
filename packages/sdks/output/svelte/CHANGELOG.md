@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 4.1.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+
 ## 4.1.0
 
 ### Minor Changes
