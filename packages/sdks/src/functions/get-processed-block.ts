@@ -107,16 +107,16 @@ export function getProcessedBlock({
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
 >): BuilderBlock {
-  let transformedBlock = evaluateBindings({
-    block: block,
+  let transformedBlock = transformBlock(block);
+  transformedBlock = evaluateBindings({
+    block: transformedBlock,
     localState,
     rootState,
     rootSetState,
     context,
   });
-  transformedBlock = transformBlock(transformedBlock);
   let localizedBlock = resolveLocalizedValues(
-    block,
+    transformedBlock,
     rootState.locale as string | undefined
   );
   return localizedBlock;
