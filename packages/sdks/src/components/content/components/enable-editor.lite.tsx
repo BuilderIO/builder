@@ -270,7 +270,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     () => {
       window.addEventListener('message', state.processMessage);
 
-      registerInsertMenu();
       setupBrowserForEditing({
         ...(props.locale ? { locale: props.locale } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
