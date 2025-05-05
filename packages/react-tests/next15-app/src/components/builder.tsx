@@ -1,5 +1,5 @@
 'use client';
-import { builder, Builder} from '@builder.io/sdk';
+import { builder, Builder } from '@builder.io/sdk';
 import { BuilderComponent } from '@builder.io/react';
 import DefaultErrorPage from 'next/error';
 import { getAPIKey } from '@sdk/tests';
@@ -66,19 +66,19 @@ export function RenderBuilderContent(props: BuilderPageProps) {
         .then();
     }
     Builder.registerAction({
-      name: "test-action",
+      name: 'test-action',
       kind: 'function',
       id: 'test-action-id',
-      inputs:[
+      inputs: [
         {
-          name: "actionName",
-          type: "string",
+          name: 'actionName',
+          type: 'string',
           required: true,
-          helperText: "Action name",
+          helperText: 'Action name',
         },
       ],
       action: () => {
-        return `console.log("function call")`
+        return `console.log("function call")`;
       },
     });
   }, []);

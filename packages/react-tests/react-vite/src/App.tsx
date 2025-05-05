@@ -46,19 +46,19 @@ Builder.registerComponent(ComponentWithLocalizedSubfields, {
 
 if (typeof window !== 'undefined') {
   Builder.registerAction({
-    name: "test-action",
+    name: 'test-action',
     kind: 'function',
     id: 'test-action-id',
-    inputs:[
+    inputs: [
       {
-        name: "actionName",
-        type: "string",
+        name: 'actionName',
+        type: 'string',
         required: true,
-        helperText: "Action name",
+        helperText: 'Action name',
       },
     ],
-    action:  () => {
-      return`console.log("function call") `
+    action: () => {
+      return `console.log("function call") `;
     },
   });
 }
