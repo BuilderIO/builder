@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.0.9
+
+### Patch Changes
+
+- 1c659e9: feat: add support for register action
+
 ## 6.0.8
 
 ### Patch Changes
