@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
-const CUSTOM_ACTION_LOADED_MESSAGE = "function call";
+const CUSTOM_ACTION_LOADED_MESSAGE = 'function call';
 
 test.describe('Custom Actions', () => {
   test('should verify button click with custom action', async ({ page, packageName }) => {
@@ -13,7 +13,7 @@ test.describe('Custom Actions', () => {
     await expect(button).toBeVisible();
 
     const customActionMsgPromise = page.waitForEvent('console', msg =>
-        msg.text().includes(CUSTOM_ACTION_LOADED_MESSAGE)
+      msg.text().includes(CUSTOM_ACTION_LOADED_MESSAGE)
     );
 
     await button.click();
