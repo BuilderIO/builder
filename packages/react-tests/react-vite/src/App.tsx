@@ -44,6 +44,25 @@ Builder.registerComponent(ComponentWithLocalizedSubfields, {
   ],
 });
 
+if (typeof window !== 'undefined') {
+  Builder.registerAction({
+    name: "test-action",
+    kind: 'function',
+    id: 'test-action-id',
+    inputs:[
+      {
+        name: "actionName",
+        type: "string",
+        required: true,
+        helperText: "Action name",
+      },
+    ],
+    action:  () => {
+      return`console.log("function call") `
+    },
+  });
+}
+
 function App() {
   const [props, setProps] = useState<any>(undefined);
 
