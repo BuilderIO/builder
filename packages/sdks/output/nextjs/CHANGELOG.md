@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.19.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
 ## 0.19.2
 
 ### Patch Changes
