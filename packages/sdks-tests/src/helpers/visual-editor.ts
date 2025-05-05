@@ -80,10 +80,12 @@ export const sendNewStateMessage = async ({
   page,
   newState,
   model,
+  editType,
 }: {
   page: Page;
   newState: Record<string, any>;
   model: string;
+  editType?: EditType;
 }) => {
   await page.evaluate(
     msgData => {
@@ -96,12 +98,13 @@ export const sendNewStateMessage = async ({
           data: {
             state: msgData.newState,
             model: msgData.model,
+            editType: msgData.editType,
           },
         },
         '*'
       );
     },
-    { newState, model }
+    { newState, model, editType }
   );
 };
 

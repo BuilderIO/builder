@@ -14,7 +14,7 @@ type ContentListener = Required<
 > & {
   callbacks: {
     contentUpdate: (updatedContent: BuilderContent, editType?: EditType) => void;
-    stateUpdate: (newState: Dictionary<string>) => void;
+    stateUpdate: (newState: Dictionary<string>, editType?: EditType) => void;
     animation: (updatedContent: BuilderAnimation) => void;
     configureSdk: (updatedContent: any) => void;
   };
@@ -46,8 +46,9 @@ export const createEditorListener = ({
           const messageContent = data.data;
           const modelName = messageContent.model;
           const newState = messageContent?.state;
+          const editType = messageContent.editType;
           if (modelName === model && newState) {
-            callbacks.stateUpdate(newState);
+            callbacks.stateUpdate(newState, editType);
           }
           break;
         }

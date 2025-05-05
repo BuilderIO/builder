@@ -74,7 +74,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   const [hasExecuted, setHasExecuted] = useState<boolean>(false);
   const [contextValue, setContextValue] = useState<any>(props.builderContextSignal.value);
   const state = useStore({
-    mergeNewRootState(newData: Dictionary<any>) {
+    mergeNewRootState(newData: Dictionary<any>, editType?: EditType) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
         ...newData,
@@ -85,6 +85,30 @@ export default function EnableEditor(props: BuilderEditorProps) {
       } else {
         props.builderContextSignal.value.rootState = combinedState;
       }
+      useTarget({
+        rsc: () => {
+          if (editType === 'server') {
+            if (props.builderContextSignal.value.rootSetState) {
+              props.builderContextSignal.value.rootSetState?.(combinedState);
+            } else {
+              props.builderContextSignal.value.rootState = combinedState;
+            }
+          } else {
+            const updatedContext = {
+              ...props.builderContextSignal.value,
+              rootState: combinedState
+            };
+            setContextValue(updatedContext);
+          }
+        },
+        default: () => {
+          if (props.builderContextSignal.value.rootSetState) {
+            props.builderContextSignal.value.rootSetState(combinedState);
+          } else {
+            props.builderContextSignal.value.rootState = combinedState;
+          }
+        }
+      })
     },
     mergeNewContent(newContent: BuilderContent, editType?: EditType) {
       const newContentValue = {
@@ -153,8 +177,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
           contentUpdate: (newContent, editType) => {
             state.mergeNewContent(newContent, editType);
           },
-          stateUpdate: (newState) => {
-            state.mergeNewRootState(newState);
+          stateUpdate: (newState, editType) => {
+            state.mergeNewRootState(newState, editType);
           },
         },
       })(event);
