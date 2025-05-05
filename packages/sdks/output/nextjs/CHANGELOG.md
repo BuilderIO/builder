@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.19.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
 ## 0.19.1
 
 ### Patch Changes
