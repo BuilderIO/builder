@@ -243,6 +243,7 @@ export const PAGES: Record<string, Page> = {
   '/localization-locale-passed': { content: LOCALIZATION },
   '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
   '/localization-subfields': { content: LOCALIZATION_SUBFIELDS, target: ['react', 'gen1-react'] },
+  '/localized-bindings': { content: LOCALIZATION_SUBFIELDS },
   '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
   '/editing-empty-content-element-ref': {
     content: null as unknown as BuilderContent,
@@ -426,6 +427,18 @@ export const getProps = async (args: {
     case '/localization-subfields':
       extraProps = {
         locale: 'hi-IN',
+      };
+      break;
+    case '/localized-bindings':
+      extraProps = {
+        locale: 'hi-IN',
+        data: {
+          header: {
+            '@type': '@builder.io/core:LocalizedValue',
+            Default: 'en-US title',
+            'hi-IN': 'hi-IN title',
+          },
+        },
       };
       break;
     case '/editing-with-top-padding':
