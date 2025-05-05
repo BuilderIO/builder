@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 4.1.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
 ## 4.1.1
 
 ### Patch Changes
