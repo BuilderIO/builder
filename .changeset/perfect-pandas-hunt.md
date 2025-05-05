@@ -9,4 +9,4 @@
 '@builder.io/sdk-vue': patch
 ---
 
-fix: localized data bindings issue
+fix: parsing of localized values evaluated from data bindings
