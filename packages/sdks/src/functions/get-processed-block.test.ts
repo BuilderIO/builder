@@ -32,3 +32,43 @@ test('Can process bindings', () => {
   expect(processed.properties?.isEditing).toEqual(false);
   expect(processed.responsiveStyles?.large?.zIndex).toEqual(2);
 });
+
+test.only('Can process localized bindings', () => {
+  const block: BuilderBlock = {
+    '@type': '@builder.io/sdk:Element',
+    bindings: {
+      'component.options.text':
+        'var _virtual_index=state.listData.data.title;return _virtual_index',
+    },
+    component: {
+      name: 'Text',
+      options: {
+        text: 'Enter some text...',
+      },
+    },
+  };
+
+  const rootState = {
+    deviceSize: 'large',
+    listData: {
+      data: {
+        title: {
+          Default: 'default title',
+          '@type': '@builder.io/core:LocalizedValue',
+          'en-US': 'en-US title',
+          'en-IN': 'en-IN title',
+        },
+      },
+    },
+    locale: 'en-US',
+  };
+  const processed = getProcessedBlock({
+    block,
+    context: {},
+    rootState,
+    rootSetState: undefined,
+    localState: undefined,
+  });
+
+  expect(processed.component?.options.text).toEqual('en-US title');
+});

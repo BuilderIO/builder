@@ -48,4 +48,10 @@ test.describe('Localization', () => {
     await expect(text1).toBeVisible();
     await expect(text2).toBeVisible();
   });
+
+  test.only('localized bindings are processed correctly', async ({ page }) => {
+    await page.goto('/localized-bindings');
+    const text1 = page.locator('text=hi-IN title');
+    await expect(text1).toBeVisible();
+  });
 });
