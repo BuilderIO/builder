@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "4.1.1",
+  "version": "4.1.3",
   "main": "./lib/node/index.cjs",
   "module": "./lib/node/index.mjs",
   "type": "module",

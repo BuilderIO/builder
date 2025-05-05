@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 4.1.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
 ## 4.1.2
 
 ### Patch Changes

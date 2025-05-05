@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 4.1.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
 ## 4.1.2
 
 ### Patch Changes
