@@ -115,9 +115,9 @@ export function getProcessedBlock({
     rootSetState,
     context,
   });
-  const localizedBlock = resolveLocalizedValues(
+  transformedBlock = resolveLocalizedValues(
     transformedBlock,
     rootState.locale as string | undefined
   );
-  return localizedBlock;
+  return transformedBlock;
 }
