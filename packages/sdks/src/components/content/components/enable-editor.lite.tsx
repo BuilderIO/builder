@@ -30,7 +30,6 @@ import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
 import {
-  registerInsertMenu,
   setupBrowserForEditing,
 } from '../../../scripts/init-editing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
@@ -270,7 +269,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
     () => {
       window.addEventListener('message', state.processMessage);
 
-      registerInsertMenu();
       setupBrowserForEditing({
         ...(props.locale ? { locale: props.locale } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
