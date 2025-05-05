@@ -29,9 +29,7 @@ import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
 import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
-import {
-  setupBrowserForEditing,
-} from '../../../scripts/init-editing.js';
+import { setupBrowserForEditing } from '../../../scripts/init-editing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
 import type { ComponentInfo } from '../../../types/components.js';
 import type { Dictionary } from '../../../types/typescript.js';
