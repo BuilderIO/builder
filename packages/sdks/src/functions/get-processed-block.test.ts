@@ -33,7 +33,7 @@ test('Can process bindings', () => {
   expect(processed.responsiveStyles?.large?.zIndex).toEqual(2);
 });
 
-test.only('Can process localized bindings', () => {
+test('Can process localized bindings', () => {
   const block: BuilderBlock = {
     '@type': '@builder.io/sdk:Element',
     bindings: {
