@@ -98,7 +98,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
             </props.Wrapper>
           }
         >
-          <LiveEdit Wrapper={props.Wrapper} id={props.block.id || ''} attributes={state.attributes}>
+          <LiveEdit Wrapper={props.Wrapper} id={props.block.id || ''} attributes={state.attributes} targetWrapperProps={state.targetWrapperProps}>
             {props.children}
           </LiveEdit>
         </Show>

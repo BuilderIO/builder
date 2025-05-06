@@ -7,6 +7,7 @@ type LiveEditProps = {
   id?: any;
   Wrapper?: any;
   attributes?: any;
+  targetWrapperProps?: any;
 };
 
 export default function LiveEdit(props: LiveEditProps) {

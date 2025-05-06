@@ -497,6 +497,7 @@ test.describe('Visual Editing', () => {
           booleanToggle: true,
         },
         model: 'page',
+        editType: packageName === 'nextjs-sdk-next-app' ? 'client' : undefined,
       });
       await page.frameLocator('iframe').getByText('Hello').waitFor();
 
