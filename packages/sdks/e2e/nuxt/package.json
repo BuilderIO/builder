@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@types/node": "^18",
-    "nuxt": "^3.8.1"
+    "nuxt": "^3.16.0"
   },
   "nx": {
     "targets": {
