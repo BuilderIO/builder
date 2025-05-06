@@ -21,7 +21,6 @@ export default function HomeScreen() {
     }).then((resp) => {
       setProps(resp);
     });
-    if (typeof window !== 'undefined') {
       registerAction({
         name: "test-action",
         kind: 'function',
@@ -38,7 +37,6 @@ export default function HomeScreen() {
           return`console.log("function call") `
         },
       });
-    }
   }, []);
 
   return (
