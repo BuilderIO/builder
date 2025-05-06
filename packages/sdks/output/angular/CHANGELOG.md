@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.19.4
+
+### Patch Changes
+
+- 103248e: feat: Add edge exports to angular SDK
+
 ## 0.19.3
 
 ### Patch Changes
