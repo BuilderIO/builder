@@ -37,6 +37,9 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
+  qwik: {
+    setUseStoreFirst: true,
+  },
 });
 
 export default function PersonalizationContainer(
@@ -116,7 +119,8 @@ export default function PersonalizationContainer(
     const unsub = userAttributesService.subscribeOnUserAttributesChange(
       (attrs) => {
         state.userAttributes = attrs;
-      }
+      },
+      { fireImmediately: TARGET === 'qwik' }
     );
 
     if (!(isEditing() || isPreviewing())) {
