@@ -71,7 +71,7 @@
     "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
     "@glimmer/syntax": "^0.42.1",
-    "axios": "^0.21.2",
+    "axios": "^0.30.0",
     "axios-cache-adapter": "^2.5.0",
     "clean-css": "^4.2.1",
     "csso": "^3.5.1",
