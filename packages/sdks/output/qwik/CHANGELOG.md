@@ -1,5 +1,23 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.19.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
+## 0.19.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
+## 0.19.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+
 ## 0.19.0
 
 ### Minor Changes

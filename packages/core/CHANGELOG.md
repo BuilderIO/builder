@@ -1,5 +1,17 @@
 # @builder.io/sdk
 
+## 6.0.9
+
+### Patch Changes
+
+- 1c659e9: feat: add support for register action
+
+## 6.0.8
+
+### Patch Changes
+
+- a6eee0e: Fix: Functions in plugins will be selectively serialized
+
 ## 6.0.7
 
 ### Patch Changes

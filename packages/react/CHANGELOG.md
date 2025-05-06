@@ -1,5 +1,20 @@
 # @builder.io/react
 
+## 8.1.2
+
+### Patch Changes
+
+- Updated dependencies [1c659e9]
+  - @builder.io/sdk@6.0.9
+
+## 8.1.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+- Updated dependencies [a6eee0e]
+  - @builder.io/sdk@6.0.8
+
 ## 8.1.0
 
 ### Minor Changes
