@@ -13,7 +13,7 @@
     "serve": "remix-serve ./build/server/index.js"
   },
   "dependencies": {
-    "@builder.io/sdk-react": "workspace:^",
+    "@builder.io/sdk-react": "workspace:*",
     "@remix-run/node": "^2.16.5",
     "@remix-run/react": "^2.16.5",
     "@remix-run/serve": "^2.16.5",
