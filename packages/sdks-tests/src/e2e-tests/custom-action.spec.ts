@@ -3,7 +3,7 @@ import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 
 const CUSTOM_ACTION_LOADED_MESSAGE = 'BUILDER_EVENT: builder.registerAction';
 
-test.describe.only('Custom actions', () => {
+test.describe('Custom actions', () => {
   test('correctly captures registering of custom action', async ({ page, basePort, packageName, sdk }) => {
     test.skip([
       'solid',
