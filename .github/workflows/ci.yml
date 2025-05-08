@@ -225,6 +225,9 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
+      - name: Test React SDK
+        run: yarn g:nx test @builder.io/react -- packages/react/src
+
       - name: Run E2E tests
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
