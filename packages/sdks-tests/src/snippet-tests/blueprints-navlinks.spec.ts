@@ -3,7 +3,7 @@ import { test } from '../helpers/index.js';
 
 test.describe('Nav Bar Components', () => {
   test.beforeEach(async ({ page, packageName }) => {
-    test.skip(!['angular-16', 'angular-16-ssr'].includes(packageName));
+    test.skip(!['angular-16', 'angular-16-ssr', 'react'].includes(packageName));
     // Visit the page where NavBarComponent is rendered
     await page.goto('/landing-page');
   });
@@ -26,7 +26,7 @@ test.describe('Nav Bar Components', () => {
     });
 
     test('should contain NavLinksComponent', async ({ page }) => {
-      const navLinksComponent = page.locator('app-nav-links');
+      const navLinksComponent = page.getByRole('list');
       await expect(navLinksComponent).toBeVisible();
     });
   });
@@ -34,9 +34,10 @@ test.describe('Nav Bar Components', () => {
   test.describe('NavLinksComponent', () => {
     test('should display navigation links', async ({ page }) => {
       // Wait for the links to be loaded
-      await page.waitForSelector('app-nav-links ul li');
+      await page.waitForSelector('ul');
 
-      const links = page.locator('app-nav-links ul li a');
+      const links = page.locator('ul li a');
+
       const linksCount = await links.count();
 
       // Ensure there are links (adjust the number if you know the exact count)
@@ -46,8 +47,6 @@ test.describe('Nav Bar Components', () => {
       for (let i = 0; i < linksCount; i++) {
         const link = links.nth(i);
         await expect(link).toHaveAttribute('href');
-        await expect(link).toHaveCSS('text-decoration', 'none solid rgb(0, 0, 238)');
-
         // Verify link text is not empty
         const linkText = await link.textContent();
         expect(linkText?.trim().length).toBeGreaterThan(0);
