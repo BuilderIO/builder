@@ -11,6 +11,7 @@
   import AdvancedChild from './components/advanced-child/AdvancedChild.svelte';
   import ProductDetails from './components/blueprints/ProductDetails.svelte';
   import BlogArticle from './components/blueprints/BlogArticle.svelte';
+  import Hero from './components/blueprints/Hero.svelte';
   export let url = '';
 </script>
 
@@ -26,5 +27,6 @@
   <Route path="/advanced-child" component={AdvancedChild} />
   <Route path="/product/category/:handle" component={ProductDetails} />
   <Route path="/blogs/:handle" component={BlogArticle} />
+  <Route path="/marketing-event" component={Hero} />
   <Route path="/*" component={CatchAll} />
 </Router>
