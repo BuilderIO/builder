@@ -1,5 +1,5 @@
 <template>
-    <ul v-if="links?.data?.links && links.data.links.length">
+    <ul v-if="links.data?.links">
       <li v-for="(link, index) in links.data.links" :key="index">
         <a :href="link.url">{{ link.text }}</a>
       </li>
@@ -8,5 +8,5 @@
   
   <script setup lang="ts">
   import type { BuilderContent } from '@builder.io/sdk-vue';
-  const props = defineProps<{ links: BuilderContent | null }>();
+  const props = defineProps<{ links: BuilderContent }>();
   </script>

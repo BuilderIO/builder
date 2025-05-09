@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { BuilderContent } from '@builder.io/sdk-svelte';
-  export let links: BuilderContent | null;
+  export let links: BuilderContent;
 </script>
 
-{#if links?.data?.links}
+{#if links.data?.links}
   <ul>
     {#each links.data.links as link}
       <li>

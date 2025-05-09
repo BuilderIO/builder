@@ -15,7 +15,7 @@
     <nav>
       <h1>Acme company</h1>
       <!-- NavBar component with links from Builder.io -->
-      <NavBar :links="links" />
+      <NavBar v-if="links" :links="links" />
       <!-- Auth buttons -->
       <div class="auth-buttons">
         <button>Login</button>
