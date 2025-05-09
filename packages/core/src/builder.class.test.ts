@@ -243,6 +243,108 @@ describe('serializeIncludingFunctions', () => {
       'return (async (value) => value * 2).apply(this, arguments)'
     );
   });
+
+  test('does not serialize onSave function when isForPlugin is true', () => {
+    const onSaveFn = function (data: any) {
+      return data;
+    };
+    const input = {
+      name: 'PluginComponent',
+      inputs: [
+        {
+          name: 'text',
+          type: 'string',
+          onChange: function (value: string) {
+            return value.toUpperCase();
+          },
+        },
+      ],
+      onSave: onSaveFn,
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input, true);
+
+    // Check that onChange was serialized to a string
+    expect(typeof result.inputs[0].onChange).toBe('string');
+    expect(result.inputs[0].onChange).toContain('value.toUpperCase()');
+
+    // Check that onSave was preserved as a function
+    expect(typeof result.onSave).toBe('function');
+    expect(result.onSave).toBe(onSaveFn);
+  });
+
+  test('serializes all functions when isForPlugin is false', () => {
+    const onSaveFn = function (data: any) {
+      return data;
+    };
+    const input = {
+      name: 'PluginComponent',
+      inputs: [
+        {
+          name: 'text',
+          type: 'string',
+          onChange: function (value: string) {
+            return value.toUpperCase();
+          },
+        },
+      ],
+      onSave: onSaveFn,
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input, false);
+
+    // Check that all functions were serialized to strings
+    expect(typeof result.inputs[0].onChange).toBe('string');
+    expect(result.inputs[0].onChange).toContain('value.toUpperCase()');
+    expect(typeof result.onSave).toBe('string');
+  });
+
+  test('serializes top-level functions when isForPlugin is true except onSave', () => {
+    const onSaveFn = function (data: any) {
+      return data;
+    };
+    const validateFn = function (data: any) {
+      return data.isValid;
+    };
+
+    const input = {
+      name: 'PluginComponent',
+      validate: validateFn,
+      onSave: onSaveFn,
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input, true);
+
+    // Check that validate was serialized
+    expect(typeof result.validate).toBe('string');
+    expect(result.validate).toContain('return data.isValid');
+
+    // Check that onSave was preserved as a function
+    expect(typeof result.onSave).toBe('function');
+    expect(result.onSave).toBe(onSaveFn);
+  });
+
+  test('preserves onSave function in both input and output when isForPlugin is true', () => {
+    const onSaveFn = function (data: any) {
+      console.log('Saving data');
+      return (data.modified = true);
+    };
+
+    const input = {
+      name: 'PluginWithOnSave',
+      onSave: onSaveFn,
+    };
+
+    const result = Builder['serializeIncludingFunctions'](input, true);
+
+    // Verify the function is the same reference
+    expect(result.onSave).toBe(input.onSave);
+
+    // Verify behavior is preserved by calling the function
+    const testData: any = { value: 'test' };
+    result.onSave(testData);
+    expect(testData.modified).toBe(true);
+  });
 });
 
 describe('prepareComponentSpecToSend', () => {

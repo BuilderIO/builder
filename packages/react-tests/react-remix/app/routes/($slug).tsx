@@ -1,6 +1,6 @@
 import { Links, Meta, Scripts, useCatch, useLoaderData, useParams } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/node';
-import { BuilderComponent, builder } from '@builder.io/react';
+import { BuilderComponent, builder, Builder } from '@builder.io/react';
 import { getAPIKey, getProps } from '@sdk/tests';
 import { useEffect } from 'react';
 
@@ -61,6 +61,24 @@ export default function Page() {
         })
         .promise()
         .then();
+    }
+    if (typeof window !== 'undefined') {
+      Builder.registerAction({
+        name: 'test-action',
+        kind: 'function',
+        id: 'test-action-id',
+        inputs: [
+          {
+            name: 'actionName',
+            type: 'string',
+            required: true,
+            helperText: 'Action name',
+          },
+        ],
+        action: () => {
+          return `console.log("function call") `;
+        },
+      });
     }
   }, []);
 

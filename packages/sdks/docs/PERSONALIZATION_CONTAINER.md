@@ -91,9 +91,9 @@ The Personalization Container dispatches two custom events:
 - ✅ React SDK - Full support with optimized hydration
 - ✅ Vue SDK - Supported with reset approach
 - ✅ Svelte SDK - Supported with reset approach
+- ✅ Qwik SDK - Supported with reset approach
 - ❌ Angular SDK - Not supported yet
 - ❌ Solid SDK - Not supported yet
-- ❌ Qwik SDK - Not supported yet
 - ❌ Nextjs SDK - Not supported yet
 - ❌ React Native SDK - Not supported
 

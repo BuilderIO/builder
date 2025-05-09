@@ -48,4 +48,11 @@ test.describe('Localization', () => {
     await expect(text1).toBeVisible();
     await expect(text2).toBeVisible();
   });
+
+  test('localized bindings are processed correctly', async ({ page, packageName }) => {
+    test.skip(['gen1-react'].includes(packageName));
+    await page.goto('/localized-bindings');
+    const text1 = page.locator('text=hi-IN title');
+    await expect(text1).toBeVisible();
+  });
 });

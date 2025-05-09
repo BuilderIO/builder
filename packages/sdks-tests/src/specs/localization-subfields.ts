@@ -69,6 +69,49 @@ export const LOCALIZATION_SUBFIELDS = {
           },
         },
       },
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        bindings: {
+          'component.options.text': 'var _virtual_index=state.header;return _virtual_index',
+        },
+        code: {
+          bindings: {
+            'component.options.text': 'state.header',
+          },
+        },
+        id: 'builder-f76bb010047a44f3bbb18ee6aa7071bb',
+        meta: {
+          transformed: {
+            text: 'localized',
+          },
+          localizedTextInputs: ['text'],
+          bindingActions: {
+            _newProperty: null,
+          },
+        },
+        component: {
+          name: 'Text',
+          options: {
+            text: {
+              '@type': '@builder.io/core:LocalizedValue',
+              Default: 'Enter some text...',
+            },
+          },
+        },
+        responsiveStyles: {
+          large: {
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            flexShrink: '0',
+            boxSizing: 'border-box',
+            marginTop: '20px',
+            lineHeight: 'normal',
+            height: 'auto',
+          },
+        },
+      },
     ],
   },
   metrics: {
