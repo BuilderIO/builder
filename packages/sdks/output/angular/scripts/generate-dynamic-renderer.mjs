@@ -60,7 +60,7 @@ const voidElements = ['img', 'input'];
 
 const dynamicRendererImports = [
   `import { CommonModule } from '@angular/common';`,
-  `import { Component, ElementRef, Input, Renderer2, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';`,
+  `import { Component, ElementRef, input, viewChild, Renderer2, SimpleChanges, TemplateRef, ViewContainerRef, signal, computed } from '@angular/core';`,
   `import { isEmptyElement } from './dynamic-renderer.helpers';`,
 ];
 
@@ -74,10 +74,11 @@ const dynamicComponentTemplate = (tagName) => {
   styles: [':host { display: contents; }'],
 })
 export class Dynamic${capitalize(tagName)} {
-  @Input() attributes!: any;
-  @Input() actionAttributes?: any;
-  @Input() tagName?: string;
-  @ViewChild('v', { read: ElementRef }) v!: ElementRef;
+  attributes = input.required<any>();
+  actionAttributes = input<any | undefined>();
+  tagName = input<string | undefined>();
+  
+  v = viewChild<ElementRef>('v');
   _listenerFns = new Map<string, () => void>();
   constructor(private renderer: Renderer2) {}
   setAttributes(el: any, value: any, changes?: any) {
@@ -95,11 +96,11 @@ export class Dynamic${capitalize(tagName)} {
     });
   }
   ngAfterViewInit() {
-    this.setAttributes(this.v?.nativeElement, this.attributes);
+    this.setAttributes(this.v()?.nativeElement, this.attributes());
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes.attributes) {
-      this.setAttributes(this.v?.nativeElement, this.attributes, changes.attributes.currentValue);
+      this.setAttributes(this.v()?.nativeElement, this.attributes(), changes.attributes.currentValue);
     }
   }
   ngOnDestroy() {
@@ -118,53 +119,53 @@ const generateComponents = () => {
   selector: 'dynamic-renderer, DynamicRenderer',
   template: \`
     <ng-template #tagnameTemplate><ng-content></ng-content></ng-template>
-    <ng-container *ngIf="!isEmptyElement(TagName)">
-      <ng-container *ngIf="useTypeOf(TagName) === 'string'">
+    <ng-container *ngIf="!isEmptyElement(effectiveTagName())">
+      <ng-container *ngIf="tagNameIsString()">
         <ng-container
           *ngComponentOutlet="
-            getComponentType(TagName);
+            mappedComponent();
             inputs: {
-              attributes: attributes,
-              actionAttributes: actionAttributes,
-              tagName: tagName
+              attributes: attributes(),
+              actionAttributes: actionAttributes(),
+              tagName: tagName()
             };
             content: myContent
           "
         ></ng-container>
       </ng-container>
-      <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getDynamicTagName() !== ''">
+      <ng-container *ngIf="!tagNameIsString() && dynamicTagName() !== ''">
         <ng-container
           *ngComponentOutlet="
-            TagName;
+            effectiveTagName();
             inputs: {
-              attributes: attributes,
-              actionAttributes: actionAttributes,
-              tagName: tagName
+              attributes: attributes(),
+              actionAttributes: actionAttributes(),
+              tagName: tagName()
             };
             content: myContent
           "
         ></ng-container>
       </ng-container>
-       <ng-container *ngIf="!(useTypeOf(TagName) === 'string') && getDynamicTagName() === ''">
+       <ng-container *ngIf="!tagNameIsString() && dynamicTagName() === ''">
         <ng-container
           *ngComponentOutlet="
-            TagName;
+            effectiveTagName();
             inputs: {
-              attributes: attributes,
-              actionAttributes: actionAttributes,
+              attributes: attributes(),
+              actionAttributes: actionAttributes(),
             };
             content: myContent
           "
         ></ng-container>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="!!isEmptyElement(TagName)">
+    <ng-container *ngIf="!!isEmptyElement(effectiveTagName())">
       <ng-container
         *ngComponentOutlet="
-          TagName;
+          effectiveTagName();
           inputs: {
-            attributes: attributes,
-            actionAttributes: actionAttributes,
+            attributes: attributes(),
+            actionAttributes: actionAttributes(),
           };
           content: myContent
         "
@@ -178,22 +179,28 @@ const generateComponents = () => {
 export default class DynamicRenderer {
   isEmptyElement = isEmptyElement;
 
-  @Input() TagName!: any;
-  @Input() attributes!: any;
-  @Input() actionAttributes!: any;
-  @Input() tagName : string = '';
+  TagName = input.required<any>();
+  attributes = input.required<any>();
+  actionAttributes = input.required<any>();
+  tagName = signal<string>('');
 
-  @ViewChild('tagnameTemplate', { static: true }) tagnameTemplateRef!: TemplateRef<any>;
+  tagnameTemplateRef = viewChild<TemplateRef<any>>('tagnameTemplate');
+  private _processedTagName = signal<any>(null);
 
   myContent?: any[][];
 
-  useTypeOf(obj: any): string {
-    return typeof obj;
-  }
-
-  getDynamicTagName(): string {
-    return this.tagName;
-  }
+  tagNameIsString = computed(() => typeof this.TagName() === 'string');
+  
+  dynamicTagName = computed(() => this.tagName());
+  
+  effectiveTagName = computed(() => this._processedTagName());
+  
+  mappedComponent = computed(() => {
+    if (this.tagNameIsString()) {
+      return this.getComponentType(this.TagName());
+    }
+    return null;
+  });
 
   constructor(private vcRef: ViewContainerRef) {}
 
@@ -206,15 +213,17 @@ export default class DynamicRenderer {
   }
 
   ngOnInit() {
-    if (typeof this.TagName === 'string') {
-      if (this.tagComponentMap[this.TagName]) {
-        this.TagName = this.tagComponentMap[this.TagName];
+    if (this.tagNameIsString()) {
+      if (this.tagComponentMap[this.TagName()]) {
+        this._processedTagName.set(this.tagComponentMap[this.TagName()]);
       } else {
-        this.tagName = this.TagName;
-        this.TagName = DynamicElement;
+        this.tagName.set(this.TagName());
+        this._processedTagName.set(DynamicElement);
       }
+    } else {
+      this._processedTagName.set(this.TagName());
     }
-    this.myContent = [this.vcRef.createEmbeddedView(this.tagnameTemplateRef).rootNodes];
+    this.myContent = [this.vcRef.createEmbeddedView(this.tagnameTemplateRef()).rootNodes];
   }
 }
 `;
@@ -231,9 +240,9 @@ export default class DynamicRenderer {
     })
 
     export class DynamicElement {
-      @Input() tagName: string;
-      @Input() attributes: any;
-      @Input() actionAttributes: any;
+      tagName = input<string>();
+      attributes = input<any>();
+      actionAttributes = input<any>();
     
       private _element!: HTMLElement;
       private _listenerFns = new Map<string, () => void>();
@@ -241,10 +250,10 @@ export default class DynamicRenderer {
       constructor(private hostRef: ElementRef, private renderer: Renderer2) {}
     
       ngOnInit() {
-        if(this.tagName){
-          this._element = this.renderer.createElement(this.tagName);
+        if(this.tagName()){
+          this._element = this.renderer.createElement(this.tagName());
           this.renderer.appendChild(this.hostRef.nativeElement, this._element);
-          this.setAttributes(this._element, this.attributes);
+          this.setAttributes(this._element, this.attributes());
         }
       }
 
