@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Content, type BuilderContent } from '@builder.io/sdk-angular';
+import {
+  Content,
+  isPreviewing,
+  type BuilderContent,
+} from '@builder.io/sdk-angular';
 @Component({
   selector: 'app-hero',
   standalone: true,
@@ -9,12 +13,17 @@ import { Content, type BuilderContent } from '@builder.io/sdk-angular';
   template: `
     <!-- Your nav goes here -->
     <!-- Hero Section -->
-    <builder-content
-      *ngIf="productHero"
-      [model]="model"
-      [content]="productHero"
-      [apiKey]="apiKey"
-    ></builder-content>
+    <div *ngIf="productHero || isPreviewing(); else notFound">
+      <builder-content
+        [model]="'collection-hero'"
+        [content]="productHero"
+        [apiKey]="'ee9f13b4981e489a9a1209887695ef2b'"
+      ></builder-content>
+    </div>
+    <ng-template #notFound>
+      <div>404</div>
+    </ng-template>
+
     <!-- The rest of your page goes here -->
   `,
 })
@@ -22,6 +31,10 @@ export class HeroComponent implements OnInit {
   productHero: BuilderContent | null = null;
   model = 'collection-hero';
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
+
+  isPreviewing() {
+    return isPreviewing();
+  }
 
   constructor(private route: ActivatedRoute) {}
 

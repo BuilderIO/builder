@@ -1,11 +1,14 @@
-import {fetchOneEntry, Content} from '@builder.io/sdk-react';
+import {fetchOneEntry, Content, isPreviewing} from '@builder.io/sdk-react';
 import {useLoaderData} from '@remix-run/react';
 import {type LoaderFunction} from '@shopify/remix-oxygen';
 
+const MODEL = 'collection-hero';
+const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+
 export const loader: LoaderFunction = async ({params}) => {
   const content = await fetchOneEntry({
-    model: 'collection-hero',
-    apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+    model: MODEL,
+    apiKey: API_KEY,
     userAttributes: {urlPath: params.pathname},
   });
 
@@ -18,13 +21,8 @@ export default function ProductHero() {
   return (
     <div>
       {/* Your nav goes here */}
-      {content && (
-        <Content
-          model="collection-hero"
-          content={content}
-          apiKey="ee9f13b4981e489a9a1209887695ef2b"
-        />
-      )}
+      {/* Hero Section */}
+      <Content model={MODEL} content={content} apiKey={API_KEY} />
       {/* The rest of your page goes here */}
     </div>
   );
