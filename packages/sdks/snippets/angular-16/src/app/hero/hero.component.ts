@@ -16,9 +16,9 @@ import {
     <!-- Hero Section -->
     <div *ngIf="productHero || isPreviewing(); else notFound">
       <builder-content
-        [model]="'collection-hero'"
+        [model]="model"
         [content]="productHero"
-        [apiKey]="'ee9f13b4981e489a9a1209887695ef2b'"
+        [apiKey]="apiKey"
       ></builder-content>
     </div>
     <ng-template #notFound>
@@ -30,14 +30,14 @@ import {
 export class HeroComponent {
   productHero: BuilderContent | null = null;
 
-  isPreviewing() {
-    return isPreviewing();
-  }
+  isPreviewing = isPreviewing;
+  model = 'collection-hero';
+  apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
   async ngOnInit() {
     this.productHero = await fetchOneEntry({
-      model: 'collection-hero',
-      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      model: this.model,
+      apiKey: this.apiKey,
       userAttributes: {
         urlPath: window.location.pathname,
       },

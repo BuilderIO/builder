@@ -15,15 +15,14 @@ import {
     <!-- Hero Section -->
     <div *ngIf="productHero || isPreviewing(); else notFound">
       <builder-content
-        [model]="'collection-hero'"
+        [model]="model"
         [content]="productHero"
-        [apiKey]="'ee9f13b4981e489a9a1209887695ef2b'"
+        [apiKey]="apiKey"
       ></builder-content>
     </div>
     <ng-template #notFound>
       <div>404</div>
     </ng-template>
-
     <!-- The rest of your page goes here -->
   `,
 })
@@ -32,9 +31,7 @@ export class HeroComponent implements OnInit {
   model = 'collection-hero';
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
-  isPreviewing() {
-    return isPreviewing();
-  }
+  isPreviewing = isPreviewing;
 
   constructor(private route: ActivatedRoute) {}
 
