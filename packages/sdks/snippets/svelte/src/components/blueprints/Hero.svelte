@@ -5,6 +5,7 @@
     fetchOneEntry,
     Content,
     type BuilderContent,
+    isPreviewing,
   } from '@builder.io/sdk-svelte';
   let productHero: BuilderContent | null = null;
 
@@ -24,7 +25,9 @@
 
 <!-- Your nav goes here -->
 <!-- Hero Section -->
-{#if productHero}
+{#if productHero || isPreviewing()}
   <Content model={MODEL} content={productHero} apiKey={API_KEY} />
+{:else}
+  <div>404</div>
 {/if}
 <!-- The rest of your page goes here -->

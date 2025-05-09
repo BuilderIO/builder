@@ -1,4 +1,4 @@
-import { Content, fetchOneEntry } from '@builder.io/sdk-react';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 const MODEL = 'collection-hero';
@@ -23,8 +23,10 @@ export default function ProductHeroPage({
     <>
       {/* Your nav goes here */}
       {/* Hero Section */}
-      {productHero && (
+      {productHero || isPreviewing() ? (
         <Content model={MODEL} content={productHero} apiKey={API_KEY} />
+      ) : (
+        <div>404</div>
       )}
       {/* The rest of your page goes here */}
     </>

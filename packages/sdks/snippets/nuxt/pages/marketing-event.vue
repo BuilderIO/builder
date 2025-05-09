@@ -3,15 +3,18 @@
   <div>
     <!-- Your nav goes here -->
     <!-- Hero Section -->
-    <div v-if="productHero">
+    <div v-if="productHero || isPreviewing()">
       <Content :content="productHero" :model="MODEL" :apiKey="API_KEY" />
+    </div>
+    <div v-else>
+      404
     </div>
     <!-- The rest of your page goes here -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { Content, fetchOneEntry } from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import { useAsyncData } from '#app';
 import { useRoute } from 'nuxt/app';
 

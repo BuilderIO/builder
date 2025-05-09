@@ -22,7 +22,11 @@ export default function ProductHero() {
     <div>
       {/* Your nav goes here */}
       {/* Hero Section */}
-      <Content model={MODEL} content={content} apiKey={API_KEY} />
+      {content || isPreviewing() ? (
+        <Content model={MODEL} content={content} apiKey={API_KEY} />
+      ) : (
+        <div>404</div>
+      )}
       {/* The rest of your page goes here */}
     </div>
   );
