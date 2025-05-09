@@ -24,7 +24,7 @@ import {
   imports: [CommonModule],
   styles: [
     ':host { display: contents; }',
-    '.props-blocks-wrapper { display: flex; flex-direction: column; align-items: stretch; }',
+    '.this-blocks-wrapper { display: flex; flex-direction: column; align-items: stretch; }',
   ],
 })
 export default class DynamicDiv {

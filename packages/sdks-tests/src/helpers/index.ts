@@ -130,7 +130,8 @@ export const isSSRFramework = (packageName: ServerName | 'DEFAULT') => {
     packageName === 'svelte' ||
     packageName === 'react-native-74' ||
     packageName === 'react-native-76-fabric' ||
-    packageName === 'gen1-react';
+    packageName === 'gen1-react' ||
+    packageName === 'angular-17';
   return !isNonSSR;
 };
 
