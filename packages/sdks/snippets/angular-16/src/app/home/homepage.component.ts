@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 
@@ -11,22 +12,31 @@ import {
   standalone: true,
   imports: [Content, CommonModule],
   template: `
-    <ng-container *ngIf="!content">404</ng-container>
     <builder-content
-      *ngIf="content"
-      [model]="'homepage'"
+      *ngIf="content || isPreviewing(); else notFound"
+      [model]="MODEL"
       [content]="content"
-      [apiKey]="'ee9f13b4981e489a9a1209887695ef2b'"
+      [apiKey]="API_KEY"
     ></builder-content>
+    <ng-template #notFound>
+      <div>404</div>
+    </ng-template>
   `,
 })
 export class HomepageComponent {
   content: BuilderContent | null = null;
 
+  MODEL = 'homepage';
+  API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+
+  isPreviewing() {
+    return isPreviewing();
+  }
+
   async ngOnInit() {
     this.content = await fetchOneEntry({
-      model: 'homepage',
-      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      model: this.MODEL,
+      apiKey: this.API_KEY,
     });
   }
 }

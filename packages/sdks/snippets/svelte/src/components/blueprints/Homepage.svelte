@@ -9,22 +9,21 @@
 
   let content: BuilderContent | null = null;
 
+  const MODEL = 'homepage';
+  const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+
   onMount(() => {
     fetchOneEntry({
-      model: 'homepage',
-      apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+      model: MODEL,
+      apiKey: API_KEY,
     }).then((res) => {
       content = res;
     });
   });
 </script>
 
-{#if !content && !isPreviewing()}
-  <div>404</div>
+{#if content || isPreviewing()}
+  <Content model={MODEL} {content} apiKey={API_KEY} />
 {:else}
-  <Content
-    model="homepage"
-    {content}
-    apiKey="ee9f13b4981e489a9a1209887695ef2b"
-  />
+  <div>404</div>
 {/if}

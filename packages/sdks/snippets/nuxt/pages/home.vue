@@ -2,19 +2,22 @@
 import { useAsyncData } from '#app'
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue'
 
+const MODEL = 'homepage';
+const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+
 const { data: content } = await useAsyncData('homepage', () =>
   fetchOneEntry({
-    model: 'homepage',
-    apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
+    model: MODEL,
+    apiKey: API_KEY,
   })
 )
 </script>
 
 <template>
-    <div v-if="!content && !isPreviewing()">
-      404
-    </div>
-    <div v-else>
-      <Content model="homepage" :content="content" apiKey="ee9f13b4981e489a9a1209887695ef2b" />
-    </div>
+  <div v-if="content || isPreviewing()">
+    <Content :model="MODEL" :content="content" :apiKey="API_KEY" />
+  </div>
+  <div v-else>
+    404
+  </div>
 </template>
