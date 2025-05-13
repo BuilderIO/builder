@@ -1232,44 +1232,60 @@ export class BuilderComponent extends React.Component<
     );
   }
 
-  async handleRequest(propertyName: string, url: string) {
+  async handleRequest(
+    propertyName: string,
+    httpRequest: {
+      url: string;
+      method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+      body?: any;
+      headers?: Record<string, string>;
+    }
+  ) {
+    const { url, method, body, headers } = httpRequest;
+
+    const fetchCacheKey = JSON.stringify({ url, method, body, headers });
     // TODO: Builder.isEditing = just checks if iframe and parent page is this.builder.io or localhost:1234
-    if (Builder.isIframe && fetchCache[url]) {
+    if (Builder.isIframe && fetchCache[fetchCacheKey]) {
       this.updateState(ctx => {
-        ctx[propertyName] = fetchCache[url];
+        ctx[propertyName] = fetchCache[fetchCacheKey];
       });
-      return fetchCache[url];
+      return fetchCache[fetchCacheKey];
     }
     const request = async () => {
       const requestStart = Date.now();
       if (!Builder.isBrowser) {
-        console.time('Fetch ' + url);
+        console.time('Fetch ' + fetchCacheKey);
       }
       let json: any;
       try {
-        const result = await fetch(url);
+        const result = await fetch(url, {
+          method,
+          headers,
+          body,
+        });
         json = await result.json();
       } catch (err) {
+        console.log('DEBUG handleRequest error', err);
         const error = toError(err);
         if (this._errors) {
           this._errors.push(error);
         }
         if (this._logs) {
-          this._logs.push(`Fetch to ${url} errored in ${Date.now() - requestStart}ms`);
+          this._logs.push(`Fetch to ${fetchCacheKey} errored in ${Date.now() - requestStart}ms`);
         }
         return;
       } finally {
         if (!Builder.isBrowser) {
-          console.timeEnd('Fetch ' + url);
+          console.timeEnd('Fetch ' + fetchCacheKey);
           if (this._logs) {
-            this._logs.push(`Fetched ${url} in ${Date.now() - requestStart}ms`);
+            this._logs.push(`Fetched ${fetchCacheKey} in ${Date.now() - requestStart}ms`);
           }
         }
       }
 
       if (json) {
         if (Builder.isIframe) {
-          fetchCache[url] = json;
+          fetchCache[fetchCacheKey] = json;
         }
         // TODO: debounce next tick all of these when there are a bunch
         this.updateState(ctx => {
@@ -1334,6 +1350,7 @@ export class BuilderComponent extends React.Component<
   }
 
   onContentLoaded = (data: any, content: Content) => {
+    console.log('DEBUG onContentLoaded', data, content);
     if (this.name === 'page' && Builder.isBrowser) {
       if (data) {
         const { title, pageTitle, description, pageDescription } = data;
@@ -1467,18 +1484,34 @@ export class BuilderComponent extends React.Component<
       if (!skip) {
         // TODO: another structure for this
         for (const key in data.httpRequests) {
-          const url: string | undefined = data.httpRequests[key];
-          if (url && (!this.data[key] || Builder.isEditing)) {
+          const httpRequest: any | string | undefined = data.httpRequests[key];
+          if (httpRequest && (!this.data[key] || Builder.isEditing)) {
+            const isCoreRequest =
+              typeof httpRequest === 'object' &&
+              httpRequest['@type'] === '@builder.io/core:Request';
             if (Builder.isBrowser) {
-              const finalUrl = this.evalExpression(url);
+              const finalUrl = isCoreRequest
+                ? this.evalExpression(httpRequest.request.url)
+                : this.evalExpression(httpRequest);
+
               if (Builder.isEditing && this.lastHttpRequests[key] === finalUrl) {
                 continue;
               }
               this.lastHttpRequests[key] = finalUrl;
-              const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i;
-              const builderModelMatch = url.match(builderModelRe);
-              const model = builderModelMatch && builderModelMatch[1];
-              this.handleRequest(key, finalUrl);
+
+              if (isCoreRequest) {
+                this.handleRequest(key, {
+                  url: finalUrl,
+                  method: httpRequest.request.method,
+                  body: httpRequest.request.body,
+                  headers: httpRequest.request.headers,
+                });
+              } else {
+                this.handleRequest(key, {
+                  url: finalUrl,
+                  method: 'GET',
+                });
+              }
               const currentSubscription = this.httpSubscriptionPerKey[key];
               if (currentSubscription) {
                 currentSubscription.unsubscribe();
@@ -1487,15 +1520,41 @@ export class BuilderComponent extends React.Component<
               // TODO: fix this
               const newSubscription = (this.httpSubscriptionPerKey[key] =
                 this.onStateChange.subscribe(() => {
-                  const newUrl = this.evalExpression(url);
+                  const newUrl = isCoreRequest
+                    ? this.evalExpression(httpRequest.request.url)
+                    : this.evalExpression(httpRequest);
                   if (newUrl !== finalUrl) {
-                    this.handleRequest(key, newUrl);
+                    if (isCoreRequest) {
+                      this.handleRequest(key, {
+                        url: newUrl,
+                        method: httpRequest.request.method,
+                        body: httpRequest.request.body,
+                        headers: httpRequest.request.headers,
+                      });
+                    } else {
+                      this.handleRequest(key, {
+                        url: newUrl,
+                        method: 'GET',
+                      });
+                    }
                     this.lastHttpRequests[key] = newUrl;
                   }
                 }));
               this.subscriptions.add(newSubscription);
             } else {
-              this.handleRequest(key, this.evalExpression(url));
+              if (isCoreRequest) {
+                this.handleRequest(key, {
+                  url: this.evalExpression(httpRequest.request.url),
+                  method: httpRequest.request.method,
+                  body: httpRequest.request.body,
+                  headers: httpRequest.request.headers,
+                });
+              } else {
+                this.handleRequest(key, {
+                  url: this.evalExpression(httpRequest),
+                  method: 'GET',
+                });
+              }
             }
           }
         }
