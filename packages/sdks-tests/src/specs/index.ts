@@ -52,6 +52,7 @@ import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
+import { CUSTOM_ACTION } from './custom-action.js';
 import { BASIC_STYLES } from './basic-styles.js';
 import {
   ACCORDION,
@@ -195,6 +196,7 @@ export const PAGES: Record<string, Page> = {
   '/hover-animation': { content: HOVER_ANIMATION },
   '/tabs': { content: TABS },
   '/custom-components': { content: CUSTOM_COMPONENTS },
+  '/custom-action': { content: CUSTOM_ACTION },
   '/basic-styles': { content: BASIC_STYLES },
   '/accordion': { content: ACCORDION },
   '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
@@ -241,6 +243,7 @@ export const PAGES: Record<string, Page> = {
   '/localization-locale-passed': { content: LOCALIZATION },
   '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
   '/localization-subfields': { content: LOCALIZATION_SUBFIELDS, target: ['react', 'gen1-react'] },
+  '/localized-bindings': { content: LOCALIZATION_SUBFIELDS },
   '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
   '/editing-empty-content-element-ref': {
     content: null as unknown as BuilderContent,
@@ -424,6 +427,18 @@ export const getProps = async (args: {
     case '/localization-subfields':
       extraProps = {
         locale: 'hi-IN',
+      };
+      break;
+    case '/localized-bindings':
+      extraProps = {
+        locale: 'hi-IN',
+        data: {
+          header: {
+            '@type': '@builder.io/core:LocalizedValue',
+            Default: 'en-US title',
+            'hi-IN': 'hi-IN title',
+          },
+        },
       };
       break;
     case '/editing-with-top-padding':

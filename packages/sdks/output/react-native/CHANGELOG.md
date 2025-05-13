@@ -1,5 +1,17 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.1.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
+## 4.1.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
 ## 4.1.0
 
 ### Minor Changes
