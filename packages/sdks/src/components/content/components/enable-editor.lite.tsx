@@ -179,17 +179,23 @@ export default function EnableEditor(props: BuilderEditorProps) {
     },
 
     runHttpRequests() {
-      const requests: { [key: string]: string } =
+      const requests: { [key: string]: string | any } =
         props.builderContextSignal.value.content?.data?.httpRequests ?? {};
 
-      Object.entries(requests).forEach(([key, url]) => {
-        if (!url) return;
+      Object.entries(requests).forEach(([key, httpRequest]) => {
+        if (!httpRequest) return;
+
+        const isCoreRequest =
+          typeof httpRequest === 'object' &&
+          httpRequest['@type'] === '@builder.io/core:Request';
 
         // request already in progress
         if (state.httpReqsPending[key]) return;
 
         // request already completed, and not in edit mode
         if (state.httpReqsData[key] && !isEditing()) return;
+
+        const url = isCoreRequest ? httpRequest.request.url : httpRequest;
 
         state.httpReqsPending[key] = true;
         const evaluatedUrl = url.replace(/{{([^}]+)}}/g, (_match, group) =>
@@ -206,14 +212,30 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
         logFetch(evaluatedUrl);
 
-        fetch(evaluatedUrl)
+        const fetchRequestObj = isCoreRequest
+          ? {
+              url: evaluatedUrl,
+              method: httpRequest.request.method,
+              headers: httpRequest.request.headers,
+              body: httpRequest.request.body,
+            }
+          : {
+              url: evaluatedUrl,
+              method: 'GET',
+            };
+
+        fetch(fetchRequestObj.url, {
+          method: fetchRequestObj.method,
+          headers: fetchRequestObj.headers,
+          body: fetchRequestObj.body,
+        })
           .then((response) => response.json())
           .then((json) => {
             state.mergeNewRootState({ [key]: json });
             state.httpReqsData[key] = true;
           })
           .catch((err) => {
-            console.error('error fetching dynamic data', url, err);
+            console.error('error fetching dynamic data', httpRequest, err);
           })
           .finally(() => {
             state.httpReqsPending[key] = false;
