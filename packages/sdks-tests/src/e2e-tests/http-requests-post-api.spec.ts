@@ -44,7 +44,7 @@ test.describe('HTTP Requests POST API', () => {
 
     let x = 0;
 
-    const urlMatch = /^https:\/\/countries\.trevorblades\.com\/graphql$/;
+    const urlMatch = /^https:\/\/cdn\.builder\.io\/api\/v2\/admin$/;
 
     await page.route(urlMatch, route => {
       if (route.request().method() === 'POST') {
@@ -84,7 +84,7 @@ test.describe('HTTP Requests POST API', () => {
 
     let x = 0;
 
-    const urlMatch = /^https:\/\/countries\.trevorblades\.com\/graphql$/;
+    const urlMatch = /^https:\/\/cdn\.builder\.io\/api\/v2\/admin$/;
 
     await page.route(urlMatch, route => {
       if (route.request().method() === 'POST') {

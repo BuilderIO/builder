@@ -308,6 +308,18 @@ export interface BuilderComponentState {
   key: number;
   breakpoints?: Breakpoints;
 }
+interface BuilderRequest {
+  '@type': '@builder.io/core:Request';
+  request: {
+    url: string;
+    query?: { [key: string]: string };
+    headers?: { [key: string]: string };
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    body?: any;
+  };
+  options?: { [key: string]: any };
+  bindings?: { [key: string]: string };
+}
 
 function searchToObject(location: Location | Url) {
   const pairs = (location.search || '').substring(1).split('&');
@@ -1265,7 +1277,6 @@ export class BuilderComponent extends React.Component<
         });
         json = await result.json();
       } catch (err) {
-        console.log('DEBUG handleRequest error', err);
         const error = toError(err);
         if (this._errors) {
           this._errors.push(error);
@@ -1350,7 +1361,6 @@ export class BuilderComponent extends React.Component<
   }
 
   onContentLoaded = (data: any, content: Content) => {
-    console.log('DEBUG onContentLoaded', data, content);
     if (this.name === 'page' && Builder.isBrowser) {
       if (data) {
         const { title, pageTitle, description, pageDescription } = data;
@@ -1484,7 +1494,7 @@ export class BuilderComponent extends React.Component<
       if (!skip) {
         // TODO: another structure for this
         for (const key in data.httpRequests) {
-          const httpRequest: any | string | undefined = data.httpRequests[key];
+          const httpRequest: BuilderRequest | string | undefined = data.httpRequests[key];
           if (httpRequest && (!this.data[key] || Builder.isEditing)) {
             const isCoreRequest =
               typeof httpRequest === 'object' &&
@@ -1492,7 +1502,7 @@ export class BuilderComponent extends React.Component<
             if (Builder.isBrowser) {
               const finalUrl = isCoreRequest
                 ? this.evalExpression(httpRequest.request.url)
-                : this.evalExpression(httpRequest);
+                : this.evalExpression(httpRequest as string);
 
               if (Builder.isEditing && this.lastHttpRequests[key] === finalUrl) {
                 continue;
@@ -1522,7 +1532,7 @@ export class BuilderComponent extends React.Component<
                 this.onStateChange.subscribe(() => {
                   const newUrl = isCoreRequest
                     ? this.evalExpression(httpRequest.request.url)
-                    : this.evalExpression(httpRequest);
+                    : this.evalExpression(httpRequest as string);
                   if (newUrl !== finalUrl) {
                     if (isCoreRequest) {
                       this.handleRequest(key, {
@@ -1551,7 +1561,7 @@ export class BuilderComponent extends React.Component<
                 });
               } else {
                 this.handleRequest(key, {
-                  url: this.evalExpression(httpRequest),
+                  url: this.evalExpression(httpRequest as string),
                   method: 'GET',
                 });
               }

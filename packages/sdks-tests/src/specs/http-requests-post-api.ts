@@ -55,7 +55,7 @@ export const HTTP_REQUESTS_POST_API_CONTENT = {
       someOtherRequest: {
         '@type': '@builder.io/core:Request',
         request: {
-          url: 'https://countries.trevorblades.com/graphql',
+          url: 'https://cdn.builder.io/api/v2/admin',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
