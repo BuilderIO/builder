@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.2.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
 ## 8.1.2
 
 ### Patch Changes

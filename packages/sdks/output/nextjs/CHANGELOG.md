@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.20.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
 ## 0.19.3
 
 ### Patch Changes

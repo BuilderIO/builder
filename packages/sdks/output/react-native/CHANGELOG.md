@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.2.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
 ## 4.1.3
 
 ### Patch Changes
