@@ -109,7 +109,7 @@ export default function FormComponent(props: FormProps) {
             if (el instanceof HTMLInputElement) {
               if (el.type === 'radio') {
                 if (el.checked) {
-                  value = el.name;
+                  value = el.value;
                   return { key, value };
                 }
               } else if (el.type === 'checkbox') {
