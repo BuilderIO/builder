@@ -227,8 +227,6 @@ export default function EnableEditor(props: BuilderEditorProps) {
               )
           );
 
-          logFetch(evaluatedUrl);
-
           const fetchRequestObj = isCoreRequest
             ? {
                 url: evaluatedUrl,
@@ -240,6 +238,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
                 url: evaluatedUrl,
                 method: 'GET',
               };
+
+          logFetch(JSON.stringify(fetchRequestObj));
 
           fetch(fetchRequestObj.url, {
             method: fetchRequestObj.method,
