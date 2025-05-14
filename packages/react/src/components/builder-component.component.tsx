@@ -308,6 +308,7 @@ export interface BuilderComponentState {
   key: number;
   breakpoints?: Breakpoints;
 }
+
 interface BuilderRequest {
   '@type': '@builder.io/core:Request';
   request: {
