@@ -1,4 +1,4 @@
-export const HTTP_REQUESTS = {
+export const HTTP_REQUESTS_POST_API_CONTENT = {
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   createdDate: 1644861373771,
   data: {
@@ -9,18 +9,32 @@ export const HTTP_REQUESTS = {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
         bindings: {
-          'component.options.text':
-            'var _virtual_index=state.article.entries[0].seo_title;return _virtual_index',
+          'component.options.text': 'state.countriesItem.name',
         },
         code: {
           bindings: {
-            'component.options.text': 'state.article.entries[0].seo_title',
+            'component.options.text': 'state.countriesItem.name',
           },
         },
-        id: 'builder-ae1475bc1a1941ce839d210f20b96192',
+        repeat: {
+          collection: 'state.someOtherRequest.data.countries',
+        },
+        id: 'builder-7e214686e245495aa8a4b67fc13bc746',
+        meta: {
+          bindingActions: {
+            _newProperty: null,
+            component: {
+              options: {
+                text: null,
+              },
+            },
+          },
+        },
         component: {
           name: 'Text',
-          options: { text: 'Enter some text...' },
+          options: {
+            text: 'Enter some text...',
+          },
         },
         responsiveStyles: {
           large: {
@@ -38,8 +52,24 @@ export const HTTP_REQUESTS = {
     ],
     url: '/',
     httpRequests: {
-      article:
-        'https://cdn.builder.io/api/v1/proxy-api?url=https%3A%2F%2Fcdn.contentstack.io%2Fv3%2Fcontent_types%2Farticle%2Fentries%3Fenvironment%3Dprod&headers.api_key=bltc12136c3b9f23503&headers.access_token=cs4291c43a722a771559bd3b3d',
+      someOtherRequest: {
+        '@type': '@builder.io/core:Request',
+        request: {
+          url: 'https://countries.trevorblades.com/graphql',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `query ExampleQuery {
+              countries {
+                name
+              }
+            }`,
+            variables: {},
+          }),
+        },
+      },
     },
     state: {
       deviceSize: 'large',
