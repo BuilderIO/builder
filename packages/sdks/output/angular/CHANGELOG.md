@@ -1,5 +1,47 @@
 # @builder.io/sdk-angular
 
+## 0.20.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
+## 0.19.4
+
+### Patch Changes
+
+- 103248e: feat: Add edge exports to angular SDK
+
+## 0.19.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
+## 0.19.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
+## 0.19.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+
+## 0.19.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+## 0.18.15
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
 ## 0.18.13
 
 ### Patch Changes

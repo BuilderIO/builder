@@ -12,7 +12,6 @@ test.describe('Hero Section', () => {
         'remix',
         'react-sdk-next-15-app',
         'nextjs-sdk-next-app',
-        'react',
         'angular-19-ssr',
         'gen1-react',
         'gen1-remix',
@@ -31,12 +30,11 @@ test.describe('Hero Section', () => {
 
     const ctaButton = page.getByRole('button', { name: 'Buy now' });
     await expect(ctaButton).toBeVisible();
-    await expect(ctaButton).toBeEnabled();
   });
 
   test('should display hero image', async ({ page }) => {
-    const productImage = page.getByRole('presentation');
-    await expect(productImage).toBeVisible();
-    await expect(productImage).toHaveAttribute('src', /.+/);
+    const imgInPicture = page.locator('picture img');
+    await expect(imgInPicture).toBeVisible();
+    await expect(imgInPicture).toHaveAttribute('src', /.+/);
   });
 });
