@@ -17,10 +17,8 @@ export default function NavLinks() {
   return (
     <nav>
       <h1>Acme company</h1>
-
       {/* Navigation links from Builder */}
       {links && <NavBar links={links} />}
-
       <div className="auth-buttons">
         <button>Login</button>
         <button>Register</button>
