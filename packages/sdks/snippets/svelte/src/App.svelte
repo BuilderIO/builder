@@ -12,6 +12,7 @@
   import ProductDetails from './components/blueprints/ProductDetails.svelte';
   import BlogArticle from './components/blueprints/BlogArticle.svelte';
   import Homepage from './components/blueprints/Homepage.svelte';
+  import NavLinks from './components/blueprints/navlinks/NavLinks.svelte';
   export let url = '';
 </script>
 
@@ -28,5 +29,6 @@
   <Route path="/product/category/:handle" component={ProductDetails} />
   <Route path="/blogs/:handle" component={BlogArticle} />
   <Route path="/home" component={Homepage} />
+  <Route path="/landing-page" component={NavLinks} />
   <Route path="/*" component={CatchAll} />
 </Router>

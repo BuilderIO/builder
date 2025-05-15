@@ -886,7 +886,17 @@ export interface Action {
   name: string;
   inputs?: readonly Input[];
   returnType?: Input;
-  action: Function | string;
+  action: (options: Record<string, any>) => string;
+  /**
+   * Is an action for expression (e.g. calculating a binding like a formula
+   * to fill a value based on locale) or a function (e.g. something to trigger
+   * on an event like add to cart) or either (e.g. a custom code block)
+   */
+  kind: 'expression' | 'function' | 'any';
+  /**
+   * Globally unique ID for an action, e.g. "@builder.io:setState"
+   */
+  id: string;
 }
 
 export class Builder {
@@ -931,7 +941,7 @@ export class Builder {
   static register(type: string, info: any): void;
   static register(type: string, info: any) {
     if (type === 'plugin') {
-      info = this.serializeIncludingFunctions(info);
+      info = this.serializeIncludingFunctions(info, true);
     }
 
     // TODO: all must have name and can't conflict?
@@ -988,6 +998,20 @@ export class Builder {
 
   static registerAction(action: Action) {
     this.actions.push(action);
+
+    if (Builder.isBrowser) {
+      const actionClone = JSON.parse(JSON.stringify(action));
+      if (action.action) {
+        actionClone.action = action.action.toString();
+      }
+      window.parent?.postMessage(
+        {
+          type: 'builder.registerAction',
+          data: actionClone,
+        },
+        '*'
+      );
+    }
   }
 
   static registerTrustedHost(host: string) {
@@ -1113,7 +1137,7 @@ export class Builder {
     }
   }
 
-  private static serializeIncludingFunctions(info: any) {
+  private static serializeIncludingFunctions(info: any, isForPlugin?: boolean) {
     const serializeFn = (fnValue: Function) => {
       const fnStr = fnValue.toString().trim();
 
@@ -1135,14 +1159,21 @@ export class Builder {
       return `return (${appendFunction ? 'function ' : ''}${fnStr}).apply(this, arguments)`;
     };
 
-    return JSON.parse(
+    const objToReturn = JSON.parse(
       JSON.stringify(info, (key, value) => {
-        if (typeof value === 'function') {
+        const shouldNotSerializeFn = isForPlugin && key === 'onSave';
+        if (typeof value === 'function' && !shouldNotSerializeFn) {
           return serializeFn(value);
         }
         return value;
       })
     );
+
+    if (isForPlugin) {
+      objToReturn.onSave = info.onSave;
+    }
+
+    return objToReturn;
   }
 
   private static prepareComponentSpecToSend(spec: Component): Component {
