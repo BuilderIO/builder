@@ -1,13 +1,13 @@
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-const MODEL = 'homepage';
-const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const model = 'homepage';
+const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const content = await fetchOneEntry({
-    model: MODEL,
-    apiKey: API_KEY,
+    model,
+    apiKey,
   });
   return {
     props: {
@@ -20,7 +20,7 @@ export default function ProductHeroPage({
   content,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return content || isPreviewing() ? (
-    <Content model={MODEL} content={content} apiKey={API_KEY} />
+    <Content model={model} content={content} apiKey={apiKey} />
   ) : (
     <div>404</div>
   );

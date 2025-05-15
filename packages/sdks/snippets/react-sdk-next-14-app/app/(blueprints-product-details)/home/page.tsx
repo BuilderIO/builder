@@ -1,16 +1,16 @@
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 
-const MODEL = 'homepage';
-const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const model = 'homepage';
+const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export default async function ProductHeroPage() {
   const content = await fetchOneEntry({
-    model: MODEL,
-    apiKey: API_KEY,
+    model,
+    apiKey,
   });
 
   return content || isPreviewing() ? (
-    <Content model={MODEL} content={content} apiKey={API_KEY} />
+    <Content model={model} content={content} apiKey={apiKey} />
   ) : (
     <div>404</div>
   );
