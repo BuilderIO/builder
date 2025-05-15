@@ -29,9 +29,7 @@ export class HomepageComponent {
   MODEL = 'homepage';
   API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
-  isPreviewing() {
-    return isPreviewing();
-  }
+  isPreviewing = isPreviewing;
 
   async ngOnInit() {
     this.content = await fetchOneEntry({
