@@ -12,7 +12,6 @@ test.describe('Nav Bar Components', () => {
         'remix',
         'react-sdk-next-15-app',
         'nextjs-sdk-next-app',
-        'react',
         'angular-19-ssr',
         'gen1-react',
         'gen1-remix',
