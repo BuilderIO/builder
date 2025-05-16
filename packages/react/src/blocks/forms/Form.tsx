@@ -100,13 +100,19 @@ class FormComponent extends React.Component<FormProps> {
                     value: File | boolean | number | string | FileList;
                   }[] = Array.from(event.currentTarget.querySelectorAll('input,select,textarea'))
                     .filter(el => !!(el as HTMLInputElement).name)
+                    .filter(
+                      el =>
+                        !!(el as HTMLInputElement).name &&
+                        ((el as HTMLInputElement).type !== 'radio' ||
+                          (el as HTMLInputElement).checked)
+                    )
                     .map(el => {
                       let value: any;
                       const key = (el as HTMLImageElement).name;
                       if (el instanceof HTMLInputElement) {
                         if (el.type === 'radio') {
                           if (el.checked) {
-                            value = el.name;
+                            value = el.value;
                             return { key, value };
                           }
                         } else if (el.type === 'checkbox') {
