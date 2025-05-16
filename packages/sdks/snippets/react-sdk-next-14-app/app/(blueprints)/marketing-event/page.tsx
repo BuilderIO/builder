@@ -1,13 +1,18 @@
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
+import { headers } from 'next/headers';
 
-const MODEL = 'collection-hero';
-const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const model = 'collection-hero';
+const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export default async function ProductHeroPage() {
+  const pathname = headers().get('x-pathname') as string;
+
   const productHero = await fetchOneEntry({
-    model: MODEL,
-    apiKey: API_KEY,
-    userAttributes: { urlPath: '/marketing-event' },
+    model,
+    apiKey,
+    userAttributes: {
+      urlPath: pathname,
+    },
   });
 
   return (
@@ -15,7 +20,7 @@ export default async function ProductHeroPage() {
       {/* Your nav goes here */}
       {/* Hero Section */}
       {productHero || isPreviewing() ? (
-        <Content model={MODEL} content={productHero} apiKey={API_KEY} />
+        <Content model={model} content={productHero} apiKey={apiKey} />
       ) : (
         <div>404</div>
       )}
