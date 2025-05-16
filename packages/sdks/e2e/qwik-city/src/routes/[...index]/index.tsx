@@ -4,6 +4,7 @@ import {
   Content,
   _processContentResult,
   setClientUserAttributes,
+  registerAction,
 } from '@builder.io/sdk-qwik';
 import { getProps } from '@sdk/tests';
 import BuilderBlockWithClassName from '~/components/BuilderBlockWithClassName';
@@ -91,6 +92,24 @@ export default component$(() => {
       if (window.location.pathname === '/variant-containers/') {
         setClientUserAttributes({
           device: 'tablet',
+        });
+      }
+      if (typeof window !== 'undefined') {
+        registerAction({
+          name: "test-action",
+          kind: 'function',
+          id: 'test-action-id',
+          inputs:[
+            {
+              name: "actionName",
+              type: "string",
+              required: true,
+              helperText: "Action name",
+            },
+          ],
+          action:  () => {
+            return`console.log("function call") `
+          },
         });
       }
     })

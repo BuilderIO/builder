@@ -3,6 +3,7 @@ import {
   _processContentResult,
   fetchOneEntry,
   subscribeToEditor,
+  registerAction
 } from '@builder.io/sdk-react';
 import { getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
@@ -52,6 +53,24 @@ function App() {
       return () => {
         unsubscribe();
       };
+    }
+    if (typeof window !== 'undefined') {
+      registerAction({
+        name: "test-action",
+        kind: 'function',
+        id: 'test-action-id',
+        inputs:[
+          {
+            name: "actionName",
+            type: "string",
+            required: true,
+            helperText: "Action name",
+          },
+        ],
+        action:  () => {
+          return`console.log("function call")`
+        },
+      });
     }
   }, []);
 
