@@ -959,6 +959,19 @@ const ANGULAR_AB_TEST_VE_CORRECT_VARIANT = () => ({
   },
 });
 
+const ANGULAR_INJECT_UPDATE_VIEW_CODE = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BlocksWrapper') {
+        json.compileContext.angular.hooks.ngAfterContentChecked = {
+          code: `if (this.shouldUpdate()) { this._updateView(); this.shouldUpdate.set(false); }`,
+        };
+      }
+      return json;
+    },
+  },
+});
+
 const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   code: {
     post: (code, json) => {
@@ -1023,6 +1036,7 @@ module.exports = {
         // ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
         // ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
+        ANGULAR_INJECT_UPDATE_VIEW_CODE,
         // ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
         // ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
         // ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,

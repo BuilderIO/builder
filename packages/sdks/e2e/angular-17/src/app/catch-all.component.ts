@@ -86,6 +86,8 @@ export class CatchAllComponent {
     });
 
     const builderProps = await getProps({
+      // data: 'real',
+      // apiKey: 'ad30f9a246614faaa6a03374f83554c9',
       pathname: urlPath,
       _processContentResult,
       options: getBuilderSearchParams(searchParams),

@@ -73,6 +73,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   const elementRef = useRef<HTMLDivElement>();
   const [hasExecuted, setHasExecuted] = useState<boolean>(false);
   const state = useStore({
+    prevData: null as Dictionary<any> | null,
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
@@ -468,7 +469,11 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onUpdate(() => {
     if (props.data) {
+      if (state.prevData === props.data) {
+        return;
+      }
       state.mergeNewRootState(props.data);
+      state.prevData = props.data;
     }
   }, [props.data]);
 

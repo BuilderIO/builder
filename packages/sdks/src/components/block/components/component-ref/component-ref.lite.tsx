@@ -51,7 +51,7 @@ export default function ComponentRef(props: ComponentProps) {
           contextValue: props.context.value,
         })}
       >
-        <Show when={props.componentRef && props.blockChildren}>
+        <Show when={props.componentRef}>
           <For each={props.blockChildren}>
             {(child) => (
               <Block
