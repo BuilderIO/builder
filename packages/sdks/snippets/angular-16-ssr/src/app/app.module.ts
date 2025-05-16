@@ -21,6 +21,8 @@ import { editableRegionsResolver } from './editable-regions/editable-regions-res
 import { EditableRegionComponent } from './editable-regions/editable-regions.component';
 import { HeroComponent } from './hero/hero.component';
 import { heroResolver } from './hero/hero.resolver';
+import { HomepageComponent } from './home/homepage.component';
+import { homepageResolver } from './home/homepage.resolver';
 import { LivePreviewComponent } from './live-preview/live-preview.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { navBarResolver } from './nav-bar/nav-bar.resolver';
@@ -85,6 +87,11 @@ import { productEditorialResolver } from './product-editorial/product-editorial.
         path: 'marketing-event',
         component: HeroComponent,
         resolve: { content: heroResolver },
+      },
+      {
+        path: 'home',
+        component: HomepageComponent,
+        resolve: { content: homepageResolver },
       },
       {
         path: '**',
