@@ -30,7 +30,7 @@ export class HomepageComponent implements OnInit {
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
   isPreviewing = isPreviewing;
-  
+
   constructor(private route: ActivatedRoute) {}
 
   async ngOnInit() {
