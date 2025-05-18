@@ -6,6 +6,7 @@
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-solid';
 import { createEffect, createSignal } from 'solid-js';
@@ -15,6 +16,7 @@ const MODEL = 'announcement-bar';
 
 function AnnouncementBar() {
   const [content, setContent] = createSignal<BuilderContent | null>(null);
+  const [canShowContent, setCanShowContent] = createSignal(false);
 
   createEffect(() => {
     fetchOneEntry({
@@ -25,12 +27,13 @@ function AnnouncementBar() {
       },
     }).then((data: any) => {
       setContent(data);
+      setCanShowContent(data ? true : isPreviewing());
     });
   });
 
   return (
     <>
-      {content() && (
+      {canShowContent() && (
         <Content content={content()} apiKey={BUILDER_API_KEY} model={MODEL} />
       )}
 

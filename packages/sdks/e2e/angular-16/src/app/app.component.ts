@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {
   _processContentResult,
   fetchOneEntry,
-  getBuilderSearchParams,
   type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
@@ -62,9 +61,6 @@ export class AppComponent {
     const builderProps = await getProps({
       pathname: urlPath,
       _processContentResult,
-      options: getBuilderSearchParams(
-        new URLSearchParams(window.location.search)
-      ),
       fetchOneEntry,
     });
 
