@@ -8,7 +8,6 @@ import { routeLoader$ } from '@builder.io/qwik-city';
 import {
   Content,
   fetchOneEntry,
-  getBuilderSearchParams,
 } from '@builder.io/sdk-qwik';
 
 export const BUILDER_PUBLIC_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
@@ -18,7 +17,7 @@ export const useBuilderContent = routeLoader$(async ({ url }) => {
   const announcementBar = await fetchOneEntry({
     model: BUILDER_MODEL,
     apiKey: BUILDER_PUBLIC_API_KEY,
-    options: getBuilderSearchParams(url.searchParams),
+
     userAttributes: {
       urlPath: url.pathname,
     },
