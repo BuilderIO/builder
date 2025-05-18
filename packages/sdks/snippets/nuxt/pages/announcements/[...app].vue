@@ -7,7 +7,6 @@ import {
   Content,
   fetchOneEntry,
   isPreviewing,
-  getBuilderSearchParams,
 } from '@builder.io/sdk-vue';
 import { ref } from 'vue';
 

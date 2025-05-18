@@ -3,6 +3,7 @@ import { Component, type OnInit } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import { customColumnsInfo } from './custom-columns/custom-columns.component';
@@ -38,6 +39,6 @@ export class EditableRegionComponent implements OnInit {
         urlPath: window.location.pathname,
       },
     });
-    this.notFound = !this.content;
+    this.notFound = !this.content && !isPreviewing();
   }
 }

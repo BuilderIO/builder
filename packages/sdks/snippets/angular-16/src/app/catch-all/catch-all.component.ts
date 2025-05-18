@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 
@@ -16,7 +17,7 @@ import {
   standalone: true,
   imports: [Content, CommonModule],
   template: `
-    <ng-container *ngIf="content; else notFound">
+    <ng-container *ngIf="!notFound">
       <builder-content
         [model]="model"
         [content]="content"
@@ -33,6 +34,7 @@ export class CatchAllComponent {
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   model = 'page';
   content: BuilderContent | null = null;
+  notFound = false;
 
   async ngOnInit() {
     const urlPath = window.location.pathname || '';
@@ -45,10 +47,7 @@ export class CatchAllComponent {
       },
     });
 
-    if (!content) {
-      return;
-    }
-
     this.content = content;
+    this.notFound = !content && !isPreviewing();
   }
 }

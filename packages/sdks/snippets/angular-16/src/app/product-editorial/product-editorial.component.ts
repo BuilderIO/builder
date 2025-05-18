@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import { FooterComponent } from './footer/footer.component';
@@ -24,7 +25,10 @@ import { ProductInfoComponent } from './product-info/product-info.component';
 
     <app-product-info [product]="product" />
 
-    <builder-content [content]="editorial" model="product-editorial" />
+    <ng-container *ngIf="!notFound">
+      <builder-content [content]="editorial" model="product-editorial" />
+    </ng-container>
+    <div *ngIf="notFound">404</div>
 
     <app-footer />
   `,
@@ -33,11 +37,13 @@ export class ProductEditorialComponent {
   product: any;
   editorial: BuilderContent | null = null;
   productId?: string;
+  notFound = false;
 
   async ngOnInit() {
     this.productId = window.location.pathname.split('/').pop() || '';
     if (this.productId) {
       await this.fetchProductAndEditorial();
+      this.notFound = !this.editorial && !isPreviewing();
     }
   }
 
