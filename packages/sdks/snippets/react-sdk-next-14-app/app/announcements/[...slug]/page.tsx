@@ -6,7 +6,6 @@
 import {
   Content,
   fetchOneEntry,
-  getBuilderSearchParams,
   isEditing,
   isPreviewing,
 } from '@builder.io/sdk-react';
@@ -27,7 +26,6 @@ export default async function Page(props: PageProps) {
   const announcementBar = await fetchOneEntry({
     apiKey,
     model,
-    options: getBuilderSearchParams(props.searchParams),
     userAttributes: { urlPath },
   });
 
