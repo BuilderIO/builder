@@ -7,7 +7,6 @@ import {
   Content,
   _processContentResult,
   fetchOneEntry,
-  getBuilderSearchParams,
   registerAction,
   type RegisteredComponent,
 } from '@builder.io/sdk-angular';
@@ -95,7 +94,6 @@ export class CatchAllComponent {
     const builderProps = await getProps({
       pathname: urlPath,
       _processContentResult,
-      options: getBuilderSearchParams(searchParams),
       fetchOneEntry: (args) => {
         return fetchOneEntry({
           ...args,
