@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 
@@ -17,7 +18,7 @@ import {
   standalone: true,
   imports: [CommonModule, Content],
   template: `
-    <ng-container *ngIf="content">
+    <ng-container *ngIf="!notFound">
       <builder-content
         [model]="model"
         [content]="content"
@@ -25,6 +26,9 @@ import {
       ></builder-content>
     </ng-container>
 
+    <ng-template #notFound>
+      <div>404 - Content not found</div>
+    </ng-template>
     <!-- Your content coming from your app (or also Builder) -->
     <div>The rest of your page goes here</div>
   `,
@@ -33,6 +37,7 @@ export class AnnouncementBarComponent {
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   model = 'announcement-bar';
   content: BuilderContent | null = null;
+  notFound = false;
 
   async ngOnInit() {
     const urlPath = window.location.pathname || '';
@@ -45,10 +50,7 @@ export class AnnouncementBarComponent {
       },
     });
 
-    if (!content) {
-      return;
-    }
-
     this.content = content;
+    this.notFound = !content && !isPreviewing();
   }
 }

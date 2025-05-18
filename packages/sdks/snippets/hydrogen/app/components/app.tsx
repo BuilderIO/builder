@@ -3,11 +3,7 @@
  * snippets/hydrogen/app/components/app.tsx
  */
 
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-} from '@builder.io/sdk-react';
+import {Content, fetchOneEntry} from '@builder.io/sdk-react';
 import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {useNonce} from '@shopify/hydrogen';
