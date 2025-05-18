@@ -6,7 +6,6 @@ import {
   Content,
   type BuilderContent,
   fetchOneEntry,
-  getBuilderSearchParams,
   isPreviewing,
 } from '@builder.io/sdk-vue';
 import { onMounted, ref } from 'vue';
@@ -20,7 +19,6 @@ onMounted(async () => {
   content.value = await fetchOneEntry({
     model,
     apiKey,
-
     userAttributes: {
       urlPath: window.location.pathname,
     },
