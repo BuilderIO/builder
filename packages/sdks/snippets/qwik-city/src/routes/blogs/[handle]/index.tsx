@@ -5,30 +5,44 @@ import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-qwik';
 const MODEL_NAME = 'blog-article';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
-export const useBlogArticle = routeLoader$(async ({ params }) => {
-  return await fetchOneEntry({
+export const useBlogArticle = routeLoader$(async ({ params, request }) => {
+  const url = new URL(request.url);
+  const searchParams = Object.fromEntries(url.searchParams);
+
+  const content = await fetchOneEntry({
     model: MODEL_NAME,
     apiKey: API_KEY,
     query: { 'data.handle': params.handle },
   });
+
+  return {
+    content,
+    searchParams,
+  };
 });
 
 export default component$(() => {
-  const article = useBlogArticle();
-  if (!article.value && !isPreviewing()) return <div>404</div>;
+  const { value } = useBlogArticle();
+  const canShowContent = value?.content || isPreviewing(value?.searchParams);
+
   return (
     <>
-      {article.value?.data && (
+      {canShowContent ? (
         <div class="content">
-          <h1>{article.value.data.title}</h1>
-          <p>{article.value.data.blurb}</p>
-          <img src={article.value.data.image} alt={article.value.data.title} />
+          <h1>{value.content?.data?.title}</h1>
+          <p>{value.content?.data?.blurb}</p>
+          <img
+            src={value.content?.data?.image}
+            alt={value.content?.data?.title}
+          />
           <Content
             model={MODEL_NAME}
-            content={article.value}
+            content={value?.content}
             apiKey={API_KEY}
           />
         </div>
+      ) : (
+        <div>404</div>
       )}
     </>
   );
