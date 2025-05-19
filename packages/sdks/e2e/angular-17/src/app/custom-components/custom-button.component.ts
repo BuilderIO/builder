@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'custom-button',
-  template: `<button><ng-content /></button>`,
-  standalone: true,
+  selector: 'button[custom-button]',
+  template: `
+    <span>
+      <ng-content></ng-content>
+    </span>
+  `,
 })
-export class CustomButtonComponent {} 
+export class CustomButtonComponent {}
