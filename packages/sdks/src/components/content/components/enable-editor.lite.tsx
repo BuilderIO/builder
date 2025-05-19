@@ -83,6 +83,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   const [hasExecuted, setHasExecuted] = useState<boolean>(false);
   const state = useStore({
     prevData: null as Dictionary<any> | null,
+    prevLocale: '',
     mergeNewRootState(newData: Dictionary<any>) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
@@ -519,7 +520,11 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onUpdate(() => {
     if (props.locale) {
+      if (state.prevLocale === props.locale) {
+        return;
+      }
       state.mergeNewRootState({ locale: props.locale });
+      state.prevLocale = props.locale;
     }
   }, [props.locale]);
 

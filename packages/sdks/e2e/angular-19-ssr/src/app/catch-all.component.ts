@@ -37,6 +37,8 @@ interface BuilderProps {
         [apiKey]="apiKey"
         [customComponents]="customComponents"
         [data]="data"
+        [apiHost]="apiHost ?? ''"
+        [locale]="locale ?? ''"
       ></builder-content>
     } @else {
       <div>404 - Content not found</div>
