@@ -205,7 +205,13 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
           `,
         };
 
-        json.children[0].children[0].children[0] = {
+        if (json.children[0].children[1].children[0].name !== 'For') {
+          throw new Error(
+            'Blocks component must have a For block that will get converted to a FlatList'
+          );
+        }
+
+        json.children[0].children[1].children[0] = {
           '@type': '@builder.io/mitosis/node',
           name: 'FlatList',
           meta: {},
@@ -1101,6 +1107,7 @@ module.exports = {
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
       ],
       stylesType: 'style-tag',
+      styleTagsPlacement: 'top',
     },
     rsc: {
       explicitImportFileExtension: true,

@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-nextjs",
   "description": "Builder.io RSC SDK for NextJS App Directory",
-  "version": "0.18.11",
+  "version": "0.20.0",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/nextjs",
   "repository": {
     "type": "git",
@@ -107,7 +107,7 @@
     "next": ">=13.4.20",
     "react": "^18.2.0",
     "typescript": "^5.1.6",
-    "vite": "^4.5.6"
+    "vite": "^4.5.11"
   },
   "dependencies": {
     "isolated-vm": "^5.0.0"

@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/admin-sdk",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Builder.io Admin API SDK",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [

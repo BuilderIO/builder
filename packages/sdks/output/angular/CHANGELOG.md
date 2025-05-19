@@ -1,5 +1,79 @@
 # @builder.io/sdk-angular
 
+## 0.20.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
+## 0.19.4
+
+### Patch Changes
+
+- 103248e: feat: Add edge exports to angular SDK
+
+## 0.19.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
+## 0.19.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
+## 0.19.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+
+## 0.19.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+## 0.18.15
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
+## 0.18.13
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<blocks>` component. This allows overriding global props set via `<builder-content>` with specific props for individual blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```html
+  <!-- Set global props, applies to all blocks -->
+  <builder-content
+    [blocksWrapperProps]="{ style: { padding: '10px' } }"
+  ></builder-content>
+
+  <!-- Override global props -->
+  <blocks [BlocksWrapperProps]="{ style: { backgroundColor: 'red' } }"></blocks>
+
+  <!-- Merge global and local props -->
+  <blocks
+    [BlocksWrapperProps]="{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' } // applies both bg color and padding
+    }"
+  ></blocks>
+  ```
+
+## 0.18.12
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
 ## 0.18.11
 
 ### Patch Changes

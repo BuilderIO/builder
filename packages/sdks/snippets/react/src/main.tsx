@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AnnouncementBar from './routes/AnnouncementBar.tsx';
 import BlogArticle from './routes/blueprints/BlogArticle.tsx';
+import Hero from './routes/blueprints/Hero.tsx';
+import Homepage from './routes/blueprints/homepage.tsx';
+import NavLinks from './routes/blueprints/NavLinks.tsx';
 import ProductDetails from './routes/blueprints/ProductDetails.tsx';
+import ProductEditorial from './routes/blueprints/ProductEditorial.tsx';
 import AdvancedChildRoute from './routes/custom-components/advanced-child.tsx';
 import CustomChildRoute from './routes/custom-components/custom-child.tsx';
 import EditableRegionRoute from './routes/custom-components/editable-region.tsx';
@@ -43,6 +47,19 @@ const router = createBrowserRouter([
   {
     path: '/blogs/:handle',
     element: <BlogArticle />,
+  },
+  {
+    path: '/products/:id',
+    element: <ProductEditorial />,
+  },
+  {
+    path: '/marketing-event',
+    element: <Hero />,
+  },
+  { path: '/home', element: <Homepage /> },
+  {
+    path: '/landing-page',
+    element: <NavLinks />,
   },
   {
     path: '/*',

@@ -52,6 +52,7 @@ import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
+import { CUSTOM_ACTION } from './custom-action.js';
 import { BASIC_STYLES } from './basic-styles.js';
 import {
   ACCORDION,
@@ -93,6 +94,8 @@ import { DYNAMIC_BUTTON } from './dynamic-button.js';
 import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from './symbols-with-list-content-input.js';
 import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
 import { SECTION_CHILDREN } from './section-children.js';
+import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
+import { HTTP_REQUESTS_POST_API_CONTENT } from './http-requests-post-api.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -148,6 +151,7 @@ export const PAGES: Record<string, Page> = {
   '/ab-test': { content: abTest },
   '/ab-test-interactive': { content: AB_TEST_INTERACTIVE },
   '/http-requests': { content: HTTP_REQUESTS },
+  '/http-requests-post-api': { content: HTTP_REQUESTS_POST_API_CONTENT },
   '/symbol-ab-test': { content: symbolAbTest },
   '/custom-breakpoints': { content: customBreakpoints },
   '/reactive-state': { content: REACTIVE_STATE_CONTENT },
@@ -194,6 +198,7 @@ export const PAGES: Record<string, Page> = {
   '/hover-animation': { content: HOVER_ANIMATION },
   '/tabs': { content: TABS },
   '/custom-components': { content: CUSTOM_COMPONENTS },
+  '/custom-action': { content: CUSTOM_ACTION },
   '/basic-styles': { content: BASIC_STYLES },
   '/accordion': { content: ACCORDION },
   '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
@@ -240,6 +245,7 @@ export const PAGES: Record<string, Page> = {
   '/localization-locale-passed': { content: LOCALIZATION },
   '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
   '/localization-subfields': { content: LOCALIZATION_SUBFIELDS, target: ['react', 'gen1-react'] },
+  '/localized-bindings': { content: LOCALIZATION_SUBFIELDS },
   '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
   '/editing-empty-content-element-ref': {
     content: null as unknown as BuilderContent,
@@ -249,39 +255,15 @@ export const PAGES: Record<string, Page> = {
   '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
   '/variant-containers': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-0': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-1': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-undefined': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
@@ -291,6 +273,7 @@ export const PAGES: Record<string, Page> = {
   '/dynamic-button': { content: DYNAMIC_BUTTON },
   '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
   '/section-children': { content: SECTION_CHILDREN },
+  '/symbol-update-entries': { content: SYMBOL_UPDATE_ENTRIES },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -446,6 +429,18 @@ export const getProps = async (args: {
     case '/localization-subfields':
       extraProps = {
         locale: 'hi-IN',
+      };
+      break;
+    case '/localized-bindings':
+      extraProps = {
+        locale: 'hi-IN',
+        data: {
+          header: {
+            '@type': '@builder.io/core:LocalizedValue',
+            Default: 'en-US title',
+            'hi-IN': 'hi-IN title',
+          },
+        },
       };
       break;
     case '/editing-with-top-padding':

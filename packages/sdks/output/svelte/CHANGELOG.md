@@ -1,5 +1,67 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 4.1.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
+## 4.1.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
+## 4.1.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+
+## 4.1.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+## 4.0.10
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
+## 4.0.9
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<Blocks />` component. This allows overriding global props set via `<Content />` with specific props for individual Blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```tsx
+  // Set global props, applies to all <Blocks />
+  <Content blocksWrapperProps={{ style: { padding: 10 } }} />
+
+  // Override global props
+  <Blocks BlocksWrapperProps={{ style: { backgroundColor: 'red' } }} />
+
+  // Merge global and local props
+  <Blocks
+    BlocksWrapperProps={{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' } // applies both bg color and padding
+    }}
+  />
+  ```
+
+- 8d5274f: Feat: support of Variant Containers and block level personalization
+
+## 4.0.8
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+
 ## 4.0.7
 
 ### Patch Changes

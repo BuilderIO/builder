@@ -1,5 +1,46 @@
 # @builder.io/react
 
+## 8.2.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
+## 8.1.2
+
+### Patch Changes
+
+- Updated dependencies [1c659e9]
+  - @builder.io/sdk@6.0.9
+
+## 8.1.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+- Updated dependencies [a6eee0e]
+  - @builder.io/sdk@6.0.8
+
+## 8.1.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+### Patch Changes
+
+- c8d7674: Stricter trusted origin check
+- Updated dependencies [c8d7674]
+  - @builder.io/sdk@6.0.7
+
+## 8.0.13
+
+### Patch Changes
+
+- 6d4e36b: fix: updated defaultStyles example
+- Updated dependencies [6d4e36b]
+  - @builder.io/sdk@6.0.6
+
 ## 8.0.12
 
 ### Patch Changes

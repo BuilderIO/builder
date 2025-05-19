@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "4.0.7",
+  "version": "4.2.0",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react",
   "type": "module",
   "repository": {
@@ -132,7 +132,7 @@
     "react": "^18.2.0",
     "recast": "^0.23.4",
     "typescript": "^4.9.4",
-    "vite": "^4.5.6"
+    "vite": "^4.5.11"
   },
   "nx": {
     "targets": {
