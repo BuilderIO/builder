@@ -472,9 +472,9 @@ const ANGULAR_NO_WRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
           code: UPDATE_ATTRIBUTES_METHOD,
           type: 'method',
         };
-        json.hooks.onMount.push({
+        json.compileContext.angular.hooks.ngAfterViewInit = {
           code: ATTACH_ATTRIBUTES_METHOD,
-        });
+        };
 
         if (!json.hooks.onUnMount) {
           json.hooks.onUnMount = {

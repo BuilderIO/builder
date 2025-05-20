@@ -209,10 +209,10 @@ export default class DynamicRenderer {
   };
 
   getComponentType(tagName: string): any {
-    return this.tagComponentMap[tagName] || null;
+    return this.tagComponentMap[tagName] || DynamicElement;
   }
 
-  ngOnInit() {
+  ngAfterContentInit() {
     if (this.tagNameIsString()) {
       if (this.tagComponentMap[this.TagName()]) {
         this._processedTagName.set(this.tagComponentMap[this.TagName()]);

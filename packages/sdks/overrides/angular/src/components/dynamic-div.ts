@@ -86,14 +86,21 @@ export default class DynamicDiv {
       return;
     }
 
-    if (changes.attributes) {
+    if (
+      changes.attributes &&
+      JSON.stringify(changes.attributes.currentValue) !==
+        JSON.stringify(changes.attributes.previousValue)
+    ) {
       this.setAttributes(
         el,
         this.attributes(),
         changes.attributes.currentValue
       );
     }
-    if (changes.actionAttributes) {
+    if (
+      changes.actionAttributes &&
+      Object.keys(changes.actionAttributes.currentValue).length > 0
+    ) {
       this.setAttributes(
         el,
         this.actionAttributes(),

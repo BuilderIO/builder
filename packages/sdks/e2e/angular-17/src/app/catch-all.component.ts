@@ -15,7 +15,7 @@ import { customComponents } from './custom-components';
 interface BuilderProps {
   apiVersion: string;
   canTrack?: boolean;
-  trustedHosts?: undefined;
+  trustedHosts?: string[];
   apiKey: string;
   model: string;
   content: any;
@@ -35,8 +35,10 @@ interface BuilderProps {
         [apiKey]="apiKey"
         [customComponents]="customComponents"
         [data]="data"
-        [locale]="locale ?? ''"
-        [apiHost]="apiHost ?? ''"
+        [locale]="locale"
+        [apiHost]="apiHost"
+        [trustedHosts]="trustedHosts"
+        [canTrack]="canTrack"
       ></builder-content>
     } @else {
       <div>404 - Content not found</div>
