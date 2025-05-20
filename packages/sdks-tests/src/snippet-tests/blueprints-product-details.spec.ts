@@ -5,8 +5,6 @@ test.describe('Product Details Component', () => {
   test.beforeEach(async ({ page, packageName }) => {
     test.skip(
       ![
-        'angular-16',
-        'angular-16-ssr',
         'react',
         'vue',
         'nuxt',

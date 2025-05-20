@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Component, ElementRef, input, Renderer2 } from '@angular/core';
 
 interface Props {
   scriptStr: string;
@@ -23,9 +23,9 @@ interface Props {
   ],
 })
 export default class InlinedScript {
-  @Input() scriptStr!: Props['scriptStr'];
-  @Input() id!: Props['id'];
-  @Input() nonce!: Props['nonce'];
+  scriptStr = input.required<Props['scriptStr']>();
+  id = input.required<Props['id']>();
+  nonce = input.required<Props['nonce']>();
 
   constructor(
     private renderer: Renderer2,
@@ -34,9 +34,9 @@ export default class InlinedScript {
 
   ngOnInit() {
     const script = this.renderer.createElement('script');
-    script.text = this.scriptStr;
-    this.renderer.setAttribute(script, 'data-id', this.id);
-    this.renderer.setAttribute(script, 'nonce', this.nonce);
+    script.text = this.scriptStr();
+    this.renderer.setAttribute(script, 'data-id', this.id());
+    this.renderer.setAttribute(script, 'nonce', this.nonce());
     this.renderer.appendChild(this.elRef.nativeElement, script);
   }
 }

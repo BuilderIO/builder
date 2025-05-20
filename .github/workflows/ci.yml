@@ -75,8 +75,8 @@ jobs:
             'nextjs-sdk-next-app',
             'vue',
             'nuxt',
-            'angular-16',
-            'angular-16-ssr',
+            'angular-17',
+            'angular-17-ssr',
             'angular-19-ssr',
           ]
 

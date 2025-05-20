@@ -14,6 +14,7 @@ useMetadata({
   },
   angular: {
     changeDetection: 'OnPush',
+    selector: 'builder-embed',
   },
 });
 
