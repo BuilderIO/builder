@@ -38,45 +38,40 @@ export default function Video(props: VideoProps) {
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  onMount(
-    () => {
-      if (props.lazyLoad) {
-        const oberver = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
+  onMount(() => {
+    if (props.lazyLoad) {
+      const oberver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
 
-            const videoElement = entry.target as HTMLVideoElement;
-            try {
-              // Convert HTMLCollection to Array and filter for source elements
-              Array.from(videoElement.children)
-                .filter(
-                  (child): child is HTMLSourceElement =>
-                    child instanceof HTMLElement && child.tagName === 'SOURCE'
-                )
-                .forEach((source) => {
-                  const src = source.dataset.src;
-                  if (src) {
-                    source.src = src;
-                  }
-                });
+          const videoElement = entry.target as HTMLVideoElement;
+          try {
+            // Convert HTMLCollection to Array and filter for source elements
+            Array.from(videoElement.children)
+              .filter(
+                (child): child is HTMLSourceElement =>
+                  child instanceof HTMLElement && child.tagName === 'SOURCE'
+              )
+              .forEach((source) => {
+                const src = source.dataset.src;
+                if (src) {
+                  source.src = src;
+                }
+              });
 
-              videoElement.load();
-              oberver.unobserve(videoElement);
-            } catch (error) {
-              console.error('Error loading lazy video:', error);
-            }
-          });
+            videoElement.load();
+            oberver.unobserve(videoElement);
+          } catch (error) {
+            console.error('Error loading lazy video:', error);
+          }
         });
-        if (videoRef) {
-          oberver.observe(videoRef);
-        }
-        state.lazyVideoObserver = oberver;
+      });
+      if (videoRef) {
+        oberver.observe(videoRef);
       }
-    },
-    {
-      onSSR: false,
+      state.lazyVideoObserver = oberver;
     }
-  );
+  });
 
   onUnMount(() => {
     if (state.lazyVideoObserver) {
