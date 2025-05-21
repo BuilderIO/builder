@@ -1,5 +1,12 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 4.2.1
+
+### Patch Changes
+
+- 6ae35cc: feat: add support for register action
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
 ## 4.2.0
 
 ### Minor Changes
