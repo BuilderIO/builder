@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.2.1
+
+### Patch Changes
+
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
 ## 8.2.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.20.1
+
+### Patch Changes
+
+- 6ae35cc: feat: add support for register action
+
 ## 0.20.0
 
 ### Minor Changes
