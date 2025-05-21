@@ -298,6 +298,11 @@ export interface BuilderComponentProps {
    * Pass a list of custom components to register with Builder.io.
    */
   customComponents?: Array<RegisteredComponent>;
+
+  /**
+   * CSP nonce to allow the loading and execution of a script or style tag when Content-Security-Policy is enabled.
+   */
+  nonce?: string;
 }
 
 export interface BuilderComponentState {
@@ -439,6 +444,7 @@ export class BuilderComponent extends React.Component<
       context: {
         ...props.context,
         apiKey: this.props.apiKey || builder.apiKey,
+        nonce: this.props.nonce,
       },
       state: Object.assign(this.rootState, {
         ...(this.inlinedContent && this.inlinedContent.data && this.inlinedContent.data.state),
@@ -1097,6 +1103,7 @@ export class BuilderComponent extends React.Component<
                       }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
+                      nonce={this.props.nonce}
                     >
                       {(data, loading, fullData) => {
                         if (this.props.dataOnly) {
@@ -1191,6 +1198,7 @@ export class BuilderComponent extends React.Component<
                           >
                             {!codegen && this.getCss(data) && (
                               <style
+                                nonce={this.props.nonce}
                                 ref={ref => (this.styleRef = ref)}
                                 className="builder-custom-styles"
                                 dangerouslySetInnerHTML={{
