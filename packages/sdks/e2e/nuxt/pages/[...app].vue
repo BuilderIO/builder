@@ -3,6 +3,7 @@ import {
   Content,
   _processContentResult,
   setClientUserAttributes,
+  registerAction,
 } from '@builder.io/sdk-vue';
 import BuilderBlockWithClassName from '../components/BuilderBlockWithClassName.vue';
 import { getProps } from '@sdk/tests';
@@ -13,6 +14,22 @@ if (typeof window !== 'undefined') {
       device: 'tablet',
     });
   }
+  registerAction({
+    name: "test-action",
+    kind: 'function',
+    id: 'test-action-id',
+    inputs:[
+      {
+        name: "actionName",
+        type: "string",
+        required: true,
+        helperText: "Action name",
+      },
+    ],
+    action: () => {
+      return console.log("function call")
+    },
+  });
 }
 
 const route = useRoute();
