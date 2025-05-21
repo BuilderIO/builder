@@ -1,4 +1,4 @@
-import {Content,registerAction} from '@builder.io/sdk-react';
+import {Content, registerAction} from '@builder.io/sdk-react';
 import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {getProps} from '@sdk/tests';
@@ -61,19 +61,19 @@ export default function BuilderPage() {
 
   if (typeof window !== 'undefined') {
     registerAction({
-      name: "test-action",
+      name: 'test-action',
       kind: 'function',
       id: 'test-action-id',
-      inputs:[
+      inputs: [
         {
-          name: "actionName",
-          type: "string",
+          name: 'actionName',
+          type: 'string',
           required: true,
-          helperText: "Action name",
+          helperText: 'Action name',
         },
       ],
-      action:  () => {
-        return`console.log("function call") `
+      action: () => {
+        return `console.log("function call") `;
       },
     });
   }

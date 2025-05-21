@@ -2,8 +2,8 @@ import {
   Content,
   _processContentResult,
   fetchOneEntry,
+  registerAction,
   subscribeToEditor,
-  registerAction
 } from '@builder.io/sdk-react';
 import { getProps } from '@sdk/tests';
 import { useEffect, useState } from 'react';
@@ -56,19 +56,19 @@ function App() {
     }
     if (typeof window !== 'undefined') {
       registerAction({
-        name: "test-action",
+        name: 'test-action',
         kind: 'function',
         id: 'test-action-id',
-        inputs:[
+        inputs: [
           {
-            name: "actionName",
-            type: "string",
+            name: 'actionName',
+            type: 'string',
             required: true,
-            helperText: "Action name",
+            helperText: 'Action name',
           },
         ],
-        action:  () => {
-          return`console.log("function call")`
+        action: () => {
+          return `console.log("function call")`;
         },
       });
     }
