@@ -2,7 +2,7 @@ import {
   Content,
   _processContentResult,
   fetchOneEntry,
-  registerAction
+  registerAction,
 } from '@builder.io/sdk-react-native';
 import { getProps } from '@sdk/tests';
 import { useLocalSearchParams } from 'expo-router';
@@ -23,19 +23,19 @@ export default function HomeScreen() {
     });
     if (typeof window !== 'undefined') {
       registerAction({
-        name: "test-action",
+        name: 'test-action',
         kind: 'function',
         id: 'test-action-id',
-        inputs:[
+        inputs: [
           {
-            name: "actionName",
-            type: "string",
+            name: 'actionName',
+            type: 'string',
             required: true,
-            helperText: "Action name",
+            helperText: 'Action name',
           },
         ],
-        action:  () => {
-          return`console.log("function call") `
+        action: () => {
+          return `console.log("function call") `;
         },
       });
     }
