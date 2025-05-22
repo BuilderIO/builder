@@ -172,6 +172,7 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
                   hydrate={state.state?._hydrate}
                   builderBlock={this.props.builderBlock}
                   dataOnly={this.props.dataOnly}
+                  nonce={state.context.nonce}
                 >
                   {/* TODO: builder blocks option for loading stuff */}
                   {this.props.children}
