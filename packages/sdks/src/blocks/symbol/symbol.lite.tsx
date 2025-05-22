@@ -23,6 +23,9 @@ useMetadata({
   rsc: {
     componentType: 'server',
   },
+  angular: {
+    selector: 'builder-symbol',
+  },
 });
 
 export default function Symbol(props: SymbolProps) {
