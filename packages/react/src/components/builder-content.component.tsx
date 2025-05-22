@@ -50,6 +50,10 @@ export type BuilderContentProps<ContentType> = {
    * Required if `inline` is set to `true`.
    */
   content?: Content;
+  /**
+   * CSP nonce to allow the loading and execution of a script or style tag when Content-Security-Policy is enabled.
+   */
+  nonce?: string;
 } & ({ model: string } | { modelName: string }); // model and modelName are aliases of the same thing¸
 
 /**
@@ -314,7 +318,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     const useData: any = this.data;
     const TagName = this.props.dataOnly ? NoWrap : 'div';
     return (
-      <VariantsProvider initialContent={useData}>
+      <VariantsProvider initialContent={useData} nonce={this.props.nonce}>
         {(variants, renderScript) => {
           return (
             <React.Fragment>
