@@ -29,11 +29,11 @@ import {
   provideLinkComponent,
   provideRegisteredComponents,
 } from './block.helpers.js';
-import BlockStyles from './components/block-styles.lite.jsx';
 import BlockWrapper from './components/block-wrapper.lite.jsx';
 import type { ComponentProps } from './components/component-ref/component-ref.helpers.js';
 import ComponentRef from './components/component-ref/component-ref.lite.jsx';
 import RepeatedBlock from './components/repeated-block.lite.jsx';
+import StyleWrapper from './components/style-wrapper.lite.jsx';
 
 export type BlockProps = {
   block: BuilderBlock;
@@ -269,7 +269,11 @@ export default function Block(props: BlockProps) {
 
   return (
     <Show when={state.canShowBlock}>
-      <BlockStyles block={state.processedBlock} context={props.context.value} />
+      <StyleWrapper
+        block={state.processedBlock}
+        context={props.context.value}
+        id={props.block.id}
+      />
       <Show
         when={!state.blockComponent?.noWrap}
         else={
