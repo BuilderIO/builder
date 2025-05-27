@@ -1,27 +1,19 @@
 // ($slug)._index.tsx
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-  isPreviewing,
-  type BuilderContent,
-} from '@builder.io/sdk-react';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { fetch as webFetch } from '@remix-run/web-fetch';
 
-const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
+const BUILDER_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const MODEL_NAME = 'page';
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const urlPath = `/${params['slug'] || ''}`;
 
   const page = await fetchOneEntry({
-    model: 'page',
-    apiKey: apiKey,
-    options: getBuilderSearchParams(url.searchParams),
+    model: MODEL_NAME,
+    apiKey: BUILDER_API_KEY,
     userAttributes: { urlPath },
-    fetch: webFetch,
   });
 
   if (!page && !isPreviewing(url.search)) {
@@ -40,7 +32,5 @@ export default function Page() {
   const { page } = useLoaderData<typeof loader>();
 
   // Render the page content from Builder.io
-  return (
-    <Content model="page" apiKey={apiKey} content={page as BuilderContent} />
-  );
+  return <Content model={MODEL_NAME} apiKey={BUILDER_API_KEY} content={page} />;
 }

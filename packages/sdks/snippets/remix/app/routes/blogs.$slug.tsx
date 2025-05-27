@@ -2,7 +2,6 @@ import {
   BuilderContent,
   Content,
   fetchOneEntry,
-  getBuilderSearchParams,
   isPreviewing,
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
@@ -20,7 +19,6 @@ export default function BlogArticle() {
       userAttributes: {
         urlPath: window.location.pathname,
       },
-      options: getBuilderSearchParams(new URL(location.href).searchParams),
     }).then((result) => {
       setArticle(result);
     });
