@@ -38,7 +38,7 @@ export default function LiveEdit(props: LiveEditProps) {
   });
   
   return (
-    <props.Wrapper {...state.options} attributes={props.attributes}>
+    <props.Wrapper {...state.options} {...props.targetWrapperProps} attributes={props.attributes}>
       {props.children}
     </props.Wrapper>
   );

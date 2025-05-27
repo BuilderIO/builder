@@ -34,6 +34,15 @@ export const findBlockInTree = (
       const child = findBlockInTree(block.children, id);
       if (child) return child;
     }
+
+    if (block.component?.name === 'Columns' && block.component?.options?.columns) {
+      for (const column of block.component.options.columns) {
+        if (column.blocks) {
+          const child = findBlockInTree(column.blocks, id);
+          if (child) return child;
+        }
+      }
+    }
   }
   return null;
 };

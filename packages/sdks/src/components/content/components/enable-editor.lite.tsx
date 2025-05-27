@@ -28,10 +28,11 @@ import { getInteractionPropertiesForEvent } from '../../../functions/track/inter
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
-import { createEditorListener, type EditType} from '../../../helpers/subscribe-to-editor.js';
 import {
-  setupBrowserForEditing,
-} from '../../../scripts/init-editing.js';
+  createEditorListener,
+  type EditType,
+} from '../../../helpers/subscribe-to-editor.js';
+import { setupBrowserForEditing } from '../../../scripts/init-editing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
 import type { ComponentInfo } from '../../../types/components.js';
 import type { Dictionary } from '../../../types/typescript.js';
@@ -71,7 +72,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
    */
   const elementRef = useRef<HTMLDivElement>();
   const [hasExecuted, setHasExecuted] = useState<boolean>(false);
-  const [contextValue, setContextValue] = useState<any>(props.builderContextSignal.value);
+  const [contextValue, setContextValue] = useState<any>(
+    props.builderContextSignal.value
+  );
   const state = useStore({
     mergeNewRootState(newData: Dictionary<any>, editType?: EditType) {
       const combinedState = {
@@ -95,7 +98,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           } else {
             const updatedContext = {
               ...props.builderContextSignal.value,
-              rootState: combinedState
+              rootState: combinedState,
             };
             setContextValue(updatedContext);
           }
@@ -106,8 +109,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
           } else {
             props.builderContextSignal.value.rootState = combinedState;
           }
-        }
-      })
+        },
+      });
     },
     mergeNewContent(newContent: BuilderContent, editType?: EditType) {
       const newContentValue = {
@@ -135,7 +138,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
               url: window.location.pathname,
             });
           } else {
-            setContextValue({...contextValue, content: newContentValue});
+            // setContextValue({...contextValue, content: newContentValue});
+            const updatedContent = JSON.parse(JSON.stringify(newContentValue));
+            const updatedContextValue = {
+              ...contextValue,
+              content: updatedContent,
+            };
+            setContextValue(updatedContextValue);
           }
         },
         default: () => {

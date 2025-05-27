@@ -45,7 +45,6 @@ export const sendContentUpdateMessage = async ({
   page,
   newContent,
   model,
-  editType,
 }: {
   page: Page;
   newContent: BuilderContent;
@@ -66,13 +65,12 @@ export const sendContentUpdateMessage = async ({
               id: msgData.id,
               data: msgData.data,
             },
-            editType: msgData.editType,
           },
         },
         '*'
       );
     },
-    { ...newContent, model, editType }
+    { ...newContent, model }
   );
 };
 
