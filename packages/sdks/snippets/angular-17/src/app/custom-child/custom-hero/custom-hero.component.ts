@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import type { RegisteredComponent } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-custom-hero',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: ` <div>This is text from your component</div> `,
 })
 export class CustomHeroComponent {}

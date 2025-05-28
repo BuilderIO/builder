@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   Content,
@@ -12,13 +11,7 @@ import { ProductInfoComponent } from './product-info/product-info.component';
 @Component({
   selector: 'app-product-editorial',
   standalone: true,
-  imports: [
-    Content,
-    CommonModule,
-    ProductInfoComponent,
-    HeaderComponent,
-    FooterComponent,
-  ],
+  imports: [Content, ProductInfoComponent, HeaderComponent, FooterComponent],
   template: `
     <app-header />
 

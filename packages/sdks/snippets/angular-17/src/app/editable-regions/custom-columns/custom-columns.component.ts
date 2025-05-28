@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import type {
   BuilderBlock,
   BuilderContextInterface,
@@ -11,30 +10,30 @@ import { Blocks } from '@builder.io/sdk-angular';
 @Component({
   selector: 'app-custom-columns',
   standalone: true,
-  imports: [CommonModule, Blocks],
+  imports: [Blocks],
   template: `
     <blocks
-      [blocks]="column1"
+      [blocks]="column1()"
       [path]="'column1'"
-      [parent]="builderBlock.id"
-      [context]="builderContext"
-      [registeredComponents]="builderComponents"
+      [parent]="builderBlock().id"
+      [context]="builderContext()"
+      [registeredComponents]="builderComponents()"
     />
     <blocks
-      [blocks]="column2"
+      [blocks]="column2()"
       [path]="'column2'"
-      [parent]="builderBlock.id"
-      [context]="builderContext"
-      [registeredComponents]="builderComponents"
+      [parent]="builderBlock().id"
+      [context]="builderContext()"
+      [registeredComponents]="builderComponents()"
     />
   `,
 })
 export class CustomColumnsComponent {
-  @Input() builderBlock!: BuilderBlock;
-  @Input() column1!: BuilderBlock[];
-  @Input() column2!: BuilderBlock[];
-  @Input() builderComponents!: RegisteredComponents;
-  @Input() builderContext!: BuilderContextInterface;
+  builderBlock = input.required<BuilderBlock>();
+  column1 = input.required<BuilderBlock[]>();
+  column2 = input.required<BuilderBlock[]>();
+  builderComponents = input.required<RegisteredComponents>();
+  builderContext = input.required<BuilderContextInterface>();
 }
 
 export const customColumnsInfo: RegisteredComponent = {

@@ -1,14 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { type BuilderContent } from '@builder.io/sdk-angular';
-import { NavBarComponent } from '../nav-bar.component';
 
 @Component({
   selector: 'app-nav-links',
   standalone: true,
-  imports: [NavBarComponent],
+  imports: [],
   template: `
     <ul>
-      @for (link of links.data?.['links']; track link.url) {
+      @for (link of links().data?.['links']; track link.url) {
         <li>
           <a [href]="link.url">{{ link.text }}</a>
         </li>
@@ -17,5 +16,5 @@ import { NavBarComponent } from '../nav-bar.component';
   `,
 })
 export class NavLinksComponent {
-  @Input() links: BuilderContent = { data: { links: [] } };
+  links = input<BuilderContent>({ data: { links: [] } });
 }

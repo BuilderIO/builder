@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
@@ -7,7 +7,7 @@ import { type BuilderContent } from '@builder.io/sdk-angular';
   imports: [],
   template: `
     <ul>
-      @for (link of links.data?.['links']; track link.url) {
+      @for (link of links().data?.['links']; track link.url) {
         <li>
           <a [href]="link.url">{{ link.text }}</a>
         </li>
@@ -16,5 +16,5 @@ import { type BuilderContent } from '@builder.io/sdk-angular';
   `,
 })
 export class NavLinksComponent {
-  @Input() links: BuilderContent = { data: { links: [] } };
+  links = input<BuilderContent>({ data: { links: [] } });
 }

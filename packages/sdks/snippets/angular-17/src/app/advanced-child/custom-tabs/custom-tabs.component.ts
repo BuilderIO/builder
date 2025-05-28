@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import type {
   BuilderBlock,
   BuilderContextInterface,
@@ -12,8 +12,8 @@ import { Blocks } from '@builder.io/sdk-angular';
   standalone: true,
   imports: [Blocks],
   template: `
-    @if (tabList.length) {
-      @for (tab of tabList; track $index) {
+    @if (tabList().length) {
+      @for (tab of tabList(); track $index) {
         <button
           [class.active]="activeTab === $index"
           (click)="activeTab = $index"
@@ -23,20 +23,20 @@ import { Blocks } from '@builder.io/sdk-angular';
       }
 
       <blocks
-        [blocks]="tabList[activeTab].blocks"
+        [blocks]="tabList()[activeTab].blocks"
         [path]="'tabList.' + activeTab + '.blocks'"
-        [parent]="builderBlock.id"
-        [context]="builderContext"
-        [registeredComponents]="builderComponents"
+        [parent]="builderBlock().id"
+        [context]="builderContext()"
+        [registeredComponents]="builderComponents()"
       />
     }
   `,
 })
 export class CustomTabsComponent {
-  @Input() builderBlock!: BuilderBlock;
-  @Input() tabList: { tabName: string; blocks: BuilderBlock[] }[] = [];
-  @Input() builderComponents: RegisteredComponents = {};
-  @Input() builderContext!: BuilderContextInterface;
+  builderBlock = input.required<BuilderBlock>();
+  tabList = input<{ tabName: string; blocks: BuilderBlock[] }[]>([]);
+  builderComponents = input<RegisteredComponents>({});
+  builderContext = input.required<BuilderContextInterface>();
 
   activeTab = 0;
 }
