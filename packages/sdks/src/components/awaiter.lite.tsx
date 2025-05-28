@@ -3,7 +3,7 @@
  * Allows to dynamically import components.
  */
 import { onMount, useTarget } from '@builder.io/mitosis';
-import type { AwaiterProps } from './awaiter.types';
+import type { AwaiterProps } from './awaiter.types.js';
 
 export default function Awaiter(props: AwaiterProps) {
   onMount(() => {

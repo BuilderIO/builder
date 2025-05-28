@@ -552,6 +552,26 @@ const VUE_FIX_EXTRA_ATTRS_PLUGIN = () => ({
   },
 });
 
+const REACT_NATIVE_IMPORT_COMPONENTS_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'Content' || json.name === 'EnableEditor') {
+        json.imports.push({
+          imports: { ScrollView: 'ScrollView' },
+          path: 'react-native',
+        });
+      }
+
+      if (json.name === 'Block') {
+        json.imports.push({
+          imports: { View: 'View' },
+          path: 'react-native',
+        });
+      }
+    },
+  },
+});
+
 /**
  * @type {MitosisConfig}
  */
@@ -679,6 +699,7 @@ module.exports = {
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN,
         MEMOIZING_BLOCKS_COMPONENT_PLUGIN,
+        REACT_NATIVE_IMPORT_COMPONENTS_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
