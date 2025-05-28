@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { type BuilderContent } from '@builder.io/sdk-angular';
-import { NavBarComponent } from '../nav-bar.component';
 
 @Component({
   selector: 'app-nav-links',
   standalone: true,
-  imports: [NavBarComponent],
+  imports: [],
   template: `
     <ul style="display: flex; gap: 20px; list-style: none;">
       @for (link of links.data?.['links']; track link.url) {

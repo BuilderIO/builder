@@ -4,12 +4,14 @@
  * src/app/announcement-bar/announcement-bar.component.ts
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   Content,
   fetchOneEntry,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
+import { BuilderFetchService } from '../builder-fetch.service';
 
 @Component({
   selector: 'app-announcement-bar',
@@ -29,12 +31,15 @@ import {
   `,
 })
 export class AnnouncementBarComponent {
+  private router = inject(Router);
+  private builderFetch = inject(BuilderFetchService);
+
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   model = 'announcement-bar';
   content: BuilderContent | null = null;
 
   async ngOnInit() {
-    const urlPath = window.location.pathname || '';
+    const urlPath = this.router.url || '';
 
     const content = await fetchOneEntry({
       apiKey: this.apiKey,
@@ -42,6 +47,7 @@ export class AnnouncementBarComponent {
       userAttributes: {
         urlPath,
       },
+      fetch: this.builderFetch.fetch,
     });
 
     if (!content) {

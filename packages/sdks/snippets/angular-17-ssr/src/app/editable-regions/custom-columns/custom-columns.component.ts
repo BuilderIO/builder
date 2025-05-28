@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import type {
   BuilderBlock,
@@ -11,7 +10,7 @@ import { Blocks } from '@builder.io/sdk-angular';
 @Component({
   selector: 'app-custom-columns',
   standalone: true,
-  imports: [CommonModule, Blocks],
+  imports: [Blocks],
   template: `
     <blocks
       [blocks]="column1"

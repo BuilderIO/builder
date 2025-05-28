@@ -1,13 +1,14 @@
-import { Component, type OnInit } from '@angular/core';
+import { Component, inject, type OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   Content,
   fetchOneEntry,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
-import { customColumnsInfo } from './custom-columns/custom-columns.component';
+import { BuilderFetchService } from '../builder-fetch.service';
 
 @Component({
-  selector: 'app-editable-region',
+  selector: 'app-editable-regions',
   standalone: true,
   imports: [Content],
   template: `
@@ -15,9 +16,8 @@ import { customColumnsInfo } from './custom-columns/custom-columns.component';
       <div>
         <builder-content
           [content]="content"
-          [model]="model"
+          [model]="modelName"
           [apiKey]="apiKey"
-          [customComponents]="customComponents"
         />
       </div>
     }
@@ -26,21 +26,26 @@ import { customColumnsInfo } from './custom-columns/custom-columns.component';
     }
   `,
 })
-export class EditableRegionComponent implements OnInit {
-  model = 'page';
+export class EditableRegionsComponent implements OnInit {
+  private router = inject(Router);
+  private builderFetch = inject(BuilderFetchService);
+
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
-  customComponents = [customColumnsInfo];
-  notFound = false;
+  modelName = 'page';
+
   content: BuilderContent | null = null;
+  notFound = false;
 
   async ngOnInit() {
     this.content = await fetchOneEntry({
-      model: this.model,
+      model: this.modelName,
       apiKey: this.apiKey,
       userAttributes: {
-        urlPath: window.location.pathname,
+        urlPath: this.router.url,
       },
+      fetch: this.builderFetch.fetch,
     });
+
     this.notFound = !this.content;
   }
 }

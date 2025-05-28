@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import type {
   BuilderBlock,
@@ -11,16 +10,17 @@ import { Blocks } from '@builder.io/sdk-angular';
 @Component({
   selector: 'app-custom-tabs',
   standalone: true,
-  imports: [CommonModule, Blocks],
+  imports: [Blocks],
   template: `
-    <ng-container *ngIf="tabList?.length">
-      <button
-        *ngFor="let tab of tabList; let i = index"
-        [class.active]="activeTab === i"
-        (click)="activeTab = i"
-      >
-        {{ tab.tabName }}
-      </button>
+    @if (tabList.length) {
+      @for (tab of tabList; track $index) {
+        <button
+          [class.active]="activeTab === $index"
+          (click)="activeTab = $index"
+        >
+          {{ tab.tabName }}
+        </button>
+      }
 
       <blocks
         [blocks]="tabList[activeTab].blocks"
@@ -29,7 +29,7 @@ import { Blocks } from '@builder.io/sdk-angular';
         [context]="builderContext"
         [registeredComponents]="builderComponents"
       />
-    </ng-container>
+    }
   `,
 })
 export class CustomTabsComponent {

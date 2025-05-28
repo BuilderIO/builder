@@ -1,9 +1,11 @@
-import { Component, type OnInit } from '@angular/core';
+import { Component, inject, type OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   Content,
   fetchOneEntry,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
+import { BuilderFetchService } from '../builder-fetch.service';
 import {
   CustomTabsComponent,
   customTabsInfo,
@@ -30,6 +32,9 @@ import {
   `,
 })
 export class AdvancedChildComponent implements OnInit {
+  private router = inject(Router);
+  private builderFetch = inject(BuilderFetchService);
+
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   modelName = 'page';
 
@@ -42,8 +47,9 @@ export class AdvancedChildComponent implements OnInit {
       model: this.modelName,
       apiKey: this.apiKey,
       userAttributes: {
-        urlPath: window.location.pathname,
+        urlPath: this.router.url,
       },
+      fetch: this.builderFetch.fetch,
     });
 
     this.notFound = !this.content;

@@ -4,7 +4,7 @@ import { AnnouncementBarComponent } from './announcement-bar/announcement-bar.co
 import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { CustomChildComponent } from './custom-child/custom-child.component';
-import { EditableRegionComponent } from './editable-regions/editable-regions.component';
+import { EditableRegionsComponent } from './editable-regions/editable-regions.component';
 import { HomepageComponent } from './home/homepage.component';
 import { LivePreviewComponent } from './live-preview/live-preview.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -23,7 +23,7 @@ export const routes: Routes = [
   },
   {
     path: 'editable-region',
-    component: EditableRegionComponent,
+    component: EditableRegionsComponent,
   },
   { path: 'advanced-child', component: AdvancedChildComponent },
   { path: 'live-preview', component: LivePreviewComponent },

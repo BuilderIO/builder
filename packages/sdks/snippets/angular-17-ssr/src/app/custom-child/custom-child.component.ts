@@ -1,9 +1,11 @@
-import { Component, type OnInit } from '@angular/core';
+import { Component, inject, type OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   Content,
   fetchOneEntry,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
+import { BuilderFetchService } from '../builder-fetch.service';
 import { customHeroInfo } from './custom-hero/custom-hero.component';
 
 @Component({
@@ -15,36 +17,38 @@ import { customHeroInfo } from './custom-hero/custom-hero.component';
       <div>
         <builder-content
           [content]="content"
-          [model]="model"
+          [model]="modelName"
           [apiKey]="apiKey"
-          [customComponents]="[customHeroInfo]"
-        ></builder-content>
+          [customComponents]="customComponents"
+        />
       </div>
     }
-
     @if (notFound) {
-      <div>404 Not Found</div>
+      <div>404</div>
     }
   `,
 })
 export class CustomChildComponent implements OnInit {
-  notFound = false;
-  content: BuilderContent | null = null;
-  customHeroInfo = customHeroInfo;
-  model = 'page';
+  private router = inject(Router);
+  private builderFetch = inject(BuilderFetchService);
+
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
+  modelName = 'page';
+
+  content: BuilderContent | null = null;
+  notFound = false;
+  customComponents = [customHeroInfo];
 
   async ngOnInit() {
     this.content = await fetchOneEntry({
-      model: this.model,
+      model: this.modelName,
       apiKey: this.apiKey,
       userAttributes: {
-        urlPath: window.location.pathname,
+        urlPath: this.router.url,
       },
+      fetch: this.builderFetch.fetch,
     });
 
-    if (!this.content) {
-      this.notFound = true;
-    }
+    this.notFound = !this.content;
   }
 }
