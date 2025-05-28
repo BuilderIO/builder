@@ -6,12 +6,10 @@ import { type BuilderContent } from '@builder.io/sdk-angular';
   standalone: true,
   imports: [],
   template: `
-    <ul style="display: flex; gap: 20px; list-style: none;">
+    <ul>
       @for (link of links.data?.['links']; track link.url) {
         <li>
-          <a [href]="link.url" style="text-decoration: none;">{{
-            link.text
-          }}</a>
+          <a [href]="link.url">{{ link.text }}</a>
         </li>
       }
     </ul>

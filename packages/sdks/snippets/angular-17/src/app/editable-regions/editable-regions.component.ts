@@ -1,7 +1,9 @@
-import { Component, type OnInit } from '@angular/core';
+import { Component, inject, type OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import { customColumnsInfo } from './custom-columns/custom-columns.component';
@@ -11,15 +13,13 @@ import { customColumnsInfo } from './custom-columns/custom-columns.component';
   standalone: true,
   imports: [Content],
   template: `
-    @if (content) {
-      <div>
-        <builder-content
-          [content]="content"
-          [model]="model"
-          [apiKey]="apiKey"
-          [customComponents]="customComponents"
-        />
-      </div>
+    @if (content || isPreviewing()) {
+      <builder-content
+        [content]="content"
+        [model]="model"
+        [apiKey]="apiKey"
+        [customComponents]="customComponents"
+      />
     }
     @if (notFound) {
       <div>404</div>
@@ -33,12 +33,16 @@ export class EditableRegionComponent implements OnInit {
   notFound = false;
   content: BuilderContent | null = null;
 
+  router = inject(Router);
+  isPreviewing = isPreviewing;
+
   async ngOnInit() {
+    const urlPath = this.router.url.split('?')[0] || '';
     this.content = await fetchOneEntry({
       model: this.model,
       apiKey: this.apiKey,
       userAttributes: {
-        urlPath: window.location.pathname,
+        urlPath,
       },
     });
     this.notFound = !this.content;

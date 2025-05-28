@@ -8,16 +8,16 @@ import { Router } from '@angular/router';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
-import { BuilderFetchService } from '../builder-fetch.service';
 
 @Component({
   selector: 'app-catchall',
   standalone: true,
   imports: [Content],
   template: `
-    @if (content) {
+    @if (content || isPreviewing()) {
       <builder-content
         [model]="model"
         [content]="content"
@@ -29,15 +29,15 @@ import { BuilderFetchService } from '../builder-fetch.service';
   `,
 })
 export class CatchAllComponent {
-  private router = inject(Router);
-  private builderFetch = inject(BuilderFetchService);
-
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   model = 'page';
   content: BuilderContent | null = null;
 
+  router = inject(Router);
+  isPreviewing = isPreviewing;
+
   async ngOnInit() {
-    const urlPath = this.router.url || '';
+    const urlPath = this.router.url.split('?')[0] || '';
 
     const content = await fetchOneEntry({
       apiKey: this.apiKey,
@@ -45,7 +45,6 @@ export class CatchAllComponent {
       userAttributes: {
         urlPath,
       },
-      fetch: this.builderFetch.fetch,
     });
 
     if (!content) {

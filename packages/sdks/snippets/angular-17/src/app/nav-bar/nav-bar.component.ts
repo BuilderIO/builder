@@ -8,16 +8,14 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
   standalone: true,
   imports: [CommonModule, NavLinksComponent],
   template: `
-    <nav
-      style="display: flex; justify-content: space-between; align-items: center; padding: 1rem;"
-    >
+    <nav>
       <div class="brand-name">
         <h1>Acme company</h1>
       </div>
 
       <app-nav-links [links]="links" />
 
-      <div style="display: flex; gap: 10px;">
+      <div>
         <button>Login</button>
         <button>Register</button>
       </div>

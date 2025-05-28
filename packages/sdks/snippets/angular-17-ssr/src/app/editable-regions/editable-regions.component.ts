@@ -3,49 +3,48 @@ import { Router } from '@angular/router';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
-import { BuilderFetchService } from '../builder-fetch.service';
+import { customColumnsInfo } from './custom-columns/custom-columns.component';
 
 @Component({
-  selector: 'app-editable-regions',
+  selector: 'app-editable-region',
   standalone: true,
   imports: [Content],
   template: `
-    @if (content) {
-      <div>
-        <builder-content
-          [content]="content"
-          [model]="modelName"
-          [apiKey]="apiKey"
-        />
-      </div>
+    @if (content || isPreviewing()) {
+      <builder-content
+        [content]="content"
+        [model]="model"
+        [apiKey]="apiKey"
+        [customComponents]="customComponents"
+      />
     }
     @if (notFound) {
       <div>404</div>
     }
   `,
 })
-export class EditableRegionsComponent implements OnInit {
-  private router = inject(Router);
-  private builderFetch = inject(BuilderFetchService);
-
+export class EditableRegionComponent implements OnInit {
+  model = 'page';
   apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
-  modelName = 'page';
-
-  content: BuilderContent | null = null;
+  customComponents = [customColumnsInfo];
   notFound = false;
+  content: BuilderContent | null = null;
+
+  router = inject(Router);
+  isPreviewing = isPreviewing;
 
   async ngOnInit() {
+    const urlPath = this.router.url.split('?')[0] || '';
     this.content = await fetchOneEntry({
-      model: this.modelName,
+      model: this.model,
       apiKey: this.apiKey,
       userAttributes: {
-        urlPath: this.router.url,
+        urlPath,
       },
-      fetch: this.builderFetch.fetch,
     });
-
     this.notFound = !this.content;
   }
 }

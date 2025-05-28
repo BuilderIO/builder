@@ -6,25 +6,20 @@ import {
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import { BuilderFetchService } from '../builder-fetch.service';
-import {
-  CustomTabsComponent,
-  customTabsInfo,
-} from './custom-tabs/custom-tabs.component';
+import { customTabsInfo } from './custom-tabs/custom-tabs.component';
 
 @Component({
   selector: 'app-advanced-child',
   standalone: true,
-  imports: [Content, CustomTabsComponent],
+  imports: [Content],
   template: `
     @if (content) {
-      <div>
-        <builder-content
-          [content]="content"
-          [model]="modelName"
-          [apiKey]="apiKey"
-          [customComponents]="customComponents"
-        />
-      </div>
+      <builder-content
+        [content]="content"
+        [model]="modelName"
+        [apiKey]="apiKey"
+        [customComponents]="customComponents"
+      />
     }
     @if (notFound) {
       <div>404</div>

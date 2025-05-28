@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-product-info',
   standalone: true,
-  template: ` <div style="display: flex; gap: 200px; max-width: 1200px">
+  template: ` <div>
     <div class="product-image">
       <img
         [src]="product.image"
