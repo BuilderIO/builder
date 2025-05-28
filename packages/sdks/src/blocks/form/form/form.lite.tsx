@@ -77,8 +77,8 @@ export default function FormComponent(props: FormProps) {
     submissionState(): FormState {
       return (isEditing() && props.previewState) || state.formState;
     },
-    errorResponse(responseData: any) {
-      return JSON.stringify(responseData, null, 2);
+    errorResponse(response: any) {
+      return JSON.stringify(response, null, 2);
     },
     onSubmit(event: any) {
       const sendWithJsProp =
