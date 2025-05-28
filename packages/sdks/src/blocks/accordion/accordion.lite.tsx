@@ -167,23 +167,6 @@ export default function Accordion(props: AccordionProps) {
         state.open = state.onlyOneAtATime ? [index] : state.open.concat(index);
       }
     },
-    getAccordionTitleStyles(index: number) {
-      return {
-        ...state.accordionTitleStyles,
-        ...(props.grid && {
-          width: props.gridRowWidth,
-          ...(useTarget({
-            reactNative: {},
-            default: {
-              order:
-                state.openGridItemOrder !== null
-                  ? convertOrderNumberToString(index)
-                  : convertOrderNumberToString(index + 1),
-            },
-          }) as any),
-        }),
-      };
-    },
   });
 
   return (
@@ -193,7 +176,21 @@ export default function Accordion(props: AccordionProps) {
           <Fragment key={index}>
             <div
               class={state.getAccordionTitleClassName(index)}
-              style={state.getAccordionTitleStyles(index)}
+              style={{
+                ...state.accordionTitleStyles,
+                ...(props.grid && {
+                  width: props.gridRowWidth,
+                  ...(useTarget({
+                    reactNative: {},
+                    default: {
+                      order:
+                        state.openGridItemOrder !== null
+                          ? convertOrderNumberToString(index)
+                          : convertOrderNumberToString(index + 1),
+                    },
+                  }) as any),
+                }),
+              }}
               data-index={index}
               onClick={() => state.onClick(index)}
             >
