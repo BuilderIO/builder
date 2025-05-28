@@ -163,6 +163,9 @@ const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
   json: {
     post: (json) => {
@@ -251,6 +254,9 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -336,58 +342,33 @@ const REMOVE_UNUSED_PROPS_HACK_PLUGIN = () => ({
  * @type {Plugin}
  */
 const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'ComponentRef' || json.name === 'RepeatedBlock') {
+        json.imports.push({
+          imports: { forwardRef: 'forwardRef' },
+          path: '@angular/core',
+        });
+      }
+      return json;
+    },
+  },
   code: {
-    post: (code) => {
-      if (
-        code.includes('selector: "component-ref"') ||
-        code.includes('selector: "repeated-block"')
-      ) {
+    post: (code, json) => {
+      if (json.name === 'ComponentRef' || json.name === 'RepeatedBlock') {
         code = code.replace(
           'imports: [CommonModule, Block]',
           'imports: [CommonModule, forwardRef(() => Block)]'
         );
-
-        // First try to match multiline imports
-        const multilineImport = code.match(
-          /import\s*{[\s\S]*?}[\s\S]*?from\s*["']@angular\/core["'];/
-        );
-
-        if (multilineImport) {
-          // Extract the content inside braces
-          const importContent = multilineImport[0].match(/{[\s\S]*?}/)[0];
-          const cleanedContent = importContent.replace(/[{}]/g, '').trim();
-
-          // Check if forwardRef is already imported
-          if (!cleanedContent.includes('forwardRef')) {
-            // Add forwardRef to the import
-            const newImport = multilineImport[0].replace(
-              importContent,
-              `{ ${cleanedContent}${cleanedContent.endsWith(',') ? ' ' : ', '}forwardRef }`
-            );
-
-            code = code.replace(multilineImport[0], newImport);
-          }
-        } else {
-          // Fallback to single line import matching
-          const singleLineImport = code.match(
-            /import\s+{(.*?)}\s+from\s+["']@angular\/core["'];/
-          );
-
-          if (singleLineImport) {
-            const importedItems = singleLineImport[1].trim();
-
-            if (!importedItems.includes('forwardRef')) {
-              const newImport = `import { ${importedItems}${importedItems.endsWith(',') ? ' ' : ', '}forwardRef } from "@angular/core";`;
-              code = code.replace(singleLineImport[0], newImport);
-            }
-          }
-        }
       }
       return code;
     },
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const ANGULAR_INJECT_UPDATE_VIEW_CODE = () => ({
   json: {
     post: (json) => {
@@ -448,6 +429,9 @@ const FILTER_PROPS_METHOD = `filterPropsThatWrapperNeeds(allProps: any) {
     }, {});
   }`;
 
+/**
+ * @type {Plugin}
+ */
 const ANGULAR_NO_WRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -511,6 +495,9 @@ const ANGULAR_NO_WRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   code: {
     post: (code, json) => {
@@ -522,6 +509,9 @@ const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE =
   () => ({
     json: {
@@ -552,10 +542,13 @@ const VUE_FIX_EXTRA_ATTRS_PLUGIN = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const REACT_NATIVE_IMPORT_COMPONENTS_PLUGIN = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'Content' || json.name === 'EnableEditor') {
+      if (json.name === 'ContentComponent' || json.name === 'EnableEditor') {
         json.imports.push({
           imports: { ScrollView: 'ScrollView' },
           path: 'react-native',
