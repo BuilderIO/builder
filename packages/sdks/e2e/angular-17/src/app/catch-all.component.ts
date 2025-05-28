@@ -1,3 +1,5 @@
+// fails because type imports cannot be injected
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +8,7 @@ import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
+  registerAction,
   type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
@@ -81,6 +84,25 @@ export class CatchAllComponent {
   };
 
   async ngOnInit() {
+    if (typeof window !== 'undefined') {
+      registerAction({
+        name: 'test-action',
+        kind: 'function',
+        id: 'test-action-id',
+        inputs: [
+          {
+            name: 'actionName',
+            type: 'string',
+            required: true,
+            helperText: 'Action name',
+          },
+        ],
+        action: () => {
+          return `console.log("function call") `;
+        },
+      });
+    }
+
     const urlPath = this.router.url.split('?')[0] || '';
 
     const queryParams = this.route.snapshot.queryParams;
