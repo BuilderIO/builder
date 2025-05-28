@@ -6,6 +6,7 @@ import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
+  registerAction,
   type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
@@ -103,6 +104,25 @@ export class CatchAllComponent {
 
     if (!builderProps) {
       return;
+    }
+
+    if (typeof window !== 'undefined') {
+      registerAction({
+        name: 'test-action',
+        kind: 'function',
+        id: 'test-action-id',
+        inputs: [
+          {
+            name: 'actionName',
+            type: 'string',
+            required: true,
+            helperText: 'Action name',
+          },
+        ],
+        action: () => {
+          return `console.log("function call") `;
+        },
+      });
     }
 
     this.content = builderProps.content;

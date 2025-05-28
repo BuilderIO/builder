@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.2.1
+
+### Patch Changes
+
+- 6ae35cc: feat: add support for register action
+
 ## 4.2.0
 
 ### Minor Changes

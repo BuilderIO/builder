@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 4.2.1
+
+### Patch Changes
+
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
 ## 4.2.0
 
 ### Minor Changes
