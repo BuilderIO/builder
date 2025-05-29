@@ -115,6 +115,7 @@ test.describe('Visual Editing', () => {
       packageName === 'gen1-next15-app' ||
         packageName === 'gen1-react' ||
         packageName === 'gen1-remix' ||
+        packageName === 'gen1-next14-pages' ||
         packageName === 'nextjs-sdk-next-app'
     );
 
