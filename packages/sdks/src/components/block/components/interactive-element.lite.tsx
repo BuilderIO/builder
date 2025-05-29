@@ -6,6 +6,7 @@ import {
   useTarget,
   type Signal,
 } from '@builder.io/mitosis';
+import { TARGET } from '../../../constants/target.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
@@ -14,7 +15,6 @@ import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import Awaiter from '../../awaiter.lite.jsx';
 import LiveEdit from '../../live-edit.lite.jsx';
-import { TARGET } from '../../../constants/target.js';
 
 export type InteractiveElementProps = {
   Wrapper: any;
@@ -98,7 +98,12 @@ export default function InteractiveElement(props: InteractiveElementProps) {
             </props.Wrapper>
           }
         >
-          <LiveEdit Wrapper={props.Wrapper} id={props.block.id || ''} attributes={state.attributes} targetWrapperProps={state.targetWrapperProps}>
+          <LiveEdit
+            Wrapper={props.Wrapper}
+            id={props.block.id || ''}
+            attributes={state.attributes}
+            targetWrapperProps={state.targetWrapperProps}
+          >
             {props.children}
           </LiveEdit>
         </Show>

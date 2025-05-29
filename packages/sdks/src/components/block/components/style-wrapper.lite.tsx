@@ -1,6 +1,5 @@
 import {
   onMount,
-  onUpdate,
   Show,
   useContext,
   useMetadata,
@@ -8,6 +7,7 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import { TARGET } from '../../../constants/target.js';
+import { BuilderContext } from '../../../context/index.js';
 import {
   isEditing,
   type BuilderBlock,
@@ -15,7 +15,6 @@ import {
 } from '../../../server-index.js';
 import BlockStyles from './block-styles.lite.jsx';
 import LiveEditBlockStyles from './live-edit-block-styles.lite.jsx';
-import { BuilderContext } from '../../../context/index.js';
 
 useMetadata({
   rsc: {
@@ -31,7 +30,7 @@ type StyleWrapperProps = {
 
 export default function StyleWrapper(props: StyleWrapperProps) {
   const contextProvider = useContext(BuilderContext);
-  
+
   const state = useStore({
     isClientEditing: false,
     isHydrated: false,
@@ -55,7 +54,10 @@ export default function StyleWrapper(props: StyleWrapperProps) {
         when={TARGET === 'rsc' && state.isClientEditing}
         else={<BlockStyles block={props.block} context={props.context} />}
       >
-        <LiveEditBlockStyles id={props.block.id} contextProvider={contextProvider.value} />
+        <LiveEditBlockStyles
+          id={props.block.id}
+          contextProvider={contextProvider.value}
+        />
       </Show>
     </Show>
   );

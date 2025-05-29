@@ -3,14 +3,17 @@ import {
   getMaxWidthQueryForSize,
   getSizesForBreakpoints,
 } from '../../../constants/device-sizes.js';
+import { TARGET } from '../../../constants/target.js';
+import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
 import { getProcessedBlock } from '../../../functions/get-processed-block.js';
 import { createCssClass } from '../../../helpers/css.js';
 import { findBlockById } from '../../../helpers/find-block.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
-import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
-import { TARGET } from '../../../constants/target.js';
+import type {
+  BuilderBlock,
+  BuilderContextInterface,
+} from '../../../server-index.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
-import type { BuilderBlock, BuilderContextInterface } from '../../../server-index.js';
 
 type LiveEditBlockStylesProps = {
   id?: any;
@@ -20,11 +23,10 @@ type LiveEditBlockStylesProps = {
 useMetadata({
   rsc: {
     componentType: 'client',
-  }
-})
+  },
+});
 
 export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
-
   const state = useStore({
     get block() {
       return findBlockById(props.contextProvider.content!, props.id);
@@ -156,5 +158,5 @@ export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
         nonce={props.contextProvider.nonce}
       />
     </Show>
-  )
+  );
 }

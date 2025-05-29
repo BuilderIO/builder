@@ -13,7 +13,10 @@ type ContentListener = Required<
   Pick<ContentProps, 'model' | 'trustedHosts'>
 > & {
   callbacks: {
-    contentUpdate: (updatedContent: BuilderContent, editType?: EditType) => void;
+    contentUpdate: (
+      updatedContent: BuilderContent,
+      editType?: EditType
+    ) => void;
     stateUpdate: (newState: Dictionary<string>, editType?: EditType) => void;
     animation: (updatedContent: BuilderAnimation) => void;
     configureSdk: (updatedContent: any) => void;
