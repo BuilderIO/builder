@@ -2,6 +2,7 @@ import {
   Content,
   _processContentResult,
   fetchOneEntry,
+  registerAction,
   subscribeToEditor,
 } from '@builder.io/sdk-react';
 import { getProps } from '@sdk/tests';
@@ -52,6 +53,24 @@ function App() {
       return () => {
         unsubscribe();
       };
+    }
+    if (typeof window !== 'undefined') {
+      registerAction({
+        name: 'test-action',
+        kind: 'function',
+        id: 'test-action-id',
+        inputs: [
+          {
+            name: 'actionName',
+            type: 'string',
+            required: true,
+            helperText: 'Action name',
+          },
+        ],
+        action: () => {
+          return `console.log("function call")`;
+        },
+      });
     }
   }, []);
 
