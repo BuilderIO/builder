@@ -65,6 +65,18 @@ type BuilderEditorProps = Omit<
   setBuilderContextSignal?: (signal: any) => any;
   children?: any;
 };
+interface BuilderRequest {
+  '@type': '@builder.io/core:Request';
+  request: {
+    url: string;
+    query?: { [key: string]: string };
+    headers?: { [key: string]: string };
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    body?: any;
+  };
+  options?: { [key: string]: any };
+  bindings?: { [key: string]: string };
+}
 
 export default function EnableEditor(props: BuilderEditorProps) {
   /**
@@ -219,46 +231,78 @@ export default function EnableEditor(props: BuilderEditorProps) {
     },
 
     runHttpRequests() {
-      const requests: { [key: string]: string } =
+      const requests: { [key: string]: string | any } =
         props.builderContextSignal.value.content?.data?.httpRequests ?? {};
 
-      Object.entries(requests).forEach(([key, url]) => {
-        if (!url) return;
+      Object.entries(requests).forEach(
+        ([key, httpRequest]: [string, BuilderRequest | string]) => {
+          if (!httpRequest) return;
 
-        // request already in progress
-        if (state.httpReqsPending[key]) return;
+          const isCoreRequest =
+            typeof httpRequest === 'object' &&
+            httpRequest['@type'] === '@builder.io/core:Request';
 
-        // request already completed, and not in edit mode
-        if (state.httpReqsData[key] && !isEditing()) return;
+          // request already in progress
+          if (state.httpReqsPending[key]) return;
 
-        state.httpReqsPending[key] = true;
-        const evaluatedUrl = url.replace(/{{([^}]+)}}/g, (_match, group) =>
-          String(
-            evaluate({
-              code: group,
-              context: props.context || {},
-              localState: undefined,
-              rootState: props.builderContextSignal.value.rootState,
-              rootSetState: props.builderContextSignal.value.rootSetState,
+          // request already completed, and not in edit mode
+          if (state.httpReqsData[key] && !isEditing()) return;
+
+          const url = isCoreRequest
+            ? httpRequest.request.url
+            : (httpRequest as string);
+
+          state.httpReqsPending[key] = true;
+          const evaluatedUrl = url.replace(
+            /{{([^}]+)}}/g,
+            (_match: string, group: string) =>
+              String(
+                evaluate({
+                  code: group,
+                  context: props.context || {},
+                  localState: undefined,
+                  rootState: props.builderContextSignal.value.rootState,
+                  rootSetState: props.builderContextSignal.value.rootSetState,
+                })
+              )
+          );
+
+          const fetchRequestObj = isCoreRequest
+            ? {
+                url: evaluatedUrl,
+                method: httpRequest.request.method,
+                headers: httpRequest.request.headers,
+                body: httpRequest.request.body,
+              }
+            : {
+                url: evaluatedUrl,
+                method: 'GET',
+              };
+
+          logFetch(JSON.stringify(fetchRequestObj));
+
+          fetch(fetchRequestObj.url, {
+            method: fetchRequestObj.method,
+            headers: fetchRequestObj.headers,
+            body: fetchRequestObj.body,
+          })
+            .then((response) => response.json())
+            .then((json) => {
+              state.mergeNewRootState({ [key]: json });
+              state.httpReqsData[key] = true;
             })
-          )
-        );
-
-        logFetch(evaluatedUrl);
-
-        fetch(evaluatedUrl)
-          .then((response) => response.json())
-          .then((json) => {
-            state.mergeNewRootState({ [key]: json });
-            state.httpReqsData[key] = true;
-          })
-          .catch((err) => {
-            console.error('error fetching dynamic data', url, err);
-          })
-          .finally(() => {
-            state.httpReqsPending[key] = false;
-          });
-      });
+            .catch((err) => {
+              console.error(
+                'error fetching dynamic data',
+                JSON.stringify(httpRequest),
+                err
+              );
+            })
+            .finally(() => {
+              state.httpReqsPending[key] = false;
+            });
+        }
+      );
     },
     emitStateUpdate() {
       if (isEditing()) {

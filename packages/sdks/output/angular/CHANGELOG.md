@@ -1,5 +1,24 @@
 # @builder.io/sdk-angular
 
+## 0.20.1
+
+### Patch Changes
+
+- 6ae35cc: feat: add support for register action
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
+## 0.20.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
+## 0.19.4
+
+### Patch Changes
+
+- 103248e: feat: Add edge exports to angular SDK
+
 ## 0.19.3
 
 ### Patch Changes

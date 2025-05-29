@@ -262,7 +262,7 @@ class RouterComponent extends React.Component<PropsWithChildren<RouterProps>> {
           return (
             <div className="builder-router" data-model={model}>
               {/* TODO: move to emotion */}
-              <style>{`
+              <style nonce={state.context.nonce}>{`
                 @keyframes builderLoadingSpinner {
                   0% {
                     transform: rotate(0deg);
@@ -297,6 +297,7 @@ class RouterComponent extends React.Component<PropsWithChildren<RouterProps>> {
                 options={{
                   key: Builder.isEditing ? undefined : this.model + ':' + url, // TODO: other custom targets specify if should refetch components on change
                 }}
+                nonce={state.context.nonce}
               >
                 {/* TODO: builder blocks option for loading stuff */}
                 {/* TODO: input for builder blocks for this */}

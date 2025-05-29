@@ -1,4 +1,4 @@
-import {Content} from '@builder.io/sdk-react';
+import {Content, registerAction} from '@builder.io/sdk-react';
 import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {getProps} from '@sdk/tests';
@@ -58,6 +58,25 @@ export default function BuilderPage() {
   const builderProps = useLoaderData<ReturnType<typeof getProps>>();
   builderProps.customComponents = [builderBlockWithClassNameCustomComponent];
   const nonce = useNonce();
+
+  if (typeof window !== 'undefined') {
+    registerAction({
+      name: 'test-action',
+      kind: 'function',
+      id: 'test-action-id',
+      inputs: [
+        {
+          name: 'actionName',
+          type: 'string',
+          required: true,
+          helperText: 'Action name',
+        },
+      ],
+      action: () => {
+        return `console.log("function call") `;
+      },
+    });
+  }
 
   return builderProps?.content ? (
     <Content nonce={nonce} {...builderProps} />
