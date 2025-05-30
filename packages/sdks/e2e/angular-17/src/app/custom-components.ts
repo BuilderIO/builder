@@ -96,4 +96,4 @@ export const customComponents: RegisteredComponent[] = [
     noWrap: true,
     canHaveChildren: true,
   },
-]; 
+];

@@ -15,11 +15,7 @@ To use the SDK, you need to:
 
 ```ts
 import { Component } from '@angular/core';
-import {
-  Content,
-  fetchOneEntry,
-  type BuilderContent,
-} from '@builder.io/sdk-angular';
+import { Content, fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-catchall',
@@ -27,11 +23,7 @@ import {
   imports: [Content],
   template: `
     @if (content) {
-      <builder-content
-        [model]="model"
-        [content]="content"
-        [apiKey]="apiKey"
-      ></builder-content>
+      <builder-content [model]="model" [content]="content" [apiKey]="apiKey"></builder-content>
     } @else {
       <div>404 - Content not found</div>
     }
