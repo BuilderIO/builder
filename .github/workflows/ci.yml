@@ -130,6 +130,7 @@ jobs:
             'nextjs-sdk-next-app',
             'react-sdk-next-14-app',
             'react-sdk-next-pages',
+            'remix',
             'svelte',
             'sveltekit',
             'solid',
