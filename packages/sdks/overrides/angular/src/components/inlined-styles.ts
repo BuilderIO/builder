@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Component, ElementRef, input, Renderer2 } from '@angular/core';
 
 interface Props {
   styles: string;
@@ -23,9 +23,9 @@ interface Props {
   ],
 })
 export default class InlinedStyles {
-  @Input() styles!: Props['styles'];
-  @Input() id!: Props['id'];
-  @Input() nonce!: Props['nonce'];
+  styles = input.required<Props['styles']>();
+  id = input.required<Props['id']>();
+  nonce = input.required<Props['nonce']>();
 
   styleElement!: HTMLStyleElement;
 
@@ -37,15 +37,15 @@ export default class InlinedStyles {
   ngOnChanges(changes) {
     if (changes.styles) {
       if (this.styleElement) {
-        this.styleElement.textContent = this.styles;
+        this.styleElement.textContent = this.styles();
       } else {
         this.styleElement = this.renderer.createElement('style');
-        this.renderer.setAttribute(this.styleElement, 'data-id', this.id);
+        this.renderer.setAttribute(this.styleElement, 'data-id', this.id());
         this.renderer.appendChild(
           this.styleElement,
-          this.renderer.createText(this.styles)
+          this.renderer.createText(this.styles())
         );
-        this.renderer.setAttribute(this.styleElement, 'nonce', this.nonce);
+        this.renderer.setAttribute(this.styleElement, 'nonce', this.nonce());
         this.renderer.appendChild(this.elRef.nativeElement, this.styleElement);
       }
     }

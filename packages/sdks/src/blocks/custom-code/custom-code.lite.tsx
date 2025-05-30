@@ -102,6 +102,11 @@ export default function CustomCode(props: CustomCodeProps) {
             state.runScripts();
           }, 0);
         },
+        angular: () => {
+          setTimeout(() => {
+            state.runScripts();
+          }, 0);
+        },
         default: () => {
           state.runScripts();
         },

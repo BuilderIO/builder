@@ -23,6 +23,9 @@ useMetadata({
   rsc: {
     componentType: 'server',
   },
+  angular: {
+    selector: 'builder-symbol',
+  },
 });
 
 export default function Symbol(props: SymbolProps) {
@@ -44,6 +47,9 @@ export default function Symbol(props: SymbolProps) {
         angular: DynamicDiv,
         default: 'div',
       });
+    },
+    get customComponents() {
+      return Object.values(props.builderComponents);
     },
     get className() {
       return [
@@ -131,7 +137,7 @@ export default function Symbol(props: SymbolProps) {
           ...props.builderContext.value.context,
           symbolId: props.builderBlock?.id,
         }}
-        customComponents={Object.values(props.builderComponents)}
+        customComponents={state.customComponents}
         data={{
           ...props.symbol?.data,
           ...props.builderContext.value.localState,
