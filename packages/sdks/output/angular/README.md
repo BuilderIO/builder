@@ -15,18 +15,26 @@ To use the SDK, you need to:
 
 ```ts
 import { Component } from '@angular/core';
-import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
+import {
+  Content,
+  fetchOneEntry,
+  type BuilderContent,
+} from '@builder.io/sdk-angular';
 
 @Component({
   selector: 'app-catchall',
+  standalone: true,
+  imports: [Content],
   template: `
-    <ng-container *ngIf="content; else notFound">
-      <builder-content [model]="model" [content]="content" [apiKey]="apiKey"></builder-content>
-    </ng-container>
-
-    <ng-template #notFound>
+    @if (content) {
+      <builder-content
+        [model]="model"
+        [content]="content"
+        [apiKey]="apiKey"
+      ></builder-content>
+    } @else {
       <div>404 - Content not found</div>
-    </ng-template>
+    }
   `,
 })
 export class CatchAllComponent {
@@ -68,4 +76,4 @@ This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-pack
 
 ## Version Support
 
-This SDK supports Angular version `>=16.2.12`.
+This SDK supports Angular version `>=17.3.0`.

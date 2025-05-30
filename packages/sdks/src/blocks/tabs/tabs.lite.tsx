@@ -9,6 +9,9 @@ export default function Tabs(props: TabsProps) {
     activeTabContent(active: number): BuilderBlock[] | undefined {
       return props.tabs && props.tabs[active].content;
     },
+    getTabStyle(index: number) {
+      return index === state.activeTab ? props.activeTabStyle : {};
+    },
     onClick(index: number) {
       if (index === state.activeTab && props.collapsible) {
         state.activeTab = -1;
@@ -40,9 +43,7 @@ export default function Tabs(props: TabsProps) {
             <span
               key={index}
               class={`builder-tab-wrap ${state.activeTab === index ? 'builder-tab-active' : ''}`}
-              style={{
-                ...(state.activeTab === index ? props.activeTabStyle : {}),
-              }}
+              style={state.getTabStyle(index)}
               onClick={() => state.onClick(index)}
             >
               <Blocks
