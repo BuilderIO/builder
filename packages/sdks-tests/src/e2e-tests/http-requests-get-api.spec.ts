@@ -30,7 +30,7 @@ const countriesResponse = {
   },
 };
 
-test.describe.only('HTTP Requests GET API', () => {
+test.describe('HTTP Requests GET API', () => {
   test('call GET API only once - in page', async ({ page, packageName, sdk }) => {
     test.fail(
       packageName === 'nextjs-sdk-next-app',
