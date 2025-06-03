@@ -5,20 +5,31 @@ import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-qwik';
 const model = 'homepage';
 const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
-export const useHomepage = routeLoader$(async () => {
-  return await fetchOneEntry({
+export const useHomepage = routeLoader$(async ({ request }) => {
+  const url = new URL(request.url);
+  const searchParams = Object.fromEntries(url.searchParams);
+
+  const content = await fetchOneEntry({
     model,
     apiKey,
   });
+
+  return {
+    content,
+    searchParams,
+  };
 });
 
 export default component$(() => {
-  const content = useHomepage();
+  const data = useHomepage();
+
+  const canShowContent =
+    data.value?.content || isPreviewing(data.value?.searchParams);
 
   return (
     <div>
-      {content.value || isPreviewing() ? (
-        <Content model={model} content={content.value} apiKey={apiKey} />
+      {canShowContent ? (
+        <Content model={model} content={data.value?.content} apiKey={apiKey} />
       ) : (
         <div>404</div>
       )}
