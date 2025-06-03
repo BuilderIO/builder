@@ -1,5 +1,12 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 4.2.2
+
+### Patch Changes
+
+- 7adc4f6: Fix: Corrected the implementaion of http requests with GET method
+- 25895a2: Fix: Improved implementation of making Content http-requests with GET method
+
 ## 4.2.1
 
 ### Patch Changes
