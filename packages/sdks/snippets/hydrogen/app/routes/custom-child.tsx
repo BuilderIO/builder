@@ -1,4 +1,4 @@
-import type {LoaderFunction, LoaderFunctionArgs} from '@remix-run/node';
+import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {Content, fetchOneEntry, isPreviewing} from '@builder.io/sdk-react';
 import {customHeroInfo} from '~/components/CustomHero';
@@ -6,7 +6,8 @@ import {customHeroInfo} from '~/components/CustomHero';
 const MODEL_NAME = 'custom-child';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
-export const loader: LoaderFunction = async ({params}) => {
+export const loader: LoaderFunction = async ({params, request}) => {
+  const url = new URL(request.url);
   const content = await fetchOneEntry({
     model: MODEL_NAME,
     apiKey: API_KEY,
@@ -14,21 +15,24 @@ export const loader: LoaderFunction = async ({params}) => {
       urlPath: params.pathname,
     },
   });
-  return {content};
+  return {content, searchParams: Object.fromEntries(url.searchParams)};
 };
 export default function CustomChildRoute() {
-  const {content} = useLoaderData<typeof loader>();
+  const {content, searchParams} = useLoaderData<{
+    content: any;
+    searchParams: Record<string, string>;
+  }>();
 
-  if (!content && !isPreviewing()) {
-    return <div>404</div>;
-  }
+  const canShowContent = content || isPreviewing(searchParams);
 
-  return (
+  return canShowContent ? (
     <Content
       content={content}
       model={MODEL_NAME}
       apiKey={API_KEY}
       customComponents={[customHeroInfo]}
     />
+  ) : (
+    <div>404</div>
   );
 }
