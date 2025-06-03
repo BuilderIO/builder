@@ -246,7 +246,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
           fetch(fetchRequestObj.url, {
             method: fetchRequestObj.method,
             headers: fetchRequestObj.headers,
-            body: fetchRequestObj.body,
+            body:
+              fetchRequestObj.method === 'GET'
+                ? undefined
+                : fetchRequestObj.body,
           })
             .then((response) => response.json())
             .then((json) => {

@@ -1282,7 +1282,7 @@ export class BuilderComponent extends React.Component<
         const result = await fetch(url, {
           method,
           headers,
-          body,
+          body: method === 'GET' ? undefined : body,
         });
         json = await result.json();
       } catch (err) {
