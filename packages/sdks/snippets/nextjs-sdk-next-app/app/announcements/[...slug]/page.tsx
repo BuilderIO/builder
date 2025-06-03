@@ -28,6 +28,7 @@ export default async function Page(props: PageProps) {
     model,
 
     userAttributes: { urlPath },
+
   });
 
   const canShowContent =
