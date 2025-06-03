@@ -26,7 +26,6 @@ export default async function Page(props: PageProps) {
     apiKey: PUBLIC_API_KEY,
     model: 'page',
     userAttributes: { urlPath },
-    options: getBuilderSearchParams(props.searchParams),
   });
 
   const canShowContent = content || isPreviewing(props.searchParams);
