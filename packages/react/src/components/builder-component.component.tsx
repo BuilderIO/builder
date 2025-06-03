@@ -1279,11 +1279,15 @@ export class BuilderComponent extends React.Component<
       }
       let json: any;
       try {
-        const result = await fetch(url, {
+        const fetchOptions = {
           method,
           headers,
-          body: method === 'GET' ? undefined : body,
-        });
+          body,
+        };
+        if (method === 'GET') {
+          delete fetchOptions.body;
+        }
+        const result = await fetch(url, fetchOptions);
         json = await result.json();
       } catch (err) {
         const error = toError(err);
