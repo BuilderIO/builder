@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, type OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Content, type BuilderContent } from '@builder.io/sdk-angular';
+import {
+  Content,
+  isPreviewing,
+  type BuilderContent,
+} from '@builder.io/sdk-angular';
 import {
   CustomTabsComponent,
   customTabsInfo,
@@ -36,6 +40,8 @@ export class AdvancedChildComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: any) => {
       this.content = data.content;
+      const searchParams = this.route.snapshot.queryParams;
+      this.notFound = !this.content && !isPreviewing(searchParams);
     });
   }
 }
