@@ -243,14 +243,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
           logFetch(JSON.stringify(fetchRequestObj));
 
-          fetch(fetchRequestObj.url, {
+          const fetchOptions = {
             method: fetchRequestObj.method,
             headers: fetchRequestObj.headers,
-            body:
-              fetchRequestObj.method === 'GET'
-                ? undefined
-                : fetchRequestObj.body,
-          })
+            body: fetchRequestObj.body,
+          };
+          if (fetchRequestObj.method === 'GET') {
+            delete fetchOptions.body;
+          }
+
+          fetch(fetchRequestObj.url, fetchOptions)
             .then((response) => response.json())
             .then((json) => {
               state.mergeNewRootState({ [key]: json });
