@@ -23,7 +23,7 @@ export const builderLoader: LoaderFunction = async ({params, request}) => {
         urlPath: pathname,
       },
     });
-    return {content, model, isPreviewing: isPreviewing(url.searchParams)};
+    return {content, model, searchParams: Object.fromEntries(url.searchParams)};
   } catch (e) {
     console.error(e);
     return {content: null};
@@ -31,24 +31,27 @@ export const builderLoader: LoaderFunction = async ({params, request}) => {
 };
 
 export default function BuilderPage() {
-  const {content, model, isPreviewing} = useLoaderData<{
+  const {content, model, searchParams} = useLoaderData<{
     content: any;
     model: string;
-    isPreviewing: boolean;
+    searchParams: Record<string, string>;
   }>();
   const nonce = useNonce();
 
+  const canShowContent = content || isPreviewing(searchParams);
+
   return (
     <div>
-      {content && !isPreviewing && (
+      {canShowContent ? (
         <Content
           model={model}
           apiKey={BUILDER_API_KEY}
           content={content}
           nonce={nonce}
         />
+      ) : (
+        <div>404</div>
       )}
-      <div>The rest of your page goes here</div>
     </div>
   );
 }
