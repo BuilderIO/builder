@@ -6,7 +6,6 @@
 import {
   Content,
   fetchOneEntry,
-  getBuilderSearchParams,
   isPreviewing,
 } from '@builder.io/sdk-react-nextjs';
 
