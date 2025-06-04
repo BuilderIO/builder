@@ -7,7 +7,7 @@
   const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 </script>
 
-{#if !article && !isPreviewing()}
+{#if !article && !isPreviewing(data.searchParams)}
   <div>404</div>
 {:else if article?.data}
   <div class="content">

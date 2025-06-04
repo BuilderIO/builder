@@ -4,11 +4,7 @@
  */
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-} from '@builder.io/sdk-qwik';
+import { Content, fetchOneEntry } from '@builder.io/sdk-qwik';
 
 // Define Builder's public API key and content model.
 // TO DO: Replace with your Public API Key
@@ -22,7 +18,6 @@ export const useBuilderContent = routeLoader$(async ({ url }) => {
   const builderContent = await fetchOneEntry({
     model: BUILDER_MODEL,
     apiKey: BUILDER_PUBLIC_API_KEY,
-    options: getBuilderSearchParams(url.searchParams),
     userAttributes: {
       urlPath: url.pathname,
     },
