@@ -4,11 +4,6 @@ import { test } from '../helpers/index.js';
 test.describe('State binding', () => {
   test.describe('inside repeater', () => {
     test('writing to state should update binding', async ({ page, packageName }) => {
-      test.fail(
-        packageName === 'angular-16-ssr' || packageName === 'angular-16',
-        'Angular Gen2 event binding not working properly for repeat blocks.'
-      );
-
       // flaky, can't `test.fail()`
       test.skip(
         packageName === 'react-native-74' ||

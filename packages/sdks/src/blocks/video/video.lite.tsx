@@ -12,6 +12,9 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
+  angular: {
+    selector: 'builder-video',
+  },
 });
 
 export default function Video(props: VideoProps) {

@@ -163,6 +163,9 @@ const ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
   json: {
     post: (json) => {
@@ -251,6 +254,9 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN = () => ({
   json: {
     pre: (json) => {
@@ -336,354 +342,23 @@ const REMOVE_UNUSED_PROPS_HACK_PLUGIN = () => ({
  * @type {Plugin}
  */
 const ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS = () => ({
-  code: {
-    post: (code) => {
-      if (
-        code.includes('selector: "component-ref"') ||
-        code.includes('selector: "repeated-block"')
-      ) {
-        code = code.replace(
-          'imports: [CommonModule, Block]',
-          'imports: [CommonModule, forwardRef(() => Block)]'
-        );
-        code = code.replace(
-          '} from "@angular/core";',
-          `${code.includes('repeated-block') ? ',' : ''}forwardRef } from "@angular/core";`
-        );
-      }
-      return code;
-    },
-  },
-});
-
-const ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('selector: "component-ref"')) {
-        code = code
-          .replace(
-            '<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">',
-            '<ng-container *ngIf="componentRef">\n<ng-container *ngFor="let child of blockChildren; trackBy: trackByChild0">'
-          )
-          .replace('</ng-container>', '</ng-container>\n</ng-container>');
-      }
-      return code;
-    },
-  },
-});
-
-const ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN = () => ({
   json: {
     post: (json) => {
-      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
-        json.hooks.onUpdate.forEach((hook) => {
-          hook.code = hook.code.replaceAll(
-            /^\s*\/\/\s*@ts-expect-error.*$/gm,
-            ''
-          );
+      if (json.name === 'ComponentRef' || json.name === 'RepeatedBlock') {
+        json.imports.push({
+          imports: { forwardRef: 'forwardRef' },
+          path: '@angular/core',
         });
-        /**
-         * Since the angular SDK manually handles the creation of the dynamic blocks and attaching them as children of BlocksWrapper in the DOM
-         * it must also manually handle their re-renders on content change in the visual editor.
-         *
-         * <blocks-wrapper> -> inserts blocks as children dynamically
-         *  {each <block />} -> we need to re-render blocks when props.blocks update while visual editing
-         * </blocks-wrapper>
-         *
-         * `ngAfterContentChecked` runs after children were checked for changes, which is the earliest point we can safely append new blocks,
-         * and re-paint the DOM else the new children blocks are not present in the existing array, therefore pushed to the top of the list.
-         */
-        const templateRefName =
-          json.name === 'BlocksWrapper'
-            ? 'blockswrapperTemplateRef'
-            : 'wrapperTemplateRef';
-        json.compileContext = {
-          angular: {
-            hooks: {
-              ngAfterContentChecked: {
-                code: `if (this.shouldUpdate) {
-                  this.myContent = [this.vcRef.createEmbeddedView(this.${templateRefName}).rootNodes];
-                  this.shouldUpdate = false;
-                }`,
-              },
-            },
-          },
-        };
       }
       return json;
     },
   },
   code: {
     post: (code, json) => {
-      if (json.name === 'BlocksWrapper' || json.name === 'ComponentRef') {
-        // insert children only after they are fully initialized
-        code = code.replace('ngOnInit', 'ngAfterContentInit');
-      }
-      return code;
-    },
-  },
-});
-
-const VALID_HTML_TAGS = [
-  'html',
-  'base',
-  'head',
-  'link',
-  'meta',
-  'style',
-  'title',
-  'body',
-  'address',
-  'article',
-  'aside',
-  'footer',
-  'header',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'main',
-  'nav',
-  'section',
-  'blockquote',
-  'dd',
-  'div',
-  'dl',
-  'dt',
-  'figcaption',
-  'figure',
-  'hr',
-  'li',
-  'menu',
-  'ol',
-  'p',
-  'pre',
-  'ul',
-  'a',
-  'abbr',
-  'b',
-  'bdi',
-  'bdo',
-  'br',
-  'cite',
-  'code',
-  'data',
-  'dfn',
-  'em',
-  'i',
-  'kbd',
-  'mark',
-  'q',
-  'rp',
-  'rt',
-  'ruby',
-  's',
-  'samp',
-  'small',
-  'span',
-  'strong',
-  'sub',
-  'sup',
-  'time',
-  'u',
-  'var',
-  'wbr',
-  'area',
-  'audio',
-  'img',
-  'map',
-  'track',
-  'video',
-  'embed',
-  'iframe',
-  'object',
-  'param',
-  'picture',
-  'portal',
-  'source',
-  'svg',
-  'math',
-  'canvas',
-  'noscript',
-  'script',
-  'del',
-  'ins',
-  'caption',
-  'col',
-  'colgroup',
-  'table',
-  'tbody',
-  'td',
-  'tfoot',
-  'th',
-  'thead',
-  'tr',
-  'button',
-  'datalist',
-  'fieldset',
-  'form',
-  'input',
-  'label',
-  'legend',
-  'meter',
-  'optgroup',
-  'option',
-  'output',
-  'progress',
-  'select',
-  'textarea',
-  'details',
-  'dialog',
-  'summary',
-  'slot',
-  'template',
-  // tags below are SVG tags. See the below article for list of SVG tags
-  // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
-  'animate',
-  'animateMotion',
-  'animateTransform',
-  'circle',
-  'clipPath',
-  'defs',
-  'desc',
-  'discard',
-  'ellipse',
-  'feBlend',
-  'feColorMatrix',
-  'feComponentTransfer',
-  'feComposite',
-  'feConvolveMatrix',
-  'feDiffuseLighting',
-  'feDisplacementMap',
-  'feDistantLight',
-  'feDropShadow',
-  'feFlood',
-  'feFuncA',
-  'feFuncB',
-  'feFuncG',
-  'feFuncR',
-  'feGaussianBlur',
-  'feImage',
-  'feMerge',
-  'feMergeNode',
-  'feMorphology',
-  'feOffset',
-  'fePointLight',
-  'feSpecularLighting',
-  'feSpotLight',
-  'feTile',
-  'feTurbulence',
-  'filter',
-  'foreignObject',
-  'g',
-  'hatch',
-  'hatchpath',
-  'image',
-  'line',
-  'linearGradient',
-  'marker',
-  'mask',
-  'metadata',
-  'mpath',
-  'path',
-  'pattern',
-  'polygon',
-  'polyline',
-  'radialGradient',
-  'rect',
-  'set',
-  'stop',
-  'switch',
-  'symbol',
-  'text',
-  'textPath',
-  'tspan',
-  'use',
-  'view',
-];
-
-const ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES = () => ({
-  json: {
-    pre: (json) => {
-      if (VALID_HTML_TAGS.includes(json.name.toLowerCase())) {
-        json.name = `Builder${json.name}`;
-      }
-    },
-  },
-});
-
-const ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('enable-editor')) {
-        /**
-         * we need to wait till the children content of enable-editor is fully loaded before rendering
-         * else the content that are behind any conditional logic will get rendered outside of the enable-editor
-         */
-        code = code.replace('ngOnInit', 'ngAfterContentInit');
-
-        // find two event listeners and add bind(this) to the fn passed
-        const eventListeners = code.match(
-          /window\.addEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
-        );
-        if (eventListeners && eventListeners.length) {
-          eventListeners.forEach((eventListener) => {
-            const [eventName, fn] = eventListener
-              .replace('window.addEventListener(', '')
-              .replace(')', '')
-              .split(',');
-            code = code.replace(
-              eventListener,
-              `window.addEventListener(${eventName}, ${fn}.bind(this))`
-            );
-          });
-        }
-        const eventListenersRemove = code.match(
-          /window\.removeEventListener\(\s*['"]([^'"]+)['"]\s*,\s*([^)]+)\)/g
-        );
-        if (eventListenersRemove && eventListenersRemove.length) {
-          eventListenersRemove.forEach((eventListener) => {
-            const [eventName, fn] = eventListener
-              .replace('window.removeEventListener(', '')
-              .replace(')', '')
-              .split(',');
-            code = code.replace(
-              eventListener,
-              `window.removeEventListener(${eventName}, ${fn}.bind(this))`
-            );
-          });
-        }
-      }
-      return code;
-    },
-  },
-});
-
-// required for registering custom components properly
-const ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('selector: "content-component"')) {
-        code = code.replaceAll(
-          'this.contentSetState',
-          'this.contentSetState.bind(this)'
-        );
-      }
-      return code;
-    },
-  },
-});
-
-const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('selector: "builder-symbol"')) {
-        code = code.replace('ngOnChanges() {', 'ngOnChanges(changes) {');
+      if (json.name === 'ComponentRef' || json.name === 'RepeatedBlock') {
         code = code.replace(
-          'this.setContent();',
-          'if (changes.symbol) { this.setContent(); }'
+          'imports: [CommonModule, Block]',
+          'imports: [CommonModule, forwardRef(() => Block)]'
         );
       }
       return code;
@@ -692,31 +367,26 @@ const ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS = () => ({
 });
 
 /**
- * This code is used to destructure the `attributes` prop and apply it to the direct child element of the
- * interactive-element when `noWrap` is set to `true`.
- *
- * When using a custom component that doesn't expect the `attributes` prop and `noWrap` is `true`,
- * the `attributes` are applied to the root element of the custom component:
- *
- * <mat-button {...attributes}>
- *   ...
- * </mat-button>
- *
- * For custom components that **do** expect the `attributes` prop, it is passed as an `@Input()`,
- * allowing users to utilize it wherever needed.
- * For instance, in our Button block, the `attributes` prop is passed to `dynamic-renderer` -> `button`.
- *
- * If users want to apply the `attributes` prop at specific locations within their custom components,
- * they can use it as an `@Input()`.
+ * @type {Plugin}
  */
-const ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE = `  
-  _listenerFns = new Map<string, () => void>();
+const ANGULAR_INJECT_UPDATE_VIEW_CODE = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'BlocksWrapper') {
+        json.compileContext.angular.hooks.ngAfterContentChecked = {
+          code: `if (this.shouldUpdate()) { this._updateView(); this.shouldUpdate.set(false); }`,
+        };
+      }
+      return json;
+    },
+  },
+});
 
-  private hasAttributesInput(component): boolean {
-    return !!reflectComponentType(component)?.inputs.find(input => input.propName === 'attributes');
-  }
+const HAS_ATTRIBUTES_INPUT_METHOD = `hasAttributesInput(component): boolean {
+  return !!reflectComponentType(component)?.inputs.find(input => input.propName === 'attributes');
+}`;
 
-  private updateAttributes(
+const UPDATE_ATTRIBUTES_METHOD = `updateAttributes(
     el: HTMLElement,
     attributes: { [key: string]: any }
   ): void {
@@ -742,197 +412,92 @@ const ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE = `
         this.renderer.setAttribute(el, attr.toLowerCase(), attributes[attr] ?? "");
       }
     });
-  }
+  }`;
 
-  ngAfterViewInit() {
-    if (!this.hasAttributesInput(this.Wrapper)) {
-      const wrapperElement =
-        this.wrapperTemplateRef.elementRef.nativeElement?.nextElementSibling;
-      if (wrapperElement) {
-        this.updateAttributes(wrapperElement, this.attributes);
-      }
-    }
+const ATTACH_ATTRIBUTES_METHOD = `if (!this.hasAttributesInput(this.Wrapper())) {
+  const wrapperElement = this.wrapperTemplateRef()?.elementRef.nativeElement?.nextElementSibling;
+  if (wrapperElement) {
+    this.updateAttributes(wrapperElement, this.attributes());
   }
+}`;
 
-  ngOnDestroy() {
-    for (const fn of this._listenerFns.values()) {
-      fn();
-    }
-  }
-`;
-
-/**
- * Filters props to only include those explicitly defined as @Input() in the Angular component.
- * This prevents "Input property X is not annotated with @Input()" errors that occur when passing
- * unused props, since Mitosis only annotates props actually used by the component.
- */
-const FN_TO_FILTER_PROPS_THAT_WRAPPER_NEEDS = `
-  private filterPropsThatWrapperNeeds(allProps: any) {
-    const definedPropNames = reflectComponentType(this.Wrapper).inputs.map(prop => prop.propName);
+const FILTER_PROPS_METHOD = `filterPropsThatWrapperNeeds(allProps: any) {
+    const definedPropNames = reflectComponentType(this.Wrapper()).inputs.map(prop => prop.propName);
     return definedPropNames.reduce((acc, propName) => {
       acc[propName] = allProps[propName];
       return acc;
     }, {});
-  }
-`;
+  }`;
 
 /**
- * Checks if the custom component expects `attributes` prop.
- * If yes, it passes `attributes` as an `@Input()` to the custom component.
- * If no, it attaches `attributes` to the direct child element of interactive element.
+ * @type {Plugin}
  */
-const ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('selector: "interactive-element"')) {
-        code = code.replace(
-          'constructor(private vcRef: ViewContainerRef) {',
-          'constructor(private vcRef: ViewContainerRef, private renderer: Renderer2) {'
-        );
-        code = code.replace(
-          /import {/,
-          `import {
-          Renderer2,
-          reflectComponentType,
-          `
-        );
-        code = code.replaceAll(
-          'attributes: this.attributes,',
-          '...(this.hasAttributesInput(this.Wrapper) ? { attributes: this.attributes } : {})'
-        );
-
-        // extract the props that Wrapper needs
-        code = code.replaceAll(
-          '...this.targetWrapperProps',
-          '...this.filterPropsThatWrapperNeeds(this.targetWrapperProps)'
-        );
-
-        const ngOnChangesIndex = code.indexOf('ngOnChanges');
-        code =
-          code.slice(0, ngOnChangesIndex) +
-          ATTACH_ATTRIBUTES_TO_CHILD_ELEMENT_CODE +
-          FN_TO_FILTER_PROPS_THAT_WRAPPER_NEEDS +
-          code.slice(ngOnChangesIndex);
-
-        code = code.replace(
-          'ngOnChanges(changes: SimpleChanges) {',
-          'ngOnChanges(changes: SimpleChanges) { if (changes["attributes"] && !this.hasAttributesInput(this.Wrapper)) { this.ngAfterViewInit(); }'
-        );
-      }
-      return code;
-    },
-  },
-});
-
-/**
- * Looks for any changes in `component-ref` component's wrapper template and updates it such that it resolves during SSR.
- */
-const ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('selector: "component-ref"')) {
-        code = code.replace(
-          /this\.myContent\s*=\s*\[[^\]]*\]/,
-          `const wrapperTemplate = this.vcRef.createEmbeddedView(this.wrapperTemplateRef);
-          wrapperTemplate.detectChanges();
-          this.myContent = [wrapperTemplate.rootNodes]`
-        );
-      }
-      return code;
-    },
-  },
-});
-
-/**
- * Angular allows DOM manipulation in `ngAfterViewInit` hook.
- * This plugin moves the DOM code from `ngOnInit` to `ngAfterViewInit` hook.
- */
-const ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT = () => ({
-  json: {
-    post: (json) => {
-      if (['BuilderVideo', 'CustomCode', 'BuilderEmbed'].includes(json.name)) {
-        let hooks = {};
-
-        if (json.name === 'BuilderVideo') {
-          hooks.ngAfterViewInit = json.hooks.onMount[0];
-        }
-        if (json.name === 'CustomCode') {
-          hooks.ngAfterViewInit = json.hooks.onMount[0];
-          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
-        }
-        if (json.name === 'BuilderEmbed') {
-          hooks.ngAfterViewChecked = json.hooks.onUpdate[0];
-        }
-
-        json.compileContext = {
-          angular: {
-            hooks,
-          },
-        };
-
-        if (hooks.ngAfterViewInit) {
-          json.compileContext.angular.hooks.ngAfterViewInit.code =
-            json.compileContext.angular.hooks.ngAfterViewInit.code
-              .replaceAll('props.', 'this.')
-              .replaceAll('state.', 'this.');
-        }
-
-        if (hooks.ngAfterViewChecked) {
-          json.compileContext.angular.hooks.ngAfterViewChecked.code =
-            json.compileContext.angular.hooks.ngAfterViewChecked.code
-              .replaceAll('props.', 'this.')
-              .replaceAll('state.', 'this.');
-        }
-
-        if (json.name === 'CustomCode' || json.name === 'BuilderEmbed') {
-          json.hooks.onUpdate = [];
-        }
-        json.hooks.onMount = [];
-      }
-    },
-  },
-});
-
-/**
- * Angular doesn't support hydration for components created dynamically.
- * Refer: https://angular.dev/errors/NG0503
- * GitHub issue: https://github.com/angular/angular/issues/51798
- */
-const ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('selector: "content-component"')) {
-        const componentDecorator = code.match(/@Component\s*\({/)[0];
-        const componentDecoratorWithHost = componentDecorator.replace(
-          /@Component\s*\({/,
-          `@Component({\n\thost: { ngSkipHydration: "true" },`
-        );
-        code = code.replace(componentDecorator, componentDecoratorWithHost);
-      }
-      return code;
-    },
-  },
-});
-
-// Temporary fix to make the visual editing work for AB tests in Angular SDK
-// getters in angular run on every change detection
-const ANGULAR_AB_TEST_VE_CORRECT_VARIANT = () => ({
+const ANGULAR_NO_WRAP_INTERACTIVE_ELEMENT_PLUGIN = () => ({
   json: {
     pre: (json) => {
-      if (json.name === 'ContentVariants') {
-        json.state['defaultContent'].code = json.state[
-          'defaultContent'
-        ].code.replace('get ', '');
-        json.state['defaultContent'].type = 'method';
-        // as we are "pre" modifying the json, this will create a new state property for this
-        json.children[0].children[2].bindings['content'].code =
-          'state.defaultContent()';
+      if (json.name === 'InteractiveElement') {
+        json.imports.push({
+          imports: { reflectComponentType: 'reflectComponentType' },
+          path: '@angular/core',
+        });
+        json.state['_listenerFns'] = {
+          code: `new Map()`,
+          type: 'single',
+        };
+        json.state['hasAttributesInput'] = {
+          code: HAS_ATTRIBUTES_INPUT_METHOD,
+          type: 'method',
+        };
+        json.state['filterPropsThatWrapperNeeds'] = {
+          code: FILTER_PROPS_METHOD,
+          type: 'method',
+        };
+        json.state['updateAttributes'] = {
+          code: UPDATE_ATTRIBUTES_METHOD,
+          type: 'method',
+        };
+        json.compileContext.angular.hooks.ngAfterViewInit = {
+          code: ATTACH_ATTRIBUTES_METHOD,
+        };
+
+        if (!json.hooks.onUnMount) {
+          json.hooks.onUnMount = {
+            code: `
+         for (const fn of this._listenerFns.values()) {
+            fn();
+          }
+          `,
+          };
+        }
       }
       return json;
     },
   },
+  code: {
+    post: (code, json) => {
+      if (json.name === 'InteractiveElement') {
+        code = code.replace(
+          'attributes = ',
+          `private _listenerFns = new Map();
+        attributes = `
+        );
+        code = code.replace(
+          'attributes: this.attributes()',
+          '...(this.hasAttributesInput(this.Wrapper()) && { attributes: this.attributes() })'
+        );
+        code = code.replace(
+          '...this.targetWrapperProps()',
+          '...(this.filterPropsThatWrapperNeeds(this.targetWrapperProps()))'
+        );
+      }
+      return code;
+    },
+  },
 });
 
+/**
+ * @type {Plugin}
+ */
 const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   code: {
     post: (code, json) => {
@@ -944,6 +509,9 @@ const QWIK_ONUPDATE_TO_USEVISIBLETASK = () => ({
   },
 });
 
+/**
+ * @type {Plugin}
+ */
 const QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE =
   () => ({
     json: {
@@ -975,6 +543,29 @@ const VUE_FIX_EXTRA_ATTRS_PLUGIN = () => ({
 });
 
 /**
+ * @type {Plugin}
+ */
+const REACT_NATIVE_IMPORT_COMPONENTS_PLUGIN = () => ({
+  json: {
+    post: (json) => {
+      if (json.name === 'ContentComponent' || json.name === 'EnableEditor') {
+        json.imports.push({
+          imports: { ScrollView: 'ScrollView' },
+          path: 'react-native',
+        });
+      }
+
+      if (json.name === 'Block') {
+        json.imports.push({
+          imports: { View: 'View' },
+          path: 'react-native',
+        });
+      }
+    },
+  },
+});
+
+/**
  * @type {MitosisConfig}
  */
 module.exports = {
@@ -990,21 +581,13 @@ module.exports = {
       standalone: true,
       typescript: true,
       state: 'class-properties',
+      api: 'signals',
+      defaultExportComponents: true,
       plugins: [
         ANGULAR_FIX_CIRCULAR_DEPENDENCIES_OF_COMPONENTS,
-        ANGULAR_OVERRIDE_COMPONENT_REF_PLUGIN,
-        ANGULAR_COMPONENT_NAMES_HAVING_HTML_TAG_NAMES,
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
-        ANGULAR_INITIALIZE_PROP_ON_NG_ONINIT,
-        ANGULAR_BIND_THIS_FOR_WINDOW_EVENTS,
-        ANGULAR_WRAP_SYMBOLS_FETCH_AROUND_CHANGES_DEPS,
-        ANGULAR_RENAME_NG_ONINIT_TO_NG_AFTERCONTENTINIT_PLUGIN,
-        REMOVE_UNUSED_PROPS_HACK_PLUGIN,
-        ANGULAR_NOWRAP_INTERACTIVE_ELEMENT_PLUGIN,
-        ANGULAR_COMPONENT_REF_UPDATE_TEMPLATE_SSR,
-        ANGULAR_SKIP_HYDRATION_FOR_CONTENT_COMPONENT,
-        ANGULAR_MOVE_DOM_MANIPULATION_CODE_TO_AFTERVIEWINIT,
-        ANGULAR_AB_TEST_VE_CORRECT_VARIANT,
+        ANGULAR_INJECT_UPDATE_VIEW_CODE,
+        ANGULAR_NO_WRAP_INTERACTIVE_ELEMENT_PLUGIN,
       ],
     },
     solid: {
@@ -1116,6 +699,7 @@ module.exports = {
         REMOVE_SET_CONTEXT_PLUGIN_FOR_FORM,
         ADD_IS_STRICT_STYLE_MODE_TO_CONTEXT_PLUGIN,
         MEMOIZING_BLOCKS_COMPONENT_PLUGIN,
+        REACT_NATIVE_IMPORT_COMPONENTS_PLUGIN,
         () => ({
           json: {
             pre: (json) => {

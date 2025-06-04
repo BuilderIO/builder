@@ -88,6 +88,8 @@ export default function EnableEditor(props: BuilderEditorProps) {
     props.builderContextSignal.value
   );
   const state = useStore({
+    prevData: null as Dictionary<any> | null,
+    prevLocale: '',
     mergeNewRootState(newData: Dictionary<any>, editType?: EditType) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
@@ -284,7 +286,10 @@ export default function EnableEditor(props: BuilderEditorProps) {
           fetch(fetchRequestObj.url, {
             method: fetchRequestObj.method,
             headers: fetchRequestObj.headers,
-            body: fetchRequestObj.body,
+            body:
+              fetchRequestObj.method === 'GET'
+                ? undefined
+                : fetchRequestObj.body,
           })
             .then((response) => response.json())
             .then((json) => {
@@ -548,13 +553,21 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onUpdate(() => {
     if (props.data) {
+      if (state.prevData === props.data) {
+        return;
+      }
       state.mergeNewRootState(props.data);
+      state.prevData = props.data;
     }
   }, [props.data]);
 
   onUpdate(() => {
     if (props.locale) {
+      if (state.prevLocale === props.locale) {
+        return;
+      }
       state.mergeNewRootState({ locale: props.locale });
+      state.prevLocale = props.locale;
     }
   }, [props.locale]);
 

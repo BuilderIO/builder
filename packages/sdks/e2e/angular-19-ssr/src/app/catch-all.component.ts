@@ -36,12 +36,12 @@ interface BuilderProps {
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
-        [trustedHosts]="trustedHosts"
-        [canTrack]="canTrack"
         [customComponents]="customComponents"
         [data]="data"
         [apiHost]="apiHost"
         [locale]="locale"
+        [trustedHosts]="trustedHosts"
+        [canTrack]="canTrack"
       ></builder-content>
     } @else {
       <div>404 - Content not found</div>
