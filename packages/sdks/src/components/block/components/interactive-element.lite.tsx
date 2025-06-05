@@ -102,7 +102,6 @@ export default function InteractiveElement(props: InteractiveElementProps) {
             Wrapper={props.Wrapper}
             id={props.block.id || ''}
             attributes={state.attributes}
-            targetWrapperProps={state.targetWrapperProps}
           >
             {props.children}
           </LiveEdit>
