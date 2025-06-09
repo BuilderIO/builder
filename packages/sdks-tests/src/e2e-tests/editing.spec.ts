@@ -528,9 +528,7 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -577,9 +575,7 @@ test.describe('Visual Editing', () => {
 
     test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'qwik-city' || packageName === 'nuxt',
         'Failing on the CI: Test timeout of 30000ms exceeded'
@@ -631,9 +627,7 @@ test.describe('Visual Editing', () => {
 
     test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -659,7 +653,7 @@ test.describe('Visual Editing', () => {
       });
       await page.frameLocator('iframe').getByText('add to top').waitFor();
 
-      const textBlocks = await page 
+      const textBlocks = await page
         .frameLocator('iframe')
         .getByText('some text already published')
         .all();
@@ -686,9 +680,7 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -732,17 +724,13 @@ test.describe('Visual Editing', () => {
       sdk === 'qwik',
       'Qwik fails to update the data when nested values are updated. Need to raise another PR.'
     );
-    test.skip(
-      packageName === 'nextjs-sdk-next-app'
-    );
+    test.skip(packageName === 'nextjs-sdk-next-app');
     // Loom for reference: https://www.loom.com/share/b951939394ca4758b4a362725016d30b?sid=c54d90f5-121a-4652-877e-5abb6ddd2605
     test.skip(
       sdk === 'vue',
       `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
     );
-    test.skip(
-      packageName === 'nextjs-sdk-next-app'
-    );
+    test.skip(packageName === 'nextjs-sdk-next-app');
     test.skip(excludeGen1(sdk));
 
     await launchEmbedderAndWaitForSdk({
@@ -774,16 +762,12 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
       );
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
 
       await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
 
@@ -821,9 +805,7 @@ test.describe('Visual Editing', () => {
 
     test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -868,9 +850,7 @@ test.describe('Visual Editing', () => {
 
     test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -922,9 +902,7 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app'
-      );
+      test.skip(packageName === 'nextjs-sdk-next-app');
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
