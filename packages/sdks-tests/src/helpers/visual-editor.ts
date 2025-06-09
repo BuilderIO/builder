@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test';
 import { EMBEDDER_PORT, GEN1_SDK_LOADED_MSG, GEN2_SDK_LOADED_MSG } from './context.js';
-import type { BuilderContent } from '../specs/types.js';
+import type { BuilderContent, EditType } from '../specs/types.js';
 import type { Sdk } from './sdk.js';
 import type { Path } from '../specs/index.js';
 import { PAGES } from '../specs/index.js';
@@ -49,6 +49,7 @@ export const sendContentUpdateMessage = async ({
   page: Page;
   newContent: BuilderContent;
   model: string;
+  editType?: EditType;
 }) => {
   await page.evaluate(
     msgData => {
@@ -77,10 +78,12 @@ export const sendNewStateMessage = async ({
   page,
   newState,
   model,
+  editType,
 }: {
   page: Page;
   newState: Record<string, any>;
   model: string;
+  editType?: EditType;
 }) => {
   await page.evaluate(
     msgData => {
@@ -93,12 +96,13 @@ export const sendNewStateMessage = async ({
           data: {
             state: msgData.newState,
             model: msgData.model,
+            editType: msgData.editType,
           },
         },
         '*'
       );
     },
-    { newState, model }
+    { newState, model, editType }
   );
 };
 
@@ -147,6 +151,7 @@ export const sendPatchOrUpdateMessage = async ({
   sdk,
   updateFn,
   path,
+  editType,
 }: {
   page: Page;
   content: BuilderContent;
@@ -154,6 +159,7 @@ export const sendPatchOrUpdateMessage = async ({
   sdk: Sdk;
   updateFn: (text: string) => string;
   path: string;
+  editType?: EditType;
 }) => {
   const pathParts = path.split('/').filter(Boolean);
   let target: any = content;
@@ -174,7 +180,7 @@ export const sendPatchOrUpdateMessage = async ({
       id: content.id ?? '',
     });
   } else {
-    await sendContentUpdateMessage({ page, newContent: content, model });
+    await sendContentUpdateMessage({ page, newContent: content, model, editType });
   }
 
   return content;

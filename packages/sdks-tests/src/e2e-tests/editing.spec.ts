@@ -36,8 +36,7 @@ const editorTests = ({
 }) => {
   test('correctly updates Text block', async ({ page, basePort, packageName, sdk }) => {
     test.skip(
-      packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next14-pages' ||
+      packageName === 'gen1-next14-pages' ||
         packageName === 'gen1-next15-app' ||
         packageName === 'gen1-remix'
     );
@@ -75,8 +74,7 @@ const editorTests = ({
 
   test('correctly updates Text block styles', async ({ page, packageName, basePort, sdk }) => {
     test.skip(
-      packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next14-pages' ||
+      packageName === 'gen1-next14-pages' ||
         packageName === 'gen1-next15-app' ||
         packageName === 'gen1-remix'
     );
@@ -97,6 +95,7 @@ const editorTests = ({
       sdk,
       path: '/data/blocks/0/responsiveStyles/large/backgroundColor',
       updateFn: () => 'rgb(19, 67, 92)',
+      editType: packageName === 'nextjs-sdk-next-app' ? 'client' : undefined,
     });
 
     const btn = page.frameLocator('iframe').getByRole(sdk === 'oldReact' ? 'button' : 'link');
@@ -113,11 +112,11 @@ test.describe('Visual Editing', () => {
     sdk,
   }) => {
     test.skip(
-      packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next14-pages' ||
-        packageName === 'gen1-next15-app' ||
+      packageName === 'gen1-next15-app' ||
         packageName === 'gen1-react' ||
-        packageName === 'gen1-remix'
+        packageName === 'gen1-remix' ||
+        packageName === 'gen1-next14-pages' ||
+        packageName === 'nextjs-sdk-next-app'
     );
 
     await launchEmbedderAndWaitForSdk({
@@ -137,7 +136,12 @@ test.describe('Visual Editing', () => {
       expect(firstBox.y).toBeLessThan(secondBox.y);
     }
 
-    await sendContentUpdateMessage({ page, newContent: MODIFIED_EDITING_COLUMNS, model: 'page' });
+    await sendContentUpdateMessage({
+      page,
+      newContent: MODIFIED_EDITING_COLUMNS,
+      model: 'page',
+      editType: packageName === 'nextjs-sdk-next-app' ? 'server' : undefined,
+    });
     // had to hack this so that we can wait for the content update to actually show up (was failing in Qwik)
     await page.frameLocator('iframe').getByText('third').waitFor();
 
@@ -187,7 +191,7 @@ test.describe('Visual Editing', () => {
   });
 
   test('removal of styles should work properly', async ({ page, packageName, sdk, basePort }) => {
-    test.skip(packageName === 'nextjs-sdk-next-app' || checkIsGen1React(sdk));
+    test.skip(checkIsGen1React(sdk));
 
     await launchEmbedderAndWaitForSdk({
       path: '/editing-styles',
@@ -208,6 +212,7 @@ test.describe('Visual Editing', () => {
       page,
       newContent,
       model: 'page',
+      editType: packageName === 'nextjs-sdk-next-app' ? 'client' : undefined,
     });
 
     await expect(buttonLocator).toHaveCSS('margin-top', '0px');
@@ -220,11 +225,11 @@ test.describe('Visual Editing', () => {
     sdk,
   }) => {
     test.skip(
-      packageName === 'nextjs-sdk-next-app' ||
-        packageName === 'gen1-next14-pages' ||
+      packageName === 'gen1-next14-pages' ||
         packageName === 'gen1-next15-app' ||
         packageName === 'gen1-react' ||
-        packageName === 'gen1-remix'
+        packageName === 'gen1-remix' ||
+        packageName === 'nextjs-sdk-next-app'
     );
 
     test.skip(packageName === 'vue', 'Vue tests flake on this one for an unnkown reason.');
@@ -255,24 +260,29 @@ test.describe('Visual Editing', () => {
   test.describe('Column block', () => {
     test('correctly updates nested Text block', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
-        packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'nextjs-sdk-next-app'
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
-      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_TEXT, model: 'page' });
+      await sendContentUpdateMessage({
+        page,
+        newContent: COLUMNS_WITH_NEW_TEXT,
+        model: 'page',
+        editType: packageName === 'nextjs-sdk-next-app' ? 'server' : undefined,
+      });
       await page.frameLocator('iframe').getByText(NEW_TEXT).waitFor();
     });
     test('correctly updates space prop', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
-        packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'nextjs-sdk-next-app'
       );
 
       const selector = checkIsRN(sdk)
@@ -282,18 +292,23 @@ test.describe('Visual Editing', () => {
       const secondColumn = page.frameLocator('iframe').locator(selector).nth(1);
 
       await expect(secondColumn).toHaveCSS('margin-left', checkIsRN(sdk) ? '0px' : '20px');
-      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_SPACE, model: 'page' });
+      await sendContentUpdateMessage({
+        page,
+        newContent: COLUMNS_WITH_NEW_SPACE,
+        model: 'page',
+        editType: packageName === 'nextjs-sdk-next-app' ? 'server' : undefined,
+      });
       await expect(secondColumn).toHaveCSS('margin-left', '10px');
     });
     test('correctly updates width props', async ({ page, basePort, packageName, sdk }) => {
       test.skip(
         packageName === 'react-native-74' ||
           packageName === 'react-native-76-fabric' ||
-          packageName === 'nextjs-sdk-next-app' ||
           packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
           packageName === 'gen1-react' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'nextjs-sdk-next-app'
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/columns', basePort, page, sdk });
@@ -303,7 +318,12 @@ test.describe('Visual Editing', () => {
         getComputedStyle(el).width.replace('px', '')
       );
 
-      await sendContentUpdateMessage({ page, newContent: COLUMNS_WITH_NEW_WIDTHS, model: 'page' });
+      await sendContentUpdateMessage({
+        page,
+        newContent: COLUMNS_WITH_NEW_WIDTHS,
+        model: 'page',
+        editType: packageName === 'nextjs-sdk-next-app' ? 'server' : undefined,
+      });
 
       await expect
         .poll(
@@ -469,10 +489,10 @@ test.describe('Visual Editing', () => {
   test.describe('Content Input', () => {
     test('correctly updates', async ({ page, packageName, basePort, sdk }) => {
       test.skip(
-        packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next14-pages' ||
+        packageName === 'gen1-next14-pages' ||
           packageName === 'gen1-next15-app' ||
-          packageName === 'gen1-remix'
+          packageName === 'gen1-remix' ||
+          packageName === 'nextjs-sdk-next-app'
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/content-input-bindings', basePort, page, sdk });
@@ -484,6 +504,7 @@ test.describe('Visual Editing', () => {
           booleanToggle: true,
         },
         model: 'page',
+        editType: packageName === 'nextjs-sdk-next-app' ? 'client' : undefined,
       });
       await page.frameLocator('iframe').getByText('Hello').waitFor();
 
@@ -493,6 +514,7 @@ test.describe('Visual Editing', () => {
           booleanToggle: false,
         },
         model: 'page',
+        editType: packageName === 'nextjs-sdk-next-app' ? 'client' : undefined,
       });
       await page.frameLocator('iframe').getByText('Bye').waitFor();
     });
@@ -506,7 +528,9 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -529,7 +553,9 @@ test.describe('Visual Editing', () => {
         page,
         newContent,
         model: 'page',
+        editType: packageName === 'nextjs-sdk-next-app' ? 'client' : undefined,
       });
+
       await page.frameLocator('iframe').getByText('new text').waitFor();
 
       const textBlocks = await page
@@ -551,7 +577,9 @@ test.describe('Visual Editing', () => {
 
     test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'qwik-city' || packageName === 'nuxt',
         'Failing on the CI: Test timeout of 30000ms exceeded'
@@ -603,7 +631,9 @@ test.describe('Visual Editing', () => {
 
     test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -629,7 +659,7 @@ test.describe('Visual Editing', () => {
       });
       await page.frameLocator('iframe').getByText('add to top').waitFor();
 
-      const textBlocks = await page
+      const textBlocks = await page 
         .frameLocator('iframe')
         .getByText('some text already published')
         .all();
@@ -656,7 +686,9 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -700,12 +732,18 @@ test.describe('Visual Editing', () => {
       sdk === 'qwik',
       'Qwik fails to update the data when nested values are updated. Need to raise another PR.'
     );
+    test.skip(
+      packageName === 'nextjs-sdk-next-app'
+    );
     // Loom for reference: https://www.loom.com/share/b951939394ca4758b4a362725016d30b?sid=c54d90f5-121a-4652-877e-5abb6ddd2605
     test.skip(
       sdk === 'vue',
       `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
     );
-    test.skip(excludeGen1(sdk) || packageName === 'nextjs-sdk-next-app');
+    test.skip(
+      packageName === 'nextjs-sdk-next-app'
+    );
+    test.skip(excludeGen1(sdk));
 
     await launchEmbedderAndWaitForSdk({
       path: '/symbols-with-list-content-input',
@@ -736,10 +774,15 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
+      );
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
@@ -778,7 +821,9 @@ test.describe('Visual Editing', () => {
 
     test('should add new block in the middle', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -823,7 +868,9 @@ test.describe('Visual Editing', () => {
 
     test('should add new block at the top', async ({ page, basePort, sdk, packageName }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
@@ -875,7 +922,9 @@ test.describe('Visual Editing', () => {
       packageName,
     }) => {
       test.skip(checkIsGen1React(sdk));
-      test.skip(packageName === 'nextjs-sdk-next-app');
+      test.skip(
+        packageName === 'nextjs-sdk-next-app'
+      );
       test.skip(
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`

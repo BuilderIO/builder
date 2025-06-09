@@ -517,7 +517,7 @@ const QWIK_FORCE_RENDER_COUNT_FOR_RENDERING_CUSTOM_COMPONENT_DEFAULT_VALUE =
     json: {
       post: (json) => {
         if (json.name === 'InteractiveElement') {
-          json.children[0].meta.else.bindings['key'] = {
+          json.children[0].meta.else.meta.else.bindings['key'] = {
             code: "'wrapper-' + state.forceRenderCount",
             bindingType: 'expression',
             type: 'single',
@@ -660,17 +660,24 @@ module.exports = {
                 json.state.contentToUse.code =
                   json.state.contentToUse?.code.replace('async () => ', '');
               } else if (json.name === 'EnableEditor') {
+                json.context.set = {
+                  '../../../context/builder.context.lite.js:default': {
+                    name: 'builderContext',
+                    ref: 'contextValue',
+                  },
+                };
+
                 json.imports.push({
                   path: 'next/navigation',
                   imports: {
                     useRouter: 'useRouter',
                   },
                 });
-
                 json.hooks.init = {
                   code: `const router = useRouter();`,
                 };
               }
+
               return json;
             },
           },
