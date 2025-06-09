@@ -1,5 +1,15 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.22.0
+
+### Minor Changes
+
+- c7417f1: **Refactor Next.js SDK to support RSC-based hybrid editing for \[Text, Image, Video, Button, Section, Columns, Symbols]**
+
+  - Client-side updates enabled for faster editing on Text, Image, Video, and Button
+  - Section, Columns, and Symbols treated as server components for optimized SSR
+  - Improved performance and flexibility for visual editing in RSC environments
+
 ## 0.21.1
 
 ### Patch Changes
