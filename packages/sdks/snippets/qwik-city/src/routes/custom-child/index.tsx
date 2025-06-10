@@ -9,7 +9,7 @@ const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 export const useCustomChild = routeLoader$(async ({ url }) => {
   const searchParams = Object.fromEntries(url.searchParams);
 
-  const content = await fetchOneEntry({
+  const customChild = await fetchOneEntry({
     model: MODEL,
     apiKey: API_KEY,
     userAttributes: {
@@ -18,20 +18,21 @@ export const useCustomChild = routeLoader$(async ({ url }) => {
   });
 
   return {
-    content,
+    customChild,
     searchParams,
   };
 });
 
 export default component$(() => {
-  const content = useCustomChild();
-  const canShowContent =
-    content.value?.content || isPreviewing(content.value?.searchParams);
+  const {
+    value: { customChild, searchParams },
+  } = useCustomChild();
+  const canShowContent = customChild || isPreviewing(searchParams);
 
   return canShowContent ? (
     <Content
       model={MODEL}
-      content={content.value?.content}
+      content={customChild}
       apiKey={API_KEY}
       customComponents={[customHeroInfo]}
     />

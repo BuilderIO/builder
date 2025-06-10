@@ -15,10 +15,10 @@ import {
   template: `
     <div *ngIf="loading">Loading Data...</div>
 
-    <div *ngIf="!loading && !notFound && content" class="blog-data-preview">
-      <div>Blog Title: {{ content.data?.title }}</div>
-      <div>Authored by: {{ content.data?.['author'] }}</div>
-      <div>Handle: {{ content.data?.['handle'] }}</div>
+    <div *ngIf="!loading && !notFound" class="blog-data-preview">
+      <div>Blog Title: {{ content!.data?.title }}</div>
+      <div>Authored by: {{ content!.data?.['author'] }}</div>
+      <div>Handle: {{ content!.data?.['handle'] }}</div>
     </div>
     <div *ngIf="notFound">404 - Content not found</div>
   `,
@@ -34,7 +34,7 @@ export class LivePreviewComponent implements OnInit, OnDestroy {
     fetchOneEntry({
       model: 'blog-data',
       apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
-      userAttributes: { urlPath: this.router.url },
+      userAttributes: { urlPath: window.location.pathname },
     })
       .then((data) => {
         this.content = data;
