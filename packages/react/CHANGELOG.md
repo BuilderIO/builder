@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 8.2.4
+
+### Patch Changes
+
+- Updated dependencies [c7417f1]
+  - @builder.io/sdk@6.1.0
+
 ## 8.2.3
 
 ### Patch Changes
