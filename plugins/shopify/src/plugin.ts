@@ -1,6 +1,6 @@
 import { registerCommercePlugin } from '@builder.io/plugin-tools';
 
-import Client from 'shopify-buy';
+import Client from 'shopify-buy'
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import { getDataConfig } from './data-plugin';
