@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-shopify",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
