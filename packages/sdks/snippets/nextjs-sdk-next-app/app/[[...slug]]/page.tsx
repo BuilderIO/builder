@@ -23,10 +23,10 @@ export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
 
   const content = await fetchOneEntry({
-    options: getBuilderSearchParams(props.searchParams),
     apiKey: PUBLIC_API_KEY,
     model: 'page',
     userAttributes: { urlPath },
+    options: getBuilderSearchParams(props.searchParams),
   });
 
   const canShowContent = content || isPreviewing(props.searchParams);
