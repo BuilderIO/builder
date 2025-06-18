@@ -16,6 +16,97 @@ export const componentInfo: ComponentInfo = {
       allowedFileTypes: IMAGE_FILE_TYPES,
       required: true,
     },
+    {
+      name: 'backgroundSize',
+      type: 'text',
+      defaultValue: 'cover',
+      enum: [
+        {
+          label: 'contain',
+          value: 'contain',
+          helperText: 'The image should never get cropped',
+        },
+        {
+          label: 'cover',
+          value: 'cover',
+          helperText: "The image should fill it's box, cropping when needed",
+        },
+      ],
+    },
+    {
+      name: 'backgroundPosition',
+      type: 'text',
+      defaultValue: 'center',
+      enum: [
+        'center',
+        'top',
+        'left',
+        'right',
+        'bottom',
+        'top left',
+        'top right',
+        'bottom left',
+        'bottom right',
+      ],
+    },
+    {
+      name: 'altText',
+      type: 'string',
+      helperText: 'Text to display when the user has images off',
+    },
+    {
+      name: 'title',
+      type: 'string',
+      helperText: 'Text to display when hovering over the asset',
+    },
+    {
+      name: 'height',
+      type: 'number',
+      hideFromUI: true,
+    },
+    {
+      name: 'width',
+      type: 'number',
+      hideFromUI: true,
+    },
+    {
+      name: 'sizes',
+      type: 'string',
+      hideFromUI: true,
+    },
+    {
+      name: 'srcset',
+      type: 'string',
+      hideFromUI: true,
+    },
+    {
+      name: 'lazy',
+      type: 'boolean',
+      defaultValue: true,
+      hideFromUI: true,
+    },
+    {
+      name: 'fitContent',
+      type: 'boolean',
+      helperText:
+        "When child blocks are provided, fit to them instead of using the image's aspect ratio",
+      defaultValue: true,
+    },
+    {
+      name: 'highPriority',
+      type: 'boolean',
+      advanced: true,
+      helperText:
+        'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
+    },
+    {
+      name: 'aspectRatio',
+      type: 'number',
+      helperText:
+        "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
+      advanced: true,
+      defaultValue: 0.7041,
+    },
   ],
   noWrap: true,
   static: true,

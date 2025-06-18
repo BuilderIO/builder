@@ -7,6 +7,7 @@ import { getSrcSet } from '../image/image.helpers.js';
  */
 
 import { setAttrs } from '../helpers.js';
+import { JSX } from '@builder.io/mitosis/jsx-runtime';
 
 useMetadata({
   rsc: {
@@ -30,6 +31,7 @@ export interface ImgProps {
     | 'top right'
     | 'bottom left'
     | 'bottom right';
+  aspectRatio?: number;
 }
 
 export default function ImgComponent(props: ImgProps) {
@@ -47,6 +49,21 @@ export default function ImgComponent(props: ImgProps) {
 
       return getSrcSet(url);
     },
+    get aspectRatioCss():
+    | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
+        position: 'absolute';
+      })
+    | undefined {
+    const aspectRatioStyles = {
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      left: '0px',
+      top: '0px',
+    } as const;
+    const out = props.aspectRatio ? aspectRatioStyles : undefined;
+    return out;
+  },
   });
 
   return (
@@ -55,6 +72,7 @@ export default function ImgComponent(props: ImgProps) {
       style={{
         objectFit: props.backgroundSize || 'cover',
         objectPosition: props.backgroundPosition || 'center',
+        ...state.aspectRatioCss,
       }}
       key={(isEditing() && props.imgSrc) || 'default-key'}
       alt={props.altText}
