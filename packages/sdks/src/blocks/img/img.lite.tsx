@@ -6,8 +6,8 @@ import { getSrcSet } from '../image/image.helpers.js';
  * This import is used by the Svelte SDK. Do not remove.
  */
 
+import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import { setAttrs } from '../helpers.js';
-import { JSX } from '@builder.io/mitosis/jsx-runtime';
 
 useMetadata({
   rsc: {
@@ -50,20 +50,20 @@ export default function ImgComponent(props: ImgProps) {
       return getSrcSet(url);
     },
     get aspectRatioCss():
-    | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
-        position: 'absolute';
-      })
-    | undefined {
-    const aspectRatioStyles = {
-      position: 'absolute',
-      height: '100%',
-      width: '100%',
-      left: '0px',
-      top: '0px',
-    } as const;
-    const out = props.aspectRatio ? aspectRatioStyles : undefined;
-    return out;
-  },
+      | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
+          position: 'absolute';
+        })
+      | undefined {
+      const aspectRatioStyles = {
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        left: '0px',
+        top: '0px',
+      } as const;
+      const out = props.aspectRatio ? aspectRatioStyles : undefined;
+      return out;
+    },
   });
 
   return (
