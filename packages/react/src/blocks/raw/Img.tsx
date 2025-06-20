@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { BuilderElement } from '@builder.io/sdk';
+import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import { withBuilder } from '../../functions/with-builder';
 import { IMAGE_FILE_TYPES } from 'src/constants/file-types.constant';
 import { getSrcSet } from '../Image';
@@ -9,6 +10,20 @@ export interface ImgProps {
   attributes?: any;
   image?: string;
   builderBlock?: BuilderElement;
+  altText?: string;
+  backgroundSize?: 'cover' | 'contain';
+  backgroundPosition?:
+    | 'center'
+    | 'top'
+    | 'left'
+    | 'right'
+    | 'bottom'
+    | 'top left'
+    | 'top right'
+    | 'bottom left'
+    | 'bottom right';
+  aspectRatio?: number;
+  title?: string;
 }
 
 // TODO: srcset, alt text input, object size/position input, etc
@@ -28,6 +43,22 @@ class ImgComponent extends React.Component<ImgProps> {
     return getSrcSet(url);
   }
 
+  getAspectRatioCss():
+    | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
+        position: 'absolute';
+      })
+    | undefined {
+    const aspectRatioStyles = {
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      left: '0px',
+      top: '0px',
+    } as const;
+    const out = this.props.aspectRatio ? aspectRatioStyles : undefined;
+    return out;
+  }
+
   render() {
     const attributes = this.props.attributes || {};
     const srcset = this.getSrcSet();
@@ -37,6 +68,13 @@ class ImgComponent extends React.Component<ImgProps> {
         {...this.props.attributes}
         src={this.props.image || attributes.src}
         srcSet={srcset}
+        title={this.props.title}
+        alt={this.props.altText}
+        style={{
+          objectFit: this.props.backgroundSize || 'cover',
+          objectPosition: this.props.backgroundPosition || 'center',
+          ...this.getAspectRatioCss(),
+        }}
       />
     );
   }
