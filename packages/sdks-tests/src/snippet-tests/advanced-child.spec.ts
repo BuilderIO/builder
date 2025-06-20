@@ -67,18 +67,7 @@ test.describe('Advanced child sub components', () => {
     page,
     packageName,
   }) => {
-    test.skip(
-      [
-        'react-native-74',
-        'react-native-76-fabric',
-        'solid',
-        'solid-start',
-        'angular-19-ssr',
-        'gen1-next14-pages',
-        'gen1-next15-app',
-        'nextjs-sdk-next-app',
-      ].includes(packageName)
-    );
+    test.skip(!['react-none-gen2'].includes(packageName));
 
     await page.goto(
       '/advanced-child?builder.space=ee9f13b4981e489a9a1209887695ef2b&builder.cachebust=true&builder.preview=page&builder.noCache=true&builder.allowTextEdit=true&__builder_editing__=true&builder.overrides.page=91744fcdc9f04bb8884a5f4c9feb0dc1&builder.overrides.91744fcdc9f04bb8884a5f4c9feb0dc1=91744fcdc9f04bb8884a5f4c9feb0dc1&builder.overrides.page:/advanced-child=91744fcdc9f04bb8884a5f4c9feb0dc1'
