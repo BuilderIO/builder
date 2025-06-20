@@ -32,6 +32,7 @@ export interface ImgProps {
     | 'bottom left'
     | 'bottom right';
   aspectRatio?: number;
+  title?: string;
 }
 
 export default function ImgComponent(props: ImgProps) {
@@ -68,7 +69,6 @@ export default function ImgComponent(props: ImgProps) {
 
   return (
     <img
-      loading="lazy"
       style={{
         objectFit: props.backgroundSize || 'cover',
         objectPosition: props.backgroundPosition || 'center',
@@ -77,6 +77,7 @@ export default function ImgComponent(props: ImgProps) {
       key={(isEditing() && props.imgSrc) || 'default-key'}
       alt={props.altText}
       src={props.imgSrc || props.image}
+      title={props.title}
       srcSet={state.srcSetToUse}
       {...useTarget({
         vue: filterAttrs(props.attributes, 'v-on:', false),

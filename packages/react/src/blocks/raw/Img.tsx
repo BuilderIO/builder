@@ -100,46 +100,6 @@ export const Img = withBuilder(ImgComponent, {
       helperText: 'Text to display when hovering over the asset',
     },
     {
-      name: 'height',
-      type: 'number',
-      hideFromUI: true,
-    },
-    {
-      name: 'width',
-      type: 'number',
-      hideFromUI: true,
-    },
-    {
-      name: 'sizes',
-      type: 'string',
-      hideFromUI: true,
-    },
-    {
-      name: 'srcset',
-      type: 'string',
-      hideFromUI: true,
-    },
-    {
-      name: 'lazy',
-      type: 'boolean',
-      defaultValue: true,
-      hideFromUI: true,
-    },
-    {
-      name: 'fitContent',
-      type: 'boolean',
-      helperText:
-        "When child blocks are provided, fit to them instead of using the image's aspect ratio",
-      defaultValue: true,
-    },
-    {
-      name: 'highPriority',
-      type: 'boolean',
-      advanced: true,
-      helperText:
-        'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
-    },
-    {
       name: 'aspectRatio',
       type: 'number',
       helperText:

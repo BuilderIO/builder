@@ -5,7 +5,6 @@ export const componentInfo: ComponentInfo = {
   // friendlyName?
   name: 'Raw:Img',
   hideFromInsertMenu: true,
-
   image:
     'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-insert_photo-24px.svg?alt=media&token=4e5d0ef4-f5e8-4e57-b3a9-38d63a9b9dc4',
   inputs: [
@@ -58,46 +57,6 @@ export const componentInfo: ComponentInfo = {
       name: 'title',
       type: 'string',
       helperText: 'Text to display when hovering over the asset',
-    },
-    {
-      name: 'height',
-      type: 'number',
-      hideFromUI: true,
-    },
-    {
-      name: 'width',
-      type: 'number',
-      hideFromUI: true,
-    },
-    {
-      name: 'sizes',
-      type: 'string',
-      hideFromUI: true,
-    },
-    {
-      name: 'srcset',
-      type: 'string',
-      hideFromUI: true,
-    },
-    {
-      name: 'lazy',
-      type: 'boolean',
-      defaultValue: true,
-      hideFromUI: true,
-    },
-    {
-      name: 'fitContent',
-      type: 'boolean',
-      helperText:
-        "When child blocks are provided, fit to them instead of using the image's aspect ratio",
-      defaultValue: true,
-    },
-    {
-      name: 'highPriority',
-      type: 'boolean',
-      advanced: true,
-      helperText:
-        'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
     },
     {
       name: 'aspectRatio',
