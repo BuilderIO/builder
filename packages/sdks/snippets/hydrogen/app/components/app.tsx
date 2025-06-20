@@ -3,11 +3,7 @@
  * snippets/hydrogen/app/components/app.tsx
  */
 
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-} from '@builder.io/sdk-react';
+import {Content, fetchOneEntry, isPreviewing} from '@builder.io/sdk-react';
 import type {LoaderFunction} from '@remix-run/node';
 import {useLoaderData} from '@remix-run/react';
 import {useNonce} from '@shopify/hydrogen';
@@ -26,9 +22,8 @@ export const builderLoader: LoaderFunction = async ({params, request}) => {
       userAttributes: {
         urlPath: pathname,
       },
-      options: getBuilderSearchParams(url.searchParams),
     });
-    return {content, model};
+    return {content, model, searchParams: Object.fromEntries(url.searchParams)};
   } catch (e) {
     console.error(e);
     return {content: null};
@@ -36,20 +31,27 @@ export const builderLoader: LoaderFunction = async ({params, request}) => {
 };
 
 export default function BuilderPage() {
-  const {content, model} = useLoaderData<{content: any; model: string}>();
+  const {content, model, searchParams} = useLoaderData<{
+    content: any;
+    model: string;
+    searchParams: Record<string, string>;
+  }>();
   const nonce = useNonce();
+
+  const canShowContent = content || isPreviewing(searchParams);
 
   return (
     <div>
-      {content && (
+      {canShowContent ? (
         <Content
           model={model}
           apiKey={BUILDER_API_KEY}
           content={content}
           nonce={nonce}
         />
+      ) : (
+        <div>404</div>
       )}
-      <div>The rest of your page goes here</div>
     </div>
   );
 }
