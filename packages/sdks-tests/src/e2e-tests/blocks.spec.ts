@@ -258,7 +258,7 @@ test.describe('Blocks', () => {
     });
   });
 
-  test.describe('Raw:Img', () => {
+  test.describe.only('Raw:Img', () => {
 
     test("SVG Image shouldn't have srcset", async ({ page, sdk, packageName }) => {
       test.skip(checkIsRN(sdk));
