@@ -28,6 +28,7 @@ import {
   CONTENT_2 as imageHighPriority,
   CONTENT_3 as imageNoWebp,
 } from './image.js';
+import { CONTENT as rawImg, CONTENT_2 as rawImgNoWebp } from './raw-img.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
 import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
@@ -142,8 +143,10 @@ export const PAGES: Record<string, Page> = {
   '/content-bindings': { content: contentBindings },
   '/content-input-bindings': { content: contentInputBindings, isGen1VisualEditingTest: true },
   '/image': { content: image },
+  '/raw-img': { content: rawImg },
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },
+  '/raw-img-no-webp': { content: rawImgNoWebp },
   '/data-bindings': { content: dataBindings },
   '/symbols-with-list-content-input': { content: SYMBOLS_WITH_LIST_CONTENT_INPUT },
   '/data-binding-styles': { content: dataBindingStyles },
