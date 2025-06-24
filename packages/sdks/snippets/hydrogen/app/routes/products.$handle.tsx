@@ -13,16 +13,22 @@ import ProductInfo, {type Product} from '../components/ProductInfo';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'product-editorial';
 
-export async function loader({params}: LoaderFunctionArgs) {
+export async function loader({params, request}: LoaderFunctionArgs) {
   const productRes = await fetch(
     `https://fakestoreapi.com/products/${params.handle}`,
   );
+
+  if (!productRes.ok) {
+    throw new Error(`Failed to fetch product: ${productRes.status}`);
+  }
+
   const product = (await productRes.json()) as Product;
 
+  const url = new URL(request.url);
   const editorialContent = await fetchOneEntry({
     model: MODEL_NAME,
     apiKey: API_KEY,
-    userAttributes: {urlPath: params.pathname},
+    userAttributes: {urlPath: url.pathname},
   });
 
   return json({product, editorialContent});
