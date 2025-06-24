@@ -17,8 +17,6 @@ test.describe('Product Editorial Page with Real Data', () => {
         'gen1-remix',
         'gen1-next14-pages',
         'gen1-next15-app',
-        'angular-17',
-        'angular-17-ssr',
       ].includes(packageName)
     );
     await page.goto('/products/1');
