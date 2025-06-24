@@ -1,5 +1,27 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.22.0
+
+### Minor Changes
+
+- c7417f1: **Refactor Next.js SDK to support RSC-based hybrid editing for \[Text, Image, Video, Button, Section, Columns, Symbols]**
+  - Client-side updates enabled for faster editing on Text, Image, Video, and Button
+  - Section, Columns, and Symbols treated as server components for optimized SSR
+  - Improved performance and flexibility for visual editing in RSC environments
+
+## 0.21.1
+
+### Patch Changes
+
+- 7adc4f6: Fix: Corrected the implementaion of http requests with GET method
+- 25895a2: Fix: Improved implementation of making Content http-requests with GET method
+
+## 0.20.1
+
+### Patch Changes
+
+- 6ae35cc: feat: add support for register action
+
 ## 0.20.0
 
 ### Minor Changes

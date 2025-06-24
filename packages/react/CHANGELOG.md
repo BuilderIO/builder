@@ -1,5 +1,31 @@
 # @builder.io/react
 
+## 8.2.4
+
+### Patch Changes
+
+- Updated dependencies [c7417f1]
+  - @builder.io/sdk@6.1.0
+
+## 8.2.3
+
+### Patch Changes
+
+- 7adc4f6: Fix: Corrected the implementaion of http requests with GET method
+- 25895a2: Fix: Improved implementation of making Content http-requests with GET method
+
+## 8.2.2
+
+### Patch Changes
+
+- 31a0d0e: feat: add `nonce` support for Content Security Policy
+
+## 8.2.1
+
+### Patch Changes
+
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
 ## 8.2.0
 
 ### Minor Changes

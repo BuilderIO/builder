@@ -1,5 +1,31 @@
 # @builder.io/sdk-angular
 
+## 0.21.1
+
+### Patch Changes
+
+- 7adc4f6: Fix: Corrected the implementaion of http requests with GET method
+- 25895a2: Fix: Improved implementation of making Content http-requests with GET method
+
+## 0.21.0
+
+### Minor Changes
+
+- 774b180: 🚨 Breaking Change
+  Refactor Angular SDK to leverage Angular v17+ features (signals, computed, inputs, declarative statements, etc.).
+
+  - Performance revamp: Recomputations now occur only when a dependent signal updates, instead of on every change detection cycle.
+  - Components with children no longer re-render on each change, eliminating sluggish interactions in the Visual Editor.
+
+  The SDK will only work for apps with Angular v17.3.0 and above
+
+## 0.20.1
+
+### Patch Changes
+
+- 6ae35cc: feat: add support for register action
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
 ## 0.20.0
 
 ### Minor Changes

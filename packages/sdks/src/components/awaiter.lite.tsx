@@ -2,16 +2,8 @@
  * Placeholder component to be overridden by specific SDKs.
  * Allows to dynamically import components.
  */
-
 import { onMount, useTarget } from '@builder.io/mitosis';
-
-type AwaiterProps = {
-  load: () => Promise<any>;
-  props?: any;
-  attributes?: any;
-  fallback?: any;
-  children?: any;
-};
+import type { AwaiterProps } from './awaiter.types.js';
 
 export default function Awaiter(props: AwaiterProps) {
   onMount(() => {

@@ -96,6 +96,7 @@ import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
 import { SECTION_CHILDREN } from './section-children.js';
 import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
 import { HTTP_REQUESTS_POST_API_CONTENT } from './http-requests-post-api.js';
+import { HTTP_REQUESTS_GET_API_CONTENT } from './http-requests-get-api.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -152,6 +153,7 @@ export const PAGES: Record<string, Page> = {
   '/ab-test-interactive': { content: AB_TEST_INTERACTIVE },
   '/http-requests': { content: HTTP_REQUESTS },
   '/http-requests-post-api': { content: HTTP_REQUESTS_POST_API_CONTENT },
+  '/http-requests-get-api': { content: HTTP_REQUESTS_GET_API_CONTENT },
   '/symbol-ab-test': { content: symbolAbTest },
   '/custom-breakpoints': { content: customBreakpoints },
   '/reactive-state': { content: REACTIVE_STATE_CONTENT },
@@ -229,7 +231,7 @@ export const PAGES: Record<string, Page> = {
   '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
   '/custom-components-nowrap': {
     content: CUSTOM_COMPONENTS_NOWRAP,
-    target: ['angular-16', 'angular-16-ssr', 'angular-19-ssr'],
+    target: ['angular-17', 'angular-17-ssr', 'angular-19-ssr'],
   },
   /**
    * For some reason, the `HTTP_REQUESTS` content is missing some values when
