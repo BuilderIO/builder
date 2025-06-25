@@ -1017,7 +1017,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22${expectedModel}%22&entry=%22${expectedEntryId}%22&query.id=${expectedEntryId}`,
+      `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=data.blocks&apiKey=${API_KEY}&fields=data&format=${expectedFormat}&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22${expectedModel}%22&entry=%22123%22&query.id=%22${expectedEntryId}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -1059,7 +1059,37 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/symbol?omit=data.blocks&apiKey=25608a566fbb654ea959c1b1729e370d&fields=data&format=email&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&query=%7B%22data%22%3A%7B%22id%22%3A%22123%22%7D%2C%22%24or%22%3A%5B%7B%22data%22%3A%7B%22sourceUrl%22%3A%22%2Fc%2Fdocs%2Fdevelop%22%7D%7D%2C%7B%22data%22%3A%7B%22sourceUrl%22%3A%22https%3A%2F%2Fwww.builder.io%2Fc%2Fdocs%2Fdevelop%22%7D%7D%5D%7D&model=%22symbol%22&entry=%22123%22`,
+      `https://cdn.builder.io/api/v3/content/symbol?omit=data.blocks&apiKey=25608a566fbb654ea959c1b1729e370d&fields=data&format=email&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22symbol%22&entry=%22123%22&query=%7B%22data%22%3A%7B%22id%22%3A%22123%22%7D%2C%22%24or%22%3A%5B%7B%22data%22%3A%7B%22sourceUrl%22%3A%22%2Fc%2Fdocs%2Fdevelop%22%7D%7D%2C%7B%22data%22%3A%7B%22sourceUrl%22%3A%22https%3A%2F%2Fwww.builder.io%2Fc%2Fdocs%2Fdevelop%22%7D%7D%5D%7D`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test('hits content url with query as the same object as the one passed in options.query if query contains nested $ mongo-operator', async () => {
+    const expectedModel = 'symbol';
+    const expectedFormat = 'email';
+    const expectedEntryId = '123';
+
+    builder.apiEndpoint = 'content';
+    const result = await builder['flushGetContentQueue'](true, [
+      {
+        model: expectedModel,
+        format: expectedFormat,
+        key: expectedModel,
+        omit: OMIT,
+        fields: 'data',
+        limit: 10,
+        entry: expectedEntryId,
+        query: {
+          data: {
+            sourceUrl: { $eq: '/c/docs/develop' },
+          },
+        },
+      },
+    ]);
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/symbol?omit=data.blocks&apiKey=25608a566fbb654ea959c1b1729e370d&fields=data&format=email&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22symbol%22&entry=%22123%22&query.data.sourceUrl=%7B%22%24eq%22%3A%22%2Fc%2Fdocs%2Fdevelop%22%7D`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
@@ -1092,7 +1122,7 @@ describe('flushGetContentQueue', () => {
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
-      `https://cdn.builder.io/api/v3/content/symbol?omit=data.blocks&apiKey=25608a566fbb654ea959c1b1729e370d&fields=data&format=email&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22symbol%22&entry=%22123%22&query.data.sourceUrl=%2Fc%2Fdocs%2Fdevelop&query.name.fullName=John%20Doe`,
+      `https://cdn.builder.io/api/v3/content/symbol?omit=data.blocks&apiKey=25608a566fbb654ea959c1b1729e370d&fields=data&format=email&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=10&model=%22symbol%22&entry=%22123%22&query.data.sourceUrl=%22%2Fc%2Fdocs%2Fdevelop%22&query.name.fullName=%22John%20Doe%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
