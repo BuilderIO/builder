@@ -2520,6 +2520,25 @@ export class Builder {
     return _res;
   }
 
+  /**
+   * Compare two objects for shallow equality (same keys and values)
+   */
+  private isShallowEqual(obj1: any, obj2: any): boolean {
+    if (obj1 === obj2) return true;
+    if (!obj1 || !obj2) return false;
+
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) return false;
+
+    for (const key of keys1) {
+      if (obj1[key] !== obj2[key]) return false;
+    }
+
+    return true;
+  }
+
   private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
     if (!this.apiKey) {
       throw new Error(
@@ -2709,11 +2728,17 @@ export class Builder {
 
     if (this.apiEndpoint === 'content') {
       if (queue[0].query) {
-        const flattened = this.flattenMongoQuery({ query: queue[0].query });
+        const objectToFlatten = { query: queue[0].query };
+        const flattened = this.flattenMongoQuery(objectToFlatten);
         for (const key in flattened) {
           queryParams[key] = flattened[key];
         }
-        delete queryParams.query;
+
+        if (this.isShallowEqual(objectToFlatten, flattened)) {
+          queryParams.query = JSON.stringify(flattened.query);
+        } else {
+          delete queryParams.query;
+        }
       }
     }
 
