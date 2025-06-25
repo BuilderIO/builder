@@ -19,7 +19,11 @@ test.describe('Hero Section', () => {
         'gen1-next15-app',
       ].includes(packageName)
     );
-    await page.goto('/marketing-event');
+
+    const testUrl =
+      packageName === 'react-sdk-next-14-app' ? '/blueprints/marketing-event' : '/marketing-event';
+
+    await page.goto(testUrl);
   });
 
   test('should display the hero section with title and call-to-action', async ({ page }) => {
