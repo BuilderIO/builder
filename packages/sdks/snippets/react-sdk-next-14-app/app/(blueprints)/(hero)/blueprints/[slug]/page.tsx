@@ -1,7 +1,7 @@
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-react';
 
-const MODEL = 'collection-hero';
-const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
+const model = 'collection-hero';
+const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export default async function ProductHeroPage({
   params,
@@ -9,8 +9,8 @@ export default async function ProductHeroPage({
   params: { slug: string };
 }) {
   const productHero = await fetchOneEntry({
-    model: MODEL,
-    apiKey: API_KEY,
+    model,
+    apiKey,
     userAttributes: { urlPath: `/${params.slug}` },
   });
 
@@ -19,7 +19,7 @@ export default async function ProductHeroPage({
       {/* Your nav goes here */}
       {/* Hero Section */}
       {productHero || isPreviewing() ? (
-        <Content model={MODEL} content={productHero} apiKey={API_KEY} />
+        <Content model={model} content={productHero} apiKey={apiKey} />
       ) : (
         <div>404</div>
       )}
