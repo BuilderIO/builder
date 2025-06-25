@@ -17,76 +17,11 @@ export const componentInfo: ComponentInfo = {
   canHaveChildren: true,
   inputs: [
     {
-      name: 'image',
-      type: 'file',
+      name: "image",
       bubble: true,
+      type: "file",
       allowedFileTypes: IMAGE_FILE_TYPES,
       required: true,
-      defaultValue:
-        'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F72c80f114dc149019051b6852a9e3b7a',
-      onChange: (options: Map<string, any>): void | Promise<void> => {
-        const DEFAULT_ASPECT_RATIO = 0.7041;
-        options.delete('srcset');
-        options.delete('noWebp');
-        function loadImage(
-          url: string,
-          timeout = 60000
-        ): Promise<HTMLImageElement> {
-          return new Promise((resolve, reject) => {
-            const img = document.createElement('img');
-            let loaded = false;
-            img.onload = () => {
-              loaded = true;
-              resolve(img);
-            };
-
-            img.addEventListener('error', (event) => {
-              console.warn('Image load failed', event.error);
-              reject(event.error);
-            });
-
-            img.src = url;
-            setTimeout(() => {
-              if (!loaded) {
-                reject(new Error('Image load timed out'));
-              }
-            }, timeout);
-          });
-        }
-
-        function round(num: number) {
-          return Math.round(num * 1000) / 1000;
-        }
-
-        const value = options.get('image');
-        const aspectRatio = options.get('aspectRatio');
-
-        // For SVG images - don't render as webp, keep them as SVG
-        fetch(value)
-          .then((res) => res.blob())
-          .then((blob) => {
-            if (blob.type.includes('svg')) {
-              options.set('noWebp', true);
-            }
-          });
-
-        if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
-          return loadImage(value).then((img) => {
-            const possiblyUpdatedAspectRatio = options.get('aspectRatio');
-            if (
-              options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio ||
-                possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
-            ) {
-              if (img.width && img.height) {
-                options.set('aspectRatio', round(img.height / img.width));
-                options.set('height', img.height);
-                options.set('width', img.width);
-              }
-            }
-          });
-        }
-      },
     },
     {
       name: 'backgroundSize',
@@ -139,17 +74,7 @@ export const componentInfo: ComponentInfo = {
       advanced: true,
       defaultValue: 0.7041,
     },
-    {
-      name: 'fitContent',
-      type: 'boolean',
-      helperText:
-        "When child blocks are provided, fit to them instead of using the image's aspect ratio",
-      defaultValue: true,
-    },
   ],
 
-  shouldReceiveBuilderProps: {
-    builderBlock: true,
-  },
   noWrap: true,
 };

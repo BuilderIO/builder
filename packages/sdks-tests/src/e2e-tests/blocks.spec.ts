@@ -260,35 +260,6 @@ test.describe('Blocks', () => {
 
   test.describe('Raw:Img', () => {
 
-    test("SVG Image shouldn't have srcset", async ({ page, sdk, packageName }) => {
-      test.skip(checkIsRN(sdk));
-      test.skip(
-        isSSRFramework(packageName),
-        'SSR frameworks get the images from the server so page.route intercept does not work'
-      );
-      const mockSvgPath = path.join(mockFolderPath, 'sample-svg.svg');
-      const mockSvgBuffer = fs.readFileSync(mockSvgPath);
-
-      await page.route('**/*', route => {
-        const request = route.request();
-        if (request.url().includes('cdn.builder.io/api/v1/image')) {
-          return route.fulfill({
-            status: 200,
-            contentType: 'image/svg+xml',
-            body: mockSvgBuffer,
-          });
-        } else {
-          return route.continue();
-        }
-      });
-
-      await page.goto('/raw-img-no-webp');
-
-      const img = page.locator('.builder-raw-img');
-
-      await expect(img).not.toHaveAttribute('srcset');
-    });
-
     test('Image title attribute', async ({ page, sdk, packageName }) => {
       test.skip(checkIsRN(sdk));
       test.skip(
