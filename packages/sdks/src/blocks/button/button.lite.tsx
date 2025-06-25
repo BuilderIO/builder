@@ -8,6 +8,9 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
+  angular: {
+    selector: 'builder-button',
+  },
 });
 
 export default function Button(props: ButtonProps) {

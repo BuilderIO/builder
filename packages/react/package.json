@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "8.2.0",
+  "version": "8.2.4",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -36,7 +36,7 @@
     "release:minor": "yarn build && yarn version minor && yarn npm publish",
     "release:patch": "yarn build && yarn version patch && yarn npm publish",
     "release:nightly": "yarn build && yarn version prerelease && yarn npm publish --tag nightly",
-    "release:dev": "yarn build && yarn version prerelease && yarn npm publish --tag dev",
+    "release:dev": "yarn version prerelease && yarn pack && tar -zxvf package.tgz && cp package/package.json ./package.json && rm -rf package package.tgz && yarn build && yarn npm publish --tag dev",
     "fix-core-version": "bash ./scripts/fix-core-version.sh",
     "ci:test": "yarn test",
     "ci:build": "yarn build"

@@ -22,11 +22,7 @@ test.describe('Hydration', () => {
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 
-  test('No mismatch on A/B test content', async ({ page, packageName }) => {
-    test.skip(
-      packageName === 'angular-16-ssr' || packageName === 'angular-19-ssr',
-      'Angular SSR does not support A/B tests'
-    );
+  test('No mismatch on A/B test content', async ({ page }) => {
     await page.goto('/ab-test-interactive');
     await page.locator('a').locator('visible=true').first().click({ timeout: 10000 });
     await findTextInPage({ page, text: 'Stack at tablet' });

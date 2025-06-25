@@ -99,9 +99,10 @@ const variantsScript = (variantsString: string, contentId: string) =>
 interface VariantsProviderProps {
   initialContent: BuilderContent;
   children: (variants: BuilderContent[], renderScript?: () => JSX.Element) => JSX.Element;
+  nonce?: string;
 }
 
-export const VariantsProvider = ({ initialContent, children }: VariantsProviderProps) => {
+export const VariantsProvider = ({ initialContent, children, nonce }: VariantsProviderProps) => {
   if (Builder.isBrowser && !builder.canTrack) {
     return children([initialContent]);
   }
@@ -126,6 +127,7 @@ export const VariantsProvider = ({ initialContent, children }: VariantsProviderP
     );
     const renderScript = () => (
       <script
+        nonce={nonce}
         id={`variants-script-${initialContent.id}`}
         dangerouslySetInnerHTML={{
           __html: variantsScript(variantsJson, initialContent.id!),

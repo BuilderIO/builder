@@ -28,7 +28,10 @@ import { getInteractionPropertiesForEvent } from '../../../functions/track/inter
 import { getDefaultCanTrack } from '../../../helpers/canTrack.js';
 import { getCookieSync } from '../../../helpers/cookie.js';
 import { postPreviewContent } from '../../../helpers/preview-lru-cache/set.js';
-import { createEditorListener } from '../../../helpers/subscribe-to-editor.js';
+import {
+  createEditorListener,
+  type EditType,
+} from '../../../helpers/subscribe-to-editor.js';
 import { setupBrowserForEditing } from '../../../scripts/init-editing.js';
 import type { BuilderContent } from '../../../types/builder-content.js';
 import type { ComponentInfo } from '../../../types/components.js';
@@ -81,8 +84,13 @@ export default function EnableEditor(props: BuilderEditorProps) {
    */
   const elementRef = useRef<HTMLDivElement>();
   const [hasExecuted, setHasExecuted] = useState<boolean>(false);
+  const [contextValue, setContextValue] = useState<any>(
+    props.builderContextSignal.value
+  );
   const state = useStore({
-    mergeNewRootState(newData: Dictionary<any>) {
+    prevData: null as Dictionary<any> | null,
+    prevLocale: '',
+    mergeNewRootState(newData: Dictionary<any>, editType?: EditType) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
         ...newData,
@@ -93,8 +101,32 @@ export default function EnableEditor(props: BuilderEditorProps) {
       } else {
         props.builderContextSignal.value.rootState = combinedState;
       }
+      useTarget({
+        rsc: () => {
+          if (editType === 'server') {
+            if (props.builderContextSignal.value.rootSetState) {
+              props.builderContextSignal.value.rootSetState?.(combinedState);
+            } else {
+              props.builderContextSignal.value.rootState = combinedState;
+            }
+          } else {
+            const updatedContext = {
+              ...props.builderContextSignal.value,
+              rootState: combinedState,
+            };
+            setContextValue(updatedContext);
+          }
+        },
+        default: () => {
+          if (props.builderContextSignal.value.rootSetState) {
+            props.builderContextSignal.value.rootSetState(combinedState);
+          } else {
+            props.builderContextSignal.value.rootState = combinedState;
+          }
+        },
+      });
     },
-    mergeNewContent(newContent: BuilderContent) {
+    mergeNewContent(newContent: BuilderContent, editType?: EditType) {
       const newContentValue = {
         ...props.builderContextSignal.value.content,
         ...newContent,
@@ -113,11 +145,21 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
       useTarget({
         rsc: () => {
-          postPreviewContent({
-            value: newContentValue,
-            key: newContentValue.id!,
-            url: window.location.pathname,
-          });
+          if (editType === 'server') {
+            postPreviewContent({
+              value: newContentValue,
+              key: newContentValue.id!,
+              url: window.location.pathname,
+            });
+          } else {
+            // setContextValue({...contextValue, content: newContentValue});
+            const updatedContent = JSON.parse(JSON.stringify(newContentValue));
+            const updatedContextValue = {
+              ...contextValue,
+              content: updatedContent,
+            };
+            setContextValue(updatedContextValue);
+          }
         },
         default: () => {
           props.builderContextSignal.value.content = newContentValue;
@@ -154,11 +196,11 @@ export default function EnableEditor(props: BuilderEditorProps) {
           animation: (animation) => {
             triggerAnimation(animation);
           },
-          contentUpdate: (newContent) => {
-            state.mergeNewContent(newContent);
+          contentUpdate: (newContent, editType) => {
+            state.mergeNewContent(newContent, editType);
           },
-          stateUpdate: (newState) => {
-            state.mergeNewRootState(newState);
+          stateUpdate: (newState, editType) => {
+            state.mergeNewRootState(newState, editType);
           },
         },
       })(event);
@@ -241,11 +283,16 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
           logFetch(JSON.stringify(fetchRequestObj));
 
-          fetch(fetchRequestObj.url, {
+          const fetchOptions = {
             method: fetchRequestObj.method,
             headers: fetchRequestObj.headers,
             body: fetchRequestObj.body,
-          })
+          };
+          if (fetchRequestObj.method === 'GET') {
+            delete fetchOptions.body;
+          }
+
+          fetch(fetchRequestObj.url, fetchOptions)
             .then((response) => response.json())
             .then((json) => {
               state.mergeNewRootState({ [key]: json });
@@ -508,13 +555,21 @@ export default function EnableEditor(props: BuilderEditorProps) {
 
   onUpdate(() => {
     if (props.data) {
+      if (state.prevData === props.data) {
+        return;
+      }
       state.mergeNewRootState(props.data);
+      state.prevData = props.data;
     }
   }, [props.data]);
 
   onUpdate(() => {
     if (props.locale) {
+      if (state.prevLocale === props.locale) {
+        return;
+      }
       state.mergeNewRootState({ locale: props.locale });
+      state.prevLocale = props.locale;
     }
   }, [props.locale]);
 

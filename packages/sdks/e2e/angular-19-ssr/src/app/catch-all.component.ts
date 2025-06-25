@@ -8,6 +8,7 @@ import {
   _processContentResult,
   fetchOneEntry,
   getBuilderSearchParams,
+  registerAction,
   type RegisteredComponent,
 } from '@builder.io/sdk-angular';
 import { getProps } from '@sdk/tests';
@@ -35,12 +36,12 @@ interface BuilderProps {
         [model]="model"
         [content]="content"
         [apiKey]="apiKey"
-        [trustedHosts]="trustedHosts"
-        [canTrack]="canTrack"
         [customComponents]="customComponents"
         [data]="data"
         [apiHost]="apiHost"
         [locale]="locale"
+        [trustedHosts]="trustedHosts"
+        [canTrack]="canTrack"
       ></builder-content>
     } @else {
       <div>404 - Content not found</div>
@@ -105,6 +106,25 @@ export class CatchAllComponent {
 
     if (!builderProps) {
       return;
+    }
+
+    if (typeof window !== 'undefined') {
+      registerAction({
+        name: 'test-action',
+        kind: 'function',
+        id: 'test-action-id',
+        inputs: [
+          {
+            name: 'actionName',
+            type: 'string',
+            required: true,
+            helperText: 'Action name',
+          },
+        ],
+        action: () => {
+          return `console.log("function call") `;
+        },
+      });
     }
 
     this.content = builderProps.content;
