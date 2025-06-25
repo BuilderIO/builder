@@ -2502,6 +2502,13 @@ export class Builder {
     return getFetch()(url, this.addSdkHeaders(requestOptions));
   }
 
+  /**
+   * Flatten a nested MongoDB query object into a flat object with dot-separated keys.
+   * $ keys are not flattened and are left as is.
+   *
+   * { foo: { bar: { $gt: 5 }}} -> { 'foo.bar': { '$gt': 5 }}
+   * { foo: {'bar.id': { $elemMatch: { 'baz.id': { $in: ['abc', 'bcd'] }}}}} -> { 'foo.bar.id': { '$elemMatch': { 'baz.id': { '$in': ['abc', 'bcd'] }}}}
+   */
   private flattenMongoQuery(obj: any, _current?: any, _res: any = {}): { [key: string]: string } {
     for (const key in obj) {
       const value = obj[key];
