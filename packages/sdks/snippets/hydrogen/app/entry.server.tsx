@@ -18,6 +18,7 @@ export default async function handleRequest(
       'https://cdn.builder.io',
       'http://localhost:*',
       'https://fakestoreapi.com',
+      'https://cdn.dummyjson.com',
     ],
     // we need to allow 'unsafe-eval' for Builder's SDK to evaluate dynamic bindings.
     scriptSrc: ["'unsafe-eval'", 'http://localhost:*'],

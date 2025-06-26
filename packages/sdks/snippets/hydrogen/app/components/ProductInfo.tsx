@@ -5,11 +5,8 @@ export type Product = {
   title: string;
   price: number;
   description: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  images: string[];
+  rating: number;
 };
 
 export default function ProductInfo({product}: {product: Product}) {
@@ -18,13 +15,13 @@ export default function ProductInfo({product}: {product: Product}) {
   return (
     <>
       <div className="product-image">
-        <img src={product.image} alt={product.title} />
+        <img src={"https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp"} alt={product.title} />
       </div>
       <div className="product-info">
         <h2>{product.title}</h2>
         <p>{product.description}</p>
         <p>Price: {product.price} $</p>
-        <p>Rating: {product.rating?.rate} / 5</p>
+        <p>Rating: {product.rating} / 5</p>
         <button>Buy now</button>
       </div>
     </>

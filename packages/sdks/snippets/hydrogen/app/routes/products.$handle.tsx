@@ -14,8 +14,9 @@ const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const MODEL_NAME = 'product-editorial';
 
 export async function loader({params, request}: LoaderFunctionArgs) {
+  console.log('params@@@', params);
   const productRes = await fetch(
-    `https://fakestoreapi.com/products/${params.handle}`,
+    `https://dummyjson.com/products/${params.handle}`,
   );
 
   if (!productRes.ok) {
