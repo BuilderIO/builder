@@ -2625,11 +2625,12 @@ export class Builder {
     if (apiEndpoint === 'content') {
       queryParams.enrich = true;
       if (queue[0].query) {
-        const flattened = this.flattenMongoQuery({ query: queue[0].query });
-        for (const key in flattened) {
-          queryParams[key] = flattened[key];
-        }
         delete queryParams.query;
+        const objectToFlatten = { query: queue[0].query };
+        const flattened = this.flattenMongoQuery(objectToFlatten);
+        for (const key in flattened) {
+          queryParams[key] = JSON.stringify(flattened[key]);
+        }
       }
     }
 
