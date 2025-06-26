@@ -371,7 +371,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
               {amp ? (
                 imageContents
               ) : (
-                <picture ref={ref => (this.pictureRef = ref)}>
+                <picture css={{display: 'contents'}} ref={ref => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && !this.props.noWebp && (
                     <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />
                   )}
