@@ -14,7 +14,12 @@ export default async function handleRequest(
     // we need to whitelist Builder's CDN for API calls to work.
     connectSrc: ['https://cdn.builder.io'],
     // we need to whitelist Builder's CDN for image requests to work.
-    imgSrc: ['https://cdn.builder.io', 'http://localhost:*'],
+    imgSrc: [
+      'https://cdn.builder.io',
+      'http://localhost:*',
+      'https://fakestoreapi.com',
+      'https://cdn.dummyjson.com',
+    ],
     // we need to allow 'unsafe-eval' for Builder's SDK to evaluate dynamic bindings.
     scriptSrc: ["'unsafe-eval'", 'http://localhost:*'],
     // we need to allow Builder's visual editor to embed the app in an iframe.

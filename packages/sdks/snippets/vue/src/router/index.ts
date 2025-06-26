@@ -8,6 +8,7 @@ import BlogArticle from '@/views/blueprints/BlogArticle.vue';
 import Homepage from '@/views/blueprints/Homepage.vue';
 import NavLinks from '@/views/blueprints/NavLinks.vue';
 import ProductDetails from '@/views/blueprints/ProductDetails.vue';
+import ProductEditorial from '@/views/blueprints/ProductEditorial.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -26,6 +27,7 @@ const router = createRouter({
       component: AdvancedChild,
     },
     { path: '/product/category/:handle', component: ProductDetails },
+    { path: '/products/:id', component: ProductEditorial },
     { path: '/blogs/:handle', component: BlogArticle },
     { path: '/home', component: Homepage },
     { path: '/landing-page', component: NavLinks },
