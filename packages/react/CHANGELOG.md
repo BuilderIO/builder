@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 8.2.5
+
+### Patch Changes
+
+- 33664b7: Fix: Corrected the conversion of query-objects with $-mongo-operators which are passed to builder.get() with apiEndpoint is "content"
+- Updated dependencies [33664b7]
+  - @builder.io/sdk@6.1.1
+
 ## 8.2.4
 
 ### Patch Changes
