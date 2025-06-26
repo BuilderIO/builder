@@ -16,11 +16,13 @@ import { CustomChildComponent } from './custom-child/custom-child.component';
 import { CustomHeroComponent } from './custom-child/custom-hero/custom-hero.component';
 import { CustomColumnsComponent } from './editable-regions/custom-columns/custom-columns.component';
 import { EditableRegionComponent } from './editable-regions/editable-regions.component';
+import { HeroComponent } from './hero/hero.component';
 import { HomepageComponent } from './home/homepage.component';
 import { LivePreviewComponent } from './live-preview/live-preview.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductEditorialComponent } from './product-editorial/product-editorial.component';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -56,6 +58,7 @@ import { ProductEditorialComponent } from './product-editorial/product-editorial
       },
       { path: 'advanced-child', component: AdvancedChildComponent },
       { path: 'live-preview', component: LivePreviewComponent },
+      { path: 'marketing-event', component: HeroComponent },
       { path: 'home', component: HomepageComponent },
       { path: '**', component: CatchAllComponent },
     ]),

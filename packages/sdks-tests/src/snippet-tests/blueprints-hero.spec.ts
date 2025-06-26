@@ -9,19 +9,9 @@ test.describe('Hero Section', () => {
         'react-native-76-fabric',
         'solid',
         'solid-start',
-        'qwik-city',
-        'react-sdk-next-pages',
         'remix',
-        'hydrogen',
-        'react-sdk-next-14-app',
         'react-sdk-next-15-app',
         'nextjs-sdk-next-app',
-        'vue',
-        'nuxt',
-        'svelte',
-        'sveltekit',
-        'angular-17',
-        'angular-17-ssr',
         'angular-19-ssr',
         'gen1-react',
         'gen1-remix',
@@ -29,7 +19,11 @@ test.describe('Hero Section', () => {
         'gen1-next15-app',
       ].includes(packageName)
     );
-    await page.goto('/marketing-event');
+
+    const testUrl =
+      packageName === 'react-sdk-next-14-app' ? '/blueprints/marketing-event' : '/marketing-event';
+
+    await page.goto(testUrl);
   });
 
   test('should display the hero section with title and call-to-action', async ({ page }) => {

@@ -5,6 +5,7 @@ import { BlogArticleComponent } from './blog-article/blog-article.component';
 import { CatchAllComponent } from './catch-all/catch-all.component';
 import { CustomChildComponent } from './custom-child/custom-child.component';
 import { EditableRegionComponent } from './editable-regions/editable-regions.component';
+import { HeroComponent } from './hero/hero.component';
 import { HomepageComponent } from './home/homepage.component';
 import { LivePreviewComponent } from './live-preview/live-preview.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -27,6 +28,7 @@ export const routes: Routes = [
   },
   { path: 'advanced-child', component: AdvancedChildComponent },
   { path: 'live-preview', component: LivePreviewComponent },
+  { path: 'marketing-event', component: HeroComponent },
   { path: 'home', component: HomepageComponent },
   { path: '**', component: CatchAllComponent },
 ];
