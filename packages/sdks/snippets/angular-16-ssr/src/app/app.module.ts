@@ -19,6 +19,8 @@ import { CustomChildComponent } from './custom-child/custom-child.component';
 import { customChildResolver } from './custom-child/custom-child.resolver';
 import { editableRegionsResolver } from './editable-regions/editable-regions-resolver';
 import { EditableRegionComponent } from './editable-regions/editable-regions.component';
+import { HeroComponent } from './hero/hero.component';
+import { heroResolver } from './hero/hero.resolver';
 import { HomepageComponent } from './home/homepage.component';
 import { homepageResolver } from './home/homepage.resolver';
 import { LivePreviewComponent } from './live-preview/live-preview.component';
@@ -80,6 +82,11 @@ import { productEditorialResolver } from './product-editorial/product-editorial.
       {
         path: 'live-preview',
         component: LivePreviewComponent,
+      },
+      {
+        path: 'marketing-event',
+        component: HeroComponent,
+        resolve: { content: heroResolver },
       },
       {
         path: 'home',
