@@ -15,7 +15,7 @@ export default function ProductInfo({product}: {product: Product}) {
   return (
     <>
       <div className="product-image">
-        <img src={"https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp"} alt={product.title} />
+        <img src={product.images[0]} alt={product.title} />
       </div>
       <div className="product-info">
         <h2>{product.title}</h2>
