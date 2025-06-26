@@ -1,14 +1,12 @@
 <!-- pages/ProductHero.vue -->
- <template>
+<template>
   <div>
     <!-- Your nav goes here -->
     <!-- Hero Section -->
     <div v-if="productHero || isPreviewing()">
       <Content :content="productHero" :model="MODEL" :apiKey="API_KEY" />
     </div>
-    <div v-else>
-      404
-    </div>
+    <div v-else>404</div>
     <!-- The rest of your page goes here -->
   </div>
 </template>
@@ -29,5 +27,5 @@ const { data: productHero } = await useAsyncData('productHero', () =>
     apiKey: API_KEY,
     userAttributes: { urlPath: route.path },
   })
-)
+);
 </script>
