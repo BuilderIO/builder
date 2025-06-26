@@ -4,5 +4,3 @@
     <p>© 2024 Acme Corp. All rights reserved.</p>
   </div>
 </template>
-  
-  
