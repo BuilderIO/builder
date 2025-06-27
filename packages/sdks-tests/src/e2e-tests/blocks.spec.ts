@@ -259,7 +259,6 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Raw:Img', () => {
-
     test('Image title attribute', async ({ page, sdk, packageName }) => {
       test.skip(checkIsRN(sdk));
       test.skip(
@@ -286,6 +285,37 @@ test.describe('Blocks', () => {
 
       const img = page.getByTitle('title test');
       await expect(img).toHaveAttribute('title', 'title test');
+    });
+
+    test('aspect ratio is respected', async ({ page, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk));
+      test.skip(
+        isSSRFramework(packageName),
+        'SSR frameworks fetch images server-side, so Playwright route interception fails'
+      );
+
+      // mock any CDN image so we don't hit the network
+      const mockImgPath = path.join(mockFolderPath, 'placeholder-img.png');
+      const mockImgBuffer = fs.readFileSync(mockImgPath);
+      await page.route('**/*', route => {
+        const req = route.request();
+        if (req.url().includes('cdn.builder.io/api/v1/image')) {
+          return route.fulfill({ status: 200, contentType: 'image/png', body: mockImgBuffer });
+        }
+        return route.continue();
+      });
+
+      await page.goto('/raw-img');
+
+      const rawImgs = page.locator('.builder-raw-img');
+      const expected = ['1.11 / 1', '0.19 / 1', '0.2 / 1', 'auto'];
+      console.log('rawImgs', await rawImgs.all());
+      await expect(rawImgs).toHaveCount(expected.length);
+
+      for (let i = 0; i < expected.length; i++) {
+        const img = rawImgs.nth(i);
+        await expect(img).toHaveCSS('aspect-ratio', expected[i]);
+      }
     });
   });
 

@@ -37,20 +37,29 @@ class ImgComponent extends React.Component<ImgProps> {
     const attributes = this.props.attributes || {};
     const srcset = this.getSrcSet();
 
-    console.log('this.props@@@', this.props);
+    // Separate out any user-provided style so we can merge it and ensure it overrides
+    const { style: userStyle, ...restAttributes } = attributes;
+
+    const defaultStyle: React.CSSProperties = {
+      objectFit: this.props.backgroundSize as React.CSSProperties['objectFit'],
+      objectPosition: this.props.backgroundPosition as React.CSSProperties['objectPosition'],
+      aspectRatio: this.props.aspectRatio as unknown as React.CSSProperties['aspectRatio'],
+    };
+
+    const mergedStyle = {
+      ...defaultStyle,
+      ...(userStyle as React.CSSProperties),
+    };
+
     return (
       <img
         loading="lazy"
-        {...this.props.attributes}
+        {...restAttributes}
         src={this.props.image || attributes.src}
         srcSet={srcset}
         alt={this.props.altText}
         title={this.props.title}
-        style={{
-          objectFit: this.props.backgroundSize,
-          objectPosition: this.props.backgroundPosition,
-          aspectRatio: this.props.aspectRatio,
-        }}
+        style={mergedStyle}
         className="builder-raw-img"
       />
     );

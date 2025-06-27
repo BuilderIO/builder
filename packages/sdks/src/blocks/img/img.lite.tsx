@@ -49,7 +49,21 @@ export default function ImgComponent(props: ImgProps) {
 
       return getSrcSet(url);
     },
+    get attributesWithoutClass() {
+      if (!props.attributes) {
+        return {};
+      }
+      const { class: _class, className: _className, ...rest } = props.attributes;
+      return rest;
+    },
+    get className() {
+      return ['builder-raw-img', props.attributes?.class, props.attributes?.className]
+        .filter(Boolean)
+        .join(' ');
+    },
   });
+
+  console.log('props.attributes', props.attributes);
 
   return (
     <img
@@ -60,21 +74,22 @@ export default function ImgComponent(props: ImgProps) {
       src={props.imgSrc || props.image}
       srcSet={state.srcSetToUse}
       {...useTarget({
-        vue: filterAttrs(props.attributes, 'v-on:', false),
-        svelte: filterAttrs(props.attributes, 'on:', false),
+        vue: filterAttrs(state.attributesWithoutClass, 'v-on:', false),
+        svelte: filterAttrs(state.attributesWithoutClass, 'on:', false),
         default: {},
       })}
       {...useTarget({
-        vue: filterAttrs(props.attributes, 'v-on:', true),
-        svelte: filterAttrs(props.attributes, 'on:', true),
-        default: props.attributes,
+        vue: filterAttrs(state.attributesWithoutClass, 'v-on:', true),
+        svelte: filterAttrs(state.attributesWithoutClass, 'on:', true),
+        default: state.attributesWithoutClass,
       })}
       style={{
-        objectFit: props.backgroundSize || 'cover',
-        objectPosition: props.backgroundPosition || 'center',
+        objectFit: props.backgroundSize,
+        objectPosition: props.backgroundPosition,
         aspectRatio: props.aspectRatio,
+        ...(props.attributes?.style || {}),
       }}
-      className="builder-raw-img"
+      class={state.className}
     />
   );
 }
