@@ -309,7 +309,6 @@ test.describe('Blocks', () => {
 
       const rawImgs = page.locator('.builder-raw-img');
       const expected = ['1.11 / 1', '0.19 / 1', '0.2 / 1', 'auto'];
-      console.log('rawImgs', await rawImgs.all());
       await expect(rawImgs).toHaveCount(expected.length);
 
       for (let i = 0; i < expected.length; i++) {

@@ -63,8 +63,6 @@ export default function ImgComponent(props: ImgProps) {
     },
   });
 
-  console.log('props.attributes', props.attributes);
-
   return (
     <img
       loading="lazy"
