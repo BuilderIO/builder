@@ -6,7 +6,7 @@ import { getSrcSet } from '../image/image.helpers.js';
  * This import is used by the Svelte SDK. Do not remove.
  */
 
-import { setAttrs } from '../helpers.js';
+import { getClassPropName } from '../../functions/get-class-prop-name.js';
 
 useMetadata({
   rsc: {
@@ -49,17 +49,23 @@ export default function ImgComponent(props: ImgProps) {
 
       return getSrcSet(url);
     },
-    get attributesWithoutClass() {
-      if (!props.attributes) {
-        return {};
-      }
-      const { class: _class, className: _className, ...rest } = props.attributes;
-      return rest;
-    },
-    get className() {
-      return ['builder-raw-img', props.attributes?.class, props.attributes?.className]
-        .filter(Boolean)
-        .join(' ');
+    get imgAttrs() {
+      const attrs = {
+        ...useTarget({
+          vue: filterAttrs(props.attributes, 'v-on:', false),
+          svelte: filterAttrs(props.attributes, 'on:', false),
+          default: props.attributes,
+        }),
+        ...useTarget({
+          vue: filterAttrs(props.attributes, 'v-on:', true),
+          svelte: filterAttrs(props.attributes, 'on:', true),
+          default: {},
+        }),
+        [getClassPropName()]: `builder-raw-img ${props.attributes[getClassPropName()] || ''}`,
+      } as Record<string, any>;
+      delete attrs.style;
+
+      return attrs;
     },
   });
 
@@ -70,24 +76,13 @@ export default function ImgComponent(props: ImgProps) {
       alt={props.altText}
       title={props.title}
       src={props.imgSrc || props.image}
-      srcSet={state.srcSetToUse}
-      {...useTarget({
-        vue: filterAttrs(state.attributesWithoutClass, 'v-on:', false),
-        svelte: filterAttrs(state.attributesWithoutClass, 'on:', false),
-        default: {},
-      })}
-      {...useTarget({
-        vue: filterAttrs(state.attributesWithoutClass, 'v-on:', true),
-        svelte: filterAttrs(state.attributesWithoutClass, 'on:', true),
-        default: state.attributesWithoutClass,
-      })}
+      {...state.imgAttrs}
       style={{
-        objectFit: props.backgroundSize,
-        objectPosition: props.backgroundPosition,
-        aspectRatio: props.aspectRatio,
+        objectFit: props.backgroundSize || 'cover',
+        objectPosition: props.backgroundPosition || 'center',
+        aspectRatio: props.aspectRatio || undefined,
         ...(props.attributes?.style || {}),
       }}
-      class={state.className}
     />
   );
 }
