@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.22.1
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+
 ## 0.21.1
 
 ### Patch Changes
