@@ -5,7 +5,3 @@
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
-node_modules/
-bin/
-obj/
-.vs/
