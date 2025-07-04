@@ -7,7 +7,6 @@ import {
   Content,
   fetchOneEntry,
   isPreviewing,
-  getBuilderSearchParams,
 } from '@builder.io/sdk-vue';
 import { ref } from 'vue';
 
@@ -23,7 +22,7 @@ const { data: announcement } = await useAsyncData(
     fetchOneEntry({
       model,
       apiKey,
-      options: getBuilderSearchParams(route.query),
+
       userAttributes: { urlPath: route.path },
     })
 );
