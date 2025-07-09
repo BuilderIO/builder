@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.1.2
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+
 ## 6.1.1
 
 ### Patch Changes

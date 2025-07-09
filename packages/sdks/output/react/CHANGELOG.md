@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 4.2.3
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+
 ## 4.2.2
 
 ### Patch Changes
