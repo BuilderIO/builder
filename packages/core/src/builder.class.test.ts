@@ -1196,7 +1196,7 @@ describe('get', () => {
     );
   });
 
-  test('hits content API with locale=fr added to the locale query param and the userAttributes.locale param', async () => {
+  test('hits content API with locale=en-IN added to the locale query param and the userAttributes.locale param', async () => {
     const expectedModel = 'page';
     const expectedLocale = 'en-IN';
 
@@ -1279,7 +1279,7 @@ describe('getAll', () => {
     );
   });
 
-  test('hits content API with locale=fr added to the locale query param and NOT the userAttributes.locale param', async () => {
+  test('hits content API with locale=en-IN added to the locale query param and NOT the userAttributes.locale param', async () => {
     const expectedModel = 'page';
     const expectedLocale = 'en-IN';
 
