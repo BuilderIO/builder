@@ -1195,6 +1195,20 @@ describe('get', () => {
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
+
+  test('hits content API with locale=en-IN added to the locale query param and the userAttributes.locale param', async () => {
+    const expectedModel = 'page';
+    const expectedLocale = 'en-IN';
+
+    builder.apiEndpoint = 'content';
+    await builder.get(expectedModel, { locale: expectedLocale });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/page?omit=meta.componentsUsed&apiKey=${API_KEY}&locale=${expectedLocale}&noTraverse=false&userAttributes=%7B%22locale%22%3A%22${expectedLocale}%22%7D&includeRefs=true&model=%22${expectedModel}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
 });
 
 describe('getAll', () => {
@@ -1261,6 +1275,20 @@ describe('getAll', () => {
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       `https://cdn.builder.io/api/v3/content/${expectedModel}?omit=meta.componentsUsed&apiKey=${API_KEY}&noTraverse=true&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=false&limit=30&model=%22${expectedModel}%22`,
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test('hits content API with locale=en-IN added to the locale query param and NOT the userAttributes.locale param', async () => {
+    const expectedModel = 'page';
+    const expectedLocale = 'en-IN';
+
+    builder.apiEndpoint = 'content';
+    await builder.getAll(expectedModel, { locale: expectedLocale });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      `https://cdn.builder.io/api/v3/content/page?omit=meta.componentsUsed&apiKey=${API_KEY}&locale=${expectedLocale}&noTraverse=true&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=30&model=%22${expectedModel}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });

@@ -237,7 +237,7 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
-  test('add userAttributes.locale when top-level locale option exist', () => {
+  test('does not add userAttributes.locale when top-level locale option exist', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
@@ -246,7 +246,7 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
-  test('add options.locale in userAttributes when no locale attribute set', () => {
+  test('does not add options.locale in userAttributes when no locale attribute set', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,

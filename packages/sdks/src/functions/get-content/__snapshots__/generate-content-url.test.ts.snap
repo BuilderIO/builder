@@ -2,9 +2,9 @@
 
 exports[`Generate Content URL > Handles overrides correctly 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&cachebust=true&noCache=true&overrides.037948e52eaf4743afed464f02c70da4=037948e52eaf4743afed464f02c70da4&overrides.page=037948e52eaf4743afed464f02c70da4&overrides.page%3A%2F=037948e52eaf4743afed464f02c70da4&preview=page&query.id=%22c1b81bab59704599b997574eb0736def%22"`;
 
-exports[`Generate Content URL > add options.locale in userAttributes when no locale attribute set 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&locale=en-US&omit=meta.componentsUsed&userAttributes=%7B%22locale%22%3A%22en-US%22%7D"`;
+exports[`Generate Content URL > does not add options.locale in userAttributes when no locale attribute set 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&userAttributes=%7B%22locale%22%3A%22en-US%22%7D"`;
 
-exports[`Generate Content URL > add userAttributes.locale when top-level locale option exist 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&locale=en-US&omit=meta.componentsUsed&userAttributes=%7B%22locale%22%3A%22en-US%22%7D"`;
+exports[`Generate Content URL > does not add userAttributes.locale when top-level locale option exist 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&locale=en-US&omit=meta.componentsUsed"`;
 
 exports[`Generate Content URL > generate content url when given invalid values of offset, includeUnpublished, cacheSeconds, staleCacheSeconds 1`] = `"https://cdn.builder.io/api/v3/content/page?apiKey=YJIGb4i01jvw0SRdL5Bt&limit=30&noTraverse=true&includeRefs=true&omit=meta.componentsUsed&includeUnpublished=false"`;
 
