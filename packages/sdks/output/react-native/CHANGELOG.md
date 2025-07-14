@@ -1,5 +1,12 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 4.2.3
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+- 8089dc5: Fix: corrected the implementation of locale handling for fetchEntries()
+
 ## 4.2.2
 
 ### Patch Changes
