@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 8.2.6
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+- Updated dependencies [648653e]
+  - @builder.io/sdk@6.1.2
+
 ## 8.2.5
 
 ### Patch Changes
