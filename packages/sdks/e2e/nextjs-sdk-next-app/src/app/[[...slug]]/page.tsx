@@ -5,7 +5,6 @@ import {
   Content,
   _processContentResult,
   fetchOneEntry,
-  getBuilderSearchParams,
 } from '@builder.io/sdk-react-nextjs';
 import { getProps } from '@sdk/tests';
 import MyTextBox from '../../components/MyTextBox/MyTextBox';
@@ -73,7 +72,6 @@ export default async function Page(props: MyPageProps) {
   const builderProps = await getProps({
     pathname: urlPath,
     _processContentResult,
-    options: getBuilderSearchParams(props.searchParams),
     fetchOneEntry,
   });
 
