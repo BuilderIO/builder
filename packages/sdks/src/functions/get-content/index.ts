@@ -20,6 +20,16 @@ const checkContentHasResults = (
 export async function fetchOneEntry(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
+  const finalLocale = options.locale || options.userAttributes?.locale;
+
+  if (finalLocale) {
+    options.locale = finalLocale;
+    options.userAttributes = {
+      locale: finalLocale,
+      ...options.userAttributes,
+    };
+  }
+
   const allContent = await fetchEntries({ ...options, limit: 1 });
 
   if (allContent) {
