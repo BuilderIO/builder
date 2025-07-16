@@ -7,6 +7,8 @@ import { CustomChildComponent } from './custom-child/custom-child.component';
 import { EditableRegionComponent } from './editable-regions/editable-regions.component';
 import { HeroComponent } from './hero/hero.component';
 import { HomepageComponent } from './home/homepage.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { landingPageResolver } from './landing-page/landing-page.resolver';
 import { LivePreviewComponent } from './live-preview/live-preview.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
@@ -18,6 +20,11 @@ export const routes: Routes = [
   { path: 'products/:id', component: ProductEditorialComponent },
   { path: 'product/category/jacket', component: ProductDetailsComponent },
   { path: 'landing-page', component: NavBarComponent },
+  {
+    path: 'landing-page-integrating-pages',
+    component: LandingPageComponent,
+    resolve: { content: landingPageResolver },
+  },
   {
     path: 'custom-child',
     component: CustomChildComponent,
