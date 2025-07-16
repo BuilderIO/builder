@@ -1,0 +1,12 @@
+<!-- app/landing-page.component.html -->
+<ng-container *ngIf="content; else notFound">
+  <builder-content
+    [model]="model"
+    [content]="content"
+    [apiKey]="apiKey"
+  ></builder-content>
+</ng-container>
+
+<ng-template #notFound>
+  <div>404 - Content not found</div>
+</ng-template>
