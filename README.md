@@ -36,7 +36,7 @@ Read more about [How Builder works](https://www.builder.io/c/docs/how-builder-wo
   <img alt="How it works" src="https://github.com/user-attachments/assets/7ef9ca00-22f2-49b7-9b29-1df1eb7daba7" />
 </p>
 
-## Sign up
+## Try it out
 
 [Sign up for a free account](https://builder.io/signup) to dive right in. We also offer [Enterprise plans](https://www.builder.io/m/pricing).
 
