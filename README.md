@@ -38,7 +38,7 @@ Read more about [How Builder works](https://www.builder.io/c/docs/how-builder-wo
 
 ## Try it out
 
-[Sign up for a free account](https://builder.io/signup) to dive right in. We also offer [Enterprise plans](https://www.builder.io/m/pricing).
+[Sign up for a free account](https://builder.io/signup) to dive right in. 
 
 ## What's in this repository
 
