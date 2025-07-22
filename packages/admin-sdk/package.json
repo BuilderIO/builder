@@ -47,5 +47,12 @@
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
     "traverse": "^0.6.11"
+  },
+  "overrides": {
+    "graphql-typed-client": {
+      "isomorphic-fetch": {
+        "node-fetch": "^2.7.0"
+      }
+    }
   }
 }
