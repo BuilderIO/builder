@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/admin-sdk",
-  "version": "0.0.8",
+  "version": "0.0.9-0",
   "description": "Builder.io Admin API SDK",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
@@ -45,14 +45,13 @@
     "fs-extra": "^11.3.0",
     "graphql-typed-client": "^1.7.4",
     "lodash": "^4.17.21",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "traverse": "^0.6.11"
   },
   "overrides": {
-    "graphql-typed-client": {
-      "isomorphic-fetch": {
-        "node-fetch": "^2.7.0"
-      }
-    }
+    "node-fetch": "^2.7.0"
+  },
+  "resolutions": {
+    "node-fetch": "^2.7.0"
   }
 }
