@@ -57,7 +57,7 @@ function recordValue({
         sourceLocaleId,
       });
     });
-  } else if (typeof value === 'object') {
+  } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
       results[path] = {
         value: value?.[sourceLocaleId] || value?.Default,
@@ -106,7 +106,7 @@ function resolveTranslation({
         locale,
       });
     });
-  } else if (typeof value === 'object') {
+  } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
       const translatedSymbolInput = translation[`${basePath}${path}`];
 
