@@ -53,5 +53,10 @@
   },
   "resolutions": {
     "node-fetch": "^2.7.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "node-fetch": "^2.7.0"
+    }
   }
 }
