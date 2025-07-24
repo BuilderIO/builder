@@ -57,7 +57,7 @@
   "pnpm": {
     "overrides": {
       "node-fetch": "2.7.0",
-      "isomorphic-fetch > node-fetch": "2.7.0"
+      "node-fetch@1.7.3": "2.7.0"
     }
   }
 }
