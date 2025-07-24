@@ -6,7 +6,6 @@
 import {
   Content,
   fetchOneEntry,
-  getBuilderSearchParams,
   type BuilderContent,
 } from '@builder.io/sdk-react';
 import { useEffect, useState } from 'react';
@@ -24,7 +23,6 @@ export default function AnnouncementBar() {
       userAttributes: {
         urlPath: window.location.pathname,
       },
-      options: getBuilderSearchParams(new URL(location.href).searchParams),
     })
       .then((content) => {
         if (content) {

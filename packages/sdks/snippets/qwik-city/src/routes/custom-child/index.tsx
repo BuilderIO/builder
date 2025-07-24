@@ -1,39 +1,42 @@
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-  isPreviewing,
-} from '@builder.io/sdk-qwik';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-qwik';
 import { customHeroInfo } from '~/components/CustomHero';
 
 const MODEL = 'custom-child';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export const useCustomChild = routeLoader$(async ({ url }) => {
-  return await fetchOneEntry({
+  const searchParams = Object.fromEntries(url.searchParams);
+
+  const customChild = await fetchOneEntry({
     model: MODEL,
     apiKey: API_KEY,
-    options: getBuilderSearchParams(url.searchParams),
     userAttributes: {
       urlPath: url.pathname,
     },
   });
+
+  return {
+    customChild,
+    searchParams,
+  };
 });
 
 export default component$(() => {
-  const content = useCustomChild();
+  const {
+    value: { customChild, searchParams },
+  } = useCustomChild();
+  const canShowContent = customChild || isPreviewing(searchParams);
 
-  if (!content.value && !isPreviewing()) {
-    return <div>404</div>;
-  }
-  return (
+  return canShowContent ? (
     <Content
       model={MODEL}
-      content={content.value}
+      content={customChild}
       apiKey={API_KEY}
       customComponents={[customHeroInfo]}
     />
+  ) : (
+    <div>404</div>
   );
 });

@@ -3,6 +3,7 @@ import { Component, type OnInit } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import {
@@ -43,6 +44,6 @@ export class AdvancedChildComponent implements OnInit {
       },
     });
 
-    this.notFound = !this.content;
+    this.notFound = !this.content && !isPreviewing();
   }
 }
