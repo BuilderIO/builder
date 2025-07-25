@@ -6859,9 +6859,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/qwik-city@npm:^1.9.1":
-  version: 1.9.1
-  resolution: "@builder.io/qwik-city@npm:1.9.1"
+"@builder.io/qwik-city@npm:^1.13.0":
+  version: 1.14.1
+  resolution: "@builder.io/qwik-city@npm:1.14.1"
   dependencies:
     "@mdx-js/mdx": ^3
     "@types/mdx": ^2
@@ -6869,11 +6869,13 @@ __metadata:
     svgo: ^3.3
     undici: "*"
     valibot: ">=0.36.0 <2"
-    vfile: 6.0.1
+    vfile: 6.0.2
     vite: ^5
     vite-imagetools: ^7
     zod: 3.22.4
-  checksum: c73d2831c1ee7c8ae8b353b37cddcbba38e0c49844d58c8b0748c31f723193e6464f5323066ce349ae6e87a5b13773247dcc4683f6ceaf2b6edaa0ef6eeb3f4d
+  peerDependencies:
+    vite: ^5
+  checksum: 620aa58ec9158d582fa8ac3c31cd597b7fb4d9c99be3070b814199a55ca9d59b81ba9756cf6156d732421930779293c84a177faad39f3261ab921545e7850dab
   languageName: node
   linkType: hard
 
@@ -7913,7 +7915,7 @@ __metadata:
   resolution: "@e2e/qwik-city@workspace:packages/sdks/e2e/qwik-city"
   dependencies:
     "@builder.io/qwik": ^1.9.1
-    "@builder.io/qwik-city": ^1.9.1
+    "@builder.io/qwik-city": ^1.13.0
     "@builder.io/sdk-qwik": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/node": ^18.11.18
@@ -20172,7 +20174,7 @@ __metadata:
   resolution: "@snippet/qwik-city@workspace:packages/sdks/snippets/qwik-city"
   dependencies:
     "@builder.io/qwik": ^1.9.1
-    "@builder.io/qwik-city": ^1.9.1
+    "@builder.io/qwik-city": ^1.13.0
     "@builder.io/sdk-qwik": "workspace:*"
     "@types/node": ^18.11.18
     node-fetch: 3.3.0
@@ -62757,14 +62759,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vfile@npm:6.0.1":
-  version: 6.0.1
-  resolution: "vfile@npm:6.0.1"
+"vfile@npm:6.0.2":
+  version: 6.0.2
+  resolution: "vfile@npm:6.0.2"
   dependencies:
     "@types/unist": ^3.0.0
     unist-util-stringify-position: ^4.0.0
     vfile-message: ^4.0.0
-  checksum: 05ccee73aeb00402bc8a5d0708af299e9f4a33f5132805449099295085e3ca3b0d018328bad9ff44cf2e6f4cd364f1d558d3fb9b394243a25b2739207edcb0ed
+  checksum: 2f3f405654aa549f1902dfe0cefa5f0d785f9f65cb90989b9ab543166afabf30f9c5c4bda734d78cf08e169dd7cba08af4cdcae5563f89782caf1d4719c57646
   languageName: node
   linkType: hard
 
