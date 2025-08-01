@@ -1,7 +1,4 @@
-import {
-  registerCommercePlugin as registerPlugin,
-  Resource,
-} from '@builder.io/commerce-plugin-tools';
+// Removed commerce plugin tools dependency
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import uniq from 'lodash/uniq';
@@ -57,59 +54,66 @@ function updatePublishCTA(content: any, translationModel: any) {
   appState.designerState.editorOptions.publishedToastMessage = publishedToastMessage;
 }
 
-registerPlugin(
-  {
-    name: 'Smartling',
-    id: pkg.name,
-    settings: [
-      {
-        name: 'accountUid',
-        type: 'string',
-        required: true,
-      },
-      {
-        name: 'userId',
-        type: 'string',
-        required: true,
-      },
-      {
-        name: 'tokenSecret',
-        type: 'string',
-        required: true,
-      },
-      {
-        name: 'enableJobAutoAuthorization',
-        friendlyName: 'Authorize Smartling Jobs through Builder',
-        type: 'boolean',
-        defaultValue: true,
-        helperText: 'Allows users to authorize Smartling jobs directly from Builder',
-        requiredPermissions: ['admin'],
-      },
-      {
-        name: 'copySmartlingLocales',
-        friendlyName: 'Copy Locales from Smartling to Builder',
-        type: 'boolean',
-        defaultValue: true,
-        helperText: 'This will copy locales from Smartling to Builder',
-        requiredPermissions: ['admin'],
-      },
-    ],
-    onSave: async actions => {
-      const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
-      if (!getTranslationModel()) {
-        actions.addModel(
-          getTranslationModelTemplate(pluginPrivateKey, appState.user.apiKey, pkg.name) as any
-        );
-      }
+// Register the Smartling plugin
+Builder.register('plugin', {
+  name: 'Smartling',
+  id: pkg.name,
+  settings: [
+    {
+      name: 'accountUid',
+      type: 'string',
+      required: true,
     },
-    ctaText: `Connect your Smartling account`,
-    noPreviewTypes: true,
+    {
+      name: 'userId',
+      type: 'string',
+      required: true,
+    },
+    {
+      name: 'tokenSecret',
+      type: 'string',
+      required: true,
+    },
+    {
+      name: 'enableJobAutoAuthorization',
+      friendlyName: 'Authorize Smartling Jobs through Builder',
+      type: 'boolean',
+      defaultValue: true,
+      helperText: 'Allows users to authorize Smartling jobs directly from Builder',
+      requiredPermissions: ['admin'],
+    },
+    {
+      name: 'copySmartlingLocales',
+      friendlyName: 'Copy Locales from Smartling to Builder',
+      type: 'boolean',
+      defaultValue: true,
+      helperText: 'This will copy locales from Smartling to Builder',
+      requiredPermissions: ['admin'],
+    },
+  ],
+  onSave: async actions => {
+    const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
+    if (!getTranslationModel()) {
+      actions.addModel(
+        getTranslationModelTemplate(pluginPrivateKey, appState.user.apiKey, pkg.name) as any
+      );
+    }
   },
-  async (settings) => {
-    const copySmartlingLocales= settings.get('copySmartlingLocales');
-    const api = new SmartlingApi();
-    registerEditorOnLoad(({ safeReaction }) => {
-      safeReaction(
+  ctaText: `Connect your Smartling account`,
+});
+
+// Initialize plugin functionality
+const initializeSmartlingPlugin = async () => {
+  const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
+  if (!pluginSettings) {
+    return;
+  }
+  
+  const settings = pluginSettings;
+  const copySmartlingLocales = settings.get('copySmartlingLocales');
+  const api = new SmartlingApi();
+  registerEditorOnLoad(({ safeReaction }) => {
+    safeReaction(
         () => {
           return String(appState.designerState.editingContentModel?.lastUpdated || '');
         },
@@ -217,7 +221,7 @@ registerPlugin(
       label: 'Translate',
       showIf(selectedContentIds, content, model) {
         const translationModel = getTranslationModel();
-        if (!model || model.name === translationModel.name) {
+        if (!model || !translationModel || model.name === translationModel.name) {
           return false;
         }
 
@@ -301,9 +305,10 @@ registerPlugin(
       label: 'Add to translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
+        if (!translationModel) return false;
         return (
           content.published === 'published' &&
-          model.name !== translationModel.name &&
+          model?.name !== translationModel.name &&
           !enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
         );
       },
@@ -343,9 +348,10 @@ registerPlugin(
       label: 'Request an updated translation',
       showIf(content, model) {
         const translationModel = getTranslationModel();
+        if (!translationModel) return false;
         return (
           content.published === 'published' &&
-          model.name !== translationModel.name &&
+          model?.name !== translationModel.name &&
           content.meta?.get('translationStatus') === 'pending' &&
           content.meta.get('translationRevisionLatest') &&
           content.meta.get('translationRevision') !== content.meta.get('translationRevisionLatest')
@@ -370,7 +376,8 @@ registerPlugin(
       label: 'Apply Translation',
       showIf(content, model) {
         const translationModel = getTranslationModel();
-        return content.published === 'published' && model.name === translationModel.name;
+        if (!translationModel) return false;
+        return content.published === 'published' && model?.name === translationModel.name;
       },
       async onClick(localTranslationJob) {
         const translationModel = getTranslationModel();
@@ -385,9 +392,10 @@ registerPlugin(
       label: 'View pending translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
+        if (!translationModel) return false;
         return (
           content.published === 'published' &&
-          model.name !== translationModel.name &&
+          model?.name !== translationModel.name &&
           enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
         );
       },
@@ -400,9 +408,10 @@ registerPlugin(
       label: 'View translation strings in smartling',
       showIf(content, model) {
         const translationModel = getTranslationModel();
+        if (!translationModel) return false;
         return (
           content.published === 'published' &&
-          model.name !== translationModel.name &&
+          model?.name !== translationModel.name &&
           content.meta?.get('translationStatus') === 'pending'
         );
       },
@@ -418,8 +427,9 @@ registerPlugin(
       label: 'Remove from translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
+        if (!translationModel) return false;
         return (
-          model.name !== translationModel.name && Boolean(content.meta.get('translationJobId'))
+          model?.name !== translationModel.name && Boolean(content.meta.get('translationJobId'))
         );
       },
       async onClick(content) {
@@ -444,42 +454,55 @@ registerPlugin(
       ),
     });
 
-    return {
-      project: {
-        findById(id: string) {
-          return api.getProject(id).then(res => transformProject(res.project));
-        },
-        search(q = '') {
-          return api.getAllProjects().then(res => {
-            if (!res.results || res.results.length === 0) {
-              return appState.globalState
-                .getPluginPrivateKey(pkg.name)
-                .then((pluginPrivateKey: string) => {
-                  if (api.isPluginPrivateKeySame(pluginPrivateKey)) {
-                    appState.snackBar.show('Oh no! There was an error searching for resources');
-                  } else {
-                    appState.snackBar.show(
-                      'Please refresh your browser to view your Smartling projects.'
-                    );
-                  }
+    // Register SmartlingProject editor for project selection
+    Builder.registerEditor({
+      name: 'SmartlingProject',
+      component: (props: any) => {
+        // Simple select dropdown for project selection
+        const [projects, setProjects] = React.useState<Project[]>([]);
+        const [loading, setLoading] = React.useState(false);
 
-                  return [];
-                });
+        React.useEffect(() => {
+          const loadProjects = async () => {
+            setLoading(true);
+            try {
+              const response = await api.getAllProjects();
+              const projectsWithDetails = [];
+              for (const proj of response.results) {
+                const details = await api.getProject(proj.projectId);
+                projectsWithDetails.push(details.project);
+              }
+              setProjects(projectsWithDetails);
+            } catch (error) {
+              console.error('Error loading projects:', error);
             }
+            setLoading(false);
+          };
+          loadProjects();
+        }, []);
 
-            return res.results
-              .filter(proj => proj.projectName.toLowerCase().includes(q.toLowerCase()))
-              .map(transformProject);
-          });
-        },
-        getRequestObject(id) {
-          // todo update types, commerce-plugin-tools actually accepts strings, just needs an interface update
-          return id as any;
-        },
+        return React.createElement('select', {
+          value: props.value || '',
+          onChange: (e: any) => props.onChange(e.target.value),
+          disabled: loading,
+        }, [
+          React.createElement('option', { key: '', value: '' }, 'Select a project...'),
+          ...projects.map(project =>
+            React.createElement('option', {
+              key: project.projectId,
+              value: project.projectId
+            }, project.projectName)
+          )
+        ]);
       },
-    };
-  }
-);
+    });
+
+};
+
+// Initialize the plugin when settings are available
+Builder.nextTick(() => {
+  initializeSmartlingPlugin();
+});
 
 function pickTranslationJob() {
   const translationModel = getTranslationModel();
@@ -498,11 +521,6 @@ function pickTranslationJob() {
   });
 }
 
-const transformProject = (project: Project): Resource => {
-  return {
-    id: project.projectId,
-    title: project.projectName,
-  };
-};
+// Removed transformProject function - no longer needed with Builder.register pattern
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

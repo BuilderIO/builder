@@ -129,16 +129,46 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
               })}
             >
               {store.project ? (
-                store.project.targetLocales.map(locale => (
-                  <MenuItem key={locale.localeId} value={locale.localeId}>
+                <>
+                  <MenuItem
+                    key="select-all"
+                    value=""
+                    onClick={action(event => {
+                      event.preventDefault();
+                      const allLocaleIds = store.project?.targetLocales.map(locale => locale.localeId) || [];
+                      const allSelected = allLocaleIds.every(localeId => store.targetLocales.includes(localeId));
+                      
+                      if (allSelected) {
+                        // Deselect all
+                        store.targetLocales = [];
+                      } else {
+                        // Select all
+                        store.targetLocales = [...allLocaleIds];
+                      }
+                      store.setValue();
+                    })}
+                  >
                     <Checkbox
                       color="primary"
-                      checked={store.targetLocales.includes(locale.localeId)}
+                      checked={store.project?.targetLocales.every(locale => store.targetLocales.includes(locale.localeId)) || false}
+                      indeterminate={
+                        store.targetLocales.length > 0 && 
+                        !store.project?.targetLocales.every(locale => store.targetLocales.includes(locale.localeId))
+                      }
                     />
-
-                    <ListItemText primary={locale.description} />
+                    <ListItemText primary="Select All" />
                   </MenuItem>
-                ))
+                  {store.project.targetLocales.map(locale => (
+                    <MenuItem key={locale.localeId} value={locale.localeId}>
+                      <Checkbox
+                        color="primary"
+                        checked={store.targetLocales.includes(locale.localeId)}
+                      />
+
+                      <ListItemText primary={locale.description} />
+                    </MenuItem>
+                  ))}
+                </>
               ) : (
                 <Typography>Pick a project first</Typography>
               )}
