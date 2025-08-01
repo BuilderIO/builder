@@ -71,8 +71,9 @@ Builder.register('plugin', {
     },
     {
       name: 'tokenSecret',
-      type: 'string',
+      type: 'password',
       required: true,
+      hideFromUI: false,
     },
     {
       name: 'enableJobAutoAuthorization',
