@@ -79,6 +79,7 @@ Builder.register('plugin', {
       friendlyName: 'Authorize Smartling Jobs through Builder',
       type: 'boolean',
       defaultValue: true,
+      advanced: false,
       helperText: 'Allows users to authorize Smartling jobs directly from Builder',
       requiredPermissions: ['admin'],
     },
@@ -107,6 +108,11 @@ const initializeSmartlingPlugin = async () => {
   const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
   if (!pluginSettings) {
     return;
+  }
+  
+  // Ensure enableJobAutoAuthorization defaults to true if not explicitly set
+  if (pluginSettings.get('enableJobAutoAuthorization') === undefined) {
+    pluginSettings.set('enableJobAutoAuthorization', true);
   }
   
   const settings = pluginSettings;
@@ -458,7 +464,6 @@ const initializeSmartlingPlugin = async () => {
     Builder.registerEditor({
       name: 'SmartlingProject',
       component: (props: any) => {
-        // Simple select dropdown for project selection
         const [projects, setProjects] = React.useState<Project[]>([]);
         const [loading, setLoading] = React.useState(false);
 
@@ -481,19 +486,43 @@ const initializeSmartlingPlugin = async () => {
           loadProjects();
         }, []);
 
-        return React.createElement('select', {
-          value: props.value || '',
-          onChange: (e: any) => props.onChange(e.target.value),
-          disabled: loading,
-        }, [
-          React.createElement('option', { key: '', value: '' }, 'Select a project...'),
-          ...projects.map(project =>
-            React.createElement('option', {
-              key: project.projectId,
-              value: project.projectId
-            }, project.projectName)
-          )
-        ]);
+        return React.createElement(
+          React.Fragment,
+          {},
+          loading 
+            ? React.createElement(
+                'div',
+                { style: { textAlign: 'center' } },
+                React.createElement('span', {}, 'Loading projects...')
+              )
+            : React.createElement(
+                'select',
+                {
+                  value: props.value || '',
+                  onChange: (e: any) => props.onChange(e.target.value),
+                  disabled: loading,
+                  style: {
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                    fontSize: '14px',
+                    backgroundColor: '#fff',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }
+                },
+                [
+                  React.createElement('option', { key: '', value: '' }, 'Select a project...'),
+                  ...projects.map(project =>
+                    React.createElement('option', {
+                      key: project.projectId,
+                      value: project.projectId
+                    }, project.projectName)
+                  )
+                ]
+              )
+        );
       },
     });
 
