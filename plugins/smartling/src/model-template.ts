@@ -11,7 +11,7 @@ export const getTranslationModelTemplate = (
   apiKey: string,
   pluginId: string
 ) => ({
-  '@version': 2,
+  '@version': 3,
   name: translationModelName,
   kind: 'data',
   subType: '',
@@ -173,12 +173,9 @@ export const getTranslationModelTemplate = (
   showScheduling: false,
   hooks: {
     validate: `async function run() {
-      if (contentModel.published === 'published') {
-          return {
-              level: 'error',
-              message: 'Job was already sent to smartling, please duplicate to create a new job'
-          }
-      }
+      // The API now handles both new jobs and updates to existing jobs
+      // No need to block republishing - let the API decide what to do
+      
       if (!contentModel.data.get('jobDetails')?.get('project')) {
         return {
             level: 'error',
@@ -191,8 +188,7 @@ export const getTranslationModelTemplate = (
             message: 'Please choose at least one target locale for this job'
         }
       }
-      const entries = contentModel.data.get('entries');
-
+      const entries = contentModel.data.get('entries') || [];
       const validEntries = entries.length > 0 && entries.every(entry => entry.get('content')?.id);
 
       if (!validEntries) {

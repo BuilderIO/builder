@@ -32,22 +32,34 @@ function updatePublishCTA(content: any, translationModel: any) {
   let publishedToastMessage = undefined;
 
   // establish that it's a job's content entry that we are currently in
-  if (content.modelId === translationModel?.id) {
+  if (content?.modelId === translationModel?.id) {
     const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
     if (!pluginSettings) {
       return;
     }
 
     const enableJobAutoAuthorization = pluginSettings.get('enableJobAutoAuthorization');
+    const isJobAlreadyPublished = content.published === 'published';
+    const hasEntries = content.data?.get('entries')?.length > 0;
+
+    console.log('Smartling: updatePublishCTA', {
+      isJobAlreadyPublished,
+      hasEntries,
+      enableJobAutoAuthorization,
+      contentId: content.id,
+      modelId: content.modelId
+    });
 
     // if 'enableJobAutoAuthorization' is undefined then assume it to be true and proceed likewise
     if (enableJobAutoAuthorization === undefined || enableJobAutoAuthorization === true) {
-      publishButtonText = 'Authorize';
-      publishedToastMessage = 'Authorized';
+      publishButtonText = (isJobAlreadyPublished && hasEntries) ? 'Update & Authorize' : 'Authorize';
+      publishedToastMessage = (isJobAlreadyPublished && hasEntries) ? 'Updated & Authorized' : 'Authorized';
     } else {
-      publishButtonText = 'Send to Smartling';
-      publishedToastMessage = 'Sent to Smartling';
+      publishButtonText = (isJobAlreadyPublished && hasEntries) ? 'Update & Send to Smartling' : 'Send to Smartling';
+      publishedToastMessage = (isJobAlreadyPublished && hasEntries) ? 'Updated & Sent to Smartling' : 'Sent to Smartling';
     }
+
+    console.log('Smartling: Setting button text to:', publishButtonText);
   }
 
   appState.designerState.editorOptions.publishButtonText = publishButtonText;
@@ -120,6 +132,7 @@ const initializeSmartlingPlugin = async () => {
   const copySmartlingLocales = settings.get('copySmartlingLocales');
   const api = new SmartlingApi();
   registerEditorOnLoad(({ safeReaction }) => {
+    
     safeReaction(
         () => {
           return String(appState.designerState.editingContentModel?.lastUpdated || '');
