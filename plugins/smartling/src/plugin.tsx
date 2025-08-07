@@ -313,10 +313,16 @@ const initializeSmartlingPlugin = async () => {
       showIf(content, model) {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
+        
+        const translationStatus = content.meta?.get('translationStatus');
+        
+        // Allow adding if:
+        // 1. Content is published and not in a translation model
+        // 2. AND content is not currently in an active translation job
         return (
           content.published === 'published' &&
           model?.name !== translationModel.name &&
-          !enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
+          !enabledTranslationStatuses.includes(translationStatus)
         );
       },
       async onClick(content) {
@@ -431,12 +437,52 @@ const initializeSmartlingPlugin = async () => {
     });
 
     registerContentAction({
+      label: 'Clear translation metadata',
+      showIf(content, model) {
+        const translationModel = getTranslationModel();
+        if (!translationModel) return false;
+        const translationStatus = content.meta?.get('translationStatus');
+        const translationJobId = content.meta?.get('translationJobId');
+        // Show for content that has translation metadata but is not actively being translated
+        return (
+          model?.name !== translationModel.name &&
+          (translationJobId || translationStatus) &&
+          !enabledTranslationStatuses.includes(translationStatus)
+        );
+      },
+      async onClick(content) {
+        const result = await appState.dialogs.confirm({
+          message: 'This will clear all translation metadata from this content. Are you sure?',
+        });
+        if (result) {
+          const updatedMeta = fastClone(content.meta);
+          delete updatedMeta.translationStatus;
+          delete updatedMeta.translationJobId;
+          delete updatedMeta.translationBy;
+          delete updatedMeta.translationRevision;
+          delete updatedMeta.translationRevisionLatest;
+          delete updatedMeta.translationBatch;
+          delete updatedMeta.translationRequested;
+          
+          await appState.updateLatestDraft({
+            id: content.id,
+            modelId: content.modelId,
+            meta: updatedMeta,
+          });
+          appState.snackBar.show('Translation metadata cleared.');
+        }
+      },
+    });
+
+    registerContentAction({
       label: 'Remove from translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
         return (
-          model?.name !== translationModel.name && Boolean(content.meta.get('translationJobId'))
+          model?.name !== translationModel.name && 
+          Boolean(content.meta.get('translationJobId')) &&
+          enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
         );
       },
       async onClick(content) {
@@ -546,6 +592,12 @@ function pickTranslationJob() {
         property: 'query.published',
         operator: 'is',
         value: 'draft',
+      },
+      {
+        '@type': '@builder.io/core:Query',
+        property: 'query.published',
+        operator: 'is', 
+        value: 'published',
       },
     ],
   });
