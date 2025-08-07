@@ -114,19 +114,12 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
             <Select
               fullWidth
               value={store.targetLocales}
+              multiple
               placeholder="+ Add a value"
               renderValue={selected => (Array.isArray(selected) ? selected?.join(',') : selected)}
-              onChange={action(event => {
-                if (store.targetLocales.includes(event.target.value)) {
-                  // remove
-                  store.targetLocales = store.targetLocales.filter(
-                    locale => locale !== event.target.value
-                  );
-                } else {
-                  store.targetLocales = [event.target.value, ...store.targetLocales];
-                }
-                store.setValue();
-              })}
+              onChange={() => {
+                // Handle selection through individual MenuItem onClick events
+              }}
             >
               {store.project ? (
                 <>
@@ -159,7 +152,23 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
                     <ListItemText primary="Select All" />
                   </MenuItem>
                   {store.project.targetLocales.map(locale => (
-                    <MenuItem key={locale.localeId} value={locale.localeId}>
+                    <MenuItem 
+                      key={locale.localeId} 
+                      value={locale.localeId}
+                      onClick={action(event => {
+                        event.preventDefault();
+                        if (store.targetLocales.includes(locale.localeId)) {
+                          // remove
+                          store.targetLocales = store.targetLocales.filter(
+                            targetLocale => targetLocale !== locale.localeId
+                          );
+                        } else {
+                          // add
+                          store.targetLocales = [locale.localeId, ...store.targetLocales];
+                        }
+                        store.setValue();
+                      })}
+                    >
                       <Checkbox
                         color="primary"
                         checked={store.targetLocales.includes(locale.localeId)}
