@@ -18,6 +18,12 @@ Builder.register('plugin', {
       type: 'text',
       defaultValue: true,
     },
+    {
+      name: 'handleLargeRecordSizes',
+      type: 'boolean',
+      defaultValue: false,
+      friendlyName: 'Split large records',
+    },
   ],
 
   ctaText: 'Save',
