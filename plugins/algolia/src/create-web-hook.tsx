@@ -5,11 +5,19 @@ export const createWebhook = async (model: any) => {
   const pluginSettings = appState.user.organization.value.settings.plugins.get(pluginId);
   const algoliaKey = pluginSettings.get('algoliaKey');
   const algoliaAppId = pluginSettings.get('algoliaAppId');
+  const handleLargeRecordSizes = pluginSettings.get('handleLargeRecordSizes');
   const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pluginId);
 
   if (!pluginPrivateKey) {
     return;
   }
+
+  const webhookUrl = new URL(`${appState.config.apiRoot()}/api/v1/algolia-sync/webhook`);
+  webhookUrl.searchParams.set('algoliaKey', algoliaKey);
+  webhookUrl.searchParams.set('algoliaAppId', algoliaAppId);
+  webhookUrl.searchParams.set('modelId', String(model.id));
+  webhookUrl.searchParams.set('apiKey', appState.user.apiKey);
+  webhookUrl.searchParams.set('handleLargeRecordSizes', handleLargeRecordSizes);
 
   const newWebhook = {
     meta: {
@@ -21,9 +29,7 @@ export const createWebhook = async (model: any) => {
         value: `Bearer ${pluginPrivateKey}`,
       },
     ],
-    url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelId=${
-      model.id
-    }&apiKey=${appState.user.apiKey}`,
+    url: webhookUrl.toString(),
     disableProxy: true, // proxy has an issue with the POST request body
   };
 
