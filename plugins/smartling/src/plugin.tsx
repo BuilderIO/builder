@@ -245,14 +245,11 @@ const initializeSmartlingPlugin = async () => {
           return false;
         }
 
-        const hasDraftOrTranslationPending = selectedContentIds.find(id => {
+        const hasTranslationPending = selectedContentIds.find(id => {
           const fullContent = content.find(entry => entry.id === id);
-          return (
-            fullContent.published !== 'published' ||
-            enabledTranslationStatuses.includes(fullContent.meta?.get('translationStatus'))
-          );
+          return enabledTranslationStatuses.includes(fullContent.meta?.get('translationStatus'));
         });
-        return appState.user.can('publish') && !hasDraftOrTranslationPending;
+        return appState.user.can('publish') && !hasTranslationPending;
       },
       async onClick(actions, selectedContentIds, contentEntries) {
         let translationJobId = await pickTranslationJob();
@@ -330,10 +327,9 @@ const initializeSmartlingPlugin = async () => {
         const translationStatus = content.meta?.get('translationStatus');
         
         // Allow adding if:
-        // 1. Content is published and not in a translation model
+        // 1. Content is not in a translation model
         // 2. AND content is not currently in an active translation job
         return (
-          content.published === 'published' &&
           model?.name !== translationModel.name &&
           !enabledTranslationStatuses.includes(translationStatus)
         );
@@ -368,7 +364,7 @@ const initializeSmartlingPlugin = async () => {
       isDisabled() {
         return appState.designerState.hasUnsavedChanges();
       },
-      disabledTooltip: 'Please publish your changes to add to translation job',
+      disabledTooltip: 'Please save your changes to add to translation job',
     });
     registerContentAction({
       label: 'Request an updated translation',
@@ -420,7 +416,6 @@ const initializeSmartlingPlugin = async () => {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
         return (
-          content.published === 'published' &&
           model?.name !== translationModel.name &&
           enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
         );
@@ -436,7 +431,6 @@ const initializeSmartlingPlugin = async () => {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
         return (
-          content.published === 'published' &&
           model?.name !== translationModel.name &&
           content.meta?.get('translationStatus') === 'pending'
         );
