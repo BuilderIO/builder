@@ -5,10 +5,7 @@
  */
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import {
-  Content,
-  fetchOneEntry,
-} from '@builder.io/sdk-qwik';
+import { Content, fetchOneEntry } from '@builder.io/sdk-qwik';
 
 export const BUILDER_PUBLIC_API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 export const BUILDER_MODEL = 'announcement-bar';

@@ -3,11 +3,7 @@
 <!-- pages/announcements/[...app].vue -->
 
 <script setup>
-import {
-  Content,
-  fetchOneEntry,
-  isPreviewing,
-} from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import { ref } from 'vue';
 
 const route = useRoute();
