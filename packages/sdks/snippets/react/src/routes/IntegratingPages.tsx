@@ -5,7 +5,6 @@
 import {
   Content,
   fetchOneEntry,
-  getBuilderSearchParams,
   isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-react';
@@ -29,7 +28,6 @@ export default function App() {
       userAttributes: {
         urlPath: window.location.pathname,
       },
-      options: getBuilderSearchParams(new URL(location.href).searchParams),
     })
       .then((content) => {
         if (content) {

@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { Content, fetchOneEntry } from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import { useRoute } from 'nuxt/app';
 
 const model = 'blog-article';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 const route = useRoute();
+
+const searchParams = process.server 
+  ? new URLSearchParams(useRequestURL().search) 
+  : new URLSearchParams(window.location.search);
 
 const { data: article } = await useAsyncData('blogArticle', () =>
   fetchOneEntry({
@@ -16,7 +20,7 @@ const { data: article } = await useAsyncData('blogArticle', () =>
 </script>
 
 <template>
-  <div v-if="!article && !isPreviewing()">404</div>
+  <div v-if="!article && !isPreviewing(searchParams)">404</div>
   <div v-if="article?.data" class="content">
     <h1>{{ article.data.title }}</h1>
     <p>{{ article.data.blurb }}</p>

@@ -3,6 +3,7 @@ import { Component, type OnInit } from '@angular/core';
 import {
   Content,
   fetchOneEntry,
+  isPreviewing,
   type BuilderContent,
 } from '@builder.io/sdk-angular';
 import { customHeroInfo } from './custom-hero/custom-hero.component';
@@ -12,7 +13,7 @@ import { customHeroInfo } from './custom-hero/custom-hero.component';
   standalone: true,
   imports: [Content, CommonModule],
   template: `
-    <div *ngIf="content">
+    <div *ngIf="!notFound">
       <builder-content
         [content]="content"
         [model]="model"
@@ -20,7 +21,6 @@ import { customHeroInfo } from './custom-hero/custom-hero.component';
         [customComponents]="[customHeroInfo]"
       ></builder-content>
     </div>
-
     <div *ngIf="notFound">404 Not Found</div>
   `,
 })
@@ -39,9 +39,6 @@ export class CustomChildComponent implements OnInit {
         urlPath: window.location.pathname,
       },
     });
-
-    if (!this.content) {
-      this.notFound = true;
-    }
+    this.notFound = !this.content && !isPreviewing();
   }
 }
