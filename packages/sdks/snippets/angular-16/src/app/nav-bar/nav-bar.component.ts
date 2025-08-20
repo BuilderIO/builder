@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-angular';
+import {
+  fetchOneEntry,
+  isPreviewing,
+  type BuilderContent,
+} from '@builder.io/sdk-angular';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 
 @Component({
@@ -10,6 +14,7 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
   template: `
     <nav
       style="display: flex; justify-content: space-between; align-items: center; padding: 1rem;"
+      *ngIf="!notFound"
     >
       <div class="brand-name">
         <h1>Acme company</h1>
@@ -22,10 +27,12 @@ import { NavLinksComponent } from './nav-links/nav-links.component';
         <button>Register</button>
       </div>
     </nav>
+    <div *ngIf="notFound">404 - Navigation not found</div>
   `,
 })
 export class NavBarComponent {
   links: BuilderContent = { data: { links: [] } };
+  notFound = false;
 
   async ngOnInit() {
     this.links =
@@ -33,5 +40,6 @@ export class NavBarComponent {
         model: 'navigation-links',
         apiKey: 'ee9f13b4981e489a9a1209887695ef2b',
       })) || this.links;
+    this.notFound = !this.links?.data?.['links']?.length && !isPreviewing();
   }
 }

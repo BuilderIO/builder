@@ -6,8 +6,14 @@ const BUILDER_SEARCHPARAMS_PREFIX = 'builder.';
 const BUILDER_OPTIONS_PREFIX = 'options.';
 
 /**
- * Receives a `URLSearchParams` object or a regular query object, and returns the subset of query params that are
- * relevant to the Builder SDK.
+ * Receives a `URLSearchParams` object or a regular query object, and returns
+ * the subset of query params that are relevant to the Builder SDK.
+ *
+ * Outputs a key-value object to be passed to `fetchOneEntry` or `fetchEntries`
+ * functions as the `options` argument.
+ *
+ * NOTE: This function is generally not needed. Instead, it is recommended to use `isPreviewing()`
+ * to check if the current page requires previewed content.
  *
  * @returns
  */
