@@ -9,8 +9,14 @@ export function getTranslationModel() {
 export const getTranslationModelTemplate = (
   privateKey: string,
   apiKey: string,
-  pluginId: string
-) => ({
+  pluginId: string,
+  apiVersion: 'v1' | 'v2' = 'v1'
+) => {
+  // Get the default project from plugin settings
+  const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pluginId);
+  const defaultProjectId = pluginSettings?.get('defaultProjectId') || '';
+  
+  return {
   '@version': 3,
   name: translationModelName,
   kind: 'data',
@@ -93,7 +99,7 @@ export const getTranslationModelTemplate = (
           },
           required: true,
           subFields: [],
-          helperText: 'The content to translate, must be published',
+          helperText: 'The content to translate must be in draft or published status.',
           autoFocus: false,
           simpleTextOnly: false,
           disallowRemove: false,
@@ -137,7 +143,7 @@ export const getTranslationModelTemplate = (
       name: 'jobDetails',
       type: 'SmartlingConfiguration',
       defaultValue: {
-        project: '',
+        project: defaultProjectId,
         targetLocales: [],
       },
       required: true,
@@ -189,13 +195,27 @@ export const getTranslationModelTemplate = (
         }
       }
       const entries = contentModel.data.get('entries') || [];
-      const validEntries = entries.length > 0 && entries.every(entry => entry.get('content')?.id);
-
-      if (!validEntries) {
+      const isJobAlreadyPublished = contentModel.published === 'published';
+      
+      // For published jobs (updates), be more permissive - just check that we have entries
+      // For new jobs, validate that all entries have proper content references
+      if (isJobAlreadyPublished) {
+        // For published jobs, just ensure there are entries (allows for updates)
+        if (entries.length === 0) {
           return {
               level: 'error',
               message: 'Please add content to this job'
           }
+        }
+      } else {
+        // For new jobs, validate all entries have proper content references
+        const validEntries = entries.length > 0 && entries.every(entry => entry.get('content')?.id);
+        if (!validEntries) {
+            return {
+                level: 'error',
+                message: 'Please add content to this job'
+            }
+        }
       }
   }
   return run();`,
@@ -208,9 +228,10 @@ export const getTranslationModelTemplate = (
           value: `Bearer ${privateKey}`,
         },
       ],
-      url: `${appState.config.apiRoot()}/api/v1/smartling/job-publish-hook?apiKey=${apiKey}&pluginId=${pluginId}`,
+      url: `${appState.config.apiRoot()}/api/v1/smartling/job-publish-hook?apiKey=${apiKey}&pluginId=${pluginId}&preferredVersion=${apiVersion}`,
       disableProxy: true, // proxy has an issue with the POST request body
     },
   ],
   hideFromUI: false,
-});
+};
+}

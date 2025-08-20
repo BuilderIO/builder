@@ -27,6 +27,53 @@ import stringify from 'fast-json-stable-stringify';
 // translation status that indicate the content is being queued for translations
 const enabledTranslationStatuses = ['pending', 'local'];
 
+// Cache for job existence checks to avoid repeated API calls
+const jobExistenceCache = new Map<string, { exists: boolean; timestamp: number }>();
+const CACHE_DURATION = 30000; // 30 seconds
+
+// Helper function to check if content is actually in an active translation job
+async function isContentInActiveTranslationJob(content: any, api: SmartlingApi): Promise<boolean> {
+  const translationStatus = content.meta?.get('translationStatus');
+  const translationJobId = content.meta?.get('translationJobId');
+  
+  // If no translation status or job ID, definitely not in active translation
+  if (!enabledTranslationStatuses.includes(translationStatus) || !translationJobId) {
+    return false;
+  }
+  
+  // Check cache first
+  const cached = jobExistenceCache.get(translationJobId);
+  const now = Date.now();
+  
+  if (cached && (now - cached.timestamp) < CACHE_DURATION) {
+    // If cached result shows job doesn't exist, clean up metadata
+    if (!cached.exists) {
+      await api.cleanupOrphanedTranslationMetadata(content);
+    }
+    return cached.exists;
+  }
+  
+  // Check if job actually exists
+  const jobExists = await api.checkTranslationJobExists(translationJobId);
+  
+  // Update cache
+  jobExistenceCache.set(translationJobId, { exists: jobExists, timestamp: now });
+  
+  // If job doesn't exist, clean up metadata
+  if (!jobExists) {
+    await api.cleanupOrphanedTranslationMetadata(content);
+    return false;
+  }
+  
+  return true;
+}
+
+// Utility function to clear job existence cache (useful for testing/debugging)
+function clearJobExistenceCache(): void {
+  jobExistenceCache.clear();
+  console.log('Smartling: Job existence cache cleared');
+}
+
 function updatePublishCTA(content: any, translationModel: any) {
   let publishButtonText = undefined;
   let publishedToastMessage = undefined;
@@ -104,6 +151,14 @@ Builder.register('plugin', {
       helperText: 'This will copy locales from Smartling to Builder',
       requiredPermissions: ['admin'],
     },
+    {
+      name: 'defaultProjectId',
+      friendlyName: 'Default Smartling Project',
+      type: 'SmartlingProject',
+      helperText: 'Default project to use for new translation jobs',
+      advanced: false,
+      requiredPermissions: ['admin'],
+    },
   ],
   onSave: async actions => {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -131,6 +186,37 @@ const initializeSmartlingPlugin = async () => {
   const settings = pluginSettings;
   const copySmartlingLocales = settings.get('copySmartlingLocales');
   const api = new SmartlingApi();
+  
+  // Wait for API to initialize and detect version
+  await api.loaded;
+  
+  console.log(`Smartling: Plugin initialized with API version: ${api.apiVersion}`);
+  
+  // Update model template if using v2 and model exists
+  const existingModel = getTranslationModel();
+  if (existingModel && api.apiVersion === 'v2') {
+    const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
+    const updatedTemplate = getTranslationModelTemplate(
+      pluginPrivateKey, 
+      appState.user.apiKey, 
+      pkg.name, 
+      'v2'
+    );
+    
+    // Check if webhook URL needs updating
+    const currentWebhookUrl = existingModel.webhooks?.[0]?.url;
+    const newWebhookUrl = updatedTemplate.webhooks[0].url;
+    
+    if (currentWebhookUrl && !currentWebhookUrl.includes('preferredVersion=v2') && newWebhookUrl.includes('preferredVersion=v2')) {
+      console.log('Smartling: Updating model template for v2 API support');
+      // Update the existing model with v2 webhook
+      existingModel.webhooks = updatedTemplate.webhooks;
+    }
+  }
+  
+  // Get API capabilities for debugging
+  const capabilities = await api.getApiCapabilities();
+  console.log('Smartling: API capabilities:', capabilities);
   registerEditorOnLoad(({ safeReaction }) => {
     
     safeReaction(
@@ -247,7 +333,30 @@ const initializeSmartlingPlugin = async () => {
 
         const hasTranslationPending = selectedContentIds.find(id => {
           const fullContent = content.find(entry => entry.id === id);
-          return enabledTranslationStatuses.includes(fullContent.meta?.get('translationStatus'));
+          const translationStatus = fullContent.meta?.get('translationStatus');
+          const translationJobId = fullContent.meta?.get('translationJobId');
+          
+          // If content has translation status but no job ID, it's orphaned - allow action
+          if (enabledTranslationStatuses.includes(translationStatus) && !translationJobId) {
+            return false; // Not pending (orphaned)
+          }
+          
+          // If content has both status and job ID, check cache
+          if (enabledTranslationStatuses.includes(translationStatus) && translationJobId) {
+            // Trigger background validation for each item
+            isContentInActiveTranslationJob(fullContent, api).catch(console.warn);
+            
+            // Check cache
+            const cached = jobExistenceCache.get(translationJobId);
+            if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+              return cached.exists; // Return whether job exists
+            }
+            
+            // Default to pending while validating
+            return true;
+          }
+          
+          return false; // No translation status
         });
         return appState.user.can('publish') && !hasTranslationPending;
       },
@@ -261,12 +370,13 @@ const initializeSmartlingPlugin = async () => {
             placeholderText: 'Enter a name for your new job',
           });
           if (name) {
-            const localJob = await api.createLocalJob(name, selectedContent);
+            // Use enhanced job creation that supports both v1 and v2
+            const localJob = await api.createTranslationJob(name, selectedContent);
             translationJobId = localJob.id;
           }
         } else if (translationJobId) {
           // adding content to an already created job
-          await api.updateLocalJob(translationJobId, selectedContent);
+          await api.updateBatchTranslation(translationJobId, selectedContent);
         }
         await Promise.all(
           selectedContent.map(entry =>
@@ -325,14 +435,37 @@ const initializeSmartlingPlugin = async () => {
         if (!translationModel) return false;
         
         const translationStatus = content.meta?.get('translationStatus');
+        const translationJobId = content.meta?.get('translationJobId');
         
         // Allow adding if:
         // 1. Content is not in a translation model
         // 2. AND content is not currently in an active translation job
-        return (
-          model?.name !== translationModel.name &&
-          !enabledTranslationStatuses.includes(translationStatus)
-        );
+        if (model?.name === translationModel.name) {
+          return false;
+        }
+        
+        // If content has translation status but no job ID, allow adding (orphaned status)
+        if (enabledTranslationStatuses.includes(translationStatus) && !translationJobId) {
+          return true;
+        }
+        
+        // If content has both status and job ID, validate job existence in background
+        if (enabledTranslationStatuses.includes(translationStatus) && translationJobId) {
+          // Trigger background validation and cleanup if needed
+          isContentInActiveTranslationJob(content, api).catch(console.warn);
+          
+          // Check cache for immediate result
+          const cached = jobExistenceCache.get(translationJobId);
+          if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+            return !cached.exists; // Allow adding if job doesn't exist
+          }
+          
+          // Default to hiding the action while we validate
+          return false;
+        }
+        
+        // Content has no translation status, allow adding
+        return true;
       },
       async onClick(content) {
         let translationJobId = await pickTranslationJob();
@@ -341,12 +474,13 @@ const initializeSmartlingPlugin = async () => {
             placeholderText: 'Enter a name for your new job',
           });
           if (name) {
-            const localJob = await api.createLocalJob(name, [content]);
+            // Use enhanced job creation that supports both v1 and v2
+            const localJob = await api.createTranslationJob(name, [content]);
             translationJobId = localJob.id;
           }
         } else if (translationJobId) {
           // adding content to an already created job
-          await api.updateLocalJob(translationJobId, [content]);
+          await api.updateBatchTranslation(translationJobId, [content]);
         }
 
         await appState.updateLatestDraft({
@@ -415,10 +549,30 @@ const initializeSmartlingPlugin = async () => {
       showIf(content, model) {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
-        return (
-          model?.name !== translationModel.name &&
-          enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
-        );
+        
+        const translationStatus = content.meta?.get('translationStatus');
+        const translationJobId = content.meta?.get('translationJobId');
+        
+        if (model?.name === translationModel.name) {
+          return false;
+        }
+        
+        // Only show if content has active translation status AND job ID
+        if (!enabledTranslationStatuses.includes(translationStatus) || !translationJobId) {
+          return false;
+        }
+        
+        // Trigger background validation and cleanup if needed
+        isContentInActiveTranslationJob(content, api).catch(console.warn);
+        
+        // Check cache for immediate result
+        const cached = jobExistenceCache.get(translationJobId);
+        if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+          return cached.exists; // Show only if job exists
+        }
+        
+        // Default to showing while we validate (will hide after background check completes)
+        return true;
       },
       async onClick(content) {
         appState.location.go(`/content/${content.meta.get(`translationJobId`)}`);
@@ -486,11 +640,30 @@ const initializeSmartlingPlugin = async () => {
       showIf(content, model) {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
-        return (
-          model?.name !== translationModel.name && 
-          Boolean(content.meta.get('translationJobId')) &&
-          enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
-        );
+        
+        const translationStatus = content.meta?.get('translationStatus');
+        const translationJobId = content.meta?.get('translationJobId');
+        
+        if (model?.name === translationModel.name) {
+          return false;
+        }
+        
+        // Only show if content has both job ID and active status
+        if (!translationJobId || !enabledTranslationStatuses.includes(translationStatus)) {
+          return false;
+        }
+        
+        // Trigger background validation and cleanup if needed
+        isContentInActiveTranslationJob(content, api).catch(console.warn);
+        
+        // Check cache for immediate result
+        const cached = jobExistenceCache.get(translationJobId);
+        if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+          return cached.exists; // Show only if job exists
+        }
+        
+        // Default to showing while we validate
+        return true;
       },
       async onClick(content) {
         appState.globalState.showGlobalBlockingLoading();
@@ -509,9 +682,10 @@ const initializeSmartlingPlugin = async () => {
 
     Builder.registerEditor({
       name: 'SmartlingConfiguration',
-      component: (props: CustomReactEditorProps) => (
-        <SmartlingConfigurationEditor {...props} api={api} />
-      ),
+      component: (props: CustomReactEditorProps) => {
+        console.log('Smartling: SmartlingConfiguration editor being rendered with props:', props);
+        return <SmartlingConfigurationEditor {...props} api={api} />;
+      },
     });
 
     // Register SmartlingProject editor for project selection

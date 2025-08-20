@@ -5,6 +5,8 @@ import { observable, reaction, IReactionOptions, action } from 'mobx';
 import React, { useEffect } from 'react';
 import { useObserver, useLocalStore } from 'mobx-react';
 import { Project, SmartlingApi } from './smartling';
+import appState from '@builder.io/app-context';
+import pkg from '../package.json';
 import {
   CircularProgress,
   Select,
@@ -27,11 +29,28 @@ interface Props extends CustomReactEditorProps {
 }
 
 export const SmartlingConfigurationEditor: React.FC<Props> = props => {
-  const store = useLocalStore(() => ({
+  console.log('Smartling: SmartlingConfigurationEditor component mounted');
+  
+  const store = useLocalStore(() => {
+    // Get default project from plugin settings
+    const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
+    const defaultProjectId = pluginSettings?.get('defaultProjectId') || '';
+    
+    console.log('Smartling: SmartlingConfigurationEditor initializing with:', {
+      defaultProjectId,
+      propsValue: props.value
+    });
+    
+    // Initialize with default project if no value is provided
+    const initialValue = props.value ? fastClone(props.value) : { project: defaultProjectId };
+    
+    console.log('Smartling: SmartlingConfigurationEditor initialValue:', initialValue);
+    
+    return {
     loading: false,
     projects: [] as any[],
     project: null as Project | null,
-    filters: observable.map(props.value ? fastClone(props.value) : { project: '' }),
+    filters: observable.map(initialValue),
     targetLocales: [] as string[],
     catchError: (err: any) => {
       console.error('search error:', err);
@@ -55,10 +74,31 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
         targetLocales: store.targetLocales,
       });
     },
-  }));
+    };
+  });
 
   useEffect(() => {
     store.targetLocales = props.value?.get('targetLocales') || [];
+    
+    // Debug: Check default project configuration
+    const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
+    const defaultProjectId = pluginSettings?.get('defaultProjectId') || '';
+    const currentProject = props.value?.get('project') || '';
+    
+    console.log('Smartling: SmartlingConfigurationEditor debug:', {
+      defaultProjectId,
+      currentProject,
+      hasPropsValue: !!props.value,
+      propsValue: props.value?.toJS ? props.value.toJS() : props.value
+    });
+    
+    // If we have a default project but no current project selected, auto-select it
+    if (defaultProjectId && !currentProject) {
+      console.log(`Smartling: Auto-selecting default project: ${defaultProjectId}`);
+      // Set the default project in the filters and trigger onChange
+      store.filters.set('project', defaultProjectId);
+      store.setValue();
+    }
   }, [props.value]);
 
   useReaction(
