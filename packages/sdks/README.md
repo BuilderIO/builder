@@ -44,22 +44,7 @@ Legend:
 
 ## Builder Blocks
 
-| Builder Blocks | Vue | React-Native | Svelte | Solid | Qwik | React | NextJS | Angular |
-| -------------- | --- | ------------ | ------ | ----- | ---- | ----- | ------ | ------- |
-| Columns        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Text           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Image          | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Button         | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Video          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Custom Code    | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Section        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Fragment       | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Embed          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Slot           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    | ✅     | ✅      |
-| Form           | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
-| Input          | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
-| Select         | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
-| SubmitButton   | ✅  | 🏗           | ✅     | ✅    | ✅   | ✅    | 🏗️     | ✅      |
+Visit [Builder's SDK Comparison docs](https://www.builder.io/c/docs/sdk-comparison#blocks-available-by-framework) for block availability by framework.
 
 ## Builder Widgets
 
