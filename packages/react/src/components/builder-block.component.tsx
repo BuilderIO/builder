@@ -43,11 +43,7 @@ export function deepCloneWithConditions<T = any>(obj: T): T {
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       if (key === 'meta') {
-        clonedObj.meta = {
-          breakpoints: {
-            ...obj['meta'].breakpoints,
-          },
-        };
+        clonedObj.meta = obj['meta'];
       } else {
         clonedObj[key] = deepCloneWithConditions(obj[key]);
       }
