@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 4.2.4
+
+### Patch Changes
+
+- 3e5133e: docs: document `getBuilderSearchParams` and `isPreviewing`
+
 ## 4.2.3
 
 ### Patch Changes
