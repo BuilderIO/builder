@@ -159,6 +159,15 @@ Builder.register('plugin', {
       advanced: false,
       requiredPermissions: ['admin'],
     },
+    {
+      name: 'enableVisualContext',
+      friendlyName: 'Generate Visual Context for Translators',
+      type: 'boolean',
+      defaultValue: true,
+      helperText: 'Automatically capture screenshots to provide visual context to translators in Smartling',
+      advanced: false,
+      requiredPermissions: ['admin'],
+    },
   ],
   onSave: async actions => {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -168,7 +177,7 @@ Builder.register('plugin', {
       );
     }
   },
-  ctaText: `Connect your Smartling account`,
+  ctaText: `Save plugin settings`,
 });
 
 // Initialize plugin functionality
@@ -331,14 +340,28 @@ const initializeSmartlingPlugin = async () => {
           return false;
         }
 
-        const hasTranslationPending = selectedContentIds.find(id => {
+        const hasActiveTranslationPending = selectedContentIds.find(id => {
           const fullContent = content.find(entry => entry.id === id);
           const translationStatus = fullContent.meta?.get('translationStatus');
           const translationJobId = fullContent.meta?.get('translationJobId');
+          const translationRevision = fullContent.meta?.get('translationRevision');
+          const translationRevisionLatest = fullContent.meta?.get('translationRevisionLatest');
           
           // If content has translation status but no job ID, it's orphaned - allow action
           if (enabledTranslationStatuses.includes(translationStatus) && !translationJobId) {
             return false; // Not pending (orphaned)
+          }
+          
+          // If content has changes (different revisions), allow re-translation
+          if (translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest) {
+            return false; // Has changes, allow action
+          }
+          
+          // If content has active translation status and is currently being edited with unsaved changes, allow action
+          if (enabledTranslationStatuses.includes(translationStatus) && 
+              appState.designerState.editingContentModel?.id === fullContent.id && 
+              appState.designerState.hasUnsavedChanges()) {
+            return false; // Has unsaved changes in currently edited content, allow action
           }
           
           // If content has both status and job ID, check cache
@@ -358,7 +381,7 @@ const initializeSmartlingPlugin = async () => {
           
           return false; // No translation status
         });
-        return appState.user.can('publish') && !hasTranslationPending;
+        return appState.user.can('publish') && !hasActiveTranslationPending;
       },
       async onClick(actions, selectedContentIds, contentEntries) {
         let translationJobId = await pickTranslationJob();
@@ -377,19 +400,55 @@ const initializeSmartlingPlugin = async () => {
         } else if (translationJobId) {
           // adding content to an already created job
           await api.updateBatchTranslation(translationJobId, selectedContent);
+          
+          // For changed content that was previously published, update translation files in Smartling
+          const changedPublishedContent = selectedContent.filter(entry => {
+            const translationRevision = entry.meta?.get('translationRevision');
+            const translationRevisionLatest = entry.meta?.get('translationRevisionLatest');
+            return entry.published === 'published' && 
+                   translationRevision && translationRevisionLatest && 
+                   translationRevision !== translationRevisionLatest;
+          });
+          
+          if (changedPublishedContent.length > 0) {
+            console.log(`Smartling: Updating ${changedPublishedContent.length} changed published content files in Smartling`);
+            await Promise.all(changedPublishedContent.map(async (entry) => {
+              try {
+                await api.updateTranslationFile({
+                  translationJobId,
+                  translationModel: getTranslationModel().name,
+                  contentId: entry.id,
+                  contentModel: appState.designerState.editingModel?.name || 'page',
+                  preview: entry.meta?.get?.('lastPreviewUrl') || entry.meta?.lastPreviewUrl,
+                });
+              } catch (error) {
+                console.warn(`Smartling: Failed to update translation file for ${entry.id}:`, error);
+              }
+            }));
+          }
         }
         await Promise.all(
-          selectedContent.map(entry =>
-            appState.updateLatestDraft({
+          selectedContent.map(entry => {
+            const metaUpdates: any = {
+              ...fastClone(entry.meta),
+              translationStatus: 'local',
+              translationJobId,
+            };
+            
+            // If content has changes (different revisions), update revision to latest
+            const translationRevision = entry.meta?.get('translationRevision');
+            const translationRevisionLatest = entry.meta?.get('translationRevisionLatest');
+            if (translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest) {
+              metaUpdates.translationRevision = translationRevisionLatest;
+              console.log(`Smartling: Updating revision for changed content ${entry.id} to latest`);
+            }
+            
+            return appState.updateLatestDraft({
               id: entry.id,
               modelId: entry.modelId,
-              meta: {
-                ...fastClone(entry.meta),
-                translationStatus: 'local',
-                translationJobId,
-              },
-            })
-          )
+              meta: metaUpdates,
+            });
+          })
         );
         actions.refreshList();
         showJobNotification(translationJobId);
@@ -436,16 +495,30 @@ const initializeSmartlingPlugin = async () => {
         
         const translationStatus = content.meta?.get('translationStatus');
         const translationJobId = content.meta?.get('translationJobId');
+        const translationRevision = content.meta?.get('translationRevision');
+        const translationRevisionLatest = content.meta?.get('translationRevisionLatest');
         
         // Allow adding if:
         // 1. Content is not in a translation model
-        // 2. AND content is not currently in an active translation job
+        // 2. AND content is not currently in an active translation job OR has changes
         if (model?.name === translationModel.name) {
           return false;
         }
         
         // If content has translation status but no job ID, allow adding (orphaned status)
         if (enabledTranslationStatuses.includes(translationStatus) && !translationJobId) {
+          return true;
+        }
+        
+        // If content has changes (different revisions), allow re-translation
+        if (translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest) {
+          return true;
+        }
+        
+        // If content has active translation status and is currently being edited with unsaved changes, allow re-translation
+        if (enabledTranslationStatuses.includes(translationStatus) && 
+            appState.designerState.editingContentModel?.id === content.id && 
+            appState.designerState.hasUnsavedChanges()) {
           return true;
         }
         
@@ -468,6 +541,13 @@ const initializeSmartlingPlugin = async () => {
         return true;
       },
       async onClick(content) {
+        // If there are unsaved changes, wait for auto-save to complete
+        if (appState.designerState.hasUnsavedChanges()) {
+          console.log('Smartling: Waiting for auto-save to complete before adding to translation job');
+          // Give a moment for auto-save to complete and update metadata
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        
         let translationJobId = await pickTranslationJob();
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
@@ -481,24 +561,56 @@ const initializeSmartlingPlugin = async () => {
         } else if (translationJobId) {
           // adding content to an already created job
           await api.updateBatchTranslation(translationJobId, [content]);
+          
+          // For changed content that was previously published, update translation file in Smartling
+          const translationRevision = content.meta?.get('translationRevision');
+          const translationRevisionLatest = content.meta?.get('translationRevisionLatest');
+          const isChangedPublishedContent = content.published === 'published' && 
+                                           translationRevision && translationRevisionLatest && 
+                                           translationRevision !== translationRevisionLatest;
+          
+          if (isChangedPublishedContent) {
+            console.log(`Smartling: Updating changed published content file for ${content.id} in Smartling`);
+            try {
+              await api.updateTranslationFile({
+                translationJobId,
+                translationModel: getTranslationModel().name,
+                contentId: content.id,
+                contentModel: appState.designerState.editingModel?.name || 'page',
+                preview: content.meta?.get?.('lastPreviewUrl') || content.meta?.lastPreviewUrl,
+              });
+            } catch (error) {
+              console.warn(`Smartling: Failed to update translation file for ${content.id}:`, error);
+            }
+          }
         }
 
+        const metaUpdates: any = {
+          ...fastClone(content.meta),
+          translationStatus: 'local',
+          translationJobId,
+          translationBy: pkg.name,
+        };
+        
+        // If content has changes (different revisions), update revision to latest
+        const translationRevision = content.meta?.get('translationRevision');
+        const translationRevisionLatest = content.meta?.get('translationRevisionLatest');
+        if (translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest) {
+          metaUpdates.translationRevision = translationRevisionLatest;
+          console.log(`Smartling: Updating revision for changed content ${content.id} to latest`);
+        }
+        
         await appState.updateLatestDraft({
           id: content.id,
           modelId: content.modelId,
-          meta: {
-            ...fastClone(content.meta),
-            translationStatus: 'local',
-            translationJobId,
-            translationBy: pkg.name,
-          },
+          meta: metaUpdates,
         });
         showJobNotification(translationJobId);
       },
       isDisabled() {
-        return appState.designerState.hasUnsavedChanges();
+        return false; // Allow action even with unsaved changes for re-translation scenarios
       },
-      disabledTooltip: 'Please save your changes to add to translation job',
+      disabledTooltip: 'Will save changes automatically before adding to translation job',
     });
     registerContentAction({
       label: 'Request an updated translation',

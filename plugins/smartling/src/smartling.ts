@@ -124,11 +124,11 @@ export class SmartlingApi {
          }
          // todo separate types
          getProject(id: string): Promise<{ project: Project }> {
-           return this.request(`project/${id}`);
+           return this.request(`project/${id}`, {}, {}, 'v1');
          }
 
          getAllProjects(): Promise<{ results: Project[] }> {
-           return this.request('project/all');
+           return this.request('project/all', {}, {}, 'v1');
          }
 
          getJob(id: string, projectId: string): Promise<{ job: any }> {

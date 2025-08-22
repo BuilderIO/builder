@@ -14,7 +14,10 @@ import {
   ListItemText,
   Checkbox,
   Typography,
+  TextField,
+  InputAdornment,
 } from '@material-ui/core';
+import { Search } from '@material-ui/icons';
 
 function useReaction<T = any>(
   expression: () => T,
@@ -52,6 +55,25 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
     project: null as Project | null,
     filters: observable.map(initialValue),
     targetLocales: [] as string[],
+    localeSearchQuery: observable.box(''),
+    // Helper function to check if locale matches any of the search terms
+    matchesSearchTerms(locale: any, searchQuery: string): boolean {
+      if (!searchQuery.trim()) return true;
+      
+      const searchTerms = searchQuery.toLowerCase()
+        .split(',')
+        .map(term => term.trim())
+        .filter(term => term.length > 0);
+      
+      if (searchTerms.length === 0) return true;
+      
+      const localeDescription = locale.description.toLowerCase();
+      const localeId = locale.localeId.toLowerCase();
+      
+      return searchTerms.some(term => 
+        localeDescription.includes(term) || localeId.includes(term)
+      );
+    },
     catchError: (err: any) => {
       console.error('search error:', err);
       props.context.snackBar.show('There was an error searching for products');
@@ -151,12 +173,36 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
               <CircularProgress disableShrink size={20} />{' '}
             </div>
           ) : (
-            <Select
+            <>
+              {store.project && store.project.targetLocales.length > 0 && (
+                <TextField
+                  fullWidth
+                  placeholder="Search locales... (e.g., hindi, french, german)"
+                  value={store.localeSearchQuery.get()}
+                  onChange={action((e) => {
+                    store.localeSearchQuery.set(e.target.value);
+                  })}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                    ),
+                  }}
+                  css={{ marginBottom: 10 }}
+                />
+              )}
+              <Select
               fullWidth
               value={store.targetLocales}
               multiple
-              placeholder="+ Add a value"
-              renderValue={selected => (Array.isArray(selected) ? selected?.join(',') : selected)}
+              displayEmpty
+              renderValue={selected => {
+                if (Array.isArray(selected) && selected.length === 0) {
+                  return <span style={{ color: '#999' }}>Select locale(s)</span>;
+                }
+                return Array.isArray(selected) ? selected.join(', ') : selected;
+              }}
               onChange={() => {
                 // Handle selection through individual MenuItem onClick events
               }}
@@ -168,30 +214,51 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
                     value=""
                     onClick={action(event => {
                       event.preventDefault();
-                      const allLocaleIds = store.project?.targetLocales.map(locale => locale.localeId) || [];
-                      const allSelected = allLocaleIds.every(localeId => store.targetLocales.includes(localeId));
+                      // Get filtered locales based on search query
+                      const searchQuery = store.localeSearchQuery.get();
+                      const filteredLocales = store.project?.targetLocales.filter(locale => 
+                        store.matchesSearchTerms(locale, searchQuery)
+                      ) || [];
+                      const filteredLocaleIds = filteredLocales.map(locale => locale.localeId);
+                      const allFilteredSelected = filteredLocaleIds.every(localeId => store.targetLocales.includes(localeId));
                       
-                      if (allSelected) {
-                        // Deselect all
-                        store.targetLocales = [];
+                      if (allFilteredSelected) {
+                        // Deselect all filtered locales
+                        store.targetLocales = store.targetLocales.filter(localeId => !filteredLocaleIds.includes(localeId));
                       } else {
-                        // Select all
-                        store.targetLocales = [...allLocaleIds];
+                        // Select all filtered locales (add to existing selection)
+                        const newSelections = filteredLocaleIds.filter(localeId => !store.targetLocales.includes(localeId));
+                        store.targetLocales = [...store.targetLocales, ...newSelections];
                       }
                       store.setValue();
                     })}
                   >
                     <Checkbox
                       color="primary"
-                      checked={store.project?.targetLocales.every(locale => store.targetLocales.includes(locale.localeId)) || false}
-                      indeterminate={
-                        store.targetLocales.length > 0 && 
-                        !store.project?.targetLocales.every(locale => store.targetLocales.includes(locale.localeId))
-                      }
+                      checked={(() => {
+                        const searchQuery = store.localeSearchQuery.get();
+                        const filteredLocales = store.project?.targetLocales.filter(locale => 
+                          store.matchesSearchTerms(locale, searchQuery)
+                        ) || [];
+                        return filteredLocales.length > 0 && filteredLocales.every(locale => store.targetLocales.includes(locale.localeId));
+                      })()}
+                      indeterminate={(() => {
+                        const searchQuery = store.localeSearchQuery.get();
+                        const filteredLocales = store.project?.targetLocales.filter(locale => 
+                          store.matchesSearchTerms(locale, searchQuery)
+                        ) || [];
+                        const selectedFilteredCount = filteredLocales.filter(locale => store.targetLocales.includes(locale.localeId)).length;
+                        return selectedFilteredCount > 0 && selectedFilteredCount < filteredLocales.length;
+                      })()}
                     />
-                    <ListItemText primary="Select All" />
+                    <ListItemText primary={store.localeSearchQuery.get() ? "Select All Filtered" : "Select All"} />
                   </MenuItem>
-                  {store.project.targetLocales.map(locale => (
+                  {store.project.targetLocales
+                    .filter(locale => {
+                      const searchQuery = store.localeSearchQuery.get();
+                      return store.matchesSearchTerms(locale, searchQuery);
+                    })
+                    .map(locale => (
                     <MenuItem 
                       key={locale.localeId} 
                       value={locale.localeId}
@@ -222,6 +289,7 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
                 <Typography>Pick a project first</Typography>
               )}
             </Select>
+            </>
           )}
           <Typography css={{ marginBottom: 15, marginTop: 10 }} variant="caption">
             Pick from the list of available target locales

@@ -15,6 +15,7 @@ export const getTranslationModelTemplate = (
   // Get the default project from plugin settings
   const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pluginId);
   const defaultProjectId = pluginSettings?.get('defaultProjectId') || '';
+  const enableJobAutoAuthorization = pluginSettings?.get('enableJobAutoAuthorization');
   
   return {
   '@version': 3,
@@ -22,7 +23,7 @@ export const getTranslationModelTemplate = (
   kind: 'data',
   subType: '',
   schema: {},
-  publishText: 'Authorize',
+  publishText: enableJobAutoAuthorization !== false ? 'Authorize' : 'Send to Smartling',
   unPublishText: 'Cancel',
   fields: [
     {
@@ -44,7 +45,7 @@ export const getTranslationModelTemplate = (
           type: 'text',
           required: false,
           subFields: [],
-          helperText: '',
+          helperText: 'Instructions for translators (optional)',
           autoFocus: false,
           simpleTextOnly: false,
           disallowRemove: false,
@@ -66,10 +67,10 @@ export const getTranslationModelTemplate = (
         {
           '@type': '@builder.io/core:Field',
           name: 'preview',
-          type: 'url',
+          type: 'text',
           required: false,
           subFields: [],
-          helperText: '',
+          helperText: 'Preview URL for this content entry (optional) - must be a valid URL',
           autoFocus: false,
           simpleTextOnly: false,
           disallowRemove: false,
