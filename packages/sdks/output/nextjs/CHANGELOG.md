@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.22.2
+
+### Patch Changes
+
+- 3e5133e: docs: document `getBuilderSearchParams` and `isPreviewing`
+
 ## 0.22.1
 
 ### Patch Changes

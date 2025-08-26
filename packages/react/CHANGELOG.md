@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 8.2.7
+
+### Patch Changes
+
+- c042d67: fix passing down custom breakpoints to Symbol
+- 912bfa4: Fixed state variable context availability in SSR rendering
+
 ## 8.2.6
 
 ### Patch Changes
