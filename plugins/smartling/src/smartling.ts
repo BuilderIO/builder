@@ -2,6 +2,7 @@ import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import { getTranslationModel } from './model-template';
 import { action } from 'mobx';
+import { getTranslateableFieldsWithExclusions, ContentExclusionOptions } from './content-exclusion-utils';
 
 export type Project = {
   targetLocales: Array<{ enabled: boolean; localeId: string; description: string }>;
@@ -135,9 +136,9 @@ export class SmartlingApi {
            return this.request('job', { method: 'GET' }, { id, projectId });
          }
 
-         async createLocalJob(name: string, content: any[]): Promise<any> {
+         async createLocalJob(name: string, content: any[], exclusionOptions?: ContentExclusionOptions): Promise<any> {
            // Use enhanced version that includes symbols
-           return this.createLocalJobWithSymbols(name, content);
+           return this.createLocalJobWithSymbols(name, content, exclusionOptions);
          }
          async updateLocalJob(jobId: string, content: any[]) {
            const latestDraft = await appState.getLatestDraft(jobId);
@@ -272,10 +273,19 @@ export class SmartlingApi {
          }
 
          // Enhanced local job creation that includes symbols
-         async createLocalJobWithSymbols(name: string, content: any[]): Promise<any> {
+         async createLocalJobWithSymbols(name: string, content: any[], exclusionOptions?: ContentExclusionOptions): Promise<any> {
            const translationModel = getTranslationModel();
            const allContent = [...content];
            const processedSymbols = new Set<string>(); // Avoid duplicates
+           
+           // Default exclusion options if not provided
+           const defaultExclusionOptions: ContentExclusionOptions = {
+             excludeHiddenContent: true,
+             excludedBlockTypes: [],
+             customExclusionRules: [],
+           };
+           
+           const finalExclusionOptions = exclusionOptions || defaultExclusionOptions;
            
            // Extract and include symbol content
            console.log('Smartling: Extracting symbol references from content...');
@@ -328,6 +338,10 @@ export class SmartlingApi {
              },
              data: {
                entries: allContent.map(getContentReference),
+               // Store exclusion options for use during translation processing
+               excludeHiddenContent: finalExclusionOptions.excludeHiddenContent,
+               excludedBlockTypes: finalExclusionOptions.excludedBlockTypes,
+               customExclusionRules: finalExclusionOptions.customExclusionRules,
              },
            });
          }
@@ -370,7 +384,7 @@ export class SmartlingApi {
          }
 
          // Enhanced job creation with version detection
-         async createTranslationJob(name: string, content: any[], jobDetails?: any): Promise<any> {
+         async createTranslationJob(name: string, content: any[], jobDetails?: any, exclusionOptions?: ContentExclusionOptions): Promise<any> {
            if (this.apiVersion === 'v2' && jobDetails) {
              try {
                const batchRequest: BatchTranslationRequest = {
@@ -394,7 +408,7 @@ export class SmartlingApi {
 
            // Fallback to v1 local job creation
            console.log('Smartling: Creating translation job with v1 local job');
-           return this.createLocalJob(name, content);
+           return this.createLocalJob(name, content, exclusionOptions);
          }
 
          // Enhanced method to extract symbol references from content

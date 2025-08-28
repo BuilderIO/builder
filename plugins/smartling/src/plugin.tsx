@@ -22,6 +22,7 @@ import { showJobNotification, showOutdatedNotifications } from './snackbar-utils
 import { Builder } from '@builder.io/react';
 import React from 'react';
 import { getTranslateableFields } from '@builder.io/utils';
+import { getTranslateableFieldsWithExclusions, ContentExclusionOptions } from './content-exclusion-utils';
 import hash from 'object-hash';
 import stringify from 'fast-json-stable-stringify';
 // translation status that indicate the content is being queued for translations
@@ -72,6 +73,62 @@ async function isContentInActiveTranslationJob(content: any, api: SmartlingApi):
 function clearJobExistenceCache(): void {
   jobExistenceCache.clear();
   console.log('Smartling: Job existence cache cleared');
+}
+
+// Helper function to get content exclusion options from job configuration
+function getExclusionOptionsFromJob(jobContent: any): ContentExclusionOptions {
+  const jobData = jobContent?.data || {};
+  
+  return {
+    excludeHiddenContent: jobData.excludeHiddenContent ?? true,
+    excludedBlockTypes: jobData.excludedBlockTypes || [],
+    customExclusionRules: jobData.customExclusionRules || [],
+  };
+}
+
+// Helper function to check if content should be excluded based on global or job-specific rules
+async function checkContentExclusion(content: any): Promise<boolean> {
+  try {
+    // For now, apply default exclusion rules since we don't have access to job config at this point
+    // This is a simplified check - in a full implementation, you'd want to get exclusion options from job config
+    const defaultExclusionOptions: ContentExclusionOptions = {
+      excludeHiddenContent: true,
+      excludedBlockTypes: [],
+      customExclusionRules: [],
+    };
+
+    // Fetch the full content to analyze
+    const fullContent = await fetch(
+      `https://cdn.builder.io/api/v3/content/${content.modelName || appState.designerState.editingModel?.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
+    ).then(res => res.json());
+
+    // Apply exclusion logic using our utility function
+    const translatableFields = getTranslateableFieldsWithExclusions(
+      fullContent,
+      'en-US', // Default source locale - in practice this should come from project config
+      '',
+      defaultExclusionOptions
+    );
+
+    // If no translatable fields are found after applying exclusions, exclude the content
+    const fieldCount = Object.keys(translatableFields).length;
+    const originalFields = getTranslateableFields(fullContent, 'en-US', '');
+    const originalFieldCount = Object.keys(originalFields).length;
+    
+    if (fieldCount === 0 && originalFieldCount > 0) {
+      console.log(`Smartling: Content ${content.id} excluded - no translatable fields after applying exclusion rules`);
+      return true;
+    }
+
+    if (fieldCount < originalFieldCount) {
+      console.log(`Smartling: Content ${content.id} - ${originalFieldCount - fieldCount} fields excluded by visibility/block type rules`);
+    }
+
+    return false;
+  } catch (error) {
+    console.warn(`Smartling: Error checking content exclusion for ${content.id}:`, error);
+    return false; // Don't exclude on error
+  }
 }
 
 function updatePublishCTA(content: any, translationModel: any) {
@@ -388,21 +445,44 @@ const initializeSmartlingPlugin = async () => {
         const selectedContent = selectedContentIds.map(id =>
           contentEntries.find(entry => entry.id === id)
         );
+        
+        // Apply content exclusion logic to filter out content that should be excluded
+        const filteredContent = [];
+        for (const content of selectedContent) {
+          if (content) {
+            const shouldExclude = await checkContentExclusion(content);
+            if (!shouldExclude) {
+              filteredContent.push(content);
+            } else {
+              console.log(`Smartling: Bulk action - excluded content ${content.id} due to visibility or block type rules`);
+            }
+          }
+        }
+        
+        if (filteredContent.length === 0) {
+          appState.snackBar.show('All selected content was excluded from translation due to visibility or block type settings');
+          return;
+        }
+        
+        if (filteredContent.length < selectedContent.length) {
+          const excludedCount = selectedContent.length - filteredContent.length;
+          appState.snackBar.show(`${excludedCount} content item(s) excluded from translation due to visibility or block type settings`);
+        }
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
             placeholderText: 'Enter a name for your new job',
           });
           if (name) {
             // Use enhanced job creation that supports both v1 and v2
-            const localJob = await api.createTranslationJob(name, selectedContent);
+            const localJob = await api.createTranslationJob(name, filteredContent);
             translationJobId = localJob.id;
           }
         } else if (translationJobId) {
           // adding content to an already created job
-          await api.updateBatchTranslation(translationJobId, selectedContent);
+          await api.updateBatchTranslation(translationJobId, filteredContent);
           
           // For changed content that was previously published, update translation files in Smartling
-          const changedPublishedContent = selectedContent.filter(entry => {
+          const changedPublishedContent = filteredContent.filter(entry => {
             const translationRevision = entry.meta?.get('translationRevision');
             const translationRevisionLatest = entry.meta?.get('translationRevisionLatest');
             return entry.published === 'published' && 
@@ -428,7 +508,7 @@ const initializeSmartlingPlugin = async () => {
           }
         }
         await Promise.all(
-          selectedContent.map(entry => {
+          filteredContent.map(entry => {
             const metaUpdates: any = {
               ...fastClone(entry.meta),
               translationStatus: 'local',
@@ -548,6 +628,14 @@ const initializeSmartlingPlugin = async () => {
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
         
+        // Apply content exclusion logic before processing
+        const shouldExcludeContent = await checkContentExclusion(content);
+        if (shouldExcludeContent) {
+          console.log(`Smartling: Content ${content.id} was excluded due to visibility or block type rules`);
+          appState.snackBar.show('Content excluded from translation due to visibility or block type settings');
+          return;
+        }
+        
         let translationJobId = await pickTranslationJob();
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
@@ -657,22 +745,38 @@ const initializeSmartlingPlugin = async () => {
     });
 
     registerContentAction({
-      label: 'View pending translation job',
+      label: 'View translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
-        if (!translationModel) return false;
+        console.log('Smartling Debug: View translation job showIf check', {
+          hasTranslationModel: !!translationModel,
+          translationModelName: translationModel?.name,
+          currentModelName: model?.name,
+          contentId: content.id,
+          translationJobId: content.meta?.get('translationJobId'),
+          translationStatus: content.meta?.get('translationStatus'),
+          contentMeta: content.meta?.toJS ? content.meta.toJS() : content.meta
+        });
         
-        const translationStatus = content.meta?.get('translationStatus');
+        if (!translationModel) {
+          console.log('Smartling Debug: No translation model found');
+          return false;
+        }
+        
         const translationJobId = content.meta?.get('translationJobId');
         
         if (model?.name === translationModel.name) {
+          console.log('Smartling Debug: Content is in translation model, hiding action');
           return false;
         }
         
-        // Only show if content has active translation status AND job ID
-        if (!enabledTranslationStatuses.includes(translationStatus) || !translationJobId) {
+        // Show if content has a translation job ID (regardless of status)
+        if (!translationJobId) {
+          console.log('Smartling Debug: No translation job ID found');
           return false;
         }
+        
+        console.log('Smartling Debug: Translation job ID found, checking cache...');
         
         // Trigger background validation and cleanup if needed
         isContentInActiveTranslationJob(content, api).catch(console.warn);
@@ -680,14 +784,24 @@ const initializeSmartlingPlugin = async () => {
         // Check cache for immediate result
         const cached = jobExistenceCache.get(translationJobId);
         if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+          console.log('Smartling Debug: Cache result:', cached.exists);
           return cached.exists; // Show only if job exists
         }
         
+        console.log('Smartling Debug: No cache result, showing action while validating');
         // Default to showing while we validate (will hide after background check completes)
         return true;
       },
       async onClick(content) {
-        appState.location.go(`/content/${content.meta.get(`translationJobId`)}`);
+        const translationJobId = content.meta.get('translationJobId');
+        const translationModel = getTranslationModel();
+        
+        if (translationJobId && translationModel) {
+          // Navigate to the specific translation job in Builder
+          appState.location.go(`/content/${translationModel.name}/${translationJobId}`);
+        } else {
+          appState.snackBar.show('Translation job not found');
+        }
       },
     });
 
