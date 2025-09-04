@@ -225,6 +225,16 @@ Builder.register('plugin', {
       advanced: false,
       requiredPermissions: ['admin'],
     },
+    {
+      name: 'apiVersion',
+      friendlyName: 'API Version',
+      type: 'list',
+      defaultValue: 'v2',
+      helperText: 'Choose which Smartling API version to use. v2 is recommended for new features.',
+      advanced: true,
+      requiredPermissions: ['admin'],
+      enum: ['v1', 'v2'],
+    },
   ],
   onSave: async actions => {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -280,9 +290,6 @@ const initializeSmartlingPlugin = async () => {
     }
   }
   
-  // Get API capabilities for debugging
-  const capabilities = await api.getApiCapabilities();
-  console.log('Smartling: API capabilities:', capabilities);
   registerEditorOnLoad(({ safeReaction }) => {
     
     safeReaction(

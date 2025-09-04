@@ -66,29 +66,18 @@ export class SmartlingApi {
              return this.apiVersion;
            }
 
-           try {
-             // Try v2 capabilities endpoint first
-             const response = await fetch(this.getBaseUrl('batch/capabilities', {}, 'v2'), {
-               method: 'GET',
-               headers: {
-                 Authorization: `Bearer ${this.privateKey}`,
-                 'Content-Type': 'application/json',
-               },
-             });
-
-             if (response.ok) {
-               console.log('Smartling: v2 API detected and available');
-               this.apiVersion = 'v2';
-               return 'v2';
-             }
-           } catch (error) {
-             console.log('Smartling: v2 API not available, falling back to v1');
+           // Check if user has configured a specific API version
+           const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
+           const configuredVersion = pluginSettings?.get('apiVersion');
+           
+           if (configuredVersion && (configuredVersion === 'v1' || configuredVersion === 'v2')) {
+             this.apiVersion = configuredVersion;
+             return configuredVersion;
            }
 
-           // Fallback to v1
-           console.log('Smartling: Using v1 API');
-           this.apiVersion = 'v1';
-           return 'v1';
+           // Default to v2 if no version is configured
+           this.apiVersion = 'v2';
+           return 'v2';
          }
 
          isPluginPrivateKeySame(pluginPrivateKey: string) {
@@ -361,26 +350,6 @@ export class SmartlingApi {
            // Fallback to v1 local job update
            console.log('Smartling: Using v1 local job update');
            return this.updateLocalJob(jobId, additionalContent);
-         }
-
-         async getApiCapabilities(): Promise<any> {
-           if (this.apiVersion === 'v2') {
-             try {
-               return await this.request('batch/capabilities', { method: 'GET' }, {}, 'v2');
-             } catch (error) {
-               console.log('Smartling: Failed to get v2 capabilities:', error);
-             }
-           }
-
-           // Return basic v1 capabilities
-           return {
-             version: 'v1',
-             batchSupport: false,
-             realTimeUpdates: false,
-             endpoints: {
-               jobPublishHook: '/api/v1/smartling/job-publish-hook'
-             }
-           };
          }
 
          // Enhanced job creation with version detection
