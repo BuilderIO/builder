@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { CustomReactEditorProps, fastClone } from './plugin-helpers';
-import { DEFAULT_EXCLUDED_BLOCK_TYPES } from './content-exclusion-utils';
 import { observable, reaction, IReactionOptions, action } from 'mobx';
 import React, { useEffect } from 'react';
 import { useObserver, useLocalStore } from 'mobx-react';
@@ -18,6 +17,8 @@ import {
   TextField,
   InputAdornment,
   Button,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 
@@ -34,22 +35,16 @@ interface Props extends CustomReactEditorProps {
 }
 
 export const SmartlingConfigurationEditor: React.FC<Props> = props => {
-  console.log('Smartling: SmartlingConfigurationEditor component mounted');
   
   const store = useLocalStore(() => {
     // Get default project from plugin settings
     const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
     const defaultProjectId = pluginSettings?.get('defaultProjectId') || '';
     
-    console.log('Smartling: SmartlingConfigurationEditor initializing with:', {
-      defaultProjectId,
-      propsValue: props.value
-    });
     
     // Initialize with default project if no value is provided
     const initialValue = props.value ? fastClone(props.value) : { project: defaultProjectId };
     
-    console.log('Smartling: SmartlingConfigurationEditor initialValue:', initialValue);
     
     return {
     loading: false,
@@ -58,14 +53,6 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
     filters: observable.map(initialValue),
     targetLocales: [] as string[],
     localeSearchQuery: observable.box(''),
-    // Content control options
-    excludeHiddenContent: observable.box(initialValue.excludeHiddenContent ?? true),
-    excludedBlockTypes: observable.array(initialValue.excludedBlockTypes || []),
-    availableBlockTypes: observable.array([
-      'Text', 'Image', 'Video', 'Button', 'Form', 'Code', 'Custom Code', 
-      'Embed', 'Spacer', 'Divider', 'Symbol', 'Columns', 'Box', 'Fragment'
-    ]),
-    showContentControls: observable.box(false),
     // Helper function to check if locale matches any of the search terms
     matchesSearchTerms(locale: any, searchQuery: string): boolean {
       if (!searchQuery.trim()) return true;
@@ -85,7 +72,6 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
       );
     },
     catchError: (err: any) => {
-      console.error('search error:', err);
       props.context.snackBar.show('There was an error searching for products');
       return null;
     },
@@ -104,8 +90,6 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
       props.onChange({
         ...fastClone(store.filters),
         targetLocales: store.targetLocales,
-        excludeHiddenContent: store.excludeHiddenContent.get(),
-        excludedBlockTypes: store.excludedBlockTypes.slice(),
       });
     },
     };
@@ -114,32 +98,15 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
   useEffect(() => {
     store.targetLocales = props.value?.get('targetLocales') || [];
     
-    // Initialize content control options
-    const excludeHidden = props.value?.get('excludeHiddenContent');
-    if (excludeHidden !== undefined) {
-      store.excludeHiddenContent.set(excludeHidden);
-    }
-    
-    const excludedTypes = props.value?.get('excludedBlockTypes');
-    if (excludedTypes && Array.isArray(excludedTypes)) {
-      store.excludedBlockTypes.replace(excludedTypes);
-    }
     
     // Debug: Check default project configuration
     const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
     const defaultProjectId = pluginSettings?.get('defaultProjectId') || '';
     const currentProject = props.value?.get('project') || '';
     
-    console.log('Smartling: SmartlingConfigurationEditor debug:', {
-      defaultProjectId,
-      currentProject,
-      hasPropsValue: !!props.value,
-      propsValue: props.value?.toJS ? props.value.toJS() : props.value
-    });
     
     // If we have a default project but no current project selected, auto-select it
     if (defaultProjectId && !currentProject) {
-      console.log(`Smartling: Auto-selecting default project: ${defaultProjectId}`);
       // Set the default project in the filters and trigger onChange
       store.filters.set('project', defaultProjectId);
       store.setValue();
@@ -320,166 +287,7 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
         </div>
       </div>
 
-      {/* Content Controls Section */}
-      <div css={{ marginBottom: 25, marginTop: 20 }}>
-        <div
-          css={{
-            paddingLeft: 15,
-            marginTop: 10,
-            paddingBottom: 10,
-            borderLeft: '1px solid #ccc',
-          }}
-        >
-          <div css={{ display: 'flex', alignItems: 'center', marginBottom: 15 }}>
-            <Typography variant="h6">Content Controls</Typography>
-            <Button
-              size="small"
-              onClick={action(() => {
-                store.showContentControls.set(!store.showContentControls.get());
-              })}
-              css={{ marginLeft: 'auto' }}
-            >
-              {store.showContentControls.get() ? 'Hide' : 'Show'}
-            </Button>
-          </div>
-          
-          {store.showContentControls.get() && (
-            <div css={{ width: '100%' }}>
-              
-              {/* Visibility Controls */}
-              <div css={{ marginBottom: 20 }}>
-                <Typography variant="subtitle2" css={{ marginBottom: 10 }}>
-                  Visibility Settings
-                </Typography>
-                <div css={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
-                  <Checkbox
-                    checked={store.excludeHiddenContent.get()}
-                    onChange={action((e) => {
-                      store.excludeHiddenContent.set(e.target.checked);
-                      store.setValue();
-                    })}
-                    color="primary"
-                  />
-                  <Typography css={{ marginLeft: 8 }}>
-                    Exclude hidden/invisible content from translation
-                  </Typography>
-                </div>
-                <Typography variant="caption" css={{ color: '#666', marginLeft: 42, display: 'block' }}>
-                  Content with display:none, visibility:hidden, opacity:0, or Builder's responsive hiding will be excluded
-                </Typography>
-              </div>
 
-              {/* Block Type Exclusions */}
-              <div css={{ marginBottom: 20 }}>
-                <Typography variant="subtitle2" css={{ marginBottom: 10 }}>
-                  Block Type Exclusions
-                </Typography>
-                <div css={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 8 }}>
-                  {store.availableBlockTypes.map(blockType => (
-                    <div key={blockType} css={{ display: 'flex', alignItems: 'center' }}>
-                      <Checkbox
-                        checked={store.excludedBlockTypes.includes(blockType)}
-                        onChange={action((e) => {
-                          if (e.target.checked) {
-                            store.excludedBlockTypes.push(blockType);
-                          } else {
-                            const index = store.excludedBlockTypes.indexOf(blockType);
-                            if (index > -1) {
-                              store.excludedBlockTypes.splice(index, 1);
-                            }
-                          }
-                          store.setValue();
-                        })}
-                        color="primary"
-                        size="small"
-                      />
-                      <Typography variant="body2" css={{ marginLeft: 4 }}>
-                        {blockType}
-                      </Typography>
-                    </div>
-                  ))}
-                </div>
-                <Typography variant="caption" css={{ color: '#666', marginTop: 10, display: 'block' }}>
-                  Selected block types will be excluded from translation jobs
-                </Typography>
-              </div>
-
-              {/* Quick Preset Buttons */}
-              <div css={{ marginBottom: 15 }}>
-                <Typography variant="subtitle2" css={{ marginBottom: 10 }}>
-                  Quick Presets
-                </Typography>
-                <div css={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  <Button
-                    variant={store.excludedBlockTypes.includes('Image') && store.excludedBlockTypes.includes('Video') ? 'contained' : 'outlined'}
-                    color={store.excludedBlockTypes.includes('Image') && store.excludedBlockTypes.includes('Video') ? 'primary' : 'default'}
-                    size="small"
-                    onClick={action(() => {
-                      const mediaTypes = ['Image', 'Video', 'Embed'];
-                      const allMediaExcluded = mediaTypes.every(type => store.excludedBlockTypes.includes(type));
-                      
-                      if (allMediaExcluded) {
-                        // Remove media types
-                        mediaTypes.forEach(type => {
-                          const index = store.excludedBlockTypes.indexOf(type);
-                          if (index > -1) store.excludedBlockTypes.splice(index, 1);
-                        });
-                      } else {
-                        // Add media types
-                        mediaTypes.forEach(type => {
-                          if (!store.excludedBlockTypes.includes(type)) {
-                            store.excludedBlockTypes.push(type);
-                          }
-                        });
-                      }
-                      store.setValue();
-                    })}
-                  >
-                    Exclude Media
-                  </Button>
-                  <Button
-                    variant={store.excludedBlockTypes.includes('Code') && store.excludedBlockTypes.includes('Custom Code') ? 'contained' : 'outlined'}
-                    color={store.excludedBlockTypes.includes('Code') && store.excludedBlockTypes.includes('Custom Code') ? 'primary' : 'default'}
-                    size="small"
-                    onClick={action(() => {
-                      const codeTypes = ['Code', 'Custom Code'];
-                      const allCodeExcluded = codeTypes.every(type => store.excludedBlockTypes.includes(type));
-                      
-                      if (allCodeExcluded) {
-                        codeTypes.forEach(type => {
-                          const index = store.excludedBlockTypes.indexOf(type);
-                          if (index > -1) store.excludedBlockTypes.splice(index, 1);
-                        });
-                      } else {
-                        codeTypes.forEach(type => {
-                          if (!store.excludedBlockTypes.includes(type)) {
-                            store.excludedBlockTypes.push(type);
-                          }
-                        });
-                      }
-                      store.setValue();
-                    })}
-                  >
-                    Exclude Code
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={action(() => {
-                      store.excludedBlockTypes.replace([]);
-                      store.excludeHiddenContent.set(true);
-                      store.setValue();
-                    })}
-                  >
-                    Reset to Defaults
-                  </Button>
-                </div>
-              </div>
-
-            </div>
-          )}
-        </div>
-      </div>
     </React.Fragment>
   ));
 };

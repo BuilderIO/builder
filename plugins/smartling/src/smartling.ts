@@ -2,7 +2,6 @@ import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import { getTranslationModel } from './model-template';
 import { action } from 'mobx';
-import { getTranslateableFieldsWithExclusions, ContentExclusionOptions } from './content-exclusion-utils';
 
 export type Project = {
   targetLocales: Array<{ enabled: boolean; localeId: string; description: string }>;
@@ -28,10 +27,10 @@ export class SmartlingApi {
          private privateKey?: string;
          loaded?: Promise<void>;
          resolveLoaded?: () => void;
-         public apiVersion: 'v1' | 'v2' | null = null;
+         public apiVersion: 'v1' | 'v2' = 'v2';
          // TODO: basic cache
          
-         getBaseUrl(path: string, search = {}, version: 'v1' | 'v2' = 'v1') {
+         getBaseUrl(path: string, search = {}, version: 'v1' | 'v2' = 'v2') {
            const params = new URLSearchParams({
              ...search,
              pluginId: pkg.name,
@@ -55,30 +54,10 @@ export class SmartlingApi {
          async init() {
            this.privateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
            if (this.privateKey) {
-             // Detect API version on initialization
-             await this.detectApiVersion();
              this.resolveLoaded!();
            }
          }
 
-         async detectApiVersion(): Promise<'v1' | 'v2'> {
-           if (this.apiVersion) {
-             return this.apiVersion;
-           }
-
-           // Check if user has configured a specific API version
-           const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
-           const configuredVersion = pluginSettings?.get('apiVersion');
-           
-           if (configuredVersion && (configuredVersion === 'v1' || configuredVersion === 'v2')) {
-             this.apiVersion = configuredVersion;
-             return configuredVersion;
-           }
-
-           // Default to v2 if no version is configured
-           this.apiVersion = 'v2';
-           return 'v2';
-         }
 
          isPluginPrivateKeySame(pluginPrivateKey: string) {
            return Boolean(this.privateKey) && this.privateKey === pluginPrivateKey;
@@ -86,7 +65,7 @@ export class SmartlingApi {
 
          async request(path: string, config?: RequestInit, search = {}, version?: 'v1' | 'v2') {
            await this.loaded;
-           const apiVersion = version || this.apiVersion || 'v1';
+           const apiVersion = version || this.apiVersion;
            return fetch(`${this.getBaseUrl(path, search, apiVersion)}`, {
              ...config,
              headers: {
@@ -106,7 +85,6 @@ export class SmartlingApi {
                return response;
              }
            } catch (error) {
-             console.log(`Smartling: v2 request failed for ${path}, falling back to v1:`, error);
            }
 
            // Fallback to v1
@@ -125,9 +103,9 @@ export class SmartlingApi {
            return this.request('job', { method: 'GET' }, { id, projectId });
          }
 
-         async createLocalJob(name: string, content: any[], exclusionOptions?: ContentExclusionOptions): Promise<any> {
+         async createLocalJob(name: string, content: any[]): Promise<any> {
            // Use enhanced version that includes symbols
-           return this.createLocalJobWithSymbols(name, content, exclusionOptions);
+           return this.createLocalJobWithSymbols(name, content);
          }
          async updateLocalJob(jobId: string, content: any[]) {
            const latestDraft = await appState.getLatestDraft(jobId);
@@ -138,7 +116,6 @@ export class SmartlingApi {
            const existingEntryIds = new Set((latestDraft.data.entries || []).map((entry: any) => entry.content?.id));
            
            // Extract and include symbol content for updates too
-           console.log('Smartling: Extracting symbol references for job update...');
            for (const contentItem of content) {
              try {
                // Fetch the full content to analyze for symbols
@@ -149,7 +126,6 @@ export class SmartlingApi {
                const symbolReferences = await this.extractSymbolReferences(fullContent);
                
                if (symbolReferences.length > 0) {
-                 console.log(`Smartling: Found ${symbolReferences.length} symbol references in update content ${contentItem.id}`);
                  
                  // Fetch each symbol and add to update (avoid duplicates)
                  for (const symbolId of symbolReferences) {
@@ -157,7 +133,6 @@ export class SmartlingApi {
                      processedSymbols.add(symbolId);
                      const symbolContent = await this.fetchSymbolContent(symbolId);
                      if (symbolContent) {
-                       console.log(`Smartling: Adding symbol ${symbolId} to job update`);
                        allContent.push({
                          id: symbolContent.id,
                          modelName: 'symbol',
@@ -169,7 +144,6 @@ export class SmartlingApi {
                  }
                }
              } catch (error) {
-               console.warn(`Smartling: Error processing symbols for update content ${contentItem.id}:`, error);
              }
            }
            
@@ -186,9 +160,7 @@ export class SmartlingApi {
            
            const symbolCount = allContent.length - content.length;
            if (symbolCount > 0) {
-             console.log(`Smartling: Updating job with ${allContent.length} items (including ${symbolCount} new symbols)`);
            } else {
-             console.log(`Smartling: Updating job with ${allContent.length} items (no new symbols)`);
            }
            appState.updateLatestDraft(draft);
          }
@@ -242,18 +214,15 @@ export class SmartlingApi {
          async createBatchTranslation(batchRequest: BatchTranslationRequest): Promise<any> {
            if (this.apiVersion === 'v2') {
              try {
-               console.log('Smartling: Creating batch translation with v2 API');
                return await this.request('batch/create', {
                  method: 'POST',
                  body: JSON.stringify(batchRequest),
                }, {}, 'v2');
              } catch (error) {
-               console.log('Smartling: v2 batch creation failed, falling back to v1:', error);
              }
            }
 
            // Fallback to v1 local job creation with enhanced symbol support
-           console.log('Smartling: Using v1 local job creation as fallback');
            return this.createLocalJobWithSymbols(batchRequest.name, batchRequest.contentEntries.map(entry => ({
              id: entry.content.id,
              modelName: entry.content.model,
@@ -262,22 +231,12 @@ export class SmartlingApi {
          }
 
          // Enhanced local job creation that includes symbols
-         async createLocalJobWithSymbols(name: string, content: any[], exclusionOptions?: ContentExclusionOptions): Promise<any> {
+         async createLocalJobWithSymbols(name: string, content: any[]): Promise<any> {
            const translationModel = getTranslationModel();
            const allContent = [...content];
            const processedSymbols = new Set<string>(); // Avoid duplicates
            
-           // Default exclusion options if not provided
-           const defaultExclusionOptions: ContentExclusionOptions = {
-             excludeHiddenContent: true,
-             excludedBlockTypes: [],
-             customExclusionRules: [],
-           };
-           
-           const finalExclusionOptions = exclusionOptions || defaultExclusionOptions;
-           
            // Extract and include symbol content
-           console.log('Smartling: Extracting symbol references from content...');
            for (const contentItem of content) {
              try {
                // Fetch the full content to analyze for symbols
@@ -288,7 +247,6 @@ export class SmartlingApi {
                const symbolReferences = await this.extractSymbolReferences(fullContent);
                
                if (symbolReferences.length > 0) {
-                 console.log(`Smartling: Found ${symbolReferences.length} symbol references in content ${contentItem.id}`);
                  
                  // Fetch each symbol and add to translation job (avoid duplicates)
                  for (const symbolId of symbolReferences) {
@@ -296,7 +254,6 @@ export class SmartlingApi {
                      processedSymbols.add(symbolId);
                      const symbolContent = await this.fetchSymbolContent(symbolId);
                      if (symbolContent) {
-                       console.log(`Smartling: Adding symbol ${symbolId} to translation job`);
                        allContent.push({
                          id: symbolContent.id,
                          modelName: 'symbol',
@@ -308,15 +265,12 @@ export class SmartlingApi {
                  }
                }
              } catch (error) {
-               console.warn(`Smartling: Error processing symbols for content ${contentItem.id}:`, error);
              }
            }
            
            const symbolCount = allContent.length - content.length;
            if (symbolCount > 0) {
-             console.log(`Smartling: Creating translation job with ${allContent.length} items (including ${symbolCount} symbols)`);
            } else {
-             console.log(`Smartling: Creating translation job with ${allContent.length} items (no symbols found)`);
            }
            
            return appState.createContent(translationModel.name, {
@@ -327,10 +281,6 @@ export class SmartlingApi {
              },
              data: {
                entries: allContent.map(getContentReference),
-               // Store exclusion options for use during translation processing
-               excludeHiddenContent: finalExclusionOptions.excludeHiddenContent,
-               excludedBlockTypes: finalExclusionOptions.excludedBlockTypes,
-               customExclusionRules: finalExclusionOptions.customExclusionRules,
              },
            });
          }
@@ -340,20 +290,17 @@ export class SmartlingApi {
              try {
                // For v2, we'll need to create a new batch with existing + new content
                // This is a design decision - v2 batch API might handle updates differently
-               console.log('Smartling: v2 batch update - this may require specific implementation');
                // TODO: Implement v2-specific update logic when the API supports it
              } catch (error) {
-               console.log('Smartling: v2 batch update failed, falling back to v1:', error);
              }
            }
 
            // Fallback to v1 local job update
-           console.log('Smartling: Using v1 local job update');
            return this.updateLocalJob(jobId, additionalContent);
          }
 
          // Enhanced job creation with version detection
-         async createTranslationJob(name: string, content: any[], jobDetails?: any, exclusionOptions?: ContentExclusionOptions): Promise<any> {
+         async createTranslationJob(name: string, content: any[], jobDetails?: any): Promise<any> {
            if (this.apiVersion === 'v2' && jobDetails) {
              try {
                const batchRequest: BatchTranslationRequest = {
@@ -368,16 +315,13 @@ export class SmartlingApi {
                  }))
                };
 
-               console.log('Smartling: Creating translation job with v2 batch API');
                return await this.createBatchTranslation(batchRequest);
              } catch (error) {
-               console.log('Smartling: v2 job creation failed, falling back to v1:', error);
              }
            }
 
            // Fallback to v1 local job creation
-           console.log('Smartling: Creating translation job with v1 local job');
-           return this.createLocalJob(name, content, exclusionOptions);
+           return this.createLocalJob(name, content);
          }
 
          // Enhanced method to extract symbol references from content
@@ -410,7 +354,6 @@ export class SmartlingApi {
                });
              }
            } catch (error) {
-             console.warn('Smartling: Error extracting symbol references:', error);
            }
            
            return Array.from(symbolReferences);
@@ -447,11 +390,9 @@ export class SmartlingApi {
              if (response.ok) {
                return await response.json();
              } else {
-               console.warn(`Smartling: Failed to fetch symbol content for ${symbolId}:`, response.status);
                return null;
              }
            } catch (error) {
-             console.warn(`Smartling: Error fetching symbol content for ${symbolId}:`, error);
              return null;
            }
          }
@@ -470,7 +411,6 @@ export class SmartlingApi {
              
              return response.ok;
            } catch (error) {
-             console.warn(`Smartling: Error checking translation job existence for ${jobId}:`, error);
              return false;
            }
          }
@@ -486,7 +426,6 @@ export class SmartlingApi {
            const jobExists = await this.checkTranslationJobExists(translationJobId);
            
            if (!jobExists) {
-             console.log(`Smartling: Cleaning up orphaned translation metadata for content ${content.id} - job ${translationJobId} no longer exists`);
              
              // Clear the translation metadata
              const updatedMeta = { ...content.meta?.toJS() };
@@ -506,11 +445,9 @@ export class SmartlingApi {
                });
                
                // Show a subtle notification that the content is now available for translation
-               console.log(`Smartling: Content ${content.id} is now available for translation (orphaned job cleanup completed)`);
                
                return true; // Metadata was cleaned up
              } catch (error) {
-               console.warn(`Smartling: Failed to cleanup orphaned metadata for ${content.id}:`, error);
              }
            }
            

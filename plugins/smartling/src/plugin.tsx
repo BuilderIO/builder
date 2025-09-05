@@ -22,7 +22,6 @@ import { showJobNotification, showOutdatedNotifications } from './snackbar-utils
 import { Builder } from '@builder.io/react';
 import React from 'react';
 import { getTranslateableFields } from '@builder.io/utils';
-import { getTranslateableFieldsWithExclusions, ContentExclusionOptions } from './content-exclusion-utils';
 import hash from 'object-hash';
 import stringify from 'fast-json-stable-stringify';
 // translation status that indicate the content is being queued for translations
@@ -72,64 +71,8 @@ async function isContentInActiveTranslationJob(content: any, api: SmartlingApi):
 // Utility function to clear job existence cache (useful for testing/debugging)
 function clearJobExistenceCache(): void {
   jobExistenceCache.clear();
-  console.log('Smartling: Job existence cache cleared');
 }
 
-// Helper function to get content exclusion options from job configuration
-function getExclusionOptionsFromJob(jobContent: any): ContentExclusionOptions {
-  const jobData = jobContent?.data || {};
-  
-  return {
-    excludeHiddenContent: jobData.excludeHiddenContent ?? true,
-    excludedBlockTypes: jobData.excludedBlockTypes || [],
-    customExclusionRules: jobData.customExclusionRules || [],
-  };
-}
-
-// Helper function to check if content should be excluded based on global or job-specific rules
-async function checkContentExclusion(content: any): Promise<boolean> {
-  try {
-    // For now, apply default exclusion rules since we don't have access to job config at this point
-    // This is a simplified check - in a full implementation, you'd want to get exclusion options from job config
-    const defaultExclusionOptions: ContentExclusionOptions = {
-      excludeHiddenContent: true,
-      excludedBlockTypes: [],
-      customExclusionRules: [],
-    };
-
-    // Fetch the full content to analyze
-    const fullContent = await fetch(
-      `https://cdn.builder.io/api/v3/content/${content.modelName || appState.designerState.editingModel?.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
-    ).then(res => res.json());
-
-    // Apply exclusion logic using our utility function
-    const translatableFields = getTranslateableFieldsWithExclusions(
-      fullContent,
-      'en-US', // Default source locale - in practice this should come from project config
-      '',
-      defaultExclusionOptions
-    );
-
-    // If no translatable fields are found after applying exclusions, exclude the content
-    const fieldCount = Object.keys(translatableFields).length;
-    const originalFields = getTranslateableFields(fullContent, 'en-US', '');
-    const originalFieldCount = Object.keys(originalFields).length;
-    
-    if (fieldCount === 0 && originalFieldCount > 0) {
-      console.log(`Smartling: Content ${content.id} excluded - no translatable fields after applying exclusion rules`);
-      return true;
-    }
-
-    if (fieldCount < originalFieldCount) {
-      console.log(`Smartling: Content ${content.id} - ${originalFieldCount - fieldCount} fields excluded by visibility/block type rules`);
-    }
-
-    return false;
-  } catch (error) {
-    console.warn(`Smartling: Error checking content exclusion for ${content.id}:`, error);
-    return false; // Don't exclude on error
-  }
-}
 
 function updatePublishCTA(content: any, translationModel: any) {
   let publishButtonText = undefined;
@@ -146,24 +89,28 @@ function updatePublishCTA(content: any, translationModel: any) {
     const isJobAlreadyPublished = content.published === 'published';
     const hasEntries = content.data?.get('entries')?.length > 0;
 
-    console.log('Smartling: updatePublishCTA', {
-      isJobAlreadyPublished,
-      hasEntries,
-      enableJobAutoAuthorization,
-      contentId: content.id,
-      modelId: content.modelId
+
+    // Check if the job has been sent to Smartling (status 'pending') - if so, disable CTA
+    const hasEntriesWithPendingStatus = content.data?.get('entries')?.some((entry: any) => {
+      return entry?.meta?.translationStatus === 'pending';
     });
 
-    // if 'enableJobAutoAuthorization' is undefined then assume it to be true and proceed likewise
-    if (enableJobAutoAuthorization === undefined || enableJobAutoAuthorization === true) {
-      publishButtonText = (isJobAlreadyPublished && hasEntries) ? 'Update & Authorize' : 'Authorize';
-      publishedToastMessage = (isJobAlreadyPublished && hasEntries) ? 'Updated & Authorized' : 'Authorized';
+    if (hasEntriesWithPendingStatus) {
+      // Job has been sent to Smartling, disable the publish button
+      publishButtonText = undefined;
+      publishedToastMessage = undefined;
     } else {
-      publishButtonText = (isJobAlreadyPublished && hasEntries) ? 'Update & Send to Smartling' : 'Send to Smartling';
-      publishedToastMessage = (isJobAlreadyPublished && hasEntries) ? 'Updated & Sent to Smartling' : 'Sent to Smartling';
-    }
+      // Job is still local, allow publishing but remove "Update" language
+      // if 'enableJobAutoAuthorization' is undefined then assume it to be true and proceed likewise
+      if (enableJobAutoAuthorization === undefined || enableJobAutoAuthorization === true) {
+        publishButtonText = 'Authorize';
+        publishedToastMessage = 'Authorized';
+      } else {
+        publishButtonText = 'Send to Smartling';
+        publishedToastMessage = 'Sent to Smartling';
+      }
 
-    console.log('Smartling: Setting button text to:', publishButtonText);
+    }
   }
 
   appState.designerState.editorOptions.publishButtonText = publishButtonText;
@@ -216,25 +163,6 @@ Builder.register('plugin', {
       advanced: false,
       requiredPermissions: ['admin'],
     },
-    {
-      name: 'enableVisualContext',
-      friendlyName: 'Generate Visual Context for Translators',
-      type: 'boolean',
-      defaultValue: true,
-      helperText: 'Automatically capture screenshots to provide visual context to translators in Smartling',
-      advanced: false,
-      requiredPermissions: ['admin'],
-    },
-    {
-      name: 'apiVersion',
-      friendlyName: 'API Version',
-      type: 'list',
-      defaultValue: 'v2',
-      helperText: 'Choose which Smartling API version to use. v2 is recommended for new features.',
-      advanced: true,
-      requiredPermissions: ['admin'],
-      enum: ['v1', 'v2'],
-    },
   ],
   onSave: async actions => {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -247,36 +175,34 @@ Builder.register('plugin', {
   ctaText: `Save plugin settings`,
 });
 
+// Create API instance for plugin use
+const api = new SmartlingApi();
+
 // Initialize plugin functionality
 const initializeSmartlingPlugin = async () => {
+  // Wait for API to initialize - this should always happen
+  await api.loaded;
+
+  // Get plugin settings - but don't return early if they don't exist
   const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
-  if (!pluginSettings) {
-    return;
-  }
   
-  // Ensure enableJobAutoAuthorization defaults to true if not explicitly set
-  if (pluginSettings.get('enableJobAutoAuthorization') === undefined) {
+  // Ensure enableJobAutoAuthorization defaults to true if settings exist
+  if (pluginSettings && pluginSettings.get('enableJobAutoAuthorization') === undefined) {
     pluginSettings.set('enableJobAutoAuthorization', true);
   }
   
   const settings = pluginSettings;
-  const copySmartlingLocales = settings.get('copySmartlingLocales');
-  const api = new SmartlingApi();
+  const copySmartlingLocales = settings?.get('copySmartlingLocales');
   
-  // Wait for API to initialize and detect version
-  await api.loaded;
   
-  console.log(`Smartling: Plugin initialized with API version: ${api.apiVersion}`);
-  
-  // Update model template if using v2 and model exists
+  // Update model template and model exists
   const existingModel = getTranslationModel();
-  if (existingModel && api.apiVersion === 'v2') {
+  if (existingModel) {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
     const updatedTemplate = getTranslationModelTemplate(
       pluginPrivateKey, 
       appState.user.apiKey, 
-      pkg.name, 
-      'v2'
+      pkg.name
     );
     
     // Check if webhook URL needs updating
@@ -284,7 +210,6 @@ const initializeSmartlingPlugin = async () => {
     const newWebhookUrl = updatedTemplate.webhooks[0].url;
     
     if (currentWebhookUrl && !currentWebhookUrl.includes('preferredVersion=v2') && newWebhookUrl.includes('preferredVersion=v2')) {
-      console.log('Smartling: Updating model template for v2 API support');
       // Update the existing model with v2 webhook
       existingModel.webhooks = updatedTemplate.webhooks;
     }
@@ -431,7 +356,7 @@ const initializeSmartlingPlugin = async () => {
           // If content has both status and job ID, check cache
           if (enabledTranslationStatuses.includes(translationStatus) && translationJobId) {
             // Trigger background validation for each item
-            isContentInActiveTranslationJob(fullContent, api).catch(console.warn);
+            isContentInActiveTranslationJob(fullContent, api).catch(() => {});
             
             // Check cache
             const cached = jobExistenceCache.get(translationJobId);
@@ -453,28 +378,7 @@ const initializeSmartlingPlugin = async () => {
           contentEntries.find(entry => entry.id === id)
         );
         
-        // Apply content exclusion logic to filter out content that should be excluded
-        const filteredContent = [];
-        for (const content of selectedContent) {
-          if (content) {
-            const shouldExclude = await checkContentExclusion(content);
-            if (!shouldExclude) {
-              filteredContent.push(content);
-            } else {
-              console.log(`Smartling: Bulk action - excluded content ${content.id} due to visibility or block type rules`);
-            }
-          }
-        }
-        
-        if (filteredContent.length === 0) {
-          appState.snackBar.show('All selected content was excluded from translation due to visibility or block type settings');
-          return;
-        }
-        
-        if (filteredContent.length < selectedContent.length) {
-          const excludedCount = selectedContent.length - filteredContent.length;
-          appState.snackBar.show(`${excludedCount} content item(s) excluded from translation due to visibility or block type settings`);
-        }
+        const filteredContent = selectedContent.filter(content => content);
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
             placeholderText: 'Enter a name for your new job',
@@ -498,7 +402,6 @@ const initializeSmartlingPlugin = async () => {
           });
           
           if (changedPublishedContent.length > 0) {
-            console.log(`Smartling: Updating ${changedPublishedContent.length} changed published content files in Smartling`);
             await Promise.all(changedPublishedContent.map(async (entry) => {
               try {
                 await api.updateTranslationFile({
@@ -509,7 +412,6 @@ const initializeSmartlingPlugin = async () => {
                   preview: entry.meta?.get?.('lastPreviewUrl') || entry.meta?.lastPreviewUrl,
                 });
               } catch (error) {
-                console.warn(`Smartling: Failed to update translation file for ${entry.id}:`, error);
               }
             }));
           }
@@ -527,7 +429,6 @@ const initializeSmartlingPlugin = async () => {
             const translationRevisionLatest = entry.meta?.get('translationRevisionLatest');
             if (translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest) {
               metaUpdates.translationRevision = translationRevisionLatest;
-              console.log(`Smartling: Updating revision for changed content ${entry.id} to latest`);
             }
             
             return appState.updateLatestDraft({
@@ -578,7 +479,8 @@ const initializeSmartlingPlugin = async () => {
       label: 'Add to translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
-        if (!translationModel) return false;
+        // Always show the action - we'll handle unconfigured state in onClick
+        if (!translationModel) return true;
         
         const translationStatus = content.meta?.get('translationStatus');
         const translationJobId = content.meta?.get('translationJobId');
@@ -612,7 +514,7 @@ const initializeSmartlingPlugin = async () => {
         // If content has both status and job ID, validate job existence in background
         if (enabledTranslationStatuses.includes(translationStatus) && translationJobId) {
           // Trigger background validation and cleanup if needed
-          isContentInActiveTranslationJob(content, api).catch(console.warn);
+          isContentInActiveTranslationJob(content, api).catch(() => {});
           
           // Check cache for immediate result
           const cached = jobExistenceCache.get(translationJobId);
@@ -628,20 +530,18 @@ const initializeSmartlingPlugin = async () => {
         return true;
       },
       async onClick(content) {
+        const translationModel = getTranslationModel();
+        if (!translationModel) {
+          appState.snackBar.show('Please configure the Smartling plugin in the plugins section first.');
+          return;
+        }
+        
         // If there are unsaved changes, wait for auto-save to complete
         if (appState.designerState.hasUnsavedChanges()) {
-          console.log('Smartling: Waiting for auto-save to complete before adding to translation job');
           // Give a moment for auto-save to complete and update metadata
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
         
-        // Apply content exclusion logic before processing
-        const shouldExcludeContent = await checkContentExclusion(content);
-        if (shouldExcludeContent) {
-          console.log(`Smartling: Content ${content.id} was excluded due to visibility or block type rules`);
-          appState.snackBar.show('Content excluded from translation due to visibility or block type settings');
-          return;
-        }
         
         let translationJobId = await pickTranslationJob();
         if (translationJobId === null) {
@@ -665,7 +565,6 @@ const initializeSmartlingPlugin = async () => {
                                            translationRevision !== translationRevisionLatest;
           
           if (isChangedPublishedContent) {
-            console.log(`Smartling: Updating changed published content file for ${content.id} in Smartling`);
             try {
               await api.updateTranslationFile({
                 translationJobId,
@@ -675,7 +574,6 @@ const initializeSmartlingPlugin = async () => {
                 preview: content.meta?.get?.('lastPreviewUrl') || content.meta?.lastPreviewUrl,
               });
             } catch (error) {
-              console.warn(`Smartling: Failed to update translation file for ${content.id}:`, error);
             }
           }
         }
@@ -692,7 +590,6 @@ const initializeSmartlingPlugin = async () => {
         const translationRevisionLatest = content.meta?.get('translationRevisionLatest');
         if (translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest) {
           metaUpdates.translationRevision = translationRevisionLatest;
-          console.log(`Smartling: Updating revision for changed content ${content.id} to latest`);
         }
         
         await appState.updateLatestDraft({
@@ -710,15 +607,8 @@ const initializeSmartlingPlugin = async () => {
     registerContentAction({
       label: 'Request an updated translation',
       showIf(content, model) {
-        const translationModel = getTranslationModel();
-        if (!translationModel) return false;
-        return (
-          content.published === 'published' &&
-          model?.name !== translationModel.name &&
-          content.meta?.get('translationStatus') === 'pending' &&
-          content.meta.get('translationRevisionLatest') &&
-          content.meta.get('translationRevision') !== content.meta.get('translationRevisionLatest')
-        );
+        // Disabled: Users cannot currently update existing translation jobs
+        return false;
       },
       async onClick(content) {
         appState.globalState.showGlobalBlockingLoading('Contacting Smartling ....');
@@ -755,47 +645,32 @@ const initializeSmartlingPlugin = async () => {
       label: 'View translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
-        console.log('Smartling Debug: View translation job showIf check', {
-          hasTranslationModel: !!translationModel,
-          translationModelName: translationModel?.name,
-          currentModelName: model?.name,
-          contentId: content.id,
-          translationJobId: content.meta?.get('translationJobId'),
-          translationStatus: content.meta?.get('translationStatus'),
-          contentMeta: content.meta?.toJS ? content.meta.toJS() : content.meta
-        });
         
         if (!translationModel) {
-          console.log('Smartling Debug: No translation model found');
           return false;
         }
         
         const translationJobId = content.meta?.get('translationJobId');
         
         if (model?.name === translationModel.name) {
-          console.log('Smartling Debug: Content is in translation model, hiding action');
           return false;
         }
         
         // Show if content has a translation job ID (regardless of status)
         if (!translationJobId) {
-          console.log('Smartling Debug: No translation job ID found');
           return false;
         }
         
-        console.log('Smartling Debug: Translation job ID found, checking cache...');
         
         // Trigger background validation and cleanup if needed
-        isContentInActiveTranslationJob(content, api).catch(console.warn);
+        isContentInActiveTranslationJob(content, api).catch(() => {});
         
         // Check cache for immediate result
         const cached = jobExistenceCache.get(translationJobId);
         if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
-          console.log('Smartling Debug: Cache result:', cached.exists);
           return cached.exists; // Show only if job exists
         }
         
-        console.log('Smartling Debug: No cache result, showing action while validating');
         // Default to showing while we validate (will hide after background check completes)
         return true;
       },
@@ -887,7 +762,7 @@ const initializeSmartlingPlugin = async () => {
         }
         
         // Trigger background validation and cleanup if needed
-        isContentInActiveTranslationJob(content, api).catch(console.warn);
+        isContentInActiveTranslationJob(content, api).catch(() => {});
         
         // Check cache for immediate result
         const cached = jobExistenceCache.get(translationJobId);
@@ -916,78 +791,79 @@ const initializeSmartlingPlugin = async () => {
     Builder.registerEditor({
       name: 'SmartlingConfiguration',
       component: (props: CustomReactEditorProps) => {
-        console.log('Smartling: SmartlingConfiguration editor being rendered with props:', props);
         return <SmartlingConfigurationEditor {...props} api={api} />;
       },
     });
 
-    // Register SmartlingProject editor for project selection
-    Builder.registerEditor({
-      name: 'SmartlingProject',
-      component: (props: any) => {
-        const [projects, setProjects] = React.useState<Project[]>([]);
-        const [loading, setLoading] = React.useState(false);
-
-        React.useEffect(() => {
-          const loadProjects = async () => {
-            setLoading(true);
-            try {
-              const response = await api.getAllProjects();
-              const projectsWithDetails = [];
-              for (const proj of response.results) {
-                const details = await api.getProject(proj.projectId);
-                projectsWithDetails.push(details.project);
-              }
-              setProjects(projectsWithDetails);
-            } catch (error) {
-              console.error('Error loading projects:', error);
-            }
-            setLoading(false);
-          };
-          loadProjects();
-        }, []);
-
-        return React.createElement(
-          React.Fragment,
-          {},
-          loading 
-            ? React.createElement(
-                'div',
-                { style: { textAlign: 'center' } },
-                React.createElement('span', {}, 'Loading projects...')
-              )
-            : React.createElement(
-                'select',
-                {
-                  value: props.value || '',
-                  onChange: (e: any) => props.onChange(e.target.value),
-                  disabled: loading,
-                  style: {
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
-                    fontSize: '14px',
-                    backgroundColor: '#fff',
-                    cursor: 'pointer',
-                    fontFamily: 'inherit'
-                  }
-                },
-                [
-                  React.createElement('option', { key: '', value: '' }, 'Select a project...'),
-                  ...projects.map(project =>
-                    React.createElement('option', {
-                      key: project.projectId,
-                      value: project.projectId
-                    }, project.projectName)
-                  )
-                ]
-              )
-        );
-      },
-    });
-
 };
+
+
+// Register SmartlingProject editor for project selection - must be outside async init
+Builder.registerEditor({
+  name: 'SmartlingProject',
+  component: (props: any) => {
+    const [projects, setProjects] = React.useState<Project[]>([]);
+    const [loading, setLoading] = React.useState(false);
+
+    React.useEffect(() => {
+      const loadProjects = async () => {
+        setLoading(true);
+        try {
+          const response = await api.getAllProjects();
+          const projectsWithDetails = [];
+          for (const proj of response.results) {
+            const details = await api.getProject(proj.projectId);
+            projectsWithDetails.push(details.project);
+          }
+          setProjects(projectsWithDetails);
+        } catch (error) {
+          // If we can't load projects, set an empty array so the select still renders
+          setProjects([]);
+        }
+        setLoading(false);
+      };
+      loadProjects();
+    }, []);
+
+    return React.createElement(
+      React.Fragment,
+      {},
+      loading 
+        ? React.createElement(
+            'div',
+            { style: { textAlign: 'center' } },
+            React.createElement('span', {}, 'Loading projects...')
+          )
+        : React.createElement(
+            'select',
+            {
+              value: props.value || '',
+              onChange: (e: any) => props.onChange(e.target.value),
+              disabled: loading,
+              style: {
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                fontSize: '14px',
+                backgroundColor: '#fff',
+                cursor: 'pointer',
+                fontFamily: 'inherit'
+              }
+            },
+            [
+              React.createElement('option', { key: '', value: '' }, 'Select a project...'),
+              ...projects.map(project =>
+                React.createElement('option', {
+                  key: project.projectId,
+                  value: project.projectId
+                }, project.projectName)
+              )
+            ]
+          )
+    );
+  },
+});
 
 // Initialize the plugin when settings are available
 Builder.nextTick(() => {

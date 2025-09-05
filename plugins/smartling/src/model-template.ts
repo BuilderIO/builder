@@ -9,8 +9,7 @@ export function getTranslationModel() {
 export const getTranslationModelTemplate = (
   privateKey: string,
   apiKey: string,
-  pluginId: string,
-  apiVersion: 'v1' | 'v2' = 'v1'
+  pluginId: string
 ) => {
   // Get the default project from plugin settings
   const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pluginId);
@@ -229,7 +228,7 @@ export const getTranslationModelTemplate = (
           value: `Bearer ${privateKey}`,
         },
       ],
-      url: `${appState.config.apiRoot()}/api/v1/smartling/job-publish-hook?apiKey=${apiKey}&pluginId=${pluginId}&preferredVersion=${apiVersion}`,
+      url: `${appState.config.apiRoot()}/api/v1/smartling/job-publish-hook?apiKey=${apiKey}&pluginId=${pluginId}&preferredVersion=v2`,
       disableProxy: true, // proxy has an issue with the POST request body
     },
   ],
