@@ -27,10 +27,10 @@ export class SmartlingApi {
          private privateKey?: string;
          loaded?: Promise<void>;
          resolveLoaded?: () => void;
-         public apiVersion: 'v1' | 'v2' = 'v2';
+         public apiVersion: 'v1' | 'v2' = 'v1';
          // TODO: basic cache
          
-         getBaseUrl(path: string, search = {}, version: 'v1' | 'v2' = 'v2') {
+         getBaseUrl(path: string, search = {}, version: 'v1' | 'v2' = 'v1') {
            const params = new URLSearchParams({
              ...search,
              pluginId: pkg.name,
