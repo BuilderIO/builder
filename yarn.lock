@@ -1214,16 +1214,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/ssr@npm:^17.3.8":
-  version: 17.3.17
-  resolution: "@angular/ssr@npm:17.3.17"
+"@angular/ssr@npm:^18.2.21":
+  version: 18.2.21
+  resolution: "@angular/ssr@npm:18.2.21"
   dependencies:
-    critters: 0.0.22
+    critters: 0.0.24
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": ^17.0.0
-    "@angular/core": ^17.0.0
-  checksum: 2895a206521833ac93729842bdc751947d8cf18d51d033adc05d32adf05161fd66a0cbded0703e038997d410ba25f4700c76e5fc1c2f70f5ca06fcb07759ed86
+    "@angular/common": ^18.0.0
+    "@angular/core": ^18.0.0
+  checksum: b9b562485dcb170ae2a04cfa5b8a769649fc57c1aef87e4cfa8c6544efca1617f416ce0c25bd9281f01741b9988dc989549562cc036bc20a8aaa1d42e72876ce
   languageName: node
   linkType: hard
 
@@ -7676,7 +7676,7 @@ __metadata:
     "@angular/platform-browser-dynamic": ^17.3.0
     "@angular/platform-server": ^17.3.0
     "@angular/router": ^17.3.0
-    "@angular/ssr": ^17.3.8
+    "@angular/ssr": ^18.2.21
     "@builder.io/sdk-angular": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/express": ^4.17.17
@@ -19991,7 +19991,7 @@ __metadata:
     "@angular/platform-browser-dynamic": ^17.3.0
     "@angular/platform-server": ^17.3.0
     "@angular/router": ^17.3.0
-    "@angular/ssr": ^17.3.8
+    "@angular/ssr": ^18.2.21
     "@builder.io/sdk-angular": "workspace:*"
     "@types/express": ^4.17.17
     "@types/jasmine": ~5.1.0
@@ -29586,6 +29586,21 @@ __metadata:
     postcss: ^8.4.23
     postcss-media-query-parser: ^0.2.3
   checksum: e5f49ccf2966bb4e403981c654b413c81c728e2f56038c1ce03f28e87abec1be47c4005df2950ead581b2bb5036abe9d85a54df1a92e8a80490d3735687a0aa6
+  languageName: node
+  linkType: hard
+
+"critters@npm:0.0.24":
+  version: 0.0.24
+  resolution: "critters@npm:0.0.24"
+  dependencies:
+    chalk: ^4.1.0
+    css-select: ^5.1.0
+    dom-serializer: ^2.0.0
+    domhandler: ^5.0.2
+    htmlparser2: ^8.0.2
+    postcss: ^8.4.23
+    postcss-media-query-parser: ^0.2.3
+  checksum: 6abf1e512d27c4adcac5dfc40d1c755242ee2cb3f9cbb467c2a279835f37c53c013363b0b4bf4db402a58bbc387eb4c3cee68a25dc3781758a6df403528efd23
   languageName: node
   linkType: hard
 
