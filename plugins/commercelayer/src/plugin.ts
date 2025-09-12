@@ -28,6 +28,7 @@ registerCommercePlugin(
       const clientId = settings.get('clientId')
       const scope = settings.get('scope')
       
+      // Get auth and organization info
       const auth = await authenticateClient({ clientId, scope })
       const { baseEndpoint } = await getOrganizationInfo(auth.accessToken)
 

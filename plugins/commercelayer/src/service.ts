@@ -14,13 +14,9 @@ type AuthResponse = {
 }
 
 export const authenticateClient = async ({ clientId, scope }: AuthConfig): Promise<AuthResponse> => {
-    // Use Builder's proxy API to avoid CORS
     const authUrl = 'https://auth.commercelayer.io/oauth/token'
-    const proxyUrl = `${appState.config.apiRoot()}/api/v1/proxy-api?apiKey=${
-      appState.user.apiKey
-    }&url=${encodeURIComponent(authUrl)}`
 
-    const response = await fetch(proxyUrl, {
+    const response = await fetch(authUrl, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -35,11 +31,11 @@ export const authenticateClient = async ({ clientId, scope }: AuthConfig): Promi
   
     if (!response.ok) {
       const errorText = await response.text()
-      console.error('Auth Error:', errorText) // Add this for debugging
-      throw new Error(`Authentication failed: ${response.statusText}`)
+      throw new Error(`Authentication failed: ${response.status} ${response.statusText} - ${errorText}`)
     }
   
     const data = await response.json()
+    
     return {
       accessToken: data.access_token,
       tokenType: data.token_type,
@@ -51,18 +47,14 @@ export const authenticateClient = async ({ clientId, scope }: AuthConfig): Promi
 
 
 /**
- * Make API request using Builder's proxy with proper OAuth token
+ * Make API request directly - Commerce Layer supports CORS
  */
 const makeApiRequest = async (
   url: string,
   accessToken: string,
   options: RequestInit = {}
 ): Promise<any> => {
-  const proxyUrl = `${appState.config.apiRoot()}/api/v1/proxy-api?apiKey=${
-    appState.user.apiKey
-  }&url=${encodeURIComponent(url)}`
-
-  const response = await fetch(proxyUrl, {
+  const response = await fetch(url, {
     ...options,
     headers: {
       'Authorization': `Bearer ${accessToken}`,
@@ -74,11 +66,11 @@ const makeApiRequest = async (
 
   if (!response.ok) {
     const errorText = await response.text()
-    console.error('API Error:', errorText)
     throw new Error(`API request failed: ${response.status} ${response.statusText}`)
   }
 
-  return response.json()
+  const data = await response.json()
+  return data
 }
 
 export const getOrganizationInfo = async (accessToken: string) => {
@@ -117,8 +109,8 @@ export const getProduct = async (id: string, accessToken: string, baseEndpoint: 
 
 export const searchProducts = async (search: string, accessToken: string, baseEndpoint: string): Promise<Product[]> => {
     const params = new URLSearchParams({
-      'filter[q][code_or_name_cont]': search,
-      'include': 'prices,stock_items'
+      'filter[q][name_or_code_cont]': search,
+      'page[size]': '25'
     })
   
     const url = `${baseEndpoint}/api/skus?${params}`
