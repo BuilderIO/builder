@@ -1,3 +1,5 @@
+import appState from '@builder.io/app-context'
+
 type AuthConfig = {
     clientId: string
     scope?: string
@@ -9,10 +11,16 @@ type AuthResponse = {
     expiresIn: number
     scope: string
     createdAt: number
-  }
+}
 
 export const authenticateClient = async ({ clientId, scope }: AuthConfig): Promise<AuthResponse> => {
-    const response = await fetch('https://auth.commercelayer.io/oauth/token', {
+    // Use Builder's proxy API to avoid CORS
+    const authUrl = 'https://auth.commercelayer.io/oauth/token'
+    const proxyUrl = `${appState.config.apiRoot()}/api/v1/proxy-api?apiKey=${
+      appState.user.apiKey
+    }&url=${encodeURIComponent(authUrl)}`
+
+    const response = await fetch(proxyUrl, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -41,6 +49,37 @@ export const authenticateClient = async ({ clientId, scope }: AuthConfig): Promi
     }
   }
 
+
+/**
+ * Make API request using Builder's proxy with proper OAuth token
+ */
+const makeApiRequest = async (
+  url: string,
+  accessToken: string,
+  options: RequestInit = {}
+): Promise<any> => {
+  const proxyUrl = `${appState.config.apiRoot()}/api/v1/proxy-api?apiKey=${
+    appState.user.apiKey
+  }&url=${encodeURIComponent(url)}`
+
+  const response = await fetch(proxyUrl, {
+    ...options,
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+      ...options.headers,
+    },
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    console.error('API Error:', errorText)
+    throw new Error(`API request failed: ${response.status} ${response.statusText}`)
+  }
+
+  return response.json()
+}
 
 export const getOrganizationInfo = async (accessToken: string) => {
   // Simple base64 decode of JWT payload
@@ -71,18 +110,8 @@ type Product = {
 }
 
 export const getProduct = async (id: string, accessToken: string, baseEndpoint: string): Promise<Product> => {
-  const response = await fetch(`${baseEndpoint}/api/skus/${id}`, {
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    }
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch product: ${response.statusText}`)
-  }
-
-  const data = await response.json()
+  const url = `${baseEndpoint}/api/skus/${id}`
+  const data = await makeApiRequest(url, accessToken)
   return data.data
 }
 
@@ -92,21 +121,9 @@ export const searchProducts = async (search: string, accessToken: string, baseEn
       'include': 'prices,stock_items'
     })
   
-    const response = await fetch(`${baseEndpoint}/api/skus?${params}`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Accept': 'application/vnd.api+json',
-        'Content-Type': 'application/vnd.api+json'
-      }
-    })
-  
-    if (!response.ok) {
-      console.error('Search Error:', await response.text()) // Add this for debugging
-      throw new Error(`Failed to search products: ${response.statusText}`)
-    }
-  
-    const data = await response.json()
-    return data.data
+    const url = `${baseEndpoint}/api/skus?${params}`
+    const data = await makeApiRequest(url, accessToken)
+    return data.data || []
   }
 
 export const transformProduct = (product: Product) => ({
@@ -124,20 +141,9 @@ export const getProductByHandle = async (handle: string, accessToken: string, ba
     'filter[q][code_eq]': handle
   })
 
-  const response = await fetch(`${baseEndpoint}/api/skus?${params}`, {
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Accept': 'application/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json'
-    }
-  })
-
-  if (!response.ok) {
-    console.error('Product Handle Error:', await response.text())
-    throw new Error(`Failed to fetch product by handle: ${response.statusText}`)
-  }
-
-  const data = await response.json()
+  const url = `${baseEndpoint}/api/skus?${params}`
+  const data = await makeApiRequest(url, accessToken)
+  
   if (!data.data?.[0]) {
     throw new Error(`Product not found with handle: ${handle}`)
   }

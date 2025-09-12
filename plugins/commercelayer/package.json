@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-commercelayer",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "description": "Commerce Layer plugin for Builder.io",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -20,20 +20,11 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript",
     "start": "SERVE=true rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript -w",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
-    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish",
-    "test": "jest --coverage",
-    "test:watch": "jest --coverage --watch",
-    "test:prod": "npm run lint && npm run test -- --no-cache",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "travis-deploy-once": "travis-deploy-once"
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
@@ -41,12 +32,13 @@
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.11.19",
+    "rimraf": "^2.6.2",
     "rollup": "^4.12.0",
     "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-serve": "^1.1.1",
+    "tslib": "^2.8.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.2.2",
-    "rimraf": "^2.6.2"
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@builder.io/plugin-tools": "^0.0.6"

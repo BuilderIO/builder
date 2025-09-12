@@ -12,14 +12,16 @@ registerCommercePlugin(
       name: 'clientId',
       type: 'string',
       required: true,
+      helperText: 'Your Commerce Layer application Client ID'
     },
     {
       name: 'scope',
       type: 'string',
       required: true,
+      helperText: 'Commerce Layer scope (e.g., "market:all")'
     }
   ],
-  ctaText: 'Connect Commerce Layer',
+  ctaText: 'Connect your Commerce Layer store',
 },
   async (settings: any): Promise<CommerceAPIOperations> => {
     try {
