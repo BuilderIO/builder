@@ -1,5 +1,3 @@
-import appState from '@builder.io/app-context'
-
 type AuthConfig = {
     clientId: string
     scope?: string
