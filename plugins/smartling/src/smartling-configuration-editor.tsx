@@ -18,6 +18,7 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
+import { debounce } from 'lodash';
 
 function useReaction<T = any>(
   expression: () => T,
@@ -50,6 +51,7 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
     filters: observable.map(initialValue),
     targetLocales: [] as string[],
     localeSearchQuery: observable.box(''),
+    selectOpen: observable.box(false),
     // Helper function to check if locale matches any of the search terms
     matchesSearchTerms(locale: any, searchQuery: string): boolean {
       if (!searchQuery.trim()) return true;
@@ -91,6 +93,10 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
     },
     };
   });
+
+  const debouncedOpenSelect = debounce(() => {
+    store.selectOpen.set(true);
+  }, 1500);
 
   useEffect(() => {
     store.targetLocales = props.value?.get('targetLocales') || [];
@@ -168,6 +174,9 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
                   value={store.localeSearchQuery.get()}
                   onChange={action((e) => {
                     store.localeSearchQuery.set(e.target.value);
+                    if(store.localeSearchQuery.get().length > 0){
+                      debouncedOpenSelect();
+                    }
                   })}
                   InputProps={{
                     startAdornment: (
@@ -184,6 +193,13 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
               value={store.targetLocales}
               multiple
               displayEmpty
+              open={store.selectOpen.get()}
+              onOpen={action(() => {
+                store.selectOpen.set(true);
+              })}
+              onClose={action(() => {
+                store.selectOpen.set(false);
+              })}
               MenuProps={{
                 PaperProps: {
                   style: {
@@ -247,7 +263,6 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
                     />
                     <ListItemText primary={store.localeSearchQuery.get() ? "Select All Filtered" : "Select All"} />
                   </MenuItem>
-                  {store.project.targetLocales && console.log('store.project.targetLocales:', store.project.targetLocales)}
                   {store.project.targetLocales
                     .filter(locale => {
                       const searchQuery = store.localeSearchQuery.get();

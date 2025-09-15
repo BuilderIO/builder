@@ -187,7 +187,7 @@ const initializeSmartlingPlugin = async () => {
     return;
   }
   isInitialized = true;
-  
+
   // Wait for API to initialize - this should always happen
   await api.loaded;
 
@@ -560,6 +560,8 @@ const initializeSmartlingPlugin = async () => {
             // Use enhanced job creation that supports both v1 and v2
             const localJob = await api.createTranslationJob(name, [content]);
             translationJobId = localJob.id;
+          } else {
+            return;
           }
         } else if (translationJobId) {
           // adding content to an already created job
@@ -568,9 +570,7 @@ const initializeSmartlingPlugin = async () => {
           // For changed content that was previously published, update translation file in Smartling
           const translationRevision = content.meta?.get('translationRevision');
           const translationRevisionLatest = content.meta?.get('translationRevisionLatest');
-          const isChangedPublishedContent = content.published === 'published' && 
-                                           translationRevision && translationRevisionLatest && 
-                                           translationRevision !== translationRevisionLatest;
+          const isChangedPublishedContent = content.published === 'published' && translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest;
           
           if (isChangedPublishedContent) {
             try {
@@ -688,7 +688,7 @@ const initializeSmartlingPlugin = async () => {
         
         if (translationJobId && translationModel) {
           // Navigate to the specific translation job in Builder
-          appState.location.go(`/content/${translationModel.name}/${translationJobId}`);
+          appState.location.go(`/content/${translationJobId}`);
         } else {
           appState.snackBar.show('Translation job not found');
         }
@@ -700,10 +700,7 @@ const initializeSmartlingPlugin = async () => {
       showIf(content, model) {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
-        return (
-          model?.name !== translationModel.name &&
-          content.meta?.get('translationStatus') === 'pending'
-        );
+        return model?.name !== translationModel.name && content.meta?.get('translationStatus') && ['completed', 'pending', 'local'].includes(content.meta?.get('translationStatus'));
       },
       async onClick(content) {
         const translationBatch = fastClone(content.meta).translationBatch;
