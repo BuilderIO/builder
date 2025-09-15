@@ -178,8 +178,16 @@ Builder.register('plugin', {
 // Create API instance for plugin use
 const api = new SmartlingApi();
 
+let isInitialized = false;
+
 // Initialize plugin functionality
 const initializeSmartlingPlugin = async () => {
+
+  if (isInitialized) {
+    return;
+  }
+  isInitialized = true;
+  
   // Wait for API to initialize - this should always happen
   await api.loaded;
 
