@@ -48,7 +48,8 @@ async function isContentInActiveTranslationJob(content: any, api: SmartlingApi):
   if (cached && (now - cached.timestamp) < CACHE_DURATION) {
     // If cached result shows job doesn't exist, clean up metadata
     if (!cached.exists) {
-      await api.cleanupOrphanedTranslationMetadata(content);
+      console.log('plugin.tsx:51: cleaning up orphaned translation metadata');
+      // await api.cleanupOrphanedTranslationMetadata(content);
     }
     return cached.exists;
   }
@@ -61,7 +62,8 @@ async function isContentInActiveTranslationJob(content: any, api: SmartlingApi):
   
   // If job doesn't exist, clean up metadata
   if (!jobExists) {
-    await api.cleanupOrphanedTranslationMetadata(content);
+    console.log('plugin.tsx:65: cleaning up orphaned translation metadata');
+    // await api.cleanupOrphanedTranslationMetadata(content);
     return false;
   }
   
@@ -846,7 +848,6 @@ Builder.registerEditor({
                 border: '1px solid #ccc',
                 borderRadius: '4px',
                 fontSize: '14px',
-                backgroundColor: '#fff',
                 cursor: 'pointer',
                 fontFamily: 'inherit'
               }

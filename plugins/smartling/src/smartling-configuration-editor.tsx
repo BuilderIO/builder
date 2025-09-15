@@ -16,9 +16,6 @@ import {
   Typography,
   TextField,
   InputAdornment,
-  Button,
-  FormControl,
-  InputLabel,
 } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 
@@ -163,7 +160,7 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
               <CircularProgress disableShrink size={20} />{' '}
             </div>
           ) : (
-            <>
+            <React.Fragment>
               {store.project && store.project.targetLocales.length > 0 && (
                 <TextField
                   fullWidth
@@ -187,6 +184,13 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
               value={store.targetLocales}
               multiple
               displayEmpty
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 300,
+                  },
+                },
+              }}
               renderValue={selected => {
                 if (Array.isArray(selected) && selected.length === 0) {
                   return <span style={{ color: '#999' }}>Select locale(s)</span>;
@@ -198,7 +202,7 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
               }}
             >
               {store.project ? (
-                <>
+                <React.Fragment>
                   <MenuItem
                     key="select-all"
                     value=""
@@ -243,6 +247,7 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
                     />
                     <ListItemText primary={store.localeSearchQuery.get() ? "Select All Filtered" : "Select All"} />
                   </MenuItem>
+                  {store.project.targetLocales && console.log('store.project.targetLocales:', store.project.targetLocales)}
                   {store.project.targetLocales
                     .filter(locale => {
                       const searchQuery = store.localeSearchQuery.get();
@@ -274,12 +279,12 @@ export const SmartlingConfigurationEditor: React.FC<Props> = props => {
                       <ListItemText primary={locale.description} />
                     </MenuItem>
                   ))}
-                </>
+                </React.Fragment>
               ) : (
                 <Typography>Pick a project first</Typography>
               )}
             </Select>
-            </>
+            </React.Fragment>
           )}
           <Typography css={{ marginBottom: 15, marginTop: 10 }} variant="caption">
             Pick from the list of available target locales
