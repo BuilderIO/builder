@@ -48,7 +48,6 @@ async function isContentInActiveTranslationJob(content: any, api: SmartlingApi):
   if (cached && (now - cached.timestamp) < CACHE_DURATION) {
     // If cached result shows job doesn't exist, clean up metadata
     if (!cached.exists) {
-      console.log('plugin.tsx:51: cleaning up orphaned translation metadata');
       // await api.cleanupOrphanedTranslationMetadata(content);
     }
     return cached.exists;
@@ -62,7 +61,6 @@ async function isContentInActiveTranslationJob(content: any, api: SmartlingApi):
   
   // If job doesn't exist, clean up metadata
   if (!jobExists) {
-    console.log('plugin.tsx:65: cleaning up orphaned translation metadata');
     // await api.cleanupOrphanedTranslationMetadata(content);
     return false;
   }
