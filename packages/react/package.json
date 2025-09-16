@@ -100,7 +100,7 @@
     "@builder.io/sdk": "workspace:*",
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
-    "isolated-vm": "^5.0.0",
+    "isolated-vm": "^6.0.0",
     "preact": "^10.1.0"
   },
   "installConfig": {
