@@ -21,6 +21,7 @@ export default async function Page(props: PageProps) {
     apiKey: PUBLIC_API_KEY,
     model: 'page',
     userAttributes: { urlPath },
+    fetchOptions: { next: { revalidate: 3 } },
   });
 
   const canShowContent = content || isPreviewing(props.searchParams);
