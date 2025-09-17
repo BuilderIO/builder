@@ -156,6 +156,7 @@ export class SmartlingApi {
                  ...allContent.map(c => getContentReference(c)),
                ],
              },
+             published: 'draft',
            };
            
            const symbolCount = allContent.length - content.length;

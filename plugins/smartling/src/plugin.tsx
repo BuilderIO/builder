@@ -664,22 +664,10 @@ const initializeSmartlingPlugin = async () => {
           return false;
         }
         
-        // Show if content has a translation job ID (regardless of status)
         if (!translationJobId) {
           return false;
         }
-        
-        
-        // Trigger background validation and cleanup if needed
-        isContentInActiveTranslationJob(content, api).catch(() => {});
-        
-        // Check cache for immediate result
-        const cached = jobExistenceCache.get(translationJobId);
-        if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
-          return cached.exists; // Show only if job exists
-        }
-        
-        // Default to showing while we validate (will hide after background check completes)
+      
         return true;
       },
       async onClick(content) {
