@@ -1,5 +1,5 @@
-import { registerCommercePlugin, BuilderRequest, CommerceAPIOperations } from '@builder.io/plugin-tools'
 import appState from '@builder.io/app-context'
+import { BuilderRequest, CommerceAPIOperations, registerCommercePlugin, Resource } from '@builder.io/plugin-tools'
 import pkg from '../package.json'
 import { authenticateClient, getOrganizationInfo, getProduct, searchProducts, getProductByHandle, transformProduct } from './service'
 
@@ -44,7 +44,7 @@ registerCommercePlugin(
             const products = await searchProducts(search, auth.accessToken, baseEndpoint)
             return products.map(transformProduct)
           },
-          getRequestObject(id: string): BuilderRequest {
+          getRequestObject(id: string, resource: Resource): BuilderRequest {
             return {
               '@type': '@builder.io/core:Request',
               request: {
@@ -56,6 +56,7 @@ registerCommercePlugin(
               },
               options: {
                 product: id,
+                code: resource.handle,
                 pluginId: pkg.name
               }
             }
