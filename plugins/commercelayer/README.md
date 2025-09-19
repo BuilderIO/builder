@@ -6,7 +6,8 @@ Easily connect your Commerce Layer products to your Builder.io content!
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and press on `@builder.io/plugin-commercelayer` in the list of plugins, then hit save. You'll be prompted for your Commerce Layer credentials:
 - Client ID
-- Market Scope (e.g., 'market:id:YOUR_MARKET_ID')
+- Client Secret (optional - required for integration tokens to access all markets)
+- Market Scope (e.g., 'market:all' for integrations, 'market:id:YOUR_MARKET_ID' for sales channels)
 
 ## Features
 
@@ -68,10 +69,21 @@ Go to [builder.io/account/organization](https://builder.io/account/organization)
 
 ## Authentication
 
-The plugin uses Commerce Layer's Sales Channel authentication. You'll need:
+The plugin supports both Commerce Layer authentication methods:
+
+### Sales Channel Authentication (Market-Specific)
+For accessing products from a specific market:
 - A Commerce Layer account
-- Sales Channel API credentials
-- A valid market scope
+- Sales Channel API credentials (Client ID only)
+- Market-specific scope (e.g., `market:id:YOUR_MARKET_ID`)
+
+### Integration Authentication (All Markets)
+For accessing products from all markets:
+- A Commerce Layer account  
+- Integration API credentials (Client ID + Client Secret)
+- Market scope set to `market:all`
+
+**Note:** Sales channel tokens with `market:all` scope will not return products due to Commerce Layer restrictions. Use integration tokens for cross-market access.
 
 ## Contributing
 
