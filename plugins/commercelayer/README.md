@@ -6,16 +6,34 @@ Easily connect your Commerce Layer products to your Builder.io content!
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and press on `@builder.io/plugin-commercelayer` in the list of plugins, then hit save. You'll be prompted for your Commerce Layer credentials:
 - Client ID
-- Market Scope (e.g., 'market:id:YOUR_MARKET_ID')
+- Client Secret (optional - required for integration tokens to access all markets)
+- Market Scope (e.g., 'market:all' for integrations, 'market:id:YOUR_MARKET_ID' for sales channels)
 
 ## Features
 
-The plugin provides new field types for your Builder.io models:
+The plugin provides new field types for your Builder.io models and data connection capabilities:
 
 ### Product Fields
 
 - `Commerce Layer Product` - Search and select products from your Commerce Layer catalog
 - `Commerce Layer Product Preview` - Preview product templates with live data
+
+### Connect Data
+
+The plugin also provides a "Connect Data" feature that allows you to fetch live product data directly from your Commerce Layer API:
+
+- **Real-time data access** - Connect to your Commerce Layer products as a data source
+- **Flexible querying** - Search products by name or SKU code with configurable result limits
+- **Full product data** - Access all product attributes including SKU codes, prices, images, and metadata
+- **Dynamic content** - Use live product data in your Builder.io content and templates
+
+To use Connect Data:
+1. In the Builder.io editor, go to the "Connect Data" panel
+2. Click "Add Data" and select "CommerceLayer" from the data sources
+3. Configure your query parameters (search terms, result limits)
+4. Use the returned product data in your content via data bindings
+
+Example: Access product SKU code with `data.attributes.code` or product name with `data.attributes.name`
 
 ### Component Model Fields
 
@@ -68,10 +86,21 @@ Go to [builder.io/account/organization](https://builder.io/account/organization)
 
 ## Authentication
 
-The plugin uses Commerce Layer's Sales Channel authentication. You'll need:
+The plugin supports both Commerce Layer authentication methods:
+
+### Sales Channel Authentication (Market-Specific)
+For accessing products from a specific market:
 - A Commerce Layer account
-- Sales Channel API credentials
-- A valid market scope
+- Sales Channel API credentials (Client ID only)
+- Market-specific scope (e.g., `market:id:YOUR_MARKET_ID`)
+
+### Integration Authentication (All Markets)
+For accessing products from all markets:
+- A Commerce Layer account  
+- Integration API credentials (Client ID + Client Secret)
+- Market scope set to `market:all`
+
+**Note:** Sales channel tokens with `market:all` scope will not return products due to Commerce Layer restrictions. Use integration tokens for cross-market access.
 
 ## Contributing
 
