@@ -11,12 +11,29 @@ Go to [builder.io/account/organization](https://builder.io/account/organization)
 
 ## Features
 
-The plugin provides new field types for your Builder.io models:
+The plugin provides new field types for your Builder.io models and data connection capabilities:
 
 ### Product Fields
 
 - `Commerce Layer Product` - Search and select products from your Commerce Layer catalog
 - `Commerce Layer Product Preview` - Preview product templates with live data
+
+### Connect Data
+
+The plugin also provides a "Connect Data" feature that allows you to fetch live product data directly from your Commerce Layer API:
+
+- **Real-time data access** - Connect to your Commerce Layer products as a data source
+- **Flexible querying** - Search products by name or SKU code with configurable result limits
+- **Full product data** - Access all product attributes including SKU codes, prices, images, and metadata
+- **Dynamic content** - Use live product data in your Builder.io content and templates
+
+To use Connect Data:
+1. In the Builder.io editor, go to the "Connect Data" panel
+2. Click "Add Data" and select "CommerceLayer" from the data sources
+3. Configure your query parameters (search terms, result limits)
+4. Use the returned product data in your content via data bindings
+
+Example: Access product SKU code with `data.attributes.code` or product name with `data.attributes.name`
 
 ### Component Model Fields
 
