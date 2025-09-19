@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-commercelayer",
-  "version": "0.0.4",
+  "version": "0.0.9-2",
   "description": "Commerce Layer plugin for Builder.io",
   "keywords": [],
   "main": "dist/plugin.system.js",
