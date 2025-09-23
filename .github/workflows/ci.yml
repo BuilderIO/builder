@@ -29,7 +29,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -91,7 +91,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -149,7 +149,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -184,7 +184,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -218,7 +218,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -258,7 +258,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -288,10 +288,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use node version 18
+      - name: Use node version 24
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -324,10 +324,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use node version 18
+      - name: Use node version 24
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
