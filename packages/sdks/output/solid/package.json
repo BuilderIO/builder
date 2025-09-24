@@ -87,7 +87,7 @@
     "build:browser": "SDK_ENV=browser yarn build:one"
   },
   "dependencies": {
-    "isolated-vm": "^5.0.0",
+    "isolated-vm": "^6.0.0",
     "solid-styled-components": "^0.27.6"
   },
   "peerDependencies": {

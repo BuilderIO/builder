@@ -48,7 +48,7 @@
     "check": "SDK_ENV=browser svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "isolated-vm": "^5.0.0"
+    "isolated-vm": "^6.0.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",

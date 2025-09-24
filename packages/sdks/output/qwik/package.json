@@ -112,7 +112,7 @@
     "build:browser": "SDK_ENV=browser yarn build:one"
   },
   "dependencies": {
-    "isolated-vm": "^5.0.0"
+    "isolated-vm": "^6.0.0"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.5.1",
