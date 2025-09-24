@@ -110,7 +110,7 @@
     "vite": "^4.5.11"
   },
   "dependencies": {
-    "isolated-vm": "^5.0.0"
+    "isolated-vm": "^6.0.0"
   },
   "nx": {
     "targets": {
