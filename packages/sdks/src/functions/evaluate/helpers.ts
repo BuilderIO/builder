@@ -7,9 +7,9 @@ import { getTestCookie } from '../content-variants.js';
 import { getGlobalBuilderContext } from '../global-context.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
-import type { EventProps } from '../track';
-import { _track } from '../track';
 import { getUserAttributes } from '../track/helpers.js';
+import type { EventProps } from '../track/index.js';
+import { _track } from '../track/index.js';
 
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
