@@ -62,8 +62,12 @@ const transformFile = (filePath, replaceValue, revert = false) => {
                 hasReplacedImport = true;
               }
             },
-            // When building EDGE bundle, force choose-eval to always use the edge evaluator
-            // and skip any browser fallback logic.
+            /**
+             * When building EDGE bundle, force choose-eval to always use the edge evaluator
+             * and skip any browser fallback logic.
+             * 
+             * converts chooseBrowserOrServerEval = (args) => evaluator(args)
+             */
             ExportNamedDeclaration(path) {
               if (process.env.SDK_ENV !== 'edge' || revert) return;
               const decl = path.node.declaration;
