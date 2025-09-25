@@ -65,7 +65,7 @@ const transformFile = (filePath, replaceValue, revert = false) => {
             /**
              * When building EDGE bundle, force choose-eval to always use the edge evaluator
              * and skip any browser fallback logic.
-             * 
+             *
              * converts chooseBrowserOrServerEval = (args) => evaluator(args)
              */
             ExportNamedDeclaration(path) {
