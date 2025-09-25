@@ -1602,9 +1602,30 @@ export class Builder {
       return;
     }
     const meta = typeof contentId === 'object' ? contentId : customProperties;
-    const useContentId = typeof contentId === 'string' ? contentId : undefined;
+    let useContentId = typeof contentId === 'string' ? contentId : undefined;
 
-    this.track('conversion', { amount, variationId, meta, contentId: useContentId }, context);
+    if (!useContentId && this.contentId) {
+      useContentId = this.contentId;
+    }
+
+    let useVariationId = variationId;
+    if (!useVariationId && useContentId) {
+      useVariationId = this.getTestCookie(useContentId);
+    }
+
+    this.track(
+      'conversion',
+      {
+        amount,
+        variationId:
+          useVariationId && useContentId && useVariationId !== useContentId
+            ? useVariationId
+            : undefined,
+        meta,
+        contentId: useContentId,
+      },
+      context
+    );
   }
 
   autoTrack = !Builder.isBrowser

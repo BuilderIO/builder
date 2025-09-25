@@ -3,6 +3,7 @@ import type {
   BuilderRenderState,
 } from '../../context/types.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
+import { getTestCookie } from '../content-variants.js';
 import { getCookie } from '../cookie.js';
 import { getGlobalBuilderContext } from '../global-context.js';
 import { isBrowser } from '../is-browser.js';
@@ -98,15 +99,28 @@ export const getBuilderGlobals = (): BuilderGlobals => ({
     context?: any
   ) => {
     const meta = typeof contentId === 'object' ? contentId : customProperties;
-    const useContentId = typeof contentId === 'string' ? contentId : undefined;
+    let useContentId = typeof contentId === 'string' ? contentId : undefined;
     const builderContext = getGlobalBuilderContext();
+
+    if (!useContentId && builderContext?.contentId) {
+      useContentId = builderContext.contentId;
+    }
+
+    let useVariationId = variationId;
+    if (!useVariationId && useContentId) {
+      useVariationId = getTestCookie(useContentId) || undefined;
+    }
+
     _track({
       type: 'conversion',
       apiHost: builderContext?.apiHost,
       apiKey: builderContext?.apiKey || '',
       amount: amount || undefined,
       contentId: useContentId,
-      variationId: variationId || undefined,
+      variationId:
+        useVariationId && useContentId && useVariationId !== useContentId
+          ? useVariationId
+          : undefined,
       meta,
       context: context || undefined,
       canTrack: getDefaultCanTrack(),

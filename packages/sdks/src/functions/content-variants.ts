@@ -1,6 +1,10 @@
-import { setCookie } from './cookie';
+import { getCookie, setCookie } from './cookie.js';
 
-const testCookiePrefix = 'builder.tests';
+export const testCookiePrefix = 'builder.tests';
+
+export function getTestCookie(name: string) {
+  return getCookie(`${testCookiePrefix}.${name}`);
+}
 
 function parseUrlParams(url: string): Map<string, string> {
   const result = new Map<string, string>();

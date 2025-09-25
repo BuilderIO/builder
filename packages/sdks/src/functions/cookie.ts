@@ -1,4 +1,4 @@
-import { isBrowser } from './is-browser';
+import { isBrowser } from './is-browser.js';
 
 export function setCookie(name: string, value: string, expires?: Date) {
   try {
