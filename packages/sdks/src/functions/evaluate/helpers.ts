@@ -4,7 +4,6 @@ import type {
 } from '../../context/types.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { getTestCookie } from '../content-variants.js';
-import { getCookie } from '../cookie.js';
 import { getGlobalBuilderContext } from '../global-context.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
@@ -21,9 +20,6 @@ export type BuilderGlobals = {
   isBrowser: boolean | undefined;
   isServer: boolean | undefined;
   getUserAttributes: typeof getUserAttributes;
-  apiKey: string | undefined;
-  contentId: string | undefined;
-  getCookie: typeof getCookie;
   track: (
     eventName: string,
     properties: Partial<EventProps & { apiHost?: string }>,
@@ -73,9 +69,6 @@ export const getBuilderGlobals = (): BuilderGlobals => ({
   isBrowser: isBrowser(),
   isServer: !isBrowser(),
   getUserAttributes: () => getUserAttributes(),
-  apiKey: getGlobalBuilderContext().apiKey,
-  contentId: getGlobalBuilderContext().contentId,
-  getCookie: (args) => getCookie(args),
   track: (
     eventName: string,
     properties: Partial<EventProps & { apiHost?: string }> = {},
