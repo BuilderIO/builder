@@ -2,8 +2,13 @@ import type {
   BuilderContextInterface,
   BuilderRenderState,
 } from '../../context/types.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
+import { getCookie } from '../cookie.js';
+import { getGlobalBuilderContext } from '../global-context.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
+import type { EventProps } from '../track';
+import { _track } from '../track';
 import { getUserAttributes } from '../track/helpers.js';
 
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
@@ -15,6 +20,21 @@ export type BuilderGlobals = {
   isBrowser: boolean | undefined;
   isServer: boolean | undefined;
   getUserAttributes: typeof getUserAttributes;
+  apiKey: string | undefined;
+  contentId: string | undefined;
+  getCookie: typeof getCookie;
+  track: (
+    eventName: string,
+    properties: Partial<EventProps & { apiHost?: string }>,
+    context?: any
+  ) => void;
+  trackConversion: (
+    amount?: number,
+    contentId?: string | any,
+    variationId?: string,
+    customProperties?: any,
+    context?: any
+  ) => void;
 };
 
 export type ExecutorArgs = Pick<
@@ -52,6 +72,46 @@ export const getBuilderGlobals = (): BuilderGlobals => ({
   isBrowser: isBrowser(),
   isServer: !isBrowser(),
   getUserAttributes: () => getUserAttributes(),
+  apiKey: getGlobalBuilderContext().apiKey,
+  contentId: getGlobalBuilderContext().contentId,
+  getCookie: (args) => getCookie(args),
+  track: (
+    eventName: string,
+    properties: Partial<EventProps & { apiHost?: string }> = {},
+    context?: any
+  ) => {
+    const builderContext = getGlobalBuilderContext();
+    _track({
+      type: eventName,
+      ...properties,
+      apiHost: builderContext?.apiHost,
+      apiKey: builderContext?.apiKey || '',
+      context,
+      canTrack: getDefaultCanTrack(properties.canTrack),
+    });
+  },
+  trackConversion: (
+    amount?: number,
+    contentId?: string,
+    variationId?: string,
+    customProperties?: any,
+    context?: any
+  ) => {
+    const meta = typeof contentId === 'object' ? contentId : customProperties;
+    const useContentId = typeof contentId === 'string' ? contentId : undefined;
+    const builderContext = getGlobalBuilderContext();
+    _track({
+      type: 'conversion',
+      apiHost: builderContext?.apiHost,
+      apiKey: builderContext?.apiKey || '',
+      amount: amount || undefined,
+      contentId: useContentId,
+      variationId: variationId || undefined,
+      meta,
+      context: context || undefined,
+      canTrack: getDefaultCanTrack(),
+    });
+  },
 });
 
 export const parseCode = (

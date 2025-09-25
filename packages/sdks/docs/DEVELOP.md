@@ -78,6 +78,19 @@ You can fetch real data from the Builder API instead of using the JSON mock file
 
 To unlink the SDK from your project, all you have to do is run `npm install` in your project folder. That will clear all sym-links.
 
+*Alternative Method* :
+
+- Build the SDK using `yarn g:nx build @builder.io/sdk-react` (replace `react` with the SDK you want to build) 
+- In your project temporarily replace the sdk dependency as follows:
+
+    ```
+    "@builder.io/sdk-react": "link:<absolute-path-to-project-directory>/packages/sdks/output/react",
+    ```
+- `yarn install` in your project folder
+- If you want your sdk to refresh when making changes in the `packages/sdks/src` folder, run the command in root folder `yarn run watch:sdk @builder.io/sdk-react` (replace `react` with the SDK you want to build)
+
+This achieves the same result as the npm link method above, but uses yarn instead.
+
 **NOTE: Testing React-Native SDK in iOS Simulator**
 
 One big caveat is that the iOS Simulator does not support sym-linked packages. To workaround this, you will have to copy the SDK folder. This means that you will need to manually do so every time you want a new change to be reflected. in the react-native example, there is a handy `yarn run cp-sdk` command to do that for you.
