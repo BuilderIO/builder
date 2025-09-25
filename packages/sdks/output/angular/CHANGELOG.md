@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.22.3
+
+### Patch Changes
+
+- f4584fa: fix: only use the edge runtime when the edge build is imported
+
 ## 0.22.2
 
 ### Patch Changes
