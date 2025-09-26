@@ -15,7 +15,10 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
+import { setTestsFromUrl } from '../../functions/content-variants.js';
 import { evaluate } from '../../functions/evaluate/evaluate.js';
+import { setGlobalBuilderContext } from '../../functions/global-context.js';
+import { isBrowser } from '../../functions/is-browser.js';
 import { serializeIncludingFunctions } from '../../functions/register-component.js';
 import { logger } from '../../helpers/logger.js';
 import type { ComponentInfo } from '../../types/components.js';
@@ -137,6 +140,16 @@ export default function ContentComponent(props: ContentProps) {
       logger.error(
         'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
+    }
+
+    setGlobalBuilderContext({
+      apiKey: props.apiKey,
+      apiHost: props.apiHost,
+      contentId: builderContextSignal.value.content?.id,
+    });
+
+    if (isBrowser()) {
+      setTestsFromUrl();
     }
 
     // run any dynamic JS code attached to content

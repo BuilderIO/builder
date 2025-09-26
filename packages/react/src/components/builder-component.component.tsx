@@ -1374,6 +1374,9 @@ export class BuilderComponent extends React.Component<
   }
 
   onContentLoaded = (data: any, content: Content) => {
+    if (content && content.id) {
+      this.builder.contentId = content.id;
+    }
     if (this.name === 'page' && Builder.isBrowser) {
       if (data) {
         const { title, pageTitle, description, pageDescription } = data;
