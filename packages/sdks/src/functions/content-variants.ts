@@ -1,9 +1,12 @@
-import { getCookie, setCookie } from './cookie.js';
+import { getCookieSync, setCookie } from '../helpers/cookie.js';
 
 export const testCookiePrefix = 'builder.tests';
 
 export function getTestCookie(name: string) {
-  return getCookie(`${testCookiePrefix}.${name}`);
+  return getCookieSync({
+    name: `${testCookiePrefix}.${name}`,
+    canTrack: true,
+  });
 }
 
 function parseUrlParams(url: string): Map<string, string> {
@@ -30,7 +33,12 @@ export function setTestCookie(contentId: string, variationId: string) {
 
   // Use the native setCookie function directly
   if (typeof window !== 'undefined') {
-    setCookie(`${testCookiePrefix}.${contentId}`, variationId, future);
+    setCookie({
+      name: `${testCookiePrefix}.${contentId}`,
+      value: variationId,
+      expires: future,
+      canTrack: true,
+    });
   }
 }
 
