@@ -141,12 +141,13 @@ export default function ContentComponent(props: ContentProps) {
         'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
-
-    setGlobalBuilderContext({
-      apiKey: props.apiKey,
-      apiHost: props.apiHost,
-      contentId: builderContextSignal.value.content?.id,
-    });
+    if (!props.isNestedRender) {
+      setGlobalBuilderContext({
+        apiKey: props.apiKey,
+        apiHost: props.apiHost,
+        contentId: props.content?.id,
+      });
+    }
 
     if (isBrowser()) {
       setTestsFromUrl();

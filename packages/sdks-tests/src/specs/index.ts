@@ -62,6 +62,7 @@ import {
   ACCORDION_WITH_NO_DETAIL,
 } from './accordion.js';
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
+import { TRACK_CONVERSION_CONTENT } from './track-conversion.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
 import { CUSTOM_COMPONENTS_MODELS_RESTRICTION } from './custom-components-models.js';
 import { EDITING_BOX_TO_COLUMN_INNER_LAYOUT } from './editing-columns-inner-layout.js';
@@ -98,6 +99,8 @@ import { SECTION_CHILDREN } from './section-children.js';
 import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
 import { HTTP_REQUESTS_POST_API_CONTENT } from './http-requests-post-api.js';
 import { HTTP_REQUESTS_GET_API_CONTENT } from './http-requests-get-api.js';
+import { CONTENT_WITH_SECTION_MODEL } from './section-with-conversion.js';
+import { CONTENT_WITH_SYMBOL } from './symbol-with-conversion.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -209,6 +212,9 @@ export const PAGES: Record<string, Page> = {
   '/accordion-grid': { content: ACCORDION_GRID },
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
+  '/track-conversion': { content: TRACK_CONVERSION_CONTENT },
+  '/symbol-conversion': { content: CONTENT_WITH_SYMBOL },
+  '/section-conversion': { content: CONTENT_WITH_SECTION_MODEL },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
   '/custom-components-no-default-value': { content: CUSTOM_COMPONENT_NO_DEFAULT_VALUE },
   '/custom-components-models-show': {
