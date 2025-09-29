@@ -263,10 +263,14 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     return this.props.image || this.props.src;
   }
 
+  get loadEagerly() {
+    return this.props.builderBlock?.id.startsWith('builder-pixel-') || this.props.highPriority;
+  }
+
   get fetchPriorityProp() {
     const propNameToUse = isNewReact ? 'fetchPriority' : 'fetchpriority';
     return {
-      [propNameToUse]: this.props.highPriority ? 'high' : 'auto',
+      [propNameToUse]: this.loadEagerly ? 'high' : 'auto',
     };
   }
 
@@ -310,8 +314,6 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       srcset = this.getSrcSet();
     }
 
-    const isPixel = builderBlock?.id.startsWith('builder-pixel-');
-    const eagerLoad = isPixel || this.props.highPriority;
     const { fitContent } = this.props;
 
     return (
@@ -361,7 +363,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   },
                 }),
               }}
-              loading={eagerLoad ? 'eager' : 'lazy'}
+              loading={this.loadEagerly ? 'eager' : 'lazy'}
               {...this.fetchPriorityProp}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
