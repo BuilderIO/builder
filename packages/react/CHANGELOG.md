@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 8.2.8
+
+### Patch Changes
+
+- 958c11b: fix: handle `fetchpriority` casing in different react versions
+
 ## 8.2.7
 
 ### Patch Changes
