@@ -103,7 +103,7 @@ export const CONVERSION_SECTION_CONTENT: BuilderContent = {
 export const CONTENT_WITH_SECTION_MODEL = {
   id: 'test-content-id',
   data: {
-    title: 'Symbol Conversion Test',
+    title: 'Section Conversion Test',
     inputs: [],
     blocks: [
       {
@@ -113,7 +113,7 @@ export const CONTENT_WITH_SECTION_MODEL = {
         component: {
           name: 'Text',
           options: {
-            text: '<h1>Symbol Conversion Tracking Test</h1>',
+            text: '<h1>Section Conversion Tracking Test</h1>',
           },
         },
         responsiveStyles: {
@@ -137,17 +137,11 @@ export const CONTENT_WITH_SECTION_MODEL = {
         component: {
           name: 'Symbol',
           options: {
-            dataOnly: false,
-            inheritState: false,
-            renderToLiquid: false,
             symbol: {
               model: 'sample-section-model',
-              data: {},
               entry: 'section-conversion-test-id',
-              ownerId: '75c6e293e39b4890ac75a37bbca0a447',
             },
           },
-          isRSC: true,
         },
         responsiveStyles: {
           large: {

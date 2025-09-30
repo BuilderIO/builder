@@ -4,6 +4,7 @@ import type { Nullable } from '../../helpers/nullable.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Target } from '../../types/targets.js';
 import {
+  SETUP_GLOBAL_BUILDER_CONTEXT_SCRIPT,
   UPDATE_COOKIES_AND_STYLES_SCRIPT,
   UPDATE_VARIANT_VISIBILITY_SCRIPT,
 } from './inlined-fns.js';
@@ -16,6 +17,8 @@ import {
  */
 const UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME = 'builderIoAbTest';
 const UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME = 'builderIoRenderContent';
+const SETUP_GLOBAL_BUILDER_CONTEXT_SCRIPT_FN_NAME =
+  'builderIoInitializeGlobalBuilderContext';
 
 export const getVariants = (content: Nullable<BuilderContent>) =>
   Object.values(content?.variations || {}).map((variant) => ({
@@ -72,6 +75,7 @@ const isHydrationTarget = getIsHydrationTarget(TARGET);
 export const getInitVariantsFnsScriptString = () => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
   window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
+  window.${SETUP_GLOBAL_BUILDER_CONTEXT_SCRIPT_FN_NAME} = ${SETUP_GLOBAL_BUILDER_CONTEXT_SCRIPT}
   `;
 
 export const getUpdateCookieAndStylesScript = (

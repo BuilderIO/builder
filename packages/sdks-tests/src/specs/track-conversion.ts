@@ -42,7 +42,7 @@ export const TRACK_CONVERSION_CONTENT = {
             component: {
               name: 'Core:Button',
               options: {
-                text: 'Track Basic Conversion',
+                text: 'Track Basic Conversion - Default',
                 openLinkInNewTab: false,
               },
               isRSC: null,
@@ -283,92 +283,6 @@ export const TRACK_CONVERSION_CONTENT = {
         },
       },
       {
-        '@type': '@builder.io/sdk:Element',
-        '@version': 2,
-        id: 'builder-section-with-conversion-test',
-        component: {
-          name: 'Core:Section',
-          options: {
-            maxWidth: 1200,
-            lazyLoad: false,
-          },
-          isRSC: null,
-        },
-        children: [
-          {
-            '@type': '@builder.io/sdk:Element',
-            '@version': 2,
-            actions: {
-              click: 'builder.trackConversion()',
-            },
-            code: {
-              actions: {
-                click: 'builder.trackConversion();\n',
-              },
-            },
-            id: 'builder-section-button-conversion',
-            meta: {
-              eventActions: {
-                '': [],
-                click: [
-                  {
-                    '@type': '@builder.io/core:Action',
-                    action: '@builder.io:trackEvent',
-                    options: {
-                      name: 'myEvent',
-                      trackConversion: true,
-                    },
-                  },
-                ],
-              },
-            },
-            component: {
-              name: 'Core:Button',
-              options: {
-                text: 'Section Button Conversion',
-                openLinkInNewTab: false,
-              },
-              isRSC: null,
-            },
-            responsiveStyles: {
-              large: {
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-                flexShrink: '0',
-                boxSizing: 'border-box',
-                marginTop: '20px',
-                appearance: 'none',
-                paddingTop: '15px',
-                paddingBottom: '15px',
-                paddingLeft: '25px',
-                paddingRight: '25px',
-                backgroundColor: 'black',
-                color: 'white',
-                borderRadius: '4px',
-                textAlign: 'center',
-                cursor: 'pointer',
-              },
-            },
-          },
-        ],
-        responsiveStyles: {
-          large: {
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative',
-            flexShrink: '0',
-            boxSizing: 'border-box',
-            marginTop: '20px',
-            paddingLeft: '20px',
-            paddingRight: '20px',
-            paddingTop: '20px',
-            paddingBottom: '20px',
-            minHeight: '100px',
-          },
-        },
-      },
-      {
         id: 'builder-pixel-11upajbeli8i',
         '@type': '@builder.io/sdk:Element',
         tagName: 'img',
@@ -498,7 +412,7 @@ export const TRACK_CONVERSION_CONTENT = {
                 component: {
                   name: 'Core:Button',
                   options: {
-                    text: 'Track Basic Conversion',
+                    text: 'Track Basic Conversion - Variant',
                     openLinkInNewTab: false,
                   },
                   isRSC: null,

@@ -3,6 +3,98 @@
  * They cannot import anything.
  */
 
+/**
+ * Global Builder context singleton to store and retrieve Builder configuration
+ * across the application without prop drilling.
+ */
+
+export interface GlobalBuilderContext {
+  apiKey?: string;
+  apiHost?: string;
+  contentId?: string;
+}
+
+// Define the global Builder object structure
+interface GlobalBuilder {
+  globalContext: GlobalBuilderContext;
+  setContext: (context: GlobalBuilderContext) => void;
+  getContext: () => GlobalBuilderContext;
+  getValue: <K extends keyof GlobalBuilderContext>(
+    key: K
+  ) => GlobalBuilderContext[K];
+  clearContext: () => void;
+}
+
+/**
+ * Initialize the GlobalBuilderContext on the global/window object
+ * This function sets up the Builder context functions globally
+ */
+export function initializeGlobalBuilderContext(): void {
+  // Detect environment and get the appropriate global object
+  const isServer = typeof window === 'undefined';
+  const globalObject = isServer ? global : window;
+
+  if ((globalObject as any).GlobalBuilderContext) {
+    // if already exists, don't re-initialize
+    return;
+  }
+
+  /**
+   * Singleton instance to store the global Builder context
+   */
+  const globalContext: GlobalBuilderContext = {};
+  /**
+   * Set the global Builder context
+   * @param context - The context values to set
+   */
+  function setGlobalBuilderContext(
+    this: any,
+    context: GlobalBuilderContext
+  ): void {
+    this.globalContext = { ...this.globalContext, ...context };
+  }
+
+  /**
+   * Get the global Builder context
+   * @returns The current global Builder context
+   */
+  function getGlobalBuilderContext(this: any): GlobalBuilderContext {
+    return this.globalContext;
+  }
+
+  /**
+   * Get a specific value from the global Builder context
+   * @param key - The key to retrieve
+   * @returns The value for the specified key
+   */
+  function getGlobalBuilderValue<K extends keyof GlobalBuilderContext>(
+    this: any,
+    key: K
+  ): GlobalBuilderContext[K] {
+    return this.globalContext[key];
+  }
+
+  /**
+   * Clear the global Builder context
+   */
+  function clearGlobalBuilderContext(this: any): void {
+    this.globalContext = {};
+  }
+
+  // Attach Builder functions to the global object
+  if (globalObject) {
+    (globalObject as any).GlobalBuilderContext =
+      (globalObject as any).GlobalBuilderContext || {};
+    const globalBuilderContext = (globalObject as any)
+      .GlobalBuilderContext as GlobalBuilder;
+    globalBuilderContext.globalContext = globalContext;
+
+    globalBuilderContext.setContext = setGlobalBuilderContext;
+    globalBuilderContext.getContext = getGlobalBuilderContext;
+    globalBuilderContext.getValue = getGlobalBuilderValue;
+    globalBuilderContext.clearContext = clearGlobalBuilderContext;
+  }
+}
 type VariantData = {
   id: string;
   testRatio?: number;
@@ -34,6 +126,48 @@ function updateCookiesAndStyles(
         '; path=/' +
         '; Secure; SameSite=None';
     }
+
+    function parseUrlParams(url: string): Map<string, string> {
+      const result = new Map<string, string>();
+
+      try {
+        const urlObj = new URL(url);
+        const params = urlObj.searchParams;
+
+        for (const [key, value] of params) {
+          result.set(key, value);
+        }
+      } catch (error) {
+        console.debug('Error parsing URL parameters:', error);
+      }
+
+      return result;
+    }
+    function getVariantIdFromUrl() {
+      if (typeof window === 'undefined') return;
+      const testCookiePrefix = 'builder.tests';
+      try {
+        // Use native URL object to parse current page URL
+        const params = parseUrlParams(window.location.href);
+
+        // Look for parameters that start with 'builder.tests.'
+        for (const [key, value] of params) {
+          if (key.startsWith(`${testCookiePrefix}.${contentId}`)) {
+            return [key, value];
+          }
+        }
+        return;
+      } catch (e) {
+        console.debug('Error parsing tests from URL', e);
+        return;
+      }
+    }
+    const builderTestQueryParam = getVariantIdFromUrl();
+    if (builderTestQueryParam) {
+      const [key, value] = builderTestQueryParam;
+      setCookie(key, value, 30);
+    }
+
     function getCookie(name: string) {
       const nameEQ = name + '=';
       const ca = document.cookie.split(';');
@@ -187,3 +321,5 @@ export const UPDATE_COOKIES_AND_STYLES_SCRIPT = updateCookiesAndStyles
 export const UPDATE_VARIANT_VISIBILITY_SCRIPT = updateVariantVisibility
   .toString()
   .replace(/\s+/g, ' ');
+export const SETUP_GLOBAL_BUILDER_CONTEXT_SCRIPT =
+  initializeGlobalBuilderContext.toString().replace(/\s+/g, ' ');

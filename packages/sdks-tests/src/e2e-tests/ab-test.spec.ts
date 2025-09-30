@@ -10,7 +10,7 @@ import { CONTENT as AB_TEST_CONTENT } from '../specs/ab-test.js';
 
 const SELECTOR = 'div[builder-content-id]';
 
-const createContextWithCookies = async ({
+export const createContextWithCookies = async ({
   cookies,
   baseURL,
   browser,
@@ -37,7 +37,7 @@ const createContextWithCookies = async ({
   return context;
 };
 
-const initializeAbTest = async (
+export const initializeAbTest = async (
   {
     page: _page,
     baseURL,

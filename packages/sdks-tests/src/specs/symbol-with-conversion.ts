@@ -15,11 +15,11 @@ export const CONVERSION_SYMBOL_CONTENT = {
         '@version': 2,
         id: 'builder-conversion-symbol-button',
         actions: {
-          click: 'console.log(builder);builder.trackConversion();\n',
+          click: 'builder.trackConversion();\n',
         },
         code: {
           actions: {
-            click: 'console.log(builder);builder.trackConversion();\n',
+            click: 'builder.trackConversion();\n',
           },
         },
         component: {

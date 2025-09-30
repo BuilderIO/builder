@@ -1,17 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { initializeGlobalBuilderContext } from '../../components/content-variants/inlined-fns.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { getTestCookie } from '../content-variants.js';
-import { getGlobalBuilderContext } from '../global-context.js';
 import { _track } from '../track/index.js';
 import { flattenState, getBuilderGlobals } from './helpers';
+initializeGlobalBuilderContext();
 
 // Mock dependencies
 vi.mock('../track/index.js', () => ({
   _track: vi.fn(),
-}));
-
-vi.mock('../global-context.js', () => ({
-  getGlobalBuilderContext: vi.fn(),
 }));
 
 vi.mock('../content-variants.js', () => ({
@@ -25,7 +22,12 @@ vi.mock('../../helpers/canTrack.js', () => ({
 describe('getBuilderGlobals', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(getGlobalBuilderContext).mockReturnValue({});
+
+    (typeof window !== 'undefined'
+      ? window
+      : (global as any)
+    ).GlobalBuilderContext.globalContext = {};
+
     vi.mocked(getDefaultCanTrack).mockReturnValue(true);
     vi.mocked(getTestCookie).mockReturnValue(undefined);
   });
@@ -38,7 +40,11 @@ describe('getBuilderGlobals', () => {
         apiKey: 'test-api-key',
       };
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue(mockContext);
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.setContext(mockContext);
+
       vi.mocked(getDefaultCanTrack).mockReturnValue(true);
 
       builderGlobals.track('click', { customProp: 'value' }, { userId: '123' });
@@ -55,7 +61,10 @@ describe('getBuilderGlobals', () => {
 
     it('should use empty string for apiKey when not provided', () => {
       const builderGlobals = getBuilderGlobals();
-      vi.mocked(getGlobalBuilderContext).mockReturnValue({
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.setContext({
         apiHost: 'https://test.builder.io',
       });
 
@@ -71,6 +80,10 @@ describe('getBuilderGlobals', () => {
     });
 
     it('should work with no properties provided', () => {
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.globalContext = {};
       const builderGlobals = getBuilderGlobals();
 
       builderGlobals.track('custom-event', {});
@@ -94,7 +107,10 @@ describe('getBuilderGlobals', () => {
         contentId: 'content-123',
       };
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue(mockContext);
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.setContext(mockContext);
       vi.mocked(getDefaultCanTrack).mockReturnValue(true);
 
       builderGlobals.trackConversion(
@@ -125,7 +141,10 @@ describe('getBuilderGlobals', () => {
         contentId: 'global-content-123',
       };
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue(mockContext);
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.setContext(mockContext);
 
       builderGlobals.trackConversion(50);
 
@@ -146,9 +165,12 @@ describe('getBuilderGlobals', () => {
       const builderGlobals = getBuilderGlobals();
       const metaObject = { product: 'shoes', category: 'footwear' };
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue({
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.globalContext = {
         apiKey: 'test-key',
-      });
+      };
 
       builderGlobals.trackConversion(75, metaObject, 'variation-123');
 
@@ -168,9 +190,12 @@ describe('getBuilderGlobals', () => {
     it('should get variationId from test cookie when not provided', () => {
       const builderGlobals = getBuilderGlobals();
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue({
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.globalContext = {
         apiKey: 'test-key',
-      });
+      };
       vi.mocked(getTestCookie).mockReturnValue('cookie-variation-456');
 
       builderGlobals.trackConversion(25, 'content-789');
@@ -192,7 +217,10 @@ describe('getBuilderGlobals', () => {
     it('should not set variationId when it equals contentId', () => {
       const builderGlobals = getBuilderGlobals();
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue({
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.setContext({
         apiKey: 'test-key',
       });
 
@@ -214,7 +242,10 @@ describe('getBuilderGlobals', () => {
     it('should handle all parameters as undefined', () => {
       const builderGlobals = getBuilderGlobals();
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue({});
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.globalContext = {};
 
       builderGlobals.trackConversion();
 
@@ -238,7 +269,10 @@ describe('getBuilderGlobals', () => {
         contentId: 'global-content-123',
       };
 
-      vi.mocked(getGlobalBuilderContext).mockReturnValue(mockContext);
+      (typeof window !== 'undefined'
+        ? window
+        : (global as any)
+      ).GlobalBuilderContext.globalContext = mockContext;
 
       builderGlobals.trackConversion(100, 'explicit-content-456');
 

@@ -4,7 +4,6 @@ import type {
 } from '../../context/types.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { getTestCookie } from '../content-variants.js';
-import { getGlobalBuilderContext } from '../global-context.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { getUserAttributes } from '../track/helpers.js';
@@ -74,7 +73,9 @@ export const getBuilderGlobals = (): BuilderGlobals => ({
     properties: Partial<EventProps & { apiHost?: string }> = {},
     context?: any
   ) => {
-    const builderContext = getGlobalBuilderContext();
+    const builderContext = (
+      typeof window !== 'undefined' ? window : (global as any)
+    )?.GlobalBuilderContext?.getContext();
     _track({
       type: eventName,
       ...properties,
@@ -93,7 +94,9 @@ export const getBuilderGlobals = (): BuilderGlobals => ({
   ) => {
     const meta = typeof contentId === 'object' ? contentId : customProperties;
     let useContentId = typeof contentId === 'string' ? contentId : undefined;
-    const builderContext = getGlobalBuilderContext();
+    const builderContext = (
+      typeof window !== 'undefined' ? window : (global as any)
+    )?.GlobalBuilderContext?.getContext();
 
     if (!useContentId && builderContext?.contentId) {
       useContentId = builderContext.contentId;

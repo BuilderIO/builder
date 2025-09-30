@@ -7,6 +7,8 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { getSetupGlobalBuilderContextScript } from '../../blocks/personalization-container/helpers.js';
+import { initializeGlobalBuilderContext } from '../../components/content-variants/inlined-fns.js';
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import ComponentsContext from '../../context/components.context.lite.js';
@@ -15,10 +17,7 @@ import type {
   BuilderRenderState,
   RegisteredComponents,
 } from '../../context/types.js';
-import { setTestsFromUrl } from '../../functions/content-variants.js';
 import { evaluate } from '../../functions/evaluate/evaluate.js';
-import { setGlobalBuilderContext } from '../../functions/global-context.js';
-import { isBrowser } from '../../functions/is-browser.js';
 import { serializeIncludingFunctions } from '../../functions/register-component.js';
 import { logger } from '../../helpers/logger.js';
 import type { ComponentInfo } from '../../types/components.js';
@@ -56,6 +55,16 @@ export default function ContentComponent(props: ContentProps) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
     }),
+    setGlobalContextScriptStr: props.isNestedRender
+      ? ''
+      : `
+      ${getSetupGlobalBuilderContextScript()}
+      window.GlobalBuilderContext.setContext({
+        apiKey: '${props.apiKey || ''}',
+        apiHost: '${props.apiHost || ''}',
+        contentId: '${props.content?.id || ''}',
+      });
+    `,
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
     },
@@ -141,16 +150,15 @@ export default function ContentComponent(props: ContentProps) {
         'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
+    initializeGlobalBuilderContext();
     if (!props.isNestedRender) {
-      setGlobalBuilderContext({
+      (
+        (typeof window !== 'undefined' ? window : global) as any
+      )?.GlobalBuilderContext?.setContext({
         apiKey: props.apiKey,
         apiHost: props.apiHost,
         contentId: props.content?.id,
       });
-    }
-
-    if (isBrowser()) {
-      setTestsFromUrl();
     }
 
     // run any dynamic JS code attached to content
@@ -229,6 +237,12 @@ export default function ContentComponent(props: ContentProps) {
           nonce={props.nonce || ''}
         />
       </Show>
+      <InlinedScript
+        scriptStr={state.setGlobalContextScriptStr}
+        id="builderio-set-global-context"
+        nonce={props.nonce || ''}
+      />
+
       <Show when={TARGET !== 'reactNative'}>
         <ContentStyles
           nonce={props.nonce || ''}

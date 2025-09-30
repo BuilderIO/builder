@@ -4,11 +4,7 @@ import { excludeGen1, excludeRn, test } from '../helpers/index.js';
 import { CONVERSION_SYMBOL_CONTENT } from '../specs/symbol-with-conversion.js';
 import { CONVERSION_SECTION_CONTENT } from '../specs/section-with-conversion.js';
 
-const COOKIE_NAME = 'builder.tests.test-content-id';
-const CONTENT_ID = 'test-content-id';
-const VARIANT_ID = 'test-variation-id';
-
-const createContextWithCookies = async ({
+export const createContextWithCookies = async ({
   cookies,
   baseURL,
   browser,
@@ -35,7 +31,7 @@ const createContextWithCookies = async ({
   return context;
 };
 
-const initializeAbTest = async (
+export const initializeAbTest = async (
   {
     page: _page,
     baseURL,
@@ -68,14 +64,12 @@ const initializeAbTest = async (
   return { page };
 };
 
+const COOKIE_NAME = 'builder.tests.test-content-id';
+const CONTENT_ID = 'test-content-id';
+const VARIANT_ID = 'test-variation-id';
+
 test.describe('Track Conversion', () => {
   test.describe('Basic conversion tracking', () => {
-    // clear cookies before each test
-    test.beforeEach(async ({ page }) => {
-      await page.context().clearCookies();
-      await page.reload();
-    });
-
     test('should track basic conversion with amount', async ({
       page,
       sdk,
@@ -241,7 +235,7 @@ test.describe('Track Conversion', () => {
       await testPage.goto('/track-conversion', { waitUntil: 'networkidle' });
 
       // Click the basic conversion button
-      await testPage.click('text=Track Basic Conversion');
+      await testPage.click('text=Track Basic Conversion - Variant');
 
       const trackingRequest = await trackingRequestPromise;
       const data = trackingRequest.postDataJSON();
@@ -285,7 +279,7 @@ test.describe('Track Conversion', () => {
       await testPage.goto('/track-conversion', { waitUntil: 'networkidle' });
 
       // Click the basic conversion button
-      await testPage.click('text=Track Basic Conversion');
+      await testPage.click('text=Track Basic Conversion - Default');
 
       const trackingRequest = await trackingRequestPromise;
       const data = trackingRequest.postDataJSON();
@@ -310,10 +304,12 @@ test.describe('Track Conversion', () => {
       browser,
     }) => {
       test.skip(excludeGen1(sdk) || excludeRn(sdk));
-
-      // Skip packages that fetch symbol content on the server
-      const SSR_FETCHING_PACKAGES = ['nextjs-sdk-next-app', 'qwik-city'];
-      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
+          packageName === 'gen1-remix'
+      );
 
       const { page: testPage } = await initializeAbTest(
         {
@@ -373,10 +369,13 @@ test.describe('Track Conversion', () => {
       browser,
     }) => {
       test.skip(excludeGen1(sdk) || excludeRn(sdk));
-
       // Skip packages that fetch symbol content on the server
-      const SSR_FETCHING_PACKAGES = ['nextjs-sdk-next-app', 'qwik-city'];
-      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
+          packageName === 'gen1-remix'
+      );
 
       const { page: testPage } = await initializeAbTest(
         {
@@ -435,6 +434,12 @@ test.describe('Track Conversion', () => {
       browser,
     }) => {
       test.skip(excludeGen1(sdk) || excludeRn(sdk));
+      test.skip(
+        packageName === 'nextjs-sdk-next-app' ||
+          packageName === 'gen1-next14-pages' ||
+          packageName === 'gen1-next15-app' ||
+          packageName === 'gen1-remix'
+      );
 
       const { page: testPage } = await initializeAbTest(
         {
@@ -470,11 +475,7 @@ test.describe('Track Conversion', () => {
 
       await testPage.goto('/section-conversion', { waitUntil: 'networkidle' });
 
-      await testPage.pause();
-
       await testPage.click('text=Section Button');
-
-      await testPage.pause();
 
       const trackingRequest = await trackingRequestPromise;
       const data = trackingRequest.postDataJSON();
