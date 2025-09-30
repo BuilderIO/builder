@@ -35,6 +35,7 @@
     "commit": "git-cz",
     "release": "npm run build && ALLOW_PUBLISH=true npm publish",
     "release:major": "npm run build && npm version major && ALLOW_PUBLISH=true npm publish",
+    "release:minor": "npm run build && npm version minor && ALLOW_PUBLISH=true npm publish",
     "release:patch": "npm run build && npm version patch --no-git-tag-version && ALLOW_PUBLISH=true npm publish",
     "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag nightly",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
