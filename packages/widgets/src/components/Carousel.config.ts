@@ -208,7 +208,7 @@ export const carouselConfig: any = {
       advanced: true,
     },
     {
-      name: 'focusOnChange',
+      name: 'focusOnSelect',
       helperText: 'Focus on slide after slide change for better accessibility',
       type: 'boolean',
       defaultValue: false,

@@ -26,7 +26,7 @@ interface CarouselProps {
   slickProps?: Settings;
   responsive?: ResponsiveObject[];
   accessibility?: boolean;
-  focusOnChange?: boolean;
+  focusOnSelect?: boolean;
 }
 
 // TODO: change to slick grid
@@ -103,7 +103,7 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                     }
                     dots={!this.props.hideDots}
                     accessibility={this.props.accessibility}
-                    focusOnChange={this.props.focusOnChange}
+                    focusOnSelect={this.props.focusOnSelect}
                     // TODO: on change emit event on element?
                     // renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
 
