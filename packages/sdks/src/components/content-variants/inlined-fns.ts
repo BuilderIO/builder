@@ -32,7 +32,17 @@ interface GlobalBuilder {
 export function initializeGlobalBuilderContext(): void {
   // Detect environment and get the appropriate global object
   const isServer = typeof window === 'undefined';
-  const globalObject = isServer ? global : window;
+  const globalObject = isServer
+    ? typeof globalThis !== 'undefined'
+      ? globalThis
+      : (function () {
+          try {
+            return global;
+          } catch (e) {
+            return {};
+          }
+        })()
+    : window;
 
   if ((globalObject as any).GlobalBuilderContext) {
     // if already exists, don't re-initialize
