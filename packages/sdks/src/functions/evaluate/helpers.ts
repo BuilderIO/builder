@@ -2,9 +2,13 @@ import type {
   BuilderContextInterface,
   BuilderRenderState,
 } from '../../context/types.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
+import { getTestCookie } from '../content-variants.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { getUserAttributes } from '../track/helpers.js';
+import type { EventProps } from '../track/index.js';
+import { _track } from '../track/index.js';
 
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
@@ -15,6 +19,18 @@ export type BuilderGlobals = {
   isBrowser: boolean | undefined;
   isServer: boolean | undefined;
   getUserAttributes: typeof getUserAttributes;
+  track: (
+    eventName: string,
+    properties: Partial<EventProps & { apiHost?: string }>,
+    context?: any
+  ) => void;
+  trackConversion: (
+    amount?: number,
+    contentId?: string | any,
+    variationId?: string,
+    customProperties?: any,
+    context?: any
+  ) => void;
 };
 
 export type ExecutorArgs = Pick<
@@ -52,6 +68,60 @@ export const getBuilderGlobals = (): BuilderGlobals => ({
   isBrowser: isBrowser(),
   isServer: !isBrowser(),
   getUserAttributes: () => getUserAttributes(),
+  track: (
+    eventName: string,
+    properties: Partial<EventProps & { apiHost?: string }> = {},
+    context?: any
+  ) => {
+    const builderContext = (
+      typeof window !== 'undefined' ? window : (global as any)
+    )?.GlobalBuilderContext?.getContext();
+    _track({
+      type: eventName,
+      ...properties,
+      apiHost: builderContext?.apiHost,
+      apiKey: builderContext?.apiKey || '',
+      context,
+      canTrack: getDefaultCanTrack(properties.canTrack),
+    });
+  },
+  trackConversion: (
+    amount?: number,
+    contentId?: string,
+    variationId?: string,
+    customProperties?: any,
+    context?: any
+  ) => {
+    const meta = typeof contentId === 'object' ? contentId : customProperties;
+    let useContentId = typeof contentId === 'string' ? contentId : undefined;
+    const builderContext = (
+      typeof window !== 'undefined' ? window : (global as any)
+    )?.GlobalBuilderContext?.getContext();
+
+    if (!useContentId && builderContext?.contentId) {
+      useContentId = builderContext.contentId;
+    }
+
+    let useVariationId = variationId;
+    if (!useVariationId && useContentId) {
+      useVariationId = getTestCookie(useContentId) || undefined;
+    }
+
+    _track({
+      type: 'conversion',
+      apiHost: builderContext?.apiHost,
+      apiKey: builderContext?.apiKey || '',
+      amount: amount || undefined,
+      contentId: useContentId,
+      variationId:
+        useVariationId && useContentId && useVariationId !== useContentId
+          ? useVariationId
+          : undefined,
+      meta,
+      context: context || undefined,
+      canTrack: getDefaultCanTrack(),
+    });
+  },
 });
 
 export const parseCode = (

@@ -31,7 +31,8 @@
     "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "update-npm-dependency": "zx ./scripts/update-npm-dependency.mjs",
     "g:changeset": "changeset",
-    "g:nx": "cd $INIT_CWD && nx"
+    "g:nx": "cd $INIT_CWD && nx",
+    "watch:sdk": "npx watch \"yarn g:nx build $0\" packages/sdks/src packages/sdks/overrides"
   },
   "engines": {
     "yarn": ">= 3.0.0"

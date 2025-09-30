@@ -1373,6 +1373,7 @@ export class Builder {
   private hasOverriddenCanTrack = false;
   private apiKey$ = new BehaviorSubject<string | null>(null);
   private authToken$ = new BehaviorSubject<string | null>(null);
+  private contentId$ = new BehaviorSubject<string | null>(null);
 
   userAttributesChanged = new BehaviorSubject<any>(null);
 
@@ -1601,9 +1602,30 @@ export class Builder {
       return;
     }
     const meta = typeof contentId === 'object' ? contentId : customProperties;
-    const useContentId = typeof contentId === 'string' ? contentId : undefined;
+    let useContentId = typeof contentId === 'string' ? contentId : undefined;
 
-    this.track('conversion', { amount, variationId, meta, contentId: useContentId }, context);
+    if (!useContentId && this.contentId) {
+      useContentId = this.contentId;
+    }
+
+    let useVariationId = variationId;
+    if (!useVariationId && useContentId) {
+      useVariationId = this.getTestCookie(useContentId);
+    }
+
+    this.track(
+      'conversion',
+      {
+        amount,
+        variationId:
+          useVariationId && useContentId && useVariationId !== useContentId
+            ? useVariationId
+            : undefined,
+        meta,
+        contentId: useContentId,
+      },
+      context
+    );
   }
 
   autoTrack = !Builder.isBrowser
@@ -1706,6 +1728,14 @@ export class Builder {
 
   set apiKey(key: string | null) {
     this.apiKey$.next(key);
+  }
+
+  get contentId() {
+    return this.contentId$.value;
+  }
+
+  set contentId(id: string | null) {
+    this.contentId$.next(id);
   }
 
   get authToken() {

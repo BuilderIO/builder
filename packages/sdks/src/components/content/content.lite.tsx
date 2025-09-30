@@ -7,6 +7,8 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { getSetupGlobalBuilderContextScript } from '../../blocks/personalization-container/helpers.js';
+import { initializeGlobalBuilderContext } from '../../components/content-variants/inlined-fns.js';
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import ComponentsContext from '../../context/components.context.lite.js';
@@ -16,6 +18,7 @@ import type {
   RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/evaluate.js';
+import { getGlobalThis } from '../../functions/get-global-this.js';
 import { serializeIncludingFunctions } from '../../functions/register-component.js';
 import { logger } from '../../helpers/logger.js';
 import type { ComponentInfo } from '../../types/components.js';
@@ -53,6 +56,16 @@ export default function ContentComponent(props: ContentProps) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
     }),
+    setGlobalContextScriptStr: props.isNestedRender
+      ? ''
+      : `
+      ${getSetupGlobalBuilderContextScript()}
+      window.GlobalBuilderContext.setContext({
+        apiKey: '${props.apiKey || ''}',
+        apiHost: '${props.apiHost || ''}',
+        contentId: '${props.content?.id || ''}',
+      });
+    `,
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
     },
@@ -138,6 +151,14 @@ export default function ContentComponent(props: ContentProps) {
         'No API key provided to `Content` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
+    initializeGlobalBuilderContext();
+    if (!props.isNestedRender) {
+      (getGlobalThis() as any)?.GlobalBuilderContext?.setContext({
+        apiKey: props.apiKey,
+        apiHost: props.apiHost,
+        contentId: props.content?.id,
+      });
+    }
 
     // run any dynamic JS code attached to content
     const jsCode = builderContextSignal.value.content?.data?.jsCode;
@@ -215,6 +236,12 @@ export default function ContentComponent(props: ContentProps) {
           nonce={props.nonce || ''}
         />
       </Show>
+      <InlinedScript
+        scriptStr={state.setGlobalContextScriptStr}
+        id="builderio-set-global-context"
+        nonce={props.nonce || ''}
+      />
+
       <Show when={TARGET !== 'reactNative'}>
         <ContentStyles
           nonce={props.nonce || ''}

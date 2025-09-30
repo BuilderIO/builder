@@ -1,4 +1,4 @@
-import { Builder, GetContentOptions } from './builder.class';
+import { Builder } from './builder.class';
 import { BehaviorSubject } from './classes/observable.class';
 import { BuilderContent } from './types/content';
 
@@ -1291,5 +1291,384 @@ describe('getAll', () => {
       `https://cdn.builder.io/api/v3/content/page?omit=meta.componentsUsed&apiKey=${API_KEY}&locale=${expectedLocale}&noTraverse=true&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=30&model=%22${expectedModel}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
+  });
+});
+
+describe('Builder.trackConversion', () => {
+  let builder: Builder;
+  let mockTrack: jest.SpyInstance;
+  let mockGetTestCookie: jest.SpyInstance;
+
+  beforeEach(() => {
+    // Reset Builder static properties
+    Builder.isPreviewing = false;
+
+    // Create a fresh Builder instance
+    builder = new Builder('test-api-key');
+
+    // Mock the track method
+    mockTrack = jest.spyOn(builder, 'track').mockImplementation(() => {});
+
+    // Mock the getTestCookie method
+    mockGetTestCookie = jest.spyOn(builder as any, 'getTestCookie').mockReturnValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe('early return conditions', () => {
+    it('should return early when Builder.isPreviewing is true', () => {
+      Builder.isPreviewing = true;
+
+      (builder.trackConversion as any)(100, 'content-123');
+
+      expect(mockTrack).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('parameter handling', () => {
+    it('should call track with all parameters provided', () => {
+      const amount = 100;
+      const contentId = 'content-123';
+      const variationId = 'variation-456';
+      const customProperties = { product: 'shoes' };
+      const context = { userId: '789' };
+
+      (builder.trackConversion as any)(amount, contentId, variationId, customProperties, context);
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'content-123',
+          variationId: 'variation-456',
+          meta: { product: 'shoes' },
+        },
+        { userId: '789' }
+      );
+    });
+
+    it('should handle minimal parameters', () => {
+      builder.trackConversion();
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: undefined,
+          contentId: undefined,
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should handle two-parameter overload (amount and customProperties)', () => {
+      const customProperties = { category: 'electronics' };
+
+      builder.trackConversion(75, customProperties);
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 75,
+          contentId: undefined,
+          variationId: undefined,
+          meta: { category: 'electronics' },
+        },
+        undefined
+      );
+    });
+  });
+
+  describe('contentId logic', () => {
+    it('should use string contentId when provided', () => {
+      builder.trackConversion(100, 'explicit-content-id');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'explicit-content-id',
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should handle contentId as object (legacy format)', () => {
+      const metaObject = { product: 'laptop', brand: 'Apple' };
+
+      (builder.trackConversion as any)(1500, metaObject, 'variation-123');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 1500,
+          contentId: undefined,
+          variationId: undefined, // undefined because contentId is undefined
+          meta: metaObject,
+        },
+        undefined
+      );
+    });
+
+    it('should fallback to this.contentId when no contentId provided', () => {
+      builder.contentId = 'builder-instance-content-id';
+
+      builder.trackConversion(200);
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 200,
+          contentId: 'builder-instance-content-id',
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should prioritize explicit contentId over this.contentId', () => {
+      builder.contentId = 'builder-instance-content-id';
+
+      (builder.trackConversion as any)(300, 'explicit-content-id');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 300,
+          contentId: 'explicit-content-id',
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+  });
+
+  describe('variationId logic', () => {
+    it('should use provided variationId', () => {
+      (builder.trackConversion as any)(100, 'content-123', 'explicit-variation-456');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'content-123',
+          variationId: 'explicit-variation-456',
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should get variationId from test cookie when not provided', () => {
+      mockGetTestCookie.mockReturnValue('cookie-variation-789');
+
+      (builder.trackConversion as any)(100, 'content-123');
+
+      expect(mockGetTestCookie).toHaveBeenCalledWith('content-123');
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'content-123',
+          variationId: 'cookie-variation-789',
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should not get variationId from cookie when contentId is undefined', () => {
+      mockGetTestCookie.mockReturnValue('cookie-variation-789');
+
+      builder.trackConversion(100);
+
+      expect(mockGetTestCookie).not.toHaveBeenCalled();
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: undefined,
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should set variationId to undefined when it equals contentId', () => {
+      (builder.trackConversion as any)(100, 'content-123', 'content-123');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'content-123',
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should set variationId to undefined when contentId is undefined', () => {
+      (builder.trackConversion as any)(100, undefined, 'variation-456');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: undefined,
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should prioritize explicit variationId over cookie value', () => {
+      mockGetTestCookie.mockReturnValue('cookie-variation-789');
+
+      (builder.trackConversion as any)(100, 'content-123', 'explicit-variation-456');
+
+      expect(mockGetTestCookie).not.toHaveBeenCalled();
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'content-123',
+          variationId: 'explicit-variation-456',
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+  });
+
+  describe('meta handling', () => {
+    it('should use customProperties as meta when contentId is string', () => {
+      const customProperties = { source: 'email', campaign: 'summer2023' };
+
+      (builder.trackConversion as any)(100, 'content-123', 'variation-456', customProperties);
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'content-123',
+          variationId: 'variation-456',
+          meta: customProperties,
+        },
+        undefined
+      );
+    });
+
+    it('should use contentId as meta when contentId is object', () => {
+      const metaObject = { product: 'subscription', tier: 'premium' };
+
+      builder.trackConversion(100, metaObject);
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: undefined,
+          variationId: undefined,
+          meta: metaObject,
+        },
+        undefined
+      );
+    });
+
+    it('should handle undefined meta', () => {
+      (builder.trackConversion as any)(100, 'content-123');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 100,
+          contentId: 'content-123',
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+  });
+
+  describe('complex scenarios', () => {
+    it('should handle contentId from instance with cookie variationId', () => {
+      builder.contentId = 'instance-content-456';
+      mockGetTestCookie.mockReturnValue('cookie-variation-789');
+
+      (builder.trackConversion as any)(250, undefined, undefined, { source: 'organic' });
+
+      expect(mockGetTestCookie).toHaveBeenCalledWith('instance-content-456');
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 250,
+          contentId: 'instance-content-456',
+          variationId: 'cookie-variation-789',
+          meta: { source: 'organic' },
+        },
+        undefined
+      );
+    });
+
+    it('should handle all edge cases together', () => {
+      // Object contentId, no variationId, with context
+      const metaObject = { product: 'service', type: 'consultation' };
+      const context = { referrer: 'google.com' };
+
+      (builder.trackConversion as any)(500, metaObject, undefined, undefined, context);
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 500,
+          contentId: undefined,
+          variationId: undefined,
+          meta: metaObject,
+        },
+        context
+      );
+    });
+
+    it('should handle zero amount', () => {
+      builder.trackConversion(0, 'content-123');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: 0,
+          contentId: 'content-123',
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
+
+    it('should handle negative amount', () => {
+      builder.trackConversion(-50, 'content-123');
+
+      expect(mockTrack).toHaveBeenCalledWith(
+        'conversion',
+        {
+          amount: -50,
+          contentId: 'content-123',
+          variationId: undefined,
+          meta: undefined,
+        },
+        undefined
+      );
+    });
   });
 });
