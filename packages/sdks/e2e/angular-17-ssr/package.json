@@ -19,7 +19,7 @@
     "@angular/forms": "^17.3.0",
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
-    "@angular/platform-server": "^17.3.0",
+    "@angular/platform-server": "^18.2.14",
     "@angular/router": "^17.3.0",
     "@angular/ssr": "^17.3.8",
     "@builder.io/sdk-angular": "workspace:*",
