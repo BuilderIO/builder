@@ -18,6 +18,7 @@ import type {
   RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/evaluate.js';
+import { getGlobalThis } from '../../functions/get-global-this.js';
 import { serializeIncludingFunctions } from '../../functions/register-component.js';
 import { logger } from '../../helpers/logger.js';
 import type { ComponentInfo } from '../../types/components.js';
@@ -152,9 +153,7 @@ export default function ContentComponent(props: ContentProps) {
     }
     initializeGlobalBuilderContext();
     if (!props.isNestedRender) {
-      (
-        (typeof window !== 'undefined' ? window : global) as any
-      )?.GlobalBuilderContext?.setContext({
+      (getGlobalThis() as any)?.GlobalBuilderContext?.setContext({
         apiKey: props.apiKey,
         apiHost: props.apiHost,
         contentId: props.content?.id,
