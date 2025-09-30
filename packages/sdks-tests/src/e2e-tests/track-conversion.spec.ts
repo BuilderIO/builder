@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { excludeGen1, excludeRn, test } from '../helpers/index.js';
+import { excludeGen1, excludeRn, isSSRFramework, test } from '../helpers/index.js';
 import { CONVERSION_SYMBOL_CONTENT } from '../specs/symbol-with-conversion.js';
 import { CONVERSION_SECTION_CONTENT } from '../specs/section-with-conversion.js';
 
@@ -45,8 +45,7 @@ export const initializeAbTest = async (
 ) => {
   if (!baseURL) throw new Error('Missing baseURL');
 
-  // RN can't have SSR, we don't support/export it.
-  test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
+  test.skip(isSSRFramework(packageName));
 
   /**
    * This test is flaky on `nextjs-sdk-next-app` and `qwik-city`. Most likely because it is the very first test that runs.
@@ -304,12 +303,7 @@ test.describe('Track Conversion', () => {
       browser,
     }) => {
       test.skip(excludeGen1(sdk) || excludeRn(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next14-pages' ||
-          packageName === 'gen1-next15-app' ||
-          packageName === 'gen1-remix'
-      );
+      test.skip(isSSRFramework(packageName));
 
       const { page: testPage } = await initializeAbTest(
         {
@@ -434,12 +428,7 @@ test.describe('Track Conversion', () => {
       browser,
     }) => {
       test.skip(excludeGen1(sdk) || excludeRn(sdk));
-      test.skip(
-        packageName === 'nextjs-sdk-next-app' ||
-          packageName === 'gen1-next14-pages' ||
-          packageName === 'gen1-next15-app' ||
-          packageName === 'gen1-remix'
-      );
+      test.skip(isSSRFramework(packageName));
 
       const { page: testPage } = await initializeAbTest(
         {
