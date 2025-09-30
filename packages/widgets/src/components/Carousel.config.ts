@@ -200,5 +200,19 @@ export const carouselConfig: any = {
         },
       ],
     },
+    {
+      name: 'accessibility',
+      helperText: 'Enable accessibility features for screen readers and keyboard navigation',
+      type: 'boolean',
+      defaultValue: false,
+      advanced: true,
+    },
+    {
+      name: 'focusOnSelect',
+      helperText: 'Focus on slide after slide change for better accessibility',
+      type: 'boolean',
+      defaultValue: false,
+      advanced: true,
+    },
   ],
 };
