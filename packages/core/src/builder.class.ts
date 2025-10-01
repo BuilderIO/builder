@@ -1604,7 +1604,7 @@ export class Builder {
     const meta = typeof contentId === 'object' ? contentId : customProperties;
     let useContentId = typeof contentId === 'string' ? contentId : undefined;
 
-    if (!useContentId && this.contentId) {
+    if (!useContentId && !contentId && this.contentId) {
       useContentId = this.contentId;
     }
 
