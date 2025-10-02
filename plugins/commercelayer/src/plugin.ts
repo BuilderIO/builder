@@ -1,7 +1,7 @@
 import { registerCommercePlugin, BuilderRequest, CommerceAPIOperations } from '@builder.io/plugin-tools'
 import appState from '@builder.io/app-context'
 import pkg from '../package.json'
-import { authenticateClient, getOrganizationInfo, getProduct, searchProducts, getProductByHandle, transformProduct, getValidToken, cachedAuth } from './service'
+import { authenticateClient, getOrganizationInfo, getResource, searchResources, getResourceByHandle, transformResource, getValidToken, cachedAuth, CommerceLayerResourceType, RESOURCE_ENDPOINTS } from './service'
 import { getDataConfig } from './data-plugin'
 
 registerCommercePlugin(
@@ -40,44 +40,47 @@ registerCommercePlugin(
       const auth = await authenticateClient({ clientId, clientSecret, scope })
       const { baseEndpoint } = await getOrganizationInfo(auth.accessToken)
 
-      const service = {
-        product: {
-          async findById(id: string) {
-            const token = await getValidToken(clientId, clientSecret, scope)
-            const product = await getProduct(id, token, baseEndpoint)
-            return transformProduct(product)
-          },
-          async findByHandle(handle: string) {
-            const token = await getValidToken(clientId, clientSecret, scope)
-            const product = await getProductByHandle(handle, token, baseEndpoint)
-            return transformProduct(product)
-          },
-          
-          async search(search: string) {
-            const token = await getValidToken(clientId, clientSecret, scope)
-            const products = await searchProducts(search, token, baseEndpoint)
-            return products.map(transformProduct)
-          },
-          getRequestObject(id: string): BuilderRequest {
-            // Note: getRequestObject must be synchronous, so we use the cached token
-            // The token will be refreshed automatically on the next API call if needed
-            const token = cachedAuth?.token || auth.accessToken
-            return {
-              '@type': '@builder.io/core:Request',
-              request: {
-                url: `${baseEndpoint}/api/skus/${id}`,
-                method: 'GET',
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                }
-              },
-              options: {
-                product: id,
-                pluginId: pkg.name
+      const createResourceService = (type: CommerceLayerResourceType) => ({
+        async findById(id: string) {
+          const token = await getValidToken(clientId, clientSecret, scope)
+          const resource = await getResource(type, id, token, baseEndpoint)
+          return transformResource(resource, type)
+        },
+        async findByHandle(handle: string) {
+          const token = await getValidToken(clientId, clientSecret, scope)
+          const resource = await getResourceByHandle(type, handle, token, baseEndpoint)
+          return transformResource(resource, type)
+        },
+
+        async search(search: string) {
+          const token = await getValidToken(clientId, clientSecret, scope)
+          const resources = await searchResources(type, search, token, baseEndpoint)
+          return resources.map(res => transformResource(res, type))
+        },
+        getRequestObject(id: string): BuilderRequest {
+          const token = cachedAuth?.token || auth.accessToken
+          return {
+            '@type': '@builder.io/core:Request',
+            request: {
+              url: `${baseEndpoint}/api/${RESOURCE_ENDPOINTS[type]}/${id}`,
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`
               }
+            },
+            options: {
+              [type]: id,
+              resourceType: type,
+              resourceId: id,
+              pluginId: pkg.name
             }
           }
         }
+      })
+
+      const service = {
+        product: createResourceService('product'),
+        bundle: createResourceService('bundle')
       }
 
       // Register the data plugin for "Connect Data" functionality
