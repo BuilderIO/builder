@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 8.2.9
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+- Updated dependencies [3e864ce]
+  - @builder.io/sdk@6.1.3
+
 ## 8.2.8
 
 ### Patch Changes
