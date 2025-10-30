@@ -73,6 +73,83 @@ function clearJobExistenceCache(): void {
   jobExistenceCache.clear();
 }
 
+// Helper function to traverse blocks and mark components for exclusion based on type
+function traverseAndMarkBlocks(blocks: any[], allowedTypes: Set<string>): void {
+  if (!blocks || !Array.isArray(blocks)) {
+    return;
+  }
+  
+  blocks.forEach(block => {
+    const componentType = block.component?.name;
+    
+    if (componentType && !allowedTypes.has(componentType)) {
+      // Mark as excluded from translation
+      if (!block.meta) {
+        block.meta = {};
+      }
+      block.meta.excludeFromTranslation = true;
+    }
+    
+    // Recursively process children
+    if (block.children && Array.isArray(block.children)) {
+      traverseAndMarkBlocks(block.children, allowedTypes);
+    }
+  });
+}
+
+// Apply translation exclusion rules based on plugin settings
+async function applyTranslationExclusionRules(content: any): Promise<void> {
+  const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
+  const translatableTypes = pluginSettings?.get('translatableComponentTypes') || [];
+  
+  // If no types configured, skip filtering (translate everything)
+  if (!translatableTypes || translatableTypes.length === 0) {
+    return;
+  }
+  
+  // Create set of allowed component types (now it's directly an array of strings)
+  const allowedTypes = new Set<string>(translatableTypes);
+  
+  try {
+    // Fetch full content to analyze blocks
+    const fullContent = await fetch(
+      `https://cdn.builder.io/api/v3/content/${content.modelName}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
+    ).then(res => res.json());
+    
+    // Get blocks from content data
+    let blocks = fullContent.data?.blocks;
+    
+    // Handle case where blocks might be a JSON string
+    if (typeof blocks === 'string') {
+      try {
+        blocks = JSON.parse(blocks);
+      } catch (e) {
+        console.error('Failed to parse blocks:', e);
+        return;
+      }
+    }
+    
+    if (!blocks || !Array.isArray(blocks)) {
+      return;
+    }
+    
+    // Traverse and mark blocks for exclusion
+    traverseAndMarkBlocks(blocks, allowedTypes);
+    
+    // Update content with exclusion metadata
+    await appState.updateLatestDraft({
+      id: content.id,
+      modelId: content.modelId,
+      data: {
+        ...fullContent.data,
+        blocks: blocks
+      }
+    });
+  } catch (error) {
+    console.error('Error applying translation exclusion rules:', error);
+  }
+}
+
 
 function updatePublishCTA(content: any, translationModel: any) {
   let publishButtonText = undefined;
@@ -163,8 +240,17 @@ Builder.register('plugin', {
       advanced: false,
       requiredPermissions: ['admin'],
     },
+    {
+      name: 'translatableComponentTypes',
+      friendlyName: 'Component Types to Translate',
+      type: 'ComponentTypeMultiSelect',
+      defaultValue: [],
+      helperText: 'Select which component types should be included in translations. When configured, all other component types will be automatically excluded. Leave empty to translate all components.',
+      advanced: true,
+      requiredPermissions: ['admin'],
+    },
   ],
-  onSave: async actions => {
+  onSave: async (actions: any) => {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
     if (!getTranslationModel()) {
       actions.addModel(
@@ -550,6 +636,8 @@ const initializeSmartlingPlugin = async () => {
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
         
+        // Apply translation exclusion rules based on plugin settings
+        await applyTranslationExclusionRules(content);
         
         let translationJobId = await pickTranslationJob();
         if (translationJobId === null) {
@@ -790,6 +878,83 @@ const initializeSmartlingPlugin = async () => {
 
 };
 
+
+// Register ComponentTypeMultiSelect editor for multi-select component types
+Builder.registerEditor({
+  name: 'ComponentTypeMultiSelect',
+  component: (props: any) => {
+    const componentTypes = ['Text', 'Button', 'Image', 'Video', 'Custom Code', 'Symbol', 'Box', 'Section', 'Columns'];
+    const [selected, setSelected] = React.useState<string[]>(Array.isArray(props.value) ? props.value : []);
+
+    // Sync with props.value when it changes externally
+    React.useEffect(() => {
+      if (Array.isArray(props.value)) {
+        setSelected(props.value);
+      }
+    }, [props.value]);
+
+    const toggleType = (type: string) => {
+      const newSelected = selected.includes(type)
+        ? selected.filter(t => t !== type)
+        : [...selected, type];
+      
+      setSelected(newSelected);
+      props.onChange(newSelected);
+    };
+
+    return React.createElement(
+      'div',
+      {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+          padding: '8px',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          backgroundColor: '#fff'
+        }
+      },
+      componentTypes.map(type => {
+        const isChecked = selected.includes(type);
+        
+        return React.createElement(
+          'div',
+          {
+            key: type,
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              padding: '6px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              borderRadius: '3px',
+              transition: 'background-color 0.2s'
+            },
+            onClick: () => toggleType(type),
+            onMouseEnter: (e: any) => {
+              e.currentTarget.style.backgroundColor = '#f5f5f5';
+            },
+            onMouseLeave: (e: any) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }
+          },
+          React.createElement('input', {
+            type: 'checkbox',
+            checked: isChecked,
+            readOnly: true,
+            style: {
+              cursor: 'pointer',
+              marginRight: '8px',
+              pointerEvents: 'none'
+            }
+          }),
+          React.createElement('span', { style: { userSelect: 'none' } }, type)
+        );
+      })
+    );
+  },
+});
 
 // Register SmartlingProject editor for project selection - must be outside async init
 Builder.registerEditor({
