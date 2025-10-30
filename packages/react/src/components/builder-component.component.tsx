@@ -568,12 +568,18 @@ export class BuilderComponent extends React.Component<
       case 'builder.resetState': {
         const { state, model } = info.data;
         if (model === this.name) {
+          // Suspend change tracking to batch all updates
+          onChange.suspend(this.rootState);
+
           for (const key in this.rootState) {
             // TODO: support nested functions (somehow)
             if (typeof this.rootState[key] !== 'function') {
               delete this.rootState[key];
             }
           }
+          // Resume change tracking
+          onChange.resume(this.rootState);
+
           Object.assign(this.rootState, state);
           this.setState({
             ...this.state,
@@ -586,9 +592,16 @@ export class BuilderComponent extends React.Component<
       case 'builder.resetSymbolState': {
         const { state, model, id } = info.data.state;
         if (this.props.builderBlock && this.props.builderBlock === id) {
+          // Suspend change tracking to batch all updates
+          onChange.suspend(this.rootState);
+
           for (const key in this.rootState) {
             delete this.rootState[key];
           }
+
+          // Resume change tracking
+          onChange.resume(this.rootState);
+
           Object.assign(this.rootState, state);
           this.setState({
             ...this.state,
