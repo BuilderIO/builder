@@ -571,14 +571,17 @@ export class BuilderComponent extends React.Component<
           // Suspend change tracking to batch all updates
           onChange.suspend(this.rootState);
 
-          for (const key in this.rootState) {
-            // TODO: support nested functions (somehow)
-            if (typeof this.rootState[key] !== 'function') {
-              delete this.rootState[key];
+          try {
+            for (const key in this.rootState) {
+              // TODO: support nested functions (somehow)
+              if (typeof this.rootState[key] !== 'function') {
+                delete this.rootState[key];
+              }
             }
+          } finally {
+            // Resume change tracking - ensure this always runs even if deletion fails
+            onChange.resume(this.rootState);
           }
-          // Resume change tracking
-          onChange.resume(this.rootState);
 
           Object.assign(this.rootState, state);
           this.setState({
@@ -595,12 +598,14 @@ export class BuilderComponent extends React.Component<
           // Suspend change tracking to batch all updates
           onChange.suspend(this.rootState);
 
-          for (const key in this.rootState) {
-            delete this.rootState[key];
+          try {
+            for (const key in this.rootState) {
+              delete this.rootState[key];
+            }
+          } finally {
+            // Resume change tracking - ensure this always runs even if deletion fails
+            onChange.resume(this.rootState);
           }
-
-          // Resume change tracking
-          onChange.resume(this.rootState);
 
           Object.assign(this.rootState, state);
           this.setState({
