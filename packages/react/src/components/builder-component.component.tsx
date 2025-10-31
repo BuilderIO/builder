@@ -578,17 +578,18 @@ export class BuilderComponent extends React.Component<
                 delete this.rootState[key];
               }
             }
+
+            Object.assign(this.rootState, state);
+            this.setState({
+              ...this.state,
+              state: this.rootState,
+              updates: ((this.state && this.state.updates) || 0) + 1,
+            });
           } finally {
             // Resume change tracking - ensure this always runs even if deletion fails
             onChange.resume(this.rootState);
+            this.debouncedUpdateState();
           }
-
-          Object.assign(this.rootState, state);
-          this.setState({
-            ...this.state,
-            state: this.rootState,
-            updates: ((this.state && this.state.updates) || 0) + 1,
-          });
         }
         break;
       }
@@ -827,6 +828,8 @@ export class BuilderComponent extends React.Component<
 
     this.notifyStateChange();
   };
+
+  debouncedUpdateState = debounce(this.updateState, 1000);
 
   get isPreviewing() {
     return (
