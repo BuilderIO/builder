@@ -288,10 +288,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use node version 24
+      - name: Use node version 18
         uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
+          node-version: '18.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
