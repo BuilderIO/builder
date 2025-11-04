@@ -161,17 +161,7 @@ export function getTranslateableFields(
 
   // blocks
   if (blocks) {
-    console.log('[Translation Debug] Processing blocks for translation extraction');
     traverse(blocks).forEach(function (el) {
-      // Log all components we encounter
-      if (el && el.id && el.component?.name) {
-        console.log('[Translation Debug] Traversing component:', {
-          id: el.id,
-          name: el.component.name,
-          hasText: !!el.component?.options?.text,
-        });
-      }
-      
       if (this.key && el && el.meta?.localizedTextInputs) {
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
@@ -198,32 +188,6 @@ export function getTranslateableFields(
               : componentText?.[sourceLocaleId] || componentText?.Default,
           instructions: el.meta?.instructions || defaultInstructions,
         };
-      }
-
-      if (el && el.id && el.component?.name === 'Core:Button' && !el.meta?.excludeFromTranslation) {
-        console.log('[Translation Debug] Found Button component:', {
-          id: el.id,
-          name: el.component?.name,
-          hasOptions: !!el.component?.options,
-          text: el.component?.options?.text,
-          excludeFromTranslation: el.meta?.excludeFromTranslation,
-        });
-        const buttonText = el.component.options.text;
-        if (buttonText) {
-          const extractedValue = typeof buttonText === 'string'
-            ? buttonText
-            : buttonText?.[sourceLocaleId] || buttonText?.Default;
-          console.log('[Translation Debug] Adding button text to results:', {
-            key: `blocks.${el.id}#text`,
-            value: extractedValue,
-          });
-          results[`blocks.${el.id}#text`] = {
-            value: extractedValue,
-            instructions: el.meta?.instructions || defaultInstructions,
-          };
-        } else {
-          console.log('[Translation Debug] Button has no text value');
-        }
       }
 
       if (el && el.id && el.component?.name === 'Symbol') {
@@ -253,11 +217,6 @@ export function getTranslateableFields(
     });
   }
 
-  console.log('[Translation Debug] Final translatable fields:', {
-    count: Object.keys(results).length,
-    keys: Object.keys(results),
-    results,
-  });
   return results;
 }
 
@@ -334,42 +293,6 @@ export function applyTranslation(
         el &&
         el.id &&
         el.component?.name === 'Text' &&
-        !el.meta?.excludeFromTranslation &&
-        translation[`blocks.${el.id}#text`]
-      ) {
-        const localizedValues =
-          typeof el.component.options?.text === 'string'
-            ? {
-                Default: el.component.options.text,
-              }
-            : el.component.options.text;
-
-        this.update({
-          ...el,
-          meta: {
-            ...el.meta,
-            translated: true,
-            // this tells the editor that this is a forced localized input similar to clicking the globe icon
-            'transformed.text': 'localized',
-          },
-          component: {
-            ...el.component,
-            options: {
-              ...el.component.options,
-              text: {
-                '@type': localizedType,
-                ...localizedValues,
-                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#text`].value),
-              },
-            },
-          },
-        });
-      }
-
-      if (
-        el &&
-        el.id &&
-        el.component?.name === 'Core:Button' &&
         !el.meta?.excludeFromTranslation &&
         translation[`blocks.${el.id}#text`]
       ) {
