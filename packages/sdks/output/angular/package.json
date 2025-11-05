@@ -14,7 +14,7 @@
     "build:edge": "cross-env SDK_ENV=edge node ./scripts/multi-build.mjs"
   },
   "dependencies": {
-    "isolated-vm": "^5.0.0",
+    "isolated-vm": "^6.0.0",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
