@@ -1,6 +1,6 @@
 ---
 '@builder.io/react': major
-'@builder.io/sdk-angular': major
+'@builder.io/sdk-angular': minor
 '@builder.io/sdk-react-nextjs': minor
 '@builder.io/sdk-qwik': minor
 '@builder.io/sdk-react': major
