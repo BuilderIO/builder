@@ -10,7 +10,6 @@ export default createContext<BuilderContextInterface>(
     rootState: {},
     apiKey: null,
     apiVersion: undefined,
-    componentInfos: {},
     inheritedStyles: {},
     BlocksWrapper: 'div',
     BlocksWrapperProps: {},
