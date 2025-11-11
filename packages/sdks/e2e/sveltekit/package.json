@@ -16,7 +16,7 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.2.5",
     "@sveltejs/kit": "^2.8.3",
-    "svelte": "^4.2.19",
+    "svelte": "^5.0.0",
     "svelte-check": "^4.0.5",
     "tslib": "^2.4.1",
     "typescript": "^5.1.6",

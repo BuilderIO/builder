@@ -93,6 +93,6 @@
     }
   },
   "peerDependencies": {
-    "svelte": "^4.1.2"
+    "svelte": "^5.0.0"
   }
 }
