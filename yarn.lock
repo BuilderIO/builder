@@ -7170,7 +7170,7 @@ __metadata:
     "@sveltejs/kit": ^1.22.4
     "@sveltejs/package": ^2.2.0
     isolated-vm: ^6.0.0
-    svelte: ^5.43.6
+    svelte: ^5.0.0
     svelte-check: ^3.4.6
     svelte-preprocess: ^5.0.4
     tslib: ^2.3.1
@@ -59481,7 +59481,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^5.43.6":
+"svelte@npm:^5.0.0":
   version: 5.43.6
   resolution: "svelte@npm:5.43.6"
   dependencies:
