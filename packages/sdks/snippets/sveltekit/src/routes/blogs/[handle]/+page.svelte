@@ -1,7 +1,11 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import { Content, isPreviewing } from '@builder.io/sdk-svelte';
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
   const { article } = data;
   const model = 'blog-article';
   const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';

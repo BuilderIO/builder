@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
   import { subscribeToEditor } from '@builder.io/sdk-svelte';
 
-  let content: BuilderContent | null = null;
+  let content: BuilderContent | null = $state(null);
 
   onMount(() => {
     let unsubscribe = subscribeToEditor({
