@@ -1,7 +1,11 @@
 <script lang="ts">
   import type { BuilderContent } from '@builder.io/sdk-svelte';
-  export let data: { links: BuilderContent | null };
   import NavBar from './NavBar.svelte';
+  interface Props {
+    data: { links: BuilderContent | null };
+  }
+
+  let { data }: Props = $props();
 </script>
 
 <nav>

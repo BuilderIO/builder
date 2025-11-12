@@ -15,7 +15,11 @@
   import Hero from './components/blueprints/Hero.svelte';
   import Homepage from './components/blueprints/Homepage.svelte';
   import NavLinks from './components/blueprints/navlinks/NavLinks.svelte';
-  export let url = '';
+  interface Props {
+    url?: string;
+  }
+
+  let { url = '' }: Props = $props();
 </script>
 
 <svelte:head>

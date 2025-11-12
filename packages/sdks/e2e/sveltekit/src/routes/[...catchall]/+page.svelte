@@ -10,8 +10,13 @@
     }
   }
 
-  // this data comes from the function in `+page.server.ts`, which runs on the server only
-  export let data;
+  
+  interface Props {
+    // this data comes from the function in `+page.server.ts`, which runs on the server only
+    data: any;
+  }
+
+  let { data }: Props = $props();
   const builderBlockWithClassNameCustomComponent = {
     name: 'BuilderBlockWithClassName',
     component: BuilderBlockWithClassName,

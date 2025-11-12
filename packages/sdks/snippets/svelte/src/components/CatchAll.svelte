@@ -12,8 +12,8 @@
   let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   let model = 'page';
 
-  let content: BuilderContent | null = null;
-  let canShowContent = false;
+  let content: BuilderContent | null = $state(null);
+  let canShowContent = $state(false);
 
   async function fetchContent() {
     content = await fetchOneEntry({
