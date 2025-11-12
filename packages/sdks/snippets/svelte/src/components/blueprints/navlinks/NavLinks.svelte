@@ -4,7 +4,7 @@
   import { fetchOneEntry } from '@builder.io/sdk-svelte';
   import type { BuilderContent } from '@builder.io/sdk-svelte';
 
-  let links: BuilderContent | null = null;
+  let links: BuilderContent | null = $state(null);
 
   onMount(() => {
     fetchOneEntry({

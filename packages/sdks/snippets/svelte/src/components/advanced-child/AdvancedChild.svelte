@@ -4,8 +4,8 @@
   import type { BuilderContent } from '@builder.io/sdk-svelte';
   import { CustomTabsInfo } from './CustomTabsInfo';
 
-  let loading = true;
-  let content: BuilderContent | null;
+  let loading = $state(true);
+  let content: BuilderContent | null = $state();
 
   let model = 'advanced-child';
   let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';

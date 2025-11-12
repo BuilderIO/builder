@@ -13487,6 +13487,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jridgewell/sourcemap-codec@npm:^1.5.5":
+  version: 1.5.5
+  resolution: "@jridgewell/sourcemap-codec@npm:1.5.5"
+  checksum: c2e36e67971f719a8a3a85ef5a5f580622437cc723c35d03ebd0c9c0b06418700ef006f58af742791f71f6a4fc68fcfaf1f6a74ec2f9a3332860e9373459dae7
+  languageName: node
+  linkType: hard
+
 "@jridgewell/trace-mapping@npm:0.3.9":
   version: 0.3.9
   resolution: "@jridgewell/trace-mapping@npm:0.3.9"
@@ -20333,14 +20340,14 @@ __metadata:
   resolution: "@snippet/svelte@workspace:packages/sdks/snippets/svelte"
   dependencies:
     "@builder.io/sdk-svelte": "workspace:*"
-    "@sveltejs/vite-plugin-svelte": ^3.0.2
+    "@sveltejs/vite-plugin-svelte": ^4.0.0
     "@tsconfig/svelte": ^5.0.2
     svelte: ^5.0.0
-    svelte-check: ^3.6.7
+    svelte-check: ^4.0.0
     svelte-routing: ^2.13.0
     tslib: ^2.6.2
-    typescript: ^5.2.2
-    vite: ^5.2.0
+    typescript: ^5.5.0
+    vite: ^5.4.4
   languageName: unknown
   linkType: soft
 
@@ -20787,6 +20794,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sveltejs/vite-plugin-svelte-inspector@npm:^3.0.0-next.0||^3.0.0":
+  version: 3.0.1
+  resolution: "@sveltejs/vite-plugin-svelte-inspector@npm:3.0.1"
+  dependencies:
+    debug: ^4.3.7
+  peerDependencies:
+    "@sveltejs/vite-plugin-svelte": ^4.0.0-next.0||^4.0.0
+    svelte: ^5.0.0-next.96 || ^5.0.0
+    vite: ^5.0.0
+  checksum: 03d0c4610b9a899255e978aa5b6a29b87630942e0b8a949c8ea2b2ca7ff24efa485000c1c65138001c13682620d41c0011178e90fdf880fa6b4bb1f2e90ec7ab
+  languageName: node
+  linkType: hard
+
 "@sveltejs/vite-plugin-svelte@npm:^2.0.3, @sveltejs/vite-plugin-svelte@npm:^2.5.0":
   version: 2.5.3
   resolution: "@sveltejs/vite-plugin-svelte@npm:2.5.3"
@@ -20805,7 +20825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/vite-plugin-svelte@npm:^3.0.0, @sveltejs/vite-plugin-svelte@npm:^3.0.2":
+"@sveltejs/vite-plugin-svelte@npm:^3.0.0":
   version: 3.1.0
   resolution: "@sveltejs/vite-plugin-svelte@npm:3.1.0"
   dependencies:
@@ -20820,6 +20840,23 @@ __metadata:
     svelte: ^4.0.0 || ^5.0.0-next.0
     vite: ^5.0.0
   checksum: 7d99c058feecf2cc5d6adac0185d128f386a63e98b25c3cdfb37af326036769015904fd01938756039128b23792874c4526025df5381e31f9de85682f88ead65
+  languageName: node
+  linkType: hard
+
+"@sveltejs/vite-plugin-svelte@npm:^4.0.0":
+  version: 4.0.4
+  resolution: "@sveltejs/vite-plugin-svelte@npm:4.0.4"
+  dependencies:
+    "@sveltejs/vite-plugin-svelte-inspector": ^3.0.0-next.0||^3.0.0
+    debug: ^4.3.7
+    deepmerge: ^4.3.1
+    kleur: ^4.1.5
+    magic-string: ^0.30.12
+    vitefu: ^1.0.3
+  peerDependencies:
+    svelte: ^5.0.0-next.96 || ^5.0.0
+    vite: ^5.0.0
+  checksum: 7f10dd92b5ccb79b2725fa830d89fd81535c65cfc691397e2fbe5f0982906859b5123a354b4784dde56a19984a38f33c61a09f81ab1c34c2b8ce827b50963f5f
   languageName: node
   linkType: hard
 
@@ -45033,6 +45070,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-string@npm:^0.30.12":
+  version: 0.30.21
+  resolution: "magic-string@npm:0.30.21"
+  dependencies:
+    "@jridgewell/sourcemap-codec": ^1.5.5
+  checksum: 4ff76a4e8d439431cf49f039658751ed351962d044e5955adc257489569bd676019c906b631f86319217689d04815d7d064ee3ff08ab82ae65b7655a7e82a414
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.30.17":
   version: 0.30.17
   resolution: "magic-string@npm:0.30.17"
@@ -59240,7 +59286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-check@npm:^3.6.0, svelte-check@npm:^3.6.7":
+"svelte-check@npm:^3.6.0":
   version: 3.7.1
   resolution: "svelte-check@npm:3.7.1"
   dependencies:
@@ -59257,6 +59303,24 @@ __metadata:
   bin:
     svelte-check: bin/svelte-check
   checksum: bb0b15f1a0b9d42c1788a6aa965810a5c53f13037ac60eecc1535fefa2a27732017e3ae05319d5f255e168100a9260f88071c0d3ccde0b7a28224cc57e3261e2
+  languageName: node
+  linkType: hard
+
+"svelte-check@npm:^4.0.0":
+  version: 4.3.4
+  resolution: "svelte-check@npm:4.3.4"
+  dependencies:
+    "@jridgewell/trace-mapping": ^0.3.25
+    chokidar: ^4.0.1
+    fdir: ^6.2.0
+    picocolors: ^1.0.0
+    sade: ^1.7.4
+  peerDependencies:
+    svelte: ^4.0.0 || ^5.0.0-next.0
+    typescript: ">=5.0.0"
+  bin:
+    svelte-check: bin/svelte-check
+  checksum: 1c125edf689a540e8af7a0afc528391bb74395ce3a83f223733a62ad8f2a8682f9b48699b3953573a519ded9b2e52019c1f4503f59ef702744ead3cdd437752c
   languageName: node
   linkType: hard
 
@@ -61150,6 +61214,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.5.0":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 0d0ffb84f2cd072c3e164c79a2e5a1a1f4f168e84cb2882ff8967b92afe1def6c2a91f6838fb58b168428f9458c57a2ba06a6737711fdd87a256bbe83e9a217f
+  languageName: node
+  linkType: hard
+
 "typescript@npm:~5.0.4":
   version: 5.0.4
   resolution: "typescript@npm:5.0.4"
@@ -61237,6 +61311,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 633cd749d6cd7bc842c6b6245847173bba99742a60776fae3c0fbcc0d1733cd51a733995e5f4dadd8afb0e64e57d3c7dbbeae953a072ee303940eca69e22f311
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.5.0#~builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#~builtin<compat/typescript>::version=5.9.3&hash=14eedb"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 8bb8d86819ac86a498eada254cad7fb69c5f74778506c700c2a712daeaff21d3a6f51fd0d534fe16903cb010d1b74f89437a3d02d4d0ff5ca2ba9a4660de8497
   languageName: node
   linkType: hard
 
@@ -63600,6 +63684,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite@npm:^5.4.4":
+  version: 5.4.21
+  resolution: "vite@npm:5.4.21"
+  dependencies:
+    esbuild: ^0.21.3
+    fsevents: ~2.3.3
+    postcss: ^8.4.43
+    rollup: ^4.20.0
+  peerDependencies:
+    "@types/node": ^18.0.0 || >=20.0.0
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    sass-embedded: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    sass-embedded:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 7177fa03cff6a382f225290c9889a0d0e944d17eab705bcba89b58558a6f7adfa1f47e469b88f42a044a0eb40c12a1bf68b3cb42abb5295d04f9d7d4dd320837
+  languageName: node
+  linkType: hard
+
 "vite@npm:~5.4.17":
   version: 5.4.19
   resolution: "vite@npm:5.4.19"
@@ -63652,6 +63779,18 @@ __metadata:
     vite:
       optional: true
   checksum: 1a58f3f8b2fe493f595952ad2e8d2876a18e2de16b211c2e795af879863948db838bdcc962d300c7fbd8d827ee616905d7799c30a46206a045aec5f7c8e5031b
+  languageName: node
+  linkType: hard
+
+"vitefu@npm:^1.0.3":
+  version: 1.1.1
+  resolution: "vitefu@npm:1.1.1"
+  peerDependencies:
+    vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0-beta.0
+  peerDependenciesMeta:
+    vite:
+      optional: true
+  checksum: 58de990bb7b4665969627034067c3892c7483ed52eb996d6a1353e76a45feee43117a04bfef806d7670136d895f6935cf7c0c143148954583094ff274fcccfdb
   languageName: node
   linkType: hard
 

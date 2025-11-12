@@ -1,5 +1,6 @@
 <script lang="ts">
-  export let product: {
+  interface Props {
+    product: {
     id: number;
     title: string;
     price: number;
@@ -8,6 +9,9 @@
     image: string;
     rating: { rate: number; count: number };
   } | null;
+  }
+
+  let { product }: Props = $props();
 </script>
 
 {#if product}

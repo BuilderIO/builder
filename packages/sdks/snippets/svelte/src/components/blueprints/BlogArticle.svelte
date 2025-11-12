@@ -7,8 +7,12 @@
     type BuilderContent,
   } from '@builder.io/sdk-svelte';
 
-  export let handle: string;
-  let article: BuilderContent | null;
+  interface Props {
+    handle: string;
+  }
+
+  let { handle }: Props = $props();
+  let article: BuilderContent | null = $state();
   const model = 'blog-article';
   const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
 

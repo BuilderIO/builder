@@ -13,8 +13,8 @@
   let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   let model = 'announcement-bar';
 
-  let announcementBar: BuilderContent | null = null;
-  let canShowContent = false;
+  let announcementBar: BuilderContent | null = $state(null);
+  let canShowContent = $state(false);
 
   async function fetchContent() {
     announcementBar = await fetchOneEntry({

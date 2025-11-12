@@ -2,8 +2,12 @@
   import { onMount } from 'svelte';
   import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-svelte';
 
-  export let handle: string;
-  let productDetails: BuilderContent | null = null;
+  interface Props {
+    handle: string;
+  }
+
+  let { handle }: Props = $props();
+  let productDetails: BuilderContent | null = $state(null);
 
   onMount(() => {
     fetchOneEntry({

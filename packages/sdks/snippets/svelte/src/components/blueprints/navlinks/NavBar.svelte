@@ -1,6 +1,10 @@
 <script lang="ts">
   import type { BuilderContent } from '@builder.io/sdk-svelte';
-  export let links: BuilderContent;
+  interface Props {
+    links: BuilderContent;
+  }
+
+  let { links }: Props = $props();
 </script>
 
 {#if links.data?.links}
