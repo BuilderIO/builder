@@ -190,6 +190,21 @@ export function getTranslateableFields(
         };
       }
 
+      if (el && el.id && el.component?.name === 'Core:Button' && !el.meta?.excludeFromTranslation) {
+        const componentText = el.component.options?.text;
+        if (componentText) {
+          const textValue = typeof componentText === 'string'
+            ? componentText
+            : componentText?.[sourceLocaleId] || componentText?.Default;
+          if (textValue) {
+            results[`blocks.${el.id}#text`] = {
+              value: textValue,
+              instructions: el.meta?.instructions || defaultInstructions,
+            };
+          }
+        }
+      }
+
       if (el && el.id && el.component?.name === 'Symbol') {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
@@ -323,6 +338,45 @@ export function applyTranslation(
             },
           },
         });
+      }
+
+      // Core:Button special handling - similar to Text component
+      if (
+        el &&
+        el.id &&
+        el.component?.name === 'Core:Button' &&
+        !el.meta?.excludeFromTranslation &&
+        translation[`blocks.${el.id}#text`]
+      ) {
+        const localizedValues =
+          typeof el.component.options?.text === 'string'
+            ? {
+                Default: el.component.options.text,
+              }
+            : el.component.options.text;
+
+        const updatedElement = {
+          ...el,
+          meta: {
+            ...el.meta,
+            translated: true,
+            // this tells the editor that this is a forced localized input similar to clicking the globe icon
+            'transformed.text': 'localized',
+          },
+          component: {
+            ...el.component,
+            options: {
+              ...el.component.options,
+              text: {
+                '@type': localizedType,
+                ...localizedValues,
+                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#text`].value),
+              },
+            },
+          },
+        };
+        
+        this.update(updatedElement);
       }
 
       // custom components
