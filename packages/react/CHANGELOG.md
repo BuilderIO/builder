@@ -1,5 +1,21 @@
 # @builder.io/react
 
+## 9.0.0
+
+### Major Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
+## 8.2.9
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+- Updated dependencies [3e864ce]
+  - @builder.io/sdk@6.1.3
+
 ## 8.2.8
 
 ### Patch Changes
