@@ -61,10 +61,31 @@ const _fetchContent = async (options: GetContentOptions) => {
       ...getSdkHeaders(),
     },
   };
-  const res = await _fetch(url.href, fetchOptions);
 
-  const content = await (res.json() as Promise<ContentResponse>);
-  return content;
+  try {
+    const res = await _fetch(url.href, fetchOptions);
+
+    // Check if response is OK
+    if (!res.ok) {
+      logger.error(`Builder.io API returned ${res.status} for ${url.href}`);
+      return { results: [] } as ContentResults;
+    }
+
+    // Check if response is JSON
+    const contentType = res.headers.get('content-type');
+    if (contentType && !contentType.includes('application/json')) {
+      logger.error(
+        `Builder.io API returned non-JSON response (${contentType}) for ${url.href}`
+      );
+      return { results: [] } as ContentResults;
+    }
+
+    const content = await (res.json() as Promise<ContentResponse>);
+    return content;
+  } catch (error) {
+    logger.error('Error fetching Builder.io content:', error);
+    return { results: [] } as ContentResults;
+  }
 };
 
 /**
