@@ -155,7 +155,7 @@ export default function ContentComponent(props: ContentProps) {
         contentId: nextId,
       });
     }
-  }, [props.content]);
+  }, [props.content, props.data, props.locale]);
 
   setContext(ComponentsContext, {
     registeredComponents: state.registeredComponents,
