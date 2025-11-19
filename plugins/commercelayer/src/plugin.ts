@@ -57,7 +57,7 @@ registerCommercePlugin(
           const resources = await searchResources(type, search, token, baseEndpoint)
           return resources.map(res => transformResource(res, type))
         },
-        getRequestObject(id: string): BuilderRequest {
+        getRequestObject(id: string, resource?: any): BuilderRequest {
           const token = cachedAuth?.token || auth.accessToken
           return {
             '@type': '@builder.io/core:Request',
@@ -72,6 +72,7 @@ registerCommercePlugin(
               [type]: id,
               resourceType: type,
               resourceId: id,
+              ...(resource?.handle && { code: resource.handle }),
               pluginId: pkg.name
             }
           }
