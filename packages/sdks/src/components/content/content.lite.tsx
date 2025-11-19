@@ -130,8 +130,8 @@ export default function ContentComponent(props: ContentProps) {
     );
 
   onUpdate(() => {
-    const nextId = props.content?.id ?? (props.content as any)?._id;
-    const currentId = builderContextSignal.value.content?.id ?? (builderContextSignal.value.content as any)?._id;
+    const nextId = props.content?.id;
+    const currentId = builderContextSignal.value.content?.id;
 
     if (nextId && nextId !== currentId) {
       // Update content and root state to reflect the new entry
