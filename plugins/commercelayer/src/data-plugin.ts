@@ -100,7 +100,9 @@ export const getDataConfig = (
               friendlyName: 'Search', 
               name: 'query', 
               type: 'string',
-              helperText: 'Search by product name or SKU code'
+              helperText: model.id === 'product' 
+                ? 'Search by product name or SKU code'
+                : 'Search by bundle name or code'
             },
           ],
           toUrl: ({ entry, query, limit }) =>
