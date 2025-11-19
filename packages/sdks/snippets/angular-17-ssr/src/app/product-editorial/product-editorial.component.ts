@@ -17,9 +17,7 @@ import { ProductInfoComponent } from './product-info/product-info.component';
   template: `
     <app-header />
 
-    @if (product) {
-      <app-product-info [product]="product" />
-    }
+    <app-product-info [product]="product" />
 
     @if (editorial) {
       <div>
@@ -65,26 +63,9 @@ export class ProductEditorialComponent implements OnInit {
   }
 
   private async fetchProductAndEditorial() {
-    try {
-      // Fetch product data from external API or your own CMS
-      const response = await fetch(
-        `https://fakestoreapi.com/products/${this.productId}`
-      );
-
-      if (!response.ok) {
-        console.error(`Failed to fetch product: ${response.status}`);
-        return;
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (contentType && !contentType.includes('application/json')) {
-        console.error(`Expected JSON but got ${contentType}`);
-        return;
-      }
-
-      this.product = await response.json();
-    } catch (error) {
-      console.error('Error fetching product:', error);
-    }
+    // Fetch product data from external API or your own CMS
+    this.product = await fetch(
+      `https://fakestoreapi.com/products/${this.productId}`
+    ).then((res) => res.json());
   }
 }
