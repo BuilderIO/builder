@@ -568,27 +568,46 @@ export class BuilderComponent extends React.Component<
       case 'builder.resetState': {
         const { state, model } = info.data;
         if (model === this.name) {
-          for (const key in this.rootState) {
-            // TODO: support nested functions (somehow)
-            if (typeof this.rootState[key] !== 'function') {
-              delete this.rootState[key];
+          // Suspend change tracking to batch all updates
+          onChange.suspend(this.rootState);
+
+          try {
+            for (const key in this.rootState) {
+              // TODO: support nested functions (somehow)
+              if (typeof this.rootState[key] !== 'function') {
+                delete this.rootState[key];
+              }
             }
+
+            Object.assign(this.rootState, state);
+            this.setState({
+              ...this.state,
+              state: this.rootState,
+              updates: ((this.state && this.state.updates) || 0) + 1,
+            });
+          } finally {
+            // Resume change tracking - ensure this always runs even if deletion fails
+            onChange.resume(this.rootState);
+            this.debouncedUpdateState();
           }
-          Object.assign(this.rootState, state);
-          this.setState({
-            ...this.state,
-            state: this.rootState,
-            updates: ((this.state && this.state.updates) || 0) + 1,
-          });
         }
         break;
       }
       case 'builder.resetSymbolState': {
         const { state, model, id } = info.data.state;
         if (this.props.builderBlock && this.props.builderBlock === id) {
-          for (const key in this.rootState) {
-            delete this.rootState[key];
+          // Suspend change tracking to batch all updates
+          onChange.suspend(this.rootState);
+
+          try {
+            for (const key in this.rootState) {
+              delete this.rootState[key];
+            }
+          } finally {
+            // Resume change tracking - ensure this always runs even if deletion fails
+            onChange.resume(this.rootState);
           }
+
           Object.assign(this.rootState, state);
           this.setState({
             ...this.state,
@@ -809,6 +828,8 @@ export class BuilderComponent extends React.Component<
 
     this.notifyStateChange();
   };
+
+  debouncedUpdateState = debounce(this.updateState, 1000);
 
   get isPreviewing() {
     return (
