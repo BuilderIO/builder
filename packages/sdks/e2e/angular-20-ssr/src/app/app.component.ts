@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
-  template: ` <router-outlet /> `,
-  standalone: true,
+  templateUrl: './app.html',
+  styleUrl: './app.css',
 })
 export class AppComponent {
-  title = 'angular-20-ssr';
+  protected readonly title = signal('builder-repeat');
 }

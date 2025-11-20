@@ -9,38 +9,48 @@
     "test": "SERVER_NAME=angular-20-ssr yarn g:nx test:e2e @sdk/tests",
     "serve": "node dist/angular-20-ssr/server/server.mjs"
   },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^20.1.0",
     "@angular/common": "^20.1.0",
     "@angular/compiler": "^20.1.0",
     "@angular/core": "^20.1.0",
     "@angular/forms": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
-    "@angular/platform-browser-dynamic": "^20.1.0",
     "@angular/platform-server": "^20.1.0",
     "@angular/router": "^20.1.0",
     "@angular/ssr": "^20.1.6",
     "@builder.io/sdk-angular": "workspace:*",
     "@sdk/tests": "workspace:*",
-    "express": "^4.18.2",
+    "express": "^5.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^20.1.0",
-    "@angular/cli": "^20.1.0",
+    "@angular/build": "^20.1.6",
+    "@angular/cli": "^20.1.6",
     "@angular/compiler-cli": "^20.1.0",
-    "@types/express": "^4.17.17",
+    "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
-    "@types/node": "^18.18.0",
-    "jasmine-core": "~5.4.0",
+    "@types/node": "^20.17.19",
+    "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.0"
+    "typescript": "~5.8.2"
   }
 }
