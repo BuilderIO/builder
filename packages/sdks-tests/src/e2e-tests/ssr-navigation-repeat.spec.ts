@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
 test.describe('SSR with Navigation and Repeat Collection', () => {
-  test.only('should render homepage with SSR and navigate to page with repeat collection', async ({
+  test('should render homepage with SSR and navigate to page with repeat collection', async ({
     page,
   }) => {
     // Step 1: Verify SSR rendering on homepage
