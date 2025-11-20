@@ -8,5 +8,5 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
 })
 export class AppComponent {
-  title = 'angular-19-ssr';
+  title = 'angular-20-ssr';
 }

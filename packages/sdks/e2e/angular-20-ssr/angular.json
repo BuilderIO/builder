@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-19-ssr:build:production"
+              "buildTarget": "angular-20-ssr:build:production"
             },
             "development": {
-              "buildTarget": "angular-19-ssr:build:development"
+              "buildTarget": "angular-20-ssr:build:development"
             }
           },
           "defaultConfiguration": "development"
