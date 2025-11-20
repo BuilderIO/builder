@@ -130,31 +130,39 @@ export default function ContentComponent(props: ContentProps) {
     );
 
   onUpdate(() => {
-    const nextId = props.content?.id;
-    const currentId = builderContextSignal.value.content?.id;
+    const updateContentAndRootState = () => {
+      const nextId = props.content?.id;
+      const currentId = builderContextSignal.value.content?.id;
 
-    if (nextId && nextId !== currentId) {
-      // Update content and root state to reflect the new entry
-      builderContextSignal.value.content = getContentInitialValue({
-        content: useTarget({
-          qwik: JSON.parse(JSON.stringify(props.content || {})),
-          default: props.content,
-        }),
-        data: props.data,
-      });
+      if (nextId && nextId !== currentId) {
+        // Update content and root state to reflect the new entry
+        builderContextSignal.value.content = getContentInitialValue({
+          content: useTarget({
+            qwik: JSON.parse(JSON.stringify(props.content || {})),
+            default: props.content,
+          }),
+          data: props.data,
+        });
 
-      builderContextSignal.value.rootState = getRootStateInitialValue({
-        content: props.content,
-        data: props.data,
-        locale: props.locale,
-      });
+        builderContextSignal.value.rootState = getRootStateInitialValue({
+          content: props.content,
+          data: props.data,
+          locale: props.locale,
+        });
 
-      // Update AB-test visibility script
-      state.scriptStr = getUpdateVariantVisibilityScript({
-        variationId: props.content?.testVariationId || '',
-        contentId: nextId,
-      });
-    }
+        // Update AB-test visibility script
+        state.scriptStr = getUpdateVariantVisibilityScript({
+          variationId: props.content?.testVariationId || '',
+          contentId: nextId,
+        });
+      }
+    };
+    useTarget({
+      angular: () => {
+        updateContentAndRootState();
+      },
+      default: () => {},
+    });
   }, [props.content, props.data, props.locale]);
 
   setContext(ComponentsContext, {
