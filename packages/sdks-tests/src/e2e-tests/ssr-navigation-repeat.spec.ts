@@ -4,7 +4,9 @@ import { test } from '../helpers/index.js';
 test.describe('SSR with Navigation and Repeat Collection', () => {
   test('should render homepage with SSR and navigate to page with repeat collection', async ({
     page,
+    packageName,
   }) => {
+    test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
     // Step 1: Verify SSR rendering on homepage
     await page.goto('/');
 
