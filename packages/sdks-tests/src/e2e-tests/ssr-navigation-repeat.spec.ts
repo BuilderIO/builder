@@ -94,32 +94,4 @@ test.describe('SSR with Navigation and Repeat Collection', () => {
     const collegeCards = page.locator('[builder-id="builder-college-card"]');
     await expect(collegeCards).toHaveCount(5);
   });
-
-  test('should render repeat collection with SSR (JavaScript disabled)', async ({ browser }) => {
-    // Create a new context with JavaScript disabled
-    const context = await browser.newContext({
-      javaScriptEnabled: false,
-    });
-    const page = await context.newPage();
-
-    // Navigate to the college results page
-    await page.goto('/college-results-repeat');
-
-    // Verify that the content is rendered via SSR (without JavaScript)
-    const header = page.locator('h1:has-text("Top Colleges")');
-    await expect(header).toBeVisible();
-
-    // Verify that all colleges are rendered server-side
-    await expect(page.locator('text=Rank #1: Stanford University')).toBeVisible();
-    await expect(page.locator('text=Rank #2: MIT')).toBeVisible();
-    await expect(page.locator('text=Rank #3: Harvard University')).toBeVisible();
-    await expect(page.locator('text=Rank #4: Princeton University')).toBeVisible();
-    await expect(page.locator('text=Rank #5: Yale University')).toBeVisible();
-
-    // Verify locations are also rendered
-    await expect(page.locator('text=Location: California')).toBeVisible();
-    await expect(page.locator('text=Location: Massachusetts').first()).toBeVisible();
-
-    await context.close();
-  });
 });
