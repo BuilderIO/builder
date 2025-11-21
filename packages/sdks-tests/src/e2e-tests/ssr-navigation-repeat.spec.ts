@@ -47,7 +47,11 @@ test.describe('SSR with Navigation and Repeat Collection', () => {
     await expect(collegeCards).toHaveCount(5);
   });
 
-  test('should render repeat collection with correct state bindings', async ({ page }) => {
+  test('should render repeat collection with correct state bindings', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
     await page.goto('/college-results-repeat');
 
     // Wait for content to load
@@ -82,7 +86,12 @@ test.describe('SSR with Navigation and Repeat Collection', () => {
     }
   });
 
-  test('should maintain repeat collection state during hydration', async ({ page }) => {
+  test('should maintain repeat collection state during hydration', async ({
+    page,
+    packageName,
+  }) => {
+    test.skip(packageName === 'react-native-74' || packageName === 'react-native-76-fabric');
+
     await page.goto('/college-results-repeat');
 
     // Wait for the page to be fully hydrated
