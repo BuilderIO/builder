@@ -692,8 +692,8 @@ const initializeSmartlingPlugin = async () => {
       },
       async onClick(content) {
         const translationBatch = fastClone(content.meta).translationBatch;
-        // https://dashboard.smartling.com/app/projects/0e6193784/strings/jobs/schqxtpcnxix
-        const smartlingFile = `https://dashboard.smartling.com/app/projects/${translationBatch.projectId}/strings/jobs/${translationBatch.translationJobUid}`;
+        // Filter by file URI (content ID) to show all translations across all jobs
+        const smartlingFile = `https://dashboard.smartling.com/app/projects/${translationBatch.projectId}/strings/?urlsFilter.urls=${content.id}&limit=200&offset=0`;
         window.open(smartlingFile, '_blank', 'noreferrer,noopener');
       },
     });
