@@ -335,6 +335,18 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onUpdate(() => {
     useTarget({
       rsc: () => {},
+      angular: () => {
+        if (props.content) {
+          const nextId = props.content?.id;
+          const currentId = props.builderContextSignal.value.content?.id;
+          if (nextId && nextId !== currentId) {
+            setTimeout(() => {
+              state.runHttpRequests();
+            });
+          }
+          state.mergeNewContent(props.content);
+        }
+      },
       default: () => {
         if (props.content) {
           state.mergeNewContent(props.content);
