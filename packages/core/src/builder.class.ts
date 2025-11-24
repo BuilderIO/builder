@@ -3,7 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
 import { BehaviorSubject } from './classes/observable.class';
-import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
+import { getFetch } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
 import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
@@ -495,6 +495,20 @@ export type GetContentOptions = AllowEnrich & {
    * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
+
+  /**
+   * Options to configure how enrichment works.
+   * @see {@link https://www.builder.io/c/docs/content-api#code-enrich-options-code}
+   */
+  enrichOptions?: {
+    /**
+     * The depth level for enriching references. For example, an enrichLevel of 1
+     * would return one additional nested model within the original response.
+     * The maximum level is 4.
+     */
+    enrichLevel?: number;
+    [key: string]: any;
+  };
 };
 
 export type Class = {
@@ -2698,6 +2712,19 @@ export class Builder {
         queryParams.includeRefs = true;
       }
 
+      if (this.apiEndpoint === 'query') {
+        for (const options of queue) {
+          if ('enrich' in options && options.enrich !== undefined) {
+            queryParams.enrich = options.enrich;
+          }
+          if (options.enrichOptions) {
+            for (const [subKey, subValue] of Object.entries(options.enrichOptions)) {
+              queryParams[`enrichOptions.${subKey}`] = subValue;
+            }
+          }
+        }
+      }
+
       const properties: (keyof GetContentOptions)[] = [
         'prerender',
         'extractCss',
@@ -2721,6 +2748,18 @@ export class Builder {
             queryParams.options[options.key!][key] = JSON.stringify(value);
           } else {
             queryParams[key] = JSON.stringify(value);
+          }
+        }
+      }
+
+      // Handle enrich and enrichOptions for content endpoint
+      if (this.apiEndpoint === 'content') {
+        if ('enrich' in options && options.enrich !== undefined) {
+          queryParams.enrich = options.enrich;
+        }
+        if (options.enrichOptions) {
+          for (const [subKey, subValue] of Object.entries(options.enrichOptions)) {
+            queryParams[`enrichOptions.${subKey}`] = subValue;
           }
         }
       }
