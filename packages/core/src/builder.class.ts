@@ -2713,14 +2713,12 @@ export class Builder {
       }
 
       if (this.apiEndpoint === 'query') {
-        for (const options of queue) {
-          if ('enrich' in options && options.enrich !== undefined) {
-            queryParams.enrich = options.enrich;
-          }
-          if (options.enrichOptions) {
-            for (const [subKey, subValue] of Object.entries(options.enrichOptions)) {
-              queryParams[`enrichOptions.${subKey}`] = subValue;
-            }
+        if ('enrich' in options && options.enrich !== undefined) {
+          queryParams.enrich = options.enrich;
+        }
+        if (options.enrichOptions) {
+          for (const [subKey, subValue] of Object.entries(options.enrichOptions)) {
+            queryParams[`enrichOptions.${subKey}`] = subValue;
           }
         }
       }
