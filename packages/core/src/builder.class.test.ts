@@ -1,4 +1,4 @@
-import { Builder, GetContentOptions } from './builder.class';
+import { Builder } from './builder.class';
 import { BehaviorSubject } from './classes/observable.class';
 import { BuilderContent } from './types/content';
 
@@ -1290,6 +1290,70 @@ describe('getAll', () => {
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       `https://cdn.builder.io/api/v3/content/page?omit=meta.componentsUsed&apiKey=${API_KEY}&locale=${expectedLocale}&noTraverse=true&userAttributes=%7B%22urlPath%22%3A%22%2F%22%2C%22host%22%3A%22localhost%22%2C%22device%22%3A%22desktop%22%7D&includeRefs=true&limit=30&model=%22${expectedModel}%22`,
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
+    );
+  });
+
+  test('hits query url with enrich=true when passed in options', async () => {
+    const expectedModel = 'page';
+
+    await builder.getAll(expectedModel, { enrich: true });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrich=true'),
+      expect.anything()
+    );
+  });
+
+  test('hits query url with enrichOptions.enrichLevel when passed in options', async () => {
+    const expectedModel = 'page';
+
+    await builder.getAll(expectedModel, {
+      enrich: true,
+      enrichOptions: { enrichLevel: 2 },
+    });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrich=true'),
+      expect.anything()
+    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrichOptions.enrichLevel=2'),
+      expect.anything()
+    );
+  });
+
+  test('hits content url with enrich=true when apiEndpoint is content', async () => {
+    const expectedModel = 'page';
+
+    builder.apiEndpoint = 'content';
+    await builder.getAll(expectedModel, { enrich: true });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrich=true'),
+      expect.anything()
+    );
+  });
+
+  test('hits content url with enrichOptions.enrichLevel when apiEndpoint is content', async () => {
+    const expectedModel = 'page';
+
+    builder.apiEndpoint = 'content';
+    await builder.getAll(expectedModel, {
+      enrich: true,
+      enrichOptions: { enrichLevel: 3 },
+    });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrich=true'),
+      expect.anything()
+    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrichOptions.enrichLevel=3'),
+      expect.anything()
     );
   });
 });
