@@ -397,38 +397,6 @@ export const HOMEPAGE = {
                   },
                 },
               },
-              {
-                '@type': '@builder.io/sdk:Element',
-                '@version': 2,
-                id: 'builder-college-results-repeat-link-12345',
-                component: {
-                  name: 'Core:Button',
-                  options: {
-                    text: 'College Results Repeat',
-                    link: '/college-results-repeat',
-                  },
-                },
-                responsiveStyles: {
-                  large: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'relative',
-                    flexShrink: '0',
-                    boxSizing: 'border-box',
-                    marginTop: '20px',
-                    appearance: 'none',
-                    paddingTop: '15px',
-                    paddingBottom: '15px',
-                    paddingLeft: '25px',
-                    paddingRight: '25px',
-                    backgroundColor: '#3898EC',
-                    color: 'white',
-                    borderRadius: '4px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                  },
-                },
-              },
             ],
             responsiveStyles: {
               large: {
