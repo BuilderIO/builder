@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.23.1
+
+### Patch Changes
+
+- 5971c7a: fix: hydration issue when routing from ssr rendered page
+
 ## 0.23.0
 
 ### Minor Changes
