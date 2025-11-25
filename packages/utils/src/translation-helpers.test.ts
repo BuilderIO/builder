@@ -55,6 +55,38 @@ test('getTranslateableFields from content to match snapshot', async () => {
           },
         },
         {
+          meta: {
+            instructions: 'Button with plain text',
+          },
+          id: 'button-plain-text-id',
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Core:Button',
+            options: {
+              text: 'Cute Baby',
+              openLinkInNewTab: false,
+            },
+          },
+        },
+        {
+          meta: {
+            instructions: 'Button with pre-localized text',
+          },
+          id: 'button-localized-text-id',
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Core:Button',
+            options: {
+              text: {
+                '@type': localizedType,
+                'en-US': 'Click Me!',
+                Default: 'Click Here',
+              },
+              openLinkInNewTab: true,
+            },
+          },
+        },
+        {
           '@type': '@builder.io/sdk:Element',
           id: 'builder-custom-component-id',
           meta: {
