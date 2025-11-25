@@ -507,6 +507,36 @@ export type GetContentOptions = AllowEnrich & {
      * The maximum level is 4.
      */
     enrichLevel?: number;
+
+    /**
+     * Model-specific enrichment options. Allows selective field inclusion/exclusion
+     * for each referenced model type.
+     *
+     * @example
+     * ```typescript
+     * enrichOptions: {
+     *   model: {
+     *     'product': {
+     *       fields: 'id,name,price',
+     *       omit: 'data.internalNotes'
+     *     },
+     *     'category': {
+     *       fields: 'id,name'
+     *     }
+     *   }
+     * }
+     * ```
+     */
+    model?: {
+      [modelName: string]: {
+        /** Comma-separated list of fields to include */
+        fields?: string;
+        /** Comma-separated list of fields to omit */
+        omit?: string;
+        [key: string]: any;
+      };
+    };
+
     [key: string]: any;
   };
 };
@@ -2717,9 +2747,7 @@ export class Builder {
           queryParams.enrich = options.enrich;
         }
         if (options.enrichOptions) {
-          for (const [subKey, subValue] of Object.entries(options.enrichOptions)) {
-            queryParams[`enrichOptions.${subKey}`] = subValue;
-          }
+          this.flattenEnrichOptions(options.enrichOptions, 'enrichOptions', queryParams);
         }
       }
 
@@ -2756,9 +2784,7 @@ export class Builder {
           queryParams.enrich = options.enrich;
         }
         if (options.enrichOptions) {
-          for (const [subKey, subValue] of Object.entries(options.enrichOptions)) {
-            queryParams[`enrichOptions.${subKey}`] = subValue;
-          }
+          this.flattenEnrichOptions(options.enrichOptions, 'enrichOptions', queryParams);
         }
       }
     }
@@ -2963,6 +2989,22 @@ export class Builder {
       });
     }
     return Builder.isBrowser && setCookie(name, value, expires);
+  }
+
+  /**
+   * Recursively flattens enrichOptions object into dot-notation query parameters
+   * @private
+   */
+  private flattenEnrichOptions(obj: any, prefix: string, result: Record<string, any>): void {
+    for (const [key, value] of Object.entries(obj)) {
+      const newKey = `${prefix}.${key}`;
+
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        this.flattenEnrichOptions(value, newKey, result);
+      } else {
+        result[newKey] = value;
+      }
+    }
   }
 
   getContent(modelName: string, options: GetContentOptions = {}) {
