@@ -1356,4 +1356,42 @@ describe('getAll', () => {
       expect.anything()
     );
   });
+
+  test('hits query url with enrichOptions.model when passed complex model options', async () => {
+    const expectedModel = 'page';
+
+    await builder.getAll(expectedModel, {
+      enrich: true,
+      enrichOptions: {
+        enrichLevel: 2,
+        model: {
+          product: {
+            fields: 'id,name,price',
+            omit: 'data.internalNotes',
+          },
+          category: {
+            fields: 'id,name',
+          },
+        },
+      },
+    });
+
+    expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrichOptions.enrichLevel=2'),
+      expect.anything()
+    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrichOptions.model.product.fields=id%2Cname%2Cprice'),
+      expect.anything()
+    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrichOptions.model.product.omit=data.internalNotes'),
+      expect.anything()
+    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('enrichOptions.model.category.fields=id%2Cname'),
+      expect.anything()
+    );
+  });
 });
