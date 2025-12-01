@@ -8,6 +8,10 @@ on:
   # We allow manually dispatching workflow when needed. Most often, this will not be needed.
   workflow_dispatch:
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
