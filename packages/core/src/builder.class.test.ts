@@ -1314,13 +1314,12 @@ describe('getAll', () => {
     });
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
-    expect(builder['makeFetchApiCall']).toBeCalledWith(
-      expect.stringContaining('enrich=true'),
-      expect.anything()
-    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(expect.stringContaining('enrich=true'), {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       expect.stringContaining('enrichOptions.enrichLevel=2'),
-      expect.anything()
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
 
@@ -1331,10 +1330,9 @@ describe('getAll', () => {
     await builder.getAll(expectedModel, { enrich: true });
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
-    expect(builder['makeFetchApiCall']).toBeCalledWith(
-      expect.stringContaining('enrich=true'),
-      expect.anything()
-    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(expect.stringContaining('enrich=true'), {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
   });
 
   test('hits content url with enrichOptions.enrichLevel when apiEndpoint is content', async () => {
@@ -1347,13 +1345,12 @@ describe('getAll', () => {
     });
 
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
-    expect(builder['makeFetchApiCall']).toBeCalledWith(
-      expect.stringContaining('enrich=true'),
-      expect.anything()
-    );
+    expect(builder['makeFetchApiCall']).toBeCalledWith(expect.stringContaining('enrich=true'), {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       expect.stringContaining('enrichOptions.enrichLevel=3'),
-      expect.anything()
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
 
@@ -1379,19 +1376,19 @@ describe('getAll', () => {
     expect(builder['makeFetchApiCall']).toBeCalledTimes(1);
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       expect.stringContaining('enrichOptions.enrichLevel=2'),
-      expect.anything()
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       expect.stringContaining('enrichOptions.model.product.fields=id%2Cname%2Cprice'),
-      expect.anything()
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       expect.stringContaining('enrichOptions.model.product.omit=data.internalNotes'),
-      expect.anything()
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
     expect(builder['makeFetchApiCall']).toBeCalledWith(
       expect.stringContaining('enrichOptions.model.category.fields=id%2Cname'),
-      expect.anything()
+      { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
 });
