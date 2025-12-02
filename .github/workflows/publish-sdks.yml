@@ -48,10 +48,6 @@ jobs:
           # need this custom token to run CI checks on the created PR
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
-          # probably don't need both of those, but it works!
-          NPM_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SDK_RELEASE_TOKEN }}
-
       # - name: Send Slack notification
       #   id: slack
       #   uses: slackapi/slack-github-action@v1.24.0
