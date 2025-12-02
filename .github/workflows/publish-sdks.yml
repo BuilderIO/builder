@@ -10,7 +10,6 @@ on:
 
 permissions:
   id-token: write  # Required for OIDC
-  contents: read
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
