@@ -650,6 +650,64 @@ const initializeSmartlingPlugin = async () => {
     });
 
     registerContentAction({
+      label: 'View job in smartling',
+      showIf(content, model) {
+        const translationModel = getTranslationModel();
+        if (!translationModel) return false;
+        if (!model?.name || model.name !== translationModel.name) return false;
+        if (!content || content.published !== 'published') return false;
+        
+        // Only show if job has been authorized/published to Smartling
+        // translationBatch is set by backend after job is published
+        if (!content.meta || !content.data) return false;
+        
+        const meta = fastClone(content.meta);
+        const data = content.data;
+        
+        // Get project ID from jobDetails
+        const projectId = data?.get?.('jobDetails')?.get?.('project') || data?.get?.('jobDetails')?.project;
+        
+        // Get job UID from translationBatch (only available after job is authorized in Smartling)
+        const translationJobUid = meta?.translationBatch?.translationJobUid;
+        
+        return (
+          content.published === 'published' && 
+          projectId &&
+          translationJobUid
+        );
+      },
+      async onClick(translationJob) {
+        if (!translationJob) {
+          appState.snackBar.show('Job information not available');
+          return;
+        }
+        
+        if (!translationJob.meta || !translationJob.data) {
+          appState.snackBar.show('Job information not available');
+          return;
+        }
+        
+        const meta = fastClone(translationJob.meta);
+        const data = translationJob.data;
+        
+        // Get project ID from jobDetails
+        const projectId = data?.get?.('jobDetails')?.get?.('project') || data?.get?.('jobDetails')?.project;
+        
+        // Get job UID from translationBatch
+        const translationJobUid = meta?.translationBatch?.translationJobUid;
+        
+        if (!projectId || !translationJobUid) {
+          appState.snackBar.show('Job information not available');
+          return;
+        }
+        
+        // Construct Smartling job URL with format: projectId:translationJobUid
+        const smartlingJobUrl = `https://dashboard.smartling.com/app/projects/${projectId}/account-jobs/${projectId}:${translationJobUid}`;
+        window.open(smartlingJobUrl, '_blank', 'noreferrer,noopener');
+      },
+    });
+
+    registerContentAction({
       label: 'View translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
