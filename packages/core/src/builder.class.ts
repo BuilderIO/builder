@@ -532,7 +532,7 @@ export interface Input {
   name: string;
   /** A friendlier name to show in the UI if the component prop name is not ideal for end users */
   friendlyName?: string;
-  /** @hidden @deprecated */
+  /** A description to show in the UI to give guidance on how to use this input */
   description?: string;
   /** A default value to use */
   defaultValue?: any;
