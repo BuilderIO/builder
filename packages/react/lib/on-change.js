@@ -7,6 +7,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var PATH_SEPARATOR = '.';
 var TARGET = Symbol('target');
 var UNSUBSCRIBE = Symbol('unsubscribe');
+var SUSPEND = Symbol('suspend');
+var RESUME = Symbol('resume');
 var isPrimitive = function (value) {
   return value === null || (typeof value !== 'object' && typeof value !== 'function');
 };
@@ -56,6 +58,7 @@ var onChange = function (object, onChange, options) {
   var applyPath;
   var applyPrevious;
   var isUnsubscribed = false;
+  var isSuspended = false;
   var equals = options.equals || Object.is;
   var propCache = new WeakMap();
   var pathCache = new WeakMap();
@@ -126,8 +129,18 @@ var onChange = function (object, onChange, options) {
     proxyCache = null;
     return target;
   };
+  var suspend = function () {
+    isSuspended = true;
+  };
+  var resume = function () {
+    isSuspended = false;
+  };
   var ignoreChange = function (property) {
-    return isUnsubscribed || (options.ignoreSymbols === true && typeof property === 'symbol');
+    return (
+      isUnsubscribed ||
+      isSuspended ||
+      (options.ignoreSymbols === true && typeof property === 'symbol')
+    );
   };
   var handler = {
     get: function (target, property, receiver) {
@@ -136,6 +149,12 @@ var onChange = function (object, onChange, options) {
       }
       if (property === UNSUBSCRIBE && pathCache.get(target) === '') {
         return unsubscribe(target);
+      }
+      if (property === SUSPEND && pathCache.get(target) === '') {
+        return suspend;
+      }
+      if (property === RESUME && pathCache.get(target) === '') {
+        return resume;
       }
       var value = Reflect.get(target, property, receiver);
       if (
@@ -227,6 +246,20 @@ onChange.target = function (proxy) {
 };
 onChange.unsubscribe = function (proxy) {
   return proxy[UNSUBSCRIBE] || proxy;
+};
+onChange.suspend = function (proxy) {
+  var suspendFn = proxy[SUSPEND];
+  if (suspendFn) {
+    suspendFn();
+  }
+  return proxy;
+};
+onChange.resume = function (proxy) {
+  var resumeFn = proxy[RESUME];
+  if (resumeFn) {
+    resumeFn();
+  }
+  return proxy;
 };
 module.exports = onChange;
 exports.default = onChange;
