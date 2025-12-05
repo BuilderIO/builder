@@ -213,12 +213,12 @@ const initializeSmartlingPlugin = async () => {
       pkg.name
     );
     
-    // Check if webhook URL needs updating - update whenever the URL is different
+    // Check if webhook URL needs updating
     const currentWebhookUrl = existingModel.webhooks?.[0]?.url;
     const newWebhookUrl = updatedTemplate.webhooks[0].url;
     
-    if (currentWebhookUrl !== newWebhookUrl) {
-      // Update the existing model with new webhook configuration
+    if (currentWebhookUrl && !currentWebhookUrl.includes('preferredVersion=v2') && newWebhookUrl.includes('preferredVersion=v2')) {
+      // Update the existing model with v2 webhook
       existingModel.webhooks = updatedTemplate.webhooks;
     }
   }
