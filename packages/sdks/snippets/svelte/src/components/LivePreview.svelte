@@ -7,11 +7,11 @@
   } from '@builder.io/sdk-svelte';
   import type { BuilderContent } from '@builder.io/sdk-svelte';
 
-  let content: BuilderContent | null = null;
-  let isLoading = true;
+  let content: BuilderContent | null = $state(null);
+  let isLoading = $state(true);
 
   let urlPath = window.location.pathname;
-  let canShowContent = false;
+  let canShowContent = $state(false);
 
   async function fetchContent() {
     content = await fetchOneEntry({

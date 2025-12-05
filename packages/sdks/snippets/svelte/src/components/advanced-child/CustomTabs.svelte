@@ -1,16 +1,20 @@
 <script lang="ts">
   import { Blocks, type BuilderBlock } from '@builder.io/sdk-svelte';
 
-  export let builderBlock: BuilderBlock;
-  export let tabList: Array<{ tabName: string; blocks: BuilderBlock[] }>;
+  interface Props {
+    builderBlock: BuilderBlock;
+    tabList: Array<{ tabName: string; blocks: BuilderBlock[] }>;
+  }
 
-  let activeTab = 0;
+  let { builderBlock, tabList }: Props = $props();
+
+  let activeTab = $state(0);
 </script>
 
 {#if tabList.length}
   <div class="dynamics-slots">
     {#each tabList as tab, index}
-      <button on:click={() => (activeTab = index)}>
+      <button onclick={() => (activeTab = index)}>
         {tab.tabName}
       </button>
     {/each}

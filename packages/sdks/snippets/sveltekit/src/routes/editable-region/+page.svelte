@@ -3,7 +3,11 @@
   import type { PageData } from './$types';
   import { CustomColumnsInfo } from './CustomColumnsInfo';
 
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
 </script>
 
 {#if !data.data && !isPreviewing(data.searchParams)}
