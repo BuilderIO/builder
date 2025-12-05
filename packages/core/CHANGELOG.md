@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.1.4
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
 ## 6.1.3
 
 ### Patch Changes
