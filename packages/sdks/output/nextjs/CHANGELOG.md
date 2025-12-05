@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.23.2
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
 ## 0.23.0
 
 ### Minor Changes
