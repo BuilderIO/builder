@@ -931,13 +931,7 @@ function pickTranslationJob() {
         '@type': '@builder.io/core:Query',
         property: 'query.published',
         operator: 'is',
-        value: 'draft',
-      },
-      {
-        '@type': '@builder.io/core:Query',
-        property: 'query.published',
-        operator: 'is', 
-        value: 'published',
+        value: 'published or draft',
       },
     ],
   });
