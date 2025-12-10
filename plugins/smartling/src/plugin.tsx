@@ -655,9 +655,7 @@ const initializeSmartlingPlugin = async () => {
         const translationModel = getTranslationModel();
         if (!translationModel) return false;
         if (!model?.name || model.name !== translationModel.name) return false;
-        if (!content || content.published !== 'published') return false;
         
-        // Only show if job has been authorized/published to Smartling
         // translationBatch is set by backend after job is published
         if (!content.meta || !content.data) return false;
         
@@ -671,7 +669,6 @@ const initializeSmartlingPlugin = async () => {
         const translationJobUid = meta?.translationBatch?.translationJobUid;
         
         return (
-          content.published === 'published' && 
           projectId &&
           translationJobUid
         );
