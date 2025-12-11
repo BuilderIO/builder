@@ -220,19 +220,19 @@ export const runInNode = ({
       return resultStr;
     }
   } finally {
-    // Clean up all references to prevent memory leak
-    references.forEach((ref) => {
+    // Clean up global context variables first (remove bindings from jail)
+    args.forEach(([key]) => {
       try {
-        ref.release();
+        jail.deleteSync(getSyncValName(key));
       } catch (e) {
         // Ignore errors during cleanup
       }
     });
 
-    // Clean up global context variables
-    args.forEach(([key]) => {
+    // Clean up all references to prevent memory leak (after removing from jail)
+    references.forEach((ref) => {
       try {
-        jail.deleteSync(getSyncValName(key));
+        ref.release();
       } catch (e) {
         // Ignore errors during cleanup
       }
