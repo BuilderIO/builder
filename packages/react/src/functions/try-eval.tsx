@@ -80,12 +80,24 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
         }
       });
       const fnString = makeFn(str!, useReturn, ['state']);
-      const resultStr = context.evalClosureSync(fnString, [new ivm.Reference(data || {})]);
+
+      // Create reference and ensure it's cleaned up
+      const dataRef = new ivm.Reference(data || {});
       try {
-        // returning objects throw errors in isolated vm, so we stringify it and parse it back
-        return JSON.parse(resultStr);
-      } catch (_error: any) {
-        return resultStr;
+        const resultStr = context.evalClosureSync(fnString, [dataRef]);
+        try {
+          // returning objects throw errors in isolated vm, so we stringify it and parse it back
+          return JSON.parse(resultStr);
+        } catch (_error: any) {
+          return resultStr;
+        }
+      } finally {
+        // Clean up reference to prevent memory leak
+        try {
+          dataRef.release();
+        } catch (e) {
+          // Ignore errors during cleanup
+        }
       }
     }
   } catch (error: any) {

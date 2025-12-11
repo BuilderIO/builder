@@ -122,28 +122,42 @@ export function stringToFunction(
         // TODO: cache these for better performancs with new VmScript
         const isolateContext: import('isolated-vm').Context = getIsolateContext();
         const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
-        const resultStr = isolateContext.evalClosureSync(
-          makeFn(str, useReturn),
-          args.map((arg, index) =>
-            typeof arg === 'object'
-              ? new ivm.Reference(
-                  index === indexOfBuilderInstance
-                    ? {
-                        // workaround: methods with default values for arguments is not being cloned over
-                        ...arg,
-                        getUserAttributes: () => arg.getUserAttributes(''),
-                      }
-                    : arg
-                )
-              : null
-          )
+
+        // Create references and track them for cleanup
+        const references = args.map((arg, index) =>
+          typeof arg === 'object'
+            ? new ivm.Reference(
+                index === indexOfBuilderInstance
+                  ? {
+                      // workaround: methods with default values for arguments is not being cloned over
+                      ...arg,
+                      getUserAttributes: () => arg.getUserAttributes(''),
+                    }
+                  : arg
+              )
+            : null
         );
+
         try {
-          // returning objects throw errors in isolated vm, so we stringify it and parse it back
-          const res = JSON.parse(resultStr);
-          return res;
-        } catch (_error: any) {
-          return resultStr;
+          const resultStr = isolateContext.evalClosureSync(makeFn(str, useReturn), references);
+          try {
+            // returning objects throw errors in isolated vm, so we stringify it and parse it back
+            const res = JSON.parse(resultStr);
+            return res;
+          } catch (_error: any) {
+            return resultStr;
+          }
+        } finally {
+          // Clean up all references to prevent memory leak
+          references.forEach(ref => {
+            if (ref) {
+              try {
+                ref.release();
+              } catch (e) {
+                // Ignore errors during cleanup
+              }
+            }
+          });
         }
       }
     } catch (error: any) {

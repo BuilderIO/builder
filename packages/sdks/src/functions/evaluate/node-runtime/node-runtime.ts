@@ -184,32 +184,58 @@ export const runInNode = ({
     rootSetState?.(rootState);
   });
 
-  args.forEach(([key, arg]) => {
-    const val =
-      typeof arg === 'object'
-        ? new ivm.Reference(
-            // workaround: methods with default values for arguments is not being cloned over
-            key === 'builder'
-              ? {
-                  ...arg,
-                  getUserAttributes: () =>
-                    (arg as BuilderGlobals).getUserAttributes(),
-                }
-              : arg
-          )
-        : null;
-    jail.setSync(getSyncValName(key), val);
-  });
-
-  const evalStr = processCode({ code, args });
-
-  const resultStr = isolateContext.evalClosureSync(evalStr);
+  // Track references for cleanup
+  const references: Array<any> = [];
 
   try {
-    // returning objects throw errors in isolated vm, so we stringify it and parse it back
-    const res = JSON.parse(resultStr);
-    return res;
-  } catch (_error: any) {
-    return resultStr;
+    args.forEach(([key, arg]) => {
+      const val =
+        typeof arg === 'object'
+          ? new ivm.Reference(
+              // workaround: methods with default values for arguments is not being cloned over
+              key === 'builder'
+                ? {
+                    ...arg,
+                    getUserAttributes: () =>
+                      (arg as BuilderGlobals).getUserAttributes(),
+                  }
+                : arg
+            )
+          : null;
+      if (val) {
+        references.push(val);
+      }
+      jail.setSync(getSyncValName(key), val);
+    });
+
+    const evalStr = processCode({ code, args });
+
+    const resultStr = isolateContext.evalClosureSync(evalStr);
+
+    try {
+      // returning objects throw errors in isolated vm, so we stringify it and parse it back
+      const res = JSON.parse(resultStr);
+      return res;
+    } catch (_error: any) {
+      return resultStr;
+    }
+  } finally {
+    // Clean up all references to prevent memory leak
+    references.forEach((ref) => {
+      try {
+        ref.release();
+      } catch (e) {
+        // Ignore errors during cleanup
+      }
+    });
+
+    // Clean up global context variables
+    args.forEach(([key]) => {
+      try {
+        jail.deleteSync(getSyncValName(key));
+      } catch (e) {
+        // Ignore errors during cleanup
+      }
+    });
   }
 };
