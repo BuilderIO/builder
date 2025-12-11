@@ -59,24 +59,10 @@ function recordValue({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      const extractedValue = value?.[sourceLocaleId] || value?.Default;
-      
-      // Only record if it's a string - these are the actual translatable values
-      if (typeof extractedValue === 'string') {
-        results[path] = {
-          value: extractedValue,
-          instructions,
-        };
-      } else if (Array.isArray(extractedValue) || (typeof extractedValue === 'object' && extractedValue !== null)) {
-        // If extracted value is array/object, recursively process for nested LocalizedValues
-        recordValue({
-          results,
-          value: extractedValue,
-          path,
-          instructions,
-          sourceLocaleId,
-        });
-      }
+      results[path] = {
+        value: value?.[sourceLocaleId] || value?.Default,
+        instructions,
+      };
     } else {
       Object.entries(value).forEach(([key, v]) => {
         recordValue({
@@ -124,25 +110,16 @@ function resolveTranslation({
     if (value['@type'] === localizedType) {
       const translatedSymbolInput = translation[`${basePath}${path}`];
 
-      if (translatedSymbolInput?.value) {
-        // Directly mutate the LocalizedValue object to add the translated locale
-        value[locale] = unescapeStringOrObject(translatedSymbolInput.value);
-        transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
+      if (!translatedSymbolInput?.value) {
+        return;
       }
-      
-      // Also check for nested LocalizedValues within the extracted value
-      const extractedValue = value?.Default;
-      if (Array.isArray(extractedValue) || (typeof extractedValue === 'object' && extractedValue !== null)) {
-        resolveTranslation({
-          data,
-          basePath,
-          path,
-          value: extractedValue,
-          translation,
-          transformedMeta,
-          locale,
-        });
-      }
+
+      set(data, path, {
+        ...value,
+        [locale]: unescapeStringOrObject(translatedSymbolInput.value),
+      });
+
+      transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
     } else {
       Object.entries(value).forEach(([key, v]) => {
         resolveTranslation({
@@ -152,65 +129,6 @@ function resolveTranslation({
           value: v,
           translation,
           transformedMeta,
-          locale,
-        });
-      });
-    }
-  }
-}
-
-// Helper function to resolve translations for metadata with nested LocalizedValues
-// This function directly mutates the LocalizedValue objects it finds
-function resolveMetadataTranslation({
-  basePath,
-  path,
-  value,
-  translation,
-  locale,
-}: {
-  basePath: string;
-  path: string;
-  value: any;
-  translation: any;
-  locale: string;
-}) {
-  if (Array.isArray(value)) {
-    value.forEach((item, index) => {
-      resolveMetadataTranslation({
-        basePath,
-        path: `${path}[${index}]`,
-        value: item,
-        translation,
-        locale,
-      });
-    });
-  } else if (typeof value === 'object' && value !== null) {
-    if (value['@type'] === localizedType) {
-      const translatedValue = translation[`${basePath}${path}`];
-
-      if (translatedValue?.value) {
-        // Directly mutate the LocalizedValue object to add the translated locale
-        value[locale] = unescapeStringOrObject(translatedValue.value);
-      }
-      
-      // Also check for nested LocalizedValues within the extracted value
-      const extractedValue = value?.Default;
-      if (Array.isArray(extractedValue) || (typeof extractedValue === 'object' && extractedValue !== null)) {
-        resolveMetadataTranslation({
-          basePath,
-          path,
-          value: extractedValue,
-          translation,
-          locale,
-        });
-      }
-    } else {
-      Object.entries(value).forEach(([key, v]) => {
-        resolveMetadataTranslation({
-          basePath,
-          path: `${path}.${key}`,
-          value: v,
-          translation,
           locale,
         });
       });
@@ -230,28 +148,10 @@ export function getTranslateableFields(
   // metadata [content's localized custom fields]
   traverse(customFields).forEach(function (el) {
     if (this.key && el && el['@type'] === localizedType) {
-      const extractedValue = el[sourceLocaleId] || el.Default;
-      
-      // Only record if it's a string - these are the actual translatable values
-      if (typeof extractedValue === 'string') {
-        results[`metadata.${this.path.join('#')}`] = {
-          instructions: el.meta?.instructions || defaultInstructions,
-          value: extractedValue,
-        };
-      } else if (Array.isArray(extractedValue) || (typeof extractedValue === 'object' && extractedValue !== null)) {
-        // If extracted value is array/object, recursively process for nested LocalizedValues
-        recordValue({
-          results,
-          value: extractedValue,
-          path: `metadata.${this.path.join('#')}`,
-          instructions: el.meta?.instructions || defaultInstructions,
-          sourceLocaleId,
-        });
-      }
-      
-      // Stop traversing into this LocalizedValue's locale-specific keys
-      // to avoid processing fr-FR, de-DE, etc. arrays separately
-      this.block();
+      results[`metadata.${this.path.join('#')}`] = {
+        instructions: el.meta?.instructions || defaultInstructions,
+        value: el[sourceLocaleId] || el.Default,
+      };
     }
   });
 
@@ -327,7 +227,6 @@ export function applyTranslation(
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
-  // Handle simple LocalizedValue fields (backward compatible)
   traverse(customFields).forEach(function (el) {
     const path = this.path?.join('#');
     if (translation[`metadata.${path}`]) {
@@ -335,23 +234,6 @@ export function applyTranslation(
         ...el,
         [locale]: unescapeStringOrObject(translation[`metadata.${path}`].value),
       });
-    }
-    
-    // For LocalizedValues containing arrays/objects with nested LocalizedValues,
-    // use the resolveMetadataTranslation helper
-    if (this.key && el && el['@type'] === localizedType) {
-      const extractedValue = el?.Default;
-      if (Array.isArray(extractedValue) || (typeof extractedValue === 'object' && extractedValue !== null)) {
-        resolveMetadataTranslation({
-          basePath: 'metadata.',
-          path: this.path?.join('#') || '',
-          value: extractedValue,
-          translation,
-          locale,
-        });
-      }
-      // Stop traversing into locale-specific keys
-      this.block();
     }
   });
 
