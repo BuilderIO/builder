@@ -59,10 +59,27 @@ function recordValue({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      results[path] = {
-        value: value?.[sourceLocaleId] || value?.Default,
-        instructions,
-      };
+      const extractedValue = value?.[sourceLocaleId] || value?.Default;
+
+      // If the extracted value is a string, store it directly
+      if (typeof extractedValue === 'string') {
+        results[path] = {
+          value: extractedValue,
+          instructions,
+        };
+      } else if (
+        Array.isArray(extractedValue) ||
+        (typeof extractedValue === 'object' && extractedValue !== null)
+      ) {
+        // If the extracted value is an array or object, recurse into it to find more localized values
+        recordValue({
+          results,
+          value: extractedValue,
+          path,
+          instructions,
+          sourceLocaleId,
+        });
+      }
     } else {
       Object.entries(value).forEach(([key, v]) => {
         recordValue({
