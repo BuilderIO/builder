@@ -79,6 +79,7 @@ type IsolatedVMImport = typeof import('isolated-vm');
 
 let IVM_INSTANCE: IsolatedVMImport | null = null;
 // IVM_CONTEXT removed - we now create fresh isolates per request to prevent memory leaks
+let IVM_OPTIONS: IsolateOptions = { memoryLimit: 128 };
 
 /**
  * Set the `isolated-vm` instance to be used by the node runtime.
@@ -88,7 +89,10 @@ let IVM_INSTANCE: IsolatedVMImport | null = null;
 export const setIvm = (ivm: IsolatedVMImport, options?: IsolateOptions) => {
   if (IVM_INSTANCE) return;
   IVM_INSTANCE = ivm;
-  // Note: options are now used per-request in runInNode, not globally
+  // Store options to be used per-request in runInNode
+  if (options) {
+    IVM_OPTIONS = options;
+  }
 };
 
 // only mention the script for SDKs that have it.
@@ -134,11 +138,13 @@ export const runInNode = ({
   const ivm = getIvm();
 
   // ✅ CREATE FRESH ISOLATE PER REQUEST (The Nuclear Fix)
-  const isolate = new ivm.Isolate({ memoryLimit: 128 });
-  const isolateContext = isolate.createContextSync();
-  const jail = isolateContext.global;
-
+  // Use stored options from setIvm, or default to { memoryLimit: 128 }
+  let isolate;
   try {
+    isolate = new ivm.Isolate(IVM_OPTIONS);
+    const isolateContext = isolate.createContextSync();
+    const jail = isolateContext.global;
+
     // Setup the isolate (moved from global initialization)
     jail.setSync('global', jail.derefInto());
     jail.setSync('log', function (...logArgs: any[]) {
@@ -198,10 +204,12 @@ export const runInNode = ({
   } finally {
     // ✅ THE NUCLEAR CLEANUP: Destroy the entire VM
     // This frees ALL memory at the C++ level, guaranteed
-    try {
-      isolate.dispose();
-    } catch (e) {
-      // Ignore disposal errors
+    if (isolate) {
+      try {
+        isolate.dispose();
+      } catch (e) {
+        // Ignore disposal errors
+      }
     }
   }
 };
