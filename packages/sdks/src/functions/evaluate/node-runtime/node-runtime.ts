@@ -1,4 +1,4 @@
-import type { Context, IsolateOptions } from 'isolated-vm';
+import type { IsolateOptions } from 'isolated-vm';
 import { SDK_NAME } from '../../../constants/sdk-name.js';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
