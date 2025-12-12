@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-smartling",
-  "version": "0.0.23-8",
+  "version": "0.0.23-11",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -125,7 +125,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/utils": "^1.1.23",
+    "@builder.io/utils": "1.1.25-2",
     "fast-json-stable-stringify": "^2.1.0",
     "lodash": "^4.17.21",
     "object-hash": "^3.0.0",
