@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.1.3
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+
 ## 6.1.2
 
 ### Patch Changes

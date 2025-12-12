@@ -109,14 +109,18 @@ export class SmartlingApi {
          }
          async updateLocalJob(jobId: string, content: any[]) {
            const latestDraft = await appState.getLatestDraft(jobId);
-           const allContent = [...content];
            const processedSymbols = new Set<string>(); // Avoid duplicates
            
-           // Get existing entries to check for duplicate symbols
+           // Get existing entries to check for duplicate content and symbols
            const existingEntryIds = new Set((latestDraft.data.entries || []).map((entry: any) => entry.content?.id));
            
+           // Filter out content that already exists in the job
+           const newContent = content.filter(c => !existingEntryIds.has(c.id));
+           
+           const allContent = [...newContent];
+           
            // Extract and include symbol content for updates too
-           for (const contentItem of content) {
+           for (const contentItem of newContent) {
              try {
                // Fetch the full content to analyze for symbols
                const fullContent = await fetch(
@@ -159,7 +163,7 @@ export class SmartlingApi {
              published: 'draft',
            };
            
-           const symbolCount = allContent.length - content.length;
+           const symbolCount = allContent.length - newContent.length;
            if (symbolCount > 0) {
            } else {
            }

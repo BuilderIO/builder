@@ -1,5 +1,13 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 5.0.0
+
+### Major Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
 ## 4.2.4
 
 ### Patch Changes

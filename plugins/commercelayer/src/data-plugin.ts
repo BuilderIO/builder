@@ -1,8 +1,7 @@
 import { APIOperations, ResourceType, CommerceAPIOperations, BuilderRequest } from '@builder.io/plugin-tools';
 import appState from '@builder.io/app-context';
 import pkg from '../package.json';
-
-type CommerceLayerResourceType = 'product';
+import { CommerceLayerResourceType, RESOURCE_ENDPOINTS } from './service';
 
 const buildCommerceLayerUrl = ({
   resource,
@@ -20,10 +19,11 @@ const buildCommerceLayerUrl = ({
   token: string;
 }): BuilderRequest => {
   let url: string;
+  const endpoint = RESOURCE_ENDPOINTS[resource];
   
   if (resourceId) {
     // Get specific product by ID
-    url = `${baseEndpoint}/api/skus/${resourceId}`;
+    url = `${baseEndpoint}/api/${endpoint}/${resourceId}`;
   } else {
     // Search products
     const params = new URLSearchParams();
@@ -31,7 +31,7 @@ const buildCommerceLayerUrl = ({
       params.set('filter[q][name_or_code_cont]', query);
     }
     params.set('page[size]', (limit || 25).toString());
-    url = `${baseEndpoint}/api/skus?${params}`;
+    url = `${baseEndpoint}/api/${endpoint}?${params}`;
   }
 
   return {
@@ -62,6 +62,11 @@ const RESOURCE_TYPES: {
     name: 'Product',
     id: 'product',
     description: 'All of your Commerce Layer products (SKUs).',
+  },
+  {
+    name: 'Bundle',
+    id: 'bundle',
+    description: 'All of your Commerce Layer bundles.',
   },
 ];
 
@@ -95,7 +100,9 @@ export const getDataConfig = (
               friendlyName: 'Search', 
               name: 'query', 
               type: 'string',
-              helperText: 'Search by product name or SKU code'
+              helperText: model.id === 'product' 
+                ? 'Search by product name or SKU code'
+                : 'Search by bundle name or code'
             },
           ],
           toUrl: ({ entry, query, limit }) =>
