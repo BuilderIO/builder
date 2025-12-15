@@ -107,68 +107,82 @@ export class SmartlingApi {
            // Use enhanced version that includes symbols
            return this.createLocalJobWithSymbols(name, content);
          }
-         async updateLocalJob(jobId: string, content: any[]) {
-           const latestDraft = await appState.getLatestDraft(jobId);
-           const processedSymbols = new Set<string>(); // Avoid duplicates
-           
-           // Get existing entries to check for duplicate content and symbols
-           const existingEntryIds = new Set((latestDraft.data.entries || []).map((entry: any) => entry.content?.id));
-           
-           // Filter out content that already exists in the job
-           const newContent = content.filter(c => !existingEntryIds.has(c.id));
-           
-           const allContent = [...newContent];
-           
-           // Extract and include symbol content for updates too
-           for (const contentItem of newContent) {
-             try {
-               // Fetch the full content to analyze for symbols
-               const fullContent = await fetch(
-                 `https://cdn.builder.io/api/v3/content/${contentItem.modelName}/${contentItem.id}?apiKey=${appState.user.apiKey}&cachebust=true`
-               ).then(res => res.json());
-               
-               const symbolReferences = await this.extractSymbolReferences(fullContent);
-               
-               if (symbolReferences.length > 0) {
-                 
-                 // Fetch each symbol and add to update (avoid duplicates)
-                 for (const symbolId of symbolReferences) {
-                   if (!processedSymbols.has(symbolId) && !existingEntryIds.has(symbolId)) {
-                     processedSymbols.add(symbolId);
-                     const symbolContent = await this.fetchSymbolContent(symbolId);
-                     if (symbolContent) {
-                       allContent.push({
-                         id: symbolContent.id,
-                         modelName: 'symbol',
-                         previewUrl: symbolContent.meta?.lastPreviewUrl || contentItem.previewUrl,
-                         instruction: `Symbol referenced in ${contentItem.id}`,
-                       });
-                     }
-                   }
-                 }
-               }
-             } catch (error) {
-             }
-           }
-           
-           const draft = {
-             ...latestDraft,
-             data: {
-               ...latestDraft.data,
-               entries: [
-                 ...(latestDraft.data.entries || []),
-                 ...allContent.map(c => getContentReference(c)),
-               ],
-             },
-             published: 'draft',
-           };
-           
-           const symbolCount = allContent.length - newContent.length;
-           if (symbolCount > 0) {
-           } else {
-           }
-           appState.updateLatestDraft(draft);
-         }
+        async updateLocalJob(jobId: string, content: any[]) {
+          const latestDraft = await appState.getLatestDraft(jobId);
+          const processedSymbols = new Set<string>(); // Avoid duplicates
+          
+          // Get existing entries to check for duplicates (both original content and symbols)
+          const existingEntryIds = new Set((latestDraft.data.entries || []).map((entry: any) => entry.content?.id));
+          
+          // Filter out content items that are already in the job
+          const newContent = content.filter(c => !existingEntryIds.has(c.id));
+          const allContent = [...newContent];
+          
+          // Recursively extract symbols from content and nested symbols
+          const extractSymbolsRecursively = async (contentId: string, modelName: string, parentId: string, previewUrl?: string) => {
+            try {
+              const fullContent = await fetch(
+                `https://cdn.builder.io/api/v3/content/${modelName}/${contentId}?apiKey=${appState.user.apiKey}&cachebust=true`
+              ).then(res => res.json());
+              
+              const symbolReferences = await this.extractSymbolReferences(fullContent);
+              
+              for (const symbolId of symbolReferences) {
+                if (!processedSymbols.has(symbolId) && !existingEntryIds.has(symbolId)) {
+                  processedSymbols.add(symbolId);
+                  const symbolContent = await this.fetchSymbolContent(symbolId);
+                  if (symbolContent) {
+                    allContent.push({
+                      id: symbolContent.id,
+                      modelName: 'symbol',
+                      previewUrl: symbolContent.meta?.lastPreviewUrl || previewUrl,
+                      instruction: `Symbol referenced in ${parentId}`,
+                    });
+                    
+                    // Recursively check this symbol for nested symbols
+                    await extractSymbolsRecursively(
+                      symbolContent.id, 
+                      'symbol', 
+                      symbolContent.id,
+                      symbolContent.meta?.lastPreviewUrl || previewUrl
+                    );
+                  }
+                }
+              }
+            } catch (error) {
+              // Ignore errors for individual content items
+            }
+          };
+          
+          // Extract and include symbol content from ALL content items (including already existing ones)
+          // This ensures we still find nested symbols even if the parent content is already in the job
+          for (const contentItem of content) {
+            await extractSymbolsRecursively(
+              contentItem.id, 
+              contentItem.modelName, 
+              contentItem.id,
+              contentItem.previewUrl
+            );
+          }
+          
+          const draft = {
+            ...latestDraft,
+            data: {
+              ...latestDraft.data,
+              entries: [
+                ...(latestDraft.data.entries || []),
+                ...allContent.map(c => getContentReference(c)),
+              ],
+            },
+            published: 'draft',
+          };
+          
+          const symbolCount = allContent.length - newContent.length;
+          if (symbolCount > 0) {
+          } else {
+          }
+          appState.updateLatestDraft(draft);
+        }
 
          applyTranslation(id: string, model: string) {
            return this.request('apply-translation', {
@@ -235,43 +249,58 @@ export class SmartlingApi {
            })));
          }
 
-         // Enhanced local job creation that includes symbols
-         async createLocalJobWithSymbols(name: string, content: any[]): Promise<any> {
-           const translationModel = getTranslationModel();
-           const allContent = [...content];
-           const processedSymbols = new Set<string>(); // Avoid duplicates
-           
-           // Extract and include symbol content
-           for (const contentItem of content) {
-             try {
-               // Fetch the full content to analyze for symbols
-               const fullContent = await fetch(
-                 `https://cdn.builder.io/api/v3/content/${contentItem.modelName}/${contentItem.id}?apiKey=${appState.user.apiKey}&cachebust=true`
-               ).then(res => res.json());
-               
-               const symbolReferences = await this.extractSymbolReferences(fullContent);
-               
-               if (symbolReferences.length > 0) {
-                 
-                 // Fetch each symbol and add to translation job (avoid duplicates)
-                 for (const symbolId of symbolReferences) {
-                   if (!processedSymbols.has(symbolId)) {
-                     processedSymbols.add(symbolId);
-                     const symbolContent = await this.fetchSymbolContent(symbolId);
-                     if (symbolContent) {
-                       allContent.push({
-                         id: symbolContent.id,
-                         modelName: 'symbol',
-                         previewUrl: symbolContent.meta?.lastPreviewUrl || contentItem.previewUrl,
-                         instruction: `Symbol referenced in ${contentItem.id}`,
-                       });
-                     }
-                   }
-                 }
-               }
-             } catch (error) {
-             }
-           }
+        // Enhanced local job creation that includes symbols
+        async createLocalJobWithSymbols(name: string, content: any[]): Promise<any> {
+          const translationModel = getTranslationModel();
+          const allContent = [...content];
+          const processedSymbols = new Set<string>(); // Avoid duplicates
+          const processedContentIds = new Set<string>(content.map(c => c.id)); // Track processed content
+          
+          // Recursively extract symbols from content and nested symbols
+          const extractSymbolsRecursively = async (contentId: string, modelName: string, parentId: string, previewUrl?: string) => {
+            try {
+              const fullContent = await fetch(
+                `https://cdn.builder.io/api/v3/content/${modelName}/${contentId}?apiKey=${appState.user.apiKey}&cachebust=true`
+              ).then(res => res.json());
+              
+              const symbolReferences = await this.extractSymbolReferences(fullContent);
+              
+              for (const symbolId of symbolReferences) {
+                if (!processedSymbols.has(symbolId)) {
+                  processedSymbols.add(symbolId);
+                  const symbolContent = await this.fetchSymbolContent(symbolId);
+                  if (symbolContent) {
+                    allContent.push({
+                      id: symbolContent.id,
+                      modelName: 'symbol',
+                      previewUrl: symbolContent.meta?.lastPreviewUrl || previewUrl,
+                      instruction: `Symbol referenced in ${parentId}`,
+                    });
+                    
+                    // Recursively check this symbol for nested symbols
+                    await extractSymbolsRecursively(
+                      symbolContent.id, 
+                      'symbol', 
+                      symbolContent.id,
+                      symbolContent.meta?.lastPreviewUrl || previewUrl
+                    );
+                  }
+                }
+              }
+            } catch (error) {
+              // Ignore errors for individual content items
+            }
+          };
+          
+          // Extract and include symbol content from original content items
+          for (const contentItem of content) {
+            await extractSymbolsRecursively(
+              contentItem.id, 
+              contentItem.modelName, 
+              contentItem.id,
+              contentItem.previewUrl
+            );
+          }
            
            const symbolCount = allContent.length - content.length;
            if (symbolCount > 0) {
