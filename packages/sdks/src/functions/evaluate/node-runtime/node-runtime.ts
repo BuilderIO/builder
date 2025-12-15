@@ -78,7 +78,7 @@ if (typeof output === 'object' && output !== null) {
 type IsolatedVMImport = typeof import('isolated-vm');
 
 let IVM_INSTANCE: IsolatedVMImport | null = null;
-// IVM_CONTEXT removed - we now create fresh isolates per request to prevent memory leaks
+// Create fresh isolates per request to prevent memory leaks
 let IVM_OPTIONS: IsolateOptions = { memoryLimit: 128 };
 
 /**
@@ -124,8 +124,6 @@ const getIvm = (): IsolatedVMImport => {
   throw new Error(ERROR_MESSAGE);
 };
 
-// Removed setIsolateContext and getIsolateContext - isolates are now created per-request
-
 export const runInNode = ({
   code,
   builder,
@@ -137,7 +135,6 @@ export const runInNode = ({
 }: ExecutorArgs) => {
   const ivm = getIvm();
 
-  // ✅ CREATE FRESH ISOLATE PER REQUEST (The Nuclear Fix)
   // Use stored options from setIvm, or default to { memoryLimit: 128 }
   let isolate;
   try {
@@ -145,7 +142,7 @@ export const runInNode = ({
     const isolateContext = isolate.createContextSync();
     const jail = isolateContext.global;
 
-    // Setup the isolate (moved from global initialization)
+    // Setup the isolate
     jail.setSync('global', jail.derefInto());
     jail.setSync('log', function (...logArgs: any[]) {
       console.log(...logArgs);
@@ -202,8 +199,7 @@ export const runInNode = ({
       return resultStr;
     }
   } finally {
-    // ✅ THE NUCLEAR CLEANUP: Destroy the entire VM
-    // This frees ALL memory at the C++ level, guaranteed
+    // Destroy the entire VM, this frees ALL memory at the C++ level.
     if (isolate) {
       try {
         isolate.dispose();
