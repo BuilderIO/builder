@@ -80,7 +80,8 @@ function recordValue({
 function resolveTranslation({
   data,
   basePath,
-  path,
+  translationPath,
+  dataPath,
   value,
   translation,
   transformedMeta,
@@ -88,7 +89,8 @@ function resolveTranslation({
 }: {
   data: any;
   basePath: string;
-  path: string;
+  translationPath: string; // Path used for looking up translations
+  dataPath: string; // Actual path in the data structure for setting values
   value: any;
   translation: any;
   transformedMeta: Record<string, string>;
@@ -99,7 +101,8 @@ function resolveTranslation({
       resolveTranslation({
         data,
         basePath,
-        path: `${path}[${index}]`,
+        translationPath: `${translationPath}[${index}]`,
+        dataPath: `${dataPath}[${index}]`,
         value: item,
         translation,
         transformedMeta,
@@ -108,24 +111,63 @@ function resolveTranslation({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      const translatedSymbolInput = translation[`${basePath}${path}`];
+      const translatedSymbolInput = translation[`${basePath}${translationPath}`];
 
-      if (!translatedSymbolInput?.value) {
-        return;
+      if (translatedSymbolInput?.value) {
+        // Direct translation found for this path - apply it
+        set(data, dataPath, {
+          ...value,
+          [locale]: unescapeStringOrObject(translatedSymbolInput.value),
+        });
+
+        transformedMeta[`transformed.symbol.data.${translationPath}`] = 'localized';
+      } else {
+        // No direct translation - check if Default value contains nested LocalizedValues
+        const defaultValue = value?.Default;
+        if (
+          Array.isArray(defaultValue) ||
+          (typeof defaultValue === 'object' && defaultValue !== null)
+        ) {
+          // Recurse into the Default array/object to find nested LocalizedValues
+          // The dataPath must include '.Default' to correctly point to where values should be set
+          resolveTranslation({
+            data,
+            basePath,
+            translationPath, // Keep same translation path for lookup
+            dataPath: `${dataPath}.Default`, // But update data path to include the locale key
+            value: defaultValue,
+            translation,
+            transformedMeta,
+            locale,
+          });
+        }
+
+        // Also check if there's a locale-specific array/object and apply translations there too
+        const localeValue = value?.[locale];
+        if (
+          localeValue &&
+          (Array.isArray(localeValue) || (typeof localeValue === 'object' && localeValue !== null))
+        ) {
+          // Recurse into the locale-specific array/object to find nested LocalizedValues
+          resolveTranslation({
+            data,
+            basePath,
+            translationPath, // Keep same translation path for lookup
+            dataPath: `${dataPath}.${locale}`, // Update data path to point to locale-specific branch
+            value: localeValue,
+            translation,
+            transformedMeta,
+            locale,
+          });
+        }
       }
-
-      set(data, path, {
-        ...value,
-        [locale]: unescapeStringOrObject(translatedSymbolInput.value),
-      });
-
-      transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
     } else {
       Object.entries(value).forEach(([key, v]) => {
         resolveTranslation({
           data,
           basePath,
-          path: `${path}.${key}`,
+          translationPath: `${translationPath}.${key}`,
+          dataPath: `${dataPath}.${key}`,
           value: v,
           translation,
           transformedMeta,
@@ -256,7 +298,8 @@ export function applyTranslation(
               resolveTranslation({
                 data: el.component?.options?.symbol?.data,
                 basePath: `blocks.${el.id}.symbolInput#`,
-                path: symbolInputName,
+                translationPath: symbolInputName,
+                dataPath: symbolInputName,
                 value: symbolInputValue,
                 translation,
                 transformedMeta,
