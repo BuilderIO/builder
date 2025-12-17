@@ -1,11 +1,5 @@
 # @builder.io/sdk
 
-## 6.3.0
-
-### Minor Changes
-
-- 659cc99: - Eliminates memory leaks in long-running Node.js processes
-
 ## 6.2.0
 
 ### Minor Changes
