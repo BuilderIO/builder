@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 9.0.1
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+- Updated dependencies [1b1b76e]
+  - @builder.io/sdk@6.1.4
+
 ## 9.0.0
 
 ### Major Changes
