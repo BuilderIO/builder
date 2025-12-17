@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 5.1.0
+
+### Minor Changes
+
+- 659cc99: - Eliminates memory leaks in long-running Node.js processes
+
 ## 5.0.1
 
 ### Patch Changes

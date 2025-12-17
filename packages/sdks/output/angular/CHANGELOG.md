@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.24.0
+
+### Minor Changes
+
+- 659cc99: - Eliminates memory leaks in long-running Node.js processes
+
 ## 0.23.2
 
 ### Patch Changes
