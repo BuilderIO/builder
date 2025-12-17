@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 5.0.1
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
 ## 5.0.0
 
 ### Major Changes
