@@ -221,7 +221,7 @@ export function getTranslateableFields(
   // blocks
   if (blocks) {
     traverse(blocks).forEach(function (el) {
-      if (this.key && el && el.meta?.localizedTextInputs) {
+      if (this.key && el && el.meta?.localizedTextInputs && !el.meta?.excludeFromTranslation) {
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
           localizedTextInputs
@@ -264,7 +264,7 @@ export function getTranslateableFields(
         }
       }
 
-      if (el && el.id && el.component?.name === 'Symbol') {
+      if (el && el.id && el.component?.name === 'Symbol'&& !el.meta?.excludeFromTranslation) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const basePath = `blocks.${el.id}.symbolInput`;
@@ -440,7 +440,7 @@ export function applyTranslation(
       }
 
       // custom components
-      if (el && el.id && el.meta?.localizedTextInputs) {
+      if (el && el.id && el.meta?.localizedTextInputs && !el.meta?.excludeFromTranslation) {
         // there's a localized input
         const keys = el.meta?.localizedTextInputs as string[];
         let options = el.component.options;

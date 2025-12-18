@@ -163,6 +163,21 @@ Builder.register('plugin', {
       advanced: false,
       requiredPermissions: ['admin'],
     },
+    {
+      name: 'disableVisualContextCapture',
+      friendlyName: 'Disable Visual Context Capture',
+      type: 'boolean',
+      defaultValue: false,
+      helperText: 'Disable automatic visual context capture for translations',
+      requiredPermissions: ['admin'],
+    },
+    {
+      name: 'contextOverrideOlderThanDays',
+      friendlyName: 'Context Override Older Than Days',
+      type: 'number',
+      helperText: 'Override context for content older than this number of days',
+      requiredPermissions: ['admin'],
+    },
   ],
   onSave: async actions => {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -480,6 +495,78 @@ const initializeSmartlingPlugin = async () => {
       },
       onClick(elements) {
         elements.forEach(el => el.meta.set('excludeFromTranslation', false));
+      },
+    });
+
+
+    registerContextMenuAction({
+      label: 'Add String Instructions',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        return element.meta?.get('instructions') === undefined;
+      },
+      async onClick(elements) {
+        if (elements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const instructions = await appState.dialogs.prompt({
+          placeholderText: 'Enter string instructions for translation',
+        });
+        if (instructions) {
+          elements[0].meta.set('instructions', instructions);
+          appState.snackBar.show('String instructions added to content');
+        }
+      },
+    });
+
+    registerContextMenuAction({
+      label: 'Edit String Instructions',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        return element.meta?.get('instructions') !== undefined;
+      },
+      async onClick(elements) {
+        if (elements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = elements[0];
+        const instructions = element.meta?.get('instructions');
+        if (instructions) {
+          const newInstructions = await appState.dialogs.prompt({
+            placeholderText: 'Enter new string instructions for translation',
+            defaultValue: instructions,
+          });
+          if (newInstructions) {
+            element.meta.set('instructions', newInstructions);
+            appState.snackBar.show('String instructions updated');
+          }
+        }
+      },
+    });
+
+    registerContextMenuAction({
+      label: 'Delete String Instructions',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        return element.meta?.get('instructions') !== undefined;
+      },
+      onClick(elements) {
+        elements[0].meta.delete('instructions');
+        appState.snackBar.show('String instructions deleted');
       },
     });
 
