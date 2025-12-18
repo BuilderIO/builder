@@ -1,7 +1,11 @@
 <script lang="ts">
   import { Content, isPreviewing } from '@builder.io/sdk-svelte';
   import type { PageData } from './$types';
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
 </script>
 
 <!-- Your nav goes here -->

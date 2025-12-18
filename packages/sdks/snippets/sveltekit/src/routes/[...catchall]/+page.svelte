@@ -1,14 +1,19 @@
 <!-- Quickstart snippet -->
 <!-- snippets/sveltekit/src/routes/[...catchall]/+page.svelte -->
-<script>
+<script lang="ts">
   import { isPreviewing, Content } from '@builder.io/sdk-svelte';
 
   // TODO: use your own API key
   const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   const model = 'page';
 
-  // this data comes from the function in `+page.server.js`, which runs on the server only
-  export let data;
+  
+  interface Props {
+    // this data comes from the function in `+page.server.js`, which runs on the server only
+    data: any;
+  }
+
+  let { data }: Props = $props();
 
   // show unpublished content when in preview mode.
   const canShowContent = data.content || isPreviewing(data.searchParams);

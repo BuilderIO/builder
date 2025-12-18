@@ -1,11 +1,15 @@
 <script lang="ts">
   import type { PageData } from './$types';
-  export let data: PageData;
 
   import ProductHeader from '../ProductHeader.svelte';
   import ProductFooter from '../ProductFooter.svelte';
   import ProductInfo from '../ProductInfo.svelte';
   import { Content, isPreviewing } from '@builder.io/sdk-svelte';
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
 </script>
 
 {#if !data.product && !data.editorial && !isPreviewing()}
