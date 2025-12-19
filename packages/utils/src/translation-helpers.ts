@@ -317,7 +317,7 @@ export function applyTranslation(
 
   if (blocks) {
     traverse(blocks).forEach(function (el) {
-      if (el && el.id && el.component?.name === 'Symbol') {
+      if (el && el.id && el.component?.name === 'Symbol' && !el.meta?.excludeFromTranslation) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const transformedMeta = {};

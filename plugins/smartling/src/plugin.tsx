@@ -534,7 +534,7 @@ const initializeSmartlingPlugin = async () => {
         }
         const element = elements[0];
         const instructions = element.meta?.get('instructions');
-        if (instructions) {
+        if (instructions !== undefined) {
           const newInstructions = await appState.dialogs.prompt({
             placeholderText: 'Enter new string instructions for translation',
             defaultValue: instructions,
