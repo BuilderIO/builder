@@ -125,7 +125,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/utils": "1.1.28",
+    "@builder.io/utils": "1.1.29",
     "fast-json-stable-stringify": "^2.1.0",
     "lodash": "^4.17.21",
     "object-hash": "^3.0.0",
