@@ -7826,7 +7826,7 @@ __metadata:
     "@builder.io/widgets": ^1.2.24
     "@remix-run/dev": ^1.14.3
     "@remix-run/eslint-config": ^1.19.1
-    "@remix-run/node": ^1.14.3
+    "@remix-run/node": ^2.17.2
     "@remix-run/react": ^1.14.3
     "@remix-run/serve": ^1.14.3
     "@sdk/tests": "workspace:*"
@@ -17836,7 +17836,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/node@npm:1.19.3, @remix-run/node@npm:^1.14.3":
+"@remix-run/node@npm:1.19.3":
   version: 1.19.3
   resolution: "@remix-run/node@npm:1.19.3"
   dependencies:
@@ -17910,6 +17910,26 @@ __metadata:
     typescript:
       optional: true
   checksum: 343a13a27986e24922176bd8fa4f2d0901ba976f5e10e00d3f2f5665a0dce22861d4a148ad689ce5d0c27b4721106d30a2474fa4cae1201b67bb8bd73fe6f133
+  languageName: node
+  linkType: hard
+
+"@remix-run/node@npm:^2.17.2":
+  version: 2.17.3
+  resolution: "@remix-run/node@npm:2.17.3"
+  dependencies:
+    "@remix-run/server-runtime": 2.17.3
+    "@remix-run/web-fetch": ^4.4.2
+    "@web3-storage/multipart-parser": ^1.0.0
+    cookie-signature: ^1.1.0
+    source-map-support: ^0.5.21
+    stream-slice: ^0.1.2
+    undici: ^6.21.2
+  peerDependencies:
+    typescript: ^5.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: e146077e5afb0f01c62ec7223af9b19c318daab5871323c2668230a42654701940d9093f5c5ac6318415676f24392cabe0450ba65d62908b54559f424aff11bd
   languageName: node
   linkType: hard
 
@@ -18104,6 +18124,26 @@ __metadata:
     typescript:
       optional: true
   checksum: fbe1d0083744aac267077d81ed7c37bbc47a28adfe6f76a70b8f1578d98836637c718d86f661a09d3cd5fbf02d12e2658d5e3de7e8070bcdb31a721ad4a59b01
+  languageName: node
+  linkType: hard
+
+"@remix-run/server-runtime@npm:2.17.3":
+  version: 2.17.3
+  resolution: "@remix-run/server-runtime@npm:2.17.3"
+  dependencies:
+    "@remix-run/router": 1.23.0
+    "@types/cookie": ^0.6.0
+    "@web3-storage/multipart-parser": ^1.0.0
+    cookie: ^0.7.2
+    set-cookie-parser: ^2.4.8
+    source-map: ^0.7.3
+    turbo-stream: 2.4.1
+  peerDependencies:
+    typescript: ^5.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 40f67d129c366d39561d80bd054bdbcb2b17b9516bb56cd3949af51fb20ed524c92bda86c1c8c8c399acfea52d93170bcd9fc7ab0a65abfa2146f09962d2ca95
   languageName: node
   linkType: hard
 
@@ -60762,6 +60802,13 @@ __metadata:
   version: 2.4.0
   resolution: "turbo-stream@npm:2.4.0"
   checksum: e36f52ed40589f01bede79757a143bef484914d579927235be1fd0c205618994cb5779a39ff8c2a80a87a1464d05771cd75320a9412b15bca03c7ff432e3cdf7
+  languageName: node
+  linkType: hard
+
+"turbo-stream@npm:2.4.1":
+  version: 2.4.1
+  resolution: "turbo-stream@npm:2.4.1"
+  checksum: e2c0aa1d4796af0089a1b8b46b3b4b5e95c118eb8168f25572bd7fe7bd70d118aaa64e8207b6fe3a90e6f88dcf84f5a2ccfd2d0d067c2032ea62d7edfc3b0d3c
   languageName: node
   linkType: hard
 
