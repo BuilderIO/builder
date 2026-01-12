@@ -68,6 +68,11 @@ export default function InteractiveElement(props: InteractiveElementProps) {
           ...(Object.keys(state.attributes).length > 0
             ? { attributes: state.attributes }
             : {}),
+          // Pass the Builder context to the custom component
+          // This allows custom components to access context.builderContent.data.* fields
+          context: {
+            builderContent: props.context.value.content,
+          },
         },
       });
     },
