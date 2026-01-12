@@ -121,7 +121,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       <Awaiter
         load={props.Wrapper.load}
         fallback={props.Wrapper.fallback}
-        props={props.wrapperProps}
+        props={state.targetWrapperProps}
         attributes={state.attributes}
       >
         {props.children}
