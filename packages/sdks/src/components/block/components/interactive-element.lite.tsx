@@ -64,7 +64,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
       return useTarget({
         default: {
           ...props.wrapperProps,
-          // Pass the Builder context to the custom component (To access context.builderContent.data.* fields)
+          // Pass the Builder context to the custom component (to access context.builderContent.data.* fields)
           context: {
             builderContent: props.context.value.content,
           },
@@ -74,7 +74,7 @@ export default function InteractiveElement(props: InteractiveElementProps) {
           ...(Object.keys(state.attributes).length > 0
             ? { attributes: state.attributes }
             : {}),
-          // Pass the Builder context to the custom component (To access context.builderContent.data.* fields)
+          // Pass the Builder context to the custom component (to access context.builderContent.data.* fields)
           context: {
             builderContent: props.context.value.content,
           },
