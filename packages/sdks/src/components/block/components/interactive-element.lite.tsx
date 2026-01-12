@@ -62,7 +62,14 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     },
     get targetWrapperProps() {
       return useTarget({
-        default: props.wrapperProps,
+        default: {
+          ...props.wrapperProps,
+          // Pass the Builder context to the custom component
+          // This allows custom components to access context.builderContent.data.* fields
+          context: {
+            builderContent: props.context.value.content,
+          },
+        },
         vue: {
           ...props.wrapperProps,
           ...(Object.keys(state.attributes).length > 0
