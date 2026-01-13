@@ -3,6 +3,13 @@ import { getProps } from '@sdk/tests';
 import { Show, createResource } from 'solid-js';
 import { Title, useLocation, useRouteData } from 'solid-start';
 import BuilderBlockWithClassName from '~/components/BuilderBlockWithClassName';
+import Hello from '~/components/Hello';
+
+const helloCustomComponent = {
+  name: 'Hello',
+  component: Hello,
+  inputs: [],
+};
 
 const builderBlockWithClassNameCustomComponent = {
   name: 'BuilderBlockWithClassName',
@@ -63,7 +70,7 @@ export default function App() {
       <Show when={props} fallback={<div>Content Not Found</div>}>
         <Content
           {...props()}
-          customComponents={[builderBlockWithClassNameCustomComponent]}
+          customComponents={[helloCustomComponent, builderBlockWithClassNameCustomComponent]}
         />
       </Show>
     </main>

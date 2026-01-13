@@ -5,6 +5,13 @@ import { createResource, Show } from 'solid-js';
 import { _processContentResult, Content } from '@builder.io/sdk-solid';
 import { getProps } from '@sdk/tests';
 import BuilderBlockWithClassName from './components/BuilderBlockWithClassName';
+import Hello from './components/Hello';
+
+const helloCustomComponent = {
+  name: 'Hello',
+  component: Hello,
+  inputs: [],
+};
 
 const builderBlockWithClassNameCustomComponent = {
   name: 'BuilderBlockWithClassName',
@@ -56,6 +63,7 @@ const App: Component = () => {
       {() => {
         const propsForContent = props();
         propsForContent.customComponents = [
+          helloCustomComponent,
           builderBlockWithClassNameCustomComponent,
         ];
         return <Content {...propsForContent} />;

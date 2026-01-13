@@ -6,6 +6,7 @@ import {
   registerAction,
 } from '@builder.io/sdk-vue';
 import BuilderBlockWithClassName from '../components/BuilderBlockWithClassName.vue';
+import Hello from '../components/Hello.vue';
 import { getProps } from '@sdk/tests';
 
 if (typeof window !== 'undefined') {
@@ -35,6 +36,11 @@ if (typeof window !== 'undefined') {
 const route = useRoute();
 
 const REGISTERED_COMPONENTS = [
+  {
+    name: 'Hello',
+    component: Hello,
+    inputs: [],
+  },
   {
     name: 'BuilderBlockWithClassName',
     component: BuilderBlockWithClassName,

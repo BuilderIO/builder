@@ -9,13 +9,14 @@ const LAST_COMPONENT_REGISTERED_MESSAGE =
 
 test.describe('Custom components', () => {
   test('correctly renders custom component', async ({ page, packageName, sdk }) => {
-    test.skip(!['angular', 'react', 'qwik'].includes(sdk));
+    test.skip(!['angular', 'react', 'qwik', 'vue', 'svelte', 'sveltekit', 'solid', 'solid-start'].includes(sdk));
     test.skip(
       ['react-sdk-next-14-app', 'react-sdk-next-15-app', 'remix', 'hydrogen'].includes(packageName)
     );
     await page.goto('/custom-components');
-    const helloWorldText = page.locator('text=hello World').first();
-    await expect(helloWorldText).toBeVisible();
+    // Verify context.builderContent.data.title is rendered (title = 'custom-components')
+    const helloText = page.locator('text=hello custom-components').first();
+    await expect(helloText).toBeVisible();
   });
 
   test('correctly captures registering of custom component', async ({

@@ -2,8 +2,14 @@
 import { defineComponent } from 'vue';
 import { Content } from '@builder.io/sdk-vue';
 import BuilderBlockWithClassName from './BuilderBlockWithClassName.vue';
+import Hello from './Hello.vue';
 
 const REGISTERED_COMPONENTS = [
+  {
+    name: 'Hello',
+    component: Hello,
+    inputs: [],
+  },
   {
     name: 'BuilderBlockWithClassName',
     component: BuilderBlockWithClassName,

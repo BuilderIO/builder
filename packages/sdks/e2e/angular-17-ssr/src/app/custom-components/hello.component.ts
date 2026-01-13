@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'hello',
-  template: ` <h1>hello {{ name }}<ng-content></ng-content></h1> `,
+  template: ` <div>hello {{ context?.builderContent?.data?.title || 'World' }}</div> `,
 })
 export class HelloComponent {
-  name = 'World';
+  @Input() context: any;
 }

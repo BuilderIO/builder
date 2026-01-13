@@ -1,5 +1,5 @@
-function Hello() {
-  return <div>hello World</div>;
+function Hello(props: { context?: any }) {
+  return <div>hello {props.context?.builderContent?.data?.title || 'World'}</div>;
 }
 
 export default Hello;

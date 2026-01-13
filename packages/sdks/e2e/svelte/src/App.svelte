@@ -2,6 +2,13 @@
   import { Content, _processContentResult } from '@builder.io/sdk-svelte';
   import { getProps } from '@sdk/tests';
   import BuilderBlockWithClassName from './BuilderBlockWithClassName.svelte';
+  import Hello from './Hello.svelte';
+
+  const helloCustomComponent = {
+    name: 'Hello',
+    component: Hello,
+    inputs: [],
+  };
 
   const builderBlockWithClassNameCustomComponent = {
     name: 'BuilderBlockWithClassName',
@@ -45,7 +52,7 @@
   let props = undefined;
   const fetch = async () => {
     props = await getProps({ _processContentResult });
-    props.customComponents = [builderBlockWithClassNameCustomComponent];
+    props.customComponents = [helloCustomComponent, builderBlockWithClassNameCustomComponent];
   };
 
   fetch();

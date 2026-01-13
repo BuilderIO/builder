@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Content, setClientUserAttributes } from '@builder.io/sdk-svelte';
   import BuilderBlockWithClassName from '../../components/BuilderBlockWithClassName.svelte';
+  import Hello from '../../components/Hello.svelte';
 
   if (typeof window !== 'undefined') {
     if (window.location.pathname === '/variant-containers') {
@@ -12,6 +13,13 @@
 
   // this data comes from the function in `+page.server.ts`, which runs on the server only
   export let data;
+  
+  const helloCustomComponent = {
+    name: 'Hello',
+    component: Hello,
+    inputs: [],
+  };
+
   const builderBlockWithClassNameCustomComponent = {
     name: 'BuilderBlockWithClassName',
     component: BuilderBlockWithClassName,
@@ -61,6 +69,7 @@
         {...data.props}
         customComponents={[
           ...data.customComponents,
+          helloCustomComponent,
           builderBlockWithClassNameCustomComponent,
         ]}
       />
