@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'hello',
-  template: ` <div>hello {{ context?.builderContent?.data?.title || 'World' }}</div> `,
+  template: ` <h1>hello {{ context?.builderContent?.data?.title || 'World' }}<ng-content></ng-content></h1> `,
 })
 export class HelloComponent {
   @Input() context: any;

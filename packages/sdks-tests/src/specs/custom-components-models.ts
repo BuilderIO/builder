@@ -28,7 +28,7 @@ export const CUSTOM_COMPONENTS_MODELS_RESTRICTION = {
   ],
   data: {
     themeId: false,
-    title: 'ahh-test',
+    title: 'Hello World',
     blocks: [
       {
         '@type': '@builder.io/sdk:Element',
