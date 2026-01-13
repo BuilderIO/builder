@@ -28,7 +28,7 @@ export const CUSTOM_COMPONENTS_MODELS_RESTRICTION = {
   ],
   data: {
     themeId: false,
-    title: 'Hello World',
+    title: 'World',
     blocks: [
       {
         '@type': '@builder.io/sdk:Element',
