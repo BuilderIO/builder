@@ -3,7 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
 import { BehaviorSubject } from './classes/observable.class';
-import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
+import { getFetch } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
 import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
@@ -495,6 +495,50 @@ export type GetContentOptions = AllowEnrich & {
    * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
+
+  /**
+   * Options to configure how enrichment works.
+   * @see {@link https://www.builder.io/c/docs/content-api#code-enrich-options-code}
+   */
+  enrichOptions?: {
+    /**
+     * The depth level for enriching references. For example, an enrichLevel of 1
+     * would return one additional nested model within the original response.
+     * The maximum level is 4.
+     */
+    enrichLevel?: number;
+
+    /**
+     * Model-specific enrichment options. Allows selective field inclusion/exclusion
+     * for each referenced model type.
+     *
+     * @example
+     * ```typescript
+     * enrichOptions: {
+     *   model: {
+     *     'product': {
+     *       fields: 'id,name,price',
+     *       omit: 'data.internalNotes'
+     *     },
+     *     'category': {
+     *       fields: 'id,name'
+     *     }
+     *   }
+     * }
+     * ```
+     */
+    model?: {
+      [modelName: string]: {
+        /** Comma-separated list of fields to include */
+        fields?: string;
+        /** Comma-separated list of fields to omit */
+        omit?: string;
+        [key: string]: any;
+      };
+    };
+
+    [key: string]: any;
+  };
 };
 
 export type Class = {
@@ -2698,6 +2742,15 @@ export class Builder {
         queryParams.includeRefs = true;
       }
 
+      if (this.apiEndpoint === 'query') {
+        if ('enrich' in options && options.enrich !== undefined) {
+          queryParams.enrich = options.enrich;
+        }
+        if (options.enrichOptions) {
+          this.flattenEnrichOptions(options.enrichOptions, 'enrichOptions', queryParams);
+        }
+      }
+
       const properties: (keyof GetContentOptions)[] = [
         'prerender',
         'extractCss',
@@ -2722,6 +2775,16 @@ export class Builder {
           } else {
             queryParams[key] = JSON.stringify(value);
           }
+        }
+      }
+
+      // Handle enrich and enrichOptions for content endpoint
+      if (this.apiEndpoint === 'content') {
+        if ('enrich' in options && options.enrich !== undefined) {
+          queryParams.enrich = options.enrich;
+        }
+        if (options.enrichOptions) {
+          this.flattenEnrichOptions(options.enrichOptions, 'enrichOptions', queryParams);
         }
       }
     }
@@ -2926,6 +2989,22 @@ export class Builder {
       });
     }
     return Builder.isBrowser && setCookie(name, value, expires);
+  }
+
+  /**
+   * Recursively flattens enrichOptions object into dot-notation query parameters
+   * @private
+   */
+  private flattenEnrichOptions(obj: any, prefix: string, result: Record<string, any>): void {
+    for (const [key, value] of Object.entries(obj)) {
+      const newKey = `${prefix}.${key}`;
+
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        this.flattenEnrichOptions(value, newKey, result);
+      } else {
+        result[newKey] = value;
+      }
+    }
   }
 
   getContent(modelName: string, options: GetContentOptions = {}) {

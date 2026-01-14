@@ -1,6 +1,12 @@
 {
   "name": "@builder.io/sdk-angular",
-  "version": "0.23.1",
+  "version": "0.24.0",
+  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/angular",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuilderIO/builder.git",
+    "directory": "packages/sdks/output/angular"
+  },
   "files": [
     "lib"
   ],
