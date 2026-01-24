@@ -1,34 +1,40 @@
-import { RegisteredComponent } from '@builder.io/sdk-react';
-import { ReactNode } from 'react';
+import {
+  Blocks,
+  BuilderBlock,
+  RegisteredComponent,
+} from '@builder.io/sdk-react';
 
 interface CustomHeroProps {
-  children: ReactNode;
+  content: BuilderBlock[];
+  builderBlock: BuilderBlock;
 }
 
 const CustomHero = (props: CustomHeroProps) => {
   return (
     <>
-      <div>This is text from your component</div>
+      <h2>This is text from your component</h2>
 
-      {props.children}
+      <Blocks
+        blocks={props.content}
+        parent={props.builderBlock.id}
+        path="content"
+      />
     </>
   );
 };
 
 export const customHeroInfo: RegisteredComponent = {
-  component: CustomHero,
   name: 'CustomHero',
-  inputs: [],
-  canHaveChildren: true,
-  defaultChildren: [
+  component: CustomHero,
+  shouldReceiveBuilderProps: {
+    builderBlock: true,
+  },
+  inputs: [
     {
-      '@type': '@builder.io/sdk:Element',
-      component: {
-        name: 'Text',
-        options: {
-          text: 'This is Builder text',
-        },
-      },
+      name: 'content',
+      type: 'uiBlocks',
+      hideFromUI: true,
+      defaultValue: [],
     },
   ],
 };
