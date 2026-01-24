@@ -38,7 +38,7 @@
     "serve:ssr:angular": "node dist/server/server.mjs"
   },
   "dependencies": {
-    "@angular/ssr": "^18.0.7",
+    "@angular/ssr": "^21.0.1",
     "@builder.io/sdk": "^5.0.0",
     "express": "^4.18.2"
   },
@@ -48,17 +48,17 @@
     "zone.js": "0.14.x"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "18.2.14",
+    "@angular-devkit/build-angular": "21.0.1",
     "@angular/cli": "18.0.7",
-    "@angular/common": "18.0.6",
+    "@angular/common": "21.0.1",
     "@angular/compiler-cli": "18.0.6",
     "@angular/core": "18.0.6",
     "@angular/elements": "18.0.6",
-    "@angular/forms": "18.0.6",
-    "@angular/platform-browser": "18.0.6",
-    "@angular/platform-browser-dynamic": "18.0.6",
-    "@angular/platform-server": "18.0.6",
-    "@angular/router": "18.0.6",
+    "@angular/forms": "21.0.1",
+    "@angular/platform-browser": "21.0.1",
+    "@angular/platform-browser-dynamic": "21.0.1",
+    "@angular/platform-server": "21.0.1",
+    "@angular/router": "21.0.1",
     "@babel/core": "^7.17.4",
     "@babel/preset-env": "^7.16.11",
     "@builder.io/block-publish": "^1.1.2",
