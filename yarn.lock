@@ -1140,19 +1140,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-server@npm:^17.3.0":
-  version: 17.3.12
-  resolution: "@angular/platform-server@npm:17.3.12"
+"@angular/platform-server@npm:^18.2.14":
+  version: 18.2.14
+  resolution: "@angular/platform-server@npm:18.2.14"
   dependencies:
     tslib: ^2.3.0
     xhr2: ^0.2.0
   peerDependencies:
-    "@angular/animations": 17.3.12
-    "@angular/common": 17.3.12
-    "@angular/compiler": 17.3.12
-    "@angular/core": 17.3.12
-    "@angular/platform-browser": 17.3.12
-  checksum: 652dc2c6770b177f1f76def3f21859c16809061269aacc475cbb7e2274a4f4ff2ca5f3c3f5f65506ae15b29459ea9cea57963a4ce0d2ef412b1ec3c6761a1eae
+    "@angular/animations": 18.2.14
+    "@angular/common": 18.2.14
+    "@angular/compiler": 18.2.14
+    "@angular/core": 18.2.14
+    "@angular/platform-browser": 18.2.14
+  checksum: 4a128c2ff9e0086426f410bdc559a76612ccef8ac6fe4620172d46de7abc8ef908a69baaa3a628fba564377db751d25f8a082e07454e30d0a6d3f1714ec84aa5
   languageName: node
   linkType: hard
 
@@ -7674,7 +7674,7 @@ __metadata:
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
-    "@angular/platform-server": ^17.3.0
+    "@angular/platform-server": ^18.2.14
     "@angular/router": ^17.3.0
     "@angular/ssr": ^17.3.8
     "@builder.io/sdk-angular": "workspace:*"
@@ -19989,7 +19989,7 @@ __metadata:
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
-    "@angular/platform-server": ^17.3.0
+    "@angular/platform-server": ^18.2.14
     "@angular/router": ^17.3.0
     "@angular/ssr": ^17.3.8
     "@builder.io/sdk-angular": "workspace:*"
