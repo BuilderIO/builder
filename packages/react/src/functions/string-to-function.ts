@@ -169,6 +169,9 @@ export function stringToFunction(
       if (errors) {
         errors.push(error);
       }
+      if (logs && error.message && typeof error.message === 'string') {
+        logs.push(error.message);
+      }
       return null;
     }
   };
@@ -209,7 +212,12 @@ export const makeFn = (code: string, useReturn: boolean, args?: string[]) => {
             }
             const val = obj.getSync(key);
             if (typeof val?.copySync === 'function') {
+              try {
                 return JSON.parse(stringify(val));
+              } catch (e) {
+                log('Error:', e);
+                return refToProxy(val);
+              }
             }
             return val;
         },
