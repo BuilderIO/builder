@@ -1,0 +1,33 @@
+{
+  "name": "@builder.io/plugin-google-translate",
+  "version": "1.0.0",
+  "description": "",
+  "entry": "plugin",
+  "output": "plugin.system.js",
+  "main": "dist/plugin.system.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@builder.io/app-context": "^1.0.0",
+    "@builder.io/react": "^8.2.1",
+    "babel-loader": "^10.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
+  },
+  "dependencies": {
+    "css-loader": "^7.1.2",
+    "style-loader": "^4.0.0"
+  }
+}

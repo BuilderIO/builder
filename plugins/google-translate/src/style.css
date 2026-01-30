@@ -1,0 +1,18 @@
+div#builder-io-plugin-google-translate{
+    margin: 16px;
+    & p {
+        margin: 0;
+    }
+    & button{
+        margin-top: 8px;
+        border: 1px solid black;
+        background-color: black;
+        color: white;
+        padding: 8px 48px;
+        border-radius: 8px;
+    }
+    & button:hover{
+        cursor: pointer;
+        background-color: rgba(0,0,0, .8);
+    }
+}
