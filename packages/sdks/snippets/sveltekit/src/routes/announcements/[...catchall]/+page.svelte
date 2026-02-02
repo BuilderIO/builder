@@ -2,13 +2,13 @@
 <!-- https://www.builder.io/c/blueprints/announcement-bar -->
 <!-- src/routes/announcements/[...catchall]/+page.svelte -->
 
-<script>
+<script lang="ts">
   import { isPreviewing, Content } from '@builder.io/sdk-svelte';
 
   const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
   const model = 'announcement-bar';
 
-  export let data;
+  let { data } = $props();
 
   const canShowContent = data.content || isPreviewing(data.searchParams);
 </script>

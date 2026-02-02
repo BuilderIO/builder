@@ -7,7 +7,7 @@
     isPreviewing,
   } from '@builder.io/sdk-svelte';
 
-  let content: BuilderContent | null = null;
+  let content: BuilderContent | null = $state(null);
 
   const model = 'homepage';
   const apiKey = 'ee9f13b4981e489a9a1209887695ef2b';

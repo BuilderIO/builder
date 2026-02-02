@@ -4,8 +4,8 @@
   import type { BuilderContent } from '@builder.io/sdk-svelte';
   import { customHeroInfo } from './CustomHeroInfo';
 
-  let loading = true;
-  let content: BuilderContent | null;
+  let loading = $state(true);
+  let content: BuilderContent | null = $state();
 
   let model = 'custom-child';
   let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';

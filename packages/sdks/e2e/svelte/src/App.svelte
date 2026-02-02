@@ -42,7 +42,7 @@
     ],
   };
 
-  let props = undefined;
+  let props = $state(undefined);
   const fetch = async () => {
     props = await getProps({ _processContentResult });
     props.customComponents = [builderBlockWithClassNameCustomComponent];
