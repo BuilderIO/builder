@@ -59,10 +59,27 @@ function recordValue({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      results[path] = {
-        value: value?.[sourceLocaleId] || value?.Default,
-        instructions,
-      };
+      const extractedValue = value?.[sourceLocaleId] || value?.Default;
+
+      // If the extracted value is a string, store it directly
+      if (typeof extractedValue === 'string') {
+        results[path] = {
+          value: extractedValue,
+          instructions,
+        };
+      } else if (
+        Array.isArray(extractedValue) ||
+        (typeof extractedValue === 'object' && extractedValue !== null)
+      ) {
+        // If the extracted value is an array or object, recurse into it to find more localized values
+        recordValue({
+          results,
+          value: extractedValue,
+          path,
+          instructions,
+          sourceLocaleId,
+        });
+      }
     } else {
       Object.entries(value).forEach(([key, v]) => {
         recordValue({
@@ -80,7 +97,8 @@ function recordValue({
 function resolveTranslation({
   data,
   basePath,
-  path,
+  translationPath,
+  dataPath,
   value,
   translation,
   transformedMeta,
@@ -88,7 +106,8 @@ function resolveTranslation({
 }: {
   data: any;
   basePath: string;
-  path: string;
+  translationPath: string; // Path used for looking up translations
+  dataPath: string; // Actual path in the data structure for setting values
   value: any;
   translation: any;
   transformedMeta: Record<string, string>;
@@ -99,7 +118,8 @@ function resolveTranslation({
       resolveTranslation({
         data,
         basePath,
-        path: `${path}[${index}]`,
+        translationPath: `${translationPath}[${index}]`,
+        dataPath: `${dataPath}[${index}]`,
         value: item,
         translation,
         transformedMeta,
@@ -108,24 +128,63 @@ function resolveTranslation({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      const translatedSymbolInput = translation[`${basePath}${path}`];
+      const translatedSymbolInput = translation[`${basePath}${translationPath}`];
 
-      if (!translatedSymbolInput?.value) {
-        return;
+      if (translatedSymbolInput?.value) {
+        // Direct translation found for this path - apply it
+        set(data, dataPath, {
+          ...value,
+          [locale]: unescapeStringOrObject(translatedSymbolInput.value),
+        });
+
+        transformedMeta[`transformed.symbol.data.${translationPath}`] = 'localized';
+      } else {
+        // No direct translation - check if Default value contains nested LocalizedValues
+        const defaultValue = value?.Default;
+        if (
+          Array.isArray(defaultValue) ||
+          (typeof defaultValue === 'object' && defaultValue !== null)
+        ) {
+          // Recurse into the Default array/object to find nested LocalizedValues
+          // The dataPath must include '.Default' to correctly point to where values should be set
+          resolveTranslation({
+            data,
+            basePath,
+            translationPath, // Keep same translation path for lookup
+            dataPath: `${dataPath}.Default`, // But update data path to include the locale key
+            value: defaultValue,
+            translation,
+            transformedMeta,
+            locale,
+          });
+        }
+
+        // Also check if there's a locale-specific array/object and apply translations there too
+        const localeValue = value?.[locale];
+        if (
+          localeValue &&
+          (Array.isArray(localeValue) || (typeof localeValue === 'object' && localeValue !== null))
+        ) {
+          // Recurse into the locale-specific array/object to find nested LocalizedValues
+          resolveTranslation({
+            data,
+            basePath,
+            translationPath, // Keep same translation path for lookup
+            dataPath: `${dataPath}.${locale}`, // Update data path to point to locale-specific branch
+            value: localeValue,
+            translation,
+            transformedMeta,
+            locale,
+          });
+        }
       }
-
-      set(data, path, {
-        ...value,
-        [locale]: unescapeStringOrObject(translatedSymbolInput.value),
-      });
-
-      transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
     } else {
       Object.entries(value).forEach(([key, v]) => {
         resolveTranslation({
           data,
           basePath,
-          path: `${path}.${key}`,
+          translationPath: `${translationPath}.${key}`,
+          dataPath: `${dataPath}.${key}`,
           value: v,
           translation,
           transformedMeta,
@@ -161,8 +220,27 @@ export function getTranslateableFields(
 
   // blocks
   if (blocks) {
+    // Track how many levels deep we are inside excluded blocks
+    let excludedDepth = 0;
+
     traverse(blocks).forEach(function (el) {
-      if (this.key && el && el.meta?.localizedTextInputs) {
+      // Check if this element starts an exclusion zone
+      const startsExclusion = el && el.meta?.excludeFromTranslation;
+      if (startsExclusion) {
+        excludedDepth++;
+      }
+
+      // After processing children, decrement the counter if this element started an exclusion
+      this.after(function () {
+        if (startsExclusion) {
+          excludedDepth--;
+        }
+      });
+
+      // Skip translation if we're inside an excluded block (excludedDepth > 0)
+      const isExcluded = excludedDepth > 0;
+
+      if (this.key && el && el.meta?.localizedTextInputs && !isExcluded) {
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
           localizedTextInputs
@@ -179,7 +257,7 @@ export function getTranslateableFields(
             });
         }
       }
-      if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
+      if (el && el.id && el.component?.name === 'Text' && !isExcluded) {
         const componentText = el.component.options.text;
         results[`blocks.${el.id}#text`] = {
           value:
@@ -190,7 +268,22 @@ export function getTranslateableFields(
         };
       }
 
-      if (el && el.id && el.component?.name === 'Symbol') {
+      if (el && el.id && el.component?.name === 'Core:Button' && !isExcluded) {
+        const componentText = el.component.options?.text;
+        if (componentText) {
+          const textValue = typeof componentText === 'string'
+            ? componentText
+            : componentText?.[sourceLocaleId] || componentText?.Default;
+          if (textValue) {
+            results[`blocks.${el.id}#text`] = {
+              value: textValue,
+              instructions: el.meta?.instructions || defaultInstructions,
+            };
+          }
+        }
+      }
+
+      if (el && el.id && el.component?.name === 'Symbol'&& !isExcluded) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const basePath = `blocks.${el.id}.symbolInput`;
@@ -242,8 +335,27 @@ export function applyTranslation(
   }
 
   if (blocks) {
+    // Track how many levels deep we are inside excluded blocks
+    let excludedDepth = 0;
+
     traverse(blocks).forEach(function (el) {
-      if (el && el.id && el.component?.name === 'Symbol') {
+      // Check if this element starts an exclusion zone
+      const startsExclusion = el && el.meta?.excludeFromTranslation;
+      if (startsExclusion) {
+        excludedDepth++;
+      }
+
+      // After processing children, decrement the counter if this element started an exclusion
+      this.after(function () {
+        if (startsExclusion) {
+          excludedDepth--;
+        }
+      });
+
+      // Skip translation if we're inside an excluded block (excludedDepth > 0)
+      const isExcluded = excludedDepth > 0;
+
+      if (el && el.id && el.component?.name === 'Symbol' && !isExcluded) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const transformedMeta = {};
@@ -256,7 +368,8 @@ export function applyTranslation(
               resolveTranslation({
                 data: el.component?.options?.symbol?.data,
                 basePath: `blocks.${el.id}.symbolInput#`,
-                path: symbolInputName,
+                translationPath: symbolInputName,
+                dataPath: symbolInputName,
                 value: symbolInputValue,
                 translation,
                 transformedMeta,
@@ -293,7 +406,7 @@ export function applyTranslation(
         el &&
         el.id &&
         el.component?.name === 'Text' &&
-        !el.meta?.excludeFromTranslation &&
+        !isExcluded &&
         translation[`blocks.${el.id}#text`]
       ) {
         const localizedValues =
@@ -325,8 +438,47 @@ export function applyTranslation(
         });
       }
 
+      // Core:Button special handling - similar to Text component
+      if (
+        el &&
+        el.id &&
+        el.component?.name === 'Core:Button' &&
+        !isExcluded &&
+        translation[`blocks.${el.id}#text`]
+      ) {
+        const localizedValues =
+          typeof el.component.options?.text === 'string'
+            ? {
+                Default: el.component.options.text,
+              }
+            : el.component.options.text;
+
+        const updatedElement = {
+          ...el,
+          meta: {
+            ...el.meta,
+            translated: true,
+            // this tells the editor that this is a forced localized input similar to clicking the globe icon
+            'transformed.text': 'localized',
+          },
+          component: {
+            ...el.component,
+            options: {
+              ...el.component.options,
+              text: {
+                '@type': localizedType,
+                ...localizedValues,
+                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#text`].value),
+              },
+            },
+          },
+        };
+        
+        this.update(updatedElement);
+      }
+
       // custom components
-      if (el && el.id && el.meta?.localizedTextInputs) {
+      if (el && el.id && el.meta?.localizedTextInputs && !isExcluded) {
         // there's a localized input
         const keys = el.meta?.localizedTextInputs as string[];
         let options = el.component.options;

@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "4.2.4",
+  "version": "5.1.0",
   "main": "./lib/node/index.cjs",
   "module": "./lib/node/index.mjs",
   "type": "module",
@@ -105,7 +105,7 @@
     "vue": ">= 3"
   },
   "dependencies": {
-    "isolated-vm": "^5.0.0"
+    "isolated-vm": "^6.0.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",

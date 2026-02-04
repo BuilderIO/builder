@@ -163,6 +163,14 @@ Builder.register('plugin', {
       advanced: false,
       requiredPermissions: ['admin'],
     },
+    {
+      name: 'enableVisualContextCapture',
+      friendlyName: 'Enable Visual Context Capture',
+      type: 'boolean',
+      defaultValue: false,
+      helperText: 'Enable automatic visual context capture for translations',
+      requiredPermissions: ['admin'],
+    },
   ],
   onSave: async actions => {
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
@@ -213,12 +221,12 @@ const initializeSmartlingPlugin = async () => {
       pkg.name
     );
     
-    // Check if webhook URL needs updating
+    // Check if webhook URL needs updating - update whenever the URL is different
     const currentWebhookUrl = existingModel.webhooks?.[0]?.url;
     const newWebhookUrl = updatedTemplate.webhooks[0].url;
     
-    if (currentWebhookUrl && !currentWebhookUrl.includes('preferredVersion=v2') && newWebhookUrl.includes('preferredVersion=v2')) {
-      // Update the existing model with v2 webhook
+    if (currentWebhookUrl !== newWebhookUrl) {
+      // Update the existing model with new webhook configuration
       existingModel.webhooks = updatedTemplate.webhooks;
     }
   }
@@ -460,7 +468,7 @@ const initializeSmartlingPlugin = async () => {
         }
         const element = selectedElements[0];
         const isExcluded = element.meta?.get(transcludedMetaKey);
-        return element.component?.name === 'Text' && !isExcluded;
+        return !isExcluded;
       },
       onClick(elements) {
         elements.forEach(el => el.meta.set('excludeFromTranslation', true));
@@ -476,10 +484,82 @@ const initializeSmartlingPlugin = async () => {
         }
         const element = selectedElements[0];
         const isExcluded = element.meta?.get(transcludedMetaKey);
-        return element.component?.name === 'Text' && isExcluded;
+        return isExcluded;
       },
       onClick(elements) {
         elements.forEach(el => el.meta.set('excludeFromTranslation', false));
+      },
+    });
+
+
+    registerContextMenuAction({
+      label: 'Add String Instructions',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        return element.meta?.get('instructions') === undefined;
+      },
+      async onClick(elements) {
+        if (elements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const instructions = await appState.dialogs.prompt({
+          placeholderText: 'Enter string instructions for translation',
+        });
+        if (instructions) {
+          elements[0].meta.set('instructions', instructions);
+          appState.snackBar.show('String instructions added to content');
+        }
+      },
+    });
+
+    registerContextMenuAction({
+      label: 'Edit String Instructions',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        return element.meta?.get('instructions') !== undefined;
+      },
+      async onClick(elements) {
+        if (elements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = elements[0];
+        const instructions = element.meta?.get('instructions');
+        if (instructions !== undefined) {
+          const newInstructions = await appState.dialogs.prompt({
+            placeholderText: 'Enter new string instructions for translation',
+            defaultValue: instructions,
+          });
+          if (newInstructions) {
+            element.meta.set('instructions', newInstructions);
+            appState.snackBar.show('String instructions updated');
+          }
+        }
+      },
+    });
+
+    registerContextMenuAction({
+      label: 'Delete String Instructions',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        return element.meta?.get('instructions') !== undefined;
+      },
+      onClick(elements) {
+        elements[0].meta.delete('instructions');
+        appState.snackBar.show('String instructions deleted');
       },
     });
 
@@ -650,6 +730,61 @@ const initializeSmartlingPlugin = async () => {
     });
 
     registerContentAction({
+      label: 'View job in smartling',
+      showIf(content, model) {
+        const translationModel = getTranslationModel();
+        if (!translationModel) return false;
+        if (!model?.name || model.name !== translationModel.name) return false;
+        
+        // translationBatch is set by backend after job is published
+        if (!content.meta || !content.data) return false;
+        
+        const meta = fastClone(content.meta);
+        const data = content.data;
+        
+        // Get project ID from jobDetails
+        const projectId = data?.get?.('jobDetails')?.get?.('project') || data?.get?.('jobDetails')?.project;
+        
+        // Get job UID from translationBatch (only available after job is authorized in Smartling)
+        const translationJobUid = meta?.translationBatch?.translationJobUid;
+        
+        return (
+          projectId &&
+          translationJobUid
+        );
+      },
+      async onClick(translationJob) {
+        if (!translationJob) {
+          appState.snackBar.show('Job information not available');
+          return;
+        }
+        
+        if (!translationJob.meta || !translationJob.data) {
+          appState.snackBar.show('Job information not available');
+          return;
+        }
+        
+        const meta = fastClone(translationJob.meta);
+        const data = translationJob.data;
+        
+        // Get project ID from jobDetails
+        const projectId = data?.get?.('jobDetails')?.get?.('project') || data?.get?.('jobDetails')?.project;
+        
+        // Get job UID from translationBatch
+        const translationJobUid = meta?.translationBatch?.translationJobUid;
+        
+        if (!projectId || !translationJobUid) {
+          appState.snackBar.show('Job information not available');
+          return;
+        }
+        
+        // Construct Smartling job URL with format: projectId:translationJobUid
+        const smartlingJobUrl = `https://dashboard.smartling.com/app/projects/${projectId}/account-jobs/${projectId}:${translationJobUid}`;
+        window.open(smartlingJobUrl, '_blank', 'noreferrer,noopener');
+      },
+    });
+
+    registerContentAction({
       label: 'View translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
@@ -692,8 +827,8 @@ const initializeSmartlingPlugin = async () => {
       },
       async onClick(content) {
         const translationBatch = fastClone(content.meta).translationBatch;
-        // https://dashboard.smartling.com/app/projects/0e6193784/strings/jobs/schqxtpcnxix
-        const smartlingFile = `https://dashboard.smartling.com/app/projects/${translationBatch.projectId}/strings/jobs/${translationBatch.translationJobUid}`;
+        // Filter by file URI (content ID) to show all translations across all jobs
+        const smartlingFile = `https://dashboard.smartling.com/app/projects/${translationBatch.projectId}/strings/?urlsFilter.urls=${content.id}&limit=200&offset=0`;
         window.open(smartlingFile, '_blank', 'noreferrer,noopener');
       },
     });
@@ -873,13 +1008,7 @@ function pickTranslationJob() {
         '@type': '@builder.io/core:Query',
         property: 'query.published',
         operator: 'is',
-        value: 'draft',
-      },
-      {
-        '@type': '@builder.io/core:Query',
-        property: 'query.published',
-        operator: 'is', 
-        value: 'published',
+        value: 'published or draft',
       },
     ],
   });

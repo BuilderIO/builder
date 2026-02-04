@@ -1,5 +1,25 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.1.0
+
+### Minor Changes
+
+- 659cc99: - Eliminates memory leaks in long-running Node.js processes
+
+## 5.0.1
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
+## 5.0.0
+
+### Major Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
 ## 4.2.4
 
 ### Patch Changes

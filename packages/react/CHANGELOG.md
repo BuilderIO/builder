@@ -1,5 +1,81 @@
 # @builder.io/react
 
+## 9.1.0
+
+### Minor Changes
+
+- c729e93: Feat: Add support for `enrichOptions` parameter to control reference enrichment depth and field selection when fetching content.
+
+  This feature allows you to:
+
+  - Control the depth level of nested reference enrichment (up to 4 levels)
+  - Selectively include/exclude fields for each referenced model type
+  - Optimize API responses by fetching only the data you need
+
+  Example usage:
+
+  ```typescript
+  // Basic enrichment with depth control
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 2, // Fetch 2 levels of nested references
+    },
+  });
+
+  // Advanced: Selective field inclusion per model
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 3,
+      model: {
+        product: {
+          fields: "id,name,price",
+          omit: "data.internalNotes",
+        },
+        category: {
+          fields: "id,name",
+        },
+      },
+    },
+  });
+  ```
+
+### Patch Changes
+
+- Updated dependencies [c729e93]
+  - @builder.io/sdk@6.2.0
+
+## 9.0.1
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+- Updated dependencies [1b1b76e]
+  - @builder.io/sdk@6.1.4
+
+## 9.0.0
+
+### Major Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
+## 8.2.9
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+- Updated dependencies [3e864ce]
+  - @builder.io/sdk@6.1.3
+
+## 8.2.8
+
+### Patch Changes
+
+- 958c11b: fix: handle `fetchpriority` casing in different react versions
+
 ## 8.2.7
 
 ### Patch Changes
