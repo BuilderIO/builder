@@ -160,6 +160,7 @@ jobs:
           cache-install-state: true
 
       - name: Run snippets tests
+        timeout-minutes: 10
         run: yarn g:nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
@@ -271,6 +272,7 @@ jobs:
           cache-install-state: true
 
       - name: Run snippets tests
+        timeout-minutes: 10
         run: yarn nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
