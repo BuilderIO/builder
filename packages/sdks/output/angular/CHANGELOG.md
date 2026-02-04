@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.24.1
+
+### Patch Changes
+
+- 5f25224: update package.json file so that npm provenance validation passes
+
 ## 0.24.0
 
 ### Minor Changes
