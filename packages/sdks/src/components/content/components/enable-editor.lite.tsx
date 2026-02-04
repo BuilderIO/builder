@@ -14,7 +14,7 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import builderContext from '../../../context/builder.context.lite.js';
-import type { BuilderContextInterface } from '../../../context/types.js';
+import type { BuilderContextInterface, RegisteredComponents } from '../../../context/types.js';
 import { evaluate } from '../../../functions/evaluate/index.js';
 import { fastClone } from '../../../functions/fast-clone.js';
 import { fetchOneEntry } from '../../../functions/get-content/index.js';
@@ -61,6 +61,7 @@ type BuilderEditorProps = Omit<
   | 'blocksWrapperProps'
   | 'linkComponent'
 > & {
+  registeredComponents: RegisteredComponents,
   builderContextSignal: Signal<BuilderContextInterface>;
   setBuilderContextSignal?: (signal: any) => any;
   children?: any;
@@ -377,9 +378,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
         modelName: props.model ?? '',
         apiKey: props.apiKey,
       });
-      Object.values<ComponentInfo>(
-        props.builderContextSignal.value.componentInfos
-      ).forEach((registeredComponent) => {
+      Object.values<ComponentInfo>(props.registeredComponents).forEach((registeredComponent) => {
         if (
           !registeredComponent.models?.length ||
           registeredComponent.models.includes(props.model)
