@@ -296,6 +296,7 @@ export class BuilderBlock extends React.Component<
         this.setState({ updates: this.state.updates + 1 });
 
         break;
+        break;
       }
     }
   };
