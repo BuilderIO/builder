@@ -45,7 +45,7 @@
     "use-typed-event-listener": "3.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "11.0.0",
+    "@commitlint/cli": "20.4.1",
     "@commitlint/config-conventional": "11.0.0",
     "@emotion/serialize": "1.0.0",
     "@types/lodash": "4.14.168",
