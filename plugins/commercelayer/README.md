@@ -13,10 +13,9 @@ Go to [builder.io/account/organization](https://builder.io/account/organization)
 
 The plugin provides new field types for your Builder.io models and data connection capabilities:
 
-### Product & Bundle Fields
+### Product Fields
 
-- `Commerce Layer Product` - Search and select products (SKUs) from your Commerce Layer catalog
-- `Commerce Layer Bundle` - Search and select bundles from your Commerce Layer catalog
+- `Commerce Layer Product` - Search and select products from your Commerce Layer catalog
 - `Commerce Layer Product Preview` - Preview product templates with live data
 
 ### Connect Data
@@ -24,7 +23,7 @@ The plugin provides new field types for your Builder.io models and data connecti
 The plugin also provides a "Connect Data" feature that allows you to fetch live product data directly from your Commerce Layer API:
 
 - **Real-time data access** - Connect to your Commerce Layer products as a data source
-- **Flexible querying** - Search products or bundles by name or SKU code with configurable result limits
+- **Flexible querying** - Search products by name or SKU code with configurable result limits
 - **Full product data** - Access all product attributes including SKU codes, prices, images, and metadata
 - **Dynamic content** - Use live product data in your Builder.io content and templates
 

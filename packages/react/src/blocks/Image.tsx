@@ -10,8 +10,6 @@ import { throttle } from '../functions/throttle';
 import { Breakpoints, getSizesForBreakpoints } from '../constants/device-sizes.constant';
 import { IMAGE_FILE_TYPES } from 'src/constants/file-types.constant';
 
-const isNewReact = 'use' in React;
-
 // Taken from (and modified) the shopify theme script repo
 // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
 function removeProtocol(path: string) {
@@ -263,17 +261,6 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     return this.props.image || this.props.src;
   }
 
-  get loadEagerly() {
-    return this.props.builderBlock?.id.startsWith('builder-pixel-') || this.props.highPriority;
-  }
-
-  get fetchPriorityProp() {
-    const propNameToUse = isNewReact ? 'fetchPriority' : 'fetchpriority';
-    return {
-      [propNameToUse]: this.loadEagerly ? 'high' : 'auto',
-    };
-  }
-
   getSrcSet(): string | undefined {
     const url = this.image;
     if (!url || typeof url !== 'string') {
@@ -314,6 +301,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       srcset = this.getSrcSet();
     }
 
+    const isPixel = builderBlock?.id.startsWith('builder-pixel-');
+    const eagerLoad = isPixel || this.props.highPriority;
     const { fitContent } = this.props;
 
     return (
@@ -363,8 +352,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   },
                 }),
               }}
-              loading={this.loadEagerly ? 'eager' : 'lazy'}
-              {...this.fetchPriorityProp}
+              loading={eagerLoad ? 'eager' : 'lazy'}
+              fetchPriority={eagerLoad ? 'high' : 'auto'}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
               {...(!amp && {

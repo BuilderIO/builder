@@ -183,7 +183,6 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
       const contentData = this.options.initialContent[0];
       // TODO: intersectionobserver like in subscribetocontent - reuse the logic
       if (contentData?.id) {
-        this.builder.contentId = contentData.id;
         this.builder.trackImpression(contentData.id, this.renderedVariantId, undefined, {
           content: contentData,
         });

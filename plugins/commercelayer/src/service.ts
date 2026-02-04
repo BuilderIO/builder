@@ -133,7 +133,7 @@ export const getOrganizationInfo = async (accessToken: string) => {
   throw new Error('Invalid token: no organization found')
 }
 
-type CommerceLayerResource = {
+type Product = {
   id: string
   type: string
   attributes: {
@@ -141,62 +141,51 @@ type CommerceLayerResource = {
     name: string
     description: string
     image_url: string
-    price?: number
+    price: number
     // Add other fields we need
   }
   // ... other fields
 }
 
-export const RESOURCE_ENDPOINTS = {
-  product: 'skus',
-  bundle: 'bundles'
-} as const
-
-type CommerceLayerResourceType = keyof typeof RESOURCE_ENDPOINTS
-
-export const getResource = async (type: CommerceLayerResourceType, id: string, accessToken: string, baseEndpoint: string): Promise<CommerceLayerResource> => {
-  const url = `${baseEndpoint}/api/${RESOURCE_ENDPOINTS[type]}/${id}`
+export const getProduct = async (id: string, accessToken: string, baseEndpoint: string): Promise<Product> => {
+  const url = `${baseEndpoint}/api/skus/${id}`
   const data = await makeApiRequest(url, accessToken)
   return data.data
 }
 
-export const searchResources = async (type: CommerceLayerResourceType, search: string, accessToken: string, baseEndpoint: string): Promise<CommerceLayerResource[]> => {
-  const params = new URLSearchParams({
-    'filter[q][name_or_code_cont]': search,
-    'page[size]': '25'
-  })
+export const searchProducts = async (search: string, accessToken: string, baseEndpoint: string): Promise<Product[]> => {
+    const params = new URLSearchParams({
+      'filter[q][name_or_code_cont]': search,
+      'page[size]': '25'
+    })
+  
+    const url = `${baseEndpoint}/api/skus?${params}`
+    const data = await makeApiRequest(url, accessToken)
+    return data.data || []
+  }
 
-  const url = `${baseEndpoint}/api/${RESOURCE_ENDPOINTS[type]}?${params}`
-  const data = await makeApiRequest(url, accessToken)
-  return data.data || []
-}
-
-export const transformResource = (resource: CommerceLayerResource, type: CommerceLayerResourceType) => ({
-  id: resource.id,
-  type,
-  title: resource.attributes.name,
-  handle: resource.attributes.code,
-  price: resource.attributes.price,
-  image: resource.attributes.image_url
-    ? {
-        src: resource.attributes.image_url
-      }
-    : undefined
+export const transformProduct = (product: Product) => ({
+  id: product.id,
+  type: 'product',
+  title: product.attributes.name,
+  handle: product.attributes.code,
+  price: product.attributes.price,
+  image: {
+    src: product.attributes.image_url
+  }
 })
 
-export const getResourceByHandle = async (type: CommerceLayerResourceType, handle: string, accessToken: string, baseEndpoint: string): Promise<CommerceLayerResource> => {
+export const getProductByHandle = async (handle: string, accessToken: string, baseEndpoint: string): Promise<Product> => {
   const params = new URLSearchParams({
     'filter[q][code_eq]': handle
   })
 
-  const url = `${baseEndpoint}/api/${RESOURCE_ENDPOINTS[type]}?${params}`
+  const url = `${baseEndpoint}/api/skus?${params}`
   const data = await makeApiRequest(url, accessToken)
-
+  
   if (!data.data?.[0]) {
-    throw new Error(`${type} not found with handle: ${handle}`)
+    throw new Error(`Product not found with handle: ${handle}`)
   }
-
+  
   return data.data[0]
-}
-
-export { CommerceLayerResourceType }
+} 

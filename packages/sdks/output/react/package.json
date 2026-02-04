@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "5.1.0",
+  "version": "4.2.4",
   "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/react",
   "type": "module",
   "repository": {
@@ -124,7 +124,7 @@
     "react": ">=16 || ^19.0.0-rc"
   },
   "dependencies": {
-    "isolated-vm": "^6.0.0"
+    "isolated-vm": "^5.0.0"
   },
   "devDependencies": {
     "@builder.io/sdks": "workspace:*",

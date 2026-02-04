@@ -1,12 +1,6 @@
 {
   "name": "@builder.io/sdk-angular",
-  "version": "0.24.0",
-  "homepage": "https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/angular",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BuilderIO/builder.git",
-    "directory": "packages/sdks/output/angular"
-  },
+  "version": "0.22.2",
   "files": [
     "lib"
   ],
@@ -20,7 +14,7 @@
     "build:edge": "cross-env SDK_ENV=edge node ./scripts/multi-build.mjs"
   },
   "dependencies": {
-    "isolated-vm": "^6.0.0",
+    "isolated-vm": "^5.0.0",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {

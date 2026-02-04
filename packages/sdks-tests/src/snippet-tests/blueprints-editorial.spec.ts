@@ -1,8 +1,7 @@
 import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
-import { mockFakeStoreAPI } from '../helpers/fakestoreapi-mock.js';
 
-test.describe('Product Editorial Page', () => {
+test.describe('Product Editorial Page with Real Data', () => {
   test.beforeEach(async ({ page, packageName }) => {
     test.skip(
       [
@@ -12,11 +11,6 @@ test.describe('Product Editorial Page', () => {
         'solid-start',
         'remix',
         'react-sdk-next-15-app',
-        'sveltekit',
-        'qwik-city',
-        'nuxt',
-        'react-sdk-next-14-app',
-        'react-sdk-next-pages',
         'nextjs-sdk-next-app',
         'angular-19-ssr',
         'gen1-react',
@@ -25,10 +19,6 @@ test.describe('Product Editorial Page', () => {
         'gen1-next15-app',
       ].includes(packageName)
     );
-
-    // Mock fakestoreapi.com to avoid anti-bot protection issues in CI
-    await mockFakeStoreAPI(page);
-
     await page.goto('/products/1');
   });
 
@@ -36,7 +26,7 @@ test.describe('Product Editorial Page', () => {
     await expect(page.locator('h1')).toHaveText('Acme Corp');
   });
 
-  test('should render the product info', async ({ page }) => {
+  test('should render the product info with real data', async ({ page }) => {
     // Wait for the product image element to appear
     const productImage = page.locator('.product-image img');
     await expect(productImage).toBeAttached();
@@ -59,8 +49,8 @@ test.describe('Product Editorial Page', () => {
     await expect(page.locator('p').nth(2)).toBeVisible();
   });
 
-  test('should render the editorial content', async ({ page }) => {
-    // verify that the editorial content is visible and has some text
+  test('should render the editorial content with real data', async ({ page }) => {
+    // verify that the editorial content is visible and has some text (as the real data may vary)
     await expect(page.locator('.builder-blocks')).toBeVisible();
     await expect(page.locator('.builder-blocks')).toHaveText(/.+/);
   });
