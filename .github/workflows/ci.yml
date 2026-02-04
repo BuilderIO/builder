@@ -101,7 +101,6 @@ jobs:
 
       - name: Run E2E tests
         timeout-minutes: 10
-        continue-on-error: true
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
@@ -231,7 +230,6 @@ jobs:
 
       - name: Run E2E tests
         timeout-minutes: 10
-        continue-on-error: true
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
