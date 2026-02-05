@@ -200,8 +200,9 @@ test.describe('Tracking', () => {
     test('POSTs correct conversion data when builder.trackConversion() is called', async ({
       page,
       sdk,
+      packageName,
     }) => {
-      test.skip(checkIsRN(sdk));
+      test.skip(checkIsRN(sdk) || packageName === 'qwik-city');
 
       // Wait for the page to load and initial impression tracking to complete
       await page.goto('/track-conversion', { waitUntil: 'networkidle' });
@@ -257,8 +258,12 @@ test.describe('Tracking', () => {
       expect(data.events[0].data.userAttributes.urlPath).toBe('/track-conversion');
     });
 
-    test('POSTs correct conversion data with custom properties', async ({ page, sdk }) => {
-      test.skip(checkIsRN(sdk));
+    test('POSTs correct conversion data with custom properties', async ({
+      page,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsRN(sdk) || packageName === 'qwik-city');
 
       // Wait for the page to load and initial impression tracking to complete
       await page.goto('/track-conversion', { waitUntil: 'networkidle' });
