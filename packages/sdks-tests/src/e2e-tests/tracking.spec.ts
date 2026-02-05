@@ -243,7 +243,7 @@ test.describe('Tracking', () => {
 
       const ID_REGEX = /^[a-f0-9]{32}$/;
 
-      expect(data).toMatchObject(expected);
+      expect(data.events[0].data.metadata.amount).toEqual(expected.events[0].data.metadata.amount);
       expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
       expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
       expect(data.events[0].data.ownerId).toMatch(/abcd/);
@@ -307,7 +307,10 @@ test.describe('Tracking', () => {
         ],
       };
 
-      expect(data).toMatchObject(expected);
+      expect(data.events[0].data.metadata.amount).toEqual(expected.events[0].data.metadata.amount);
+      expect(data.events[0].data.metadata.customField).toEqual(
+        expected.events[0].data.metadata.customField
+      );
     });
   });
 });

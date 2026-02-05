@@ -4,8 +4,8 @@ import type {
 } from '../../context/types.js';
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
-import { _track } from '../track/index.js';
 import { getUserAttributes } from '../track/helpers.js';
+import { _track } from '../track/index.js';
 
 export type TrackingContext = {
   apiKey: string | null;
