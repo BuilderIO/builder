@@ -84,8 +84,8 @@ export const getBuilderGlobals = (
           ? trackingContext.variationId
           : undefined,
       metadata: {
-        amount,
-        ...customProperties,
+        ...(customProperties || {}),
+        ...(amount !== undefined ? { amount } : {}),
       },
     });
   },
