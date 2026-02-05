@@ -35,6 +35,7 @@ export function evaluate({
   rootSetState,
   event,
   isExpression = true,
+  trackingContext,
 }: EvaluatorArgs): EvalValue {
   if (code.trim() === '') {
     return undefined;
@@ -53,7 +54,7 @@ export function evaluate({
 
   const args: ExecutorArgs = {
     code: parseCode(code, { isExpression }),
-    builder: getBuilderGlobals(),
+    builder: getBuilderGlobals(trackingContext),
     context,
     event,
     rootSetState,

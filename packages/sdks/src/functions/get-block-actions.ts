@@ -2,6 +2,7 @@ import { TARGET } from '../constants/target.js';
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { getEventHandlerName } from './event-handler-name.js';
+import type { TrackingContext } from './evaluate/helpers.js';
 import { createEventHandler } from './get-block-actions-handler.js';
 
 type Actions = { [index: string]: (event: Event) => any };
@@ -10,6 +11,7 @@ export function getBlockActions(
   options: {
     block: BuilderBlock;
     stripPrefix?: boolean;
+    trackingContext?: TrackingContext;
   } & Pick<
     BuilderContextInterface,
     'localState' | 'context' | 'rootState' | 'rootSetState'
