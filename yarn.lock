@@ -7093,6 +7093,7 @@ __metadata:
     babel-plugin-module-resolver: ^5.0.0
     css-to-react-native: ^3.2.0
     isolated-vm: ^6.0.0
+    react-fast-compare: ^3.2.2
     react-native-builder-bob: ^0.21.3
     react-native-storage: ^1.0.1
     react-native-url-polyfill: ^2.0.0

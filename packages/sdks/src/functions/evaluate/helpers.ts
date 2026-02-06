@@ -95,8 +95,7 @@ export function flattenState({
           localState: undefined,
           rootSetState: rootSetState
             ? (subState) => {
-                target[prop] = subState;
-                rootSetState(target);
+                rootSetState({ ...target, [prop]: subState });
               }
             : undefined,
         });
@@ -111,9 +110,12 @@ export function flattenState({
         );
       }
 
-      target[prop] = value;
-
-      rootSetState?.(target);
+      if (rootSetState) {
+        // Create a new object to avoid mutating original state
+        rootSetState({ ...target, [prop]: value });
+      } else {
+        target[prop] = value;
+      }
       return true;
     },
   });
