@@ -38,6 +38,9 @@ test.describe('Large Reactive State', () => {
     // Initial state
     await expect(page.getByText('0', { exact: true })).toBeVisible();
 
+    // log page contents
+    console.log(await page.content());
+
     // Increment multiple times
     for (let i = 1; i <= 5; i++) {
       await page.getByText('Increment Number').click();

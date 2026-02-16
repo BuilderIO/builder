@@ -95,7 +95,8 @@ export function flattenState({
           localState: undefined,
           rootSetState: rootSetState
             ? (subState) => {
-                rootSetState({ ...target, [prop]: subState });
+                target[prop] = subState;
+                rootSetState({ ...target });
               }
             : undefined,
         });
@@ -110,12 +111,9 @@ export function flattenState({
         );
       }
 
-      if (rootSetState) {
-        // Create a new object to avoid mutating original state
-        rootSetState({ ...target, [prop]: value });
-      } else {
-        target[prop] = value;
-      }
+      target[prop] = value;
+      // Pass a new object reference so React/RN detects the state change
+      rootSetState?.({ ...target });
       return true;
     },
   });

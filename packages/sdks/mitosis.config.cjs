@@ -231,6 +231,7 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
             data: { code: 'props.blocks', type: 'single' },
             renderItem: { code: 'renderItem', type: 'single' },
             keyExtractor: { code: 'keyExtractor', type: 'single' },
+            extraData: { code: 'builderContext', type: 'single' },
             removeClippedSubviews: { code: 'true', type: 'single' },
             maxToRenderPerBatch: { code: '10', type: 'single' },
             windowSize: { code: '5', type: 'single' },
