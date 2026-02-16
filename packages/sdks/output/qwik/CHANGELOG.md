@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.24.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+
 ## 0.24.0
 
 ### Minor Changes

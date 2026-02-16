@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 9.1.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+- Updated dependencies [fffde77]
+  - @builder.io/sdk@6.2.1
+
 ## 9.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.2.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+
 ## 6.2.0
 
 ### Minor Changes
