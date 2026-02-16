@@ -5,16 +5,29 @@ import type {
 import { isBrowser } from '../is-browser.js';
 import { isEditing } from '../is-editing.js';
 import { getUserAttributes } from '../track/helpers.js';
+import { _track } from '../track/index.js';
+
+export type TrackingContext = {
+  apiKey: string | null;
+  canTrack?: boolean;
+  contentId?: string;
+  variationId?: string;
+};
 
 export type EvaluatorArgs = Omit<ExecutorArgs, 'builder' | 'event'> & {
   event?: Event;
   isExpression?: boolean;
+  trackingContext?: TrackingContext;
 };
 export type BuilderGlobals = {
   isEditing: boolean | undefined;
   isBrowser: boolean | undefined;
   isServer: boolean | undefined;
   getUserAttributes: typeof getUserAttributes;
+  trackConversion: (
+    amount?: number,
+    customProperties?: Record<string, any>
+  ) => void;
 };
 
 export type ExecutorArgs = Pick<
@@ -47,11 +60,35 @@ export const getFunctionArguments = ({
   });
 };
 
-export const getBuilderGlobals = (): BuilderGlobals => ({
+export const getBuilderGlobals = (
+  trackingContext?: TrackingContext
+): BuilderGlobals => ({
   isEditing: isEditing(),
   isBrowser: isBrowser(),
   isServer: !isBrowser(),
   getUserAttributes: () => getUserAttributes(),
+  trackConversion: (
+    amount?: number,
+    customProperties?: Record<string, any>
+  ) => {
+    if (!trackingContext?.apiKey || trackingContext?.canTrack === false) {
+      return;
+    }
+    _track({
+      type: 'conversion',
+      apiKey: trackingContext.apiKey,
+      canTrack: trackingContext.canTrack ?? true,
+      contentId: trackingContext.contentId,
+      variationId:
+        trackingContext.variationId !== trackingContext.contentId
+          ? trackingContext.variationId
+          : undefined,
+      metadata: {
+        ...(customProperties || {}),
+        ...(amount !== undefined ? { amount } : {}),
+      },
+    });
+  },
 });
 
 export const parseCode = (

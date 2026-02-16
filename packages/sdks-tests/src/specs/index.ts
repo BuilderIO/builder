@@ -98,6 +98,7 @@ import { SECTION_CHILDREN } from './section-children.js';
 import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
 import { HTTP_REQUESTS_POST_API_CONTENT } from './http-requests-post-api.js';
 import { HTTP_REQUESTS_GET_API_CONTENT } from './http-requests-get-api.js';
+import { TRACK_CONVERSION } from './track-conversion.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -278,6 +279,7 @@ export const PAGES: Record<string, Page> = {
   '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
   '/section-children': { content: SECTION_CHILDREN },
   '/symbol-update-entries': { content: SYMBOL_UPDATE_ENTRIES },
+  '/track-conversion': { content: TRACK_CONVERSION },
 } as const;
 
 export type Path = keyof typeof PAGES;

@@ -56,6 +56,12 @@ export default function InteractiveElement(props: InteractiveElementProps) {
               rootSetState: props.context.value.rootSetState,
               localState: props.context.value.localState,
               context: props.context.value.context,
+              trackingContext: {
+                apiKey: props.context.value.apiKey,
+                canTrack: props.context.value.canTrack ?? true,
+                contentId: props.context.value.content?.id,
+                variationId: props.context.value.content?.testVariationId,
+              },
             }),
           }
         : {};
