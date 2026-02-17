@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.24.2
+
+### Patch Changes
+
+- a3d063a: update the version of tar-fs dependency
+
 ## 0.24.1
 
 ### Patch Changes

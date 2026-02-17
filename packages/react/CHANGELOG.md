@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.1.2
+
+### Patch Changes
+
+- a3d063a: update the version of tar-fs dependency
+
 ## 9.1.1
 
 ### Patch Changes
