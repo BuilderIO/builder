@@ -1,0 +1,7 @@
+{
+  "extends": ["tslint-config-standard", "tslint-config-prettier"],
+  "rules": {
+    "no-unexpected-multiline": false,
+    "no-floating-promises": false
+  }
+}
