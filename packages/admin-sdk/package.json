@@ -49,9 +49,26 @@
     "traverse": "^0.6.11"
   },
   "overrides": {
-    "lodash": "^4.17.23"
+    "lodash": "^4.17.23",
+    "graphql-typed-client": {
+      "lodash": "^4.17.23",
+      "qs": "^6.13.0",
+      "isomorphic-fetch": {
+        "node-fetch": "^2.7.0"
+      }
+    }
   },
   "resolutions": {
-    "lodash": "^4.17.23"
+    "lodash": "^4.17.23",
+    "**/graphql-typed-client/**/lodash": "^4.17.23",
+    "**/graphql-typed-client/**/node-fetch": "^2.7.0",
+    "**/graphql-typed-client/qs": "^6.13.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "lodash": "^4.17.23",
+      "graphql-typed-client>qs": "^6.13.0",
+      "graphql-typed-client>isomorphic-fetch>node-fetch": "^2.7.0"
+    }
   }
 }
