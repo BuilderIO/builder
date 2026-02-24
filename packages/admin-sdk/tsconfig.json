@@ -9,6 +9,7 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "declaration": true,
+    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types"
     ]
