@@ -11,6 +11,7 @@ export interface SymbolInfo {
   inline?: boolean;
   dynamic?: boolean;
   ownerId?: string;
+  global?: boolean;
 }
 
 export const fetchSymbolContent = async ({
@@ -36,7 +37,7 @@ export const fetchSymbolContent = async ({
   ) {
     return fetchOneEntry({
       model: symbol.model,
-      apiKey: symbol.ownerId || builderContextValue.apiKey,
+      apiKey: (symbol.global && symbol.ownerId) ? symbol.ownerId : builderContextValue.apiKey,
       apiVersion: builderContextValue.apiVersion,
       ...(symbol?.entry && {
         query: {

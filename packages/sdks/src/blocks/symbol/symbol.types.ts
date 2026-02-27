@@ -13,6 +13,7 @@ export interface SymbolInfo {
   inline?: boolean;
   dynamic?: boolean;
   ownerId?: string;
+  global?: boolean;
 }
 
 export interface SymbolProps
