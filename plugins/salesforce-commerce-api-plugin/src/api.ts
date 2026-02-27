@@ -90,11 +90,15 @@ export class Api {
     }
   }
 
-  async validateConfig(){
-       const response = await this.request(`validate-config`);
-       if(response.errors){
-        throw 'We failed to authenticate your access to Salesforce Commerce Cloud B2C API. Please review all plugin fields and make sure they are correct.';
-       }
+  async validateConfig() {
+    const response = await this.request(`validate-config`);
+    if (response.errors) {
+      const detail = response.errors[0]?.title;
+      throw `We failed to authenticate your access to Salesforce Commerce Cloud B2C API.${detail ? ` Reason: ${detail}.` : ''} Please review all plugin fields and make sure they are correct.`;
+    }
+    if (response.message && !response.message.includes('Validated')) {
+      throw `We failed to authenticate your access to Salesforce Commerce Cloud B2C API. Reason: ${response.message}. Please review all plugin fields and make sure they are correct.`;
+    }
   }
 
   getProduct(id: string): Promise<any> {
