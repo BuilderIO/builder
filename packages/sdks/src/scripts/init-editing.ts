@@ -32,7 +32,6 @@ export const setupBrowserForEditing = (options: {
           apiKey: options.apiKey,
           supportsXSmallBreakpoint: TARGET === 'reactNative' ? false : true,
           blockLevelPersonalization: true,
-          supportsGlobalSymbols: true,
         },
       },
       '*'
