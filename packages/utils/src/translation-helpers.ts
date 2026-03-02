@@ -220,8 +220,27 @@ export function getTranslateableFields(
 
   // blocks
   if (blocks) {
+    // Track how many levels deep we are inside excluded blocks
+    let excludedDepth = 0;
+
     traverse(blocks).forEach(function (el) {
-      if (this.key && el && el.meta?.localizedTextInputs) {
+      // Check if this element starts an exclusion zone
+      const startsExclusion = el && el.meta?.excludeFromTranslation;
+      if (startsExclusion) {
+        excludedDepth++;
+      }
+
+      // After processing children, decrement the counter if this element started an exclusion
+      this.after(function () {
+        if (startsExclusion) {
+          excludedDepth--;
+        }
+      });
+
+      // Skip translation if we're inside an excluded block (excludedDepth > 0)
+      const isExcluded = excludedDepth > 0;
+
+      if (this.key && el && el.meta?.localizedTextInputs && !isExcluded) {
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
           localizedTextInputs
@@ -238,7 +257,7 @@ export function getTranslateableFields(
             });
         }
       }
-      if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
+      if (el && el.id && el.component?.name === 'Text' && !isExcluded) {
         const componentText = el.component.options.text;
         results[`blocks.${el.id}#text`] = {
           value:
@@ -249,7 +268,7 @@ export function getTranslateableFields(
         };
       }
 
-      if (el && el.id && el.component?.name === 'Core:Button' && !el.meta?.excludeFromTranslation) {
+      if (el && el.id && el.component?.name === 'Core:Button' && !isExcluded) {
         const componentText = el.component.options?.text;
         if (componentText) {
           const textValue = typeof componentText === 'string'
@@ -264,7 +283,7 @@ export function getTranslateableFields(
         }
       }
 
-      if (el && el.id && el.component?.name === 'Symbol') {
+      if (el && el.id && el.component?.name === 'Symbol'&& !isExcluded) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const basePath = `blocks.${el.id}.symbolInput`;
@@ -316,8 +335,27 @@ export function applyTranslation(
   }
 
   if (blocks) {
+    // Track how many levels deep we are inside excluded blocks
+    let excludedDepth = 0;
+
     traverse(blocks).forEach(function (el) {
-      if (el && el.id && el.component?.name === 'Symbol') {
+      // Check if this element starts an exclusion zone
+      const startsExclusion = el && el.meta?.excludeFromTranslation;
+      if (startsExclusion) {
+        excludedDepth++;
+      }
+
+      // After processing children, decrement the counter if this element started an exclusion
+      this.after(function () {
+        if (startsExclusion) {
+          excludedDepth--;
+        }
+      });
+
+      // Skip translation if we're inside an excluded block (excludedDepth > 0)
+      const isExcluded = excludedDepth > 0;
+
+      if (el && el.id && el.component?.name === 'Symbol' && !isExcluded) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const transformedMeta = {};
@@ -368,7 +406,7 @@ export function applyTranslation(
         el &&
         el.id &&
         el.component?.name === 'Text' &&
-        !el.meta?.excludeFromTranslation &&
+        !isExcluded &&
         translation[`blocks.${el.id}#text`]
       ) {
         const localizedValues =
@@ -405,7 +443,7 @@ export function applyTranslation(
         el &&
         el.id &&
         el.component?.name === 'Core:Button' &&
-        !el.meta?.excludeFromTranslation &&
+        !isExcluded &&
         translation[`blocks.${el.id}#text`]
       ) {
         const localizedValues =
@@ -440,7 +478,7 @@ export function applyTranslation(
       }
 
       // custom components
-      if (el && el.id && el.meta?.localizedTextInputs) {
+      if (el && el.id && el.meta?.localizedTextInputs && !isExcluded) {
         // there's a localized input
         const keys = el.meta?.localizedTextInputs as string[];
         let options = el.component.options;

@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.1.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+
 ## 5.1.0
 
 ### Minor Changes

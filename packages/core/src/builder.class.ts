@@ -1645,7 +1645,19 @@ export class Builder {
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
-    const meta = typeof contentId === 'object' ? contentId : customProperties;
+    let metadata =
+      typeof contentId === 'object'
+        ? { ...contentId }
+        : customProperties && typeof customProperties === 'object'
+          ? { ...customProperties }
+          : undefined;
+
+    if (amount !== undefined) {
+      if (!metadata) {
+        metadata = {};
+      }
+      metadata.amount = amount;
+    }
     let useContentId = typeof contentId === 'string' ? contentId : undefined;
 
     if (!useContentId && !contentId && this.contentId) {
@@ -1665,7 +1677,7 @@ export class Builder {
           useVariationId && useContentId && useVariationId !== useContentId
             ? useVariationId
             : undefined,
-        meta,
+        meta: metadata,
         contentId: useContentId,
       },
       context

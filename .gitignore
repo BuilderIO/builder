@@ -39,3 +39,10 @@ Pods/
 .nx/workspace-data
 
 !packages/sdks/e2e/react-native-74/.eas/build/*
+/nbproject/
+/.idea/*
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project

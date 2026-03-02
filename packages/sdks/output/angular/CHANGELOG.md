@@ -1,5 +1,18 @@
 # @builder.io/sdk-angular
 
+## 0.24.2
+
+### Patch Changes
+
+- a3d063a: update the version of tar-fs dependency
+
+## 0.24.1
+
+### Patch Changes
+
+- 5f25224: update package.json file so that npm provenance validation passes
+- fffde77: fix trackConversion method for sdks
+
 ## 0.24.0
 
 ### Minor Changes
