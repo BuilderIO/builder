@@ -1,0 +1,8 @@
+git clone https://github.com/BuilderIO/nextjs-shopify.git
+cd nextjs-shopify
+
+unzip builder
+
+npm install --global "@builder.io/cli"
+
+builder create --key "<bpk-3cc894ecd5ca4744808a61fe6e19f606>" --name "<kubucoin>" --debug
