@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.9.1",
-    "@builder.io/qwik-city": "^1.9.1",
+    "@builder.io/qwik-city": "^1.19.0",
     "@types/node": "^18.11.18",
     "node-fetch": "3.3.0",
     "typescript": "^5.1.6",
