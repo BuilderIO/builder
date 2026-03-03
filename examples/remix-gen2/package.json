@@ -11,7 +11,7 @@
   "dependencies": {
     "@builder.io/sdk-react": "^1.0.23",
     "@remix-run/node": "^2.8.0",
-    "@remix-run/react": "^2.8.0",
+    "@remix-run/react": "^2.17.4",
     "@remix-run/server-runtime": "^2.8.0",
     "@vercel/analytics": "^1.2.2",
     "@vercel/remix": "^2.8.0",
