@@ -1,9 +1,13 @@
 <script lang="ts">
   import { Blocks, type BuilderBlock } from '@builder.io/sdk-svelte';
 
-  export let column1: BuilderBlock[];
-  export let column2: BuilderBlock[];
-  export let builderBlock: BuilderBlock;
+  interface Props {
+    column1: BuilderBlock[];
+    column2: BuilderBlock[];
+    builderBlock: BuilderBlock;
+  }
+
+  let { column1, column2, builderBlock }: Props = $props();
 </script>
 
 <!-- Left Column -->

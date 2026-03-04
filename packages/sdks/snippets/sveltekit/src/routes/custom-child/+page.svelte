@@ -3,7 +3,11 @@
   import type { PageData } from './$types';
   import { customHeroInfo } from './CustomHeroInfo';
 
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
 </script>
 
 {#if !data.data && !isPreviewing(data.searchParams)}
