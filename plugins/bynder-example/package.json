@@ -82,7 +82,7 @@
     "@types/react": "^18.3.3",
     "prettier": "^3.3.3",
     "rimraf": "^2.6.2",
-    "semantic-release": "^24.0.0",
+    "semantic-release": "^25.0.3",
     "ts-loader": "^9.2.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
