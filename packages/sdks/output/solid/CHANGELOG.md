@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.2.0
+
+### Minor Changes
+
+- 8322519: Add global symbol support for Gen2 SDKs
+
 ## 5.1.1
 
 ### Patch Changes
