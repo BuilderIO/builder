@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.0
+
+### Minor Changes
+
+- 8322519: Add global symbol support for Gen2 SDKs
+
 ## 0.24.2
 
 ### Patch Changes
