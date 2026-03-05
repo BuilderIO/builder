@@ -132,7 +132,11 @@ export default function Symbol(props: SymbolProps) {
         nonce={props.builderContext.value.nonce}
         isNestedRender
         apiVersion={props.builderContext.value.apiVersion}
-        apiKey={(props.symbol?.global && props.symbol?.ownerId) ? props.symbol.ownerId : props.builderContext.value.apiKey!}
+        apiKey={
+          props.symbol?.global && props.symbol?.ownerId
+            ? props.symbol.ownerId
+            : props.builderContext.value.apiKey!
+        }
         context={{
           ...props.builderContext.value.context,
           symbolId: props.builderBlock?.id,

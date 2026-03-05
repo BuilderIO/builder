@@ -46,7 +46,11 @@ import { CONTENT as symbolAbTest } from './symbol-ab-test.js';
 import { CONTENT as symbolBindings } from './symbol-bindings.js';
 import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.js';
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
-import { CONTENT_WITHOUT_SYMBOLS, CONTENT_WITH_GLOBAL_SYMBOL, CONTENT as symbols } from './symbols.js';
+import {
+  CONTENT_WITHOUT_SYMBOLS,
+  CONTENT_WITH_GLOBAL_SYMBOL,
+  CONTENT as symbols,
+} from './symbols.js';
 import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
 import { CONTENT as textEval } from './text-eval.js';

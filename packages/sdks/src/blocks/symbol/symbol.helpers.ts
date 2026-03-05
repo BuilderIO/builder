@@ -37,7 +37,10 @@ export const fetchSymbolContent = async ({
   ) {
     return fetchOneEntry({
       model: symbol.model,
-      apiKey: (symbol.global && symbol.ownerId) ? symbol.ownerId : builderContextValue.apiKey,
+      apiKey:
+        symbol.global && symbol.ownerId
+          ? symbol.ownerId
+          : builderContextValue.apiKey,
       apiVersion: builderContextValue.apiVersion,
       ...(symbol?.entry && {
         query: {
