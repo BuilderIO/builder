@@ -12,6 +12,8 @@ export interface SymbolInfo {
   content?: BuilderContent;
   inline?: boolean;
   dynamic?: boolean;
+  ownerId?: string;
+  global?: boolean;
 }
 
 export interface SymbolProps

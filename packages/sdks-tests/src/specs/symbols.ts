@@ -738,3 +738,21 @@ const splitUpContent = () => {
 
 export const { CONTENT_WITHOUT_SYMBOLS, FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } =
   splitUpContent();
+
+/**
+ * The API key of the space that owns the global symbol — different from the current space.
+ */
+export const GLOBAL_SYMBOL_OWNER_ID = 'global-owner-space-api-key-abc123';
+
+/**
+ * A page content where:
+ * - block[1] is a GLOBAL symbol (global: true, ownerId = GLOBAL_SYMBOL_OWNER_ID)
+ * - block[2] is a LOCAL symbol (no global/ownerId — uses current space apiKey by default)
+ */
+export const CONTENT_WITH_GLOBAL_SYMBOL = (() => {
+  const clone = JSON.parse(JSON.stringify(CONTENT_WITHOUT_SYMBOLS));
+  // Mark the first symbol as global, owned by a different space.
+  clone.data.blocks[1].component.options.symbol.global = true;
+  clone.data.blocks[1].component.options.symbol.ownerId = GLOBAL_SYMBOL_OWNER_ID;
+  return clone;
+})();
