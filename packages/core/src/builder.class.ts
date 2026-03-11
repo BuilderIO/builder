@@ -497,6 +497,12 @@ export type GetContentOptions = AllowEnrich & {
   includeUnpublished?: boolean;
 
   /**
+   * When `true`, the API will also return the total number of matching entries
+   * regardless of `limit`/`offset`. Useful for building numbered pagination.
+   */
+  fetchTotalCount?: boolean;
+
+  /**
    * Options to configure how enrichment works.
    * @see {@link https://www.builder.io/c/docs/content-api#code-enrich-options-code}
    */
@@ -2336,6 +2342,7 @@ export class Builder {
 
   private getContentQueue: null | GetContentOptions[] = null;
   private priorContentQueue: null | GetContentOptions[] = null;
+  private totalCountByKey: Record<string, number> = {};
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
@@ -2775,6 +2782,7 @@ export class Builder {
         'rev',
         'static',
         'includeRefs',
+        'fetchTotalCount',
       ];
 
       for (const key of properties) {
@@ -2871,6 +2879,9 @@ export class Builder {
               return;
             }
             const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
+            if (result.totalCount !== undefined) {
+              this.totalCountByKey[keyName] = result.totalCount;
+            }
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer
@@ -3035,8 +3046,27 @@ export class Builder {
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
+      fetchTotalCount: true;
+    }
+  ): Promise<{ results: BuilderContent[]; totalCount: number }>;
+  getAll(
+    modelName: string,
+    options?: GetContentOptions & {
+      req?: IncomingMessage;
+      res?: ServerResponse;
+      apiKey?: string;
+      authToken?: string;
+    }
+  ): Promise<BuilderContent[]>;
+  getAll(
+    modelName: string,
+    options: GetContentOptions & {
+      req?: IncomingMessage;
+      res?: ServerResponse;
+      apiKey?: string;
+      authToken?: string;
     } = {}
-  ): Promise<BuilderContent[]> {
+  ): Promise<BuilderContent[] | { results: BuilderContent[]; totalCount: number }> {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(
@@ -3067,18 +3097,27 @@ export class Builder {
       options.noTraverse = true;
     }
 
+    const key =
+      options.key ||
+      (Builder.isBrowser
+        ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
+        : undefined);
+
     return instance
       .getContent(modelName, {
         limit: 30,
         ...options,
-        key:
-          options.key ||
-          // Make the key include all options, so we don't reuse cache for the same content fetched
-          // with different options
-          Builder.isBrowser
-            ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
-            : undefined,
+        key,
       })
-      .promise();
+      .promise()
+      .then(results => {
+        if (options.fetchTotalCount) {
+          return {
+            results,
+            totalCount: key !== undefined ? instance.totalCountByKey[key] ?? 0 : 0,
+          };
+        }
+        return results;
+      });
   }
 }
