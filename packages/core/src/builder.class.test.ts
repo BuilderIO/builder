@@ -1391,4 +1391,56 @@ describe('getAll', () => {
       { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
     );
   });
+
+  test('includes fetchTotalCount=true in URL when option is set', async () => {
+    builder.apiEndpoint = 'content';
+    await builder.getAll('blog-post', { fetchTotalCount: true });
+
+    expect(builder['makeFetchApiCall']).toBeCalledWith(
+      expect.stringContaining('fetchTotalCount=true'),
+      expect.anything()
+    );
+  });
+
+  test('does not include fetchTotalCount in URL when option is not set', async () => {
+    builder.apiEndpoint = 'content';
+    await builder.getAll('blog-post', {});
+
+    expect(builder['makeFetchApiCall']).not.toBeCalledWith(
+      expect.stringContaining('fetchTotalCount'),
+      expect.anything()
+    );
+  });
+
+  test('resolves to { results, totalCount } when fetchTotalCount is true', async () => {
+    const mockResults = [{ id: 'abc', data: {} }];
+    const mockTotalCount = 99;
+
+    builder['makeFetchApiCall'] = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ results: mockResults, totalCount: mockTotalCount }),
+      })
+    );
+
+    builder.apiEndpoint = 'content';
+    const result = await builder.getAll('blog-post', { fetchTotalCount: true });
+
+    expect(result).toEqual({ results: mockResults, totalCount: mockTotalCount });
+  });
+
+  test('resolves to BuilderContent[] (not wrapped) when fetchTotalCount is not set', async () => {
+    const mockResults = [{ id: 'abc', data: {} }];
+
+    builder['makeFetchApiCall'] = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ results: mockResults }),
+      })
+    );
+
+    builder.apiEndpoint = 'content';
+    const result = await builder.getAll('blog-post', {});
+
+    expect(Array.isArray(result)).toBe(true);
+    expect(result).toEqual(mockResults);
+  });
 });
