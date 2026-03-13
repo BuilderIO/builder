@@ -119,8 +119,8 @@ export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
           : '';
 
       const hoverAnimation =
-        this.processedBlock.animations &&
-        this.processedBlock.animations.find((item) => item.trigger === 'hover');
+        this.processedBlock?.animations &&
+        this.processedBlock?.animations?.find((item) => item.trigger === 'hover');
 
       let hoverStylesClass = '';
       if (hoverAnimation) {
