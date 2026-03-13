@@ -812,18 +812,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/common@npm:^17.3.0":
-  version: 17.3.12
-  resolution: "@angular/common@npm:17.3.12"
-  dependencies:
-    tslib: ^2.3.0
-  peerDependencies:
-    "@angular/core": 17.3.12
-    rxjs: ^6.5.3 || ^7.4.0
-  checksum: fd5cb1dffb40454bca766a0d5b2fb292a29a9a95f32fddeeb2d164664f988c82ade1c670cd3288fd67072d55cf8ad29f8503b2a100a50067d957b3195aeb87bd
-  languageName: node
-  linkType: hard
-
 "@angular/common@npm:^19.0.0":
   version: 19.0.5
   resolution: "@angular/common@npm:19.0.5"
@@ -833,6 +821,18 @@ __metadata:
     "@angular/core": 19.0.5
     rxjs: ^6.5.3 || ^7.4.0
   checksum: 76da48707c5f580ba637b8da3d9d9bf13f4ff51d9a9133a58f5d20339d85751744488a4f6d99d4ad9df23cddc2bf93cd5918b8f3b675038a0ce09a2fd4e8213b
+  languageName: node
+  linkType: hard
+
+"@angular/common@npm:^19.2.16":
+  version: 19.2.16
+  resolution: "@angular/common@npm:19.2.16"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/core": 19.2.16
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: e8fe8de10f5de7e1d035e6789b418e0e5cb59e30e2f8374dfcc77db7ea96d0448f37055c237f45249123bc4bbbe27807d7d2a230412c49152545f4a18b94beb0
   languageName: node
   linkType: hard
 
@@ -7028,7 +7028,7 @@ __metadata:
     "@angular-devkit/build-angular": ^17.3.8
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
-    "@angular/common": ^17.3.0
+    "@angular/common": ^19.2.16
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
@@ -7667,7 +7667,7 @@ __metadata:
     "@angular-devkit/build-angular": ^17.3.8
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
-    "@angular/common": ^17.3.0
+    "@angular/common": ^19.2.16
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
@@ -7703,7 +7703,7 @@ __metadata:
     "@angular-devkit/build-angular": ^17.3.8
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
-    "@angular/common": ^17.3.0
+    "@angular/common": ^19.2.16
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
@@ -19982,7 +19982,7 @@ __metadata:
     "@angular-devkit/build-angular": ^17.3.8
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
-    "@angular/common": ^17.3.0
+    "@angular/common": ^19.2.16
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
@@ -20017,7 +20017,7 @@ __metadata:
     "@angular-devkit/build-angular": ^17.3.8
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
-    "@angular/common": ^17.3.0
+    "@angular/common": ^19.2.16
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
