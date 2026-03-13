@@ -19,8 +19,6 @@ import type {
 import { evaluate } from '../../functions/evaluate/evaluate.js';
 import { serializeIncludingFunctions } from '../../functions/register-component.js';
 import { logger } from '../../helpers/logger.js';
-import type { ComponentInfo } from '../../types/components.js';
-import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
 import { getUpdateVariantVisibilityScript } from '../content-variants/helpers.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
@@ -104,16 +102,6 @@ export default function ContentComponent(props: ContentProps) {
         canTrack: props.canTrack,
         apiKey: props.apiKey,
         apiVersion: props.apiVersion,
-        componentInfos: [
-          ...getDefaultRegisteredComponents(),
-          ...(props.customComponents || []),
-        ].reduce<Dictionary<ComponentInfo>>(
-          (acc, { component: _, ...info }) => ({
-            ...acc,
-            [info.name]: serializeIncludingFunctions(info),
-          }),
-          {}
-        ),
         inheritedStyles: {},
         BlocksWrapper: useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -225,6 +213,7 @@ export default function ContentComponent(props: ContentProps) {
       enrich={props.enrich}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
+      registeredComponents={state.registeredComponents}
       contentWrapper={props.contentWrapper}
       contentWrapperProps={props.contentWrapperProps}
       trustedHosts={props.trustedHosts}
