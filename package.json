@@ -19,7 +19,7 @@
     "nx-cloud": "^19.0.0",
     "octokit": "^2.0.14",
     "prettier": "^3.2.5",
-    "zx": "7.2.1"
+    "zx": "8.8.5"
   },
   "license": "MIT",
   "repository": {
