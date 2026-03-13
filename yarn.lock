@@ -29180,6 +29180,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-es@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "cookie-es@npm:1.2.2"
+  checksum: 099050c30c967c89aa72d1d7984e87b3395f3e709cf148d297f436828ebfcc39033f5374d2efdc46d9b5e3eee50b1d59635432c252e57329fea7f09afeb4d055
+  languageName: node
+  linkType: hard
+
 "cookie-signature@npm:1.0.6":
   version: 1.0.6
   resolution: "cookie-signature@npm:1.0.6"
@@ -29701,7 +29708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crossws@npm:^0.2.0, crossws@npm:^0.2.2, crossws@npm:^0.2.4":
+"crossws@npm:^0.2.0, crossws@npm:^0.2.4":
   version: 0.2.4
   resolution: "crossws@npm:0.2.4"
   peerDependencies:
@@ -29710,6 +29717,15 @@ __metadata:
     uWebSockets.js:
       optional: true
   checksum: dcaf730a3af32cf081ab49fdb9c31192a738d7e0585585975e581e71a3d7d14df8d3b42ba183e13e34a1fc26645f695362abf30c40369d12652bcee372a484c3
+  languageName: node
+  linkType: hard
+
+"crossws@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "crossws@npm:0.3.5"
+  dependencies:
+    uncrypto: ^0.1.3
+  checksum: ca597f9b07d82c71fdeed033d6691c4ba2523c596089218ba2782fce26365c86d555e4ea9d6726d277a34087eac861b11bd4df30646dcfc1a1c867a174f2bf98
   languageName: node
   linkType: hard
 
@@ -30911,6 +30927,13 @@ __metadata:
   version: 2.0.3
   resolution: "destr@npm:2.0.3"
   checksum: 4521b145ba6118919a561f7d979d623793695a516d1b9df704de81932601bf9cf21c47278e1cb93a309c88a14f4fd1f18680bb49ebef8b2546cc7f415e7ae48e
+  languageName: node
+  linkType: hard
+
+"destr@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "destr@npm:2.0.5"
+  checksum: e6d5b9e922f528527cd98035249b4d34077828debd2be448a33e268ac1f803bd9a53e7cf0f5184ef68a67573b7f0a6033a89913f61eadaf0e180de49b148606e
   languageName: node
   linkType: hard
 
@@ -38181,37 +38204,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"h3@npm:^1.10.2, h3@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "h3@npm:1.11.1"
+"h3@npm:^1.10.2, h3@npm:^1.11.1, h3@npm:^1.8.1, h3@npm:^1.8.2, h3@npm:^1.9.0":
+  version: 1.15.5
+  resolution: "h3@npm:1.15.5"
   dependencies:
-    cookie-es: ^1.0.0
-    crossws: ^0.2.2
+    cookie-es: ^1.2.2
+    crossws: ^0.3.5
     defu: ^6.1.4
-    destr: ^2.0.3
-    iron-webcrypto: ^1.0.0
-    ohash: ^1.1.3
-    radix3: ^1.1.0
-    ufo: ^1.4.0
+    destr: ^2.0.5
+    iron-webcrypto: ^1.2.1
+    node-mock-http: ^1.0.4
+    radix3: ^1.1.2
+    ufo: ^1.6.3
     uncrypto: ^0.1.3
-    unenv: ^1.9.0
-  checksum: 505ef90cf095f5a6c1e7fb7f26e83b44477634c31eda4459b683e96837ba33d163e89599b3a883e645688b761ffa754ff1f77a432c4e229bf5ab916272e0bee5
-  languageName: node
-  linkType: hard
-
-"h3@npm:^1.8.1, h3@npm:^1.8.2, h3@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "h3@npm:1.9.0"
-  dependencies:
-    cookie-es: ^1.0.0
-    defu: ^6.1.3
-    destr: ^2.0.2
-    iron-webcrypto: ^1.0.0
-    radix3: ^1.1.0
-    ufo: ^1.3.2
-    uncrypto: ^0.1.3
-    unenv: ^1.7.4
-  checksum: 7305163b6fa4ecd7d14fce85e6372fae3580728957c8c021fa6b18176ce5e0cbfcc07c523bafcf7b34e895d2dab3ba731a11af43282faee4f2c8a331ec144f51
+  checksum: 455f58681de2b789b39af45067db8dde35234c18d86ec5068687300aae3c0225f85edcd110906493e087407e2caaa1f292352769c484284e72558d7677c29899
   languageName: node
   linkType: hard
 
@@ -39742,10 +39748,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iron-webcrypto@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "iron-webcrypto@npm:1.0.0"
-  checksum: bbd96cbbfec7d072296bc7464763b96555bdadb12aca50f1f1c7e4fcdc6acb102bc3488333e924f94404dd50eda24f84b67ad28323b9138ec7255a023e8dc19e
+"iron-webcrypto@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "iron-webcrypto@npm:1.2.1"
+  checksum: b158d1893c8d037c11a7dcfd1998b519f31f979643c2c505c6eb1170fd63553498a58b05947d5dea116975df8f12ede5ca235cb68e4c1f404fa6695e4508c60c
   languageName: node
   linkType: hard
 
@@ -48838,6 +48844,13 @@ __metadata:
   version: 1.1.12
   resolution: "node-machine-id@npm:1.1.12"
   checksum: e23088a0fb4a77a1d6484b7f09a22992fd3e0054d4f2e427692b4c7081e6cf30118ba07b6113b6c89f1ce46fd26ec5ab1d76dcaf6c10317717889124511283a5
+  languageName: node
+  linkType: hard
+
+"node-mock-http@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "node-mock-http@npm:1.0.4"
+  checksum: 965f7915d3bbe9cbf5555dca12800cb0ca78a0b8db9c8f33a0ea6d9447fd200a925232b5ddf0d60c7112785ea282eb9baa079bb53d485b2b554355e8559f98ed
   languageName: node
   linkType: hard
 
@@ -61335,6 +61348,13 @@ __metadata:
   version: 1.5.4
   resolution: "ufo@npm:1.5.4"
   checksum: f244703b7d4f9f0df4f9af23921241ab73410b591f4e5b39c23e3147f3159b139a4b1fb5903189c306129f7a16b55995dac0008e0fbae88a37c3e58cbc34d833
+  languageName: node
+  linkType: hard
+
+"ufo@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "ufo@npm:1.6.3"
+  checksum: a23eff86bbbef0b9cc69c19c653c703b656c2328938576d3a60e05e246ef5a78d88b17c710afa146311c5b855950ccfee60ba8f6c8845e8d1ed6b5a9086ddad1
   languageName: node
   linkType: hard
 
