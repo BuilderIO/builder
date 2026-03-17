@@ -19,11 +19,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate GitHub App token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BUILDER_BOT_FOR_LINT_APP_ID }}
+          private-key: ${{ secrets.BUILDER_BOT_FOR_LINT_PRIVATE_KEY }}
+
       - name: Setup
         uses: actions/checkout@v3
         with:
           # need this custom token to run CI checks on the created PR
-          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -46,7 +53,7 @@ jobs:
           commit: '📦 Publish SDKs'
         env:
           # need this custom token to run CI checks on the created PR
-          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
       # - name: Send Slack notification
       #   id: slack
