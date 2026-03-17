@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.1.3
+
+### Patch Changes
+
+- 8001b0f: fix: handle errors in makeFn() when serialising functions
+
 ## 9.1.2
 
 ### Patch Changes
