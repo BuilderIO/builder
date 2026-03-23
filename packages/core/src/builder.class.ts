@@ -3098,10 +3098,7 @@ export class Builder {
     }
 
     const key =
-      options.key ||
-      (Builder.isBrowser
-        ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
-        : undefined);
+      options.key || `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`;
 
     return instance
       .getContent(modelName, {
