@@ -3098,7 +3098,10 @@ export class Builder {
     }
 
     const key =
-      options.key || `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`;
+      options.key ||
+      (Builder.isBrowser || options.fetchTotalCount
+        ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
+        : undefined);
 
     return instance
       .getContent(modelName, {
