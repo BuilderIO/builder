@@ -3039,25 +3039,16 @@ export class Builder {
     return this.queueGetContent(modelName, options);
   }
 
-  getAll(
-    modelName: string,
-    options: GetContentOptions & {
-      req?: IncomingMessage;
-      res?: ServerResponse;
-      apiKey?: string;
-      authToken?: string;
-      fetchTotalCount: true;
-    }
-  ): Promise<{ results: BuilderContent[]; totalCount: number }>;
-  getAll(
+  getAll<T extends boolean = false>(
     modelName: string,
     options?: GetContentOptions & {
       req?: IncomingMessage;
       res?: ServerResponse;
       apiKey?: string;
       authToken?: string;
+      fetchTotalCount?: T;
     }
-  ): Promise<BuilderContent[]>;
+  ): Promise<T extends true ? { results: BuilderContent[]; totalCount: number } : BuilderContent[]>;
   getAll(
     modelName: string,
     options: GetContentOptions & {
