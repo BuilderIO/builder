@@ -3068,6 +3068,7 @@ export class Builder {
         options.authToken || this.authToken,
         options.apiVersion || this.apiVersion
       );
+      instance.apiEndpoint = this.apiEndpoint;
       instance.setUserAttributes(this.getUserAttributes());
     } else {
       // NOTE: All these are when .init is not called and the customer
