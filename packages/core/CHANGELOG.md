@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.3.0
+
+### Minor Changes
+
+- 560a5d0: Added fetchTotalCount param to getAll() in gen1 sdks
+
 ## 6.2.1
 
 ### Patch Changes

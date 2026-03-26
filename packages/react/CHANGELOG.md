@@ -1,5 +1,16 @@
 # @builder.io/react
 
+## 9.2.0
+
+### Minor Changes
+
+- 560a5d0: Added fetchTotalCount param to getAll() in gen1 sdks
+
+### Patch Changes
+
+- Updated dependencies [560a5d0]
+  - @builder.io/sdk@6.3.0
+
 ## 9.1.3
 
 ### Patch Changes
