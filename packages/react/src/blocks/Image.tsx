@@ -298,11 +298,16 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     const children = this.props.builderBlock && this.props.builderBlock.children;
 
     let srcset = this.props.srcset;
-    const sizes = getSizes(
+    const sizesComputed = getSizes(
       this.props.sizes,
       builderBlock,
       builderState?.context.builderContent?.meta?.breakpoints || {}
     );
+    // Prepend "auto" for lazy-loaded images so browsers that support it
+    // (Chrome 126+, Edge 126+) use the actual rendered width instead of
+    // the fallback vw-based heuristic. Older browsers ignore "auto" and
+    // use the fallback value after the comma.
+    const sizes = !this.loadEagerly && sizesComputed ? `auto, ${sizesComputed}` : sizesComputed;
     const image = this.image;
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
@@ -585,7 +590,9 @@ export const Image = withBuilder(ImageComponent, {
     {
       name: 'sizes',
       type: 'string',
-      hideFromUI: true,
+      advanced: true,
+      helperText:
+        'The HTML sizes attribute for the image. E.g. "(max-width: 768px) 100vw, 50vw". If not set, sizes is auto-calculated from the image width styles.',
     },
     {
       name: 'srcset',
