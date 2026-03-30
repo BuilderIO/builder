@@ -303,11 +303,11 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       builderBlock,
       builderState?.context.builderContent?.meta?.breakpoints || {}
     );
-    // Prepend "auto" for lazy-loaded images so browsers that support it
-    // (Chrome 126+, Edge 126+) use the actual rendered width instead of
-    // the fallback vw-based heuristic. Older browsers ignore "auto" and
-    // use the fallback value after the comma.
-    const sizes = !this.loadEagerly && sizesComputed ? `auto, ${sizesComputed}` : sizesComputed;
+    // Prepend "auto" only for auto-calculated sizes on lazy-loaded images so
+    // browsers that support it (Chrome 126+) use the rendered width. When the
+    // user explicitly provides sizes, use their value as-is.
+    const shouldPrependAuto = !this.props.sizes && !this.loadEagerly && sizesComputed;
+    const sizes = shouldPrependAuto ? `auto, ${sizesComputed}` : sizesComputed;
     const image = this.image;
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
@@ -389,7 +389,11 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
               ) : (
                 <picture ref={ref => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && !this.props.noWebp && (
-                    <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />
+                    <source
+                      srcSet={srcset.replace(/\?/g, '?format=webp&')}
+                      type="image/webp"
+                      sizes={sizes || undefined}
+                    />
                   )}
                   {imageContents}
                 </picture>
