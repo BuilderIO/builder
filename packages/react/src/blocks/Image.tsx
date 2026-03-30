@@ -592,13 +592,6 @@ export const Image = withBuilder(ImageComponent, {
       hideFromUI: true,
     },
     {
-      name: 'sizes',
-      type: 'string',
-      advanced: true,
-      helperText:
-        'The HTML sizes attribute for the image. E.g. "(max-width: 768px) 100vw, 50vw". If not set, sizes is auto-calculated from the image width styles.',
-    },
-    {
       name: 'srcset',
       type: 'string',
       hideFromUI: true,
@@ -624,6 +617,13 @@ export const Image = withBuilder(ImageComponent, {
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
       defaultValue: DEFAULT_ASPECT_RATIO,
+    },
+    {
+      name: 'sizes',
+      type: 'string',
+      advanced: true,
+      helperText:
+        'The HTML sizes attribute for the image. E.g. "(max-width: 768px) 100vw, 50vw". If not set, sizes is auto-calculated from the image width styles.',
     },
     // {
     //   name: 'backgroundRepeat',
