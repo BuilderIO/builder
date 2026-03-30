@@ -131,4 +131,87 @@ describe('Image', () => {
 
     expect(renderedBlock).toMatchSnapshot();
   });
+
+  it('prepends auto to sizes when no explicit sizes and not eager', () => {
+    const tree = reactTestRenderer
+      .create(
+        <Image
+          image="https://cdn.builder.io/api/v1/image/assets%2Fabc%2F123?width=500"
+          builderBlock={{
+            id: 'test-block',
+            responsiveStyles: { large: { width: '50%' } },
+          }}
+        />
+      )
+      .toJSON();
+
+    const picture = tree as any;
+    const img = picture.children.find((c: any) => c.type === 'img');
+    // sizes should start with "auto," since no explicit sizes and not eager
+    expect(img.props.sizes).toMatch(/^auto,/);
+    expect(img.props.sizes).toContain('50vw');
+  });
+
+  it('does not prepend auto when explicit sizes are provided', () => {
+    const tree = reactTestRenderer
+      .create(
+        <Image
+          image="https://cdn.builder.io/api/v1/image/assets%2Fabc%2F123?width=500"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          builderBlock={{
+            id: 'test-block',
+            responsiveStyles: { large: { width: '80%' } },
+          }}
+        />
+      )
+      .toJSON();
+
+    const picture = tree as any;
+    const img = picture.children.find((c: any) => c.type === 'img');
+    // explicit sizes should be used as-is, no "auto" prefix
+    expect(img.props.sizes).not.toMatch(/^auto/);
+    expect(img.props.sizes).toBe('(max-width: 768px) 100vw, 50vw');
+  });
+
+  it('does not prepend auto when highPriority (eager) is set', () => {
+    const tree = reactTestRenderer
+      .create(
+        <Image
+          image="https://cdn.builder.io/api/v1/image/assets%2Fabc%2F123?width=500"
+          highPriority
+          builderBlock={{
+            id: 'test-block',
+            responsiveStyles: { large: { width: '50%' } },
+          }}
+        />
+      )
+      .toJSON();
+
+    const picture = tree as any;
+    const img = picture.children.find((c: any) => c.type === 'img');
+    // highPriority loads eagerly, so no "auto" prefix
+    expect(img.props.sizes).not.toMatch(/^auto/);
+    expect(img.props.sizes).toBe('50vw');
+  });
+
+  it('passes sizes to the webp source tag', () => {
+    const tree = reactTestRenderer
+      .create(
+        <Image
+          image="https://cdn.builder.io/api/v1/image/assets%2Fabc%2F123?width=500"
+          builderBlock={{
+            id: 'test-block',
+            responsiveStyles: { large: { width: '50%' } },
+          }}
+        />
+      )
+      .toJSON();
+
+    const picture = tree as any;
+    const source = picture.children.find((c: any) => c.type === 'source');
+    // source tag should have sizes matching the img tag
+    expect(source).toBeTruthy();
+    expect(source.props.sizes).toBeDefined();
+    expect(source.props.sizes).toContain('50vw');
+  });
 });
