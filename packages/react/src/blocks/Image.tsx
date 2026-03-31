@@ -303,8 +303,10 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       builderBlock,
       builderState?.context.builderContent?.meta?.breakpoints || {}
     );
-    // Prepend "auto" for lazy-loaded images so browsers that support it use the rendered width.
-    const shouldPrependAuto = !this.loadEagerly && sizesComputed;
+    // Prepend "auto" only for auto-calculated sizes on lazy-loaded images so
+    // browsers that support it use the rendered width.
+    // When sizes are explicitly provided, use them as-is.
+    const shouldPrependAuto = !this.props.sizes && !this.loadEagerly && sizesComputed;
     const sizes = shouldPrependAuto ? `auto, ${sizesComputed}` : sizesComputed;
     const image = this.image;
 
