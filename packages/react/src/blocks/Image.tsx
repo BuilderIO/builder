@@ -303,10 +303,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       builderBlock,
       builderState?.context.builderContent?.meta?.breakpoints || {}
     );
-    // Prepend "auto" only for auto-calculated sizes on lazy-loaded images so
-    // browsers that support it (Chrome 126+) use the rendered width. When the
-    // user explicitly provides sizes, use their value as-is.
-    const shouldPrependAuto = !this.props.sizes && !this.loadEagerly && sizesComputed;
+    // Prepend "auto" for lazy-loaded images so browsers that support it use the rendered width.
+    const shouldPrependAuto = !this.loadEagerly && sizesComputed;
     const sizes = shouldPrependAuto ? `auto, ${sizesComputed}` : sizesComputed;
     const image = this.image;
 
@@ -582,6 +580,11 @@ export const Image = withBuilder(ImageComponent, {
         'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
     },
     {
+      name: 'sizes',
+      type: 'string',
+      hideFromUI: true,
+    },
+    {
       name: 'height',
       type: 'number',
       hideFromUI: true,
@@ -617,13 +620,6 @@ export const Image = withBuilder(ImageComponent, {
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
       defaultValue: DEFAULT_ASPECT_RATIO,
-    },
-    {
-      name: 'sizes',
-      type: 'string',
-      advanced: true,
-      helperText:
-        'The HTML sizes attribute for the image. E.g. "(max-width: 768px) 100vw, 50vw". If not set, sizes is auto-calculated from the image width styles.',
     },
     // {
     //   name: 'backgroundRepeat',
