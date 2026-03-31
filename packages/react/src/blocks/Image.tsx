@@ -306,7 +306,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     // Prepend "auto" only for auto-calculated sizes on lazy-loaded images so
     // browsers that support it use the rendered width.
     // When sizes are explicitly provided, use them as-is.
-    const shouldPrependAuto = !this.props.sizes && !this.loadEagerly && sizesComputed;
+    const shouldPrependAuto = !this.props.sizes && !this.loadEagerly;
     const sizes = shouldPrependAuto ? `auto, ${sizesComputed}` : sizesComputed;
     const image = this.image;
 
