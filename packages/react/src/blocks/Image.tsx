@@ -580,11 +580,6 @@ export const Image = withBuilder(ImageComponent, {
         'Mark this image as high priority compared to other images on the page. This prevents lazy loading of the image and tells the browser to load this image before others on the page.',
     },
     {
-      name: 'sizes',
-      type: 'string',
-      hideFromUI: true,
-    },
-    {
       name: 'height',
       type: 'number',
       hideFromUI: true,
@@ -592,6 +587,11 @@ export const Image = withBuilder(ImageComponent, {
     {
       name: 'width',
       type: 'number',
+      hideFromUI: true,
+    },
+    {
+      name: 'sizes',
+      type: 'string',
       hideFromUI: true,
     },
     {
