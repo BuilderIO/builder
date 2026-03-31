@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.3.0
+
+### Minor Changes
+
+- 5096d69: Prepend sizes="auto" to <img> and <source> elements to reduce oversized image downloads
+
 ## 9.2.0
 
 ### Minor Changes
