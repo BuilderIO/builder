@@ -174,13 +174,20 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
           imports: { memo: 'memo' },
           path: 'react',
         });
+        json.imports.push({
+          imports: { isEqual: 'default' },
+          path: 'react-fast-compare',
+        });
       }
       if (json.name === 'Blocks') {
         json.imports.push({
           imports: { memo: 'memo' },
           path: 'react',
         });
-
+        json.imports.push({
+          imports: { isEqual: 'default' },
+          path: 'react-fast-compare',
+        });
         json.hooks.init = {
           code: `
             ${json.hooks.init?.code || ''}
@@ -224,6 +231,7 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
             data: { code: 'props.blocks', type: 'single' },
             renderItem: { code: 'renderItem', type: 'single' },
             keyExtractor: { code: 'keyExtractor', type: 'single' },
+            extraData: { code: 'builderContext', type: 'single' },
             removeClippedSubviews: { code: 'true', type: 'single' },
             maxToRenderPerBatch: { code: '10', type: 'single' },
             windowSize: { code: '5', type: 'single' },
@@ -240,13 +248,13 @@ const MEMOIZING_BLOCKS_COMPONENT_PLUGIN = () => ({
       if (json.name === 'Blocks') {
         return code.replace(
           'export default Blocks',
-          'export default memo(Blocks)'
+          'export default memo(Blocks, isEqual)'
         );
       }
       if (json.name === 'Block') {
         return code.replace(
           'export default Block',
-          'export default memo(Block)'
+          'export default memo(Block, isEqual)'
         );
       }
       return code;

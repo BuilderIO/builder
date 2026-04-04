@@ -133,7 +133,7 @@ export function flattenState({
           rootSetState: rootSetState
             ? (subState) => {
                 target[prop] = subState;
-                rootSetState(target);
+                rootSetState({ ...target });
               }
             : undefined,
         });
@@ -149,8 +149,8 @@ export function flattenState({
       }
 
       target[prop] = value;
-
-      rootSetState?.(target);
+      // Pass a new object reference so React/RN detects the state change
+      rootSetState?.({ ...target });
       return true;
     },
   });
