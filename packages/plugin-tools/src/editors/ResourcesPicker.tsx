@@ -70,6 +70,9 @@ export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
             }}
+            title={props.resource.title !== 'untitled'
+              ? `${props.resource.title} - ${props.resource.id}`
+              : props.resource.title}
           >
             {props.resource.title !== 'untitled' ? (
               <div>
