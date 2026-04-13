@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { Create, Search } from '@material-ui/icons';
+import { Close, Create, Search } from '@material-ui/icons';
 import { runInAction, action } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
 import React, { useEffect } from 'react';
@@ -301,11 +301,11 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
               position: 'relative',
             }}
           >
-            <ResourcePreviewCell button css={{ paddingRight: 30 }} resource={store.resourceInfo} />
+            <ResourcePreviewCell button css={{ paddingRight: 70 }} resource={store.resourceInfo} />
             <IconButton
               css={{
                 position: 'absolute',
-                right: 2,
+                right: 42,
                 top: 0,
                 bottom: 0,
                 height: 50,
@@ -317,6 +317,26 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
               }}
             >
               <Create css={{ color: '#888' }} />
+            </IconButton>
+            <IconButton
+              css={{
+                position: 'absolute',
+                right: 2,
+                top: 0,
+                bottom: 0,
+                height: 50,
+                marginTop: 'auto',
+                marginBottom: 'auto',
+                opacity: 0.7,
+              }}
+              onClick={action(() => {
+                store.resourceHandle = undefined;
+                store.resourceId = undefined;
+                store.resourceInfo = null;
+                props.onChange(null as any);
+              })}
+            >
+              <Close css={{ color: '#888' }} />
             </IconButton>
           </Paper>
         )}
