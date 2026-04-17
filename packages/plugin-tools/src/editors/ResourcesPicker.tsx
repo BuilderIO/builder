@@ -333,7 +333,7 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
                 store.resourceHandle = undefined;
                 store.resourceId = undefined;
                 store.resourceInfo = null;
-                props.onChange(null as any);
+                props.onChange(undefined);
               })}
             >
               <Close css={{ color: '#888' }} />
