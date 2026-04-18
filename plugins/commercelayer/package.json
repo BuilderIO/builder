@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-commercelayer",
-  "version": "0.1.5",
+  "version": "0.1.6-4",
   "description": "Commerce Layer plugin for Builder.io",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -27,6 +27,7 @@
     "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-replace": "^5.0.5",
@@ -41,6 +42,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@builder.io/plugin-tools": "0.0.9"
+    "@builder.io/plugin-tools": "0.0.10-2"
   }
 }

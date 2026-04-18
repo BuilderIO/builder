@@ -2,6 +2,7 @@ import replace from '@rollup/plugin-replace';
 import serve from 'rollup-plugin-serve';
 import esbuild from 'rollup-plugin-esbuild';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { readFileSync } from 'fs';
 
@@ -15,6 +16,7 @@ export default {
   external: [
     'react',
     '@builder.io/react',
+    '@builder.io/sdk',
     '@builder.io/app-context',
     '@material-ui/core',
     '@emotion/core',
@@ -34,9 +36,10 @@ export default {
       preventAssignment: true
     }),
     json(),
-    nodeResolve({ 
+    nodeResolve({
       mainFields: ['module', 'browser']
     }),
+    commonjs(),
     esbuild(),
 
     ...(SERVE
@@ -53,4 +56,4 @@ export default {
         ]
       : []),
   ],
-} 
+}
