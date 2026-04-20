@@ -51,19 +51,17 @@ export default function ComponentRef(props: ComponentProps) {
           contextValue: props.context.value,
         })}
       >
-        <Show when={props.componentRef}>
-          <For each={props.blockChildren}>
-            {(child) => (
-              <Block
-                key={child.id}
-                block={child}
-                context={props.context}
-                registeredComponents={props.registeredComponents}
-                linkComponent={props.linkComponent}
-              />
-            )}
-          </For>
-        </Show>
+        <For each={props.blockChildren}>
+          {(child) => (
+            <Block
+              key={child.id}
+              block={child}
+              context={props.context}
+              registeredComponents={props.registeredComponents}
+              linkComponent={props.linkComponent}
+            />
+          )}
+        </For>
       </state.Wrapper>
     </Show>
   );
