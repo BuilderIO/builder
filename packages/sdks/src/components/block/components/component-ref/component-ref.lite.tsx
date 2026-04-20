@@ -51,7 +51,7 @@ export default function ComponentRef(props: ComponentProps) {
           contextValue: props.context.value,
         })}
       >
-        <For each={props.blockChildren}>
+        <For each={props.componentRef ? props.blockChildren : []}>
           {(child) => (
             <Block
               key={child.id}
