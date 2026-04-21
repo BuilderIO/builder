@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 5.2.1
+
+### Patch Changes
+
+- 4b799ef: Fix: remove redundant `<Show>` wrapper around `<For>` in `component-ref` that was wrapping custom component `children` in a `React.Fragment`, breaking `React.Children.count` and iteration.
+
 ## 5.2.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.25.1
+
+### Patch Changes
+
+- 4b799ef: Fix: remove redundant `<Show>` wrapper around `<For>` in `component-ref` that was wrapping custom component `children` in a `React.Fragment`, breaking `React.Children.count` and iteration.
+
 ## 0.25.0
 
 ### Minor Changes
