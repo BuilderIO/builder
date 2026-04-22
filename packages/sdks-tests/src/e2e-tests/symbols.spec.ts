@@ -1,7 +1,11 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
-import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
+import {
+  FIRST_SYMBOL_CONTENT,
+  SECOND_SYMBOL_CONTENT,
+  GLOBAL_SYMBOL_OWNER_ID,
+} from '../specs/symbols.js';
 import {
   excludeGen2,
   checkIsGen1React,
@@ -244,5 +248,80 @@ test.describe('Symbols', () => {
     }
     const symbols = page.locator(selector);
     await expect(symbols).toHaveCount(2);
+  });
+
+  test.describe('global symbols', () => {
+    const symbolUrlMatch = /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+
+    /**
+     * When a symbol block has `global: true` and `ownerId` set to a different space,
+     * the SDK must use `ownerId` as the apiKey in the CDN fetch — not the current space's apiKey.
+     *
+     * Uses `/symbols-with-global` which has block[1] marked as global with GLOBAL_SYMBOL_OWNER_ID.
+     */
+    test('uses ownerId as apiKey when fetching a global symbol', async ({
+      page,
+      packageName,
+      sdk,
+    }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
+
+      const capturedApiKeys: string[] = [];
+
+      await page.route(symbolUrlMatch, route => {
+        const url = new URL(route.request().url());
+        capturedApiKeys.push(url.searchParams.get('apiKey') || '');
+
+        return route.fulfill({
+          status: 200,
+          json: { results: [FIRST_SYMBOL_CONTENT] },
+        });
+      });
+
+      await page.goto('/symbols-with-global');
+
+      // Wait for symbols to render (ensures the CDN fetch has completed)
+      await expect(page.getByText('default description').locator('visible=true')).toBeVisible();
+
+      // At least one fetch must have used the global symbol owner's apiKey
+      expect(capturedApiKeys).toContain(GLOBAL_SYMBOL_OWNER_ID);
+    });
+
+    /**
+     * When a symbol block does not have the `global` attribute, the SDK must always use the current
+     * space's apiKey — even if `ownerId` is present on the symbol data.
+     *
+     * Uses `/symbols-without-content` which has no global symbols (no `global: true`).
+     * All fetches must use the same apiKey (the current space key).
+     */
+    test('non-global symbol does not use ownerId as apiKey', async ({ page, packageName, sdk }) => {
+      test.skip(checkIsGen1React(sdk));
+      test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
+
+      const capturedApiKeys: string[] = [];
+
+      await page.route(symbolUrlMatch, route => {
+        const url = new URL(route.request().url());
+        capturedApiKeys.push(url.searchParams.get('apiKey') || '');
+
+        return route.fulfill({
+          status: 200,
+          json: { results: [FIRST_SYMBOL_CONTENT] },
+        });
+      });
+
+      await page.goto('/symbols-without-content');
+
+      // Wait for symbols to render (ensures the CDN fetch has completed)
+      await expect(page.getByText('default description').locator('visible=true')).toBeVisible();
+
+      await expect(capturedApiKeys.length).toBeGreaterThanOrEqual(1);
+
+      // All fetches must use the same apiKey — no cross-space key should appear
+      const uniqueKeys = Array.from(new Set(capturedApiKeys));
+      expect(uniqueKeys.length).toBe(1);
+      expect(uniqueKeys[0]).not.toBe(GLOBAL_SYMBOL_OWNER_ID);
+    });
   });
 });

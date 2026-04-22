@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, type OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Content, type BuilderContent } from '@builder.io/sdk-angular';
+import {
+  Content,
+  isPreviewing,
+  type BuilderContent,
+} from '@builder.io/sdk-angular';
 import {
   CustomTabsComponent,
   customTabsInfo,
@@ -12,7 +16,7 @@ import {
   standalone: true,
   imports: [CommonModule, Content, CustomTabsComponent],
   template: `
-    <div *ngIf="content">
+    <div *ngIf="canShowContent; else notFound">
       <builder-content
         [content]="content"
         [model]="modelName"
@@ -20,7 +24,7 @@ import {
         [customComponents]="customComponents"
       />
     </div>
-    <div *ngIf="notFound">404</div>
+    <ng-template #notFound> 404 </ng-template>
   `,
 })
 export class AdvancedChildComponent implements OnInit {
@@ -28,7 +32,7 @@ export class AdvancedChildComponent implements OnInit {
   modelName = 'page';
 
   content: BuilderContent | null = null;
-  notFound = false;
+  canShowContent = false;
   customComponents = [customTabsInfo];
 
   constructor(private route: ActivatedRoute) {}
@@ -36,6 +40,8 @@ export class AdvancedChildComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: any) => {
       this.content = data.content;
+      const searchParams = this.route.snapshot.queryParams;
+      this.canShowContent = !!this.content || isPreviewing(searchParams);
     });
   }
 }

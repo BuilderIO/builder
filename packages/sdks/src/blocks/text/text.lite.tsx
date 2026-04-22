@@ -5,6 +5,9 @@ useMetadata({
   angular: {
     changeDetection: 'OnPush',
   },
+  rsc: {
+    componentType: 'client',
+  },
 });
 
 export default function Text(props: TextProps) {

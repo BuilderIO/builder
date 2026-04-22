@@ -1,4 +1,4 @@
-import type { Context, IsolateOptions } from 'isolated-vm';
+import type { IsolateOptions } from 'isolated-vm';
 import { SDK_NAME } from '../../../constants/sdk-name.js';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
@@ -78,18 +78,21 @@ if (typeof output === 'object' && output !== null) {
 type IsolatedVMImport = typeof import('isolated-vm');
 
 let IVM_INSTANCE: IsolatedVMImport | null = null;
-let IVM_CONTEXT: Context | null = null;
+// Create fresh isolates per request to prevent memory leaks
+let IVM_OPTIONS: IsolateOptions = { memoryLimit: 128 };
 
 /**
  * Set the `isolated-vm` instance to be used by the node runtime.
  * This is useful for environments that are not able to rely on our
  * `safeDynamicRequire` trick to import the `isolated-vm` package.
  */
-export const setIvm = (ivm: IsolatedVMImport, options: IsolateOptions = {}) => {
+export const setIvm = (ivm: IsolatedVMImport, options?: IsolateOptions) => {
   if (IVM_INSTANCE) return;
-
   IVM_INSTANCE = ivm;
-  setIsolateContext(options);
+  // Store options to be used per-request in runInNode
+  if (options) {
+    IVM_OPTIONS = options;
+  }
 };
 
 // only mention the script for SDKs that have it.
@@ -121,34 +124,6 @@ const getIvm = (): IsolatedVMImport => {
   throw new Error(ERROR_MESSAGE);
 };
 
-function setIsolateContext(options: IsolateOptions = { memoryLimit: 128 }) {
-  if (IVM_CONTEXT) return IVM_CONTEXT;
-
-  const ivm = getIvm();
-  const isolate = new ivm.Isolate(options);
-  const context = isolate.createContextSync();
-
-  const jail = context.global;
-
-  // This makes the global object available in the context as `global`. We use `derefInto()` here
-  // because otherwise `global` would actually be a Reference{} object in the new isolate.
-  jail.setSync('global', jail.derefInto());
-
-  // We will create a basic `log` function for the new isolate to use.
-  jail.setSync('log', function (...logArgs: any[]) {
-    console.log(...logArgs);
-  });
-
-  jail.setSync(INJECTED_IVM_GLOBAL, ivm);
-
-  IVM_CONTEXT = context;
-  return context;
-}
-
-const getIsolateContext = () => {
-  return setIsolateContext();
-};
-
 export const runInNode = ({
   code,
   builder,
@@ -160,56 +135,77 @@ export const runInNode = ({
 }: ExecutorArgs) => {
   const ivm = getIvm();
 
-  const state = fastClone({
-    ...rootState,
-    ...localState,
-  });
-  const args = getFunctionArguments({
-    builder,
-    context,
-    event,
-    state,
-  });
-  const isolateContext = getIsolateContext();
-  const jail = isolateContext.global;
-
-  /**
-   * Propagate state changes back to the reactive root state.
-   */
-  jail.setSync(BUILDER_SET_STATE_NAME, function (key: string, value: any) {
-    // mutate the `rootState` object itself. Important for cases where we do not have `rootSetState`
-    // like Qwik.
-    set(rootState, key, value);
-    // call the `rootSetState` function if it exists
-    rootSetState?.(rootState);
-  });
-
-  args.forEach(([key, arg]) => {
-    const val =
-      typeof arg === 'object'
-        ? new ivm.Reference(
-            // workaround: methods with default values for arguments is not being cloned over
-            key === 'builder'
-              ? {
-                  ...arg,
-                  getUserAttributes: () =>
-                    (arg as BuilderGlobals).getUserAttributes(),
-                }
-              : arg
-          )
-        : null;
-    jail.setSync(getSyncValName(key), val);
-  });
-
-  const evalStr = processCode({ code, args });
-
-  const resultStr = isolateContext.evalClosureSync(evalStr);
-
+  // Use stored options from setIvm, or default to { memoryLimit: 128 }
+  let isolate;
   try {
-    // returning objects throw errors in isolated vm, so we stringify it and parse it back
-    const res = JSON.parse(resultStr);
-    return res;
-  } catch (_error: any) {
-    return resultStr;
+    isolate = new ivm.Isolate(IVM_OPTIONS);
+    const isolateContext = isolate.createContextSync();
+    const jail = isolateContext.global;
+
+    // Setup the isolate
+    jail.setSync('global', jail.derefInto());
+    jail.setSync('log', function (...logArgs: any[]) {
+      console.log(...logArgs);
+    });
+    jail.setSync(INJECTED_IVM_GLOBAL, ivm);
+
+    const state = fastClone({
+      ...rootState,
+      ...localState,
+    });
+    const args = getFunctionArguments({
+      builder,
+      context,
+      event,
+      state,
+    });
+
+    /**
+     * Propagate state changes back to the reactive root state.
+     */
+    jail.setSync(BUILDER_SET_STATE_NAME, function (key: string, value: any) {
+      // mutate the `rootState` object itself. Important for cases where we do not have `rootSetState`
+      // like Qwik.
+      set(rootState, key, value);
+      // call the `rootSetState` function if it exists
+      rootSetState?.(rootState);
+    });
+
+    args.forEach(([key, arg]) => {
+      const val =
+        typeof arg === 'object'
+          ? new ivm.Reference(
+              // workaround: methods with default values for arguments is not being cloned over
+              key === 'builder'
+                ? {
+                    ...arg,
+                    getUserAttributes: () =>
+                      (arg as BuilderGlobals).getUserAttributes(),
+                  }
+                : arg
+            )
+          : null;
+      jail.setSync(getSyncValName(key), val);
+    });
+
+    const evalStr = processCode({ code, args });
+    const resultStr = isolateContext.evalClosureSync(evalStr);
+
+    try {
+      // returning objects throw errors in isolated vm, so we stringify it and parse it back
+      const res = JSON.parse(resultStr);
+      return res;
+    } catch (_error: any) {
+      return resultStr;
+    }
+  } finally {
+    // Destroy the entire VM, this frees ALL memory at the C++ level.
+    if (isolate) {
+      try {
+        isolate.dispose();
+      } catch (e) {
+        // Ignore disposal errors
+      }
+    }
   }
 };

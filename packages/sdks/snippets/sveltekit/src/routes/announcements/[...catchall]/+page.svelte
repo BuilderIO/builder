@@ -10,7 +10,7 @@
 
   export let data;
 
-  const canShowContent = data.content || isPreviewing();
+  const canShowContent = data.content || isPreviewing(data.searchParams);
 </script>
 
 <main>

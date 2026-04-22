@@ -2,28 +2,6 @@ import { SDK_VERSION } from '../constants/sdk-version.js';
 import { TARGET } from '../constants/target.js';
 import { isBrowser } from '../functions/is-browser.js';
 import { isFromTrustedHost } from '../functions/is-from-trusted-host.js';
-import { register } from '../functions/register.js';
-
-export const registerInsertMenu = () => {
-  register('insertMenu', {
-    name: '_default',
-    default: true,
-    items: [
-      { name: 'Box' },
-      { name: 'Text' },
-      { name: 'Image' },
-      { name: 'Columns' },
-      ...(TARGET === 'reactNative'
-        ? []
-        : [
-            { name: 'Core:Section' },
-            { name: 'Core:Button' },
-            { name: 'Embed' },
-            { name: 'Custom Code' },
-          ]),
-    ],
-  });
-};
 
 let isSetupForEditing = false;
 export const setupBrowserForEditing = (options: {

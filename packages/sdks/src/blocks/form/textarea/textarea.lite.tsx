@@ -10,6 +10,9 @@ useMetadata({
   rsc: {
     componentType: 'client',
   },
+  angular: {
+    selector: 'builder-textarea',
+  },
 });
 
 export interface TextareaProps {

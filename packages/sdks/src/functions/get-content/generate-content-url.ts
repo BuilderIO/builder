@@ -52,17 +52,12 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   url.searchParams.set('limit', String(limit));
   url.searchParams.set('noTraverse', String(noTraverse));
   url.searchParams.set('includeRefs', String(true));
+  if (locale) {
+    url.searchParams.set('locale', locale);
+  }
 
-  const finalLocale = locale || userAttributes?.locale;
   let finalUserAttributes: Record<string, any> = userAttributes || {};
 
-  if (finalLocale) {
-    url.searchParams.set('locale', finalLocale);
-    finalUserAttributes = {
-      locale: finalLocale,
-      ...finalUserAttributes,
-    };
-  }
   if (enrich) url.searchParams.set('enrich', String(enrich));
 
   url.searchParams.set('omit', omit ?? 'meta.componentsUsed');

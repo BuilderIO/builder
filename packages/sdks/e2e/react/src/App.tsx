@@ -2,6 +2,7 @@ import {
   Content,
   _processContentResult,
   fetchOneEntry,
+  registerAction,
   subscribeToEditor,
 } from '@builder.io/sdk-react';
 import { getProps } from '@sdk/tests';
@@ -9,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { builderBlockWithClassNameCustomComponent } from './components/BuilderBlockWithClassName';
 import ComponentNeedsHello from './components/ComponentNeedsHello';
 import { componentWithLocalizedSubfieldsInfo } from './components/ComponentWithLocalizedSubfields';
+import { Description } from './components/Description';
 import Hello from './components/Hello';
 
 const DataComp = (props: {
@@ -52,6 +54,24 @@ function App() {
         unsubscribe();
       };
     }
+    if (typeof window !== 'undefined') {
+      registerAction({
+        name: 'test-action',
+        kind: 'function',
+        id: 'test-action-id',
+        inputs: [
+          {
+            name: 'actionName',
+            type: 'string',
+            required: true,
+            helperText: 'Action name',
+          },
+        ],
+        action: () => {
+          return `console.log("function call")`;
+        },
+      });
+    }
   }, []);
 
   if (window.location.pathname === '/data-preview') {
@@ -87,6 +107,17 @@ function App() {
               ) && {
                 models: ['test-model'],
               }),
+            },
+            {
+              name: 'Description',
+              component: Description,
+              inputs: [
+                {
+                  name: 'text',
+                  type: 'string',
+                  defaultValue: 'Hello',
+                },
+              ],
             },
             {
               name: 'ComponentNeedsHello',

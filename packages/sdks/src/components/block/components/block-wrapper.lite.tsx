@@ -42,6 +42,12 @@ export default function BlockWrapper(props: BlockWrapperProps) {
         localState: props.context.value.localState,
         context: props.context.value.context,
         stripPrefix: true,
+        trackingContext: {
+          apiKey: props.context.value.apiKey,
+          canTrack: props.context.value.canTrack ?? true,
+          contentId: props.context.value.content?.id,
+          variationId: props.context.value.content?.testVariationId,
+        },
       })}
     >
       {props.children}

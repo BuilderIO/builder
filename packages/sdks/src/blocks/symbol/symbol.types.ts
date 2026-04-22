@@ -5,13 +5,15 @@ import type {
   BuilderLinkComponentProp,
 } from '../../types/builder-props.js';
 
-interface SymbolInfo {
+export interface SymbolInfo {
   model?: string;
   entry?: string;
   data?: any;
   content?: BuilderContent;
   inline?: boolean;
   dynamic?: boolean;
+  ownerId?: string;
+  global?: boolean;
 }
 
 export interface SymbolProps

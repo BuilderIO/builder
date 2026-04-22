@@ -1,16 +1,20 @@
 import {
   Show,
+  onUpdate,
   useMetadata,
   useStore,
   useTarget,
   type Signal,
 } from '@builder.io/mitosis';
+import { TARGET } from '../../../constants/target.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { getBlockActions } from '../../../functions/get-block-actions.js';
 import { getBlockProperties } from '../../../functions/get-block-properties.js';
+import { isEditing } from '../../../server-index.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import type { Dictionary } from '../../../types/typescript.js';
 import Awaiter from '../../awaiter.lite.jsx';
+import LiveEdit from '../../live-edit.lite.jsx';
 
 export type InteractiveElementProps = {
   Wrapper: any;
@@ -38,6 +42,7 @@ useMetadata({
  */
 export default function InteractiveElement(props: InteractiveElementProps) {
   const state = useStore({
+    forceRenderCount: 0,
     get attributes() {
       return props.includeBlockProps
         ? {
@@ -51,6 +56,12 @@ export default function InteractiveElement(props: InteractiveElementProps) {
               rootSetState: props.context.value.rootSetState,
               localState: props.context.value.localState,
               context: props.context.value.context,
+              trackingContext: {
+                apiKey: props.context.value.apiKey,
+                canTrack: props.context.value.canTrack ?? true,
+                contentId: props.context.value.content?.id,
+                variationId: props.context.value.content?.testVariationId,
+              },
             }),
           }
         : {};
@@ -68,16 +79,39 @@ export default function InteractiveElement(props: InteractiveElementProps) {
     },
   });
 
+  // Use onUpdate to track prop changes (Mitosis equivalent of useEffect/useTask)
+  onUpdate(() => {
+    useTarget({
+      qwik: () => {
+        state.forceRenderCount = state.forceRenderCount + 1;
+      },
+      default: () => {},
+    });
+  }, [props.wrapperProps, props.block?.component?.options]);
+
   return (
     <Show
       when={props.Wrapper.load}
       else={
-        <props.Wrapper
-          {...state.targetWrapperProps}
-          attributes={state.attributes}
+        <Show
+          when={TARGET === 'rsc' && isEditing()}
+          else={
+            <props.Wrapper
+              {...state.targetWrapperProps}
+              attributes={state.attributes}
+            >
+              {props.children}
+            </props.Wrapper>
+          }
         >
-          {props.children}
-        </props.Wrapper>
+          <LiveEdit
+            Wrapper={props.Wrapper}
+            id={props.block.id || ''}
+            attributes={state.attributes}
+          >
+            {props.children}
+          </LiveEdit>
+        </Show>
       }
     >
       <Awaiter

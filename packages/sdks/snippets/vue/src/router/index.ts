@@ -4,7 +4,12 @@ import CustomChild from '@/views/CustomChild.vue';
 import EditableRegions from '@/views/EditableRegions.vue';
 import LivePreview from '@/views/LivePreview.vue';
 import QuickStart from '@/views/QuickStart.vue';
+import BlogArticle from '@/views/blueprints/BlogArticle.vue';
+import Hero from '@/views/blueprints/Hero.vue';
+import Homepage from '@/views/blueprints/Homepage.vue';
+import NavLinks from '@/views/blueprints/NavLinks.vue';
 import ProductDetails from '@/views/blueprints/ProductDetails.vue';
+import ProductEditorial from '@/views/blueprints/ProductEditorial.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -23,6 +28,11 @@ const router = createRouter({
       component: AdvancedChild,
     },
     { path: '/product/category/:handle', component: ProductDetails },
+    { path: '/products/:id', component: ProductEditorial },
+    { path: '/blogs/:handle', component: BlogArticle },
+    { path: '/marketing-event', component: Hero },
+    { path: '/home', component: Homepage },
+    { path: '/landing-page', component: NavLinks },
     // will match everything and put it under `route.params.pathMatch`
     { path: '/:pathMatch(.*)*', component: QuickStart },
   ],

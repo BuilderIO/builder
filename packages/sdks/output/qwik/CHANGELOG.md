@@ -1,5 +1,137 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.25.0
+
+### Minor Changes
+
+- 8322519: Add global symbol support for Gen2 SDKs
+
+## 0.24.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+
+## 0.24.0
+
+### Minor Changes
+
+- 659cc99: - Eliminates memory leaks in long-running Node.js processes
+
+## 0.23.2
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
+## 0.23.0
+
+### Minor Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
+## 0.22.2
+
+### Patch Changes
+
+- 3e5133e: docs: document `getBuilderSearchParams` and `isPreviewing`
+
+## 0.22.1
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+- 8089dc5: Fix: corrected the implementation of locale handling for fetchEntries()
+
+## 0.21.1
+
+### Patch Changes
+
+- 7adc4f6: Fix: Corrected the implementaion of http requests with GET method
+- 25895a2: Fix: Improved implementation of making Content http-requests with GET method
+
+## 0.20.1
+
+### Patch Changes
+
+- 6ae35cc: feat: add support for register action
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
+## 0.20.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
+## 0.19.3
+
+### Patch Changes
+
+- 9417b4a: fix: parsing of localized values evaluated from data bindings
+
+## 0.19.2
+
+### Patch Changes
+
+- 18fdcb9: fix: removed duplicate menu
+
+## 0.19.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+
+## 0.19.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+## 0.18.15
+
+### Patch Changes
+
+- a1e0f69: Fix: Error handling on form submission
+
+## 0.18.14
+
+### Patch Changes
+
+- f59d992: Feat: support of Variant Containers and block level personalization
+
+## 0.18.13
+
+### Patch Changes
+
+- 8d5274f: Feat: Add support for passing `BlocksWrapperProps` to `<Blocks />` component. This allows overriding global props set via `<Content />` with specific props for individual Blocks instances. Note that local props completely replace global props unless manually merged.
+
+  Example usage:
+
+  ```tsx
+  // Set global props, applies to all <Blocks />
+  <Content blocksWrapperProps={{ style: { padding: 10 } }} />
+
+  // Override global props
+  <Blocks BlocksWrapperProps={{ style: { backgroundColor: 'red' } }} />
+
+  // Merge global and local props
+  <Blocks
+    BlocksWrapperProps={{
+      ...builderContext.BlocksWrapperProps,
+      style: { backgroundColor: 'red' } // applies both bg color and padding
+    }}
+  />
+  ```
+
+## 0.18.12
+
+### Patch Changes
+
+- 5bd303e: Fix: Ensures the correct content loads when the symbol entry changes in the Visual Editor.
+- dfbc6e5: Fix: Default values for custom components now update correctly in the editor.
+
 ## 0.18.11
 
 ### Patch Changes

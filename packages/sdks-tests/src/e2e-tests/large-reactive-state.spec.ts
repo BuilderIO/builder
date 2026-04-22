@@ -81,7 +81,6 @@ test.describe('Large Reactive State', () => {
     basePort,
     packageName,
   }) => {
-    test.fail(excludeTestFor({ rsc: true }, sdk));
     test.skip(
       packageName === 'gen1-next14-pages' ||
         packageName === 'gen1-next15-app' ||

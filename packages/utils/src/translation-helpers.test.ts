@@ -55,6 +55,38 @@ test('getTranslateableFields from content to match snapshot', async () => {
           },
         },
         {
+          meta: {
+            instructions: 'Button with plain text',
+          },
+          id: 'button-plain-text-id',
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Core:Button',
+            options: {
+              text: 'Cute Baby',
+              openLinkInNewTab: false,
+            },
+          },
+        },
+        {
+          meta: {
+            instructions: 'Button with pre-localized text',
+          },
+          id: 'button-localized-text-id',
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Core:Button',
+            options: {
+              text: {
+                '@type': localizedType,
+                'en-US': 'Click Me!',
+                Default: 'Click Here',
+              },
+              openLinkInNewTab: true,
+            },
+          },
+        },
+        {
           '@type': '@builder.io/sdk:Element',
           id: 'builder-custom-component-id',
           meta: {
@@ -845,4 +877,94 @@ test('applyTranslation from plain data model content to match snapshot', async (
   let result = applyTranslation(content, frenchTranslations, 'fr-FR');
   result = applyTranslation(result, germanTranslations, 'de');
   expect(result).toMatchSnapshot();
+});
+
+test('applyTranslation for symbol with localized array containing nested localized values', async () => {
+  // This test covers the case where:
+  // 1. uspList is itself a LocalizedValue (array-level localization)
+  // 2. Each array item has nested LocalizedValue fields (headline, description)
+  const content: BuilderContent = {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          id: 'builder-b14878b45889498c862240c40ac6bddd',
+          component: {
+            name: 'Symbol',
+            options: {
+              symbol: {
+                model: 'symbol',
+                entry: '44c18d32c87f446ab5926a39efd35db4',
+                data: {
+                  uspList: {
+                    '@type': localizedType,
+                    Default: [
+                      {
+                        headline: {
+                          '@type': localizedType,
+                          Default: 'Accept card payments',
+                        },
+                        description: {
+                          '@type': localizedType,
+                          Default: 'Take contactless or Chip and PIN payments from all major cards.',
+                        },
+                        iconsrc: 'https://example.com/icon.svg',
+                      },
+                      {
+                        headline: {
+                          '@type': localizedType,
+                          Default: 'Organise your items',
+                        },
+                        description: {
+                          '@type': localizedType,
+                          Default: 'Make stock management seamless with a detailed item catalogue.',
+                        },
+                        iconsrc: 'https://example.com/icon2.svg',
+                      },
+                    ],
+                  },
+                },
+                ownerId: '970aa68ef5444888893ac22df7f024eb',
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  const bulgarianTranslations = {
+    'blocks.builder-b14878b45889498c862240c40ac6bddd.symbolInput#uspList[0].headline': {
+      value: 'Приемане на картови плащания',
+    },
+    'blocks.builder-b14878b45889498c862240c40ac6bddd.symbolInput#uspList[0].description': {
+      value: 'Приемайте Безконтактно или плащания с чип и ПИН от всички основни карти.',
+    },
+    'blocks.builder-b14878b45889498c862240c40ac6bddd.symbolInput#uspList[1].headline': {
+      value: 'Организирайте вашите артикули',
+    },
+    'blocks.builder-b14878b45889498c862240c40ac6bddd.symbolInput#uspList[1].description': {
+      value: 'Направете управлението на наличностите безпроблемно с подробен Каталог с артикули.',
+    },
+  };
+
+  const result = applyTranslation(content, bulgarianTranslations, 'bg-BG');
+  
+  // Verify the translations were applied correctly
+  const symbolData = result.data?.blocks?.[0]?.component?.options?.symbol?.data;
+  
+  // The translations should be applied to the Default array's items
+  expect(symbolData.uspList.Default[0].headline['bg-BG']).toBe('Приемане на картови плащания');
+  expect(symbolData.uspList.Default[0].description['bg-BG']).toBe(
+    'Приемайте Безконтактно или плащания с чип и ПИН от всички основни карти.'
+  );
+  expect(symbolData.uspList.Default[1].headline['bg-BG']).toBe('Организирайте вашите артикули');
+  expect(symbolData.uspList.Default[1].description['bg-BG']).toBe(
+    'Направете управлението на наличностите безпроблемно с подробен Каталог с артикули.'
+  );
+  
+  // Original Default values should still be preserved
+  expect(symbolData.uspList.Default[0].headline.Default).toBe('Accept card payments');
+  expect(symbolData.uspList.Default[1].headline.Default).toBe('Organise your items');
 });

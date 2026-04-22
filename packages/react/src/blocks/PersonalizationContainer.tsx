@@ -106,6 +106,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             </template>
           ))}
           <script
+            nonce={builderStore.context.nonce}
             id={`variants-script-${props.builderBlock?.id}`}
             dangerouslySetInnerHTML={{
               __html: getPersonalizationScript(
@@ -123,6 +124,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
           />
         </div>
         <script
+          nonce={builderStore.context.nonce}
           dangerouslySetInnerHTML={{
             __html: `
          window.__hydrated = window.__hydrated || {};
@@ -194,6 +196,7 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         )}
       </div>
       <script
+        nonce={builderStore.context.nonce}
         dangerouslySetInnerHTML={{
           __html: `
          window.__hydrated = window.__hydrated || {};

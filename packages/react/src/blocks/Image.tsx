@@ -10,6 +10,8 @@ import { throttle } from '../functions/throttle';
 import { Breakpoints, getSizesForBreakpoints } from '../constants/device-sizes.constant';
 import { IMAGE_FILE_TYPES } from 'src/constants/file-types.constant';
 
+const isNewReact = 'use' in React;
+
 // Taken from (and modified) the shopify theme script repo
 // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
 function removeProtocol(path: string) {
@@ -261,6 +263,17 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     return this.props.image || this.props.src;
   }
 
+  get loadEagerly() {
+    return this.props.builderBlock?.id.startsWith('builder-pixel-') || this.props.highPriority;
+  }
+
+  get fetchPriorityProp() {
+    const propNameToUse = isNewReact ? 'fetchPriority' : 'fetchpriority';
+    return {
+      [propNameToUse]: this.loadEagerly ? 'high' : 'auto',
+    };
+  }
+
   getSrcSet(): string | undefined {
     const url = this.image;
     if (!url || typeof url !== 'string') {
@@ -285,11 +298,15 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     const children = this.props.builderBlock && this.props.builderBlock.children;
 
     let srcset = this.props.srcset;
-    const sizes = getSizes(
+    const sizesComputed = getSizes(
       this.props.sizes,
       builderBlock,
       builderState?.context.builderContent?.meta?.breakpoints || {}
     );
+    // Prepend "auto" only for auto-calculated sizes on lazy-loaded images so
+    // browsers that support it use the rendered width.
+    const shouldPrependAuto = !this.props.sizes && !this.loadEagerly;
+    const sizes = shouldPrependAuto ? `auto, ${sizesComputed}` : sizesComputed;
     const image = this.image;
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
@@ -301,8 +318,6 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       srcset = this.getSrcSet();
     }
 
-    const isPixel = builderBlock?.id.startsWith('builder-pixel-');
-    const eagerLoad = isPixel || this.props.highPriority;
     const { fitContent } = this.props;
 
     return (
@@ -352,8 +367,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   },
                 }),
               }}
-              loading={eagerLoad ? 'eager' : 'lazy'}
-              fetchPriority={eagerLoad ? 'high' : 'auto'}
+              loading={this.loadEagerly ? 'eager' : 'lazy'}
+              {...this.fetchPriorityProp}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
               {...(!amp && {
@@ -373,7 +388,11 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
               ) : (
                 <picture ref={ref => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && !this.props.noWebp && (
-                    <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />
+                    <source
+                      srcSet={srcset.replace(/\?/g, '?format=webp&')}
+                      type="image/webp"
+                      sizes={sizes || undefined}
+                    />
                   )}
                   {imageContents}
                 </picture>

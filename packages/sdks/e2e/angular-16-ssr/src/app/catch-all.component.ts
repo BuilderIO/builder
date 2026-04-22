@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ActivatedRoute } from '@angular/router';
 import type { RegisteredComponent } from '@builder.io/sdk-angular';
+import { registerAction } from '@builder.io/sdk-angular';
 import { customComponents } from './custom-components';
 
 interface BuilderProps {
@@ -53,6 +54,24 @@ export class CatchAllComponent {
   constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
+    if (typeof window !== 'undefined') {
+      registerAction({
+        name: 'test-action',
+        kind: 'function',
+        id: 'test-action-id',
+        inputs: [
+          {
+            name: 'actionName',
+            type: 'string',
+            required: true,
+            helperText: 'Action name',
+          },
+        ],
+        action: () => {
+          return `console.log("function call") `;
+        },
+      });
+    }
     this.activatedRoute.data.subscribe((data: any) => {
       this.content = data.content?.content;
       this.canTrack = data.content?.canTrack;

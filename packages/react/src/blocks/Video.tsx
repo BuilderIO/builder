@@ -2,7 +2,6 @@
 import { jsx } from '@emotion/core';
 import React, { PropsWithChildren } from 'react';
 
-import { throttle } from '../functions/throttle';
 import { withChildren } from '../functions/with-children';
 import { Builder } from '@builder.io/sdk';
 import { IMAGE_FILE_TYPES, VIDEO_FILE_TYPES } from 'src/constants/file-types.constant';
@@ -30,8 +29,7 @@ class VideoComponent extends React.Component<
 > {
   video: HTMLVideoElement | null = null;
   containerRef: HTMLElement | null = null;
-
-  scrollListener: null | ((e: Event) => void) = null;
+  lazyVideoObserver: IntersectionObserver | null = null;
 
   get lazyLoad() {
     // Default is true, must be explicitly turned off to not have this behavior
@@ -72,43 +70,33 @@ class VideoComponent extends React.Component<
     this.updateVideo();
 
     if (this.lazyLoad && Builder.isBrowser) {
-      // TODO: have a way to consolidate all listeners into one timer
-      // to avoid excessive reflows
-      const listener = throttle(
-        (event: Event) => {
-          if (this.containerRef) {
-            const rect = this.containerRef.getBoundingClientRect();
-            const buffer = window.innerHeight / 2;
-            if (rect.top < window.innerHeight + buffer) {
-              this.setState(state => ({
-                ...state,
-                load: true,
-              }));
-              window.removeEventListener('scroll', listener);
-              this.scrollListener = null;
-            }
-          }
-        },
-        400,
-        {
-          leading: false,
-          trailing: true,
-        }
-      );
-      this.scrollListener = listener;
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
 
-      window.addEventListener('scroll', listener, {
-        capture: true,
-        passive: true,
+          this.setState(state => ({
+            ...state,
+            load: true,
+          }));
+
+          if (this.lazyVideoObserver) {
+            this.lazyVideoObserver.disconnect();
+            this.lazyVideoObserver = null;
+          }
+        });
       });
-      listener();
+
+      if (this.containerRef) {
+        observer.observe(this.containerRef);
+        this.lazyVideoObserver = observer;
+      }
     }
   }
 
   componentWillUnmount() {
-    if (Builder.isBrowser && this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener);
-      this.scrollListener = null;
+    if (this.lazyVideoObserver) {
+      this.lazyVideoObserver.disconnect();
+      this.lazyVideoObserver = null;
     }
   }
 

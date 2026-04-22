@@ -2,12 +2,7 @@
 <!-- pages/[...app].vue -->
 
 <script setup>
-import {
-  Content,
-  fetchOneEntry,
-  getBuilderSearchParams,
-  isPreviewing,
-} from '@builder.io/sdk-vue';
+import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
 import { ref } from 'vue';
 
 const route = useRoute();
@@ -22,7 +17,7 @@ const { data: content } = await useAsyncData(
     fetchOneEntry({
       model,
       apiKey,
-      options: getBuilderSearchParams(route.query),
+
       userAttributes: { urlPath: route.path },
     })
 );

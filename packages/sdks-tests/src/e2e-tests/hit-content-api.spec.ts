@@ -71,7 +71,8 @@ test.describe('Get Content', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
 
     urls.forEach(url => {
-      expect(url).toContain('query.id=29ab534d62c4406c8500e1cbfa609537');
+      const urlParams = new URL(url).searchParams;
+      expect(urlParams.get('query.id')).toBe(`"29ab534d62c4406c8500e1cbfa609537"`);
     });
 
     // Check for new SDK headers

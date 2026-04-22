@@ -1,4 +1,4 @@
-export const COUNTDOWN_DATE = 'Thu May 15 2025 01:00:00 GMT-0300 (Atlantic Daylight Time)';
+export const COUNTDOWN_DATE = new Date(Date.now() + 1000 * 60 * 60 * 24 * 10).toString();
 
 export const COUNTDOWN = {
   data: {

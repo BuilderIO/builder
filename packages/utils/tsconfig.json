@@ -7,7 +7,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "types": []
   },
   "include": ["./src"],
   "exclude": ["node_modules", "**/*.test.ts"]

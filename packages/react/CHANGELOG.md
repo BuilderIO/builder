@@ -1,5 +1,208 @@
 # @builder.io/react
 
+## 9.3.0
+
+### Minor Changes
+
+- 5096d69: Prepend sizes="auto" to <img> and <source> elements to reduce oversized image downloads
+
+## 9.2.0
+
+### Minor Changes
+
+- 560a5d0: Added fetchTotalCount param to getAll() in gen1 sdks
+
+### Patch Changes
+
+- Updated dependencies [560a5d0]
+  - @builder.io/sdk@6.3.0
+
+## 9.1.3
+
+### Patch Changes
+
+- 8001b0f: fix: handle errors in makeFn() when serialising functions
+
+## 9.1.2
+
+### Patch Changes
+
+- a3d063a: update the version of tar-fs dependency
+
+## 9.1.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+- Updated dependencies [fffde77]
+  - @builder.io/sdk@6.2.1
+
+## 9.1.0
+
+### Minor Changes
+
+- c729e93: Feat: Add support for `enrichOptions` parameter to control reference enrichment depth and field selection when fetching content.
+
+  This feature allows you to:
+
+  - Control the depth level of nested reference enrichment (up to 4 levels)
+  - Selectively include/exclude fields for each referenced model type
+  - Optimize API responses by fetching only the data you need
+
+  Example usage:
+
+  ```typescript
+  // Basic enrichment with depth control
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 2, // Fetch 2 levels of nested references
+    },
+  });
+
+  // Advanced: Selective field inclusion per model
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 3,
+      model: {
+        product: {
+          fields: "id,name,price",
+          omit: "data.internalNotes",
+        },
+        category: {
+          fields: "id,name",
+        },
+      },
+    },
+  });
+  ```
+
+### Patch Changes
+
+- Updated dependencies [c729e93]
+  - @builder.io/sdk@6.2.0
+
+## 9.0.1
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+- Updated dependencies [1b1b76e]
+  - @builder.io/sdk@6.1.4
+
+## 9.0.0
+
+### Major Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
+## 8.2.9
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+- Updated dependencies [3e864ce]
+  - @builder.io/sdk@6.1.3
+
+## 8.2.8
+
+### Patch Changes
+
+- 958c11b: fix: handle `fetchpriority` casing in different react versions
+
+## 8.2.7
+
+### Patch Changes
+
+- c042d67: fix passing down custom breakpoints to Symbol
+- 912bfa4: Fixed state variable context availability in SSR rendering
+
+## 8.2.6
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+- Updated dependencies [648653e]
+  - @builder.io/sdk@6.1.2
+
+## 8.2.5
+
+### Patch Changes
+
+- 33664b7: Fix: Corrected the conversion of query-objects with $-mongo-operators which are passed to builder.get() with apiEndpoint is "content"
+- Updated dependencies [33664b7]
+  - @builder.io/sdk@6.1.1
+
+## 8.2.4
+
+### Patch Changes
+
+- Updated dependencies [c7417f1]
+  - @builder.io/sdk@6.1.0
+
+## 8.2.3
+
+### Patch Changes
+
+- 7adc4f6: Fix: Corrected the implementaion of http requests with GET method
+- 25895a2: Fix: Improved implementation of making Content http-requests with GET method
+
+## 8.2.2
+
+### Patch Changes
+
+- 31a0d0e: feat: add `nonce` support for Content Security Policy
+
+## 8.2.1
+
+### Patch Changes
+
+- 7a0d981: fix: Form submission should use the radio button value rather than name
+
+## 8.2.0
+
+### Minor Changes
+
+- 3f84ee5: Feature: Added support for POST requests in Content HTTP Requests
+
+## 8.1.2
+
+### Patch Changes
+
+- Updated dependencies [1c659e9]
+  - @builder.io/sdk@6.0.9
+
+## 8.1.1
+
+### Patch Changes
+
+- 59cf58a: Add loading=lazy to RawImg component for better perf
+- Updated dependencies [a6eee0e]
+  - @builder.io/sdk@6.0.8
+
+## 8.1.0
+
+### Minor Changes
+
+- e060d32: Add srcset to raw Img component, use intersection observers for Video component
+
+### Patch Changes
+
+- c8d7674: Stricter trusted origin check
+- Updated dependencies [c8d7674]
+  - @builder.io/sdk@6.0.7
+
+## 8.0.13
+
+### Patch Changes
+
+- 6d4e36b: fix: updated defaultStyles example
+- Updated dependencies [6d4e36b]
+  - @builder.io/sdk@6.0.6
+
 ## 8.0.12
 
 ### Patch Changes

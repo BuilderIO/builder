@@ -1,6 +1,5 @@
 import {
   For,
-  onUpdate,
   Show,
   useMetadata,
   useStore,
@@ -36,53 +35,10 @@ export default function ComponentRef(props: ComponentProps) {
           default: InteractiveElement,
         })
       : props.componentRef,
+    get blockChildrenToRender() {
+      return props.componentRef ? props.blockChildren : [];
+    },
   });
-
-  onUpdate(() => {
-    useTarget({
-      angular: () => {
-        /**
-         * The getter in <Block /> runs on every change detection, and returns us a new empty array in ngOnChanges
-         * so we need to check if the values aren't two different empty arrays and if the values are actually different.
-         * We only want to update the view if the values are different as it's an expensive operation.
-         */
-        if (
-          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-          !changes['blockChildren']?.isFirstChange() &&
-          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-          changes['blockChildren']?.previousValue?.length !== 0 &&
-          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-          changes['blockChildren']?.currentValue?.length !== 0 &&
-          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-          changes['blockChildren']?.previousValue !==
-            // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-            changes['blockChildren']?.currentValue
-        ) {
-          state.shouldUpdate = true;
-        }
-        // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-        if (changes.componentOptions) {
-          let foundChange = false;
-          // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-          for (const key in changes.componentOptions.previousValue) {
-            if (
-              // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-              changes.componentOptions.previousValue[key] !==
-              // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-              changes.componentOptions.currentValue[key]
-            ) {
-              foundChange = true;
-              break;
-            }
-          }
-          if (!foundChange) {
-            return;
-          }
-        }
-      },
-      default: () => {},
-    });
-  }, [props.componentOptions, props.blockChildren]);
 
   return (
     <Show when={props.componentRef}>
@@ -98,7 +54,7 @@ export default function ComponentRef(props: ComponentProps) {
           contextValue: props.context.value,
         })}
       >
-        <For each={props.blockChildren}>
+        <For each={state.blockChildrenToRender}>
           {(child) => (
             <Block
               key={child.id}

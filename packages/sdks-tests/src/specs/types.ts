@@ -3,6 +3,7 @@ export interface Breakpoints {
   small: number;
   medium: number;
 }
+export type EditType = 'client' | 'server' | undefined;
 export type Nullable<T> = T | null | undefined;
 export type BuilderContent = Partial<{
   id?: string;

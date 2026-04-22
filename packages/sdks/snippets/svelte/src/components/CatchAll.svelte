@@ -2,35 +2,41 @@
 <!-- snippets/svelte/src/components/CatchAll.svelte -->
 
 <script lang="ts">
-    import { Content, fetchOneEntry, type BuilderContent } from '@builder.io/sdk-svelte';
+  import {
+    Content,
+    fetchOneEntry,
+    type BuilderContent,
+    isPreviewing,
+  } from '@builder.io/sdk-svelte';
 
-    let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
-    let model = 'page';
+  let apiKey = 'ee9f13b4981e489a9a1209887695ef2b';
+  let model = 'page';
 
-    let content: BuilderContent | null = null;
+  let content: BuilderContent | null = null;
+  let canShowContent = false;
 
-    async function fetchContent() {
-        content = await fetchOneEntry({
-            apiKey,
-            model,
-            userAttributes: {
-                urlPath: window.location.pathname
-            }
-        });
-    }
+  async function fetchContent() {
+    content = await fetchOneEntry({
+      apiKey,
+      model,
+      userAttributes: {
+        urlPath: window.location.pathname,
+      },
+    });
+    canShowContent = content ? true : isPreviewing();
+  }
 
-    fetchContent();
+  fetchContent();
 </script>
 
 <svelte:head>
-    <title>{content?.data?.title || "Unpublished"}</title>
+  <title>{content?.data?.title || 'Unpublished'}</title>
 </svelte:head>
 
 <main>
-    {#if content}
-        <Content content={content} apiKey={apiKey} model={model}  />
-    {:else}
-        Content Not Found
-    {/if}
+  {#if canShowContent}
+    <Content {content} {apiKey} {model} />
+  {:else}
+    Content Not Found
+  {/if}
 </main>
-  

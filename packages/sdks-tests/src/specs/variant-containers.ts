@@ -143,7 +143,7 @@ export const VARIANT_CONTAINERS = {
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        id: 'builder-f90383ccd64745ada9399da4f492b466',
+        id: 'builder-a1fa7007203347ce817e860661bbea79',
         component: {
           name: 'PersonalizationContainer',
           options: {

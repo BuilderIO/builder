@@ -29,7 +29,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -75,8 +75,8 @@ jobs:
             'nextjs-sdk-next-app',
             'vue',
             'nuxt',
-            'angular-16',
-            'angular-16-ssr',
+            'angular-17',
+            'angular-17-ssr',
             'angular-19-ssr',
           ]
 
@@ -91,7 +91,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -100,6 +100,7 @@ jobs:
           cache-install-state: true
 
       - name: Run E2E tests
+        timeout-minutes: 15
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
@@ -124,12 +125,13 @@ jobs:
             'vue',
             'nuxt',
             'react',
-            'angular-16',
-            'angular-16-ssr',
+            'angular-17',
+            'angular-17-ssr',
             'qwik-city',
             'nextjs-sdk-next-app',
             'react-sdk-next-14-app',
             'react-sdk-next-pages',
+            'remix',
             'svelte',
             'sveltekit',
             'solid',
@@ -148,7 +150,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -157,6 +159,7 @@ jobs:
           cache-install-state: true
 
       - name: Run snippets tests
+        timeout-minutes: 15
         run: yarn g:nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
@@ -183,7 +186,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -217,7 +220,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -225,7 +228,11 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
+      - name: Test React SDK
+        run: yarn g:nx test @builder.io/react -- packages/react/src
+
       - name: Run E2E tests
+        timeout-minutes: 15
         run: yarn g:nx test @e2e/${{ matrix.e2e-server }}
 
       - name: Upload Playwright Report
@@ -257,7 +264,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
@@ -266,6 +273,7 @@ jobs:
           cache-install-state: true
 
       - name: Run snippets tests
+        timeout-minutes: 15
         run: yarn nx test @snippet/${{ matrix.snippet }}
 
       - name: Upload Playwright Report
@@ -323,10 +331,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use node version 18
+      - name: Use node version 22
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir

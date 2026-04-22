@@ -26,7 +26,19 @@ export type BlocksWrapperProps = {
    */
   BlocksWrapper: any;
   /**
-   * Additonal props to pass to `blocksWrapper`. Defaults to `{}`.
+   * Props to be applied to the wrapping element of blocks. Can be set in two ways:
+   * 1. Globally via `<Content blocksWrapperProps={{...}}/>` - applies to all blocks wrappers in the Content
+   * 2. Locally via `<Blocks BlocksWrapperProps={{...}}/>` - applies only to this specific blocks instance and overrides global props
+   *
+   * For merging both global and local props, spread the context props before adding your own:
+   * ```
+   * <Blocks
+   *   BlocksWrapperProps={{
+   *     ...builderContext.BlocksWrapperProps,
+   *     'data-test-id': 'my-test-id'
+   *   }}
+   * />
+   * ```
    */
   BlocksWrapperProps: any;
 
@@ -113,10 +125,7 @@ export default function BlocksWrapper(props: BlocksWrapperProps) {
   onUpdate(() => {
     useTarget({
       angular: () => {
-        // @ts-expect-error - 'changes' comes from Angular's ngOnChanges hook
-        if (changes['blocks']) {
-          state.shouldUpdate = true;
-        }
+        state.shouldUpdate = true;
       },
       default: () => {},
     });

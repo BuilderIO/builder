@@ -38,6 +38,7 @@
   },
   "packageManager": "yarn@3.6.1",
   "resolutions": {
+    "tar-fs": "2.1.4",
     "minimist": "^1.2.7",
     "json5": "2.2.1",
     "@builder.io/react": "workspace:*",

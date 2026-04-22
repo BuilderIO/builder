@@ -1,5 +1,115 @@
 # @builder.io/sdk
 
+## 6.3.0
+
+### Minor Changes
+
+- 560a5d0: Added fetchTotalCount param to getAll() in gen1 sdks
+
+## 6.2.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+
+## 6.2.0
+
+### Minor Changes
+
+- c729e93: Feat: Add support for `enrichOptions` parameter to control reference enrichment depth and field selection when fetching content.
+
+  This feature allows you to:
+
+  - Control the depth level of nested reference enrichment (up to 4 levels)
+  - Selectively include/exclude fields for each referenced model type
+  - Optimize API responses by fetching only the data you need
+
+  Example usage:
+
+  ```typescript
+  // Basic enrichment with depth control
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 2, // Fetch 2 levels of nested references
+    },
+  });
+
+  // Advanced: Selective field inclusion per model
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 3,
+      model: {
+        product: {
+          fields: "id,name,price",
+          omit: "data.internalNotes",
+        },
+        category: {
+          fields: "id,name",
+        },
+      },
+    },
+  });
+  ```
+
+## 6.1.4
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
+## 6.1.3
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+
+## 6.1.2
+
+### Patch Changes
+
+- 648653e: FEAT: Updated 'Raw:Img' componentInfo with extra inputs field
+
+## 6.1.1
+
+### Patch Changes
+
+- 33664b7: Fix: Corrected the conversion of query-objects with $-mongo-operators which are passed to builder.get() with apiEndpoint is "content"
+
+## 6.1.0
+
+### Minor Changes
+
+- c7417f1: **Refactor Next.js SDK to support RSC-based hybrid editing for \[Text, Image, Video, Button, Section, Columns, Symbols]**
+  - Client-side updates enabled for faster editing on Text, Image, Video, and Button
+  - Section, Columns, and Symbols treated as server components for optimized SSR
+  - Improved performance and flexibility for visual editing in RSC environments
+
+## 6.0.9
+
+### Patch Changes
+
+- 1c659e9: feat: add support for register action
+
+## 6.0.8
+
+### Patch Changes
+
+- a6eee0e: Fix: Functions in plugins will be selectively serialized
+
+## 6.0.7
+
+### Patch Changes
+
+- c8d7674: Stricter trusted origin check
+
+## 6.0.6
+
+### Patch Changes
+
+- 6d4e36b: fix: updated defaultStyles example
+
 ## 6.0.5
 
 ### Patch Changes

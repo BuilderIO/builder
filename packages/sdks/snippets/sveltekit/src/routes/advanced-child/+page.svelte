@@ -6,7 +6,7 @@
   export let data: PageData;
 </script>
 
-{#if !data.data && !isPreviewing()}
+{#if !data.data && !isPreviewing(data.searchParams)}
   <div>404 - Not Found</div>
 {:else}
   <Content

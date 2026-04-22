@@ -77,6 +77,9 @@ export default function FormComponent(props: FormProps) {
     submissionState(): FormState {
       return (isEditing() && props.previewState) || state.formState;
     },
+    errorResponse(response: any) {
+      return JSON.stringify(response, null, 2);
+    },
     onSubmit(event: any) {
       const sendWithJsProp =
         props.sendWithJs || props.sendSubmissionsTo === 'email';
@@ -103,13 +106,19 @@ export default function FormComponent(props: FormProps) {
           value: File | boolean | number | string | FileList;
         }[] = Array.from(el.querySelectorAll('input,select,textarea'))
           .filter((el) => !!(el as HTMLInputElement).name)
+          .filter(
+            (el) =>
+              !!(el as HTMLInputElement).name &&
+              ((el as HTMLInputElement).type !== 'radio' ||
+                (el as HTMLInputElement).checked)
+          )
           .map((el) => {
             let value: any;
             const key = (el as HTMLImageElement).name;
             if (el instanceof HTMLInputElement) {
               if (el.type === 'radio') {
                 if (el.checked) {
-                  value = el.name;
+                  value = el.value;
                   return { key, value };
                 }
               } else if (el.type === 'checkbox') {
@@ -187,6 +196,21 @@ export default function FormComponent(props: FormProps) {
 
         state.formState = 'sending';
 
+        if (
+          props.sendSubmissionsTo === 'email' &&
+          (props.sendSubmissionsToEmail === 'your@email.com' ||
+            !props.sendSubmissionsToEmail)
+        ) {
+          const message =
+            'SubmissionsToEmail is required when sendSubmissionsTo is set to email';
+          console.error(message);
+          state.formState = 'error';
+          state.mergeNewRootState({
+            formErrorMessage: message,
+          });
+          return;
+        }
+
         const formUrl = `${
           getEnv() === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
         }/api/v1/form-submit?apiKey=${props.builderContext.value.apiKey}&to=${btoa(
@@ -214,21 +238,37 @@ export default function FormComponent(props: FormProps) {
               body = await res.text();
             }
 
-            if (!res.ok && props.errorMessagePath) {
-              /* TODO: allow supplying an error formatter function */
-              let message = get(body, props.errorMessagePath);
+            if (!res.ok) {
+              const submitErrorEvent = new CustomEvent('submit:error', {
+                detail: {
+                  error: body,
+                  status: res.status,
+                },
+              });
 
-              if (message) {
-                if (typeof message !== 'string') {
-                  /* TODO: ideally convert json to yaml so it woul dbe like
-                   error: - email has been taken */
-                  message = JSON.stringify(message);
+              if (formRef?.nativeElement) {
+                formRef?.nativeElement.dispatchEvent(submitErrorEvent);
+                if (submitErrorEvent.defaultPrevented) {
+                  return;
                 }
-                state.formErrorMessage = message;
-                state.mergeNewRootState({
-                  formErrorMessage: message,
-                });
               }
+              state.responseData = body;
+              state.formState = 'error';
+
+              let message = props.errorMessagePath
+                ? get(body, props.errorMessagePath)
+                : body.message || body.error || body;
+
+              if (typeof message !== 'string') {
+                message = JSON.stringify(message);
+              }
+
+              state.formErrorMessage = message;
+              state.mergeNewRootState({
+                formErrorMessage: message,
+              });
+
+              return;
             }
 
             state.responseData = body;
@@ -341,7 +381,7 @@ export default function FormComponent(props: FormProps) {
           class="builder-form-error-text"
           css={{ padding: '10px', color: 'red', textAlign: 'center' }}
         >
-          {JSON.stringify(state.responseData, null, 2)}
+          {state.errorResponse(state.responseData)}
         </pre>
       </Show>
 

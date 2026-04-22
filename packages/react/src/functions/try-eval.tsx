@@ -56,6 +56,29 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
       // for the server build
       const ivm = safeDynamicRequire('isolated-vm');
       const context = getIsolateContext();
+
+      Object.keys(data).forEach(key => {
+        switch (key) {
+          case 'state':
+          case 'global':
+          case 'log':
+            console.warn(`Not setting state.${key} as global ${key} in isolated vm`);
+            break;
+          default:
+            if (data[key] === undefined) {
+              return;
+            }
+            try {
+              if (typeof data[key] === 'object' && data[key] !== null) {
+                context.global.setSync(key, new ivm.ExternalCopy(data[key]).copyInto());
+              } else {
+                context.global.setSync(key, data[key]);
+              }
+            } catch (error) {
+              console.warn(`Could not set ${key} for isolated-vm:`, error);
+            }
+        }
+      });
       const fnString = makeFn(str!, useReturn, ['state']);
       const resultStr = context.evalClosureSync(fnString, [new ivm.Reference(data || {})]);
       try {
@@ -77,6 +100,22 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
         console.debug('Builder custom code error:', error.message, 'in', str, error.stack);
       }
       // Add to req.options.errors to return to client
+    }
+  } finally {
+    if (!(Builder.isBrowser || shouldForceBrowserRuntimeInNode())) {
+      const context = getIsolateContext();
+
+      // Clean up the global context
+      Object.keys(data).forEach(key => {
+        switch (key) {
+          case 'state':
+          case 'global':
+          case 'log':
+            break;
+          default:
+            context.global.deleteSync(key);
+        }
+      });
     }
   }
 

@@ -33,7 +33,7 @@ export { isEditing } from './functions/is-editing.js';
 export { isPreviewing } from './functions/is-previewing.js';
 export { createRegisterComponentMessage } from './functions/register-component.js';
 
-export { register } from './functions/register.js';
+export { register, registerAction } from './functions/register.js';
 export type { InsertMenuConfig, InsertMenuItem } from './functions/register.js';
 
 export { setEditorSettings } from './functions/set-editor-settings.js';

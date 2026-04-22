@@ -62,6 +62,30 @@ const transformFile = (filePath, replaceValue, revert = false) => {
                 hasReplacedImport = true;
               }
             },
+            /**
+             * When building EDGE bundle, force choose-eval to always use the edge evaluator
+             * and skip any browser fallback logic.
+             *
+             * converts chooseBrowserOrServerEval = (args) => evaluator(args)
+             */
+            ExportNamedDeclaration(path) {
+              if (process.env.SDK_ENV !== 'edge' || revert) return;
+              const decl = path.node.declaration;
+              if (!decl || decl.type !== 'VariableDeclaration') return;
+              const first = decl.declarations && decl.declarations[0];
+              if (!first || first.type !== 'VariableDeclarator') return;
+              if (first.id.type !== 'Identifier') return;
+              if (first.id.name !== 'chooseBrowserOrServerEval') return;
+
+              // Replace the entire initializer with a simple arrow function
+              first.init = babel.types.arrowFunctionExpression(
+                [babel.types.identifier('args')],
+                babel.types.callExpression(
+                  babel.types.identifier('evaluator'),
+                  [babel.types.identifier('args')]
+                )
+              );
+            },
           },
         };
       },

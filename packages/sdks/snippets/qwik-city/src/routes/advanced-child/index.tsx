@@ -7,27 +7,36 @@ const MODEL = 'advanced-child';
 const API_KEY = 'ee9f13b4981e489a9a1209887695ef2b';
 
 export const useCustomChild = routeLoader$(async ({ url }) => {
-  return await fetchOneEntry({
+  const searchParams = Object.fromEntries(url.searchParams);
+
+  const content = await fetchOneEntry({
     model: MODEL,
     apiKey: API_KEY,
     userAttributes: {
       urlPath: url.pathname,
     },
   });
+
+  return {
+    content,
+    searchParams,
+  };
 });
 
 export default component$(() => {
   const content = useCustomChild();
 
-  if (!content.value && !isPreviewing()) {
-    return <div>404</div>;
-  }
-  return (
+  const canShowContent =
+    content.value?.content || isPreviewing(content.value?.searchParams);
+
+  return canShowContent ? (
     <Content
       model={MODEL}
-      content={content.value}
+      content={content.value?.content}
       apiKey={API_KEY}
       customComponents={[customTabsInfo]}
     />
+  ) : (
+    <div>404</div>
   );
 });

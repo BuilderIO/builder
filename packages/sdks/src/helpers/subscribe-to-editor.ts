@@ -7,12 +7,17 @@ import type { BuilderContent } from '../types/builder-content.js';
 import type { Dictionary } from '../types/typescript.js';
 import { logger } from './logger.js';
 
+export type EditType = 'client' | 'server' | undefined;
+
 type ContentListener = Required<
   Pick<ContentProps, 'model' | 'trustedHosts'>
 > & {
   callbacks: {
-    contentUpdate: (updatedContent: BuilderContent) => void;
-    stateUpdate: (newState: Dictionary<string>) => void;
+    contentUpdate: (
+      updatedContent: BuilderContent,
+      editType?: EditType
+    ) => void;
+    stateUpdate: (newState: Dictionary<string>, editType?: EditType) => void;
     animation: (updatedContent: BuilderAnimation) => void;
     configureSdk: (updatedContent: any) => void;
   };
@@ -44,8 +49,9 @@ export const createEditorListener = ({
           const messageContent = data.data;
           const modelName = messageContent.model;
           const newState = messageContent?.state;
+          const editType = messageContent.editType;
           if (modelName === model && newState) {
-            callbacks.stateUpdate(newState);
+            callbacks.stateUpdate(newState, editType);
           }
           break;
         }
@@ -58,9 +64,9 @@ export const createEditorListener = ({
             messageContent.modelName;
 
           const contentData = messageContent.data;
-
+          const editType = messageContent.editType;
           if (key === model) {
-            callbacks.contentUpdate(contentData);
+            callbacks.contentUpdate(contentData, editType);
           }
           break;
         }

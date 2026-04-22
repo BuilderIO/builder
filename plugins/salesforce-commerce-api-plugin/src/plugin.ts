@@ -83,8 +83,8 @@ registerCommercePlugin(
   },
   async settings => {
     const api = new Api(appState.user.apiKey, pkg.name);
-    const einsteinId = settings.get('einsteinId');
-    const einsteinSiteId = settings.get('einsteinSiteId');
+    const einsteinId = settings.get('einsteinId')?.trim();
+    const einsteinSiteId = settings.get('einsteinSiteId')?.trim();
     let recommendersType = {};
     if (einsteinId && einsteinSiteId) {
       const recommenders = await getRecommenders(einsteinSiteId, einsteinId);

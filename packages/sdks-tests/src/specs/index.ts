@@ -28,6 +28,7 @@ import {
   CONTENT_2 as imageHighPriority,
   CONTENT_3 as imageNoWebp,
 } from './image.js';
+import { CONTENT as rawImg } from './raw-img.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
 import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
@@ -45,13 +46,18 @@ import { CONTENT as symbolAbTest } from './symbol-ab-test.js';
 import { CONTENT as symbolBindings } from './symbol-bindings.js';
 import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.js';
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
-import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
+import {
+  CONTENT_WITHOUT_SYMBOLS,
+  CONTENT_WITH_GLOBAL_SYMBOL,
+  CONTENT as symbols,
+} from './symbols.js';
 import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
 import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
 import { CUSTOM_COMPONENTS } from './custom-components.js';
+import { CUSTOM_ACTION } from './custom-action.js';
 import { BASIC_STYLES } from './basic-styles.js';
 import {
   ACCORDION,
@@ -87,11 +93,16 @@ import { VIDEO_LAZY_LOAD } from './video-lazy-load.js';
 import { COLUMNS_VERTICAL_CENTER_FLEX } from './columns-vertical-center-flex.js';
 import { DYNAMIC_ELEMENT } from './dynamic-element.js';
 import { CUSTOM_CODE_DOM_UPDATE } from './custom-code-dom-update.js';
+import { CUSTOM_COMPONENT_NO_DEFAULT_VALUE } from './custom-component-no-default-value.js';
 import { NEW_BLOCK_ADD } from './new-block-add.js';
 import { DYNAMIC_BUTTON } from './dynamic-button.js';
 import { SYMBOLS_WITH_LIST_CONTENT_INPUT } from './symbols-with-list-content-input.js';
 import { COLUMNS_VERTICAL_CENTERING } from './columns-vertical-centering.js';
 import { SECTION_CHILDREN } from './section-children.js';
+import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
+import { HTTP_REQUESTS_POST_API_CONTENT } from './http-requests-post-api.js';
+import { HTTP_REQUESTS_GET_API_CONTENT } from './http-requests-get-api.js';
+import { TRACK_CONVERSION } from './track-conversion.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -130,6 +141,7 @@ export const PAGES: Record<string, Page> = {
   '/symbols': { content: symbols },
   '/js-code': { content: JS_CODE_CONTENT },
   '/symbols-without-content': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/symbols-with-global': { content: CONTENT_WITH_GLOBAL_SYMBOL },
   '/symbol-bindings': { content: symbolBindings },
   '/symbol-with-locale': { content: symbolWithLocale },
   '/link-url': { content: linkUrl },
@@ -137,6 +149,7 @@ export const PAGES: Record<string, Page> = {
   '/content-bindings': { content: contentBindings },
   '/content-input-bindings': { content: contentInputBindings, isGen1VisualEditingTest: true },
   '/image': { content: image },
+  '/raw-img': { content: rawImg },
   '/image-high-priority': { content: imageHighPriority },
   '/image-no-webp': { content: imageNoWebp },
   '/data-bindings': { content: dataBindings },
@@ -147,6 +160,8 @@ export const PAGES: Record<string, Page> = {
   '/ab-test': { content: abTest },
   '/ab-test-interactive': { content: AB_TEST_INTERACTIVE },
   '/http-requests': { content: HTTP_REQUESTS },
+  '/http-requests-post-api': { content: HTTP_REQUESTS_POST_API_CONTENT },
+  '/http-requests-get-api': { content: HTTP_REQUESTS_GET_API_CONTENT },
   '/symbol-ab-test': { content: symbolAbTest },
   '/custom-breakpoints': { content: customBreakpoints },
   '/reactive-state': { content: REACTIVE_STATE_CONTENT },
@@ -193,6 +208,7 @@ export const PAGES: Record<string, Page> = {
   '/hover-animation': { content: HOVER_ANIMATION },
   '/tabs': { content: TABS },
   '/custom-components': { content: CUSTOM_COMPONENTS },
+  '/custom-action': { content: CUSTOM_ACTION },
   '/basic-styles': { content: BASIC_STYLES },
   '/accordion': { content: ACCORDION },
   '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
@@ -200,6 +216,7 @@ export const PAGES: Record<string, Page> = {
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
+  '/custom-components-no-default-value': { content: CUSTOM_COMPONENT_NO_DEFAULT_VALUE },
   '/custom-components-models-show': {
     content: CUSTOM_COMPONENTS_MODELS_RESTRICTION,
     target: ['react'],
@@ -222,7 +239,7 @@ export const PAGES: Record<string, Page> = {
   '/duplicated-content-using-nested-symbols': { content: DUPLICATED_CONTENT_USING_NESTED_SYMBOLS },
   '/custom-components-nowrap': {
     content: CUSTOM_COMPONENTS_NOWRAP,
-    target: ['angular-16', 'angular-16-ssr', 'angular-19-ssr'],
+    target: ['angular-17', 'angular-17-ssr', 'angular-19-ssr'],
   },
   /**
    * For some reason, the `HTTP_REQUESTS` content is missing some values when
@@ -238,6 +255,7 @@ export const PAGES: Record<string, Page> = {
   '/localization-locale-passed': { content: LOCALIZATION },
   '/localization-locale-not-passed': { content: LOCALIZATION_WITHOUT_LOCALE_PROP },
   '/localization-subfields': { content: LOCALIZATION_SUBFIELDS, target: ['react', 'gen1-react'] },
+  '/localized-bindings': { content: LOCALIZATION_SUBFIELDS },
   '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
   '/editing-empty-content-element-ref': {
     content: null as unknown as BuilderContent,
@@ -247,39 +265,15 @@ export const PAGES: Record<string, Page> = {
   '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
   '/variant-containers': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-0': {
     content: VARIANT_CONTAINERS,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-1': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_1,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/variant-containers-with-previewing-index-undefined': {
     content: VARIANT_CONTAINERS_WITH_PREVIEWING_INDEX_UNDEFINED,
-    target: [
-      'react-sdk-next-15-app',
-      'gen1-next15-app',
-      'react-sdk-next-pages',
-      'gen1-next14-pages',
-    ],
   },
   '/columns-vertical-center-flex': { content: COLUMNS_VERTICAL_CENTER_FLEX },
   '/can-track-false-pre-init': { content: HOMEPAGE, target: 'gen1' },
@@ -289,6 +283,8 @@ export const PAGES: Record<string, Page> = {
   '/dynamic-button': { content: DYNAMIC_BUTTON },
   '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
   '/section-children': { content: SECTION_CHILDREN },
+  '/symbol-update-entries': { content: SYMBOL_UPDATE_ENTRIES },
+  '/track-conversion': { content: TRACK_CONVERSION },
 } as const;
 
 export type Path = keyof typeof PAGES;
@@ -444,6 +440,18 @@ export const getProps = async (args: {
     case '/localization-subfields':
       extraProps = {
         locale: 'hi-IN',
+      };
+      break;
+    case '/localized-bindings':
+      extraProps = {
+        locale: 'hi-IN',
+        data: {
+          header: {
+            '@type': '@builder.io/core:LocalizedValue',
+            Default: 'en-US title',
+            'hi-IN': 'hi-IN title',
+          },
+        },
       };
       break;
     case '/editing-with-top-padding':
