@@ -1173,13 +1173,20 @@ export class BuilderComponent extends React.Component<
                           );
                         }
 
-                        const blocks = data?.blocks || [];
+                        const allBlocks = data?.blocks || [];
+
+                        // Strip the pixel block when tracking is disabled
+                        const blocks = builder.canTrack
+                          ? allBlocks
+                          : allBlocks.filter(
+                              (b: BuilderElement) => !b?.id?.startsWith('builder-pixel')
+                            );
 
                         const hasPixel = blocks.find((block: BuilderElement) =>
                           block.id?.startsWith('builder-pixel')
                         );
 
-                        if (data && !hasPixel && blocks.length > 0) {
+                        if (data && !hasPixel && blocks.length > 0 && builder.canTrack) {
                           blocks.push(getBuilderPixel(builder.apiKey!));
                         }
 
