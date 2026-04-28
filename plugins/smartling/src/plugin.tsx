@@ -852,7 +852,7 @@ const initializeSmartlingPlugin = async () => {
           message: 'This will clear all translation metadata from this content. Are you sure?',
         });
         if (result) {
-          const updatedMeta = fastClone(content.meta);
+          const updatedMeta = { ...content.meta?.toJS() };
           delete updatedMeta.translationStatus;
           delete updatedMeta.translationJobId;
           delete updatedMeta.translationBy;
