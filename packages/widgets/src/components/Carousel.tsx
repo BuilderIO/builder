@@ -116,7 +116,12 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                     focusOnSelect={this.props.focusOnSelect}
                     // TODO: on change emit event on element?
                     // renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
-
+                    arrows={
+                      !!(
+                        (this.props.prevButton && this.props.prevButton.length) ||
+                        (this.props.nextButton && this.props.nextButton.length)
+                      )
+                    }
                     // OOF!!
                     nextArrow={
                       <CarouselArrow>
