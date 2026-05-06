@@ -69,6 +69,55 @@ const isAngularSDK = TARGET === 'angular';
 
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
+export const removeDuplicateScript = (id: string, scriptStr: string) => `
+  (function() {
+    var selector = 'script[data-id="${id}"]';
+    var scriptKey = '__builderioScriptInitialized_${id}';
+    var observerKey = '__builderioScriptObserver_${id}';
+    var removeIfDuplicate = function(script) {
+      var firstScript = document.querySelector(selector);
+      if (firstScript && script !== firstScript) {
+        script.remove();
+      }
+    };
+    var cleanupExisting = function() {
+      document.querySelectorAll(selector).forEach(function(script, index) {
+        if (index > 0) {
+          script.remove();
+        }
+      });
+    };
+    var checkAddedNode = function(node) {
+      if (node.nodeType !== 1) return;
+      if (node.matches && node.matches(selector)) {
+        removeIfDuplicate(node);
+      }
+      if (node.querySelectorAll) {
+        node.querySelectorAll(selector).forEach(removeIfDuplicate);
+      }
+    };
+
+    cleanupExisting();
+
+    if (!window[observerKey] && typeof MutationObserver !== 'undefined') {
+      window[observerKey] = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(checkAddedNode);
+        });
+      });
+      window[observerKey].observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    if (!window[scriptKey]) {
+      window[scriptKey] = true;
+      ${scriptStr}
+    }
+  })();
+`;
+
 export const getInitVariantsFnsScriptString = () => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
   window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
