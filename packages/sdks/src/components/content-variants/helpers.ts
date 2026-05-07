@@ -71,20 +71,26 @@ const isHydrationTarget = getIsHydrationTarget(TARGET);
 
 export const removeDuplicateScript = (id: string, scriptStr: string) => `
   (function() {
-    var scripts = document.querySelectorAll('script[data-id="${id}"]');
-    var firstScript = scripts[0];
-    var scriptKey = '__builderioScriptInitialized_${id}';
-
-    scripts.forEach(function(script) {
-      if (script !== firstScript) {
-        script.parentNode?.removeChild(script);
-      }
-    });
-
-    if (!window[scriptKey]) {
-      window[scriptKey] = true;
-      ${scriptStr}
+    if (!window.__builderioScriptObserver) {
+      window.__builderioScriptObserver = true;
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeName === 'SCRIPT') {
+              var dataId = node.getAttribute('data-id');
+              if (dataId) {
+                var all = document.querySelectorAll('script[data-id="' + dataId + '"]');
+                for (var i = 1; i < all.length; i++) {
+                  all[i].parentNode && all[i].parentNode.removeChild(all[i]);
+                }
+              }
+            }
+          });
+        });
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
     }
+    ${scriptStr}
   })();
 `;
 

@@ -104,7 +104,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
           )}
           id="builderio-init-variants-fns"
           nonce={props.nonce || ''}
-          dedupe
         />
       </Show>
       <Show
@@ -121,7 +120,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
             getInitPersonalizationVariantsFnsScriptString()
           )}
           id="builderio-init-personalization-variants-fns"
-          dedupe
         />
       </Show>
       <Show when={state.shouldRenderVariants}>
