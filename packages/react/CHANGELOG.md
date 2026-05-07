@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.0
+
+### Minor Changes
+
+- f3d7a3d: Improve state inspector reliability in visual editor for gen1 react sdk
+
 ## 9.3.0
 
 ### Minor Changes
