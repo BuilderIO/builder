@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 5.2.2
+
+### Patch Changes
+
+- ee26917: remove duplicate a/b test scripts being inserted in DOM
+
 ## 5.2.0
 
 ### Minor Changes

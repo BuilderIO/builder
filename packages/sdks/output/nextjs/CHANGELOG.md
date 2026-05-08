@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.25.2
+
+### Patch Changes
+
+- ee26917: remove duplicate a/b test scripts being inserted in DOM
+
 ## 0.25.1
 
 ### Patch Changes

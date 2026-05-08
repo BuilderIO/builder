@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.2
+
+### Patch Changes
+
+- ee26917: remove duplicate a/b test scripts being inserted in DOM
+
 ## 0.25.0
 
 ### Minor Changes

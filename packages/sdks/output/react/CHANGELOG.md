@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 5.2.2
+
+### Patch Changes
+
+- ee26917: remove duplicate a/b test scripts being inserted in DOM
+
 ## 5.2.1
 
 ### Patch Changes
