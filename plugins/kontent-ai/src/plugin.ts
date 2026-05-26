@@ -1,6 +1,6 @@
 import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 import pkg from '../package.json';
-import { createDeliveryClient } from '@kentico/kontent-delivery';
+import { createDeliveryClient } from '@kontent-ai/delivery-sdk';
 import { Input } from '@builder.io/sdk';
 
 // development URL https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent-ai
@@ -14,20 +14,20 @@ registerDataPlugin(
     icon: 'https://cdn.builder.io/api/v1/image/assets%2F0b9554e4c74747a08f247f55227230e0%2F4830cd357f5f480983ae6e0caf817076',
     settings: [
       {
-        name: 'projectId',
+        name: 'environmentId',
         type: 'string',
         required: true,
-        helperText: 'Get your project ID from "Project Settings" > "API keys"',
+        helperText: 'Get your environment ID from "Environment Settings" > "General" > "Environment ID"',
       },
     ],
     ctaText: `Connect your project`,
   },
   // settings will be an Observable map of the settings configured above
   async settings => {
-    const projectId = settings.get('projectId')?.trim();
+    const environmentId = settings.get('environmentId')?.trim();
 
     const client = createDeliveryClient({
-      projectId,
+      environmentId,
     });
 
     return {
@@ -93,7 +93,7 @@ registerDataPlugin(
                       type: element.type,
                       name: element.id,
                       helperText:
-                        'Exact match only: see https://kontent.ai/learn/reference/delivery-api/#tag/Filtering-content',
+                        'Exact match only: see https://kontent.ai/learn/docs/apis/openapi/delivery-api/#tag/Filtering-parameters',
                       friendlyName: element.name,
                     } as Input)
                 ),
