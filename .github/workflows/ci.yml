@@ -75,8 +75,7 @@ jobs:
             'nextjs-sdk-next-app',
             'vue',
             'nuxt',
-            'angular-17',
-            'angular-17-ssr',
+            'angular-19',
             'angular-19-ssr',
           ]
 
@@ -125,8 +124,8 @@ jobs:
             'vue',
             'nuxt',
             'react',
-            'angular-17',
-            'angular-17-ssr',
+            'angular-19',
+            'angular-19-ssr',
             'qwik-city',
             'nextjs-sdk-next-app',
             'react-sdk-next-14-app',

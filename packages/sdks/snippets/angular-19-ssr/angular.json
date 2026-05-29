@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-17": {
+    "angular-19-ssr": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -14,14 +14,19 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "preserveSymlinks": true,
-            "outputPath": "dist/angular-17",
+            "outputPath": "dist/angular-19-ssr",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "server": "src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -51,10 +56,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-17:build:production"
+              "buildTarget": "angular-19-ssr:build:production"
             },
             "development": {
-              "buildTarget": "angular-17:build:development"
+              "buildTarget": "angular-19-ssr:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -62,7 +67,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "angular-17:build"
+            "buildTarget": "angular-19-ssr:build"
           }
         },
         "test": {

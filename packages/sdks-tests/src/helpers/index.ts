@@ -131,7 +131,7 @@ export const isSSRFramework = (packageName: ServerName | 'DEFAULT') => {
     packageName === 'react-native-74' ||
     packageName === 'react-native-76-fabric' ||
     packageName === 'gen1-react' ||
-    packageName === 'angular-17';
+    packageName === 'angular-19';
   return !isNonSSR;
 };
 
