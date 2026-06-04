@@ -7,6 +7,7 @@ import {
   BuilderStoreContext,
   stringToFunction,
 } from '@builder.io/react';
+import { debounce } from 'lodash-es';
 import * as React from 'react';
 import Slider, { ResponsiveObject, Settings } from 'react-slick';
 
@@ -54,8 +55,13 @@ export class CarouselComponent extends React.Component<CarouselProps> {
     return slickProps?.slidesToShow ?? 1;
   }
 
+  private handleResize = debounce(() => {
+    this.setState({ slidesToShow: this.getBreakpointSlidesToShow() });
+  }, 50);
+
   componentDidMount() {
     this.setState({ slidesToShow: this.getBreakpointSlidesToShow() });
+    window.addEventListener('resize', this.handleResize);
 
     setTimeout(() => {
       this.divRef.current?.dispatchEvent(
@@ -69,6 +75,11 @@ export class CarouselComponent extends React.Component<CarouselProps> {
         })
       );
     });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+    this.handleResize.cancel();
   }
 
   render() {
@@ -98,6 +109,7 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                     <style type="text/css">{slickStyles}</style>
                   )}
                   <Slider
+                    {...this.props.slickProps}
                     slidesToShow={this.state.slidesToShow}
                     responsive={this.props.responsive}
                     ref={this.sliderRef}
@@ -147,7 +159,6 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                         />
                       </div>
                     }
-                    {...this.props.slickProps}
                   >
                     {/* todo: children.forEach hmm insert block inside */}
                     {this.props.useChildrenForSlides
