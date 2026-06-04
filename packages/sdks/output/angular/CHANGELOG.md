@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.3
+
+### Patch Changes
+
+- 20e6dad: revert dedupe inline A/B test script fix
+
 ## 0.25.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 5.2.3
+
+### Patch Changes
+
+- 20e6dad: revert dedupe inline A/B test script fix
+
 ## 5.2.2
 
 ### Patch Changes
