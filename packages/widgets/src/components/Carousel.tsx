@@ -118,8 +118,6 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                     <style type="text/css">{slickStyles}</style>
                   )}
                   <Slider
-                    {...this.props.slickProps}
-                    slidesToShow={this.state.slidesToShow}
                     responsive={this.props.responsive}
                     ref={this.sliderRef}
                     afterChange={slide => {
@@ -168,6 +166,8 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                         />
                       </div>
                     }
+                    {...this.props.slickProps}
+                    slidesToShow={this.state.slidesToShow}
                   >
                     {/* todo: children.forEach hmm insert block inside */}
                     {this.props.useChildrenForSlides
