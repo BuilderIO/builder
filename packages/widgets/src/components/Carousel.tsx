@@ -37,7 +37,26 @@ export class CarouselComponent extends React.Component<CarouselProps> {
   private _errors?: Error[];
   private _logs?: string[];
 
+  state = { slidesToShow: 1 };
+
+  private getBreakpointSlidesToShow(): number {
+    const { responsive, slickProps } = this.props;
+    if (typeof window === 'undefined' || !responsive?.length) {
+      return slickProps?.slidesToShow ?? 1;
+    }
+    const sorted = [...responsive]
+      .filter(r => r.breakpoint != null)
+      .sort((a, b) => a.breakpoint - b.breakpoint);
+    const matched = sorted.find(r => window.innerWidth <= r.breakpoint);
+    if (matched?.settings && typeof matched.settings === 'object') {
+      return (matched.settings as Settings).slidesToShow ?? slickProps?.slidesToShow ?? 1;
+    }
+    return slickProps?.slidesToShow ?? 1;
+  }
+
   componentDidMount() {
+    this.setState({ slidesToShow: this.getBreakpointSlidesToShow() });
+
     setTimeout(() => {
       this.divRef.current?.dispatchEvent(
         new CustomEvent('builder:carousel:load', {
@@ -79,6 +98,7 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                     <style type="text/css">{slickStyles}</style>
                   )}
                   <Slider
+                    slidesToShow={this.state.slidesToShow}
                     responsive={this.props.responsive}
                     ref={this.sliderRef}
                     afterChange={slide => {
