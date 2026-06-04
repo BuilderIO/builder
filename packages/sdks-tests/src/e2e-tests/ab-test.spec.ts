@@ -1,4 +1,4 @@
-import type { Browser, Page } from '@playwright/test';
+import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { checkIsGen1React, checkIsRN, test } from '../helpers/index.js';
 import {
@@ -9,11 +9,6 @@ import {
 import { CONTENT as AB_TEST_CONTENT } from '../specs/ab-test.js';
 
 const SELECTOR = 'div[builder-content-id]';
-
-const assertSingleInitVariantsScript = async (page: Page, { skip = false } = {}) => {
-  if (skip) return;
-  await expect(page.locator('script[data-id="builderio-init-variants-fns"]')).toHaveCount(1);
-};
 
 const createContextWithCookies = async ({
   cookies,
@@ -96,7 +91,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -131,7 +125,6 @@ test.describe('A/B tests', () => {
         });
 
         await page.goto('/ab-test', { waitUntil: 'networkidle' });
-        await assertSingleInitVariantsScript(page, { skip: checkIsGen1React(sdk) });
 
         expect(trackCalls).toBe(1);
 
@@ -145,7 +138,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -173,7 +165,6 @@ test.describe('A/B tests', () => {
         });
 
         await page.goto('/ab-test', { waitUntil: 'networkidle' });
-        await assertSingleInitVariantsScript(page, { skip: checkIsGen1React(sdk) });
 
         expect(trackCalls).toBe(1);
 
@@ -204,7 +195,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -219,7 +209,6 @@ test.describe('A/B tests', () => {
           }
         );
         await page.goto('/symbol-ab-test');
-        await assertSingleInitVariantsScript(page, { skip: checkIsGen1React(sdk) });
 
         await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(
@@ -235,7 +224,6 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
-        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -251,7 +239,6 @@ test.describe('A/B tests', () => {
         );
 
         await page.goto('/symbol-ab-test');
-        await assertSingleInitVariantsScript(page, { skip: checkIsGen1React(sdk) });
 
         await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(

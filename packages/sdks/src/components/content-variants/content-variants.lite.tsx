@@ -22,7 +22,6 @@ import {
   getInitVariantsFnsScriptString,
   getUpdateCookieAndStylesScript,
   getVariants,
-  removeDuplicateScript,
 } from './helpers.js';
 
 useMetadata({
@@ -79,7 +78,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         .map((value) => `.variant-${value.testVariationId} { display: none; } `)
         .join('');
     },
-    get defaultContent(): ContentVariantsPrps['content'] {
+    get defaultContent() {
       return state.shouldRenderVariants
         ? { ...props.content, testVariationId: props.content?.id }
         : handleABTestingSync({
@@ -93,29 +92,17 @@ export default function ContentVariants(props: VariantsProviderProps) {
     <>
       <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
         <InlinedScript
-          scriptStr={removeDuplicateScript(
-            'builderio-init-variants-fns',
-            getInitVariantsFnsScriptString()
-          )}
+          scriptStr={getInitVariantsFnsScriptString()}
           id="builderio-init-variants-fns"
           nonce={props.nonce || ''}
         />
-      </Show>
-      <Show
-        when={
-          !props.isNestedRender &&
-          TARGET !== 'reactNative' &&
-          SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET)
-        }
-      >
-        <InlinedScript
-          nonce={props.nonce || ''}
-          scriptStr={removeDuplicateScript(
-            'builderio-init-personalization-variants-fns',
-            getInitPersonalizationVariantsFnsScriptString()
-          )}
-          id="builderio-init-personalization-variants-fns"
-        />
+        {SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET) && (
+          <InlinedScript
+            nonce={props.nonce || ''}
+            scriptStr={getInitPersonalizationVariantsFnsScriptString()}
+            id="builderio-init-personalization-variants-fns"
+          />
+        )}
       </Show>
       <Show when={state.shouldRenderVariants}>
         <InlinedStyles

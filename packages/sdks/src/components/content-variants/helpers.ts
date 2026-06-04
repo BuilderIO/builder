@@ -69,38 +69,6 @@ const isAngularSDK = TARGET === 'angular';
 
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
-export const removeDuplicateScript = (id: string, scriptStr: string) => `
-  (function() {
-    var selector = 'script[data-id="${id}"]';
-    var scriptKey = '__builderioScriptInitialized_${id}';
-    var observerKey = '__builderioScriptObserver_${id}';
-
-    // Synchronously remove any duplicates already in the DOM
-    var existing = document.querySelectorAll(selector);
-    existing.forEach(function(script, index) {
-      if (index > 0) {
-        script.parentNode && script.parentNode.removeChild(script);
-      }
-    });
-
-    // Watch for duplicates added later (e.g. RSC streaming chunks)
-    if (!window[observerKey] && typeof MutationObserver !== 'undefined') {
-      window[observerKey] = new MutationObserver(function() {
-        var all = document.querySelectorAll(selector);
-        for (var i = 1; i < all.length; i++) {
-          all[i].parentNode && all[i].parentNode.removeChild(all[i]);
-        }
-      });
-      window[observerKey].observe(document.documentElement, { childList: true, subtree: true });
-    }
-
-    if (!window[scriptKey]) {
-      window[scriptKey] = true;
-      ${scriptStr}
-    }
-  })();
-`;
-
 export const getInitVariantsFnsScriptString = () => `
   window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
   window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
