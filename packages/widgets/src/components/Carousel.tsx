@@ -77,6 +77,15 @@ export class CarouselComponent extends React.Component<CarouselProps> {
     });
   }
 
+  componentDidUpdate(prevProps: CarouselProps) {
+    if (
+      prevProps.responsive !== this.props.responsive ||
+      prevProps.slickProps?.slidesToShow !== this.props.slickProps?.slidesToShow
+    ) {
+      this.setState({ slidesToShow: this.getBreakpointSlidesToShow() });
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
     this.handleResize.cancel();
