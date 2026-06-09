@@ -968,3 +968,122 @@ test('applyTranslation for symbol with localized array containing nested localiz
   expect(symbolData.uspList.Default[0].headline.Default).toBe('Accept card payments');
   expect(symbolData.uspList.Default[1].headline.Default).toBe('Organise your items');
 });
+
+// ---------------------------------------------------------------------------
+// Customer bug: nested fields inside a LocalizedValue array (custom metadata)
+// ---------------------------------------------------------------------------
+// Scenario: a data model has a `faqs` Object field (cannot be localized) that
+// contains an `items` List field. The `items` field itself has Localize enabled,
+// so Builder stores the whole array as one LocalizedValue. Each item has
+// `question` and `answer` plain-string sub-fields.
+// Before the fix: getTranslateableFields produced one entry with an array value
+// (not a string) which Smartling could not translate. After the fix: individual
+// string entries are produced for each nested field.
+// ---------------------------------------------------------------------------
+
+test('getTranslateableFields extracts nested string fields from a LocalizedValue array (FAQ scenario)', () => {
+  const content: BuilderContent = {
+    data: {
+      title: {
+        '@type': localizedType,
+        'en-US': 'Excel Expert',
+        Default: 'Excel Expert',
+      },
+      faqs: {
+        // `items` is a LocalizedValue whose payload is an array of plain objects.
+        // This is what Builder stores when you enable Localize on an array-type field.
+        items: {
+          '@type': localizedType,
+          Default: [
+            {
+              question: 'What does an Excel expert actually do?',
+              answer: 'An Excel expert is a data analyst who leverages advanced features of Microsoft Excel.',
+            },
+            {
+              question: 'What tools does an Excel expert use?',
+              answer: 'Excel experts use pivot tables, VLOOKUP, macros, and VBA scripting.',
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  const result = getTranslateableFields(content, 'en-US', '');
+
+  // Top-level localized string field still works
+  expect(result['metadata.title']).toEqual({ value: 'Excel Expert', instructions: '' });
+
+  // Each nested string field inside the LocalizedValue array must be a separate entry
+  expect(result['metadata.faqs#items#0#question']).toEqual({
+    value: 'What does an Excel expert actually do?',
+    instructions: '',
+  });
+  expect(result['metadata.faqs#items#0#answer']).toEqual({
+    value: 'An Excel expert is a data analyst who leverages advanced features of Microsoft Excel.',
+    instructions: '',
+  });
+  expect(result['metadata.faqs#items#1#question']).toEqual({
+    value: 'What tools does an Excel expert use?',
+    instructions: '',
+  });
+  expect(result['metadata.faqs#items#1#answer']).toEqual({
+    value: 'Excel experts use pivot tables, VLOOKUP, macros, and VBA scripting.',
+    instructions: '',
+  });
+
+  // The broken old key (whole array as value) must NOT exist
+  expect(result['metadata.faqs#items']).toBeUndefined();
+});
+
+test('applyTranslation writes translated strings back into the correct locale slot for LocalizedValue array (FAQ scenario)', () => {
+  const content: BuilderContent = {
+    data: {
+      title: {
+        '@type': localizedType,
+        'en-US': 'Excel Expert',
+        Default: 'Excel Expert',
+      },
+      faqs: {
+        items: {
+          '@type': localizedType,
+          Default: [
+            {
+              question: 'What does an Excel expert actually do?',
+              answer: 'An Excel expert is a data analyst.',
+            },
+            {
+              question: 'What tools does an Excel expert use?',
+              answer: 'Excel experts use pivot tables and VLOOKUP.',
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  const germanTranslations = {
+    'metadata.title': { value: 'Excel-Experte' },
+    'metadata.faqs#items#0#question': { value: 'Was macht ein Excel-Experte eigentlich?' },
+    'metadata.faqs#items#0#answer': { value: 'Ein Excel-Experte ist ein Datenanalyst.' },
+    'metadata.faqs#items#1#question': { value: 'Welche Tools verwendet ein Excel-Experte?' },
+    'metadata.faqs#items#1#answer': { value: 'Excel-Experten verwenden Pivot-Tabellen und VLOOKUP.' },
+  };
+
+  const result = applyTranslation(content, germanTranslations, 'de-DE');
+  const data = result.data!;
+
+  // Direct string LocalizedValue translation still works
+  expect((data.title as any)['de-DE']).toBe('Excel-Experte');
+
+  // The translated locale array must be set correctly
+  const localizedItems = (data.faqs as any).items;
+  expect(localizedItems['de-DE'][0].question).toBe('Was macht ein Excel-Experte eigentlich?');
+  expect(localizedItems['de-DE'][0].answer).toBe('Ein Excel-Experte ist ein Datenanalyst.');
+  expect(localizedItems['de-DE'][1].question).toBe('Welche Tools verwendet ein Excel-Experte?');
+  expect(localizedItems['de-DE'][1].answer).toBe('Excel-Experten verwenden Pivot-Tabellen und VLOOKUP.');
+
+  // Default values must be preserved untouched
+  expect(localizedItems.Default[0].question).toBe('What does an Excel expert actually do?');
+  expect(localizedItems.Default[1].question).toBe('What tools does an Excel expert use?');
+});

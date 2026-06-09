@@ -393,16 +393,13 @@ Object {
     "instructions": "Button with plain text",
     "value": "Cute Baby",
   },
-  "metadata.seo": Object {
+  "metadata.seo#menuItems#0#menuName": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
-    "value": Object {
-      "menuItems": Array [
-        Object {
-          "menuName": "en menu name",
-        },
-      ],
-      "name": "en name in subfield",
-    },
+    "value": "en menu name",
+  },
+  "metadata.seo#name": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "en name in subfield",
   },
   "metadata.title": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
