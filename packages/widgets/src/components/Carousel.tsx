@@ -45,7 +45,7 @@ export class CarouselComponent extends React.Component<CarouselProps> {
     if (typeof window === 'undefined' || !responsive?.length) {
       return slickProps?.slidesToShow ?? 1;
     }
-    const sorted = [...responsive]
+    const sorted = responsive.slice()
       .filter(r => r.breakpoint != null)
       .sort((a, b) => a.breakpoint - b.breakpoint);
     const matched = sorted.find(r => window.innerWidth <= r.breakpoint);
