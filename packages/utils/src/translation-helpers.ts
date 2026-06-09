@@ -367,7 +367,8 @@ export function getTranslateableFields(
 export function applyTranslation(
   content: BuilderContent,
   translation: TranslateableFields,
-  locale: string
+  locale: string,
+  sourceLocaleId?: string
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
@@ -387,14 +388,27 @@ export function applyTranslation(
       // store the result under the target locale.
       const prefix = `${metaKey}#`;
       const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
-      if (compoundKeys.length > 0 && el.Default !== null && el.Default !== undefined) {
-        const localeValue = JSON.parse(JSON.stringify(el.Default));
+      const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
+          ? el[sourceLocaleId]
+          : el.Default;
+      if (compoundKeys.length > 0 && sourceValue !== null && sourceValue !== undefined) {
+        const localeValue = JSON.parse(JSON.stringify(sourceValue));
         compoundKeys.forEach(key => {
           const nestedPath = key.slice(prefix.length);
           const segments = nestedPath
             .split('#')
             .map((s: string) => (/^\d+$/.test(s) ? parseInt(s, 10) : s));
-          set(localeValue, segments, unescapeStringOrObject(translation[key].value));
+          const existingValue = get(localeValue, segments);
+          if (existingValue && typeof existingValue === 'object' && existingValue['@type'] === localizedType) {
+            // Nested LocalizedValue — preserve its structure and add the locale key
+            set(localeValue, segments, {
+              ...existingValue,
+              [locale]: unescapeStringOrObject(translation[key].value),
+            });
+          } else {
+            // Plain string or primitive — replace directly
+            set(localeValue, segments, unescapeStringOrObject(translation[key].value));
+          }
         });
         this.update({ ...el, [locale]: localeValue });
       }

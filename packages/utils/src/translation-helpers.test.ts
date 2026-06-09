@@ -969,18 +969,6 @@ test('applyTranslation for symbol with localized array containing nested localiz
   expect(symbolData.uspList.Default[1].headline.Default).toBe('Organise your items');
 });
 
-// ---------------------------------------------------------------------------
-// Customer bug: nested fields inside a LocalizedValue array (custom metadata)
-// ---------------------------------------------------------------------------
-// Scenario: a data model has a `faqs` Object field (cannot be localized) that
-// contains an `items` List field. The `items` field itself has Localize enabled,
-// so Builder stores the whole array as one LocalizedValue. Each item has
-// `question` and `answer` plain-string sub-fields.
-// Before the fix: getTranslateableFields produced one entry with an array value
-// (not a string) which Smartling could not translate. After the fix: individual
-// string entries are produced for each nested field.
-// ---------------------------------------------------------------------------
-
 test('getTranslateableFields extracts nested string fields from a LocalizedValue array (FAQ scenario)', () => {
   const content: BuilderContent = {
     data: {
@@ -1086,4 +1074,90 @@ test('applyTranslation writes translated strings back into the correct locale sl
   // Default values must be preserved untouched
   expect(localizedItems.Default[0].question).toBe('What does an Excel expert actually do?');
   expect(localizedItems.Default[1].question).toBe('What tools does an Excel expert use?');
+});
+
+test('applyTranslation preserves nested LocalizedValue structure when sub-fields are themselves LocalizedValues (double-localized scenario)', () => {
+  // Scenario: `items` is a LocalizedValue whose Default array contains items where
+  // `question` and `answer` are ALSO individually LocalizedValues.
+  // The fix must NOT replace those nested LocalizedValue objects with plain strings.
+  const content: BuilderContent = {
+    data: {
+      faqs: {
+        items: {
+          '@type': localizedType,
+          Default: [
+            {
+              question: { '@type': localizedType, Default: 'Q1', 'en-US': 'Q1' },
+              answer: { '@type': localizedType, Default: 'A1', 'en-US': 'A1' },
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  const germanTranslations = {
+    'metadata.faqs#items#0#question': { value: 'German Q1' },
+    'metadata.faqs#items#0#answer': { value: 'German A1' },
+  };
+
+  const result = applyTranslation(content, germanTranslations, 'de-DE');
+  const localizedItems = (result.data!.faqs as any).items;
+
+  // The locale-specific copy must preserve the nested LocalizedValue structure
+  expect(localizedItems['de-DE'][0].question['@type']).toBe(localizedType);
+  expect(localizedItems['de-DE'][0].question['de-DE']).toBe('German Q1');
+  expect(localizedItems['de-DE'][0].question.Default).toBe('Q1');
+
+  expect(localizedItems['de-DE'][0].answer['@type']).toBe(localizedType);
+  expect(localizedItems['de-DE'][0].answer['de-DE']).toBe('German A1');
+  expect(localizedItems['de-DE'][0].answer.Default).toBe('A1');
+
+  // Default array must be completely untouched
+  expect(localizedItems.Default[0].question['@type']).toBe(localizedType);
+  expect(localizedItems.Default[0].question.Default).toBe('Q1');
+  expect(localizedItems.Default[0].question['de-DE']).toBeUndefined();
+});
+
+test('applyTranslation uses sourceLocaleId as the base when it differs from Default', () => {
+  // When sourceLocaleId array has more items / extra fields than Default,
+  // the translated locale must be based on the sourceLocaleId structure,
+  // not the (potentially stale) Default.
+  const content: BuilderContent = {
+    data: {
+      faqs: {
+        items: {
+          '@type': localizedType,
+          Default: [
+            { question: 'Default Q1', answer: 'Default A1' },
+          ],
+          'en-US': [
+            { question: 'English Q1', answer: 'English A1' },
+            { question: 'English Q2', answer: 'English A2' },  // extra item only in en-US
+          ],
+        },
+      },
+    },
+  };
+
+  const germanTranslations = {
+    'metadata.faqs#items#0#question': { value: 'German Q1' },
+    'metadata.faqs#items#0#answer': { value: 'German A1' },
+    'metadata.faqs#items#1#question': { value: 'German Q2' },
+    'metadata.faqs#items#1#answer': { value: 'German A2' },
+  };
+
+  const result = applyTranslation(content, germanTranslations, 'de-DE', 'en-US');
+  const localizedItems = (result.data!.faqs as any).items;
+
+  // Both items must be present (sourced from en-US, not the 1-item Default)
+  expect(localizedItems['de-DE']).toHaveLength(2);
+  expect(localizedItems['de-DE'][0].question).toBe('German Q1');
+  expect(localizedItems['de-DE'][0].answer).toBe('German A1');
+  expect(localizedItems['de-DE'][1].question).toBe('German Q2');
+  expect(localizedItems['de-DE'][1].answer).toBe('German A2');
+
+  // Default and en-US must be untouched
+  expect(localizedItems.Default).toHaveLength(1);
+  expect(localizedItems['en-US']).toHaveLength(2);
 });
