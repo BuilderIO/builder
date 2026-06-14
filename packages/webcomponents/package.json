@@ -150,7 +150,7 @@
     "@builder.io/widgets": "^1.2.26",
     "@emotion/core": "^10.0.22",
     "@types/css-font-loading-module": "0.0.4",
-    "liquidjs": "^9.7.0",
+    "liquidjs": "^10.26.0",
     "preact": "^10.5.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
