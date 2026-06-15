@@ -1214,30 +1214,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/ssr@npm:^17.3.8":
-  version: 17.3.17
-  resolution: "@angular/ssr@npm:17.3.17"
-  dependencies:
-    critters: 0.0.22
-    tslib: ^2.3.0
-  peerDependencies:
-    "@angular/common": ^17.0.0
-    "@angular/core": ^17.0.0
-  checksum: 2895a206521833ac93729842bdc751947d8cf18d51d033adc05d32adf05161fd66a0cbded0703e038997d410ba25f4700c76e5fc1c2f70f5ca06fcb07759ed86
-  languageName: node
-  linkType: hard
-
-"@angular/ssr@npm:^19.0.6":
-  version: 19.0.6
-  resolution: "@angular/ssr@npm:19.0.6"
+"@angular/ssr@npm:^19.2.25":
+  version: 19.2.25
+  resolution: "@angular/ssr@npm:19.2.25"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": ^19.0.0
-    "@angular/core": ^19.0.0
-    "@angular/platform-server": ^19.0.0
-    "@angular/router": ^19.0.0
-  checksum: 67f597931723223691d1248f5bb86801cafa216bdc5c1ffcb423e3e013cc081fb68f42a63b298a97969de79bd3342f5660eae5b917021336f1cbd3da12edc7c0
+    "@angular/common": ^19.0.0 || ^19.2.0-next.0
+    "@angular/core": ^19.0.0 || ^19.2.0-next.0
+    "@angular/platform-server": ^19.0.0 || ^19.2.0-next.0
+    "@angular/router": ^19.0.0 || ^19.2.0-next.0
+  peerDependenciesMeta:
+    "@angular/platform-server":
+      optional: true
+  checksum: 79d7266173ed7e27c7445c58e63b5c18c89c333262c0e1a2b4bc400dc7041b13a8b578ec9acefe1178bdd0876569331d1d9647260e94f541d9c4b32531c1df7c
   languageName: node
   linkType: hard
 
@@ -7676,7 +7666,7 @@ __metadata:
     "@angular/platform-browser-dynamic": ^17.3.0
     "@angular/platform-server": ^17.3.0
     "@angular/router": ^17.3.0
-    "@angular/ssr": ^17.3.8
+    "@angular/ssr": ^19.2.25
     "@builder.io/sdk-angular": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/express": ^4.17.17
@@ -7744,7 +7734,7 @@ __metadata:
     "@angular/platform-browser-dynamic": ^19.0.0
     "@angular/platform-server": ^19.0.0
     "@angular/router": ^19.0.0
-    "@angular/ssr": ^19.0.6
+    "@angular/ssr": ^19.2.25
     "@builder.io/sdk-angular": "workspace:*"
     "@sdk/tests": "workspace:*"
     "@types/express": ^4.17.17
@@ -19991,7 +19981,7 @@ __metadata:
     "@angular/platform-browser-dynamic": ^17.3.0
     "@angular/platform-server": ^17.3.0
     "@angular/router": ^17.3.0
-    "@angular/ssr": ^17.3.8
+    "@angular/ssr": ^19.2.25
     "@builder.io/sdk-angular": "workspace:*"
     "@types/express": ^4.17.17
     "@types/jasmine": ~5.1.0
