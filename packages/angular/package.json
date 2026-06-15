@@ -57,7 +57,7 @@
     "@angular/forms": "18.0.6",
     "@angular/platform-browser": "18.0.6",
     "@angular/platform-browser-dynamic": "18.0.6",
-    "@angular/platform-server": "18.0.6",
+    "@angular/platform-server": "19.2.22",
     "@angular/router": "18.0.6",
     "@babel/core": "^7.17.4",
     "@babel/preset-env": "^7.16.11",
