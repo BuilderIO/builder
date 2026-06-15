@@ -43,7 +43,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.11.30",
     "cross-env": "^7.0.3",
-    "glob": "^7.2.3",
+    "glob": "^12.0.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
