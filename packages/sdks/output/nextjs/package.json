@@ -107,7 +107,7 @@
     "next": ">=13.4.20",
     "react": "^18.2.0",
     "typescript": "^5.1.6",
-    "vite": "^4.5.11"
+    "vite": "^6.4.3"
   },
   "dependencies": {
     "isolated-vm": "^6.0.0"
