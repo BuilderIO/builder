@@ -46,3 +46,5 @@ Pods/
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
+
+.builder/plans
