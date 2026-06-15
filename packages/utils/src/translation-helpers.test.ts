@@ -1122,7 +1122,7 @@ test('applyTranslation preserves nested LocalizedValue structure when sub-fields
 test('applyTranslation uses sourceLocaleId as the base when it differs from Default', () => {
   // When sourceLocaleId array has more items / extra fields than Default,
   // the translated locale must be based on the sourceLocaleId structure,
-  // not the (potentially stale) Default.
+  // not the (potentially stale) Default
   const content: BuilderContent = {
     data: {
       faqs: {
