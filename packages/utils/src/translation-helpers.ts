@@ -94,6 +94,25 @@ function recordValue({
   }
 }
 
+function extractStringLeaves(
+  value: any,
+  path: string,
+  results: TranslateableFields,
+  instructions: string
+) {
+  if (typeof value === 'string') {
+    results[path] = { value, instructions };
+  } else if (value?.['@type'] === localizedType) {
+    extractStringLeaves(value.Default, path, results, instructions);
+  } else if (Array.isArray(value)) {
+    value.forEach((item, i) => extractStringLeaves(item, `${path}[${i}]`, results, instructions));
+  } else if (typeof value === 'object' && value !== null) {
+    Object.entries(value).forEach(([k, v]) =>
+      extractStringLeaves(v, `${path}.${k}`, results, instructions)
+    );
+  }
+}
+
 function resolveTranslation({
   data,
   basePath,
@@ -247,12 +266,16 @@ export function getTranslateableFields(
             .filter(input => get(el.component?.options || {}, `${input}.@type`) === localizedType)
             .forEach(inputKey => {
               const inputValue = get(el.component?.options || {}, inputKey);
-              const valueToBeTranslated = inputValue?.[sourceLocaleId] || inputValue?.Default;
-              if (valueToBeTranslated) {
-                results[`blocks.${el.id}#${inputKey}`] = {
-                  instructions: el.meta?.instructions || defaultInstructions,
-                  value: valueToBeTranslated,
-                };
+              const valueToBeTranslated = inputValue?.[sourceLocaleId] ?? inputValue?.Default;
+              if (valueToBeTranslated === undefined || valueToBeTranslated === null) return;
+
+              const basePath = `blocks.${el.id}#${inputKey}`;
+              const instructions = el.meta?.instructions || defaultInstructions;
+
+              if (typeof valueToBeTranslated === 'string') {
+                results[basePath] = { instructions, value: valueToBeTranslated };
+              } else {
+                extractStringLeaves(valueToBeTranslated, basePath, results, instructions);
               }
             });
         }
@@ -271,9 +294,10 @@ export function getTranslateableFields(
       if (el && el.id && el.component?.name === 'Core:Button' && !isExcluded) {
         const componentText = el.component.options?.text;
         if (componentText) {
-          const textValue = typeof componentText === 'string'
-            ? componentText
-            : componentText?.[sourceLocaleId] || componentText?.Default;
+          const textValue =
+            typeof componentText === 'string'
+              ? componentText
+              : componentText?.[sourceLocaleId] || componentText?.Default;
           if (textValue) {
             results[`blocks.${el.id}#text`] = {
               value: textValue,
@@ -283,7 +307,7 @@ export function getTranslateableFields(
         }
       }
 
-      if (el && el.id && el.component?.name === 'Symbol'&& !isExcluded) {
+      if (el && el.id && el.component?.name === 'Symbol' && !isExcluded) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const basePath = `blocks.${el.id}.symbolInput`;
@@ -473,7 +497,7 @@ export function applyTranslation(
             },
           },
         };
-        
+
         this.update(updatedElement);
       }
 
@@ -482,27 +506,53 @@ export function applyTranslation(
         // there's a localized input
         const keys = el.meta?.localizedTextInputs as string[];
         let options = el.component.options;
+        let didUpdate = false;
 
         keys.forEach(key => {
-          if (translation[`blocks.${el.id}#${key}`]) {
+          const exactKey = `blocks.${el.id}#${key}`;
+          if (translation[exactKey]) {
+            // String LocalizedValue — current behavior
             set(options, key, {
               ...(get(options, key) || {}),
-              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
+              [locale]: unescapeStringOrObject(translation[exactKey].value),
             });
-
-            this.update({
-              ...el,
-              meta: {
-                ...el.meta,
-                translated: true,
-              },
-              component: {
-                ...el.component,
-                options,
-              },
-            });
+            didUpdate = true;
+          } else {
+            // List/object LocalizedValue — reconstruct locale value from leaf paths
+            const prefix = `${exactKey}[`;
+            const prefixDot = `${exactKey}.`;
+            const subEntries = Object.entries(translation).filter(
+              ([k]) => k.startsWith(prefix) || k.startsWith(prefixDot)
+            );
+            if (subEntries.length) {
+              const inputValue = get(options, key);
+              const localeValue = JSON.parse(JSON.stringify(inputValue?.Default ?? []));
+              subEntries.forEach(([k, entry]) => {
+                const subPath = k.slice(exactKey.length);
+                set(localeValue, subPath, unescapeStringOrObject(entry.value));
+              });
+              set(options, key, {
+                ...inputValue,
+                [locale]: localeValue,
+              });
+              didUpdate = true;
+            }
           }
         });
+
+        if (didUpdate) {
+          this.update({
+            ...el,
+            meta: {
+              ...el.meta,
+              translated: true,
+            },
+            component: {
+              ...el.component,
+              options,
+            },
+          });
+        }
       }
     });
     content.data = {
