@@ -61,10 +61,25 @@ const messageDependabot = async (command = 'rebase') => {
   }
 };
 
+const closePrs = async () => {
+  const prs = await getPrs();
+  for (const pr of prs) {
+    echo`\nclosing PR: ${pr.url}: ${pr.title}`;
+    try {
+      await $`gh pr close ${pr.number}`;
+    } catch (error) {
+      echo`ERROR closing PR: ${pr.url}: ${pr.title}`;
+      echo`ERROR: ${error}`;
+    }
+  }
+};
+
 const main = async () => {
-  const action = await question('What do you want to do? [merge/msg]: ');
+  const action = await question('What do you want to do? [merge/msg/close]: ');
   if (action === 'merge') {
     await mergePrs();
+  } else if (action === 'close') {
+    await closePrs();
   } else if (action === 'msg') {
     // get msg from user
     const command = await question('What do you want to say to dependabot? [rebase]: ');
