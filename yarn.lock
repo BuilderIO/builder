@@ -1140,22 +1140,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-server@npm:^17.3.0":
-  version: 17.3.12
-  resolution: "@angular/platform-server@npm:17.3.12"
-  dependencies:
-    tslib: ^2.3.0
-    xhr2: ^0.2.0
-  peerDependencies:
-    "@angular/animations": 17.3.12
-    "@angular/common": 17.3.12
-    "@angular/compiler": 17.3.12
-    "@angular/core": 17.3.12
-    "@angular/platform-browser": 17.3.12
-  checksum: 652dc2c6770b177f1f76def3f21859c16809061269aacc475cbb7e2274a4f4ff2ca5f3c3f5f65506ae15b29459ea9cea57963a4ce0d2ef412b1ec3c6761a1eae
-  languageName: node
-  linkType: hard
-
 "@angular/platform-server@npm:^19.0.0":
   version: 19.0.5
   resolution: "@angular/platform-server@npm:19.0.5"
@@ -1169,6 +1153,22 @@ __metadata:
     "@angular/core": 19.0.5
     "@angular/platform-browser": 19.0.5
   checksum: 49dc40d929f92daa42be68ef57d647e2a44fbadccc1f04c856d49a7f187bda25d2b563dfc30dbe2510d058a5d5af3a97716208b9981d9d870c6dbf16b9b6b0bf
+  languageName: node
+  linkType: hard
+
+"@angular/platform-server@npm:^19.2.25":
+  version: 19.2.25
+  resolution: "@angular/platform-server@npm:19.2.25"
+  dependencies:
+    tslib: ^2.3.0
+    xhr2: ^0.2.0
+  peerDependencies:
+    "@angular/common": 19.2.25
+    "@angular/compiler": 19.2.25
+    "@angular/core": 19.2.25
+    "@angular/platform-browser": 19.2.25
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: feb87a12a4e76341e9fc0afc88238753e1c53769479dc9f525b869d317187651e0cee869d895be8aa26d76a33a24f3f806523cb0ea20b49532dd65b8ac902c9b
   languageName: node
   linkType: hard
 
@@ -7674,7 +7674,7 @@ __metadata:
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
-    "@angular/platform-server": ^17.3.0
+    "@angular/platform-server": ^19.2.25
     "@angular/router": ^17.3.0
     "@angular/ssr": ^17.3.8
     "@builder.io/sdk-angular": "workspace:*"
@@ -19989,7 +19989,7 @@ __metadata:
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
-    "@angular/platform-server": ^17.3.0
+    "@angular/platform-server": ^19.2.25
     "@angular/router": ^17.3.0
     "@angular/ssr": ^17.3.8
     "@builder.io/sdk-angular": "workspace:*"
