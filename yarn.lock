@@ -914,45 +914,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:^16.2.0":
-  version: 16.2.12
-  resolution: "@angular/compiler@npm:16.2.12"
+"@angular/compiler@npm:^19.2.20":
+  version: 19.2.20
+  resolution: "@angular/compiler@npm:19.2.20"
   dependencies:
     tslib: ^2.3.0
-  peerDependencies:
-    "@angular/core": 16.2.12
-  peerDependenciesMeta:
-    "@angular/core":
-      optional: true
-  checksum: 061903d04445acae39fb85048952a5451c3c2a198d0b55541afdc943e0cb5de3b7164c1efa4d9d2c3d92dba2dbf3143150f72449230d48074562e1c1be6f0108
-  languageName: node
-  linkType: hard
-
-"@angular/compiler@npm:^17.3.0":
-  version: 17.3.12
-  resolution: "@angular/compiler@npm:17.3.12"
-  dependencies:
-    tslib: ^2.3.0
-  peerDependencies:
-    "@angular/core": 17.3.12
-  peerDependenciesMeta:
-    "@angular/core":
-      optional: true
-  checksum: 97669f922c78eca451e0011c2d0708dfb74ed25be52c7fe4b2120516be6b8888547b65ed2dc1ef94fb626ea5db1cd047d4bee6f719ddc37d3586cafdb057bbae
-  languageName: node
-  linkType: hard
-
-"@angular/compiler@npm:^19.0.0":
-  version: 19.0.5
-  resolution: "@angular/compiler@npm:19.0.5"
-  dependencies:
-    tslib: ^2.3.0
-  peerDependencies:
-    "@angular/core": 19.0.5
-  peerDependenciesMeta:
-    "@angular/core":
-      optional: true
-  checksum: 112335191b2e08b345be8b3db113df2db37b2b256c5574843d498a0f59bce22f9762fb8d5506b0bbbcec659d75e0f15c0353e64e34b8731a0b2f374099f66e6c
+  checksum: ef69b61d0acc8c5f023c567bfb0623f164738639a43723086c7c4d828620a176448ba5d1a4089ec264264bca8ff182fec4f1b0fb73753c8093f238bd256ce69d
   languageName: node
   linkType: hard
 
@@ -7029,7 +6996,7 @@ __metadata:
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
     "@angular/common": ^17.3.0
-    "@angular/compiler": ^17.3.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
     "@angular/forms": ^17.3.0
@@ -7668,7 +7635,7 @@ __metadata:
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
     "@angular/common": ^17.3.0
-    "@angular/compiler": ^17.3.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
     "@angular/forms": ^17.3.0
@@ -7704,7 +7671,7 @@ __metadata:
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
     "@angular/common": ^17.3.0
-    "@angular/compiler": ^17.3.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
     "@angular/forms": ^17.3.0
@@ -7736,7 +7703,7 @@ __metadata:
     "@angular/animations": ^19.0.0
     "@angular/cli": ^19.0.6
     "@angular/common": ^19.0.0
-    "@angular/compiler": ^19.0.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^19.0.0
     "@angular/core": ^19.0.0
     "@angular/forms": ^19.0.0
@@ -19916,7 +19883,7 @@ __metadata:
     "@angular/animations": ^16.2.0
     "@angular/cli": ^16.2.12
     "@angular/common": ^16.2.0
-    "@angular/compiler": ^16.2.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^16.2.0
     "@angular/core": ^16.2.0
     "@angular/forms": ^16.2.0
@@ -19953,7 +19920,7 @@ __metadata:
     "@angular/animations": ^16.2.0
     "@angular/cli": ^16.2.12
     "@angular/common": ^16.2.0
-    "@angular/compiler": ^16.2.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^16.2.0
     "@angular/core": ^16.2.0
     "@angular/forms": ^16.2.0
@@ -19983,7 +19950,7 @@ __metadata:
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
     "@angular/common": ^17.3.0
-    "@angular/compiler": ^17.3.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
     "@angular/forms": ^17.3.0
@@ -20018,7 +19985,7 @@ __metadata:
     "@angular/animations": ^17.3.0
     "@angular/cli": ^17.3.8
     "@angular/common": ^17.3.0
-    "@angular/compiler": ^17.3.0
+    "@angular/compiler": ^19.2.20
     "@angular/compiler-cli": ^17.3.0
     "@angular/core": ^17.3.0
     "@angular/forms": ^17.3.0
