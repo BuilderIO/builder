@@ -1124,51 +1124,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-server@npm:^16.2.0":
-  version: 16.2.12
-  resolution: "@angular/platform-server@npm:16.2.12"
+"@angular/platform-server@npm:^19.2.22":
+  version: 19.2.22
+  resolution: "@angular/platform-server@npm:19.2.22"
   dependencies:
     tslib: ^2.3.0
     xhr2: ^0.2.0
   peerDependencies:
-    "@angular/animations": 16.2.12
-    "@angular/common": 16.2.12
-    "@angular/compiler": 16.2.12
-    "@angular/core": 16.2.12
-    "@angular/platform-browser": 16.2.12
-  checksum: 432e9ec3e5009fadb1ac7e934388effaf8ed1f4a3138f404347717af99ae7c93366721ffd543972079730b13b4dc8c48652a4423d8382b48cdfd3a2551b92490
-  languageName: node
-  linkType: hard
-
-"@angular/platform-server@npm:^17.3.0":
-  version: 17.3.12
-  resolution: "@angular/platform-server@npm:17.3.12"
-  dependencies:
-    tslib: ^2.3.0
-    xhr2: ^0.2.0
-  peerDependencies:
-    "@angular/animations": 17.3.12
-    "@angular/common": 17.3.12
-    "@angular/compiler": 17.3.12
-    "@angular/core": 17.3.12
-    "@angular/platform-browser": 17.3.12
-  checksum: 652dc2c6770b177f1f76def3f21859c16809061269aacc475cbb7e2274a4f4ff2ca5f3c3f5f65506ae15b29459ea9cea57963a4ce0d2ef412b1ec3c6761a1eae
-  languageName: node
-  linkType: hard
-
-"@angular/platform-server@npm:^19.0.0":
-  version: 19.0.5
-  resolution: "@angular/platform-server@npm:19.0.5"
-  dependencies:
-    tslib: ^2.3.0
-    xhr2: ^0.2.0
-  peerDependencies:
-    "@angular/animations": 19.0.5
-    "@angular/common": 19.0.5
-    "@angular/compiler": 19.0.5
-    "@angular/core": 19.0.5
-    "@angular/platform-browser": 19.0.5
-  checksum: 49dc40d929f92daa42be68ef57d647e2a44fbadccc1f04c856d49a7f187bda25d2b563dfc30dbe2510d058a5d5af3a97716208b9981d9d870c6dbf16b9b6b0bf
+    "@angular/common": 19.2.22
+    "@angular/compiler": 19.2.22
+    "@angular/core": 19.2.22
+    "@angular/platform-browser": 19.2.22
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: d926202b94b280fd7bad306e05c955b9b997eefd990c624a50b2f837ad45061b73fc301d915e896a1b5d0ad47c83982879038a68f61210a46904437cb723f232
   languageName: node
   linkType: hard
 
@@ -7674,7 +7642,7 @@ __metadata:
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
-    "@angular/platform-server": ^17.3.0
+    "@angular/platform-server": ^19.2.22
     "@angular/router": ^17.3.0
     "@angular/ssr": ^17.3.8
     "@builder.io/sdk-angular": "workspace:*"
@@ -7742,7 +7710,7 @@ __metadata:
     "@angular/forms": ^19.0.0
     "@angular/platform-browser": ^19.0.0
     "@angular/platform-browser-dynamic": ^19.0.0
-    "@angular/platform-server": ^19.0.0
+    "@angular/platform-server": ^19.2.22
     "@angular/router": ^19.0.0
     "@angular/ssr": ^19.0.6
     "@builder.io/sdk-angular": "workspace:*"
@@ -19922,7 +19890,7 @@ __metadata:
     "@angular/forms": ^16.2.0
     "@angular/platform-browser": ^16.2.0
     "@angular/platform-browser-dynamic": ^16.2.0
-    "@angular/platform-server": ^16.2.0
+    "@angular/platform-server": ^19.2.22
     "@angular/router": ^16.2.0
     "@builder.io/sdk-angular": "workspace:*"
     "@nguniversal/builders": ^16.2.0
@@ -19989,7 +19957,7 @@ __metadata:
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
-    "@angular/platform-server": ^17.3.0
+    "@angular/platform-server": ^19.2.22
     "@angular/router": ^17.3.0
     "@angular/ssr": ^17.3.8
     "@builder.io/sdk-angular": "workspace:*"
