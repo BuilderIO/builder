@@ -7826,7 +7826,7 @@ __metadata:
     "@builder.io/widgets": ^1.2.24
     "@remix-run/dev": ^1.14.3
     "@remix-run/eslint-config": ^1.19.1
-    "@remix-run/node": ^1.14.3
+    "@remix-run/node": ^2.17.2
     "@remix-run/react": ^1.14.3
     "@remix-run/serve": ^1.14.3
     "@sdk/tests": "workspace:*"
@@ -8097,7 +8097,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@remix-run/dev": ^2.9.2
-    "@remix-run/node": ^2.9.2
+    "@remix-run/node": ^2.17.2
     "@remix-run/react": ^2.9.2
     "@remix-run/serve": ^2.9.2
     "@sdk/tests": "workspace:*"
@@ -17836,7 +17836,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/node@npm:1.19.3, @remix-run/node@npm:^1.14.3":
+"@remix-run/node@npm:1.19.3":
   version: 1.19.3
   resolution: "@remix-run/node@npm:1.19.3"
   dependencies:
@@ -17853,7 +17853,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/node@npm:2.16.5, @remix-run/node@npm:^2.16.5":
+"@remix-run/node@npm:2.16.5":
   version: 2.16.5
   resolution: "@remix-run/node@npm:2.16.5"
   dependencies:
@@ -17873,7 +17873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/node@npm:2.9.2, @remix-run/node@npm:^2.7.2, @remix-run/node@npm:^2.9.2":
+"@remix-run/node@npm:2.9.2, @remix-run/node@npm:^2.7.2":
   version: 2.9.2
   resolution: "@remix-run/node@npm:2.9.2"
   dependencies:
@@ -17910,6 +17910,26 @@ __metadata:
     typescript:
       optional: true
   checksum: 343a13a27986e24922176bd8fa4f2d0901ba976f5e10e00d3f2f5665a0dce22861d4a148ad689ce5d0c27b4721106d30a2474fa4cae1201b67bb8bd73fe6f133
+  languageName: node
+  linkType: hard
+
+"@remix-run/node@npm:^2.17.2":
+  version: 2.17.2
+  resolution: "@remix-run/node@npm:2.17.2"
+  dependencies:
+    "@remix-run/server-runtime": 2.17.2
+    "@remix-run/web-fetch": ^4.4.2
+    "@web3-storage/multipart-parser": ^1.0.0
+    cookie-signature: ^1.1.0
+    source-map-support: ^0.5.21
+    stream-slice: ^0.1.2
+    undici: ^6.21.2
+  peerDependencies:
+    typescript: ^5.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: a1368db820ed5bc2aa02f03a0d397a5bddfe65ae82507c86736cebd620d9c1573bdeef3282bd545b570489366c4f44c63a34e807d416eaa1b8bf48ac210d4fac
   languageName: node
   linkType: hard
 
@@ -18104,6 +18124,26 @@ __metadata:
     typescript:
       optional: true
   checksum: fbe1d0083744aac267077d81ed7c37bbc47a28adfe6f76a70b8f1578d98836637c718d86f661a09d3cd5fbf02d12e2658d5e3de7e8070bcdb31a721ad4a59b01
+  languageName: node
+  linkType: hard
+
+"@remix-run/server-runtime@npm:2.17.2":
+  version: 2.17.2
+  resolution: "@remix-run/server-runtime@npm:2.17.2"
+  dependencies:
+    "@remix-run/router": 1.23.0
+    "@types/cookie": ^0.6.0
+    "@web3-storage/multipart-parser": ^1.0.0
+    cookie: ^0.7.2
+    set-cookie-parser: ^2.4.8
+    source-map: ^0.7.3
+    turbo-stream: 2.4.1
+  peerDependencies:
+    typescript: ^5.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 5f3b2317e6be59766eea78eb8cfa5c22aedcb2a4ec7b4b4b53ac70f1a4de4f41a45f93f922adbc678c32524b2710d9595fba09845fef46d8d9665de6ecf59b33
   languageName: node
   linkType: hard
 
@@ -20081,7 +20121,7 @@ __metadata:
     "@builder.io/react": "workspace:*"
     "@emotion/core": 10.0.17
     "@remix-run/dev": ^2.9.2
-    "@remix-run/node": ^2.9.2
+    "@remix-run/node": ^2.17.2
     "@remix-run/react": ^2.9.2
     "@remix-run/serve": ^2.9.2
     "@types/react": ^18.2.20
@@ -20280,7 +20320,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@remix-run/dev": ^2.16.5
-    "@remix-run/node": ^2.16.5
+    "@remix-run/node": ^2.17.2
     "@remix-run/react": ^2.16.5
     "@remix-run/serve": ^2.16.5
     "@types/react": ^18.2.20
@@ -60762,6 +60802,13 @@ __metadata:
   version: 2.4.0
   resolution: "turbo-stream@npm:2.4.0"
   checksum: e36f52ed40589f01bede79757a143bef484914d579927235be1fd0c205618994cb5779a39ff8c2a80a87a1464d05771cd75320a9412b15bca03c7ff432e3cdf7
+  languageName: node
+  linkType: hard
+
+"turbo-stream@npm:2.4.1":
+  version: 2.4.1
+  resolution: "turbo-stream@npm:2.4.1"
+  checksum: e2c0aa1d4796af0089a1b8b46b3b4b5e95c118eb8168f25572bd7fe7bd70d118aaa64e8207b6fe3a90e6f88dcf84f5a2ccfd2d0d067c2032ea62d7edfc3b0d3c
   languageName: node
   linkType: hard
 

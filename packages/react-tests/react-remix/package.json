@@ -11,7 +11,7 @@
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@builder.io/widgets": "^1.2.24",
-    "@remix-run/node": "^1.14.3",
+    "@remix-run/node": "^2.17.2",
     "@remix-run/react": "^1.14.3",
     "@remix-run/serve": "^1.14.3",
     "@sdk/tests": "workspace:*",

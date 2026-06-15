@@ -15,7 +15,7 @@
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@emotion/core": "10.0.17",
-    "@remix-run/node": "^2.9.2",
+    "@remix-run/node": "^2.17.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
     "isbot": "^4.1.0",

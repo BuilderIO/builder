@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",
-    "@remix-run/node": "^2.9.2",
+    "@remix-run/node": "^2.17.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
     "@sdk/tests": "workspace:*",
