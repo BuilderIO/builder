@@ -27,9 +27,9 @@ const getPrs = async (extra = '') => {
 
   console.log(prsStr, prs);
 
-  // exclude `BuilderIO/builder-internal` PRs
-  const cleanedPrs = prs.filter(pr => pr.url.includes('BuilderIO/builder/pull'));
-  return cleanedPrs.slice(offset, offset + limit);
+  // Apply offset/limit on the raw, globally-ordered results so the window
+  // matches the sort order.
+  return prs.slice(offset, offset + limit);
 };
 
 const mergePrs = async () => {
@@ -64,7 +64,7 @@ const messageDependabot = async (command = 'rebase') => {
 const closePrs = async () => {
   const prs = await getPrs();
   for (const pr of prs) {
-    echo`\nclosing PR: ${pr.url}: ${pr.title}`;
+    echo`closing PR: ${pr.url}: ${pr.title}`;
     try {
       await $`gh pr close ${pr.number}`;
     } catch (error) {
