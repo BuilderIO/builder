@@ -968,3 +968,196 @@ test('applyTranslation for symbol with localized array containing nested localiz
   expect(symbolData.uspList.Default[0].headline.Default).toBe('Accept card payments');
   expect(symbolData.uspList.Default[1].headline.Default).toBe('Organise your items');
 });
+
+test('getTranslateableFields extracts nested string fields from a LocalizedValue array (FAQ scenario)', () => {
+  const content: BuilderContent = {
+    data: {
+      title: {
+        '@type': localizedType,
+        'en-US': 'Excel Expert',
+        Default: 'Excel Expert',
+      },
+      faqs: {
+        // `items` is a LocalizedValue whose payload is an array of plain objects.
+        // This is what Builder stores when you enable Localize on an array-type field.
+        items: {
+          '@type': localizedType,
+          Default: [
+            {
+              question: 'What does an Excel expert actually do?',
+              answer: 'An Excel expert is a data analyst who leverages advanced features of Microsoft Excel.',
+            },
+            {
+              question: 'What tools does an Excel expert use?',
+              answer: 'Excel experts use pivot tables, VLOOKUP, macros, and VBA scripting.',
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  const result = getTranslateableFields(content, 'en-US', '');
+
+  // Top-level localized string field still works
+  expect(result['metadata.title']).toEqual({ value: 'Excel Expert', instructions: '' });
+
+  // Each nested string field inside the LocalizedValue array must be a separate entry
+  expect(result['metadata.faqs#items#0#question']).toEqual({
+    value: 'What does an Excel expert actually do?',
+    instructions: '',
+  });
+  expect(result['metadata.faqs#items#0#answer']).toEqual({
+    value: 'An Excel expert is a data analyst who leverages advanced features of Microsoft Excel.',
+    instructions: '',
+  });
+  expect(result['metadata.faqs#items#1#question']).toEqual({
+    value: 'What tools does an Excel expert use?',
+    instructions: '',
+  });
+  expect(result['metadata.faqs#items#1#answer']).toEqual({
+    value: 'Excel experts use pivot tables, VLOOKUP, macros, and VBA scripting.',
+    instructions: '',
+  });
+
+  // The broken old key (whole array as value) must NOT exist
+  expect(result['metadata.faqs#items']).toBeUndefined();
+});
+
+test('applyTranslation writes translated strings back into the correct locale slot for LocalizedValue array (FAQ scenario)', () => {
+  const content: BuilderContent = {
+    data: {
+      title: {
+        '@type': localizedType,
+        'en-US': 'Excel Expert',
+        Default: 'Excel Expert',
+      },
+      faqs: {
+        items: {
+          '@type': localizedType,
+          Default: [
+            {
+              question: 'What does an Excel expert actually do?',
+              answer: 'An Excel expert is a data analyst.',
+            },
+            {
+              question: 'What tools does an Excel expert use?',
+              answer: 'Excel experts use pivot tables and VLOOKUP.',
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  const germanTranslations = {
+    'metadata.title': { value: 'Excel-Experte' },
+    'metadata.faqs#items#0#question': { value: 'Was macht ein Excel-Experte eigentlich?' },
+    'metadata.faqs#items#0#answer': { value: 'Ein Excel-Experte ist ein Datenanalyst.' },
+    'metadata.faqs#items#1#question': { value: 'Welche Tools verwendet ein Excel-Experte?' },
+    'metadata.faqs#items#1#answer': { value: 'Excel-Experten verwenden Pivot-Tabellen und VLOOKUP.' },
+  };
+
+  const result = applyTranslation(content, germanTranslations, 'de-DE');
+  const data = result.data!;
+
+  // Direct string LocalizedValue translation still works
+  expect((data.title as any)['de-DE']).toBe('Excel-Experte');
+
+  // The translated locale array must be set correctly
+  const localizedItems = (data.faqs as any).items;
+  expect(localizedItems['de-DE'][0].question).toBe('Was macht ein Excel-Experte eigentlich?');
+  expect(localizedItems['de-DE'][0].answer).toBe('Ein Excel-Experte ist ein Datenanalyst.');
+  expect(localizedItems['de-DE'][1].question).toBe('Welche Tools verwendet ein Excel-Experte?');
+  expect(localizedItems['de-DE'][1].answer).toBe('Excel-Experten verwenden Pivot-Tabellen und VLOOKUP.');
+
+  // Default values must be preserved untouched
+  expect(localizedItems.Default[0].question).toBe('What does an Excel expert actually do?');
+  expect(localizedItems.Default[1].question).toBe('What tools does an Excel expert use?');
+});
+
+test('applyTranslation preserves nested LocalizedValue structure when sub-fields are themselves LocalizedValues (double-localized scenario)', () => {
+  // Scenario: `items` is a LocalizedValue whose Default array contains items where
+  // `question` and `answer` are ALSO individually LocalizedValues.
+  // The fix must NOT replace those nested LocalizedValue objects with plain strings.
+  const content: BuilderContent = {
+    data: {
+      faqs: {
+        items: {
+          '@type': localizedType,
+          Default: [
+            {
+              question: { '@type': localizedType, Default: 'Q1', 'en-US': 'Q1' },
+              answer: { '@type': localizedType, Default: 'A1', 'en-US': 'A1' },
+            },
+          ],
+        },
+      },
+    },
+  };
+
+  const germanTranslations = {
+    'metadata.faqs#items#0#question': { value: 'German Q1' },
+    'metadata.faqs#items#0#answer': { value: 'German A1' },
+  };
+
+  const result = applyTranslation(content, germanTranslations, 'de-DE');
+  const localizedItems = (result.data!.faqs as any).items;
+
+  // The locale-specific copy must preserve the nested LocalizedValue structure
+  expect(localizedItems['de-DE'][0].question['@type']).toBe(localizedType);
+  expect(localizedItems['de-DE'][0].question['de-DE']).toBe('German Q1');
+  expect(localizedItems['de-DE'][0].question.Default).toBe('Q1');
+
+  expect(localizedItems['de-DE'][0].answer['@type']).toBe(localizedType);
+  expect(localizedItems['de-DE'][0].answer['de-DE']).toBe('German A1');
+  expect(localizedItems['de-DE'][0].answer.Default).toBe('A1');
+
+  // Default array must be completely untouched
+  expect(localizedItems.Default[0].question['@type']).toBe(localizedType);
+  expect(localizedItems.Default[0].question.Default).toBe('Q1');
+  expect(localizedItems.Default[0].question['de-DE']).toBeUndefined();
+});
+
+test('applyTranslation uses sourceLocaleId as the base when it differs from Default', () => {
+  // When sourceLocaleId array has more items / extra fields than Default,
+  // the translated locale must be based on the sourceLocaleId structure,
+  // not the (potentially stale) Default
+  const content: BuilderContent = {
+    data: {
+      faqs: {
+        items: {
+          '@type': localizedType,
+          Default: [
+            { question: 'Default Q1', answer: 'Default A1' },
+          ],
+          'en-US': [
+            { question: 'English Q1', answer: 'English A1' },
+            { question: 'English Q2', answer: 'English A2' },  // extra item only in en-US
+          ],
+        },
+      },
+    },
+  };
+
+  const germanTranslations = {
+    'metadata.faqs#items#0#question': { value: 'German Q1' },
+    'metadata.faqs#items#0#answer': { value: 'German A1' },
+    'metadata.faqs#items#1#question': { value: 'German Q2' },
+    'metadata.faqs#items#1#answer': { value: 'German A2' },
+  };
+
+  const result = applyTranslation(content, germanTranslations, 'de-DE', 'en-US');
+  const localizedItems = (result.data!.faqs as any).items;
+
+  // Both items must be present (sourced from en-US, not the 1-item Default)
+  expect(localizedItems['de-DE']).toHaveLength(2);
+  expect(localizedItems['de-DE'][0].question).toBe('German Q1');
+  expect(localizedItems['de-DE'][0].answer).toBe('German A1');
+  expect(localizedItems['de-DE'][1].question).toBe('German Q2');
+  expect(localizedItems['de-DE'][1].answer).toBe('German A2');
+
+  // Default and en-US must be untouched
+  expect(localizedItems.Default).toHaveLength(1);
+  expect(localizedItems['en-US']).toHaveLength(2);
+});
