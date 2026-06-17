@@ -56,5 +56,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "overrides": {
+    "ejs": "^3.1.7"
+  }
 }
