@@ -1,5 +1,23 @@
 # @builder.io/sdk-angular
 
+## 0.25.4
+
+### Patch Changes
+
+- 8b7fc90: Angular signals: gate the deprecated `allowSignalWrites` effect option on the runtime Angular version (`VERSION.major < 19`) instead of dropping it. This silences the deprecation warning on Angular 19+ while keeping backwards compatibility with lower versions.
+
+## 0.25.3
+
+### Patch Changes
+
+- 20e6dad: revert dedupe inline A/B test script fix
+
+## 0.25.2
+
+### Patch Changes
+
+- ee26917: remove duplicate a/b test scripts being inserted in DOM
+
 ## 0.25.0
 
 ### Minor Changes

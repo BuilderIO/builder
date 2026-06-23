@@ -6798,11 +6798,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.11.1":
-  version: 0.11.1
-  resolution: "@builder.io/mitosis-cli@npm:0.11.1"
+"@builder.io/mitosis-cli@npm:^0.13.2":
+  version: 0.13.2
+  resolution: "@builder.io/mitosis-cli@npm:0.13.2"
   dependencies:
-    "@builder.io/mitosis": 0.11.1
+    "@builder.io/mitosis": 0.13.2
     cosmiconfig: 9.0.0
     debug: ^4.3.4
     dedent: ^0.7.0
@@ -6816,13 +6816,13 @@ __metadata:
     ts-morph: ^19.0.0
   bin:
     mitosis: bin/mitosis
-  checksum: ab7298272a291bae48a28a760ef2b765b34c8c3ab4c279a25e9551c82877fcbc62ffff49a07c665bf8090b2aee1d432c198ab600ad6b195709719d48a6b6eb23
+  checksum: 1d958d523f72606a9dd7a0fd1288f55be1e80925fa9120e6f4297c988a99fa281e005bd58309411f7a610fdcb57e2e6830cee1693137e56162abceee8c2eb346
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.11.1, @builder.io/mitosis@npm:^0.11.1":
-  version: 0.11.1
-  resolution: "@builder.io/mitosis@npm:0.11.1"
+"@builder.io/mitosis@npm:0.13.2, @builder.io/mitosis@npm:^0.13.2":
+  version: 0.13.2
+  resolution: "@builder.io/mitosis@npm:0.13.2"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -6847,7 +6847,7 @@ __metadata:
     svelte-preprocess: ^5.0.3
     ts-morph: ^19.0.0
     typescript: ^5.3.2
-  checksum: e641cd89ce6b28a88475abf3adcc8b3a1e9b040995fd14dc2ac9e7aefddcb8cd3ba18fa44a4d56b4fa288b90e5daf7111db993a4dfb96177bff202ef2015800d
+  checksum: 39c9a8a95f43b1e1022c5db19929eb2dd876a1caf05a1417ec47d8f0faf3d24ffaed55d7a65a9eb0e2a0b29a8b0b49834ac61180082a8b03ca9dc155323f5633
   languageName: node
   linkType: hard
 
@@ -7252,8 +7252,8 @@ __metadata:
   dependencies:
     "@arethetypeswrong/cli": ^0.13.3
     "@builder.io/eslint-plugin-mitosis": ^0.0.16
-    "@builder.io/mitosis": ^0.11.1
-    "@builder.io/mitosis-cli": ^0.11.1
+    "@builder.io/mitosis": ^0.13.2
+    "@builder.io/mitosis-cli": ^0.13.2
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
     "@types/traverse": ^0.6.32
@@ -43504,23 +43504,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"launch-editor@npm:^2.6.0":
-  version: 2.6.1
-  resolution: "launch-editor@npm:2.6.1"
+"launch-editor@npm:^2.6.0, launch-editor@npm:^2.6.1, launch-editor@npm:^2.9.1":
+  version: 2.14.1
+  resolution: "launch-editor@npm:2.14.1"
   dependencies:
-    picocolors: ^1.0.0
-    shell-quote: ^1.8.1
-  checksum: e06d193075ac09f7f8109f10cabe464a211bf7ed4cbe75f83348d6f67bf4d9f162f06e7a1ab3e1cd7fc250b5342c3b57080618aff2e646dc34248fe499227601
-  languageName: node
-  linkType: hard
-
-"launch-editor@npm:^2.6.1, launch-editor@npm:^2.9.1":
-  version: 2.9.1
-  resolution: "launch-editor@npm:2.9.1"
-  dependencies:
-    picocolors: ^1.0.0
-    shell-quote: ^1.8.1
-  checksum: bed887085a9729cc2ad050329d92a99f4c69bacccf96d1ed8c84670608a3a128a828ba8e9a8a41101c5aea5aea6f79984658e2fd11f6ba85e32e6e1ed16dbb1c
+    picocolors: ^1.1.1
+    shell-quote: ^1.8.4
+  checksum: 232ea8a80146e7fec6c8ece7ebb600d58a82e9938f36111194980188d276935f424754b18e37d5b098f596d30580def723b231e093c27c3bcd703418278afc4c
   languageName: node
   linkType: hard
 
@@ -57128,10 +57118,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shell-quote@npm:^1.6.1, shell-quote@npm:^1.7.2, shell-quote@npm:^1.7.3, shell-quote@npm:^1.8.1":
+"shell-quote@npm:^1.6.1, shell-quote@npm:^1.7.2, shell-quote@npm:^1.7.3":
   version: 1.8.1
   resolution: "shell-quote@npm:1.8.1"
   checksum: 5f01201f4ef504d4c6a9d0d283fa17075f6770bfbe4c5850b074974c68062f37929ca61700d95ad2ac8822e14e8c4b990ca0e6e9272e64befd74ce5e19f0736b
+  languageName: node
+  linkType: hard
+
+"shell-quote@npm:^1.8.4":
+  version: 1.8.4
+  resolution: "shell-quote@npm:1.8.4"
+  checksum: 082dc836baa8ade01144ee3068af487ea45ba570ea6ab13a5eddc11ab16a976b8857b51ef2caf7dc9a1e173ff0aea685b8f78b4f6f5a0a1ef24c7b17c51350e2
   languageName: node
   linkType: hard
 

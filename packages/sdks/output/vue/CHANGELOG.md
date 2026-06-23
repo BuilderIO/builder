@@ -1,5 +1,17 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 5.2.3
+
+### Patch Changes
+
+- 20e6dad: revert dedupe inline A/B test script fix
+
+## 5.2.2
+
+### Patch Changes
+
+- ee26917: remove duplicate a/b test scripts being inserted in DOM
+
 ## 5.2.0
 
 ### Minor Changes

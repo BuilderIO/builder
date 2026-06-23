@@ -601,6 +601,8 @@ export class BuilderComponent extends React.Component<
     }
   };
 
+  stateChangeListenerActivatedHandler = () => this.notifyStateChange();
+
   resizeFn = () => {
     const deviceSize = this.deviceSizeState;
     if (deviceSize !== this.state.state.deviceSize) {
@@ -766,6 +768,10 @@ export class BuilderComponent extends React.Component<
       window.addEventListener('resize', this.resizeListener);
       if (Builder.isEditing) {
         window.addEventListener('message', this.messageListener);
+        window.addEventListener(
+          'builder:component:stateChangeListenerActivated',
+          this.stateChangeListenerActivatedHandler
+        );
       }
 
       if (Builder.isEditing || Builder.isPreviewing) {
@@ -897,6 +903,10 @@ export class BuilderComponent extends React.Component<
     if (Builder.isBrowser) {
       window.removeEventListener('resize', this.resizeListener);
       window.removeEventListener('message', this.messageListener);
+      window.removeEventListener(
+        'builder:component:stateChangeListenerActivated',
+        this.stateChangeListenerActivatedHandler
+      );
     }
   }
 

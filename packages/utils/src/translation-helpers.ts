@@ -195,6 +195,41 @@ function resolveTranslation({
   }
 }
 
+// Recursively walks an already-extracted LocalizedValue payload (array or object)
+// and records individual string leaves as separate translation entries.
+function extractNestedStrings(
+  value: any,
+  basePath: string,
+  results: TranslateableFields,
+  instructions: string,
+  sourceLocaleId: string
+) {
+  if (typeof value === 'string') {
+    if (value) {
+      results[basePath] = { value, instructions };
+    }
+  } else if (Array.isArray(value)) {
+    value.forEach((item, index) => {
+      extractNestedStrings(item, `${basePath}#${index}`, results, instructions, sourceLocaleId);
+    });
+  } else if (typeof value === 'object' && value !== null) {
+    if (value['@type'] === localizedType) {
+      // Nested LocalizedValue inside an outer LocalizedValue's payload
+      const nested = value[sourceLocaleId] || value.Default;
+      const nestedInstructions = value.meta?.instructions || instructions;
+      if (typeof nested === 'string' && nested) {
+        results[basePath] = { value: nested, instructions: nestedInstructions };
+      } else if (nested !== null && nested !== undefined) {
+        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+      }
+    } else {
+      Object.entries(value).forEach(([key, v]) => {
+        extractNestedStrings(v, `${basePath}#${key}`, results, instructions, sourceLocaleId);
+      });
+    }
+  }
+}
+
 export function getTranslateableFields(
   content: BuilderContent,
   sourceLocaleId: string,
@@ -205,14 +240,30 @@ export function getTranslateableFields(
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
   // metadata [content's localized custom fields]
-  traverse(customFields).forEach(function (el) {
-    if (this.key && el && el['@type'] === localizedType) {
-      results[`metadata.${this.path.join('#')}`] = {
-        instructions: el.meta?.instructions || defaultInstructions,
-        value: el[sourceLocaleId] || el.Default,
-      };
+  // Uses a custom recursive walk instead of traverse so we can stop at LocalizedValue
+  // boundaries and avoid generating duplicate / malformed path keys for nodes that live
+  // inside the LocalizedValue's internal Default / locale-keyed arrays.
+  function extractCustomField(value: any, path: string) {
+    if (!value || typeof value !== 'object') return;
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => extractCustomField(item, `${path}#${index}`));
+      return;
     }
-  });
+    if (value['@type'] === localizedType) {
+      const instructions = value.meta?.instructions || defaultInstructions;
+      const extractedValue = value[sourceLocaleId] || value.Default;
+      if (typeof extractedValue === 'string') {
+        results[path] = { value: extractedValue, instructions };
+      } else if (extractedValue !== null && extractedValue !== undefined) {
+        // Value is an array or object — extract individual string leaves so each
+        // one becomes its own Smartling translation unit.
+        extractNestedStrings(extractedValue, path, results, instructions, sourceLocaleId);
+      }
+      return; // Do not recurse into the LocalizedValue's internal structure.
+    }
+    Object.entries(value).forEach(([key, v]) => extractCustomField(v, `${path}#${key}`));
+  }
+  Object.entries(customFields).forEach(([key, value]) => extractCustomField(value, `metadata.${key}`));
 
   if (blocksString && typeof blocks === 'undefined') {
     blocks = JSON.parse(blocksString);
@@ -316,17 +367,51 @@ export function getTranslateableFields(
 export function applyTranslation(
   content: BuilderContent,
   translation: TranslateableFields,
-  locale: string
+  locale: string,
+  sourceLocaleId?: string
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
   traverse(customFields).forEach(function (el) {
     const path = this.path?.join('#');
-    if (translation[`metadata.${path}`]) {
+    const metaKey = `metadata.${path}`;
+    if (translation[metaKey]) {
+      // Direct translation — the node itself is a LocalizedValue with a string value.
       this.update({
         ...el,
-        [locale]: unescapeStringOrObject(translation[`metadata.${path}`].value),
+        [locale]: unescapeStringOrObject(translation[metaKey].value),
       });
+    } else if (el && typeof el === 'object' && el['@type'] === localizedType) {
+      // The LocalizedValue's payload was an array/object. Individual string leaves
+      // were extracted with compound keys like `metadata.faqs#items#0#question`.
+      // Collect all such keys, clone Default as the base, patch each leaf, then
+      // store the result under the target locale.
+      const prefix = `${metaKey}#`;
+      const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+      const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
+          ? el[sourceLocaleId]
+          : el.Default;
+      if (compoundKeys.length > 0 && sourceValue !== null && sourceValue !== undefined) {
+        const localeValue = JSON.parse(JSON.stringify(sourceValue));
+        compoundKeys.forEach(key => {
+          const nestedPath = key.slice(prefix.length);
+          const segments = nestedPath
+            .split('#')
+            .map((s: string) => (/^\d+$/.test(s) ? parseInt(s, 10) : s));
+          const existingValue = get(localeValue, segments);
+          if (existingValue && typeof existingValue === 'object' && existingValue['@type'] === localizedType) {
+            // Nested LocalizedValue — preserve its structure and add the locale key
+            set(localeValue, segments, {
+              ...existingValue,
+              [locale]: unescapeStringOrObject(translation[key].value),
+            });
+          } else {
+            // Plain string or primitive — replace directly
+            set(localeValue, segments, unescapeStringOrObject(translation[key].value));
+          }
+        });
+        this.update({ ...el, [locale]: localeValue });
+      }
     }
   });
 
