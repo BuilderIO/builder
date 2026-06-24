@@ -24,7 +24,8 @@ const assertInitVariantsScriptCount = async (
 ) => {
   if (skip || !response) return;
   const html = await response.text();
-  const count = (html.match(/data-id="builderio-init-variants-fns"/g) || []).length;
+  // Quote-agnostic: React/Vue render `data-id="..."` while Svelte renders it unquoted.
+  const count = (html.match(/data-id=["']?builderio-init-variants-fns["'\s>]/g) || []).length;
   expect(count).toBe(expectedCount);
 };
 
