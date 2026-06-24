@@ -91,11 +91,6 @@ export default function ContentVariants(props: VariantsProviderProps) {
   return (
     <>
       <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
-        <InlinedScript
-          scriptStr={getInitVariantsFnsScriptString()}
-          id="builderio-init-variants-fns"
-          nonce={props.nonce || ''}
-        />
         {SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET) && (
           <InlinedScript
             nonce={props.nonce || ''}
@@ -105,6 +100,12 @@ export default function ContentVariants(props: VariantsProviderProps) {
         )}
       </Show>
       <Show when={state.shouldRenderVariants}>
+        {/* Emit window.builderIoAbTest/builderIoRenderContent only when variants render; idempotent + self-removing to avoid duplicate defs and hydration mismatches. */}
+        <InlinedScript
+          scriptStr={getInitVariantsFnsScriptString()}
+          id="builderio-init-variants-fns"
+          nonce={props.nonce || ''}
+        />
         <InlinedStyles
           id="builderio-variants"
           styles={state.hideVariantsStyleString}

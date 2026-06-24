@@ -1,6 +1,6 @@
-import type { Browser } from '@playwright/test';
+import type { Browser, Response } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { checkIsGen1React, checkIsRN, test } from '../helpers/index.js';
+import { checkIsGen1React, checkIsRN, isSSRFramework, test } from '../helpers/index.js';
 import {
   cloneContent,
   launchEmbedderAndWaitForSdk,
@@ -9,6 +9,24 @@ import {
 import { CONTENT as AB_TEST_CONTENT } from '../specs/ab-test.js';
 
 const SELECTOR = 'div[builder-content-id]';
+
+/**
+ * Counts the A/B-test init scripts (`builderio-init-variants-fns`) in the SSR
+ * response body. We read the raw response rather than the live DOM because on
+ * hydration targets the script self-removes after hydration. It is emitted once
+ * per Content that renders A/B variants, so a page with one A/B-tested content
+ * ships exactly one (and zero when no content has variants).
+ */
+const assertInitVariantsScriptCount = async (
+  response: Response | null,
+  expectedCount: number,
+  { skip = false } = {}
+) => {
+  if (skip || !response) return;
+  const html = await response.text();
+  const count = (html.match(/data-id="builderio-init-variants-fns"/g) || []).length;
+  expect(count).toBe(expectedCount);
+};
 
 const createContextWithCookies = async ({
   cookies,
@@ -91,6 +109,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -124,7 +143,10 @@ test.describe('A/B tests', () => {
           await route.continue();
         });
 
-        await page.goto('/ab-test', { waitUntil: 'networkidle' });
+        const response = await page.goto('/ab-test', { waitUntil: 'networkidle' });
+        await assertInitVariantsScriptCount(response, 1, {
+          skip: checkIsGen1React(sdk) || !isSSRFramework(packageName),
+        });
 
         expect(trackCalls).toBe(1);
 
@@ -138,6 +160,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -164,7 +187,10 @@ test.describe('A/B tests', () => {
           await route.continue();
         });
 
-        await page.goto('/ab-test', { waitUntil: 'networkidle' });
+        const response = await page.goto('/ab-test', { waitUntil: 'networkidle' });
+        await assertInitVariantsScriptCount(response, 1, {
+          skip: checkIsGen1React(sdk) || !isSSRFramework(packageName),
+        });
 
         expect(trackCalls).toBe(1);
 
@@ -195,6 +221,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -208,7 +235,10 @@ test.describe('A/B tests', () => {
             cookieValue: CONTENT_ID,
           }
         );
-        await page.goto('/symbol-ab-test');
+        const response = await page.goto('/symbol-ab-test');
+        await assertInitVariantsScriptCount(response, 1, {
+          skip: checkIsGen1React(sdk) || !isSSRFramework(packageName),
+        });
 
         await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeVisible();
         await expect(
@@ -224,6 +254,7 @@ test.describe('A/B tests', () => {
         baseURL,
         packageName,
         browser,
+        sdk,
       }) => {
         const { page } = await initializeAbTest(
           {
@@ -238,7 +269,10 @@ test.describe('A/B tests', () => {
           }
         );
 
-        await page.goto('/symbol-ab-test');
+        const response = await page.goto('/symbol-ab-test');
+        await assertInitVariantsScriptCount(response, 1, {
+          skip: checkIsGen1React(sdk) || !isSSRFramework(packageName),
+        });
 
         await expect(page.getByText(TEXTS.VARIANT_1).locator('visible=true')).toBeVisible();
         await expect(
