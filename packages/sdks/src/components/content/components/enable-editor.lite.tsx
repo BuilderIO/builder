@@ -198,6 +198,9 @@ export default function EnableEditor(props: BuilderEditorProps) {
           },
           contentUpdate: (newContent, editType) => {
             state.mergeNewContent(newContent, editType);
+            if(newContent.data?.state) {
+              state.mergeNewRootState(newContent.data.state)
+            }  
           },
           stateUpdate: (newState, editType) => {
             state.mergeNewRootState(newState, editType);
