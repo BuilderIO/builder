@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.5
+
+### Patch Changes
+
+- 071f939: Stop injecting duplicate inline A/B test scripts on pages with multiple Content components. The `window.builderIoAbTest` / `window.builderIoRenderContent` init script is now only emitted when a Content actually renders A/B variants, and the definition is idempotent and self-removing on hydration targets. This avoids the duplication without the client-side DOM mutation that caused the previous hydration regression.
+
 ## 0.25.4
 
 ### Patch Changes

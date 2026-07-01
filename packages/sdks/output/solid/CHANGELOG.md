@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.2.4
+
+### Patch Changes
+
+- 071f939: Stop injecting duplicate inline A/B test scripts on pages with multiple Content components. The `window.builderIoAbTest` / `window.builderIoRenderContent` init script is now only emitted when a Content actually renders A/B variants, and the definition is idempotent and self-removing on hydration targets. This avoids the duplication without the client-side DOM mutation that caused the previous hydration regression.
+
 ## 5.2.3
 
 ### Patch Changes

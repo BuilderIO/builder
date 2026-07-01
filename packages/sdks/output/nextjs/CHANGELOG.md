@@ -1,5 +1,12 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.25.5
+
+### Patch Changes
+
+- 071f939: Stop injecting duplicate inline A/B test scripts on pages with multiple Content components. The `window.builderIoAbTest` / `window.builderIoRenderContent` init script is now only emitted when a Content actually renders A/B variants, and the definition is idempotent and self-removing on hydration targets. This avoids the duplication without the client-side DOM mutation that caused the previous hydration regression.
+- 10b6707: Bump `next` peer dependency to `>=13.5.9` to address authorization bypass in Next.js middleware (CVE-2025-29927)
+
 ## 0.25.3
 
 ### Patch Changes
