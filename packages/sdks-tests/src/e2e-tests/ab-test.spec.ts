@@ -15,7 +15,7 @@ const SELECTOR = 'div[builder-content-id]';
  * response body. We read the raw response rather than the live DOM because on
  * hydration targets the script self-removes after hydration. It is emitted once
  * per Content that renders A/B variants, so a page with one A/B-tested content
- * ships exactly one (and zero when no content has variants).
+ * ships exactly one (and zero when no content has variants)
  */
 const assertInitVariantsScriptCount = async (
   response: Response | null,
