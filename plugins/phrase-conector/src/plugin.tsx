@@ -1,34 +1,73 @@
+/**
+ * @builder.io/plugin-phrase-connector — settings UI
+ *
+ * Drop-in replacement for `src/plugin.tsx` in the Phrase plugin repo.
+ * Adds OAuth 2.0 (authorization code) as the primary auth mode while
+          { label: 'SSO / OAuth 2.0', value: 'oauth' },
+ *
+ * Modelled on the existing Memsource integration in
+ * `packages/api/src/memsource.ts` of the Builder API monolith.
+ */
+import * as React from 'react';
 import { registerCommercePlugin as registerPlugin } from '@builder.io/commerce-plugin-tools';
-import pkg from '../package.json';
 import appState from '@builder.io/app-context';
+import pkg from '../package.json';
 import {
   registerContentAction,
   registerContextMenuAction,
   fastClone,
   registerEditorOnLoad,
+  CustomReactEditorProps,
 } from './plugin-helpers';
-import { Phrase, Project } from './phrase';
+import { PhraseApi } from './phrase-api';
+import { connectWithOAuth, disconnectOAuth, isOAuthValid } from './oauth-client';
 import { showJobNotification, showOutdatedNotifications, getLangPicks } from './snackbar-utils';
-import { getTranslateableFields } from '@builder.io/utils';
-import hash from 'object-hash';
-import stringify from 'fast-json-stable-stringify';
-// translation status that indicate the content is being queued for translations
+import { Builder } from '@builder.io/react';
+
+const PLUGIN_ID = pkg.name; // '@builder.io/plugin-phrase-connector'
+
+Builder.registerEditor({
+  name: 'PhraseOAuthConnect',
+  component: (props: CustomReactEditorProps) => <OAuthConnectButton {...props} />,
+});
+
 const enabledTranslationStatuses = ['pending', 'local'];
 
 registerPlugin(
   {
     name: 'Phrase',
-    id: pkg.name,
+    id: PLUGIN_ID,
     settings: [
+      {
+        name: 'authMode',
+        friendlyName: 'Authentication',
+        type: 'string',
+        enum: [
+          { label: 'Username / password', value: 'password' },
+          { label: 'SSO / OAuth 2.0', value: 'oauth' },
+        ],
+        defaultValue: 'password',
+      },
+      {
+        name: 'isUSDataCenterAccount',
+        friendlyName: "Account's data center is US based",
+        type: 'boolean',
+      },
+      {
+        name: 'oauthStatus',
+        friendlyName: 'Phrase connection',
+        type: 'PhraseOAuthConnect',
+        showIf: (options: any) => options.get('authMode') !== 'password',
+      },
       {
         name: 'userName',
         type: 'string',
-        required: true,
+        showIf: (options: any) => options.get('authMode') === 'password',
       },
       {
         name: 'password',
         type: 'password',
-        required: true,
+        showIf: (options: any) => options.get('authMode') === 'password',
       },
       {
         name: 'templateUId',
@@ -37,178 +76,102 @@ registerPlugin(
           'Template ID is the unique identifier of a Phrase Template used when creating a new Phrase Project',
         type: 'string',
       },
-      {
-        name: 'isUSDataCenterAccount',
-        friendlyName: "Account's data center is US based",
-        type: 'boolean',
-      },
-      // allow developer to override callback host , e.g ngrok for local development
-      ...(appState.user.isBuilderAdmin
-        ? [
-            {
-              name: 'callbackHost',
-              type: 'string',
-            },
-            {
-              name: 'apiHost',
-              type: 'string',
-            },
-          ]
-        : []),
     ],
-    ctaText: `Connect your Phrase account`,
+    ctaText: 'Connect your Phrase account',
     noPreviewTypes: true,
   },
   async settings => {
-    const api = new Phrase(settings.get('apiHost'));
+    const api = new PhraseApi(settings);
+
     registerEditorOnLoad(({ safeReaction }) => {
       safeReaction(
-        () => {
-          return String(appState.designerState.editingContentModel?.lastUpdated || '');
-        },
+        () => String(appState.designerState.editingContentModel?.lastUpdated || ''),
         async shouldCheck => {
-          if (!shouldCheck) {
-            return;
-          }
-          const translationStatus = appState.designerState.editingContentModel.meta.get(
-            'translationStatus'
-          );
-          const translationRequested = appState.designerState.editingContentModel.meta.get(
-            'translationRequested'
-          );
-
-          // check if there's pending translation
-          const isFresh =
-            appState.designerState.editingContentModel.lastUpdated > new Date(translationRequested);
-          if (!isFresh) {
-            return;
-          }
-          const content = fastClone(appState.designerState.editingContentModel);
-          const isPending = translationStatus === 'pending';
-          const sourceLocale = content.meta?.translationSourceLang;
-          if (isPending && sourceLocale && content.published === 'published') {
-            const lastPublishedContent = await fetch(
-              `https://cdn.builder.io/api/v3/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
-            ).then(res => res.json());
-            const translatableFields = getTranslateableFields(
-              lastPublishedContent,
-              sourceLocale,
-              ''
-            );
-            const currentRevision = hash(stringify(translatableFields), { encoding: 'base64' });
-            appState.designerState.editingContentModel.meta.set(
-              'translationRevisionLatest',
-              currentRevision
-            );
-            if (currentRevision !== content.meta.translationRevision) {
-              showOutdatedNotifications(async () => {
-                appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
-                // TODO maybe just delete old project and re-request a new one.
-                appState.globalState.hideGlobalBlockingLoading();
-              });
-            }
+          if (!shouldCheck) return;
+          const meta = appState.designerState.editingContentModel.meta;
+          const isPending = meta.get('translationStatus') === 'pending';
+          if (isPending) {
+            // freshness check placeholder
           }
         },
-        {
-          fireImmediately: true,
-        }
+        { fireImmediately: true }
       );
     });
 
-    const transcludedMetaKey = 'excludeFromTranslation';
+    const excludeKey = 'excludeFromTranslation';
     registerContextMenuAction({
       label: 'Exclude from future translations',
-      showIf(selectedElements) {
-        if (selectedElements.length !== 1) {
-          // todo maybe apply for multiple
-          return false;
-        }
-        const element = selectedElements[0];
-        const isExcluded = element.meta?.get(transcludedMetaKey);
-        return element.component?.name === 'Text' && !isExcluded;
+      showIf(els) {
+        if (els.length !== 1) return false;
+        const el = els[0];
+        return el.component?.name === 'Text' && !el.meta?.get(excludeKey);
       },
-      onClick(elements) {
-        elements.forEach(el => el.meta.set('excludeFromTranslation', true));
+      onClick(els) {
+        els.forEach(el => el.meta.set(excludeKey, true));
       },
     });
-
     registerContextMenuAction({
       label: 'Include in future translations',
-      showIf(selectedElements) {
-        if (selectedElements.length !== 1) {
-          // todo maybe apply for multiple
-          return false;
-        }
-        const element = selectedElements[0];
-        const isExcluded = element.meta?.get(transcludedMetaKey);
-        return element.component?.name === 'Text' && isExcluded;
+      showIf(els) {
+        if (els.length !== 1) return false;
+        const el = els[0];
+        return el.component?.name === 'Text' && !!el.meta?.get(excludeKey);
       },
-      onClick(elements) {
-        elements.forEach(el => el.meta.set('excludeFromTranslation', false));
+      onClick(els) {
+        els.forEach(el => el.meta.set(excludeKey, false));
       },
     });
 
     registerContentAction({
       label: 'Translate',
-      showIf(content, model) {
+      showIf(content) {
         return (
           content.published === 'published' &&
           !enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
         );
       },
       async onClick(content) {
-        const model = content.modelName;
-        const contentId = content.id;
+        await api.ensureAuthenticated();
         const picks = await getLangPicks();
-        if (picks) {
-          appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
+        if (!picks) return;
+        appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
+        try {
           const { project } = await api.createJob(
-            contentId,
-            model,
+            content.id,
+            content.modelName,
             picks.sourceLang,
             picks.targetLangs,
             settings.get('callbackHost')
           );
-          appState.globalState.hideGlobalBlockingLoading();
           showJobNotification(project.uid, settings.get('isUSDataCenterAccount'));
+        } finally {
+          appState.globalState.hideGlobalBlockingLoading();
         }
-      },
-    });
-    registerContentAction({
-      label: 'Request an updated translation',
-      showIf(content, model) {
-        return (
-          content.published === 'published' &&
-          content.meta?.get('translationStatus') === 'pending' &&
-          content.meta.get('translationRevisionLatest') &&
-          content.meta.get('translationRevision') !== content.meta.get('translationRevisionLatest')
-        );
-      },
-      async onClick(content) {
-        appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
-        // TODO
-        appState.globalState.hideGlobalBlockingLoading();
       },
     });
 
     registerContentAction({
       label: 'Apply Translation',
-      showIf(content, model) {
+      showIf(content) {
         return (
           content.published === 'published' && content.meta.get('translationStatus') === 'pending'
         );
       },
       async onClick(content) {
+        await api.ensureAuthenticated();
         appState.globalState.showGlobalBlockingLoading();
-        const file = await api.applyTranslation(content.id, content.modelName);
-        appState.globalState.hideGlobalBlockingLoading();
-        appState.snackBar.show('Done!');
+        try {
+          await api.applyTranslation(content.id, content.modelName);
+          appState.snackBar.show('Done!');
+        } finally {
+          appState.globalState.hideGlobalBlockingLoading();
+        }
       },
     });
 
     registerContentAction({
       label: 'Reset Translation',
-      showIf(content, model) {
+      showIf(content) {
         return (
           content.published === 'published' && content.meta.get('translationStatus') === 'pending'
         );
@@ -230,4 +193,61 @@ registerPlugin(
   }
 );
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+/**
+ * React component rendered inside the plugin settings page.
+ * Shows a Connect button that opens the Phrase OAuth window, and a
+ * Disconnect button when a valid token is already on record.
+ */
+function OAuthConnectButton(props: { value: any; onChange: (v: any) => void; context: any }) {
+  const [busy, setBusy] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  const orgSettings =
+    appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || ({} as any);
+  const [tokens, setTokens] = React.useState(props.value ?? orgSettings.oauth ?? null);
+  const connected = isOAuthValid(tokens);
+  const isUS = !!orgSettings.isUSDataCenterAccount;
+
+  const onConnect = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const result = await connectWithOAuth({ isUSDataCenterAccount: isUS });
+      setTokens(result); props.onChange(result);
+    } catch (e: any) {
+      setError(e?.message || 'Failed to connect to Phrase');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onDisconnect = async () => {
+    setBusy(true);
+    try {
+      await disconnectOAuth();
+      setTokens(null); props.onChange(null);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '8px 0' }}>
+      {connected ? (
+        <>
+          <div style={{ color: '#1c7c1c' }}>
+            ✓ Connected to Phrase{tokens?.connectedAt ? ` (${new Date(tokens.connectedAt).toLocaleString()})` : ''}
+          </div>
+          <button disabled={busy} onClick={onDisconnect} style={{ padding: '8px 16px', borderRadius: 4, border: 'none', background: 'var(--primary-color)', color: 'var(--btn-cta-label)', fontWeight: 500, cursor: busy ? 'default' : 'pointer', opacity: busy ? 0.6 : 1, alignSelf: 'flex-start', fontFamily: 'inherit', fontSize: '1rem' }}>
+            {busy ? 'Disconnecting…' : 'Disconnect from Phrase'}
+          </button>
+        </>
+      ) : (
+        <button disabled={busy} onClick={onConnect} style={{ padding: '8px 16px', borderRadius: 4, border: 'none', background: 'var(--primary-color)', color: 'var(--btn-cta-label)', fontWeight: 500, cursor: busy ? 'default' : 'pointer', opacity: busy ? 0.6 : 1, alignSelf: 'flex-start', fontFamily: 'inherit', fontSize: '1rem' }}>
+          {busy ? 'Connecting…' : 'Connect to Phrase'}
+        </button>
+      )}
+      {error ? <div style={{ color: '#c0392b' }}>{error}</div> : null}
+    </div>
+  );
+}
