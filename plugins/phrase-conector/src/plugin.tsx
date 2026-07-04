@@ -60,7 +60,7 @@ registerPlugin(
         name: 'oauthStatus',
         friendlyName: 'Phrase connection',
         type: 'PhraseOAuthConnect',
-        showIf: (options: any) => options.get('authMode') !== 'password',
+        showIf: (options: any) => options.get('authMode') === 'oauth',
       },
       {
         name: 'userName',

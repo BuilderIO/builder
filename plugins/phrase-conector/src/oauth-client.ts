@@ -42,13 +42,16 @@ export async function disconnectOAuth(): Promise<void> {
   const apiHost = getApiHost();
   const privateKey = await appState.globalState.getPluginPrivateKey(PLUGIN_ID);
   const params = new URLSearchParams({ apiKey: appState.user.apiKey, pluginId: PLUGIN_ID });
-  await fetch(apiHost + "/api/v1/memsource/oauth/disconnect?" + params, {
+  const res = await fetch(apiHost + "/api/v1/memsource/oauth/disconnect?" + params, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + privateKey,
     },
   });
+  if (!res.ok) {
+    throw new Error("Could not disconnect from Phrase. Please try again.");
+  }
 }
 
 export async function connectWithOAuth(opts: {
@@ -94,6 +97,11 @@ export async function connectWithOAuth(opts: {
   );
   if (!popup) throw new Error("Popup blocked. Allow popups for this site and try again.");
 
+  let expectedOrigin = "";
+  try {
+    expectedOrigin = new URL(apiHost).origin;
+  } catch {}
+
   return await new Promise((resolve, reject) => {
     let settled = false;
     const cleanup = () => {
@@ -101,6 +109,7 @@ export async function connectWithOAuth(opts: {
       clearInterval(closedTimer);
     };
     const onMessage = (e: MessageEvent) => {
+      if (expectedOrigin && e.origin !== expectedOrigin) return;
       const data = e.data ? e.data : {};
       if (data?.type !== "memsource-oauth-result") return;
       if (e.source !== popup) return;
