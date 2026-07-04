@@ -22,6 +22,9 @@ import {
 import { PhraseApi } from './phrase-api';
 import { connectWithOAuth, disconnectOAuth, isOAuthValid } from './oauth-client';
 import { showJobNotification, showOutdatedNotifications, getLangPicks } from './snackbar-utils';
+import { getTranslateableFields } from '@builder.io/utils';
+import hash from 'object-hash';
+import stringify from 'fast-json-stable-stringify';
 import { Builder } from '@builder.io/react';
 
 const PLUGIN_ID = pkg.name; // '@builder.io/plugin-phrase-connector'
@@ -91,7 +94,7 @@ registerPlugin(
           const meta = appState.designerState.editingContentModel.meta;
           const isPending = meta.get('translationStatus') === 'pending';
           if (isPending) {
-            // freshness check placeholder
+            await checkTranslationFreshness();
           }
         },
         { fireImmediately: true }
@@ -198,14 +201,14 @@ registerPlugin(
  * Shows a Connect button that opens the Phrase OAuth window, and a
  * Disconnect button when a valid token is already on record.
  */
-function OAuthConnectButton(props: { value: any; onChange: (v: any) => void; context: any }) {
+function OAuthConnectButton(_props: CustomReactEditorProps) {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
   const orgSettings =
     appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || ({} as any);
-  const [tokens, setTokens] = React.useState(props.value ?? orgSettings.oauth ?? null);
-  const connected = isOAuthValid(tokens);
+  const serverOauth = orgSettings.oauth; const [override, setOverride] = React.useState<{ connected: boolean; connectedAt?: number } | null>(null);
+  const connected = override ? override.connected : isOAuthValid(serverOauth); const connectedAt = override ? override.connectedAt : serverOauth?.connectedAt;
   const isUS = !!orgSettings.isUSDataCenterAccount;
 
   const onConnect = async () => {
@@ -213,7 +216,7 @@ function OAuthConnectButton(props: { value: any; onChange: (v: any) => void; con
     setError(null);
     try {
       const result = await connectWithOAuth({ isUSDataCenterAccount: isUS });
-      setTokens(result); props.onChange(result);
+      setOverride({ connected: true, connectedAt: result.connectedAt });
     } catch (e: any) {
       setError(e?.message || 'Failed to connect to Phrase');
     } finally {
@@ -225,7 +228,7 @@ function OAuthConnectButton(props: { value: any; onChange: (v: any) => void; con
     setBusy(true);
     try {
       await disconnectOAuth();
-      setTokens(null); props.onChange(null);
+      setOverride({ connected: false });
     } finally {
       setBusy(false);
     }
@@ -236,7 +239,7 @@ function OAuthConnectButton(props: { value: any; onChange: (v: any) => void; con
       {connected ? (
         <>
           <div style={{ color: '#1c7c1c' }}>
-            ✓ Connected to Phrase{tokens?.connectedAt ? ` (${new Date(tokens.connectedAt).toLocaleString()})` : ''}
+            ✓ Connected to Phrase{connectedAt ? ` (${new Date(connectedAt).toLocaleString()})` : ''}
           </div>
           <button disabled={busy} onClick={onDisconnect} style={{ padding: '8px 16px', borderRadius: 4, border: 'none', background: 'var(--primary-color)', color: 'var(--btn-cta-label)', fontWeight: 500, cursor: busy ? 'default' : 'pointer', opacity: busy ? 0.6 : 1, alignSelf: 'flex-start', fontFamily: 'inherit', fontSize: '1rem' }}>
             {busy ? 'Disconnecting…' : 'Disconnect from Phrase'}
@@ -250,4 +253,39 @@ function OAuthConnectButton(props: { value: any; onChange: (v: any) => void; con
       {error ? <div style={{ color: '#c0392b' }}>{error}</div> : null}
     </div>
   );
+}
+
+// Warns editors when the published source strings changed after a pending
+// Phrase job was created (restored from the original plugin behavior).
+async function checkTranslationFreshness() {
+  const model = appState.designerState.editingContentModel;
+  const translationStatus = model.meta.get("translationStatus");
+  const translationRequested = model.meta.get("translationRequested");
+  const isFresh = model.lastUpdated > new Date(translationRequested);
+  if (!isFresh) return;
+  const content = fastClone(model);
+  const isPending = translationStatus === "pending";
+  const sourceLocale = content.meta?.translationSourceLang;
+  const isPublished = content.published === "published";
+  if (!isPending || !sourceLocale || !isPublished) return;
+  const modelName = appState.designerState.editingModel.name;
+  const apiKey = appState.user.apiKey;
+  const cdnUrl =
+    "https://cdn.builder.io/api/v3/content/" +
+    modelName +
+    "/" +
+    content.id +
+    "?apiKey=" +
+    apiKey +
+    "&cachebust=true";
+  const lastPublishedContent = await fetch(cdnUrl).then(res => res.json());
+  const translatableFields = getTranslateableFields(lastPublishedContent, sourceLocale, "");
+  const currentRevision = hash(stringify(translatableFields), { encoding: "base64" });
+  model.meta.set("translationRevisionLatest", currentRevision);
+  if (currentRevision !== content.meta.translationRevision) {
+    showOutdatedNotifications(async () => {
+      appState.globalState.showGlobalBlockingLoading("Contacting Phrase ....");
+      appState.globalState.hideGlobalBlockingLoading();
+    });
+  }
 }

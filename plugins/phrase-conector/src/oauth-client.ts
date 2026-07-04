@@ -37,61 +37,6 @@ function getApiHost(): string {
   return orgSettings.apiHost || 'https://cdn.builder.io';
 }
 
-export async function connectWithOAuth(opts: {
-  isUSDataCenterAccount: boolean;
-}): Promise<PhraseOAuthTokens> {
-  const apiHost = getApiHost();
-  const orgId = appState.user.organization.value.id;
-  const apiKey = appState.user.apiKey;
-  const stateParam = encodeURIComponent(
-    JSON.stringify({
-      orgId,
-      apiKey,
-      pluginId: PLUGIN_ID,
-      isUS: !!opts.isUSDataCenterAccount,
-      // anti-CSRF nonce
-      nonce: Math.random().toString(36).slice(2),
-    })
-  );
-  const url = `${apiHost}/api/v1/memsource/oauth/start?state=${stateParam}`;
-
-  const popup = window.open(
-    url,
-    'phrase-oauth',
-    'width=560,height=720,menubar=no,toolbar=no,location=no'
-  );
-  if (!popup) throw new Error('Popup blocked. Allow popups for this site and try again.');
-
-  return await new Promise<PhraseOAuthTokens>((resolve, reject) => {
-    const cleanup = () => {
-      window.removeEventListener('message', onMessage);
-      clearInterval(closedTimer);
-    };
-    const onMessage = (e: MessageEvent) => {
-      const data = e.data || {};
-      if (data?.type !== 'memsource-oauth-result') return;
-      if (e.source !== popup) return;
-      cleanup();
-      try {
-        popup.close();
-      } catch {}
-      if (data.error) {
-        reject(new Error(data.error));
-      } else if (data.tokens) {
-        resolve(data.tokens as PhraseOAuthTokens);
-      } else {
-        reject(new Error('Unknown OAuth response'));
-      }
-    };
-    window.addEventListener('message', onMessage);
-    const closedTimer = setInterval(() => {
-      if (popup.closed) {
-        cleanup();
-        reject(new Error('OAuth window closed before completion'));
-      }
-    }, 500);
-  });
-}
 
 export async function disconnectOAuth(): Promise<void> {
   const apiHost = getApiHost();
@@ -103,5 +48,80 @@ export async function disconnectOAuth(): Promise<void> {
       "Content-Type": "application/json",
       Authorization: "Bearer " + privateKey,
     },
+  });
+}
+
+export async function connectWithOAuth(opts: {
+  isUSDataCenterAccount: boolean;
+}): Promise<{ connectedAt?: number; expiresAt?: number }> {
+  const apiHost = getApiHost();
+  const privateKey = await appState.globalState.getPluginPrivateKey(PLUGIN_ID);
+
+  // Mint a one-time, server-stored state (authenticated) instead of passing
+  // apiKey/pluginId through the public query string.
+  const prepareParams = new URLSearchParams({
+    apiKey: appState.user.apiKey,
+    pluginId: PLUGIN_ID,
+  });
+  const prepareRes = await fetch(
+    apiHost + "/api/v1/memsource/oauth/prepare?" + prepareParams,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + privateKey,
+      },
+      body: JSON.stringify({
+        isUS: !!opts.isUSDataCenterAccount,
+        origin: window.location.origin,
+      }),
+    }
+  );
+  if (!prepareRes.ok) {
+    throw new Error("Could not start Phrase OAuth. Please try again.");
+  }
+  const { stateId } = await prepareRes.json();
+  if (!stateId) {
+    throw new Error("Could not start Phrase OAuth. Please try again.");
+  }
+
+  const url =
+    apiHost + "/api/v1/memsource/oauth/start?state=" + encodeURIComponent(stateId);
+  const popup = window.open(
+    url,
+    "phrase-oauth",
+    "width=560,height=720,menubar=no,toolbar=no,location=no"
+  );
+  if (!popup) throw new Error("Popup blocked. Allow popups for this site and try again.");
+
+  return await new Promise((resolve, reject) => {
+    let settled = false;
+    const cleanup = () => {
+      window.removeEventListener("message", onMessage);
+      clearInterval(closedTimer);
+    };
+    const onMessage = (e: MessageEvent) => {
+      const data = e.data ? e.data : {};
+      if (data?.type !== "memsource-oauth-result") return;
+      if (e.source !== popup) return;
+      settled = true;
+      cleanup();
+      try {
+        popup.close();
+      } catch {}
+      if (data.error) {
+        reject(new Error(data.error));
+      } else {
+        resolve(data.connection ? data.connection : {});
+      }
+    };
+    window.addEventListener("message", onMessage);
+    const closedTimer = setInterval(() => {
+      if (settled) return;
+      if (popup.closed) {
+        cleanup();
+        reject(new Error("OAuth window closed before completion"));
+      }
+    }, 500);
   });
 }
