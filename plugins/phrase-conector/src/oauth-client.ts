@@ -31,6 +31,15 @@ export function isOAuthValid(oauth?: PhraseOAuthTokens | null): boolean {
   return true;
 }
 
+// Bridges the window between a successful connect and the next full org
+// reload: the server persists the real token to Firestore, but the client's
+// in-memory org settings won't carry it until reload. This client-only
+// marker lets ensureAuthenticated() proceed meanwhile. It is never persisted,
+// so it cannot clobber the server-held access token.
+export const sessionOAuth: { value: { expiresAt: number; connectedAt?: number } | null } = {
+  value: null,
+};
+
 function getApiHost(): string {
   const orgSettings: any =
     appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || {};
@@ -52,6 +61,7 @@ export async function disconnectOAuth(): Promise<void> {
   if (!res.ok) {
     throw new Error("Could not disconnect from Phrase. Please try again.");
   }
+  sessionOAuth.value = null;
 }
 
 export async function connectWithOAuth(opts: {
@@ -121,7 +131,14 @@ export async function connectWithOAuth(opts: {
       if (data.error) {
         reject(new Error(data.error));
       } else {
-        resolve(data.connection ? data.connection : {});
+        const connection = data.connection ? data.connection : {};
+        if (connection.expiresAt) {
+          sessionOAuth.value = {
+            expiresAt: connection.expiresAt,
+            connectedAt: connection.connectedAt,
+          };
+        }
+        resolve(connection);
       }
     };
     window.addEventListener("message", onMessage);

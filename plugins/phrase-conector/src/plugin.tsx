@@ -65,12 +65,12 @@ registerPlugin(
       {
         name: 'userName',
         type: 'string',
-        showIf: (options: any) => options.get('authMode') === 'password',
+        showIf: (options: any) => options.get('authMode') !== 'oauth',
       },
       {
         name: 'password',
         type: 'password',
-        showIf: (options: any) => options.get('authMode') === 'password',
+        showIf: (options: any) => options.get('authMode') !== 'oauth',
       },
       {
         name: 'templateUId',

@@ -12,6 +12,7 @@
 import { action } from 'mobx';
 import appState from '@builder.io/app-context';
 import pkg from '../package.json';
+import { sessionOAuth } from './oauth-client';
 
 const PLUGIN_ID = pkg.name;
 
@@ -27,6 +28,9 @@ export class PhraseApi {
     this.init();
     appState.globalState.orgSwitched?.subscribe(
       action(async () => {
+        // The session OAuth marker is per-org; drop it so it cannot leak into
+        // a different org that is in oauth mode but not yet connected.
+        sessionOAuth.value = null;
         this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
         await this.init();
       })
@@ -68,10 +72,14 @@ export class PhraseApi {
       }
       return;
     }
-    if (!orgSettings.oauth?.accessToken) {
+    // The real access token lives server-side; the client only ever sees
+    // connection metadata. Right after connect the org model may not carry
+    // it yet, so fall back to the session marker set by connectWithOAuth().
+    const oauth = orgSettings.oauth || sessionOAuth.value;
+    if (!oauth) {
       throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
     }
-    if (orgSettings.oauth.expiresAt <= Date.now()) {
+    if (oauth.expiresAt <= Date.now()) {
       throw new Error("Phrase OAuth session expired. Please reconnect.");
     }
   }
