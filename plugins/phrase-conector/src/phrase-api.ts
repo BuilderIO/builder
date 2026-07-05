@@ -22,6 +22,10 @@ export class PhraseApi {
   private privateKey?: string;
   private loaded: Promise<void>;
   private resolveLoaded!: () => void;
+  // Bumped on every init() so a stale in-flight init (e.g. from before an
+  // org switch) cannot assign the previous org's key or resolve the current
+  // loaded promise.
+  private initEpoch = 0;
 
   constructor(private settings: any) {
     this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
@@ -53,7 +57,11 @@ export class PhraseApi {
   }
 
   private async init() {
-    this.privateKey = await appState.globalState.getPluginPrivateKey(PLUGIN_ID);
+    const epoch = ++this.initEpoch;
+    const key = await appState.globalState.getPluginPrivateKey(PLUGIN_ID);
+    // A newer init() started while we were awaiting; let it win.
+    if (epoch !== this.initEpoch) return;
+    this.privateKey = key;
     this.resolveLoaded();
   }
 
