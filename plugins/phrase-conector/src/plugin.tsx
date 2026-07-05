@@ -79,6 +79,15 @@ registerPlugin(
           'Template ID is the unique identifier of a Phrase Template used when creating a new Phrase Project',
         type: 'string',
       },
+      // Builder-admin-only overrides for local development (e.g. an ngrok
+      // callback host, or pointing the API base at a tunnel). Hidden from
+      // regular users.
+      ...(appState.user.isBuilderAdmin
+        ? [
+            { name: 'callbackHost', type: 'string' },
+            { name: 'apiHost', type: 'string' },
+          ]
+        : []),
     ],
     ctaText: 'Connect your Phrase account',
     noPreviewTypes: true,
@@ -201,7 +210,7 @@ registerPlugin(
  * Shows a Connect button that opens the Phrase OAuth window, and a
  * Disconnect button when a valid token is already on record.
  */
-function OAuthConnectButton(_props: CustomReactEditorProps) {
+function OAuthConnectButton(props: CustomReactEditorProps) {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -209,7 +218,14 @@ function OAuthConnectButton(_props: CustomReactEditorProps) {
     appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || ({} as any);
   const serverOauth = orgSettings.oauth; const [override, setOverride] = React.useState<{ connected: boolean; connectedAt?: number } | null>(null);
   const connected = override ? override.connected : isOAuthValid(serverOauth); const connectedAt = override ? override.connectedAt : serverOauth?.connectedAt;
-  const isUS = !!orgSettings.isUSDataCenterAccount;
+  // Prefer the live edited options (Builder passes the parent object being
+  // edited) so an unsaved data-center toggle targets the right Phrase region;
+  // fall back to persisted settings.
+  const editedOptions = (props as any)?.object;
+  const isUS =
+    editedOptions && typeof editedOptions.get === 'function'
+      ? !!editedOptions.get('isUSDataCenterAccount')
+      : !!orgSettings.isUSDataCenterAccount;
 
   const onConnect = async () => {
     setBusy(true);
