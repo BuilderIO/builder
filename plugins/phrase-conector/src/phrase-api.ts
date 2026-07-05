@@ -108,12 +108,12 @@ export class PhraseApi {
     if (res.status === 401) {
       const mode = (appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) ?? {}).authMode;
       if (mode === "oauth") {
-      // Ask the server to refresh the token, then retry once.
-      await fetch(this.buildUrl('oauth/refresh'), {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${this.privateKey}` },
-      });
-      res = await doFetch();
+        // Ask the server to refresh the token, then retry once.
+        await fetch(this.buildUrl('oauth/refresh'), {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${this.privateKey}` },
+        });
+        res = await doFetch();
       }
     }
     if (!res.ok) {

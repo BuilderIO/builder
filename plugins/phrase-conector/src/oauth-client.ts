@@ -40,15 +40,16 @@ export const sessionOAuth: { value: { expiresAt: number; connectedAt?: number } 
   value: null,
 };
 
-function getApiHost(): string {
+function getApiHost(override?: string): string {
+  if (override) return override;
   const orgSettings: any =
     appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || {};
   return orgSettings.apiHost || 'https://cdn.builder.io';
 }
 
 
-export async function disconnectOAuth(): Promise<void> {
-  const apiHost = getApiHost();
+export async function disconnectOAuth(opts: { apiHost?: string } = {}): Promise<void> {
+  const apiHost = getApiHost(opts.apiHost);
   const privateKey = await appState.globalState.getPluginPrivateKey(PLUGIN_ID);
   const params = new URLSearchParams({ apiKey: appState.user.apiKey, pluginId: PLUGIN_ID });
   const res = await fetch(apiHost + "/api/v1/memsource/oauth/disconnect?" + params, {
@@ -66,8 +67,9 @@ export async function disconnectOAuth(): Promise<void> {
 
 export async function connectWithOAuth(opts: {
   isUSDataCenterAccount: boolean;
+  apiHost?: string;
 }): Promise<{ connectedAt?: number; expiresAt?: number }> {
-  const apiHost = getApiHost();
+  const apiHost = getApiHost(opts.apiHost);
   const privateKey = await appState.globalState.getPluginPrivateKey(PLUGIN_ID);
 
   // Mint a one-time, server-stored state (authenticated) instead of passing

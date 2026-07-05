@@ -232,16 +232,21 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
   // edited) so an unsaved data-center toggle targets the right Phrase region;
   // fall back to persisted settings.
   const editedOptions = (props as any)?.object;
-  const isUS =
-    editedOptions && typeof editedOptions.get === 'function'
-      ? !!editedOptions.get('isUSDataCenterAccount')
-      : !!orgSettings.isUSDataCenterAccount;
+  const hasEditedOptions = editedOptions && typeof editedOptions.get === 'function';
+  const isUS = hasEditedOptions
+    ? !!editedOptions.get('isUSDataCenterAccount')
+    : !!orgSettings.isUSDataCenterAccount;
+  // Keep OAuth traffic on the same host jobs use, honouring an unsaved admin
+  // apiHost override.
+  const apiHostOverride = hasEditedOptions
+    ? editedOptions.get('apiHost') || undefined
+    : orgSettings.apiHost || undefined;
 
   const onConnect = async () => {
     setBusy(true);
     setError(null);
     try {
-      const result = await connectWithOAuth({ isUSDataCenterAccount: isUS });
+      const result = await connectWithOAuth({ isUSDataCenterAccount: isUS, apiHost: apiHostOverride });
       if (!result?.expiresAt) {
         setError('Phrase did not return a valid session. Please try again.');
         return;
@@ -257,7 +262,7 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
   const onDisconnect = async () => {
     setBusy(true);
     try {
-      await disconnectOAuth();
+      await disconnectOAuth({ apiHost: apiHostOverride });
       setOverride({ connected: false });
     } finally {
       setBusy(false);
