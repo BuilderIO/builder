@@ -20,7 +20,7 @@ import {
   CustomReactEditorProps,
 } from './plugin-helpers';
 import { PhraseApi } from './phrase-api';
-import { connectWithOAuth, disconnectOAuth, isOAuthValid } from './oauth-client';
+import { connectWithOAuth, disconnectOAuth, isOAuthValid, sessionOAuth } from './oauth-client';
 import { showJobNotification, showOutdatedNotifications, getLangPicks } from './snackbar-utils';
 import { getTranslateableFields } from '@builder.io/utils';
 import hash from 'object-hash';
@@ -216,8 +216,18 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
 
   const orgSettings =
     appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || ({} as any);
-  const serverOauth = orgSettings.oauth; const [override, setOverride] = React.useState<{ connected: boolean; connectedAt?: number } | null>(null);
-  const connected = override ? override.connected : isOAuthValid(serverOauth); const connectedAt = override ? override.connectedAt : serverOauth?.connectedAt;
+  const serverOauth = orgSettings.oauth;
+  const [override, setOverride] = React.useState<{ connected: boolean; connectedAt?: number } | null>(null);
+  // Mirror ensureAuthenticated(): connected if the server holds a valid token
+  // OR the client session marker set right after connect is still unexpired.
+  const session = sessionOAuth.value;
+  const sessionValid = !!(session && session.expiresAt > Date.now());
+  const connected = override
+    ? override.connected
+    : isOAuthValid(serverOauth) || sessionValid;
+  const connectedAt = override
+    ? override.connectedAt
+    : serverOauth?.connectedAt ?? session?.connectedAt;
   // Prefer the live edited options (Builder passes the parent object being
   // edited) so an unsaved data-center toggle targets the right Phrase region;
   // fall back to persisted settings.
@@ -232,6 +242,10 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
     setError(null);
     try {
       const result = await connectWithOAuth({ isUSDataCenterAccount: isUS });
+      if (!result?.expiresAt) {
+        setError('Phrase did not return a valid session. Please try again.');
+        return;
+      }
       setOverride({ connected: true, connectedAt: result.connectedAt });
     } catch (e: any) {
       setError(e?.message || 'Failed to connect to Phrase');
