@@ -57,6 +57,14 @@ registerPlugin(
         type: 'boolean',
       },
       {
+        name: 'oauthClientId',
+        friendlyName: 'OAuth Client ID',
+        helperText:
+          'Client ID of your Phrase Registered OAuth App (Phrase → Settings → Integrations). Enter this before connecting.',
+        type: 'string',
+        showIf: (options: any) => options.get('authMode') === 'oauth',
+      },
+      {
         name: 'oauthStatus',
         friendlyName: 'Phrase connection',
         type: 'PhraseOAuthConnect',
@@ -241,12 +249,17 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
   const apiHostOverride = hasEditedOptions
     ? editedOptions.get('apiHost') || undefined
     : orgSettings.apiHost || undefined;
+  // Prefer the live edited Client ID so a first-time connect uses the value the
+  // admin just typed (before save); fall back to persisted settings.
+  const clientId = hasEditedOptions
+    ? editedOptions.get('oauthClientId') || undefined
+    : orgSettings.oauthClientId || undefined;
 
   const onConnect = async () => {
     setBusy(true);
     setError(null);
     try {
-      const result = await connectWithOAuth({ isUSDataCenterAccount: isUS, apiHost: apiHostOverride });
+      const result = await connectWithOAuth({ isUSDataCenterAccount: isUS, apiHost: apiHostOverride, clientId });
       if (!result?.expiresAt) {
         setError('Phrase did not return a valid session. Please try again.');
         return;

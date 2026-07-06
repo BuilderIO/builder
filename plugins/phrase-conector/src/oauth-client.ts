@@ -68,6 +68,7 @@ export async function disconnectOAuth(opts: { apiHost?: string } = {}): Promise<
 export async function connectWithOAuth(opts: {
   isUSDataCenterAccount: boolean;
   apiHost?: string;
+  clientId?: string;
 }): Promise<{ connectedAt?: number; expiresAt?: number }> {
   const apiHost = getApiHost(opts.apiHost);
   const privateKey = await appState.globalState.getPluginPrivateKey(PLUGIN_ID);
@@ -89,6 +90,7 @@ export async function connectWithOAuth(opts: {
       body: JSON.stringify({
         isUS: !!opts.isUSDataCenterAccount,
         origin: window.location.origin,
+        clientId: opts.clientId,
       }),
     }
   );
