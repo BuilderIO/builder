@@ -226,6 +226,16 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
     appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || ({} as any);
   const serverOauth = orgSettings.oauth;
   const [override, setOverride] = React.useState<{ connected: boolean; connectedAt?: number } | null>(null);
+  // The override reflects a connect/disconnect done in *this* org. If the editor
+  // isn't remounted across an org switch, drop it so it can't show the previous
+  // org's state.
+  React.useEffect(() => {
+    const sub = appState.globalState.orgSwitched?.subscribe(() => setOverride(null));
+    return () => {
+      if (typeof sub === 'function') sub();
+      else (sub as any)?.unsubscribe?.();
+    };
+  }, []);
   // Mirror ensureAuthenticated(): connected if the server holds a valid token
   // OR the client session marker set right after connect is still unexpired.
   const session = sessionOAuth.value;

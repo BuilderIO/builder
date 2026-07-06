@@ -32,9 +32,10 @@ export class PhraseApi {
     this.init();
     appState.globalState.orgSwitched?.subscribe(
       action(async () => {
-        // The session OAuth marker is per-org; drop it so it cannot leak into
-        // a different org that is in oauth mode but not yet connected.
+        // These markers are per-org; drop them so neither a fresh-connect nor a
+        // disconnect from one org leaks into a different org's connected state.
         sessionOAuth.value = null;
+        sessionDisconnected.value = false;
         this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
         await this.init();
       })
