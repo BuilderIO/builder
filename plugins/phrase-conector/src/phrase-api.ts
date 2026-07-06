@@ -81,12 +81,15 @@ export class PhraseApi {
       return;
     }
     // The real access token lives server-side; the client only ever sees
-    // connection metadata. Right after connect the org model may not carry
-    // it yet, so fall back to the session marker set by connectWithOAuth().
-    const oauth = orgSettings.oauth || sessionOAuth.value;
-    if (!oauth) {
+    // connection metadata. Right after connect the org model may not carry it
+    // yet, so also consider the session marker set by connectWithOAuth(). Pick
+    // whichever has the later expiry so a fresh reconnect isn't blocked by a
+    // stale org OAuth object left over from before the reconnect.
+    const candidates = [orgSettings.oauth, sessionOAuth.value].filter(Boolean);
+    if (candidates.length === 0) {
       throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
     }
+    const oauth = candidates.reduce((a: any, b: any) => (b.expiresAt > a.expiresAt ? b : a));
     if (oauth.expiresAt <= Date.now()) {
       throw new Error("Phrase OAuth session expired. Please reconnect.");
     }
