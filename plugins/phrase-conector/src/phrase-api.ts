@@ -108,11 +108,17 @@ export class PhraseApi {
     if (res.status === 401) {
       const mode = (appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) ?? {}).authMode;
       if (mode === "oauth") {
-        // Ask the server to refresh the token, then retry once.
-        await fetch(this.buildUrl('oauth/refresh'), {
+        // Ask the server to refresh the token, then retry once. If the refresh
+        // itself failed (e.g. no refresh token -> reconnect needed), surface
+        // that reason instead of retrying and reporting a misleading API error.
+        const refreshRes = await fetch(this.buildUrl('oauth/refresh'), {
           method: 'POST',
           headers: { Authorization: `Bearer ${this.privateKey}` },
         });
+        if (!refreshRes.ok) {
+          const info = await refreshRes.json().catch(() => ({} as any));
+          throw new Error(info?.error || 'Phrase session expired. Please reconnect.');
+        }
         res = await doFetch();
       }
     }
