@@ -20,7 +20,7 @@ import {
   CustomReactEditorProps,
 } from './plugin-helpers';
 import { PhraseApi } from './phrase-api';
-import { connectWithOAuth, disconnectOAuth, isOAuthValid, sessionOAuth, sessionDisconnected } from './oauth-client';
+import { connectWithOAuth, disconnectOAuth, isOAuthValid, getSessionOAuth, isSessionDisconnected } from './oauth-client';
 import { showJobNotification, showOutdatedNotifications, getLangPicks } from './snackbar-utils';
 import { getTranslateableFields } from '@builder.io/utils';
 import hash from 'object-hash';
@@ -238,11 +238,11 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
   }, []);
   // Mirror ensureAuthenticated(): connected if the server holds a valid token
   // OR the client session marker set right after connect is still unexpired.
-  const session = sessionOAuth.value;
+  const session = getSessionOAuth();
   const sessionValid = !!(session && session.expiresAt > Date.now());
   // After a disconnect the in-memory org model may still hold stale oauth
   // metadata until it reloads; ignore it unless a fresh session says otherwise.
-  const disconnectedThisSession = sessionDisconnected.value && !sessionValid;
+  const disconnectedThisSession = isSessionDisconnected() && !sessionValid;
   const connected = override
     ? override.connected
     : !disconnectedThisSession && (isOAuthValid(serverOauth) || sessionValid);

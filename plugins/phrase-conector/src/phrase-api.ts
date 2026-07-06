@@ -12,7 +12,7 @@
 import { action } from 'mobx';
 import appState from '@builder.io/app-context';
 import pkg from '../package.json';
-import { sessionOAuth, sessionDisconnected } from './oauth-client';
+import { getSessionOAuth, isSessionDisconnected } from './oauth-client';
 
 const PLUGIN_ID = pkg.name;
 
@@ -32,10 +32,8 @@ export class PhraseApi {
     this.init();
     appState.globalState.orgSwitched?.subscribe(
       action(async () => {
-        // These markers are per-org; drop them so neither a fresh-connect nor a
-        // disconnect from one org leaks into a different org's connected state.
-        sessionOAuth.value = null;
-        sessionDisconnected.value = false;
+        // Session markers are keyed by apiKey (see oauth-client), so they don't
+        // leak across orgs and nothing needs resetting here on switch.
         this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
         await this.init();
       })
@@ -86,12 +84,13 @@ export class PhraseApi {
     // yet, so also consider the session marker set by connectWithOAuth(). Pick
     // whichever has the later expiry so a fresh reconnect isn't blocked by a
     // stale org OAuth object left over from before the reconnect.
-    // A disconnect clears sessionOAuth but the org model may still hold stale
-    // oauth metadata until it reloads; don't treat that as connected.
-    if (sessionDisconnected.value && !sessionOAuth.value) {
+    // A disconnect leaves stale oauth metadata on the org model until it
+    // reloads; don't treat that as connected. Markers are apiKey-scoped.
+    const sessionOauth = getSessionOAuth();
+    if (isSessionDisconnected() && !sessionOauth) {
       throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
     }
-    const candidates = [orgSettings.oauth, sessionOAuth.value].filter(Boolean);
+    const candidates = [orgSettings.oauth, sessionOauth].filter(Boolean);
     if (candidates.length === 0) {
       throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
     }

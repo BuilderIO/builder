@@ -38,14 +38,26 @@ export function isOAuthValid(oauth?: { expiresAt?: number } | null): boolean {
 // in-memory org settings won't carry it until reload. This client-only
 // marker lets ensureAuthenticated() proceed meanwhile. It is never persisted,
 // so it cannot clobber the server-held access token.
-export const sessionOAuth: { value: { expiresAt: number; connectedAt?: number } | null } = {
-  value: null,
-};
+// Client-only connect/disconnect markers, keyed by apiKey so one org's state
+// never bleeds into another and survives switching away and back. Never
+// persisted, so they can't clobber the server-held access token.
+export const sessionOAuth: {
+  value: Record<string, { expiresAt: number; connectedAt?: number }>;
+} = { value: {} };
+export const sessionDisconnected: { value: Record<string, boolean> } = { value: {} };
 
-// Set when the user disconnects so ensureAuthenticated() stops trusting the
-// stale in-memory org OAuth metadata (which lingers until the org model reloads
-// without it). Cleared on a fresh connect. Client-only, never persisted.
-export const sessionDisconnected: { value: boolean } = { value: false };
+// Bridges the window between a connect and the next full org reload: the server
+// persists the real token to Firestore, but the client's in-memory org settings
+// won't carry it until reload. Scoped to the current org.
+export function getSessionOAuth(): { expiresAt: number; connectedAt?: number } | null {
+  return sessionOAuth.value[appState.user.apiKey] || null;
+}
+
+// True when the user disconnected in the current org this session, so callers
+// stop trusting stale in-memory org OAuth metadata until the model reloads.
+export function isSessionDisconnected(): boolean {
+  return !!sessionDisconnected.value[appState.user.apiKey];
+}
 
 function getApiHost(override?: string): string {
   if (override) return override;
@@ -69,8 +81,9 @@ export async function disconnectOAuth(opts: { apiHost?: string } = {}): Promise<
   if (!res.ok) {
     throw new Error("Could not disconnect from Phrase. Please try again.");
   }
-  sessionOAuth.value = null;
-  sessionDisconnected.value = true;
+  const apiKey = appState.user.apiKey;
+  delete sessionOAuth.value[apiKey];
+  sessionDisconnected.value[apiKey] = true;
 }
 
 export async function connectWithOAuth(opts: {
@@ -147,11 +160,12 @@ export async function connectWithOAuth(opts: {
       } else {
         const connection = data.connection ? data.connection : {};
         if (connection.expiresAt) {
-          sessionOAuth.value = {
+          const apiKey = appState.user.apiKey;
+          sessionOAuth.value[apiKey] = {
             expiresAt: connection.expiresAt,
             connectedAt: connection.connectedAt,
           };
-          sessionDisconnected.value = false;
+          delete sessionDisconnected.value[apiKey];
         }
         resolve(connection);
       }
