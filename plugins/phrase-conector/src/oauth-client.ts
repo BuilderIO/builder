@@ -59,11 +59,21 @@ export function isSessionDisconnected(): boolean {
   return !!sessionDisconnected.value[appState.user.apiKey];
 }
 
+// Reads a field from the current org's plugin settings, tolerating MST/MobX:
+// `settings.plugins` and the per-plugin node can each be an observable map
+// (needs `.get(key)`) or a plain object (needs `node[key]`). Direct property
+// access on an observable map silently returns undefined.
+export function readOrgPluginSetting(key: string): any {
+  const plugins: any = appState.user.organization?.value?.settings?.plugins;
+  const node: any =
+    typeof plugins?.get === 'function' ? plugins.get(PLUGIN_ID) : plugins?.[PLUGIN_ID];
+  if (!node) return undefined;
+  return typeof node.get === 'function' ? node.get(key) : node[key];
+}
+
 function getApiHost(override?: string): string {
   if (override) return override;
-  const orgSettings: any =
-    appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || {};
-  return orgSettings.apiHost || 'https://cdn.builder.io';
+  return readOrgPluginSetting('apiHost') || 'https://cdn.builder.io';
 }
 
 

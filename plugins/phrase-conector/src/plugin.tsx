@@ -20,7 +20,7 @@ import {
   CustomReactEditorProps,
 } from './plugin-helpers';
 import { PhraseApi } from './phrase-api';
-import { connectWithOAuth, disconnectOAuth, isOAuthValid, getSessionOAuth, isSessionDisconnected } from './oauth-client';
+import { connectWithOAuth, disconnectOAuth, isOAuthValid, getSessionOAuth, isSessionDisconnected, readOrgPluginSetting } from './oauth-client';
 import { showJobNotification, showOutdatedNotifications, getLangPicks } from './snackbar-utils';
 import { getTranslateableFields } from '@builder.io/utils';
 import hash from 'object-hash';
@@ -222,9 +222,7 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  const orgSettings =
-    appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || ({} as any);
-  const serverOauth = orgSettings.oauth;
+  const serverOauth = readOrgPluginSetting('oauth');
   const [override, setOverride] = React.useState<{ connected: boolean; connectedAt?: number } | null>(null);
   // The override reflects a connect/disconnect done in *this* org. If the editor
   // isn't remounted across an org switch, drop it so it can't show the previous
@@ -256,17 +254,17 @@ function OAuthConnectButton(props: CustomReactEditorProps) {
   const hasEditedOptions = editedOptions && typeof editedOptions.get === 'function';
   const isUS = hasEditedOptions
     ? !!editedOptions.get('isUSDataCenterAccount')
-    : !!orgSettings.isUSDataCenterAccount;
+    : !!readOrgPluginSetting('isUSDataCenterAccount');
   // Keep OAuth traffic on the same host jobs use, honouring an unsaved admin
   // apiHost override.
   const apiHostOverride = hasEditedOptions
     ? editedOptions.get('apiHost') || undefined
-    : orgSettings.apiHost || undefined;
+    : readOrgPluginSetting('apiHost') || undefined;
   // Prefer the live edited Client ID so a first-time connect uses the value the
   // admin just typed (before save); fall back to persisted settings.
   const clientId = hasEditedOptions
     ? editedOptions.get('oauthClientId') || undefined
-    : orgSettings.oauthClientId || undefined;
+    : readOrgPluginSetting('oauthClientId') || undefined;
 
   const onConnect = async () => {
     setBusy(true);

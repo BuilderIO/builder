@@ -12,9 +12,10 @@
 import { action } from 'mobx';
 import appState from '@builder.io/app-context';
 import pkg from '../package.json';
-import { getSessionOAuth, isSessionDisconnected } from './oauth-client';
+import { getSessionOAuth, isSessionDisconnected, readOrgPluginSetting } from './oauth-client';
 
 const PLUGIN_ID = pkg.name;
+
 
 export type Project = { uid: string };
 
@@ -71,10 +72,8 @@ export class PhraseApi {
    */
   async ensureAuthenticated() {
     await this.loaded;
-    const orgSettings: any =
-      appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) || {};
-    if (orgSettings.authMode !== 'oauth') {
-      if (!orgSettings.userName || !orgSettings.password) {
+    if (readOrgPluginSetting('authMode') !== 'oauth') {
+      if (!readOrgPluginSetting('userName') || !readOrgPluginSetting('password')) {
         throw new Error('Phrase username/password is not configured.');
       }
       return;
@@ -90,7 +89,7 @@ export class PhraseApi {
     if (isSessionDisconnected() && !sessionOauth) {
       throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
     }
-    const candidates = [orgSettings.oauth, sessionOauth].filter(Boolean);
+    const candidates = [readOrgPluginSetting('oauth'), sessionOauth].filter(Boolean);
     if (candidates.length === 0) {
       throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
     }
@@ -114,7 +113,7 @@ export class PhraseApi {
 
     let res = await doFetch();
     if (res.status === 401) {
-      const mode = (appState.user.organization?.value?.settings?.plugins?.get?.(PLUGIN_ID) ?? {}).authMode;
+      const mode = readOrgPluginSetting('authMode');
       if (mode === "oauth") {
         // Ask the server to refresh the token, then retry once. If the refresh
         // itself failed (e.g. no refresh token -> reconnect needed), surface
