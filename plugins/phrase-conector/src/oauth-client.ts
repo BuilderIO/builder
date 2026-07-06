@@ -24,10 +24,12 @@ export type PhraseOAuthTokens = {
   userUid?: string;
 };
 
-export function isOAuthValid(oauth?: PhraseOAuthTokens | null): boolean {
-  if (!oauth?.accessToken) return false;
+export function isOAuthValid(oauth?: { expiresAt?: number } | null): boolean {
+  // The access token stays server-side; the client only ever sees connection
+  // metadata (expiresAt/connectedAt). So a connection is "valid" when it has a
+  // not-yet-expired expiry, not when a token is present (the token never is).
+  if (!oauth?.expiresAt) return false;
   if (oauth.expiresAt <= Date.now()) return false;
-  // Valid = we have an access token that has not yet expired.
   return true;
 }
 
@@ -39,6 +41,11 @@ export function isOAuthValid(oauth?: PhraseOAuthTokens | null): boolean {
 export const sessionOAuth: { value: { expiresAt: number; connectedAt?: number } | null } = {
   value: null,
 };
+
+// Set when the user disconnects so ensureAuthenticated() stops trusting the
+// stale in-memory org OAuth metadata (which lingers until the org model reloads
+// without it). Cleared on a fresh connect. Client-only, never persisted.
+export const sessionDisconnected: { value: boolean } = { value: false };
 
 function getApiHost(override?: string): string {
   if (override) return override;
@@ -63,6 +70,7 @@ export async function disconnectOAuth(opts: { apiHost?: string } = {}): Promise<
     throw new Error("Could not disconnect from Phrase. Please try again.");
   }
   sessionOAuth.value = null;
+  sessionDisconnected.value = true;
 }
 
 export async function connectWithOAuth(opts: {
@@ -123,7 +131,9 @@ export async function connectWithOAuth(opts: {
       clearInterval(closedTimer);
     };
     const onMessage = (e: MessageEvent) => {
-      if (expectedOrigin && e.origin !== expectedOrigin) return;
+      // Fail closed: if apiHost couldn't be parsed we can't verify the sender,
+      // so reject rather than skip the origin check.
+      if (!expectedOrigin || e.origin !== expectedOrigin) return;
       const data = e.data ? e.data : {};
       if (data?.type !== "memsource-oauth-result") return;
       if (e.source !== popup) return;
@@ -141,6 +151,7 @@ export async function connectWithOAuth(opts: {
             expiresAt: connection.expiresAt,
             connectedAt: connection.connectedAt,
           };
+          sessionDisconnected.value = false;
         }
         resolve(connection);
       }

@@ -12,7 +12,7 @@
 import { action } from 'mobx';
 import appState from '@builder.io/app-context';
 import pkg from '../package.json';
-import { sessionOAuth } from './oauth-client';
+import { sessionOAuth, sessionDisconnected } from './oauth-client';
 
 const PLUGIN_ID = pkg.name;
 
@@ -85,6 +85,11 @@ export class PhraseApi {
     // yet, so also consider the session marker set by connectWithOAuth(). Pick
     // whichever has the later expiry so a fresh reconnect isn't blocked by a
     // stale org OAuth object left over from before the reconnect.
+    // A disconnect clears sessionOAuth but the org model may still hold stale
+    // oauth metadata until it reloads; don't treat that as connected.
+    if (sessionDisconnected.value && !sessionOAuth.value) {
+      throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
+    }
     const candidates = [orgSettings.oauth, sessionOAuth.value].filter(Boolean);
     if (candidates.length === 0) {
       throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
