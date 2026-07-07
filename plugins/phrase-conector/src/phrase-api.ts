@@ -121,8 +121,8 @@ export class PhraseApi {
 
     let res = await doFetch();
     if (res.status === 401) {
-      const mode = readOrgPluginSetting('authMode');
-      if (mode === "oauth") {
+      const isOAuthMode = readOrgPluginSetting('authMode') === "oauth" || !!getSessionOAuth();
+      if (isOAuthMode) {
         // Ask the server to refresh the token, then retry once. If the refresh
         // itself failed (e.g. no refresh token -> reconnect needed), surface
         // that reason instead of retrying and reporting a misleading API error.
