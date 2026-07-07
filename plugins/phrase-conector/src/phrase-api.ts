@@ -12,7 +12,7 @@
 import { action } from 'mobx';
 import appState from '@builder.io/app-context';
 import pkg from '../package.json';
-import { getSessionOAuth, isSessionDisconnected, readOrgPluginSetting } from './oauth-client';
+import { getSessionOAuth, isOAuthValid, isSessionDisconnected, readOrgPluginSetting } from './oauth-client';
 
 const PLUGIN_ID = pkg.name;
 
@@ -72,30 +72,38 @@ export class PhraseApi {
    */
   async ensureAuthenticated() {
     await this.loaded;
-    if (readOrgPluginSetting('authMode') !== 'oauth') {
+    const notConnected =
+      'Phrase is not connected. Please click "Connect to Phrase" in plugin settings.';
+
+    // The real access token lives server-side; the client only ever sees
+    // connection metadata. The session marker (set by connectWithOAuth) is the
+    // reliable signal of a fresh connect this session, since the persisted
+    // authMode may not have propagated to the in-memory org model yet.
+    const sessionOauth = getSessionOAuth();
+    const isOAuthMode = readOrgPluginSetting('authMode') === 'oauth' || !!sessionOauth;
+
+    if (!isOAuthMode) {
       if (!readOrgPluginSetting('userName') || !readOrgPluginSetting('password')) {
         throw new Error('Phrase username/password is not configured.');
       }
       return;
     }
-    // The real access token lives server-side; the client only ever sees
-    // connection metadata. Right after connect the org model may not carry it
-    // yet, so also consider the session marker set by connectWithOAuth(). Pick
-    // whichever has the later expiry so a fresh reconnect isn't blocked by a
-    // stale org OAuth object left over from before the reconnect.
-    // A disconnect leaves stale oauth metadata on the org model until it
-    // reloads; don't treat that as connected. Markers are apiKey-scoped.
-    const sessionOauth = getSessionOAuth();
+
+    // Disconnect leaves stale oauth metadata on the org model until it reloads;
+    // don't treat that as connected. Markers are apiKey-scoped.
     if (isSessionDisconnected() && !sessionOauth) {
-      throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
+      throw new Error(notConnected);
     }
-    const candidates = [readOrgPluginSetting('oauth'), sessionOauth].filter(Boolean);
-    if (candidates.length === 0) {
-      throw new Error('Phrase is not connected. Please click "Connect to Phrase" in plugin settings.');
-    }
-    const oauth = candidates.reduce((a: any, b: any) => (b.expiresAt > a.expiresAt ? b : a));
-    if (oauth.expiresAt <= Date.now()) {
-      throw new Error("Phrase OAuth session expired. Please reconnect.");
+    // Prefer whichever candidate has the later expiry so a fresh reconnect isn't
+    // blocked by stale org OAuth metadata left over from before it.
+    const oauth = [readOrgPluginSetting('oauth'), sessionOauth]
+      .filter(Boolean)
+      .reduce(
+        (best: any, c: any) => (best && best.expiresAt >= (c?.expiresAt ?? 0) ? best : c),
+        null
+      );
+    if (!isOAuthValid(oauth)) {
+      throw new Error(oauth ? 'Phrase OAuth session expired. Please reconnect.' : notConnected);
     }
   }
 
