@@ -80,7 +80,11 @@ export class PhraseApi {
     // reliable signal of a fresh connect this session, since the persisted
     // authMode may not have propagated to the in-memory org model yet.
     const sessionOauth = getSessionOAuth();
-    const isOAuthMode = readOrgPluginSetting('authMode') === 'oauth' || !!sessionOauth;
+    // Decide by persisted authMode; only let the live session marker force
+    // OAuth when authMode is unset (a first-ever connect whose mode hasn't
+    // been saved yet). Never let it override an explicit 'password'.
+    const persistedMode = readOrgPluginSetting('authMode');
+    const isOAuthMode = persistedMode === 'oauth' || (!persistedMode && !!sessionOauth);
 
     if (!isOAuthMode) {
       if (!readOrgPluginSetting('userName') || !readOrgPluginSetting('password')) {
@@ -121,7 +125,8 @@ export class PhraseApi {
 
     let res = await doFetch();
     if (res.status === 401) {
-      const isOAuthMode = readOrgPluginSetting('authMode') === "oauth" || !!getSessionOAuth();
+      const persistedMode = readOrgPluginSetting('authMode');
+      const isOAuthMode = persistedMode === "oauth" || (!persistedMode && !!getSessionOAuth());
       if (isOAuthMode) {
         // Ask the server to refresh the token, then retry once. If the refresh
         // itself failed (e.g. no refresh token -> reconnect needed), surface
