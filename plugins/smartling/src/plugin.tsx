@@ -852,7 +852,8 @@ const initializeSmartlingPlugin = async () => {
           'This will clear all translation metadata from this content. Are you sure?'
         );
         if (result) {
-          const updatedMeta = { ...content.meta?.toJS() };
+          const metadata = typeof content.meta?.toJS === 'function' ? content.meta.toJS() : content.meta;
+          const updatedMeta = { ...(metadata || {}) };
           delete updatedMeta.translationStatus;
           delete updatedMeta.translationJobId;
           delete updatedMeta.translationBy;
