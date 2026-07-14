@@ -848,9 +848,9 @@ const initializeSmartlingPlugin = async () => {
         );
       },
       async onClick(content) {
-        const result = await appState.dialogs.confirm({
-          message: 'This will clear all translation metadata from this content. Are you sure?',
-        });
+        const result = await appState.dialogs.confirm(
+          'This will clear all translation metadata from this content. Are you sure?'
+        );
         if (result) {
           const updatedMeta = { ...content.meta?.toJS() };
           delete updatedMeta.translationStatus;
