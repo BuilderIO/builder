@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 5.2.5
+
+### Patch Changes
+
+- 95c6a94: Validate visual editor message origins with exact trusted hostnames and reject malformed or non-HTTP origins.
+
 ## 5.2.4
 
 ### Patch Changes

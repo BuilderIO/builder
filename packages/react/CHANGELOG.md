@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 9.4.1
+
+### Patch Changes
+
+- 95c6a94: Validate visual editor message origins with exact trusted hostnames and reject malformed or non-HTTP origins.
+- Updated dependencies [95c6a94]
+  - @builder.io/sdk@6.3.1
+
 ## 9.4.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.3.1
+
+### Patch Changes
+
+- 95c6a94: Validate visual editor message origins with exact trusted hostnames and reject malformed or non-HTTP origins.
+
 ## 6.3.0
 
 ### Minor Changes
