@@ -1096,12 +1096,20 @@ export class Builder {
     return isTrusted;
   }
 
-  static isTrustedHostForEvent(event: MessageEvent) {
-    if (event.origin === 'null') {
+  static isTrustedHostForEvent(event: { origin: string }) {
+    if (!/^https?:\/\//i.test(event.origin)) {
       return false;
     }
-    const url = parse(event.origin);
-    return url.hostname && Builder.isTrustedHost(url.hostname);
+
+    try {
+      const url = parse(event.origin);
+      return (
+        (url.protocol === 'http:' || url.protocol === 'https:') &&
+        Boolean(url.hostname && Builder.isTrustedHost(url.hostname))
+      );
+    } catch {
+      return false;
+    }
   }
 
   static runAction(action: Action | string) {
@@ -1165,7 +1173,7 @@ export class Builder {
   // work but is async...
   static isEditing = Boolean(
     isIframe &&
-      ((document.referrer && document.referrer.match(/builder\.io|localhost:1234/)) ||
+      ((document.referrer && Builder.isTrustedHostForEvent({ origin: document.referrer })) ||
         location.search.indexOf('builder.frameEditing=') !== -1)
   );
 

@@ -10,17 +10,22 @@ export function isFromTrustedHost(
   trustedHosts: string[] | undefined,
   e: { origin: string }
 ): boolean {
-  if (!e.origin.startsWith('http') && !e.origin.startsWith('https')) {
+  let url: URL;
+  try {
+    url = new URL(e.origin);
+  } catch {
     return false;
   }
-  const url = new URL(e.origin),
-    hostname = url.hostname;
+
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return false;
+  }
 
   return (
     (trustedHosts || DEFAULT_TRUSTED_HOSTS).findIndex((trustedHost) =>
       trustedHost.startsWith('*.')
-        ? hostname.endsWith(trustedHost.slice(1))
-        : trustedHost === hostname
+        ? url.hostname.endsWith(trustedHost.slice(1))
+        : trustedHost === url.hostname
     ) > -1
   );
 }

@@ -22,6 +22,18 @@ describe('Builder', () => {
     Builder.registerTrustedHost('example.com');
     expect(Builder.isTrustedHost('example.com')).toBe(true);
   });
+
+  test('trusted message origins', () => {
+    expect(Builder.isTrustedHostForEvent({ origin: 'https://builder.io' })).toBe(true);
+    expect(Builder.isTrustedHostForEvent({ origin: 'http://localhost:1234' })).toBe(true);
+    expect(Builder.isTrustedHostForEvent({ origin: 'https://evil-builder.io.attacker.com' })).toBe(
+      false
+    );
+    expect(Builder.isTrustedHostForEvent({ origin: 'https://notlocalhost:1234x' })).toBe(false);
+    expect(Builder.isTrustedHostForEvent({ origin: 'javascript://builder.io' })).toBe(false);
+    expect(Builder.isTrustedHostForEvent({ origin: 'not a URL' })).toBe(false);
+    expect(Builder.isTrustedHostForEvent({ origin: 'null' })).toBe(false);
+  });
 });
 
 describe('serializeIncludingFunctions', () => {
