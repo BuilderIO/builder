@@ -253,6 +253,9 @@ export class BuilderBlock extends React.Component<
   }
 
   onWindowMessage = (event: MessageEvent) => {
+    const isTrusted = Builder.isTrustedHostForEvent(event);
+    if (!isTrusted) return;
+
     const message = event.data;
     if (!message) {
       return;
