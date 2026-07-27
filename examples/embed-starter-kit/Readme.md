@@ -60,6 +60,6 @@ Mult-tenancy was not addressed in this code to simplify the starting point, feel
 
 ## References
 
-- [Admin API Docs and Playground](https://beta.builder.io/api/v2/admin)
+- [Admin API Docs and Playground](https://builder.io/api/v2/admin)
 - [Builder React SDK](https://github.com/BuilderIO/builder/tree/main/packages/react)
 - [Builder Write API doc](https://www.builder.io/c/docs/write-api)
