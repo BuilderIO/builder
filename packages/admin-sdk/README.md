@@ -1,6 +1,6 @@
 # Builder.io Admin API SDK.
 
-Nodejs SDK to interact with Builder.io Graphql Admin API (beta).
+Nodejs SDK to interact with Builder.io Graphql Admin API.
 
 ## How to use
 
@@ -72,7 +72,7 @@ await adminSDK.chain.mutation
 
 ## More info:
 
-- check the graphiql explorer on [beta.builder.io/api/v2/admin](https://beta.builder.io/api/v2/admin), add your private key to the http headers section and inspect available queries / mutations:
+- check the graphiql explorer on [builder.io/api/v2/admin](https://builder.io/api/v2/admin), add your private key to the http headers section and inspect available queries / mutations:
 
  <p align="center">
   <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F281068da62e44bb5bce7d48307cec9f0"  />
