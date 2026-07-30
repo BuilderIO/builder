@@ -1304,6 +1304,48 @@ test('applyTranslation ignores a non-string flat value echoed back for a localiz
   expect((result.data!.blocks as any)[0].meta.translated).toBeUndefined();
 });
 
+test('applyTranslation keeps source text on nested leaves that received no translation', () => {
+  const content: BuilderContent = {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-partial',
+          meta: { localizedTextInputs: ['items'] },
+          component: {
+            name: 'PartialList',
+            options: {
+              items: {
+                '@type': localizedType,
+                Default: [
+                  {
+                    title: { '@type': localizedType, Default: 'Translated title' },
+                    badge: { '@type': localizedType, Default: '' },
+                    note: { '@type': localizedType, Default: 'Untranslated note' },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  const result = applyTranslation(
+    content,
+    { 'blocks.builder-partial#items#0#title': { value: 'Übersetzter Titel' } },
+    'de-DE',
+    'en-US'
+  );
+  const item = (result.data!.blocks as any)[0].component.options.items['de-DE'][0];
+
+  expect(item.title['de-DE']).toBe('Übersetzter Titel');
+  // Untranslated leaves keep a locale key, so the SDK does not resolve them to undefined
+  expect(item.note['de-DE']).toBe('Untranslated note');
+  expect(item.badge['de-DE']).toBe('');
+});
+
 // A localized subfield whose payload is an object of plain strings, rather than a string.
 const objectPayloadContent = (): BuilderContent => ({
   data: {

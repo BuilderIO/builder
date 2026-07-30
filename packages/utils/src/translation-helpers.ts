@@ -447,6 +447,30 @@ export function getTranslateableFields(
   return results;
 }
 
+// Gives every nested LocalizedValue a locale branch seeded from the source. The SDK
+// resolves a missing locale key to undefined rather than falling back to Default, so
+// untranslated leaves would otherwise vanish while their plain-string siblings survive
+// the clone.
+function seedLocaleBranches(node: any, locale: string, sourceLocaleId?: string) {
+  if (Array.isArray(node)) {
+    node.forEach(item => seedLocaleBranches(item, locale, sourceLocaleId));
+    return;
+  }
+  if (!node || typeof node !== 'object') {
+    return;
+  }
+  if (node['@type'] === localizedType) {
+    if (node[locale] === null || node[locale] === undefined) {
+      const source =
+        sourceLocaleId && node[sourceLocaleId] != null ? node[sourceLocaleId] : node.Default;
+      node[locale] = source == null ? source : JSON.parse(JSON.stringify(source));
+    }
+    seedLocaleBranches(node[locale], locale, sourceLocaleId);
+    return;
+  }
+  Object.values(node).forEach(value => seedLocaleBranches(value, locale, sourceLocaleId));
+}
+
 // Writes a translated leaf into a cloned payload, stepping through intermediate
 // LocalizedValue nodes into their locale branch. Without this, `details#heading` would land
 // on the wrapper next to `@type`/`Default` instead of in the data.
@@ -761,6 +785,7 @@ export function applyTranslation(
           }
 
           const localeValue = JSON.parse(JSON.stringify(sourceValue));
+          seedLocaleBranches(localeValue, locale, sourceLocaleId);
           compoundKeys.forEach(compoundKey => {
             const segments = compoundKey
               .slice(prefix.length)
