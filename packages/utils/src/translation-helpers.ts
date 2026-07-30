@@ -4,6 +4,7 @@ import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
 import set from 'lodash/set';
 import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
 
@@ -230,11 +231,9 @@ function extractNestedStrings(
   }
 }
 
-// Recursively walks an already-extracted LocalizedValue payload (array or object) and
-// records only the leaves that are themselves LocalizedValues, i.e. the subfields the
-// component schema explicitly marked `localized: true`. Returns how many LocalizedValue
-// nodes were found so callers can tell "no per-subfield localization" apart from
-// "localized subfields that happen to be empty".
+// Records only leaves that are themselves LocalizedValues, i.e. subfields marked
+// `localized: true`. Returns how many were found, so callers can tell "no per-subfield
+// localization" from "localized subfields that are empty".
 function extractLocalizedLeaves(
   value: any,
   basePath: string,
@@ -265,8 +264,7 @@ function extractLocalizedLeaves(
       return 1;
     }
     if (nested !== null && nested !== undefined) {
-      // The payload is an object/array. Honour any deeper localized markers it carries;
-      // if it has none, the whole payload is the translatable unit.
+      // Honour deeper localized markers; with none, the whole payload is the unit.
       const deeper = extractLocalizedLeaves(
         nested,
         basePath,
@@ -372,10 +370,8 @@ export function getTranslateableFields(
                 return;
               }
 
-              // Localized list/object input: emit one translation unit per string leaf.
-              // Prefer subfields explicitly marked localized; only when the payload has no
-              // nested LocalizedValues at all do we fall back to every string leaf, so that
-              // siblings like `currency` or an image URL are not sent for translation.
+              // One unit per string leaf. Marked subfields win; only a payload with none
+              // falls back to every string, keeping siblings like `currency` out of the job.
               const localizedLeaves = extractLocalizedLeaves(
                 valueToBeTranslated,
                 path,
@@ -451,10 +447,9 @@ export function getTranslateableFields(
   return results;
 }
 
-// Writes a translated leaf into a cloned payload, stepping through any intermediate
-// LocalizedValue node into its locale branch (seeded from the source payload) rather than
-// treating the wrapper as the leaf. Without this, a path like `details#heading` would be
-// written onto the wrapper next to `@type`/`Default` instead of into the actual data.
+// Writes a translated leaf into a cloned payload, stepping through intermediate
+// LocalizedValue nodes into their locale branch. Without this, `details#heading` would land
+// on the wrapper next to `@type`/`Default` instead of in the data.
 function setTranslatedLeaf({
   payload,
   segments,
@@ -718,20 +713,39 @@ export function applyTranslation(
           const flatKey = `blocks.${el.id}#${key}`;
           const existing = get(options, key);
 
-          // Flat keys only ever carry a translated string. Guarding on the type stops a
-          // non-string payload echoed back untranslated by Smartling from being written
-          // into the target locale and the block being marked as translated.
-          if (typeof translation[flatKey]?.value === 'string') {
+          const flatValue = translation[flatKey]?.value;
+          const writeFlatValue = () => {
             set(options, key, {
               ...(existing || {}),
-              [locale]: unescapeStringOrObject(translation[flatKey].value),
+              [locale]: unescapeStringOrObject(flatValue!),
             });
             markTranslated();
+          };
+
+          if (typeof flatValue === 'string') {
+            writeFlatValue();
             return;
           }
 
-          // Localized list/object input: leaves were extracted as `${flatKey}#0#title`.
-          // Clone the source payload, patch each leaf, then store it under the locale.
+          if (flatValue !== null && flatValue !== undefined) {
+            // Legacy jobs sent the whole payload under the flat key. Memsource translates
+            // nested strings and returns a real translation; Smartling only handles
+            // `textValue`/`htmlValue` and echoes it back unchanged, which would put source
+            // content in the target locale. Comparing against the source separates them —
+            // exact only when the payload has no `value`/`instructions` keys, which the
+            // Smartling transform rewrites.
+            const flatSource =
+              sourceLocaleId && existing?.[sourceLocaleId] != null
+                ? existing[sourceLocaleId]
+                : existing?.Default;
+            if (!isEqual(flatValue, flatSource)) {
+              writeFlatValue();
+              return;
+            }
+          }
+
+          // Leaves were extracted as `${flatKey}#0#title`: clone the source payload,
+          // patch each leaf, then store it under the locale.
           const prefix = `${flatKey}#`;
           const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
           if (!compoundKeys.length) {

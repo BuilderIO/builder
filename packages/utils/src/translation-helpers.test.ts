@@ -1162,9 +1162,8 @@ test('applyTranslation uses sourceLocaleId as the base when it differs from Defa
   expect(localizedItems['en-US']).toHaveLength(2);
 });
 
-// A registered custom component whose list input is `localized: true` AND whose subFields
-// are `localized: true`. The list input is a LocalizedValue wrapping an array of items,
-// each mixing localized subfields with plain ones.
+// Custom component with `localized: true` on both the list input and its subFields:
+// a LocalizedValue wrapping items that mix localized subfields with plain ones.
 const productGridContent = (): BuilderContent => ({
   data: {
     blocks: [
@@ -1291,10 +1290,11 @@ test('applyTranslation writes localized list subfields back into the target loca
 
 test('applyTranslation ignores a non-string flat value echoed back for a localized list input', () => {
   const content = productGridContent();
+  // Smartling returns the payload byte-identical when it contains no textValue/htmlValue
+  const sourcePayload = (productGridContent().data!.blocks as any)[0].component.options.products
+    .Default;
   const untranslatedEcho = {
-    'blocks.builder-productgrid#products': {
-      value: [{ title: { '@type': localizedType, Default: 'Smart Fitness Watch new' } }] as any,
-    },
+    'blocks.builder-productgrid#products': { value: sourcePayload as any },
   };
 
   const result = applyTranslation(content, untranslatedEcho, 'de-DE', 'en-US');
@@ -1398,8 +1398,7 @@ test('getTranslateableFields honours deeper localized markers over unmarked sibl
 
   const result = getTranslateableFields(content, 'en-US', 'instructions');
 
-  // Where the payload carries its own localized markers we honour them, matching how
-  // unmarked siblings are skipped at the top level. `heading` is intentionally omitted.
+  // Own markers win, as unmarked siblings do at the top level; `heading` is omitted.
   expect(result).toEqual({
     'blocks.builder-mixed#details#sub': { value: 'Marked sub', instructions: 'instructions' },
   });
