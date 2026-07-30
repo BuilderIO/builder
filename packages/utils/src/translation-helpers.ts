@@ -255,7 +255,7 @@ function extractLocalizedLeaves(
   }
 
   if (value['@type'] === localizedType) {
-    const nested = value[sourceLocaleId] || value.Default;
+    const nested = value[sourceLocaleId] != null ? value[sourceLocaleId] : value.Default;
     const nestedInstructions = value.meta?.instructions || instructions;
     if (typeof nested === 'string') {
       if (nested) {
