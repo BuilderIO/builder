@@ -265,9 +265,18 @@ function extractLocalizedLeaves(
       return 1;
     }
     if (nested !== null && nested !== undefined) {
-      return (
-        1 + extractLocalizedLeaves(nested, basePath, results, nestedInstructions, sourceLocaleId)
+      // The payload is an object/array. Honour any deeper localized markers it carries;
+      // if it has none, the whole payload is the translatable unit.
+      const deeper = extractLocalizedLeaves(
+        nested,
+        basePath,
+        results,
+        nestedInstructions,
+        sourceLocaleId
       );
+      if (deeper === 0) {
+        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+      }
     }
     return 1;
   }
@@ -440,6 +449,51 @@ export function getTranslateableFields(
   }
 
   return results;
+}
+
+// Writes a translated leaf into a cloned payload, stepping through any intermediate
+// LocalizedValue node into its locale branch (seeded from the source payload) rather than
+// treating the wrapper as the leaf. Without this, a path like `details#heading` would be
+// written onto the wrapper next to `@type`/`Default` instead of into the actual data.
+function setTranslatedLeaf({
+  payload,
+  segments,
+  value,
+  locale,
+  sourceLocaleId,
+}: {
+  payload: any;
+  segments: (string | number)[];
+  value: any;
+  locale: string;
+  sourceLocaleId?: string;
+}) {
+  let node = payload;
+
+  for (const segment of segments.slice(0, -1)) {
+    const child = node?.[segment];
+    if (child && typeof child === 'object' && child['@type'] === localizedType) {
+      if (child[locale] === null || child[locale] === undefined) {
+        const source =
+          sourceLocaleId && child[sourceLocaleId] != null ? child[sourceLocaleId] : child.Default;
+        child[locale] = JSON.parse(JSON.stringify(source ?? {}));
+      }
+      node = child[locale];
+    } else {
+      node = child;
+    }
+    if (node === null || node === undefined) {
+      return;
+    }
+  }
+
+  const leafSegment = segments[segments.length - 1];
+  const leaf = node?.[leafSegment];
+  if (leaf && typeof leaf === 'object' && leaf['@type'] === localizedType) {
+    node[leafSegment] = { ...leaf, [locale]: value };
+  } else if (node) {
+    node[leafSegment] = value;
+  }
 }
 
 export function applyTranslation(
@@ -698,19 +752,13 @@ export function applyTranslation(
               .slice(prefix.length)
               .split('#')
               .map((segment: string) => (/^\d+$/.test(segment) ? parseInt(segment, 10) : segment));
-            const existingLeaf = get(localeValue, segments);
-            if (
-              existingLeaf &&
-              typeof existingLeaf === 'object' &&
-              existingLeaf['@type'] === localizedType
-            ) {
-              set(localeValue, segments, {
-                ...existingLeaf,
-                [locale]: unescapeStringOrObject(translation[compoundKey].value),
-              });
-            } else {
-              set(localeValue, segments, unescapeStringOrObject(translation[compoundKey].value));
-            }
+            setTranslatedLeaf({
+              payload: localeValue,
+              segments,
+              value: unescapeStringOrObject(translation[compoundKey].value),
+              locale,
+              sourceLocaleId,
+            });
           });
 
           set(options, key, { ...(existing || {}), [locale]: localeValue });

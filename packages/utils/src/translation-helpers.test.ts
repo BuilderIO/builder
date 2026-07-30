@@ -1304,6 +1304,107 @@ test('applyTranslation ignores a non-string flat value echoed back for a localiz
   expect((result.data!.blocks as any)[0].meta.translated).toBeUndefined();
 });
 
+// A localized subfield whose payload is an object of plain strings, rather than a string.
+const objectPayloadContent = (): BuilderContent => ({
+  data: {
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-objectpayload',
+        meta: { localizedTextInputs: ['cards'] },
+        component: {
+          name: 'CardList',
+          options: {
+            cards: {
+              '@type': localizedType,
+              Default: [
+                {
+                  sku: 'SKU-1',
+                  details: {
+                    '@type': localizedType,
+                    Default: { heading: 'Card heading', body: 'Card body' },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+
+test('getTranslateableFields extracts plain strings inside a localized object-valued subfield', () => {
+  const result = getTranslateableFields(objectPayloadContent(), 'en-US', 'instructions');
+
+  expect(result).toEqual({
+    'blocks.builder-objectpayload#cards#0#details#heading': {
+      value: 'Card heading',
+      instructions: 'instructions',
+    },
+    'blocks.builder-objectpayload#cards#0#details#body': {
+      value: 'Card body',
+      instructions: 'instructions',
+    },
+  });
+
+  // `sku` sits outside the localized subfield, so it is still not sent
+  expect(Object.keys(result).some(key => key.includes('sku'))).toBe(false);
+});
+
+test('applyTranslation writes into the locale branch of a localized object-valued subfield', () => {
+  const translation = {
+    'blocks.builder-objectpayload#cards#0#details#heading': { value: 'Karten-Überschrift' },
+    'blocks.builder-objectpayload#cards#0#details#body': { value: 'Kartentext' },
+  };
+
+  const result = applyTranslation(objectPayloadContent(), translation, 'de-DE', 'en-US');
+  const cards = (result.data!.blocks as any)[0].component.options.cards;
+  const details = cards['de-DE'][0].details;
+
+  // Translation lands inside the nested LocalizedValue's locale branch...
+  expect(details['de-DE']).toEqual({ heading: 'Karten-Überschrift', body: 'Kartentext' });
+  // ...not as stray keys on the wrapper itself
+  expect(details.heading).toBeUndefined();
+  expect(details.body).toBeUndefined();
+  // ...and the source payload is preserved
+  expect(details.Default).toEqual({ heading: 'Card heading', body: 'Card body' });
+});
+
+test('getTranslateableFields honours deeper localized markers over unmarked siblings', () => {
+  const content: BuilderContent = {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-mixed',
+          meta: { localizedTextInputs: ['details'] },
+          component: {
+            name: 'Mixed',
+            options: {
+              details: {
+                '@type': localizedType,
+                Default: {
+                  heading: 'Unmarked heading',
+                  sub: { '@type': localizedType, Default: 'Marked sub' },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  const result = getTranslateableFields(content, 'en-US', 'instructions');
+
+  // Where the payload carries its own localized markers we honour them, matching how
+  // unmarked siblings are skipped at the top level. `heading` is intentionally omitted.
+  expect(result).toEqual({
+    'blocks.builder-mixed#details#sub': { value: 'Marked sub', instructions: 'instructions' },
+  });
+});
+
 test('getTranslateableFields falls back to string leaves when a localized list has no localized subfields', () => {
   const content: BuilderContent = {
     data: {
