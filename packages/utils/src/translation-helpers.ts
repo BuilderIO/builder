@@ -4,7 +4,6 @@ import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
 import set from 'lodash/set';
 import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
 
@@ -231,9 +230,8 @@ function extractNestedStrings(
   }
 }
 
-// Records only leaves that are themselves LocalizedValues, i.e. subfields marked
-// `localized: true`. Returns how many were found, so callers can tell "no per-subfield
-// localization" from "localized subfields that are empty".
+// Records only leaves marked `localized: true`; returns the count so callers can tell
+// "no localized subfields" from "localized subfields that are empty".
 function extractLocalizedLeaves(
   value: any,
   basePath: string,
@@ -264,7 +262,7 @@ function extractLocalizedLeaves(
       return 1;
     }
     if (nested !== null && nested !== undefined) {
-      // Honour deeper localized markers; with none, the whole payload is the unit.
+      // Deeper localized markers win; with none, the whole payload is the unit.
       const deeper = extractLocalizedLeaves(
         nested,
         basePath,
@@ -355,7 +353,11 @@ export function getTranslateableFields(
             .filter(input => get(el.component?.options || {}, `${input}.@type`) === localizedType)
             .forEach(inputKey => {
               const inputValue = get(el.component?.options || {}, inputKey);
-              const valueToBeTranslated = inputValue?.[sourceLocaleId] || inputValue?.Default;
+              // Nullish, not truthy, so an explicitly blank source locale is honoured.
+              const valueToBeTranslated =
+                inputValue?.[sourceLocaleId] != null
+                  ? inputValue[sourceLocaleId]
+                  : inputValue?.Default;
               const instructions = el.meta?.instructions || defaultInstructions;
               const path = `blocks.${el.id}#${inputKey}`;
 
@@ -370,8 +372,8 @@ export function getTranslateableFields(
                 return;
               }
 
-              // One unit per string leaf. Marked subfields win; only a payload with none
-              // falls back to every string, keeping siblings like `currency` out of the job.
+              // One unit per string leaf; only a payload with no marked subfields falls
+              // back to every string, keeping siblings like `currency` out of the job.
               const localizedLeaves = extractLocalizedLeaves(
                 valueToBeTranslated,
                 path,
@@ -447,10 +449,9 @@ export function getTranslateableFields(
   return results;
 }
 
-// Gives every nested LocalizedValue a locale branch seeded from the source. The SDK
-// resolves a missing locale key to undefined rather than falling back to Default, so
-// untranslated leaves would otherwise vanish while their plain-string siblings survive
-// the clone.
+// Seeds every nested LocalizedValue with a locale branch from the source: the SDK
+// resolves a missing locale key to undefined rather than to Default, so untranslated
+// leaves would otherwise vanish.
 function seedLocaleBranches(node: any, locale: string, sourceLocaleId?: string) {
   if (Array.isArray(node)) {
     node.forEach(item => seedLocaleBranches(item, locale, sourceLocaleId));
@@ -472,8 +473,7 @@ function seedLocaleBranches(node: any, locale: string, sourceLocaleId?: string) 
 }
 
 // Writes a translated leaf into a cloned payload, stepping through intermediate
-// LocalizedValue nodes into their locale branch. Without this, `details#heading` would land
-// on the wrapper next to `@type`/`Default` instead of in the data.
+// LocalizedValue nodes into their locale branch instead of onto the wrapper itself.
 function setTranslatedLeaf({
   payload,
   segments,
@@ -519,7 +519,10 @@ export function applyTranslation(
   content: BuilderContent,
   translation: TranslateableFields,
   locale: string,
-  sourceLocaleId?: string
+  sourceLocaleId?: string,
+  // Set by callers whose provider echoes anything outside its declared paths back
+  // unchanged, so such a response is not a translation.
+  providerOptions?: { providerEchoesSourcePayload?: boolean }
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
@@ -751,25 +754,19 @@ export function applyTranslation(
             return;
           }
 
-          if (flatValue !== null && flatValue !== undefined) {
-            // Legacy jobs sent the whole payload under the flat key. Memsource translates
-            // nested strings and returns a real translation; Smartling only handles
-            // `textValue`/`htmlValue` and echoes it back unchanged, which would put source
-            // content in the target locale. Comparing against the source separates them —
-            // exact only when the payload has no `value`/`instructions` keys, which the
-            // Smartling transform rewrites.
-            const flatSource =
-              sourceLocaleId && existing?.[sourceLocaleId] != null
-                ? existing[sourceLocaleId]
-                : existing?.Default;
-            if (!isEqual(flatValue, flatSource)) {
-              writeFlatValue();
-              return;
-            }
+          // Legacy jobs sent the whole payload under the flat key. Write it only for
+          // providers that translate it, else source content lands in the target locale.
+          if (
+            flatValue !== null &&
+            flatValue !== undefined &&
+            !providerOptions?.providerEchoesSourcePayload
+          ) {
+            writeFlatValue();
+            return;
           }
 
-          // Leaves were extracted as `${flatKey}#0#title`: clone the source payload,
-          // patch each leaf, then store it under the locale.
+          // Leaves were extracted as `${flatKey}#0#title`: clone the source, patch each
+          // leaf, store under the locale.
           const prefix = `${flatKey}#`;
           const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
           if (!compoundKeys.length) {

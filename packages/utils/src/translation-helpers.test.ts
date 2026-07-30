@@ -1288,20 +1288,32 @@ test('applyTranslation writes localized list subfields back into the target loca
   expect((result.data!.blocks as any)[0].meta.translated).toBe(true);
 });
 
-test('applyTranslation ignores a non-string flat value echoed back for a localized list input', () => {
-  const content = productGridContent();
-  // Smartling returns the payload byte-identical when it contains no textValue/htmlValue
-  const sourcePayload = (productGridContent().data!.blocks as any)[0].component.options.products
-    .Default;
-  const untranslatedEcho = {
-    'blocks.builder-productgrid#products': { value: sourcePayload as any },
-  };
+const flatObjectResponse = () => ({
+  'blocks.builder-productgrid#products': {
+    value: (productGridContent().data!.blocks as any)[0].component.options.products.Default as any,
+  },
+});
 
-  const result = applyTranslation(content, untranslatedEcho, 'de-DE', 'en-US');
+test('applyTranslation ignores a flat object response when the provider echoes the payload', () => {
+  const content = productGridContent();
+
+  const result = applyTranslation(content, flatObjectResponse(), 'de-DE', 'en-US', {
+    providerEchoesSourcePayload: true,
+  });
   const products = (result.data!.blocks as any)[0].component.options.products;
 
   expect(products['de-DE']).toBeUndefined();
   expect((result.data!.blocks as any)[0].meta.translated).toBeUndefined();
+});
+
+test('applyTranslation writes a flat object response from a provider that translates it', () => {
+  const content = productGridContent();
+
+  const result = applyTranslation(content, flatObjectResponse(), 'de-DE', 'en-US');
+  const products = (result.data!.blocks as any)[0].component.options.products;
+
+  expect(products['de-DE']).toHaveLength(2);
+  expect((result.data!.blocks as any)[0].meta.translated).toBe(true);
 });
 
 test('applyTranslation keeps source text on nested leaves that received no translation', () => {
