@@ -1161,3 +1161,181 @@ test('applyTranslation uses sourceLocaleId as the base when it differs from Defa
   expect(localizedItems.Default).toHaveLength(1);
   expect(localizedItems['en-US']).toHaveLength(2);
 });
+
+// A registered custom component whose list input is `localized: true` AND whose subFields
+// are `localized: true`. The list input is a LocalizedValue wrapping an array of items,
+// each mixing localized subfields with plain ones.
+const productGridContent = (): BuilderContent => ({
+  data: {
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-productgrid',
+        meta: {
+          localizedTextInputs: ['products'],
+        },
+        component: {
+          name: 'ProductGrid',
+          options: {
+            products: {
+              '@type': localizedType,
+              Default: [
+                {
+                  currency: 'USD',
+                  rating: 4.9,
+                  ratingCount: 10,
+                  imageSrc: 'https://cdn.builder.io/api/v1/image/watch.png',
+                  id: { '@type': localizedType, Default: 'prod-001' },
+                  title: { '@type': localizedType, Default: 'Smart Fitness Watch new' },
+                  description: { '@type': localizedType, Default: 'Water-resistant smartwatch' },
+                },
+                {
+                  currency: 'USD',
+                  rating: 5,
+                  ratingCount: 40,
+                  imageSrc: 'https://cdn.builder.io/api/v1/image/headphones.png',
+                  id: { '@type': localizedType, Default: 'prod-002' },
+                  title: { '@type': localizedType, Default: 'Wireless Headphones' },
+                  description: { '@type': localizedType, Default: 'Premium over-ear headphones' },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+
+test('getTranslateableFields extracts localized subfields of a localized list input on a custom component', () => {
+  const result = getTranslateableFields(productGridContent(), 'en-US', 'instructions');
+
+  expect(result).toEqual({
+    'blocks.builder-productgrid#products#0#id': {
+      value: 'prod-001',
+      instructions: 'instructions',
+    },
+    'blocks.builder-productgrid#products#0#title': {
+      value: 'Smart Fitness Watch new',
+      instructions: 'instructions',
+    },
+    'blocks.builder-productgrid#products#0#description': {
+      value: 'Water-resistant smartwatch',
+      instructions: 'instructions',
+    },
+    'blocks.builder-productgrid#products#1#id': {
+      value: 'prod-002',
+      instructions: 'instructions',
+    },
+    'blocks.builder-productgrid#products#1#title': {
+      value: 'Wireless Headphones',
+      instructions: 'instructions',
+    },
+    'blocks.builder-productgrid#products#1#description': {
+      value: 'Premium over-ear headphones',
+      instructions: 'instructions',
+    },
+  });
+});
+
+test('getTranslateableFields does not send non-localized siblings of a localized list input', () => {
+  const result = getTranslateableFields(productGridContent(), 'en-US', 'instructions');
+  const values = Object.values(result).map(entry => entry.value);
+
+  expect(values).not.toContain('USD');
+  expect(values).not.toContain('https://cdn.builder.io/api/v1/image/watch.png');
+  expect(Object.keys(result).some(key => key.includes('currency'))).toBe(false);
+  expect(Object.keys(result).some(key => key.includes('imageSrc'))).toBe(false);
+  expect(Object.keys(result).some(key => key.includes('rating'))).toBe(false);
+});
+
+test('applyTranslation writes localized list subfields back into the target locale', () => {
+  const content = productGridContent();
+  const translation = {
+    'blocks.builder-productgrid#products#0#id': { value: 'prod-001' },
+    'blocks.builder-productgrid#products#0#title': { value: 'Intelligente Fitnessuhr' },
+    'blocks.builder-productgrid#products#0#description': { value: 'Wasserfeste Smartwatch' },
+    'blocks.builder-productgrid#products#1#id': { value: 'prod-002' },
+    'blocks.builder-productgrid#products#1#title': { value: 'Kabellose Kopfhörer' },
+    'blocks.builder-productgrid#products#1#description': { value: 'Premium Over-Ear-Kopfhörer' },
+  };
+
+  const result = applyTranslation(content, translation, 'de-DE', 'en-US');
+  const products = (result.data!.blocks as any)[0].component.options.products;
+
+  // Nested LocalizedValue structure is preserved, with the locale added alongside Default
+  expect(products['de-DE'][0].title).toEqual({
+    '@type': localizedType,
+    Default: 'Smart Fitness Watch new',
+    'de-DE': 'Intelligente Fitnessuhr',
+  });
+  expect(products['de-DE'][1].description).toEqual({
+    '@type': localizedType,
+    Default: 'Premium over-ear headphones',
+    'de-DE': 'Premium Over-Ear-Kopfhörer',
+  });
+
+  // Non-localized siblings are carried over untouched
+  expect(products['de-DE'][0].currency).toBe('USD');
+  expect(products['de-DE'][0].rating).toBe(4.9);
+
+  // The source payload is not mutated
+  expect(products.Default[0].title).toEqual({
+    '@type': localizedType,
+    Default: 'Smart Fitness Watch new',
+  });
+
+  expect((result.data!.blocks as any)[0].meta.translated).toBe(true);
+});
+
+test('applyTranslation ignores a non-string flat value echoed back for a localized list input', () => {
+  const content = productGridContent();
+  const untranslatedEcho = {
+    'blocks.builder-productgrid#products': {
+      value: [{ title: { '@type': localizedType, Default: 'Smart Fitness Watch new' } }] as any,
+    },
+  };
+
+  const result = applyTranslation(content, untranslatedEcho, 'de-DE', 'en-US');
+  const products = (result.data!.blocks as any)[0].component.options.products;
+
+  expect(products['de-DE']).toBeUndefined();
+  expect((result.data!.blocks as any)[0].meta.translated).toBeUndefined();
+});
+
+test('getTranslateableFields falls back to string leaves when a localized list has no localized subfields', () => {
+  const content: BuilderContent = {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-plainlist',
+          meta: { localizedTextInputs: ['items'] },
+          component: {
+            name: 'PlainList',
+            options: {
+              items: {
+                '@type': localizedType,
+                Default: [{ label: 'First label' }, { label: 'Second label' }],
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  const result = getTranslateableFields(content, 'en-US', 'instructions');
+
+  expect(result).toEqual({
+    'blocks.builder-plainlist#items#0#label': {
+      value: 'First label',
+      instructions: 'instructions',
+    },
+    'blocks.builder-plainlist#items#1#label': {
+      value: 'Second label',
+      instructions: 'instructions',
+    },
+  });
+});
