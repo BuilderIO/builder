@@ -230,6 +230,61 @@ function extractNestedStrings(
   }
 }
 
+// Records only leaves marked `localized: true`; returns the count so callers can tell
+// "no localized subfields" from "localized subfields that are empty".
+function extractLocalizedLeaves(
+  value: any,
+  basePath: string,
+  results: TranslateableFields,
+  instructions: string,
+  sourceLocaleId: string
+): number {
+  if (Array.isArray(value)) {
+    return value.reduce(
+      (found: number, item, index) =>
+        found +
+        extractLocalizedLeaves(item, `${basePath}#${index}`, results, instructions, sourceLocaleId),
+      0
+    );
+  }
+
+  if (typeof value !== 'object' || value === null) {
+    return 0;
+  }
+
+  if (value['@type'] === localizedType) {
+    const nested = value[sourceLocaleId] != null ? value[sourceLocaleId] : value.Default;
+    const nestedInstructions = value.meta?.instructions || instructions;
+    if (typeof nested === 'string') {
+      if (nested) {
+        results[basePath] = { value: nested, instructions: nestedInstructions };
+      }
+      return 1;
+    }
+    if (nested !== null && nested !== undefined) {
+      // Deeper localized markers win; with none, the whole payload is the unit.
+      const deeper = extractLocalizedLeaves(
+        nested,
+        basePath,
+        results,
+        nestedInstructions,
+        sourceLocaleId
+      );
+      if (deeper === 0) {
+        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+      }
+    }
+    return 1;
+  }
+
+  return Object.entries(value).reduce(
+    (found: number, [key, v]) =>
+      found +
+      extractLocalizedLeaves(v, `${basePath}#${key}`, results, instructions, sourceLocaleId),
+    0
+  );
+}
+
 export function getTranslateableFields(
   content: BuilderContent,
   sourceLocaleId: string,
@@ -298,12 +353,42 @@ export function getTranslateableFields(
             .filter(input => get(el.component?.options || {}, `${input}.@type`) === localizedType)
             .forEach(inputKey => {
               const inputValue = get(el.component?.options || {}, inputKey);
-              const valueToBeTranslated = inputValue?.[sourceLocaleId] || inputValue?.Default;
-              if (valueToBeTranslated) {
-                results[`blocks.${el.id}#${inputKey}`] = {
-                  instructions: el.meta?.instructions || defaultInstructions,
-                  value: valueToBeTranslated,
-                };
+              // Nullish, not truthy, so an explicitly blank source locale is honoured.
+              const valueToBeTranslated =
+                inputValue?.[sourceLocaleId] != null
+                  ? inputValue[sourceLocaleId]
+                  : inputValue?.Default;
+              const instructions = el.meta?.instructions || defaultInstructions;
+              const path = `blocks.${el.id}#${inputKey}`;
+
+              if (typeof valueToBeTranslated === 'string') {
+                if (valueToBeTranslated) {
+                  results[path] = { instructions, value: valueToBeTranslated };
+                }
+                return;
+              }
+
+              if (valueToBeTranslated === null || valueToBeTranslated === undefined) {
+                return;
+              }
+
+              // One unit per string leaf; only a payload with no marked subfields falls
+              // back to every string, keeping siblings like `currency` out of the job.
+              const localizedLeaves = extractLocalizedLeaves(
+                valueToBeTranslated,
+                path,
+                results,
+                instructions,
+                sourceLocaleId
+              );
+              if (localizedLeaves === 0) {
+                extractNestedStrings(
+                  valueToBeTranslated,
+                  path,
+                  results,
+                  instructions,
+                  sourceLocaleId
+                );
               }
             });
         }
@@ -364,11 +449,80 @@ export function getTranslateableFields(
   return results;
 }
 
+// Seeds every nested LocalizedValue with a locale branch from the source: the SDK
+// resolves a missing locale key to undefined rather than to Default, so untranslated
+// leaves would otherwise vanish.
+function seedLocaleBranches(node: any, locale: string, sourceLocaleId?: string) {
+  if (Array.isArray(node)) {
+    node.forEach(item => seedLocaleBranches(item, locale, sourceLocaleId));
+    return;
+  }
+  if (!node || typeof node !== 'object') {
+    return;
+  }
+  if (node['@type'] === localizedType) {
+    if (node[locale] === null || node[locale] === undefined) {
+      const source =
+        sourceLocaleId && node[sourceLocaleId] != null ? node[sourceLocaleId] : node.Default;
+      node[locale] = source == null ? source : JSON.parse(JSON.stringify(source));
+    }
+    seedLocaleBranches(node[locale], locale, sourceLocaleId);
+    return;
+  }
+  Object.values(node).forEach(value => seedLocaleBranches(value, locale, sourceLocaleId));
+}
+
+// Writes a translated leaf into a cloned payload, stepping through intermediate
+// LocalizedValue nodes into their locale branch instead of onto the wrapper itself.
+function setTranslatedLeaf({
+  payload,
+  segments,
+  value,
+  locale,
+  sourceLocaleId,
+}: {
+  payload: any;
+  segments: (string | number)[];
+  value: any;
+  locale: string;
+  sourceLocaleId?: string;
+}) {
+  let node = payload;
+
+  for (const segment of segments.slice(0, -1)) {
+    const child = node?.[segment];
+    if (child && typeof child === 'object' && child['@type'] === localizedType) {
+      if (child[locale] === null || child[locale] === undefined) {
+        const source =
+          sourceLocaleId && child[sourceLocaleId] != null ? child[sourceLocaleId] : child.Default;
+        child[locale] = JSON.parse(JSON.stringify(source ?? {}));
+      }
+      node = child[locale];
+    } else {
+      node = child;
+    }
+    if (node === null || node === undefined) {
+      return;
+    }
+  }
+
+  const leafSegment = segments[segments.length - 1];
+  const leaf = node?.[leafSegment];
+  if (leaf && typeof leaf === 'object' && leaf['@type'] === localizedType) {
+    node[leafSegment] = { ...leaf, [locale]: value };
+  } else if (node) {
+    node[leafSegment] = value;
+  }
+}
+
 export function applyTranslation(
   content: BuilderContent,
   translation: TranslateableFields,
   locale: string,
-  sourceLocaleId?: string
+  sourceLocaleId?: string,
+  // Set by callers whose provider echoes anything outside its declared paths back
+  // unchanged, so such a response is not a translation.
+  providerOptions?: { providerEchoesSourcePayload?: boolean }
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
@@ -568,25 +722,83 @@ export function applyTranslation(
         const keys = el.meta?.localizedTextInputs as string[];
         let options = el.component.options;
 
-        keys.forEach(key => {
-          if (translation[`blocks.${el.id}#${key}`]) {
-            set(options, key, {
-              ...(get(options, key) || {}),
-              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
-            });
+        const markTranslated = () => {
+          this.update({
+            ...el,
+            meta: {
+              ...el.meta,
+              translated: true,
+            },
+            component: {
+              ...el.component,
+              options,
+            },
+          });
+        };
 
-            this.update({
-              ...el,
-              meta: {
-                ...el.meta,
-                translated: true,
-              },
-              component: {
-                ...el.component,
-                options,
-              },
+        keys.forEach(key => {
+          const flatKey = `blocks.${el.id}#${key}`;
+          const existing = get(options, key);
+
+          const flatValue = translation[flatKey]?.value;
+          const writeFlatValue = () => {
+            set(options, key, {
+              ...(existing || {}),
+              [locale]: unescapeStringOrObject(flatValue!),
             });
+            markTranslated();
+          };
+
+          if (typeof flatValue === 'string') {
+            writeFlatValue();
+            return;
           }
+
+          // Legacy jobs sent the whole payload under the flat key. Write it only for
+          // providers that translate it, else source content lands in the target locale.
+          if (
+            flatValue !== null &&
+            flatValue !== undefined &&
+            !providerOptions?.providerEchoesSourcePayload
+          ) {
+            writeFlatValue();
+            return;
+          }
+
+          // Leaves were extracted as `${flatKey}#0#title`: clone the source, patch each
+          // leaf, store under the locale.
+          const prefix = `${flatKey}#`;
+          const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+          if (!compoundKeys.length) {
+            return;
+          }
+
+          const sourceValue =
+            sourceLocaleId && existing?.[sourceLocaleId] != null
+              ? existing[sourceLocaleId]
+              : existing?.Default;
+          if (sourceValue === null || sourceValue === undefined) {
+            return;
+          }
+
+          const localeValue = JSON.parse(JSON.stringify(sourceValue));
+          seedLocaleBranches(localeValue, locale, sourceLocaleId);
+          compoundKeys.forEach(compoundKey => {
+            const segments = compoundKey
+              .slice(prefix.length)
+              .split('#')
+              .map((segment: string) => (/^\d+$/.test(segment) ? parseInt(segment, 10) : segment));
+            setTranslatedLeaf({
+              payload: localeValue,
+              segments,
+              value: unescapeStringOrObject(translation[compoundKey].value),
+              locale,
+              sourceLocaleId,
+            });
+          });
+
+          set(options, key, { ...(existing || {}), [locale]: localeValue });
+          markTranslated();
         });
       }
     });
