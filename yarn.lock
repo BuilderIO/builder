@@ -968,18 +968,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/core@npm:^17.3.0":
-  version: 17.3.12
-  resolution: "@angular/core@npm:17.3.12"
-  dependencies:
-    tslib: ^2.3.0
-  peerDependencies:
-    rxjs: ^6.5.3 || ^7.4.0
-    zone.js: ~0.14.0
-  checksum: 10a1253c4785b761d2fcaa5c6119c7da7618b4c0bf2985517a7151d6c0885571a937e9cdd4d07c74b5cacf64d07d0a56b7c5c235c21adfa2e5dd401c6d66d8ca
-  languageName: node
-  linkType: hard
-
 "@angular/core@npm:^19.0.0":
   version: 19.0.5
   resolution: "@angular/core@npm:19.0.5"
@@ -989,6 +977,24 @@ __metadata:
     rxjs: ^6.5.3 || ^7.4.0
     zone.js: ~0.15.0
   checksum: 691cc5d8fe06a8c73b7fbbf96382d4f198b3d7af55b25517276cdc5ef470f7f47b8c7e360accfc1735facff525c18c1aa9f9179192e2f219477afb19868c783e
+  languageName: node
+  linkType: hard
+
+"@angular/core@npm:^20.3.27":
+  version: 20.3.27
+  resolution: "@angular/core@npm:20.3.27"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    "@angular/compiler": 20.3.27
+    rxjs: ^6.5.3 || ^7.4.0
+    zone.js: ~0.15.0
+  peerDependenciesMeta:
+    "@angular/compiler":
+      optional: true
+    zone.js:
+      optional: true
+  checksum: 874f363bbfbe51496162ac66a970d893ade9901cb9658db3c9378a66ec0787a3c910f813def8dcefeca0e4cda10a68b1377a2d29b5bf2a38ca1eaf23c34d6d90
   languageName: node
   linkType: hard
 
@@ -7031,7 +7037,7 @@ __metadata:
     "@angular/common": ^17.3.0
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
-    "@angular/core": ^17.3.0
+    "@angular/core": ^20.3.27
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
@@ -7670,7 +7676,7 @@ __metadata:
     "@angular/common": ^17.3.0
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
-    "@angular/core": ^17.3.0
+    "@angular/core": ^20.3.27
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
@@ -7706,7 +7712,7 @@ __metadata:
     "@angular/common": ^17.3.0
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
-    "@angular/core": ^17.3.0
+    "@angular/core": ^20.3.27
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
@@ -20151,7 +20157,7 @@ __metadata:
     "@angular/common": ^17.3.0
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
-    "@angular/core": ^17.3.0
+    "@angular/core": ^20.3.27
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
@@ -20186,7 +20192,7 @@ __metadata:
     "@angular/common": ^17.3.0
     "@angular/compiler": ^17.3.0
     "@angular/compiler-cli": ^17.3.0
-    "@angular/core": ^17.3.0
+    "@angular/core": ^20.3.27
     "@angular/forms": ^17.3.0
     "@angular/platform-browser": ^17.3.0
     "@angular/platform-browser-dynamic": ^17.3.0
