@@ -144,7 +144,7 @@ test.describe('Blocks', () => {
 
       const images = page.locator('.builder-image');
       const sources = page.locator('picture source');
-      const sizes = '(max-width: 638px) 98vw, (max-width: 998px) 49vw, 71vw';
+      const sizes = /\(max-width: 638px\) 98vw,\s+\(max-width: 998px\) 49vw,\s+71vw/;
 
       await expect(images.first()).toHaveAttribute('sizes', sizes);
       await expect(sources.first()).toHaveAttribute('sizes', sizes);
