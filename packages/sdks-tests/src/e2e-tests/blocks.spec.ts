@@ -148,15 +148,22 @@ test.describe('Blocks', () => {
 
       await expect(images.first()).toHaveAttribute('sizes', sizes);
       await expect(sources.first()).toHaveAttribute('sizes', sizes);
-      await expect(images.nth(1)).toHaveAttribute('sizes', 'auto');
-      await expect(sources.nth(1)).toHaveAttribute('sizes', 'auto');
+
+      const automaticSizes = checkIsGen1React(sdk) ? 'auto, 100vw' : 'auto';
+      await expect(images.nth(1)).toHaveAttribute('sizes', automaticSizes);
+      await expect(sources.nth(1)).toHaveAttribute('sizes', automaticSizes);
 
       await page.goto('/image-high-priority');
 
-      await expect(images.nth(1)).toHaveAttribute('sizes', 'auto');
-      await expect(sources.nth(1)).toHaveAttribute('sizes', 'auto');
-      await expect(images.nth(3)).not.toHaveAttribute('sizes');
-      await expect(sources.nth(3)).not.toHaveAttribute('sizes');
+      await expect(images.nth(1)).toHaveAttribute('sizes', automaticSizes);
+      await expect(sources.nth(1)).toHaveAttribute('sizes', automaticSizes);
+      if (checkIsGen1React(sdk)) {
+        await expect(images.nth(3)).toHaveAttribute('sizes', '100vw');
+        await expect(sources.nth(3)).toHaveAttribute('sizes', '100vw');
+      } else {
+        await expect(images.nth(3)).not.toHaveAttribute('sizes');
+        await expect(sources.nth(3)).not.toHaveAttribute('sizes');
+      }
     });
 
     test('Image high priority', async ({ page, sdk, packageName }) => {
