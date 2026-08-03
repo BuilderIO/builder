@@ -102,5 +102,9 @@
   "dependencies": {
     "@builder.io/plugin-tools": "^0.0.3",
     "shopify-buy": "^3.0.4"
+  },
+  "overrides": {
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }

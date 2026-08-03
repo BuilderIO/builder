@@ -126,5 +126,9 @@
     "jodit-react": "^4.1.2",
     "react": "^16.11.0",
     "react-dom": "^16.13.1"
+  },
+  "overrides": {
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }

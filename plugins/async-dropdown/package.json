@@ -109,5 +109,9 @@
     "mustache": "^4.0.0",
     "react": "^16.11.0",
     "ses": "^0.6.4"
+  },
+  "overrides": {
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }

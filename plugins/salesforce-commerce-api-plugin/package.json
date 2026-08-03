@@ -54,5 +54,9 @@
   "dependencies": {
     "@builder.io/plugin-tools": "0.0.5",
     "commerce-sdk-isomorphic": "2.1.0"
+  },
+  "overrides": {
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }
