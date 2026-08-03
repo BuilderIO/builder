@@ -137,6 +137,28 @@ test.describe('Blocks', () => {
       }
     });
 
+    test('Image sizes attribute', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      await page.goto('/image');
+
+      const images = page.locator('.builder-image');
+      const sources = page.locator('picture source');
+      const sizes = '(max-width: 638px) 98vw, (max-width: 998px) 49vw, 71vw';
+
+      await expect(images.first()).toHaveAttribute('sizes', sizes);
+      await expect(sources.first()).toHaveAttribute('sizes', sizes);
+      await expect(images.nth(1)).toHaveAttribute('sizes', 'auto');
+      await expect(sources.nth(1)).toHaveAttribute('sizes', 'auto');
+
+      await page.goto('/image-high-priority');
+
+      await expect(images.nth(1)).toHaveAttribute('sizes', 'auto');
+      await expect(sources.nth(1)).toHaveAttribute('sizes', 'auto');
+      await expect(images.nth(3)).not.toHaveAttribute('sizes');
+      await expect(sources.nth(3)).not.toHaveAttribute('sizes');
+    });
+
     test('Image high priority', async ({ page, sdk, packageName }) => {
       test.skip(checkIsRN(sdk));
       test.skip(

@@ -80,7 +80,6 @@ export const CONTENT = {
             lazy: false,
             fitContent: true,
             lockAspectRatio: false,
-            sizes: '(max-width: 638px) 98vw, (max-width: 998px) 49vw, 71vw',
             image:
               'https://cdn.builder.io/api/v1/image/assets%2F89d6bbb44070475d9580fd22f21ef8f1%2F1ab2f86b7c5447ad9b99cb039165c15e',
             height: 1245,
@@ -283,7 +282,6 @@ export const CONTENT_2 = {
             lazy: false,
             fitContent: true,
             lockAspectRatio: false,
-            sizes: '(max-width: 638px) 98vw, (max-width: 998px) 49vw, 71vw',
             image:
               'https://cdn.builder.io/api/v1/image/assets%2F89d6bbb44070475d9580fd22f21ef8f1%2F1ab2f86b7c5447ad9b99cb039165c15e',
             height: 1245,
@@ -361,7 +359,6 @@ export const CONTENT_2 = {
             lazy: false,
             fitContent: true,
             lockAspectRatio: false,
-            sizes: '(max-width: 638px) 98vw, (max-width: 998px) 49vw, 71vw',
             image:
               'https://cdn.builder.io/api/v1/image/assets%2F89d6bbb44070475d9580fd22f21ef8f1%2F1ab2f86b7c5447ad9b99cb039165c15e',
             height: 1245,
