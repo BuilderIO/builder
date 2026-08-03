@@ -123,5 +123,9 @@
   "dependencies": {
     "@builder.io/commerce-plugin-tools": "^0.2.1-4",
     "@moltin/sdk": "^8.8.1"
+  },
+  "overrides": {
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }

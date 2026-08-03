@@ -132,5 +132,9 @@
     "object-hash": "^3.0.0",
     "traverse": "^0.6.6",
     "uuid": "^8.3.2"
+  },
+  "overrides": {
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }

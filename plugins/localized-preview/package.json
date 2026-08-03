@@ -124,5 +124,9 @@
   "peerDependencies": {
     "@material-ui/icons": "^4.11.2",
     "react": "^17.0.2"
+  },
+  "overrides": {
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }
