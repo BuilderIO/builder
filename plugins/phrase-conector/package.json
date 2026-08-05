@@ -136,6 +136,7 @@
   "overrides": {
     "lodash": "$lodash",
     "minimist@<1": "0.2.4",
+    "json-schema": "0.4.0",
     "minimist@1": "1.2.8"
   }
 }
