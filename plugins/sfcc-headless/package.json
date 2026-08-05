@@ -135,6 +135,7 @@
     "safe-localstorage": "^1.0.1"
   },
   "overrides": {
-    "json-schema": "0.4.0"
+    "json-schema": "0.4.0",
+    "lodash": "4.18.1"
   }
 }

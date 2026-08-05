@@ -127,6 +127,7 @@
     "react-quill": "^1.3.5"
   },
   "overrides": {
+    "lodash": "4.18.1",
     "minimist@<1": "0.2.4",
     "json-schema": "0.4.0",
     "minimist@1": "1.2.8"
