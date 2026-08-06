@@ -143,7 +143,9 @@ export const componentInfo: ComponentInfo = {
     {
       name: 'sizes',
       type: 'string',
-      hideFromUI: true,
+      advanced: true,
+      helperText:
+        'The sizes attribute for responsive images, e.g. "(max-width: 600px) 100vw, 50vw"',
     },
     {
       name: 'srcset',
