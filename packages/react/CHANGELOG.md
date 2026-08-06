@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.2
+
+### Patch Changes
+
+- bbcd9d7: Exposed the existing Image `sizes` field and fixed responsive source selection in Gen 2 SDKs.
+
 ## 9.4.1
 
 ### Patch Changes

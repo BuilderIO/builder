@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 5.2.6
+
+### Patch Changes
+
+- bbcd9d7: Exposed the existing Image `sizes` field and fixed responsive source selection in Gen 2 SDKs.
+
 ## 5.2.5
 
 ### Patch Changes

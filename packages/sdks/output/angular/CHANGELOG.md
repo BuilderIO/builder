@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.8
+
+### Patch Changes
+
+- bbcd9d7: Exposed the existing Image `sizes` field and fixed responsive source selection in Gen 2 SDKs.
+
 ## 0.25.7
 
 ### Patch Changes
