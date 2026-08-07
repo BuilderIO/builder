@@ -2,6 +2,7 @@ import { TARGET } from '../../constants/target.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import type { BuilderContent } from '../../types/builder-content.js';
 import type { Target } from '../../types/targets.js';
 import {
   FILTER_WITH_CUSTOM_TARGETING_SCRIPT,
@@ -15,6 +16,8 @@ export const DEFAULT_INDEX = 'default';
 const FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME = 'filterWithCustomTargeting';
 const BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME = 'builderIoPersonalization';
 const UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME = 'updateVisibilityStylesScript';
+
+const PERSONALIZATION_CONTAINER_COMPONENT_NAME = 'PersonalizationContainer';
 
 export type UserAttributes = {
   date?: string | Date;
@@ -147,11 +150,46 @@ export function getBlocksToRender({
   return fallback;
 }
 
+/**
+ * Walks the whole content rather than a known set of paths. A/B variation blocks live on
+ * `variations[*].data.blocks`, a sibling of `data.blocks`, and containers can sit inside columns,
+ * tabs, slots or inlined symbols. A missed container leaves the inlined fns undefined at parse
+ * time, so every variant renders at once.
+ */
+const containsPersonalizationContainer = (value: unknown): boolean => {
+  if (Array.isArray(value)) {
+    return value.some(containsPersonalizationContainer);
+  }
+
+  if (!value || typeof value !== 'object') return false;
+
+  if (
+    (value as BuilderBlock).component?.name ===
+    PERSONALIZATION_CONTAINER_COMPONENT_NAME
+  ) {
+    return true;
+  }
+
+  return Object.values(value).some(containsPersonalizationContainer);
+};
+
+export const hasPersonalizationContainer = (
+  content: BuilderContent | null | undefined
+) => containsPersonalizationContainer(content);
+
 export const getInitPersonalizationVariantsFnsScriptString = () => {
   return `
-  window.${FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME} = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT}
-  window.${BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME} = ${PERSONALIZATION_SCRIPT}
-  window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VISIBILITY_STYLES_SCRIPT}
+  (function() {
+    if (!window.${FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME}) {
+      window.${FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME} = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT};
+    }
+    if (!window.${BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME}) {
+      window.${BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME} = ${PERSONALIZATION_SCRIPT};
+    }
+    if (!window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}) {
+      window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VISIBILITY_STYLES_SCRIPT};
+    }
+  })();
   `;
 };
 
