@@ -151,9 +151,10 @@ export function getBlocksToRender({
 }
 
 /**
- * Walks every value rather than a known set of child paths, so containers nested inside columns,
- * tabs, slots, inline symbols or other variants are never missed. A missed container would leave
- * the inlined fns undefined at parse time and render every variant at once.
+ * Walks the whole content rather than a known set of paths. A/B variation blocks live on
+ * `variations[*].data.blocks`, a sibling of `data.blocks`, and containers can sit inside columns,
+ * tabs, slots or inlined symbols. A missed container leaves the inlined fns undefined at parse
+ * time, so every variant renders at once.
  */
 const containsPersonalizationContainer = (value: unknown): boolean => {
   if (Array.isArray(value)) {
@@ -174,7 +175,7 @@ const containsPersonalizationContainer = (value: unknown): boolean => {
 
 export const hasPersonalizationContainer = (
   content: BuilderContent | null | undefined
-) => containsPersonalizationContainer(content?.data?.blocks);
+) => containsPersonalizationContainer(content);
 
 export const getInitPersonalizationVariantsFnsScriptString = () => {
   return `
