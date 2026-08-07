@@ -23,8 +23,8 @@
     "@types/node": "16.11.9",
     "@types/react": "17.0.36",
     "@types/three": "^0.134.0",
-    "eslint": "7",
-    "eslint-config-next": "12.0.4",
+    "eslint": "10",
+    "eslint-config-next": "12.3.7",
     "prettier": "^2.4.1",
     "typescript": "4.5.2"
   },
