@@ -59,6 +59,8 @@
   ],
   "overrides": {
     "ejs": "^3.1.7",
-    "json-schema": "0.4.0"
+    "json-schema": "0.4.0",
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }
