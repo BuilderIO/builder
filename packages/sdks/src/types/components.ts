@@ -105,6 +105,21 @@ export interface ComponentInfo {
   friendlyName?: string;
 
   /**
+   * Group custom components into their own accordion sections in the editor's insert menu.
+   * Components with the same `group` value are grouped together; components without a `group`
+   * (or with a blank value) fall back to the default "Custom Components" accordion.
+   *
+   * @example
+   * ```js
+   * Builder.registerComponent(MyStepComponent, {
+   *   name: 'Step',
+   *   group: 'Steps',
+   * })
+   * ```
+   */
+  group?: string;
+
+  /**
    * Use to restrict access to your component based on a the current user permissions
    * By default components will show to all users
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
