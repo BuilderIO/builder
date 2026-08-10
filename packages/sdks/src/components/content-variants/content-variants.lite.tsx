@@ -9,6 +9,7 @@ import {
 import {
   SDKS_SUPPORTING_PERSONALIZATION,
   getInitPersonalizationVariantsFnsScriptString,
+  hasPersonalizationContainer,
 } from '../../blocks/personalization-container/helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { handleABTestingSync } from '../../helpers/ab-tests.js';
@@ -63,6 +64,12 @@ export default function ContentVariants(props: VariantsProviderProps) {
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     }),
+    /**
+     * Derived only from `props.content` so server and client agree during hydration.
+     * Nested renders are included because a symbol's content is absent from its parent's blocks.
+     */
+    shouldEmitPersonalizationFns:
+      TARGET !== 'reactNative' && hasPersonalizationContainer(props.content),
     get updateCookieAndStylesScriptStr() {
       return getUpdateCookieAndStylesScript(
         getVariants(props.content).map((value) => ({
@@ -90,7 +97,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={!props.isNestedRender && TARGET !== 'reactNative'}>
+      <Show when={state.shouldEmitPersonalizationFns}>
         {SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET) && (
           <InlinedScript
             nonce={props.nonce || ''}
