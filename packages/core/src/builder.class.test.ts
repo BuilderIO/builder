@@ -36,6 +36,57 @@ describe('Builder', () => {
   });
 });
 
+describe('makeFetchApiCall logging', () => {
+  const url = 'https://cdn.builder.io/api/v3/content/page';
+  let debugSpy: jest.SpyInstance;
+  let originalLogLevel: typeof Builder.logLevel;
+  let originalFetch: typeof globalThis.fetch;
+
+  beforeEach(() => {
+    debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
+    originalLogLevel = Builder.logLevel;
+    originalFetch = globalThis.fetch;
+  });
+
+  afterEach(() => {
+    debugSpy.mockRestore();
+    Builder.logLevel = originalLogLevel;
+    globalThis.fetch = originalFetch;
+  });
+
+  test('logs the x-request-id header when Builder.logLevel is debug', async () => {
+    Builder.logLevel = 'debug';
+    const mockResponse = {
+      status: 200,
+      json: async () => ({}),
+      headers: { get: (name: string) => (name === 'x-request-id' ? 'req-abc' : null) },
+    };
+    globalThis.fetch = jest.fn().mockResolvedValue(mockResponse) as any;
+
+    const builder = new Builder();
+    await (builder as any).makeFetchApiCall(url, {});
+
+    expect(debugSpy).toHaveBeenCalledTimes(1);
+    expect(debugSpy.mock.calls[0][0]).toContain(url);
+    expect(debugSpy.mock.calls[0][0]).toContain('req-abc');
+  });
+
+  test('does not log when Builder.logLevel is silent (the default)', async () => {
+    Builder.logLevel = 'silent';
+    const mockResponse = {
+      status: 200,
+      json: async () => ({}),
+      headers: { get: () => 'req-abc' },
+    };
+    globalThis.fetch = jest.fn().mockResolvedValue(mockResponse) as any;
+
+    const builder = new Builder();
+    await (builder as any).makeFetchApiCall(url, {});
+
+    expect(debugSpy).not.toHaveBeenCalled();
+  });
+});
+
 describe('serializeIncludingFunctions', () => {
   test('serializes functions in inputs', () => {
     const input = {
