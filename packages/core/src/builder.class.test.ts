@@ -1,4 +1,3 @@
-
 import { Builder, Component, GetContentOptions } from './builder.class';
 import { BehaviorSubject } from './classes/observable.class';
 import { BuilderContent } from './types/content';
