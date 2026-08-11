@@ -11,7 +11,7 @@
   "devDependencies": {
     "@types/node": "^18.17.5",
     "esbuild": "^0.14.54",
-    "postcss": "^8.4.28",
+    "postcss": "^8.5.12",
     "solid-start-node": "^0.3.10",
     "typescript": "^4.9.5",
     "vite": "^4.5.11"
