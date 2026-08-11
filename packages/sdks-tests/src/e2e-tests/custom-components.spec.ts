@@ -51,7 +51,7 @@ test.describe('Custom components', () => {
   test('children content are ssred', async ({ browser, packageName }) => {
     test.skip(
       !['angular-19-ssr', 'angular-17-ssr'].includes(packageName),
-      'Only run this for Angular SSR and Angular 19 SSR'
+      'Only run this for Angular SSR and Angular 17,19 SSR'
     );
 
     const context = await browser.newContext({

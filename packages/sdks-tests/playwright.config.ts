@@ -42,6 +42,12 @@ const testType = TestTypeEnum.parse(process.env.TEST_TYPE);
  */
 const IS_DEV_MODE = process.env.TEST_ENV === 'dev';
 
+/**
+ * Default timeout for webServer startup (in milliseconds).
+ * This prevents tests from hanging indefinitely if a server fails to start.
+ */
+const WEB_SERVER_TIMEOUT = 60 * 1000; // 60 seconds
+
 export default defineConfig({
   testDir: getDirName() + `/src/${testType}-tests`,
   // testMatch: '**/*.ts',
@@ -56,10 +62,27 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [[process.env.CI ? 'github' : 'list'], ['html']],
 
+  /**
+   * Global timeout for the entire test run.
+   * This prevents CI from hanging indefinitely.
+   * 10 minutes should be enough for all tests to complete.
+   */
+  globalTimeout: process.env.CI ? 10 * 60 * 1000 : undefined,
+
+  /**
+   * Timeout for each individual test.
+   * 30 seconds for e2e tests, 60 seconds for snippet tests.
+   */
+  timeout: testType === 'snippet' ? 60000 : 30000,
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
+    /* Action timeout - how long to wait for actions like click, fill, etc. */
+    actionTimeout: 10000,
+    /* Navigation timeout - how long to wait for page.goto and similar */
+    navigationTimeout: 30000,
   },
 
   expect: {
@@ -86,19 +109,30 @@ export default defineConfig({
   })),
 
   webServer: things
-    .map(({ packageName, port, portFlag }) => ({
-      command: `PORT=${port} yarn workspace @${testType}/${packageName} ${IS_DEV_MODE ? 'dev' : 'serve'} ${portFlag}`,
-      port,
-      reuseExistingServer: false,
-      ...(packageName === 'react-native-74' || packageName === 'react-native-76-fabric'
-        ? { timeout: 120 * 1000 }
-        : {}),
-    }))
+    .map(({ packageName, port, portFlag }) => {
+      // React Native servers take longer to start
+      const isReactNative =
+        packageName === 'react-native-74' || packageName === 'react-native-76-fabric';
+      const timeout = isReactNative ? 120 * 1000 : WEB_SERVER_TIMEOUT;
+
+      return {
+        command: `PORT=${port} yarn workspace @${testType}/${packageName} ${IS_DEV_MODE ? 'dev' : 'serve'} ${portFlag}`,
+        port,
+        reuseExistingServer: false,
+        timeout,
+        // Log stdout/stderr to help debug server startup issues
+        stdout: 'pipe' as const,
+        stderr: 'pipe' as const,
+      };
+    })
     .concat([
       {
         command: `PORT=${EMBEDDER_PORT} yarn workspace @sdk/tests run-embedder`,
         port: EMBEDDER_PORT,
         reuseExistingServer: false,
+        timeout: WEB_SERVER_TIMEOUT,
+        stdout: 'pipe' as const,
+        stderr: 'pipe' as const,
       },
     ]),
 });

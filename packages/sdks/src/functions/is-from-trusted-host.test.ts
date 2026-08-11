@@ -44,7 +44,22 @@ describe('isFromTrustedHost', () => {
     ).toBe(true);
   });
 
-  test('when origin is not a URL', () => {
+  test('spoofed trusted hostnames', () => {
+    expect(
+      isFromTrustedHost(undefined, {
+        origin: 'https://evil-builder.io.attacker.com',
+      })
+    ).toBe(false);
+    expect(
+      isFromTrustedHost(undefined, { origin: 'https://notlocalhost:1234x' })
+    ).toBe(false);
+  });
+
+  test('when origin is not an HTTP URL', () => {
     expect(isFromTrustedHost(undefined, { origin: 'foo' })).toBe(false);
+    expect(
+      isFromTrustedHost(undefined, { origin: 'javascript://builder.io' })
+    ).toBe(false);
+    expect(isFromTrustedHost(undefined, { origin: 'null' })).toBe(false);
   });
 });

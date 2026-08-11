@@ -125,5 +125,8 @@
   },
   "dependencies": {
     "@builder.io/plugin-tools": "^0.0.6"
+  },
+  "overrides": {
+    "lodash": "4.18.1"
   }
 }

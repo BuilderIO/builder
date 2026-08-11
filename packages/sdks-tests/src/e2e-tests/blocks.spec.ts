@@ -137,6 +137,35 @@ test.describe('Blocks', () => {
       }
     });
 
+    test('Image sizes attribute', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      await page.goto('/image');
+
+      const images = page.locator('.builder-image');
+      const sources = page.locator('picture source');
+      const sizes = /\(max-width: 638px\) 98vw,\s+\(max-width: 998px\) 49vw,\s+71vw/;
+
+      await expect(images.first()).toHaveAttribute('sizes', sizes);
+      await expect(sources.first()).toHaveAttribute('sizes', sizes);
+
+      const automaticSizes = checkIsGen1React(sdk) ? 'auto, 100vw' : 'auto';
+      await expect(images.nth(1)).toHaveAttribute('sizes', automaticSizes);
+      await expect(sources.nth(1)).toHaveAttribute('sizes', automaticSizes);
+
+      await page.goto('/image-high-priority');
+
+      await expect(images.nth(1)).toHaveAttribute('sizes', automaticSizes);
+      await expect(sources.nth(1)).toHaveAttribute('sizes', automaticSizes);
+      if (checkIsGen1React(sdk)) {
+        await expect(images.nth(3)).toHaveAttribute('sizes', '100vw');
+        await expect(sources.nth(3)).toHaveAttribute('sizes', '100vw');
+      } else {
+        await expect(images.nth(3)).not.toHaveAttribute('sizes');
+        await expect(sources.nth(3)).not.toHaveAttribute('sizes');
+      }
+    });
+
     test('Image high priority', async ({ page, sdk, packageName }) => {
       test.skip(checkIsRN(sdk));
       test.skip(

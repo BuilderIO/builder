@@ -59,10 +59,27 @@ function recordValue({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      results[path] = {
-        value: value?.[sourceLocaleId] || value?.Default,
-        instructions,
-      };
+      const extractedValue = value?.[sourceLocaleId] || value?.Default;
+
+      // If the extracted value is a string, store it directly
+      if (typeof extractedValue === 'string') {
+        results[path] = {
+          value: extractedValue,
+          instructions,
+        };
+      } else if (
+        Array.isArray(extractedValue) ||
+        (typeof extractedValue === 'object' && extractedValue !== null)
+      ) {
+        // If the extracted value is an array or object, recurse into it to find more localized values
+        recordValue({
+          results,
+          value: extractedValue,
+          path,
+          instructions,
+          sourceLocaleId,
+        });
+      }
     } else {
       Object.entries(value).forEach(([key, v]) => {
         recordValue({
@@ -80,7 +97,8 @@ function recordValue({
 function resolveTranslation({
   data,
   basePath,
-  path,
+  translationPath,
+  dataPath,
   value,
   translation,
   transformedMeta,
@@ -88,7 +106,8 @@ function resolveTranslation({
 }: {
   data: any;
   basePath: string;
-  path: string;
+  translationPath: string; // Path used for looking up translations
+  dataPath: string; // Actual path in the data structure for setting values
   value: any;
   translation: any;
   transformedMeta: Record<string, string>;
@@ -99,7 +118,8 @@ function resolveTranslation({
       resolveTranslation({
         data,
         basePath,
-        path: `${path}[${index}]`,
+        translationPath: `${translationPath}[${index}]`,
+        dataPath: `${dataPath}[${index}]`,
         value: item,
         translation,
         transformedMeta,
@@ -108,24 +128,63 @@ function resolveTranslation({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      const translatedSymbolInput = translation[`${basePath}${path}`];
+      const translatedSymbolInput = translation[`${basePath}${translationPath}`];
 
-      if (!translatedSymbolInput?.value) {
-        return;
+      if (translatedSymbolInput?.value) {
+        // Direct translation found for this path - apply it
+        set(data, dataPath, {
+          ...value,
+          [locale]: unescapeStringOrObject(translatedSymbolInput.value),
+        });
+
+        transformedMeta[`transformed.symbol.data.${translationPath}`] = 'localized';
+      } else {
+        // No direct translation - check if Default value contains nested LocalizedValues
+        const defaultValue = value?.Default;
+        if (
+          Array.isArray(defaultValue) ||
+          (typeof defaultValue === 'object' && defaultValue !== null)
+        ) {
+          // Recurse into the Default array/object to find nested LocalizedValues
+          // The dataPath must include '.Default' to correctly point to where values should be set
+          resolveTranslation({
+            data,
+            basePath,
+            translationPath, // Keep same translation path for lookup
+            dataPath: `${dataPath}.Default`, // But update data path to include the locale key
+            value: defaultValue,
+            translation,
+            transformedMeta,
+            locale,
+          });
+        }
+
+        // Also check if there's a locale-specific array/object and apply translations there too
+        const localeValue = value?.[locale];
+        if (
+          localeValue &&
+          (Array.isArray(localeValue) || (typeof localeValue === 'object' && localeValue !== null))
+        ) {
+          // Recurse into the locale-specific array/object to find nested LocalizedValues
+          resolveTranslation({
+            data,
+            basePath,
+            translationPath, // Keep same translation path for lookup
+            dataPath: `${dataPath}.${locale}`, // Update data path to point to locale-specific branch
+            value: localeValue,
+            translation,
+            transformedMeta,
+            locale,
+          });
+        }
       }
-
-      set(data, path, {
-        ...value,
-        [locale]: unescapeStringOrObject(translatedSymbolInput.value),
-      });
-
-      transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
     } else {
       Object.entries(value).forEach(([key, v]) => {
         resolveTranslation({
           data,
           basePath,
-          path: `${path}.${key}`,
+          translationPath: `${translationPath}.${key}`,
+          dataPath: `${dataPath}.${key}`,
           value: v,
           translation,
           transformedMeta,
@@ -134,6 +193,96 @@ function resolveTranslation({
       });
     }
   }
+}
+
+// Recursively walks an already-extracted LocalizedValue payload (array or object)
+// and records individual string leaves as separate translation entries.
+function extractNestedStrings(
+  value: any,
+  basePath: string,
+  results: TranslateableFields,
+  instructions: string,
+  sourceLocaleId: string
+) {
+  if (typeof value === 'string') {
+    if (value) {
+      results[basePath] = { value, instructions };
+    }
+  } else if (Array.isArray(value)) {
+    value.forEach((item, index) => {
+      extractNestedStrings(item, `${basePath}#${index}`, results, instructions, sourceLocaleId);
+    });
+  } else if (typeof value === 'object' && value !== null) {
+    if (value['@type'] === localizedType) {
+      // Nested LocalizedValue inside an outer LocalizedValue's payload
+      const nested = value[sourceLocaleId] || value.Default;
+      const nestedInstructions = value.meta?.instructions || instructions;
+      if (typeof nested === 'string' && nested) {
+        results[basePath] = { value: nested, instructions: nestedInstructions };
+      } else if (nested !== null && nested !== undefined) {
+        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+      }
+    } else {
+      Object.entries(value).forEach(([key, v]) => {
+        extractNestedStrings(v, `${basePath}#${key}`, results, instructions, sourceLocaleId);
+      });
+    }
+  }
+}
+
+// Records only leaves marked `localized: true`; returns the count so callers can tell
+// "no localized subfields" from "localized subfields that are empty".
+function extractLocalizedLeaves(
+  value: any,
+  basePath: string,
+  results: TranslateableFields,
+  instructions: string,
+  sourceLocaleId: string
+): number {
+  if (Array.isArray(value)) {
+    return value.reduce(
+      (found: number, item, index) =>
+        found +
+        extractLocalizedLeaves(item, `${basePath}#${index}`, results, instructions, sourceLocaleId),
+      0
+    );
+  }
+
+  if (typeof value !== 'object' || value === null) {
+    return 0;
+  }
+
+  if (value['@type'] === localizedType) {
+    const nested = value[sourceLocaleId] != null ? value[sourceLocaleId] : value.Default;
+    const nestedInstructions = value.meta?.instructions || instructions;
+    if (typeof nested === 'string') {
+      if (nested) {
+        results[basePath] = { value: nested, instructions: nestedInstructions };
+      }
+      return 1;
+    }
+    if (nested !== null && nested !== undefined) {
+      // Deeper localized markers win; with none, the whole payload is the unit.
+      const deeper = extractLocalizedLeaves(
+        nested,
+        basePath,
+        results,
+        nestedInstructions,
+        sourceLocaleId
+      );
+      if (deeper === 0) {
+        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+      }
+    }
+    return 1;
+  }
+
+  return Object.entries(value).reduce(
+    (found: number, [key, v]) =>
+      found +
+      extractLocalizedLeaves(v, `${basePath}#${key}`, results, instructions, sourceLocaleId),
+    0
+  );
 }
 
 export function getTranslateableFields(
@@ -146,14 +295,30 @@ export function getTranslateableFields(
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
   // metadata [content's localized custom fields]
-  traverse(customFields).forEach(function (el) {
-    if (this.key && el && el['@type'] === localizedType) {
-      results[`metadata.${this.path.join('#')}`] = {
-        instructions: el.meta?.instructions || defaultInstructions,
-        value: el[sourceLocaleId] || el.Default,
-      };
+  // Uses a custom recursive walk instead of traverse so we can stop at LocalizedValue
+  // boundaries and avoid generating duplicate / malformed path keys for nodes that live
+  // inside the LocalizedValue's internal Default / locale-keyed arrays.
+  function extractCustomField(value: any, path: string) {
+    if (!value || typeof value !== 'object') return;
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => extractCustomField(item, `${path}#${index}`));
+      return;
     }
-  });
+    if (value['@type'] === localizedType) {
+      const instructions = value.meta?.instructions || defaultInstructions;
+      const extractedValue = value[sourceLocaleId] || value.Default;
+      if (typeof extractedValue === 'string') {
+        results[path] = { value: extractedValue, instructions };
+      } else if (extractedValue !== null && extractedValue !== undefined) {
+        // Value is an array or object — extract individual string leaves so each
+        // one becomes its own Smartling translation unit.
+        extractNestedStrings(extractedValue, path, results, instructions, sourceLocaleId);
+      }
+      return; // Do not recurse into the LocalizedValue's internal structure.
+    }
+    Object.entries(value).forEach(([key, v]) => extractCustomField(v, `${path}#${key}`));
+  }
+  Object.entries(customFields).forEach(([key, value]) => extractCustomField(value, `metadata.${key}`));
 
   if (blocksString && typeof blocks === 'undefined') {
     blocks = JSON.parse(blocksString);
@@ -161,25 +326,74 @@ export function getTranslateableFields(
 
   // blocks
   if (blocks) {
+    // Track how many levels deep we are inside excluded blocks
+    let excludedDepth = 0;
+
     traverse(blocks).forEach(function (el) {
-      if (this.key && el && el.meta?.localizedTextInputs) {
+      // Check if this element starts an exclusion zone
+      const startsExclusion = el && el.meta?.excludeFromTranslation;
+      if (startsExclusion) {
+        excludedDepth++;
+      }
+
+      // After processing children, decrement the counter if this element started an exclusion
+      this.after(function () {
+        if (startsExclusion) {
+          excludedDepth--;
+        }
+      });
+
+      // Skip translation if we're inside an excluded block (excludedDepth > 0)
+      const isExcluded = excludedDepth > 0;
+
+      if (this.key && el && el.meta?.localizedTextInputs && !isExcluded) {
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
           localizedTextInputs
             .filter(input => get(el.component?.options || {}, `${input}.@type`) === localizedType)
             .forEach(inputKey => {
               const inputValue = get(el.component?.options || {}, inputKey);
-              const valueToBeTranslated = inputValue?.[sourceLocaleId] || inputValue?.Default;
-              if (valueToBeTranslated) {
-                results[`blocks.${el.id}#${inputKey}`] = {
-                  instructions: el.meta?.instructions || defaultInstructions,
-                  value: valueToBeTranslated,
-                };
+              // Nullish, not truthy, so an explicitly blank source locale is honoured.
+              const valueToBeTranslated =
+                inputValue?.[sourceLocaleId] != null
+                  ? inputValue[sourceLocaleId]
+                  : inputValue?.Default;
+              const instructions = el.meta?.instructions || defaultInstructions;
+              const path = `blocks.${el.id}#${inputKey}`;
+
+              if (typeof valueToBeTranslated === 'string') {
+                if (valueToBeTranslated) {
+                  results[path] = { instructions, value: valueToBeTranslated };
+                }
+                return;
+              }
+
+              if (valueToBeTranslated === null || valueToBeTranslated === undefined) {
+                return;
+              }
+
+              // One unit per string leaf; only a payload with no marked subfields falls
+              // back to every string, keeping siblings like `currency` out of the job.
+              const localizedLeaves = extractLocalizedLeaves(
+                valueToBeTranslated,
+                path,
+                results,
+                instructions,
+                sourceLocaleId
+              );
+              if (localizedLeaves === 0) {
+                extractNestedStrings(
+                  valueToBeTranslated,
+                  path,
+                  results,
+                  instructions,
+                  sourceLocaleId
+                );
               }
             });
         }
       }
-      if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
+      if (el && el.id && el.component?.name === 'Text' && !isExcluded) {
         const componentText = el.component.options.text;
         results[`blocks.${el.id}#text`] = {
           value:
@@ -190,7 +404,22 @@ export function getTranslateableFields(
         };
       }
 
-      if (el && el.id && el.component?.name === 'Symbol') {
+      if (el && el.id && el.component?.name === 'Core:Button' && !isExcluded) {
+        const componentText = el.component.options?.text;
+        if (componentText) {
+          const textValue = typeof componentText === 'string'
+            ? componentText
+            : componentText?.[sourceLocaleId] || componentText?.Default;
+          if (textValue) {
+            results[`blocks.${el.id}#text`] = {
+              value: textValue,
+              instructions: el.meta?.instructions || defaultInstructions,
+            };
+          }
+        }
+      }
+
+      if (el && el.id && el.component?.name === 'Symbol'&& !isExcluded) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const basePath = `blocks.${el.id}.symbolInput`;
@@ -220,20 +449,123 @@ export function getTranslateableFields(
   return results;
 }
 
+// Seeds every nested LocalizedValue with a locale branch from the source: the SDK
+// resolves a missing locale key to undefined rather than to Default, so untranslated
+// leaves would otherwise vanish.
+function seedLocaleBranches(node: any, locale: string, sourceLocaleId?: string) {
+  if (Array.isArray(node)) {
+    node.forEach(item => seedLocaleBranches(item, locale, sourceLocaleId));
+    return;
+  }
+  if (!node || typeof node !== 'object') {
+    return;
+  }
+  if (node['@type'] === localizedType) {
+    if (node[locale] === null || node[locale] === undefined) {
+      const source =
+        sourceLocaleId && node[sourceLocaleId] != null ? node[sourceLocaleId] : node.Default;
+      node[locale] = source == null ? source : JSON.parse(JSON.stringify(source));
+    }
+    seedLocaleBranches(node[locale], locale, sourceLocaleId);
+    return;
+  }
+  Object.values(node).forEach(value => seedLocaleBranches(value, locale, sourceLocaleId));
+}
+
+// Writes a translated leaf into a cloned payload, stepping through intermediate
+// LocalizedValue nodes into their locale branch instead of onto the wrapper itself.
+function setTranslatedLeaf({
+  payload,
+  segments,
+  value,
+  locale,
+  sourceLocaleId,
+}: {
+  payload: any;
+  segments: (string | number)[];
+  value: any;
+  locale: string;
+  sourceLocaleId?: string;
+}) {
+  let node = payload;
+
+  for (const segment of segments.slice(0, -1)) {
+    const child = node?.[segment];
+    if (child && typeof child === 'object' && child['@type'] === localizedType) {
+      if (child[locale] === null || child[locale] === undefined) {
+        const source =
+          sourceLocaleId && child[sourceLocaleId] != null ? child[sourceLocaleId] : child.Default;
+        child[locale] = JSON.parse(JSON.stringify(source ?? {}));
+      }
+      node = child[locale];
+    } else {
+      node = child;
+    }
+    if (node === null || node === undefined) {
+      return;
+    }
+  }
+
+  const leafSegment = segments[segments.length - 1];
+  const leaf = node?.[leafSegment];
+  if (leaf && typeof leaf === 'object' && leaf['@type'] === localizedType) {
+    node[leafSegment] = { ...leaf, [locale]: value };
+  } else if (node) {
+    node[leafSegment] = value;
+  }
+}
+
 export function applyTranslation(
   content: BuilderContent,
   translation: TranslateableFields,
-  locale: string
+  locale: string,
+  sourceLocaleId?: string,
+  // Set by callers whose provider echoes anything outside its declared paths back
+  // unchanged, so such a response is not a translation.
+  providerOptions?: { providerEchoesSourcePayload?: boolean }
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
   traverse(customFields).forEach(function (el) {
     const path = this.path?.join('#');
-    if (translation[`metadata.${path}`]) {
+    const metaKey = `metadata.${path}`;
+    if (translation[metaKey]) {
+      // Direct translation — the node itself is a LocalizedValue with a string value.
       this.update({
         ...el,
-        [locale]: unescapeStringOrObject(translation[`metadata.${path}`].value),
+        [locale]: unescapeStringOrObject(translation[metaKey].value),
       });
+    } else if (el && typeof el === 'object' && el['@type'] === localizedType) {
+      // The LocalizedValue's payload was an array/object. Individual string leaves
+      // were extracted with compound keys like `metadata.faqs#items#0#question`.
+      // Collect all such keys, clone Default as the base, patch each leaf, then
+      // store the result under the target locale.
+      const prefix = `${metaKey}#`;
+      const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+      const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
+          ? el[sourceLocaleId]
+          : el.Default;
+      if (compoundKeys.length > 0 && sourceValue !== null && sourceValue !== undefined) {
+        const localeValue = JSON.parse(JSON.stringify(sourceValue));
+        compoundKeys.forEach(key => {
+          const nestedPath = key.slice(prefix.length);
+          const segments = nestedPath
+            .split('#')
+            .map((s: string) => (/^\d+$/.test(s) ? parseInt(s, 10) : s));
+          const existingValue = get(localeValue, segments);
+          if (existingValue && typeof existingValue === 'object' && existingValue['@type'] === localizedType) {
+            // Nested LocalizedValue — preserve its structure and add the locale key
+            set(localeValue, segments, {
+              ...existingValue,
+              [locale]: unescapeStringOrObject(translation[key].value),
+            });
+          } else {
+            // Plain string or primitive — replace directly
+            set(localeValue, segments, unescapeStringOrObject(translation[key].value));
+          }
+        });
+        this.update({ ...el, [locale]: localeValue });
+      }
     }
   });
 
@@ -242,8 +574,27 @@ export function applyTranslation(
   }
 
   if (blocks) {
+    // Track how many levels deep we are inside excluded blocks
+    let excludedDepth = 0;
+
     traverse(blocks).forEach(function (el) {
-      if (el && el.id && el.component?.name === 'Symbol') {
+      // Check if this element starts an exclusion zone
+      const startsExclusion = el && el.meta?.excludeFromTranslation;
+      if (startsExclusion) {
+        excludedDepth++;
+      }
+
+      // After processing children, decrement the counter if this element started an exclusion
+      this.after(function () {
+        if (startsExclusion) {
+          excludedDepth--;
+        }
+      });
+
+      // Skip translation if we're inside an excluded block (excludedDepth > 0)
+      const isExcluded = excludedDepth > 0;
+
+      if (el && el.id && el.component?.name === 'Symbol' && !isExcluded) {
         const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
         if (symbolInputs.length) {
           const transformedMeta = {};
@@ -256,7 +607,8 @@ export function applyTranslation(
               resolveTranslation({
                 data: el.component?.options?.symbol?.data,
                 basePath: `blocks.${el.id}.symbolInput#`,
-                path: symbolInputName,
+                translationPath: symbolInputName,
+                dataPath: symbolInputName,
                 value: symbolInputValue,
                 translation,
                 transformedMeta,
@@ -293,7 +645,7 @@ export function applyTranslation(
         el &&
         el.id &&
         el.component?.name === 'Text' &&
-        !el.meta?.excludeFromTranslation &&
+        !isExcluded &&
         translation[`blocks.${el.id}#text`]
       ) {
         const localizedValues =
@@ -325,31 +677,128 @@ export function applyTranslation(
         });
       }
 
+      // Core:Button special handling - similar to Text component
+      if (
+        el &&
+        el.id &&
+        el.component?.name === 'Core:Button' &&
+        !isExcluded &&
+        translation[`blocks.${el.id}#text`]
+      ) {
+        const localizedValues =
+          typeof el.component.options?.text === 'string'
+            ? {
+                Default: el.component.options.text,
+              }
+            : el.component.options.text;
+
+        const updatedElement = {
+          ...el,
+          meta: {
+            ...el.meta,
+            translated: true,
+            // this tells the editor that this is a forced localized input similar to clicking the globe icon
+            'transformed.text': 'localized',
+          },
+          component: {
+            ...el.component,
+            options: {
+              ...el.component.options,
+              text: {
+                '@type': localizedType,
+                ...localizedValues,
+                [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#text`].value),
+              },
+            },
+          },
+        };
+        
+        this.update(updatedElement);
+      }
+
       // custom components
-      if (el && el.id && el.meta?.localizedTextInputs) {
+      if (el && el.id && el.meta?.localizedTextInputs && !isExcluded) {
         // there's a localized input
         const keys = el.meta?.localizedTextInputs as string[];
         let options = el.component.options;
 
-        keys.forEach(key => {
-          if (translation[`blocks.${el.id}#${key}`]) {
-            set(options, key, {
-              ...(get(options, key) || {}),
-              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
-            });
+        const markTranslated = () => {
+          this.update({
+            ...el,
+            meta: {
+              ...el.meta,
+              translated: true,
+            },
+            component: {
+              ...el.component,
+              options,
+            },
+          });
+        };
 
-            this.update({
-              ...el,
-              meta: {
-                ...el.meta,
-                translated: true,
-              },
-              component: {
-                ...el.component,
-                options,
-              },
+        keys.forEach(key => {
+          const flatKey = `blocks.${el.id}#${key}`;
+          const existing = get(options, key);
+
+          const flatValue = translation[flatKey]?.value;
+          const writeFlatValue = () => {
+            set(options, key, {
+              ...(existing || {}),
+              [locale]: unescapeStringOrObject(flatValue!),
             });
+            markTranslated();
+          };
+
+          if (typeof flatValue === 'string') {
+            writeFlatValue();
+            return;
           }
+
+          // Legacy jobs sent the whole payload under the flat key. Write it only for
+          // providers that translate it, else source content lands in the target locale.
+          if (
+            flatValue !== null &&
+            flatValue !== undefined &&
+            !providerOptions?.providerEchoesSourcePayload
+          ) {
+            writeFlatValue();
+            return;
+          }
+
+          // Leaves were extracted as `${flatKey}#0#title`: clone the source, patch each
+          // leaf, store under the locale.
+          const prefix = `${flatKey}#`;
+          const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+          if (!compoundKeys.length) {
+            return;
+          }
+
+          const sourceValue =
+            sourceLocaleId && existing?.[sourceLocaleId] != null
+              ? existing[sourceLocaleId]
+              : existing?.Default;
+          if (sourceValue === null || sourceValue === undefined) {
+            return;
+          }
+
+          const localeValue = JSON.parse(JSON.stringify(sourceValue));
+          seedLocaleBranches(localeValue, locale, sourceLocaleId);
+          compoundKeys.forEach(compoundKey => {
+            const segments = compoundKey
+              .slice(prefix.length)
+              .split('#')
+              .map((segment: string) => (/^\d+$/.test(segment) ? parseInt(segment, 10) : segment));
+            setTranslatedLeaf({
+              payload: localeValue,
+              segments,
+              value: unescapeStringOrObject(translation[compoundKey].value),
+              locale,
+              sourceLocaleId,
+            });
+          });
+
+          set(options, key, { ...(existing || {}), [locale]: localeValue });
+          markTranslated();
         });
       }
     });

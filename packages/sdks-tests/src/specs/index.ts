@@ -46,7 +46,11 @@ import { CONTENT as symbolAbTest } from './symbol-ab-test.js';
 import { CONTENT as symbolBindings } from './symbol-bindings.js';
 import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.js';
 import { CONTENT as symbolWithLocale } from './symbol-with-locale.js';
-import { CONTENT_WITHOUT_SYMBOLS, CONTENT as symbols } from './symbols.js';
+import {
+  CONTENT_WITHOUT_SYMBOLS,
+  CONTENT_WITH_GLOBAL_SYMBOL,
+  CONTENT as symbols,
+} from './symbols.js';
 import { TABS } from './tabs.js';
 import { CONTENT as textBlock } from './text-block.js';
 import { CONTENT as textEval } from './text-eval.js';
@@ -98,6 +102,7 @@ import { SECTION_CHILDREN } from './section-children.js';
 import { MAIN_CONTENT as SYMBOL_UPDATE_ENTRIES } from './get-content-symbol-update-entry.js';
 import { HTTP_REQUESTS_POST_API_CONTENT } from './http-requests-post-api.js';
 import { HTTP_REQUESTS_GET_API_CONTENT } from './http-requests-get-api.js';
+import { TRACK_CONVERSION } from './track-conversion.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -136,6 +141,7 @@ export const PAGES: Record<string, Page> = {
   '/symbols': { content: symbols },
   '/js-code': { content: JS_CODE_CONTENT },
   '/symbols-without-content': { content: CONTENT_WITHOUT_SYMBOLS },
+  '/symbols-with-global': { content: CONTENT_WITH_GLOBAL_SYMBOL },
   '/symbol-bindings': { content: symbolBindings },
   '/symbol-with-locale': { content: symbolWithLocale },
   '/link-url': { content: linkUrl },
@@ -278,6 +284,7 @@ export const PAGES: Record<string, Page> = {
   '/columns-vertical-centering': { content: COLUMNS_VERTICAL_CENTERING },
   '/section-children': { content: SECTION_CHILDREN },
   '/symbol-update-entries': { content: SYMBOL_UPDATE_ENTRIES },
+  '/track-conversion': { content: TRACK_CONVERSION },
 } as const;
 
 export type Path = keyof typeof PAGES;

@@ -22,5 +22,8 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-parallax": "^3.5.1"
+  },
+  "overrides": {
+    "next": "13.5.9"
   }
 }

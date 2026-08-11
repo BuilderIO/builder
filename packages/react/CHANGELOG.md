@@ -1,5 +1,138 @@
 # @builder.io/react
 
+## 9.4.2
+
+### Patch Changes
+
+- bbcd9d7: Exposed the existing Image `sizes` field and fixed responsive source selection in Gen 2 SDKs.
+
+## 9.4.1
+
+### Patch Changes
+
+- 95c6a94: Validate visual editor message origins with exact trusted hostnames and reject malformed or non-HTTP origins.
+- Updated dependencies [95c6a94]
+  - @builder.io/sdk@6.3.1
+
+## 9.4.0
+
+### Minor Changes
+
+- f3d7a3d: Improve state inspector reliability in visual editor for gen1 react sdk
+
+## 9.3.0
+
+### Minor Changes
+
+- 5096d69: Prepend sizes="auto" to <img> and <source> elements to reduce oversized image downloads
+
+## 9.2.0
+
+### Minor Changes
+
+- 560a5d0: Added fetchTotalCount param to getAll() in gen1 sdks
+
+### Patch Changes
+
+- Updated dependencies [560a5d0]
+  - @builder.io/sdk@6.3.0
+
+## 9.1.3
+
+### Patch Changes
+
+- 8001b0f: fix: handle errors in makeFn() when serialising functions
+
+## 9.1.2
+
+### Patch Changes
+
+- a3d063a: update the version of tar-fs dependency
+
+## 9.1.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+- Updated dependencies [fffde77]
+  - @builder.io/sdk@6.2.1
+
+## 9.1.0
+
+### Minor Changes
+
+- c729e93: Feat: Add support for `enrichOptions` parameter to control reference enrichment depth and field selection when fetching content.
+
+  This feature allows you to:
+
+  - Control the depth level of nested reference enrichment (up to 4 levels)
+  - Selectively include/exclude fields for each referenced model type
+  - Optimize API responses by fetching only the data you need
+
+  Example usage:
+
+  ```typescript
+  // Basic enrichment with depth control
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 2, // Fetch 2 levels of nested references
+    },
+  });
+
+  // Advanced: Selective field inclusion per model
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 3,
+      model: {
+        product: {
+          fields: "id,name,price",
+          omit: "data.internalNotes",
+        },
+        category: {
+          fields: "id,name",
+        },
+      },
+    },
+  });
+  ```
+
+### Patch Changes
+
+- Updated dependencies [c729e93]
+  - @builder.io/sdk@6.2.0
+
+## 9.0.1
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+- Updated dependencies [1b1b76e]
+  - @builder.io/sdk@6.1.4
+
+## 9.0.0
+
+### Major Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
+## 8.2.9
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+- Updated dependencies [3e864ce]
+  - @builder.io/sdk@6.1.3
+
+## 8.2.8
+
+### Patch Changes
+
+- 958c11b: fix: handle `fetchpriority` casing in different react versions
+
 ## 8.2.7
 
 ### Patch Changes

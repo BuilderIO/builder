@@ -1,5 +1,76 @@
 # @builder.io/sdk
 
+## 6.3.1
+
+### Patch Changes
+
+- 95c6a94: Validate visual editor message origins with exact trusted hostnames and reject malformed or non-HTTP origins.
+
+## 6.3.0
+
+### Minor Changes
+
+- 560a5d0: Added fetchTotalCount param to getAll() in gen1 sdks
+
+## 6.2.1
+
+### Patch Changes
+
+- fffde77: fix trackConversion method for sdks
+
+## 6.2.0
+
+### Minor Changes
+
+- c729e93: Feat: Add support for `enrichOptions` parameter to control reference enrichment depth and field selection when fetching content.
+
+  This feature allows you to:
+
+  - Control the depth level of nested reference enrichment (up to 4 levels)
+  - Selectively include/exclude fields for each referenced model type
+  - Optimize API responses by fetching only the data you need
+
+  Example usage:
+
+  ```typescript
+  // Basic enrichment with depth control
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 2, // Fetch 2 levels of nested references
+    },
+  });
+
+  // Advanced: Selective field inclusion per model
+  await builder.getAll("page", {
+    enrich: true,
+    enrichOptions: {
+      enrichLevel: 3,
+      model: {
+        product: {
+          fields: "id,name,price",
+          omit: "data.internalNotes",
+        },
+        category: {
+          fields: "id,name",
+        },
+      },
+    },
+  });
+  ```
+
+## 6.1.4
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
+## 6.1.3
+
+### Patch Changes
+
+- 3e864ce: fix: incorrect conversion tracking
+
 ## 6.1.2
 
 ### Patch Changes

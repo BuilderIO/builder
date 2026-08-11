@@ -133,5 +133,9 @@
     "react-vtree": "^2.0.4",
     "react-window": "^1.8.6",
     "safe-localstorage": "^1.0.1"
+  },
+  "overrides": {
+    "json-schema": "0.4.0",
+    "lodash": "4.18.1"
   }
 }

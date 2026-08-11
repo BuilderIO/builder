@@ -70,8 +70,20 @@ const isAngularSDK = TARGET === 'angular';
 const isHydrationTarget = getIsHydrationTarget(TARGET);
 
 export const getInitVariantsFnsScriptString = () => `
-  window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT}
-  window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT}
+  (function() {
+    if (!window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME}) {
+      window.${UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME} = ${UPDATE_COOKIES_AND_STYLES_SCRIPT};
+    }
+    if (!window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}) {
+      window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME} = ${UPDATE_VARIANT_VISIBILITY_SCRIPT};
+    }${
+      isHydrationTarget
+        ? `
+    var thisScriptEl = document.currentScript;
+    if (thisScriptEl) { thisScriptEl.remove(); }`
+        : ''
+    }
+  })();
   `;
 
 export const getUpdateCookieAndStylesScript = (

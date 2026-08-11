@@ -119,5 +119,11 @@
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
     "typescript": "^3.0.3"
+  },
+  "overrides": {
+    "lodash": "4.18.1",
+    "minimist@<1": "0.2.4",
+    "json-schema": "0.4.0",
+    "minimist@1": "1.2.8"
   }
 }

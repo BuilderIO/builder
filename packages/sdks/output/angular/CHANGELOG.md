@@ -1,5 +1,110 @@
 # @builder.io/sdk-angular
 
+## 0.25.9
+
+### Patch Changes
+
+- 35d9809: Stop injecting personalization inline scripts on pages that do not use them. The `window.builderIoPersonalization` / `window.filterWithCustomTargeting` / `window.updateVisibilityStylesScript` init script was emitted once per top-level `Content` regardless of whether any Variant Container was present. It is now emitted only by a `Content` whose blocks actually contain one, and the definitions are idempotent — matching the treatment `window.builderIoAbTest` received previously.
+
+## 0.25.8
+
+### Patch Changes
+
+- bbcd9d7: Exposed the existing Image `sizes` field and fixed responsive source selection in Gen 2 SDKs.
+
+## 0.25.7
+
+### Patch Changes
+
+- d38e980: Fix: edits made in the Visual Editor no longer revert to the initially rendered content.
+
+  The `props.content` update hook is compiled to an Angular `effect()` that tracks every
+  signal read in its body instead of the declared dependency list. Any unrelated context
+  update therefore re-ran the hook and re-merged the original page-load `props.content`
+  over content received from the editor. Guard the merge with a `prevContent` check, the
+  same pattern already used by the neighbouring `props.data` and `props.locale` hooks.
+
+## 0.25.6
+
+### Patch Changes
+
+- 95c6a94: Validate visual editor message origins with exact trusted hostnames and reject malformed or non-HTTP origins.
+
+## 0.25.5
+
+### Patch Changes
+
+- 071f939: Stop injecting duplicate inline A/B test scripts on pages with multiple Content components. The `window.builderIoAbTest` / `window.builderIoRenderContent` init script is now only emitted when a Content actually renders A/B variants, and the definition is idempotent and self-removing on hydration targets. This avoids the duplication without the client-side DOM mutation that caused the previous hydration regression.
+
+## 0.25.4
+
+### Patch Changes
+
+- 8b7fc90: Angular signals: gate the deprecated `allowSignalWrites` effect option on the runtime Angular version (`VERSION.major < 19`) instead of dropping it. This silences the deprecation warning on Angular 19+ while keeping backwards compatibility with lower versions.
+
+## 0.25.3
+
+### Patch Changes
+
+- 20e6dad: revert dedupe inline A/B test script fix
+
+## 0.25.2
+
+### Patch Changes
+
+- ee26917: remove duplicate a/b test scripts being inserted in DOM
+
+## 0.25.0
+
+### Minor Changes
+
+- 8322519: Add global symbol support for Gen2 SDKs
+
+## 0.24.2
+
+### Patch Changes
+
+- a3d063a: update the version of tar-fs dependency
+
+## 0.24.1
+
+### Patch Changes
+
+- 5f25224: update package.json file so that npm provenance validation passes
+- fffde77: fix trackConversion method for sdks
+
+## 0.24.0
+
+### Minor Changes
+
+- 659cc99: - Eliminates memory leaks in long-running Node.js processes
+
+## 0.23.2
+
+### Patch Changes
+
+- 1b1b76e: chore: add back `description` support for inputs
+
+## 0.23.1
+
+### Patch Changes
+
+- 5971c7a: fix: hydration issue when routing from ssr rendered page
+
+## 0.23.0
+
+### Minor Changes
+
+- ba80951: Bump dependency `isolated-vm` from `5.0.0` to `6.0.0` to add support for Node v24.
+
+  BREAKING CHANGE: Drops support for Node 18 and 20.
+
+## 0.22.3
+
+### Patch Changes
+
+- f4584fa: fix: only use the edge runtime when the edge build is imported
+
 ## 0.22.2
 
 ### Patch Changes

@@ -35,6 +35,9 @@ export default function ComponentRef(props: ComponentProps) {
           default: InteractiveElement,
         })
       : props.componentRef,
+    get blockChildrenToRender() {
+      return props.componentRef ? props.blockChildren : [];
+    },
   });
 
   return (
@@ -51,19 +54,17 @@ export default function ComponentRef(props: ComponentProps) {
           contextValue: props.context.value,
         })}
       >
-        <Show when={props.componentRef}>
-          <For each={props.blockChildren}>
-            {(child) => (
-              <Block
-                key={child.id}
-                block={child}
-                context={props.context}
-                registeredComponents={props.registeredComponents}
-                linkComponent={props.linkComponent}
-              />
-            )}
-          </For>
-        </Show>
+        <For each={state.blockChildrenToRender}>
+          {(child) => (
+            <Block
+              key={child.id}
+              block={child}
+              context={props.context}
+              registeredComponents={props.registeredComponents}
+              linkComponent={props.linkComponent}
+            />
+          )}
+        </For>
       </state.Wrapper>
     </Show>
   );

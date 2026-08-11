@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { Create, Search } from '@material-ui/icons';
+import { Close, Create, Search } from '@material-ui/icons';
 import { runInAction, action } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
 import React, { useEffect } from 'react';
@@ -65,15 +65,18 @@ export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
         primary={
           <div
             css={{
-              maxWidth: 400,
+              width: '100%',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
             }}
+            title={props.resource.title !== 'untitled'
+              ? `${props.resource.title} - ${props.resource.handle || props.resource.id}`
+              : props.resource.title}
           >
             {props.resource.title !== 'untitled' ? (
               <div>
-                {props.resource.title} - {props.resource.id}
+                {props.resource.title} - {props.resource.handle || props.resource.id}
               </div>
             ) : (
               props.resource.title
@@ -301,11 +304,11 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
               position: 'relative',
             }}
           >
-            <ResourcePreviewCell button css={{ paddingRight: 30 }} resource={store.resourceInfo} />
+            <ResourcePreviewCell button css={{ paddingRight: 70 }} resource={store.resourceInfo} />
             <IconButton
               css={{
                 position: 'absolute',
-                right: 2,
+                right: 42,
                 top: 0,
                 bottom: 0,
                 height: 50,
@@ -317,6 +320,26 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
               }}
             >
               <Create css={{ color: '#888' }} />
+            </IconButton>
+            <IconButton
+              css={{
+                position: 'absolute',
+                right: 2,
+                top: 0,
+                bottom: 0,
+                height: 50,
+                marginTop: 'auto',
+                marginBottom: 'auto',
+                opacity: 0.7,
+              }}
+              onClick={action(() => {
+                store.resourceHandle = undefined;
+                store.resourceId = undefined;
+                store.resourceInfo = null;
+                props.onChange(null);
+              })}
+            >
+              <Close css={{ color: '#888' }} />
             </IconButton>
           </Paper>
         )}

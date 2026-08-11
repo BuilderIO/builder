@@ -110,5 +110,11 @@
     "cross-env": "^6.0.3",
     "react": "^16.11.0",
     "react-helmet": "^5.2.1"
+  },
+  "overrides": {
+    "json-schema": "0.4.0",
+    "lodash": "4.18.1",
+    "minimist@<1": "0.2.4",
+    "minimist@1": "1.2.8"
   }
 }

@@ -90,6 +90,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
   const state = useStore({
     prevData: null as Dictionary<any> | null,
     prevLocale: '',
+    prevContent: null as BuilderContent | null,
     mergeNewRootState(newData: Dictionary<any>, editType?: EditType) {
       const combinedState = {
         ...props.builderContextSignal.value.rootState,
@@ -335,6 +336,28 @@ export default function EnableEditor(props: BuilderEditorProps) {
   onUpdate(() => {
     useTarget({
       rsc: () => {},
+      angular: () => {
+        if (props.content) {
+          const nextId = props.content?.id;
+          const currentId = props.builderContextSignal.value.content?.id;
+          if (nextId && nextId !== currentId) {
+            setTimeout(() => {
+              state.runHttpRequests();
+            });
+          }
+          /**
+           * Angular compiles this hook into an `effect()` that tracks every signal
+           * read in its body rather than the declared `[props.content]` deps. Without
+           * this guard, unrelated context updates re-merge the stale `props.content`
+           * over edits made in the Visual Editor.
+           */
+          if (state.prevContent === props.content) {
+            return;
+          }
+          state.mergeNewContent(props.content);
+          state.prevContent = props.content;
+        }
+      },
       default: () => {
         if (props.content) {
           state.mergeNewContent(props.content);

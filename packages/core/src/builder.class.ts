@@ -3,7 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
 import { BehaviorSubject } from './classes/observable.class';
-import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
+import { getFetch } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
 import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
@@ -495,6 +495,56 @@ export type GetContentOptions = AllowEnrich & {
    * draft mode and un-archived. Default is false.
    */
   includeUnpublished?: boolean;
+
+  /**
+   * When `true`, the API will also return the total number of matching entries
+   * regardless of `limit`/`offset`. Useful for building numbered pagination.
+   */
+  fetchTotalCount?: boolean;
+
+  /**
+   * Options to configure how enrichment works.
+   * @see {@link https://www.builder.io/c/docs/content-api#code-enrich-options-code}
+   */
+  enrichOptions?: {
+    /**
+     * The depth level for enriching references. For example, an enrichLevel of 1
+     * would return one additional nested model within the original response.
+     * The maximum level is 4.
+     */
+    enrichLevel?: number;
+
+    /**
+     * Model-specific enrichment options. Allows selective field inclusion/exclusion
+     * for each referenced model type.
+     *
+     * @example
+     * ```typescript
+     * enrichOptions: {
+     *   model: {
+     *     'product': {
+     *       fields: 'id,name,price',
+     *       omit: 'data.internalNotes'
+     *     },
+     *     'category': {
+     *       fields: 'id,name'
+     *     }
+     *   }
+     * }
+     * ```
+     */
+    model?: {
+      [modelName: string]: {
+        /** Comma-separated list of fields to include */
+        fields?: string;
+        /** Comma-separated list of fields to omit */
+        omit?: string;
+        [key: string]: any;
+      };
+    };
+
+    [key: string]: any;
+  };
 };
 
 export type Class = {
@@ -532,7 +582,7 @@ export interface Input {
   name: string;
   /** A friendlier name to show in the UI if the component prop name is not ideal for end users */
   friendlyName?: string;
-  /** @hidden @deprecated */
+  /** A description to show in the UI to give guidance on how to use this input */
   description?: string;
   /** A default value to use */
   defaultValue?: any;
@@ -1061,12 +1111,20 @@ export class Builder {
     return isTrusted;
   }
 
-  static isTrustedHostForEvent(event: MessageEvent) {
-    if (event.origin === 'null') {
+  static isTrustedHostForEvent(event: { origin: string }) {
+    if (!/^https?:\/\//i.test(event.origin)) {
       return false;
     }
-    const url = parse(event.origin);
-    return url.hostname && Builder.isTrustedHost(url.hostname);
+
+    try {
+      const url = parse(event.origin);
+      return (
+        (url.protocol === 'http:' || url.protocol === 'https:') &&
+        Boolean(url.hostname && Builder.isTrustedHost(url.hostname))
+      );
+    } catch {
+      return false;
+    }
   }
 
   static runAction(action: Action | string) {
@@ -1130,7 +1188,7 @@ export class Builder {
   // work but is async...
   static isEditing = Boolean(
     isIframe &&
-      ((document.referrer && document.referrer.match(/builder\.io|localhost:1234/)) ||
+      ((document.referrer && Builder.isTrustedHostForEvent({ origin: document.referrer })) ||
         location.search.indexOf('builder.frameEditing=') !== -1)
   );
 
@@ -1388,6 +1446,7 @@ export class Builder {
   private hasOverriddenCanTrack = false;
   private apiKey$ = new BehaviorSubject<string | null>(null);
   private authToken$ = new BehaviorSubject<string | null>(null);
+  private contentId$ = new BehaviorSubject<string | null>(null);
 
   userAttributesChanged = new BehaviorSubject<any>(null);
 
@@ -1615,10 +1674,43 @@ export class Builder {
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
-    const meta = typeof contentId === 'object' ? contentId : customProperties;
-    const useContentId = typeof contentId === 'string' ? contentId : undefined;
+    let metadata =
+      typeof contentId === 'object'
+        ? { ...contentId }
+        : customProperties && typeof customProperties === 'object'
+          ? { ...customProperties }
+          : undefined;
 
-    this.track('conversion', { amount, variationId, meta, contentId: useContentId }, context);
+    if (amount !== undefined) {
+      if (!metadata) {
+        metadata = {};
+      }
+      metadata.amount = amount;
+    }
+    let useContentId = typeof contentId === 'string' ? contentId : undefined;
+
+    if (!useContentId && !contentId && this.contentId) {
+      useContentId = this.contentId;
+    }
+
+    let useVariationId = variationId;
+    if (!useVariationId && useContentId) {
+      useVariationId = this.getTestCookie(useContentId);
+    }
+
+    this.track(
+      'conversion',
+      {
+        amount,
+        variationId:
+          useVariationId && useContentId && useVariationId !== useContentId
+            ? useVariationId
+            : undefined,
+        meta: metadata,
+        contentId: useContentId,
+      },
+      context
+    );
   }
 
   autoTrack = !Builder.isBrowser
@@ -1721,6 +1813,14 @@ export class Builder {
 
   set apiKey(key: string | null) {
     this.apiKey$.next(key);
+  }
+
+  get contentId() {
+    return this.contentId$.value;
+  }
+
+  set contentId(id: string | null) {
+    this.contentId$.next(id);
   }
 
   get authToken() {
@@ -2265,6 +2365,7 @@ export class Builder {
 
   private getContentQueue: null | GetContentOptions[] = null;
   private priorContentQueue: null | GetContentOptions[] = null;
+  private totalCountByKey: Record<string, number> = {};
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
@@ -2683,6 +2784,15 @@ export class Builder {
         queryParams.includeRefs = true;
       }
 
+      if (this.apiEndpoint === 'query') {
+        if ('enrich' in options && options.enrich !== undefined) {
+          queryParams.enrich = options.enrich;
+        }
+        if (options.enrichOptions) {
+          this.flattenEnrichOptions(options.enrichOptions, 'enrichOptions', queryParams);
+        }
+      }
+
       const properties: (keyof GetContentOptions)[] = [
         'prerender',
         'extractCss',
@@ -2695,6 +2805,7 @@ export class Builder {
         'rev',
         'static',
         'includeRefs',
+        'fetchTotalCount',
       ];
 
       for (const key of properties) {
@@ -2707,6 +2818,16 @@ export class Builder {
           } else {
             queryParams[key] = JSON.stringify(value);
           }
+        }
+      }
+
+      // Handle enrich and enrichOptions for content endpoint
+      if (this.apiEndpoint === 'content') {
+        if ('enrich' in options && options.enrich !== undefined) {
+          queryParams.enrich = options.enrich;
+        }
+        if (options.enrichOptions) {
+          this.flattenEnrichOptions(options.enrichOptions, 'enrichOptions', queryParams);
         }
       }
     }
@@ -2781,6 +2902,9 @@ export class Builder {
               return;
             }
             const data = isApiCallForCodegenOrQuery ? result[keyName] : result.results;
+            if (result.totalCount !== undefined) {
+              this.totalCountByKey[keyName] = result.totalCount;
+            }
             const sorted = data; // sortBy(data, item => item.priority);
             if (data) {
               const testModifiedResults = Builder.isServer
@@ -2913,6 +3037,22 @@ export class Builder {
     return Builder.isBrowser && setCookie(name, value, expires);
   }
 
+  /**
+   * Recursively flattens enrichOptions object into dot-notation query parameters
+   * @private
+   */
+  private flattenEnrichOptions(obj: any, prefix: string, result: Record<string, any>): void {
+    for (const [key, value] of Object.entries(obj)) {
+      const newKey = `${prefix}.${key}`;
+
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        this.flattenEnrichOptions(value, newKey, result);
+      } else {
+        result[newKey] = value;
+      }
+    }
+  }
+
   getContent(modelName: string, options: GetContentOptions = {}) {
     if (!this.apiKey) {
       throw new Error(
@@ -2922,6 +3062,16 @@ export class Builder {
     return this.queueGetContent(modelName, options);
   }
 
+  getAll<T extends boolean = false>(
+    modelName: string,
+    options?: GetContentOptions & {
+      req?: IncomingMessage;
+      res?: ServerResponse;
+      apiKey?: string;
+      authToken?: string;
+      fetchTotalCount?: T;
+    }
+  ): Promise<T extends true ? { results: BuilderContent[]; totalCount: number } : BuilderContent[]>;
   getAll(
     modelName: string,
     options: GetContentOptions & {
@@ -2930,7 +3080,7 @@ export class Builder {
       apiKey?: string;
       authToken?: string;
     } = {}
-  ): Promise<BuilderContent[]> {
+  ): Promise<BuilderContent[] | { results: BuilderContent[]; totalCount: number }> {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(
@@ -2941,6 +3091,7 @@ export class Builder {
         options.authToken || this.authToken,
         options.apiVersion || this.apiVersion
       );
+      instance.apiEndpoint = this.apiEndpoint;
       instance.setUserAttributes(this.getUserAttributes());
     } else {
       // NOTE: All these are when .init is not called and the customer
@@ -2961,18 +3112,26 @@ export class Builder {
       options.noTraverse = true;
     }
 
+    const key =
+      options.key || Builder.isBrowser || options.fetchTotalCount
+        ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
+        : undefined;
+
     return instance
       .getContent(modelName, {
         limit: 30,
         ...options,
-        key:
-          options.key ||
-          // Make the key include all options, so we don't reuse cache for the same content fetched
-          // with different options
-          Builder.isBrowser
-            ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
-            : undefined,
+        key,
       })
-      .promise();
+      .promise()
+      .then(results => {
+        if (options.fetchTotalCount) {
+          return {
+            results,
+            totalCount: key !== undefined ? instance.totalCountByKey[key] ?? 0 : 0,
+          };
+        }
+        return results;
+      });
   }
 }

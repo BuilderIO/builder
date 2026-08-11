@@ -196,5 +196,126 @@ test.describe('Tracking', () => {
         expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
       }
     });
+
+    test('POSTs correct conversion data when builder.trackConversion() is called', async ({
+      page,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsRN(sdk) || packageName === 'qwik-city');
+
+      // Wait for the page to load and initial impression tracking to complete
+      await page.goto('/track-conversion', { waitUntil: 'networkidle' });
+
+      // Set up promise to wait for conversion tracking request
+      const conversionTrackingPromise = page.waitForRequest(
+        request =>
+          request.url().includes('cdn.builder.io/api/v1/track') &&
+          request.method() === 'POST' &&
+          request.postDataJSON().events[0].type === 'conversion',
+        { timeout: 10000 }
+      );
+
+      // Click the button that triggers builder.trackConversion(10)
+      await page.click('text=Track Conversion');
+
+      // Wait for the conversion tracking request
+      const trackingRequest = await conversionTrackingPromise;
+
+      const data = trackingRequest.postDataJSON();
+      const headers = trackingRequest.headers();
+
+      // Validate the conversion event structure
+      const expected = {
+        events: [
+          {
+            type: 'conversion',
+            data: {
+              metadata: {
+                amount: 10,
+              },
+              userAttributes: {
+                device: 'desktop',
+              },
+            },
+          },
+        ],
+      };
+
+      const ID_REGEX = /^[a-f0-9]{32}$/;
+
+      expect(data.events[0].data.metadata.amount).toEqual(expected.events[0].data.metadata.amount);
+      expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
+      expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
+      expect(data.events[0].data.ownerId).toMatch(/abcd/);
+
+      // Check for SDK headers
+      expect(headers['x-builder-sdk']).toBe(mapSdkName(sdk));
+      expect(headers['x-builder-sdk-gen']).toBe(getSdkGeneration(sdk));
+      expect(headers['x-builder-sdk-version']).toMatch(/\d+\.\d+\.\d+/);
+
+      // Check urlPath
+      expect(data.events[0].data.userAttributes.urlPath).toBe('/track-conversion');
+    });
+
+    test('POSTs correct conversion data with custom properties', async ({
+      page,
+      sdk,
+      packageName,
+    }) => {
+      test.skip(checkIsRN(sdk) || packageName === 'qwik-city');
+
+      // Wait for the page to load and initial impression tracking to complete
+      await page.goto('/track-conversion', { waitUntil: 'networkidle' });
+
+      // Set up promise to wait for conversion tracking request with custom field
+      const conversionTrackingPromise = page.waitForRequest(
+        request => {
+          if (
+            !request.url().includes('cdn.builder.io/api/v1/track') ||
+            request.method() !== 'POST'
+          ) {
+            return false;
+          }
+          const data = request.postDataJSON();
+          return (
+            data.events[0].type === 'conversion' &&
+            data.events[0].data.metadata?.customField === 'test-value'
+          );
+        },
+        { timeout: 10000 }
+      );
+
+      // Click the button that triggers builder.trackConversion(25, { customField: "test-value" })
+      await page.click('text=Track Conversion With Props');
+
+      // Wait for the conversion tracking request
+      const trackingRequest = await conversionTrackingPromise;
+
+      const data = trackingRequest.postDataJSON();
+
+      // Validate the conversion event structure with custom properties
+      const expected = {
+        events: [
+          {
+            type: 'conversion',
+            data: {
+              metadata: {
+                amount: 25,
+                customField: 'test-value',
+              },
+              userAttributes: {
+                device: 'desktop',
+              },
+            },
+          },
+        ],
+      };
+
+      expect(data.events[0].data.metadata.amount).toEqual(expected.events[0].data.metadata.amount);
+      expect(data.events[0].data.metadata.customField).toEqual(
+        expected.events[0].data.metadata.customField
+      );
+    });
   });
 });

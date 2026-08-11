@@ -55,6 +55,10 @@ export default function Image(props: ImageProps) {
       }
     },
 
+    get sizesToUse(): string | undefined {
+      return props.sizes || (props.highPriority ? undefined : 'auto');
+    },
+
     get aspectRatioCss():
       | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
           position: 'absolute';
@@ -86,7 +90,11 @@ export default function Image(props: ImageProps) {
     <>
       <picture>
         <Show when={state.webpSrcSet}>
-          <source srcset={state.webpSrcSet} type="image/webp" />
+          <source
+            srcset={state.webpSrcSet}
+            sizes={state.sizesToUse}
+            type="image/webp"
+          />
         </Show>
         <img
           loading={props.highPriority ? 'eager' : 'lazy'}
@@ -109,7 +117,7 @@ export default function Image(props: ImageProps) {
           src={props.image}
           // TODO: memoize on image on client
           srcset={state.srcSetToUse}
-          sizes={props.sizes}
+          sizes={state.sizesToUse}
         />
       </picture>
 

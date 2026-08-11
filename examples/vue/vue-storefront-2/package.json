@@ -48,5 +48,8 @@
     "mochawesome-report-generator": "^5.2.0",
     "vue-jest": "^4.0.0-0"
   },
+  "resolutions": {
+    "json-schema": "0.4.0"
+  },
   "packageManager": "yarn@3.2.0"
 }

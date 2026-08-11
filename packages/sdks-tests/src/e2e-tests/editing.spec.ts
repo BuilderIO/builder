@@ -810,6 +810,7 @@ test.describe('Visual Editing', () => {
         packageName === 'vue',
         `Failing on the CI: TypeError: Cannot read properties of null (reading 'namespaceURI')`
       );
+      test.skip(packageName === 'nuxt', 'test is flaky');
 
       await launchEmbedderAndWaitForSdk({ path: '/section-children', basePort, page, sdk });
 

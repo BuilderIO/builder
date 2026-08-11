@@ -109,5 +109,11 @@
     "mustache": "^4.0.0",
     "react": "^16.11.0",
     "ses": "^0.6.4"
+  },
+  "overrides": {
+    "lodash": "4.18.1",
+    "minimist@<1": "0.2.4",
+    "json-schema": "0.4.0",
+    "minimist@1": "1.2.8"
   }
 }
