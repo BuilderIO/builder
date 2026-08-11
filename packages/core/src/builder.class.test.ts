@@ -1,4 +1,4 @@
-import { Builder, GetContentOptions } from './builder.class';
+import { Builder, Component, GetContentOptions } from './builder.class';
 import { BehaviorSubject } from './classes/observable.class';
 import { BuilderContent } from './types/content';
 
@@ -398,6 +398,31 @@ describe('prepareComponentSpecToSend', () => {
     expect(result.inputs?.[0].onChange).toContain('value.trim()');
     expect(result.inputs?.[0].defaultValue).toBe('hello');
     expect(result.inputs?.[1]).toEqual(input.inputs[1]);
+  });
+});
+
+describe('Component.group', () => {
+  // If someone removes the `group?: string` field from the `Component` interface,
+  // this typed literal will fail excess-property checking at `tsc` build time.
+  const spec: Component = {
+    name: 'GroupedComponent',
+    group: 'Steps',
+  };
+
+  test('is preserved by prepareComponentSpecToSend', () => {
+    const result = Builder['prepareComponentSpecToSend'](spec);
+    expect(result.group).toBe('Steps');
+  });
+
+  test('is preserved on Builder.components after registerComponent', () => {
+    const uniqueName = `GroupedComponent_${Date.now()}_${Math.random()}`;
+    Builder.registerComponent(function GroupedComponent() {}, {
+      name: uniqueName,
+      group: 'Steps',
+    });
+
+    const registered = Builder.components.find(c => c.name === uniqueName);
+    expect(registered?.group).toBe('Steps');
   });
 });
 
