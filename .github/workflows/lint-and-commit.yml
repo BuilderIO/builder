@@ -47,7 +47,7 @@ jobs:
       - name: Run eslint
         run: yarn workspace @builder.io/sdks lint
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         id: auto-commit-action
         with:
           commit_message: Apply linting changes
