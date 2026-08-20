@@ -339,7 +339,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                       (aspectRatio ? Math.round(1000 / aspectRatio) : undefined),
                   } as any)
                 : null)}
-              alt={this.props.altText}
+              alt={this.props.altText || ''}
               title={this.props.title}
               key={
                 Builder.isEditing
