@@ -1,5 +1,12 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 5.2.8
+
+### Patch Changes
+
+- d9afb88: Types: add optional `group?: string` to the component metadata type used by `Builder.registerComponent`, so TypeScript integrations can bucket custom components into their own accordions in the editor's insert menu without excess-property errors.
+- 771e834: Fixed Image components to render an explicit empty `alt` attribute when alt text is blank or missing
+
 ## 5.2.7
 
 ### Patch Changes
