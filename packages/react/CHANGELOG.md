@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 9.4.3
+
+### Patch Changes
+
+- 771e834: Fixed Image components to render an explicit empty `alt` attribute when alt text is blank or missing
+- Updated dependencies [d9afb88]
+  - @builder.io/sdk@6.3.2
+
 ## 9.4.2
 
 ### Patch Changes

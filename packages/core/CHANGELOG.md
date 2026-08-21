@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.3.2
+
+### Patch Changes
+
+- d9afb88: Types: add optional `group?: string` to the component metadata type used by `Builder.registerComponent`, so TypeScript integrations can bucket custom components into their own accordions in the editor's insert menu without excess-property errors.
+
 ## 6.3.1
 
 ### Patch Changes
