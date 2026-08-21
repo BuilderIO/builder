@@ -154,11 +154,19 @@ export class PhraseApi {
     model: string,
     sourceLang: string,
     targetLangs: string[],
+    preTranslate: boolean,
     callbackHost?: string
   ): Promise<{ project: Project }> {
     return this.request('job', {
       method: 'POST',
-      body: JSON.stringify({ contentId, model, sourceLang, targetLangs, callbackHost }),
+      body: JSON.stringify({
+        contentId,
+        model,
+        sourceLang,
+        targetLangs,
+        preTranslate,
+        callbackHost,
+      }),
     });
   }
 
