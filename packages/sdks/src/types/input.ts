@@ -120,7 +120,14 @@ export interface Input {
   /** @hidden */
   richText?: boolean;
   /** @hidden */
-  showIf?: ((options: Map<string, any>) => boolean) | string;
+  showIf?:
+    | ((
+        options: Map<string, any>,
+        parent?: any,
+        parentElements?: any,
+        context?: { locale?: string }
+      ) => boolean)
+    | string;
   /** @hidden */
   copyOnAdd?: boolean;
   /**
