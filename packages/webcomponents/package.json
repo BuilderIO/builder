@@ -6,6 +6,10 @@
   "main": "dist/system/builder-webcomponents-async.js",
   "browser": "dist/system/builder-webcomponents-async.js",
   "unpkg": "dist/system/builder-webcomponents-async.js",
+  "files": [
+    "dist",
+    "sri-manifest.json"
+  ],
   "module": "dist/builder-webcomponents.es5.js",
   "typings": "dist/types/builder-webcomponents.d.ts",
   "author": "Steve Sewell <steve@builder.io>",
@@ -22,9 +26,10 @@
     "_install": "npm install",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist sri-manifest.json",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist && npm run build:sri-manifest",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist && npm run build:sri-manifest && npm run validate:package",
     "build:unpkg:dist": "ts-node -O '{\"module\": \"commonjs\"}' tools/make-unpkg-dist.ts",
     "build:sri-manifest": "node tools/generate-sri-manifest.js",
+    "validate:package": "node tools/validate-package.js",
     "start": "SERVE=true rollup -c rollup.config.ts -w",
     "test": "jest watch",
     "test:watch": "npm run test -- --watch",
