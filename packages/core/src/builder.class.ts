@@ -1,6 +1,11 @@
 import './polyfills/custom-event-polyfill';
 import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
+import {
+  BuilderLogLevel,
+  getDefaultLogLevel,
+  logFetchDebugInfo,
+} from './functions/log-level.function';
 import { QueryString } from './classes/query-string.class';
 import { BehaviorSubject } from './classes/observable.class';
 import { getFetch } from './functions/fetch.function';
@@ -1002,6 +1007,24 @@ export class Builder {
   static registry: { [key: string]: any[] } = {};
   static overrideHost: string | undefined;
   static attributesCookieName = 'builder.userAttributes';
+
+  /**
+   * Controls SDK diagnostic logging. Set to `'debug'` to log a `console.debug` line for every
+   * content fetch, including the request URL, response status, and the `x-request-id` response
+   * header when the API includes one. This is useful when reporting intermittent API issues to
+   * Builder.io support, since it lets you correlate a specific SDK call with a request on
+   * Builder's side.
+   *
+   * Defaults to the `BUILDER_SDK_LOG_LEVEL` environment variable (e.g.
+   * `BUILDER_SDK_LOG_LEVEL=debug`) when running under Node.js, or `'silent'` otherwise. Can
+   * also be set programmatically at any time, which is the only option in bundled browser code
+   * where environment variables aren't available at runtime:
+   *
+   * ```ts
+   * Builder.logLevel = 'debug';
+   * ```
+   */
+  static logLevel: BuilderLogLevel = getDefaultLogLevel();
 
   /**
    * @todo `key` property on any info where if a key matches a current
@@ -2559,7 +2582,10 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, this.addSdkHeaders(options)).then(res => res.json());
+    return getFetch()(url, this.addSdkHeaders(options)).then(res => {
+      logFetchDebugInfo(Builder.logLevel, { method: 'GET', url, response: res });
+      return res.json();
+    });
   }
 
   get host() {
@@ -2615,7 +2641,10 @@ export class Builder {
   }
 
   private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
-    return getFetch()(url, this.addSdkHeaders(requestOptions));
+    return getFetch()(url, this.addSdkHeaders(requestOptions)).then(res => {
+      logFetchDebugInfo(Builder.logLevel, { method: requestOptions?.method, url, response: res });
+      return res;
+    });
   }
 
   /**
