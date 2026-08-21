@@ -10,7 +10,7 @@ function MyFunComponent({ text }) {
     <div>
       <h3>{text.toUpperCase()}</h3>
       <p>{state.count}</p>
-      <button onClick={() => state.count++}>Click me </button>
+      <button onClick={() => state.count++}>Click me</button>
     </div>
   );
 }
