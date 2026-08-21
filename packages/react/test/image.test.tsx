@@ -23,6 +23,17 @@ describe('Image', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('renders an empty alt attribute when alt text is missing', () => {
+    const tree = reactTestRenderer
+      .create(
+        <Image image="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003" />
+      )
+      .toJSON() as any;
+    const image = tree.children.find((child: any) => child.type === 'img');
+
+    expect(image.props.alt).toBe('');
+  });
+
   it('Shopify image url', () => {
     const tree = reactTestRenderer
       .create(

@@ -137,6 +137,16 @@ test.describe('Blocks', () => {
       }
     });
 
+    test('Image alt attribute', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      await page.goto('/image');
+
+      const images = page.locator('.builder-image');
+      await expect(images.first()).toHaveAttribute('alt', '');
+      await expect(images.nth(1)).toHaveAttribute('alt', 'alt text test');
+    });
+
     test('Image sizes attribute', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
 
