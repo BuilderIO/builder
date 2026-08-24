@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.3.3
+
+### Patch Changes
+
+- c8f3d4a: Types: allow `showIf` callbacks to receive the existing parent arguments and the current editor locale through `context.locale`.
+
 ## 6.3.2
 
 ### Patch Changes

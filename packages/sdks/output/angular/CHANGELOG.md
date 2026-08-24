@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.11
+
+### Patch Changes
+
+- c8f3d4a: Types: allow `showIf` callbacks to receive the existing parent arguments and the current editor locale through `context.locale`.
+
 ## 0.25.10
 
 ### Patch Changes

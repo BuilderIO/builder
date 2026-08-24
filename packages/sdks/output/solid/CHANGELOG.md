@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.2.9
+
+### Patch Changes
+
+- c8f3d4a: Types: allow `showIf` callbacks to receive the existing parent arguments and the current editor locale through `context.locale`.
+
 ## 5.2.8
 
 ### Patch Changes
