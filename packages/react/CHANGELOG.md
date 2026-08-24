@@ -1,5 +1,12 @@
 # @builder.io/react
 
+## 9.4.4
+
+### Patch Changes
+
+- Updated dependencies [c8f3d4a]
+  - @builder.io/sdk@6.3.3
+
 ## 9.4.3
 
 ### Patch Changes
