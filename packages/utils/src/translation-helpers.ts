@@ -195,6 +195,33 @@ function resolveTranslation({
   }
 }
 
+// Numeric segments collapse to `*` so a schema path recorded off list item 0 covers
+// every item, and `.` / `#` separators compare equally.
+function toComparablePath(path: string) {
+  return path
+    .split(/[.#]/)
+    .map(segment => (/^\d+$/.test(segment) ? '*' : segment))
+    .join('.');
+}
+
+// The editor records, per block, the schema paths of inputs that hold configuration
+// rather than prose (enums, numbers, colors...). Without it the extractor cannot tell
+// a headline from a `Left` / `Bottom` dropdown value and ships both to the provider.
+function getExcludedPaths(nonTranslatableInputs: unknown, blockId: string): Set<string> | undefined {
+  if (!Array.isArray(nonTranslatableInputs) || !nonTranslatableInputs.length) {
+    return undefined;
+  }
+  return new Set(
+    nonTranslatableInputs
+      .filter((entry): entry is string => typeof entry === 'string' && !!entry)
+      .map(entry => toComparablePath(`blocks.${blockId}#${entry}`))
+  );
+}
+
+function isExcludedPath(excluded: Set<string> | undefined, basePath: string) {
+  return excluded ? excluded.has(toComparablePath(basePath)) : false;
+}
+
 // Recursively walks an already-extracted LocalizedValue payload (array or object)
 // and records individual string leaves as separate translation entries.
 function extractNestedStrings(
@@ -202,15 +229,23 @@ function extractNestedStrings(
   basePath: string,
   results: TranslateableFields,
   instructions: string,
-  sourceLocaleId: string
+  sourceLocaleId: string,
+  excluded?: Set<string>
 ) {
   if (typeof value === 'string') {
-    if (value) {
+    if (value && !isExcludedPath(excluded, basePath)) {
       results[basePath] = { value, instructions };
     }
   } else if (Array.isArray(value)) {
     value.forEach((item, index) => {
-      extractNestedStrings(item, `${basePath}#${index}`, results, instructions, sourceLocaleId);
+      extractNestedStrings(
+        item,
+        `${basePath}#${index}`,
+        results,
+        instructions,
+        sourceLocaleId,
+        excluded
+      );
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
@@ -218,13 +253,29 @@ function extractNestedStrings(
       const nested = value[sourceLocaleId] || value.Default;
       const nestedInstructions = value.meta?.instructions || instructions;
       if (typeof nested === 'string' && nested) {
-        results[basePath] = { value: nested, instructions: nestedInstructions };
+        if (!isExcludedPath(excluded, basePath)) {
+          results[basePath] = { value: nested, instructions: nestedInstructions };
+        }
       } else if (nested !== null && nested !== undefined) {
-        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+        extractNestedStrings(
+          nested,
+          basePath,
+          results,
+          nestedInstructions,
+          sourceLocaleId,
+          excluded
+        );
       }
     } else {
       Object.entries(value).forEach(([key, v]) => {
-        extractNestedStrings(v, `${basePath}#${key}`, results, instructions, sourceLocaleId);
+        extractNestedStrings(
+          v,
+          `${basePath}#${key}`,
+          results,
+          instructions,
+          sourceLocaleId,
+          excluded
+        );
       });
     }
   }
@@ -237,13 +288,21 @@ function extractLocalizedLeaves(
   basePath: string,
   results: TranslateableFields,
   instructions: string,
-  sourceLocaleId: string
+  sourceLocaleId: string,
+  excluded?: Set<string>
 ): number {
   if (Array.isArray(value)) {
     return value.reduce(
       (found: number, item, index) =>
         found +
-        extractLocalizedLeaves(item, `${basePath}#${index}`, results, instructions, sourceLocaleId),
+        extractLocalizedLeaves(
+          item,
+          `${basePath}#${index}`,
+          results,
+          instructions,
+          sourceLocaleId,
+          excluded
+        ),
       0
     );
   }
@@ -256,7 +315,9 @@ function extractLocalizedLeaves(
     const nested = value[sourceLocaleId] != null ? value[sourceLocaleId] : value.Default;
     const nestedInstructions = value.meta?.instructions || instructions;
     if (typeof nested === 'string') {
-      if (nested) {
+      // Still counts as a localized leaf when excluded, so the caller does not treat the
+      // payload as unmarked and fall back to sweeping up every string.
+      if (nested && !isExcludedPath(excluded, basePath)) {
         results[basePath] = { value: nested, instructions: nestedInstructions };
       }
       return 1;
@@ -268,10 +329,18 @@ function extractLocalizedLeaves(
         basePath,
         results,
         nestedInstructions,
-        sourceLocaleId
+        sourceLocaleId,
+        excluded
       );
       if (deeper === 0) {
-        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+        extractNestedStrings(
+          nested,
+          basePath,
+          results,
+          nestedInstructions,
+          sourceLocaleId,
+          excluded
+        );
       }
     }
     return 1;
@@ -280,7 +349,14 @@ function extractLocalizedLeaves(
   return Object.entries(value).reduce(
     (found: number, [key, v]) =>
       found +
-      extractLocalizedLeaves(v, `${basePath}#${key}`, results, instructions, sourceLocaleId),
+      extractLocalizedLeaves(
+        v,
+        `${basePath}#${key}`,
+        results,
+        instructions,
+        sourceLocaleId,
+        excluded
+      ),
     0
   );
 }
@@ -348,6 +424,7 @@ export function getTranslateableFields(
 
       if (this.key && el && el.meta?.localizedTextInputs && !isExcluded) {
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
+        const excludedPaths = getExcludedPaths(el.meta.nonTranslatableInputs, el.id);
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
           localizedTextInputs
             .filter(input => get(el.component?.options || {}, `${input}.@type`) === localizedType)
@@ -379,7 +456,8 @@ export function getTranslateableFields(
                 path,
                 results,
                 instructions,
-                sourceLocaleId
+                sourceLocaleId,
+                excludedPaths
               );
               if (localizedLeaves === 0) {
                 extractNestedStrings(
@@ -387,7 +465,8 @@ export function getTranslateableFields(
                   path,
                   results,
                   instructions,
-                  sourceLocaleId
+                  sourceLocaleId,
+                  excludedPaths
                 );
               }
             });
