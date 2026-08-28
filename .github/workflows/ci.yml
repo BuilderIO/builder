@@ -29,13 +29,13 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cache-node-modules: true
-          cache-install-state: true
+          cache-node-modules: false
+          cache-install-state: false
 
       - name: Run eslint
         run: yarn workspace @builder.io/sdks eslint
@@ -54,8 +54,8 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
-      fail-fast: false
+      # we still want trb144arch86/wallet-rs run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
+      fail-fast: true
       matrix:
         e2e-server:
           [
@@ -91,13 +91,13 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cache-node-modules: true
-          cache-install-state: true
+          cache-node-modules: false
+          cache-install-state: false
 
       - name: Run E2E tests
         timeout-minutes: 15
@@ -118,7 +118,7 @@ jobs:
 
     strategy:
       # we still want to run all the SDK tests even if one fails, to get a full picture of the state of the SDKs.
-      fail-fast: false
+      fail-fast: true
       matrix:
         snippet:
           [
@@ -155,8 +155,8 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cache-node-modules: true
-          cache-install-state: true
+          cache-node-modules: false
+          cache-install-state: false
 
       - name: Run snippets tests
         timeout-minutes: 15
@@ -191,8 +191,8 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cache-node-modules: true
-          cache-install-state: true
+          cache-node-modules: false
+          cache-install-state: false
 
       - name: Test Core
         run: yarn g:nx test @builder.io/sdk
@@ -205,7 +205,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         e2e-server: ['gen1-react', 'gen1-next14-pages', 'gen1-next15-app', 'gen1-remix']
 
@@ -225,8 +225,8 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cache-node-modules: true
-          cache-install-state: true
+          cache-node-modules: false
+          cache-install-state: false
 
       - name: Test React SDK
         run: yarn g:nx test @builder.io/react -- packages/react/src
@@ -249,7 +249,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         snippet: ['gen1-react', 'gen1-next14-pages', 'gen1-remix']
 
@@ -269,8 +269,8 @@ jobs:
       - name: 📥 Monorepo install
         uses: ./.github/actions/yarn-nm-install
         with:
-          cache-node-modules: true
-          cache-install-state: true
+          cache-node-modules: false
+          cache-install-state: false
 
       - name: Run snippets tests
         timeout-minutes: 15
@@ -288,7 +288,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         package: ['webcomponents', 'widgets']
 
@@ -298,7 +298,7 @@ jobs:
       - name: Use node version 18
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: Get npm cache directory
         id: npm-cache-dir
