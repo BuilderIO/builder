@@ -195,8 +195,7 @@ function resolveTranslation({
   }
 }
 
-// Numeric segments collapse to `*` so a schema path recorded off list item 0 covers
-// every item, and `.` / `#` separators compare equally.
+// List indices collapse to a wildcard, and `.` / `#` separators compare equally.
 function toComparablePath(path: string) {
   return path
     .split(/[.#]/)
@@ -204,9 +203,7 @@ function toComparablePath(path: string) {
     .join('.');
 }
 
-// The editor records, per block, the schema paths of inputs that hold configuration
-// rather than prose (enums, numbers, colors...). Without it the extractor cannot tell
-// a headline from a `Left` / `Bottom` dropdown value and ships both to the provider.
+// Recorded by the editor, since the extractor has no access to component schemas.
 function getExcludedPaths(nonTranslatableInputs: unknown, blockId: string): Set<string> | undefined {
   if (!Array.isArray(nonTranslatableInputs) || !nonTranslatableInputs.length) {
     return undefined;
@@ -315,8 +312,7 @@ function extractLocalizedLeaves(
     const nested = value[sourceLocaleId] != null ? value[sourceLocaleId] : value.Default;
     const nestedInstructions = value.meta?.instructions || instructions;
     if (typeof nested === 'string') {
-      // Still counts as a localized leaf when excluded, so the caller does not treat the
-      // payload as unmarked and fall back to sweeping up every string.
+      // Counts even when excluded, else the caller sweeps up every string instead.
       if (nested && !isExcludedPath(excluded, basePath)) {
         results[basePath] = { value: nested, instructions: nestedInstructions };
       }
@@ -437,6 +433,11 @@ export function getTranslateableFields(
                   : inputValue?.Default;
               const instructions = el.meta?.instructions || defaultInstructions;
               const path = `blocks.${el.id}#${inputKey}`;
+
+              // Only an exact match on the input's own path skips; a list keeps its other leaves.
+              if (isExcludedPath(excludedPaths, path)) {
+                return;
+              }
 
               if (typeof valueToBeTranslated === 'string') {
                 if (valueToBeTranslated) {
@@ -799,6 +800,8 @@ export function applyTranslation(
       if (el && el.id && el.meta?.localizedTextInputs && !isExcluded) {
         // there's a localized input
         const keys = el.meta?.localizedTextInputs as string[];
+        // Jobs created before the exclusions existed still carry translated enum values.
+        const excludedPaths = getExcludedPaths(el.meta.nonTranslatableInputs, el.id);
         let options = el.component.options;
 
         const markTranslated = () => {
@@ -818,6 +821,28 @@ export function applyTranslation(
         keys.forEach(key => {
           const flatKey = `blocks.${el.id}#${key}`;
           const existing = get(options, key);
+
+          const sourceValue =
+            sourceLocaleId && existing?.[sourceLocaleId] != null
+              ? existing[sourceLocaleId]
+              : existing?.Default;
+
+          // The SDK resolves a missing locale key to undefined, not to Default.
+          const seedSourceIntoLocale = () => {
+            if (!existing || existing[locale] != null || sourceValue == null) {
+              return;
+            }
+            const seeded = JSON.parse(JSON.stringify(sourceValue));
+            seedLocaleBranches(seeded, locale, sourceLocaleId);
+            set(options, key, { ...existing, [locale]: seeded });
+            markTranslated();
+          };
+
+          // Guards every branch below, including the legacy whole-payload write.
+          if (isExcludedPath(excludedPaths, flatKey)) {
+            seedSourceIntoLocale();
+            return;
+          }
 
           const flatValue = translation[flatKey]?.value;
           const writeFlatValue = () => {
@@ -847,15 +872,16 @@ export function applyTranslation(
           // Leaves were extracted as `${flatKey}#0#title`: clone the source, patch each
           // leaf, store under the locale.
           const prefix = `${flatKey}#`;
-          const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+          const matchingKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+          const compoundKeys = matchingKeys.filter(k => !isExcludedPath(excludedPaths, k));
           if (!compoundKeys.length) {
+            // Distinct from the provider returning nothing, which must leave the locale alone.
+            if (matchingKeys.length) {
+              seedSourceIntoLocale();
+            }
             return;
           }
 
-          const sourceValue =
-            sourceLocaleId && existing?.[sourceLocaleId] != null
-              ? existing[sourceLocaleId]
-              : existing?.Default;
           if (sourceValue === null || sourceValue === undefined) {
             return;
           }

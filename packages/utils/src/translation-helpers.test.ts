@@ -1659,3 +1659,61 @@ test('getTranslateableFields excludes an enum subfield that is itself a Localize
     },
   });
 });
+
+test('applyTranslation ignores translated enum values from a job created before the fix', () => {
+  const content = textColumnsContent(textColumnsMeta);
+
+  // A job uploaded before the exclusions existed: real copy alongside translated enums.
+  const legacyTranslation = {
+    'blocks.builder-textcolumns#textColumns#0#headline': { value: 'DE headline' },
+    'blocks.builder-textcolumns#textColumns#0#bodyText': { value: 'DE body' },
+    'blocks.builder-textcolumns#textColumns#0#textColumnAlignment': { value: 'Links' },
+    'blocks.builder-textcolumns#textColumns#0#textRowAlignment': { value: 'Unteres' },
+    'blocks.builder-textcolumns#textColumns#0#backgroundColor': { value: 'Weiss' },
+  };
+
+  const result = applyTranslation(content, legacyTranslation, 'de-DE', 'en-US');
+  const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
+
+  expect(columns[0]).toEqual({
+    headline: 'DE headline',
+    bodyText: 'DE body',
+    textColumnAlignment: 'Left',
+    textRowAlignment: 'Bottom',
+    backgroundColor: 'White',
+  });
+});
+
+test('applyTranslation keeps the source payload when a job returns only excluded enum values', () => {
+  const content = textColumnsContent(textColumnsMeta);
+
+  const result = applyTranslation(
+    content,
+    { 'blocks.builder-textcolumns#textColumns#0#backgroundColor': { value: 'Weiss' } },
+    'de-DE',
+    'en-US'
+  );
+  const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
+
+  // Without the locale branch the SDK resolves the list to undefined and it vanishes.
+  expect(columns[0].backgroundColor).toEqual('White');
+  expect(columns[0].headline).toEqual('Get paid faster');
+});
+
+test('applyTranslation is unaffected when no exclusions are recorded', () => {
+  const content = textColumnsContent({ localizedTextInputs: ['textColumns'] });
+
+  const result = applyTranslation(
+    content,
+    {
+      'blocks.builder-textcolumns#textColumns#0#headline': { value: 'DE headline' },
+      'blocks.builder-textcolumns#textColumns#0#backgroundColor': { value: 'Weiss' },
+    },
+    'de-DE',
+    'en-US'
+  );
+  const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
+
+  expect(columns[0].headline).toEqual('DE headline');
+  expect(columns[0].backgroundColor).toEqual('Weiss');
+});
