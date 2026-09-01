@@ -1592,12 +1592,10 @@ test('getTranslateableFields keeps sending every leaf when no exclusions are rec
 test('applyTranslation leaves excluded enum subfields untouched in the target locale', () => {
   const content = textColumnsContent(textColumnsMeta);
   const translation = getTranslateableFields(content, 'en-US', 'instructions');
-  const translated = Object.fromEntries(
-    Object.entries(translation).map(([key, field]) => [
-      key,
-      { ...field, value: 'DE ' + field.value },
-    ])
-  );
+  const translated: typeof translation = {};
+  Object.keys(translation).forEach(key => {
+    translated[key] = { ...translation[key], value: 'DE ' + translation[key].value };
+  });
 
   const result = applyTranslation(content, translated, 'de-DE', 'en-US');
   const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
