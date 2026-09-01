@@ -195,6 +195,30 @@ function resolveTranslation({
   }
 }
 
+// List indices collapse to a wildcard, and `.` / `#` separators compare equally.
+function toComparablePath(path: string) {
+  return path
+    .split(/[.#]/)
+    .map(segment => (/^\d+$/.test(segment) ? '*' : segment))
+    .join('.');
+}
+
+// Recorded by the editor, since the extractor has no access to component schemas.
+function getExcludedPaths(nonTranslatableInputs: unknown, blockId: string): Set<string> | undefined {
+  if (!Array.isArray(nonTranslatableInputs) || !nonTranslatableInputs.length) {
+    return undefined;
+  }
+  return new Set(
+    nonTranslatableInputs
+      .filter((entry): entry is string => typeof entry === 'string' && !!entry)
+      .map(entry => toComparablePath(`blocks.${blockId}#${entry}`))
+  );
+}
+
+function isExcludedPath(excluded: Set<string> | undefined, basePath: string) {
+  return excluded ? excluded.has(toComparablePath(basePath)) : false;
+}
+
 // Recursively walks an already-extracted LocalizedValue payload (array or object)
 // and records individual string leaves as separate translation entries.
 function extractNestedStrings(
@@ -202,15 +226,23 @@ function extractNestedStrings(
   basePath: string,
   results: TranslateableFields,
   instructions: string,
-  sourceLocaleId: string
+  sourceLocaleId: string,
+  excluded?: Set<string>
 ) {
   if (typeof value === 'string') {
-    if (value) {
+    if (value && !isExcludedPath(excluded, basePath)) {
       results[basePath] = { value, instructions };
     }
   } else if (Array.isArray(value)) {
     value.forEach((item, index) => {
-      extractNestedStrings(item, `${basePath}#${index}`, results, instructions, sourceLocaleId);
+      extractNestedStrings(
+        item,
+        `${basePath}#${index}`,
+        results,
+        instructions,
+        sourceLocaleId,
+        excluded
+      );
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
@@ -218,13 +250,29 @@ function extractNestedStrings(
       const nested = value[sourceLocaleId] || value.Default;
       const nestedInstructions = value.meta?.instructions || instructions;
       if (typeof nested === 'string' && nested) {
-        results[basePath] = { value: nested, instructions: nestedInstructions };
+        if (!isExcludedPath(excluded, basePath)) {
+          results[basePath] = { value: nested, instructions: nestedInstructions };
+        }
       } else if (nested !== null && nested !== undefined) {
-        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+        extractNestedStrings(
+          nested,
+          basePath,
+          results,
+          nestedInstructions,
+          sourceLocaleId,
+          excluded
+        );
       }
     } else {
       Object.entries(value).forEach(([key, v]) => {
-        extractNestedStrings(v, `${basePath}#${key}`, results, instructions, sourceLocaleId);
+        extractNestedStrings(
+          v,
+          `${basePath}#${key}`,
+          results,
+          instructions,
+          sourceLocaleId,
+          excluded
+        );
       });
     }
   }
@@ -237,13 +285,21 @@ function extractLocalizedLeaves(
   basePath: string,
   results: TranslateableFields,
   instructions: string,
-  sourceLocaleId: string
+  sourceLocaleId: string,
+  excluded?: Set<string>
 ): number {
   if (Array.isArray(value)) {
     return value.reduce(
       (found: number, item, index) =>
         found +
-        extractLocalizedLeaves(item, `${basePath}#${index}`, results, instructions, sourceLocaleId),
+        extractLocalizedLeaves(
+          item,
+          `${basePath}#${index}`,
+          results,
+          instructions,
+          sourceLocaleId,
+          excluded
+        ),
       0
     );
   }
@@ -256,7 +312,8 @@ function extractLocalizedLeaves(
     const nested = value[sourceLocaleId] != null ? value[sourceLocaleId] : value.Default;
     const nestedInstructions = value.meta?.instructions || instructions;
     if (typeof nested === 'string') {
-      if (nested) {
+      // Counts even when excluded, else the caller sweeps up every string instead.
+      if (nested && !isExcludedPath(excluded, basePath)) {
         results[basePath] = { value: nested, instructions: nestedInstructions };
       }
       return 1;
@@ -268,10 +325,18 @@ function extractLocalizedLeaves(
         basePath,
         results,
         nestedInstructions,
-        sourceLocaleId
+        sourceLocaleId,
+        excluded
       );
       if (deeper === 0) {
-        extractNestedStrings(nested, basePath, results, nestedInstructions, sourceLocaleId);
+        extractNestedStrings(
+          nested,
+          basePath,
+          results,
+          nestedInstructions,
+          sourceLocaleId,
+          excluded
+        );
       }
     }
     return 1;
@@ -280,7 +345,14 @@ function extractLocalizedLeaves(
   return Object.entries(value).reduce(
     (found: number, [key, v]) =>
       found +
-      extractLocalizedLeaves(v, `${basePath}#${key}`, results, instructions, sourceLocaleId),
+      extractLocalizedLeaves(
+        v,
+        `${basePath}#${key}`,
+        results,
+        instructions,
+        sourceLocaleId,
+        excluded
+      ),
     0
   );
 }
@@ -348,6 +420,7 @@ export function getTranslateableFields(
 
       if (this.key && el && el.meta?.localizedTextInputs && !isExcluded) {
         const localizedTextInputs = el.meta.localizedTextInputs as string[];
+        const excludedPaths = getExcludedPaths(el.meta.nonTranslatableInputs, el.id);
         if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
           localizedTextInputs
             .filter(input => get(el.component?.options || {}, `${input}.@type`) === localizedType)
@@ -360,6 +433,11 @@ export function getTranslateableFields(
                   : inputValue?.Default;
               const instructions = el.meta?.instructions || defaultInstructions;
               const path = `blocks.${el.id}#${inputKey}`;
+
+              // Only an exact match on the input's own path skips; a list keeps its other leaves.
+              if (isExcludedPath(excludedPaths, path)) {
+                return;
+              }
 
               if (typeof valueToBeTranslated === 'string') {
                 if (valueToBeTranslated) {
@@ -379,7 +457,8 @@ export function getTranslateableFields(
                 path,
                 results,
                 instructions,
-                sourceLocaleId
+                sourceLocaleId,
+                excludedPaths
               );
               if (localizedLeaves === 0) {
                 extractNestedStrings(
@@ -387,7 +466,8 @@ export function getTranslateableFields(
                   path,
                   results,
                   instructions,
-                  sourceLocaleId
+                  sourceLocaleId,
+                  excludedPaths
                 );
               }
             });
@@ -720,6 +800,8 @@ export function applyTranslation(
       if (el && el.id && el.meta?.localizedTextInputs && !isExcluded) {
         // there's a localized input
         const keys = el.meta?.localizedTextInputs as string[];
+        // Jobs created before the exclusions existed still carry translated enum values.
+        const excludedPaths = getExcludedPaths(el.meta.nonTranslatableInputs, el.id);
         let options = el.component.options;
 
         const markTranslated = () => {
@@ -739,6 +821,41 @@ export function applyTranslation(
         keys.forEach(key => {
           const flatKey = `blocks.${el.id}#${key}`;
           const existing = get(options, key);
+
+          const sourceValue =
+            sourceLocaleId && existing?.[sourceLocaleId] != null
+              ? existing[sourceLocaleId]
+              : existing?.Default;
+
+          // The SDK resolves a missing locale key to undefined, not to Default.
+          const seedSourceIntoLocale = () => {
+            if (!existing || existing[locale] != null || sourceValue == null) {
+              return;
+            }
+            const seeded = JSON.parse(JSON.stringify(sourceValue));
+            seedLocaleBranches(seeded, locale, sourceLocaleId);
+            set(options, key, { ...existing, [locale]: seeded });
+            markTranslated();
+          };
+
+          // Same walk extraction uses, so an input it never sent is told apart from one the
+          // provider simply has not answered yet.
+          const hasTranslatableLeaf = () => {
+            const probe: TranslateableFields = {};
+            const sourceLocale = sourceLocaleId ?? '';
+            if (
+              extractLocalizedLeaves(sourceValue, flatKey, probe, '', sourceLocale, excludedPaths) === 0
+            ) {
+              extractNestedStrings(sourceValue, flatKey, probe, '', sourceLocale, excludedPaths);
+            }
+            return Object.keys(probe).length > 0;
+          };
+
+          // Guards every branch below, including the legacy whole-payload write.
+          if (isExcludedPath(excludedPaths, flatKey)) {
+            seedSourceIntoLocale();
+            return;
+          }
 
           const flatValue = translation[flatKey]?.value;
           const writeFlatValue = () => {
@@ -768,15 +885,17 @@ export function applyTranslation(
           // Leaves were extracted as `${flatKey}#0#title`: clone the source, patch each
           // leaf, store under the locale.
           const prefix = `${flatKey}#`;
-          const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+          const matchingKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+          const compoundKeys = matchingKeys.filter(k => !isExcludedPath(excludedPaths, k));
           if (!compoundKeys.length) {
+            // Everything came back excluded, or there was never anything to send. Both differ
+            // from the provider not having answered yet, which must leave the locale alone.
+            if (matchingKeys.length || (excludedPaths && !hasTranslatableLeaf())) {
+              seedSourceIntoLocale();
+            }
             return;
           }
 
-          const sourceValue =
-            sourceLocaleId && existing?.[sourceLocaleId] != null
-              ? existing[sourceLocaleId]
-              : existing?.Default;
           if (sourceValue === null || sourceValue === undefined) {
             return;
           }

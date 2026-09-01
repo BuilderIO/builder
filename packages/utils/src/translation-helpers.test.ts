@@ -1493,3 +1493,264 @@ test('getTranslateableFields falls back to string leaves when a localized list h
     },
   });
 });
+
+function textColumnsContent(meta: Record<string, any>): BuilderContent {
+  return {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-textcolumns',
+          meta,
+          component: {
+            name: 'TextColumns',
+            options: {
+              textColumns: {
+                '@type': localizedType,
+                Default: [
+                  {
+                    headline: 'Get paid faster',
+                    bodyText: 'Take card payments anywhere.',
+                    textColumnAlignment: 'Left',
+                    textRowAlignment: 'Bottom',
+                    backgroundColor: 'White',
+                  },
+                  {
+                    headline: 'Grow with insights',
+                    bodyText: 'See how your business is doing.',
+                    textColumnAlignment: 'Center',
+                    textRowAlignment: 'Top',
+                    backgroundColor: 'Grey',
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+}
+
+const textColumnsMeta = {
+  localizedTextInputs: ['textColumns'],
+  nonTranslatableInputs: [
+    'textColumns.*.textColumnAlignment',
+    'textColumns.*.textRowAlignment',
+    'textColumns.*.backgroundColor',
+  ],
+};
+
+test('getTranslateableFields skips enum subfields listed in nonTranslatableInputs', () => {
+  const result = getTranslateableFields(
+    textColumnsContent(textColumnsMeta),
+    'en-US',
+    'instructions'
+  );
+
+  expect(result).toEqual({
+    'blocks.builder-textcolumns#textColumns#0#headline': {
+      value: 'Get paid faster',
+      instructions: 'instructions',
+    },
+    'blocks.builder-textcolumns#textColumns#0#bodyText': {
+      value: 'Take card payments anywhere.',
+      instructions: 'instructions',
+    },
+    'blocks.builder-textcolumns#textColumns#1#headline': {
+      value: 'Grow with insights',
+      instructions: 'instructions',
+    },
+    'blocks.builder-textcolumns#textColumns#1#bodyText': {
+      value: 'See how your business is doing.',
+      instructions: 'instructions',
+    },
+  });
+});
+
+test('getTranslateableFields keeps sending every leaf when no exclusions are recorded', () => {
+  const result = getTranslateableFields(
+    textColumnsContent({ localizedTextInputs: ['textColumns'] }),
+    'en-US',
+    'instructions'
+  );
+
+  expect(Object.keys(result).sort()).toEqual([
+    'blocks.builder-textcolumns#textColumns#0#backgroundColor',
+    'blocks.builder-textcolumns#textColumns#0#bodyText',
+    'blocks.builder-textcolumns#textColumns#0#headline',
+    'blocks.builder-textcolumns#textColumns#0#textColumnAlignment',
+    'blocks.builder-textcolumns#textColumns#0#textRowAlignment',
+    'blocks.builder-textcolumns#textColumns#1#backgroundColor',
+    'blocks.builder-textcolumns#textColumns#1#bodyText',
+    'blocks.builder-textcolumns#textColumns#1#headline',
+    'blocks.builder-textcolumns#textColumns#1#textColumnAlignment',
+    'blocks.builder-textcolumns#textColumns#1#textRowAlignment',
+  ]);
+});
+
+test('applyTranslation leaves excluded enum subfields untouched in the target locale', () => {
+  const content = textColumnsContent(textColumnsMeta);
+  const translation = getTranslateableFields(content, 'en-US', 'instructions');
+  const translated: typeof translation = {};
+  Object.keys(translation).forEach(key => {
+    translated[key] = { ...translation[key], value: 'DE ' + translation[key].value };
+  });
+
+  const result = applyTranslation(content, translated, 'de-DE', 'en-US');
+  const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
+
+  expect(columns).toEqual([
+    {
+      headline: 'DE Get paid faster',
+      bodyText: 'DE Take card payments anywhere.',
+      textColumnAlignment: 'Left',
+      textRowAlignment: 'Bottom',
+      backgroundColor: 'White',
+    },
+    {
+      headline: 'DE Grow with insights',
+      bodyText: 'DE See how your business is doing.',
+      textColumnAlignment: 'Center',
+      textRowAlignment: 'Top',
+      backgroundColor: 'Grey',
+    },
+  ]);
+});
+
+test('getTranslateableFields excludes an enum subfield that is itself a LocalizedValue', () => {
+  const content: BuilderContent = {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-marked',
+          meta: {
+            localizedTextInputs: ['cards'],
+            nonTranslatableInputs: ['cards.*.alignment'],
+          },
+          component: {
+            name: 'Cards',
+            options: {
+              cards: {
+                '@type': localizedType,
+                Default: [
+                  {
+                    headline: { '@type': localizedType, Default: 'Marked headline' },
+                    alignment: { '@type': localizedType, Default: 'Left' },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  const result = getTranslateableFields(content, 'en-US', 'instructions');
+
+  expect(result).toEqual({
+    'blocks.builder-marked#cards#0#headline': {
+      value: 'Marked headline',
+      instructions: 'instructions',
+    },
+  });
+});
+
+test('applyTranslation ignores translated enum values from a job created before the fix', () => {
+  const content = textColumnsContent(textColumnsMeta);
+
+  // A job uploaded before the exclusions existed: real copy alongside translated enums.
+  const legacyTranslation = {
+    'blocks.builder-textcolumns#textColumns#0#headline': { value: 'DE headline' },
+    'blocks.builder-textcolumns#textColumns#0#bodyText': { value: 'DE body' },
+    'blocks.builder-textcolumns#textColumns#0#textColumnAlignment': { value: 'Links' },
+    'blocks.builder-textcolumns#textColumns#0#textRowAlignment': { value: 'Unteres' },
+    'blocks.builder-textcolumns#textColumns#0#backgroundColor': { value: 'Weiss' },
+  };
+
+  const result = applyTranslation(content, legacyTranslation, 'de-DE', 'en-US');
+  const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
+
+  expect(columns[0]).toEqual({
+    headline: 'DE headline',
+    bodyText: 'DE body',
+    textColumnAlignment: 'Left',
+    textRowAlignment: 'Bottom',
+    backgroundColor: 'White',
+  });
+});
+
+test('applyTranslation keeps the source payload when a job returns only excluded enum values', () => {
+  const content = textColumnsContent(textColumnsMeta);
+
+  const result = applyTranslation(
+    content,
+    { 'blocks.builder-textcolumns#textColumns#0#backgroundColor': { value: 'Weiss' } },
+    'de-DE',
+    'en-US'
+  );
+  const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
+
+  // Without the locale branch the SDK resolves the list to undefined and it vanishes.
+  expect(columns[0].backgroundColor).toEqual('White');
+  expect(columns[0].headline).toEqual('Get paid faster');
+});
+
+test('applyTranslation is unaffected when no exclusions are recorded', () => {
+  const content = textColumnsContent({ localizedTextInputs: ['textColumns'] });
+
+  const result = applyTranslation(
+    content,
+    {
+      'blocks.builder-textcolumns#textColumns#0#headline': { value: 'DE headline' },
+      'blocks.builder-textcolumns#textColumns#0#backgroundColor': { value: 'Weiss' },
+    },
+    'de-DE',
+    'en-US'
+  );
+  const columns = (result.data as any).blocks[0].component.options.textColumns['de-DE'];
+
+  expect(columns[0].headline).toEqual('DE headline');
+  expect(columns[0].backgroundColor).toEqual('Weiss');
+});
+
+const configRowsContent = (): BuilderContent => ({
+  data: {
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-configrows',
+        meta: {
+          localizedTextInputs: ['configRows'],
+          nonTranslatableInputs: ['configRows.*.alignment', 'configRows.*.background'],
+        },
+        component: {
+          name: 'ConfigRows',
+          options: {
+            configRows: {
+              '@type': localizedType,
+              Default: [
+                { alignment: 'Left', background: 'White' },
+                { alignment: 'Right', background: 'Black' },
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+
+test('getTranslateableFields sends nothing for an input whose leaves are all excluded', () => {
+  expect(getTranslateableFields(configRowsContent(), 'en-US', 'instructions')).toEqual({});
+});
+
+test('applyTranslation seeds the source when an input had nothing to translate', () => {
+  const result = applyTranslation(configRowsContent(), {}, 'de-DE', 'en-US');
+  const rows = (result.data as any).blocks[0].component.options.configRows;
+
+  // Without the locale branch the SDK renders undefined and the rows disappear.
+  expect(rows['de-DE']).toEqual(rows.Default);
+});
