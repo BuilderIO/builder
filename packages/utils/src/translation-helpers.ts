@@ -838,6 +838,19 @@ export function applyTranslation(
             markTranslated();
           };
 
+          // Same walk extraction uses, so an input it never sent is told apart from one the
+          // provider simply has not answered yet.
+          const hasTranslatableLeaf = () => {
+            const probe: TranslateableFields = {};
+            const sourceLocale = sourceLocaleId ?? '';
+            if (
+              extractLocalizedLeaves(sourceValue, flatKey, probe, '', sourceLocale, excludedPaths) === 0
+            ) {
+              extractNestedStrings(sourceValue, flatKey, probe, '', sourceLocale, excludedPaths);
+            }
+            return Object.keys(probe).length > 0;
+          };
+
           // Guards every branch below, including the legacy whole-payload write.
           if (isExcludedPath(excludedPaths, flatKey)) {
             seedSourceIntoLocale();
@@ -875,8 +888,9 @@ export function applyTranslation(
           const matchingKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
           const compoundKeys = matchingKeys.filter(k => !isExcludedPath(excludedPaths, k));
           if (!compoundKeys.length) {
-            // Distinct from the provider returning nothing, which must leave the locale alone.
-            if (matchingKeys.length) {
+            // Everything came back excluded, or there was never anything to send. Both differ
+            // from the provider not having answered yet, which must leave the locale alone.
+            if (matchingKeys.length || (excludedPaths && !hasTranslatableLeaf())) {
               seedSourceIntoLocale();
             }
             return;

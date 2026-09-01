@@ -1717,3 +1717,42 @@ test('applyTranslation is unaffected when no exclusions are recorded', () => {
   expect(columns[0].headline).toEqual('DE headline');
   expect(columns[0].backgroundColor).toEqual('Weiss');
 });
+
+const configRowsContent = (): BuilderContent => ({
+  data: {
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-configrows',
+        meta: {
+          localizedTextInputs: ['configRows'],
+          nonTranslatableInputs: ['configRows.*.alignment', 'configRows.*.background'],
+        },
+        component: {
+          name: 'ConfigRows',
+          options: {
+            configRows: {
+              '@type': localizedType,
+              Default: [
+                { alignment: 'Left', background: 'White' },
+                { alignment: 'Right', background: 'Black' },
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+
+test('getTranslateableFields sends nothing for an input whose leaves are all excluded', () => {
+  expect(getTranslateableFields(configRowsContent(), 'en-US', 'instructions')).toEqual({});
+});
+
+test('applyTranslation seeds the source when an input had nothing to translate', () => {
+  const result = applyTranslation(configRowsContent(), {}, 'de-DE', 'en-US');
+  const rows = (result.data as any).blocks[0].component.options.configRows;
+
+  // Without the locale branch the SDK renders undefined and the rows disappear.
+  expect(rows['de-DE']).toEqual(rows.Default);
+});
