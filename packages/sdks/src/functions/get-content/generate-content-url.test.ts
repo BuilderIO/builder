@@ -264,4 +264,33 @@ describe('Generate Content URL', () => {
     });
     expect(output).toMatchSnapshot();
   });
+
+  test('converts Studio boolean user attributes from query parameters', () => {
+    vi.stubGlobal('window', {
+      location: {
+        search:
+          '?builder.preview=BUILDER_STUDIO&builder.userAttributes.isLoggedIn=true&builder.userAttributes.isGuest=false&builder.userAttributes.audience=members',
+        pathname: '/products',
+        host: 'www.example.com',
+      },
+    });
+    vi.stubGlobal('document', {});
+
+    try {
+      const output = generateContentUrl({
+        apiKey: testKey,
+        model: testModel,
+      });
+
+      expect(JSON.parse(output.searchParams.get('userAttributes')!)).toEqual({
+        isLoggedIn: true,
+        isGuest: false,
+        audience: 'members',
+        urlPath: '/products',
+        host: 'www.example.com',
+      });
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });
