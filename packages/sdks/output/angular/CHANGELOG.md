@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.12
+
+### Patch Changes
+
+- f09f685: Fix boolean user attributes in Builder Studio targeting requests.
+
 ## 0.25.11
 
 ### Patch Changes
