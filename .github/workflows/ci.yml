@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
         # https://stackoverflow.com/a/78153130
         with:
@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
         # https://stackoverflow.com/a/78153130
         with:
@@ -141,7 +141,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
         # https://stackoverflow.com/a/78153130
         with:
@@ -177,7 +177,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
         # https://stackoverflow.com/a/78153130
         with:
@@ -211,7 +211,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
         # https://stackoverflow.com/a/78153130
         with:
@@ -255,7 +255,7 @@ jobs:
 
     steps:
       - name: Setup
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # This is needed to fix an issue with Nx attempting to find the `HEAD~1` commit.
         # https://stackoverflow.com/a/78153130
         with:
@@ -293,7 +293,7 @@ jobs:
         package: ['webcomponents', 'widgets']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use node version 18
         uses: actions/setup-node@v4
@@ -329,7 +329,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use node version 22
         uses: actions/setup-node@v4
