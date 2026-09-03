@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 5.2.10
+
+### Patch Changes
+
+- f09f685: Fix boolean user attributes in Builder Studio targeting requests.
+
 ## 5.2.9
 
 ### Patch Changes
