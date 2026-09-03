@@ -118,11 +118,17 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   return url;
 };
 
+const parseStudioUserAttribute = (value: unknown) => {
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  return value;
+};
+
 const getUserAttributesFromQueryOptions = (queryOptions: any) => {
   const newUserAttributes: any = {};
   for (const key in queryOptions) {
     if (key.startsWith('userAttributes.')) {
-      newUserAttributes[key] = queryOptions[key];
+      newUserAttributes[key] = parseStudioUserAttribute(queryOptions[key]);
       delete queryOptions[key];
     }
   }
