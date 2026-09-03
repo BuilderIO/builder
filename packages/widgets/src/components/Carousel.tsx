@@ -13,6 +13,16 @@ import Slider, { ResponsiveObject, Settings } from 'react-slick';
 
 type BuilderBlockType = BuilderElement;
 
+const CarouselArrow = ({
+  currentSlide,
+  slideCount,
+  children,
+  ...rest
+}: React.HTMLAttributes<HTMLDivElement> & {
+  currentSlide?: number;
+  slideCount?: number;
+}) => <div {...rest}>{children}</div>;
+
 interface CarouselProps {
   slides: Array<
     React.ReactNode | { content: BuilderBlockType[] } /* BuilderBlock <- export this type */
@@ -145,26 +155,31 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                     focusOnSelect={this.props.focusOnSelect}
                     // TODO: on change emit event on element?
                     // renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
-
+                    arrows={
+                      !!(
+                        (this.props.prevButton && this.props.prevButton.length) ||
+                        (this.props.nextButton && this.props.nextButton.length)
+                      )
+                    }
                     // OOF!!
                     nextArrow={
-                      <div>
+                      <CarouselArrow>
                         <BuilderBlocks
                           parentElementId={this.props.builderBlock.id}
                           dataPath="component.options.prevButton"
                           blocks={this.props.prevButton}
                         />
-                      </div>
+                      </CarouselArrow>
                     }
                     // OOF!!
                     prevArrow={
-                      <div>
+                      <CarouselArrow>
                         <BuilderBlocks
                           parentElementId={this.props.builderBlock.id}
                           dataPath="component.options.nextButton"
                           blocks={this.props.nextButton}
                         />
-                      </div>
+                      </CarouselArrow>
                     }
                     {...this.props.slickProps}
                     slidesToShow={this.state.slidesToShow}
