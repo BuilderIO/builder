@@ -223,6 +223,7 @@ export default function ContentComponent(props: ContentProps) {
       canTrack={props.canTrack}
       locale={props.locale}
       enrich={props.enrich}
+      enrichOptions={props.enrichOptions}
       showContent={props.showContent}
       builderContextSignal={builderContextSignal}
       contentWrapper={props.contentWrapper}

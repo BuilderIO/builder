@@ -1,5 +1,6 @@
 import { SDK_VERSION } from '../constants/sdk-version.js';
 import { TARGET } from '../constants/target.js';
+import type { EnrichOptions } from '../functions/get-content/types.js';
 import { isBrowser } from '../functions/is-browser.js';
 import { isFromTrustedHost } from '../functions/is-from-trusted-host.js';
 
@@ -8,6 +9,9 @@ export const setupBrowserForEditing = (options: {
   modelName: string;
   apiKey: string;
   enrich?: boolean;
+  // Forwarded to the editor as part of `builder.updateContent` below, so its
+  // preview can resolve references with the same constraints as this site's fetch.
+  enrichOptions?: EnrichOptions;
   includeRefs?: boolean;
   locale?: string;
   trustedHosts?: string[];
