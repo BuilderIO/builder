@@ -1,3 +1,9 @@
+jest.mock(
+  'src/functions/extract-localized-values',
+  () => ({ containsLocalizedValues: () => false, extractLocalizedValues: () => ({}) }),
+  { virtual: true }
+);
+
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { JSDOM } from 'jsdom';

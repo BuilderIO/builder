@@ -2,6 +2,12 @@
  * @jest-environment jsdom
  * @jest-environment-options {"url": "https://example.com/?builder.tests.contentid1=variationa1"}
  */
+jest.mock(
+  'src/functions/extract-localized-values',
+  () => ({ containsLocalizedValues: () => false, extractLocalizedValues: () => ({}) }),
+  { virtual: true }
+);
+
 import React from 'react';
 import { TextEncoder, TextDecoder } from 'util';
 

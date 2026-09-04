@@ -2,10 +2,6 @@ module.exports = {
   testEnvironment: 'jest-environment-jsdom',
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect', '<rootDir>/test/setupTests.ts'],
   testMatch: ['**/?(*.)test.ts?(x)'],
-  // matches the `baseUrl` in tsconfig.json, which allows `src/...` imports
-  moduleNameMapper: {
-    '^src/(.*)$': '<rootDir>/src/$1',
-  },
   globals: {
     'ts-jest': {
       tsConfig: 'tsconfig.json',
