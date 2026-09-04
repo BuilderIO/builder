@@ -20,6 +20,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     model,
     apiKey,
     enrich,
+    enrichOptions,
     locale,
     apiVersion = DEFAULT_API_VERSION,
     fields,
@@ -59,6 +60,11 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   let finalUserAttributes: Record<string, any> = userAttributes || {};
 
   if (enrich) url.searchParams.set('enrich', String(enrich));
+
+  // Only honored alongside `enrich=true` by the content API.
+  if (enrich && enrichOptions) {
+    url.searchParams.set('enrichOptions', JSON.stringify(enrichOptions));
+  }
 
   url.searchParams.set('omit', omit ?? 'meta.componentsUsed');
 
