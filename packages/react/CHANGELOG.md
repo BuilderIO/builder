@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.5
+
+### Patch Changes
+
+- 5604e14: Fix: A/B test variation previews no longer flash the default variation before switching. The `builder.tests.<contentId>` URL parameter is now applied when the SSR variants script selects a variation, so the first paint matches what React renders during hydration.
+
 ## 9.4.4
 
 ### Patch Changes
