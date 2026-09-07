@@ -18,6 +18,28 @@ function getData(content: BuilderContentVariation) {
   return newData;
 }
 
+// Mirrors the precedence used by the inlined variants script below, so that the DOM
+// the script produces before hydration matches what React renders while hydrating.
+function getVariantIdFromUrl(contentId: string) {
+  const search = (Builder.isBrowser && location.search) || '';
+  if (search.indexOf('builder') === -1) {
+    return null;
+  }
+  const names = ['builder.tests.' + contentId, 'builder_tests_' + contentId];
+  const entries = (search.charAt(0) === '?' ? search.substring(1) : search).split('&');
+  for (const entry of entries) {
+    const parts = entry.split('=');
+    if (names.indexOf(parts[0]) > -1) {
+      try {
+        return decodeURIComponent(parts[1] || '');
+      } catch (err) {
+        return parts[1] || null;
+      }
+    }
+  }
+  return null;
+}
+
 const variantsScript = (variantsString: string, contentId: string) =>
   `
 (function() {
@@ -58,11 +80,34 @@ const variantsScript = (variantsString: string, contentId: string) =>
     }
     return null;
   }
+  function getVariantFromUrl() {
+    var search = location.search || '';
+    if (search.indexOf('builder') === -1) {
+      return null;
+    }
+    var names = ['builder.tests.${contentId}', 'builder_tests_${contentId}'];
+    var entries = (search.charAt(0) === '?' ? search.substring(1) : search).split('&');
+    for (var i = 0; i < entries.length; i++) {
+      var parts = entries[i].split('=');
+      if (names.indexOf(parts[0]) > -1) {
+        try {
+          return decodeURIComponent(parts[1] || '');
+        } catch (err) {
+          return parts[1] || null;
+        }
+      }
+    }
+    return null;
+  }
   var cookieName = 'builder.tests.${contentId}';
   var variantInCookie = getCookie(cookieName);
   var availableIDs = variants.map(function(vr) { return vr.id }).concat('${contentId}');
   var variantId;
-  if (availableIDs.indexOf(variantInCookie) > -1) {
+  var variantInUrl = getVariantFromUrl();
+  if (availableIDs.indexOf(variantInUrl) > -1) {
+    variantId = variantInUrl;
+    setCookie(cookieName, variantId);
+  } else if (availableIDs.indexOf(variantInCookie) > -1) {
     variantId = variantInCookie;
   }
   if (!variantId) {
@@ -141,7 +186,11 @@ export const VariantsProvider = ({ initialContent, children, nonce }: VariantsPr
 
   const cookieName = `builder.tests.${initialContent.id}`;
 
-  let variantId = builder.getCookie(cookieName);
+  const variantIdFromUrl = getVariantIdFromUrl(initialContent.id!);
+
+  let variantId = allVariants.some(item => item.id === variantIdFromUrl)
+    ? variantIdFromUrl
+    : builder.getCookie(cookieName);
 
   if (!variantId && Builder.isBrowser) {
     let n = 0;
