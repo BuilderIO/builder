@@ -4,20 +4,15 @@
 
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
-import { createRoot, hydrateRoot } from 'react-dom/client';
-import { act } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import type { BuilderElement } from '@builder.io/sdk';
-import type { CustomCode as CustomCodeComponent } from '../src/blocks/CustomCode';
+import type { CustomCode as CustomCodeComponent } from './CustomCode';
 
 declare global {
   interface Window {
     __ccRuns?: number;
   }
-  // eslint-disable-next-line no-var
-  var IS_REACT_ACT_ENVIRONMENT: boolean;
 }
-
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
 // jsdom does not implement innerText, which is what CustomCode reads to eval inline scripts.
 if (!Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'innerText')) {
@@ -50,21 +45,25 @@ const CODE = [
 function loadCustomCode() {
   jest.resetModules();
   const sdk = require('@builder.io/sdk') as typeof import('@builder.io/sdk');
-  const blockModule = require('../src/blocks/CustomCode') as {
+  const blockModule = require('./CustomCode') as {
     CustomCode: typeof CustomCodeComponent;
   };
   return { Builder: sdk.Builder, CustomCode: blockModule.CustomCode };
+}
+
+function customCodeTree(CustomCode: typeof CustomCodeComponent) {
+  return (
+    <div builder-id={BLOCK_ID} className={BLOCK_ID}>
+      <CustomCode code={CODE} scriptsClientOnly builderBlock={builderBlock} />
+    </div>
+  );
 }
 
 function renderSsrMarkup(): string {
   const { Builder, CustomCode } = loadCustomCode();
   Builder.isServer = true;
   try {
-    return renderToString(
-      <div builder-id={BLOCK_ID} className={BLOCK_ID}>
-        <CustomCode code={CODE} scriptsClientOnly builderBlock={builderBlock} />
-      </div>
-    );
+    return renderToString(customCodeTree(CustomCode));
   } finally {
     Builder.isServer = false;
   }
@@ -79,7 +78,6 @@ async function flushNextTick() {
 describe('CustomCode scriptsClientOnly hydration', () => {
   beforeEach(() => {
     delete window.__ccRuns;
-    document.body.innerHTML = '';
     document.head.querySelectorAll(`script[src="${REMOTE_SCRIPT_SRC}"]`).forEach(el => el.remove());
   });
 
@@ -93,23 +91,15 @@ describe('CustomCode scriptsClientOnly hydration', () => {
   it('restores and runs the stripped scripts after hydration', async () => {
     const ssrMarkup = renderSsrMarkup();
 
-    const root = document.createElement('div');
-    root.innerHTML = ssrMarkup;
-    document.body.appendChild(root);
+    const container = document.createElement('div');
+    container.innerHTML = ssrMarkup;
+    document.body.appendChild(container);
 
     const { CustomCode } = loadCustomCode();
-
-    await act(async () => {
-      hydrateRoot(
-        root,
-        <div builder-id={BLOCK_ID} className={BLOCK_ID}>
-          <CustomCode code={CODE} scriptsClientOnly builderBlock={builderBlock} />
-        </div>
-      );
-    });
+    render(customCodeTree(CustomCode), { container, hydrate: true });
     await flushNextTick();
 
-    const customCodeEl = root.querySelector('.builder-custom-code');
+    const customCodeEl = container.querySelector('.builder-custom-code');
     expect(customCodeEl).toBeTruthy();
 
     // The re-render triggered by `hydrated` must put the stripped <script> tags back in the DOM.
@@ -123,9 +113,6 @@ describe('CustomCode scriptsClientOnly hydration', () => {
     const { CustomCode } = loadCustomCode();
     const renderSpy = jest.spyOn(CustomCode.prototype, 'render');
 
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-
     function Parent({ label }: { label: string }) {
       return (
         <div>
@@ -135,18 +122,12 @@ describe('CustomCode scriptsClientOnly hydration', () => {
       );
     }
 
-    const reactRoot = createRoot(container);
-
-    await act(async () => {
-      reactRoot.render(<Parent label="a" />);
-    });
+    const { rerender } = render(<Parent label="a" />);
     await flushNextTick();
 
     const rendersAfterMount = renderSpy.mock.calls.length;
 
-    await act(async () => {
-      reactRoot.render(<Parent label="b" />);
-    });
+    rerender(<Parent label="b" />);
     await flushNextTick();
 
     expect(renderSpy.mock.calls.length).toBe(rendersAfterMount);
