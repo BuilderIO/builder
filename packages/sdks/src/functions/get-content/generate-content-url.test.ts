@@ -130,6 +130,31 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
+  test('generate content url with enrichOptions serialized alongside enrich', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      enrich: true,
+      enrichOptions: {
+        enrichLevel: 1,
+        model: { product: { fields: 'title,price' } },
+      },
+    });
+    expect(JSON.parse(output.searchParams.get('enrichOptions')!)).toEqual({
+      enrichLevel: 1,
+      model: { product: { fields: 'title,price' } },
+    });
+  });
+
+  test('generate content url omits enrichOptions when enrich is not set', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      enrichOptions: { enrichLevel: 1 },
+    });
+    expect(output.searchParams.get('enrichOptions')).toBeNull();
+  });
+
   test('generate content url with enrich option not present', () => {
     const output = generateContentUrl({
       apiKey: testKey,

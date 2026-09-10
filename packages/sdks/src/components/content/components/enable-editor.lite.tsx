@@ -384,6 +384,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
       setupBrowserForEditing({
         ...(props.locale ? { locale: props.locale } : {}),
         ...(props.enrich ? { enrich: props.enrich } : {}),
+        ...(props.enrichOptions ? { enrichOptions: props.enrichOptions } : {}),
         ...(props.trustedHosts ? { trustedHosts: props.trustedHosts } : {}),
         modelName: props.model ?? '',
         apiKey: props.apiKey,
