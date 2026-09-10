@@ -161,6 +161,7 @@ registerPlugin(
             content.modelName,
             picks.sourceLang,
             picks.targetLangs,
+            picks.preTranslate,
             settings.get('callbackHost')
           );
           showJobNotification(project.uid, settings.get('isUSDataCenterAccount'));

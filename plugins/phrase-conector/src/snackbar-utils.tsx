@@ -10,6 +10,7 @@ import {
   MenuItem,
   ListItemText,
   Checkbox,
+  FormControlLabel,
   Typography,
   Button,
   Radio,
@@ -71,7 +72,9 @@ export function showOutdatedNotifications(callback: () => void) {
 }
 
 interface Props {
-  onChoose: (val: { sourceLang: string; targetLangs: string[] } | null) => void;
+  onChoose: (
+    val: { sourceLang: string; targetLangs: string[]; preTranslate: boolean } | null
+  ) => void;
 }
 const lsKey = 'phrase.sourceLang';
 
@@ -94,6 +97,7 @@ const safeLsSet = (key: string, value: string) => {
 const PhraseConfigurationEditor: React.FC<Props> = props => {
   const store = useLocalStore(() => ({
     targetLangs: [] as string[],
+    preTranslate: false,
     get availableLangs(): string[] {
       return (
         appState.user.organization.value.customTargetingAttributes
@@ -163,6 +167,25 @@ const PhraseConfigurationEditor: React.FC<Props> = props => {
           Pick from the list of available languages
         </Typography>
       </div>
+      <FormControlLabel
+        control={
+          <Checkbox
+            color="primary"
+            checked={store.preTranslate}
+            onChange={action(event => {
+              store.preTranslate = event.target.checked;
+            })}
+          />
+        }
+        label={
+          <div>
+            <Typography>Pre-translate</Typography>
+            <Typography variant="caption">
+              Use approved translations from Phrase Translation Memory to pre-fill this job
+            </Typography>
+          </div>
+        }
+      />
       <DialogActions>
         <Button onClick={() => props.onChoose(null)} color="default">
           cancel
@@ -178,6 +201,7 @@ const PhraseConfigurationEditor: React.FC<Props> = props => {
 export async function getLangPicks(): Promise<{
   sourceLang: string;
   targetLangs: string[];
+  preTranslate: boolean;
 } | null> {
   return new Promise(async resolve => {
     const destroy = await appState.globalState.openDialog(
