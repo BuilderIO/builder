@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.13
+
+### Patch Changes
+
+- b0337c6: Add `enrichOptions` to `fetchOneEntry` and to `Content`, so reference enrichment can be constrained (`enrichLevel`, per-model `fields`/`omit`) and the Visual Editor is told which constraints your site fetches with.
+
 ## 0.25.12
 
 ### Patch Changes
