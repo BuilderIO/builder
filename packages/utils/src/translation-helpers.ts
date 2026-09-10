@@ -14,6 +14,22 @@ export type TranslateableFields = {
   };
 };
 
+// A bare URL or asset reference is a routing/config value, never a translation unit.
+// Whitespace means prose ("Visit https://x.com for more"), which stays translatable.
+function isNonTranslatableValue(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed || /\s/.test(trimmed)) {
+    return false;
+  }
+  const lower = trimmed.toLowerCase();
+  return (
+    lower.startsWith('/') ||
+    lower.startsWith('http://') ||
+    lower.startsWith('https://') ||
+    lower.startsWith('cdn.builder.io/')
+  );
+}
+
 function unescapeStringOrObject(input: string | Record<string, any>) {
   // Check if input is a string
   if (typeof input === 'string') {
@@ -62,7 +78,7 @@ function recordValue({
       const extractedValue = value?.[sourceLocaleId] || value?.Default;
 
       // If the extracted value is a string, store it directly
-      if (typeof extractedValue === 'string') {
+      if (typeof extractedValue === 'string' && !isNonTranslatableValue(extractedValue)) {
         results[path] = {
           value: extractedValue,
           instructions,
@@ -141,6 +157,15 @@ function resolveTranslation({
       } else {
         // No direct translation - check if Default value contains nested LocalizedValues
         const defaultValue = value?.Default;
+        // Restore a leaf the extractor skipped: the SDK resolves a missing locale to
+        // undefined, so the link would otherwise vanish in the target locale.
+        if (
+          typeof defaultValue === 'string' &&
+          isNonTranslatableValue(defaultValue) &&
+          value[locale] == null
+        ) {
+          set(data, dataPath, { ...value, [locale]: defaultValue });
+        }
         if (
           Array.isArray(defaultValue) ||
           (typeof defaultValue === 'object' && defaultValue !== null)
@@ -230,7 +255,7 @@ function extractNestedStrings(
   excluded?: Set<string>
 ) {
   if (typeof value === 'string') {
-    if (value && !isExcludedPath(excluded, basePath)) {
+    if (value && !isExcludedPath(excluded, basePath) && !isNonTranslatableValue(value)) {
       results[basePath] = { value, instructions };
     }
   } else if (Array.isArray(value)) {
@@ -250,7 +275,7 @@ function extractNestedStrings(
       const nested = value[sourceLocaleId] || value.Default;
       const nestedInstructions = value.meta?.instructions || instructions;
       if (typeof nested === 'string' && nested) {
-        if (!isExcludedPath(excluded, basePath)) {
+        if (!isExcludedPath(excluded, basePath) && !isNonTranslatableValue(nested)) {
           results[basePath] = { value: nested, instructions: nestedInstructions };
         }
       } else if (nested !== null && nested !== undefined) {
@@ -313,7 +338,7 @@ function extractLocalizedLeaves(
     const nestedInstructions = value.meta?.instructions || instructions;
     if (typeof nested === 'string') {
       // Counts even when excluded, else the caller sweeps up every string instead.
-      if (nested && !isExcludedPath(excluded, basePath)) {
+      if (nested && !isExcludedPath(excluded, basePath) && !isNonTranslatableValue(nested)) {
         results[basePath] = { value: nested, instructions: nestedInstructions };
       }
       return 1;
@@ -379,7 +404,7 @@ export function getTranslateableFields(
     if (value['@type'] === localizedType) {
       const instructions = value.meta?.instructions || defaultInstructions;
       const extractedValue = value[sourceLocaleId] || value.Default;
-      if (typeof extractedValue === 'string') {
+      if (typeof extractedValue === 'string' && !isNonTranslatableValue(extractedValue)) {
         results[path] = { value: extractedValue, instructions };
       } else if (extractedValue !== null && extractedValue !== undefined) {
         // Value is an array or object — extract individual string leaves so each
@@ -440,7 +465,7 @@ export function getTranslateableFields(
               }
 
               if (typeof valueToBeTranslated === 'string') {
-                if (valueToBeTranslated) {
+                if (valueToBeTranslated && !isNonTranslatableValue(valueToBeTranslated)) {
                   results[path] = { instructions, value: valueToBeTranslated };
                 }
                 return;
@@ -625,6 +650,15 @@ export function applyTranslation(
       const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
           ? el[sourceLocaleId]
           : el.Default;
+      // Same restore for a model field the extractor skipped.
+      if (
+        !compoundKeys.length &&
+        typeof sourceValue === 'string' &&
+        isNonTranslatableValue(sourceValue) &&
+        el[locale] == null
+      ) {
+        this.update({ ...el, [locale]: sourceValue });
+      }
       if (compoundKeys.length > 0 && sourceValue !== null && sourceValue !== undefined) {
         const localeValue = JSON.parse(JSON.stringify(sourceValue));
         compoundKeys.forEach(key => {
@@ -890,7 +924,7 @@ export function applyTranslation(
           if (!compoundKeys.length) {
             // Everything came back excluded, or there was never anything to send. Both differ
             // from the provider not having answered yet, which must leave the locale alone.
-            if (matchingKeys.length || (excludedPaths && !hasTranslatableLeaf())) {
+            if (matchingKeys.length || !hasTranslatableLeaf()) {
               seedSourceIntoLocale();
             }
             return;

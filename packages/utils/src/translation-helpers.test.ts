@@ -1754,3 +1754,111 @@ test('applyTranslation seeds the source when an input had nothing to translate',
   // Without the locale branch the SDK renders undefined and the rows disappear.
   expect(rows['de-DE']).toEqual(rows.Default);
 });
+
+// URLs and asset references are routing values a translator cannot produce; sending them
+// pollutes the job and lets a translator overwrite a live link.
+const assetFieldsContent = (): BuilderContent => ({
+  data: {
+    heroImage: { '@type': localizedType, Default: 'https://cdn.builder.io/api/v1/image/hero.png' },
+    intro: { '@type': localizedType, Default: 'Visit https://example.com for more' },
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-slides',
+        meta: { localizedTextInputs: ['heroLink', 'slides'] },
+        component: {
+          name: 'Carousel',
+          options: {
+            heroLink: { '@type': localizedType, Default: 'https://example.com/en-gb/hero' },
+            slides: {
+              '@type': localizedType,
+              Default: [
+                {
+                  caption: 'Food and drink',
+                  imageUrl: 'https://cdn.builder.io/api/v1/image/slide.png',
+                  link: '/en-gb/business-types/food-and-drink',
+                },
+              ],
+            },
+          },
+        },
+      },
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-symbol',
+        component: {
+          name: 'Symbol',
+          options: {
+            symbol: {
+              data: {
+                buttonUrl: { '@type': localizedType, Default: 'https://example.com/en-gb' },
+                label: { '@type': localizedType, Default: 'Get started' },
+              },
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+
+test('getTranslateableFields skips url and asset values but keeps prose containing a url', () => {
+  expect(getTranslateableFields(assetFieldsContent(), 'en-GB', 'instructions')).toEqual({
+    'metadata.intro': { value: 'Visit https://example.com for more', instructions: 'instructions' },
+    'blocks.builder-slides#slides#0#caption': {
+      value: 'Food and drink',
+      instructions: 'instructions',
+    },
+    'blocks.builder-symbol.symbolInput#label': {
+      value: 'Get started',
+      instructions: 'instructions',
+    },
+  });
+});
+
+test('applyTranslation keeps skipped urls readable in the target locale', () => {
+  const result = applyTranslation(
+    assetFieldsContent(),
+    {
+      'blocks.builder-slides#slides#0#caption': { value: 'Essen und Trinken' },
+      'blocks.builder-symbol.symbolInput#label': { value: 'Jetzt starten' },
+      'metadata.intro': { value: 'DE intro' },
+    },
+    'de-DE',
+    'en-GB'
+  );
+  const data = result.data as any;
+  const options = data.blocks[0].component.options;
+  const symbolData = data.blocks[1].component.options.symbol.data;
+
+  expect(options.slides['de-DE']).toEqual([
+    {
+      caption: 'Essen und Trinken',
+      imageUrl: 'https://cdn.builder.io/api/v1/image/slide.png',
+      link: '/en-gb/business-types/food-and-drink',
+    },
+  ]);
+  expect(options.heroLink['de-DE']).toEqual('https://example.com/en-gb/hero');
+  expect(symbolData.buttonUrl['de-DE']).toEqual('https://example.com/en-gb');
+  expect(data.heroImage['de-DE']).toEqual('https://cdn.builder.io/api/v1/image/hero.png');
+});
+
+test('applyTranslation does not seed real copy that a pending job has not returned yet', () => {
+  const result = applyTranslation(assetFieldsContent(), {}, 'de-DE', 'en-GB');
+  const data = result.data as any;
+
+  expect(data.blocks[1].component.options.symbol.data.label['de-DE']).toBeUndefined();
+  expect(data.intro['de-DE']).toBeUndefined();
+  expect(data.blocks[0].component.options.slides['de-DE']).toBeUndefined();
+});
+
+test('applyTranslation does not overwrite a url already localized for the target locale', () => {
+  const content = assetFieldsContent();
+  (content.data as any).blocks[1].component.options.symbol.data.buttonUrl['de-DE'] =
+    'https://example.com/de-de';
+
+  const result = applyTranslation(content, {}, 'de-DE', 'en-GB');
+  const symbolData = (result.data as any).blocks[1].component.options.symbol.data;
+
+  expect(symbolData.buttonUrl['de-DE']).toEqual('https://example.com/de-de');
+});
