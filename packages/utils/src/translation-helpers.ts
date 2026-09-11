@@ -14,6 +14,31 @@ export type TranslateableFields = {
   };
 };
 
+// A bare url or asset is routing config, never copy. Whitespace means prose
+// ("Visit https://x.com for more"), which stays translatable.
+function isNonTranslatableValue(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed || /\s/.test(trimmed)) {
+    return false;
+  }
+  const lower = trimmed.toLowerCase();
+  return (
+    lower.startsWith('/') ||
+    // './x' and '../x' are clearly links. Bare 'foo/bar' is not: it looks like 'and/or'.
+    lower.startsWith('./') ||
+    lower.startsWith('../') ||
+    lower.startsWith('http://') ||
+    lower.startsWith('https://') ||
+    lower.startsWith('cdn.builder.io/') ||
+    lower.startsWith('mailto:') ||
+    lower.startsWith('tel:') ||
+    lower.startsWith('sms:') ||
+    lower.startsWith('data:') ||
+    // Bare '#' is an empty placeholder; '#anchor' looks like a hashtag, so it stays in.
+    lower === '#'
+  );
+}
+
 function unescapeStringOrObject(input: string | Record<string, any>) {
   // Check if input is a string
   if (typeof input === 'string') {
@@ -62,7 +87,7 @@ function recordValue({
       const extractedValue = value?.[sourceLocaleId] || value?.Default;
 
       // If the extracted value is a string, store it directly
-      if (typeof extractedValue === 'string') {
+      if (typeof extractedValue === 'string' && !isNonTranslatableValue(extractedValue)) {
         results[path] = {
           value: extractedValue,
           instructions,
@@ -103,6 +128,7 @@ function resolveTranslation({
   translation,
   transformedMeta,
   locale,
+  sourceLocaleId,
 }: {
   data: any;
   basePath: string;
@@ -112,6 +138,7 @@ function resolveTranslation({
   translation: any;
   transformedMeta: Record<string, string>;
   locale: string;
+  sourceLocaleId?: string;
 }) {
   if (Array.isArray(value)) {
     value.forEach((item, index) => {
@@ -124,6 +151,7 @@ function resolveTranslation({
         translation,
         transformedMeta,
         locale,
+        sourceLocaleId,
       });
     });
   } else if (typeof value === 'object' && value !== null) {
@@ -141,6 +169,16 @@ function resolveTranslation({
       } else {
         // No direct translation - check if Default value contains nested LocalizedValues
         const defaultValue = value?.Default;
+        // Restore a skipped leaf. Picking the source the same way the extractor does
+        // avoids seeding a url over prose still out for translation.
+        const skippedSource = (sourceLocaleId && value?.[sourceLocaleId]) || value?.Default;
+        if (
+          typeof skippedSource === 'string' &&
+          isNonTranslatableValue(skippedSource) &&
+          value[locale] == null
+        ) {
+          set(data, dataPath, { ...value, [locale]: skippedSource });
+        }
         if (
           Array.isArray(defaultValue) ||
           (typeof defaultValue === 'object' && defaultValue !== null)
@@ -156,6 +194,7 @@ function resolveTranslation({
             translation,
             transformedMeta,
             locale,
+            sourceLocaleId,
           });
         }
 
@@ -175,6 +214,7 @@ function resolveTranslation({
             translation,
             transformedMeta,
             locale,
+            sourceLocaleId,
           });
         }
       }
@@ -189,6 +229,7 @@ function resolveTranslation({
           translation,
           transformedMeta,
           locale,
+          sourceLocaleId,
         });
       });
     }
@@ -230,7 +271,7 @@ function extractNestedStrings(
   excluded?: Set<string>
 ) {
   if (typeof value === 'string') {
-    if (value && !isExcludedPath(excluded, basePath)) {
+    if (value && !isExcludedPath(excluded, basePath) && !isNonTranslatableValue(value)) {
       results[basePath] = { value, instructions };
     }
   } else if (Array.isArray(value)) {
@@ -250,7 +291,7 @@ function extractNestedStrings(
       const nested = value[sourceLocaleId] || value.Default;
       const nestedInstructions = value.meta?.instructions || instructions;
       if (typeof nested === 'string' && nested) {
-        if (!isExcludedPath(excluded, basePath)) {
+        if (!isExcludedPath(excluded, basePath) && !isNonTranslatableValue(nested)) {
           results[basePath] = { value: nested, instructions: nestedInstructions };
         }
       } else if (nested !== null && nested !== undefined) {
@@ -313,7 +354,7 @@ function extractLocalizedLeaves(
     const nestedInstructions = value.meta?.instructions || instructions;
     if (typeof nested === 'string') {
       // Counts even when excluded, else the caller sweeps up every string instead.
-      if (nested && !isExcludedPath(excluded, basePath)) {
+      if (nested && !isExcludedPath(excluded, basePath) && !isNonTranslatableValue(nested)) {
         results[basePath] = { value: nested, instructions: nestedInstructions };
       }
       return 1;
@@ -379,7 +420,7 @@ export function getTranslateableFields(
     if (value['@type'] === localizedType) {
       const instructions = value.meta?.instructions || defaultInstructions;
       const extractedValue = value[sourceLocaleId] || value.Default;
-      if (typeof extractedValue === 'string') {
+      if (typeof extractedValue === 'string' && !isNonTranslatableValue(extractedValue)) {
         results[path] = { value: extractedValue, instructions };
       } else if (extractedValue !== null && extractedValue !== undefined) {
         // Value is an array or object — extract individual string leaves so each
@@ -440,7 +481,7 @@ export function getTranslateableFields(
               }
 
               if (typeof valueToBeTranslated === 'string') {
-                if (valueToBeTranslated) {
+                if (valueToBeTranslated && !isNonTranslatableValue(valueToBeTranslated)) {
                   results[path] = { instructions, value: valueToBeTranslated };
                 }
                 return;
@@ -527,6 +568,14 @@ export function getTranslateableFields(
   }
 
   return results;
+}
+
+// Separates a payload the url guard emptied from one that never held a string.
+function hasStringLeaf(value: any): boolean {
+  if (typeof value === 'string') return Boolean(value);
+  if (Array.isArray(value)) return value.some(hasStringLeaf);
+  if (value && typeof value === 'object') return Object.values(value).some(hasStringLeaf);
+  return false;
 }
 
 // Seeds every nested LocalizedValue with a locale branch from the source: the SDK
@@ -625,6 +674,23 @@ export function applyTranslation(
       const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
           ? el[sourceLocaleId]
           : el.Default;
+      // A url-only payload draws no response, and the SDK reads a missing locale as
+      // undefined, so restore it or it vanishes in the target locale.
+      const metaHasTranslatableLeaf = () => {
+        const probe: TranslateableFields = {};
+        extractNestedStrings(sourceValue, metaKey, probe, '', sourceLocaleId ?? '');
+        return Object.keys(probe).length > 0;
+      };
+      if (
+        !compoundKeys.length &&
+        el[locale] == null &&
+        hasStringLeaf(sourceValue) &&
+        !metaHasTranslatableLeaf()
+      ) {
+        const seeded = JSON.parse(JSON.stringify(sourceValue));
+        seedLocaleBranches(seeded, locale, sourceLocaleId);
+        this.update({ ...el, [locale]: seeded });
+      }
       if (compoundKeys.length > 0 && sourceValue !== null && sourceValue !== undefined) {
         const localeValue = JSON.parse(JSON.stringify(sourceValue));
         compoundKeys.forEach(key => {
@@ -646,6 +712,9 @@ export function applyTranslation(
         });
         this.update({ ...el, [locale]: localeValue });
       }
+      // Nested leaves are handled above; descending would only write locale keys into
+      // the source payload.
+      this.block();
     }
   });
 
@@ -693,6 +762,7 @@ export function applyTranslation(
                 translation,
                 transformedMeta,
                 locale,
+                sourceLocaleId,
               });
 
               this.update({
@@ -890,7 +960,7 @@ export function applyTranslation(
           if (!compoundKeys.length) {
             // Everything came back excluded, or there was never anything to send. Both differ
             // from the provider not having answered yet, which must leave the locale alone.
-            if (matchingKeys.length || (excludedPaths && !hasTranslatableLeaf())) {
+            if (matchingKeys.length || !hasTranslatableLeaf()) {
               seedSourceIntoLocale();
             }
             return;
