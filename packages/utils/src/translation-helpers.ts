@@ -14,8 +14,8 @@ export type TranslateableFields = {
   };
 };
 
-// A bare URL or asset reference is a routing/config value, never a translation unit.
-// Whitespace means prose ("Visit https://x.com for more"), which stays translatable.
+// A bare url or asset is routing config, never copy. Whitespace means prose
+// ("Visit https://x.com for more"), which stays translatable.
 function isNonTranslatableValue(value: string) {
   const trimmed = value.trim();
   if (!trimmed || /\s/.test(trimmed)) {
@@ -24,8 +24,7 @@ function isNonTranslatableValue(value: string) {
   const lower = trimmed.toLowerCase();
   return (
     lower.startsWith('/') ||
-    // './x' and '../x' are unambiguous relative links. A bare 'foo/bar' is not: it is
-    // shape-identical to real copy like 'and/or', 'Yes/No' or '24/7', so it stays in.
+    // './x' and '../x' are clearly links. Bare 'foo/bar' is not: it looks like 'and/or'.
     lower.startsWith('./') ||
     lower.startsWith('../') ||
     lower.startsWith('http://') ||
@@ -35,8 +34,7 @@ function isNonTranslatableValue(value: string) {
     lower.startsWith('tel:') ||
     lower.startsWith('sms:') ||
     lower.startsWith('data:') ||
-    // Bare '#' is an empty link placeholder, but '#anchor' is shape-identical to a
-    // campaign hashtag like '#SumUp', so those stay translatable.
+    // Bare '#' is an empty placeholder; '#anchor' looks like a hashtag, so it stays in.
     lower === '#'
   );
 }
@@ -171,9 +169,8 @@ function resolveTranslation({
       } else {
         // No direct translation - check if Default value contains nested LocalizedValues
         const defaultValue = value?.Default;
-        // Restore a leaf the extractor skipped. Selecting the source the same way the
-        // extractor does keeps the two from disagreeing: reading Default here would seed
-        // a url over prose that is still out for translation, or miss the url entirely.
+        // Restore a skipped leaf. Picking the source the same way the extractor does
+        // avoids seeding a url over prose still out for translation.
         const skippedSource = (sourceLocaleId && value?.[sourceLocaleId]) || value?.Default;
         if (
           typeof skippedSource === 'string' &&
@@ -573,8 +570,7 @@ export function getTranslateableFields(
   return results;
 }
 
-// Tells a payload the url guard emptied from one that never held a string, so only the
-// former is restored into the target locale.
+// Separates a payload the url guard emptied from one that never held a string.
 function hasStringLeaf(value: any): boolean {
   if (typeof value === 'string') return Boolean(value);
   if (Array.isArray(value)) return value.some(hasStringLeaf);
@@ -678,8 +674,8 @@ export function applyTranslation(
       const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
           ? el[sourceLocaleId]
           : el.Default;
-      // Restore what the extractor skipped: a url-only field or payload draws no response,
-      // and the SDK resolves a missing locale to undefined, so it would vanish there.
+      // A url-only payload draws no response, and the SDK reads a missing locale as
+      // undefined, so restore it or it vanishes in the target locale.
       const metaHasTranslatableLeaf = () => {
         const probe: TranslateableFields = {};
         extractNestedStrings(sourceValue, metaKey, probe, '', sourceLocaleId ?? '');
@@ -716,6 +712,9 @@ export function applyTranslation(
         });
         this.update({ ...el, [locale]: localeValue });
       }
+      // Nested leaves are handled above; descending would only write locale keys into
+      // the source payload.
+      this.block();
     }
   });
 
