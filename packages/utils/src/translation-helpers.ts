@@ -26,7 +26,14 @@ function isNonTranslatableValue(value: string) {
     lower.startsWith('/') ||
     lower.startsWith('http://') ||
     lower.startsWith('https://') ||
-    lower.startsWith('cdn.builder.io/')
+    lower.startsWith('cdn.builder.io/') ||
+    lower.startsWith('mailto:') ||
+    lower.startsWith('tel:') ||
+    lower.startsWith('sms:') ||
+    lower.startsWith('data:') ||
+    // Bare '#' is an empty link placeholder, but '#anchor' is shape-identical to a
+    // campaign hashtag like '#SumUp', so those stay translatable.
+    lower === '#'
   );
 }
 
@@ -119,6 +126,7 @@ function resolveTranslation({
   translation,
   transformedMeta,
   locale,
+  sourceLocaleId,
 }: {
   data: any;
   basePath: string;
@@ -128,6 +136,7 @@ function resolveTranslation({
   translation: any;
   transformedMeta: Record<string, string>;
   locale: string;
+  sourceLocaleId?: string;
 }) {
   if (Array.isArray(value)) {
     value.forEach((item, index) => {
@@ -140,6 +149,7 @@ function resolveTranslation({
         translation,
         transformedMeta,
         locale,
+        sourceLocaleId,
       });
     });
   } else if (typeof value === 'object' && value !== null) {
@@ -157,14 +167,16 @@ function resolveTranslation({
       } else {
         // No direct translation - check if Default value contains nested LocalizedValues
         const defaultValue = value?.Default;
-        // Restore a leaf the extractor skipped: the SDK resolves a missing locale to
-        // undefined, so the link would otherwise vanish in the target locale.
+        // Restore a leaf the extractor skipped. Selecting the source the same way the
+        // extractor does keeps the two from disagreeing: reading Default here would seed
+        // a url over prose that is still out for translation, or miss the url entirely.
+        const skippedSource = (sourceLocaleId && value?.[sourceLocaleId]) || value?.Default;
         if (
-          typeof defaultValue === 'string' &&
-          isNonTranslatableValue(defaultValue) &&
+          typeof skippedSource === 'string' &&
+          isNonTranslatableValue(skippedSource) &&
           value[locale] == null
         ) {
-          set(data, dataPath, { ...value, [locale]: defaultValue });
+          set(data, dataPath, { ...value, [locale]: skippedSource });
         }
         if (
           Array.isArray(defaultValue) ||
@@ -181,6 +193,7 @@ function resolveTranslation({
             translation,
             transformedMeta,
             locale,
+            sourceLocaleId,
           });
         }
 
@@ -200,6 +213,7 @@ function resolveTranslation({
             translation,
             transformedMeta,
             locale,
+            sourceLocaleId,
           });
         }
       }
@@ -214,6 +228,7 @@ function resolveTranslation({
           translation,
           transformedMeta,
           locale,
+          sourceLocaleId,
         });
       });
     }
@@ -554,6 +569,15 @@ export function getTranslateableFields(
   return results;
 }
 
+// Tells a payload the url guard emptied from one that never held a string, so only the
+// former is restored into the target locale.
+function hasStringLeaf(value: any): boolean {
+  if (typeof value === 'string') return Boolean(value);
+  if (Array.isArray(value)) return value.some(hasStringLeaf);
+  if (value && typeof value === 'object') return Object.values(value).some(hasStringLeaf);
+  return false;
+}
+
 // Seeds every nested LocalizedValue with a locale branch from the source: the SDK
 // resolves a missing locale key to undefined rather than to Default, so untranslated
 // leaves would otherwise vanish.
@@ -650,14 +674,22 @@ export function applyTranslation(
       const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
           ? el[sourceLocaleId]
           : el.Default;
-      // Same restore for a model field the extractor skipped.
+      // Restore what the extractor skipped: a url-only field or payload draws no response,
+      // and the SDK resolves a missing locale to undefined, so it would vanish there.
+      const metaHasTranslatableLeaf = () => {
+        const probe: TranslateableFields = {};
+        extractNestedStrings(sourceValue, metaKey, probe, '', sourceLocaleId ?? '');
+        return Object.keys(probe).length > 0;
+      };
       if (
         !compoundKeys.length &&
-        typeof sourceValue === 'string' &&
-        isNonTranslatableValue(sourceValue) &&
-        el[locale] == null
+        el[locale] == null &&
+        hasStringLeaf(sourceValue) &&
+        !metaHasTranslatableLeaf()
       ) {
-        this.update({ ...el, [locale]: sourceValue });
+        const seeded = JSON.parse(JSON.stringify(sourceValue));
+        seedLocaleBranches(seeded, locale, sourceLocaleId);
+        this.update({ ...el, [locale]: seeded });
       }
       if (compoundKeys.length > 0 && sourceValue !== null && sourceValue !== undefined) {
         const localeValue = JSON.parse(JSON.stringify(sourceValue));
@@ -727,6 +759,7 @@ export function applyTranslation(
                 translation,
                 transformedMeta,
                 locale,
+                sourceLocaleId,
               });
 
               this.update({

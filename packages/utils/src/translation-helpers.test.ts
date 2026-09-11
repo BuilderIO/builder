@@ -1862,3 +1862,136 @@ test('applyTranslation does not overwrite a url already localized for the target
 
   expect(symbolData.buttonUrl['de-DE']).toEqual('https://example.com/de-de');
 });
+
+// A payload the url guard empties draws no response at all, so the locale branch has to
+// be seeded or the SDK resolves the whole list to undefined and the content disappears.
+const urlOnlyPayloadContent = (): BuilderContent => ({
+  data: {
+    logos: {
+      '@type': localizedType,
+      Default: [{ image: 'https://cdn.builder.io/api/v1/image/logo.png', link: '/en-gb/partners' }],
+    },
+    tiles: {
+      '@type': localizedType,
+      Default: [
+        {
+          icon: { '@type': localizedType, Default: 'https://cdn.builder.io/api/v1/image/i.png' },
+          href: { '@type': localizedType, Default: 'https://example.com/en-gb/x' },
+        },
+      ],
+    },
+    ratings: { '@type': localizedType, Default: [{ score: 4.9, count: 10 }] },
+  },
+});
+
+test('getTranslateableFields sends nothing for a model field whose leaves are all urls', () => {
+  expect(getTranslateableFields(urlOnlyPayloadContent(), 'en-GB', 'instructions')).toEqual({});
+});
+
+test('applyTranslation seeds a model field the url guard emptied', () => {
+  const result = applyTranslation(urlOnlyPayloadContent(), {}, 'de-DE', 'en-GB');
+  const data = result.data as any;
+
+  expect(data.logos['de-DE']).toEqual(data.logos.Default);
+  expect(data.tiles['de-DE'][0].icon['de-DE']).toEqual('https://cdn.builder.io/api/v1/image/i.png');
+  expect(data.tiles['de-DE'][0].href['de-DE']).toEqual('https://example.com/en-gb/x');
+});
+
+test('applyTranslation leaves a model field with no strings untouched', () => {
+  const result = applyTranslation(urlOnlyPayloadContent(), {}, 'de-DE', 'en-GB');
+
+  expect((result.data as any).ratings['de-DE']).toBeUndefined();
+});
+
+// The restore has to select the source the same way the extractor does, or it seeds a
+// value the job was never based on.
+const symbolSourceLocaleContent = (): BuilderContent => ({
+  data: {
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-symbol-source',
+        component: {
+          name: 'Symbol',
+          options: {
+            symbol: {
+              data: {
+                buttonUrl: {
+                  '@type': localizedType,
+                  Default: 'https://example.com/global',
+                  'en-GB': 'https://example.com/en-gb',
+                },
+                // Default is a url but the source locale is prose awaiting translation.
+                heading: {
+                  '@type': localizedType,
+                  Default: 'https://example.com/placeholder',
+                  'en-GB': 'Get started',
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+
+test('applyTranslation restores a skipped url from the selected source locale', () => {
+  const result = applyTranslation(symbolSourceLocaleContent(), {}, 'de-DE', 'en-GB');
+  const symbolData = (result.data as any).blocks[0].component.options.symbol.data;
+
+  expect(symbolData.buttonUrl['de-DE']).toEqual('https://example.com/en-gb');
+});
+
+test('applyTranslation does not restore a url over source prose awaiting translation', () => {
+  const content = symbolSourceLocaleContent();
+  expect(getTranslateableFields(content, 'en-GB', '')).toEqual({
+    'blocks.builder-symbol-source.symbolInput#heading': { value: 'Get started', instructions: '' },
+  });
+
+  const result = applyTranslation(content, {}, 'de-DE', 'en-GB');
+  const symbolData = (result.data as any).blocks[0].component.options.symbol.data;
+
+  expect(symbolData.heading['de-DE']).toBeUndefined();
+});
+
+const linkSchemeContent = (fields: Record<string, string>): BuilderContent => {
+  const data: Record<string, any> = {};
+  Object.keys(fields).forEach(key => {
+    data[key] = { '@type': localizedType, Default: fields[key] };
+  });
+  return { data };
+};
+
+test('getTranslateableFields skips non-http link schemes and empty link placeholders', () => {
+  const result = getTranslateableFields(
+    linkSchemeContent({
+      email: 'mailto:support@example.com',
+      phone: 'tel:+441234567890',
+      text: 'sms:+441234567890',
+      inlineAsset: 'data:image/png;base64,iVBORw0KGgo=',
+      placeholder: '#',
+    }),
+    'en-GB',
+    'instructions'
+  );
+
+  expect(result).toEqual({});
+});
+
+test('getTranslateableFields keeps hashtags and anchors translatable', () => {
+  const result = getTranslateableFields(
+    linkSchemeContent({ hashtag: '#SumUp', anchor: '#pricing' }),
+    'en-GB',
+    'instructions'
+  );
+
+  expect(Object.keys(result)).toEqual(['metadata.hashtag', 'metadata.anchor']);
+});
+
+test('applyTranslation restores a skipped link scheme into the target locale', () => {
+  const content = linkSchemeContent({ email: 'mailto:support@example.com' });
+  const result = applyTranslation(content, {}, 'de-DE', 'en-GB');
+
+  expect((result.data as any).email['de-DE']).toEqual('mailto:support@example.com');
+});
