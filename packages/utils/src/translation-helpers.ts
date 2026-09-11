@@ -24,6 +24,10 @@ function isNonTranslatableValue(value: string) {
   const lower = trimmed.toLowerCase();
   return (
     lower.startsWith('/') ||
+    // './x' and '../x' are unambiguous relative links. A bare 'foo/bar' is not: it is
+    // shape-identical to real copy like 'and/or', 'Yes/No' or '24/7', so it stays in.
+    lower.startsWith('./') ||
+    lower.startsWith('../') ||
     lower.startsWith('http://') ||
     lower.startsWith('https://') ||
     lower.startsWith('cdn.builder.io/') ||

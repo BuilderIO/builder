@@ -1995,3 +1995,48 @@ test('applyTranslation restores a skipped link scheme into the target locale', (
 
   expect((result.data as any).email['de-DE']).toEqual('mailto:support@example.com');
 });
+
+test('getTranslateableFields skips relative link paths', () => {
+  const result = getTranslateableFields(
+    linkSchemeContent({
+      sibling: './checkout',
+      parent: '../support',
+      nested: '../../en-gb/pricing',
+    }),
+    'en-GB',
+    'instructions'
+  );
+
+  expect(result).toEqual({});
+});
+
+test('getTranslateableFields keeps slash-separated copy translatable', () => {
+  const result = getTranslateableFields(
+    linkSchemeContent({
+      conjunction: 'and/or',
+      choice: 'Yes/No',
+      hours: '24/7',
+      sizes: 'S/M/L',
+      category: 'products/item',
+      ellipsis: '...',
+    }),
+    'en-GB',
+    'instructions'
+  );
+
+  expect(Object.keys(result)).toEqual([
+    'metadata.conjunction',
+    'metadata.choice',
+    'metadata.hours',
+    'metadata.sizes',
+    'metadata.category',
+    'metadata.ellipsis',
+  ]);
+});
+
+test('applyTranslation restores a skipped relative path into the target locale', () => {
+  const content = linkSchemeContent({ sibling: './checkout' });
+  const result = applyTranslation(content, {}, 'de-DE', 'en-GB');
+
+  expect((result.data as any).sibling['de-DE']).toEqual('./checkout');
+});
