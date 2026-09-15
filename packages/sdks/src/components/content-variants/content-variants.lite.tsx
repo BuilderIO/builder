@@ -144,6 +144,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
               canTrack={props.canTrack}
               locale={props.locale}
               enrich={props.enrich}
+              enrichOptions={props.enrichOptions}
               isSsrAbTest={state.shouldRenderVariants}
               blocksWrapper={props.blocksWrapper}
               blocksWrapperProps={props.blocksWrapperProps}
@@ -183,6 +184,7 @@ export default function ContentVariants(props: VariantsProviderProps) {
         canTrack={props.canTrack}
         locale={props.locale}
         enrich={props.enrich}
+        enrichOptions={props.enrichOptions}
         isSsrAbTest={state.shouldRenderVariants}
         blocksWrapper={props.blocksWrapper}
         blocksWrapperProps={props.blocksWrapperProps}

@@ -1,3 +1,28 @@
+/**
+ * Options to configure how `enrich` resolves references.
+ *
+ * @see {@link https://www.builder.io/c/docs/content-api#code-enrich-options-code}
+ */
+export interface EnrichOptions {
+  /**
+   * How many levels of nested references to resolve. Higher levels multiply
+   * response size, so prefer the lowest level your content needs.
+   */
+  enrichLevel?: number;
+
+  /**
+   * Per-model field filters applied to resolved references.
+   */
+  model?: {
+    [modelName: string]: {
+      /** Comma-separated list of fields to include */
+      fields?: string;
+      /** Comma-separated list of fields to omit */
+      omit?: string;
+    };
+  };
+}
+
 export interface GetContentOptions {
   /** The model to get content for (required) */
   model: string;
@@ -64,6 +89,11 @@ export interface GetContentOptions {
    * Include multilevel references in the response.
    */
   enrich?: boolean;
+
+  /**
+   * Constrains how `enrich` resolves references. Only honored when `enrich` is `true`.
+   */
+  enrichOptions?: EnrichOptions;
 
   /**
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.

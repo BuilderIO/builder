@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 5.2.11
+
+### Patch Changes
+
+- b0337c6: Add `enrichOptions` to `fetchOneEntry` and to `Content`, so reference enrichment can be constrained (`enrichLevel`, per-model `fields`/`omit`) and the Visual Editor is told which constraints your site fetches with.
+
 ## 5.2.10
 
 ### Patch Changes

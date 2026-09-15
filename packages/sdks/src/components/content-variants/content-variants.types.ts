@@ -2,6 +2,7 @@ import type {
   BuilderRenderContext,
   RegisteredComponent,
 } from '../../context/types.js';
+import type { EnrichOptions } from '../../functions/get-content/types.js';
 import type { ApiVersion } from '../../types/api-version.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Nullable } from '../../types/typescript.js';
@@ -65,6 +66,14 @@ export interface ContentVariantsPrps extends ExtraFrameworkProps {
    * Enriching will Include multilevel references in the response. Defaults to `false`.
    */
   enrich?: boolean;
+
+  /**
+   * The `enrichOptions` used to fetch this content (optional).
+   *
+   * Passing the same value you passed to `fetchOneEntry` lets the Visual Editor
+   * resolve references in its preview the way your site fetches them.
+   */
+  enrichOptions?: EnrichOptions;
 
   /**
    * The element that wraps your content. Defaults to `<div>` ('ScrollView' in React Native).

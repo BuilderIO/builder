@@ -11,6 +11,14 @@ import { omit } from '../functions/utils';
 
 const size = (thing: object) => Object.keys(thing).length;
 
+const isBuilderElementArray = (value: any) =>
+  Array.isArray(value) && value.some(item => item?.['@type'] === '@builder.io/sdk:Element');
+
+// Slot content lives in `symbol.data.<name>`, so keying on it remounts the symbol on every edit to
+// a block inside a slot, tearing down the node the editor has selected. Blocks update in place.
+const omitBlockValues = (data: Record<string, any>) =>
+  omit(data, ...Object.keys(data).filter(key => isBuilderElementArray(data[key])));
+
 const isShopify = Builder.isBrowser && 'Shopify' in window;
 
 const refs: Record<string, Element> = {};
@@ -113,7 +121,8 @@ class SymbolComponent extends React.Component<PropsWithChildren<SymbolProps>> {
     }
 
     let key = dynamic ? this.props.builderBlock?.id : [model, entry].join(':');
-    const dataString = data && size(data) && hash(data);
+    const keyData = data && (Builder.isEditing ? omitBlockValues(data) : data);
+    const dataString = keyData && size(keyData) && hash(keyData);
 
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString;
