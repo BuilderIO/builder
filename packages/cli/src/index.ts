@@ -4,16 +4,27 @@ import program from 'commander';
 import chalk from 'chalk';
 import { importSpace, newSpace, overwriteSpace } from './admin-sdk';
 import { integrateWithLocalCodebase } from './integrate';
-import { intParam } from './utils';
+import { intParam, resolvePrivateKey } from './utils';
 import { MAX_CONTENT_PAGE_SIZE } from './pagination';
 const figlet = require('figlet');
 
 console.log(chalk.blueBright(figlet.textSync('Builder.io cli', { horizontalLayout: 'full' })));
 
+const requirePrivateKey = (flagValue?: string): string => {
+  const key = resolvePrivateKey(flagValue);
+  if (!key) {
+    console.error(
+      chalk.red('Missing private key: pass -k/--key or set the BUILDER_PRIVATE_KEY env var.')
+    );
+    process.exit(1);
+  }
+  return key;
+};
+
 program
   .command('import')
   .description('Import a builder space to the local file system')
-  .option('-k,--key <key>', 'Private Key')
+  .option('-k,--key <key>', 'Private Key (or set BUILDER_PRIVATE_KEY)')
   .option('-d,--debug', 'print debugging information')
   .option('-o,--output <output>', 'Path to folder default to ./builder', './builder')
   .option(
@@ -23,18 +34,20 @@ program
     MAX_CONTENT_PAGE_SIZE
   )
   .action(options => {
-    importSpace(options.key, options.output, options.debug, options.limit);
+    const key = requirePrivateKey(options.key);
+    importSpace(key, options.output, options.debug, options.limit);
   });
 
 program
   .command('create')
   .description('create a new space')
-  .option('-k,--key <key>', 'Root organization Private Key')
+  .option('-k,--key <key>', 'Root organization Private Key (or set BUILDER_PRIVATE_KEY)')
   .option('-d,--debug', 'print debugging information')
   .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
   .option('-n,--name <name>', 'The new space name')
   .action(options => {
-    newSpace(options.key, options.input, options.name, options.debug);
+    const key = requirePrivateKey(options.key);
+    newSpace(key, options.input, options.name, options.debug);
   });
 
 program
@@ -42,7 +55,7 @@ program
   .description(
     'Overwrite content and models in an existing space from a local snapshot. Models are matched by name and content by id; entries in the target space that are missing from the snapshot are left untouched'
   )
-  .option('-k,--key <key>', 'Private Key of the existing space to overwrite')
+  .option('-k,--key <key>', 'Private Key of the existing space to overwrite (or set BUILDER_PRIVATE_KEY)')
   .option('-d,--debug', 'print debugging information')
   .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
   .option(
@@ -53,8 +66,13 @@ program
     '-y,--yes',
     'Skip the confirmation prompt for --prune, for non-interactive/scripted use'
   )
+  .option(
+    '--dry-run',
+    'Print what would be created/updated/pruned without making any changes'
+  )
   .action(options => {
-    overwriteSpace(options.key, options.input, options.debug, options.prune, options.yes);
+    const key = requirePrivateKey(options.key);
+    overwriteSpace(key, options.input, options.debug, options.prune, options.yes, options.dryRun);
   });
 
 program

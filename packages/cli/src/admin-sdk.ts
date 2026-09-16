@@ -227,9 +227,15 @@ export const newSpace = async (
             spaceSettings.id
           )
         );
+        // PUT-by-id instead of POST: contentJSON.id was already rehashed to
+        // the new space's id by replaceIds above, and since the new space
+        // starts empty this has the same effect as POST but makes a retry
+        // after a timeout/5xx safe instead of risking a duplicate entry.
+        const { method, url } = buildWriteRequest(modelName, contentJSON);
         await postJsonWithRetry({
           fetchImpl: fetch as unknown as FetchLike,
-          url: `https://builder.io/api/v1/write/${modelName}`,
+          method,
+          url,
           body: contentJSON,
           headers: {
             Authorization: `Bearer ${newSpacePrivateKey.key}`,
@@ -284,15 +290,20 @@ export const newSpace = async (
  * this is a merge, not a mirror — unless `prune` is set, in which case any
  * entry belonging to a restored model that isn't in the snapshot is deleted,
  * making the target space's content an exact copy of the snapshot.
+ *
+ * `dryRun` runs every read (listing models, downloading the target space's
+ * current content for prune planning) but skips every mutation, printing a
+ * summary of what would have happened instead.
  */
 export const overwriteSpace = async (
   privateKey: string,
   directory: string,
   debug = false,
   prune = false,
-  skipConfirmation = false
+  skipConfirmation = false,
+  dryRun = false
 ) => {
-  if (prune && !skipConfirmation) {
+  if (prune && !dryRun && !skipConfirmation) {
     const confirmed = await confirmAction(
       chalk.yellow(
         '\n--prune will permanently delete content entries in the target space that are not present in the local snapshot. This cannot be undone.\nType "yes" to continue: '
@@ -306,6 +317,7 @@ export const overwriteSpace = async (
 
   const graphqlClient = createGraphqlClient(privateKey);
   const failures: Array<{ file: string; model: string; error: string }> = [];
+  const plan = { modelsToUpdate: 0, modelsToCreate: 0, entriesToWrite: 0, entriesToPrune: 0 };
 
   try {
     const rawModels = (await graphqlClient.chain.query.models.execute({ id: true, name: true })) || [];
@@ -327,15 +339,21 @@ export const overwriteSpace = async (
 
     await mapWithConcurrency(modelDirs, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
       const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
-      const plan = planModelSync(existingModels, modelName);
-      if (plan.action === 'update') {
-        await graphqlClient.chain.mutation
-          .updateModel({ body: { id: plan.existingId, data: omit(schema, 'id') } })
-          .execute({ id: true, name: true });
+      const modelPlan = planModelSync(existingModels, modelName);
+      if (modelPlan.action === 'update') {
+        plan.modelsToUpdate++;
+        if (!dryRun) {
+          await graphqlClient.chain.mutation
+            .updateModel({ body: { id: modelPlan.existingId, data: omit(schema, 'id') } })
+            .execute({ id: true, name: true });
+        }
       } else {
-        await graphqlClient.chain.mutation
-          .addModel({ body: schema })
-          .execute({ id: true, name: true });
+        plan.modelsToCreate++;
+        if (!dryRun) {
+          await graphqlClient.chain.mutation
+            .addModel({ body: schema })
+            .execute({ id: true, name: true });
+        }
       }
 
       const contentFiles = (await getFiles(`${directory}/${modelName}`)).filter(
@@ -357,35 +375,39 @@ export const overwriteSpace = async (
           writeTasks.push({ modelName, fileName: contentFile.name, entry, progress: modelProgress });
         })
       );
-      if (prune && plan.action === 'update') {
+      if (prune && modelPlan.action === 'update') {
         localEntryIdsByModel.set(modelName, localIds);
       }
     });
 
+    plan.entriesToWrite = writeTasks.length;
+
     await mapWithConcurrency(writeTasks, DEFAULT_WRITE_CONCURRENCY, async task => {
       const { modelName, fileName, entry, progress } = task;
       let failed = false;
-      try {
-        const { method, url } = buildWriteRequest(modelName, entry);
-        await postJsonWithRetry({
-          fetchImpl: fetch as unknown as FetchLike,
-          method,
-          url,
-          body: entry,
-          headers: {
-            Authorization: `Bearer ${privateKey}`,
-          },
-        });
-      } catch (e) {
-        failed = true;
-        failures.push({
-          model: modelName,
-          file: fileName,
-          error: e instanceof Error ? e.message : String(e),
-        });
+      if (!dryRun) {
+        try {
+          const { method, url } = buildWriteRequest(modelName, entry);
+          await postJsonWithRetry({
+            fetchImpl: fetch as unknown as FetchLike,
+            method,
+            url,
+            body: entry,
+            headers: {
+              Authorization: `Bearer ${privateKey}`,
+            },
+          });
+        } catch (e) {
+          failed = true;
+          failures.push({
+            model: modelName,
+            file: fileName,
+            error: e instanceof Error ? e.message : String(e),
+          });
+        }
       }
       progress.increment(1, {
-        name: `${modelName}: ${failed ? 'failed to write' : 'wrote'} ${fileName}`,
+        name: `${modelName}: ${dryRun ? 'would write' : failed ? 'failed to write' : 'wrote'} ${fileName}`,
       });
     });
 
@@ -417,6 +439,8 @@ export const overwriteSpace = async (
         });
       });
 
+      plan.entriesToPrune = deleteTasks.length;
+
       if (deleteTasks.length > 0) {
         const pruneProgress = MULTIBAR.create(deleteTasks.length, 0, {
           name: 'pruning stale entries',
@@ -425,33 +449,44 @@ export const overwriteSpace = async (
         await mapWithConcurrency(deleteTasks, DEFAULT_WRITE_CONCURRENCY, async task => {
           const { modelName, entryId } = task;
           let failed = false;
-          try {
-            const { method, url } = buildDeleteRequest(modelName, entryId);
-            await postJsonWithRetry({
-              fetchImpl: fetch as unknown as FetchLike,
-              method,
-              url,
-              headers: {
-                Authorization: `Bearer ${privateKey}`,
-              },
-            });
-          } catch (e) {
-            failed = true;
-            failures.push({
-              model: modelName,
-              file: entryId,
-              error: `prune failed: ${e instanceof Error ? e.message : String(e)}`,
-            });
+          if (!dryRun) {
+            try {
+              const { method, url } = buildDeleteRequest(modelName, entryId);
+              await postJsonWithRetry({
+                fetchImpl: fetch as unknown as FetchLike,
+                method,
+                url,
+                headers: {
+                  Authorization: `Bearer ${privateKey}`,
+                },
+              });
+            } catch (e) {
+              failed = true;
+              failures.push({
+                model: modelName,
+                file: entryId,
+                error: `prune failed: ${e instanceof Error ? e.message : String(e)}`,
+              });
+            }
           }
           pruneProgress.increment(1, {
-            name: `${modelName}: ${failed ? 'failed to prune' : 'pruned'} ${entryId}`,
+            name: `${modelName}: ${dryRun ? 'would prune' : failed ? 'failed to prune' : 'pruned'} ${entryId}`,
           });
         });
         pruneProgress.stop();
       }
     }
 
-    if (debug) {
+    if (dryRun) {
+      console.log(`\r\n\r\n`);
+      console.log(chalk.cyan('Dry run — no changes were made.'));
+      console.log(chalk.cyan(`  Models to update: ${plan.modelsToUpdate}`));
+      console.log(chalk.cyan(`  Models to create: ${plan.modelsToCreate}`));
+      console.log(chalk.cyan(`  Content entries to write: ${plan.entriesToWrite}`));
+      if (prune) {
+        console.log(chalk.cyan(`  Content entries that would be pruned: ${plan.entriesToPrune}`));
+      }
+    } else if (debug) {
       console.log(chalk.green('Overwrite complete'));
     }
   } catch (e) {
@@ -463,7 +498,7 @@ export const overwriteSpace = async (
 
   MULTIBAR.stop();
 
-  if (failures.length) {
+  if (!dryRun && failures.length) {
     console.log(`\r\n\r\n`);
     console.error(chalk.red(`Failed to write ${failures.length} content entries:`));
     failures.forEach(failure => {

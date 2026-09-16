@@ -75,6 +75,18 @@ export const confirmAction = async (
   prompt: (question: string) => Promise<string> = promptStdin
 ): Promise<boolean> => isAffirmativeAnswer(await prompt(question));
 
+export const BUILDER_PRIVATE_KEY_ENV_VAR = 'BUILDER_PRIVATE_KEY';
+
+/**
+ * Prefers the `-k`/`--key` flag value, falling back to BUILDER_PRIVATE_KEY so
+ * a private key doesn't have to be typed on the command line, where it ends
+ * up in shell history and is visible to other processes via `ps`.
+ */
+export const resolvePrivateKey = (
+  flagValue: string | undefined,
+  env: NodeJS.ProcessEnv = process.env
+): string | undefined => flagValue || env[BUILDER_PRIVATE_KEY_ENV_VAR];
+
 export function killChildren() {
   childrenProcesses.forEach(p => p.kill('SIGINT'));
 }

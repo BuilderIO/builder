@@ -42,7 +42,7 @@ USAGE
 
 
 OPTIONS
-  -k, --key Private key of the space you want to import
+  -k, --key Private key of the space you want to import (or set BUILDER_PRIVATE_KEY)
 
   -d, --debug  Optionally print debug information and progress bars.
 
@@ -64,14 +64,16 @@ USAGE
 OPTIONS
   -n, --name   The new space name
 
-  -k, --key Private key of the root organization you want to import
+  -k, --key Private key of the root organization you want to import (or set BUILDER_PRIVATE_KEY)
 
   -d, --debug  Optionally print debug information and progress bars.
 
   -o, --input   Optionally input directory, default to ./builder
 
 DESCRIPTION
-  This command will create a new space clone from your local builder directory.
+  This command will create a new space clone from your local builder directory. Content writes use
+  PUT (upsert by id) rather than POST, so a retry after a network error or 5xx cannot create a
+  duplicate entry.
 ```
 
 ## `builder overwrite -k [PRIVATE KEY] -i [INPUT DIRECTORY]`
@@ -84,7 +86,7 @@ USAGE
 
 
 OPTIONS
-  -k, --key Private key of the existing space to overwrite
+  -k, --key Private key of the existing space to overwrite (or set BUILDER_PRIVATE_KEY)
 
   -d, --debug  Optionally print debug information and progress bars.
 
@@ -94,6 +96,8 @@ OPTIONS
                that are not present in the snapshot. Destructive and cannot be undone.
 
   -y, --yes    Skip the confirmation prompt for --prune, for non-interactive/scripted use.
+
+  --dry-run    Print what would be created/updated/pruned without making any changes.
 
 DESCRIPTION
   Models are matched to the target space by name and upserted (existing models are updated in place,
@@ -108,6 +112,10 @@ DESCRIPTION
 
   Because --prune is irreversible, it asks you to type "yes" before doing anything (before any
   model or content write happens). Pass --yes to skip this prompt for scripted/CI use.
+
+  Pass --dry-run to see exactly what would happen (models to update/create, entries to write, and
+  entries that would be pruned) without making a single write, update, or delete call. --dry-run
+  never prompts for confirmation, since nothing destructive happens.
 ```
 
 ## `builder integrate`

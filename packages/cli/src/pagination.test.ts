@@ -177,3 +177,77 @@ test('an empty space produces no content', async t => {
   t.is(calls.length, 1);
   t.is(space.models[0].content.length, 0);
 });
+
+test('a server ignoring offset with id-less entries still terminates', async t => {
+  let calls = 0;
+  const fetchPage: FetchSpacePage = async () => {
+    calls++;
+    return {
+      settings: {},
+      meta: {},
+      models: [
+        {
+          name: 'page',
+          everything: {},
+          // identical id-less entries every time, as if offset were ignored
+          content: [{ name: 'a' }, { name: 'b' }],
+        },
+      ],
+    } as SpacePage;
+  };
+
+  const space = await downloadAllSpaceContent(fetchPage, { pageSize: 2 });
+
+  // the first page is new, the second page is recognized as a repeat of the
+  // same content (added === 0) and terminates the loop instead of looping
+  // forever the way an offset-based dedupe key would
+  t.is(calls, 2);
+  t.is(space.models[0].content.length, 2);
+});
+
+test('distinct id-less entries across pages are all collected', async t => {
+  const fetchPage: FetchSpacePage = async ({ offset }) => ({
+    settings: {},
+    meta: {},
+    models: [
+      {
+        name: 'page',
+        everything: {},
+        content:
+          offset === 0
+            ? [{ name: 'first' }, { name: 'second' }]
+            : offset === 2
+              ? [{ name: 'third' }, { name: 'fourth' }]
+              : [],
+      },
+    ],
+  });
+
+  const space = await downloadAllSpaceContent(fetchPage, { pageSize: 2 });
+
+  t.deepEqual(
+    space.models[0].content.map(entry => entry.name),
+    ['first', 'second', 'third', 'fourth']
+  );
+});
+
+test('throws once maxPages is exceeded instead of looping forever', async t => {
+  let calls = 0;
+  const fetchPage: FetchSpacePage = async () => {
+    calls++;
+    return {
+      settings: {},
+      meta: {},
+      // unique content every call so dedupe never kicks in, simulating a
+      // space that keeps growing faster than it can be paged through
+      models: [{ name: 'page', everything: {}, content: [{ name: `entry-${calls}` }] }],
+    } as SpacePage;
+  };
+
+  const error = await t.throwsAsync(
+    downloadAllSpaceContent(fetchPage, { pageSize: 1, maxPages: 5 })
+  );
+
+  t.is(calls, 5);
+  t.true(error.message.includes('5 pages'));
+});

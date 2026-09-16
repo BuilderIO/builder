@@ -1,8 +1,18 @@
+import { createHash } from 'crypto';
+
 /**
  * The Content API caps non-collection queries at 100 entries per request, so a
  * full space snapshot has to be assembled from multiple offset pages.
  */
 export const MAX_CONTENT_PAGE_SIZE = 100;
+
+/**
+ * Defense in depth against a server that never stops returning full pages
+ * (e.g. it ignores `offset`, or content is being added faster than we can
+ * page through it). ~10M entries at the max page size — no real space
+ * should ever hit this, so tripping it means something is wrong upstream.
+ */
+export const MAX_PAGES = 100_000;
 
 export interface ContentEntry {
   id?: string | null;
@@ -39,6 +49,7 @@ export interface PageProgress {
 export interface DownloadAllOptions {
   pageSize?: number;
   onPage?: (progress: PageProgress) => void;
+  maxPages?: number;
 }
 
 export const clampPageSize = (pageSize?: number | null) => {
@@ -75,8 +86,22 @@ const mergeMeta = (base: any, next: any): any => {
   return merged;
 };
 
-const entryKey = (entry: ContentEntry, modelName: string, position: number) =>
-  typeof entry?.id === 'string' && entry.id ? entry.id : `${modelName}:__no-id__:${position}`;
+/**
+ * Entries with an id are deduped by that id. Entries without one (rare) are
+ * deduped by a content fingerprint instead of their position in the page:
+ * a position-based key changes every iteration even if the server ignores
+ * `offset` and keeps re-sending the same entries, which would defeat the
+ * `added === 0` termination check below and page forever. Two distinct
+ * id-less entries with identical content will collide and be treated as
+ * one, which is an acceptable trade-off against an infinite loop.
+ */
+const entryKey = (entry: ContentEntry, modelName: string) => {
+  if (typeof entry?.id === 'string' && entry.id) {
+    return entry.id;
+  }
+  const fingerprint = createHash('sha1').update(JSON.stringify(entry)).digest('hex');
+  return `${modelName}:__no-id__:${fingerprint}`;
+};
 
 /**
  * Walks every offset page until each model is exhausted and returns a single
@@ -87,6 +112,7 @@ export const downloadAllSpaceContent = async (
   options: DownloadAllOptions = {}
 ): Promise<SpaceSnapshot> => {
   const limit = clampPageSize(options.pageSize);
+  const maxPages = options.maxPages ?? MAX_PAGES;
 
   let snapshot: SpaceSnapshot | undefined;
   let offset = 0;
@@ -126,8 +152,8 @@ export const downloadAllSpaceContent = async (
       }
 
       const seen = seenEntryKeys.get(model.name)!;
-      content.forEach((entry, index) => {
-        const key = entryKey(entry, model.name, offset + index);
+      content.forEach(entry => {
+        const key = entryKey(entry, model.name);
         if (seen.has(key)) {
           return;
         }
@@ -144,6 +170,12 @@ export const downloadAllSpaceContent = async (
     // would otherwise keep handing back the same full page forever.
     if (!hasFullPage || added === 0) {
       break;
+    }
+
+    if (page >= maxPages) {
+      throw new Error(
+        `Stopped after ${maxPages} pages without reaching the end of the content — this space may be growing faster than it can be paged through, or the API is not honoring \`offset\` as expected.`
+      );
     }
 
     offset += limit;
