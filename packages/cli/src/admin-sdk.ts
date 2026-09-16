@@ -14,6 +14,7 @@ import {
 } from './pagination';
 import {
   DEFAULT_WRITE_CONCURRENCY,
+  DEFAULT_WRITE_RETRIES,
   FetchLike,
   mapWithConcurrency,
   postJsonWithRetry,
@@ -240,6 +241,10 @@ export const newSpace = async (
           headers: {
             Authorization: `Bearer ${newSpacePrivateKey.key}`,
           },
+          // POST creates a new entry every time it's called, so retrying it
+          // after a lost response (vs. a request that never reached the
+          // server) risks creating a duplicate entry
+          retries: method === 'POST' ? 0 : DEFAULT_WRITE_RETRIES,
         });
       } catch (e) {
         failed = true;
@@ -340,20 +345,32 @@ export const overwriteSpace = async (
     await mapWithConcurrency(modelDirs, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
       const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
       const modelPlan = planModelSync(existingModels, modelName);
-      if (modelPlan.action === 'update') {
-        plan.modelsToUpdate++;
-        if (!dryRun) {
-          await graphqlClient.chain.mutation
-            .updateModel({ body: { id: modelPlan.existingId, data: omit(schema, 'id') } })
-            .execute({ id: true, name: true });
+      try {
+        if (modelPlan.action === 'update') {
+          plan.modelsToUpdate++;
+          if (!dryRun) {
+            await graphqlClient.chain.mutation
+              .updateModel({ body: { id: modelPlan.existingId, data: omit(schema, 'id') } })
+              .execute({ id: true, name: true });
+          }
+        } else {
+          plan.modelsToCreate++;
+          if (!dryRun) {
+            await graphqlClient.chain.mutation
+              .addModel({ body: schema })
+              .execute({ id: true, name: true });
+          }
         }
-      } else {
-        plan.modelsToCreate++;
-        if (!dryRun) {
-          await graphqlClient.chain.mutation
-            .addModel({ body: schema })
-            .execute({ id: true, name: true });
-        }
+      } catch (e) {
+        // if the model itself couldn't be synced, its content can't be
+        // trusted either — record the failure (which also blocks prune,
+        // see below) and move on instead of aborting the whole restore
+        failures.push({
+          model: modelName,
+          file: 'schema.model.json',
+          error: e instanceof Error ? e.message : String(e),
+        });
+        return;
       }
 
       const contentFiles = (await getFiles(`${directory}/${modelName}`)).filter(
@@ -388,7 +405,7 @@ export const overwriteSpace = async (
       if (!dryRun) {
         try {
           const { method, url } = buildWriteRequest(modelName, entry);
-          await postJsonWithRetry({
+          const response = await postJsonWithRetry({
             fetchImpl: fetch as unknown as FetchLike,
             method,
             url,
@@ -396,7 +413,26 @@ export const overwriteSpace = async (
             headers: {
               Authorization: `Bearer ${privateKey}`,
             },
+            // POST creates a new entry every time it's called, so retrying it
+            // after a lost response risks creating a duplicate entry
+            retries: method === 'POST' ? 0 : DEFAULT_WRITE_RETRIES,
           });
+          if (!entry?.id) {
+            // this entry had no id locally, so it was POSTed and given a new
+            // server-assigned id — that id has to be added to the keep set
+            // now, otherwise the entry we just restored looks orphaned to
+            // the prune phase below and gets deleted in the same run
+            const keepIds = localEntryIdsByModel.get(modelName);
+            if (keepIds) {
+              const created = await response
+                .text()
+                .then(text => JSON.parse(text))
+                .catch(() => undefined);
+              if (created?.id) {
+                keepIds.add(created.id);
+              }
+            }
+          }
         } catch (e) {
           failed = true;
           failures.push({
@@ -413,7 +449,15 @@ export const overwriteSpace = async (
 
     modelBars.forEach(bar => bar.stop());
 
-    if (prune && localEntryIdsByModel.size > 0) {
+    if (prune && !dryRun && failures.length > 0) {
+      // pruning now would delete entries based on an incomplete/incorrect
+      // view of what the snapshot contains, since some writes didn't land
+      console.error(
+        chalk.red(
+          `Skipping prune: ${failures.length} write(s) failed, so the target space isn't a faithful reflection of the snapshot yet. Fix the failures below and re-run.`
+        )
+      );
+    } else if (prune && localEntryIdsByModel.size > 0) {
       const destinationFetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
         graphqlClient.chain.query
           .downloadClone({ contentQuery: { limit: pageLimit, offset } })

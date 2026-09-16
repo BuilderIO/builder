@@ -1,5 +1,6 @@
 export const DEFAULT_WRITE_CONCURRENCY = 5;
 export const DEFAULT_WRITE_RETRIES = 4;
+export const DEFAULT_WRITE_TIMEOUT_MS = 30_000;
 
 export interface FetchLikeResponse {
   ok: boolean;
@@ -18,6 +19,7 @@ export interface PostJsonOptions {
   headers?: Record<string, string>;
   retries?: number;
   baseDelayMs?: number;
+  timeoutMs?: number;
   sleep?: (ms: number) => Promise<void>;
 }
 
@@ -71,20 +73,31 @@ export const postJsonWithRetry = async ({
   headers,
   retries = DEFAULT_WRITE_RETRIES,
   baseDelayMs = 500,
+  timeoutMs = DEFAULT_WRITE_TIMEOUT_MS,
   sleep = defaultSleep,
 }: PostJsonOptions): Promise<FetchLikeResponse> => {
   let lastError: Error | undefined;
   const backoffMs = (attempt: number) => baseDelayMs * Math.pow(2, attempt);
 
   for (let attempt = 0; attempt <= retries; attempt++) {
-    const init: { method: string; body?: string; headers: Record<string, string> } = {
+    const controller = new AbortController();
+    const init: {
+      method: string;
+      body?: string;
+      headers: Record<string, string>;
+      signal: AbortSignal;
+    } = {
       method,
       headers: body === undefined ? { ...headers } : { 'Content-Type': 'application/json', ...headers },
+      signal: controller.signal,
     };
     if (body !== undefined) {
       init.body = JSON.stringify(body);
     }
 
+    // a request that stalls forever (open connection, no response) would
+    // otherwise never reject and would occupy a write-queue worker forever
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
     let response: FetchLikeResponse;
     try {
       response = await fetchImpl(url, init);
@@ -94,6 +107,8 @@ export const postJsonWithRetry = async ({
         await sleep(backoffMs(attempt));
       }
       continue;
+    } finally {
+      clearTimeout(timer);
     }
 
     if (response.ok) {
