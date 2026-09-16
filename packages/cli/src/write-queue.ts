@@ -114,8 +114,17 @@ export const postJsonWithRetry = async ({
         continue;
       }
 
-      if (response.ok) {
-        return response;
+      // DELETE is idempotent: if an earlier attempt's response was lost
+      // (timeout/network error) but the delete actually landed, the retry
+      // sees a 404 for a target that's already gone — that's the desired
+      // end state, not a failure
+      const isRetriedDeleteNotFound = method === 'DELETE' && attempt > 0 && response.status === 404;
+
+      if (response.ok || isRetriedDeleteNotFound) {
+        // read the body now, while the timer can still abort a stalled
+        // read — a caller consuming it later would no longer be protected
+        const bodyText = await response.text().catch(() => '');
+        return { ...response, ok: true, text: async () => bodyText };
       }
 
       const detail = await response.text().catch(() => '');

@@ -380,25 +380,23 @@ export const overwriteSpace = async (
       }
 
       const localIds = new Set<string>();
-      await Promise.all(
-        contentFiles.map(async contentFile => {
-          let entry;
-          try {
-            entry = await readAsJson(`${directory}/${modelName}/${contentFile.name}`);
-          } catch (e) {
-            failures.push({
-              model: modelName,
-              file: contentFile.name,
-              error: e instanceof Error ? e.message : String(e),
-            });
-            return;
-          }
-          if (entry?.id) {
-            localIds.add(entry.id);
-          }
-          writeTasks.push({ modelName, fileName: contentFile.name, entry, progress: modelProgress });
-        })
-      );
+      await mapWithConcurrency(contentFiles, DEFAULT_WRITE_CONCURRENCY, async contentFile => {
+        let entry;
+        try {
+          entry = await readAsJson(`${directory}/${modelName}/${contentFile.name}`);
+        } catch (e) {
+          failures.push({
+            model: modelName,
+            file: contentFile.name,
+            error: e instanceof Error ? e.message : String(e),
+          });
+          return;
+        }
+        if (entry?.id) {
+          localIds.add(entry.id);
+        }
+        writeTasks.push({ modelName, fileName: contentFile.name, entry, progress: modelProgress });
+      });
       if (prune && modelPlan.action === 'update') {
         localEntryIdsByModel.set(modelName, localIds);
       }

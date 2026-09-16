@@ -122,6 +122,50 @@ test('throws after exhausting retries so failures are never silent', async t => 
   t.true(error.message.includes('server exploded'));
 });
 
+test('a retried DELETE that 404s is treated as already-deleted success', async t => {
+  let calls = 0;
+  const fetchImpl: FetchLike = async () => {
+    calls++;
+    if (calls === 1) {
+      throw new Error('network blip');
+    }
+    return response(404, 'not found');
+  };
+
+  const result = await postJsonWithRetry({
+    fetchImpl,
+    url: 'https://example.com',
+    method: 'DELETE',
+    sleep: noSleep,
+  });
+
+  t.is(calls, 2);
+  t.true(result.ok);
+});
+
+test('a first-attempt 404 on DELETE is still a failure', async t => {
+  const fetchImpl: FetchLike = async () => response(404, 'not found');
+
+  const error = await t.throwsAsync(
+    postJsonWithRetry({ fetchImpl, url: 'https://example.com', method: 'DELETE', sleep: noSleep })
+  );
+
+  t.true(error.message.includes('404'));
+});
+
+test('the success response body stays readable after the request settles', async t => {
+  const fetchImpl: FetchLike = async () => response(200, JSON.stringify({ id: 'abc' }));
+
+  const result = await postJsonWithRetry({
+    fetchImpl,
+    url: 'https://example.com',
+    body: {},
+    sleep: noSleep,
+  });
+
+  t.deepEqual(JSON.parse(await result.text()), { id: 'abc' });
+});
+
 test('does not retry client errors', async t => {
   let calls = 0;
   const fetchImpl: FetchLike = async () => {
