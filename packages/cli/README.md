@@ -53,13 +53,16 @@ DESCRIPTION
   The snapshot includes unpublished/draft content entries, not just published ones, so it can be used as a full
   backup of the space (see `builder overwrite` for restoring from it).
 
-  Every import removes leftover model directories from a previous snapshot at the same output path (recognized by
-  the schema.model.json file a prior import writes into them), so a model deleted or renamed since then doesn't
-  leave stale data behind for a later `overwrite` to resurrect — without ever touching unrelated files if the
-  output directory is reused for something else. It also refuses to write a snapshot (rather than silently
-  corrupting one) if two models would normalize to the same or an empty directory name, and always prints a
-  model/entry count summary on completion so an incomplete snapshot doesn't go unnoticed until you try to restore
-  from it.
+  Every model and entry is written to a temporary staging directory next to the output path first, and the
+  output directory is only replaced with it after every write succeeds. This means an interrupted or crashed
+  import (network drop, Ctrl-C, out of disk space, ...) never leaves the output directory partially emptied or
+  overwritten — a previous good snapshot there is left completely untouched, and only the incomplete staging
+  copy is discarded. It also refuses to write a snapshot at all (rather than silently corrupting one) if two
+  models would normalize to the same or an empty directory name, and always prints a model/entry count summary
+  on completion so an incomplete snapshot doesn't go unnoticed until you try to restore from it.
+
+  Note this means the output directory's entire previous contents are replaced on each successful import
+  (not merged in place), so don't store anything other than a snapshot from this command in that directory.
 
   Known limitations:
   - Pagination is offset-based. Content is excluded from the snapshot if it's created after the import starts
@@ -68,6 +71,10 @@ DESCRIPTION
     business-critical backup of a very large space, taking it during a quiet period minimizes this risk.
   - The "created after the import starts" cutoff is based on the machine's local clock. Significant clock drift
     on the machine running the CLI could exclude entries that genuinely existed before the import started.
+  - The staging-directory swap described above is a rename when the output directory's parent is on the same
+    filesystem/volume (the common case), which is effectively instantaneous and atomic. If it isn't (e.g. the
+    output path is a mounted network drive), the swap falls back to a copy, which takes longer and is not
+    atomic, though the previous snapshot is still only removed after the copy finishes successfully.
 ```
 
 ## `builder create -k [PRIVATE KEY] -i [INPUT DIRECTORY] -n [NEW SPACE NAME]`

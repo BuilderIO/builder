@@ -70,6 +70,7 @@ export const importSpace = async (
 
   const spaceProgress = MULTIBAR.create(1, 0);
   spaceProgress.start(1, 0, { name: 'getting space settings' });
+  const stagingDir = directory + '.importing-' + process.pid + '-' + Date.now();
 
   try {
     const fetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
@@ -104,8 +105,8 @@ export const importSpace = async (
     });
 
     // two distinct model names that normalize to the same directory would
-    // otherwise race on fse.emptyDir/outputFile below and silently corrupt
-    // or drop one of the two models — fail loudly before writing anything.
+    // otherwise race on outputFile below and silently corrupt or drop one
+    // of the two models — fail loudly before writing anything.
     // A name that normalizes to '' (e.g. punctuation-only) would target the
     // snapshot root itself, so it's rejected the same way.
     const modelNamesByDir = new Map<string, string[]>();
@@ -126,24 +127,8 @@ export const importSpace = async (
 
     spaceProgress.update(0, { name: 'writing space' });
     spaceProgress.setTotal(space.models.length);
-    // remove leftover directories from a previous import of a model that's
-    // since been deleted/renamed, so `overwrite` can't resurrect it later —
-    // scoped to subdirectories that look like a prior import actually wrote
-    // (i.e. contain a schema.model.json) so reusing an unrelated directory
-    // as the output path can never delete unrelated files
-    const newModelDirNames = new Set(space.models.map(model => kebabCase(model.name)));
-    const existingDirs = await getDirectories(directory).catch(() => []);
-    for (const dirent of existingDirs) {
-      if (newModelDirNames.has(dirent.name)) {
-        continue;
-      }
-      const staleModelDir = `${directory}/${dirent.name}`;
-      if (await fse.pathExists(`${staleModelDir}/schema.model.json`)) {
-        await fse.remove(staleModelDir);
-      }
-    }
     await fse.outputFile(
-      `${directory}/settings.json`,
+      `${stagingDir}/settings.json`,
       JSON.stringify({ ...space.settings, cloneInfo: space.meta }, undefined, 2)
     );
     let totalEntries = 0;
@@ -153,13 +138,12 @@ export const importSpace = async (
       // todo why conent is in everything
       const { content: _, ...schema } = everything;
       const modelName = kebabCase(model.name);
-      await fse.emptyDir(`${directory}/${modelName}`);
       const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
       if (content.length > 0) {
         modelProgress.start(content.length, 0);
       }
       await fse.outputFile(
-        `${directory}/${modelName}/schema.model.json`,
+        `${stagingDir}/${modelName}/schema.model.json`,
         JSON.stringify(schema, null, 2)
       );
       await mapWithConcurrency(content, DEFAULT_WRITE_CONCURRENCY, async (entry, index) => {
@@ -170,7 +154,7 @@ export const importSpace = async (
           typeof entry.id === 'string' && entry.id
             ? `entry-id-${encodeURIComponent(entry.id)}`
             : `entry-noid-${index}`;
-        const filename = `${directory}/${modelName}/${baseName}.json`;
+        const filename = `${stagingDir}/${modelName}/${baseName}.json`;
         await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
         modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
       });
@@ -179,6 +163,9 @@ export const importSpace = async (
       spaceProgress.increment();
       modelProgress.stop();
     });
+
+    await swapInStagingDir(stagingDir, directory);
+
     console.log(chalk.green(`\nImported successfully: ${space.settings.name}`));
     console.log(chalk.green(`  Models: ${space.models.length}`));
     console.log(chalk.green(`  Total content entries: ${totalEntries}`));
@@ -191,11 +178,40 @@ export const importSpace = async (
     console.log(`\r\n\r\n`);
     console.error(chalk.red('Error importing space'));
     console.error(e);
+    // the real output directory is never touched until every write above
+    // succeeds (see swapInStagingDir), so a previous good snapshot there is
+    // always intact -- only the incomplete staging copy needs cleaning up
+    await fse.remove(stagingDir).catch(() => {});
     process.exit(1);
   }
 
   spaceProgress.stop();
   MULTIBAR.stop();
+};
+
+/**
+ * Replaces `directory` with the fully-written `stagingDir` only now that
+ * every model and entry has been written successfully, so a crash or
+ * Ctrl-C at any point before this call leaves a previous snapshot at
+ * `directory` completely untouched instead of partially emptied/overwritten.
+ */
+export const swapInStagingDir = async (stagingDir: string, directory: string) => {
+  const previousDir = directory + '.previous-' + Date.now();
+  const hadExisting = await fse.pathExists(directory);
+  if (hadExisting) {
+    await fse.move(directory, previousDir, { overwrite: true });
+  }
+  try {
+    await fse.move(stagingDir, directory, { overwrite: true });
+  } catch (e) {
+    if (hadExisting) {
+      await fse.move(previousDir, directory, { overwrite: true }).catch(() => {});
+    }
+    throw e;
+  }
+  if (hadExisting) {
+    await fse.remove(previousDir).catch(() => {});
+  }
 };
 
 const hashIdsByOrganization = (ids: string[], organizationId: string) => {

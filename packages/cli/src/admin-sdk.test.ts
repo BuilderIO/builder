@@ -2,7 +2,7 @@ import test from 'ava';
 import os from 'os';
 import path from 'path';
 import fse from 'fs-extra';
-import { overwriteSpace } from './admin-sdk';
+import { overwriteSpace, swapInStagingDir } from './admin-sdk';
 import { WRITE_API_ROOT } from './overwrite';
 
 const GRAPHQL_URL = 'https://cdn.builder.io/api/v2/admin';
@@ -303,3 +303,33 @@ test.serial(
     t.true(errorLogs.some(log => log.includes('not possible to tell which one')));
   }
 );
+
+test('swapInStagingDir replaces the target directory only after staging succeeds', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-test-'));
+  const directory = path.join(base, 'backup');
+  const staging = path.join(base, 'backup.importing-123');
+
+  await fse.outputJson(path.join(directory, 'posts', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputJson(path.join(directory, 'posts', 'entry-id-old.json'), { id: 'old' });
+
+  await fse.outputJson(path.join(staging, 'posts', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputJson(path.join(staging, 'posts', 'entry-id-new.json'), { id: 'new' });
+
+  await swapInStagingDir(staging, directory);
+
+  t.false(await fse.pathExists(staging));
+  t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-new.json')));
+  t.false(await fse.pathExists(path.join(directory, 'posts', 'entry-id-old.json')));
+});
+
+test('swapInStagingDir restores the previous snapshot if the final swap fails', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-test-'));
+  const directory = path.join(base, 'backup');
+  const missingStaging = path.join(base, 'does-not-exist');
+
+  await fse.outputJson(path.join(directory, 'posts', 'entry-id-old.json'), { id: 'old' });
+
+  await t.throwsAsync(() => swapInStagingDir(missingStaging, directory));
+
+  t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-old.json')));
+});
