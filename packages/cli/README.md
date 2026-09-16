@@ -53,15 +53,21 @@ DESCRIPTION
   The snapshot includes unpublished/draft content entries, not just published ones, so it can be used as a full
   backup of the space (see `builder overwrite` for restoring from it).
 
-  Every import fully replaces the output directory's contents, so a model deleted or renamed since a previous
-  snapshot doesn't leave stale data behind. It also refuses to write a snapshot (rather than silently corrupting
-  one) if two models would normalize to the same directory name, and always prints a model/entry count summary on
-  completion so an incomplete snapshot doesn't go unnoticed until you try to restore from it.
+  Every import removes leftover model directories from a previous snapshot at the same output path (recognized by
+  the schema.model.json file a prior import writes into them), so a model deleted or renamed since then doesn't
+  leave stale data behind for a later `overwrite` to resurrect — without ever touching unrelated files if the
+  output directory is reused for something else. It also refuses to write a snapshot (rather than silently
+  corrupting one) if two models would normalize to the same or an empty directory name, and always prints a
+  model/entry count summary on completion so an incomplete snapshot doesn't go unnoticed until you try to restore
+  from it.
 
-  Known limitation: pagination is offset-based. If content is created after the import starts, it's cleanly
-  excluded from the snapshot rather than causing skipped/duplicated entries — but content deleted from the space
-  while a large import is still in progress can, in rare cases, cause one other unrelated entry to be skipped.
-  For a business-critical backup of a very large space, taking it during a quiet period minimizes this risk.
+  Known limitations:
+  - Pagination is offset-based. Content is excluded from the snapshot if it's created after the import starts
+    (cleanly, rather than causing skipped/duplicated entries), but content deleted from the space while a large
+    import is still in progress can, in rare cases, cause one other unrelated entry to be skipped. For a
+    business-critical backup of a very large space, taking it during a quiet period minimizes this risk.
+  - The "created after the import starts" cutoff is based on the machine's local clock. Significant clock drift
+    on the machine running the CLI could exclude entries that genuinely existed before the import started.
 ```
 
 ## `builder create -k [PRIVATE KEY] -i [INPUT DIRECTORY] -n [NEW SPACE NAME]`
@@ -139,9 +145,17 @@ DESCRIPTION
     restore/prune is in flight.
   - Interrupting a run (Ctrl-C) prints how many entries were written/pruned so far before exiting,
     so you can tell whether the target space is in a partially-updated state.
+  - If a model matched by name has a different id in the target space than the snapshot was taken
+    from (e.g. it was deleted and a new one created with the same name), overwrite refuses to touch
+    it rather than risk silently overwriting an unrelated model.
 
-  Known limitation: pruning re-downloads the entire target space's content (across all models, not
-  just the ones being restored) to compute what's stale, which can be slow on very large spaces.
+  Known limitations:
+  - Pruning re-downloads the entire target space's content (across all models, not just the ones
+    being restored) to compute what's stale, which can be slow on very large spaces.
+  - The model-id check above means a snapshot taken from space A can't be used to `overwrite` a
+    space B that was cloned from A via `builder create` — `create` intentionally assigns new ids,
+    so the check would treat every model as a mismatch. Restore snapshots into the same space they
+    were taken from.
 ```
 
 ## `builder integrate`

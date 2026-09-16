@@ -90,7 +90,7 @@ export const importSpace = async (
           },
         })
         .execute({
-          models: { name: true, everything: true, content: true },
+          models: { id: true, name: true, everything: true, content: true },
           settings: true,
           meta: true,
         }) as Promise<SpacePage>;
@@ -105,27 +105,43 @@ export const importSpace = async (
 
     // two distinct model names that normalize to the same directory would
     // otherwise race on fse.emptyDir/outputFile below and silently corrupt
-    // or drop one of the two models — fail loudly before writing anything
+    // or drop one of the two models — fail loudly before writing anything.
+    // A name that normalizes to '' (e.g. punctuation-only) would target the
+    // snapshot root itself, so it's rejected the same way.
     const modelNamesByDir = new Map<string, string[]>();
     space.models.forEach(model => {
       const dirName = kebabCase(model.name);
       modelNamesByDir.set(dirName, [...(modelNamesByDir.get(dirName) || []), model.name]);
     });
-    const collisions = [...modelNamesByDir.entries()].filter(([, names]) => names.length > 1);
+    const collisions = [...modelNamesByDir.entries()].filter(
+      ([dirName, names]) => names.length > 1 || dirName === ''
+    );
     if (collisions.length > 0) {
       throw new Error(
-        `Cannot write snapshot: these model names normalize to the same directory and would overwrite each other: ${collisions
-          .map(([dir, names]) => `"${names.join('", "')}" -> ${dir}`)
-          .join('; ')}. Rename one of the conflicting models before importing.`
+        `Cannot write snapshot: these model names normalize to an unusable or shared directory name: ${collisions
+          .map(([dir, names]) => `"${names.join('", "')}" -> "${dir}"`)
+          .join('; ')}. Rename the conflicting model(s) before importing.`
       );
     }
 
     spaceProgress.update(0, { name: 'writing space' });
     spaceProgress.setTotal(space.models.length);
-    // each import is a full, authoritative snapshot — clearing the whole
-    // directory first means a model deleted/renamed since a previous import
-    // can't leave a stale directory behind for `overwrite` to resurrect later
-    await fse.emptyDir(directory);
+    // remove leftover directories from a previous import of a model that's
+    // since been deleted/renamed, so `overwrite` can't resurrect it later —
+    // scoped to subdirectories that look like a prior import actually wrote
+    // (i.e. contain a schema.model.json) so reusing an unrelated directory
+    // as the output path can never delete unrelated files
+    const newModelDirNames = new Set(space.models.map(model => kebabCase(model.name)));
+    const existingDirs = await getDirectories(directory).catch(() => []);
+    for (const dirent of existingDirs) {
+      if (newModelDirNames.has(dirent.name)) {
+        continue;
+      }
+      const staleModelDir = `${directory}/${dirent.name}`;
+      if (await fse.pathExists(`${staleModelDir}/schema.model.json`)) {
+        await fse.remove(staleModelDir);
+      }
+    }
     await fse.outputFile(
       `${directory}/settings.json`,
       JSON.stringify({ ...space.settings, cloneInfo: space.meta }, undefined, 2)
@@ -147,11 +163,13 @@ export const importSpace = async (
         JSON.stringify(schema, null, 2)
       );
       await mapWithConcurrency(content, DEFAULT_WRITE_CONCURRENCY, async (entry, index) => {
-        // the entry id is short and filesystem-safe (Builder-assigned ids
-        // are hex/alphanumeric), unlike an arbitrary user-entered content
-        // name, which can be long enough to exceed filename length limits
-        // or contain characters that don't round-trip through kebabCase
-        const baseName = typeof entry.id === 'string' && entry.id ? entry.id : `no-id-${index}`;
+        // namespaced and encoded so a caller-supplied id can never collide
+        // with schema.model.json or the no-id fallback pattern, and can
+        // never escape the model directory via "/" or ".." in the id
+        const baseName =
+          typeof entry.id === 'string' && entry.id
+            ? `entry-id-${encodeURIComponent(entry.id)}`
+            : `entry-noid-${index}`;
         const filename = `${directory}/${modelName}/${baseName}.json`;
         await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
         modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
@@ -452,9 +470,11 @@ export const overwriteSpace = async (
         } else {
           plan.modelsToCreate++;
           if (!dryRun) {
-            await retryAsync(() =>
-              graphqlClient.chain.mutation.addModel({ body: schema }).execute({ id: true, name: true })
-            );
+            // unlike updateModel (which targets a fixed existing id and is
+            // safe to retry), addModel creates a new model on every call --
+            // retrying after a lost response risks creating a duplicate,
+            // the same reason content POSTs elsewhere disable retries too
+            await graphqlClient.chain.mutation.addModel({ body: schema }).execute({ id: true, name: true });
           }
         }
       } catch (e) {
@@ -598,7 +618,10 @@ export const overwriteSpace = async (
             contentQuery: {
               limit: pageLimit,
               offset,
-              sort: { createdDate: 1 },
+              // id tiebreaker matches the import query -- createdDate alone
+              // isn't unique, so ties could otherwise be split inconsistently
+              // across page boundaries and leave a stale entry un-pruned
+              sort: { createdDate: 1, id: 1 },
               // never consider an entry for pruning if it was created after
               // this run started — otherwise something an editor creates
               // while the restore/prune is in flight can look "not in the
@@ -611,7 +634,7 @@ export const overwriteSpace = async (
             },
           })
           .execute({
-            models: { name: true, content: true },
+            models: { id: true, name: true, content: true },
             settings: false,
             meta: false,
           }) as Promise<SpacePage>;

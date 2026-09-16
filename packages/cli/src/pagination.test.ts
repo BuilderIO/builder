@@ -170,6 +170,31 @@ test('entries without ids are still collected', async t => {
   t.is(space.models[0].content.length, 3);
 });
 
+test('two distinct models sharing a name are kept separate, not merged', async t => {
+  const fetchPage: FetchSpacePage = async () => ({
+    settings: {},
+    meta: {},
+    models: [
+      { id: 'model-1', name: 'Posts', content: [{ id: 'a', name: 'A' }] },
+      { id: 'model-2', name: 'Posts', content: [{ id: 'b', name: 'B' }] },
+    ],
+  });
+
+  const result = await downloadAllSpaceContent(fetchPage, { pageSize: 100 });
+
+  t.is(result.models.length, 2);
+  t.deepEqual(
+    result.models.map(m => m.id).sort(),
+    ['model-1', 'model-2']
+  );
+  t.deepEqual(
+    result.models
+      .reduce<string[]>((ids, model) => ids.concat(model.content.map(entry => entry.id as string)), [])
+      .sort(),
+    ['a', 'b']
+  );
+});
+
 test('an empty space produces no content', async t => {
   const { fetchPage, calls } = fakeApi({ page: 0 });
   const space = await downloadAllSpaceContent(fetchPage, { pageSize: 100 });

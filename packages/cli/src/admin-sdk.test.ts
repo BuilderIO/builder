@@ -32,6 +32,8 @@ const withMockedFetch = async (
   const calls: Array<{ url: string; init: any }> = [];
   const originalFetch = (global as any).fetch;
   const originalExit = process.exit;
+  const originalConsoleError = console.error;
+  const errorLogs: string[] = [];
   (global as any).fetch = async (url: string, init: any) => {
     calls.push({ url, init });
     const result = await handler(url, init);
@@ -48,6 +50,9 @@ const withMockedFetch = async (
     exitCode = code;
     throw new Error(`process.exit(${code})`);
   };
+  console.error = (...args: any[]) => {
+    errorLogs.push(args.join(' '));
+  };
   try {
     await run();
   } catch (e) {
@@ -57,8 +62,9 @@ const withMockedFetch = async (
   } finally {
     (global as any).fetch = originalFetch;
     process.exit = originalExit;
+    console.error = originalConsoleError;
   }
-  return { calls, exitCode };
+  return { calls, exitCode, errorLogs };
 };
 
 const graphqlResponse = (data: any) => ({ status: 200, json: { data } });
@@ -122,7 +128,7 @@ test.serial('prune only deletes entries that predate the run and existed in the 
     c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('downloadClone')
   );
   const contentQueryVar = Object.values(JSON.parse(downloadCloneCall!.init.body).variables)[0] as any;
-  t.deepEqual(contentQueryVar.sort, { createdDate: 1 });
+  t.deepEqual(contentQueryVar.sort, { createdDate: 1, id: 1 });
   t.truthy(contentQueryVar.query?.createdDate?.$lte);
   t.true(contentQueryVar.options?.includeUnpublished);
 });
@@ -164,14 +170,20 @@ test.serial('refuses to update a model whose id no longer matches the snapshot',
     },
   });
 
-  const { calls, exitCode } = await withMockedFetch(
+  const { calls, exitCode, errorLogs } = await withMockedFetch(
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
         if (body.query.includes('updateModel')) {
-          throw new Error('updateModel should not be called for a mismatched model id');
+          // if the mismatch guard were removed, this succeeding response
+          // would let the run complete normally instead of failing --
+          // proving the failure below is actually caused by the guard
+          return graphqlResponse({ updateModel: { id: 'recreated-model-id', name: 'Posts' } });
         }
         return graphqlResponse({ models: [{ id: 'recreated-model-id', name: 'Posts' }] });
+      }
+      if (url.startsWith(WRITE_API_ROOT)) {
+        return { status: 200, text: '' };
       }
       throw new Error('unexpected fetch to ' + url);
     },
@@ -179,7 +191,9 @@ test.serial('refuses to update a model whose id no longer matches the snapshot',
   );
 
   t.is(exitCode, 1);
+  t.false(calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel')));
   t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT)));
+  t.true(errorLogs.some(log => log.includes('does not match the snapshot id')));
 });
 
 test.serial('a transient model mutation failure is retried instead of skipping the model', async t => {

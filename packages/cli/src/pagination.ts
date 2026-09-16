@@ -21,6 +21,7 @@ export interface ContentEntry {
 }
 
 export interface ModelPage {
+  id?: string | null;
   name: string;
   content?: ContentEntry[] | null;
   [key: string]: any;
@@ -118,7 +119,12 @@ export const downloadAllSpaceContent = async (
   let offset = 0;
   let page = 0;
 
-  const modelsByName = new Map<string, ModelPage & { content: ContentEntry[] }>();
+  // grouped by id when the API provides one, since two distinct models can
+  // share a display name — grouping by name alone would silently merge
+  // their content into a single model in the snapshot
+  const modelGroupKey = (model: ModelPage) =>
+    typeof model.id === 'string' && model.id ? model.id : model.name;
+  const modelsByKey = new Map<string, ModelPage & { content: ContentEntry[] }>();
   const seenEntryKeys = new Map<string, Set<string>>();
 
   while (true) {
@@ -143,21 +149,22 @@ export const downloadAllSpaceContent = async (
         hasFullPage = true;
       }
 
-      let target = modelsByName.get(model.name);
+      const key = modelGroupKey(model);
+      let target = modelsByKey.get(key);
       if (!target) {
         target = { ...model, content: [] };
-        modelsByName.set(model.name, target);
-        seenEntryKeys.set(model.name, new Set());
+        modelsByKey.set(key, target);
+        seenEntryKeys.set(key, new Set());
         snapshot!.models.push(target);
       }
 
-      const seen = seenEntryKeys.get(model.name)!;
+      const seen = seenEntryKeys.get(key)!;
       content.forEach(entry => {
-        const key = entryKey(entry, model.name);
-        if (seen.has(key)) {
+        const entryDedupeKey = entryKey(entry, key);
+        if (seen.has(entryDedupeKey)) {
           return;
         }
-        seen.add(key);
+        seen.add(entryDedupeKey);
         target!.content.push(entry);
         added++;
       });
