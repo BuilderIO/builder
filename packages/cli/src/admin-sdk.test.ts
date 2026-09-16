@@ -399,3 +399,51 @@ test.serial('a failing graphql mutation is not automatically retried by the fetc
   t.is(addModelCalls, 1);
   t.is(exitCode, 1);
 });
+
+test.serial(
+  'a hidden directory like .git in the snapshot does not cause a false failure or block prune',
+  async t => {
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [{ id: 'a', name: 'A' }],
+      },
+    });
+    // simulates the snapshot directory being version-controlled, or just
+    // browsed on macOS (.DS_Store) -- neither should be mistaken for a model
+    await fse.ensureDir(path.join(dir, '.git'));
+    await fse.outputFile(path.join(dir, 'posts', '.DS_Store'), 'junk');
+
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+          }
+          if (body.query.includes('downloadClone')) {
+            const contentQueryVar = Object.values(body.variables)[0] as any;
+            if (contentQueryVar.offset > 0) {
+              return graphqlResponse({ downloadClone: { models: [] } });
+            }
+            return graphqlResponse({
+              downloadClone: {
+                models: [{ name: 'Posts', content: [{ id: 'a', createdDate: 1 }] }],
+              },
+            });
+          }
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+        }
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => overwriteSpace('fake-key', dir, false, true, true, false)
+    );
+
+    t.is(exitCode, undefined);
+    t.true(calls.some(c => c.url.endsWith('/posts/a') && c.init.method === 'PUT'));
+    t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'DELETE'));
+  }
+);

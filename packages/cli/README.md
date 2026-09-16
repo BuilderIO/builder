@@ -168,6 +168,10 @@ DESCRIPTION
     dropped connection or 5xx doesn't fail the whole run. Model/content writes are never
     automatically retried by this layer beyond what's described above, since blindly retrying a
     mutation risks creating a duplicate.
+  - Hidden files and directories in the snapshot (e.g. a `.git` folder if the snapshot directory is
+    version-controlled, or a `.DS_Store` left behind by Finder) are ignored rather than mistaken for
+    a model or content entry — which would otherwise show up as a false failure and silently disable
+    --prune for the whole run.
 
   Known limitations:
   - Pruning re-downloads the entire target space's content (across all models, not just the ones

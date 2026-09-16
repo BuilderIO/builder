@@ -29,11 +29,24 @@ export const intParam = (value: any, previous: any) => {
   return parsedValue;
 }
 
+// fs.readdir returns hidden entries (.git, .vscode, .DS_Store, ...) with no
+// filtering. A backup directory that's version-controlled or just browsed
+// in Finder/Explorer routinely picks these up, and `overwrite`/`create`
+// would otherwise treat a hidden directory as a model missing its
+// schema.model.json (a false failure that silently disables --prune and
+// makes an otherwise-successful run exit non-zero) or try to parse a
+// hidden file as a content entry.
+const isHidden = (name: string) => name.startsWith('.');
+
 export const getDirectories = async (source: string) =>
-  (await fse.readdir(source, { withFileTypes: true })).filter(dirent => dirent.isDirectory());
+  (await fse.readdir(source, { withFileTypes: true })).filter(
+    dirent => dirent.isDirectory() && !isHidden(dirent.name)
+  );
 
 export const getFiles = async (source: string) =>
-  (await fse.readdir(source, { withFileTypes: true })).filter(dirent => dirent.isFile());
+  (await fse.readdir(source, { withFileTypes: true })).filter(
+    dirent => dirent.isFile() && !isHidden(dirent.name)
+  );
 
 export const replaceField = (json: any, newValue: string, oldValue: string) => {
   return traverse(json).map(function (field) {
