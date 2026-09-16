@@ -156,6 +156,67 @@ test.serial('prune is skipped entirely when a content write fails', async t => {
   t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'DELETE'));
 });
 
+test.serial('refuses to update a model whose id no longer matches the snapshot', async t => {
+  const dir = await makeSnapshot({
+    posts: {
+      schema: { id: 'original-model-id', name: 'Posts' },
+      entries: [{ id: 'a', name: 'A' }],
+    },
+  });
+
+  const { calls, exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (body.query.includes('updateModel')) {
+          throw new Error('updateModel should not be called for a mismatched model id');
+        }
+        return graphqlResponse({ models: [{ id: 'recreated-model-id', name: 'Posts' }] });
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => overwriteSpace('fake-key', dir, false, false, true, false)
+  );
+
+  t.is(exitCode, 1);
+  t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT)));
+});
+
+test.serial('a transient model mutation failure is retried instead of skipping the model', async t => {
+  const dir = await makeSnapshot({
+    posts: {
+      schema: { name: 'Posts' },
+      entries: [{ id: 'a', name: 'A' }],
+    },
+  });
+
+  let updateModelCalls = 0;
+  const { calls, exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (body.query.includes('updateModel')) {
+          updateModelCalls++;
+          if (updateModelCalls === 1) {
+            return { status: 200, json: { errors: [{ message: 'transient error' }] } };
+          }
+          return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+        }
+        return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+      }
+      if (url.startsWith(WRITE_API_ROOT)) {
+        return { status: 200, text: '' };
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => overwriteSpace('fake-key', dir, false, false, true, false)
+  );
+
+  t.is(updateModelCalls, 2);
+  t.is(exitCode, undefined);
+  t.true(calls.some(c => c.url.endsWith('/posts/a') && c.init.method === 'PUT'));
+});
+
 test.serial('dry-run makes no write, delete, or mutation calls', async t => {
   const dir = await makeSnapshot({
     posts: {

@@ -39,14 +39,17 @@ export const buildWriteRequest = (
   entry: { id?: string | null }
 ): WriteRequest => {
   if (entry.id) {
-    return { method: 'PUT', url: `${WRITE_API_ROOT}/${modelName}/${entry.id}` };
+    return {
+      method: 'PUT',
+      url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(entry.id)}`,
+    };
   }
-  return { method: 'POST', url: `${WRITE_API_ROOT}/${modelName}` };
+  return { method: 'POST', url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}` };
 };
 
 export const buildDeleteRequest = (modelName: string, entryId: string): WriteRequest => ({
   method: 'DELETE',
-  url: `${WRITE_API_ROOT}/${modelName}/${entryId}`,
+  url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(entryId)}`,
 });
 
 /**

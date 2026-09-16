@@ -45,6 +45,17 @@ test('buildDeleteRequest targets the entry by id', t => {
   });
 });
 
+test('ids and model names with url-unsafe characters are encoded', t => {
+  t.deepEqual(buildWriteRequest('page', { id: 'a/b c' }), {
+    method: 'PUT',
+    url: 'https://builder.io/api/v1/write/page/a%2Fb%20c',
+  });
+  t.deepEqual(buildDeleteRequest('page', 'a/b c'), {
+    method: 'DELETE',
+    url: 'https://builder.io/api/v1/write/page/a%2Fb%20c',
+  });
+});
+
 test('findStaleEntryIds returns ids not present in the snapshot', t => {
   const existing = [{ id: 'keep-1' }, { id: 'stale-1' }, { id: 'keep-2' }, { id: 'stale-2' }];
   const keepIds = new Set(['keep-1', 'keep-2']);

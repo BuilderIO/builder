@@ -18,6 +18,7 @@ import {
   FetchLike,
   mapWithConcurrency,
   postJsonWithRetry,
+  retryAsync,
 } from './write-queue';
 import {
   buildDeleteRequest,
@@ -61,6 +62,11 @@ export const importSpace = async (
   limit = MAX_CONTENT_PAGE_SIZE
 ) => {
   const graphqlClient = createGraphqlClient(privateKey);
+  // entries created after this moment are excluded from the snapshot
+  // entirely (rather than merely sorted around), which keeps a concurrent
+  // insertion from shifting the offset window and causing an unrelated
+  // entry to be skipped or duplicated across pages
+  const importStartedAt = Date.now();
 
   const spaceProgress = MULTIBAR.create(1, 0);
   spaceProgress.start(1, 0, { name: 'getting space settings' });
@@ -72,11 +78,11 @@ export const importSpace = async (
           contentQuery: {
             limit: pageLimit,
             offset,
-            // a stable creation order keeps each offset page pointing at
-            // the same entries even if new ones are created mid-export —
-            // without this, an insertion ahead of the cursor shifts every
-            // later page and can cause entries to be skipped or duplicated
-            sort: { createdDate: 1 },
+            // createdDate alone isn't a unique key, so two entries created
+            // in the same millisecond would otherwise have unspecified
+            // relative order across page boundaries; id breaks the tie
+            sort: { createdDate: 1, id: 1 },
+            query: { createdDate: { $lte: importStartedAt } },
             // the content API defaults to published-only, which would
             // silently drop draft entries from the snapshot — a backup
             // that can't restore unpublished work isn't a real backup
@@ -97,12 +103,35 @@ export const importSpace = async (
         }),
     });
 
+    // two distinct model names that normalize to the same directory would
+    // otherwise race on fse.emptyDir/outputFile below and silently corrupt
+    // or drop one of the two models — fail loudly before writing anything
+    const modelNamesByDir = new Map<string, string[]>();
+    space.models.forEach(model => {
+      const dirName = kebabCase(model.name);
+      modelNamesByDir.set(dirName, [...(modelNamesByDir.get(dirName) || []), model.name]);
+    });
+    const collisions = [...modelNamesByDir.entries()].filter(([, names]) => names.length > 1);
+    if (collisions.length > 0) {
+      throw new Error(
+        `Cannot write snapshot: these model names normalize to the same directory and would overwrite each other: ${collisions
+          .map(([dir, names]) => `"${names.join('", "')}" -> ${dir}`)
+          .join('; ')}. Rename one of the conflicting models before importing.`
+      );
+    }
+
     spaceProgress.update(0, { name: 'writing space' });
     spaceProgress.setTotal(space.models.length);
+    // each import is a full, authoritative snapshot — clearing the whole
+    // directory first means a model deleted/renamed since a previous import
+    // can't leave a stale directory behind for `overwrite` to resurrect later
+    await fse.emptyDir(directory);
     await fse.outputFile(
       `${directory}/settings.json`,
       JSON.stringify({ ...space.settings, cloneInfo: space.meta }, undefined, 2)
     );
+    let totalEntries = 0;
+    const entryCountsByModel: Array<{ name: string; count: number }> = [];
     await mapWithConcurrency(space.models, DEFAULT_WRITE_CONCURRENCY, async model => {
       const { content, everything } = model;
       // todo why conent is in everything
@@ -118,15 +147,27 @@ export const importSpace = async (
         JSON.stringify(schema, null, 2)
       );
       await mapWithConcurrency(content, DEFAULT_WRITE_CONCURRENCY, async (entry, index) => {
-        const filename = `${directory}/${modelName}/${kebabCase(entry.name || '')}-${index}.json`;
+        // the entry id is short and filesystem-safe (Builder-assigned ids
+        // are hex/alphanumeric), unlike an arbitrary user-entered content
+        // name, which can be long enough to exceed filename length limits
+        // or contain characters that don't round-trip through kebabCase
+        const baseName = typeof entry.id === 'string' && entry.id ? entry.id : `no-id-${index}`;
+        const filename = `${directory}/${modelName}/${baseName}.json`;
         await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
         modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
       });
+      entryCountsByModel.push({ name: model.name, count: content.length });
+      totalEntries += content.length;
       spaceProgress.increment();
       modelProgress.stop();
     });
+    console.log(chalk.green(`\nImported successfully: ${space.settings.name}`));
+    console.log(chalk.green(`  Models: ${space.models.length}`));
+    console.log(chalk.green(`  Total content entries: ${totalEntries}`));
     if (debug) {
-      console.log(chalk.green('Imported successfully ', space.settings.name));
+      entryCountsByModel.forEach(({ name, count }) => {
+        console.log(chalk.green(`    ${name}: ${count}`));
+      });
     }
   } catch (e) {
     console.log(`\r\n\r\n`);
@@ -385,18 +426,35 @@ export const overwriteSpace = async (
       try {
         const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
         if (modelPlan.action === 'update') {
+          if (schema.id && schema.id !== modelPlan.existingId) {
+            // the destination model matched by name but has a different id
+            // than the one this snapshot was taken from (e.g. the original
+            // model was deleted and a new one created with the same name)
+            // -- updating it would silently overwrite an unrelated model
+            throw new Error(
+              'model "' +
+                modelName +
+                '" matched by name but its id in the target space (' +
+                modelPlan.existingId +
+                ') does not match the snapshot id (' +
+                schema.id +
+                ') -- refusing to overwrite what may be a different model'
+            );
+          }
           plan.modelsToUpdate++;
           if (!dryRun) {
-            await graphqlClient.chain.mutation
-              .updateModel({ body: { id: modelPlan.existingId, data: omit(schema, 'id') } })
-              .execute({ id: true, name: true });
+            await retryAsync(() =>
+              graphqlClient.chain.mutation
+                .updateModel({ body: { id: modelPlan.existingId, data: omit(schema, 'id') } })
+                .execute({ id: true, name: true })
+            );
           }
         } else {
           plan.modelsToCreate++;
           if (!dryRun) {
-            await graphqlClient.chain.mutation
-              .addModel({ body: schema })
-              .execute({ id: true, name: true });
+            await retryAsync(() =>
+              graphqlClient.chain.mutation.addModel({ body: schema }).execute({ id: true, name: true })
+            );
           }
         }
       } catch (e) {

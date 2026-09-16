@@ -52,6 +52,16 @@ DESCRIPTION
   This command will download a self-contained clone ( new IDs) from the target space and save it on the filesystem.
   The snapshot includes unpublished/draft content entries, not just published ones, so it can be used as a full
   backup of the space (see `builder overwrite` for restoring from it).
+
+  Every import fully replaces the output directory's contents, so a model deleted or renamed since a previous
+  snapshot doesn't leave stale data behind. It also refuses to write a snapshot (rather than silently corrupting
+  one) if two models would normalize to the same directory name, and always prints a model/entry count summary on
+  completion so an incomplete snapshot doesn't go unnoticed until you try to restore from it.
+
+  Known limitation: pagination is offset-based. If content is created after the import starts, it's cleanly
+  excluded from the snapshot rather than causing skipped/duplicated entries — but content deleted from the space
+  while a large import is still in progress can, in rare cases, cause one other unrelated entry to be skipped.
+  For a business-critical backup of a very large space, taking it during a quiet period minimizes this risk.
 ```
 
 ## `builder create -k [PRIVATE KEY] -i [INPUT DIRECTORY] -n [NEW SPACE NAME]`

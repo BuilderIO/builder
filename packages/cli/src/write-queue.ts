@@ -29,6 +29,36 @@ const defaultSleep = (ms: number) => new Promise<void>(resolve => setTimeout(res
 
 const isRetriableStatus = (status: number) => status === 408 || status === 429 || status >= 500;
 
+export interface RetryAsyncOptions {
+  retries?: number;
+  baseDelayMs?: number;
+  sleep?: (ms: number) => Promise<void>;
+}
+
+/**
+ * Retries any async operation with exponential backoff. Unlike
+ * `postJsonWithRetry`, this doesn't inspect HTTP status codes, so it's meant
+ * for calls (like a GraphQL mutation through a typed client) where a thrown
+ * error is the only failure signal available.
+ */
+export const retryAsync = async <T>(
+  fn: () => Promise<T>,
+  { retries = DEFAULT_WRITE_RETRIES, baseDelayMs = 500, sleep = defaultSleep }: RetryAsyncOptions = {}
+): Promise<T> => {
+  let lastError: Error | undefined;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e));
+      if (attempt < retries) {
+        await sleep(baseDelayMs * Math.pow(2, attempt));
+      }
+    }
+  }
+  throw lastError;
+};
+
 const retryAfterMs = (response: FetchLikeResponse) => {
   const header = response.headers?.get('retry-after');
   if (!header) {
