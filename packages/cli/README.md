@@ -50,6 +50,8 @@ OPTIONS
 
 DESCRIPTION
   This command will download a self-contained clone ( new IDs) from the target space and save it on the filesystem.
+  The snapshot includes unpublished/draft content entries, not just published ones, so it can be used as a full
+  backup of the space (see `builder overwrite` for restoring from it).
 ```
 
 ## `builder create -k [PRIVATE KEY] -i [INPUT DIRECTORY] -n [NEW SPACE NAME]`

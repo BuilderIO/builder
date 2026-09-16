@@ -124,6 +124,7 @@ test.serial('prune only deletes entries that predate the run and existed in the 
   const contentQueryVar = Object.values(JSON.parse(downloadCloneCall!.init.body).variables)[0] as any;
   t.deepEqual(contentQueryVar.sort, { createdDate: 1 });
   t.truthy(contentQueryVar.query?.createdDate?.$lte);
+  t.true(contentQueryVar.options?.includeUnpublished);
 });
 
 test.serial('prune is skipped entirely when a content write fails', async t => {

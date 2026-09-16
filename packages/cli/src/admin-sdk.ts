@@ -77,6 +77,10 @@ export const importSpace = async (
             // without this, an insertion ahead of the cursor shifts every
             // later page and can cause entries to be skipped or duplicated
             sort: { createdDate: 1 },
+            // the content API defaults to published-only, which would
+            // silently drop draft entries from the snapshot — a backup
+            // that can't restore unpublished work isn't a real backup
+            options: { includeUnpublished: true },
           },
         })
         .execute({
@@ -542,6 +546,10 @@ export const overwriteSpace = async (
               // while the restore/prune is in flight can look "not in the
               // snapshot" and get deleted moments after it was made
               query: { createdDate: { $lte: runStartedAt } },
+              // match the import query so a stale draft entry is still
+              // recognized as stale and pruned, instead of being invisible
+              // to the diff and left behind indefinitely
+              options: { includeUnpublished: true },
             },
           })
           .execute({
