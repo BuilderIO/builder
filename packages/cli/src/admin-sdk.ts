@@ -72,6 +72,11 @@ export const importSpace = async (
           contentQuery: {
             limit: pageLimit,
             offset,
+            // a stable creation order keeps each offset page pointing at
+            // the same entries even if new ones are created mid-export —
+            // without this, an insertion ahead of the cursor shifts every
+            // later page and can cause entries to be skipped or duplicated
+            sort: { createdDate: 1 },
           },
         })
         .execute({
@@ -306,6 +311,11 @@ export const overwriteSpace = async (
   dryRun = false
 ) => {
   const graphqlClient = createGraphqlClient(privateKey);
+  // entries created at or after this moment are never candidates for
+  // pruning, no matter what the destination re-download below sees —
+  // this is what keeps a concurrently-created entry from being deleted
+  // in the same run that just created it
+  const runStartedAt = Date.now();
   const progressCounts = { entriesWritten: 0, entriesPruned: 0 };
   const onInterrupt = () => {
     console.log('\r\n\r\n');
@@ -522,7 +532,18 @@ export const overwriteSpace = async (
     } else if (prune && localEntryIdsByModel.size > 0) {
       const destinationFetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
         graphqlClient.chain.query
-          .downloadClone({ contentQuery: { limit: pageLimit, offset } })
+          .downloadClone({
+            contentQuery: {
+              limit: pageLimit,
+              offset,
+              sort: { createdDate: 1 },
+              // never consider an entry for pruning if it was created after
+              // this run started — otherwise something an editor creates
+              // while the restore/prune is in flight can look "not in the
+              // snapshot" and get deleted moments after it was made
+              query: { createdDate: { $lte: runStartedAt } },
+            },
+          })
           .execute({
             models: { name: true, content: true },
             settings: false,

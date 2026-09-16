@@ -111,11 +111,25 @@ DESCRIPTION
   don't exist in the snapshot at all are never touched, even with --prune.
 
   Because --prune is irreversible, it asks you to type "yes" before doing anything (before any
-  model or content write happens). Pass --yes to skip this prompt for scripted/CI use.
+  model or content write happens), and shows the target space's name/id and the local snapshot
+  directory being restored so you can catch a stale BUILDER_PRIVATE_KEY before it's too late. Pass
+  --yes to skip this prompt for scripted/CI use.
 
   Pass --dry-run to see exactly what would happen (models to update/create, entries to write, and
   entries that would be pruned) without making a single write, update, or delete call. --dry-run
   never prompts for confirmation, since nothing destructive happens.
+
+  Safety guarantees:
+  - Pruning is skipped entirely (with the run exiting non-zero) if any content write failed, since
+    the target space wouldn't be a faithful reflection of the snapshot yet.
+  - An entry created in the target space after the run started is never a candidate for pruning,
+    even if it isn't in the local snapshot — this protects content created concurrently while a
+    restore/prune is in flight.
+  - Interrupting a run (Ctrl-C) prints how many entries were written/pruned so far before exiting,
+    so you can tell whether the target space is in a partially-updated state.
+
+  Known limitation: pruning re-downloads the entire target space's content (across all models, not
+  just the ones being restored) to compute what's stale, which can be slow on very large spaces.
 ```
 
 ## `builder integrate`
