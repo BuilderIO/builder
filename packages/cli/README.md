@@ -64,6 +64,10 @@ DESCRIPTION
   Note this means the output directory's entire previous contents are replaced on each successful import
   (not merged in place), so don't store anything other than a snapshot from this command in that directory.
 
+  Every admin API request this command makes (including each paginated page of a large space) has a 30 second
+  timeout and is automatically retried with backoff on a transient failure, so a single dropped connection or
+  5xx partway through a large, many-page snapshot doesn't fail the entire run.
+
   Known limitations:
   - Pagination is offset-based. Content is excluded from the snapshot if it's created after the import starts
     (cleanly, rather than causing skipped/duplicated entries), but content deleted from the space while a large
@@ -159,6 +163,11 @@ DESCRIPTION
     "blog-post"), overwrite refuses to sync the snapshot's corresponding model directory rather than
     guess which one is the real match — updating the wrong one, or letting --prune delete content
     that actually belongs to the other, unrelated model.
+  - Every admin API read (listing models, downloading the target space's content for --prune) has a
+    30 second timeout and is automatically retried with backoff on a transient failure, so a single
+    dropped connection or 5xx doesn't fail the whole run. Model/content writes are never
+    automatically retried by this layer beyond what's described above, since blindly retrying a
+    mutation risks creating a duplicate.
 
   Known limitations:
   - Pruning re-downloads the entire target space's content (across all models, not just the ones

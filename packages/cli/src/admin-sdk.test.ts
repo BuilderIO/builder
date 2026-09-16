@@ -333,3 +333,69 @@ test('swapInStagingDir restores the previous snapshot if the final swap fails', 
 
   t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-old.json')));
 });
+
+test.serial(
+  'a transient failure on a graphql query is retried instead of failing the whole run',
+  async t => {
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [{ id: 'a', name: 'A' }],
+      },
+    });
+
+    let modelsQueryCalls = 0;
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+          }
+          modelsQueryCalls++;
+          if (modelsQueryCalls === 1) {
+            return { status: 503, text: 'upstream unavailable' };
+          }
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+        }
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => overwriteSpace('fake-key', dir, false, false, true, false)
+    );
+
+    t.is(modelsQueryCalls, 2);
+    t.is(exitCode, undefined);
+    t.true(calls.some(c => c.url.endsWith('/posts/a') && c.init.method === 'PUT'));
+  }
+);
+
+test.serial('a failing graphql mutation is not automatically retried by the fetcher', async t => {
+  const dir = await makeSnapshot({
+    posts: {
+      schema: { name: 'Posts' },
+      entries: [{ id: 'a', name: 'A' }],
+    },
+  });
+
+  let addModelCalls = 0;
+  const { exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (body.query.includes('addModel')) {
+          addModelCalls++;
+          return { status: 503, text: 'upstream unavailable' };
+        }
+        return graphqlResponse({ models: [] });
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => overwriteSpace('fake-key', dir, false, false, true, false)
+  );
+
+  t.is(addModelCalls, 1);
+  t.is(exitCode, 1);
+});

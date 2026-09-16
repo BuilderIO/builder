@@ -44,15 +44,26 @@ const root = 'https://cdn.builder.io';
 
 const createGraphqlClient = (privateKey: string) =>
   createClient({
-    fetcher: ({ query, variables }, fetch, qs) =>
-      fetch(`${root}/api/v2/admin`, {
+    fetcher: async ({ query, variables }) => {
+      // queries are pure reads, so they're always safe to retry on a
+      // transient failure -- a large space's snapshot or prune scan can
+      // take hundreds of paginated requests, and without this a single
+      // blip partway through would otherwise fail the entire run with no
+      // way to resume short of starting over. Mutations get the same
+      // stall protection (a hung connection would otherwise block forever)
+      // but no automatic retry, since e.g. addModel/createSpace create
+      // something new on every call and aren't safe to retry blindly.
+      const isMutation = query.trimStart().startsWith('mutation');
+      const response = await postJsonWithRetry({
+        fetchImpl: fetch as unknown as FetchLike,
+        url: `${root}/api/v2/admin`,
         method: 'POST',
-        body: JSON.stringify({ query, variables }),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${privateKey}`,
-        },
-      }).then(r => r.json()),
+        body: { query, variables },
+        headers: { Authorization: `Bearer ${privateKey}` },
+        retries: isMutation ? 0 : DEFAULT_WRITE_RETRIES,
+      });
+      return JSON.parse(await response.text());
+    },
   });
 
 export const importSpace = async (
@@ -272,14 +283,27 @@ export const newSpace = async (
     const modelBars: cliProgress.Bar[] = [];
 
     await mapWithConcurrency(models, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
-      const body = replaceField(
-        await readAsJson(`${directory}/${modelName}/schema.model.json`),
-        organization.id,
-        spaceSettings.id
-      );
-      const model = await newSpaceAdminClient.chain.mutation
-        .addModel({ body: replaceIds(body) })
-        .execute({ id: true, name: true });
+      let model;
+      try {
+        const body = replaceField(
+          await readAsJson(`${directory}/${modelName}/schema.model.json`),
+          organization.id,
+          spaceSettings.id
+        );
+        model = await newSpaceAdminClient.chain.mutation
+          .addModel({ body: replaceIds(body) })
+          .execute({ id: true, name: true });
+      } catch (e) {
+        // one model failing to read/create shouldn't take down every other
+        // concurrently-running model in this pool -- record it and move on,
+        // same as the per-model isolation `overwrite` already has
+        failures.push({
+          model: modelName,
+          file: 'schema.model.json',
+          error: e instanceof Error ? e.message : String(e),
+        });
+        return;
+      }
       if (!model) {
         return;
       }
@@ -360,7 +384,7 @@ export const newSpace = async (
 
   if (failures.length) {
     console.log(`\r\n\r\n`);
-    console.error(chalk.red(`Failed to write ${failures.length} content entries:`));
+    console.error(chalk.red(`Failed to write ${failures.length} model(s)/content entries:`));
     failures.forEach(failure => {
       console.error(chalk.red(`  ${failure.model}/${failure.file}: ${failure.error}`));
     });
