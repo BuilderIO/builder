@@ -211,6 +211,7 @@ export const newSpace = async (
     // with an unbounded Promise.all gets rate limited and drops content.
     await mapWithConcurrency(writeTasks, DEFAULT_WRITE_CONCURRENCY, async task => {
       const { modelName, fileName, progress } = task;
+      let failed = false;
       try {
         const contentJSON = replaceIds(
           replaceField(
@@ -228,13 +229,16 @@ export const newSpace = async (
           },
         });
       } catch (e) {
+        failed = true;
         failures.push({
           model: modelName,
           file: fileName,
           error: e instanceof Error ? e.message : String(e),
         });
       }
-      progress.increment(1, { name: `${modelName}: wrote ${fileName}` });
+      progress.increment(1, {
+        name: `${modelName}: ${failed ? 'failed to write' : 'wrote'} ${fileName}`,
+      });
     });
 
     modelBars.forEach(bar => bar.stop());

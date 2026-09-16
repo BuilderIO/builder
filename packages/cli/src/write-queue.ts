@@ -30,7 +30,11 @@ const retryAfterMs = (response: FetchLikeResponse) => {
     return undefined;
   }
   const seconds = Number(header);
-  return isFinite(seconds) && seconds >= 0 ? seconds * 1000 : undefined;
+  if (isFinite(seconds) && seconds >= 0) {
+    return seconds * 1000;
+  }
+  const date = Date.parse(header);
+  return isFinite(date) ? Math.max(0, date - Date.now()) : undefined;
 };
 
 export const mapWithConcurrency = async <T, R>(

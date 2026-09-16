@@ -80,6 +80,26 @@ test('honours the retry-after header', async t => {
   t.deepEqual(delays, [2000]);
 });
 
+test('honours an http-date retry-after header', async t => {
+  const delays: number[] = [];
+  let calls = 0;
+  const retryAt = new Date(Date.now() + 3000);
+  const fetchImpl: FetchLike = async () =>
+    calls++ === 0 ? response(429, '', { 'retry-after': retryAt.toUTCString() }) : response(200);
+
+  await postJsonWithRetry({
+    fetchImpl,
+    url: 'https://example.com',
+    body: {},
+    sleep: async ms => {
+      delays.push(ms);
+    },
+  });
+
+  t.is(delays.length, 1);
+  t.true(delays[0] > 0 && delays[0] <= 3000);
+});
+
 test('throws after exhausting retries so failures are never silent', async t => {
   let calls = 0;
   const fetchImpl: FetchLike = async () => {
