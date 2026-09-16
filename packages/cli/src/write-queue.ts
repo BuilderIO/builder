@@ -14,6 +14,7 @@ export interface PostJsonOptions {
   fetchImpl: FetchLike;
   url: string;
   body: any;
+  method?: 'POST' | 'PUT';
   headers?: Record<string, string>;
   retries?: number;
   baseDelayMs?: number;
@@ -65,6 +66,7 @@ export const postJsonWithRetry = async ({
   fetchImpl,
   url,
   body,
+  method = 'POST',
   headers,
   retries = DEFAULT_WRITE_RETRIES,
   baseDelayMs = 500,
@@ -77,7 +79,7 @@ export const postJsonWithRetry = async ({
     let response: FetchLikeResponse;
     try {
       response = await fetchImpl(url, {
-        method: 'POST',
+        method,
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json', ...headers },
       });

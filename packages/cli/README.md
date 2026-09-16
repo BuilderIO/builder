@@ -29,6 +29,7 @@ USAGE
 
 - [`builder import`](#builder-import--k-private-key---o-output-directory)
 - [`builder create`](#builder-create)
+- [`builder overwrite`](#builder-overwrite)
 - [`builder integrate`](#builder-integrate)
 
 ## `builder import -k [PRIVATE KEY] -o [OUTPUT DIRECTORY]`
@@ -71,6 +72,30 @@ OPTIONS
 
 DESCRIPTION
   This command will create a new space clone from your local builder directory.
+```
+
+## `builder overwrite`
+
+Restore a local snapshot into an **existing** space, in place, using its own private key. Unlike `create`, this does not create a new space or mint a new key.
+
+```
+USAGE
+  $ builder overwrite -k [PRIVATE KEY] -i [INPUT DIRECTORY]
+
+
+OPTIONS
+  -k, --key Private key of the existing space to overwrite
+
+  -d, --debug  Optionally print debug information and progress bars.
+
+  -i, --input   Optionally input directory, default to ./builder
+
+DESCRIPTION
+  Models are matched to the target space by name and upserted (existing models are updated in place,
+  missing ones are created). Content entries are written by their original id via PUT, which updates
+  the entry if it already exists in the target space and creates it otherwise. Entries that exist in
+  the target space but are absent from the local snapshot are left untouched — this is a merge/restore,
+  not a mirror, and will never delete content.
 ```
 
 ## `builder integrate`

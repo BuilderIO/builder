@@ -18,6 +18,7 @@ import {
   mapWithConcurrency,
   postJsonWithRetry,
 } from './write-queue';
+import { buildWriteRequest, ExistingModel, planModelSync } from './overwrite';
 
 const MULTIBAR = new cliProgress.MultiBar(
   {
@@ -253,6 +254,106 @@ export const newSpace = async (
   } catch (e) {
     console.log(`\r\n\r\n`);
     console.error(chalk.red('Error creating space'));
+    console.error(e);
+    process.exit(1);
+  }
+
+  MULTIBAR.stop();
+
+  if (failures.length) {
+    console.log(`\r\n\r\n`);
+    console.error(chalk.red(`Failed to write ${failures.length} content entries:`));
+    failures.forEach(failure => {
+      console.error(chalk.red(`  ${failure.model}/${failure.file}: ${failure.error}`));
+    });
+    process.exit(1);
+  }
+};
+
+/**
+ * Restores a snapshot into an already-existing space: models are upserted by
+ * name and content entries by their original id (PUT), so entries already in
+ * the target space get overwritten and everything else is created. Entries
+ * present in the target space but absent from the snapshot are left alone —
+ * this is a merge, not a mirror.
+ */
+export const overwriteSpace = async (privateKey: string, directory: string, debug = false) => {
+  const graphqlClient = createGraphqlClient(privateKey);
+  const failures: Array<{ file: string; model: string; error: string }> = [];
+
+  try {
+    const rawModels = (await graphqlClient.chain.query.models.execute({ id: true, name: true })) || [];
+    const existingModels: ExistingModel[] = rawModels
+      .map(model => ({ id: model.id, name: model.name }))
+      .filter((model): model is ExistingModel => !!model.id && !!model.name);
+
+    const modelDirs = await getDirectories(directory);
+    const writeTasks: Array<{ modelName: string; fileName: string; progress: cliProgress.Bar }> =
+      [];
+    const modelBars: cliProgress.Bar[] = [];
+
+    await mapWithConcurrency(modelDirs, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
+      const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
+      const plan = planModelSync(existingModels, modelName);
+      if (plan.action === 'update') {
+        await graphqlClient.chain.mutation
+          .updateModel({ body: { id: plan.existingId, data: omit(schema, 'id') } })
+          .execute({ id: true, name: true });
+      } else {
+        await graphqlClient.chain.mutation
+          .addModel({ body: schema })
+          .execute({ id: true, name: true });
+      }
+
+      const content = (await getFiles(`${directory}/${modelName}`)).filter(
+        file => file.name !== 'schema.model.json'
+      );
+      const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
+      modelBars.push(modelProgress);
+      if (content.length > 0) {
+        modelProgress.start(content.length, 0, { name: modelName });
+      }
+      content.forEach(contentFile => {
+        writeTasks.push({ modelName, fileName: contentFile.name, progress: modelProgress });
+      });
+    });
+
+    await mapWithConcurrency(writeTasks, DEFAULT_WRITE_CONCURRENCY, async task => {
+      const { modelName, fileName, progress } = task;
+      let failed = false;
+      try {
+        const entry = await readAsJson(`${directory}/${modelName}/${fileName}`);
+        const { method, url } = buildWriteRequest(modelName, entry);
+        await postJsonWithRetry({
+          fetchImpl: fetch as unknown as FetchLike,
+          method,
+          url,
+          body: entry,
+          headers: {
+            Authorization: `Bearer ${privateKey}`,
+          },
+        });
+      } catch (e) {
+        failed = true;
+        failures.push({
+          model: modelName,
+          file: fileName,
+          error: e instanceof Error ? e.message : String(e),
+        });
+      }
+      progress.increment(1, {
+        name: `${modelName}: ${failed ? 'failed to write' : 'wrote'} ${fileName}`,
+      });
+    });
+
+    modelBars.forEach(bar => bar.stop());
+
+    if (debug) {
+      console.log(chalk.green('Overwrite complete'));
+    }
+  } catch (e) {
+    console.log(`\r\n\r\n`);
+    console.error(chalk.red('Error overwriting space'));
     console.error(e);
     process.exit(1);
   }

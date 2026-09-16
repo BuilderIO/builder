@@ -2,7 +2,7 @@
 
 import program from 'commander';
 import chalk from 'chalk';
-import { importSpace, newSpace } from './admin-sdk';
+import { importSpace, newSpace, overwriteSpace } from './admin-sdk';
 import { integrateWithLocalCodebase } from './integrate';
 import { intParam } from './utils';
 import { MAX_CONTENT_PAGE_SIZE } from './pagination';
@@ -35,6 +35,18 @@ program
   .option('-n,--name <name>', 'The new space name')
   .action(options => {
     newSpace(options.key, options.input, options.name, options.debug);
+  });
+
+program
+  .command('overwrite')
+  .description(
+    'Overwrite content and models in an existing space from a local snapshot. Models are matched by name and content by id; entries in the target space that are missing from the snapshot are left untouched'
+  )
+  .option('-k,--key <key>', 'Private Key of the existing space to overwrite')
+  .option('-d,--debug', 'print debugging information')
+  .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
+  .action(options => {
+    overwriteSpace(options.key, options.input, options.debug);
   });
 
 program

@@ -174,3 +174,22 @@ test('sends the payload as json with the provided headers', async t => {
   t.is(seenInit.headers['Content-Type'], 'application/json');
   t.is(seenInit.headers.Authorization, 'Bearer key');
 });
+
+test('defaults to POST but sends PUT when requested', async t => {
+  const methods: string[] = [];
+  const fetchImpl: FetchLike = async (_url, init) => {
+    methods.push(init.method);
+    return response(200);
+  };
+
+  await postJsonWithRetry({ fetchImpl, url: 'https://example.com', body: {}, sleep: noSleep });
+  await postJsonWithRetry({
+    fetchImpl,
+    url: 'https://example.com',
+    body: {},
+    method: 'PUT',
+    sleep: noSleep,
+  });
+
+  t.deepEqual(methods, ['POST', 'PUT']);
+});
