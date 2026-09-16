@@ -1,3 +1,5 @@
+import { AbortController, AbortSignal } from 'abort-controller';
+
 export const DEFAULT_WRITE_CONCURRENCY = 5;
 export const DEFAULT_WRITE_RETRIES = 4;
 export const DEFAULT_WRITE_TIMEOUT_MS = 30_000;
@@ -95,37 +97,41 @@ export const postJsonWithRetry = async ({
       init.body = JSON.stringify(body);
     }
 
-    // a request that stalls forever (open connection, no response) would
-    // otherwise never reject and would occupy a write-queue worker forever
+    // a request that stalls forever (open connection, no response, or a
+    // response whose body never finishes) would otherwise never reject and
+    // would occupy a write-queue worker forever, so the timer stays armed
+    // until the response (including its body) has been fully consumed
     const timer = setTimeout(() => controller.abort(), timeoutMs);
-    let response: FetchLikeResponse;
     try {
-      response = await fetchImpl(url, init);
-    } catch (e) {
-      lastError = e instanceof Error ? e : new Error(String(e));
-      if (attempt < retries) {
-        await sleep(backoffMs(attempt));
+      let response: FetchLikeResponse;
+      try {
+        response = await fetchImpl(url, init);
+      } catch (e) {
+        lastError = e instanceof Error ? e : new Error(String(e));
+        if (attempt < retries) {
+          await sleep(backoffMs(attempt));
+        }
+        continue;
       }
-      continue;
+
+      if (response.ok) {
+        return response;
+      }
+
+      const detail = await response.text().catch(() => '');
+      lastError = new Error(
+        `Request failed with status ${response.status}${detail ? `: ${detail.slice(0, 300)}` : ''}`
+      );
+
+      if (!isRetriableStatus(response.status)) {
+        throw lastError;
+      }
+
+      if (attempt < retries) {
+        await sleep(retryAfterMs(response) ?? backoffMs(attempt));
+      }
     } finally {
       clearTimeout(timer);
-    }
-
-    if (response.ok) {
-      return response;
-    }
-
-    const detail = await response.text().catch(() => '');
-    lastError = new Error(
-      `Request failed with status ${response.status}${detail ? `: ${detail.slice(0, 300)}` : ''}`
-    );
-
-    if (!isRetriableStatus(response.status)) {
-      throw lastError;
-    }
-
-    if (attempt < retries) {
-      await sleep(retryAfterMs(response) ?? backoffMs(attempt));
     }
   }
 

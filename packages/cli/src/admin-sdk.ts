@@ -94,7 +94,7 @@ export const importSpace = async (
       `${directory}/settings.json`,
       JSON.stringify({ ...space.settings, cloneInfo: space.meta }, undefined, 2)
     );
-    const modelOps = space.models.map(async model => {
+    await mapWithConcurrency(space.models, DEFAULT_WRITE_CONCURRENCY, async model => {
       const { content, everything } = model;
       // todo why conent is in everything
       const { content: _, ...schema } = everything;
@@ -108,17 +108,14 @@ export const importSpace = async (
         `${directory}/${modelName}/schema.model.json`,
         JSON.stringify(schema, null, 2)
       );
-      await Promise.all(
-        content.map(async (entry, index) => {
-          const filename = `${directory}/${modelName}/${kebabCase(entry.name || '')}-${index}.json`;
-          await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
-          modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
-        })
-      );
+      await mapWithConcurrency(content, DEFAULT_WRITE_CONCURRENCY, async (entry, index) => {
+        const filename = `${directory}/${modelName}/${kebabCase(entry.name || '')}-${index}.json`;
+        await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
+        modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
+      });
       spaceProgress.increment();
       modelProgress.stop();
     });
-    await Promise.all(modelOps);
     if (debug) {
       console.log(chalk.green('Imported successfully ', space.settings.name));
     }
@@ -343,9 +340,9 @@ export const overwriteSpace = async (
     const localEntryIdsByModel = new Map<string, Set<string>>();
 
     await mapWithConcurrency(modelDirs, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
-      const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
       const modelPlan = planModelSync(existingModels, modelName);
       try {
+        const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
         if (modelPlan.action === 'update') {
           plan.modelsToUpdate++;
           if (!dryRun) {
@@ -385,7 +382,17 @@ export const overwriteSpace = async (
       const localIds = new Set<string>();
       await Promise.all(
         contentFiles.map(async contentFile => {
-          const entry = await readAsJson(`${directory}/${modelName}/${contentFile.name}`);
+          let entry;
+          try {
+            entry = await readAsJson(`${directory}/${modelName}/${contentFile.name}`);
+          } catch (e) {
+            failures.push({
+              model: modelName,
+              file: contentFile.name,
+              error: e instanceof Error ? e.message : String(e),
+            });
+            return;
+          }
           if (entry?.id) {
             localIds.add(entry.id);
           }

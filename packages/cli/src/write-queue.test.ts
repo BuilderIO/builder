@@ -198,6 +198,36 @@ test('a stalled request is aborted once the timeout elapses', async t => {
   t.true(error.message.includes('aborted'));
 });
 
+test('a stalled response body is aborted once the timeout elapses', async t => {
+  let calls = 0;
+  const fetchImpl: FetchLike = (_url, init) => {
+    calls++;
+    return Promise.resolve({
+      ok: false,
+      status: 500,
+      headers: { get: () => null },
+      text: () =>
+        new Promise((_resolve, reject) => {
+          init.signal.addEventListener('abort', () => reject(new Error('The operation was aborted')));
+        }),
+    });
+  };
+
+  const error = await t.throwsAsync(
+    postJsonWithRetry({
+      fetchImpl,
+      url: 'https://example.com',
+      body: {},
+      retries: 0,
+      timeoutMs: 10,
+      sleep: noSleep,
+    })
+  );
+
+  t.is(calls, 1);
+  t.true(error.message.includes('500'));
+});
+
 test('retries: 0 fails on the first retriable failure instead of retrying', async t => {
   let calls = 0;
   const fetchImpl: FetchLike = async () => {
