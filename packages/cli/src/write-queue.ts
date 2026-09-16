@@ -122,9 +122,24 @@ export const postJsonWithRetry = async ({
 
       if (response.ok || isRetriedDeleteNotFound) {
         // read the body now, while the timer can still abort a stalled
-        // read — a caller consuming it later would no longer be protected
-        const bodyText = await response.text().catch(() => '');
-        return { ...response, ok: true, text: async () => bodyText };
+        // read — a caller consuming it later would no longer be protected.
+        // build the returned object explicitly rather than spreading
+        // `response`, since a real fetch Response exposes status/headers/ok
+        // as prototype accessors that a spread would silently drop
+        let bodyText: string;
+        try {
+          bodyText = await response.text();
+        } catch (e) {
+          // the body never finished (e.g. the timeout aborted a stalled
+          // read) — treat it like any other failed attempt instead of
+          // returning a fabricated "successful" response with a lost body
+          lastError = e instanceof Error ? e : new Error(String(e));
+          if (attempt < retries) {
+            await sleep(backoffMs(attempt));
+          }
+          continue;
+        }
+        return { ok: true, status: response.status, headers: response.headers, text: async () => bodyText };
       }
 
       const detail = await response.text().catch(() => '');

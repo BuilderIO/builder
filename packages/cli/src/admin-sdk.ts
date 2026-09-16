@@ -380,6 +380,7 @@ export const overwriteSpace = async (
       }
 
       const localIds = new Set<string>();
+      const modelWriteTasks: Array<{ fileName: string; entry: any }> = [];
       await mapWithConcurrency(contentFiles, DEFAULT_WRITE_CONCURRENCY, async contentFile => {
         let entry;
         try {
@@ -392,10 +393,28 @@ export const overwriteSpace = async (
           });
           return;
         }
-        if (entry?.id) {
-          localIds.add(entry.id);
+        modelWriteTasks.push({ fileName: contentFile.name, entry });
+      });
+
+      // two files sharing an id would otherwise race as concurrent writes
+      // to the same URL, silently discarding whichever finished first
+      const fileByEntryId = new Map<string, string>();
+      modelWriteTasks.forEach(({ fileName, entry }) => {
+        const id = entry?.id;
+        if (id && fileByEntryId.has(id)) {
+          failures.push({
+            model: modelName,
+            file: fileName,
+            error: `duplicate id "${id}" also found in ${fileByEntryId.get(id)} — skipping to avoid a write race`,
+          });
+          modelProgress.increment(1, { name: `${modelName}: skipped duplicate ${fileName}` });
+          return;
         }
-        writeTasks.push({ modelName, fileName: contentFile.name, entry, progress: modelProgress });
+        if (id) {
+          fileByEntryId.set(id, fileName);
+          localIds.add(id);
+        }
+        writeTasks.push({ modelName, fileName, entry, progress: modelProgress });
       });
       if (prune && modelPlan.action === 'update') {
         localEntryIdsByModel.set(modelName, localIds);
@@ -435,6 +454,13 @@ export const overwriteSpace = async (
                 .catch(() => undefined);
               if (created?.id) {
                 keepIds.add(created.id);
+              } else if (prune) {
+                // the entry was written but its new id is unknown, so prune
+                // can't tell it apart from stale content — block prune
+                // rather than risk deleting what was just created
+                throw new Error(
+                  `wrote ${fileName} but could not read back its new id, so prune can't be trusted for this run`
+                );
               }
             }
           }
@@ -533,7 +559,15 @@ export const overwriteSpace = async (
       console.log(chalk.cyan(`  Models to create: ${plan.modelsToCreate}`));
       console.log(chalk.cyan(`  Content entries to write: ${plan.entriesToWrite}`));
       if (prune) {
-        console.log(chalk.cyan(`  Content entries that would be pruned: ${plan.entriesToPrune}`));
+        console.log(
+          chalk.cyan(
+            `  Content entries that would be pruned: ${plan.entriesToPrune}${
+              failures.length
+                ? ' (based on an incomplete snapshot — see failures below, so the real prune plan may differ)'
+                : ''
+            }`
+          )
+        );
       }
     } else if (debug) {
       console.log(chalk.green('Overwrite complete'));
@@ -547,9 +581,11 @@ export const overwriteSpace = async (
 
   MULTIBAR.stop();
 
-  if (!dryRun && failures.length) {
+  if (failures.length) {
     console.log(`\r\n\r\n`);
-    console.error(chalk.red(`Failed to write ${failures.length} content entries:`));
+    console.error(
+      chalk.red(`${dryRun ? 'Failed to read' : 'Failed to write'} ${failures.length} content entries:`)
+    );
     failures.forEach(failure => {
       console.error(chalk.red(`  ${failure.model}/${failure.file}: ${failure.error}`));
     });

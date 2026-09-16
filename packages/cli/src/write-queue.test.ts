@@ -122,6 +122,63 @@ test('throws after exhausting retries so failures are never silent', async t => 
   t.true(error.message.includes('server exploded'));
 });
 
+test('a failed read of a successful response body is retried, not silently emptied', async t => {
+  let calls = 0;
+  const fetchImpl: FetchLike = async () => {
+    calls++;
+    return {
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      text: async () => {
+        if (calls === 1) {
+          throw new Error('body stream aborted');
+        }
+        return JSON.stringify({ id: 'created-1' });
+      },
+    };
+  };
+
+  const result = await postJsonWithRetry({
+    fetchImpl,
+    url: 'https://example.com',
+    body: {},
+    sleep: noSleep,
+  });
+
+  t.is(calls, 2);
+  t.deepEqual(JSON.parse(await result.text()), { id: 'created-1' });
+});
+
+test('the returned response preserves status and headers instead of only text', async t => {
+  class FakeResponse {
+    get ok() {
+      return true;
+    }
+    get status() {
+      return 201;
+    }
+    get headers() {
+      return { get: (name: string) => (name === 'x-id' ? 'abc' : null) };
+    }
+    text() {
+      return Promise.resolve('body');
+    }
+  }
+  const fetchImpl: FetchLike = async () => new FakeResponse() as any;
+
+  const result = await postJsonWithRetry({
+    fetchImpl,
+    url: 'https://example.com',
+    body: {},
+    sleep: noSleep,
+  });
+
+  t.is(result.status, 201);
+  t.is(result.headers?.get('x-id'), 'abc');
+  t.is(await result.text(), 'body');
+});
+
 test('a retried DELETE that 404s is treated as already-deleted success', async t => {
   let calls = 0;
   const fetchImpl: FetchLike = async () => {
