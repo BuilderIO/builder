@@ -1,4 +1,20 @@
 export const DEFAULT_WRITE_CONCURRENCY = 5;
+import { AbortController as PolyfillAbortController } from 'abort-controller';
+
+// Node < 15 has no global AbortController at all -- referencing it directly
+// would throw a ReferenceError on every single request. graphql-typed-client
+// (via isomorphic-fetch) already falls back to node-fetch on such runtimes,
+// and node-fetch's `signal` option works with either the native
+// AbortController or this polyfill, so prefer native when it's available
+// (it produces a proper AbortError; this polyfill's abort() doesn't set a
+// `reason`, so a native `fetch` would otherwise reject with an unhelpful
+// `undefined`) and only fall back to the polyfill where native support
+// doesn't exist.
+const NodeAbortController: { new (): AbortController } =
+  typeof globalThis !== 'undefined' && typeof (globalThis as any).AbortController !== 'undefined'
+    ? (globalThis as any).AbortController
+    : (PolyfillAbortController as any);
+
 export const DEFAULT_WRITE_RETRIES = 4;
 export const DEFAULT_WRITE_TIMEOUT_MS = 30_000;
 
@@ -110,7 +126,7 @@ export const postJsonWithRetry = async ({
   const backoffMs = (attempt: number) => baseDelayMs * Math.pow(2, attempt);
 
   for (let attempt = 0; attempt <= retries; attempt++) {
-    const controller = new AbortController();
+    const controller = new NodeAbortController();
     const init: {
       method: string;
       body?: string;
