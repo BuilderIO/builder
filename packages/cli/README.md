@@ -93,6 +93,8 @@ OPTIONS
   -p, --prune  Also delete content entries in the target space, for models present in the snapshot,
                that are not present in the snapshot. Destructive and cannot be undone.
 
+  -y, --yes    Skip the confirmation prompt for --prune, for non-interactive/scripted use.
+
 DESCRIPTION
   Models are matched to the target space by name and upserted (existing models are updated in place,
   missing ones are created). Content entries are written by their original id via PUT, which updates
@@ -103,6 +105,9 @@ DESCRIPTION
   Pass --prune to make it a true mirror instead: after restoring, any entry belonging to a model
   present in the snapshot that isn't in the snapshot is deleted from the target space. Models that
   don't exist in the snapshot at all are never touched, even with --prune.
+
+  Because --prune is irreversible, it asks you to type "yes" before doing anything (before any
+  model or content write happens). Pass --yes to skip this prompt for scripted/CI use.
 ```
 
 ## `builder integrate`

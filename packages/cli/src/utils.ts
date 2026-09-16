@@ -3,6 +3,7 @@ import traverse from 'traverse';
 import { ChildProcess, spawn } from 'child_process';
 import path from 'path';
 import commander from 'commander';
+import readline from 'readline';
 
 const childrenProcesses: ChildProcess[] = [];
 
@@ -53,6 +54,26 @@ export function writeFile(fileContents: string, filePath: string, fileName: stri
 
   fse.writeFileSync(path.join(filePath, fileName), fileContents);
 }
+
+export const isAffirmativeAnswer = (answer: string) => {
+  const normalized = answer.trim().toLowerCase();
+  return normalized === 'y' || normalized === 'yes';
+};
+
+const promptStdin = (question: string): Promise<string> => {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise(resolve => {
+    rl.question(question, answer => {
+      rl.close();
+      resolve(answer);
+    });
+  });
+};
+
+export const confirmAction = async (
+  question: string,
+  prompt: (question: string) => Promise<string> = promptStdin
+): Promise<boolean> => isAffirmativeAnswer(await prompt(question));
 
 export function killChildren() {
   childrenProcesses.forEach(p => p.kill('SIGINT'));

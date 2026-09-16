@@ -2,7 +2,7 @@ import { createClient } from './autogen/client/createClient';
 import fse from 'fs-extra';
 import { kebabCase, omit } from 'lodash';
 import chalk from 'chalk';
-import { readAsJson, getFiles, getDirectories, replaceField } from './utils';
+import { readAsJson, getFiles, getDirectories, replaceField, confirmAction } from './utils';
 import cliProgress from 'cli-progress';
 import { createHash } from 'crypto';
 import traverse from 'traverse';
@@ -289,8 +289,21 @@ export const overwriteSpace = async (
   privateKey: string,
   directory: string,
   debug = false,
-  prune = false
+  prune = false,
+  skipConfirmation = false
 ) => {
+  if (prune && !skipConfirmation) {
+    const confirmed = await confirmAction(
+      chalk.yellow(
+        '\n--prune will permanently delete content entries in the target space that are not present in the local snapshot. This cannot be undone.\nType "yes" to continue: '
+      )
+    );
+    if (!confirmed) {
+      console.log(chalk.red('Aborted.'));
+      return;
+    }
+  }
+
   const graphqlClient = createGraphqlClient(privateKey);
   const failures: Array<{ file: string; model: string; error: string }> = [];
 

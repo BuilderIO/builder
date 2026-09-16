@@ -49,8 +49,12 @@ program
     '-p,--prune',
     'Also delete content entries in the target space, for models present in the snapshot, that are not present in the snapshot. Makes the restore an exact mirror instead of a merge. Destructive and cannot be undone'
   )
+  .option(
+    '-y,--yes',
+    'Skip the confirmation prompt for --prune, for non-interactive/scripted use'
+  )
   .action(options => {
-    overwriteSpace(options.key, options.input, options.debug, options.prune);
+    overwriteSpace(options.key, options.input, options.debug, options.prune, options.yes);
   });
 
 program
