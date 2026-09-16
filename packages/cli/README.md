@@ -148,6 +148,10 @@ DESCRIPTION
   - If a model matched by name has a different id in the target space than the snapshot was taken
     from (e.g. it was deleted and a new one created with the same name), overwrite refuses to touch
     it rather than risk silently overwriting an unrelated model.
+  - If two distinct models in the target space normalize to the same name (e.g. "Blog Post" and
+    "blog-post"), overwrite refuses to sync the snapshot's corresponding model directory rather than
+    guess which one is the real match — updating the wrong one, or letting --prune delete content
+    that actually belongs to the other, unrelated model.
 
   Known limitations:
   - Pruning re-downloads the entire target space's content (across all models, not just the ones

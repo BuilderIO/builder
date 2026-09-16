@@ -262,3 +262,44 @@ test.serial('dry-run makes no write, delete, or mutation calls', async t => {
   t.false(calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel')));
   t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT)));
 });
+
+test.serial(
+  'refuses to sync a model when two destination models normalize to the same name',
+  async t => {
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [{ id: 'a', name: 'A' }],
+      },
+    });
+
+    const { calls, exitCode, errorLogs } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+          }
+          return graphqlResponse({
+            models: [
+              { id: 'model-1', name: 'Posts' },
+              { id: 'model-2', name: 'posts' },
+            ],
+          });
+        }
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => overwriteSpace('fake-key', dir, false, false, true, false)
+    );
+
+    t.is(exitCode, 1);
+    t.false(
+      calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel'))
+    );
+    t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT)));
+    t.true(errorLogs.some(log => log.includes('not possible to tell which one')));
+  }
+);

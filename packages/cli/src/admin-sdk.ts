@@ -427,6 +427,19 @@ export const overwriteSpace = async (
       .map(model => ({ id: model.id, name: model.name }))
       .filter((model): model is ExistingModel => !!model.id && !!model.name);
 
+    // two distinct models in the *target* space can normalize to the same
+    // kebab-case name (e.g. "Blog Post" and "blog-post") even though the
+    // snapshot's own model names were already checked for this at import
+    // time -- planModelSync matches by that normalized name alone, so
+    // without this check a snapshot directory could silently update the
+    // wrong one of the two, and --prune could delete content that actually
+    // belongs to the other, unrelated model
+    const existingModelsByDir = new Map<string, ExistingModel[]>();
+    existingModels.forEach(model => {
+      const dir = kebabCase(model.name);
+      existingModelsByDir.set(dir, [...(existingModelsByDir.get(dir) || []), model]);
+    });
+
     const modelDirs = await getDirectories(directory);
     const writeTasks: Array<{
       modelName: string;
@@ -440,6 +453,19 @@ export const overwriteSpace = async (
     const localEntryIdsByModel = new Map<string, Set<string>>();
 
     await mapWithConcurrency(modelDirs, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
+      const ambiguousMatches = existingModelsByDir.get(modelName);
+      if (ambiguousMatches && ambiguousMatches.length > 1) {
+        const matchedNames = ambiguousMatches.map(m => m.name).join(', ');
+        const errorMessage =
+          String(ambiguousMatches.length) +
+          ' models in the target space (' +
+          matchedNames +
+          ') all normalize to the name ' +
+          modelName +
+          ', so it is not possible to tell which one the snapshot corresponds to; refusing to sync this model.';
+        failures.push({ model: modelName, file: 'schema.model.json', error: errorMessage });
+        return;
+      }
       const modelPlan = planModelSync(existingModels, modelName);
       try {
         const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
