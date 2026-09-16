@@ -29,7 +29,7 @@ USAGE
 
 - [`builder import`](#builder-import--k-private-key---o-output-directory)
 - [`builder create`](#builder-create)
-- [`builder overwrite -k [PRIVATE KEY] -i [INPUT DIRECTORY]`](#builder-overwrite--k-private-key---i-input-directory)
+- [`builder overwrite`](#builder-overwrite--k-private-key---i-input-directory)
 - [`builder integrate`](#builder-integrate)
 
 ## `builder import -k [PRIVATE KEY] -o [OUTPUT DIRECTORY]`
