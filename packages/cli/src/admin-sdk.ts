@@ -1,4 +1,5 @@
 import { createClient } from './autogen/client/createClient';
+import path from 'path';
 import fse from 'fs-extra';
 import { kebabCase, omit } from 'lodash';
 import chalk from 'chalk';
@@ -42,6 +43,43 @@ const MULTIBAR = new cliProgress.MultiBar(
 
 const root = 'https://cdn.builder.io';
 
+// Builds a path next to `dir` (e.g. for a staging/backup copy) that's a true
+// sibling regardless of how `dir` was written -- a trailing slash (`./backup/`),
+// `.`, or any other input that isn't already a clean absolute path would
+// otherwise make plain string concatenation (`dir + suffix`) land *inside*
+// `dir` instead of next to it, since fs-extra's own directory-nesting check
+// operates on resolved path segments and a raw suffix can accidentally
+// satisfy "is a subdirectory of" for exactly these inputs.
+const siblingPath = (dir: string, suffix: string) => {
+  const resolved = path.resolve(dir);
+  return path.join(path.dirname(resolved), path.basename(resolved) + suffix);
+};
+
+/**
+ * A successful import fully replaces `directory`'s previous contents (see
+ * `swapInStagingDir`), which is only safe if that directory is empty, new,
+ * or already holds nothing but a prior snapshot from this same command.
+ * Without this check, something like `-o .` or `-o ~` would silently
+ * delete every unrelated file already in that directory.
+ */
+const isSafeToReplace = async (directory: string): Promise<boolean> => {
+  const resolved = path.resolve(directory);
+  if (!(await fse.pathExists(resolved))) {
+    return true;
+  }
+  const entries = await fse.readdir(resolved, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isFile() && entry.name === 'settings.json') {
+      continue;
+    }
+    if (entry.isDirectory() && (await fse.pathExists(path.join(resolved, entry.name, 'schema.model.json')))) {
+      continue;
+    }
+    return false;
+  }
+  return true;
+};
+
 const createGraphqlClient = (privateKey: string) =>
   createClient({
     fetcher: async ({ query, variables }) => {
@@ -78,10 +116,11 @@ export const importSpace = async (
   // insertion from shifting the offset window and causing an unrelated
   // entry to be skipped or duplicated across pages
   const importStartedAt = Date.now();
+  const importGuardPromise = isSafeToReplace(directory);
 
   const spaceProgress = MULTIBAR.create(1, 0);
   spaceProgress.start(1, 0, { name: 'getting space settings' });
-  const stagingDir = directory + '.importing-' + process.pid + '-' + Date.now();
+  const stagingDir = siblingPath(directory, '.importing-' + process.pid + '-' + Date.now());
 
   try {
     const fetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
@@ -114,6 +153,16 @@ export const importSpace = async (
           name: 'downloading page ' + page + ' (' + total + ' entries so far)',
         }),
     });
+
+    if (!(await importGuardPromise)) {
+      throw new Error(
+        'Refusing to import into "' +
+          directory +
+          '": it already contains files that do not look like a previous snapshot from this command ' +
+          '(only settings.json and model directories containing schema.model.json are recognized). ' +
+          'A successful import fully replaces the output directory contents, so point --output at an empty or dedicated directory to avoid losing unrelated data.'
+      );
+    }
 
     // two distinct model names that normalize to the same directory would
     // otherwise race on outputFile below and silently corrupt or drop one
@@ -206,8 +255,9 @@ export const importSpace = async (
  * Ctrl-C at any point before this call leaves a previous snapshot at
  * `directory` completely untouched instead of partially emptied/overwritten.
  */
-export const swapInStagingDir = async (stagingDir: string, directory: string) => {
-  const previousDir = directory + '.previous-' + Date.now();
+export const swapInStagingDir = async (stagingDir: string, targetDir: string) => {
+  const directory = path.resolve(targetDir);
+  const previousDir = siblingPath(directory, '.previous-' + Date.now());
   const hadExisting = await fse.pathExists(directory);
   if (hadExisting) {
     await fse.move(directory, previousDir, { overwrite: true });

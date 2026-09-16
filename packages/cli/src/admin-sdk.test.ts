@@ -2,7 +2,7 @@ import test from 'ava';
 import os from 'os';
 import path from 'path';
 import fse from 'fs-extra';
-import { overwriteSpace, swapInStagingDir } from './admin-sdk';
+import { importSpace, overwriteSpace, swapInStagingDir } from './admin-sdk';
 import { WRITE_API_ROOT } from './overwrite';
 
 const GRAPHQL_URL = 'https://cdn.builder.io/api/v2/admin';
@@ -447,3 +447,103 @@ test.serial(
     t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'DELETE'));
   }
 );
+
+test('swapInStagingDir handles a trailing slash on the output directory', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-slash-test-'));
+  // a trailing slash (e.g. from `-o ./backup/`) would otherwise make plain
+  // string concatenation build a sibling path *inside* the directory itself
+  const directory = path.join(base, 'backup') + path.sep;
+  const stagingDir = path.join(base, 'backup') + '.importing-123';
+
+  await fse.outputJson(path.join(directory, 'posts', 'entry-id-old.json'), { id: 'old' });
+  await fse.outputJson(path.join(stagingDir, 'posts', 'entry-id-new.json'), { id: 'new' });
+
+  await swapInStagingDir(stagingDir, directory);
+
+  const finalDir = path.join(base, 'backup');
+  t.false(await fse.pathExists(stagingDir));
+  t.true(await fse.pathExists(path.join(finalDir, 'posts', 'entry-id-new.json')));
+  t.false(await fse.pathExists(path.join(finalDir, 'posts', 'entry-id-old.json')));
+});
+
+test.serial(
+  'importSpace refuses to replace a directory containing unrelated files',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-guard-test-'));
+    await fse.outputFile(path.join(base, 'my-important-file.txt'), 'keep me');
+
+    const { exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          const vars = Object.values(body.variables)[0] as any;
+          if (vars.offset > 0) {
+            return graphqlResponse({ downloadClone: { settings: {}, meta: {}, models: [] } });
+          }
+          return graphqlResponse({
+            downloadClone: {
+              settings: { name: 'Test' },
+              meta: {},
+              models: [
+                {
+                  id: 'model-1',
+                  name: 'Posts',
+                  everything: { name: 'Posts' },
+                  content: [{ id: 'a', createdDate: 1 }],
+                },
+              ],
+            },
+          });
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => importSpace('fake-key', base, false, 100)
+    );
+
+    t.is(exitCode, 1);
+    // the guard runs after the (read-only) download but before any write,
+    // so the unrelated file is never touched
+    t.true(await fse.pathExists(path.join(base, 'my-important-file.txt')));
+    t.false(await fse.pathExists(path.join(base, 'posts')));
+  }
+);
+
+test.serial('importSpace allows re-importing into its own prior snapshot', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-reimport-test-'));
+  const dir = path.join(base, 'backup');
+  await fse.outputJson(path.join(dir, 'settings.json'), { name: 'Old' });
+  await fse.outputJson(path.join(dir, 'posts', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputJson(path.join(dir, 'posts', 'entry-id-old.json'), { id: 'old' });
+
+  const { exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ downloadClone: { settings: {}, meta: {}, models: [] } });
+        }
+        return graphqlResponse({
+          downloadClone: {
+            settings: { name: 'New' },
+            meta: {},
+            models: [
+              {
+                id: 'model-1',
+                name: 'Posts',
+                everything: { name: 'Posts' },
+                content: [{ id: 'a', createdDate: 1 }],
+              },
+            ],
+          },
+        });
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => importSpace('fake-key', dir, false, 100)
+  );
+
+  t.is(exitCode, undefined);
+  t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-a.json')));
+  t.false(await fse.pathExists(path.join(dir, 'posts', 'entry-id-old.json')));
+});

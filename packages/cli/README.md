@@ -63,6 +63,10 @@ DESCRIPTION
 
   Note this means the output directory's entire previous contents are replaced on each successful import
   (not merged in place), so don't store anything other than a snapshot from this command in that directory.
+  Because of this, import refuses to write anything at all if the output directory already exists and
+  contains anything that isn't recognized as a prior snapshot from this command (only settings.json and
+  model directories containing schema.model.json are recognized) — this is what stops something like
+  `-o .` or `-o ~` from silently deleting unrelated files that happen to live there.
 
   Every admin API request this command makes (including each paginated page of a large space) has a 30 second
   timeout and is automatically retried with backoff on a transient failure, so a single dropped connection or
