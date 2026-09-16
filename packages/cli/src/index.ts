@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import { importSpace, newSpace } from './admin-sdk';
 import { integrateWithLocalCodebase } from './integrate';
 import { intParam } from './utils';
+import { MAX_CONTENT_PAGE_SIZE } from './pagination';
 const figlet = require('figlet');
 
 console.log(chalk.blueBright(figlet.textSync('Builder.io cli', { horizontalLayout: 'full' })));
@@ -15,9 +16,14 @@ program
   .option('-k,--key <key>', 'Private Key')
   .option('-d,--debug', 'print debugging information')
   .option('-o,--output <output>', 'Path to folder default to ./builder', './builder')
-  .option('-l,--limit <limit>', 'Maximum number of content entries to request, default is 100', intParam, 100)
+  .option(
+    '-l,--limit <limit>',
+    'Content entries to request per page, max 100. All entries are downloaded regardless',
+    intParam,
+    MAX_CONTENT_PAGE_SIZE
+  )
   .action(options => {
-    importSpace(options.key, options.output, options.debug, options.limit || 100);
+    importSpace(options.key, options.output, options.debug, options.limit);
   });
 
 program
