@@ -351,7 +351,9 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                 opacity: amp ? 1 : this.useLazyLoading && !this.state.imageLoaded ? 0 : 1,
                 transition: 'opacity 0.2s ease-in-out',
                 objectFit: this.props.backgroundSize || 'cover',
-                objectPosition: this.props.backgroundPosition || 'center',
+                objectPosition: `var(--builder-image-position, ${
+                  this.props.backgroundPosition || 'center'
+                })`,
                 ...(aspectRatio &&
                   !amp && {
                     position: 'absolute',
@@ -363,7 +365,9 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                 ...(amp && {
                   ['& img']: {
                     objectFit: this.props.backgroundSize,
-                    objectPosition: this.props.backgroundPosition,
+                    objectPosition: `var(--builder-image-position, ${
+                      this.props.backgroundPosition || 'center'
+                    })`,
                   },
                 }),
               }}
