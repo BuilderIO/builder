@@ -508,6 +508,33 @@ test.serial(
   }
 );
 
+test.serial(
+  'importSpace restores a snapshot left over from a crash mid-swap, and cleans up stale staging dirs',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-recovery-test-'));
+    const directory = path.join(base, 'backup');
+    const previousDir = path.join(base, 'backup.previous-1000');
+    await fse.outputJson(path.join(previousDir, 'settings.json'), { name: 'Old' });
+    await fse.outputJson(path.join(previousDir, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputJson(path.join(previousDir, 'posts', 'entry-id-old.json'), { id: 'old' });
+    const staleStagingDir = path.join(base, 'backup.importing-9999-1');
+    await fse.outputFile(path.join(staleStagingDir, 'posts', 'schema.model.json'), 'incomplete');
+
+    const { exitCode } = await withMockedFetch(
+      async () => {
+        throw new Error('network error');
+      },
+      () => importSpace('fake-key', directory, false, 100)
+    );
+
+    t.is(exitCode, 1);
+    t.true(await fse.pathExists(path.join(directory, 'settings.json')));
+    t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-old.json')));
+    t.false(await fse.pathExists(previousDir));
+    t.false(await fse.pathExists(staleStagingDir));
+  }
+);
+
 test.serial('importSpace allows re-importing into its own prior snapshot', async t => {
   const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-reimport-test-'));
   const dir = path.join(base, 'backup');

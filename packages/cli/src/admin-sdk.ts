@@ -80,6 +80,64 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
   return true;
 };
 
+const IMPORTING_PREFIX = '.importing-';
+const PREVIOUS_PREFIX = '.previous-';
+
+/**
+ * A crash between the two renames inside `swapInStagingDir` (or one that
+ * interrupts a run before it gets that far) leaves leftover sibling
+ * directories next to `directory`. An `.importing-*` sibling is always safe
+ * to discard -- it's an incomplete staging copy that never got swapped in.
+ * A `.previous-*` sibling is normally just debris from a successful run
+ * whose final cleanup step didn't finish (also safe to discard) -- unless
+ * `directory` itself is missing, which means the crash happened *between*
+ * moving it aside and moving the new staging copy into place. In that case
+ * the `.previous-*` sibling is the last known-good snapshot, so it's
+ * restored instead of discarded: without this, a crash in that narrow
+ * window (which can be minutes wide on a network-mounted output path,
+ * where moves fall back to copy+delete) would otherwise make a snapshot
+ * that was already safely on disk appear to have vanished.
+ */
+const recoverStaleSiblings = async (directory: string) => {
+  const resolved = path.resolve(directory);
+  const parent = path.dirname(resolved);
+  const base = path.basename(resolved);
+  if (!(await fse.pathExists(parent))) {
+    return;
+  }
+  const entries = await fse.readdir(parent, { withFileTypes: true });
+  const directoryExists = await fse.pathExists(resolved);
+  const previousCandidates = entries
+    .filter(entry => entry.isDirectory() && entry.name.startsWith(`${base}${PREVIOUS_PREFIX}`))
+    .map(entry => path.join(parent, entry.name))
+    .sort()
+    .reverse();
+
+  for (const entry of entries) {
+    if (!entry.isDirectory() || !entry.name.startsWith(`${base}${IMPORTING_PREFIX}`)) {
+      continue;
+    }
+    await fse.remove(path.join(parent, entry.name)).catch(() => {});
+  }
+
+  if (previousCandidates.length === 0) {
+    return;
+  }
+
+  if (!directoryExists) {
+    const [mostRecent, ...stale] = previousCandidates;
+    console.log(
+      chalk.yellow(
+        `\nFound "${mostRecent}" left over from a previous import that appears to have been interrupted while replacing "${resolved}", which is now missing -- restoring it from that backup before continuing.`
+      )
+    );
+    await fse.move(mostRecent, resolved, { overwrite: true }).catch(() => {});
+    await Promise.all(stale.map(dir => fse.remove(dir).catch(() => {})));
+  } else {
+    await Promise.all(previousCandidates.map(dir => fse.remove(dir).catch(() => {})));
+  }
+};
+
 const createGraphqlClient = (privateKey: string) =>
   createClient({
     fetcher: async ({ query, variables }) => {
@@ -116,6 +174,7 @@ export const importSpace = async (
   // insertion from shifting the offset window and causing an unrelated
   // entry to be skipped or duplicated across pages
   const importStartedAt = Date.now();
+  await recoverStaleSiblings(directory);
   const importGuardPromise = isSafeToReplace(directory);
 
   const spaceProgress = MULTIBAR.create(1, 0);
