@@ -29,7 +29,7 @@ USAGE
 
 - [`builder import`](#builder-import--k-private-key---o-output-directory)
 - [`builder create`](#builder-create)
-- [`builder overwrite`](#builder-overwrite)
+- [`builder overwrite -k [PRIVATE KEY] -i [INPUT DIRECTORY]`](#builder-overwrite--k-private-key---i-input-directory)
 - [`builder integrate`](#builder-integrate)
 
 ## `builder import -k [PRIVATE KEY] -o [OUTPUT DIRECTORY]`
@@ -74,7 +74,7 @@ DESCRIPTION
   This command will create a new space clone from your local builder directory.
 ```
 
-## `builder overwrite`
+## `builder overwrite -k [PRIVATE KEY] -i [INPUT DIRECTORY]`
 
 Restore a local snapshot into an **existing** space, in place, using its own private key. Unlike `create`, this does not create a new space or mint a new key.
 
