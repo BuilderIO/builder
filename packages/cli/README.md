@@ -90,12 +90,19 @@ OPTIONS
 
   -i, --input   Optionally input directory, default to ./builder
 
+  --prune  Also delete content entries in the target space, for models present in the snapshot,
+           that are not present in the snapshot. Destructive and cannot be undone.
+
 DESCRIPTION
   Models are matched to the target space by name and upserted (existing models are updated in place,
   missing ones are created). Content entries are written by their original id via PUT, which updates
-  the entry if it already exists in the target space and creates it otherwise. Entries that exist in
-  the target space but are absent from the local snapshot are left untouched — this is a merge/restore,
-  not a mirror, and will never delete content.
+  the entry if it already exists in the target space and creates it otherwise. By default, entries
+  that exist in the target space but are absent from the local snapshot are left untouched — this is
+  a merge/restore, not a mirror, and will never delete content.
+
+  Pass --prune to make it a true mirror instead: after restoring, any entry belonging to a model
+  present in the snapshot that isn't in the snapshot is deleted from the target space. Models that
+  don't exist in the snapshot at all are never touched, even with --prune.
 ```
 
 ## `builder integrate`

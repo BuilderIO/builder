@@ -1,5 +1,5 @@
 import test from 'ava';
-import { buildWriteRequest, planModelSync } from './overwrite';
+import { buildDeleteRequest, buildWriteRequest, findStaleEntryIds, planModelSync } from './overwrite';
 
 test('matches an existing model by kebab-cased name', t => {
   const existing = [
@@ -36,4 +36,28 @@ test('an entry without an id falls back to creating via POST', t => {
     method: 'POST',
     url: 'https://builder.io/api/v1/write/page',
   });
+});
+
+test('buildDeleteRequest targets the entry by id', t => {
+  t.deepEqual(buildDeleteRequest('page', 'abc123'), {
+    method: 'DELETE',
+    url: 'https://builder.io/api/v1/write/page/abc123',
+  });
+});
+
+test('findStaleEntryIds returns ids not present in the snapshot', t => {
+  const existing = [{ id: 'keep-1' }, { id: 'stale-1' }, { id: 'keep-2' }, { id: 'stale-2' }];
+  const keepIds = new Set(['keep-1', 'keep-2']);
+
+  t.deepEqual(findStaleEntryIds(existing, keepIds), ['stale-1', 'stale-2']);
+});
+
+test('findStaleEntryIds ignores entries without an id', t => {
+  const existing = [{ id: 'keep-1' }, {}, { id: null }];
+  t.deepEqual(findStaleEntryIds(existing, new Set(['keep-1'])), []);
+});
+
+test('findStaleEntryIds treats an empty keep set as delete everything with an id', t => {
+  const existing = [{ id: 'a' }, { id: 'b' }];
+  t.deepEqual(findStaleEntryIds(existing, new Set()), ['a', 'b']);
 });

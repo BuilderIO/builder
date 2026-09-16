@@ -13,8 +13,8 @@ export type FetchLike = (url: string, init?: any) => Promise<FetchLikeResponse>;
 export interface PostJsonOptions {
   fetchImpl: FetchLike;
   url: string;
-  body: any;
-  method?: 'POST' | 'PUT';
+  body?: any;
+  method?: 'POST' | 'PUT' | 'DELETE';
   headers?: Record<string, string>;
   retries?: number;
   baseDelayMs?: number;
@@ -59,8 +59,9 @@ export const mapWithConcurrency = async <T, R>(
 };
 
 /**
- * Posts JSON and treats a non-ok response as a failure. Without this a rate
- * limited or rejected write is indistinguishable from a successful one.
+ * Sends a write API request (POST/PUT/DELETE) and treats a non-ok response
+ * as a failure. Without this a rate limited or rejected write is
+ * indistinguishable from a successful one. DELETE has no body.
  */
 export const postJsonWithRetry = async ({
   fetchImpl,
@@ -76,13 +77,17 @@ export const postJsonWithRetry = async ({
   const backoffMs = (attempt: number) => baseDelayMs * Math.pow(2, attempt);
 
   for (let attempt = 0; attempt <= retries; attempt++) {
+    const init: { method: string; body?: string; headers: Record<string, string> } = {
+      method,
+      headers: body === undefined ? { ...headers } : { 'Content-Type': 'application/json', ...headers },
+    };
+    if (body !== undefined) {
+      init.body = JSON.stringify(body);
+    }
+
     let response: FetchLikeResponse;
     try {
-      response = await fetchImpl(url, {
-        method,
-        body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json', ...headers },
-      });
+      response = await fetchImpl(url, init);
     } catch (e) {
       lastError = e instanceof Error ? e : new Error(String(e));
       if (attempt < retries) {

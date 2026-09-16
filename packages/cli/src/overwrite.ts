@@ -23,7 +23,7 @@ export const planModelSync = (
 };
 
 export interface WriteRequest {
-  method: 'PUT' | 'POST';
+  method: 'PUT' | 'POST' | 'DELETE';
   url: string;
 }
 
@@ -43,3 +43,22 @@ export const buildWriteRequest = (
   }
   return { method: 'POST', url: `${WRITE_API_ROOT}/${modelName}` };
 };
+
+export const buildDeleteRequest = (modelName: string, entryId: string): WriteRequest => ({
+  method: 'DELETE',
+  url: `${WRITE_API_ROOT}/${modelName}/${entryId}`,
+});
+
+/**
+ * `--prune` makes `overwrite` a true mirror: entries that exist in the
+ * target space for a model being restored, but aren't in the local
+ * snapshot, get deleted. Only entries with an id can be targeted for
+ * deletion.
+ */
+export const findStaleEntryIds = (
+  existingEntries: Array<{ id?: string | null }>,
+  keepIds: ReadonlySet<string>
+): string[] =>
+  existingEntries
+    .map(entry => entry.id)
+    .filter((id): id is string => !!id && !keepIds.has(id));

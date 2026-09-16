@@ -45,8 +45,12 @@ program
   .option('-k,--key <key>', 'Private Key of the existing space to overwrite')
   .option('-d,--debug', 'print debugging information')
   .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
+  .option(
+    '--prune',
+    'Also delete content entries in the target space, for models present in the snapshot, that are not present in the snapshot. Makes the restore an exact mirror instead of a merge. Destructive and cannot be undone'
+  )
   .action(options => {
-    overwriteSpace(options.key, options.input, options.debug);
+    overwriteSpace(options.key, options.input, options.debug, options.prune);
   });
 
 program
