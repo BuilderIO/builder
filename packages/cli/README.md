@@ -90,8 +90,8 @@ OPTIONS
 
   -i, --input   Optionally input directory, default to ./builder
 
-  --prune  Also delete content entries in the target space, for models present in the snapshot,
-           that are not present in the snapshot. Destructive and cannot be undone.
+  -p, --prune  Also delete content entries in the target space, for models present in the snapshot,
+               that are not present in the snapshot. Destructive and cannot be undone.
 
 DESCRIPTION
   Models are matched to the target space by name and upserted (existing models are updated in place,
