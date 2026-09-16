@@ -1,5 +1,3 @@
-import { AbortController, AbortSignal } from 'abort-controller';
-
 export const DEFAULT_WRITE_CONCURRENCY = 5;
 export const DEFAULT_WRITE_RETRIES = 4;
 export const DEFAULT_WRITE_TIMEOUT_MS = 30_000;
