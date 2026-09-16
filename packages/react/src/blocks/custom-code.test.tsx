@@ -59,14 +59,21 @@ function customCodeTree(CustomCode: typeof CustomCodeComponent) {
   );
 }
 
-function renderSsrMarkup(): string {
+function renderSsrMarkup() {
   const { Builder, CustomCode } = loadCustomCode();
   Builder.isServer = true;
   try {
-    return renderToString(customCodeTree(CustomCode));
+    return { markup: renderToString(customCodeTree(CustomCode)), CustomCode };
   } finally {
     Builder.isServer = false;
   }
+}
+
+function mountSsrMarkup(markup: string): HTMLElement {
+  const container = document.createElement('div');
+  container.innerHTML = markup;
+  document.body.appendChild(container);
+  return container;
 }
 
 async function flushNextTick() {
@@ -78,22 +85,20 @@ async function flushNextTick() {
 describe('CustomCode scriptsClientOnly hydration', () => {
   beforeEach(() => {
     delete window.__ccRuns;
+    document.body.innerHTML = '';
     document.head.querySelectorAll(`script[src="${REMOTE_SCRIPT_SRC}"]`).forEach(el => el.remove());
   });
 
   it('strips scripts from the server render', () => {
-    const ssrMarkup = renderSsrMarkup();
-    expect(ssrMarkup).toContain('cc-body');
-    expect(ssrMarkup).not.toContain('__ccRuns');
-    expect(ssrMarkup).not.toContain(REMOTE_SCRIPT_SRC);
+    const { markup } = renderSsrMarkup();
+    expect(markup).toContain('cc-body');
+    expect(markup).not.toContain('__ccRuns');
+    expect(markup).not.toContain(REMOTE_SCRIPT_SRC);
   });
 
   it('restores and runs the stripped scripts after hydration', async () => {
-    const ssrMarkup = renderSsrMarkup();
-
-    const container = document.createElement('div');
-    container.innerHTML = ssrMarkup;
-    document.body.appendChild(container);
+    const { markup } = renderSsrMarkup();
+    const container = mountSsrMarkup(markup);
 
     const { CustomCode } = loadCustomCode();
     render(customCodeTree(CustomCode), { container, hydrate: true });
@@ -105,6 +110,22 @@ describe('CustomCode scriptsClientOnly hydration', () => {
     // The re-render triggered by `hydrated` must put the stripped <script> tags back in the DOM.
     expect(customCodeEl!.querySelector('script')).toBeTruthy();
     // ...and findAndRunScripts must then pick them up.
+    expect(window.__ccRuns).toBe(1);
+    expect(document.head.querySelector(`script[src="${REMOTE_SCRIPT_SRC}"]`)).toBeTruthy();
+  });
+
+  // Bundlers load the SDK chunk asynchronously, so the module-scope `.builder-custom-code` scan
+  // can run before the SSR'd markup is in the document. `originalRef` then stays null and the
+  // block must still recover, which is the reported Next.js App Router failure.
+  it('restores and runs the scripts when the module loads before the SSR markup exists', async () => {
+    const { markup, CustomCode } = renderSsrMarkup();
+    const container = mountSsrMarkup(markup);
+
+    render(customCodeTree(CustomCode), { container, hydrate: true });
+    await flushNextTick();
+
+    const customCodeEl = container.querySelector('.builder-custom-code');
+    expect(customCodeEl!.querySelector('script')).toBeTruthy();
     expect(window.__ccRuns).toBe(1);
     expect(document.head.querySelector(`script[src="${REMOTE_SCRIPT_SRC}"]`)).toBeTruthy();
   });

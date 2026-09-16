@@ -105,7 +105,11 @@ class CustomCodeComponent extends React.Component<Props, State> {
   }
 
   get isHydrating() {
-    return !isShopify && this.originalRef;
+    // `originalRef` is only captured when the SSR'd markup was already in the document when this
+    // module was evaluated. Bundlers load the SDK chunk asynchronously, so that ordering is not
+    // guaranteed. `scriptsClientOnly` always strips scripts on the server, so the first client
+    // render has to match that regardless of whether the node was captured.
+    return !isShopify && Boolean(this.originalRef || this.props.scriptsClientOnly);
   }
 
   componentDidUpdate(prevProps: Props) {
