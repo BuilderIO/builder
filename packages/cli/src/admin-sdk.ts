@@ -305,10 +305,35 @@ export const overwriteSpace = async (
   skipConfirmation = false,
   dryRun = false
 ) => {
+  const graphqlClient = createGraphqlClient(privateKey);
+  const progressCounts = { entriesWritten: 0, entriesPruned: 0 };
+  const onInterrupt = () => {
+    console.log('\r\n\r\n');
+    console.error(
+      chalk.red(
+        `Interrupted before finishing. As of now: ${progressCounts.entriesWritten} content entries were written` +
+          (prune ? ` and ${progressCounts.entriesPruned} were pruned` : '') +
+          `, with ${failures.length} failure(s). The target space may be in a partially-updated state — re-run to finish syncing it.`
+      )
+    );
+    process.exit(130);
+  };
+
   if (prune && !dryRun && !skipConfirmation) {
+    // best-effort identification of the target — confirming the wrong
+    // space (e.g. a stale BUILDER_PRIVATE_KEY) is the most dangerous way
+    // to misuse --prune, so surface what key/directory are about to be used
+    let targetLabel = 'the target space';
+    try {
+      const settings = await graphqlClient.chain.query.settings.execute();
+      const spaceId = await graphqlClient.chain.query.id.execute();
+      targetLabel = settings?.name ? `"${settings.name}" (${spaceId})` : `space ${spaceId}`;
+    } catch {
+      // fall back to the generic label below if the space can't be reached yet
+    }
     const confirmed = await confirmAction(
       chalk.yellow(
-        '\n--prune will permanently delete content entries in the target space that are not present in the local snapshot. This cannot be undone.\nType "yes" to continue: '
+        `\n--prune will permanently delete content entries in ${targetLabel} that are not present in the local snapshot at "${directory}". This cannot be undone.\nType "yes" to continue: `
       )
     );
     if (!confirmed) {
@@ -316,10 +341,12 @@ export const overwriteSpace = async (
       return;
     }
   }
-
-  const graphqlClient = createGraphqlClient(privateKey);
   const failures: Array<{ file: string; model: string; error: string }> = [];
   const plan = { modelsToUpdate: 0, modelsToCreate: 0, entriesToWrite: 0, entriesToPrune: 0 };
+
+  if (!dryRun) {
+    process.on('SIGINT', onInterrupt);
+  }
 
   try {
     const rawModels = (await graphqlClient.chain.query.models.execute({ id: true, name: true })) || [];
@@ -370,9 +397,22 @@ export const overwriteSpace = async (
         return;
       }
 
-      const contentFiles = (await getFiles(`${directory}/${modelName}`)).filter(
-        file => file.name !== 'schema.model.json'
-      );
+      let contentFiles: Array<{ name: string }>;
+      try {
+        contentFiles = (await getFiles(`${directory}/${modelName}`)).filter(
+          file => file.name !== 'schema.model.json'
+        );
+      } catch (e) {
+        // an fs error reading one model's directory (permissions, EMFILE,
+        // a mid-run deletion, ...) shouldn't kill the other concurrent
+        // workers — record it like any other per-model failure and move on
+        failures.push({
+          model: modelName,
+          file: '(directory listing)',
+          error: e instanceof Error ? e.message : String(e),
+        });
+        return;
+      }
       const modelProgress = MULTIBAR.create(contentFiles.length, 0, { name: modelName });
       modelBars.push(modelProgress);
       if (contentFiles.length > 0) {
@@ -392,6 +432,17 @@ export const overwriteSpace = async (
             error: e instanceof Error ? e.message : String(e),
           });
           return;
+        }
+        if (!entry?.id) {
+          // an id-less entry (rare, see pagination.ts) would otherwise have
+          // to be POSTed, which creates a new entry on every re-run and
+          // leaves an ambiguous outcome if the response is ever lost —
+          // deriving a stable id from the file lets it be PUT instead,
+          // making the write idempotent and safe to retry/re-run
+          entry = {
+            ...entry,
+            id: createHash('sha256').update(`${modelName}:${contentFile.name}`).digest('hex'),
+          };
         }
         modelWriteTasks.push({ fileName: contentFile.name, entry });
       });
@@ -428,8 +479,11 @@ export const overwriteSpace = async (
       let failed = false;
       if (!dryRun) {
         try {
+          // every entry has an id by this point (a stable one is derived
+          // for id-less local entries above), so this is always a PUT
+          // upsert -- idempotent and safe to retry or re-run
           const { method, url } = buildWriteRequest(modelName, entry);
-          const response = await postJsonWithRetry({
+          await postJsonWithRetry({
             fetchImpl: fetch as unknown as FetchLike,
             method,
             url,
@@ -437,33 +491,7 @@ export const overwriteSpace = async (
             headers: {
               Authorization: `Bearer ${privateKey}`,
             },
-            // POST creates a new entry every time it's called, so retrying it
-            // after a lost response risks creating a duplicate entry
-            retries: method === 'POST' ? 0 : DEFAULT_WRITE_RETRIES,
           });
-          if (!entry?.id) {
-            // this entry had no id locally, so it was POSTed and given a new
-            // server-assigned id — that id has to be added to the keep set
-            // now, otherwise the entry we just restored looks orphaned to
-            // the prune phase below and gets deleted in the same run
-            const keepIds = localEntryIdsByModel.get(modelName);
-            if (keepIds) {
-              const created = await response
-                .text()
-                .then(text => JSON.parse(text))
-                .catch(() => undefined);
-              if (created?.id) {
-                keepIds.add(created.id);
-              } else if (prune) {
-                // the entry was written but its new id is unknown, so prune
-                // can't tell it apart from stale content — block prune
-                // rather than risk deleting what was just created
-                throw new Error(
-                  `wrote ${fileName} but could not read back its new id, so prune can't be trusted for this run`
-                );
-              }
-            }
-          }
         } catch (e) {
           failed = true;
           failures.push({
@@ -472,6 +500,9 @@ export const overwriteSpace = async (
             error: e instanceof Error ? e.message : String(e),
           });
         }
+      }
+      if (!dryRun && !failed) {
+        progressCounts.entriesWritten++;
       }
       progress.increment(1, {
         name: `${modelName}: ${dryRun ? 'would write' : failed ? 'failed to write' : 'wrote'} ${fileName}`,
@@ -544,6 +575,9 @@ export const overwriteSpace = async (
               });
             }
           }
+          if (!dryRun && !failed) {
+            progressCounts.entriesPruned++;
+          }
           pruneProgress.increment(1, {
             name: `${modelName}: ${dryRun ? 'would prune' : failed ? 'failed to prune' : 'pruned'} ${entryId}`,
           });
@@ -579,6 +613,7 @@ export const overwriteSpace = async (
     process.exit(1);
   }
 
+  process.off('SIGINT', onInterrupt);
   MULTIBAR.stop();
 
   if (failures.length) {
