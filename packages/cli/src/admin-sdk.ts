@@ -668,9 +668,15 @@ export const overwriteSpace = async (
           }
           plan.modelsToUpdate++;
           if (!dryRun) {
+            // the backend rejects updateModel outright if `data` includes
+            // `name` or `kind` at all, even set to their current unchanged
+            // value -- the model was already matched by name above, so
+            // there is nothing to rename here anyway
             await retryAsync(() =>
               graphqlClient.chain.mutation
-                .updateModel({ body: { id: modelPlan.existingId, data: omit(schema, 'id') } })
+                .updateModel({
+                  body: { id: modelPlan.existingId, data: omit(schema, ['id', 'name', 'kind']) },
+                })
                 .execute({ id: true, name: true })
             );
           }
