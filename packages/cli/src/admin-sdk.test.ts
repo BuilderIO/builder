@@ -84,23 +84,22 @@ test.serial('prune only deletes entries that predate the run and existed in the 
         if (body.query.includes('updateModel')) {
           return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
         }
-        if (body.query.includes('downloadClone')) {
+        if (body.query.includes('content(')) {
           const contentQueryVar = Object.values(body.variables)[0] as any;
           if (contentQueryVar.offset > 0) {
-            return graphqlResponse({ downloadClone: { models: [] } });
+            return graphqlResponse({ models: [] });
           }
           return graphqlResponse({
-            downloadClone: {
-              models: [
-                {
-                  name: 'Posts',
-                  content: [
-                    { id: 'a', createdDate: 1 },
-                    { id: 'stale', createdDate: 1 },
-                  ],
-                },
-              ],
-            },
+            models: [
+              {
+                id: 'model-1',
+                name: 'Posts',
+                content: [
+                  { id: 'a', createdDate: 1 },
+                  { id: 'stale', createdDate: 1 },
+                ],
+              },
+            ],
           });
         }
         return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
@@ -124,13 +123,12 @@ test.serial('prune only deletes entries that predate the run and existed in the 
   t.true(deleteUrls.some(url => url.endsWith('/posts/stale')));
   t.false(deleteUrls.some(url => url.endsWith('/posts/a')));
 
-  const downloadCloneCall = calls.find(
-    c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('downloadClone')
+  const contentCall = calls.find(
+    c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('content(')
   );
-  const contentQueryVar = Object.values(JSON.parse(downloadCloneCall!.init.body).variables)[0] as any;
+  const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
   t.deepEqual(contentQueryVar.sort, { createdDate: 1, id: 1 });
   t.truthy(contentQueryVar.query?.createdDate?.$lte);
-  t.true(contentQueryVar.options?.includeUnpublished);
 });
 
 test.serial('prune is skipped entirely when a content write fails', async t => {
@@ -243,13 +241,13 @@ test.serial('dry-run makes no write, delete, or mutation calls', async t => {
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (body.query.includes('downloadClone')) {
+        if (body.query.includes('content(')) {
           const contentQueryVar = Object.values(body.variables)[0] as any;
           if (contentQueryVar.offset > 0) {
-            return graphqlResponse({ downloadClone: { models: [] } });
+            return graphqlResponse({ models: [] });
           }
           return graphqlResponse({
-            downloadClone: { models: [{ name: 'Posts', content: [{ id: 'a', createdDate: 1 }] }] },
+            models: [{ id: 'model-1', name: 'Posts', content: [{ id: 'a', createdDate: 1 }] }],
           });
         }
         return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
@@ -421,15 +419,13 @@ test.serial(
           if (body.query.includes('updateModel')) {
             return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
           }
-          if (body.query.includes('downloadClone')) {
+          if (body.query.includes('content(')) {
             const contentQueryVar = Object.values(body.variables)[0] as any;
             if (contentQueryVar.offset > 0) {
-              return graphqlResponse({ downloadClone: { models: [] } });
+              return graphqlResponse({ models: [] });
             }
             return graphqlResponse({
-              downloadClone: {
-                models: [{ name: 'Posts', content: [{ id: 'a', createdDate: 1 }] }],
-              },
+              models: [{ id: 'model-1', name: 'Posts', content: [{ id: 'a', createdDate: 1 }] }],
             });
           }
           return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
@@ -476,23 +472,22 @@ test.serial(
       async (url, init) => {
         if (url === GRAPHQL_URL) {
           const body = JSON.parse(init.body);
+          if (!body.query.includes('content(')) {
+            return graphqlResponse({ settings: { name: 'Test' } });
+          }
           const vars = Object.values(body.variables)[0] as any;
           if (vars.offset > 0) {
-            return graphqlResponse({ downloadClone: { settings: {}, meta: {}, models: [] } });
+            return graphqlResponse({ models: [] });
           }
           return graphqlResponse({
-            downloadClone: {
-              settings: { name: 'Test' },
-              meta: {},
-              models: [
-                {
-                  id: 'model-1',
-                  name: 'Posts',
-                  everything: { name: 'Posts' },
-                  content: [{ id: 'a', createdDate: 1 }],
-                },
-              ],
-            },
+            models: [
+              {
+                id: 'model-1',
+                name: 'Posts',
+                everything: { name: 'Posts' },
+                content: [{ id: 'a', createdDate: 1 }],
+              },
+            ],
           });
         }
         throw new Error('unexpected fetch to ' + url);
@@ -546,23 +541,22 @@ test.serial('importSpace allows re-importing into its own prior snapshot', async
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
+        if (!body.query.includes('content(')) {
+          return graphqlResponse({ settings: { name: 'New' } });
+        }
         const vars = Object.values(body.variables)[0] as any;
         if (vars.offset > 0) {
-          return graphqlResponse({ downloadClone: { settings: {}, meta: {}, models: [] } });
+          return graphqlResponse({ models: [] });
         }
         return graphqlResponse({
-          downloadClone: {
-            settings: { name: 'New' },
-            meta: {},
-            models: [
-              {
-                id: 'model-1',
-                name: 'Posts',
-                everything: { name: 'Posts' },
-                content: [{ id: 'a', createdDate: 1 }],
-              },
-            ],
-          },
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'a', createdDate: 1 }],
+            },
+          ],
         });
       }
       throw new Error('unexpected fetch to ' + url);

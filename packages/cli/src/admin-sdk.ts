@@ -72,7 +72,10 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
     if (entry.isFile() && entry.name === 'settings.json') {
       continue;
     }
-    if (entry.isDirectory() && (await fse.pathExists(path.join(resolved, entry.name, 'schema.model.json')))) {
+    if (
+      entry.isDirectory() &&
+      (await fse.pathExists(path.join(resolved, entry.name, 'schema.model.json')))
+    ) {
       continue;
     }
     return false;
@@ -151,7 +154,7 @@ const createGraphqlClient = (privateKey: string) =>
       // something new on every call and aren't safe to retry blindly.
       const isMutation = query.trimStart().startsWith('mutation');
       const response = await postJsonWithRetry({
-        fetchImpl: fetch as unknown as FetchLike,
+        fetchImpl: (fetch as unknown) as FetchLike,
         url: `${root}/api/v2/admin`,
         method: 'POST',
         body: { query, variables },
@@ -182,26 +185,33 @@ export const importSpace = async (
   const stagingDir = siblingPath(directory, '.importing-' + process.pid + '-' + Date.now());
 
   try {
+    const settings = (await graphqlClient.chain.query.settings.execute()) || {};
+
     const fetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
-      graphqlClient.chain.query
-        .downloadClone({
-          contentQuery: {
-            limit: pageLimit,
-            offset,
-            // createdDate alone isn't a unique key, so two entries created
-            // in the same millisecond would otherwise have unspecified
-            // relative order across page boundaries; id breaks the tie
-            sort: { createdDate: 1, id: 1 },
-            query: { createdDate: { $lte: importStartedAt } },
-            // TEMP: disabled to isolate a 404 regression — re-enable once confirmed
-            // options: { includeUnpublished: true },
-          },
-        })
+      graphqlClient.chain.query.models
         .execute({
-          models: { id: true, name: true, everything: true, content: true },
-          settings: true,
-          meta: true,
-        }) as Promise<SpacePage>;
+          id: true,
+          name: true,
+          everything: true,
+          content: [
+            {
+              contentQuery: {
+                limit: pageLimit,
+                offset,
+                // createdDate alone isn't a unique key, so two entries created
+                // in the same millisecond would otherwise have unspecified
+                // relative order across page boundaries; id breaks the tie
+                sort: { createdDate: 1, id: 1 },
+                query: { createdDate: { $lte: importStartedAt } },
+                // TEMP: disabled to isolate a 404 regression — re-enable once confirmed
+                // options: { includeUnpublished: true },
+              },
+            },
+          ],
+        })
+        .then(models => ({ settings, meta: undefined, models: models || [] })) as Promise<
+        SpacePage
+      >;
 
     const space = await downloadAllSpaceContent(fetchPage, {
       pageSize: limit,
@@ -353,6 +363,12 @@ export const newSpace = async (
   const spaceSettings = await readAsJson(`${directory}/settings.json`);
   const failures: Array<{ file: string; model: string; error: string }> = [];
   try {
+    if (!spaceSettings.cloneInfo || !spaceSettings.cloneInfo.modelIdMap) {
+      throw new Error(
+        'This snapshot has no cloneInfo, so create cannot safely remap referenced ids into the new space.'
+      );
+    }
+
     const { organization, privateKey: newSpacePrivateKey } = await graphqlClient.chain.mutation
       .createSpace({
         settings: {
@@ -372,7 +388,7 @@ export const newSpace = async (
       organization.id
     );
     const replaceIds = (obj: any) =>
-      traverse(obj).map(function (field) {
+      traverse(obj).map(function(field) {
         // we keep meta props as is for debugging puprposes
         if (this.key?.includes('@')) {
           return;
@@ -385,8 +401,11 @@ export const newSpace = async (
       });
 
     const models = await getDirectories(`${directory}`);
-    const writeTasks: Array<{ modelName: string; fileName: string; progress: cliProgress.Bar }> =
-      [];
+    const writeTasks: Array<{
+      modelName: string;
+      fileName: string;
+      progress: cliProgress.Bar;
+    }> = [];
     const modelBars: cliProgress.Bar[] = [];
 
     await mapWithConcurrency(models, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
@@ -446,7 +465,7 @@ export const newSpace = async (
         // after a timeout/5xx safe instead of risking a duplicate entry.
         const { method, url } = buildWriteRequest(modelName, contentJSON);
         await postJsonWithRetry({
-          fetchImpl: fetch as unknown as FetchLike,
+          fetchImpl: (fetch as unknown) as FetchLike,
           method,
           url,
           body: contentJSON,
@@ -569,7 +588,8 @@ export const overwriteSpace = async (
   }
 
   try {
-    const rawModels = (await graphqlClient.chain.query.models.execute({ id: true, name: true })) || [];
+    const rawModels =
+      (await graphqlClient.chain.query.models.execute({ id: true, name: true })) || [];
     const existingModels: ExistingModel[] = rawModels
       .map(model => ({ id: model.id, name: model.name }))
       .filter((model): model is ExistingModel => !!model.id && !!model.name);
@@ -647,7 +667,9 @@ export const overwriteSpace = async (
             // safe to retry), addModel creates a new model on every call --
             // retrying after a lost response risks creating a duplicate,
             // the same reason content POSTs elsewhere disable retries too
-            await graphqlClient.chain.mutation.addModel({ body: schema }).execute({ id: true, name: true });
+            await graphqlClient.chain.mutation
+              .addModel({ body: schema })
+              .execute({ id: true, name: true });
           }
         }
       } catch (e) {
@@ -706,7 +728,9 @@ export const overwriteSpace = async (
           // making the write idempotent and safe to retry/re-run
           entry = {
             ...entry,
-            id: createHash('sha256').update(`${modelName}:${contentFile.name}`).digest('hex'),
+            id: createHash('sha256')
+              .update(`${modelName}:${contentFile.name}`)
+              .digest('hex'),
           };
         }
         modelWriteTasks.push({ fileName: contentFile.name, entry });
@@ -721,7 +745,9 @@ export const overwriteSpace = async (
           failures.push({
             model: modelName,
             file: fileName,
-            error: `duplicate id "${id}" also found in ${fileByEntryId.get(id)} — skipping to avoid a write race`,
+            error: `duplicate id "${id}" also found in ${fileByEntryId.get(
+              id
+            )} — skipping to avoid a write race`,
           });
           modelProgress.increment(1, { name: `${modelName}: skipped duplicate ${fileName}` });
           return;
@@ -749,7 +775,7 @@ export const overwriteSpace = async (
           // upsert -- idempotent and safe to retry or re-run
           const { method, url } = buildWriteRequest(modelName, entry);
           await postJsonWithRetry({
-            fetchImpl: fetch as unknown as FetchLike,
+            fetchImpl: (fetch as unknown) as FetchLike,
             method,
             url,
             body: entry,
@@ -770,7 +796,9 @@ export const overwriteSpace = async (
         progressCounts.entriesWritten++;
       }
       progress.increment(1, {
-        name: `${modelName}: ${dryRun ? 'would write' : failed ? 'failed to write' : 'wrote'} ${fileName}`,
+        name: `${modelName}: ${
+          dryRun ? 'would write' : failed ? 'failed to write' : 'wrote'
+        } ${fileName}`,
       });
     });
 
@@ -785,32 +813,40 @@ export const overwriteSpace = async (
         )
       );
     } else if (prune && localEntryIdsByModel.size > 0) {
+      // uses the same real-id `models` field importSpace does (see the
+      // comment there) rather than `downloadClone` -- comparing local
+      // snapshot ids (also real ids) against ids that are freshly minted
+      // on every call would make every entry look stale and get pruned
       const destinationFetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
-        graphqlClient.chain.query
-          .downloadClone({
-            contentQuery: {
-              limit: pageLimit,
-              offset,
-              // id tiebreaker matches the import query -- createdDate alone
-              // isn't unique, so ties could otherwise be split inconsistently
-              // across page boundaries and leave a stale entry un-pruned
-              sort: { createdDate: 1, id: 1 },
-              // never consider an entry for pruning if it was created after
-              // this run started — otherwise something an editor creates
-              // while the restore/prune is in flight can look "not in the
-              // snapshot" and get deleted moments after it was made
-              query: { createdDate: { $lte: runStartedAt } },
-              // match the import query so a stale draft entry is still
-              // recognized as stale and pruned, instead of being invisible
-              // to the diff and left behind indefinitely
-              options: { includeUnpublished: true },
-            },
-          })
+        graphqlClient.chain.query.models
           .execute({
-            models: { id: true, name: true, content: true },
-            settings: false,
-            meta: false,
-          }) as Promise<SpacePage>;
+            id: true,
+            name: true,
+            content: [
+              {
+                contentQuery: {
+                  limit: pageLimit,
+                  offset,
+                  // id tiebreaker matches the import query -- createdDate alone
+                  // isn't unique, so ties could otherwise be split inconsistently
+                  // across page boundaries and leave a stale entry un-pruned
+                  sort: { createdDate: 1, id: 1 },
+                  // never consider an entry for pruning if it was created after
+                  // this run started — otherwise something an editor creates
+                  // while the restore/prune is in flight can look "not in the
+                  // snapshot" and get deleted moments after it was made
+                  query: { createdDate: { $lte: runStartedAt } },
+                  // TEMP: disabled to isolate a 404 regression — re-enable once confirmed
+                  // options: { includeUnpublished: true },
+                },
+              },
+            ],
+          })
+          .then(models => ({
+            settings: undefined,
+            meta: undefined,
+            models: models || [],
+          })) as Promise<SpacePage>;
 
       const destination = await downloadAllSpaceContent(destinationFetchPage, {
         pageSize: MAX_CONTENT_PAGE_SIZE,
@@ -842,7 +878,7 @@ export const overwriteSpace = async (
             try {
               const { method, url } = buildDeleteRequest(modelName, entryId);
               await postJsonWithRetry({
-                fetchImpl: fetch as unknown as FetchLike,
+                fetchImpl: (fetch as unknown) as FetchLike,
                 method,
                 url,
                 headers: {
@@ -862,7 +898,9 @@ export const overwriteSpace = async (
             progressCounts.entriesPruned++;
           }
           pruneProgress.increment(1, {
-            name: `${modelName}: ${dryRun ? 'would prune' : failed ? 'failed to prune' : 'pruned'} ${entryId}`,
+            name: `${modelName}: ${
+              dryRun ? 'would prune' : failed ? 'failed to prune' : 'pruned'
+            } ${entryId}`,
           });
         });
         pruneProgress.stop();
@@ -902,7 +940,9 @@ export const overwriteSpace = async (
   if (failures.length) {
     console.log(`\r\n\r\n`);
     console.error(
-      chalk.red(`${dryRun ? 'Failed to read' : 'Failed to write'} ${failures.length} content entries:`)
+      chalk.red(
+        `${dryRun ? 'Failed to read' : 'Failed to write'} ${failures.length} content entries:`
+      )
     );
     failures.forEach(failure => {
       console.error(chalk.red(`  ${failure.model}/${failure.file}: ${failure.error}`));
