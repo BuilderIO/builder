@@ -28,11 +28,12 @@ export interface WriteRequest {
 }
 
 /**
- * PUT upserts by id: it updates the entry if it already exists in the target
- * space and creates it (with that id) otherwise, which is what makes
- * `overwrite` idempotent and safe to re-run. Entries without an id (rare,
- * see pagination.ts) can't be targeted by id, so they fall back to POST and
- * are always created fresh.
+ * PUT-by-id is used whenever an entry has an id, updating it if it already
+ * exists in the target space. Whether it also creates the entry when it
+ * doesn't exist yet is unconfirmed -- the caller falls back to POST on a 404
+ * to cover that case either way. Entries without an id (rare, see
+ * pagination.ts) can't be targeted by id, so they fall back to POST directly
+ * and are always created fresh.
  */
 export const buildWriteRequest = (
   modelName: string,

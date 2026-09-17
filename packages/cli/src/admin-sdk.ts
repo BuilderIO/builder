@@ -18,6 +18,7 @@ import {
   DEFAULT_WRITE_CONCURRENCY,
   DEFAULT_WRITE_RETRIES,
   FetchLike,
+  isHttpErrorWithStatus,
   mapWithConcurrency,
   postJsonWithRetry,
   retryAsync,
@@ -58,6 +59,41 @@ const siblingPath = (dir: string, suffix: string) => {
 };
 
 /**
+ * A model directory in a real snapshot only ever contains JSON files (one
+ * `schema.model.json` plus `entry-*.json` content files, see importSpace's
+ * writer below) -- checking for the filename alone would let an unrelated
+ * directory that merely happens to contain a file called `schema.model.json`
+ * (e.g. from an unrelated tool or project template) pass as a snapshot too.
+ * Checking every filename ends in `.json` is essentially free (it reuses the
+ * directory listing already read below) and rules out a real project
+ * directory, which will almost always have non-JSON files alongside it.
+ * Parsing is only done for schema.model.json itself -- doing that for every
+ * content file too would make this guard re-read and re-parse an entire
+ * large snapshot's worth of entries on every single re-run, just to prove
+ * something importSpace already wrote correctly the first time.
+ */
+const looksLikeSnapshotModelDir = async (dir: string): Promise<boolean> => {
+  const entries = await fse.readdir(dir, { withFileTypes: true });
+  if (!entries.every(entry => entry.isFile() && entry.name.endsWith('.json'))) {
+    return false;
+  }
+  try {
+    const schema = await readAsJsonQuietly(path.join(dir, 'schema.model.json'));
+    return isPlainObject(schema) && typeof schema.name === 'string';
+  } catch {
+    return false;
+  }
+};
+
+const isPlainObject = (value: unknown): value is Record<string, unknown> =>
+  !!value && typeof value === 'object' && !Array.isArray(value);
+
+// avoid readAsJson here: it logs "error parsing ..." on bad/missing JSON,
+// which would spam the console for every directory this probe correctly rejects
+const readAsJsonQuietly = async (filePath: string) =>
+  JSON.parse((await fse.readFile(filePath)).toString());
+
+/**
  * A successful import fully replaces `directory`'s previous contents (see
  * `swapInStagingDir`), which is only safe if that directory is empty, new,
  * or already holds nothing but a prior snapshot from this same command.
@@ -74,10 +110,7 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
     if (entry.isFile() && entry.name === 'settings.json') {
       continue;
     }
-    if (
-      entry.isDirectory() &&
-      (await fse.pathExists(path.join(resolved, entry.name, 'schema.model.json')))
-    ) {
+    if (entry.isDirectory() && (await looksLikeSnapshotModelDir(path.join(resolved, entry.name)))) {
       continue;
     }
     return false;
@@ -794,18 +827,39 @@ export const overwriteSpace = async (
       if (!dryRun) {
         try {
           // every entry has an id by this point (a stable one is derived
-          // for id-less local entries above), so this is always a PUT
-          // upsert -- idempotent and safe to retry or re-run
+          // for id-less local entries above), so this always starts as a
+          // PUT to that id. Whether PUT-by-id upserts (creates if missing)
+          // or only updates and 404s is undocumented and this codebase has
+          // disagreed with itself about it elsewhere -- rather than assume
+          // either way, a 404 on PUT is treated as "doesn't exist yet" and
+          // retried once as a POST (which honors the id already in the
+          // body), so the entry ends up created either way
           const { method, url } = buildWriteRequest(modelName, entry);
-          await postJsonWithRetry({
-            fetchImpl: (fetch as unknown) as FetchLike,
-            method,
-            url,
-            body: entry,
-            headers: {
-              Authorization: `Bearer ${privateKey}`,
-            },
-          });
+          try {
+            await postJsonWithRetry({
+              fetchImpl: (fetch as unknown) as FetchLike,
+              method,
+              url,
+              body: entry,
+              headers: {
+                Authorization: `Bearer ${privateKey}`,
+              },
+            });
+          } catch (e) {
+            if (method === 'PUT' && isHttpErrorWithStatus(e, 404)) {
+              await postJsonWithRetry({
+                fetchImpl: (fetch as unknown) as FetchLike,
+                method: 'POST',
+                url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}`,
+                body: entry,
+                headers: {
+                  Authorization: `Bearer ${privateKey}`,
+                },
+              });
+            } else {
+              throw e;
+            }
+          }
         } catch (e) {
           failed = true;
           failures.push({

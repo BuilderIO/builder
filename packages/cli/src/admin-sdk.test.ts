@@ -515,6 +515,42 @@ test.serial('importSpace refuses to replace a directory containing unrelated fil
   t.false(await fse.pathExists(path.join(base, 'posts')));
 });
 
+test.serial('importSpace refuses a model dir that only coincidentally has a schema.model.json', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-guard-json-test-'));
+  await fse.outputJson(path.join(base, 'not-a-model', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputFile(path.join(base, 'not-a-model', 'notes.txt'), 'unrelated data');
+
+  const { exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (!body.query.includes('content(')) {
+          return graphqlResponse({ settings: { name: 'Test' } });
+        }
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
+        }
+        return graphqlResponse({
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'a', createdDate: 1 }],
+            },
+          ],
+        });
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => importSpace('fake-key', base, false, 100)
+  );
+
+  t.is(exitCode, 1);
+  t.true(await fse.pathExists(path.join(base, 'not-a-model', 'notes.txt')));
+});
+
 test.serial(
   'importSpace restores a snapshot left over from a crash mid-swap, and cleans up stale staging dirs',
   async t => {
@@ -690,3 +726,38 @@ test.serial(
     t.is(writtenEntry.relatedModelId, addModelBody.id);
   }
 );
+
+test.serial('overwrite falls back to POST when PUT-by-id 404s on a missing entry', async t => {
+  const dir = await makeSnapshot({
+    posts: { schema: { name: 'Posts' }, entries: [{ id: 'missing-in-target', name: 'A' }] },
+  });
+
+  const { calls, exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (body.query.includes('updateModel')) {
+          return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+        }
+        return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+      }
+      if (url.startsWith(WRITE_API_ROOT) && init.method === 'PUT') {
+        return { status: 404, text: 'not found' };
+      }
+      if (url.startsWith(WRITE_API_ROOT) && init.method === 'POST') {
+        return { status: 200, text: '' };
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => overwriteSpace('fake-key', dir, false, false, true, false)
+  );
+
+  t.is(exitCode, undefined);
+  const putCall = calls.find(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'PUT');
+  const postCall = calls.find(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'POST');
+  t.truthy(putCall);
+  t.truthy(postCall);
+  t.true(Boolean(putCall && putCall.url.endsWith('/posts/missing-in-target')));
+  t.true(Boolean(postCall && postCall.url.endsWith('/posts')));
+  t.is(postCall && JSON.parse(postCall.init.body).id, 'missing-in-target');
+});

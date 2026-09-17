@@ -27,6 +27,13 @@ export interface FetchLikeResponse {
 
 export type FetchLike = (url: string, init?: any) => Promise<FetchLikeResponse>;
 
+export interface HttpError extends Error {
+  status?: number;
+}
+
+export const isHttpErrorWithStatus = (e: unknown, status: number): boolean =>
+  e instanceof Error && (e as HttpError).status === status;
+
 export interface PostJsonOptions {
   fetchImpl: FetchLike;
   url: string;
@@ -187,8 +194,11 @@ export const postJsonWithRetry = async ({
       }
 
       const detail = await response.text().catch(() => '');
-      lastError = new Error(
-        `Request failed with status ${response.status}${detail ? `: ${detail.slice(0, 300)}` : ''}`
+      lastError = Object.assign(
+        new Error(
+          `Request failed with status ${response.status}${detail ? `: ${detail.slice(0, 300)}` : ''}`
+        ),
+        { status: response.status }
       );
 
       if (!isRetriableStatus(response.status)) {
