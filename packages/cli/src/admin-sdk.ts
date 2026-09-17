@@ -9,9 +9,7 @@ import { createHash } from 'crypto';
 import traverse from 'traverse';
 import {
   ContentEntry,
-  downloadAllModelContent,
   downloadAllSpaceContent,
-  FetchModelContentPage,
   FetchSpacePage,
   MAX_CONTENT_PAGE_SIZE,
   SpacePage,
@@ -224,26 +222,25 @@ export const importSpace = async (
   try {
     const settings = (await graphqlClient.chain.query.settings.execute()) || {};
 
-    // schema/metadata for every model in one request -- content is fetched
-    // separately, per model, below
-    const modelList =
-      (await graphqlClient.chain.query.models.execute({ id: true, name: true, everything: true })) ||
-      [];
-
-    // fetching every model's content() in a single batched query (as one
-    // request per page, covering all models at once) means a server-side
-    // error resolving any single model's content -- e.g. the admin API can
-    // 404 internally for a specific model when `includeUnpublished` is set,
-    // seen in production -- fails that entire request and every other,
-    // otherwise-healthy model's content along with it. Fetching one model
-    // at a time isolates that failure to just the model that caused it.
-    const contentPage = (
-      modelId: string,
-      includeUnpublished: boolean
-    ): FetchModelContentPage => ({ limit: pageLimit, offset }) =>
-      graphqlClient.chain.query
-        .model({ id: modelId })
+    // fetches every model's content in one batched query per page (the API
+    // has no way to select a single model's content on its own -- the
+    // schema's singular `model(id)` query field doesn't support
+    // `includeUnpublished` at all, confirmed by testing it against a real
+    // space: every model 404s through that field with the option set, while
+    // the vast majority succeed through this batched `models` field). A
+    // server-side error resolving any one model's content still fails this
+    // entire request, so a failure here is handled by falling back to a
+    // full re-download without `includeUnpublished` below, rather than
+    // assuming which specific model caused it.
+    const fetchPage = (includeUnpublished: boolean): FetchSpacePage => ({
+      limit: pageLimit,
+      offset,
+    }) =>
+      graphqlClient.chain.query.models
         .execute({
+          id: true,
+          name: true,
+          everything: true,
           content: [
             {
               contentQuery: {
@@ -254,58 +251,46 @@ export const importSpace = async (
                 // relative order across page boundaries; id breaks the tie
                 sort: { createdDate: 1, id: 1 },
                 query: { createdDate: { $lte: importStartedAt } },
-                // the content API defaults to published-only, which would
-                // silently drop draft entries from the snapshot — a backup
-                // that can't restore unpublished work isn't a real backup
                 ...(includeUnpublished ? { options: { includeUnpublished: true } } : {}),
               },
             },
           ],
-        }) as Promise<{ content?: ContentEntry[] | null } | null>;
+        })
+        .then(models => ({ settings, meta: undefined, models: models || [] })) as Promise<
+        SpacePage
+      >;
 
-    const modelContentWarnings: string[] = [];
-    let modelsDownloaded = 0;
-
-    const modelsWithContent = await mapWithConcurrency(
-      modelList,
-      DEFAULT_WRITE_CONCURRENCY,
-      async model => {
-        const modelId = model.id;
-        const modelName = model.name;
-        let content: ContentEntry[] = [];
-        if (modelId) {
-          try {
-            content = await downloadAllModelContent(contentPage(modelId, true), modelName, {
-              pageSize: limit,
-            });
-          } catch (e) {
-            // fall back to published-only content for just this model
-            // instead of failing the whole import over one model's error
-            const message = e instanceof Error ? e.message : String(e);
-            try {
-              content = await downloadAllModelContent(contentPage(modelId, false), modelName, {
-                pageSize: limit,
-              });
-              modelContentWarnings.push(
-                `"${modelName}" was imported without unpublished/draft content: the server rejected that request (${message}).`
-              );
-            } catch (e2) {
-              const message2 = e2 instanceof Error ? e2.message : String(e2);
-              modelContentWarnings.push(
-                `"${modelName}" was imported with 0 content entries: the server rejected every request for its content (${message2}).`
-              );
-            }
-          }
-        }
-        modelsDownloaded++;
-        spaceProgress.update(0, {
-          name: `downloading content (${modelsDownloaded}/${modelList.length} models, ${modelName})`,
-        });
-        return { ...model, content };
-      }
-    );
-
-    const space = { settings, meta: undefined, models: modelsWithContent };
+    let draftsIncluded = true;
+    let space;
+    try {
+      space = await downloadAllSpaceContent(fetchPage(true), {
+        pageSize: limit,
+        onPage: ({ page, total }) =>
+          spaceProgress.update(0, {
+            name: 'downloading page ' + page + ' (' + total + ' entries so far)',
+          }),
+      });
+    } catch (e) {
+      // the admin API can fail resolving unpublished content for a model in
+      // a way that fails the whole batched request (seen in production) --
+      // rather than lose the entire snapshot over it, fall back to a full
+      // published-only re-download, which is known to work, and surface the
+      // trade-off clearly instead of silently producing an incomplete backup
+      draftsIncluded = false;
+      const message = e instanceof Error ? e.message : String(e);
+      console.log(
+        chalk.yellow(
+          `\nCould not fetch unpublished/draft content (the server rejected the request: ${message}). Retrying with published content only -- this snapshot will not include drafts.`
+        )
+      );
+      space = await downloadAllSpaceContent(fetchPage(false), {
+        pageSize: limit,
+        onPage: ({ page, total }) =>
+          spaceProgress.update(0, {
+            name: 'downloading page ' + page + ' (' + total + ' entries so far)',
+          }),
+      });
+    }
 
     if (!(await importGuardPromise)) {
       throw new Error(
@@ -388,9 +373,12 @@ export const importSpace = async (
         console.log(chalk.green(`    ${name}: ${count}`));
       });
     }
-    if (modelContentWarnings.length > 0) {
-      console.log(chalk.yellow(`\n${modelContentWarnings.length} model(s) had content-fetch issues:`));
-      modelContentWarnings.forEach(warning => console.log(chalk.yellow(`  ${warning}`)));
+    if (!draftsIncluded) {
+      console.log(
+        chalk.yellow(
+          '\nThis snapshot does not include unpublished/draft content -- see the warning above.'
+        )
+      );
     }
   } catch (e) {
     console.log(`\r\n\r\n`);

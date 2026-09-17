@@ -71,15 +71,6 @@ const withMockedFetch = async (
 
 const graphqlResponse = (data: any) => ({ status: 200, json: { data } });
 
-// `model(id, contentQuery)` sends two GraphQL variables (the id and the
-// contentQuery object), unlike the single-arg `models(contentQuery)` field
-// used elsewhere in this file -- picking `Object.values(variables)[0]` would
-// grab whichever variable happens to serialize first, not necessarily the
-// contentQuery, so tests against per-model content calls need to find it by
-// shape instead of position
-const contentQueryOf = (variables: Record<string, unknown>): any =>
-  Object.values(variables).find(value => value && typeof value === 'object' && 'limit' in value);
-
 test.serial(
   'prune only deletes entries that predate the run and existed in the destination',
   async t => {
@@ -494,18 +485,22 @@ test.serial('importSpace refuses to replace a directory containing unrelated fil
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (body.query.includes('settings')) {
+        if (!body.query.includes('content(')) {
           return graphqlResponse({ settings: { name: 'Test' } });
         }
-        if (body.query.includes('content(')) {
-          const vars = contentQueryOf(body.variables);
-          if (vars.offset > 0) {
-            return graphqlResponse({ model: null });
-          }
-          return graphqlResponse({ model: { content: [{ id: 'a', createdDate: 1 }] } });
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
         }
         return graphqlResponse({
-          models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'a', createdDate: 1 }],
+            },
+          ],
         });
       }
       throw new Error('unexpected fetch to ' + url);
@@ -529,18 +524,22 @@ test.serial('importSpace refuses a model dir that only coincidentally has a sche
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (body.query.includes('settings')) {
+        if (!body.query.includes('content(')) {
           return graphqlResponse({ settings: { name: 'Test' } });
         }
-        if (body.query.includes('content(')) {
-          const vars = contentQueryOf(body.variables);
-          if (vars.offset > 0) {
-            return graphqlResponse({ model: null });
-          }
-          return graphqlResponse({ model: { content: [{ id: 'a', createdDate: 1 }] } });
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
         }
         return graphqlResponse({
-          models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'a', createdDate: 1 }],
+            },
+          ],
         });
       }
       throw new Error('unexpected fetch to ' + url);
@@ -590,18 +589,22 @@ test.serial('importSpace allows re-importing into its own prior snapshot', async
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (body.query.includes('settings')) {
+        if (!body.query.includes('content(')) {
           return graphqlResponse({ settings: { name: 'New' } });
         }
-        if (body.query.includes('content(')) {
-          const vars = contentQueryOf(body.variables);
-          if (vars.offset > 0) {
-            return graphqlResponse({ model: null });
-          }
-          return graphqlResponse({ model: { content: [{ id: 'a', createdDate: 1 }] } });
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
         }
         return graphqlResponse({
-          models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'a', createdDate: 1 }],
+            },
+          ],
         });
       }
       throw new Error('unexpected fetch to ' + url);
@@ -621,20 +624,22 @@ test.serial('importSpace requests unpublished/draft content, not just published'
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (body.query.includes('settings')) {
+        if (!body.query.includes('content(')) {
           return graphqlResponse({ settings: { name: 'Test' } });
         }
-        if (body.query.includes('content(')) {
-          const vars = contentQueryOf(body.variables);
-          if (vars.offset > 0) {
-            return graphqlResponse({ model: null });
-          }
-          return graphqlResponse({
-            model: { content: [{ id: 'draft-a', createdDate: 1, published: 'draft' }] },
-          });
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
         }
         return graphqlResponse({
-          models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'draft-a', createdDate: 1, published: 'draft' }],
+            },
+          ],
         });
       }
       throw new Error('unexpected fetch to ' + url);
@@ -648,7 +653,7 @@ test.serial('importSpace requests unpublished/draft content, not just published'
   const contentCall = calls.find(
     c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('content(')
   );
-  const contentQueryVar = contentQueryOf(JSON.parse(contentCall!.init.body).variables);
+  const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
   t.true(contentQueryVar.options?.includeUnpublished);
 });
 
@@ -758,41 +763,41 @@ test.serial('overwrite falls back to POST when PUT-by-id 404s on a missing entry
 });
 
 test.serial(
-  'importSpace isolates a content-fetch error to one model instead of failing the whole run',
+  'importSpace falls back to a published-only download when the server rejects unpublished content',
   async t => {
     // reproduces a real production error: the admin API can fail resolving
-    // content for one particular model when includeUnpublished is set (a
-    // 404 from an internal dependency for that model), which must not take
-    // down every other, otherwise-healthy model in the same import
-    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-isolation-test-'));
+    // content for the whole batched request when includeUnpublished is set
+    // -- the import must still succeed, just without drafts, instead of
+    // aborting entirely
+    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-fallback-test-'));
 
-    let brokenModelAttempts = 0;
+    let contentCalls = 0;
     const { exitCode } = await withMockedFetch(
       async (url, init) => {
         if (url === GRAPHQL_URL) {
           const body = JSON.parse(init.body);
-          if (body.query.includes('settings')) {
+          if (!body.query.includes('content(')) {
             return graphqlResponse({ settings: { name: 'Test' } });
           }
-          if (body.query.includes('content(')) {
-            const vars = contentQueryOf(body.variables);
-            const idVar = Object.values(body.variables).find(v => typeof v === 'string');
-            if (idVar === 'broken-model-id') {
-              brokenModelAttempts++;
-              if (vars.options?.includeUnpublished) {
-                return { status: 200, json: { errors: [{ message: 'Request failed with status code 404' }] } };
-              }
-              return graphqlResponse({ model: { content: [{ id: 'published-only', createdDate: 1 }] } });
-            }
-            if (vars.offset > 0) {
-              return graphqlResponse({ model: null });
-            }
-            return graphqlResponse({ model: { content: [{ id: 'healthy-draft', createdDate: 1 }] } });
+          const vars = Object.values(body.variables)[0] as any;
+          if (vars.options?.includeUnpublished) {
+            contentCalls++;
+            return {
+              status: 200,
+              json: { errors: [{ message: 'Request failed with status code 404' }] },
+            };
+          }
+          if (vars.offset > 0) {
+            return graphqlResponse({ models: [] });
           }
           return graphqlResponse({
             models: [
-              { id: 'healthy-model-id', name: 'Posts', everything: { name: 'Posts' } },
-              { id: 'broken-model-id', name: 'Pages', everything: { name: 'Pages' } },
+              {
+                id: 'model-1',
+                name: 'Posts',
+                everything: { name: 'Posts' },
+                content: [{ id: 'published-only', createdDate: 1 }],
+              },
             ],
           });
         }
@@ -802,8 +807,7 @@ test.serial(
     );
 
     t.is(exitCode, undefined);
-    t.is(brokenModelAttempts, 2);
-    t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-healthy-draft.json')));
-    t.true(await fse.pathExists(path.join(dir, 'pages', 'entry-id-published-only.json')));
+    t.is(contentCalls, 1);
+    t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-published-only.json')));
   }
 );

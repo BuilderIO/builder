@@ -40,11 +40,6 @@ export interface SpaceSnapshot extends SpacePage {
 
 export type FetchSpacePage = (query: { limit: number; offset: number }) => Promise<SpacePage>;
 
-export type FetchModelContentPage = (query: {
-  limit: number;
-  offset: number;
-}) => Promise<{ content?: ContentEntry[] | null } | null | undefined>;
-
 export interface PageProgress {
   page: number;
   offset: number;
@@ -105,7 +100,7 @@ const mergeMeta = (
  * id-less entries with identical content will collide and be treated as
  * one, which is an acceptable trade-off against an infinite loop.
  */
-export const entryKey = (entry: ContentEntry, modelName: string) => {
+const entryKey = (entry: ContentEntry, modelName: string) => {
   if (typeof entry?.id === 'string' && entry.id) {
     return entry.id;
   }
@@ -201,63 +196,4 @@ export const downloadAllSpaceContent = async (
   }
 
   return snapshot!;
-};
-
-/**
- * Paginates a single model's content in isolation, rather than as part of
- * one shared multi-model query. `downloadAllSpaceContent` batches every
- * model's `content` field into a single request per page, which means a
- * server-side error resolving *any one* model's content (e.g. a 404 from an
- * internal dependency for one particular model) fails the entire request --
- * and every other, otherwise-healthy model's content along with it. Fetching
- * one model at a time lets a caller isolate and recover from a single
- * model's failure without losing the rest of the space.
- */
-export const downloadAllModelContent = async (
-  fetchPage: FetchModelContentPage,
-  modelName: string,
-  options: DownloadAllOptions = {}
-): Promise<ContentEntry[]> => {
-  const limit = clampPageSize(options.pageSize);
-  const maxPages = options.maxPages ?? MAX_PAGES;
-
-  const seen = new Set<string>();
-  const content: ContentEntry[] = [];
-  let offset = 0;
-  let page = 0;
-
-  while (true) {
-    const result = await fetchPage({ limit, offset });
-    page++;
-
-    const pageEntries = result?.content || [];
-    const hasFullPage = pageEntries.length >= limit;
-
-    let added = 0;
-    pageEntries.forEach(entry => {
-      const key = entryKey(entry, modelName);
-      if (seen.has(key)) {
-        return;
-      }
-      seen.add(key);
-      content.push(entry);
-      added++;
-    });
-
-    options.onPage?.({ page, offset, limit, added, total: content.length });
-
-    if (!hasFullPage || added === 0) {
-      break;
-    }
-
-    if (page >= maxPages) {
-      throw new Error(
-        `Stopped after ${maxPages} pages without reaching the end of "${modelName}"'s content — this model may be growing faster than it can be paged through, or the API is not honoring \`offset\` as expected.`
-      );
-    }
-
-    offset += limit;
-  }
-
-  return content;
 };
