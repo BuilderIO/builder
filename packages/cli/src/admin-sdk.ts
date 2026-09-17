@@ -200,6 +200,43 @@ const createGraphqlClient = (privateKey: string) =>
     },
   });
 
+// `graphql-typed-client` only preserves the raw GraphQL `errors` array on
+// thrown errors (as `.errors`), not a typed shape -- this pulls the model
+// index out of a `content` resolution error's `path` (e.g.
+// `["models", 4, "content"]`) so the fallback warning below can name the
+// specific model that failed instead of leaving the user to guess from a
+// raw index that shifts between runs
+const failingModelIndices = (e: unknown): number[] => {
+  const errors = (e as { errors?: unknown })?.errors;
+  if (!Array.isArray(errors)) {
+    return [];
+  }
+  const indices = new Set<number>();
+  errors.forEach(error => {
+    const path = (error as { path?: unknown })?.path;
+    if (Array.isArray(path) && path[0] === 'models' && typeof path[1] === 'number') {
+      indices.add(path[1]);
+    }
+  });
+  return Array.from(indices);
+};
+
+const namesOfFailingModels = async (
+  graphqlClient: ReturnType<typeof createGraphqlClient>,
+  e: unknown
+): Promise<string[]> => {
+  const indices = failingModelIndices(e);
+  if (indices.length === 0) {
+    return [];
+  }
+  try {
+    const models = (await graphqlClient.chain.query.models.execute({ name: true })) || [];
+    return indices.map(i => models[i]?.name).filter((name): name is string => Boolean(name));
+  } catch {
+    return [];
+  }
+};
+
 export const importSpace = async (
   privateKey: string,
   directory: string,
@@ -278,9 +315,16 @@ export const importSpace = async (
       // trade-off clearly instead of silently producing an incomplete backup
       draftsIncluded = false;
       const message = e instanceof Error ? e.message : String(e);
+      const failingModels = await namesOfFailingModels(graphqlClient, e);
       console.log(
         chalk.yellow(
-          `\nCould not fetch unpublished/draft content (the server rejected the request: ${message}). Retrying with published content only -- this snapshot will not include drafts.`
+          failingModels.length > 0
+            ? `\nCould not fetch unpublished/draft content: the server failed to resolve draft content for ${failingModels
+                .map(name => `"${name}"`)
+                .join(
+                  ', '
+                )}. Because the API returns every model's content in one request, an error on any single model (${message}) currently loses drafts for the whole space -- consider reporting this as a server-side issue with that model's unpublished content. Retrying with published content only -- this snapshot will not include drafts.`
+            : `\nCould not fetch unpublished/draft content (the server rejected the request: ${message}). Retrying with published content only -- this snapshot will not include drafts.`
         )
       );
       space = await downloadAllSpaceContent(fetchPage(false), {

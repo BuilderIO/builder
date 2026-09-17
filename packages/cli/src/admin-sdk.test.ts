@@ -811,3 +811,71 @@ test.serial(
     t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-published-only.json')));
   }
 );
+
+test.serial(
+  'importSpace names the model that failed unpublished-content resolution in its fallback warning',
+  async t => {
+    // reproduces the exact error shape seen in production: a GraphQL error
+    // whose `path` points at a specific model index in the batched
+    // `models { content }` response -- the warning should look that index
+    // up against a plain model-name query and name it, instead of just
+    // surfacing the raw index
+    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-named-fallback-test-'));
+    const logs: string[] = [];
+    const originalLog = console.log;
+    console.log = (...args: any[]) => {
+      logs.push(args.join(' '));
+    };
+
+    try {
+      await withMockedFetch(
+        async (url, init) => {
+          if (url === GRAPHQL_URL) {
+            const body = JSON.parse(init.body);
+            if (body.query.includes('settings')) {
+              return graphqlResponse({ settings: { name: 'Test' } });
+            }
+            if (!body.query.includes('content(')) {
+              // the diagnostic name-lookup query, issued only after the
+              // draft-content request below fails
+              return graphqlResponse({ models: [{ name: 'authors' }, { name: 'posts' }] });
+            }
+            const vars = Object.values(body.variables)[0] as any;
+            if (vars.options?.includeUnpublished) {
+              return {
+                status: 200,
+                json: {
+                  errors: [
+                    {
+                      message: 'Request failed with status code 404',
+                      path: ['models', 1, 'content'],
+                    },
+                  ],
+                },
+              };
+            }
+            if (vars.offset > 0) {
+              return graphqlResponse({ models: [] });
+            }
+            return graphqlResponse({
+              models: [
+                {
+                  id: 'model-1',
+                  name: 'posts',
+                  everything: { name: 'posts' },
+                  content: [{ id: 'published-only', createdDate: 1 }],
+                },
+              ],
+            });
+          }
+          throw new Error('unexpected fetch to ' + url);
+        },
+        () => importSpace('fake-key', dir, false, 100)
+      );
+    } finally {
+      console.log = originalLog;
+    }
+
+    t.true(logs.some(line => line.includes('"posts"')));
+  }
+);
