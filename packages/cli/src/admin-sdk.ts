@@ -193,10 +193,8 @@ export const importSpace = async (
             // relative order across page boundaries; id breaks the tie
             sort: { createdDate: 1, id: 1 },
             query: { createdDate: { $lte: importStartedAt } },
-            // the content API defaults to published-only, which would
-            // silently drop draft entries from the snapshot — a backup
-            // that can't restore unpublished work isn't a real backup
-            options: { includeUnpublished: true },
+            // TEMP: disabled to isolate a 404 regression — re-enable once confirmed
+            // options: { includeUnpublished: true },
           },
         })
         .execute({
