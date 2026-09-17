@@ -8,6 +8,7 @@ import cliProgress from 'cli-progress';
 import { createHash } from 'crypto';
 import traverse from 'traverse';
 import {
+  ContentEntry,
   downloadAllSpaceContent,
   FetchSpacePage,
   MAX_CONTENT_PAGE_SIZE,
@@ -261,7 +262,8 @@ export const importSpace = async (
     let totalEntries = 0;
     const entryCountsByModel: Array<{ name: string; count: number }> = [];
     await mapWithConcurrency(space.models, DEFAULT_WRITE_CONCURRENCY, async model => {
-      const { content, everything } = model;
+      const { content } = model;
+      const everything = model.everything || {};
       // todo why conent is in everything
       const { content: _, ...schema } = everything;
       const modelName = kebabCase(model.name);
@@ -399,7 +401,7 @@ export const newSpace = async (
 
     const spaceModelIdsMap = hashIdsByOrganization(modelIds, organization.id);
     const spaceContentIdsMap = hashIdsByOrganization(contentIds, organization.id);
-    const replaceIds = (obj: any) =>
+    const replaceIds = (obj: Record<string, unknown>) =>
       traverse(obj).map(function(field) {
         // we keep meta props as is for debugging puprposes
         if (this.key?.includes('@')) {
@@ -623,7 +625,7 @@ export const overwriteSpace = async (
     const writeTasks: Array<{
       modelName: string;
       fileName: string;
-      entry: any;
+      entry: ContentEntry;
       progress: cliProgress.Bar;
     }> = [];
     const modelBars: cliProgress.Bar[] = [];
@@ -719,7 +721,7 @@ export const overwriteSpace = async (
       }
 
       const localIds = new Set<string>();
-      const modelWriteTasks: Array<{ fileName: string; entry: any }> = [];
+      const modelWriteTasks: Array<{ fileName: string; entry: ContentEntry }> = [];
       await mapWithConcurrency(contentFiles, DEFAULT_WRITE_CONCURRENCY, async contentFile => {
         let entry;
         try {

@@ -17,19 +17,20 @@ export const MAX_PAGES = 100_000;
 export interface ContentEntry {
   id?: string | null;
   name?: string | null;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface ModelPage {
   id?: string | null;
   name: string;
   content?: ContentEntry[] | null;
-  [key: string]: any;
+  everything?: Record<string, unknown>;
+  [key: string]: unknown;
 }
 
 export interface SpacePage {
-  settings: any;
-  meta: any;
+  settings: Record<string, unknown>;
+  meta?: Record<string, unknown>;
   models: ModelPage[];
 }
 
@@ -60,7 +61,7 @@ export const clampPageSize = (pageSize?: number | null) => {
   return Math.min(Math.floor(pageSize), MAX_CONTENT_PAGE_SIZE);
 };
 
-const isPlainObject = (value: any): value is Record<string, any> =>
+const isPlainObject = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
 
 /**
@@ -68,14 +69,17 @@ const isPlainObject = (value: any): value is Record<string, any> =>
  * builds them from the entries in the current page, so every page contributes
  * mappings that the others are missing.
  */
-const mergeMeta = (base: any, next: any): any => {
+const mergeMeta = (
+  base: Record<string, unknown> | undefined,
+  next: Record<string, unknown> | undefined
+): Record<string, unknown> | undefined => {
   if (!isPlainObject(base)) {
     return isPlainObject(next) ? { ...next } : base;
   }
   if (!isPlainObject(next)) {
     return base;
   }
-  const merged: Record<string, any> = { ...base };
+  const merged: Record<string, unknown> = { ...base };
   Object.keys(next).forEach(key => {
     const baseValue = merged[key];
     const nextValue = next[key];

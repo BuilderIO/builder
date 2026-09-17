@@ -109,8 +109,9 @@ test('merges clone id maps from every page', async t => {
   const { fetchPage } = fakeApi({ page: 150 });
   const space = await downloadAllSpaceContent(fetchPage, { pageSize: 100 });
 
-  t.is(Object.keys(space.meta.contentIdMap).length, 150);
-  t.is(space.meta.contentIdMap['page-149'], 'page-149');
+  const contentIdMap = space.meta?.contentIdMap as Record<string, string>;
+  t.is(Object.keys(contentIdMap).length, 150);
+  t.is(contentIdMap['page-149'], 'page-149');
 });
 
 test('settings are preserved from the first page', async t => {
