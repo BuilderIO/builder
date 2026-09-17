@@ -133,6 +133,7 @@ test.serial(
     const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
     t.deepEqual(contentQueryVar.sort, { createdDate: 1, id: 1 });
     t.truthy(contentQueryVar.query?.createdDate?.$lte);
+    t.true(contentQueryVar.options?.includeUnpublished);
   }
 );
 
@@ -578,6 +579,46 @@ test.serial('importSpace allows re-importing into its own prior snapshot', async
   t.is(exitCode, undefined);
   t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-a.json')));
   t.false(await fse.pathExists(path.join(dir, 'posts', 'entry-id-old.json')));
+});
+
+test.serial('importSpace requests unpublished/draft content, not just published', async t => {
+  const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-drafts-test-'));
+
+  const { calls, exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (!body.query.includes('content(')) {
+          return graphqlResponse({ settings: { name: 'Test' } });
+        }
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
+        }
+        return graphqlResponse({
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'draft-a', createdDate: 1, published: 'draft' }],
+            },
+          ],
+        });
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => importSpace('fake-key', dir, false, 100)
+  );
+
+  t.is(exitCode, undefined);
+  t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-draft-a.json')));
+
+  const contentCall = calls.find(
+    c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('content(')
+  );
+  const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
+  t.true(contentQueryVar.options?.includeUnpublished);
 });
 
 test.serial(
