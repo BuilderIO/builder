@@ -8,7 +8,10 @@ import {
 } from './pagination';
 
 const makeEntries = (model: string, from: number, count: number) =>
-  Array.from({ length: count }, (_, i) => ({ id: `${model}-${from + i}`, name: `entry ${from + i}` }));
+  Array.from({ length: count }, (_, i) => ({
+    id: `${model}-${from + i}`,
+    name: `entry ${from + i}`,
+  }));
 
 /**
  * Stands in for `downloadClone`: every model is sliced by the same limit/offset.
@@ -193,10 +196,7 @@ test('a model is merged across pages even though downloadClone mints a new id on
   const result = await downloadAllSpaceContent(fetchPage, { pageSize: 1 });
 
   t.is(result.models.length, 1);
-  t.deepEqual(
-    result.models[0].content.map(entry => entry.id).sort(),
-    ['a', 'b']
-  );
+  t.deepEqual(result.models[0].content.map(entry => entry.id).sort(), ['a', 'b']);
 });
 
 test('an empty space produces no content', async t => {
@@ -246,8 +246,8 @@ test('distinct id-less entries across pages are all collected', async t => {
           offset === 0
             ? [{ name: 'first' }, { name: 'second' }]
             : offset === 2
-              ? [{ name: 'third' }, { name: 'fourth' }]
-              : [],
+            ? [{ name: 'third' }, { name: 'fourth' }]
+            : [],
       },
     ],
   });

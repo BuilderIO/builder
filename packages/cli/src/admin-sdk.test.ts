@@ -41,7 +41,8 @@ const withMockedFetch = async (
       ok: result.status >= 200 && result.status < 300,
       status: result.status,
       json: async () => result.json,
-      text: async () => (result.text !== undefined ? result.text : JSON.stringify(result.json ?? {})),
+      text: async () =>
+        result.text !== undefined ? result.text : JSON.stringify(result.json ?? {}),
       headers: { get: () => null },
     };
   };
@@ -69,67 +70,70 @@ const withMockedFetch = async (
 
 const graphqlResponse = (data: any) => ({ status: 200, json: { data } });
 
-test.serial('prune only deletes entries that predate the run and existed in the destination', async t => {
-  const dir = await makeSnapshot({
-    posts: {
-      schema: { name: 'Posts' },
-      entries: [{ id: 'a', name: 'A' }],
-    },
-  });
+test.serial(
+  'prune only deletes entries that predate the run and existed in the destination',
+  async t => {
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [{ id: 'a', name: 'A' }],
+      },
+    });
 
-  const { calls } = await withMockedFetch(
-    async (url, init) => {
-      if (url === GRAPHQL_URL) {
-        const body = JSON.parse(init.body);
-        if (body.query.includes('updateModel')) {
-          return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
-        }
-        if (body.query.includes('content(')) {
-          const contentQueryVar = Object.values(body.variables)[0] as any;
-          if (contentQueryVar.offset > 0) {
-            return graphqlResponse({ models: [] });
+    const { calls } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
           }
-          return graphqlResponse({
-            models: [
-              {
-                id: 'model-1',
-                name: 'Posts',
-                content: [
-                  { id: 'a', createdDate: 1 },
-                  { id: 'stale', createdDate: 1 },
-                ],
-              },
-            ],
-          });
+          if (body.query.includes('content(')) {
+            const contentQueryVar = Object.values(body.variables)[0] as any;
+            if (contentQueryVar.offset > 0) {
+              return graphqlResponse({ models: [] });
+            }
+            return graphqlResponse({
+              models: [
+                {
+                  id: 'model-1',
+                  name: 'Posts',
+                  content: [
+                    { id: 'a', createdDate: 1 },
+                    { id: 'stale', createdDate: 1 },
+                  ],
+                },
+              ],
+            });
+          }
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
         }
-        return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
-      }
-      if (url.startsWith(WRITE_API_ROOT)) {
-        return { status: 200, text: '' };
-      }
-      throw new Error(`unexpected fetch to ${url}`);
-    },
-    () => overwriteSpace('fake-key', dir, false, true, true, false)
-  );
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error(`unexpected fetch to ${url}`);
+      },
+      () => overwriteSpace('fake-key', dir, false, true, true, false)
+    );
 
-  const writeUrls = calls
-    .filter(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'PUT')
-    .map(c => c.url);
-  const deleteUrls = calls
-    .filter(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'DELETE')
-    .map(c => c.url);
+    const writeUrls = calls
+      .filter(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'PUT')
+      .map(c => c.url);
+    const deleteUrls = calls
+      .filter(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'DELETE')
+      .map(c => c.url);
 
-  t.true(writeUrls.some(url => url.endsWith('/posts/a')));
-  t.true(deleteUrls.some(url => url.endsWith('/posts/stale')));
-  t.false(deleteUrls.some(url => url.endsWith('/posts/a')));
+    t.true(writeUrls.some(url => url.endsWith('/posts/a')));
+    t.true(deleteUrls.some(url => url.endsWith('/posts/stale')));
+    t.false(deleteUrls.some(url => url.endsWith('/posts/a')));
 
-  const contentCall = calls.find(
-    c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('content(')
-  );
-  const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
-  t.deepEqual(contentQueryVar.sort, { createdDate: 1, id: 1 });
-  t.truthy(contentQueryVar.query?.createdDate?.$lte);
-});
+    const contentCall = calls.find(
+      c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('content(')
+    );
+    const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
+    t.deepEqual(contentQueryVar.sort, { createdDate: 1, id: 1 });
+    t.truthy(contentQueryVar.query?.createdDate?.$lte);
+  }
+);
 
 test.serial('prune is skipped entirely when a content write fails', async t => {
   const dir = await makeSnapshot({
@@ -189,45 +193,50 @@ test.serial('refuses to update a model whose id no longer matches the snapshot',
   );
 
   t.is(exitCode, 1);
-  t.false(calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel')));
+  t.false(
+    calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel'))
+  );
   t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT)));
   t.true(errorLogs.some(log => log.includes('does not match the snapshot id')));
 });
 
-test.serial('a transient model mutation failure is retried instead of skipping the model', async t => {
-  const dir = await makeSnapshot({
-    posts: {
-      schema: { name: 'Posts' },
-      entries: [{ id: 'a', name: 'A' }],
-    },
-  });
+test.serial(
+  'a transient model mutation failure is retried instead of skipping the model',
+  async t => {
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [{ id: 'a', name: 'A' }],
+      },
+    });
 
-  let updateModelCalls = 0;
-  const { calls, exitCode } = await withMockedFetch(
-    async (url, init) => {
-      if (url === GRAPHQL_URL) {
-        const body = JSON.parse(init.body);
-        if (body.query.includes('updateModel')) {
-          updateModelCalls++;
-          if (updateModelCalls === 1) {
-            return { status: 200, json: { errors: [{ message: 'transient error' }] } };
+    let updateModelCalls = 0;
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            updateModelCalls++;
+            if (updateModelCalls === 1) {
+              return { status: 200, json: { errors: [{ message: 'transient error' }] } };
+            }
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
           }
-          return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
         }
-        return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
-      }
-      if (url.startsWith(WRITE_API_ROOT)) {
-        return { status: 200, text: '' };
-      }
-      throw new Error('unexpected fetch to ' + url);
-    },
-    () => overwriteSpace('fake-key', dir, false, false, true, false)
-  );
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => overwriteSpace('fake-key', dir, false, false, true, false)
+    );
 
-  t.is(updateModelCalls, 2);
-  t.is(exitCode, undefined);
-  t.true(calls.some(c => c.url.endsWith('/posts/a') && c.init.method === 'PUT'));
-});
+    t.is(updateModelCalls, 2);
+    t.is(exitCode, undefined);
+    t.true(calls.some(c => c.url.endsWith('/posts/a') && c.init.method === 'PUT'));
+  }
+);
 
 test.serial('dry-run makes no write, delete, or mutation calls', async t => {
   const dir = await makeSnapshot({
@@ -257,7 +266,9 @@ test.serial('dry-run makes no write, delete, or mutation calls', async t => {
     () => overwriteSpace('fake-key', dir, false, true, true, true)
   );
 
-  t.false(calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel')));
+  t.false(
+    calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel'))
+  );
   t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT)));
 });
 
@@ -295,7 +306,9 @@ test.serial(
 
     t.is(exitCode, 1);
     t.false(
-      calls.some(c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel'))
+      calls.some(
+        c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('updateModel')
+      )
     );
     t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT)));
     t.true(errorLogs.some(log => log.includes('not possible to tell which one')));
@@ -462,46 +475,43 @@ test('swapInStagingDir handles a trailing slash on the output directory', async 
   t.false(await fse.pathExists(path.join(finalDir, 'posts', 'entry-id-old.json')));
 });
 
-test.serial(
-  'importSpace refuses to replace a directory containing unrelated files',
-  async t => {
-    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-guard-test-'));
-    await fse.outputFile(path.join(base, 'my-important-file.txt'), 'keep me');
+test.serial('importSpace refuses to replace a directory containing unrelated files', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-guard-test-'));
+  await fse.outputFile(path.join(base, 'my-important-file.txt'), 'keep me');
 
-    const { exitCode } = await withMockedFetch(
-      async (url, init) => {
-        if (url === GRAPHQL_URL) {
-          const body = JSON.parse(init.body);
-          if (!body.query.includes('content(')) {
-            return graphqlResponse({ settings: { name: 'Test' } });
-          }
-          const vars = Object.values(body.variables)[0] as any;
-          if (vars.offset > 0) {
-            return graphqlResponse({ models: [] });
-          }
-          return graphqlResponse({
-            models: [
-              {
-                id: 'model-1',
-                name: 'Posts',
-                everything: { name: 'Posts' },
-                content: [{ id: 'a', createdDate: 1 }],
-              },
-            ],
-          });
+  const { exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (!body.query.includes('content(')) {
+          return graphqlResponse({ settings: { name: 'Test' } });
         }
-        throw new Error('unexpected fetch to ' + url);
-      },
-      () => importSpace('fake-key', base, false, 100)
-    );
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
+        }
+        return graphqlResponse({
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'a', createdDate: 1 }],
+            },
+          ],
+        });
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => importSpace('fake-key', base, false, 100)
+  );
 
-    t.is(exitCode, 1);
-    // the guard runs after the (read-only) download but before any write,
-    // so the unrelated file is never touched
-    t.true(await fse.pathExists(path.join(base, 'my-important-file.txt')));
-    t.false(await fse.pathExists(path.join(base, 'posts')));
-  }
-);
+  t.is(exitCode, 1);
+  // the guard runs after the (read-only) download but before any write,
+  // so the unrelated file is never touched
+  t.true(await fse.pathExists(path.join(base, 'my-important-file.txt')));
+  t.false(await fse.pathExists(path.join(base, 'posts')));
+});
 
 test.serial(
   'importSpace restores a snapshot left over from a crash mid-swap, and cleans up stale staging dirs',

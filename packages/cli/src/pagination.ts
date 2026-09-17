@@ -100,7 +100,9 @@ const entryKey = (entry: ContentEntry, modelName: string) => {
   if (typeof entry?.id === 'string' && entry.id) {
     return entry.id;
   }
-  const fingerprint = createHash('sha1').update(JSON.stringify(entry)).digest('hex');
+  const fingerprint = createHash('sha1')
+    .update(JSON.stringify(entry))
+    .digest('hex');
   return `${modelName}:__no-id__:${fingerprint}`;
 };
 
