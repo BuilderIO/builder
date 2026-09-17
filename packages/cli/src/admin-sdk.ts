@@ -363,11 +363,29 @@ export const newSpace = async (
   const spaceSettings = await readAsJson(`${directory}/settings.json`);
   const failures: Array<{ file: string; model: string; error: string }> = [];
   try {
-    if (!spaceSettings.cloneInfo || !spaceSettings.cloneInfo.modelIdMap) {
-      throw new Error(
-        'This snapshot has no cloneInfo, so create cannot safely remap referenced ids into the new space.'
+    // the ids that need remapping into the new space are exactly the ids
+    // already recorded in this snapshot -- every model's own id (from its
+    // schema.model.json) and every content entry's own id (from its JSON
+    // file) -- collecting them here means create no longer depends on the
+    // cloneInfo maps the old downloadClone-based import used to write
+    const modelDirs = await getDirectories(directory);
+    const modelIds: string[] = [];
+    const contentIds: string[] = [];
+    await mapWithConcurrency(modelDirs, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
+      const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
+      if (typeof schema.id === 'string' && schema.id) {
+        modelIds.push(schema.id);
+      }
+      const entryFiles = (await getFiles(`${directory}/${modelName}`)).filter(
+        file => file.name !== 'schema.model.json'
       );
-    }
+      await mapWithConcurrency(entryFiles, DEFAULT_WRITE_CONCURRENCY, async file => {
+        const entry = await readAsJson(`${directory}/${modelName}/${file.name}`);
+        if (typeof entry.id === 'string' && entry.id) {
+          contentIds.push(entry.id);
+        }
+      });
+    });
 
     const { organization, privateKey: newSpacePrivateKey } = await graphqlClient.chain.mutation
       .createSpace({
@@ -379,14 +397,8 @@ export const newSpace = async (
       .execute();
     const newSpaceAdminClient = createGraphqlClient(newSpacePrivateKey.key);
 
-    const spaceModelIdsMap = hashIdsByOrganization(
-      Object.values(spaceSettings.cloneInfo.modelIdMap) as string[],
-      organization.id
-    );
-    const spaceContentIdsMap = hashIdsByOrganization(
-      Object.values(spaceSettings.cloneInfo.contentIdMap) as string[],
-      organization.id
-    );
+    const spaceModelIdsMap = hashIdsByOrganization(modelIds, organization.id);
+    const spaceContentIdsMap = hashIdsByOrganization(contentIds, organization.id);
     const replaceIds = (obj: any) =>
       traverse(obj).map(function(field) {
         // we keep meta props as is for debugging puprposes
@@ -400,7 +412,7 @@ export const newSpace = async (
         }
       });
 
-    const models = await getDirectories(`${directory}`);
+    const models = modelDirs;
     const writeTasks: Array<{
       modelName: string;
       fileName: string;

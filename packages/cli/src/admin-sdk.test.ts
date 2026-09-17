@@ -2,7 +2,8 @@ import test from 'ava';
 import os from 'os';
 import path from 'path';
 import fse from 'fs-extra';
-import { importSpace, overwriteSpace, swapInStagingDir } from './admin-sdk';
+import { createHash } from 'crypto';
+import { importSpace, newSpace, overwriteSpace, swapInStagingDir } from './admin-sdk';
 import { WRITE_API_ROOT } from './overwrite';
 
 const GRAPHQL_URL = 'https://cdn.builder.io/api/v2/admin';
@@ -578,3 +579,68 @@ test.serial('importSpace allows re-importing into its own prior snapshot', async
   t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-a.json')));
   t.false(await fse.pathExists(path.join(dir, 'posts', 'entry-id-old.json')));
 });
+
+test.serial(
+  'newSpace remaps a snapshot own ids into the new org without relying on cloneInfo',
+  async t => {
+    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-create-test-'));
+    await fse.outputJson(path.join(dir, 'settings.json'), { id: 'old-space-id', name: 'Old' });
+    await fse.outputJson(path.join(dir, 'posts', 'schema.model.json'), {
+      id: 'model-1',
+      name: 'Posts',
+    });
+    // references its own model by id, the same way a relationship/symbol
+    // field would -- proving the reference gets remapped too, not just the
+    // entry own top-level id
+    await fse.outputJson(path.join(dir, 'posts', 'entry-id-entry-1.json'), {
+      id: 'entry-1',
+      name: 'A',
+      relatedModelId: 'model-1',
+    });
+
+    const expectedContentId = createHash('sha256')
+      .update('entry-1new-org-id')
+      .digest('hex');
+
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('createSpace')) {
+            return graphqlResponse({
+              createSpace: {
+                organization: { id: 'new-org-id', name: 'New' },
+                privateKey: { key: 'new-space-key' },
+              },
+            });
+          }
+          if (body.query.includes('addModel')) {
+            return graphqlResponse({ addModel: { id: 'new-model-id', name: 'Posts' } });
+          }
+          throw new Error('unexpected graphql query: ' + body.query);
+        }
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => newSpace('fake-key', dir, 'New', false)
+    );
+
+    t.is(exitCode, undefined);
+
+    const addModelCall = calls.find(
+      c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('addModel')
+    );
+    const addModelBody = Object.values(JSON.parse(addModelCall!.init.body).variables)[0] as any;
+    t.not(addModelBody.id, 'model-1');
+
+    const writeCall = calls.find(c => c.url.startsWith(WRITE_API_ROOT));
+    t.true(writeCall!.url.endsWith('/posts/' + expectedContentId));
+    const writtenEntry = JSON.parse(writeCall!.init.body);
+    // the reference to the model id embedded in the entry got remapped to
+    // the same new id addModel was called with, not left pointing at the
+    // old space model id
+    t.is(writtenEntry.relatedModelId, addModelBody.id);
+  }
+);
