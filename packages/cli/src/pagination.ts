@@ -119,11 +119,12 @@ export const downloadAllSpaceContent = async (
   let offset = 0;
   let page = 0;
 
-  // grouped by id when the API provides one, since two distinct models can
-  // share a display name — grouping by name alone would silently merge
-  // their content into a single model in the snapshot
-  const modelGroupKey = (model: ModelPage) =>
-    typeof model.id === 'string' && model.id ? model.id : model.name;
+  // `downloadClone` mints a fresh `id` on every call (see the `import`
+  // command's docs: it produces a clone with new IDs), so the same model
+  // gets a different id on each paginated request -- grouping by id would
+  // treat one real model as a new one on every page. Name is what's
+  // actually stable across pages, so it's the only safe grouping key here.
+  const modelGroupKey = (model: ModelPage) => model.name;
   const modelsByKey = new Map<string, ModelPage & { content: ContentEntry[] }>();
   const seenEntryKeys = new Map<string, Set<string>>();
 

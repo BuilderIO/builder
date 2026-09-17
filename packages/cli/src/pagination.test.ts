@@ -170,27 +170,31 @@ test('entries without ids are still collected', async t => {
   t.is(space.models[0].content.length, 3);
 });
 
-test('two distinct models sharing a name are kept separate, not merged', async t => {
-  const fetchPage: FetchSpacePage = async () => ({
-    settings: {},
-    meta: {},
-    models: [
-      { id: 'model-1', name: 'Posts', content: [{ id: 'a', name: 'A' }] },
-      { id: 'model-2', name: 'Posts', content: [{ id: 'b', name: 'B' }] },
-    ],
-  });
+test('a model is merged across pages even though downloadClone mints a new id on every call', async t => {
+  let call = 0;
+  const fetchPage: FetchSpacePage = async ({ offset }) => {
+    call++;
+    return {
+      settings: {},
+      meta: {},
+      models: [
+        {
+          // downloadClone mints a fresh id on every call, so the same
+          // model looks like a different one on every page -- grouping
+          // must not rely on it, or the model gets split in two here
+          id: `call-${call}-id`,
+          name: 'Posts',
+          content: offset === 0 ? [{ id: 'a', name: 'A' }] : [{ id: 'b', name: 'B' }],
+        },
+      ],
+    };
+  };
 
-  const result = await downloadAllSpaceContent(fetchPage, { pageSize: 100 });
+  const result = await downloadAllSpaceContent(fetchPage, { pageSize: 1 });
 
-  t.is(result.models.length, 2);
+  t.is(result.models.length, 1);
   t.deepEqual(
-    result.models.map(m => m.id).sort(),
-    ['model-1', 'model-2']
-  );
-  t.deepEqual(
-    result.models
-      .reduce<string[]>((ids, model) => ids.concat(model.content.map(entry => entry.id as string)), [])
-      .sort(),
+    result.models[0].content.map(entry => entry.id).sort(),
     ['a', 'b']
   );
 });
