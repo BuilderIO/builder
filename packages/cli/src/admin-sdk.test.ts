@@ -636,8 +636,13 @@ test.serial(
     t.not(addModelBody.id, 'model-1');
 
     const writeCall = calls.find(c => c.url.startsWith(WRITE_API_ROOT));
-    t.true(writeCall!.url.endsWith('/posts/' + expectedContentId));
+    // content is created via POST to the collection, not PUT-by-id: the new
+    // space starts empty, and PUT-by-id 404s instead of creating when the
+    // entry doesn't already exist
+    t.is(writeCall!.init.method, 'POST');
+    t.true(writeCall!.url.endsWith('/posts'));
     const writtenEntry = JSON.parse(writeCall!.init.body);
+    t.is(writtenEntry.id, expectedContentId);
     // the reference to the model id embedded in the entry got remapped to
     // the same new id addModel was called with, not left pointing at the
     // old space model id

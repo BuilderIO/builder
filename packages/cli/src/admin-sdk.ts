@@ -28,6 +28,7 @@ import {
   ExistingModel,
   findStaleEntryIds,
   planModelSync,
+  WRITE_API_ROOT,
 } from './overwrite';
 
 const MULTIBAR = new cliProgress.MultiBar(
@@ -473,23 +474,23 @@ export const newSpace = async (
             spaceSettings.id
           )
         );
-        // PUT-by-id instead of POST: contentJSON.id was already rehashed to
-        // the new space's id by replaceIds above, and since the new space
-        // starts empty this has the same effect as POST but makes a retry
-        // after a timeout/5xx safe instead of risking a duplicate entry.
-        const { method, url } = buildWriteRequest(modelName, contentJSON);
+        // The write API's PUT-by-id only updates an existing entry and 404s
+        // if it doesn't exist yet -- it does not create one, despite what
+        // the docs say. The new space starts empty, so every entry has to
+        // be POSTed instead; contentJSON.id (already rehashed to the new
+        // space's id by replaceIds above) is honored by POST as the entry's
+        // id, and re-POSTing the same id just overwrites that entry rather
+        // than creating a duplicate, so retrying after a lost response is
+        // safe.
         await postJsonWithRetry({
           fetchImpl: (fetch as unknown) as FetchLike,
-          method,
-          url,
+          method: 'POST',
+          url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}`,
           body: contentJSON,
           headers: {
             Authorization: `Bearer ${newSpacePrivateKey.key}`,
           },
-          // POST creates a new entry every time it's called, so retrying it
-          // after a lost response (vs. a request that never reached the
-          // server) risks creating a duplicate entry
-          retries: method === 'POST' ? 0 : DEFAULT_WRITE_RETRIES,
+          retries: DEFAULT_WRITE_RETRIES,
         });
       } catch (e) {
         failed = true;
