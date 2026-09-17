@@ -9,7 +9,9 @@ import { createHash } from 'crypto';
 import traverse from 'traverse';
 import {
   ContentEntry,
+  downloadAllModelContent,
   downloadAllSpaceContent,
+  FetchModelContentPage,
   FetchSpacePage,
   MAX_CONTENT_PAGE_SIZE,
   SpacePage,
@@ -222,12 +224,26 @@ export const importSpace = async (
   try {
     const settings = (await graphqlClient.chain.query.settings.execute()) || {};
 
-    const fetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
-      graphqlClient.chain.query.models
+    // schema/metadata for every model in one request -- content is fetched
+    // separately, per model, below
+    const modelList =
+      (await graphqlClient.chain.query.models.execute({ id: true, name: true, everything: true })) ||
+      [];
+
+    // fetching every model's content() in a single batched query (as one
+    // request per page, covering all models at once) means a server-side
+    // error resolving any single model's content -- e.g. the admin API can
+    // 404 internally for a specific model when `includeUnpublished` is set,
+    // seen in production -- fails that entire request and every other,
+    // otherwise-healthy model's content along with it. Fetching one model
+    // at a time isolates that failure to just the model that caused it.
+    const contentPage = (
+      modelId: string,
+      includeUnpublished: boolean
+    ): FetchModelContentPage => ({ limit: pageLimit, offset }) =>
+      graphqlClient.chain.query
+        .model({ id: modelId })
         .execute({
-          id: true,
-          name: true,
-          everything: true,
           content: [
             {
               contentQuery: {
@@ -241,22 +257,55 @@ export const importSpace = async (
                 // the content API defaults to published-only, which would
                 // silently drop draft entries from the snapshot — a backup
                 // that can't restore unpublished work isn't a real backup
-                options: { includeUnpublished: true },
+                ...(includeUnpublished ? { options: { includeUnpublished: true } } : {}),
               },
             },
           ],
-        })
-        .then(models => ({ settings, meta: undefined, models: models || [] })) as Promise<
-        SpacePage
-      >;
+        }) as Promise<{ content?: ContentEntry[] | null } | null>;
 
-    const space = await downloadAllSpaceContent(fetchPage, {
-      pageSize: limit,
-      onPage: ({ page, total }) =>
+    const modelContentWarnings: string[] = [];
+    let modelsDownloaded = 0;
+
+    const modelsWithContent = await mapWithConcurrency(
+      modelList,
+      DEFAULT_WRITE_CONCURRENCY,
+      async model => {
+        const modelId = model.id;
+        const modelName = model.name;
+        let content: ContentEntry[] = [];
+        if (modelId) {
+          try {
+            content = await downloadAllModelContent(contentPage(modelId, true), modelName, {
+              pageSize: limit,
+            });
+          } catch (e) {
+            // fall back to published-only content for just this model
+            // instead of failing the whole import over one model's error
+            const message = e instanceof Error ? e.message : String(e);
+            try {
+              content = await downloadAllModelContent(contentPage(modelId, false), modelName, {
+                pageSize: limit,
+              });
+              modelContentWarnings.push(
+                `"${modelName}" was imported without unpublished/draft content: the server rejected that request (${message}).`
+              );
+            } catch (e2) {
+              const message2 = e2 instanceof Error ? e2.message : String(e2);
+              modelContentWarnings.push(
+                `"${modelName}" was imported with 0 content entries: the server rejected every request for its content (${message2}).`
+              );
+            }
+          }
+        }
+        modelsDownloaded++;
         spaceProgress.update(0, {
-          name: 'downloading page ' + page + ' (' + total + ' entries so far)',
-        }),
-    });
+          name: `downloading content (${modelsDownloaded}/${modelList.length} models, ${modelName})`,
+        });
+        return { ...model, content };
+      }
+    );
+
+    const space = { settings, meta: undefined, models: modelsWithContent };
 
     if (!(await importGuardPromise)) {
       throw new Error(
@@ -338,6 +387,10 @@ export const importSpace = async (
       entryCountsByModel.forEach(({ name, count }) => {
         console.log(chalk.green(`    ${name}: ${count}`));
       });
+    }
+    if (modelContentWarnings.length > 0) {
+      console.log(chalk.yellow(`\n${modelContentWarnings.length} model(s) had content-fetch issues:`));
+      modelContentWarnings.forEach(warning => console.log(chalk.yellow(`  ${warning}`)));
     }
   } catch (e) {
     console.log(`\r\n\r\n`);
