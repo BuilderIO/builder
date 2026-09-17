@@ -25,7 +25,7 @@ The output directory is fully replaced on each successful run, so only point it 
 
 ### `builder overwrite -k <private key> -i <input directory>`
 
-Restores a local snapshot into the **same, existing** space it was taken from (by id) — this is the counterpart to `import` for backups. Models are upserted by name; content entries are upserted by their original id. By default this is a merge (nothing is deleted).
+Restores a local snapshot into the **same, existing** space it was taken from (by id) — this is the counterpart to `import` for backups. Models are upserted by name; content entries are upserted by their original id. Upserting means a full replace: any model or entry that already exists in the target is overwritten with the snapshot's version, discarding changes made since the snapshot was taken. By default nothing is deleted — models and entries that exist in the target but aren't in the snapshot are left alone; use `--prune` to also remove those.
 
 | Flag | Description |
 | --- | --- |
