@@ -8,6 +8,9 @@
     "cli"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
   "main": "./dist/index.js",
   "bin": {
     "builder": "./dist/index.js"

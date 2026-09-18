@@ -2,6 +2,8 @@
 
 Experimental CLI for backing up, restoring, and cloning Builder.io spaces.
 
+Requires Node.js >= 22.
+
 ## Install & usage
 
 ```sh-session
