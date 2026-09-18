@@ -989,7 +989,6 @@ test.serial(
       },
     });
 
-    const patchedPriorityByUrl = new Map<string, number>();
     const { calls, exitCode } = await withMockedFetch(
       async (url, init) => {
         if (url === GRAPHQL_URL) {
@@ -997,25 +996,13 @@ test.serial(
           if (body.query.includes('updateModel')) {
             return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
           }
-          if (body.query.includes('models')) {
-            return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
-          }
-          return graphqlResponse({ id: 'dest-api-key' });
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
         }
         if (url.startsWith(WRITE_API_ROOT) && init.method === 'PUT') {
           return { status: 404, text: 'not found' };
         }
-        if (url.startsWith(WRITE_API_ROOT) && init.method === 'POST') {
+        if (url.startsWith(WRITE_API_ROOT) && (init.method === 'POST' || init.method === 'PATCH')) {
           return { status: 200, text: '' };
-        }
-        if (url.startsWith(WRITE_API_ROOT) && init.method === 'PATCH') {
-          const id = url.split('/').pop() as string;
-          patchedPriorityByUrl.set(id, JSON.parse(init.body).priority);
-          return { status: 200, text: '' };
-        }
-        if (url.startsWith(REST_CONTENT_URL)) {
-          const id = (url.split('/').pop() as string).split('?')[0];
-          return { status: 200, json: { priority: patchedPriorityByUrl.get(id) } };
         }
         throw new Error('unexpected fetch to ' + url);
       },
@@ -1061,7 +1048,6 @@ test.serial(
       createdDate: 3000,
     });
 
-    const patchedPriorityByUrl = new Map<string, number>();
     const { calls, exitCode } = await withMockedFetch(
       async (url, init) => {
         if (url === GRAPHQL_URL) {
@@ -1078,15 +1064,6 @@ test.serial(
             return graphqlResponse({ addModel: { id: 'new-model-id', name: 'Posts' } });
           }
           throw new Error('unexpected graphql query: ' + body.query);
-        }
-        if (url.startsWith(WRITE_API_ROOT) && init.method === 'PATCH') {
-          const id = url.split('/').pop() as string;
-          patchedPriorityByUrl.set(id, JSON.parse(init.body).priority);
-          return { status: 200, text: '' };
-        }
-        if (url.startsWith(REST_CONTENT_URL)) {
-          const id = (url.split('/').pop() as string).split('?')[0];
-          return { status: 200, json: { priority: patchedPriorityByUrl.get(id) } };
         }
         if (url.startsWith(WRITE_API_ROOT)) {
           return { status: 200, text: '' };

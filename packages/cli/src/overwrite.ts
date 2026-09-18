@@ -1,7 +1,6 @@
 import { kebabCase } from 'lodash';
 
 export const WRITE_API_ROOT = 'https://builder.io/api/v1/write';
-export const CDN_CONTENT_ROOT = 'https://cdn.builder.io/api/v3/content';
 
 export interface ExistingModel {
   id: string;
@@ -24,7 +23,7 @@ export const planModelSync = (
 };
 
 export interface WriteRequest {
-  method: 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE';
+  method: 'PUT' | 'POST' | 'PATCH' | 'DELETE';
   url: string;
 }
 
@@ -69,23 +68,6 @@ export const buildPriorityPatchRequest = (modelName: string, entryId: string): W
   url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(entryId)}`,
 });
 
-/**
- * Reads an entry back to verify a PATCH actually stuck. The write API
- * (`WRITE_API_ROOT`) has no GET-by-id -- confirmed against a real space, it
- * responds "Bad request method" -- so this goes through the public CDN
- * content API instead, with a cache-busting query param since that's a
- * cached read path and a stale hit would defeat the point of verifying.
- */
-export const buildGetRequest = (
-  modelName: string,
-  entryId: string,
-  apiKey: string
-): WriteRequest => ({
-  method: 'GET',
-  url: `${CDN_CONTENT_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(
-    entryId
-  )}?apiKey=${encodeURIComponent(apiKey)}&cachebust=true`,
-});
 
 /**
  * `--prune` makes `overwrite` a true mirror: entries that exist in the

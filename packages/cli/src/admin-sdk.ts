@@ -20,7 +20,6 @@ import {
 import {
   DEFAULT_WRITE_CONCURRENCY,
   DEFAULT_WRITE_RETRIES,
-  defaultSleep,
   FetchLike,
   isHttpErrorWithStatus,
   mapWithConcurrency,
@@ -29,7 +28,6 @@ import {
 } from './write-queue';
 import {
   buildDeleteRequest,
-  buildGetRequest,
   buildPriorityPatchRequest,
   buildWriteRequest,
   ExistingModel,
@@ -344,71 +342,27 @@ const writeSequentiallyPerModel = async <T extends { modelName: string }>(
  * Entries with no explicit `priority` in the snapshot are left alone --
  * for those, the closest available approximation is still the creation
  * order `writeSequentiallyPerModel` already produces.
- *
- * Also confirmed against a real space running a large bulk create (~100
- * entries in one model): the PATCH above can return 200 and still not be
- * reflected on a later read -- something in the write path appears to
- * renumber/settle `priority` shortly after a burst of rapid writes to the
- * same model, after the PATCH itself already succeeded. A single fire-and-
- * check-nothing PATCH isn't enough at that scale, so each one is read back
- * afterward and re-applied if it didn't stick, up to a few attempts with a
- * short delay to give that settling time to finish.
  */
-const PRIORITY_PATCH_VERIFY_ATTEMPTS = 4;
-const PRIORITY_PATCH_VERIFY_DELAY_MS = 2_000;
-// each task here is a PATCH plus a read-back against a distinct entry, with
-// no ordering requirement between tasks -- a wider pool than the default
-// write concurrency cuts down the real-world wall time for a large bulk
-// create/restore, which otherwise runs for minutes with no progress output
-const PRIORITY_PATCH_CONCURRENCY = 20;
-
 const applyPriorityPatches = async (
   tasks: Array<{ modelName: string; id: string; priority: number }>,
   authKey: string,
-  apiKey: string,
   onProgress: () => void,
   onFailure: (task: { modelName: string; id: string }, error: unknown) => void
 ): Promise<void> => {
-  await mapWithConcurrency(tasks, PRIORITY_PATCH_CONCURRENCY, async task => {
+  await mapWithConcurrency(tasks, DEFAULT_WRITE_CONCURRENCY, async task => {
     const patchRequest = buildPriorityPatchRequest(task.modelName, task.id);
-    const getRequest = buildGetRequest(task.modelName, task.id, apiKey);
-    let lastError: unknown;
-
-    for (let attempt = 0; attempt < PRIORITY_PATCH_VERIFY_ATTEMPTS; attempt++) {
-      try {
-        await postJsonWithRetry({
-          fetchImpl: (fetch as unknown) as FetchLike,
-          method: patchRequest.method,
-          url: patchRequest.url,
-          body: { priority: task.priority },
-          headers: { Authorization: `Bearer ${authKey}` },
-          retries: DEFAULT_WRITE_RETRIES,
-        });
-
-        await defaultSleep(PRIORITY_PATCH_VERIFY_DELAY_MS);
-
-        const readBack = await postJsonWithRetry({
-          fetchImpl: (fetch as unknown) as FetchLike,
-          method: getRequest.method,
-          url: getRequest.url,
-          headers: { Authorization: `Bearer ${authKey}` },
-          retries: DEFAULT_WRITE_RETRIES,
-        });
-        const entry = JSON.parse(await readBack.text());
-
-        if (entry.priority === task.priority) {
-          onProgress();
-          return;
-        }
-        lastError = new Error(
-          `priority still reads back as ${entry.priority} after PATCH set it to ${task.priority}`
-        );
-      } catch (e) {
-        lastError = e;
-      }
+    try {
+      await postJsonWithRetry({
+        fetchImpl: (fetch as unknown) as FetchLike,
+        method: patchRequest.method,
+        url: patchRequest.url,
+        body: { priority: task.priority },
+        headers: { Authorization: `Bearer ${authKey}` },
+        retries: DEFAULT_WRITE_RETRIES,
+      });
+    } catch (e) {
+      onFailure(task, e);
     }
-
-    onFailure(task, lastError);
     onProgress();
   });
 };
@@ -874,7 +828,6 @@ export const newSpace = async (
       await applyPriorityPatches(
         priorityPatchTasks,
         newSpacePrivateKey.key,
-        organization.id,
         () => priorityProgress.increment(1),
         (task, e) => {
           failures.push({
@@ -1252,7 +1205,6 @@ export const overwriteSpace = async (
       // the same unreliable-priority problem `newSpace` hit -- see
       // applyPriorityPatches
       if (priorityPatchTasks.length > 0) {
-        const destinationApiKey = await graphqlClient.chain.query.id.execute();
         const priorityProgress = MULTIBAR.create(priorityPatchTasks.length, 0, {
           name: 'restoring entry order',
         });
@@ -1260,7 +1212,6 @@ export const overwriteSpace = async (
         await applyPriorityPatches(
           priorityPatchTasks,
           privateKey,
-          destinationApiKey,
           () => priorityProgress.increment(1),
           (task, e) => {
             failures.push({
