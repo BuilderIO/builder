@@ -392,6 +392,9 @@ export const importSpace = async (
 
     let draftsIncluded = includeUnpublished;
     let space: SpaceSnapshot;
+    let streamed = false;
+    let totalEntries = 0;
+    const entryCountsByModel: Array<{ name: string; count: number }> = [];
     if (includeUnpublished) {
       // the admin GraphQL API's batched `models { content }` field is the
       // only way to fetch every model's content in one request, but its
@@ -492,16 +495,129 @@ export const importSpace = async (
             });
             return { settings, meta: undefined, models };
           }) as Promise<SpacePage>;
+      streamed = true;
+      // writes each page's entries to the staging directory as they arrive
+      // instead of buffering a full space's worth of content bodies in
+      // memory until pagination finishes -- see downloadAllSpaceContent
+      const stagedModelDirs = new Set<string>();
+      const modelEntryIndex = new Map<string, number>();
+      const modelBarByDir = new Map<string, cliProgress.Bar>();
+
+      const stageModel = async (model: ModelPage) => {
+        const modelName = kebabCase(model.name);
+        if (stagedModelDirs.has(modelName)) {
+          return modelName;
+        }
+        stagedModelDirs.add(modelName);
+        const everything = model.everything || {};
+        // todo why conent is in everything
+        const { content: _, ...schema } = everything;
+        await fse.outputFile(
+          `${stagingDir}/${modelName}/schema.model.json`,
+          JSON.stringify(schema, null, 2)
+        );
+        entryCountsByModel.push({ name: model.name, count: 0 });
+        modelEntryIndex.set(modelName, 0);
+        const bar = MULTIBAR.create(0, 0, { name: modelName });
+        modelBarByDir.set(modelName, bar);
+        return modelName;
+      };
+
+      const writeStreamedEntries = async (model: ModelPage, entries: ContentEntry[]) => {
+        const modelName = await stageModel(model);
+        const bar = modelBarByDir.get(modelName)!;
+        const counts = entryCountsByModel.find(m => m.name === model.name)!;
+        for (const entry of entries) {
+          // namespaced and encoded so a caller-supplied id can never collide
+          // with schema.model.json or the no-id fallback pattern, and can
+          // never escape the model directory via "/" or ".." in the id
+          const index = modelEntryIndex.get(modelName)!;
+          modelEntryIndex.set(modelName, index + 1);
+          const baseName =
+            typeof entry.id === 'string' && entry.id
+              ? `entry-id-${encodeURIComponent(entry.id)}`
+              : `entry-noid-${index}`;
+          const filename = `${stagingDir}/${modelName}/${baseName}.json`;
+          await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
+          counts.count++;
+          totalEntries++;
+          bar.setTotal(counts.count);
+          bar.increment(1, { name: ` ${modelName}: ${filename} ` });
+        }
+      };
+
+      // every model is present in the response on every page, regardless of
+      // how far its own content has been paginated -- so page 1 already
+      // carries the complete model list, which is all the validation below
+      // needs. Its entries are held back until that validation passes, so
+      // nothing is written to the staging directory before it's confirmed
+      // safe to do so, matching the non-streamed path's guarantee.
+      let firstPageEntries: Array<{ model: ModelPage; entries: ContentEntry[] }> | null = [];
+      let validated = false;
+      const validateAndFlushFirstPage = async () => {
+        if (validated) {
+          return;
+        }
+        validated = true;
+        const buffered = firstPageEntries || [];
+        firstPageEntries = null;
+
+        if (!(await importGuardPromise)) {
+          throw new Error(
+            'Refusing to import into "' +
+              directory +
+              '": it already contains files that do not look like a previous snapshot from this command ' +
+              '(only settings.json and model directories containing schema.model.json are recognized). ' +
+              'A successful import fully replaces the output directory contents, so point --output at an empty or dedicated directory to avoid losing unrelated data.'
+          );
+        }
+
+        const modelNamesByDir = new Map<string, string[]>();
+        buffered.forEach(({ model }) => {
+          const dirName = kebabCase(model.name);
+          modelNamesByDir.set(dirName, [...(modelNamesByDir.get(dirName) || []), model.name]);
+        });
+        const collisions = [...modelNamesByDir.entries()].filter(
+          ([dirName, names]) => names.length > 1 || dirName === ''
+        );
+        if (collisions.length > 0) {
+          throw new Error(
+            `Cannot write snapshot: these model names normalize to an unusable or shared directory name: ${collisions
+              .map(([dir, names]) => `"${names.join('", "')}" -> "${dir}"`)
+              .join('; ')}. Rename the conflicting model(s) before importing.`
+          );
+        }
+
+        spaceProgress.update(0, { name: 'writing space' });
+        for (const { model, entries } of buffered) {
+          await writeStreamedEntries(model, entries);
+        }
+      };
+
       space = await downloadAllSpaceContent(fetchPage, {
         pageSize: limit,
         onPage: ({ page, total }) =>
           spaceProgress.update(0, {
             name: 'downloading page ' + page + ' (' + total + ' entries so far)',
           }),
+        onEntries: async (model, entries, page) => {
+          if (!validated) {
+            if (page === 1) {
+              firstPageEntries!.push({ model, entries });
+              return;
+            }
+            await validateAndFlushFirstPage();
+          }
+          await writeStreamedEntries(model, entries);
+        },
       });
+      // an entirely empty space never calls onEntries at all, so validation
+      // (which also guards against replacing an unsafe output directory)
+      // still needs to happen even when there was nothing to write
+      await validateAndFlushFirstPage();
     }
 
-    if (!(await importGuardPromise)) {
+    if (!streamed && !(await importGuardPromise)) {
       throw new Error(
         'Refusing to import into "' +
           directory +
@@ -512,11 +628,6 @@ export const importSpace = async (
     }
 
     // two distinct model names that normalize to the same directory would
-    // otherwise race on outputFile below and silently corrupt or drop one
-    // of the two models — fail loudly before writing anything.
-    // A name that normalizes to '' (e.g. punctuation-only) would target the
-    // snapshot root itself, so it's rejected the same way.
-    const modelNamesByDir = new Map<string, string[]>();
     space.models.forEach(model => {
       const dirName = kebabCase(model.name);
       modelNamesByDir.set(dirName, [...(modelNamesByDir.get(dirName) || []), model.name]);
@@ -777,6 +888,17 @@ export const newSpace = async (
             spaceSettings.id
           )
         );
+        if (typeof contentJSON.id !== 'string' || !contentJSON.id) {
+          // an id-less entry (rare, see pagination.ts) has no id for
+          // replaceIds to remap, so without this it would be POSTed
+          // without one -- a retry after a lost response would then create
+          // a duplicate instead of overwriting. Deriving a stable id from
+          // the file, as overwriteSpace already does, makes the POST below
+          // idempotent like every other entry here.
+          contentJSON.id = createHash('sha256')
+            .update(modelName + ':' + fileName)
+            .digest('hex');
+        }
         // The write API's PUT-by-id only updates an existing entry and 404s
         // if it doesn't exist yet -- it does not create one, despite what
         // the docs say. The new space starts empty, so every entry has to

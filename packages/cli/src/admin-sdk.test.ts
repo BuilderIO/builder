@@ -827,6 +827,51 @@ test.serial(
   }
 );
 
+test.serial('newSpace derives a stable id for entries that have none', async t => {
+  const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-create-noid-test-'));
+  await fse.outputJson(path.join(dir, 'settings.json'), { id: 'old-space-id', name: 'Old' });
+  await fse.outputJson(path.join(dir, 'posts', 'schema.model.json'), {
+    id: 'model-1',
+    name: 'Posts',
+  });
+  await fse.outputJson(path.join(dir, 'posts', 'entry-noid-0.json'), { name: 'A' });
+
+  const { calls, exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (body.query.includes('createSpace')) {
+          return graphqlResponse({
+            createSpace: {
+              organization: { id: 'new-org-id', name: 'New' },
+              privateKey: { key: 'new-space-key' },
+            },
+          });
+        }
+        if (body.query.includes('addModel')) {
+          return graphqlResponse({ addModel: { id: 'new-model-id', name: 'Posts' } });
+        }
+        throw new Error('unexpected graphql query: ' + body.query);
+      }
+      if (url.startsWith(WRITE_API_ROOT)) {
+        return { status: 200, text: '' };
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => newSpace('fake-key', dir, 'New', false)
+  );
+
+  t.is(exitCode, undefined);
+
+  const writeCall = calls.find(c => c.url.startsWith(WRITE_API_ROOT));
+  const writtenEntry = JSON.parse(writeCall!.init.body);
+  // an id-less entry POSTed without an id would create a duplicate on
+  // retry after a lost response -- it must be given a stable id derived
+  // from its file, the same way overwriteSpace already does
+  t.is(typeof writtenEntry.id, 'string');
+  t.truthy(writtenEntry.id);
+});
+
 test.serial(
   'newSpace creates entries in their original createdDate order, not file-listing order',
   async t => {

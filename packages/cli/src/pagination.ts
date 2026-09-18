@@ -54,6 +54,21 @@ export interface DownloadAllOptions {
   maxPages?: number;
 }
 
+export interface DownloadAllSpaceOptions extends DownloadAllOptions {
+  /**
+   * When provided, newly-seen entries are handed off page-by-page instead
+   * of being accumulated into the returned snapshot's `model.content`
+   * arrays (which are left empty) -- this lets a caller write each page to
+   * disk as it arrives rather than holding a full space's worth of content
+   * bodies in memory until every page has been fetched. `page` is the
+   * 1-indexed page this batch came from, so a caller that needs to defer
+   * work until every model is known (which happens on page 1, since every
+   * model is included on every page regardless of its own content
+   * pagination progress) can tell page 1 apart from the rest.
+   */
+  onEntries?: (model: ModelPage, entries: ContentEntry[], page: number) => void | Promise<void>;
+}
+
 export const clampPageSize = (pageSize?: number | null) => {
   if (typeof pageSize !== 'number' || !isFinite(pageSize) || pageSize < 1) {
     return MAX_CONTENT_PAGE_SIZE;
@@ -175,10 +190,18 @@ export const downloadAllModelContent = async (
 /**
  * Walks every offset page until each model is exhausted and returns a single
  * space snapshot shaped exactly like one `downloadClone` response.
+ *
+ * Passing `onEntries` streams each page's newly-seen entries out to the
+ * caller instead of accumulating them in the returned snapshot -- otherwise
+ * a full space download holds every content body in memory at once until
+ * pagination finishes, which can be a lot for a large space. When
+ * `onEntries` is used, every `model.content` in the returned snapshot is
+ * left empty; the model list, `settings`, and `meta` are still populated
+ * normally.
  */
 export const downloadAllSpaceContent = async (
   fetchPage: FetchSpacePage,
-  options: DownloadAllOptions = {}
+  options: DownloadAllSpaceOptions = {}
 ): Promise<SpaceSnapshot> => {
   const limit = clampPageSize(options.pageSize);
   const maxPages = options.maxPages ?? MAX_PAGES;
@@ -186,6 +209,7 @@ export const downloadAllSpaceContent = async (
   let snapshot: SpaceSnapshot | undefined;
   let offset = 0;
   let page = 0;
+  let totalEntries = 0;
 
   // `downloadClone` mints a fresh `id` on every call (see the `import`
   // command's docs: it produces a clone with new IDs), so the same model
@@ -212,7 +236,7 @@ export const downloadAllSpaceContent = async (
     let added = 0;
     let hasFullPage = false;
 
-    pageModels.forEach(model => {
+    for (const model of pageModels) {
       const content = model?.content || [];
       if (content.length >= limit) {
         hasFullPage = true;
@@ -228,19 +252,31 @@ export const downloadAllSpaceContent = async (
       }
 
       const seen = seenEntryKeys.get(key)!;
+      const newEntries: ContentEntry[] = [];
       content.forEach(entry => {
         const entryDedupeKey = entryKey(entry, key);
         if (seen.has(entryDedupeKey)) {
           return;
         }
         seen.add(entryDedupeKey);
-        target!.content.push(entry);
-        added++;
+        newEntries.push(entry);
       });
-    });
 
-    const total = snapshot.models.reduce((sum, model) => sum + model.content.length, 0);
-    options.onPage?.({ page, offset, limit, added, total });
+      if (newEntries.length > 0) {
+        if (options.onEntries) {
+          // the caller is streaming entries to disk itself -- keeping them
+          // in `target.content` too would defeat the point of streaming by
+          // buffering a full space's worth of content bodies in memory
+          await options.onEntries(target, newEntries, page);
+        } else {
+          target.content.push(...newEntries);
+        }
+        added += newEntries.length;
+        totalEntries += newEntries.length;
+      }
+    }
+
+    options.onPage?.({ page, offset, limit, added, total: totalEntries });
 
     // `added === 0` also guards against a server that ignores `offset` and
     // would otherwise keep handing back the same full page forever.

@@ -9,7 +9,7 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=22"
+    "node": ">=14"
   },
   "main": "./dist/index.js",
   "bin": {
