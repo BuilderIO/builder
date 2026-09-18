@@ -211,6 +211,49 @@ const REST_CONTENT_ROOT = 'https://cdn.builder.io/api/v3/content';
 // see the comment where this is used (in `importSpace`) for why drafts are
 // fetched per-model through this REST endpoint rather than through the
 // admin GraphQL API's batched `models { content }` field
+// confirmed against a real space: the v3 content REST endpoint's default
+// field set silently omits `priority` -- and `fields` is a projection that
+// replaces that default set rather than extending it, so there's no single
+// request that returns both the full raw entry and `priority` together. A
+// second, narrow request for just `id`/`priority` (same query/sort/
+// pagination as the caller's main request) gets merged back in by id
+// instead. Shared by both the REST (draft-inclusive) and GraphQL
+// (published-only) import paths below, since the GraphQL admin API's
+// `content` field turns out to omit `priority` the same way.
+const fetchPriorityById = async (
+  privateKey: string,
+  modelName: string,
+  params: URLSearchParams
+): Promise<Map<string, number>> => {
+  const priorityParams = new URLSearchParams(params);
+  priorityParams.set('fields', 'id,priority');
+  const response = await postJsonWithRetry({
+    fetchImpl: (fetch as unknown) as FetchLike,
+    method: 'GET',
+    url: `${REST_CONTENT_ROOT}/${encodeURIComponent(modelName)}?${priorityParams.toString()}`,
+    headers: { Authorization: `Bearer ${privateKey}` },
+  });
+  const body = JSON.parse(await response.text());
+  const priorityById = new Map<string, number>();
+  ((body?.results || []) as ContentEntry[]).forEach(entry => {
+    if (typeof entry.id === 'string' && typeof entry.priority === 'number') {
+      priorityById.set(entry.id, entry.priority);
+    }
+  });
+  return priorityById;
+};
+
+const mergePriorityById = (
+  results: ContentEntry[],
+  priorityById: Map<string, number>
+): void => {
+  results.forEach(entry => {
+    if (typeof entry.id === 'string' && priorityById.has(entry.id)) {
+      entry.priority = priorityById.get(entry.id);
+    }
+  });
+};
+
 const fetchModelContentPageRest = (
   privateKey: string,
   apiKey: string,
@@ -239,35 +282,8 @@ const fetchModelContentPageRest = (
   const body = JSON.parse(await response.text());
   const results: ContentEntry[] = body?.results || [];
 
-  // confirmed against a real space: this endpoint's default field set
-  // silently omits `priority` -- and `fields` is a projection that replaces
-  // that default set rather than extending it, so there's no single request
-  // that returns both the full raw entry and `priority` together. A second,
-  // narrow request for just `id`/`priority` (same query/sort/pagination, so
-  // it lines up with `results` row-for-row) gets merged back in by id
-  // instead.
   if (results.length > 0) {
-    const priorityParams = new URLSearchParams(params);
-    priorityParams.set('fields', 'id,priority');
-    const priorityResponse = await postJsonWithRetry({
-      fetchImpl: (fetch as unknown) as FetchLike,
-      method: 'GET',
-      url: `${REST_CONTENT_ROOT}/${encodeURIComponent(modelName)}?${priorityParams.toString()}`,
-      headers: { Authorization: `Bearer ${privateKey}` },
-    });
-    const priorityBody = JSON.parse(await priorityResponse.text());
-    const priorityById = new Map<string, number>(
-      ((priorityBody?.results || []) as ContentEntry[])
-        .filter((entry): entry is ContentEntry & { id: string; priority: number } =>
-          typeof entry.id === 'string' && typeof entry.priority === 'number'
-        )
-        .map(entry => [entry.id, entry.priority])
-    );
-    results.forEach(entry => {
-      if (typeof entry.id === 'string' && priorityById.has(entry.id)) {
-        entry.priority = priorityById.get(entry.id);
-      }
-    });
+    mergePriorityById(results, await fetchPriorityById(privateKey, modelName, params));
   }
 
   return { content: results };
@@ -468,6 +484,7 @@ export const importSpace = async (
       }
       space = { settings, meta: undefined, models };
     } else {
+      const apiKey = await graphqlClient.chain.query.id.execute();
       const fetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
         graphqlClient.chain.query.models
           .execute({
@@ -488,9 +505,31 @@ export const importSpace = async (
               },
             ],
           })
-          .then(models => ({ settings, meta: undefined, models: models || [] })) as Promise<
-          SpacePage
-        >;
+          .then(async modelsResult => {
+            const models = modelsResult || [];
+            // the GraphQL admin API's `content` field turns out to omit
+            // `priority` the same way the REST endpoint does -- see
+            // fetchPriorityById
+            await mapWithConcurrency(models, DEFAULT_WRITE_CONCURRENCY, async model => {
+              const content = (model.content || []) as ContentEntry[];
+              if (content.length === 0) {
+                return;
+              }
+              const priorityParams = new URLSearchParams({
+                apiKey,
+                limit: String(pageLimit),
+                offset: String(offset),
+                'query.createdDate.$lte': String(importStartedAt),
+                'sort.createdDate': '1',
+                'sort.id': '1',
+              });
+              mergePriorityById(
+                content,
+                await fetchPriorityById(privateKey, model.name, priorityParams)
+              );
+            });
+            return { settings, meta: undefined, models };
+          }) as Promise<SpacePage>;
       space = await downloadAllSpaceContent(fetchPage, {
         pageSize: limit,
         onPage: ({ page, total }) =>

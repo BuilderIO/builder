@@ -634,8 +634,11 @@ test.serial('importSpace allows re-importing into its own prior snapshot', async
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (!body.query.includes('content(')) {
+        if (body.query.includes('settings')) {
           return graphqlResponse({ settings: { name: 'New' } });
+        }
+        if (!body.query.includes('content(')) {
+          return graphqlResponse({ id: 'test-api-key' });
         }
         const vars = Object.values(body.variables)[0] as any;
         if (vars.offset > 0) {
@@ -651,6 +654,9 @@ test.serial('importSpace allows re-importing into its own prior snapshot', async
             },
           ],
         });
+      }
+      if (url.startsWith(REST_CONTENT_URL)) {
+        return { status: 200, json: { results: [] } };
       }
       throw new Error('unexpected fetch to ' + url);
     },
