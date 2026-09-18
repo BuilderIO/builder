@@ -934,6 +934,7 @@ test.serial(
       },
     });
 
+    const patchedPriorityByUrl = new Map<string, number>();
     const { calls, exitCode } = await withMockedFetch(
       async (url, init) => {
         if (url === GRAPHQL_URL) {
@@ -946,8 +947,15 @@ test.serial(
         if (url.startsWith(WRITE_API_ROOT) && init.method === 'PUT') {
           return { status: 404, text: 'not found' };
         }
-        if (url.startsWith(WRITE_API_ROOT) && (init.method === 'POST' || init.method === 'PATCH')) {
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'POST') {
           return { status: 200, text: '' };
+        }
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'PATCH') {
+          patchedPriorityByUrl.set(url, JSON.parse(init.body).priority);
+          return { status: 200, text: '' };
+        }
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'GET') {
+          return { status: 200, json: { priority: patchedPriorityByUrl.get(url) } };
         }
         throw new Error('unexpected fetch to ' + url);
       },
@@ -993,6 +1001,7 @@ test.serial(
       createdDate: 3000,
     });
 
+    const patchedPriorityByUrl = new Map<string, number>();
     const { calls, exitCode } = await withMockedFetch(
       async (url, init) => {
         if (url === GRAPHQL_URL) {
@@ -1009,6 +1018,13 @@ test.serial(
             return graphqlResponse({ addModel: { id: 'new-model-id', name: 'Posts' } });
           }
           throw new Error('unexpected graphql query: ' + body.query);
+        }
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'PATCH') {
+          patchedPriorityByUrl.set(url, JSON.parse(init.body).priority);
+          return { status: 200, text: '' };
+        }
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'GET') {
+          return { status: 200, json: { priority: patchedPriorityByUrl.get(url) } };
         }
         if (url.startsWith(WRITE_API_ROOT)) {
           return { status: 200, text: '' };

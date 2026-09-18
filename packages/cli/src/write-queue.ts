@@ -46,7 +46,7 @@ export interface PostJsonOptions {
   sleep?: (ms: number) => Promise<void>;
 }
 
-const defaultSleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
+export const defaultSleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
 const isRetriableStatus = (status: number) => status === 408 || status === 429 || status >= 500;
 

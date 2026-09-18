@@ -23,7 +23,7 @@ export const planModelSync = (
 };
 
 export interface WriteRequest {
-  method: 'PUT' | 'POST' | 'PATCH' | 'DELETE';
+  method: 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE';
   url: string;
 }
 
@@ -65,6 +65,17 @@ export const buildDeleteRequest = (modelName: string, entryId: string): WriteReq
  */
 export const buildPriorityPatchRequest = (modelName: string, entryId: string): WriteRequest => ({
   method: 'PATCH',
+  url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(entryId)}`,
+});
+
+/**
+ * Reads an entry straight from the write API (rather than the CDN content
+ * API) so a post-patch verification isn't fooled by the CDN's own read
+ * cache/replica lag -- this hits the same store the PATCH above just wrote
+ * to.
+ */
+export const buildGetRequest = (modelName: string, entryId: string): WriteRequest => ({
+  method: 'GET',
   url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(entryId)}`,
 });
 

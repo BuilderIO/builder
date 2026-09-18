@@ -20,6 +20,7 @@ import {
 import {
   DEFAULT_WRITE_CONCURRENCY,
   DEFAULT_WRITE_RETRIES,
+  defaultSleep,
   FetchLike,
   isHttpErrorWithStatus,
   mapWithConcurrency,
@@ -28,6 +29,7 @@ import {
 } from './write-queue';
 import {
   buildDeleteRequest,
+  buildGetRequest,
   buildPriorityPatchRequest,
   buildWriteRequest,
   ExistingModel,
@@ -293,26 +295,63 @@ const writeSequentiallyPerModel = async <T extends { modelName: string }>(
  * Entries with no explicit `priority` in the snapshot are left alone --
  * for those, the closest available approximation is still the creation
  * order `writeSequentiallyPerModel` already produces.
+ *
+ * Also confirmed against a real space running a large bulk create (~100
+ * entries in one model): the PATCH above can return 200 and still not be
+ * reflected on a later read -- something in the write path appears to
+ * renumber/settle `priority` shortly after a burst of rapid writes to the
+ * same model, after the PATCH itself already succeeded. A single fire-and-
+ * check-nothing PATCH isn't enough at that scale, so each one is read back
+ * afterward and re-applied if it didn't stick, up to a few attempts with a
+ * short delay to give that settling time to finish.
  */
+const PRIORITY_PATCH_VERIFY_ATTEMPTS = 4;
+const PRIORITY_PATCH_VERIFY_DELAY_MS = 2_000;
+
 const applyPriorityPatches = async (
   tasks: Array<{ modelName: string; id: string; priority: number }>,
   authKey: string,
   onFailure: (task: { modelName: string; id: string }, error: unknown) => void
 ): Promise<void> => {
   await mapWithConcurrency(tasks, DEFAULT_WRITE_CONCURRENCY, async task => {
-    const { method, url } = buildPriorityPatchRequest(task.modelName, task.id);
-    try {
-      await postJsonWithRetry({
-        fetchImpl: (fetch as unknown) as FetchLike,
-        method,
-        url,
-        body: { priority: task.priority },
-        headers: { Authorization: `Bearer ${authKey}` },
-        retries: DEFAULT_WRITE_RETRIES,
-      });
-    } catch (e) {
-      onFailure(task, e);
+    const patchRequest = buildPriorityPatchRequest(task.modelName, task.id);
+    const getRequest = buildGetRequest(task.modelName, task.id);
+    let lastError: unknown;
+
+    for (let attempt = 0; attempt < PRIORITY_PATCH_VERIFY_ATTEMPTS; attempt++) {
+      try {
+        await postJsonWithRetry({
+          fetchImpl: (fetch as unknown) as FetchLike,
+          method: patchRequest.method,
+          url: patchRequest.url,
+          body: { priority: task.priority },
+          headers: { Authorization: `Bearer ${authKey}` },
+          retries: DEFAULT_WRITE_RETRIES,
+        });
+
+        await defaultSleep(PRIORITY_PATCH_VERIFY_DELAY_MS);
+
+        const readBack = await postJsonWithRetry({
+          fetchImpl: (fetch as unknown) as FetchLike,
+          method: getRequest.method,
+          url: getRequest.url,
+          headers: { Authorization: `Bearer ${authKey}` },
+          retries: DEFAULT_WRITE_RETRIES,
+        });
+        const entry = JSON.parse(await readBack.text());
+
+        if (entry.priority === task.priority) {
+          return;
+        }
+        lastError = new Error(
+          `priority still reads back as ${entry.priority} after PATCH set it to ${task.priority}`
+        );
+      } catch (e) {
+        lastError = e;
+      }
     }
+
+    onFailure(task, lastError);
   });
 };
 
