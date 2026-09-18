@@ -920,6 +920,69 @@ test.serial(
 );
 
 test.serial(
+  'newSpace orders entries by their own priority field, not createdDate, when both are present',
+  async t => {
+    // priority is the field Builder's UI list order (and therefore delivery
+    // priority) is actually based on; createdDate is only a fallback for
+    // entries missing it. createdDate here is deliberately the reverse of
+    // priority order to prove priority wins.
+    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-create-priority-order-test-'));
+    await fse.outputJson(path.join(dir, 'settings.json'), { id: 'old-space-id', name: 'Old' });
+    await fse.outputJson(path.join(dir, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputJson(path.join(dir, 'posts', 'low-priority.json'), {
+      id: 'low-priority',
+      name: 'Low',
+      priority: 10,
+      createdDate: 1000,
+    });
+    await fse.outputJson(path.join(dir, 'posts', 'mid-priority.json'), {
+      id: 'mid-priority',
+      name: 'Mid',
+      priority: 0,
+      createdDate: 2000,
+    });
+    await fse.outputJson(path.join(dir, 'posts', 'high-priority.json'), {
+      id: 'high-priority',
+      name: 'High',
+      priority: -5,
+      createdDate: 3000,
+    });
+
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('createSpace')) {
+            return graphqlResponse({
+              createSpace: {
+                organization: { id: 'new-org-id', name: 'New' },
+                privateKey: { key: 'new-space-key' },
+              },
+            });
+          }
+          if (body.query.includes('addModel')) {
+            return graphqlResponse({ addModel: { id: 'new-model-id', name: 'Posts' } });
+          }
+          throw new Error('unexpected graphql query: ' + body.query);
+        }
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => newSpace('fake-key', dir, 'New', false)
+    );
+
+    t.is(exitCode, undefined);
+    const writeCalls = calls.filter(c => c.url.startsWith(WRITE_API_ROOT));
+    t.deepEqual(
+      writeCalls.map(c => JSON.parse(c.init.body).name),
+      ['High', 'Mid', 'Low']
+    );
+  }
+);
+
+test.serial(
   'importSpace falls back to published-only content for a model whose drafts the server rejects',
   async t => {
     // reproduces the real production error: the v3 content REST endpoint

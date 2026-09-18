@@ -238,17 +238,29 @@ const fetchModelContentPageRest = (
 };
 
 /**
- * Builder determines a content entry's delivery priority (which entry
- * wins when several target the same URL/conditions) by its position in
- * the model's entry list -- a value the write API has no field for, so
- * the closest thing `create`/`overwrite` can do is create/write entries
- * in the same relative order they were in originally. A single shared
- * concurrency pool across every task (as `mapWithConcurrency` alone would
- * do) can't guarantee that, since whichever request happens to land first
- * determines the new order -- so tasks are grouped by model first, and
- * only different models' groups run concurrently; within one model,
- * tasks are awaited strictly in the order the caller already sorted them.
+ * Entries carry their own `priority` field (a float, so new entries can be
+ * inserted between two existing ones without renumbering the rest) which is
+ * exactly what Builder's default sort/delivery order is based on -- lower
+ * values sort first. It's undocumented in the public write API reference,
+ * but since `create`/`overwrite` already forward each entry's full JSON
+ * body (rather than a hand-picked subset of fields) on POST, `priority` is
+ * already included in every write; sorting local write order by it too
+ * means the order entries are created in matches the order they'll render
+ * in even if the API only uses insertion order for entries missing an
+ * explicit priority. `createdDate` is the fallback for the rare entry
+ * missing a `priority`. A single shared concurrency pool across every task
+ * (as `mapWithConcurrency` alone would do) can't guarantee relative order,
+ * since whichever request happens to land first determines the new order
+ * -- so tasks are grouped by model first, and only different models'
+ * groups run concurrently; within one model, tasks are awaited strictly in
+ * the order the caller already sorted them.
  */
+const entryOrderKey = (entry: Record<string, unknown> | null | undefined) => {
+  if (typeof entry?.priority === 'number') {
+    return entry.priority;
+  }
+  return typeof entry?.createdDate === 'number' ? entry.createdDate : Infinity;
+};
 const writeSequentiallyPerModel = async <T extends { modelName: string }>(
   tasks: T[],
   write: (task: T) => Promise<void>
@@ -614,25 +626,20 @@ export const newSpace = async (
       const content = (await getFiles(`${directory}/${modelName}`)).filter(
         file => file.name !== 'schema.model.json'
       );
-      // Builder determines a content entry's delivery priority (which
-      // entry wins when several target the same URL/conditions) by its
-      // position in the model's entry list -- a value the write API has
-      // no field for, so the closest thing possible is creating entries
-      // in their original relative order, which the write step below
-      // preserves per model by awaiting this order strictly
+      // sorted by each entry's own `priority` (falling back to createdDate)
+      // so the write step below, which preserves this order per model, can
+      // reproduce the original list order -- see entryOrderKey above
       const orderedContent = (
         await Promise.all(
           content.map(async contentFile => {
             const entry = await readAsJson(`${directory}/${modelName}/${contentFile.name}`).catch(
               () => null
             );
-            const createdDate =
-              typeof entry?.createdDate === 'number' ? entry.createdDate : Infinity;
-            return { contentFile, createdDate };
+            return { contentFile, orderKey: entryOrderKey(entry) };
           })
         )
       )
-        .sort((a, b) => a.createdDate - b.createdDate)
+        .sort((a, b) => a.orderKey - b.orderKey)
         .map(({ contentFile }) => contentFile);
       const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
       modelBars.push(modelProgress);
@@ -938,18 +945,10 @@ export const overwriteSpace = async (
         modelWriteTasks.push({ fileName: contentFile.name, entry });
       });
 
-      // Builder determines a content entry's delivery priority (which
-      // entry wins when several target the same URL/conditions) by its
-      // position in the model's entry list -- a value the write API has
-      // no field for, so the closest thing possible is creating entries
-      // in their original relative order instead of whatever order a
-      // concurrent write pool happens to finish them in, which is what
-      // the write step below preserves per model
-      modelWriteTasks.sort((a, b) => {
-        const aDate = typeof a.entry?.createdDate === 'number' ? a.entry.createdDate : Infinity;
-        const bDate = typeof b.entry?.createdDate === 'number' ? b.entry.createdDate : Infinity;
-        return aDate - bDate;
-      });
+      // sorted by each entry's own `priority` (falling back to createdDate)
+      // so the write step below, which preserves this order per model, can
+      // reproduce the original list order -- see entryOrderKey above
+      modelWriteTasks.sort((a, b) => entryOrderKey(a.entry) - entryOrderKey(b.entry));
 
       // two files sharing an id would otherwise race as concurrent writes
       // to the same URL, silently discarding whichever finished first
