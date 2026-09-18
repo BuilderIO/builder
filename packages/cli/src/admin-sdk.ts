@@ -824,11 +824,11 @@ export const newSpace = async (
       const priorityProgress = MULTIBAR.create(priorityPatchTasks.length, 0, {
         name: 'restoring entry order',
       });
-      priorityProgress.start(priorityPatchTasks.length, 0);
+      priorityProgress.start(priorityPatchTasks.length, 0, { name: 'restoring entry order' });
       await applyPriorityPatches(
         priorityPatchTasks,
         newSpacePrivateKey.key,
-        () => priorityProgress.increment(1),
+        () => priorityProgress.increment(1, { name: 'restoring entry order' }),
         (task, e) => {
           failures.push({
             model: task.modelName,
@@ -837,6 +837,7 @@ export const newSpace = async (
           });
         }
       );
+      priorityProgress.update(priorityPatchTasks.length, { name: 'restoring entry order' });
       priorityProgress.stop();
     }
 
@@ -1208,11 +1209,11 @@ export const overwriteSpace = async (
         const priorityProgress = MULTIBAR.create(priorityPatchTasks.length, 0, {
           name: 'restoring entry order',
         });
-        priorityProgress.start(priorityPatchTasks.length, 0);
+        priorityProgress.start(priorityPatchTasks.length, 0, { name: 'restoring entry order' });
         await applyPriorityPatches(
           priorityPatchTasks,
           privateKey,
-          () => priorityProgress.increment(1),
+          () => priorityProgress.increment(1, { name: 'restoring entry order' }),
           (task, e) => {
             failures.push({
               model: task.modelName,
@@ -1221,6 +1222,7 @@ export const overwriteSpace = async (
             });
           }
         );
+        priorityProgress.update(priorityPatchTasks.length, { name: 'restoring entry order' });
         priorityProgress.stop();
       }
     }
