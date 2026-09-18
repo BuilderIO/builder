@@ -1,5 +1,11 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 5.2.12
+
+### Patch Changes
+
+- 6b45a4f: Allow Image blocks to honor breakpoint-specific image positions while preserving the configured image position as a fallback.
+
 ## 5.2.11
 
 ### Patch Changes
