@@ -237,7 +237,40 @@ const fetchModelContentPageRest = (
     headers: { Authorization: `Bearer ${privateKey}` },
   });
   const body = JSON.parse(await response.text());
-  return { content: body?.results || [] };
+  const results: ContentEntry[] = body?.results || [];
+
+  // confirmed against a real space: this endpoint's default field set
+  // silently omits `priority` -- and `fields` is a projection that replaces
+  // that default set rather than extending it, so there's no single request
+  // that returns both the full raw entry and `priority` together. A second,
+  // narrow request for just `id`/`priority` (same query/sort/pagination, so
+  // it lines up with `results` row-for-row) gets merged back in by id
+  // instead.
+  if (results.length > 0) {
+    const priorityParams = new URLSearchParams(params);
+    priorityParams.set('fields', 'id,priority');
+    const priorityResponse = await postJsonWithRetry({
+      fetchImpl: (fetch as unknown) as FetchLike,
+      method: 'GET',
+      url: `${REST_CONTENT_ROOT}/${encodeURIComponent(modelName)}?${priorityParams.toString()}`,
+      headers: { Authorization: `Bearer ${privateKey}` },
+    });
+    const priorityBody = JSON.parse(await priorityResponse.text());
+    const priorityById = new Map<string, number>(
+      ((priorityBody?.results || []) as ContentEntry[])
+        .filter((entry): entry is ContentEntry & { id: string; priority: number } =>
+          typeof entry.id === 'string' && typeof entry.priority === 'number'
+        )
+        .map(entry => [entry.id, entry.priority])
+    );
+    results.forEach(entry => {
+      if (typeof entry.id === 'string' && priorityById.has(entry.id)) {
+        entry.priority = priorityById.get(entry.id);
+      }
+    });
+  }
+
+  return { content: results };
 };
 
 /**
@@ -311,11 +344,12 @@ const PRIORITY_PATCH_VERIFY_DELAY_MS = 2_000;
 const applyPriorityPatches = async (
   tasks: Array<{ modelName: string; id: string; priority: number }>,
   authKey: string,
+  apiKey: string,
   onFailure: (task: { modelName: string; id: string }, error: unknown) => void
 ): Promise<void> => {
   await mapWithConcurrency(tasks, DEFAULT_WRITE_CONCURRENCY, async task => {
     const patchRequest = buildPriorityPatchRequest(task.modelName, task.id);
-    const getRequest = buildGetRequest(task.modelName, task.id);
+    const getRequest = buildGetRequest(task.modelName, task.id, apiKey);
     let lastError: unknown;
 
     for (let attempt = 0; attempt < PRIORITY_PATCH_VERIFY_ATTEMPTS; attempt++) {
@@ -785,7 +819,7 @@ export const newSpace = async (
 
     modelBars.forEach(bar => bar.stop());
 
-    await applyPriorityPatches(priorityPatchTasks, newSpacePrivateKey.key, (task, e) => {
+    await applyPriorityPatches(priorityPatchTasks, newSpacePrivateKey.key, organization.id, (task, e) => {
       failures.push({
         model: task.modelName,
         file: task.id,
@@ -1157,13 +1191,16 @@ export const overwriteSpace = async (
       // both PUT (update) and POST (create-on-404-fallback) are covered by
       // the same unreliable-priority problem `newSpace` hit -- see
       // applyPriorityPatches
-      await applyPriorityPatches(priorityPatchTasks, privateKey, (task, e) => {
-        failures.push({
-          model: task.modelName,
-          file: task.id,
-          error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
+      if (priorityPatchTasks.length > 0) {
+        const destinationApiKey = await graphqlClient.chain.query.id.execute();
+        await applyPriorityPatches(priorityPatchTasks, privateKey, destinationApiKey, (task, e) => {
+          failures.push({
+            model: task.modelName,
+            file: task.id,
+            error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
+          });
         });
-      });
+      }
     }
 
     if (prune && !dryRun && failures.length > 0) {

@@ -703,6 +703,55 @@ test.serial('importSpace requests unpublished/draft content, not just published'
 });
 
 test.serial(
+  'importSpace merges priority into a snapshot entry even though the content endpoint omits it by default',
+  async t => {
+    // confirmed against a real space: the v3 content REST endpoint's
+    // default field set silently omits `priority`, and `fields` is a
+    // projection that replaces rather than extends that default set -- so
+    // fetchModelContentPageRest issues a second, narrow request for just
+    // id/priority and merges it back into the full entry by id
+    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-priority-test-'));
+
+    const { exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('settings')) {
+            return graphqlResponse({ settings: { name: 'Test' } });
+          }
+          if (body.query.includes('models')) {
+            return graphqlResponse({
+              models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+            });
+          }
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        if (url.startsWith(REST_CONTENT_URL)) {
+          const parsed = new URL(url);
+          if (Number(parsed.searchParams.get('offset')) > 0) {
+            return { status: 200, json: { results: [] } };
+          }
+          if (parsed.searchParams.get('fields') === 'id,priority') {
+            return { status: 200, json: { results: [{ id: 'a', priority: -12.5 }] } };
+          }
+          return {
+            status: 200,
+            json: { results: [{ id: 'a', name: 'A', createdDate: 1 }] },
+          };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => importSpace('fake-key', dir, false, 100, true)
+    );
+
+    t.is(exitCode, undefined);
+    const entry = await fse.readJson(path.join(dir, 'posts', 'entry-id-a.json'));
+    t.is(entry.priority, -12.5);
+    t.is(entry.name, 'A');
+  }
+);
+
+test.serial(
   'newSpace remaps a snapshot own ids into the new org without relying on cloneInfo',
   async t => {
     const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-create-test-'));
@@ -942,7 +991,10 @@ test.serial(
           if (body.query.includes('updateModel')) {
             return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
           }
-          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+          if (body.query.includes('models')) {
+            return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+          }
+          return graphqlResponse({ id: 'dest-api-key' });
         }
         if (url.startsWith(WRITE_API_ROOT) && init.method === 'PUT') {
           return { status: 404, text: 'not found' };
@@ -951,11 +1003,13 @@ test.serial(
           return { status: 200, text: '' };
         }
         if (url.startsWith(WRITE_API_ROOT) && init.method === 'PATCH') {
-          patchedPriorityByUrl.set(url, JSON.parse(init.body).priority);
+          const id = url.split('/').pop() as string;
+          patchedPriorityByUrl.set(id, JSON.parse(init.body).priority);
           return { status: 200, text: '' };
         }
-        if (url.startsWith(WRITE_API_ROOT) && init.method === 'GET') {
-          return { status: 200, json: { priority: patchedPriorityByUrl.get(url) } };
+        if (url.startsWith(REST_CONTENT_URL)) {
+          const id = (url.split('/').pop() as string).split('?')[0];
+          return { status: 200, json: { priority: patchedPriorityByUrl.get(id) } };
         }
         throw new Error('unexpected fetch to ' + url);
       },
@@ -1020,11 +1074,13 @@ test.serial(
           throw new Error('unexpected graphql query: ' + body.query);
         }
         if (url.startsWith(WRITE_API_ROOT) && init.method === 'PATCH') {
-          patchedPriorityByUrl.set(url, JSON.parse(init.body).priority);
+          const id = url.split('/').pop() as string;
+          patchedPriorityByUrl.set(id, JSON.parse(init.body).priority);
           return { status: 200, text: '' };
         }
-        if (url.startsWith(WRITE_API_ROOT) && init.method === 'GET') {
-          return { status: 200, json: { priority: patchedPriorityByUrl.get(url) } };
+        if (url.startsWith(REST_CONTENT_URL)) {
+          const id = (url.split('/').pop() as string).split('?')[0];
+          return { status: 200, json: { priority: patchedPriorityByUrl.get(id) } };
         }
         if (url.startsWith(WRITE_API_ROOT)) {
           return { status: 200, text: '' };
