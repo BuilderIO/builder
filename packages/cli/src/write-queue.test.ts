@@ -361,3 +361,31 @@ test('defaults to POST but sends PUT when requested', async t => {
 
   t.deepEqual(methods, ['POST', 'PUT']);
 });
+
+test('a GET request sends no body or Content-Type header, and retries like any other read', async t => {
+  let seenInit: any;
+  let calls = 0;
+  const fetchImpl: FetchLike = async (_url, init) => {
+    calls++;
+    seenInit = init;
+    if (calls === 1) {
+      return response(503);
+    }
+    return response(200, JSON.stringify({ results: [] }));
+  };
+
+  const result = await postJsonWithRetry({
+    fetchImpl,
+    url: 'https://cdn.builder.io/api/v3/content/authors?apiKey=key',
+    method: 'GET',
+    headers: { Authorization: 'Bearer key' },
+    sleep: noSleep,
+  });
+
+  t.is(calls, 2);
+  t.is(seenInit.method, 'GET');
+  t.is(seenInit.body, undefined);
+  t.is(seenInit.headers['Content-Type'], undefined);
+  t.is(seenInit.headers.Authorization, 'Bearer key');
+  t.is(await result.text(), JSON.stringify({ results: [] }));
+});

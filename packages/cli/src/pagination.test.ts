@@ -1,7 +1,9 @@
 import test from 'ava';
 import {
   clampPageSize,
+  downloadAllModelContent,
   downloadAllSpaceContent,
+  FetchModelContentPage,
   FetchSpacePage,
   MAX_CONTENT_PAGE_SIZE,
   SpacePage,
@@ -280,4 +282,66 @@ test('throws once maxPages is exceeded instead of looping forever', async t => {
 
   t.is(calls, 5);
   t.true(error.message.includes('5 pages'));
+});
+
+test('downloadAllModelContent pages a single model until a short page is seen', async t => {
+  const entries = makeEntries('authors', 0, 250);
+  let calls = 0;
+  const fetchPage: FetchModelContentPage = async ({ limit, offset }) => {
+    calls++;
+    return { content: entries.slice(offset, offset + limit) };
+  };
+
+  const content = await downloadAllModelContent(fetchPage, 'authors', { pageSize: 100 });
+
+  t.is(content.length, 250);
+  t.is(calls, 3);
+  t.is(content[0].id, 'authors-0');
+  t.is(content[249].id, 'authors-249');
+});
+
+test('downloadAllModelContent dedupes entries by id across pages', async t => {
+  let calls = 0;
+  const fetchPage: FetchModelContentPage = async () => {
+    calls++;
+    // a server that ignores offset and re-sends the same page would
+    // otherwise loop forever without the dedupe-driven added === 0 check
+    return { content: calls <= 3 ? [{ id: 'a' }, { id: 'b' }] : [] };
+  };
+
+  const content = await downloadAllModelContent(fetchPage, 'authors', { pageSize: 2 });
+
+  t.is(content.length, 2);
+  t.is(calls, 2);
+});
+
+test('downloadAllModelContent collects id-less entries by content fingerprint', async t => {
+  const fetchPage: FetchModelContentPage = async ({ offset }) => ({
+    content:
+      offset === 0
+        ? [{ name: 'first' }, { name: 'second' }]
+        : offset === 2
+        ? [{ name: 'third' }]
+        : [],
+  });
+
+  const content = await downloadAllModelContent(fetchPage, 'authors', { pageSize: 2 });
+
+  t.deepEqual(content.map(entry => entry.name), ['first', 'second', 'third']);
+});
+
+test('downloadAllModelContent throws once maxPages is exceeded', async t => {
+  let calls = 0;
+  const fetchPage: FetchModelContentPage = async () => {
+    calls++;
+    // unique content on every call so dedupe never terminates the loop
+    return { content: [{ id: `entry-${calls}` }] };
+  };
+
+  const error = await t.throwsAsync(
+    downloadAllModelContent(fetchPage, 'authors', { pageSize: 1, maxPages: 5 })
+  );
+
+  t.is(calls, 5);
+  t.true(error.message.includes('"authors"'));
 });
