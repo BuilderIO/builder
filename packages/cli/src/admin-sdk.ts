@@ -14,6 +14,7 @@ import {
   FetchModelContentPage,
   FetchSpacePage,
   MAX_CONTENT_PAGE_SIZE,
+  ModelPage,
   SpacePage,
   SpaceSnapshot,
 } from './pagination';
@@ -628,60 +629,64 @@ export const importSpace = async (
     }
 
     // two distinct model names that normalize to the same directory would
-    space.models.forEach(model => {
-      const dirName = kebabCase(model.name);
-      modelNamesByDir.set(dirName, [...(modelNamesByDir.get(dirName) || []), model.name]);
-    });
-    const collisions = [...modelNamesByDir.entries()].filter(
-      ([dirName, names]) => names.length > 1 || dirName === ''
-    );
-    if (collisions.length > 0) {
-      throw new Error(
-        `Cannot write snapshot: these model names normalize to an unusable or shared directory name: ${collisions
-          .map(([dir, names]) => `"${names.join('", "')}" -> "${dir}"`)
-          .join('; ')}. Rename the conflicting model(s) before importing.`
+    if (!streamed) {
+      const modelNamesByDir = new Map<string, string[]>();
+      space.models.forEach(model => {
+        const dirName = kebabCase(model.name);
+        modelNamesByDir.set(dirName, [...(modelNamesByDir.get(dirName) || []), model.name]);
+      });
+      const collisions = [...modelNamesByDir.entries()].filter(
+        ([dirName, names]) => names.length > 1 || dirName === ''
       );
+      if (collisions.length > 0) {
+        throw new Error(
+          `Cannot write snapshot: these model names normalize to an unusable or shared directory name: ${collisions
+            .map(([dir, names]) => `"${names.join('", "')}" -> "${dir}"`)
+            .join('; ')}. Rename the conflicting model(s) before importing.`
+        );
+      }
+      spaceProgress.update(0, { name: 'writing space' });
+      spaceProgress.setTotal(space.models.length);
     }
 
-    spaceProgress.update(0, { name: 'writing space' });
-    spaceProgress.setTotal(space.models.length);
     await fse.outputFile(
       `${stagingDir}/settings.json`,
       JSON.stringify({ ...space.settings, cloneInfo: space.meta }, undefined, 2)
     );
-    let totalEntries = 0;
-    const entryCountsByModel: Array<{ name: string; count: number }> = [];
-    await mapWithConcurrency(space.models, DEFAULT_WRITE_CONCURRENCY, async model => {
-      const { content } = model;
-      const everything = model.everything || {};
-      // todo why conent is in everything
-      const { content: _, ...schema } = everything;
-      const modelName = kebabCase(model.name);
-      const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
-      if (content.length > 0) {
-        modelProgress.start(content.length, 0, { name: modelName });
-      }
-      await fse.outputFile(
-        `${stagingDir}/${modelName}/schema.model.json`,
-        JSON.stringify(schema, null, 2)
-      );
-      await mapWithConcurrency(content, DEFAULT_WRITE_CONCURRENCY, async (entry, index) => {
-        // namespaced and encoded so a caller-supplied id can never collide
-        // with schema.model.json or the no-id fallback pattern, and can
-        // never escape the model directory via "/" or ".." in the id
-        const baseName =
-          typeof entry.id === 'string' && entry.id
-            ? `entry-id-${encodeURIComponent(entry.id)}`
-            : `entry-noid-${index}`;
-        const filename = `${stagingDir}/${modelName}/${baseName}.json`;
-        await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
-        modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
+
+    if (!streamed) {
+      await mapWithConcurrency(space.models, DEFAULT_WRITE_CONCURRENCY, async model => {
+        const { content } = model;
+        const everything = model.everything || {};
+        // todo why conent is in everything
+        const { content: _, ...schema } = everything;
+        const modelName = kebabCase(model.name);
+        const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
+        if (content.length > 0) {
+          modelProgress.start(content.length, 0, { name: modelName });
+        }
+        await fse.outputFile(
+          `${stagingDir}/${modelName}/schema.model.json`,
+          JSON.stringify(schema, null, 2)
+        );
+        await mapWithConcurrency(content, DEFAULT_WRITE_CONCURRENCY, async (entry, index) => {
+          // namespaced and encoded so a caller-supplied id can never collide
+          // with schema.model.json or the no-id fallback pattern, and can
+          // never escape the model directory via "/" or ".." in the id
+          const baseName =
+            typeof entry.id === 'string' && entry.id
+              ? `entry-id-${encodeURIComponent(entry.id)}`
+              : `entry-noid-${index}`;
+          const filename = `${stagingDir}/${modelName}/${baseName}.json`;
+          await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
+          modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
+        });
+        entryCountsByModel.push({ name: model.name, count: content.length });
+        totalEntries += content.length;
+        spaceProgress.increment();
+        modelProgress.stop();
       });
-      entryCountsByModel.push({ name: model.name, count: content.length });
-      totalEntries += content.length;
-      spaceProgress.increment();
-      modelProgress.stop();
-    });
+    }
 
     await swapInStagingDir(stagingDir, directory);
 

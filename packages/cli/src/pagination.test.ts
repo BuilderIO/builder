@@ -345,3 +345,58 @@ test('downloadAllModelContent throws once maxPages is exceeded', async t => {
   t.is(calls, 5);
   t.true(error.message.includes('"authors"'));
 });
+
+test('onEntries streams entries instead of buffering them into the snapshot', async t => {
+  const { fetchPage } = fakeApi({ page: 250 });
+  const streamed: Array<{ page: number; count: number }> = [];
+
+  const space = await downloadAllSpaceContent(fetchPage, {
+    pageSize: 100,
+    onEntries: (model, entries, page) => {
+      streamed.push({ page, count: entries.length });
+    },
+  });
+
+  // the caller is streaming entries out itself, so they are not also kept
+  // in the returned snapshot -- otherwise a full space download would hold
+  // every content body in memory regardless of whether onEntries is used
+  t.is(space.models[0].content.length, 0);
+  t.deepEqual(streamed, [
+    { page: 1, count: 100 },
+    { page: 2, count: 100 },
+    { page: 3, count: 50 },
+  ]);
+});
+
+test('onPage still reports the correct running total when streaming with onEntries', async t => {
+  const { fetchPage } = fakeApi({ page: 150 });
+  const totals: number[] = [];
+
+  await downloadAllSpaceContent(fetchPage, {
+    pageSize: 100,
+    onEntries: () => {},
+    onPage: ({ total }) => totals.push(total),
+  });
+
+  t.deepEqual(totals, [100, 150]);
+});
+
+test('onEntries is not called for pages contributing no new entries', async t => {
+  const fetchPage: FetchSpacePage = async () => ({
+    settings: {},
+    meta: {},
+    models: [{ name: 'page', everything: {}, content: [{ id: 'a' }, { id: 'b' }] }],
+  });
+  let calls = 0;
+
+  const space = await downloadAllSpaceContent(fetchPage, {
+    pageSize: 2,
+    onEntries: () => {
+      calls++;
+    },
+  });
+
+  // the second (repeat) page adds nothing new, so onEntries fires once
+  t.is(calls, 1);
+  t.is(space.models[0].content.length, 0);
+});
