@@ -237,6 +237,37 @@ const fetchModelContentPageRest = (
   return { content: body?.results || [] };
 };
 
+/**
+ * Builder determines a content entry's delivery priority (which entry
+ * wins when several target the same URL/conditions) by its position in
+ * the model's entry list -- a value the write API has no field for, so
+ * the closest thing `create`/`overwrite` can do is create/write entries
+ * in the same relative order they were in originally. A single shared
+ * concurrency pool across every task (as `mapWithConcurrency` alone would
+ * do) can't guarantee that, since whichever request happens to land first
+ * determines the new order -- so tasks are grouped by model first, and
+ * only different models' groups run concurrently; within one model,
+ * tasks are awaited strictly in the order the caller already sorted them.
+ */
+const writeSequentiallyPerModel = async <T extends { modelName: string }>(
+  tasks: T[],
+  write: (task: T) => Promise<void>
+): Promise<void> => {
+  const tasksByModel = new Map<string, T[]>();
+  tasks.forEach(task => {
+    tasksByModel.set(task.modelName, [...(tasksByModel.get(task.modelName) || []), task]);
+  });
+  await mapWithConcurrency(
+    Array.from(tasksByModel.values()),
+    DEFAULT_WRITE_CONCURRENCY,
+    async tasksForModel => {
+      for (const task of tasksForModel) {
+        await write(task);
+      }
+    }
+  );
+};
+
 export const importSpace = async (
   privateKey: string,
   directory: string,
@@ -583,19 +614,37 @@ export const newSpace = async (
       const content = (await getFiles(`${directory}/${modelName}`)).filter(
         file => file.name !== 'schema.model.json'
       );
+      // Builder determines a content entry's delivery priority (which
+      // entry wins when several target the same URL/conditions) by its
+      // position in the model's entry list -- a value the write API has
+      // no field for, so the closest thing possible is creating entries
+      // in their original relative order, which the write step below
+      // preserves per model by awaiting this order strictly
+      const orderedContent = (
+        await Promise.all(
+          content.map(async contentFile => {
+            const entry = await readAsJson(`${directory}/${modelName}/${contentFile.name}`).catch(
+              () => null
+            );
+            const createdDate =
+              typeof entry?.createdDate === 'number' ? entry.createdDate : Infinity;
+            return { contentFile, createdDate };
+          })
+        )
+      )
+        .sort((a, b) => a.createdDate - b.createdDate)
+        .map(({ contentFile }) => contentFile);
       const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
       modelBars.push(modelProgress);
       if (content.length > 0) {
         modelProgress.start(content.length, 0, { name: modelName });
       }
-      content.forEach(contentFile => {
+      orderedContent.forEach(contentFile => {
         writeTasks.push({ modelName, fileName: contentFile.name, progress: modelProgress });
       });
     });
 
-    // A single bounded pool across every model: writing thousands of entries
-    // with an unbounded Promise.all gets rate limited and drops content.
-    await mapWithConcurrency(writeTasks, DEFAULT_WRITE_CONCURRENCY, async task => {
+    await writeSequentiallyPerModel(writeTasks, async task => {
       const { modelName, fileName, progress } = task;
       let failed = false;
       try {
@@ -889,6 +938,19 @@ export const overwriteSpace = async (
         modelWriteTasks.push({ fileName: contentFile.name, entry });
       });
 
+      // Builder determines a content entry's delivery priority (which
+      // entry wins when several target the same URL/conditions) by its
+      // position in the model's entry list -- a value the write API has
+      // no field for, so the closest thing possible is creating entries
+      // in their original relative order instead of whatever order a
+      // concurrent write pool happens to finish them in, which is what
+      // the write step below preserves per model
+      modelWriteTasks.sort((a, b) => {
+        const aDate = typeof a.entry?.createdDate === 'number' ? a.entry.createdDate : Infinity;
+        const bDate = typeof b.entry?.createdDate === 'number' ? b.entry.createdDate : Infinity;
+        return aDate - bDate;
+      });
+
       // two files sharing an id would otherwise race as concurrent writes
       // to the same URL, silently discarding whichever finished first
       const fileByEntryId = new Map<string, string>();
@@ -918,7 +980,7 @@ export const overwriteSpace = async (
 
     plan.entriesToWrite = writeTasks.length;
 
-    await mapWithConcurrency(writeTasks, DEFAULT_WRITE_CONCURRENCY, async task => {
+    await writeSequentiallyPerModel(writeTasks, async task => {
       const { modelName, fileName, entry, progress } = task;
       let failed = false;
       if (!dryRun) {

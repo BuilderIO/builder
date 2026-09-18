@@ -772,6 +772,69 @@ test.serial(
   }
 );
 
+test.serial(
+  'newSpace creates entries in their original createdDate order, not file-listing order',
+  async t => {
+    // Builder decides which entry wins when several target the same
+    // URL/conditions by their position in the model's entry list -- there
+    // is no field for this, so create has to reproduce it by writing
+    // entries in their original relative order. Filenames are
+    // entry-id-<id>.json, so alphabetical directory-listing order does
+    // not match creation order -- these ids are deliberately chosen so
+    // alphabetical order is the reverse of createdDate order
+    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-create-order-test-'));
+    await fse.outputJson(path.join(dir, 'settings.json'), { id: 'old-space-id', name: 'Old' });
+    await fse.outputJson(path.join(dir, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputJson(path.join(dir, 'posts', 'entry-id-z-newest.json'), {
+      id: 'z-newest',
+      name: 'Newest',
+      createdDate: 3000,
+    });
+    await fse.outputJson(path.join(dir, 'posts', 'entry-id-y-middle.json'), {
+      id: 'y-middle',
+      name: 'Middle',
+      createdDate: 2000,
+    });
+    await fse.outputJson(path.join(dir, 'posts', 'entry-id-x-oldest.json'), {
+      id: 'x-oldest',
+      name: 'Oldest',
+      createdDate: 1000,
+    });
+
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('createSpace')) {
+            return graphqlResponse({
+              createSpace: {
+                organization: { id: 'new-org-id', name: 'New' },
+                privateKey: { key: 'new-space-key' },
+              },
+            });
+          }
+          if (body.query.includes('addModel')) {
+            return graphqlResponse({ addModel: { id: 'new-model-id', name: 'Posts' } });
+          }
+          throw new Error('unexpected graphql query: ' + body.query);
+        }
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => newSpace('fake-key', dir, 'New', false)
+    );
+
+    t.is(exitCode, undefined);
+    const writeCalls = calls.filter(c => c.url.startsWith(WRITE_API_ROOT));
+    t.deepEqual(
+      writeCalls.map(c => JSON.parse(c.init.body).name),
+      ['Oldest', 'Middle', 'Newest']
+    );
+  }
+);
+
 test.serial('overwrite falls back to POST when PUT-by-id 404s on a missing entry', async t => {
   const dir = await makeSnapshot({
     posts: { schema: { name: 'Posts' }, entries: [{ id: 'missing-in-target', name: 'A' }] },
@@ -806,6 +869,55 @@ test.serial('overwrite falls back to POST when PUT-by-id 404s on a missing entry
   t.true(Boolean(postCall && postCall.url.endsWith('/posts')));
   t.is(postCall && JSON.parse(postCall.init.body).id, 'missing-in-target');
 });
+
+test.serial(
+  'overwrite writes new entries in their original createdDate order, not file-listing order',
+  async t => {
+    // same ordering guarantee as create, exercised through overwrite's
+    // POST-fallback path for entries missing from the target -- ids are
+    // chosen so alphabetical (file-listing) order is the reverse of
+    // createdDate order
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [
+          { id: 'z-newest', name: 'Newest', createdDate: 3000 },
+          { id: 'y-middle', name: 'Middle', createdDate: 2000 },
+          { id: 'x-oldest', name: 'Oldest', createdDate: 1000 },
+        ],
+      },
+    });
+
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+          }
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+        }
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'PUT') {
+          return { status: 404, text: 'not found' };
+        }
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'POST') {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => overwriteSpace('fake-key', dir, false, false, true, false)
+    );
+
+    t.is(exitCode, undefined);
+    const postCalls = calls.filter(
+      c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'POST'
+    );
+    t.deepEqual(
+      postCalls.map(c => JSON.parse(c.init.body).id),
+      ['x-oldest', 'y-middle', 'z-newest']
+    );
+  }
+);
 
 test.serial(
   'importSpace falls back to published-only content for a model whose drafts the server rejects',

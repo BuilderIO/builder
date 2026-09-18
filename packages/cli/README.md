@@ -41,6 +41,8 @@ Restores a local snapshot into the **same, existing** space it was taken from (b
 
 `--prune` asks for confirmation before deleting anything (unless `--yes` is passed), and is skipped entirely if any write in the run failed, so it never prunes against an incomplete restore. It always checks each model's destination content (including drafts) individually to decide what's stale, so a draft-only entry that's missing from the snapshot is still recognized as stale and deleted, just like a published one.
 
+Within a model, entries are written one at a time in their original `createdDate` order (different models still write in parallel) — see the note on `create` below about why this matters for entries that end up being newly created in the target space.
+
 ### `builder create -k <private key> -i <input directory> -n <name>`
 
 Creates a **new** space from a local snapshot, remapping every model/content id (and any references to them) to new ids scoped to the target organization.
@@ -51,6 +53,8 @@ Creates a **new** space from a local snapshot, remapping every model/content id 
 | `-i, --input` | Input directory (default `./builder`) |
 | `-n, --name` | Name for the new space |
 | `-d, --debug` | Print debug info, including the new space's public key |
+
+Entries within a model are created in their original `createdDate` order (models run in parallel, but entries inside a model are created one at a time). Builder decides which entry wins when several target the same URL/conditions by their position in the model's entry list, and there's no field to set that directly — recreating them in their original order is the closest a snapshot can get to reproducing the original space's priority.
 
 ### `builder integrate [options]`
 
