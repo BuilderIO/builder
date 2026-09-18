@@ -138,6 +138,48 @@ test.serial(
   }
 );
 
+test.serial(
+  'prune aborts the whole run instead of mis-pruning when destination content is unreadable',
+  async t => {
+    // both the draft and published-only REST attempts fail for one model --
+    // deciding what is stale in that model is impossible, so the run must
+    // fail loudly instead of silently pruning based on an incomplete view
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [{ id: 'a', name: 'A' }],
+      },
+    });
+
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+          }
+          if (body.query.includes('models')) {
+            return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+          }
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        if (url.startsWith(REST_CONTENT_URL)) {
+          return { status: 403, text: 'forbidden' };
+        }
+        if (url.startsWith(WRITE_API_ROOT)) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => overwriteSpace('fake-key', dir, false, true, true, false)
+    );
+
+    t.is(exitCode, 1);
+    t.true(calls.some(c => c.url.endsWith('/posts/a') && c.init.method === 'PUT'));
+    t.false(calls.some(c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'DELETE'));
+  }
+);
+
 test.serial('prune is skipped entirely when a content write fails', async t => {
   const dir = await makeSnapshot({
     posts: {

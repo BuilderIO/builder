@@ -205,18 +205,9 @@ const createGraphqlClient = (privateKey: string) =>
 
 const REST_CONTENT_ROOT = 'https://cdn.builder.io/api/v3/content';
 
-/**
- * The admin GraphQL API's batched `models { content }` field is the only
- * way to fetch published content for every model in one request, but its
- * `includeUnpublished` option is unreliable: a server-side error resolving
- * *any one* model's draft content fails that entire batched response (see
- * `importSpace`), and the singular `model(id)` field doesn't support the
- * option at all. The v3 content REST endpoint, fetched once per model,
- * does support it reliably -- confirmed against a real space where the
- * batched GraphQL query 404s resolving one specific model's drafts. It's
- * only used when unpublished content is actually requested, since the
- * batched GraphQL query remains faster for the common published-only case.
- */
+// see the comment where this is used (in `importSpace`) for why drafts are
+// fetched per-model through this REST endpoint rather than through the
+// admin GraphQL API's batched `models { content }` field
 const fetchModelContentPageRest = (
   privateKey: string,
   apiKey: string,
