@@ -633,6 +633,8 @@ export const newSpace = async (
       progress: cliProgress.Bar;
     }> = [];
     const modelBars: cliProgress.Bar[] = [];
+    let modelsCreated = 0;
+    let entriesCreated = 0;
 
     await mapWithConcurrency(models, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
       let model;
@@ -659,6 +661,7 @@ export const newSpace = async (
       if (!model) {
         return;
       }
+      modelsCreated++;
       const content = (await getFiles(`${directory}/${modelName}`)).filter(
         file => file.name !== 'schema.model.json'
       );
@@ -733,6 +736,9 @@ export const newSpace = async (
           error: e instanceof Error ? e.message : String(e),
         });
       }
+      if (!failed) {
+        entriesCreated++;
+      }
       progress.increment(1, {
         name: `${modelName}: ${failed ? 'failed to write' : 'wrote'} ${fileName}`,
       });
@@ -748,13 +754,17 @@ export const newSpace = async (
       });
     });
 
-    if (debug) {
-      console.log(`\r\n\r\n`);
-      console.log(
-        chalk.green(`Your new space "${organization.name}" public API Key: ${organization.id}`)
-      );
-      console.log(`\r\n\r\n`);
+    console.log(`\r\n\r\n`);
+    console.log(chalk.green(`Created space "${organization.name}":`));
+    console.log(chalk.green(`  Models created: ${modelsCreated}`));
+    console.log(chalk.green(`  Content entries created: ${entriesCreated}`));
+    if (failures.length) {
+      console.log(chalk.yellow(`  Failed: ${failures.length} (see below)`));
     }
+    if (debug) {
+      console.log(chalk.green(`  Public API Key: ${organization.id}`));
+    }
+    console.log(`\r\n\r\n`);
   } catch (e) {
     console.log(`\r\n\r\n`);
     console.error(chalk.red('Error creating space'));
@@ -801,7 +811,12 @@ export const overwriteSpace = async (
   // this is what keeps a concurrently-created entry from being deleted
   // in the same run that just created it
   const runStartedAt = Date.now();
-  const progressCounts = { entriesWritten: 0, entriesPruned: 0 };
+  const progressCounts = {
+    modelsUpdated: 0,
+    modelsCreated: 0,
+    entriesWritten: 0,
+    entriesPruned: 0,
+  };
   const onInterrupt = () => {
     console.log('\r\n\r\n');
     console.error(
@@ -921,6 +936,7 @@ export const overwriteSpace = async (
                 })
                 .execute({ id: true, name: true })
             );
+            progressCounts.modelsUpdated++;
           }
         } else {
           plan.modelsToCreate++;
@@ -932,6 +948,7 @@ export const overwriteSpace = async (
             await graphqlClient.chain.mutation
               .addModel({ body: schema })
               .execute({ id: true, name: true });
+            progressCounts.modelsCreated++;
           }
         }
       } catch (e) {
@@ -1230,8 +1247,18 @@ export const overwriteSpace = async (
           )
         );
       }
-    } else if (debug) {
-      console.log(chalk.green('Overwrite complete'));
+    } else {
+      console.log(`\r\n\r\n`);
+      console.log(chalk.green('Overwrite complete:'));
+      console.log(chalk.green(`  Models updated: ${progressCounts.modelsUpdated}`));
+      console.log(chalk.green(`  Models created: ${progressCounts.modelsCreated}`));
+      console.log(chalk.green(`  Content entries written: ${progressCounts.entriesWritten}`));
+      if (prune) {
+        console.log(chalk.green(`  Content entries pruned: ${progressCounts.entriesPruned}`));
+      }
+      if (failures.length) {
+        console.log(chalk.yellow(`  Failed: ${failures.length} (see below)`));
+      }
     }
   } catch (e) {
     console.log(`\r\n\r\n`);

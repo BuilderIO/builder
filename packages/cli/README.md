@@ -26,6 +26,8 @@ By default, `import` downloads published content only. Pass `--include-unpublish
 
 The output directory is fully replaced on each successful run, so only point it at an empty directory or a prior snapshot from this command.
 
+On success, prints a summary: the number of models and total content entries in the snapshot (with a per-model breakdown when `--debug` is passed).
+
 ### `builder overwrite -k <private key> -i <input directory>`
 
 Restores a local snapshot into the **same, existing** space it was taken from (by id) — this is the counterpart to `import` for backups. Models are upserted by name; content entries are upserted by their original id. Upserting means a full replace: any model or entry that already exists in the target is overwritten with the snapshot's version, discarding changes made since the snapshot was taken. By default nothing is deleted — models and entries that exist in the target but aren't in the snapshot are left alone; use `--prune` to also remove those.
@@ -43,6 +45,8 @@ Restores a local snapshot into the **same, existing** space it was taken from (b
 
 Within a model, entries are written one at a time in their own `priority` order (falling back to `createdDate` for entries missing it; different models still write in parallel). A create/update write doesn't reliably store the `priority` sent in its body — confirmed against a real space, entries can come back with a server-assigned `priority` unrelated to the one submitted — so after writing, any entry with an explicit `priority` gets a follow-up `PATCH` setting just that field, which does stick since it's a targeted update to a doc that already exists.
 
+On success (outside `--dry-run`), prints a summary: models updated, models created, content entries written, content entries pruned (if `--prune`), and a failure count if any writes failed.
+
 ### `builder create -k <private key> -i <input directory> -n <name>`
 
 Creates a **new** space from a local snapshot, remapping every model/content id (and any references to them) to new ids scoped to the target organization.
@@ -55,6 +59,8 @@ Creates a **new** space from a local snapshot, remapping every model/content id 
 | `-d, --debug` | Print debug info, including the new space's public key |
 
 Entries within a model are created in their own `priority` order (falling back to `createdDate` for entries missing it; models run in parallel, but entries inside a model are created one at a time). `priority` is the field Builder's content list order (and delivery priority — which entry wins when several target the same URL/conditions) is actually based on, including manually drag-and-dropped order. However, the write API doesn't reliably apply a `priority` value supplied at creation time — confirmed against a real space, newly created entries came back with a server-assigned `priority` unrelated to the one sent. So once every entry has a real id in the new space, each one with an explicit `priority` gets a follow-up `PATCH` request setting just that field, which is what actually makes the new space's order match the snapshot's.
+
+On success, prints a summary: models created, content entries created, and a failure count if any writes failed.
 
 ### `builder integrate [options]`
 
