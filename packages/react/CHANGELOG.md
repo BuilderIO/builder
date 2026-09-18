@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.7
+
+### Patch Changes
+
+- 6b45a4f: Allow Image blocks to honor breakpoint-specific image positions while preserving the configured image position as a fallback.
+
 ## 9.4.6
 
 ### Patch Changes
