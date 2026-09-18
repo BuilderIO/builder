@@ -78,6 +78,8 @@ Wires Builder into an existing Next.js project by adding a catch-all route for a
 
 ## Developing
 
+This package is part of a yarn workspaces monorepo, so run `yarn install` from the repo root (not `packages/cli`) before using any of the scripts below.
+
 | Script | Description |
 | --- | --- |
 | `npm run dev` | Rebuilds on file change |
