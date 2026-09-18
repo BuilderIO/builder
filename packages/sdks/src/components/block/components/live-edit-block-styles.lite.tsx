@@ -6,7 +6,10 @@ import {
 import { TARGET } from '../../../constants/target.js';
 import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
 import { getProcessedBlock } from '../../../functions/get-processed-block.js';
-import { createCssClass } from '../../../helpers/css.js';
+import {
+  createCssClass,
+  getResponsiveStylesWithImagePosition,
+} from '../../../helpers/css.js';
 import { findBlockById } from '../../../helpers/find-block.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type {
@@ -59,7 +62,10 @@ export default function LiveEditBlockStyles(props: LiveEditBlockStylesProps) {
     },
 
     get css(): string {
-      const styles = this.processedBlock?.responsiveStyles;
+      const styles = getResponsiveStylesWithImagePosition(
+        this.processedBlock?.responsiveStyles,
+        this.processedBlock?.component?.name === 'Image'
+      );
 
       const content = props.contextProvider.content;
       const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(

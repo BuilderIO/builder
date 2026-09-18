@@ -6,7 +6,10 @@ import {
 import { TARGET } from '../../../constants/target.js';
 import type { BuilderContextInterface } from '../../../context/types.js';
 import { camelToKebabCase } from '../../../functions/camel-to-kebab-case.js';
-import { createCssClass } from '../../../helpers/css.js';
+import {
+  createCssClass,
+  getResponsiveStylesWithImagePosition,
+} from '../../../helpers/css.js';
 import { checkIsDefined } from '../../../helpers/nullable.js';
 import type { BuilderBlock } from '../../../types/builder-block.js';
 import InlinedStyles from '../../inlined-styles.lite.jsx';
@@ -39,7 +42,10 @@ export default function BlockStyles(props: BlockStylesProps) {
     get css(): string {
       const processedBlock = props.block;
 
-      const styles = processedBlock.responsiveStyles;
+      const styles = getResponsiveStylesWithImagePosition(
+        processedBlock.responsiveStyles,
+        processedBlock.component?.name === 'Image'
+      );
 
       const content = props.context.content;
       const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(

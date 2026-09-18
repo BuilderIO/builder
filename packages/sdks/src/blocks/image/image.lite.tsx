@@ -107,7 +107,12 @@ export default function Image(props: ImageProps) {
             transition: 'opacity 0.2s ease-in-out',
           }}
           style={{
-            objectPosition: props.backgroundPosition || 'center',
+            objectPosition: useTarget({
+              reactNative: props.backgroundPosition || 'center',
+              default: `var(--builder-image-position, ${
+                props.backgroundPosition || 'center'
+              })`,
+            }),
             objectFit: props.backgroundSize || 'cover',
             ...state.aspectRatioCss,
           }}
