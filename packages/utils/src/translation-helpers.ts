@@ -644,6 +644,62 @@ function setTranslatedLeaf({
   }
 }
 
+// Non-translatable leaves would inherit the source value from the rebuilt payload; keep what
+// the locale had. Paths mirror extraction: `#index`, `#key`, none for a LocalizedValue branch.
+function restoreExcludedLeaves(
+  next: any,
+  previous: any,
+  basePath: string,
+  locale: string,
+  excluded: Set<string> | undefined
+): any {
+  if (!excluded || next == null || previous == null) {
+    return next;
+  }
+  if (isExcludedPath(excluded, basePath)) {
+    return JSON.parse(JSON.stringify(previous));
+  }
+  if (Array.isArray(next)) {
+    if (Array.isArray(previous)) {
+      next.forEach((item, index) => {
+        next[index] = restoreExcludedLeaves(
+          item,
+          previous[index],
+          `${basePath}#${index}`,
+          locale,
+          excluded
+        );
+      });
+    }
+    return next;
+  }
+  if (typeof next !== 'object' || typeof previous !== 'object') {
+    return next;
+  }
+  if (next['@type'] === localizedType) {
+    if (previous['@type'] === localizedType && next[locale] != null && previous[locale] != null) {
+      next[locale] = restoreExcludedLeaves(
+        next[locale],
+        previous[locale],
+        basePath,
+        locale,
+        excluded
+      );
+    }
+    return next;
+  }
+  Object.keys(next).forEach(key => {
+    next[key] = restoreExcludedLeaves(
+      next[key],
+      previous[key],
+      `${basePath}#${key}`,
+      locale,
+      excluded
+    );
+  });
+  return next;
+}
+
 export function applyTranslation(
   content: BuilderContent,
   translation: TranslateableFields,
@@ -986,7 +1042,15 @@ export function applyTranslation(
             });
           });
 
-          set(options, key, { ...(existing || {}), [locale]: localeValue });
+          const merged = restoreExcludedLeaves(
+            localeValue,
+            existing?.[locale],
+            flatKey,
+            locale,
+            excludedPaths
+          );
+
+          set(options, key, { ...(existing || {}), [locale]: merged });
           markTranslated();
         });
       }
