@@ -548,7 +548,7 @@ export const importSpace = async (
       const modelName = kebabCase(model.name);
       const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
       if (content.length > 0) {
-        modelProgress.start(content.length, 0);
+        modelProgress.start(content.length, 0, { name: modelName });
       }
       await fse.outputFile(
         `${stagingDir}/${modelName}/schema.model.json`,
@@ -1293,7 +1293,7 @@ export const overwriteSpace = async (
         const pruneProgress = MULTIBAR.create(deleteTasks.length, 0, {
           name: 'pruning stale entries',
         });
-        pruneProgress.start(deleteTasks.length, 0);
+        pruneProgress.start(deleteTasks.length, 0, { name: 'pruning stale entries' });
         await mapWithConcurrency(deleteTasks, DEFAULT_WRITE_CONCURRENCY, async task => {
           const { modelName, entryId } = task;
           let failed = false;
@@ -1326,6 +1326,7 @@ export const overwriteSpace = async (
             } ${entryId}`,
           });
         });
+        pruneProgress.update(deleteTasks.length, { name: 'pruning stale entries' });
         pruneProgress.stop();
       }
     }
