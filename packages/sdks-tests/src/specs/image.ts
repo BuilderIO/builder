@@ -63,6 +63,10 @@ export const CONTENT = {
             overflow: 'hidden',
             marginLeft: 'auto',
             maxWidth: '604px',
+            objectPosition: 'top left',
+          },
+          small: {
+            objectPosition: 'bottom right',
           },
         },
       },
@@ -265,6 +269,10 @@ export const CONTENT_2 = {
             overflow: 'hidden',
             marginLeft: 'auto',
             maxWidth: '604px',
+            objectPosition: 'top left',
+          },
+          small: {
+            objectPosition: 'bottom right',
           },
         },
       },

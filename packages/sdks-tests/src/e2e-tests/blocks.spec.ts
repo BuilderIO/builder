@@ -137,6 +137,19 @@ test.describe('Blocks', () => {
       }
     });
 
+    test('Image position is responsive', async ({ page, sdk }) => {
+      test.skip(checkIsRN(sdk));
+
+      await page.goto('/image');
+
+      const images = page.locator('.builder-image');
+      await expect(images.first()).toHaveCSS('object-position', '0% 0%');
+      await expect(images.nth(1)).toHaveCSS('object-position', '50% 50%');
+
+      await page.setViewportSize({ width: 500, height: 720 });
+      await expect(images.first()).toHaveCSS('object-position', '100% 100%');
+    });
+
     test('Image alt attribute', async ({ page, sdk }) => {
       test.skip(checkIsRN(sdk));
 

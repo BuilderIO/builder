@@ -1,5 +1,33 @@
 import { camelToKebabCase } from '../functions/camel-to-kebab-case.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import { checkIsDefined } from './nullable.js';
+
+const withBuilderImagePosition = (
+  style: Partial<CSSStyleDeclaration> | undefined,
+  fallback?: string
+): Partial<CSSStyleDeclaration> | undefined => {
+  const imagePosition = style?.objectPosition || fallback;
+  return imagePosition
+    ? ({
+        ...style,
+        '--builder-image-position': imagePosition,
+      } as Partial<CSSStyleDeclaration>)
+    : style;
+};
+
+export const getResponsiveStylesWithImagePosition = (
+  styles: BuilderBlock['responsiveStyles'],
+  isBuilderImage: boolean
+): BuilderBlock['responsiveStyles'] =>
+  isBuilderImage
+    ? {
+        ...styles,
+        large: withBuilderImagePosition(styles?.large, 'initial'),
+        medium: withBuilderImagePosition(styles?.medium),
+        small: withBuilderImagePosition(styles?.small),
+        xsmall: withBuilderImagePosition(styles?.xsmall),
+      }
+    : styles;
 
 export const convertStyleMapToCSSArray = (
   style: Partial<CSSStyleDeclaration>

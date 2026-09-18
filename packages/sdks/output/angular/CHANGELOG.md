@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.14
+
+### Patch Changes
+
+- 6b45a4f: Allow Image blocks to honor breakpoint-specific image positions while preserving the configured image position as a fallback.
+
 ## 0.25.13
 
 ### Patch Changes

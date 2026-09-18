@@ -184,7 +184,8 @@ export class BuilderBlock extends React.Component<
 
     const reversedNames = sizeNames.slice().reverse();
     const styles: any = {};
-    if (responsiveStyles) {
+    const isBuilderImage = block.component?.name === 'Image';
+    if (responsiveStyles || isBuilderImage) {
       const contentHasXSmallBreakpoint = Boolean(
         this.privateState.context.builderContent?.meta?.breakpoints?.xsmall
       );
@@ -194,20 +195,28 @@ export class BuilderBlock extends React.Component<
           continue;
         }
 
+        const stylesForSize = responsiveStyles?.[size];
+        const imagePosition = isBuilderImage
+          ? stylesForSize?.objectPosition || (size === 'large' ? 'initial' : undefined)
+          : undefined;
+        const responsiveStylesForSize = imagePosition
+          ? { ...stylesForSize, '--builder-image-position': imagePosition }
+          : stylesForSize;
+
         if (size === 'large') {
           if (!this.props.emailMode) {
             styles[`&.builder-block`] = Object.assign(
               {},
-              responsiveStyles[size],
+              responsiveStylesForSize,
               initialAnimationStepStyles
             );
           }
-        } else {
+        } else if (responsiveStylesForSize) {
           const sizesPerBreakpoints = getSizesForBreakpoints(
             this.privateState.context.builderContent?.meta?.breakpoints || {}
           );
           styles[`@media only screen and (max-width: ${sizesPerBreakpoints[size].max}px)`] = {
-            '&.builder-block': responsiveStyles[size],
+            '&.builder-block': responsiveStylesForSize,
           };
         }
       }
