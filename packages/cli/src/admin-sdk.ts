@@ -356,14 +356,20 @@ const writeSequentiallyPerModel = async <T extends { modelName: string }>(
  */
 const PRIORITY_PATCH_VERIFY_ATTEMPTS = 4;
 const PRIORITY_PATCH_VERIFY_DELAY_MS = 2_000;
+// each task here is a PATCH plus a read-back against a distinct entry, with
+// no ordering requirement between tasks -- a wider pool than the default
+// write concurrency cuts down the real-world wall time for a large bulk
+// create/restore, which otherwise runs for minutes with no progress output
+const PRIORITY_PATCH_CONCURRENCY = 20;
 
 const applyPriorityPatches = async (
   tasks: Array<{ modelName: string; id: string; priority: number }>,
   authKey: string,
   apiKey: string,
+  onProgress: () => void,
   onFailure: (task: { modelName: string; id: string }, error: unknown) => void
 ): Promise<void> => {
-  await mapWithConcurrency(tasks, DEFAULT_WRITE_CONCURRENCY, async task => {
+  await mapWithConcurrency(tasks, PRIORITY_PATCH_CONCURRENCY, async task => {
     const patchRequest = buildPriorityPatchRequest(task.modelName, task.id);
     const getRequest = buildGetRequest(task.modelName, task.id, apiKey);
     let lastError: unknown;
@@ -391,6 +397,7 @@ const applyPriorityPatches = async (
         const entry = JSON.parse(await readBack.text());
 
         if (entry.priority === task.priority) {
+          onProgress();
           return;
         }
         lastError = new Error(
@@ -402,6 +409,7 @@ const applyPriorityPatches = async (
     }
 
     onFailure(task, lastError);
+    onProgress();
   });
 };
 
@@ -858,13 +866,26 @@ export const newSpace = async (
 
     modelBars.forEach(bar => bar.stop());
 
-    await applyPriorityPatches(priorityPatchTasks, newSpacePrivateKey.key, organization.id, (task, e) => {
-      failures.push({
-        model: task.modelName,
-        file: task.id,
-        error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
+    if (priorityPatchTasks.length > 0) {
+      const priorityProgress = MULTIBAR.create(priorityPatchTasks.length, 0, {
+        name: 'restoring entry order',
       });
-    });
+      priorityProgress.start(priorityPatchTasks.length, 0);
+      await applyPriorityPatches(
+        priorityPatchTasks,
+        newSpacePrivateKey.key,
+        organization.id,
+        () => priorityProgress.increment(1),
+        (task, e) => {
+          failures.push({
+            model: task.modelName,
+            file: task.id,
+            error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
+          });
+        }
+      );
+      priorityProgress.stop();
+    }
 
     console.log(`\r\n\r\n`);
     console.log(chalk.green(`Created space "${organization.name}":`));
@@ -1232,13 +1253,24 @@ export const overwriteSpace = async (
       // applyPriorityPatches
       if (priorityPatchTasks.length > 0) {
         const destinationApiKey = await graphqlClient.chain.query.id.execute();
-        await applyPriorityPatches(priorityPatchTasks, privateKey, destinationApiKey, (task, e) => {
-          failures.push({
-            model: task.modelName,
-            file: task.id,
-            error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
-          });
+        const priorityProgress = MULTIBAR.create(priorityPatchTasks.length, 0, {
+          name: 'restoring entry order',
         });
+        priorityProgress.start(priorityPatchTasks.length, 0);
+        await applyPriorityPatches(
+          priorityPatchTasks,
+          privateKey,
+          destinationApiKey,
+          () => priorityProgress.increment(1),
+          (task, e) => {
+            failures.push({
+              model: task.modelName,
+              file: task.id,
+              error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
+            });
+          }
+        );
+        priorityProgress.stop();
       }
     }
 
