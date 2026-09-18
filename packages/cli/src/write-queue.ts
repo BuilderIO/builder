@@ -38,7 +38,7 @@ export interface PostJsonOptions {
   fetchImpl: FetchLike;
   url: string;
   body?: any;
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   headers?: Record<string, string>;
   retries?: number;
   baseDelayMs?: number;

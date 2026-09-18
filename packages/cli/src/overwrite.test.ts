@@ -1,5 +1,11 @@
 import test from 'ava';
-import { buildDeleteRequest, buildWriteRequest, findStaleEntryIds, planModelSync } from './overwrite';
+import {
+  buildDeleteRequest,
+  buildPriorityPatchRequest,
+  buildWriteRequest,
+  findStaleEntryIds,
+  planModelSync,
+} from './overwrite';
 
 test('matches an existing model by kebab-cased name', t => {
   const existing = [
@@ -42,6 +48,17 @@ test('buildDeleteRequest targets the entry by id', t => {
   t.deepEqual(buildDeleteRequest('page', 'abc123'), {
     method: 'DELETE',
     url: 'https://builder.io/api/v1/write/page/abc123',
+  });
+});
+
+test('buildPriorityPatchRequest targets the entry by id with PATCH', t => {
+  t.deepEqual(buildPriorityPatchRequest('page', 'abc123'), {
+    method: 'PATCH',
+    url: 'https://builder.io/api/v1/write/page/abc123',
+  });
+  t.deepEqual(buildPriorityPatchRequest('page', 'a/b c'), {
+    method: 'PATCH',
+    url: 'https://builder.io/api/v1/write/page/a%2Fb%20c',
   });
 });
 

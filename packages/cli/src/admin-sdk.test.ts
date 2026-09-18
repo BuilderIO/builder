@@ -920,6 +920,51 @@ test.serial(
 );
 
 test.serial(
+  'overwrite restores an entry\'s original priority with a follow-up PATCH after creating it',
+  async t => {
+    // a plain create doesn't reliably store `priority` -- confirmed against
+    // a real space, where entries created via POST ended up with
+    // server-assigned priorities unrelated to the ones sent in the request.
+    // overwrite's POST-fallback path (for entries missing from the target)
+    // needs the same follow-up PATCH `newSpace` uses to actually fix that.
+    const dir = await makeSnapshot({
+      posts: {
+        schema: { name: 'Posts' },
+        entries: [{ id: 'missing-in-target', name: 'A', priority: -12.5 }],
+      },
+    });
+
+    const { calls, exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('updateModel')) {
+            return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
+          }
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+        }
+        if (url.startsWith(WRITE_API_ROOT) && init.method === 'PUT') {
+          return { status: 404, text: 'not found' };
+        }
+        if (url.startsWith(WRITE_API_ROOT) && (init.method === 'POST' || init.method === 'PATCH')) {
+          return { status: 200, text: '' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => overwriteSpace('fake-key', dir, false, false, true, false)
+    );
+
+    t.is(exitCode, undefined);
+    const patchCall = calls.find(
+      c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'PATCH'
+    );
+    t.truthy(patchCall);
+    t.true(Boolean(patchCall && patchCall.url.endsWith('/posts/missing-in-target')));
+    t.deepEqual(patchCall && JSON.parse(patchCall.init.body), { priority: -12.5 });
+  }
+);
+
+test.serial(
   'newSpace orders entries by their own priority field, not createdDate, when both are present',
   async t => {
     // priority is the field Builder's UI list order (and therefore delivery
@@ -974,11 +1019,30 @@ test.serial(
     );
 
     t.is(exitCode, undefined);
-    const writeCalls = calls.filter(c => c.url.startsWith(WRITE_API_ROOT));
+    const writeCalls = calls.filter(
+      c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'POST'
+    );
     t.deepEqual(
       writeCalls.map(c => JSON.parse(c.init.body).name),
       ['High', 'Mid', 'Low']
     );
+
+    // ids are rehashed by newSpace's replaceIds, so entries can only be
+    // matched up between the create (POST) and priority-restore (PATCH)
+    // calls by that shared, already-rehashed id
+    const priorityByPostedId = new Map(
+      writeCalls.map(c => {
+        const body = JSON.parse(c.init.body);
+        return [body.id, body.priority];
+      })
+    );
+    const patchCalls = calls.filter(
+      c => c.url.startsWith(WRITE_API_ROOT) && c.init.method === 'PATCH'
+    );
+    const priorityByPatchedId = new Map(
+      patchCalls.map(c => [c.url.split('/').pop(), JSON.parse(c.init.body).priority])
+    );
+    t.deepEqual(priorityByPatchedId, priorityByPostedId);
   }
 );
 

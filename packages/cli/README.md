@@ -41,7 +41,7 @@ Restores a local snapshot into the **same, existing** space it was taken from (b
 
 `--prune` asks for confirmation before deleting anything (unless `--yes` is passed), and is skipped entirely if any write in the run failed, so it never prunes against an incomplete restore. It always checks each model's destination content (including drafts) individually to decide what's stale, so a draft-only entry that's missing from the snapshot is still recognized as stale and deleted, just like a published one.
 
-Within a model, entries are written one at a time in their own `priority` order (falling back to `createdDate` for entries missing it; different models still write in parallel) — see the note on `create` below about why this matters for entries that end up being newly created in the target space.
+Within a model, entries are written one at a time in their own `priority` order (falling back to `createdDate` for entries missing it; different models still write in parallel). A create/update write doesn't reliably store the `priority` sent in its body — confirmed against a real space, entries can come back with a server-assigned `priority` unrelated to the one submitted — so after writing, any entry with an explicit `priority` gets a follow-up `PATCH` setting just that field, which does stick since it's a targeted update to a doc that already exists.
 
 ### `builder create -k <private key> -i <input directory> -n <name>`
 
@@ -54,7 +54,7 @@ Creates a **new** space from a local snapshot, remapping every model/content id 
 | `-n, --name` | Name for the new space |
 | `-d, --debug` | Print debug info, including the new space's public key |
 
-Entries within a model are created in their own `priority` order (falling back to `createdDate` for entries missing it; models run in parallel, but entries inside a model are created one at a time). `priority` is the field Builder's content list order (and delivery priority — which entry wins when several target the same URL/conditions) is actually based on, including manually drag-and-dropped order; it's included automatically since the full entry is sent on write, and sorting local writes by it too means newly created entries land in the same order they'll display in.
+Entries within a model are created in their own `priority` order (falling back to `createdDate` for entries missing it; models run in parallel, but entries inside a model are created one at a time). `priority` is the field Builder's content list order (and delivery priority — which entry wins when several target the same URL/conditions) is actually based on, including manually drag-and-dropped order. However, the write API doesn't reliably apply a `priority` value supplied at creation time — confirmed against a real space, newly created entries came back with a server-assigned `priority` unrelated to the one sent. So once every entry has a real id in the new space, each one with an explicit `priority` gets a follow-up `PATCH` request setting just that field, which is what actually makes the new space's order match the snapshot's.
 
 ### `builder integrate [options]`
 

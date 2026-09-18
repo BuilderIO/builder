@@ -28,6 +28,7 @@ import {
 } from './write-queue';
 import {
   buildDeleteRequest,
+  buildPriorityPatchRequest,
   buildWriteRequest,
   ExistingModel,
   findStaleEntryIds,
@@ -278,6 +279,41 @@ const writeSequentiallyPerModel = async <T extends { modelName: string }>(
       }
     }
   );
+};
+
+/**
+ * Confirmed against a real space: a plain create/update write doesn't
+ * reliably store the `priority` value sent in its body -- entries created
+ * via POST ended up with server-assigned priorities unrelated to the ones
+ * in the request. This runs after every entry already has a real id in the
+ * target space, PATCHing `priority` on its own as a targeted update to an
+ * existing doc, which is what actually sticks. Each PATCH targets a
+ * different entry, so unlike the writes above there's no ordering
+ * requirement between them and they can all run at full concurrency.
+ * Entries with no explicit `priority` in the snapshot are left alone --
+ * for those, the closest available approximation is still the creation
+ * order `writeSequentiallyPerModel` already produces.
+ */
+const applyPriorityPatches = async (
+  tasks: Array<{ modelName: string; id: string; priority: number }>,
+  authKey: string,
+  onFailure: (task: { modelName: string; id: string }, error: unknown) => void
+): Promise<void> => {
+  await mapWithConcurrency(tasks, DEFAULT_WRITE_CONCURRENCY, async task => {
+    const { method, url } = buildPriorityPatchRequest(task.modelName, task.id);
+    try {
+      await postJsonWithRetry({
+        fetchImpl: (fetch as unknown) as FetchLike,
+        method,
+        url,
+        body: { priority: task.priority },
+        headers: { Authorization: `Bearer ${authKey}` },
+        retries: DEFAULT_WRITE_RETRIES,
+      });
+    } catch (e) {
+      onFailure(task, e);
+    }
+  });
 };
 
 export const importSpace = async (
@@ -651,6 +687,8 @@ export const newSpace = async (
       });
     });
 
+    const priorityPatchTasks: Array<{ modelName: string; id: string; priority: number }> = [];
+
     await writeSequentiallyPerModel(writeTasks, async task => {
       const { modelName, fileName, progress } = task;
       let failed = false;
@@ -680,6 +718,13 @@ export const newSpace = async (
           },
           retries: DEFAULT_WRITE_RETRIES,
         });
+        if (typeof contentJSON.priority === 'number' && typeof contentJSON.id === 'string') {
+          priorityPatchTasks.push({
+            modelName,
+            id: contentJSON.id,
+            priority: contentJSON.priority,
+          });
+        }
       } catch (e) {
         failed = true;
         failures.push({
@@ -694,6 +739,14 @@ export const newSpace = async (
     });
 
     modelBars.forEach(bar => bar.stop());
+
+    await applyPriorityPatches(priorityPatchTasks, newSpacePrivateKey.key, (task, e) => {
+      failures.push({
+        model: task.modelName,
+        file: task.id,
+        error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
+      });
+    });
 
     if (debug) {
       console.log(`\r\n\r\n`);
@@ -979,6 +1032,8 @@ export const overwriteSpace = async (
 
     plan.entriesToWrite = writeTasks.length;
 
+    const priorityPatchTasks: Array<{ modelName: string; id: string; priority: number }> = [];
+
     await writeSequentiallyPerModel(writeTasks, async task => {
       const { modelName, fileName, entry, progress } = task;
       let failed = false;
@@ -1018,6 +1073,9 @@ export const overwriteSpace = async (
               throw e;
             }
           }
+          if (typeof entry.priority === 'number' && typeof entry.id === 'string') {
+            priorityPatchTasks.push({ modelName, id: entry.id, priority: entry.priority });
+          }
         } catch (e) {
           failed = true;
           failures.push({
@@ -1038,6 +1096,19 @@ export const overwriteSpace = async (
     });
 
     modelBars.forEach(bar => bar.stop());
+
+    if (!dryRun) {
+      // both PUT (update) and POST (create-on-404-fallback) are covered by
+      // the same unreliable-priority problem `newSpace` hit -- see
+      // applyPriorityPatches
+      await applyPriorityPatches(priorityPatchTasks, privateKey, (task, e) => {
+        failures.push({
+          model: task.modelName,
+          file: task.id,
+          error: `failed to restore original priority: ${e instanceof Error ? e.message : String(e)}`,
+        });
+      });
+    }
 
     if (prune && !dryRun && failures.length > 0) {
       // pruning now would delete entries based on an incomplete/incorrect

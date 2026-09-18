@@ -23,7 +23,7 @@ export const planModelSync = (
 };
 
 export interface WriteRequest {
-  method: 'PUT' | 'POST' | 'DELETE';
+  method: 'PUT' | 'POST' | 'PATCH' | 'DELETE';
   url: string;
 }
 
@@ -50,6 +50,21 @@ export const buildWriteRequest = (
 
 export const buildDeleteRequest = (modelName: string, entryId: string): WriteRequest => ({
   method: 'DELETE',
+  url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(entryId)}`,
+});
+
+/**
+ * A plain POST/PUT-by-id write doesn't reliably preserve an entry's
+ * `priority` -- confirmed against a real space, where entries created via
+ * POST ended up with server-assigned priorities unrelated to the ones sent
+ * in the request body. A follow-up PATCH targeting the now-known id, whose
+ * body contains nothing but `priority`, is a targeted update to a doc that
+ * already exists rather than a value supplied at creation time, and is the
+ * only way confirmed to make the target space's order actually match the
+ * snapshot's.
+ */
+export const buildPriorityPatchRequest = (modelName: string, entryId: string): WriteRequest => ({
+  method: 'PATCH',
   url: `${WRITE_API_ROOT}/${encodeURIComponent(modelName)}/${encodeURIComponent(entryId)}`,
 });
 
