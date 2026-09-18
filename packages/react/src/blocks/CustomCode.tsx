@@ -10,6 +10,10 @@ interface Props {
   scriptsClientOnly?: boolean;
 }
 
+interface State {
+  hydrated: boolean;
+}
+
 // TODO: settings context to pass this down. do in shopify-specific generated code
 const globalReplaceNodes = ({} as { [key: string]: Node[] }) || null;
 
@@ -48,7 +52,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
   }
 }
 
-class CustomCodeComponent extends React.Component<Props> {
+class CustomCodeComponent extends React.Component<Props, State> {
   elementRef: Element | null = null;
   originalRef: Node | Element | null = null;
 
@@ -57,7 +61,7 @@ class CustomCodeComponent extends React.Component<Props> {
 
   firstLoad = true;
   replaceNodes = false;
-  state = {
+  state: State = {
     hydrated: false,
   };
 
@@ -90,8 +94,9 @@ class CustomCodeComponent extends React.Component<Props> {
     }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
-    return nextProps.code !== this.props.code;
+  shouldComponentUpdate(nextProps: Readonly<Props>, nextState: State): boolean {
+    // `hydrated` flips once, in componentDidMount, to re-render the scripts stripped for SSR parity.
+    return nextProps.code !== this.props.code || nextState.hydrated !== this.state.hydrated;
   }
 
   get noReactRender() {
@@ -100,7 +105,11 @@ class CustomCodeComponent extends React.Component<Props> {
   }
 
   get isHydrating() {
-    return !isShopify && this.originalRef;
+    // `originalRef` is only captured when the SSR'd markup was already in the document when this
+    // module was evaluated. Bundlers load the SDK chunk asynchronously, so that ordering is not
+    // guaranteed. `scriptsClientOnly` always strips scripts on the server, so the first client
+    // render has to match that regardless of whether the node was captured.
+    return !isShopify && Boolean(this.originalRef || this.props.scriptsClientOnly);
   }
 
   componentDidUpdate(prevProps: Props) {
