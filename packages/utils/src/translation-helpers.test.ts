@@ -2040,3 +2040,46 @@ test('applyTranslation restores a skipped relative path into the target locale',
 
   expect((result.data as any).sibling['de-DE']).toEqual('./checkout');
 });
+
+test('applyTranslation keeps non-translatable values the target locale already had', () => {
+  const slide = (link: any) => ({
+    title: { '@type': localizedType, Default: 'Hospitality' },
+    link,
+  });
+  const content: BuilderContent = {
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-carousel',
+          meta: {
+            localizedTextInputs: ['slides'],
+            nonTranslatableInputs: ['slides.*.link'],
+          },
+          component: {
+            name: 'GenericCarousel',
+            options: {
+              slides: {
+                '@type': localizedType,
+                Default: [slide({ '@type': localizedType, Default: '/en-gb/take-payments/' })],
+                'de-DE': [slide({ '@type': localizedType, 'de-DE': '/de-de/zahlungen/' })],
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  const translation = getTranslateableFields(content, 'en-US', 'instructions');
+  const translated: typeof translation = {};
+  Object.keys(translation).forEach(key => {
+    translated[key] = { ...translation[key], value: 'DE ' + translation[key].value };
+  });
+
+  const result = applyTranslation(content, translated, 'de-DE', 'en-US');
+  const slides = (result.data as any).blocks[0].component.options.slides['de-DE'];
+
+  expect(slides[0].link).toEqual({ '@type': localizedType, 'de-DE': '/de-de/zahlungen/' });
+  expect(slides[0].title['de-DE']).toBe('DE Hospitality');
+});
