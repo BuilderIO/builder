@@ -1,58 +1,55 @@
 import type { BuilderBlock } from '../types/builder-block.js';
-import { traverse } from './traverse.js';
 
-function isLocalizedField(value: any) {
-  return (
-    value &&
-    typeof value === 'object' &&
-    value['@type'] === '@builder.io/core:LocalizedValue'
-  );
+const LOCALIZED_TYPE = '@builder.io/core:LocalizedValue';
+
+function resolveChild(child: any, locale: string, state: { seen: boolean }): any {
+  if (child === null || typeof child !== 'object') {
+    return child;
+  }
+  if (child['@type'] === LOCALIZED_TYPE) {
+    state.seen = true;
+    const value = child[locale] ?? undefined;
+    if (value !== null && typeof value === 'object') {
+      resolveLocalized(value, locale, state);
+    }
+    return value;
+  }
+  resolveLocalized(child, locale, state);
+  return child;
 }
 
-function containsLocalizedValues(data: Record<string, any>) {
-  if (!data || !Object.getOwnPropertyNames(data).length) {
-    return false;
-  }
-  let hasLocalizedValues = false;
-  traverse(data, (value) => {
-    if (isLocalizedField(value)) {
-      hasLocalizedValues = true;
-      return;
+// Resolve every LocalizedValue under `node` to `locale`, in place, in a single pass.
+function resolveLocalized(
+  node: any,
+  locale: string,
+  state: { seen: boolean }
+): void {
+  if (Array.isArray(node)) {
+    for (let i = 0; i < node.length; i++) {
+      node[i] = resolveChild(node[i], locale, state);
     }
-  });
-  return hasLocalizedValues;
-}
-
-function extractLocalizedValues(data: Record<string, any>, locale: string) {
-  if (!data || !Object.getOwnPropertyNames(data).length) {
-    return {};
-  }
-
-  traverse(data, (value, update) => {
-    if (isLocalizedField(value)) {
-      update(value[locale] ?? undefined);
+  } else {
+    for (const key in node) {
+      node[key] = resolveChild(node[key], locale, state);
     }
-  });
-
-  return data;
+  }
 }
 
 export function resolveLocalizedValues(
   block: BuilderBlock,
   locale: string | undefined
 ) {
-  if (
-    block.component?.options &&
-    containsLocalizedValues(block.component?.options)
-  ) {
-    if (!locale) {
-      console.warn(
-        '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
-      );
-    }
-    block.component.options = extractLocalizedValues(
-      block.component.options,
-      locale ?? 'Default'
+  const options = block.component?.options;
+  if (!options || typeof options !== 'object') {
+    return block;
+  }
+
+  const state = { seen: false };
+  resolveLocalized(options, locale ?? 'Default', state);
+
+  if (state.seen && !locale) {
+    console.warn(
+      '[Builder.io] In order to use localized fields in Builder, you must pass a locale prop to the BuilderComponent or to options object while fetching the content to resolve localized fields. Learn more: https://www.builder.io/c/docs/localization-inline#targeting-and-inline-localization'
     );
   }
 
