@@ -110,6 +110,68 @@ const entryKey = (entry: ContentEntry, modelName: string) => {
   return `${modelName}:__no-id__:${fingerprint}`;
 };
 
+export type FetchModelContentPage = (query: {
+  limit: number;
+  offset: number;
+}) => Promise<{ content?: ContentEntry[] | null } | null | undefined>;
+
+/**
+ * Paginates a single model's content in isolation, rather than as part of
+ * one shared multi-model query. Used for the v3 content REST endpoint,
+ * which (unlike the admin GraphQL API's batched `models { content }`
+ * field) has to be called once per model -- a bonus of that is that a
+ * failure fetching one model's content never affects any other model's,
+ * since each is a fully independent request.
+ */
+export const downloadAllModelContent = async (
+  fetchPage: FetchModelContentPage,
+  modelName: string,
+  options: DownloadAllOptions = {}
+): Promise<ContentEntry[]> => {
+  const limit = clampPageSize(options.pageSize);
+  const maxPages = options.maxPages ?? MAX_PAGES;
+
+  const seen = new Set<string>();
+  const content: ContentEntry[] = [];
+  let offset = 0;
+  let page = 0;
+
+  while (true) {
+    const result = await fetchPage({ limit, offset });
+    page++;
+
+    const pageEntries = result?.content || [];
+    const hasFullPage = pageEntries.length >= limit;
+
+    let added = 0;
+    pageEntries.forEach(entry => {
+      const key = entryKey(entry, modelName);
+      if (seen.has(key)) {
+        return;
+      }
+      seen.add(key);
+      content.push(entry);
+      added++;
+    });
+
+    options.onPage?.({ page, offset, limit, added, total: content.length });
+
+    if (!hasFullPage || added === 0) {
+      break;
+    }
+
+    if (page >= maxPages) {
+      throw new Error(
+        `Stopped after ${maxPages} pages without reaching the end of "${modelName}"'s content — this model may be growing faster than it can be paged through, or the API is not honoring \`offset\` as expected.`
+      );
+    }
+
+    offset += limit;
+  }
+
+  return content;
+};
+
 /**
  * Walks every offset page until each model is exhausted and returns a single
  * space snapshot shaped exactly like one `downloadClone` response.

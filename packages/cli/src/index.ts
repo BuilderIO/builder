@@ -33,9 +33,13 @@ program
     intParam,
     MAX_CONTENT_PAGE_SIZE
   )
+  .option(
+    '-u,--include-unpublished',
+    'Also fetch unpublished/draft content. Slower than a published-only import: each model is fetched individually so one model with draft-fetch issues does not affect the others'
+  )
   .action(options => {
     const key = requirePrivateKey(options.key);
-    importSpace(key, options.output, options.debug, options.limit);
+    importSpace(key, options.output, options.debug, options.limit, options.includeUnpublished);
   });
 
 program

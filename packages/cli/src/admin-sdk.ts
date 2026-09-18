@@ -9,10 +9,13 @@ import { createHash } from 'crypto';
 import traverse from 'traverse';
 import {
   ContentEntry,
+  downloadAllModelContent,
   downloadAllSpaceContent,
+  FetchModelContentPage,
   FetchSpacePage,
   MAX_CONTENT_PAGE_SIZE,
   SpacePage,
+  SpaceSnapshot,
 } from './pagination';
 import {
   DEFAULT_WRITE_CONCURRENCY,
@@ -200,48 +203,55 @@ const createGraphqlClient = (privateKey: string) =>
     },
   });
 
-// `graphql-typed-client` only preserves the raw GraphQL `errors` array on
-// thrown errors (as `.errors`), not a typed shape -- this pulls the model
-// index out of a `content` resolution error's `path` (e.g.
-// `["models", 4, "content"]`) so the fallback warning below can name the
-// specific model that failed instead of leaving the user to guess from a
-// raw index that shifts between runs
-const failingModelIndices = (e: unknown): number[] => {
-  const errors = (e as { errors?: unknown })?.errors;
-  if (!Array.isArray(errors)) {
-    return [];
-  }
-  const indices = new Set<number>();
-  errors.forEach(error => {
-    const path = (error as { path?: unknown })?.path;
-    if (Array.isArray(path) && path[0] === 'models' && typeof path[1] === 'number') {
-      indices.add(path[1]);
-    }
-  });
-  return Array.from(indices);
-};
+const REST_CONTENT_ROOT = 'https://cdn.builder.io/api/v3/content';
 
-const namesOfFailingModels = async (
-  graphqlClient: ReturnType<typeof createGraphqlClient>,
-  e: unknown
-): Promise<string[]> => {
-  const indices = failingModelIndices(e);
-  if (indices.length === 0) {
-    return [];
+/**
+ * The admin GraphQL API's batched `models { content }` field is the only
+ * way to fetch published content for every model in one request, but its
+ * `includeUnpublished` option is unreliable: a server-side error resolving
+ * *any one* model's draft content fails that entire batched response (see
+ * `importSpace`), and the singular `model(id)` field doesn't support the
+ * option at all. The v3 content REST endpoint, fetched once per model,
+ * does support it reliably -- confirmed against a real space where the
+ * batched GraphQL query 404s resolving one specific model's drafts. It's
+ * only used when unpublished content is actually requested, since the
+ * batched GraphQL query remains faster for the common published-only case.
+ */
+const fetchModelContentPageRest = (
+  privateKey: string,
+  apiKey: string,
+  modelName: string,
+  createdAtOrBefore: number,
+  includeUnpublished: boolean
+): FetchModelContentPage => async ({ limit, offset }) => {
+  const params = new URLSearchParams({
+    apiKey,
+    limit: String(limit),
+    offset: String(offset),
+    includeRefs: 'false',
+    'query.createdDate.$lte': String(createdAtOrBefore),
+    'sort.createdDate': '1',
+    'sort.id': '1',
+  });
+  if (includeUnpublished) {
+    params.set('includeUnpublished', 'true');
   }
-  try {
-    const models = (await graphqlClient.chain.query.models.execute({ name: true })) || [];
-    return indices.map(i => models[i]?.name).filter((name): name is string => Boolean(name));
-  } catch {
-    return [];
-  }
+  const response = await postJsonWithRetry({
+    fetchImpl: (fetch as unknown) as FetchLike,
+    method: 'GET',
+    url: `${REST_CONTENT_ROOT}/${encodeURIComponent(modelName)}?${params.toString()}`,
+    headers: { Authorization: `Bearer ${privateKey}` },
+  });
+  const body = JSON.parse(await response.text());
+  return { content: body?.results || [] };
 };
 
 export const importSpace = async (
   privateKey: string,
   directory: string,
   debug = false,
-  limit = MAX_CONTENT_PAGE_SIZE
+  limit = MAX_CONTENT_PAGE_SIZE,
+  includeUnpublished = false
 ) => {
   const graphqlClient = createGraphqlClient(privateKey);
   // entries created after this moment are excluded from the snapshot
@@ -259,75 +269,86 @@ export const importSpace = async (
   try {
     const settings = (await graphqlClient.chain.query.settings.execute()) || {};
 
-    // fetches every model's content in one batched query per page (the API
-    // has no way to select a single model's content on its own -- the
-    // schema's singular `model(id)` query field doesn't support
-    // `includeUnpublished` at all, confirmed by testing it against a real
-    // space: every model 404s through that field with the option set, while
-    // the vast majority succeed through this batched `models` field). A
-    // server-side error resolving any one model's content still fails this
-    // entire request, so a failure here is handled by falling back to a
-    // full re-download without `includeUnpublished` below, rather than
-    // assuming which specific model caused it.
-    const fetchPage = (includeUnpublished: boolean): FetchSpacePage => ({
-      limit: pageLimit,
-      offset,
-    }) =>
-      graphqlClient.chain.query.models
-        .execute({
+    let draftsIncluded = includeUnpublished;
+    let space: SpaceSnapshot;
+    if (includeUnpublished) {
+      // the admin GraphQL API's batched `models { content }` field is the
+      // only way to fetch every model's content in one request, but its
+      // `includeUnpublished` option is unreliable there: a server-side
+      // error resolving any one model's draft content fails the *entire*
+      // batched response (confirmed against a real space), and the
+      // singular `model(id)` field doesn't support the option at all. The
+      // v3 content REST endpoint, called once per model, does support it
+      // reliably, and a failure fetching one model's drafts there only
+      // affects that model instead of the whole space.
+      const apiKey = await graphqlClient.chain.query.id.execute();
+      const modelList =
+        (await graphqlClient.chain.query.models.execute({
           id: true,
           name: true,
           everything: true,
-          content: [
-            {
-              contentQuery: {
-                limit: pageLimit,
-                offset,
-                // createdDate alone isn't a unique key, so two entries created
-                // in the same millisecond would otherwise have unspecified
-                // relative order across page boundaries; id breaks the tie
-                sort: { createdDate: 1, id: 1 },
-                query: { createdDate: { $lte: importStartedAt } },
-                ...(includeUnpublished ? { options: { includeUnpublished: true } } : {}),
-              },
-            },
-          ],
-        })
-        .then(models => ({ settings, meta: undefined, models: models || [] })) as Promise<
-        SpacePage
-      >;
-
-    let draftsIncluded = true;
-    let space;
-    try {
-      space = await downloadAllSpaceContent(fetchPage(true), {
-        pageSize: limit,
-        onPage: ({ page, total }) =>
-          spaceProgress.update(0, {
-            name: 'downloading page ' + page + ' (' + total + ' entries so far)',
-          }),
+        })) || [];
+      spaceProgress.setTotal(modelList.length);
+      const modelsWithoutDrafts: string[] = [];
+      const models = await mapWithConcurrency(modelList, DEFAULT_WRITE_CONCURRENCY, async model => {
+        let content: ContentEntry[];
+        try {
+          content = await downloadAllModelContent(
+            fetchModelContentPageRest(privateKey, apiKey, model.name, importStartedAt, true),
+            model.name,
+            { pageSize: limit }
+          );
+        } catch (e) {
+          // isolated to this one model -- every other model's drafts are
+          // unaffected, unlike the batched GraphQL query this replaces
+          modelsWithoutDrafts.push(model.name);
+          content = await downloadAllModelContent(
+            fetchModelContentPageRest(privateKey, apiKey, model.name, importStartedAt, false),
+            model.name,
+            { pageSize: limit }
+          );
+        }
+        spaceProgress.increment(1, { name: `fetched "${model.name}" (${content.length} entries)` });
+        return { ...model, content };
       });
-    } catch (e) {
-      // the admin API can fail resolving unpublished content for a model in
-      // a way that fails the whole batched request (seen in production) --
-      // rather than lose the entire snapshot over it, fall back to a full
-      // published-only re-download, which is known to work, and surface the
-      // trade-off clearly instead of silently producing an incomplete backup
-      draftsIncluded = false;
-      const message = e instanceof Error ? e.message : String(e);
-      const failingModels = await namesOfFailingModels(graphqlClient, e);
-      console.log(
-        chalk.yellow(
-          failingModels.length > 0
-            ? `\nCould not fetch unpublished/draft content: the server failed to resolve draft content for ${failingModels
-                .map(name => `"${name}"`)
-                .join(
-                  ', '
-                )}. Because the API returns every model's content in one request, an error on any single model (${message}) currently loses drafts for the whole space -- consider reporting this as a server-side issue with that model's unpublished content. Retrying with published content only -- this snapshot will not include drafts.`
-            : `\nCould not fetch unpublished/draft content (the server rejected the request: ${message}). Retrying with published content only -- this snapshot will not include drafts.`
-        )
-      );
-      space = await downloadAllSpaceContent(fetchPage(false), {
+      if (modelsWithoutDrafts.length > 0) {
+        draftsIncluded = false;
+        console.log(
+          chalk.yellow(
+            `\nCould not fetch unpublished/draft content for ${modelsWithoutDrafts
+              .map(name => `"${name}"`)
+              .join(', ')} -- the server rejected that request, so ${
+              modelsWithoutDrafts.length === 1 ? 'this model was' : 'these models were'
+            } imported with published content only. Every other model's drafts were fetched normally.`
+          )
+        );
+      }
+      space = { settings, meta: undefined, models };
+    } else {
+      const fetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
+        graphqlClient.chain.query.models
+          .execute({
+            id: true,
+            name: true,
+            everything: true,
+            content: [
+              {
+                contentQuery: {
+                  limit: pageLimit,
+                  offset,
+                  // createdDate alone isn't a unique key, so two entries created
+                  // in the same millisecond would otherwise have unspecified
+                  // relative order across page boundaries; id breaks the tie
+                  sort: { createdDate: 1, id: 1 },
+                  query: { createdDate: { $lte: importStartedAt } },
+                },
+              },
+            ],
+          })
+          .then(models => ({ settings, meta: undefined, models: models || [] })) as Promise<
+          SpacePage
+        >;
+      space = await downloadAllSpaceContent(fetchPage, {
         pageSize: limit,
         onPage: ({ page, total }) =>
           spaceProgress.update(0, {
@@ -417,10 +438,10 @@ export const importSpace = async (
         console.log(chalk.green(`    ${name}: ${count}`));
       });
     }
-    if (!draftsIncluded) {
+    if (includeUnpublished && !draftsIncluded) {
       console.log(
         chalk.yellow(
-          '\nThis snapshot does not include unpublished/draft content -- see the warning above.'
+          '\nThis snapshot does not include unpublished/draft content for every model -- see the warning above.'
         )
       );
     }
@@ -975,58 +996,56 @@ export const overwriteSpace = async (
         )
       );
     } else if (prune && localEntryIdsByModel.size > 0) {
-      // uses the same real-id `models` field importSpace does (see the
-      // comment there) rather than `downloadClone` -- comparing local
-      // snapshot ids (also real ids) against ids that are freshly minted
-      // on every call would make every entry look stale and get pruned
-      const destinationFetchPage: FetchSpacePage = ({ limit: pageLimit, offset }) =>
-        graphqlClient.chain.query.models
-          .execute({
-            id: true,
-            name: true,
-            content: [
-              {
-                contentQuery: {
-                  limit: pageLimit,
-                  offset,
-                  // id tiebreaker matches the import query -- createdDate alone
-                  // isn't unique, so ties could otherwise be split inconsistently
-                  // across page boundaries and leave a stale entry un-pruned
-                  sort: { createdDate: 1, id: 1 },
-                  // never consider an entry for pruning if it was created after
-                  // this run started — otherwise something an editor creates
-                  // while the restore/prune is in flight can look "not in the
-                  // snapshot" and get deleted moments after it was made
-                  query: { createdDate: { $lte: runStartedAt } },
-                  // match the import query so a stale draft entry is still
-                  // recognized as stale and pruned, instead of being invisible
-                  // to the diff and left behind indefinitely
-                  options: { includeUnpublished: true },
-                },
-              },
-            ],
-          })
-          .then(models => ({
-            settings: undefined,
-            meta: undefined,
-            models: models || [],
-          })) as Promise<SpacePage>;
-
-      const destination = await downloadAllSpaceContent(destinationFetchPage, {
-        pageSize: MAX_CONTENT_PAGE_SIZE,
-      });
-
+      // fetches each pruned model's destination content independently via
+      // the v3 content REST endpoint rather than the admin GraphQL API's
+      // batched `models { content }` field -- that field's
+      // `includeUnpublished` option is unreliable (a server-side error
+      // resolving any one model's drafts fails the whole batched request,
+      // confirmed against a real space), so a stale draft in one model
+      // could silently make every other model's prune check fail too. A
+      // failure isolated to one model here just skips pruning drafts for
+      // that model, with a warning, instead of the whole run.
+      const apiKey = await graphqlClient.chain.query.id.execute();
       const deleteTasks: Array<{ modelName: string; entryId: string }> = [];
-      destination.models.forEach(model => {
-        const modelDirName = kebabCase(model.name);
-        const localIds = localEntryIdsByModel.get(modelDirName);
-        if (!localIds) {
-          return;
+      const modelsWithoutDraftPruneCheck: string[] = [];
+
+      await mapWithConcurrency(
+        Array.from(localEntryIdsByModel.entries()),
+        DEFAULT_WRITE_CONCURRENCY,
+        async ([modelDirName, localIds]) => {
+          const realName = existingModelsByDir.get(modelDirName)?.[0]?.name ?? modelDirName;
+          let destinationContent: ContentEntry[];
+          try {
+            destinationContent = await downloadAllModelContent(
+              fetchModelContentPageRest(privateKey, apiKey, realName, runStartedAt, true),
+              realName,
+              { pageSize: MAX_CONTENT_PAGE_SIZE }
+            );
+          } catch (e) {
+            modelsWithoutDraftPruneCheck.push(realName);
+            destinationContent = await downloadAllModelContent(
+              fetchModelContentPageRest(privateKey, apiKey, realName, runStartedAt, false),
+              realName,
+              { pageSize: MAX_CONTENT_PAGE_SIZE }
+            );
+          }
+          findStaleEntryIds(destinationContent, localIds).forEach(entryId => {
+            deleteTasks.push({ modelName: modelDirName, entryId });
+          });
         }
-        findStaleEntryIds(model.content, localIds).forEach(entryId => {
-          deleteTasks.push({ modelName: modelDirName, entryId });
-        });
-      });
+      );
+
+      if (modelsWithoutDraftPruneCheck.length > 0) {
+        console.log(
+          chalk.yellow(
+            `\nCould not check draft/unpublished content for staleness in ${modelsWithoutDraftPruneCheck
+              .map(name => `"${name}"`)
+              .join(', ')} -- the server rejected that request, so stale drafts in ${
+              modelsWithoutDraftPruneCheck.length === 1 ? 'that model' : 'those models'
+            } won't be pruned this run. Published content was still checked normally.`
+          )
+        );
+      }
 
       plan.entriesToPrune = deleteTasks.length;
 

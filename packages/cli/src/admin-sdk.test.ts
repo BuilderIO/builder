@@ -7,6 +7,10 @@ import { importSpace, newSpace, overwriteSpace, swapInStagingDir } from './admin
 import { WRITE_API_ROOT } from './overwrite';
 
 const GRAPHQL_URL = 'https://cdn.builder.io/api/v2/admin';
+const REST_CONTENT_URL = 'https://cdn.builder.io/api/v3/content';
+
+const restContentModel = (url: string) =>
+  decodeURIComponent(url.slice(REST_CONTENT_URL.length + 1).split('?')[0]);
 
 const makeSnapshot = async (models: Record<string, { schema: any; entries: any[] }>) => {
   const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-overwrite-test-'));
@@ -88,25 +92,25 @@ test.serial(
           if (body.query.includes('updateModel')) {
             return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
           }
-          if (body.query.includes('content(')) {
-            const contentQueryVar = Object.values(body.variables)[0] as any;
-            if (contentQueryVar.offset > 0) {
-              return graphqlResponse({ models: [] });
-            }
-            return graphqlResponse({
-              models: [
-                {
-                  id: 'model-1',
-                  name: 'Posts',
-                  content: [
-                    { id: 'a', createdDate: 1 },
-                    { id: 'stale', createdDate: 1 },
-                  ],
-                },
-              ],
-            });
+          if (body.query.includes('models')) {
+            return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
           }
-          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        if (url.startsWith(REST_CONTENT_URL)) {
+          const parsed = new URL(url);
+          if (Number(parsed.searchParams.get('offset')) > 0) {
+            return { status: 200, json: { results: [] } };
+          }
+          return {
+            status: 200,
+            json: {
+              results: [
+                { id: 'a', createdDate: 1 },
+                { id: 'stale', createdDate: 1 },
+              ],
+            },
+          };
         }
         if (url.startsWith(WRITE_API_ROOT)) {
           return { status: 200, text: '' };
@@ -127,13 +131,10 @@ test.serial(
     t.true(deleteUrls.some(url => url.endsWith('/posts/stale')));
     t.false(deleteUrls.some(url => url.endsWith('/posts/a')));
 
-    const contentCall = calls.find(
-      c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('content(')
-    );
-    const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
-    t.deepEqual(contentQueryVar.sort, { createdDate: 1, id: 1 });
-    t.truthy(contentQueryVar.query?.createdDate?.$lte);
-    t.true(contentQueryVar.options?.includeUnpublished);
+    const contentCall = calls.find(c => c.url.startsWith(REST_CONTENT_URL));
+    const parsedContentUrl = new URL(contentCall!.url);
+    t.is(parsedContentUrl.searchParams.get('includeUnpublished'), 'true');
+    t.truthy(parsedContentUrl.searchParams.get('query.createdDate.$lte'));
   }
 );
 
@@ -252,16 +253,17 @@ test.serial('dry-run makes no write, delete, or mutation calls', async t => {
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (body.query.includes('content(')) {
-          const contentQueryVar = Object.values(body.variables)[0] as any;
-          if (contentQueryVar.offset > 0) {
-            return graphqlResponse({ models: [] });
-          }
-          return graphqlResponse({
-            models: [{ id: 'model-1', name: 'Posts', content: [{ id: 'a', createdDate: 1 }] }],
-          });
+        if (body.query.includes('models')) {
+          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
         }
-        return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+        return graphqlResponse({ id: 'test-api-key' });
+      }
+      if (url.startsWith(REST_CONTENT_URL)) {
+        const parsed = new URL(url);
+        if (Number(parsed.searchParams.get('offset')) > 0) {
+          return { status: 200, json: { results: [] } };
+        }
+        return { status: 200, json: { results: [{ id: 'a', createdDate: 1 }] } };
       }
       throw new Error(`unexpected mutating fetch to ${url}`);
     },
@@ -434,16 +436,17 @@ test.serial(
           if (body.query.includes('updateModel')) {
             return graphqlResponse({ updateModel: { id: 'model-1', name: 'Posts' } });
           }
-          if (body.query.includes('content(')) {
-            const contentQueryVar = Object.values(body.variables)[0] as any;
-            if (contentQueryVar.offset > 0) {
-              return graphqlResponse({ models: [] });
-            }
-            return graphqlResponse({
-              models: [{ id: 'model-1', name: 'Posts', content: [{ id: 'a', createdDate: 1 }] }],
-            });
+          if (body.query.includes('models')) {
+            return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
           }
-          return graphqlResponse({ models: [{ id: 'model-1', name: 'Posts' }] });
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        if (url.startsWith(REST_CONTENT_URL)) {
+          const parsed = new URL(url);
+          if (Number(parsed.searchParams.get('offset')) > 0) {
+            return { status: 200, json: { results: [] } };
+          }
+          return { status: 200, json: { results: [{ id: 'a', createdDate: 1 }] } };
         }
         if (url.startsWith(WRITE_API_ROOT)) {
           return { status: 200, text: '' };
@@ -624,37 +627,37 @@ test.serial('importSpace requests unpublished/draft content, not just published'
     async (url, init) => {
       if (url === GRAPHQL_URL) {
         const body = JSON.parse(init.body);
-        if (!body.query.includes('content(')) {
+        if (body.query.includes('settings')) {
           return graphqlResponse({ settings: { name: 'Test' } });
         }
-        const vars = Object.values(body.variables)[0] as any;
-        if (vars.offset > 0) {
-          return graphqlResponse({ models: [] });
+        if (body.query.includes('models')) {
+          return graphqlResponse({
+            models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+          });
         }
-        return graphqlResponse({
-          models: [
-            {
-              id: 'model-1',
-              name: 'Posts',
-              everything: { name: 'Posts' },
-              content: [{ id: 'draft-a', createdDate: 1, published: 'draft' }],
-            },
-          ],
-        });
+        return graphqlResponse({ id: 'test-api-key' });
+      }
+      if (url.startsWith(REST_CONTENT_URL)) {
+        const parsed = new URL(url);
+        if (Number(parsed.searchParams.get('offset')) > 0) {
+          return { status: 200, json: { results: [] } };
+        }
+        return {
+          status: 200,
+          json: { results: [{ id: 'draft-a', createdDate: 1, published: 'draft' }] },
+        };
       }
       throw new Error('unexpected fetch to ' + url);
     },
-    () => importSpace('fake-key', dir, false, 100)
+    () => importSpace('fake-key', dir, false, 100, true)
   );
 
   t.is(exitCode, undefined);
   t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-draft-a.json')));
 
-  const contentCall = calls.find(
-    c => c.url === GRAPHQL_URL && JSON.parse(c.init.body).query.includes('content(')
-  );
-  const contentQueryVar = Object.values(JSON.parse(contentCall!.init.body).variables)[0] as any;
-  t.true(contentQueryVar.options?.includeUnpublished);
+  const contentCall = calls.find(c => c.url.startsWith(REST_CONTENT_URL));
+  const parsedContentUrl = new URL(contentCall!.url);
+  t.is(parsedContentUrl.searchParams.get('includeUnpublished'), 'true');
 });
 
 test.serial(
@@ -763,63 +766,55 @@ test.serial('overwrite falls back to POST when PUT-by-id 404s on a missing entry
 });
 
 test.serial(
-  'importSpace falls back to a published-only download when the server rejects unpublished content',
+  'importSpace falls back to published-only content for a model whose drafts the server rejects',
   async t => {
-    // reproduces a real production error: the admin API can fail resolving
-    // content for the whole batched request when includeUnpublished is set
-    // -- the import must still succeed, just without drafts, instead of
-    // aborting entirely
+    // reproduces the real production error: the v3 content REST endpoint
+    // can reject a specific model's draft request (a 404 resolving that
+    // model's unpublished content) -- the import must still succeed, with
+    // that one model published-only, instead of losing drafts for every
+    // other model too (as the old shared-batched-query approach did)
     const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-fallback-test-'));
 
-    let contentCalls = 0;
+    let draftAttempts = 0;
     const { exitCode } = await withMockedFetch(
       async (url, init) => {
         if (url === GRAPHQL_URL) {
           const body = JSON.parse(init.body);
-          if (!body.query.includes('content(')) {
+          if (body.query.includes('settings')) {
             return graphqlResponse({ settings: { name: 'Test' } });
           }
-          const vars = Object.values(body.variables)[0] as any;
-          if (vars.options?.includeUnpublished) {
-            contentCalls++;
-            return {
-              status: 200,
-              json: { errors: [{ message: 'Request failed with status code 404' }] },
-            };
+          if (body.query.includes('models')) {
+            return graphqlResponse({
+              models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+            });
           }
-          if (vars.offset > 0) {
-            return graphqlResponse({ models: [] });
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        if (url.startsWith(REST_CONTENT_URL)) {
+          const parsed = new URL(url);
+          if (parsed.searchParams.get('includeUnpublished') === 'true') {
+            draftAttempts++;
+            return { status: 404, text: 'not found' };
           }
-          return graphqlResponse({
-            models: [
-              {
-                id: 'model-1',
-                name: 'Posts',
-                everything: { name: 'Posts' },
-                content: [{ id: 'published-only', createdDate: 1 }],
-              },
-            ],
-          });
+          if (Number(parsed.searchParams.get('offset')) > 0) {
+            return { status: 200, json: { results: [] } };
+          }
+          return { status: 200, json: { results: [{ id: 'published-only', createdDate: 1 }] } };
         }
         throw new Error('unexpected fetch to ' + url);
       },
-      () => importSpace('fake-key', dir, false, 100)
+      () => importSpace('fake-key', dir, false, 100, true)
     );
 
     t.is(exitCode, undefined);
-    t.is(contentCalls, 1);
+    t.is(draftAttempts, 1);
     t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-published-only.json')));
   }
 );
 
 test.serial(
-  'importSpace names the model that failed unpublished-content resolution in its fallback warning',
+  'importSpace names the model whose drafts it could not fetch, without affecting other models',
   async t => {
-    // reproduces the exact error shape seen in production: a GraphQL error
-    // whose `path` points at a specific model index in the batched
-    // `models { content }` response -- the warning should look that index
-    // up against a plain model-name query and name it, instead of just
-    // surfacing the raw index
     const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-named-fallback-test-'));
     const logs: string[] = [];
     const originalLog = console.log;
@@ -835,47 +830,36 @@ test.serial(
             if (body.query.includes('settings')) {
               return graphqlResponse({ settings: { name: 'Test' } });
             }
-            if (!body.query.includes('content(')) {
-              // the diagnostic name-lookup query, issued only after the
-              // draft-content request below fails
-              return graphqlResponse({ models: [{ name: 'authors' }, { name: 'posts' }] });
+            if (body.query.includes('models')) {
+              return graphqlResponse({
+                models: [
+                  { id: 'model-1', name: 'authors', everything: { name: 'authors' } },
+                  { id: 'model-2', name: 'posts', everything: { name: 'posts' } },
+                ],
+              });
             }
-            const vars = Object.values(body.variables)[0] as any;
-            if (vars.options?.includeUnpublished) {
-              return {
-                status: 200,
-                json: {
-                  errors: [
-                    {
-                      message: 'Request failed with status code 404',
-                      path: ['models', 1, 'content'],
-                    },
-                  ],
-                },
-              };
+            return graphqlResponse({ id: 'test-api-key' });
+          }
+          if (url.startsWith(REST_CONTENT_URL)) {
+            const parsed = new URL(url);
+            const modelName = restContentModel(url);
+            if (modelName === 'authors' && parsed.searchParams.get('includeUnpublished') === 'true') {
+              return { status: 404, text: 'not found' };
             }
-            if (vars.offset > 0) {
-              return graphqlResponse({ models: [] });
+            if (Number(parsed.searchParams.get('offset')) > 0) {
+              return { status: 200, json: { results: [] } };
             }
-            return graphqlResponse({
-              models: [
-                {
-                  id: 'model-1',
-                  name: 'posts',
-                  everything: { name: 'posts' },
-                  content: [{ id: 'published-only', createdDate: 1 }],
-                },
-              ],
-            });
+            return { status: 200, json: { results: [{ id: `${modelName}-entry`, createdDate: 1 }] } };
           }
           throw new Error('unexpected fetch to ' + url);
         },
-        () => importSpace('fake-key', dir, false, 100)
+        () => importSpace('fake-key', dir, false, 100, true)
       );
     } finally {
       console.log = originalLog;
     }
 
-    t.true(logs.some(line => line.includes('"posts"')));
+    t.true(logs.some(line => line.includes('"authors"')));
+    t.false(logs.some(line => line.includes('Could not fetch') && line.includes('"posts"')));
   }
 );

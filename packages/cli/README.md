@@ -13,13 +13,16 @@ $ builder <command>
 
 ### `builder import -k <private key> -o <output directory>`
 
-Downloads a full snapshot of a space (models + content, including unpublished/draft entries) to the local filesystem, using the space's real, stable ids. Safe to re-run: writes to a staging directory first and only swaps it in once everything succeeds, so an interrupted run never corrupts a previous snapshot.
+Downloads a full snapshot of a space (models + content) to the local filesystem, using the space's real, stable ids. Safe to re-run: writes to a staging directory first and only swaps it in once everything succeeds, so an interrupted run never corrupts a previous snapshot.
 
 | Flag | Description |
 | --- | --- |
 | `-k, --key` | Private key of the space to import (or set `BUILDER_PRIVATE_KEY`) |
 | `-o, --output` | Output directory (default `./builder`) |
+| `-u, --include-unpublished` | Also fetch unpublished/draft content (see below) |
 | `-d, --debug` | Print debug info and per-model entry counts |
+
+By default, `import` downloads published content only. Pass `--include-unpublished` to also capture drafts: each model's content is then fetched individually (instead of one request covering every model), so a server-side issue fetching one model's drafts only falls back to published-only for that model — every other model still gets its drafts, and a warning names whichever model(s) were affected.
 
 The output directory is fully replaced on each successful run, so only point it at an empty directory or a prior snapshot from this command.
 
@@ -36,7 +39,7 @@ Restores a local snapshot into the **same, existing** space it was taken from (b
 | `--dry-run` | Show what would change without writing anything |
 | `-d, --debug` | Print debug info |
 
-`--prune` asks for confirmation before deleting anything (unless `--yes` is passed), and is skipped entirely if any write in the run failed, so it never prunes against an incomplete restore.
+`--prune` asks for confirmation before deleting anything (unless `--yes` is passed), and is skipped entirely if any write in the run failed, so it never prunes against an incomplete restore. It always checks each model's destination content (including drafts) individually to decide what's stale, so a draft-only entry that's missing from the snapshot is still recognized as stale and deleted, just like a published one.
 
 ### `builder create -k <private key> -i <input directory> -n <name>`
 
