@@ -3,7 +3,7 @@ import path from 'path';
 import fse from 'fs-extra';
 import { kebabCase, omit } from 'lodash';
 import chalk from 'chalk';
-import { readAsJson, getFiles, getDirectories, replaceField, confirmAction } from './utils';
+import { readAsJson, getFiles, getDirectories, replaceField, confirmAction, isHidden } from './utils';
 import cliProgress from 'cli-progress';
 import { createHash } from 'crypto';
 import traverse from 'traverse';
@@ -64,22 +64,31 @@ const siblingPath = (dir: string, suffix: string) => {
 };
 
 /**
- * A model directory in a real snapshot only ever contains JSON files (one
- * `schema.model.json` plus `entry-*.json` content files, see importSpace's
- * writer below) -- checking for the filename alone would let an unrelated
- * directory that merely happens to contain a file called `schema.model.json`
- * (e.g. from an unrelated tool or project template) pass as a snapshot too.
- * Checking every filename ends in `.json` is essentially free (it reuses the
- * directory listing already read below) and rules out a real project
- * directory, which will almost always have non-JSON files alongside it.
+ * A model directory in a real snapshot only ever contains JSON files named
+ * exactly the way importSpace's writer names them: one `schema.model.json`
+ * plus `entry-id-*.json` / `entry-noid-<n>.json` content files -- checking
+ * for `schema.model.json`'s filename alone would let an unrelated directory
+ * that merely happens to contain a file with that name (e.g. from an
+ * unrelated tool or project template) pass as a snapshot too, and checking
+ * only that every filename ends in `.json` would still let an unrelated
+ * `config.json` or similar sit alongside a coincidental schema.model.json.
+ * Hidden files (.DS_Store, .gitkeep, ...) are ignored, matching the
+ * getFiles/getDirectories readers used elsewhere, which already skip them.
  * Parsing is only done for schema.model.json itself -- doing that for every
  * content file too would make this guard re-read and re-parse an entire
  * large snapshot's worth of entries on every single re-run, just to prove
  * something importSpace already wrote correctly the first time.
  */
+const CONTENT_FILENAME_PATTERN = /^entry-(id-.+|noid-\d+)\.json$/;
+
 const looksLikeSnapshotModelDir = async (dir: string): Promise<boolean> => {
-  const entries = await fse.readdir(dir, { withFileTypes: true });
-  if (!entries.every(entry => entry.isFile() && entry.name.endsWith('.json'))) {
+  const entries = (await fse.readdir(dir, { withFileTypes: true })).filter(
+    entry => !isHidden(entry.name)
+  );
+  const isExpectedFile = (entry: fse.Dirent) =>
+    entry.isFile() &&
+    (entry.name === 'schema.model.json' || CONTENT_FILENAME_PATTERN.test(entry.name));
+  if (!entries.every(isExpectedFile)) {
     return false;
   }
   try {
@@ -98,6 +107,20 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> =>
 const readAsJsonQuietly = async (filePath: string) =>
   JSON.parse((await fse.readFile(filePath)).toString());
 
+// a bare filename match would let an unrelated settings.json (e.g. from an
+// editor or another tool) pass as a snapshot's settings file -- every real
+// one importSpace writes carries the space's own name, so require that
+// much before trusting it enough to let the directory be destructively
+// replaced.
+const looksLikeSnapshotSettings = async (filePath: string): Promise<boolean> => {
+  try {
+    const settings = await readAsJsonQuietly(filePath);
+    return isPlainObject(settings) && typeof settings.name === 'string';
+  } catch {
+    return false;
+  }
+};
+
 /**
  * A successful import fully replaces `directory`'s previous contents (see
  * `swapInStagingDir`), which is only safe if that directory is empty, new,
@@ -112,7 +135,18 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
   }
   const entries = await fse.readdir(resolved, { withFileTypes: true });
   for (const entry of entries) {
-    if (entry.isFile() && entry.name === 'settings.json') {
+    // a snapshot directory that's version-controlled (.git) or just been
+    // browsed on macOS (.DS_Store) picks these up too -- getFiles/
+    // getDirectories already ignore them elsewhere, so this guard should
+    // not be stricter than the readers that actually walk the snapshot
+    if (isHidden(entry.name)) {
+      continue;
+    }
+    if (
+      entry.isFile() &&
+      entry.name === 'settings.json' &&
+      (await looksLikeSnapshotSettings(path.join(resolved, entry.name)))
+    ) {
       continue;
     }
     if (entry.isDirectory() && (await looksLikeSnapshotModelDir(path.join(resolved, entry.name)))) {
@@ -686,6 +720,20 @@ export const importSpace = async (
         spaceProgress.increment();
         modelProgress.stop();
       });
+    }
+
+    // the earlier guard check can be a while ago by now -- a full download
+    // can take a long time, during which something could have appeared in
+    // `directory` since it was last checked. Re-checking fresh right before
+    // the actual swap closes that window instead of trusting a stale result.
+    if (!(await isSafeToReplace(directory))) {
+      throw new Error(
+        'Refusing to import into "' +
+          directory +
+          '": it now contains files that do not look like a previous snapshot from this command ' +
+          '(it changed since the initial check). A successful import fully replaces the output ' +
+          'directory contents, so point --output at an empty or dedicated directory to avoid losing unrelated data.'
+      );
     }
 
     await swapInStagingDir(stagingDir, directory);

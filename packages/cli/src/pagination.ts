@@ -244,11 +244,13 @@ export const downloadAllSpaceContent = async (
 
       const key = modelGroupKey(model);
       let target = modelsByKey.get(key);
+      let isNewModel = false;
       if (!target) {
         target = { ...model, content: [] };
         modelsByKey.set(key, target);
         seenEntryKeys.set(key, new Set());
         snapshot!.models.push(target);
+        isNewModel = true;
       }
 
       const seen = seenEntryKeys.get(key)!;
@@ -273,6 +275,13 @@ export const downloadAllSpaceContent = async (
         }
         added += newEntries.length;
         totalEntries += newEntries.length;
+      } else if (isNewModel && options.onEntries) {
+        // a model with no content at all would otherwise never be handed to
+        // the caller, since it never has any new entries to stream -- notify
+        // once, on first sight, so a model with zero entries still gets
+        // staged (e.g. its schema written) instead of silently disappearing
+        // from a streamed snapshot
+        await options.onEntries(target, [], page);
       }
     }
 

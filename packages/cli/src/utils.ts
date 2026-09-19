@@ -36,7 +36,7 @@ export const intParam = (value: any, previous: any) => {
 // schema.model.json (a false failure that silently disables --prune and
 // makes an otherwise-successful run exit non-zero) or try to parse a
 // hidden file as a content entry.
-const isHidden = (name: string) => name.startsWith('.');
+export const isHidden = (name: string) => name.startsWith('.');
 
 export const getDirectories = async (source: string) =>
   (await fse.readdir(source, { withFileTypes: true })).filter(

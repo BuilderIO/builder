@@ -400,3 +400,27 @@ test('onEntries is not called for pages contributing no new entries', async t =>
   t.is(calls, 1);
   t.is(space.models[0].content.length, 0);
 });
+
+test('onEntries still fires once for a model that never has any content', async t => {
+  const fetchPage: FetchSpacePage = async () => ({
+    settings: {},
+    meta: {},
+    models: [
+      { name: 'has-content', everything: {}, content: [{ id: 'a' }] },
+      { name: 'empty', everything: {}, content: [] },
+    ],
+  });
+  const seenModels: string[] = [];
+
+  await downloadAllSpaceContent(fetchPage, {
+    pageSize: 2,
+    onEntries: model => {
+      seenModels.push(model.name);
+    },
+  });
+
+  // a model with zero entries must still be handed to the caller once, or
+  // a streaming caller that stages a model from onEntries (e.g. writing its
+  // schema file) would silently drop it from the snapshot entirely
+  t.deepEqual(seenModels.sort(), ['empty', 'has-content']);
+});

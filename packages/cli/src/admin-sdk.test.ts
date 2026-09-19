@@ -560,6 +560,52 @@ test.serial('importSpace refuses to replace a directory containing unrelated fil
   t.false(await fse.pathExists(path.join(base, 'posts')));
 });
 
+test.serial('importSpace re-checks directory safety right before the swap', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-toctou-test-'));
+  let sawFinalPage = false;
+
+  const { exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (body.query.includes('settings')) {
+          return graphqlResponse({ settings: { name: 'Test' } });
+        }
+        if (!body.query.includes('content(')) {
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          if (!sawFinalPage) {
+            sawFinalPage = true;
+            await fse.outputFile(path.join(base, 'added-mid-run.txt'), 'surprise');
+          }
+          return graphqlResponse({ models: [] });
+        }
+        return graphqlResponse({
+          models: [
+            {
+              id: 'model-1',
+              name: 'Posts',
+              everything: { name: 'Posts' },
+              content: [{ id: 'a', createdDate: 1 }],
+            },
+          ],
+        });
+      }
+      if (url.startsWith(REST_CONTENT_URL)) {
+        return { status: 200, json: { results: [] } };
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => importSpace('fake-key', base, false, 1)
+  );
+
+  t.is(exitCode, 1);
+  t.true(await fse.pathExists(path.join(base, 'added-mid-run.txt')));
+  t.false(await fse.pathExists(path.join(base, 'posts')));
+});
+
 test.serial('importSpace refuses a model dir that only coincidentally has a schema.model.json', async t => {
   const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-guard-json-test-'));
   await fse.outputJson(path.join(base, 'not-a-model', 'schema.model.json'), { name: 'Posts' });
@@ -595,6 +641,90 @@ test.serial('importSpace refuses a model dir that only coincidentally has a sche
   t.is(exitCode, 1);
   t.true(await fse.pathExists(path.join(base, 'not-a-model', 'notes.txt')));
 });
+
+test.serial(
+  'importSpace refuses a model dir with an unrelated .json file alongside a coincidental schema.model.json',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-guard-extra-json-test-'));
+    await fse.outputJson(path.join(base, 'not-a-model', 'schema.model.json'), { name: 'Posts' });
+    // every file here is valid JSON and ends in .json, but "config.json"
+    // doesn't match the entry-id-*/entry-noid-* naming importSpace's own
+    // writer uses -- it should still be rejected as an unrelated directory
+    await fse.outputJson(path.join(base, 'not-a-model', 'config.json'), { some: 'config' });
+
+    const { exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (!body.query.includes('content(')) {
+            return graphqlResponse({ settings: { name: 'Test' } });
+          }
+          const vars = Object.values(body.variables)[0] as any;
+          if (vars.offset > 0) {
+            return graphqlResponse({ models: [] });
+          }
+          return graphqlResponse({
+            models: [
+              {
+                id: 'model-1',
+                name: 'Posts',
+                everything: { name: 'Posts' },
+                content: [{ id: 'a', createdDate: 1 }],
+              },
+            ],
+          });
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => importSpace('fake-key', base, false, 100)
+    );
+
+    t.is(exitCode, 1);
+    t.true(await fse.pathExists(path.join(base, 'not-a-model', 'config.json')));
+  }
+);
+
+test.serial(
+  'importSpace refuses a directory whose settings.json does not look like a snapshot',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-guard-settings-test-'));
+    // an unrelated tool's settings.json (e.g. an editor config) that
+    // happens to share the filename but isn't a Builder space snapshot
+    await fse.outputJson(path.join(base, 'settings.json'), { 'editor.tabSize': 2 });
+
+    const { exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (!body.query.includes('content(')) {
+            return graphqlResponse({ settings: { name: 'Test' } });
+          }
+          const vars = Object.values(body.variables)[0] as any;
+          if (vars.offset > 0) {
+            return graphqlResponse({ models: [] });
+          }
+          return graphqlResponse({
+            models: [
+              {
+                id: 'model-1',
+                name: 'Posts',
+                everything: { name: 'Posts' },
+                content: [{ id: 'a', createdDate: 1 }],
+              },
+            ],
+          });
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => importSpace('fake-key', base, false, 100)
+    );
+
+    t.is(exitCode, 1);
+    // the unrelated settings.json must survive untouched, not be silently
+    // treated as a prior snapshot and swapped out
+    t.deepEqual(await fse.readJson(path.join(base, 'settings.json')), { 'editor.tabSize': 2 });
+  }
+);
 
 test.serial(
   'importSpace restores a snapshot left over from a crash mid-swap, and cleans up stale staging dirs',
@@ -666,6 +796,95 @@ test.serial('importSpace allows re-importing into its own prior snapshot', async
   t.is(exitCode, undefined);
   t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-a.json')));
   t.false(await fse.pathExists(path.join(dir, 'posts', 'entry-id-old.json')));
+});
+
+test.serial(
+  'importSpace allows re-importing over a snapshot with hidden files like .git or .DS_Store',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-reimport-hidden-test-'));
+    const dir = path.join(base, 'backup');
+    await fse.outputJson(path.join(dir, 'settings.json'), { name: 'Old' });
+    await fse.outputJson(path.join(dir, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputJson(path.join(dir, 'posts', 'entry-id-old.json'), { id: 'old' });
+    // simulates the snapshot directory being version-controlled, or just
+    // browsed on macOS -- neither should block a legitimate re-import
+    await fse.ensureDir(path.join(dir, '.git'));
+    await fse.outputFile(path.join(dir, 'posts', '.DS_Store'), 'junk');
+
+    const { exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('settings')) {
+            return graphqlResponse({ settings: { name: 'New' } });
+          }
+          if (!body.query.includes('content(')) {
+            return graphqlResponse({ id: 'test-api-key' });
+          }
+          const vars = Object.values(body.variables)[0] as any;
+          if (vars.offset > 0) {
+            return graphqlResponse({ models: [] });
+          }
+          return graphqlResponse({
+            models: [
+              {
+                id: 'model-1',
+                name: 'Posts',
+                everything: { name: 'Posts' },
+                content: [{ id: 'a', createdDate: 1 }],
+              },
+            ],
+          });
+        }
+        if (url.startsWith(REST_CONTENT_URL)) {
+          return { status: 200, json: { results: [] } };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => importSpace('fake-key', dir, false, 100)
+    );
+
+    t.is(exitCode, undefined);
+    t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-a.json')));
+  }
+);
+
+test.serial('importSpace writes a schema for a model with no content entries', async t => {
+  const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-empty-model-test-'));
+
+  const { exitCode } = await withMockedFetch(
+    async (url, init) => {
+      if (url === GRAPHQL_URL) {
+        const body = JSON.parse(init.body);
+        if (body.query.includes('settings')) {
+          return graphqlResponse({ settings: { name: 'Test' } });
+        }
+        if (!body.query.includes('content(')) {
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        const vars = Object.values(body.variables)[0] as any;
+        if (vars.offset > 0) {
+          return graphqlResponse({ models: [] });
+        }
+        return graphqlResponse({
+          models: [
+            { id: 'model-1', name: 'Posts', everything: { name: 'Posts' }, content: [] },
+          ],
+        });
+      }
+      if (url.startsWith(REST_CONTENT_URL)) {
+        return { status: 200, json: { results: [] } };
+      }
+      throw new Error('unexpected fetch to ' + url);
+    },
+    () => importSpace('fake-key', dir, false, 100)
+  );
+
+  t.is(exitCode, undefined);
+  // a model with zero content entries must still get a schema written --
+  // it would otherwise silently vanish from the snapshot entirely, since
+  // the streamed write path only ever sees a model through its entries
+  t.true(await fse.pathExists(path.join(dir, 'posts', 'schema.model.json')));
 });
 
 test.serial('importSpace requests unpublished/draft content, not just published', async t => {
@@ -1242,5 +1461,44 @@ test.serial(
 
     t.true(logs.some(line => line.includes('"authors"')));
     t.false(logs.some(line => line.includes('Could not fetch') && line.includes('"posts"')));
+  }
+);
+
+test.serial(
+  'importSpace aborts instead of swapping in an incomplete snapshot when a model\'s content cannot be fetched at all',
+  async t => {
+    const dir = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-total-fetch-failure-test-'));
+    await fse.outputJson(path.join(dir, 'settings.json'), { name: 'Old' });
+    await fse.outputJson(path.join(dir, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputJson(path.join(dir, 'posts', 'entry-id-old.json'), { id: 'old' });
+
+    // both the unpublished request and its published-only fallback fail --
+    // this must not be treated as "zero entries" and swapped in over the
+    // prior good snapshot
+    const { exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (body.query.includes('settings')) {
+            return graphqlResponse({ settings: { name: 'New' } });
+          }
+          if (body.query.includes('models')) {
+            return graphqlResponse({
+              models: [{ id: 'model-1', name: 'Posts', everything: { name: 'Posts' } }],
+            });
+          }
+          return graphqlResponse({ id: 'test-api-key' });
+        }
+        if (url.startsWith(REST_CONTENT_URL)) {
+          return { status: 404, text: 'not found' };
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => importSpace('fake-key', dir, false, 100, true)
+    );
+
+    t.is(exitCode, 1);
+    // the prior good snapshot must survive untouched
+    t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-old.json')));
   }
 );
