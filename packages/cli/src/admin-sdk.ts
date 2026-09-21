@@ -820,6 +820,10 @@ export const newSpace = async (
     const modelDirs = await getDirectories(directory);
     const modelIds: string[] = [];
     const contentIds: string[] = [];
+    // include operation-specific context (timestamp + resolved directory path) in the
+    // hash for derived IDs so that id-less entries get unique IDs across different
+    // newSpace operations, even if the same snapshot directory is used multiple times
+    const operationContext = Date.now() + ':' + path.resolve(directory);
     await mapWithConcurrency(modelDirs, DEFAULT_WRITE_CONCURRENCY, async ({ name: modelName }) => {
       const schema = await readAsJson(`${directory}/${modelName}/schema.model.json`);
       if (typeof schema.id === 'string' && schema.id) {
@@ -943,10 +947,11 @@ export const newSpace = async (
           // replaceIds to remap, so without this it would be POSTed
           // without one -- a retry after a lost response would then create
           // a duplicate instead of overwriting. Deriving a stable id from
-          // the file, as overwriteSpace already does, makes the POST below
-          // idempotent like every other entry here.
+          // the file plus operation context (timestamp + directory) makes
+          // the id unique across different newSpace operations, while
+          // remaining deterministic within each operation for idempotency.
           contentJSON.id = createHash('sha256')
-            .update(modelName + ':' + fileName)
+            .update(modelName + ':' + fileName + ':' + operationContext)
             .digest('hex');
         }
         // The write API's PUT-by-id only updates an existing entry and 404s
@@ -1069,7 +1074,6 @@ export const overwriteSpace = async (
   // pruning, no matter what the destination re-download below sees —
   // this is what keeps a concurrently-created entry from being deleted
   // in the same run that just created it
-  const runStartedAt = Date.now();
   const progressCounts = {
     modelsUpdated: 0,
     modelsCreated: 0,
@@ -1110,6 +1114,11 @@ export const overwriteSpace = async (
       return;
     }
   }
+  // capture runStartedAt after confirmation, so entries created during the
+  // confirmation window (while the user was deciding) are not protected from
+  // pruning -- they should be pruned if absent from the local snapshot, since
+  // the user explicitly confirmed the prune operation before they were created
+  const runStartedAt = Date.now();
   const failures: Array<{ file: string; model: string; error: string }> = [];
   const plan = { modelsToUpdate: 0, modelsToCreate: 0, entriesToWrite: 0, entriesToPrune: 0 };
 
