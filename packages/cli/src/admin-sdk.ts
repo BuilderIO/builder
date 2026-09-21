@@ -1121,6 +1121,9 @@ export const overwriteSpace = async (
   const runStartedAt = Date.now();
   const failures: Array<{ file: string; model: string; error: string }> = [];
   const plan = { modelsToUpdate: 0, modelsToCreate: 0, entriesToWrite: 0, entriesToPrune: 0 };
+  // include operation-specific context (timestamp + resolved directory) in derived ID hash
+  // to ensure id-less entries get unique IDs across different overwrite operations
+  const operationContext = Date.now() + ':' + path.resolve(directory);
 
   if (!dryRun) {
     process.on('SIGINT', onInterrupt);
@@ -1276,7 +1279,7 @@ export const overwriteSpace = async (
           entry = {
             ...entry,
             id: createHash('sha256')
-              .update(`${modelName}:${contentFile.name}`)
+              .update(`${modelName}:${contentFile.name}:${operationContext}`)
               .digest('hex'),
           };
         }
