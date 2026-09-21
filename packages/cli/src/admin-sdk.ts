@@ -534,6 +534,7 @@ export const importSpace = async (
       const stagedModelDirs = new Set<string>();
       const modelEntryIndex = new Map<string, number>();
       const modelBarByDir = new Map<string, cliProgress.Bar>();
+      const modelBarTotalByDir = new Map<string, number>();
 
       const stageModel = async (model: ModelPage) => {
         const modelName = kebabCase(model.name);
@@ -552,6 +553,7 @@ export const importSpace = async (
         modelEntryIndex.set(modelName, 0);
         const bar = MULTIBAR.create(0, 0, { name: modelName });
         modelBarByDir.set(modelName, bar);
+        modelBarTotalByDir.set(modelName, 0);
         return modelName;
       };
 
@@ -559,6 +561,12 @@ export const importSpace = async (
         const modelName = await stageModel(model);
         const bar = modelBarByDir.get(modelName)!;
         const counts = entryCountsByModel.find(m => m.name === model.name)!;
+        const startCount = counts.count;
+        const newTotal = startCount + entries.length;
+        if (newTotal > modelBarTotalByDir.get(modelName)!) {
+          bar.setTotal(newTotal);
+          modelBarTotalByDir.set(modelName, newTotal);
+        }
         for (const entry of entries) {
           // namespaced and encoded so a caller-supplied id can never collide
           // with schema.model.json or the no-id fallback pattern, and can
@@ -573,7 +581,6 @@ export const importSpace = async (
           await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
           counts.count++;
           totalEntries++;
-          bar.setTotal(counts.count);
           bar.increment(1, { name: ` ${modelName}: ${filename} ` });
         }
       };
