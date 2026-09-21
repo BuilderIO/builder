@@ -1572,41 +1572,129 @@ test.serial(
   }
 );
 
-test('swapInStagingDir keeps the previous backup instead of deleting it when a hidden-entry move fails', async t => {
-  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-hidden-fail-test-'));
-  const directory = path.join(base, 'backup');
-  const staging = path.join(base, 'backup.importing-123');
+test.serial(
+  'swapInStagingDir keeps the previous backup instead of deleting it when a hidden-entry move fails',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-hidden-fail-test-'));
+    const directory = path.join(base, 'backup');
+    const staging = path.join(base, 'backup.importing-123');
 
-  await fse.outputJson(path.join(directory, 'posts', 'schema.model.json'), { name: 'Posts' });
-  await fse.outputFile(path.join(directory, '.env'), 'SECRET=1');
+    await fse.outputJson(path.join(directory, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputFile(path.join(directory, '.env'), 'SECRET=1');
 
-  await fse.outputJson(path.join(staging, 'posts', 'schema.model.json'), { name: 'Posts' });
-  await fse.outputJson(path.join(staging, 'posts', 'entry-id-new.json'), { id: 'new' });
+    await fse.outputJson(path.join(staging, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputJson(path.join(staging, 'posts', 'entry-id-new.json'), { id: 'new' });
 
-  const originalMove = fse.move;
-  const moveSpy = async (src: string, dest: string, options?: any) => {
-    if (src.includes('.previous-') && src.endsWith('.env')) {
-      throw new Error('simulated permission error');
+    const originalMove = fse.move;
+    const moveSpy = async (src: string, dest: string, options?: any) => {
+      if (src.includes('.previous-') && src.endsWith('.env')) {
+        throw new Error('simulated permission error');
+      }
+      return originalMove(src, dest, options);
+    };
+    (fse as any).move = moveSpy;
+
+    try {
+      await swapInStagingDir(staging, directory);
+    } finally {
+      (fse as any).move = originalMove;
     }
-    return originalMove(src, dest, options);
-  };
-  (fse as any).move = moveSpy;
 
-  try {
-    await swapInStagingDir(staging, directory);
-  } finally {
-    (fse as any).move = originalMove;
+    t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-new.json')));
+    // the .env move failed, so the .previous-* backup holding it must survive
+    // instead of being deleted along with the data that was never carried over
+    const parent = path.dirname(directory);
+    const remaining = await fse.readdir(parent);
+    const previousDirs = remaining.filter(name => name.startsWith('backup.previous-'));
+    t.is(previousDirs.length, 1);
+    t.is(
+      await fse.readFile(path.join(parent, previousDirs[0], '.env'), 'utf8'),
+      'SECRET=1'
+    );
   }
+);
 
-  t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-new.json')));
-  // the .env move failed, so the .previous-* backup holding it must survive
-  // instead of being deleted along with the data that was never carried over
-  const parent = path.dirname(directory);
-  const remaining = await fse.readdir(parent);
-  const previousDirs = remaining.filter(name => name.startsWith('backup.previous-'));
-  t.is(previousDirs.length, 1);
-  t.is(
-    await fse.readFile(path.join(parent, previousDirs[0], '.env'), 'utf8'),
-    'SECRET=1'
-  );
-});
+test.serial(
+  'importSpace retains stale backups if restoring the most recent one fails',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-recovery-fail-test-'));
+    const directory = path.join(base, 'backup');
+    const mostRecentPrevious = path.join(base, 'backup.previous-2000');
+    const stalePrevious = path.join(base, 'backup.previous-1000');
+    await fse.outputJson(path.join(mostRecentPrevious, 'settings.json'), { name: 'Recent' });
+    await fse.outputJson(path.join(stalePrevious, 'settings.json'), { name: 'Stale' });
+
+    const originalMove = fse.move;
+    const moveSpy = async (src: string, dest: string, options?: any) => {
+      if (src === mostRecentPrevious) {
+        throw new Error('simulated restore failure');
+      }
+      return originalMove(src, dest, options);
+    };
+    (fse as any).move = moveSpy;
+
+    let exitCode: number | undefined;
+    try {
+      ({ exitCode } = await withMockedFetch(
+        async () => {
+          throw new Error('network error');
+        },
+        () => importSpace('fake-key', directory, false, 100)
+      ));
+    } finally {
+      (fse as any).move = originalMove;
+    }
+
+    t.is(exitCode, 1);
+    // restoring the newest backup failed, so both it and the older,
+    // otherwise-redundant backup must survive instead of the older one
+    // being deleted along with the rest of the recovery chain
+    t.true(await fse.pathExists(mostRecentPrevious));
+    t.true(await fse.pathExists(stalePrevious));
+    t.false(await fse.pathExists(directory));
+  }
+);
+
+test.serial(
+  'swapInStagingDir keeps the previous backup when hidden entries cannot even be listed',
+  async t => {
+    const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-hidden-list-fail-test-'));
+    const directory = path.join(base, 'backup');
+    const staging = path.join(base, 'backup.importing-123');
+
+    await fse.outputJson(path.join(directory, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputFile(path.join(directory, '.env'), 'SECRET=1');
+
+    await fse.outputJson(path.join(staging, 'posts', 'schema.model.json'), { name: 'Posts' });
+    await fse.outputJson(path.join(staging, 'posts', 'entry-id-new.json'), { id: 'new' });
+
+    const originalReaddir = fse.readdir;
+    const readdirSpy = (dir: string, options?: any) => {
+      if (typeof dir === 'string' && dir.includes('.previous-')) {
+        const err: NodeJS.ErrnoException = new Error('simulated EACCES');
+        err.code = 'EACCES';
+        return Promise.reject(err);
+      }
+      return (originalReaddir as any)(dir, options);
+    };
+    (fse as any).readdir = readdirSpy;
+
+    try {
+      await swapInStagingDir(staging, directory);
+    } finally {
+      (fse as any).readdir = originalReaddir;
+    }
+
+    t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-new.json')));
+    // the listing failed (as opposed to the previous dir simply not existing),
+    // so it must be treated as an unfinished carry-over and kept, not deleted
+    const parent = path.dirname(directory);
+    const remaining = await fse.readdir(parent);
+    const previousDirs = remaining.filter(name => name.startsWith('backup.previous-'));
+    t.is(previousDirs.length, 1);
+    t.is(
+      await fse.readFile(path.join(parent, previousDirs[0], '.env'), 'utf8'),
+      'SECRET=1'
+    );
+  }
+);

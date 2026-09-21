@@ -174,9 +174,16 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
  * strength of a carry-over that didn't actually finish.
  */
 const carryOverHiddenEntries = async (fromDir: string, toDir: string): Promise<boolean> => {
-  const entries = await fse.readdir(fromDir, { withFileTypes: true }).catch(() => null);
-  if (entries === null) {
-    return true;
+  let entries: fse.Dirent[];
+  try {
+    entries = await fse.readdir(fromDir, { withFileTypes: true });
+  } catch (e) {
+    // ENOENT means fromDir never existed (or was already cleaned up), so
+    // there is genuinely nothing to carry over -- that's success. Any other
+    // error (permissions, a transient I/O failure, ...) means it's still
+    // there and unread, so a caller must not treat this as a finished
+    // carry-over and delete it
+    return (e as NodeJS.ErrnoException)?.code === 'ENOENT';
   }
   let allSucceeded = true;
   await Promise.all(
@@ -248,8 +255,26 @@ const recoverStaleSiblings = async (directory: string) => {
         `\nFound "${mostRecent}" left over from a previous import that appears to have been interrupted while replacing "${resolved}", which is now missing -- restoring it from that backup before continuing.`
       )
     );
-    await fse.move(mostRecent, resolved, { overwrite: true }).catch(() => {});
-    await Promise.all(stale.map(dir => fse.remove(dir).catch(() => {})));
+    const restored = await fse
+      .move(mostRecent, resolved, { overwrite: true })
+      .then(() => true)
+      .catch(e => {
+        console.error(
+          chalk.red(
+            `\nFailed to restore "${mostRecent}" into "${resolved}": ${
+              e?.message || e
+            }. Leaving it and every other backup in place -- resolve this manually before importing again.`
+          )
+        );
+        return false;
+      });
+    // only the older, genuinely redundant backups are discarded, and only
+    // once the newest one is confirmed restored -- a failed restore leaves
+    // every candidate in place instead of destroying the rest of the
+    // recovery chain along with it
+    if (restored) {
+      await Promise.all(stale.map(dir => fse.remove(dir).catch(() => {})));
+    }
   } else {
     // a `.previous-*` sibling can still hold hidden entries (.git, .env,
     // ...) that swapInStagingDir wasn't able to carry over into `directory`
