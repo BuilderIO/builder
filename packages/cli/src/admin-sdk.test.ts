@@ -391,6 +391,31 @@ test('swapInStagingDir restores the previous snapshot if the final swap fails', 
   t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-old.json')));
 });
 
+test('swapInStagingDir preserves unrelated hidden files instead of deleting them', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-hidden-test-'));
+  const directory = path.join(base, 'backup');
+  const staging = path.join(base, 'backup.importing-123');
+
+  await fse.outputJson(path.join(directory, 'posts', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputJson(path.join(directory, 'posts', 'entry-id-old.json'), { id: 'old' });
+  // isSafeToReplace tolerates hidden entries alongside a valid snapshot
+  // without verifying they belong to it -- the swap must not destroy them
+  await fse.outputFile(path.join(directory, '.env'), 'SECRET=1');
+  await fse.outputFile(path.join(directory, '.hidden-tool-dir', 'config'), 'setting=1');
+
+  await fse.outputJson(path.join(staging, 'posts', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputJson(path.join(staging, 'posts', 'entry-id-new.json'), { id: 'new' });
+
+  await swapInStagingDir(staging, directory);
+
+  t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-new.json')));
+  t.is(await fse.readFile(path.join(directory, '.env'), 'utf8'), 'SECRET=1');
+  t.is(
+    await fse.readFile(path.join(directory, '.hidden-tool-dir', 'config'), 'utf8'),
+    'setting=1'
+  );
+});
+
 test.serial(
   'a transient failure on a graphql query is retried instead of failing the whole run',
   async t => {

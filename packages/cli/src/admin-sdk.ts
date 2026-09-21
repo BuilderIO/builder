@@ -794,6 +794,24 @@ export const swapInStagingDir = async (stagingDir: string, targetDir: string) =>
     throw e;
   }
   if (hadExisting) {
+    // isSafeToReplace tolerates hidden entries (.git, .env, .vscode, ...)
+    // alongside a valid snapshot without verifying they belong to it -- so
+    // rather than delete them along with previousDir, carry them over into
+    // the newly-swapped-in directory instead of silently destroying them
+    const previousEntries = await fse
+      .readdir(previousDir, { withFileTypes: true })
+      .catch(() => [] as fse.Dirent[]);
+    await Promise.all(
+      previousEntries
+        .filter(entry => isHidden(entry.name))
+        .map(entry =>
+          fse
+            .move(path.join(previousDir, entry.name), path.join(directory, entry.name), {
+              overwrite: true,
+            })
+            .catch(() => {})
+        )
+    );
     await fse.remove(previousDir).catch(() => {});
   }
 };

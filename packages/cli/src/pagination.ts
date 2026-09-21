@@ -106,24 +106,20 @@ const mergeMeta = (
   return merged;
 };
 
+const stableEntryId = (entry: ContentEntry): string | undefined =>
+  typeof entry?.id === 'string' && entry.id ? entry.id : undefined;
+
 /**
- * Entries with an id are deduped by that id. Entries without one (rare) are
- * deduped by a content fingerprint instead of their position in the page:
- * a position-based key changes every iteration even if the server ignores
- * `offset` and keeps re-sending the same entries, which would defeat the
- * `added === 0` termination check below and page forever. Two distinct
- * id-less entries with identical content will collide and be treated as
- * one, which is an acceptable trade-off against an infinite loop.
+ * Content fingerprint for an id-less entry (rare). Used only to detect a
+ * server that ignores `offset` and re-sends the same page forever -- a
+ * position-based key would change every iteration even when the content is
+ * identical, which would defeat the `added === 0` termination check below.
  */
-const entryKey = (entry: ContentEntry, modelName: string) => {
-  if (typeof entry?.id === 'string' && entry.id) {
-    return entry.id;
-  }
-  const fingerprint = createHash('sha1')
-    .update(JSON.stringify(entry))
-    .digest('hex');
-  return `${modelName}:__no-id__:${fingerprint}`;
-};
+const contentFingerprint = (entry: ContentEntry) =>
+  createHash('sha1').update(JSON.stringify(entry)).digest('hex');
+
+const fingerprintsMatch = (a: string[], b: string[]) =>
+  a.length > 0 && a.length === b.length && a.every((fingerprint, i) => fingerprint === b[i]);
 
 export type FetchModelContentPage = (query: {
   limit: number;
@@ -146,7 +142,8 @@ export const downloadAllModelContent = async (
   const limit = clampPageSize(options.pageSize);
   const maxPages = options.maxPages ?? MAX_PAGES;
 
-  const seen = new Set<string>();
+  const seenIds = new Set<string>();
+  let previousNoIdFingerprints: string[] = [];
   const content: ContentEntry[] = [];
   let offset = 0;
   let page = 0;
@@ -158,13 +155,28 @@ export const downloadAllModelContent = async (
     const pageEntries = result?.content || [];
     const hasFullPage = pageEntries.length >= limit;
 
+    const noIdFingerprints = pageEntries
+      .filter(entry => stableEntryId(entry) === undefined)
+      .map(contentFingerprint);
+    // id-less entries are only deduped when this whole page's id-less
+    // content exactly repeats the previous page's -- the signal that the
+    // server is ignoring `offset` -- rather than by content fingerprint
+    // alone, which would otherwise collapse two distinct id-less entries
+    // that happen to share identical content (see stableEntryId)
+    const isRepeatedPage = fingerprintsMatch(noIdFingerprints, previousNoIdFingerprints);
+    previousNoIdFingerprints = noIdFingerprints;
+
     let added = 0;
     pageEntries.forEach(entry => {
-      const key = entryKey(entry, modelName);
-      if (seen.has(key)) {
+      const id = stableEntryId(entry);
+      if (id !== undefined) {
+        if (seenIds.has(id)) {
+          return;
+        }
+        seenIds.add(id);
+      } else if (isRepeatedPage) {
         return;
       }
-      seen.add(key);
       content.push(entry);
       added++;
     });
@@ -218,7 +230,8 @@ export const downloadAllSpaceContent = async (
   // actually stable across pages, so it's the only safe grouping key here.
   const modelGroupKey = (model: ModelPage) => model.name;
   const modelsByKey = new Map<string, ModelPage & { content: ContentEntry[] }>();
-  const seenEntryKeys = new Map<string, Set<string>>();
+  const seenIdsByKey = new Map<string, Set<string>>();
+  const previousNoIdFingerprintsByKey = new Map<string, string[]>();
 
   while (true) {
     const result = await fetchPage({ limit, offset });
@@ -248,19 +261,38 @@ export const downloadAllSpaceContent = async (
       if (!target) {
         target = { ...model, content: [] };
         modelsByKey.set(key, target);
-        seenEntryKeys.set(key, new Set());
+        seenIdsByKey.set(key, new Set());
+        previousNoIdFingerprintsByKey.set(key, []);
         snapshot!.models.push(target);
         isNewModel = true;
       }
 
-      const seen = seenEntryKeys.get(key)!;
+      const seenIds = seenIdsByKey.get(key)!;
+      const noIdFingerprints = content
+        .filter(entry => stableEntryId(entry) === undefined)
+        .map(contentFingerprint);
+      // id-less entries are only deduped when this whole page's id-less
+      // content exactly repeats the previous page's for this model -- the
+      // signal that the server is ignoring `offset` -- rather than by
+      // content fingerprint alone, which would otherwise collapse two
+      // distinct id-less entries that happen to share identical content
+      const isRepeatedPage = fingerprintsMatch(
+        noIdFingerprints,
+        previousNoIdFingerprintsByKey.get(key)!
+      );
+      previousNoIdFingerprintsByKey.set(key, noIdFingerprints);
+
       const newEntries: ContentEntry[] = [];
       content.forEach(entry => {
-        const entryDedupeKey = entryKey(entry, key);
-        if (seen.has(entryDedupeKey)) {
+        const id = stableEntryId(entry);
+        if (id !== undefined) {
+          if (seenIds.has(id)) {
+            return;
+          }
+          seenIds.add(id);
+        } else if (isRepeatedPage) {
           return;
         }
-        seen.add(entryDedupeKey);
         newEntries.push(entry);
       });
 

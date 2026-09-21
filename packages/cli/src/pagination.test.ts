@@ -424,3 +424,31 @@ test('onEntries still fires once for a model that never has any content', async 
   // schema file) would silently drop it from the snapshot entirely
   t.deepEqual(seenModels.sort(), ['empty', 'has-content']);
 });
+
+test('distinct id-less entries with identical content on the same page are all kept', async t => {
+  const fetchPage: FetchSpacePage = async ({ offset }) => ({
+    settings: {},
+    meta: {},
+    models: [
+      {
+        name: 'page',
+        everything: {},
+        content: offset === 0 ? [{ name: 'dup' }, { name: 'dup' }] : [],
+      },
+    ],
+  });
+
+  const space = await downloadAllSpaceContent(fetchPage, { pageSize: 2 });
+
+  t.is(space.models[0].content.length, 2);
+});
+
+test('downloadAllModelContent keeps distinct id-less entries with identical content on the same page', async t => {
+  const fetchPage: FetchModelContentPage = async ({ offset }) => ({
+    content: offset === 0 ? [{ name: 'dup' }, { name: 'dup' }] : [],
+  });
+
+  const content = await downloadAllModelContent(fetchPage, 'authors', { pageSize: 2 });
+
+  t.is(content.length, 2);
+});
