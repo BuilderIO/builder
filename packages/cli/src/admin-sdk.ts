@@ -162,18 +162,22 @@ const PREVIOUS_PREFIX = '.previous-';
 
 /**
  * A crash between the two renames inside `swapInStagingDir` (or one that
- * interrupts a run before it gets that far) leaves leftover sibling
- * directories next to `directory`. An `.importing-*` sibling is always safe
- * to discard -- it's an incomplete staging copy that never got swapped in.
- * A `.previous-*` sibling is normally just debris from a successful run
- * whose final cleanup step didn't finish (also safe to discard) -- unless
- * `directory` itself is missing, which means the crash happened *between*
- * moving it aside and moving the new staging copy into place. In that case
- * the `.previous-*` sibling is the last known-good snapshot, so it's
- * restored instead of discarded: without this, a crash in that narrow
- * window (which can be minutes wide on a network-mounted output path,
- * where moves fall back to copy+delete) would otherwise make a snapshot
- * that was already safely on disk appear to have vanished.
+ * interrupts a run before it gets that far) can leave a `.previous-*` sibling
+ * next to `directory`. If that crash happened between moving the main
+ * directory aside and moving the staging directory into place, the
+ * `.previous-*` sibling is the last known-good snapshot and should be
+ * restored: without this, a crash in that narrow window (which can be
+ * minutes wide on a network-mounted output path, where moves fall back to
+ * copy+delete) would otherwise make a snapshot that was already safely on
+ * disk appear to have vanished. Otherwise `.previous-*` is just debris
+ * from a successful run whose final cleanup step didn't finish, so it can
+ * be discarded.
+ *
+ * `.importing-*` directories are left as-is rather than cleaned up here,
+ * since we cannot safely determine whether they belong to a crashed run
+ * (safe to remove) or an active concurrent import (must not touch).
+ * Concurrent imports to the same directory are not supported, but accidental
+ * disk clutter is preferable to silently breaking an in-flight import.
  */
 const recoverStaleSiblings = async (directory: string) => {
   const resolved = path.resolve(directory);
@@ -189,13 +193,6 @@ const recoverStaleSiblings = async (directory: string) => {
     .map(entry => path.join(parent, entry.name))
     .sort()
     .reverse();
-
-  for (const entry of entries) {
-    if (!entry.isDirectory() || !entry.name.startsWith(`${base}${IMPORTING_PREFIX}`)) {
-      continue;
-    }
-    await fse.remove(path.join(parent, entry.name)).catch(() => {});
-  }
 
   if (previousCandidates.length === 0) {
     return;

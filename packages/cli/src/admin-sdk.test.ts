@@ -727,7 +727,7 @@ test.serial(
 );
 
 test.serial(
-  'importSpace restores a snapshot left over from a crash mid-swap, and cleans up stale staging dirs',
+  'importSpace restores a snapshot left over from a crash mid-swap, and leaves stale staging dirs alone (to avoid race with concurrent imports)',
   async t => {
     const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-import-recovery-test-'));
     const directory = path.join(base, 'backup');
@@ -749,7 +749,8 @@ test.serial(
     t.true(await fse.pathExists(path.join(directory, 'settings.json')));
     t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-old.json')));
     t.false(await fse.pathExists(previousDir));
-    t.false(await fse.pathExists(staleStagingDir));
+    // stale .importing-* dirs are left behind to avoid a race with concurrent imports
+    t.true(await fse.pathExists(staleStagingDir));
   }
 );
 
