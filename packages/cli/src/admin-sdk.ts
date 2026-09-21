@@ -134,6 +134,8 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
     return true;
   }
   const entries = await fse.readdir(resolved, { withFileTypes: true });
+  let sawVisibleEntry = false;
+  let sawValidSettings = false;
   for (const entry of entries) {
     // a snapshot directory that's version-controlled (.git) or just been
     // browsed on macOS (.DS_Store) picks these up too -- getFiles/
@@ -142,11 +144,13 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
     if (isHidden(entry.name)) {
       continue;
     }
+    sawVisibleEntry = true;
     if (
       entry.isFile() &&
       entry.name === 'settings.json' &&
       (await looksLikeSnapshotSettings(path.join(resolved, entry.name)))
     ) {
+      sawValidSettings = true;
       continue;
     }
     if (entry.isDirectory() && (await looksLikeSnapshotModelDir(path.join(resolved, entry.name)))) {
@@ -154,7 +158,46 @@ const isSafeToReplace = async (directory: string): Promise<boolean> => {
     }
     return false;
   }
-  return true;
+  // every snapshot importSpace writes always includes a settings.json at the
+  // top level, even for a space with zero models -- requiring one here
+  // (rather than accepting any directory whose visible children merely
+  // look model-shaped) closes a gap where an unrelated directory containing
+  // only a coincidentally schema.model.json-shaped file could otherwise
+  // pass and be destructively replaced
+  return !sawVisibleEntry || sawValidSettings;
+};
+
+/**
+ * Moves any hidden entries (.git, .env, ...) from `fromDir` into `toDir`,
+ * skipping anything already present at the destination. Returns false if any
+ * entry could not be moved, so a caller never deletes `fromDir` on the
+ * strength of a carry-over that didn't actually finish.
+ */
+const carryOverHiddenEntries = async (fromDir: string, toDir: string): Promise<boolean> => {
+  const entries = await fse.readdir(fromDir, { withFileTypes: true }).catch(() => null);
+  if (entries === null) {
+    return true;
+  }
+  let allSucceeded = true;
+  await Promise.all(
+    entries
+      .filter(entry => isHidden(entry.name))
+      .map(async entry => {
+        const destination = path.join(toDir, entry.name);
+        if (await fse.pathExists(destination)) {
+          // already carried over (e.g. a retried partial carry-over), or the
+          // new snapshot happens to have its own hidden entry with this name
+          // -- leave the destination alone rather than overwrite it
+          return;
+        }
+        try {
+          await fse.move(path.join(fromDir, entry.name), destination);
+        } catch {
+          allSucceeded = false;
+        }
+      })
+  );
+  return allSucceeded;
 };
 
 const IMPORTING_PREFIX = '.importing-';
@@ -208,7 +251,20 @@ const recoverStaleSiblings = async (directory: string) => {
     await fse.move(mostRecent, resolved, { overwrite: true }).catch(() => {});
     await Promise.all(stale.map(dir => fse.remove(dir).catch(() => {})));
   } else {
-    await Promise.all(previousCandidates.map(dir => fse.remove(dir).catch(() => {})));
+    // a `.previous-*` sibling can still hold hidden entries (.git, .env,
+    // ...) that swapInStagingDir wasn't able to carry over into `directory`
+    // on a prior run (see swapInStagingDir) -- retry that carry-over here
+    // and only discard the sibling once nothing is left to lose
+    await Promise.all(
+      previousCandidates.map(async dir => {
+        const carriedOverEverything = await carryOverHiddenEntries(dir, resolved).catch(
+          () => false
+        );
+        if (carriedOverEverything) {
+          await fse.remove(dir).catch(() => {});
+        }
+      })
+    );
   }
 };
 
@@ -797,22 +853,22 @@ export const swapInStagingDir = async (stagingDir: string, targetDir: string) =>
     // isSafeToReplace tolerates hidden entries (.git, .env, .vscode, ...)
     // alongside a valid snapshot without verifying they belong to it -- so
     // rather than delete them along with previousDir, carry them over into
-    // the newly-swapped-in directory instead of silently destroying them
-    const previousEntries = await fse
-      .readdir(previousDir, { withFileTypes: true })
-      .catch(() => [] as fse.Dirent[]);
-    await Promise.all(
-      previousEntries
-        .filter(entry => isHidden(entry.name))
-        .map(entry =>
-          fse
-            .move(path.join(previousDir, entry.name), path.join(directory, entry.name), {
-              overwrite: true,
-            })
-            .catch(() => {})
+    // the newly-swapped-in directory instead of silently destroying them.
+    // previousDir is only removed once every entry has actually been moved
+    // -- if a move fails partway through (permissions, a conflict, a flaky
+    // filesystem), previousDir is left in place instead of deleting data
+    // that was never copied; recoverStaleSiblings retries the carry-over
+    // from it on the next run before ever removing it.
+    const carriedOverEverything = await carryOverHiddenEntries(previousDir, directory);
+    if (carriedOverEverything) {
+      await fse.remove(previousDir).catch(() => {});
+    } else {
+      console.log(
+        chalk.yellow(
+          `\nCould not move every hidden file/directory from "${previousDir}" into "${directory}" -- leaving "${previousDir}" in place so nothing is lost. It will be retried on the next import, or can be inspected and removed manually.`
         )
-    );
-    await fse.remove(previousDir).catch(() => {});
+      );
+    }
   }
 };
 

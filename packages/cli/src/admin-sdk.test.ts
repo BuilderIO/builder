@@ -1528,3 +1528,85 @@ test.serial(
     t.true(await fse.pathExists(path.join(dir, 'posts', 'entry-id-old.json')));
   }
 );
+
+test.serial(
+  'importSpace refuses a directory with a model-shaped dir but no settings.json',
+  async t => {
+    const base = await fse.mkdtemp(
+      path.join(os.tmpdir(), 'builder-import-guard-no-settings-test-')
+    );
+    // shaped exactly like a valid snapshot model directory, but there is no
+    // settings.json anywhere -- a real snapshot always writes one, so this
+    // should not be trusted as a prior snapshot to replace
+    await fse.outputJson(path.join(base, 'posts', 'schema.model.json'), { name: 'Posts' });
+
+    const { exitCode } = await withMockedFetch(
+      async (url, init) => {
+        if (url === GRAPHQL_URL) {
+          const body = JSON.parse(init.body);
+          if (!body.query.includes('content(')) {
+            return graphqlResponse({ settings: { name: 'Test' } });
+          }
+          const vars = Object.values(body.variables)[0] as any;
+          if (vars.offset > 0) {
+            return graphqlResponse({ models: [] });
+          }
+          return graphqlResponse({
+            models: [
+              {
+                id: 'model-1',
+                name: 'Posts',
+                everything: { name: 'Posts' },
+                content: [{ id: 'a', createdDate: 1 }],
+              },
+            ],
+          });
+        }
+        throw new Error('unexpected fetch to ' + url);
+      },
+      () => importSpace('fake-key', base, false, 100)
+    );
+
+    t.is(exitCode, 1);
+    t.true(await fse.pathExists(path.join(base, 'posts', 'schema.model.json')));
+  }
+);
+
+test('swapInStagingDir keeps the previous backup instead of deleting it when a hidden-entry move fails', async t => {
+  const base = await fse.mkdtemp(path.join(os.tmpdir(), 'builder-swap-hidden-fail-test-'));
+  const directory = path.join(base, 'backup');
+  const staging = path.join(base, 'backup.importing-123');
+
+  await fse.outputJson(path.join(directory, 'posts', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputFile(path.join(directory, '.env'), 'SECRET=1');
+
+  await fse.outputJson(path.join(staging, 'posts', 'schema.model.json'), { name: 'Posts' });
+  await fse.outputJson(path.join(staging, 'posts', 'entry-id-new.json'), { id: 'new' });
+
+  const originalMove = fse.move;
+  const moveSpy = async (src: string, dest: string, options?: any) => {
+    if (src.includes('.previous-') && src.endsWith('.env')) {
+      throw new Error('simulated permission error');
+    }
+    return originalMove(src, dest, options);
+  };
+  (fse as any).move = moveSpy;
+
+  try {
+    await swapInStagingDir(staging, directory);
+  } finally {
+    (fse as any).move = originalMove;
+  }
+
+  t.true(await fse.pathExists(path.join(directory, 'posts', 'entry-id-new.json')));
+  // the .env move failed, so the .previous-* backup holding it must survive
+  // instead of being deleted along with the data that was never carried over
+  const parent = path.dirname(directory);
+  const remaining = await fse.readdir(parent);
+  const previousDirs = remaining.filter(name => name.startsWith('backup.previous-'));
+  t.is(previousDirs.length, 1);
+  t.is(
+    await fse.readFile(path.join(parent, previousDirs[0], '.env'), 'utf8'),
+    'SECRET=1'
+  );
+});
