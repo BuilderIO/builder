@@ -1121,9 +1121,12 @@ export const overwriteSpace = async (
   const runStartedAt = Date.now();
   const failures: Array<{ file: string; model: string; error: string }> = [];
   const plan = { modelsToUpdate: 0, modelsToCreate: 0, entriesToWrite: 0, entriesToPrune: 0 };
-  // include operation-specific context (timestamp + resolved directory) in derived ID hash
-  // to ensure id-less entries get unique IDs across different overwrite operations
-  const operationContext = Date.now() + ':' + path.resolve(directory);
+  // derive stable IDs for id-less entries using only the directory, so that repeated
+  // overwrite operations to the same target space generate the same IDs for the same
+  // files, allowing PUT-based updates and enabling --prune to correctly identify stale
+  // entries created by earlier runs. (Unlike newSpace, which uses Date.now() because
+  // each call creates a new space with its own context, overwrite must be idempotent)
+  const operationContext = path.resolve(directory);
 
   if (!dryRun) {
     process.on('SIGINT', onInterrupt);
