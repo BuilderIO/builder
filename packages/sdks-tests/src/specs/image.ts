@@ -38,6 +38,7 @@ export const CONTENT = {
           options: {
             image:
               'https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F7054b4049c3745a4a18a537eff0fe74b?width=982',
+            altText: '',
             backgroundSize: 'cover',
             backgroundPosition: 'top right',
             lazy: false,
@@ -239,6 +240,7 @@ export const CONTENT_2 = {
           options: {
             image:
               'https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F7054b4049c3745a4a18a537eff0fe74b?width=982',
+            altText: '',
             backgroundSize: 'cover',
             backgroundPosition: 'top right',
             lazy: false,

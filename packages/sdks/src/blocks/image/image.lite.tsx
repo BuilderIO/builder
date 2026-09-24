@@ -101,7 +101,6 @@ export default function Image(props: ImageProps) {
           fetchpriority={props.highPriority ? 'high' : 'auto'}
           alt={props.altText || ''}
           title={props.title}
-          role={props.altText ? undefined : 'presentation'}
           css={{
             opacity: '1',
             transition: 'opacity 0.2s ease-in-out',
