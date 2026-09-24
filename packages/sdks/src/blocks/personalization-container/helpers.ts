@@ -7,6 +7,7 @@ import type { Target } from '../../types/targets.js';
 import {
   FILTER_WITH_CUSTOM_TARGETING_SCRIPT,
   PERSONALIZATION_SCRIPT,
+  STUDIO_USER_ATTRIBUTES_SCRIPT,
   UPDATE_VISIBILITY_STYLES_SCRIPT,
 } from './helpers/inlined-fns.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
@@ -16,6 +17,7 @@ export const DEFAULT_INDEX = 'default';
 const FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME = 'filterWithCustomTargeting';
 const BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME = 'builderIoPersonalization';
 const UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME = 'updateVisibilityStylesScript';
+const STUDIO_USER_ATTRIBUTES_SCRIPT_FN_NAME = 'builderIoStudioUserAttributes';
 
 const PERSONALIZATION_CONTAINER_COMPONENT_NAME = 'PersonalizationContainer';
 
@@ -180,6 +182,9 @@ export const hasPersonalizationContainer = (
 export const getInitPersonalizationVariantsFnsScriptString = () => {
   return `
   (function() {
+    if (!window.${STUDIO_USER_ATTRIBUTES_SCRIPT_FN_NAME}) {
+      window.${STUDIO_USER_ATTRIBUTES_SCRIPT_FN_NAME} = ${STUDIO_USER_ATTRIBUTES_SCRIPT};
+    }
     if (!window.${FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME}) {
       window.${FILTER_WITH_CUSTOM_TARGETING_SCRIPT_FN_NAME} = ${FILTER_WITH_CUSTOM_TARGETING_SCRIPT};
     }

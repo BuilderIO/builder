@@ -35,12 +35,8 @@ export function createUserAttributesService() {
         value: JSON.stringify(userAttributes),
         canTrack,
       });
-      /**
-       * Studio overrides are re-applied when notifying, but deliberately excluded from the
-       * persisted value above, so previewing never writes preview state into the cookie of
-       * a real visitor. Without re-applying here, a site setting its own attributes
-       * mid-session would clobber the override the preview is currently showing.
-       */
+      // Kept out of the cookie above so previewing never persists into a real visitor's
+      // session, but re-applied here so the site's own attributes cannot clobber it.
       const studioAttributes = getStudioUserAttributes();
       subscribers.forEach((callback) =>
         callback({ ...userAttributes, ...studioAttributes })

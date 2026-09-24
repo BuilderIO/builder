@@ -16,8 +16,7 @@ vi.mock('../functions/is-browser', () => ({
   isBrowser: vi.fn().mockReturnValue(true),
 }));
 
-// isBrowser is mocked to true throughout, so a matching window has to exist for the
-// Studio override lookup to read location.search from.
+// isBrowser is mocked true throughout, so a window has to exist to match.
 const setLocationSearch = (search: string) => {
   vi.stubGlobal('window', { location: { search } });
 };
@@ -31,8 +30,7 @@ describe('createUserAttributesService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // clearAllMocks resets call history but not mockReturnValue, so a cookie stubbed
-    // by one test would otherwise leak into the next.
+    // clearAllMocks keeps mockReturnValue, so a stubbed cookie would leak between tests.
     vi.mocked(getCookieSync).mockReturnValue(JSON.stringify({}));
     setLocationSearch('');
     service = createUserAttributesService();
@@ -148,16 +146,14 @@ describe('createUserAttributesService', () => {
     });
 
     it('ignores userAttributes params when the Studio preview flag is absent', () => {
-      // A normal visitor can have arbitrary query params; only Studio previews may
-      // override targeting, otherwise any URL could spoof a real visitor.
+      // Otherwise any URL could spoof targeting for a real visitor.
       setLocationSearch('?builder.userAttributes.date=' + STUDIO_DATE);
 
       expect(service.getUserAttributes()).toEqual({});
     });
 
     it('never persists Studio overrides into the cookie', () => {
-      // Writing preview state to the cookie would leak it into the rest of the
-      // browsing session and affect real targeting on subsequent page loads.
+      // Persisting it would skew real targeting for the rest of the session.
       setLocationSearch(STUDIO_SEARCH);
 
       service.setUserAttributes({ name: 'John' });
@@ -170,8 +166,7 @@ describe('createUserAttributesService', () => {
     });
 
     it('re-applies Studio overrides when notifying subscribers', () => {
-      // A site calling setClientUserAttributes mid-session must not clobber the
-      // override the preview is currently displaying.
+      // A mid-session setClientUserAttributes must not clobber the preview override.
       setLocationSearch(STUDIO_SEARCH);
       const callback = vi.fn();
       service.subscribeOnUserAttributesChange(callback);

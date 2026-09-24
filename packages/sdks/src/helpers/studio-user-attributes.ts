@@ -12,9 +12,8 @@ const parseStudioValue = (value: string) => {
 };
 
 /**
- * Builder's Studio tab passes its "Preview as" targeting overrides (date, device, custom
- * attributes) as URL query params. It has no way to write the `builder.userAttributes`
- * cookie on the previewed site's domain, so they must be read from the URL instead.
+ * Studio passes its targeting overrides as query params because it cannot write the
+ * builder.userAttributes cookie on the previewed site's origin.
  */
 export const getStudioUserAttributes = (): UserAttributes => {
   if (!isBrowser()) {
