@@ -134,6 +134,19 @@ test.describe('Personalization Container', () => {
         await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeHidden();
       });
     }
+
+    test('Studio preview URL selects the variant with no cookie set', async ({ page }) => {
+      // The pre-hydration inline selector reads the cookie, which Studio cannot write on
+      // this origin. Asserting the default is hidden catches it falling back to that.
+      await page.goto(
+        '/personalization-container?builder.preview=BUILDER_STUDIO&builder.userAttributes.experiment=A'
+      );
+
+      await expect(page.getByText(TEXTS.EXPERIMENT_A).locator('visible=true')).toBeVisible();
+      await expect(page.getByText(TEXTS.NON_PERSONALIZED).locator('visible=true')).toBeVisible();
+      await expect(page.getByText(TEXTS.EXPERIMENT_B).locator('visible=true')).toBeHidden();
+      await expect(page.getByText(TEXTS.DEFAULT_CONTENT).locator('visible=true')).toBeHidden();
+    });
   });
 
   test('setClientUserAttributes and builder.setUserAttributes sets cookie and renders variant after the first render', async ({

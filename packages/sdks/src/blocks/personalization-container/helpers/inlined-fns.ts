@@ -6,6 +6,30 @@
 import type { Query, UserAttributes } from '../helpers.js';
 import { type PersonalizationContainerProps } from '../personalization-container.types.js';
 
+/**
+ * Mirrors helpers/studio-user-attributes.ts; stringification rules out sharing the code.
+ * Anything referenced from module scope becomes an undefined global at runtime.
+ */
+export function getStudioUserAttributes() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('builder.preview') !== 'BUILDER_STUDIO') {
+    return {};
+  }
+
+  const prefix = 'builder.userAttributes.';
+  const attributes: Record<string, unknown> = {};
+
+  params.forEach(function (value, key) {
+    if (key.indexOf(prefix) === 0) {
+      attributes[key.slice(prefix.length)] =
+        value === 'true' ? true : value === 'false' ? false : value;
+    }
+  });
+
+  return attributes;
+}
+
 function getPersonalizedVariant(
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
@@ -31,6 +55,7 @@ function getPersonalizedVariant(
   if (locale) {
     attributes.locale = locale;
   }
+  Object.assign(attributes, (window as any).builderIoStudioUserAttributes());
 
   const winningVariantIndex = variants?.findIndex(function (variant) {
     return (window as any).filterWithCustomTargeting(
@@ -213,6 +238,7 @@ export function updateVisibilityStylesScript(
     if (locale) {
       attributes.locale = locale;
     }
+    Object.assign(attributes, (window as any).builderIoStudioUserAttributes());
     const winningVariantIndex = variants?.findIndex(function (variant) {
       return (window as any).filterWithCustomTargeting(
         attributes,
@@ -236,6 +262,7 @@ export function updateVisibilityStylesScript(
   }
 }
 
+export const STUDIO_USER_ATTRIBUTES_SCRIPT = getStudioUserAttributes.toString();
 export const PERSONALIZATION_SCRIPT = getPersonalizedVariant.toString();
 export const FILTER_WITH_CUSTOM_TARGETING_SCRIPT =
   filterWithCustomTargeting.toString();
