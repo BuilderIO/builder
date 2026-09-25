@@ -738,10 +738,6 @@ module.exports = {
                         code: 'props.context.apiKey',
                         type: 'property',
                       },
-                      componentInfos: {
-                        code: 'props.context.componentInfos',
-                        type: 'property',
-                      },
                       inheritedStyles: {
                         code: 'props.context.inheritedStyles',
                         type: 'property',
