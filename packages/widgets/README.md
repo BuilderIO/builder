@@ -2,6 +2,10 @@
 
 Adds widgets for Builder.io editing, such as carousels, tabs, accordions, etc.
 
+## Minimum supported version
+
+This package requires **React 16.0.0 or later** (React 19 release candidates are also supported) and, if used with Next.js, **Next.js 12.3.5 or later**. See the [`peerDependencies`](./package.json) for the exact supported ranges.
+
 ## How to use it
 
 First, install the package:

@@ -4,6 +4,10 @@ Plugin for integrating [Builder.io](https://www.builder.io) to allow drag and dr
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
+## Minimum supported version
+
+This plugin requires **Gatsby 4 or later** (see the [`peerDependencies`](./package.json)).
+
 ## Install
 
 `npm install @builder.io/gatsby`
