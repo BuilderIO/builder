@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.15
+
+### Patch Changes
+
+- 2587fea: Fix Variant Containers ignoring Builder Studio targeting overrides, which are passed as `builder.userAttributes.*` query params rather than through the cookie.
+
 ## 0.25.14
 
 ### Patch Changes
