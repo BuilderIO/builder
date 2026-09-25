@@ -34,7 +34,6 @@ export function deepCloneWithConditions<T = any>(obj: T): T {
 }
 
 const IS_SDK_WITHOUT_CACHED_PROCESSED_BLOCK = [
-  'svelte',
   'vue',
   'angular',
   'qwik',
