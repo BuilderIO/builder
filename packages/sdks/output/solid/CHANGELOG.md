@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.2.13
+
+### Patch Changes
+
+- 2587fea: Fix Variant Containers ignoring Builder Studio targeting overrides, which are passed as `builder.userAttributes.*` query params rather than through the cookie.
+
 ## 5.2.12
 
 ### Patch Changes
