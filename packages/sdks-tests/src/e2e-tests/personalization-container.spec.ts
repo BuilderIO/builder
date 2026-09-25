@@ -3,6 +3,7 @@ import { expect } from '@playwright/test';
 import { isSSRFramework, test } from '../helpers/index.js';
 import { launchEmbedderAndWaitForSdk } from '../helpers/visual-editor.js';
 import type { Sdk } from '../helpers/sdk.js';
+import { CONTENT as PERSONALIZATION_CONTENT } from '../specs/personalization-container.js';
 
 const SDKS_SUPPORTING_PERSONALIZATION = ['react', 'vue', 'svelte', 'qwik'] as Sdk[];
 
@@ -136,6 +137,12 @@ test.describe('Personalization Container', () => {
     }
 
     test('Studio preview URL selects the variant with no cookie set', async ({ page }) => {
+      // BUILDER_STUDIO triggers a live refetch; unmocked, the mock apiKey gets a 401 that
+      // rejects unhandled and fails the test.
+      await page.route(/https:\/\/cdn\.builder\.io\/api\/v3\/content/, route =>
+        route.fulfill({ status: 200, json: { results: [PERSONALIZATION_CONTENT] } })
+      );
+
       // The pre-hydration inline selector reads the cookie, which Studio cannot write on
       // this origin. Asserting the default is hidden catches it falling back to that.
       await page.goto(
