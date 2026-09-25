@@ -2,6 +2,10 @@
 
 Render Builder.io content to native Kotlin components. Uses [Jetpack Compose](https://jetpackcompose.com/)
 
+## Minimum supported version
+
+This SDK is still under development (see [TODO](#todo)) and is not yet published as an installable package. The sample project in [`./sdk`](./sdk) currently targets **Android API 21 (Lollipop) or later**, with Kotlin 1.6.10 — see [`sdk/app/build.gradle`](./sdk/app/build.gradle) and [`sdk/build.gradle`](./sdk/build.gradle). These are the versions the sample is built and tested against today, not a formally published minimum.
+
 ## Developing
 
 1. Install [Android Studio](https://developer.android.com/studio/install)
