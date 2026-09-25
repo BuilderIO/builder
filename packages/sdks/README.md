@@ -15,6 +15,21 @@ All the individual SDKs live in the [output](./output/) folder. The source Mitos
 
 View the [Builder.io developer docs](https://www.builder.io/c/docs/developers) for how to use these SDKs
 
+## Minimum supported framework versions
+
+| SDK | Minimum framework version | Source |
+| --- | --- | --- |
+| [React](./output/react/) | React >=16 | [`peerDependencies`](./output/react/package.json) |
+| [React-Native](./output/react-native/) | React Native >=0.64.3, React >=18 | [`peerDependencies`](./output/react-native/package.json) |
+| [Vue](./output/vue/) | Vue >=3 | [`peerDependencies`](./output/vue/package.json) |
+| [Angular](./output/angular/) | Angular >=17.3.0 | [`peerDependencies`](./output/angular/package.json) |
+| [Svelte](./output/svelte/) | Svelte >=4.1.2 | [`peerDependencies`](./output/svelte/package.json) |
+| [SolidJS](./output/solid/) | Solid.js >=1.6.0 | [`peerDependencies`](./output/solid/package.json) |
+| [Qwik](./output/qwik/) | Qwik >=1.0.0 | [`peerDependencies`](./output/qwik/package.json) |
+| [NextJS](./output/nextjs/) (Experimental, RSC registration only) | Next.js >=13.5.9, React >=18.2.0 | [`peerDependencies`](./output/nextjs/package.json) |
+
+See each SDK's own README (linked above) for more detail.
+
 ## Development
 
 - To understand the overall architecture of the project, read our [ARCHITECTURE](./docs/ARCHITECTURE.md) guide.

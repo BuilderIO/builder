@@ -15,6 +15,10 @@ this SDK is marked as "Beta" due to the missing features mentioned above. It is 
 
 This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended to be used _only_ with NextJS's app directory, and has hard dependencies on NextJS-specific functionality that only works in the app directory.
 
+## Minimum supported version
+
+This SDK requires **Next.js 13.5.9 or later** and **React 18.2.0 or later** (see the [`peerDependencies`](./package.json)). Note this minimum is specific to this RSC-registration SDK; the standard [Gen1](../../../react/) and [Gen2](../react/) React SDKs work with all versions of Next.js.
+
 ## Usage
 
 When registering a custom component, you will need to add the `isRSC: true` option to the component. For example:

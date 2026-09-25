@@ -2,6 +2,10 @@
 
 This is Builder's Gen2 Vue SDK.
 
+## Minimum supported version
+
+This SDK requires **Vue 3 or later** (see the [`peerDependencies`](./package.json)). Vue 2 is not supported.
+
 ## Getting Started
 
 ```
