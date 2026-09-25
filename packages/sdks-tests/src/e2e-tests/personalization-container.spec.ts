@@ -136,6 +136,12 @@ test.describe('Personalization Container', () => {
     }
 
     test('Studio preview URL selects the variant with no cookie set', async ({ page }) => {
+      // BUILDER_STUDIO triggers a live refetch. Unmocked, the mock apiKey gets a 401 that
+      // rejects unhandled; empty results resolve to null so no content merge re-renders.
+      await page.route(/https:\/\/cdn\.builder\.io\/api\/v3\/content/, route =>
+        route.fulfill({ status: 200, json: { results: [] } })
+      );
+
       // The pre-hydration inline selector reads the cookie, which Studio cannot write on
       // this origin. Asserting the default is hidden catches it falling back to that.
       await page.goto(
