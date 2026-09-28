@@ -346,7 +346,6 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   ? (typeof this.image === 'string' && this.image.split('?')[0]) || undefined
                   : undefined
               }
-              role={!this.props.altText ? 'presentation' : undefined}
               css={{
                 opacity: amp ? 1 : this.useLazyLoading && !this.state.imageLoaded ? 0 : 1,
                 transition: 'opacity 0.2s ease-in-out',

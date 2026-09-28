@@ -32,6 +32,7 @@ describe('Image', () => {
     const image = tree.children.find((child: any) => child.type === 'img');
 
     expect(image.props.alt).toBe('');
+    expect(image.props.role).toBeUndefined();
   });
 
   it('Shopify image url', () => {
