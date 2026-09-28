@@ -37,6 +37,9 @@ jobs:
           cache-node-modules: true
           cache-install-state: true
 
+      - name: Check framework version guidance
+        run: yarn check:framework-support
+
       - name: Run eslint
         run: yarn workspace @builder.io/sdks eslint
 

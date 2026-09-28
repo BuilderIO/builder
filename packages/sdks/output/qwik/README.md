@@ -4,7 +4,7 @@ This is Builder's Qwik SDK.
 
 ## Minimum supported version
 
-This SDK requires **Qwik 1.0.0 or later** (see the [`peerDependencies`](./package.json)).
+The [`peerDependencies`](./package.json) permit **Qwik >=1.0.0**. This is an installation range, not an actively verified support minimum; see the [framework version matrix](../../README.md#framework-version-guidance).
 
 ## Mitosis
 

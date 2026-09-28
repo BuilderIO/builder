@@ -1,7 +1,7 @@
 ## When should I use this SDK (please read carefully)
 
 - you should ONLY use this SDK if you are trying to [register](https://www.builder.io/c/docs/custom-components-setup) your RSCs (react server components) in Builder. That is its only advantage over our standard React SDKs.
-- our [Gen1](../../../react/) and [Gen2](../react/) React SDKs work perfectly well with all versions of Next.js. The only feature they do not support is registration of RSCs.
+- our [Gen1](../../../react/) and [Gen2](../react/) React SDKs also integrate with Next.js, but their supported Next.js versions must be checked separately in the [framework version matrix](../../README.md#framework-version-guidance). They do not support registration of RSCs.
 - this SDK only works in the NextJS App Directory.
 
 To allow registering RSCs, this SDK must make compromises. Most notably:
@@ -17,7 +17,7 @@ This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended t
 
 ## Minimum supported version
 
-This SDK requires **Next.js 13.5.9 or later** and **React 18.2.0 or later** (see the [`peerDependencies`](./package.json)). Note this minimum is specific to this RSC-registration SDK; the standard [Gen1](../../../react/) and [Gen2](../react/) React SDKs work with all versions of Next.js.
+The [`peerDependencies`](./package.json) permit **Next.js >=13.5.9** and **React and React DOM >=18.2.0**. These installation ranges apply only to this RSC-registration SDK; its active support minimum is pending verification in the [framework version matrix](../../README.md#framework-version-guidance). Standard [Gen1](../../../react/) and [Gen2](../react/) React SDK integrations have separate Next.js support evidence.
 
 ## Usage
 

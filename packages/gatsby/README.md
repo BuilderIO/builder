@@ -6,7 +6,7 @@ Plugin for integrating [Builder.io](https://www.builder.io) to allow drag and dr
 
 ## Minimum supported version
 
-This plugin requires **Gatsby 4 or later** (see the [`peerDependencies`](./package.json)).
+The [`peerDependencies`](./package.json) permit **Gatsby >=4**. This is an installation range, not an actively verified support minimum; see the [framework version matrix](../sdks/README.md#framework-version-guidance).
 
 ## Install
 

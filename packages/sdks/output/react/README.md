@@ -9,7 +9,7 @@ NOTE: if you are using the SDK in a webapp that gets deployed on a serverless en
 
 ## Minimum supported version
 
-This SDK requires **React 16 or later** (React 19 release candidates are also supported). See the [`peerDependencies`](./package.json).
+The [`peerDependencies`](./package.json) permit **React >=16** (and React 19 release candidates). This is an installation range, not a guarantee of active support for React 16; see the [framework version matrix](../../README.md#framework-version-guidance).
 
 ## API Reference
 

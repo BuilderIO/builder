@@ -4,7 +4,7 @@ This is Builder's React-Native SDK.
 
 ## Minimum supported version
 
-This SDK requires **React Native 0.64.3 or later** and **React 18 or later** (see the [`peerDependencies`](./package.json)).
+The [`peerDependencies`](./package.json) permit **React Native >=0.64.3** and **React and React DOM 18.x** (`^18.0.0`, not React 19). These installation ranges do not establish an actively supported minimum; see the [framework version matrix](../../README.md#framework-version-guidance).
 
 ## Mitosis
 

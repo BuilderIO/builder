@@ -4,7 +4,7 @@ This is Builder's Svelte SDK.
 
 ## Minimum supported version
 
-This SDK requires **Svelte 4.1.2 or later** (see the [`peerDependencies`](./package.json)).
+The [`peerDependencies`](./package.json) permit **Svelte 4.1.2 through 4.x** (`^4.1.2`, not Svelte 5). This installation range does not establish an actively supported minimum; see the [framework version matrix](../../README.md#framework-version-guidance).
 
 ## Mitosis
 

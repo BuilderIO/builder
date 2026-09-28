@@ -4,9 +4,9 @@ Use the Builder Angular SDK to use Angular with Builder. You can get started by 
 
 ## Minimum supported version
 
-This SDK requires **Angular 18 or later** (see the [CHANGELOG](./CHANGELOG.md) `4.0.0` entry for the breaking change that raised the minimum). If you need support for older Angular versions, use SDK version `3.x` or earlier.
+The [CHANGELOG](./CHANGELOG.md) `4.0.0` entry targets **Angular 18** as the compatibility minimum; the package does not declare an Angular peer dependency. Older SDK releases have different requirements, but their continued support is not implied. The actively supported minimum for this release is pending verification in the [framework version matrix](../sdks/README.md#framework-version-guidance).
 
-NOTE: For new integrations, consider our [Gen 2 Angular SDK](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/angular), which supports Angular >=17.3.0 and has zero client-side dependencies.
+For new integrations, consider the [Gen 2 Angular SDK](../sdks/output/angular/), whose Angular peer dependencies permit >=17.3.0. Its active support floor is tracked separately.
 
 ## Option 1 (for those new to Angular): Use the Builder official documentation
 

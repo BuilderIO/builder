@@ -18,6 +18,8 @@ When testing something, you are free to publish `dev` versions for just one SDK 
 
 # Steps
 
+Before publishing a framework SDK, review the [framework version matrix](./README.md#framework-version-guidance) with the SDK and support owners whenever a framework major, peer range, CI fixture, or upstream maintenance status changes. Record an actively supported minimum only after its framework and companion versions pass an integration test and the owners approve it. Update the matrix, package README, and public developer documentation together; otherwise leave the active minimum pending. Run `yarn check:framework-support` to check package coverage and peer-range consistency. If the peer range changes, evaluate the breaking-change and release impact separately.
+
 ## 1- Add Changeset
 
 in your PR, run the following command from anywhere in the mono-repo:

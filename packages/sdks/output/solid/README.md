@@ -4,7 +4,7 @@ More info coming soon.
 
 ## Minimum supported version
 
-This SDK requires **Solid.js 1.6.0 or later** (see the [`peerDependencies`](./package.json)).
+The [`peerDependencies`](./package.json) permit **Solid.js 1.6.0 through 1.x** (`^1.6.0`). This installation range does not establish an actively supported minimum; see the [framework version matrix](../../README.md#framework-version-guidance).
 
 ## Mitosis
 
