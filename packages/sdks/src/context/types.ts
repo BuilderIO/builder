@@ -40,7 +40,6 @@ export interface BuilderContextInterface
   localState: BuilderRenderState | undefined;
   apiKey: string | null;
   apiVersion: ApiVersion | undefined;
-  componentInfos: Dictionary<ComponentInfo>;
   // Used to recursively store all CSS coming from a parent that would apply to a Text block
   inheritedStyles: Record<string, unknown>;
   nonce: string;
