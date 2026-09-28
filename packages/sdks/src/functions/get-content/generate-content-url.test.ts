@@ -290,6 +290,38 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
+  test('does not allow preview parameters to override the configured API key', () => {
+    vi.stubGlobal('window', {
+      location: {
+        search:
+          '?builder.preview=BUILDER_STUDIO&builder.apiKey=other-space&builder.userAttributes.audience=members',
+        pathname: '/reproduction',
+        host: 'www.example.com',
+      },
+    });
+    vi.stubGlobal('document', {});
+
+    try {
+      const output = generateContentUrl({ apiKey: testKey, model: testModel });
+      const outputWithOptions = generateContentUrl({
+        apiKey: testKey,
+        model: testModel,
+        options: { apiKey: 'another-space' },
+      });
+
+      expect(output.searchParams.get('apiKey')).toBe(testKey);
+      expect(outputWithOptions.searchParams.get('apiKey')).toBe(testKey);
+      expect(output.searchParams.get('preview')).toBe('BUILDER_STUDIO');
+      expect(JSON.parse(output.searchParams.get('userAttributes')!)).toEqual({
+        audience: 'members',
+        urlPath: '/reproduction',
+        host: 'www.example.com',
+      });
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   test('converts Studio boolean user attributes from query parameters', () => {
     vi.stubGlobal('window', {
       location: {
