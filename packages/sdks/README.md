@@ -15,35 +15,26 @@ All the individual SDKs live in the [output](./output/) folder. The source Mitos
 
 View the [Builder.io developer docs](https://www.builder.io/c/docs/developers) for how to use these SDKs
 
-## Framework version guidance
+## Supported framework versions
 
-A package's `peerDependencies` describe versions it can be installed with, **not** the versions Builder actively tests and supports. The CI fixture column shows versions requested by integration projects; ranges such as `^18.2.0` may resolve to a later patch. None of the declared lower bounds below is currently verified as an active support minimum. Until SDK owners validate a minimum-version integration test and approve a support policy, the active minimum is **pending**. Do not treat React 16 or Next.js 12 as actively supported merely because they satisfy a peer range.
+Only versions shown in the **Supported combination** column are recommended here. They do not imply support for every later release or for other versions accepted by a package's `peerDependencies`. **Not verified** means we do not yet have an approved, tested minimum for that SDK.
 
-### Gen 1 SDKs and integrations
+| SDK                                                                        | Supported combination                      | Test evidence or gap                                                                                                                                                                                                              |
+| -------------------------------------------------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@builder.io/react`](../react/) (Gen 1)                                   | `react@18.2.0` + `react-dom@18.2.0` (Vite) | [React 18 E2E fixture](../react-tests/react-vite/package.json); [Next.js 15 / React 19 fixture](../react-tests/next15-app/package.json) is a support candidate, not approved yet                                                  |
+| [`@builder.io/angular`](../angular/) (Gen 1)                               | Not verified                               | Angular 18 [package build](../angular/package.json), but no framework integration test                                                                                                                                            |
+| [`@builder.io/gatsby`](../gatsby/) (Gen 1)                                 | Not verified                               | No CI integration test; the [Gatsby example](../../examples/gatsby-minimal-starter/package.json) is not CI coverage                                                                                                               |
+| [`@builder.io/widgets`](../widgets/) (Gen 1)                               | Not verified                               | Package build only; no integration test for the current Widgets release                                                                                                                                                           |
+| [`@builder.io/sdk-react`](./output/react/)                                 | `react@18.2.0` + `react-dom@18.2.0` (Vite) | [React 18 E2E fixture](./e2e/react/package.json); [Next.js 15 / React 19 fixture](./e2e/react-sdk-next-15-app/package.json) is a support candidate, not approved yet                                                              |
+| [`@builder.io/sdk-react-native`](./output/react-native/)                   | Not verified for native                    | Web E2E fixtures: [React Native `0.74.2` + React `18.2.0`](./e2e/react-native-74/package.json) and [React Native `0.76.6` + React `18.3.1`](./e2e/react-native-76-fabric/package.json); these do not verify native-device support |
+| [`@builder.io/sdk-vue`](./output/vue/)                                     | Not verified                               | [Vue fixture](./e2e/vue/package.json) requests `^3.2.37`; [Nuxt fixture](./e2e/nuxt/package.json) requests Vue `^3.3.8`                                                                                                           |
+| [`@builder.io/sdk-angular`](./output/angular/)                             | Not verified                               | [Angular 17](./e2e/angular-17/package.json) and [Angular 19 SSR](./e2e/angular-19-ssr/package.json) fixtures use version ranges                                                                                                   |
+| [`@builder.io/sdk-svelte`](./output/svelte/)                               | Not verified                               | [SvelteKit fixture](./e2e/sveltekit/package.json) requests `^4.2.19`; the Svelte 3 fixture is outside the [SDK peer range](./output/svelte/package.json)                                                                          |
+| [`@builder.io/sdk-solid`](./output/solid/)                                 | Not verified                               | [SolidStart fixture](./e2e/solid-start/package.json) requests `^1.8.5`; the Solid 1.5 fixture is outside the [SDK peer range](./output/solid/package.json)                                                                        |
+| [`@builder.io/sdk-qwik`](./output/qwik/)                                   | Not verified                               | [Qwik fixture](./e2e/qwik-city/package.json) requests `^1.9.1`                                                                                                                                                                    |
+| [`@builder.io/sdk-react-nextjs`](./output/nextjs/) (RSC registration only) | Not verified                               | [Next.js `14.2.25` / React `^18` fixture](./e2e/nextjs-sdk-next-app/package.json) is regression coverage on an end-of-support Next.js release                                                                                     |
 
-| Package | Peer-compatible framework range | CI fixture / evidence | Active minimum |
-| --- | --- | --- | --- |
-| [`@builder.io/react`](../react/) | React and React DOM `>=16.8.0 \|\| ^19.0.0-rc` ([manifest](../react/package.json)) | [React `^18.2.0`](../react-tests/react-vite/package.json); [Next.js 14 / React 18](../react-tests/next14-pages/package.json); [Next.js 15.5.26 / React 19.0.0](../react-tests/next15-app/package.json) | Pending |
-| [`@builder.io/angular`](../angular/) | Angular is not declared as a peer; the [v4 changelog](../angular/CHANGELOG.md) raises the compatibility target to Angular 18 | [Angular 18 build](../angular/package.json); no framework E2E job | Pending |
-| [`@builder.io/gatsby`](../gatsby/) | Gatsby `>=4` ([manifest](../gatsby/package.json)) | No Gatsby CI job; [Gatsby `^5.12.4` example](../../examples/gatsby-minimal-starter/package.json) | Pending |
-| [`@builder.io/widgets`](../widgets/) | React and React DOM `>=16.0.0-0 \|\| ^19.0.0-rc`; optional Next.js `>=12.3.5` ([manifest](../widgets/package.json)). With `@builder.io/react`, use that SDK's stricter React peer range. | Package build only; no confirmed widget integration test | Pending |
-
-Standard React SDKs have no Next.js peer requirement of their own. Their Next.js support needs a separate, tested framework/React combination; the RSC SDK's requirement below does not apply to them.
-
-### Gen 2 SDKs
-
-| Package | Peer-compatible framework range | CI fixture / evidence | Active minimum |
-| --- | --- | --- | --- |
-| [`@builder.io/sdk-react`](./output/react/) | React `>=16 \|\| ^19.0.0-rc` ([manifest](./output/react/package.json)) | [React `^18.2.0`](./e2e/react/package.json); Next.js 14 and [Next.js 15.5.26 / React 19.0.0](./e2e/react-sdk-next-15-app/package.json) integration jobs | Pending |
-| [`@builder.io/sdk-react-native`](./output/react-native/) | React Native `>=0.64.3`; React and React DOM `^18.0.0` ([manifest](./output/react-native/package.json)) | [React Native 0.74.2 / React 18.2.0](./e2e/react-native-74/package.json); RN 0.76.6 / React 18.3.1 | Pending |
-| [`@builder.io/sdk-vue`](./output/vue/) | Vue `>=3` ([manifest](./output/vue/package.json)) | [Vue `^3.2.37`](./e2e/vue/package.json) | Pending |
-| [`@builder.io/sdk-angular`](./output/angular/) | Angular core and common `>=17.3.0` ([manifest](./output/angular/package.json)) | [Angular `^17.3.0`](./e2e/angular-17/package.json); Angular 19 SSR | Pending |
-| [`@builder.io/sdk-svelte`](./output/svelte/) | Svelte `^4.1.2` (4.x only; [manifest](./output/svelte/package.json)) | [Svelte `^4.2.19`](./e2e/sveltekit/package.json); another fixture requests Svelte 3, which is outside the peer range | Pending |
-| [`@builder.io/sdk-solid`](./output/solid/) | Solid `^1.6.0` (1.x only; [manifest](./output/solid/package.json)) | [Solid `^1.8.5`](./e2e/solid-start/package.json); another fixture requests 1.5, which is outside the peer range | Pending |
-| [`@builder.io/sdk-qwik`](./output/qwik/) | Qwik `>=1.0.0` ([manifest](./output/qwik/package.json)) | [Qwik `^1.9.1`](./e2e/qwik-city/package.json) | Pending |
-| [`@builder.io/sdk-react-nextjs`](./output/nextjs/) (RSC registration only) | Next.js `>=13.5.9`; React and React DOM `>=18.2.0` ([manifest](./output/nextjs/package.json)) | [Next.js 14.2.25 / React `^18`](./e2e/nextjs-sdk-next-app/package.json) | Pending |
-
-A row becomes actively supported only after its candidate minimum is verified in an integration test, checked against upstream maintenance status, and approved by the SDK and support owners. Document the approved framework/companion-framework combination and any exceptions here and in the package README. The [framework-support plan](./docs/FRAMEWORK_SUPPORT_PLAN.md) describes the review and maintenance process; the [Android sample](../android/) is not a published SDK.
+The React 18 fixtures request `^18.2.0` and resolved to React and React DOM `18.2.0` when both E2E suites passed locally. CI installs from an immutable lockfile; recheck the installed version and E2E result whenever that lockfile changes. The pinned Next.js `15.5.26` / React `19.0.0` pair has [passing local E2E results](./docs/FRAMEWORK_SUPPORT_PLAN.md), but still needs a green CI run and owner approval before it can be recommended. Next.js 14 is regression-only coverage. The [Android sample](../android/) is not a published SDK.
 
 ## Development
 
