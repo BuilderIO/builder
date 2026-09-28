@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.25.16
+
+### Patch Changes
+
+- 72f2bc8: Remove the redundant presentation role from Image blocks with empty alt text.
+
 ## 0.25.15
 
 ### Patch Changes

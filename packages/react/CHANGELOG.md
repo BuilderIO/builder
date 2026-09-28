@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.8
+
+### Patch Changes
+
+- 72f2bc8: Remove the redundant presentation role from Image blocks with empty alt text.
+
 ## 9.4.7
 
 ### Patch Changes
