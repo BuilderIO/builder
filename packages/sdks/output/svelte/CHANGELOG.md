@@ -1,5 +1,11 @@
 # Builder.io Svelte SDK Changelog (@builder.io/sdk-svelte)
 
+## 5.2.14
+
+### Patch Changes
+
+- 72f2bc8: Remove the redundant presentation role from Image blocks with empty alt text.
+
 ## 5.2.13
 
 ### Patch Changes
