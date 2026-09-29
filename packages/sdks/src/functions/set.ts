@@ -15,8 +15,9 @@ export const set = (obj: any, _path: string | string[], value: any) => {
   if (
     !path ||
     path.some(
-      (key) =>
-        key === '__proto__' || key === 'constructor' || key === 'prototype'
+      (key, i) =>
+        key === '__proto__' ||
+        (i < path.length - 1 && (key === 'constructor' || key === 'prototype'))
     )
   ) {
     return obj;
