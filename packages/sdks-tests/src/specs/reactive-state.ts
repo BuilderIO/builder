@@ -97,6 +97,17 @@ export const REACTIVE_STATE_CONTENT = {
                   {
                     '@type': '@builder.io/sdk:Element',
                     '@version': 2,
+                    id: 'builder-7c1f0e2a9b3d4c6e8f5a1b2c3d4e5f60',
+                    component: {
+                      name: 'Text',
+                      options: {
+                        text: 'Template value: {{state.reactiveValue}}',
+                      },
+                    },
+                  },
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
                     bindings: {
                       'component.options.text': 'state.reactiveValue',
                     },
