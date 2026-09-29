@@ -12,6 +12,16 @@ export const set = (obj: any, _path: string | string[], value: any) => {
     ? _path
     : (_path.toString().match(/[^.[\]]+/g) as string[]);
 
+  if (
+    !path ||
+    path.some(
+      (key) =>
+        key === '__proto__' || key === 'constructor' || key === 'prototype'
+    )
+  ) {
+    return obj;
+  }
+
   path
     .slice(0, -1)
     .reduce(
