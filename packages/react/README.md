@@ -4,7 +4,7 @@ NOTE: If you want to register your React Server Components as custom components 
 
 ## Minimum supported version
 
-The [`peerDependencies`](./package.json) permit **React and React DOM >=16.8.0** (and React 19 release candidates). This is an installation range, not a guarantee of active support for React 16. The actively supported minimum is pending verification; see the [framework version matrix](../sdks/README.md#framework-version-guidance).
+The [`peerDependencies`](./package.json) permit **React and React DOM >=16.8.0** (and React 19 release candidates). This is an installation range, not a guarantee of active support for React 16. The E2E-tested minimum is **React and React DOM 18.2.0**; see the [framework version matrix](../sdks/README.md#framework-version-guidance).
 
 ## Integration
 

@@ -17,7 +17,7 @@ This is the Builder NextJS SDK, `@builder.io/sdk-react-nextjs`. It is intended t
 
 ## Minimum supported version
 
-The [`peerDependencies`](./package.json) permit **Next.js >=13.5.9** and **React and React DOM >=18.2.0**. These installation ranges apply only to this RSC-registration SDK; its active support minimum is pending verification in the [framework version matrix](../../README.md#framework-version-guidance). Standard [Gen1](../../../react/) and [Gen2](../react/) React SDK integrations have separate Next.js support evidence.
+The [`peerDependencies`](./package.json) permit **Next.js >=13.5.9** and **React and React DOM >=18.2.0**. These installation ranges apply only to this RSC-registration SDK; its E2E-tested minimum is **Next.js 14.2.25 with React and React DOM 18.2.0** (Next.js 14 is no longer supported upstream); see the [framework version matrix](../../README.md#framework-version-guidance). Standard [Gen1](../../../react/) and [Gen2](../react/) React SDK integrations have separate Next.js support evidence.
 
 ## Usage
 

@@ -48,6 +48,7 @@ Done means each published framework-facing SDK has either an owner-approved, tes
 
 ## Policy decisions and approvals
 
+- **Approved by the owner (2026-09-29):** a framework combination that passes a CI E2E fixture is approved. The matrix records the lowest installed version per SDK from the green CI run on `8adb82417`.
 - **Approved by the owner:** upstream-EOL versions are not actively supported by default, even when peer-compatible. For React, use a tested modern major rather than counting legacy security backports as full active support. Document coverage gaps instead of expanding SDK compatibility in this pass.
 - **Still required per row:** select and test the exact minimum framework/companion-framework combination, then obtain owner approval of that numerical cutoff or explicitly state that no active minimum is currently verified.
 - **Publication ownership to assign:** who maintains the matrix, reviews upstream lifecycle changes, and updates customer-facing developer docs alongside package READMEs?

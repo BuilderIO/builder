@@ -40,12 +40,12 @@ for (const row of rows) {
     .slice(1, -1)
     .split(/(?<!\\)\|/)
     .map(cell => cell.trim());
-  assert.equal(cells.length, 3, `Expected three columns for ${name}`);
-  const [path, supported, evidence] = cells;
+  assert.equal(cells.length, 2, `Expected two columns for ${name}`);
+  const [path, supported] = cells;
   const [manifestPath, frameworkPeers] = packages.get(name);
   const manifest = JSON.parse(readFileSync(new URL(manifestPath, root), 'utf8'));
   assert.ok(path.includes(`\`${name}\``), `Missing package name for ${name}`);
-  assert.ok(supported && evidence, `Incomplete framework guidance for ${name}`);
+  assert.ok(supported, `Incomplete framework guidance for ${name}`);
 
   for (const peer of frameworkPeers) {
     const range = manifest.peerDependencies[peer];
@@ -57,16 +57,21 @@ for (const row of rows) {
 
   if (supported.startsWith('Not verified')) continue;
 
-  assert.match(evidence, /E2E fixture/, `Supported combination for ${name} needs test evidence`);
-  const versions = new Map(
-    [...supported.matchAll(/`([^`]+)@(\d+\.\d+\.\d+)`/g)].map(match => [match[1], match[2]])
+  assert.match(
+    supported,
+    /\]\(\.[^)]*\/package\.json\)/,
+    `Minimum for ${name} needs an E2E fixture link`
   );
+  const versions = [...supported.matchAll(/`([^`]+)@(\d+\.\d+\.\d+)`/g)];
   for (const peer of frameworkPeers) {
-    assert.ok(versions.has(peer), `Supported combination for ${name} must include ${peer}`);
-    assert.ok(
-      semver.satisfies(versions.get(peer), manifest.peerDependencies[peer]),
-      `Supported combination for ${name} does not satisfy ${peer}'s peer range`
-    );
+    const peerVersions = versions.filter(match => match[1] === peer);
+    assert.ok(peerVersions.length, `Minimum for ${name} must include ${peer}`);
+    for (const [, , version] of peerVersions) {
+      assert.ok(
+        semver.satisfies(version, manifest.peerDependencies[peer]),
+        `Minimum ${peer}@${version} for ${name} does not satisfy its peer range`
+      );
+    }
   }
 }
 

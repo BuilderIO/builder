@@ -4,7 +4,7 @@ This is Builder's Gen2 Vue SDK.
 
 ## Minimum supported version
 
-The [`peerDependencies`](./package.json) permit **Vue >=3**; Vue 2 is outside the installation range. The actively supported minimum is pending verification in the [framework version matrix](../../README.md#framework-version-guidance).
+The [`peerDependencies`](./package.json) permit **Vue >=3**; Vue 2 is outside the installation range. The E2E-tested minimum is **Vue 3.3.9**; see the [framework version matrix](../../README.md#framework-version-guidance).
 
 ## Getting Started
 

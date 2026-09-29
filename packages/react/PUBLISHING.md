@@ -6,7 +6,7 @@ Make sure that you are authenticated to publish on `yarn`. To do that, run `yarn
 
 ## 1- Update `CHANGELOG.md`
 
-Before publishing, make sure to update the `CHANGELOG.md` inside `packages/core` and/or `packages/react`, depending on where the change was made. If React, React DOM, or a Next.js integration changes its peer range, CI fixture, or upstream maintenance status, review the [framework version matrix](../sdks/README.md#framework-version-guidance) with the SDK and support owners. Verify and approve any active minimum in an integration test before updating the matrix, this package's README, and the public developer docs. Run `yarn check:framework-support` from the repo root; do not infer active support from a permissive peer range.
+Before publishing, make sure to update the `CHANGELOG.md` inside `packages/core` and/or `packages/react`, depending on where the change was made. If React, React DOM, or a Next.js integration changes its peer range, CI fixture, or upstream maintenance status, review the [framework version matrix](../sdks/README.md#framework-version-guidance) with the SDK and support owners. A combination that passes a CI E2E fixture is approved; record it before updating the matrix, this package's README, and the public developer docs. Run `yarn check:framework-support` from the repo root; do not infer active support from a permissive peer range.
 
 ## 2- Release Core
 
