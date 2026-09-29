@@ -7,8 +7,7 @@ import type {
 import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getStyle } from '../../functions/get-style.js';
-import { isEditing } from '../../functions/is-editing.js';
-import { isPreviewing } from '../../functions/is-previewing.js';
+import { isEditingOrPreviewing } from '../../functions/is-editing-or-previewing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -57,7 +56,7 @@ export const getComponent = ({
 const BLOCKS_WITHOUT_REPEAT = new WeakMap<BuilderBlock, BuilderBlock>();
 
 const getBlockWithoutRepeat = (block: BuilderBlock) => {
-  if (isEditing() || isPreviewing()) {
+  if (isEditingOrPreviewing()) {
     const { repeat: _repeat, ...rest } = block;
     return rest;
   }
