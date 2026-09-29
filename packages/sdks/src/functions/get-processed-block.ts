@@ -1,68 +1,11 @@
-import { TARGET } from '../constants/target.js';
 import type { BuilderContextInterface } from '../context/types.js';
-import { omit } from '../helpers/omit.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate/index.js';
 import { resolveLocalizedValues } from './extract-localized-values.js';
-import { fastClone } from './fast-clone.js';
-import { set } from './set.js';
+import { isEditing } from './is-editing.js';
+import { isPreviewing } from './is-previewing.js';
+import { setCopyOnWrite } from './set.js';
 import { transformBlock } from './transform-block.js';
-
-// Deep clone a block but without cloning any child blocks
-export function deepCloneWithConditions<T = any>(obj: T): T {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map((item: any) => deepCloneWithConditions(item)) as T;
-  }
-
-  if ((obj as any)['@type'] === '@builder.io/sdk:Element') {
-    return obj;
-  }
-
-  const clonedObj: any = {};
-
-  for (const key in obj) {
-    if (key !== 'meta' && Object.prototype.hasOwnProperty.call(obj, key)) {
-      clonedObj[key] = deepCloneWithConditions(obj[key]);
-    }
-  }
-
-  return clonedObj;
-}
-
-const IS_SDK_WITHOUT_CACHED_PROCESSED_BLOCK = [
-  'svelte',
-  'vue',
-  'angular',
-  'qwik',
-  'solid',
-].includes(TARGET);
-
-const getCopy = (block: BuilderBlock): BuilderBlock => {
-  if (IS_SDK_WITHOUT_CACHED_PROCESSED_BLOCK) {
-    const copy = fastClone(block);
-    const copied = {
-      ...copy,
-      properties: { ...copy.properties },
-      actions: { ...copy.actions },
-    };
-    return copied;
-  } else {
-    const copy = deepCloneWithConditions(
-      omit(block, 'children', 'meta')
-    ) as BuilderBlock;
-    return {
-      ...copy,
-      properties: { ...copy.properties },
-      actions: { ...copy.actions },
-      children: block.children,
-      meta: block.meta,
-    };
-  }
-};
 
 const evaluateBindings = ({
   block,
@@ -79,7 +22,15 @@ const evaluateBindings = ({
   if (!block.bindings) {
     return block;
   }
-  const copied = getCopy(block);
+  // Only objects along a bound path are copied: the block (and content) passed in is never mutated.
+  const copied = new WeakSet<object>();
+  const copy: BuilderBlock = {
+    ...block,
+    properties: { ...block.properties },
+    actions: { ...block.actions },
+  };
+  copied.add(copy.properties!);
+  copied.add(copy.actions!);
 
   for (const binding in block.bindings) {
     const expression = block.bindings[binding];
@@ -90,9 +41,24 @@ const evaluateBindings = ({
       rootSetState,
       context,
     });
-    set(copied, binding, value);
+    setCopyOnWrite(copy, binding, value, copied);
   }
-  return copied;
+  return copy;
+};
+
+/**
+ * A block without bindings processes to the same result for a given locale, so
+ * it is computed once per block object instead of on every render.
+ */
+const PROCESSED_BLOCKS_WITHOUT_BINDINGS = new WeakMap<
+  BuilderBlock,
+  Map<string, BuilderBlock>
+>();
+
+const hasBindings = (block: BuilderBlock) => {
+  if (!block.bindings) return false;
+  for (const _ in block.bindings) return true;
+  return false;
 };
 
 export function getProcessedBlock({
@@ -107,6 +73,20 @@ export function getProcessedBlock({
   BuilderContextInterface,
   'localState' | 'context' | 'rootState' | 'rootSetState'
 >): BuilderBlock {
+  const locale = rootState.locale as string | undefined;
+  const canUseCache =
+    !hasBindings(block) &&
+    typeof block === 'object' &&
+    block !== null &&
+    !isEditing() &&
+    !isPreviewing();
+
+  const cacheKey = locale ?? '';
+  if (canUseCache) {
+    const cached = PROCESSED_BLOCKS_WITHOUT_BINDINGS.get(block)?.get(cacheKey);
+    if (cached) return cached;
+  }
+
   let transformedBlock = transformBlock(block);
   transformedBlock = evaluateBindings({
     block: transformedBlock,
@@ -115,9 +95,15 @@ export function getProcessedBlock({
     rootSetState,
     context,
   });
-  transformedBlock = resolveLocalizedValues(
-    transformedBlock,
-    rootState.locale as string | undefined
-  );
+  transformedBlock = resolveLocalizedValues(transformedBlock, locale);
+
+  if (canUseCache) {
+    let byLocale = PROCESSED_BLOCKS_WITHOUT_BINDINGS.get(block);
+    if (!byLocale) {
+      byLocale = new Map();
+      PROCESSED_BLOCKS_WITHOUT_BINDINGS.set(block, byLocale);
+    }
+    byLocale.set(cacheKey, transformedBlock);
+  }
   return transformedBlock;
 }

@@ -7,6 +7,8 @@ import type {
 import { evaluate } from '../../functions/evaluate/index.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import { getStyle } from '../../functions/get-style.js';
+import { isEditing } from '../../functions/is-editing.js';
+import { isPreviewing } from '../../functions/is-previewing.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
@@ -51,6 +53,23 @@ export const getComponent = ({
   }
 };
 
+// Reused per block so repeated items keep a stable block identity across renders.
+const BLOCKS_WITHOUT_REPEAT = new WeakMap<BuilderBlock, BuilderBlock>();
+
+const getBlockWithoutRepeat = (block: BuilderBlock) => {
+  if (isEditing() || isPreviewing()) {
+    const { repeat: _repeat, ...rest } = block;
+    return rest;
+  }
+  let blockWithoutRepeat = BLOCKS_WITHOUT_REPEAT.get(block);
+  if (!blockWithoutRepeat) {
+    const { repeat: _repeat, ...rest } = block;
+    blockWithoutRepeat = rest;
+    BLOCKS_WITHOUT_REPEAT.set(block, blockWithoutRepeat);
+  }
+  return blockWithoutRepeat;
+};
+
 export const getRepeatItemData = ({
   block,
   context,
@@ -62,7 +81,7 @@ export const getRepeatItemData = ({
    * we don't use `state.processedBlock` here because the processing done within its logic includes evaluating the block's bindings,
    * which will not work if there is a repeat.
    */
-  const { repeat, ...blockWithoutRepeat } = block;
+  const { repeat } = block;
 
   if (!repeat?.collection) {
     return undefined;
@@ -83,6 +102,7 @@ export const getRepeatItemData = ({
   const collectionName = repeat.collection.split('.').pop();
   const itemNameToUse =
     repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
+  const blockWithoutRepeat = getBlockWithoutRepeat(block);
 
   const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
     context: {
@@ -125,17 +145,31 @@ export const provideLinkComponent = (
   return {};
 };
 
+const FILTERED_REGISTERED_COMPONENTS = new WeakMap<
+  RegisteredComponents,
+  Map<string, RegisteredComponents>
+>();
+
 export const provideRegisteredComponents = (
   block: RegisteredComponent | null | undefined,
   registeredComponents: RegisteredComponents,
   model: string
 ) => {
   if (block?.shouldReceiveBuilderProps?.builderComponents) {
-    const filteredRegisteredComponents = Object.fromEntries(
-      Object.entries(registeredComponents).filter(([_, component]) => {
-        return !checkIsComponentRestricted(component, model);
-      })
-    );
+    let byModel = FILTERED_REGISTERED_COMPONENTS.get(registeredComponents);
+    if (!byModel) {
+      byModel = new Map();
+      FILTERED_REGISTERED_COMPONENTS.set(registeredComponents, byModel);
+    }
+    let filteredRegisteredComponents = byModel.get(model);
+    if (!filteredRegisteredComponents) {
+      filteredRegisteredComponents = Object.fromEntries(
+        Object.entries(registeredComponents).filter(([_, component]) => {
+          return !checkIsComponentRestricted(component, model);
+        })
+      );
+      byModel.set(model, filteredRegisteredComponents);
+    }
     return { builderComponents: filteredRegisteredComponents };
   }
 

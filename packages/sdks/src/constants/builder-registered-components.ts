@@ -25,33 +25,40 @@ import type { RegisteredComponent } from '../context/types.js';
 import { getExtraComponents } from './extra-components.js';
 import { TARGET } from './target.js';
 
+let DEFAULT_REGISTERED_COMPONENTS: RegisteredComponent[] | undefined;
+
 /**
  * Returns a list of all registered components.
  * NOTE: This needs to be a function to work around ESM circular dependencies.
+ * The list is built once, on first use, so its entries keep a stable identity.
  */
 export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
-  () => [
-    { component: Button, ...buttonComponentInfo },
-    { component: Columns, ...columnsComponentInfo },
-    { component: Fragment, ...fragmentComponentInfo },
-    { component: Image, ...imageComponentInfo },
-    { component: Section, ...sectionComponentInfo },
-    { component: Slot, ...slotComponentInfo },
-    { component: Symbol, ...symbolComponentInfo },
-    { component: Text, ...textComponentInfo },
-    ...(SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET)
-      ? [
-          {
-            component: PersonalizationContainer,
-            ...personalizationContainerComponentInfo,
-          },
-        ]
-      : []),
-    ...(TARGET === 'rsc'
-      ? []
-      : [
-          { component: Tabs, ...tabsComponentInfo },
-          { component: Accordion, ...accordionComponentInfo },
-        ]),
-    ...getExtraComponents(),
-  ];
+  () => {
+    if (DEFAULT_REGISTERED_COMPONENTS) return DEFAULT_REGISTERED_COMPONENTS;
+    DEFAULT_REGISTERED_COMPONENTS = [
+      { component: Button, ...buttonComponentInfo },
+      { component: Columns, ...columnsComponentInfo },
+      { component: Fragment, ...fragmentComponentInfo },
+      { component: Image, ...imageComponentInfo },
+      { component: Section, ...sectionComponentInfo },
+      { component: Slot, ...slotComponentInfo },
+      { component: Symbol, ...symbolComponentInfo },
+      { component: Text, ...textComponentInfo },
+      ...(SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET)
+        ? [
+            {
+              component: PersonalizationContainer,
+              ...personalizationContainerComponentInfo,
+            },
+          ]
+        : []),
+      ...(TARGET === 'rsc'
+        ? []
+        : [
+            { component: Tabs, ...tabsComponentInfo },
+            { component: Accordion, ...accordionComponentInfo },
+          ]),
+      ...getExtraComponents(),
+    ];
+    return DEFAULT_REGISTERED_COMPONENTS;
+  };

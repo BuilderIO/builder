@@ -14,13 +14,9 @@ import ComponentsContext from '../../context/components.context.lite.js';
 import type {
   BuilderContextInterface,
   BuilderRenderState,
-  RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/evaluate.js';
-import { serializeIncludingFunctions } from '../../functions/register-component.js';
 import { logger } from '../../helpers/logger.js';
-import type { ComponentInfo } from '../../types/components.js';
-import type { Dictionary } from '../../types/typescript.js';
 import Blocks from '../blocks/blocks.lite.jsx';
 import { getUpdateVariantVisibilityScript } from '../content-variants/helpers.js';
 import DynamicDiv from '../dynamic-div.lite.jsx';
@@ -28,7 +24,9 @@ import InlinedScript from '../inlined-script.lite.jsx';
 import EnableEditor from './components/enable-editor.lite.jsx';
 import ContentStyles from './components/styles.lite.jsx';
 import {
+  getComponentInfos,
   getContentInitialValue,
+  getRegisteredComponents,
   getRootStateInitialValue,
 } from './content.helpers.js';
 import type { ContentProps } from './content.types.js';
@@ -58,21 +56,13 @@ export default function ContentComponent(props: ContentProps) {
       builderContextSignal.value.rootState = newRootState;
     },
 
-    registeredComponents: [
-      ...getDefaultRegisteredComponents(),
-      ...(props.customComponents || []),
-    ].reduce<RegisteredComponents>(
-      (acc, { component, ...info }) => ({
-        ...acc,
-        [info.name]: {
-          component: useTarget({
-            vue: wrapComponentRef(component),
-            default: component,
-          }),
-          ...serializeIncludingFunctions(info),
-        },
-      }),
-      {}
+    registeredComponents: getRegisteredComponents(
+      [...getDefaultRegisteredComponents(), ...(props.customComponents || [])],
+      (component) =>
+        useTarget({
+          vue: wrapComponentRef(component),
+          default: component,
+        })
     ),
   });
 
@@ -104,16 +94,10 @@ export default function ContentComponent(props: ContentProps) {
         canTrack: props.canTrack,
         apiKey: props.apiKey,
         apiVersion: props.apiVersion,
-        componentInfos: [
+        componentInfos: getComponentInfos([
           ...getDefaultRegisteredComponents(),
           ...(props.customComponents || []),
-        ].reduce<Dictionary<ComponentInfo>>(
-          (acc, { component: _, ...info }) => ({
-            ...acc,
-            [info.name]: serializeIncludingFunctions(info),
-          }),
-          {}
-        ),
+        ]),
         inheritedStyles: {},
         BlocksWrapper: useTarget({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

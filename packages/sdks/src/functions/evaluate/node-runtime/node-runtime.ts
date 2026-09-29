@@ -1,4 +1,4 @@
-import type { IsolateOptions } from 'isolated-vm';
+import type { Isolate, IsolateOptions, Reference, Script } from 'isolated-vm';
 import { SDK_NAME } from '../../../constants/sdk-name.js';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
@@ -9,6 +9,10 @@ import type {
   FunctionArguments,
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
+import {
+  getReadOnlyStateView,
+  getSafeStateExpressionFn,
+} from '../safe-state-expression.js';
 import { safeDynamicRequire } from './safeDynamicRequire.js';
 
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
@@ -58,7 +62,8 @@ const processCode = ({
     .join('');
 
   // the output is stringified and parsed back to the parent isolate if needed (when it's an `object`)
-  return `
+  // Wrapped in an IIFE so it compiles as a reusable script whose completion value is the result.
+  return `(function () {
 ${REF_TO_PROXY_FN}
 ${fnArgs}
 function theFunction() {
@@ -72,14 +77,49 @@ if (typeof output === 'object' && output !== null) {
 } else {
   return output;
 }
-`;
+})()`;
 };
 
 type IsolatedVMImport = typeof import('isolated-vm');
 
 let IVM_INSTANCE: IsolatedVMImport | null = null;
-// Create fresh isolates per request to prevent memory leaks
 let IVM_OPTIONS: IsolateOptions = { memoryLimit: 128 };
+
+/**
+ * Evaluations share one isolate, each in a fresh context, and the isolate is disposed after a
+ * fixed number of evaluations. That bounds memory the way a per-evaluation isolate does
+ * (see #4210) without paying isolate startup and script compilation on every binding.
+ */
+const MAX_EVALUATIONS_PER_ISOLATE = 1000;
+
+let POOLED: {
+  isolate: Isolate;
+  evaluations: number;
+  scripts: Map<string, Script>;
+} | null = null;
+
+const getPooledIsolate = (ivm: IsolatedVMImport) => {
+  if (
+    !POOLED ||
+    POOLED.isolate.isDisposed ||
+    POOLED.evaluations >= MAX_EVALUATIONS_PER_ISOLATE
+  ) {
+    if (POOLED && !POOLED.isolate.isDisposed) {
+      try {
+        POOLED.isolate.dispose();
+      } catch (e) {
+        // Ignore disposal errors
+      }
+    }
+    POOLED = {
+      isolate: new ivm.Isolate(IVM_OPTIONS),
+      evaluations: 0,
+      scripts: new Map(),
+    };
+  }
+  POOLED.evaluations++;
+  return POOLED;
+};
 
 /**
  * Set the `isolated-vm` instance to be used by the node runtime.
@@ -133,13 +173,16 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const ivm = getIvm();
+  const safeExpression = getSafeStateExpressionFn(code);
+  if (safeExpression) {
+    return safeExpression(getReadOnlyStateView(rootState, localState));
+  }
 
-  // Use stored options from setIvm, or default to { memoryLimit: 128 }
-  let isolate;
+  const ivm = getIvm();
+  const pooled = getPooledIsolate(ivm);
+  const isolateContext = pooled.isolate.createContextSync();
+  const references: Reference[] = [];
   try {
-    isolate = new ivm.Isolate(IVM_OPTIONS);
-    const isolateContext = isolate.createContextSync();
     const jail = isolateContext.global;
 
     // Setup the isolate
@@ -185,11 +228,16 @@ export const runInNode = ({
                 : arg
             )
           : null;
+      if (val) references.push(val);
       jail.setSync(getSyncValName(key), val);
     });
 
-    const evalStr = processCode({ code, args });
-    const resultStr = isolateContext.evalClosureSync(evalStr);
+    let script = pooled.scripts.get(code);
+    if (!script) {
+      script = pooled.isolate.compileScriptSync(processCode({ code, args }));
+      pooled.scripts.set(code, script);
+    }
+    const resultStr = script.runSync(isolateContext);
 
     try {
       // returning objects throw errors in isolated vm, so we stringify it and parse it back
@@ -199,13 +247,17 @@ export const runInNode = ({
       return resultStr;
     }
   } finally {
-    // Destroy the entire VM, this frees ALL memory at the C++ level.
-    if (isolate) {
+    references.forEach((reference) => {
       try {
-        isolate.dispose();
+        reference.release();
       } catch (e) {
-        // Ignore disposal errors
+        // Ignore release errors
       }
+    });
+    try {
+      isolateContext.release();
+    } catch (e) {
+      // Ignore release errors (e.g. the isolate was disposed after hitting its memory limit)
     }
   }
 };

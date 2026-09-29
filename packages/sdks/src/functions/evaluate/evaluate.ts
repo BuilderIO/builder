@@ -27,6 +27,37 @@ export const getSimpleExpressionGetPath = (code: string) => {
   );
 };
 
+const MAX_CACHED_CODE_STRINGS = 5000;
+const SIMPLE_GET_PATH_CACHE = new Map<string, string | null>();
+
+const getCachedSimpleExpressionGetPath = (code: string) => {
+  let getPath = SIMPLE_GET_PATH_CACHE.get(code);
+  if (getPath === undefined) {
+    getPath = getSimpleExpressionGetPath(code) || null;
+    if (SIMPLE_GET_PATH_CACHE.size >= MAX_CACHED_CODE_STRINGS) {
+      SIMPLE_GET_PATH_CACHE.clear();
+    }
+    SIMPLE_GET_PATH_CACHE.set(code, getPath);
+  }
+  return getPath;
+};
+
+/**
+ * Same result as `get({ ...rootState, ...localState }, getPath)`, without copying every state key.
+ */
+const getSimpleStateValue = (
+  rootState: EvaluatorArgs['rootState'],
+  localState: EvaluatorArgs['localState'],
+  getPath: string
+) => {
+  const firstKey = getPath.split('.')[0];
+  const source =
+    localState && Object.prototype.hasOwnProperty.call(localState, firstKey)
+      ? localState
+      : rootState;
+  return get(source, getPath);
+};
+
 export function evaluate({
   code,
   context,
@@ -47,9 +78,9 @@ export function evaluate({
    * We try not to take many risks with this optimizations, so we only do it for
    * `state.{path}` expressions.
    */
-  const getPath = getSimpleExpressionGetPath(code.trim());
+  const getPath = getCachedSimpleExpressionGetPath(code.trim());
   if (getPath) {
-    return get({ ...rootState, ...localState }, getPath);
+    return getSimpleStateValue(rootState, localState, getPath);
   }
 
   const args: ExecutorArgs = {

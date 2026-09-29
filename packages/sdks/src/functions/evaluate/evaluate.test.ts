@@ -194,6 +194,48 @@ const TESTS = {
 
     expect(output).toEqual(['first', 'second']);
   },
+  'simple getters read local state over root state': () => {
+    const read = (code: string) =>
+      evaluate({
+        ...DEFAULTS,
+        code,
+        rootState: { item: { name: 'root' }, other: 'root-only' },
+        localState: { item: { name: 'local' }, missing: undefined },
+      });
+
+    expect(read('state.item.name')).toBe('local');
+    expect(read('state.other')).toBe('root-only');
+    expect(read('state.missing')).toBeUndefined();
+  },
+  'the same code evaluates against each call state': () => {
+    const run = (count: number) =>
+      evaluate({
+        ...DEFAULTS,
+        code: 'state.count * 2 + 1',
+        rootState: { count },
+      });
+
+    expect(run(1)).toBe(3);
+    expect(run(5)).toBe(11);
+    expect(run(1)).toBe(3);
+  },
+  'globals set by one evaluation are not visible to the next': () => {
+    // the browser runtime runs in the page's own global scope
+    if (process.env.SDK_ENV === 'browser') return;
+
+    evaluate({
+      ...DEFAULTS,
+      code: 'leakedGlobal = 42; return 1',
+      isExpression: false,
+    });
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'return typeof leakedGlobal',
+      isExpression: false,
+    });
+
+    expect(output).toBe('undefined');
+  },
 };
 
 describe(`evaluate (${process.env.SDK_ENV})`, () => {
