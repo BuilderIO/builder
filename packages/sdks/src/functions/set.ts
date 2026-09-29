@@ -1,3 +1,14 @@
+const UNSAFE_PATH_SEGMENTS = new Set(['__proto__', 'constructor', 'prototype']);
+
+const parsePath = (path: string) =>
+  path.toString().match(/[^.[\]]+/g) as string[] | null;
+
+const isArrayIndex = (key: string | undefined) =>
+  Math.abs(Number(key)) >> 0 === +key!;
+
+const hasUnsafeSegment = (path: string[]) =>
+  path.some((segment) => UNSAFE_PATH_SEGMENTS.has(segment));
+
 /**
  * Minimal implementation of lodash's _.set
  * https://lodash.com/docs/4.17.15#set
@@ -10,7 +21,11 @@ export const set = (obj: any, _path: string | string[], value: any) => {
   }
   const path: string[] = Array.isArray(_path)
     ? _path
-    : (_path.toString().match(/[^.[\]]+/g) as string[]);
+    : (parsePath(_path) as string[]);
+
+  if (hasUnsafeSegment(path)) {
+    return obj;
+  }
 
   path
     .slice(0, -1)
@@ -18,15 +33,11 @@ export const set = (obj: any, _path: string | string[], value: any) => {
       (a, c, i) =>
         Object(a[c]) === a[c]
           ? a[c]
-          : (a[c] =
-              Math.abs(Number(path[i + 1])) >> 0 === +path[i + 1] ? [] : {}),
+          : (a[c] = isArrayIndex(path[i + 1]) ? [] : {}),
       obj
     )[path[path.length - 1]] = value;
   return obj;
 };
-
-const isArrayIndex = (key: string | undefined) =>
-  Math.abs(Number(key)) >> 0 === +key!;
 
 /**
  * Like `set`, but every object or array along `path` that is not in `copied`
@@ -42,8 +53,8 @@ export const setCopyOnWrite = (
   if (Object(obj) !== obj) {
     return obj;
   }
-  const path = _path.toString().match(/[^.[\]]+/g) as string[] | null;
-  if (!path) {
+  const path = parsePath(_path);
+  if (!path || hasUnsafeSegment(path)) {
     return obj;
   }
   copied.add(obj);

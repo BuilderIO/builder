@@ -51,3 +51,22 @@ describe('setCopyOnWrite', () => {
     expect(list[1].label).toBe('b');
   });
 });
+
+describe('prototype path guard', () => {
+  afterEach(() => {
+    delete (Object.prototype as any).polluted;
+  });
+
+  test('set ignores __proto__ and constructor.prototype paths', () => {
+    set({}, '__proto__.polluted', true);
+    set({}, 'constructor.prototype.polluted', true);
+    set({}, ['__proto__', 'polluted'], true);
+    expect(({} as any).polluted).toBeUndefined();
+  });
+
+  test('setCopyOnWrite ignores __proto__ and constructor.prototype paths', () => {
+    setCopyOnWrite({}, '__proto__.polluted', true, new WeakSet());
+    setCopyOnWrite({}, 'constructor.prototype.polluted', true, new WeakSet());
+    expect(({} as any).polluted).toBeUndefined();
+  });
+});
