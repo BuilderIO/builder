@@ -86,9 +86,10 @@ let IVM_INSTANCE: IsolatedVMImport | null = null;
 let IVM_OPTIONS: IsolateOptions = { memoryLimit: 128 };
 
 /**
- * Evaluations share one isolate, each in a fresh context, and the isolate is disposed after a
- * fixed number of evaluations. That bounds memory the way a per-evaluation isolate does
- * (see #4210) without paying isolate startup and script compilation on every binding.
+ * Evaluations share one isolate, each in a fresh context. The isolate is disposed at the end of the
+ * current task (or after a fixed number of evaluations), so a render's bindings share it without it
+ * outliving that work: a single long-lived isolate leaked memory (#4210), and one still alive at
+ * worker-thread teardown crashes `isolated-vm` on Linux.
  */
 const MAX_EVALUATIONS_PER_ISOLATE = 1000;
 
@@ -97,6 +98,23 @@ let POOLED: {
   evaluations: number;
   scripts: Map<string, Script>;
 } | null = null;
+let DISPOSE_TIMER: ReturnType<typeof setTimeout> | null = null;
+let IS_EXIT_HANDLER_REGISTERED = false;
+
+const disposePooledIsolate = () => {
+  if (DISPOSE_TIMER) {
+    clearTimeout(DISPOSE_TIMER);
+    DISPOSE_TIMER = null;
+  }
+  if (POOLED && !POOLED.isolate.isDisposed) {
+    try {
+      POOLED.isolate.dispose();
+    } catch (e) {
+      // Ignore disposal errors
+    }
+  }
+  POOLED = null;
+};
 
 const getPooledIsolate = (ivm: IsolatedVMImport) => {
   if (
@@ -104,18 +122,24 @@ const getPooledIsolate = (ivm: IsolatedVMImport) => {
     POOLED.isolate.isDisposed ||
     POOLED.evaluations >= MAX_EVALUATIONS_PER_ISOLATE
   ) {
-    if (POOLED && !POOLED.isolate.isDisposed) {
-      try {
-        POOLED.isolate.dispose();
-      } catch (e) {
-        // Ignore disposal errors
-      }
-    }
+    disposePooledIsolate();
     POOLED = {
       isolate: new ivm.Isolate(IVM_OPTIONS),
       evaluations: 0,
       scripts: new Map(),
     };
+  }
+  if (!DISPOSE_TIMER) {
+    DISPOSE_TIMER = setTimeout(disposePooledIsolate, 0);
+    DISPOSE_TIMER.unref?.();
+  }
+  if (
+    !IS_EXIT_HANDLER_REGISTERED &&
+    typeof process !== 'undefined' &&
+    typeof process.once === 'function'
+  ) {
+    IS_EXIT_HANDLER_REGISTERED = true;
+    process.once('exit', disposePooledIsolate);
   }
   POOLED.evaluations++;
   return POOLED;
