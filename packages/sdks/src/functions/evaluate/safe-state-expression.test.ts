@@ -1,7 +1,9 @@
 import {
+  evaluateSafeStateExpression,
   getReadOnlyStateView,
   getSafeStateExpression,
   getSafeStateExpressionFn,
+  NOT_EVALUATED,
 } from './safe-state-expression.js';
 
 describe('getSafeStateExpression', () => {
@@ -67,6 +69,58 @@ describe('getSafeStateExpression', () => {
     test(`rejects ${JSON.stringify(expression)}`, () => {
       expect(getSafeStateExpression(expression)).toBeNull();
     });
+  });
+});
+
+describe('evaluateSafeStateExpression', () => {
+  const run = (code: string, rootState: any, localState?: any) =>
+    evaluateSafeStateExpression(code, rootState, localState);
+
+  test('evaluates primitive results over plain state', () => {
+    expect(run('return (state.a.b + 1);', { a: { b: 1 } })).toBe(2);
+    expect(run('return (state.list.length);', { list: [1, 2] })).toBe(2);
+  });
+
+  test('leaves object results to the sandbox', () => {
+    expect(run('return (state.a || state.b);', { a: { x: 1 }, b: 2 })).toBe(
+      NOT_EVALUATED
+    );
+  });
+
+  test('does not run getters in state', () => {
+    let calls = 0;
+    const user = {
+      get name() {
+        calls++;
+        return 'x';
+      },
+    };
+    expect(run('return (state.user.name);', { user })).toBe(NOT_EVALUATED);
+    expect(calls).toBe(0);
+  });
+
+  test('does not call custom valueOf or class instances', () => {
+    const valueOf = vi.fn(() => 1);
+    expect(run('return (state.a + 1);', { a: { valueOf } })).toBe(
+      NOT_EVALUATED
+    );
+    expect(valueOf).not.toHaveBeenCalled();
+
+    class Money {
+      amount = 1;
+    }
+    expect(run('return (state.price.amount);', { price: new Money() })).toBe(
+      NOT_EVALUATED
+    );
+  });
+
+  test('reads frozen state', () => {
+    const rootState = Object.freeze({ a: Object.freeze({ b: 'y' }) });
+    expect(run('return (state.a.b);', rootState)).toBe('y');
+  });
+
+  test('returns NOT_EVALUATED for code it does not handle', () => {
+    expect(run('state.a = 1', { a: 1 })).toBe(NOT_EVALUATED);
   });
 });
 

@@ -10,8 +10,8 @@ import type {
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
 import {
-  getReadOnlyStateView,
-  getSafeStateExpressionFn,
+  NOT_EVALUATED,
+  evaluateSafeStateExpression,
 } from '../safe-state-expression.js';
 import { safeDynamicRequire } from './safeDynamicRequire.js';
 
@@ -40,12 +40,18 @@ var refToProxy = (obj) => {
         return val;
     },
     set(target, key, value) {
+        // Functions cannot cross the isolate boundary, and server renders never call them.
+        if (typeof value === 'function') {
+          return true;
+        }
         const v = typeof value === 'object' ? new ${INJECTED_IVM_GLOBAL}.Reference(value) : value;
         obj.setSync(key, v);
         ${BUILDER_SET_STATE_NAME}(key, value)
+        return true;
     },
     deleteProperty(target, key) {
         obj.deleteSync(key);
+        return true;
     }
   })
 }
@@ -197,10 +203,8 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const safeExpression = getSafeStateExpressionFn(code);
-  if (safeExpression) {
-    return safeExpression(getReadOnlyStateView(rootState, localState));
-  }
+  const safeValue = evaluateSafeStateExpression(code, rootState, localState);
+  if (safeValue !== NOT_EVALUATED) return safeValue;
 
   const ivm = getIvm();
   const pooled = getPooledIsolate(ivm);

@@ -1,3 +1,5 @@
+import { createBoundedCache } from '../../helpers/bounded-cache.js';
+
 /**
  * Recognizes binding expressions that only read `state` and combine the values
  * with operators and literals, e.g. `!state.open`, `state.$index + 1` or
@@ -156,10 +158,15 @@ export const getSafeStateExpressionFromCode = (code: string) => {
   return match ? getSafeStateExpression(match[1]) : null;
 };
 
+const isPrimitiveValue = (value: unknown) =>
+  value === null || (typeof value !== 'object' && typeof value !== 'function');
+
 type SafeExpressionFn = (state: Record<string, any>) => unknown;
 
 const MAX_CACHED_EXPRESSIONS = 5000;
-const COMPILED_EXPRESSIONS = new Map<string, SafeExpressionFn | null>();
+const COMPILED_EXPRESSIONS = createBoundedCache<SafeExpressionFn | null>(
+  MAX_CACHED_EXPRESSIONS
+);
 
 /**
  * The compiled expression for `code`, or `null` when `code` is not a safe state expression.
@@ -181,12 +188,49 @@ export const getSafeStateExpressionFn = (
         fn = null;
       }
     }
-    if (COMPILED_EXPRESSIONS.size >= MAX_CACHED_EXPRESSIONS) {
-      COMPILED_EXPRESSIONS.clear();
-    }
     COMPILED_EXPRESSIONS.set(code, fn);
   }
   return fn;
+};
+
+const UNSAFE_STATE_READ = Symbol('unsafe state read');
+
+const isPlainContainer = (value: object) => {
+  const prototype = Object.getPrototypeOf(value);
+  return (
+    prototype === Object.prototype ||
+    prototype === Array.prototype ||
+    prototype === null
+  );
+};
+
+const READ_ONLY_TRAPS = { set: () => false, deleteProperty: () => false };
+
+/**
+ * Wraps plain objects and arrays so every nested read goes through `readDataProperty`.
+ * The proxy target is a fresh empty container rather than `value`, because proxy
+ * invariants forbid returning a wrapper for a frozen (non-configurable) property.
+ */
+const guardStateValue = (value: unknown): unknown => {
+  if (value === null || typeof value !== 'object') {
+    if (typeof value === 'function') throw UNSAFE_STATE_READ;
+    return value;
+  }
+  if (!isPlainContainer(value)) throw UNSAFE_STATE_READ;
+  return new Proxy(Array.isArray(value) ? [] : {}, {
+    get: (_, prop) => readDataProperty(value, prop),
+    ...READ_ONLY_TRAPS,
+  });
+};
+
+/**
+ * Reads `prop` without running application code: accessors, class instances and
+ * functions (which could run getters or custom `valueOf`/`toString`) abort the read.
+ */
+const readDataProperty = (target: any, prop: string | symbol): unknown => {
+  const descriptor = Object.getOwnPropertyDescriptor(target, prop);
+  if (descriptor && (descriptor.get || descriptor.set)) throw UNSAFE_STATE_READ;
+  return guardStateValue(descriptor ? descriptor.value : target[prop]);
 };
 
 /**
@@ -195,15 +239,39 @@ export const getSafeStateExpressionFn = (
 export const getReadOnlyStateView = (
   rootState: Record<string | symbol, any>,
   localState: Record<string | symbol, any> | undefined
-) =>
-  new Proxy(
+) => {
+  if (!isPlainContainer(rootState)) throw UNSAFE_STATE_READ;
+  return new Proxy(
     {},
     {
       get: (_, prop) =>
         localState && Object.prototype.hasOwnProperty.call(localState, prop)
-          ? localState[prop]
-          : rootState[prop],
-      set: () => false,
-      deleteProperty: () => false,
+          ? readDataProperty(localState, prop)
+          : readDataProperty(rootState, prop),
+      ...READ_ONLY_TRAPS,
     }
   );
+};
+
+export const NOT_EVALUATED = Symbol('not evaluated');
+
+/**
+ * Evaluates `code` outside the sandbox when it is a safe state expression over plain
+ * data and produces a primitive. Returns `NOT_EVALUATED` when the sandbox must run it.
+ */
+export const evaluateSafeStateExpression = (
+  code: string,
+  rootState: Record<string | symbol, any>,
+  localState: Record<string | symbol, any> | undefined
+): unknown => {
+  const fn = getSafeStateExpressionFn(code);
+  if (!fn) return NOT_EVALUATED;
+  let value: unknown;
+  try {
+    value = fn(getReadOnlyStateView(rootState, localState));
+  } catch (error) {
+    if (error === UNSAFE_STATE_READ) return NOT_EVALUATED;
+    throw error;
+  }
+  return isPrimitiveValue(value) ? value : NOT_EVALUATED;
+};
