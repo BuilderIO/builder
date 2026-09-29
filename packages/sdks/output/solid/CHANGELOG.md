@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.2.15
+
+### Patch Changes
+
+- b5e5c6e: Prevent content fetch options from overriding the configured API key
+
 ## 5.2.14
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.25.17
+
+### Patch Changes
+
+- b5e5c6e: Prevent content fetch options from overriding the configured API key
+
 ## 0.25.16
 
 ### Patch Changes
