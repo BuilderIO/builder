@@ -1,13 +1,19 @@
-const UNSAFE_PATH_SEGMENTS = new Set(['__proto__', 'constructor', 'prototype']);
-
 const parsePath = (path: string) =>
   path.toString().match(/[^.[\]]+/g) as string[] | null;
 
 const isArrayIndex = (key: string | undefined) =>
   Math.abs(Number(key)) >> 0 === +key!;
 
+/**
+ * `__proto__` is never allowed. `constructor` and `prototype` are allowed only as
+ * the final key, where they are written as ordinary own properties.
+ */
 const hasUnsafeSegment = (path: string[]) =>
-  path.some((segment) => UNSAFE_PATH_SEGMENTS.has(segment));
+  path.some(
+    (key, i) =>
+      key === '__proto__' ||
+      (i < path.length - 1 && (key === 'constructor' || key === 'prototype'))
+  );
 
 /**
  * Own properties only, so a path can never walk into a value shared through a
@@ -30,7 +36,7 @@ export const set = (obj: any, _path: string | string[], value: any) => {
     ? _path
     : (parsePath(_path) as string[]);
 
-  if (hasUnsafeSegment(path)) {
+  if (!path || hasUnsafeSegment(path)) {
     return obj;
   }
 

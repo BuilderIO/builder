@@ -1,5 +1,17 @@
 # Builder.io Vue SDK Changelog (@builder.io/sdk-vue)
 
+## 5.2.16
+
+### Patch Changes
+
+- 9689cbc: Prevent prototype pollution by ignoring `__proto__`, `constructor` and `prototype` segments in block binding keys
+
+## 5.2.15
+
+### Patch Changes
+
+- b5e5c6e: Prevent content fetch options from overriding the configured API key
+
 ## 5.2.14
 
 ### Patch Changes

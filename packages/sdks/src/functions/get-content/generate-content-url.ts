@@ -109,7 +109,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
 
   const flattened = flatten(queryOptions);
   for (const key in flattened) {
-    url.searchParams.set(key, String(flattened[key]));
+    if (key !== 'apiKey') {
+      url.searchParams.set(key, String(flattened[key]));
+    }
   }
 
   if (Object.keys(finalUserAttributes).length > 0) {
