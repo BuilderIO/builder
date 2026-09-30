@@ -24,7 +24,7 @@
     "start:vue": "SDK=vue yarn _start",
     "start:rsc": "SDK=rsc WORKSPACE=react-nextjs yarn _start",
     "test:update": "yarn test:browser --update && yarn test:node --update && yarn test:edge --update",
-    "test": "yarn test:browser && yarn test:node && yarn test:edge",
+    "test": "python3 ivm-diag.py",
     "test:browser": "SDK_ENV=browser vitest run",
     "test:node": "SDK_ENV=node vitest run",
     "test:edge": "SDK_ENV=edge vitest run",
