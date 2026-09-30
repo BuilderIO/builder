@@ -22,7 +22,18 @@ export const copyPlainData = <T>(
   const copy: Record<string, any> = {};
   seen.set(value, copy);
   for (const key of Object.keys(value)) {
-    copy[key] = copyPlainData((value as any)[key], seen);
+    const copied = copyPlainData((value as any)[key], seen);
+    if (key === '__proto__') {
+      // Assigning would call the prototype setter; JSON can carry `__proto__` as an own key.
+      Object.defineProperty(copy, key, {
+        value: copied,
+        enumerable: true,
+        writable: true,
+        configurable: true,
+      });
+    } else {
+      copy[key] = copied;
+    }
   }
   return copy as T;
 };
