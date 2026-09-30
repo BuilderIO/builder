@@ -197,6 +197,23 @@ const getIvm = (): IsolatedVMImport => {
   throw new Error(ERROR_MESSAGE);
 };
 
+let IS_PROXY: ((value: unknown) => boolean) | null | undefined;
+
+/**
+ * Node's `util.types.isProxy`, which detects a Proxy without running its traps.
+ * `null` when unavailable, in which case the pure-expression fast path is skipped.
+ */
+const getIsProxy = () => {
+  if (IS_PROXY === undefined) {
+    try {
+      IS_PROXY = safeDynamicRequire('node:util')?.types?.isProxy ?? null;
+    } catch {
+      IS_PROXY = null;
+    }
+  }
+  return IS_PROXY;
+};
+
 export const runInNode = ({
   code,
   builder,
@@ -206,8 +223,16 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const safeValue = evaluateSafeStateExpression(code, rootState, localState);
-  if (safeValue !== NOT_EVALUATED) return safeValue;
+  const isProxy = getIsProxy();
+  if (isProxy) {
+    const safeValue = evaluateSafeStateExpression(
+      code,
+      rootState,
+      localState,
+      isProxy
+    );
+    if (safeValue !== NOT_EVALUATED) return safeValue;
+  }
 
   const ivm = getIvm();
   const pooled = getPooledIsolate(ivm);

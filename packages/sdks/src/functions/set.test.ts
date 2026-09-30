@@ -86,3 +86,29 @@ describe('unset', () => {
     expect(typeof ({} as any).toString).toBe('function');
   });
 });
+
+describe('inherited values', () => {
+  afterEach(() => {
+    delete (Object.prototype.toString as any).polluted;
+  });
+
+  test('set does not walk into inherited values', () => {
+    const obj: any = {};
+    set(obj, ['toString', 'polluted'], true);
+    expect((Object.prototype.toString as any).polluted).toBeUndefined();
+    expect(obj.toString).toEqual({ polluted: true });
+  });
+
+  test('setCopyOnWrite does not walk into inherited values', () => {
+    const obj: any = {};
+    setCopyOnWrite(obj, 'toString.polluted', true, new WeakSet());
+    expect((Object.prototype.toString as any).polluted).toBeUndefined();
+    expect(obj.toString).toEqual({ polluted: true });
+  });
+
+  test('unset does not walk into inherited values', () => {
+    (Object.prototype.toString as any).polluted = true;
+    unset({}, ['toString', 'polluted']);
+    expect((Object.prototype.toString as any).polluted).toBe(true);
+  });
+});

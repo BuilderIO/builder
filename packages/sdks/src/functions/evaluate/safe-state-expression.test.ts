@@ -1,3 +1,4 @@
+import { types } from 'node:util';
 import {
   evaluateSafeStateExpression,
   getReadOnlyStateView,
@@ -5,6 +6,8 @@ import {
   getSafeStateExpressionFn,
   NOT_EVALUATED,
 } from './safe-state-expression.js';
+
+const { isProxy } = types;
 
 describe('getSafeStateExpression', () => {
   const SAFE = [
@@ -74,7 +77,7 @@ describe('getSafeStateExpression', () => {
 
 describe('evaluateSafeStateExpression', () => {
   const run = (code: string, rootState: any, localState?: any) =>
-    evaluateSafeStateExpression(code, rootState, localState);
+    evaluateSafeStateExpression(code, rootState, localState, isProxy);
 
   test('evaluates primitive results over plain state', () => {
     expect(run('return (state.a.b + 1);', { a: { b: 1 } })).toBe(2);
@@ -144,6 +147,25 @@ describe('evaluateSafeStateExpression', () => {
     }
   });
 
+  test('does not run Proxy traps in state', () => {
+    let traps = 0;
+    const user = new Proxy(
+      { name: 'x' },
+      {
+        getPrototypeOf: (target) => {
+          traps++;
+          return Object.getPrototypeOf(target);
+        },
+        getOwnPropertyDescriptor: (target, prop) => {
+          traps++;
+          return Reflect.getOwnPropertyDescriptor(target, prop);
+        },
+      }
+    );
+    expect(run('return (state.user.name);', { user })).toBe(NOT_EVALUATED);
+    expect(traps).toBe(0);
+  });
+
   test('reads frozen state', () => {
     const rootState = Object.freeze({ a: Object.freeze({ b: 'y' }) });
     expect(run('return (state.a.b);', rootState)).toBe('y');
@@ -157,7 +179,7 @@ describe('evaluateSafeStateExpression', () => {
 describe('getSafeStateExpressionFn', () => {
   const run = (code: string, rootState: any, localState?: any) =>
     getSafeStateExpressionFn(code)?.(
-      getReadOnlyStateView(rootState, localState)
+      getReadOnlyStateView(rootState, localState, isProxy)
     );
 
   test('evaluates `parseCode` output and the editor transpiled form', () => {
@@ -182,7 +204,7 @@ describe('getSafeStateExpressionFn', () => {
   test('cannot write state', () => {
     const rootState = { a: 1 };
     const fn = getSafeStateExpressionFn('return (state.a);')!;
-    const view: any = getReadOnlyStateView(rootState, undefined);
+    const view: any = getReadOnlyStateView(rootState, undefined, isProxy);
     expect(fn(view)).toBe(1);
     expect(() => {
       'use strict';

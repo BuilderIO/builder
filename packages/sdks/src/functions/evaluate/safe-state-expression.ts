@@ -226,9 +226,15 @@ const findDescriptor = (target: object, prop: string | symbol) => {
  */
 export const getReadOnlyStateView = (
   rootState: Record<string | symbol, any>,
-  localState: Record<string | symbol, any> | undefined
+  localState: Record<string | symbol, any> | undefined,
+  isProxy: (value: unknown) => boolean
 ) => {
-  if (!isPlainContainer(rootState)) throw UNSAFE_STATE_READ;
+  // Reflecting on a Proxy (even `Object.getPrototypeOf`) runs its traps.
+  const isInspectable = (value: object) =>
+    !isProxy(value) && isPlainContainer(value);
+  if (!isInspectable(rootState) || (localState && isProxy(localState))) {
+    throw UNSAFE_STATE_READ;
+  }
   const wrappers = new WeakMap<object, object>();
 
   const guardStateValue = (value: unknown): unknown => {
@@ -236,7 +242,7 @@ export const getReadOnlyStateView = (
       if (typeof value === 'function') throw UNSAFE_STATE_READ;
       return value;
     }
-    if (!isPlainContainer(value)) throw UNSAFE_STATE_READ;
+    if (!isInspectable(value)) throw UNSAFE_STATE_READ;
     let wrapper = wrappers.get(value);
     if (!wrapper) {
       wrapper = new Proxy(Array.isArray(value) ? [] : {}, {
@@ -277,13 +283,14 @@ export const NOT_EVALUATED = Symbol('not evaluated');
 export const evaluateSafeStateExpression = (
   code: string,
   rootState: Record<string | symbol, any>,
-  localState: Record<string | symbol, any> | undefined
+  localState: Record<string | symbol, any> | undefined,
+  isProxy: (value: unknown) => boolean
 ): unknown => {
   const fn = getSafeStateExpressionFn(code);
   if (!fn) return NOT_EVALUATED;
   let value: unknown;
   try {
-    value = fn(getReadOnlyStateView(rootState, localState));
+    value = fn(getReadOnlyStateView(rootState, localState, isProxy));
   } catch (error) {
     if (error === UNSAFE_STATE_READ) return NOT_EVALUATED;
     throw error;
