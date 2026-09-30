@@ -25,14 +25,10 @@ def unref_off():
 
 EXPERIMENTS = [
     ('full suite', [], None),
-    ('full suite --no-threads', ['--no-threads'], None),
-    ('full suite --single-thread', ['--single-thread'], None),
     ('full suite, no unref', [], unref_off),
-    ('evaluate + processed-block', [EVAL, PROCESSED], None),
-    ('evaluate + safe-state', [EVAL, SAFE], None),
-    ('processed-block alone', [PROCESSED], None),
-    ('full suite at 0dbc18d36', [], 'checkout-0dbc'),
+    ('full suite --no-threads', ['--no-threads'], None),
 ]
+RUNS = 12
 
 rows = []
 first_crash_log = None
@@ -43,7 +39,7 @@ for name, args, prep in EXPERIMENTS:
         subprocess.run(['git', 'checkout', '0dbc18d36', '--', 'src'], check=False)
     elif prep:
         prep()
-    results = [run(args) for _ in range(3)]
+    results = [run(args) for _ in range(RUNS)]
     crashes = sum(1 for r in results if r[1])
     if crashes and first_crash_log is None:
         crash_out = next(r[3] for r in results if r[1])
@@ -54,7 +50,7 @@ subprocess.run(['git', 'checkout', 'HEAD', '--', 'src'], check=True)
 
 print('\n==== IVM DIAGNOSTICS ====')
 for name, crashes, codes, files in rows:
-    print(f'{name:<30} crashes={crashes}/3 exit={codes} files: {files}')
+    print(f'{name:<30} crashes={crashes}/{RUNS} exit={codes} files: {files}')
 if first_crash_log:
     print(f'---- context before first crash ({first_crash_log[0]}) ----')
     print(first_crash_log[1])
