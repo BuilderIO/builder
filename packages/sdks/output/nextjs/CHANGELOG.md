@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.25.18
+
+### Patch Changes
+
+- 9689cbc: Prevent prototype pollution by ignoring `__proto__`, `constructor` and `prototype` segments in block binding keys
+
 ## 0.25.17
 
 ### Patch Changes

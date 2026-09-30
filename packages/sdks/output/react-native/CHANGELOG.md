@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 5.2.16
+
+### Patch Changes
+
+- 9689cbc: Prevent prototype pollution by ignoring `__proto__`, `constructor` and `prototype` segments in block binding keys
+
 ## 5.2.15
 
 ### Patch Changes
