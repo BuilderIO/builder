@@ -74,7 +74,6 @@ export default function Block(props: BlockProps) {
     _processedBlock: { value: null as BuilderBlock | null, update: false },
     get processedBlock(): BuilderBlock {
       useTarget({
-        svelte: () => {},
         vue: () => {},
         angular: () => {},
         qwik: () => {},
@@ -102,7 +101,6 @@ export default function Block(props: BlockProps) {
           });
 
       useTarget({
-        svelte: () => {},
         vue: () => {},
         angular: () => {},
         qwik: () => {},
@@ -222,7 +220,6 @@ export default function Block(props: BlockProps) {
    */
   onUpdate(() => {
     useTarget({
-      svelte: () => {},
       vue: () => {},
       angular: () => {},
       qwik: () => {},
