@@ -206,41 +206,56 @@ const isPlainContainer = (value: object) => {
 
 const READ_ONLY_TRAPS = { set: () => false, deleteProperty: () => false };
 
-/**
- * Wraps plain objects and arrays so every nested read goes through `readDataProperty`.
- * The proxy target is a fresh empty container rather than `value`, because proxy
- * invariants forbid returning a wrapper for a frozen (non-configurable) property.
- */
-const guardStateValue = (value: unknown): unknown => {
-  if (value === null || typeof value !== 'object') {
-    if (typeof value === 'function') throw UNSAFE_STATE_READ;
-    return value;
+const findDescriptor = (target: object, prop: string | symbol) => {
+  for (let o: object | null = target; o; o = Object.getPrototypeOf(o)) {
+    const descriptor = Object.getOwnPropertyDescriptor(o, prop);
+    if (descriptor) return descriptor;
   }
-  if (!isPlainContainer(value)) throw UNSAFE_STATE_READ;
-  return new Proxy(Array.isArray(value) ? [] : {}, {
-    get: (_, prop) => readDataProperty(value, prop),
-    ...READ_ONLY_TRAPS,
-  });
-};
-
-/**
- * Reads `prop` without running application code: accessors, class instances and
- * functions (which could run getters or custom `valueOf`/`toString`) abort the read.
- */
-const readDataProperty = (target: any, prop: string | symbol): unknown => {
-  const descriptor = Object.getOwnPropertyDescriptor(target, prop);
-  if (descriptor && (descriptor.get || descriptor.set)) throw UNSAFE_STATE_READ;
-  return guardStateValue(descriptor ? descriptor.value : target[prop]);
+  return undefined;
 };
 
 /**
  * A read-only view of local state over root state, without copying either.
+ *
+ * Plain objects and arrays are wrapped so every nested read is checked: accessors
+ * anywhere on the prototype chain, class instances and functions (which could run
+ * getters or custom `valueOf`/`toString`) abort the read. Each source object maps to
+ * one wrapper for the life of the view, so `===` still compares the underlying objects.
+ * Wrappers target a fresh empty container rather than the object itself, because proxy
+ * invariants forbid returning a wrapper for a frozen (non-configurable) property.
  */
 export const getReadOnlyStateView = (
   rootState: Record<string | symbol, any>,
   localState: Record<string | symbol, any> | undefined
 ) => {
   if (!isPlainContainer(rootState)) throw UNSAFE_STATE_READ;
+  const wrappers = new WeakMap<object, object>();
+
+  const guardStateValue = (value: unknown): unknown => {
+    if (value === null || typeof value !== 'object') {
+      if (typeof value === 'function') throw UNSAFE_STATE_READ;
+      return value;
+    }
+    if (!isPlainContainer(value)) throw UNSAFE_STATE_READ;
+    let wrapper = wrappers.get(value);
+    if (!wrapper) {
+      wrapper = new Proxy(Array.isArray(value) ? [] : {}, {
+        get: (_, prop) => readDataProperty(value, prop),
+        ...READ_ONLY_TRAPS,
+      });
+      wrappers.set(value, wrapper);
+    }
+    return wrapper;
+  };
+
+  const readDataProperty = (target: object, prop: string | symbol): unknown => {
+    const descriptor = findDescriptor(target, prop);
+    if (descriptor && (descriptor.get || descriptor.set)) {
+      throw UNSAFE_STATE_READ;
+    }
+    return guardStateValue(descriptor?.value);
+  };
+
   return new Proxy(
     {},
     {

@@ -235,6 +235,23 @@ const TESTS = {
     expect(rootState.tab).toBe('design');
     expect(rootState.count).toBe(1);
   },
+  'nested writes and deletes in jsCode reach root state at their full path':
+    () => {
+      // the edge interpreter does not propagate deletes
+      if (process.env.SDK_ENV === 'edge') return;
+      const rootState: Record<string, any> = { user: { name: 'a' }, keep: 1 };
+
+      evaluate({
+        ...DEFAULTS,
+        code: 'state.user.name = "b"; delete state.keep; return 1',
+        isExpression: false,
+        rootState,
+      });
+
+      expect(rootState.user.name).toBe('b');
+      expect('name' in rootState).toBe(false);
+      expect('keep' in rootState).toBe(false);
+    },
   'globals set by one evaluation are not visible to the next': () => {
     // the browser runtime runs in the page's own global scope
     if (process.env.SDK_ENV === 'browser') return;

@@ -2,7 +2,7 @@ import type { Isolate, IsolateOptions, Reference, Script } from 'isolated-vm';
 import { SDK_NAME } from '../../../constants/sdk-name.js';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
-import { set } from '../../set.js';
+import { set, unset } from '../../set.js';
 import type {
   BuilderGlobals,
   ExecutorArgs,
@@ -18,16 +18,18 @@ import { safeDynamicRequire } from './safeDynamicRequire.js';
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
 
 const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
+const BUILDER_DELETE_STATE_NAME = 'BUILDER_DELETE_STATE';
 
 const INJECTED_IVM_GLOBAL = 'BUILDER_IVM';
 
 // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
 // https://github.com/laverdet/isolated-vm#referencecopysync
 const REF_TO_PROXY_FN = `
-var refToProxy = (obj) => {
+var refToProxy = (obj, path) => {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
+  path = path || [];
   return new Proxy({}, {
     get(target, key) {
         if (key === 'copySync') {
@@ -35,7 +37,7 @@ var refToProxy = (obj) => {
         }
         const val = obj.getSync(key);
         if (typeof val?.getSync === 'function') {
-            return refToProxy(val);
+            return refToProxy(val, path.concat(key));
         }
         return val;
     },
@@ -46,11 +48,12 @@ var refToProxy = (obj) => {
         }
         const v = typeof value === 'object' ? new ${INJECTED_IVM_GLOBAL}.Reference(value) : value;
         obj.setSync(key, v);
-        ${BUILDER_SET_STATE_NAME}(key, value)
+        ${BUILDER_SET_STATE_NAME}(path.concat(key), value)
         return true;
     },
     deleteProperty(target, key) {
         obj.deleteSync(key);
+        ${BUILDER_DELETE_STATE_NAME}(path.concat(key));
         return true;
     }
   })
@@ -234,11 +237,15 @@ export const runInNode = ({
     /**
      * Propagate state changes back to the reactive root state.
      */
-    jail.setSync(BUILDER_SET_STATE_NAME, function (key: string, value: any) {
+    jail.setSync(BUILDER_SET_STATE_NAME, function (path: string[], value: any) {
       // mutate the `rootState` object itself. Important for cases where we do not have `rootSetState`
       // like Qwik.
-      set(rootState, key, value);
+      set(rootState, path, value);
       // call the `rootSetState` function if it exists
+      rootSetState?.(rootState);
+    });
+    jail.setSync(BUILDER_DELETE_STATE_NAME, function (path: string[]) {
+      unset(rootState, path);
       rootSetState?.(rootState);
     });
 

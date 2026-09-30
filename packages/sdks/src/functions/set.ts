@@ -77,3 +77,19 @@ export const setCopyOnWrite = (
   current[path[path.length - 1]] = value;
   return obj;
 };
+
+/**
+ * Deletes the property at `path`, the inverse of `set` for an array path.
+ */
+export const unset = (obj: any, path: string[]) => {
+  if (Object(obj) !== obj || !path.length || hasUnsafeSegment(path)) {
+    return obj;
+  }
+  const parent = path
+    .slice(0, -1)
+    .reduce((a, c) => (Object(a) === a ? a[c] : undefined), obj);
+  if (Object(parent) === parent) {
+    delete parent[path[path.length - 1]];
+  }
+  return obj;
+};

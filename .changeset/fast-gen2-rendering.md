@@ -20,3 +20,4 @@ Faster rendering, and rendering no longer mutates the content object:
 - Compiled-expression and path caches are bounded and evict the oldest entry instead of clearing; the processed-block cache keeps only the latest locale per block.
 - `set` and `setCopyOnWrite` ignore paths containing `__proto__`, `constructor` or `prototype`.
 - Node: `jsCode` that sets state with `Object.assign(state, {...})` or assigns functions to state no longer throws inside `isolated-vm`; function values are skipped on the server.
+- Node: nested state writes (`state.user.name = ...`) and `delete state.x` in `jsCode` now update root state at the full path instead of writing a stray top-level key.

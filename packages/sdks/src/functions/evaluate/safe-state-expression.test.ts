@@ -114,6 +114,36 @@ describe('evaluateSafeStateExpression', () => {
     );
   });
 
+  test('keeps object identity for strict equality', () => {
+    const items = { a: 1 };
+    expect(run('return (state.items === state.items);', { items })).toBe(true);
+    expect(run('return (state.a === state.b);', { a: items, b: items })).toBe(
+      true
+    );
+    expect(
+      run('return (state.a !== state.c);', { a: items, c: { a: 1 } })
+    ).toBe(true);
+  });
+
+  test('does not run getters inherited from a prototype', () => {
+    let calls = 0;
+    Object.defineProperty(Object.prototype, 'inheritedGetter', {
+      configurable: true,
+      get() {
+        calls++;
+        return 'x';
+      },
+    });
+    try {
+      expect(run('return (state.user.inheritedGetter);', { user: {} })).toBe(
+        NOT_EVALUATED
+      );
+      expect(calls).toBe(0);
+    } finally {
+      delete (Object.prototype as any).inheritedGetter;
+    }
+  });
+
   test('reads frozen state', () => {
     const rootState = Object.freeze({ a: Object.freeze({ b: 'y' }) });
     expect(run('return (state.a.b);', rootState)).toBe('y');
