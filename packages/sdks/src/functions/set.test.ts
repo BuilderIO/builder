@@ -1,4 +1,4 @@
-import { set, setCopyOnWrite } from './set.js';
+import { set, setCopyOnWrite, unset } from './set.js';
 
 test('can shallow set a property', () => {
   const obj = { foo: 'bar' };
@@ -49,5 +49,66 @@ describe('setCopyOnWrite', () => {
     expect(copy.list[0]).toBe(list[0]);
     expect(copy.list[1].label).toBe('z');
     expect(list[1].label).toBe('b');
+  });
+});
+
+describe('prototype path guard', () => {
+  afterEach(() => {
+    delete (Object.prototype as any).polluted;
+  });
+
+  test('set ignores __proto__ and constructor.prototype paths', () => {
+    set({}, '__proto__.polluted', true);
+    set({}, 'constructor.prototype.polluted', true);
+    set({}, ['__proto__', 'polluted'], true);
+    expect(({} as any).polluted).toBeUndefined();
+  });
+
+  test('setCopyOnWrite ignores __proto__ and constructor.prototype paths', () => {
+    setCopyOnWrite({}, '__proto__.polluted', true, new WeakSet());
+    setCopyOnWrite({}, 'constructor.prototype.polluted', true, new WeakSet());
+    expect(({} as any).polluted).toBeUndefined();
+  });
+});
+
+describe('unset', () => {
+  test('deletes a nested property', () => {
+    const obj = { a: { b: 1, c: 2 } };
+    unset(obj, ['a', 'b']);
+    expect(obj).toEqual({ a: { c: 2 } });
+  });
+
+  test('ignores missing parents and unsafe paths', () => {
+    const obj = { a: 1 };
+    unset(obj, ['missing', 'b']);
+    unset(obj, ['__proto__', 'toString']);
+    expect(obj).toEqual({ a: 1 });
+    expect(typeof ({} as any).toString).toBe('function');
+  });
+});
+
+describe('inherited values', () => {
+  afterEach(() => {
+    delete (Object.prototype.toString as any).polluted;
+  });
+
+  test('set does not walk into inherited values', () => {
+    const obj: any = {};
+    set(obj, ['toString', 'polluted'], true);
+    expect((Object.prototype.toString as any).polluted).toBeUndefined();
+    expect(obj.toString).toEqual({ polluted: true });
+  });
+
+  test('setCopyOnWrite does not walk into inherited values', () => {
+    const obj: any = {};
+    setCopyOnWrite(obj, 'toString.polluted', true, new WeakSet());
+    expect((Object.prototype.toString as any).polluted).toBeUndefined();
+    expect(obj.toString).toEqual({ polluted: true });
+  });
+
+  test('unset does not walk into inherited values', () => {
+    (Object.prototype.toString as any).polluted = true;
+    unset({}, ['toString', 'polluted']);
+    expect((Object.prototype.toString as any).polluted).toBe(true);
   });
 });

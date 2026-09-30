@@ -22,6 +22,19 @@ test.describe('Reactive State', () => {
     await expect(page.getByText('1', { exact: true })).toBeVisible();
   });
 
+  test('updates text templates when state changes', async ({ page, packageName, sdk }) => {
+    test.fail(excludeTestFor({ rsc: true }, sdk));
+    test.fail(packageName === 'nextjs-sdk-next-app');
+
+    await page.goto('/reactive-state');
+
+    await expect(page.getByText('Template value: 0', { exact: true })).toBeVisible();
+
+    await page.getByText('Increment Number').click();
+
+    await expect(page.getByText('Template value: 1', { exact: true })).toBeVisible();
+  });
+
   test('updates deeply nested state value correctly', async ({ page, sdk }) => {
     test.fail(excludeTestFor({ rsc: true }, sdk));
     test.skip(excludeTestFor({ vue: true }, sdk), 'TO-DO: Fix this test for Vue');

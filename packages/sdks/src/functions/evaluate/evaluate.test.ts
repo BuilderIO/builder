@@ -219,6 +219,39 @@ const TESTS = {
     expect(run(5)).toBe(11);
     expect(run(1)).toBe(3);
   },
+  'Object.assign on state sets every value, including after a method': () => {
+    // the edge interpreter only supports ES5, which has no Object.assign
+    if (process.env.SDK_ENV === 'edge') return;
+    const rootState: Record<string, any> = {};
+
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'Object.assign(state, { tab: "design", select: function (t) { state.tab = t }, count: 1 }); return state.tab',
+      isExpression: false,
+      rootState,
+    });
+
+    expect(output).toBe('design');
+    expect(rootState.tab).toBe('design');
+    expect(rootState.count).toBe(1);
+  },
+  'nested writes and deletes in jsCode reach root state at their full path':
+    () => {
+      // the edge interpreter does not propagate deletes
+      if (process.env.SDK_ENV === 'edge') return;
+      const rootState: Record<string, any> = { user: { name: 'a' }, keep: 1 };
+
+      evaluate({
+        ...DEFAULTS,
+        code: 'state.user.name = "b"; delete state.keep; return 1',
+        isExpression: false,
+        rootState,
+      });
+
+      expect(rootState.user.name).toBe('b');
+      expect('name' in rootState).toBe(false);
+      expect('keep' in rootState).toBe(false);
+    },
   'globals set by one evaluation are not visible to the next': () => {
     // the browser runtime runs in the page's own global scope
     if (process.env.SDK_ENV === 'browser') return;

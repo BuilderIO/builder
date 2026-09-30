@@ -1,3 +1,21 @@
+const UNSAFE_PATH_SEGMENTS = new Set(['__proto__', 'constructor', 'prototype']);
+
+const parsePath = (path: string) =>
+  path.toString().match(/[^.[\]]+/g) as string[] | null;
+
+const isArrayIndex = (key: string | undefined) =>
+  Math.abs(Number(key)) >> 0 === +key!;
+
+const hasUnsafeSegment = (path: string[]) =>
+  path.some((segment) => UNSAFE_PATH_SEGMENTS.has(segment));
+
+/**
+ * Own properties only, so a path can never walk into a value shared through a
+ * prototype (e.g. `Object.prototype.toString`) and mutate it.
+ */
+const getOwn = (obj: any, key: string) =>
+  Object.prototype.hasOwnProperty.call(obj, key) ? obj[key] : undefined;
+
 /**
  * Minimal implementation of lodash's _.set
  * https://lodash.com/docs/4.17.15#set
@@ -10,23 +28,20 @@ export const set = (obj: any, _path: string | string[], value: any) => {
   }
   const path: string[] = Array.isArray(_path)
     ? _path
-    : (_path.toString().match(/[^.[\]]+/g) as string[]);
+    : (parsePath(_path) as string[]);
 
-  path
-    .slice(0, -1)
-    .reduce(
-      (a, c, i) =>
-        Object(a[c]) === a[c]
-          ? a[c]
-          : (a[c] =
-              Math.abs(Number(path[i + 1])) >> 0 === +path[i + 1] ? [] : {}),
-      obj
-    )[path[path.length - 1]] = value;
+  if (hasUnsafeSegment(path)) {
+    return obj;
+  }
+
+  path.slice(0, -1).reduce((a, c, i) => {
+    const next = getOwn(a, c);
+    return Object(next) === next
+      ? next
+      : (a[c] = isArrayIndex(path[i + 1]) ? [] : {});
+  }, obj)[path[path.length - 1]] = value;
   return obj;
 };
-
-const isArrayIndex = (key: string | undefined) =>
-  Math.abs(Number(key)) >> 0 === +key!;
 
 /**
  * Like `set`, but every object or array along `path` that is not in `copied`
@@ -42,8 +57,8 @@ export const setCopyOnWrite = (
   if (Object(obj) !== obj) {
     return obj;
   }
-  const path = _path.toString().match(/[^.[\]]+/g) as string[] | null;
-  if (!path) {
+  const path = parsePath(_path);
+  if (!path || hasUnsafeSegment(path)) {
     return obj;
   }
   copied.add(obj);
@@ -51,7 +66,7 @@ export const setCopyOnWrite = (
   let current = obj;
   for (let i = 0; i < path.length - 1; i++) {
     const key = path[i];
-    let next = current[key];
+    let next = getOwn(current, key);
     if (Object(next) !== next) {
       next = isArrayIndex(path[i + 1]) ? [] : {};
       copied.add(next);
@@ -64,5 +79,21 @@ export const setCopyOnWrite = (
     current = next;
   }
   current[path[path.length - 1]] = value;
+  return obj;
+};
+
+/**
+ * Deletes the property at `path`, the inverse of `set` for an array path.
+ */
+export const unset = (obj: any, path: string[]) => {
+  if (Object(obj) !== obj || !path.length || hasUnsafeSegment(path)) {
+    return obj;
+  }
+  const parent = path
+    .slice(0, -1)
+    .reduce((a, c) => (Object(a) === a ? getOwn(a, c) : undefined), obj);
+  if (Object(parent) === parent) {
+    delete parent[path[path.length - 1]];
+  }
   return obj;
 };

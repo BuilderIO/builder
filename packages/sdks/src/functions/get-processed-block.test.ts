@@ -175,3 +175,31 @@ test('Re-evaluates bound blocks on every call', () => {
   expect(process('b')).toBe('b');
   expect(block.component?.options.text).toBeUndefined();
 });
+
+test('A second locale replaces the cached slot and still resolves correctly', () => {
+  const block: BuilderBlock = {
+    '@type': '@builder.io/sdk:Element',
+    component: {
+      name: 'Text',
+      options: {
+        text: localized({ Default: 'hi', fr: 'bonjour', de: 'hallo' }),
+      },
+    },
+  };
+  const process = (locale: string) =>
+    getProcessedBlock({
+      block,
+      context: {},
+      rootState: { locale },
+      rootSetState: undefined,
+      localState: undefined,
+    });
+
+  const fr = process('fr');
+  const de = process('de');
+  expect(de.component?.options.text).toBe('hallo');
+  expect(process('de')).toBe(de);
+  const frAgain = process('fr');
+  expect(frAgain).not.toBe(fr);
+  expect(frAgain.component?.options.text).toBe('bonjour');
+});

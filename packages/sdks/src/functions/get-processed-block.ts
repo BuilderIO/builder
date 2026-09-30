@@ -2,8 +2,7 @@ import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate/index.js';
 import { resolveLocalizedValues } from './extract-localized-values.js';
-import { isEditing } from './is-editing.js';
-import { isPreviewing } from './is-previewing.js';
+import { isEditingOrPreviewing } from './is-editing-or-previewing.js';
 import { setCopyOnWrite } from './set.js';
 import { transformBlock } from './transform-block.js';
 
@@ -49,10 +48,11 @@ const evaluateBindings = ({
 /**
  * A block without bindings processes to the same result for a given locale, so
  * it is computed once per block object instead of on every render.
+ * Only the latest locale is kept, so a block holds at most one cached result.
  */
 const PROCESSED_BLOCKS_WITHOUT_BINDINGS = new WeakMap<
   BuilderBlock,
-  Map<string, BuilderBlock>
+  { locale: string; block: BuilderBlock }
 >();
 
 const hasBindings = (block: BuilderBlock) => {
@@ -78,13 +78,12 @@ export function getProcessedBlock({
     !hasBindings(block) &&
     typeof block === 'object' &&
     block !== null &&
-    !isEditing() &&
-    !isPreviewing();
+    !isEditingOrPreviewing();
 
   const cacheKey = locale ?? '';
   if (canUseCache) {
-    const cached = PROCESSED_BLOCKS_WITHOUT_BINDINGS.get(block)?.get(cacheKey);
-    if (cached) return cached;
+    const cached = PROCESSED_BLOCKS_WITHOUT_BINDINGS.get(block);
+    if (cached && cached.locale === cacheKey) return cached.block;
   }
 
   let transformedBlock = transformBlock(block);
@@ -98,12 +97,10 @@ export function getProcessedBlock({
   transformedBlock = resolveLocalizedValues(transformedBlock, locale);
 
   if (canUseCache) {
-    let byLocale = PROCESSED_BLOCKS_WITHOUT_BINDINGS.get(block);
-    if (!byLocale) {
-      byLocale = new Map();
-      PROCESSED_BLOCKS_WITHOUT_BINDINGS.set(block, byLocale);
-    }
-    byLocale.set(cacheKey, transformedBlock);
+    PROCESSED_BLOCKS_WITHOUT_BINDINGS.set(block, {
+      locale: cacheKey,
+      block: transformedBlock,
+    });
   }
   return transformedBlock;
 }

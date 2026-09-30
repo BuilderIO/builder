@@ -1,3 +1,4 @@
+import { createBoundedCache } from '../../helpers/bounded-cache.js';
 import { logger } from '../../helpers/logger.js';
 import { get } from '../get.js';
 import { chooseBrowserOrServerEval } from './choose-eval.js';
@@ -28,15 +29,14 @@ export const getSimpleExpressionGetPath = (code: string) => {
 };
 
 const MAX_CACHED_CODE_STRINGS = 5000;
-const SIMPLE_GET_PATH_CACHE = new Map<string, string | null>();
+const SIMPLE_GET_PATH_CACHE = createBoundedCache<string | null>(
+  MAX_CACHED_CODE_STRINGS
+);
 
 const getCachedSimpleExpressionGetPath = (code: string) => {
   let getPath = SIMPLE_GET_PATH_CACHE.get(code);
   if (getPath === undefined) {
     getPath = getSimpleExpressionGetPath(code) || null;
-    if (SIMPLE_GET_PATH_CACHE.size >= MAX_CACHED_CODE_STRINGS) {
-      SIMPLE_GET_PATH_CACHE.clear();
-    }
     SIMPLE_GET_PATH_CACHE.set(code, getPath);
   }
   return getPath;

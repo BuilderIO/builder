@@ -64,12 +64,13 @@ export const getRootStateInitialValue = ({
 }: Pick<ContentProps, 'content' | 'data' | 'locale'>) => {
   const defaultValues: BuilderRenderState = {};
 
-  const initialState = copyPlainData(content?.data?.state || {});
+  const seen = new WeakMap<object, any>();
+  const initialState = copyPlainData(content?.data?.state || {}, seen);
 
   // set default values for content state inputs
   content?.data?.inputs?.forEach((input) => {
     if (input.name && input.defaultValue !== undefined) {
-      defaultValues[input.name] = copyPlainData(input.defaultValue);
+      defaultValues[input.name] = copyPlainData(input.defaultValue, seen);
     }
   });
 

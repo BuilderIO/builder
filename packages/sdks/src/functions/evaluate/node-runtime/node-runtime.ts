@@ -2,7 +2,7 @@ import type { Isolate, IsolateOptions, Reference, Script } from 'isolated-vm';
 import { SDK_NAME } from '../../../constants/sdk-name.js';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
-import { set } from '../../set.js';
+import { set, unset } from '../../set.js';
 import type {
   BuilderGlobals,
   ExecutorArgs,
@@ -10,24 +10,26 @@ import type {
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
 import {
-  getReadOnlyStateView,
-  getSafeStateExpressionFn,
+  NOT_EVALUATED,
+  evaluateSafeStateExpression,
 } from '../safe-state-expression.js';
 import { safeDynamicRequire } from './safeDynamicRequire.js';
 
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
 
 const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
+const BUILDER_DELETE_STATE_NAME = 'BUILDER_DELETE_STATE';
 
 const INJECTED_IVM_GLOBAL = 'BUILDER_IVM';
 
 // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
 // https://github.com/laverdet/isolated-vm#referencecopysync
 const REF_TO_PROXY_FN = `
-var refToProxy = (obj) => {
+var refToProxy = (obj, path) => {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
+  path = path || [];
   return new Proxy({}, {
     get(target, key) {
         if (key === 'copySync') {
@@ -35,17 +37,24 @@ var refToProxy = (obj) => {
         }
         const val = obj.getSync(key);
         if (typeof val?.getSync === 'function') {
-            return refToProxy(val);
+            return refToProxy(val, path.concat(key));
         }
         return val;
     },
     set(target, key, value) {
+        // Functions cannot cross the isolate boundary, and server renders never call them.
+        if (typeof value === 'function') {
+          return true;
+        }
         const v = typeof value === 'object' ? new ${INJECTED_IVM_GLOBAL}.Reference(value) : value;
         obj.setSync(key, v);
-        ${BUILDER_SET_STATE_NAME}(key, value)
+        ${BUILDER_SET_STATE_NAME}(path.concat(key), value)
+        return true;
     },
     deleteProperty(target, key) {
         obj.deleteSync(key);
+        ${BUILDER_DELETE_STATE_NAME}(path.concat(key));
+        return true;
     }
   })
 }
@@ -188,6 +197,23 @@ const getIvm = (): IsolatedVMImport => {
   throw new Error(ERROR_MESSAGE);
 };
 
+let IS_PROXY: ((value: unknown) => boolean) | null | undefined;
+
+/**
+ * Node's `util.types.isProxy`, which detects a Proxy without running its traps.
+ * `null` when unavailable, in which case the pure-expression fast path is skipped.
+ */
+const getIsProxy = () => {
+  if (IS_PROXY === undefined) {
+    try {
+      IS_PROXY = safeDynamicRequire('node:util')?.types?.isProxy ?? null;
+    } catch {
+      IS_PROXY = null;
+    }
+  }
+  return IS_PROXY;
+};
+
 export const runInNode = ({
   code,
   builder,
@@ -197,9 +223,15 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const safeExpression = getSafeStateExpressionFn(code);
-  if (safeExpression) {
-    return safeExpression(getReadOnlyStateView(rootState, localState));
+  const isProxy = getIsProxy();
+  if (isProxy) {
+    const safeValue = evaluateSafeStateExpression(
+      code,
+      rootState,
+      localState,
+      isProxy
+    );
+    if (safeValue !== NOT_EVALUATED) return safeValue;
   }
 
   const ivm = getIvm();
@@ -230,11 +262,15 @@ export const runInNode = ({
     /**
      * Propagate state changes back to the reactive root state.
      */
-    jail.setSync(BUILDER_SET_STATE_NAME, function (key: string, value: any) {
+    jail.setSync(BUILDER_SET_STATE_NAME, function (path: string[], value: any) {
       // mutate the `rootState` object itself. Important for cases where we do not have `rootSetState`
       // like Qwik.
-      set(rootState, key, value);
+      set(rootState, path, value);
       // call the `rootSetState` function if it exists
+      rootSetState?.(rootState);
+    });
+    jail.setSync(BUILDER_DELETE_STATE_NAME, function (path: string[]) {
+      unset(rootState, path);
       rootSetState?.(rootState);
     });
 

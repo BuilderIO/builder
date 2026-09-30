@@ -1,3 +1,5 @@
+import { createBoundedCache } from '../../helpers/bounded-cache.js';
+
 /**
  * Recognizes binding expressions that only read `state` and combine the values
  * with operators and literals, e.g. `!state.open`, `state.$index + 1` or
@@ -156,10 +158,15 @@ export const getSafeStateExpressionFromCode = (code: string) => {
   return match ? getSafeStateExpression(match[1]) : null;
 };
 
+const isPrimitiveValue = (value: unknown) =>
+  value === null || (typeof value !== 'object' && typeof value !== 'function');
+
 type SafeExpressionFn = (state: Record<string, any>) => unknown;
 
 const MAX_CACHED_EXPRESSIONS = 5000;
-const COMPILED_EXPRESSIONS = new Map<string, SafeExpressionFn | null>();
+const COMPILED_EXPRESSIONS = createBoundedCache<SafeExpressionFn | null>(
+  MAX_CACHED_EXPRESSIONS
+);
 
 /**
  * The compiled expression for `code`, or `null` when `code` is not a safe state expression.
@@ -181,29 +188,112 @@ export const getSafeStateExpressionFn = (
         fn = null;
       }
     }
-    if (COMPILED_EXPRESSIONS.size >= MAX_CACHED_EXPRESSIONS) {
-      COMPILED_EXPRESSIONS.clear();
-    }
     COMPILED_EXPRESSIONS.set(code, fn);
   }
   return fn;
 };
 
+const UNSAFE_STATE_READ = Symbol('unsafe state read');
+
+const isPlainContainer = (value: object) => {
+  const prototype = Object.getPrototypeOf(value);
+  return (
+    prototype === Object.prototype ||
+    prototype === Array.prototype ||
+    prototype === null
+  );
+};
+
+const READ_ONLY_TRAPS = { set: () => false, deleteProperty: () => false };
+
+const findDescriptor = (target: object, prop: string | symbol) => {
+  for (let o: object | null = target; o; o = Object.getPrototypeOf(o)) {
+    const descriptor = Object.getOwnPropertyDescriptor(o, prop);
+    if (descriptor) return descriptor;
+  }
+  return undefined;
+};
+
 /**
  * A read-only view of local state over root state, without copying either.
+ *
+ * Plain objects and arrays are wrapped so every nested read is checked: accessors
+ * anywhere on the prototype chain, class instances and functions (which could run
+ * getters or custom `valueOf`/`toString`) abort the read. Each source object maps to
+ * one wrapper for the life of the view, so `===` still compares the underlying objects.
+ * Wrappers target a fresh empty container rather than the object itself, because proxy
+ * invariants forbid returning a wrapper for a frozen (non-configurable) property.
  */
 export const getReadOnlyStateView = (
   rootState: Record<string | symbol, any>,
-  localState: Record<string | symbol, any> | undefined
-) =>
-  new Proxy(
+  localState: Record<string | symbol, any> | undefined,
+  isProxy: (value: unknown) => boolean
+) => {
+  // Reflecting on a Proxy (even `Object.getPrototypeOf`) runs its traps.
+  const isInspectable = (value: object) =>
+    !isProxy(value) && isPlainContainer(value);
+  if (!isInspectable(rootState) || (localState && isProxy(localState))) {
+    throw UNSAFE_STATE_READ;
+  }
+  const wrappers = new WeakMap<object, object>();
+
+  const guardStateValue = (value: unknown): unknown => {
+    if (value === null || typeof value !== 'object') {
+      if (typeof value === 'function') throw UNSAFE_STATE_READ;
+      return value;
+    }
+    if (!isInspectable(value)) throw UNSAFE_STATE_READ;
+    let wrapper = wrappers.get(value);
+    if (!wrapper) {
+      wrapper = new Proxy(Array.isArray(value) ? [] : {}, {
+        get: (_, prop) => readDataProperty(value, prop),
+        ...READ_ONLY_TRAPS,
+      });
+      wrappers.set(value, wrapper);
+    }
+    return wrapper;
+  };
+
+  const readDataProperty = (target: object, prop: string | symbol): unknown => {
+    const descriptor = findDescriptor(target, prop);
+    if (descriptor && (descriptor.get || descriptor.set)) {
+      throw UNSAFE_STATE_READ;
+    }
+    return guardStateValue(descriptor?.value);
+  };
+
+  return new Proxy(
     {},
     {
       get: (_, prop) =>
         localState && Object.prototype.hasOwnProperty.call(localState, prop)
-          ? localState[prop]
-          : rootState[prop],
-      set: () => false,
-      deleteProperty: () => false,
+          ? readDataProperty(localState, prop)
+          : readDataProperty(rootState, prop),
+      ...READ_ONLY_TRAPS,
     }
   );
+};
+
+export const NOT_EVALUATED = Symbol('not evaluated');
+
+/**
+ * Evaluates `code` outside the sandbox when it is a safe state expression over plain
+ * data and produces a primitive. Returns `NOT_EVALUATED` when the sandbox must run it.
+ */
+export const evaluateSafeStateExpression = (
+  code: string,
+  rootState: Record<string | symbol, any>,
+  localState: Record<string | symbol, any> | undefined,
+  isProxy: (value: unknown) => boolean
+): unknown => {
+  const fn = getSafeStateExpressionFn(code);
+  if (!fn) return NOT_EVALUATED;
+  let value: unknown;
+  try {
+    value = fn(getReadOnlyStateView(rootState, localState, isProxy));
+  } catch (error) {
+    if (error === UNSAFE_STATE_READ) return NOT_EVALUATED;
+    throw error;
+  }
+  return isPrimitiveValue(value) ? value : NOT_EVALUATED;
+};
