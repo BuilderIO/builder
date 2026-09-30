@@ -26,7 +26,13 @@ const getOwn = (obj: any, key: string) =>
  * Minimal implementation of lodash's _.set
  * https://lodash.com/docs/4.17.15#set
  *
- * See ./set.test.ts for usage examples
+ * Mutates `obj` in place, creating missing objects/arrays along the path:
+ *
+ *   const obj = { a: { b: 1 } };
+ *   set(obj, 'a.c', 2);      // obj is { a: { b: 1, c: 2 } }
+ *   set(obj, 'list.0', 'x'); // obj.list is ['x']
+ *
+ * See ./set.test.ts for more usage examples
  */
 export const set = (obj: any, _path: string | string[], value: any) => {
   if (Object(obj) !== obj) {
@@ -53,6 +59,13 @@ export const set = (obj: any, _path: string | string[], value: any) => {
  * Like `set`, but every object or array along `path` that is not in `copied`
  * is shallow-copied before being written to, so objects shared with the
  * original are never mutated. `obj` itself must already be a copy.
+ *
+ *   const block = { options: { text: 'a' }, style: { color: 'red' } };
+ *   const copy = { ...block };
+ *   setCopyOnWrite(copy, 'options.text', 'b', new WeakSet());
+ *   // copy.options is a new object: { text: 'b' }
+ *   // block.options.text is still 'a'
+ *   // copy.style === block.style (untouched branches stay shared)
  */
 export const setCopyOnWrite = (
   obj: any,
@@ -90,6 +103,11 @@ export const setCopyOnWrite = (
 
 /**
  * Deletes the property at `path`, the inverse of `set` for an array path.
+ * Mutates `obj` in place and does nothing when a parent is missing:
+ *
+ *   const obj = { a: { b: 1, c: 2 } };
+ *   unset(obj, ['a', 'b']); // obj is { a: { c: 2 } }
+ *   unset(obj, ['x', 'y']); // no-op
  */
 export const unset = (obj: any, path: string[]) => {
   if (Object(obj) !== obj || !path.length || hasUnsafeSegment(path)) {

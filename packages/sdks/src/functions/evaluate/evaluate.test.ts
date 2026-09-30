@@ -252,6 +252,19 @@ const TESTS = {
       expect('name' in rootState).toBe(false);
       expect('keep' in rootState).toBe(false);
     },
+  'writes and deletes on context do not reach root state': () => {
+    const rootState: Record<string, any> = { user: { name: 'root' } };
+
+    evaluate({
+      ...DEFAULTS,
+      context: { user: { name: 'context' }, other: 1 },
+      code: 'context.user.name = "x"; context.fresh = 1; delete context.other; return 1',
+      isExpression: false,
+      rootState,
+    });
+
+    expect(rootState).toEqual({ user: { name: 'root' } });
+  },
   'globals set by one evaluation are not visible to the next': () => {
     // the browser runtime runs in the page's own global scope
     if (process.env.SDK_ENV === 'browser') return;

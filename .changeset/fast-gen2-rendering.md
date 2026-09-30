@@ -18,6 +18,6 @@ Faster rendering, and rendering no longer mutates the content object:
 - Node: `isolated-vm` evaluations reuse a periodically recycled isolate (fresh context per evaluation) with cached scripts, and pure state expressions over plain data (e.g. `!state.open`, `state.$index + 1`) skip the sandbox; expressions that would read getters or class instances still run in it.
 - Browser: binding functions are compiled once per code string.
 - Compiled-expression and path caches are bounded and evict the oldest entry instead of clearing; the processed-block cache keeps only the latest locale per block.
-- `set` and `setCopyOnWrite` ignore paths containing `__proto__`, `constructor` or `prototype`.
+- `set`, `setCopyOnWrite` and `unset` follow only own properties and use the same path rule as `set`: `__proto__` is never allowed, and `constructor`/`prototype` only as the final key.
 - Node: `jsCode` that sets state with `Object.assign(state, {...})` or assigns functions to state no longer throws inside `isolated-vm`; function values are skipped on the server.
-- Node: nested state writes (`state.user.name = ...`) and `delete state.x` in `jsCode` now update root state at the full path instead of writing a stray top-level key.
+- Node: nested state writes (`state.user.name = ...`) and `delete state.x` in `jsCode` now update root state at the full path instead of writing a stray top-level key; writes and deletes on `context`, `builder` and `event` no longer reach root state.

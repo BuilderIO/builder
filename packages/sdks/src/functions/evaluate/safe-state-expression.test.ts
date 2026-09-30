@@ -166,6 +166,12 @@ describe('evaluateSafeStateExpression', () => {
     expect(traps).toBe(0);
   });
 
+  test('leaves values that fail primitive coercion to the regular evaluator', () => {
+    const value = Object.create(null);
+    value.a = 1;
+    expect(run('return (state.value + 1);', { value })).toBe(NOT_EVALUATED);
+  });
+
   test('reads frozen state', () => {
     const rootState = Object.freeze({ a: Object.freeze({ b: 'y' }) });
     expect(run('return (state.a.b);', rootState)).toBe('y');

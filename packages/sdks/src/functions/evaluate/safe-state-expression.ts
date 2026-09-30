@@ -291,9 +291,10 @@ export const evaluateSafeStateExpression = (
   let value: unknown;
   try {
     value = fn(getReadOnlyStateView(rootState, localState, isProxy));
-  } catch (error) {
-    if (error === UNSAFE_STATE_READ) return NOT_EVALUATED;
-    throw error;
+  } catch {
+    // Unsafe reads and ordinary errors (e.g. a null-prototype object in `+`) both
+    // go to the regular evaluator, so behavior matches evaluation without the fast path.
+    return NOT_EVALUATED;
   }
   return isPrimitiveValue(value) ? value : NOT_EVALUATED;
 };

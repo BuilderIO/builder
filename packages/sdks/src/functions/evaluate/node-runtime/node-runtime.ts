@@ -23,13 +23,13 @@ const BUILDER_DELETE_STATE_NAME = 'BUILDER_DELETE_STATE';
 const INJECTED_IVM_GLOBAL = 'BUILDER_IVM';
 
 // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
+// Only the `state` proxy carries a `path`, so only writes and deletes on `state` reach the host's root state.
 // https://github.com/laverdet/isolated-vm#referencecopysync
 const REF_TO_PROXY_FN = `
 var refToProxy = (obj, path) => {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
-  path = path || [];
   return new Proxy({}, {
     get(target, key) {
         if (key === 'copySync') {
@@ -37,7 +37,7 @@ var refToProxy = (obj, path) => {
         }
         const val = obj.getSync(key);
         if (typeof val?.getSync === 'function') {
-            return refToProxy(val, path.concat(key));
+            return refToProxy(val, path && path.concat(key));
         }
         return val;
     },
@@ -48,12 +48,12 @@ var refToProxy = (obj, path) => {
         }
         const v = typeof value === 'object' ? new ${INJECTED_IVM_GLOBAL}.Reference(value) : value;
         obj.setSync(key, v);
-        ${BUILDER_SET_STATE_NAME}(path.concat(key), value)
+        if (path) ${BUILDER_SET_STATE_NAME}(path.concat(key), value);
         return true;
     },
     deleteProperty(target, key) {
         obj.deleteSync(key);
-        ${BUILDER_DELETE_STATE_NAME}(path.concat(key));
+        if (path) ${BUILDER_DELETE_STATE_NAME}(path.concat(key));
         return true;
     }
   })
@@ -67,7 +67,10 @@ const processCode = ({
   args: FunctionArguments;
 }) => {
   const fnArgs = args
-    .map(([name]) => `var ${name} = refToProxy(${getSyncValName(name)}); `)
+    .map(
+      ([name]) =>
+        `var ${name} = refToProxy(${getSyncValName(name)}${name === 'state' ? ', []' : ''}); `
+    )
     .join('');
 
   // the output is stringified and parsed back to the parent isolate if needed (when it's an `object`)
