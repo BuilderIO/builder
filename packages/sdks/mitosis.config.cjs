@@ -843,7 +843,11 @@ module.exports = {
     "readystatechange"`
                 );
               }
-              return code;
+              // BuilderScripts is optional; Qwik useContext throws without a provider unless given a default.
+              return code.replaceAll(
+                'useContext(BuilderScriptsContext)',
+                'useContext(BuilderScriptsContext, { scriptsEmitted: false })'
+              );
             },
           },
         }),
