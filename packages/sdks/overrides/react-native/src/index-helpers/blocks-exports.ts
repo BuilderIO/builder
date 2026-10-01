@@ -11,6 +11,7 @@ export { default as Text } from '../blocks/text/index.js';
 // export { default as Video } from '../blocks/video/video.lite';
 
 import { default as Blocks } from '../components/blocks/index.js';
+import { default as BuilderScripts } from '../components/builder-scripts.js';
 import { default as Content } from '../components/content-variants/index.js';
 
-export { Blocks, Content };
+export { Blocks, BuilderScripts, Content };
