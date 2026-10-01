@@ -59,6 +59,7 @@ test.describe('Integrating Pages', () => {
       );
 
       await launchEmbedderAndWaitForSdk({ path: '/', basePort, page, sdk });
+      await expect(page.frameLocator('iframe').getByText('Welcome to the homepage.')).toBeVisible();
 
       const NEW_TEXT = 'This is a new homepage.';
       const NEW_CONTENT = {
