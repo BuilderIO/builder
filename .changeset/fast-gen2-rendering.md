@@ -25,3 +25,4 @@ Behavior changes. These fix bugs, but code that relied on the old behavior will 
 - Node: writes and deletes on `context`, `builder` and `event` in `jsCode` no longer reach root state.
 - Node: function values assigned to state in `jsCode` are skipped on the server instead of throwing.
 - `set`, `setCopyOnWrite` and `unset` follow only own properties and use the same path rule: `__proto__` is never allowed, and `constructor`/`prototype` only as the final key.
+- The default `.builder-button` reset now has zero specificity (`:where(.builder-button)`), so a button's own block styles win even when a later `Content` on the page emits the reset after them. Global `button` rules in your own CSS now also apply to Builder buttons.

@@ -79,7 +79,7 @@ export const getCss = ({
 };
 
 const DEFAULT_STYLES = `
-.builder-button {
+:where(.builder-button) {
   all: unset;
 }
 
