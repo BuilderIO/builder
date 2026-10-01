@@ -1,3 +1,4 @@
+import { createBoundedCache } from '../../helpers/bounded-cache.js';
 import { logger } from '../../helpers/logger.js';
 import { get } from '../get.js';
 import { chooseBrowserOrServerEval } from './choose-eval.js';
@@ -27,6 +28,36 @@ export const getSimpleExpressionGetPath = (code: string) => {
   );
 };
 
+const MAX_CACHED_CODE_STRINGS = 5000;
+const SIMPLE_GET_PATH_CACHE = createBoundedCache<string | null>(
+  MAX_CACHED_CODE_STRINGS
+);
+
+const getCachedSimpleExpressionGetPath = (code: string) => {
+  let getPath = SIMPLE_GET_PATH_CACHE.get(code);
+  if (getPath === undefined) {
+    getPath = getSimpleExpressionGetPath(code) || null;
+    SIMPLE_GET_PATH_CACHE.set(code, getPath);
+  }
+  return getPath;
+};
+
+/**
+ * Same result as `get({ ...rootState, ...localState }, getPath)`, without copying every state key.
+ */
+const getSimpleStateValue = (
+  rootState: EvaluatorArgs['rootState'],
+  localState: EvaluatorArgs['localState'],
+  getPath: string
+) => {
+  const firstKey = getPath.split('.')[0];
+  const source =
+    localState && Object.prototype.hasOwnProperty.call(localState, firstKey)
+      ? localState
+      : rootState;
+  return get(source, getPath);
+};
+
 export function evaluate({
   code,
   context,
@@ -47,9 +78,9 @@ export function evaluate({
    * We try not to take many risks with this optimizations, so we only do it for
    * `state.{path}` expressions.
    */
-  const getPath = getSimpleExpressionGetPath(code.trim());
+  const getPath = getCachedSimpleExpressionGetPath(code.trim());
   if (getPath) {
-    return get({ ...rootState, ...localState }, getPath);
+    return getSimpleStateValue(rootState, localState, getPath);
   }
 
   const args: ExecutorArgs = {

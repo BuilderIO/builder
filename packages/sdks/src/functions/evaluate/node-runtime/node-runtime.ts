@@ -1,26 +1,32 @@
-import type { IsolateOptions } from 'isolated-vm';
+import type { Isolate, IsolateOptions, Reference, Script } from 'isolated-vm';
 import { SDK_NAME } from '../../../constants/sdk-name.js';
 import { MSG_PREFIX, logger } from '../../../helpers/logger.js';
 import { fastClone } from '../../fast-clone.js';
-import { set } from '../../set.js';
+import { set, unset } from '../../set.js';
 import type {
   BuilderGlobals,
   ExecutorArgs,
   FunctionArguments,
 } from '../helpers.js';
 import { getFunctionArguments } from '../helpers.js';
+import {
+  NOT_EVALUATED,
+  evaluateSafeStateExpression,
+} from '../safe-state-expression.js';
 import { safeDynamicRequire } from './safeDynamicRequire.js';
 
 const getSyncValName = (key: string) => `bldr_${key}_sync`;
 
 const BUILDER_SET_STATE_NAME = 'BUILDER_SET_STATE';
+const BUILDER_DELETE_STATE_NAME = 'BUILDER_DELETE_STATE';
 
 const INJECTED_IVM_GLOBAL = 'BUILDER_IVM';
 
 // Convert all argument references to proxies, and pass `copySync` method to target object, to return a copy of the original JS object
+// Only the `state` proxy carries a `path`, so only writes and deletes on `state` reach the host's root state.
 // https://github.com/laverdet/isolated-vm#referencecopysync
 const REF_TO_PROXY_FN = `
-var refToProxy = (obj) => {
+var refToProxy = (obj, path) => {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }
@@ -31,17 +37,24 @@ var refToProxy = (obj) => {
         }
         const val = obj.getSync(key);
         if (typeof val?.getSync === 'function') {
-            return refToProxy(val);
+            return refToProxy(val, path && path.concat(key));
         }
         return val;
     },
     set(target, key, value) {
+        // Functions cannot cross the isolate boundary, and server renders never call them.
+        if (typeof value === 'function') {
+          return true;
+        }
         const v = typeof value === 'object' ? new ${INJECTED_IVM_GLOBAL}.Reference(value) : value;
         obj.setSync(key, v);
-        ${BUILDER_SET_STATE_NAME}(key, value)
+        if (path) ${BUILDER_SET_STATE_NAME}(path.concat(key), value);
+        return true;
     },
     deleteProperty(target, key) {
         obj.deleteSync(key);
+        if (path) ${BUILDER_DELETE_STATE_NAME}(path.concat(key));
+        return true;
     }
   })
 }
@@ -54,11 +67,15 @@ const processCode = ({
   args: FunctionArguments;
 }) => {
   const fnArgs = args
-    .map(([name]) => `var ${name} = refToProxy(${getSyncValName(name)}); `)
+    .map(
+      ([name]) =>
+        `var ${name} = refToProxy(${getSyncValName(name)}${name === 'state' ? ', []' : ''}); `
+    )
     .join('');
 
   // the output is stringified and parsed back to the parent isolate if needed (when it's an `object`)
-  return `
+  // Wrapped in an IIFE so it compiles as a reusable script whose completion value is the result.
+  return `(function () {
 ${REF_TO_PROXY_FN}
 ${fnArgs}
 function theFunction() {
@@ -72,14 +89,73 @@ if (typeof output === 'object' && output !== null) {
 } else {
   return output;
 }
-`;
+})()`;
 };
 
 type IsolatedVMImport = typeof import('isolated-vm');
 
 let IVM_INSTANCE: IsolatedVMImport | null = null;
-// Create fresh isolates per request to prevent memory leaks
 let IVM_OPTIONS: IsolateOptions = { memoryLimit: 128 };
+
+/**
+ * Evaluations share one isolate, each in a fresh context. The isolate is disposed at the end of the
+ * current task (or after a fixed number of evaluations), so a render's bindings share it without it
+ * outliving that work: a single long-lived isolate leaked memory (#4210), and one still alive at
+ * worker-thread teardown crashes `isolated-vm` on Linux.
+ */
+const MAX_EVALUATIONS_PER_ISOLATE = 1000;
+
+let POOLED: {
+  isolate: Isolate;
+  evaluations: number;
+  scripts: Map<string, Script>;
+} | null = null;
+let DISPOSE_TIMER: ReturnType<typeof setTimeout> | null = null;
+let IS_EXIT_HANDLER_REGISTERED = false;
+
+const disposePooledIsolate = () => {
+  if (DISPOSE_TIMER) {
+    clearTimeout(DISPOSE_TIMER);
+    DISPOSE_TIMER = null;
+  }
+  if (POOLED && !POOLED.isolate.isDisposed) {
+    try {
+      POOLED.isolate.dispose();
+    } catch (e) {
+      // Ignore disposal errors
+    }
+  }
+  POOLED = null;
+};
+
+const getPooledIsolate = (ivm: IsolatedVMImport) => {
+  if (
+    !POOLED ||
+    POOLED.isolate.isDisposed ||
+    POOLED.evaluations >= MAX_EVALUATIONS_PER_ISOLATE
+  ) {
+    disposePooledIsolate();
+    POOLED = {
+      isolate: new ivm.Isolate(IVM_OPTIONS),
+      evaluations: 0,
+      scripts: new Map(),
+    };
+  }
+  if (!DISPOSE_TIMER) {
+    DISPOSE_TIMER = setTimeout(disposePooledIsolate, 0);
+    DISPOSE_TIMER.unref?.();
+  }
+  if (
+    !IS_EXIT_HANDLER_REGISTERED &&
+    typeof process !== 'undefined' &&
+    typeof process.once === 'function'
+  ) {
+    IS_EXIT_HANDLER_REGISTERED = true;
+    process.once('exit', disposePooledIsolate);
+  }
+  POOLED.evaluations++;
+  return POOLED;
+};
 
 /**
  * Set the `isolated-vm` instance to be used by the node runtime.
@@ -124,6 +200,23 @@ const getIvm = (): IsolatedVMImport => {
   throw new Error(ERROR_MESSAGE);
 };
 
+let IS_PROXY: ((value: unknown) => boolean) | null | undefined;
+
+/**
+ * Node's `util.types.isProxy`, which detects a Proxy without running its traps.
+ * `null` when unavailable, in which case the pure-expression fast path is skipped.
+ */
+const getIsProxy = () => {
+  if (IS_PROXY === undefined) {
+    try {
+      IS_PROXY = safeDynamicRequire('node:util')?.types?.isProxy ?? null;
+    } catch {
+      IS_PROXY = null;
+    }
+  }
+  return IS_PROXY;
+};
+
 export const runInNode = ({
   code,
   builder,
@@ -133,13 +226,22 @@ export const runInNode = ({
   rootSetState,
   rootState,
 }: ExecutorArgs) => {
-  const ivm = getIvm();
+  const isProxy = getIsProxy();
+  if (isProxy) {
+    const safeValue = evaluateSafeStateExpression(
+      code,
+      rootState,
+      localState,
+      isProxy
+    );
+    if (safeValue !== NOT_EVALUATED) return safeValue;
+  }
 
-  // Use stored options from setIvm, or default to { memoryLimit: 128 }
-  let isolate;
+  const ivm = getIvm();
+  const pooled = getPooledIsolate(ivm);
+  const isolateContext = pooled.isolate.createContextSync();
+  const references: Reference[] = [];
   try {
-    isolate = new ivm.Isolate(IVM_OPTIONS);
-    const isolateContext = isolate.createContextSync();
     const jail = isolateContext.global;
 
     // Setup the isolate
@@ -163,11 +265,15 @@ export const runInNode = ({
     /**
      * Propagate state changes back to the reactive root state.
      */
-    jail.setSync(BUILDER_SET_STATE_NAME, function (key: string, value: any) {
+    jail.setSync(BUILDER_SET_STATE_NAME, function (path: string[], value: any) {
       // mutate the `rootState` object itself. Important for cases where we do not have `rootSetState`
       // like Qwik.
-      set(rootState, key, value);
+      set(rootState, path, value);
       // call the `rootSetState` function if it exists
+      rootSetState?.(rootState);
+    });
+    jail.setSync(BUILDER_DELETE_STATE_NAME, function (path: string[]) {
+      unset(rootState, path);
       rootSetState?.(rootState);
     });
 
@@ -185,11 +291,16 @@ export const runInNode = ({
                 : arg
             )
           : null;
+      if (val) references.push(val);
       jail.setSync(getSyncValName(key), val);
     });
 
-    const evalStr = processCode({ code, args });
-    const resultStr = isolateContext.evalClosureSync(evalStr);
+    let script = pooled.scripts.get(code);
+    if (!script) {
+      script = pooled.isolate.compileScriptSync(processCode({ code, args }));
+      pooled.scripts.set(code, script);
+    }
+    const resultStr = script.runSync(isolateContext);
 
     try {
       // returning objects throw errors in isolated vm, so we stringify it and parse it back
@@ -199,13 +310,17 @@ export const runInNode = ({
       return resultStr;
     }
   } finally {
-    // Destroy the entire VM, this frees ALL memory at the C++ level.
-    if (isolate) {
+    references.forEach((reference) => {
       try {
-        isolate.dispose();
+        reference.release();
       } catch (e) {
-        // Ignore disposal errors
+        // Ignore release errors
       }
+    });
+    try {
+      isolateContext.release();
+    } catch (e) {
+      // Ignore release errors (e.g. the isolate was disposed after hitting its memory limit)
     }
   }
 };

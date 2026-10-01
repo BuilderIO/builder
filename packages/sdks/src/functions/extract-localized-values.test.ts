@@ -127,5 +127,88 @@ describe('Localized Values', () => {
       expect(result.component?.options.myList[0].text).toBe('Hello');
       expect(result.component?.options.myList[1].text).toBe('Hello');
     });
+
+    it('should never mutate the block it is given', () => {
+      const block = deepFreeze(fastClone(mockBlock));
+      const french = resolveLocalizedValues(block, 'es-ES');
+      const english = resolveLocalizedValues(block, 'en-US');
+      expect(french.component?.options.text).toBe('Hola');
+      expect(english.component?.options.text).toBe('Hello');
+      expect(block.component?.options.text).toEqual(mockLocalizedValue);
+    });
+
+    it('should return the same block when nothing is localized', () => {
+      const block: BuilderBlock = {
+        '@type': '@builder.io/sdk:Element',
+        component: { name: 'Text', options: { text: 'hi', list: [{ a: 1 }] } },
+      };
+      expect(resolveLocalizedValues(block, 'en-US')).toBe(block);
+    });
+
+    it('should only copy the objects on the way to a localized value', () => {
+      const untouched = { deep: { value: 1 } };
+      const block: BuilderBlock = {
+        '@type': '@builder.io/sdk:Element',
+        component: {
+          name: 'Custom',
+          options: { untouched, list: [{ label: mockLocalizedValue }] },
+        },
+      };
+      const result = resolveLocalizedValues(block, 'en-US');
+      expect(result.component?.options.untouched).toBe(untouched);
+      expect(result.component?.options.list[0].label).toBe('Hello');
+    });
+
+    it('should resolve localized values nested in nested blocks and locale values', () => {
+      const block: BuilderBlock = {
+        '@type': '@builder.io/sdk:Element',
+        component: {
+          name: 'Columns',
+          options: {
+            columns: [
+              {
+                blocks: [
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    component: {
+                      name: 'Text',
+                      options: { text: mockLocalizedValue },
+                    },
+                  },
+                ],
+              },
+            ],
+            card: {
+              '@type': '@builder.io/core:LocalizedValue',
+              'en-US': { title: mockLocalizedValue },
+            },
+          },
+        },
+      };
+      const result = resolveLocalizedValues(block, 'en-US');
+      expect(
+        result.component?.options.columns[0].blocks[0].component.options.text
+      ).toBe('Hello');
+      expect(result.component?.options.card.title).toBe('Hello');
+    });
+
+    it('should handle circular references', () => {
+      const options: any = { text: mockLocalizedValue };
+      options.self = options;
+      const block: BuilderBlock = {
+        '@type': '@builder.io/sdk:Element',
+        component: { name: 'Text', options },
+      };
+      const result = resolveLocalizedValues(block, 'en-US');
+      expect(result.component?.options.text).toBe('Hello');
+    });
   });
 });
+
+function deepFreeze<T>(value: T): T {
+  if (value && typeof value === 'object') {
+    Object.values(value).forEach(deepFreeze);
+    Object.freeze(value);
+  }
+  return value;
+}

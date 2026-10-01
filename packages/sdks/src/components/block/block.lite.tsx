@@ -180,8 +180,45 @@ export default function Block(props: BlockProps) {
         : [];
     },
 
+    /**
+     * Same memoization trick as `_processedBlock`: the template reads `componentRefProps`
+     * once per prop, so without it every read re-evaluates text templates and options.
+     */
+    _componentRefProps: {
+      value: null as ComponentProps | null,
+      deps: [] as unknown[],
+    },
     get componentRefProps(): ComponentProps {
-      return {
+      const deps: unknown[] = [
+        state.processedBlock,
+        props.context.value,
+        props.context.value.rootState,
+        props.context.value.localState,
+        props.registeredComponents,
+        props.linkComponent,
+      ];
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+        solid: () => {},
+
+        // @ts-expect-error: missing return value
+        default: () => {
+          const cached = state._componentRefProps;
+          if (
+            cached.value &&
+            cached.deps.length === deps.length &&
+            cached.deps.every((dep, index) => dep === deps[index]) &&
+            !isPreviewing()
+          ) {
+            return cached.value;
+          }
+        },
+      });
+
+      const componentRefProps: ComponentProps = {
         blockChildren: state.processedBlock.children ?? [],
         componentRef: state.blockComponent?.component,
         componentOptions: {
@@ -214,6 +251,20 @@ export default function Block(props: BlockProps) {
         includeBlockProps: state.blockComponent?.noWrap === true,
         isInteractive: !(state.blockComponent?.isRSC && TARGET === 'rsc'),
       };
+
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+        solid: () => {},
+        default: () => {
+          state._componentRefProps.value = componentRefProps;
+          state._componentRefProps.deps = deps;
+        },
+      });
+
+      return componentRefProps;
     },
   });
 

@@ -853,6 +853,7 @@ module.exports = {
     },
     svelte: {
       typescript: true,
+      memoizeGetters: true,
       plugins: [
         /**
          * This plugin modifies `svelte:component` to elements to use the `svelte:element` syntax instead.

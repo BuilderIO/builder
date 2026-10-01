@@ -194,6 +194,94 @@ const TESTS = {
 
     expect(output).toEqual(['first', 'second']);
   },
+  'simple getters read local state over root state': () => {
+    const read = (code: string) =>
+      evaluate({
+        ...DEFAULTS,
+        code,
+        rootState: { item: { name: 'root' }, other: 'root-only' },
+        localState: { item: { name: 'local' }, missing: undefined },
+      });
+
+    expect(read('state.item.name')).toBe('local');
+    expect(read('state.other')).toBe('root-only');
+    expect(read('state.missing')).toBeUndefined();
+  },
+  'the same code evaluates against each call state': () => {
+    const run = (count: number) =>
+      evaluate({
+        ...DEFAULTS,
+        code: 'state.count * 2 + 1',
+        rootState: { count },
+      });
+
+    expect(run(1)).toBe(3);
+    expect(run(5)).toBe(11);
+    expect(run(1)).toBe(3);
+  },
+  'Object.assign on state sets every value, including after a method': () => {
+    // the edge interpreter only supports ES5, which has no Object.assign
+    if (process.env.SDK_ENV === 'edge') return;
+    const rootState: Record<string, any> = {};
+
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'Object.assign(state, { tab: "design", select: function (t) { state.tab = t }, count: 1 }); return state.tab',
+      isExpression: false,
+      rootState,
+    });
+
+    expect(output).toBe('design');
+    expect(rootState.tab).toBe('design');
+    expect(rootState.count).toBe(1);
+  },
+  'nested writes and deletes in jsCode reach root state at their full path':
+    () => {
+      // the edge interpreter does not propagate deletes
+      if (process.env.SDK_ENV === 'edge') return;
+      const rootState: Record<string, any> = { user: { name: 'a' }, keep: 1 };
+
+      evaluate({
+        ...DEFAULTS,
+        code: 'state.user.name = "b"; delete state.keep; return 1',
+        isExpression: false,
+        rootState,
+      });
+
+      expect(rootState.user.name).toBe('b');
+      expect('name' in rootState).toBe(false);
+      expect('keep' in rootState).toBe(false);
+    },
+  'writes and deletes on context do not reach root state': () => {
+    const rootState: Record<string, any> = { user: { name: 'root' } };
+
+    evaluate({
+      ...DEFAULTS,
+      context: { user: { name: 'context' }, other: 1 },
+      code: 'context.user.name = "x"; context.fresh = 1; delete context.other; return 1',
+      isExpression: false,
+      rootState,
+    });
+
+    expect(rootState).toEqual({ user: { name: 'root' } });
+  },
+  'globals set by one evaluation are not visible to the next': () => {
+    // the browser runtime runs in the page's own global scope
+    if (process.env.SDK_ENV === 'browser') return;
+
+    evaluate({
+      ...DEFAULTS,
+      code: 'leakedGlobal = 42; return 1',
+      isExpression: false,
+    });
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'return typeof leakedGlobal',
+      isExpression: false,
+    });
+
+    expect(output).toBe('undefined');
+  },
 };
 
 describe(`evaluate (${process.env.SDK_ENV})`, () => {

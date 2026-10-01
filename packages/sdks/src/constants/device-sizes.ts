@@ -1,4 +1,3 @@
-import { fastClone } from '../functions/fast-clone.js';
 export type SizeName = 'large' | 'medium' | 'small' | 'xsmall';
 
 interface Size {
@@ -40,7 +39,12 @@ interface Breakpoints {
 }
 
 export const getSizesForBreakpoints = (breakpoints: Breakpoints) => {
-  const newSizes = fastClone(SIZES); // Note: this helps to get a deep clone of fields like small, medium etc
+  const newSizes: Record<SizeName, Size> = {
+    xsmall: { ...SIZES.xsmall },
+    small: { ...SIZES.small },
+    medium: { ...SIZES.medium },
+    large: { ...SIZES.large },
+  };
 
   if (!breakpoints) {
     return newSizes;
