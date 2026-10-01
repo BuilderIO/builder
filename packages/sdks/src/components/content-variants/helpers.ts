@@ -17,6 +17,18 @@ import {
 const UPDATE_COOKIES_AND_STYLES_SCRIPT_NAME = 'builderIoAbTest';
 const UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME = 'builderIoRenderContent';
 
+/**
+ * SDKs where `BuilderScripts` can dedupe helper scripts. Elsewhere `Content` cannot read its context
+ * (RSC server components, Angular DI) or has no inline scripts (React Native).
+ */
+export const SDKS_SUPPORTING_BUILDER_SCRIPTS = [
+  'react',
+  'vue',
+  'svelte',
+  'solid',
+  'qwik',
+] as Target[];
+
 export const getVariants = (content: Nullable<BuilderContent>) =>
   Object.values(content?.variations || {}).map((variant) => ({
     ...variant,

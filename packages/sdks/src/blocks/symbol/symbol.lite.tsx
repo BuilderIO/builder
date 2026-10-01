@@ -131,6 +131,7 @@ export default function Symbol(props: SymbolProps) {
       <ContentVariants
         nonce={props.builderContext.value.nonce}
         isNestedRender
+        isContentInlinedInParent={!!props.symbol?.content}
         apiVersion={props.builderContext.value.apiVersion}
         apiKey={
           props.symbol?.global && props.symbol?.ownerId
