@@ -2,6 +2,12 @@
 
 Use the Builder Angular SDK to use Angular with Builder. You can get started by heading over to Builder's official documentation or digging right into the code in this directory. The official documentation provides more explicit instructions, while this README shares more general pointers.
 
+## Minimum supported version
+
+The [CHANGELOG](./CHANGELOG.md) `4.0.0` entry targets **Angular 18** as the compatibility minimum; the package does not declare an Angular peer dependency. Older SDK releases have different requirements, but their continued support is not implied. The actively supported minimum for this release is pending verification in the [framework version matrix](../sdks/README.md#framework-version-guidance).
+
+For new integrations, consider the [Gen 2 Angular SDK](../sdks/output/angular/), whose Angular peer dependencies permit >=17.3.0. Its active support floor is tracked separately.
+
 ## Option 1 (for those new to Angular): Use the Builder official documentation
 
 For a step-by-step guide, see the Angular instructions in Builder's official [Integrating Pages](https://www.builder.io/c/docs/developers) documentation. While we recommend starting with Page building, you can also integrate sections and data:

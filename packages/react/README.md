@@ -2,6 +2,10 @@
 
 NOTE: If you want to register your React Server Components as custom components in Builder, you will need to use our experimental NextJS SDK [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/nextjs).
 
+## Minimum supported version
+
+The [`peerDependencies`](./package.json) permit **React and React DOM >=16.8.0** (and React 19 release candidates). This is an installation range, not a guarantee of active support for React 16. The E2E-tested minimum is **React and React DOM 18.2.0**; see the [framework version matrix](../sdks/README.md#framework-version-guidance).
+
 ## Integration
 
 See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page building as your initial integration:

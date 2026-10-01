@@ -2,6 +2,10 @@
 
 This is Builder's Gen2 Angular SDK.
 
+## Framework versions
+
+The [`peerDependencies`](./package.json) permit **Angular core and common >=17.3.0**. This installation range does not establish an actively supported minimum; see the [framework version matrix](../../README.md#framework-version-guidance).
+
 ## Getting Started
 
 ```bash

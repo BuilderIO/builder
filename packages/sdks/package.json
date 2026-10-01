@@ -26,7 +26,7 @@
     "test:update": "yarn test:browser --update && yarn test:node --update && yarn test:edge --update",
     "test": "yarn test:browser && yarn test:node && yarn test:edge",
     "test:browser": "SDK_ENV=browser vitest run",
-    "test:node": "SDK_ENV=node vitest run",
+    "test:node": "SDK_ENV=node vitest run --no-threads",
     "test:edge": "SDK_ENV=edge vitest run",
     "test:node:watch": "SDK_ENV=node vitest",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",

@@ -19,6 +19,7 @@
     "nx-cloud": "^19.0.0",
     "octokit": "^2.0.14",
     "prettier": "^3.2.5",
+    "semver": "^7.5.4",
     "zx": "7.2.1"
   },
   "license": "MIT",
@@ -28,6 +29,7 @@
   },
   "scripts": {
     "ci:lint": "prettier --check '**/*.{js,jsx,ts,tsx}'",
+    "check:framework-support": "node scripts/check-framework-support.mjs",
     "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "update-npm-dependency": "zx ./scripts/update-npm-dependency.mjs",
     "g:changeset": "changeset",

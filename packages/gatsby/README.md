@@ -4,6 +4,10 @@ Plugin for integrating [Builder.io](https://www.builder.io) to allow drag and dr
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
+## Minimum supported version
+
+The [`peerDependencies`](./package.json) permit **Gatsby >=4**. This is an installation range, not an actively verified support minimum; see the [framework version matrix](../sdks/README.md#framework-version-guidance).
+
 ## Install
 
 `npm install @builder.io/gatsby`
