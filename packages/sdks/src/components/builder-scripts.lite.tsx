@@ -11,6 +11,7 @@ import {
 } from '../blocks/personalization-container/helpers.js';
 import { TARGET } from '../constants/target.js';
 import BuilderScriptsContext from '../context/builder-scripts.context.lite.js';
+import { isBrowser } from '../functions/is-browser.js';
 import {
   getInitVariantsFnsScriptString,
   SDKS_SUPPORTING_BUILDER_SCRIPTS,
@@ -39,6 +40,8 @@ export default function BuilderScripts(props: BuilderScriptsProps) {
 
   const state = useStore({
     isSupported: SDKS_SUPPORTING_BUILDER_SCRIPTS.includes(TARGET),
+    // In React the A/B helper removes its own tag before hydration, so the client must not render it.
+    shouldRenderAbTestFns: TARGET !== 'react' || !isBrowser(),
   });
 
   setContext(BuilderScriptsContext, {
@@ -55,11 +58,13 @@ export default function BuilderScripts(props: BuilderScriptsProps) {
             id="builderio-init-personalization-variants-fns"
           />
         </Show>
-        <InlinedScript
-          nonce={props.nonce || ''}
-          scriptStr={getInitVariantsFnsScriptString()}
-          id="builderio-init-variants-fns"
-        />
+        <Show when={state.shouldRenderAbTestFns}>
+          <InlinedScript
+            nonce={props.nonce || ''}
+            scriptStr={getInitVariantsFnsScriptString()}
+            id="builderio-init-variants-fns"
+          />
+        </Show>
       </Show>
       {props.children}
     </>
