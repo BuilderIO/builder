@@ -51,6 +51,7 @@ jobs:
           publish: yarn workspace @builder.io/sdks ci:release
           title: '📦 Publish SDKs'
           commit: '📦 Publish SDKs'
+          commitMode: github-api
         env:
           # need this custom token to run CI checks on the created PR
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
