@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import semver from 'semver';
 
 const packages = new Map([
@@ -27,6 +27,15 @@ const packages = new Map([
 ]);
 
 const root = new URL('../', import.meta.url);
+
+// Version the fixture actually installs, found the way Node resolves it: nearest node_modules upward.
+const installedVersion = (fixtureDir, pkg) => {
+  for (let dir = fixtureDir; dir.href.startsWith(root.href); dir = new URL('../', dir)) {
+    const manifest = new URL(`node_modules/${pkg}/package.json`, dir);
+    if (existsSync(manifest)) return JSON.parse(readFileSync(manifest, 'utf8')).version;
+  }
+};
+const matrixDir = new URL('packages/sdks/', root);
 const matrix = readFileSync(new URL('packages/sdks/README.md', root), 'utf8');
 const rows = matrix.split('\n').filter(line => line.startsWith('| [`@builder.io/'));
 const seen = new Set();
@@ -71,6 +80,21 @@ for (const row of rows) {
         semver.satisfies(version, manifest.peerDependencies[peer]),
         `Minimum ${peer}@${version} for ${name} does not satisfy its peer range`
       );
+    }
+  }
+
+  for (const segment of supported.split(';')) {
+    const fixtures = [...segment.matchAll(/\]\((\.[^)]*)\/package\.json\)/g)];
+    for (const [, fixture] of fixtures) {
+      const fixtureDir = new URL(`${fixture}/`, matrixDir);
+      for (const [, pkg, version] of segment.matchAll(/`([^`]+)@(\d+\.\d+\.\d+)`/g)) {
+        const installed = installedVersion(fixtureDir, pkg);
+        assert.equal(
+          installed,
+          version,
+          `${name} lists ${pkg}@${version}, but ${fixture} installs ${installed ?? 'nothing'}; update the matrix`
+        );
+      }
     }
   }
 }

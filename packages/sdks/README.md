@@ -34,7 +34,7 @@ Each version is the lowest one installed by a passing CI E2E fixture for that fr
 | [`@builder.io/sdk-qwik`](./output/qwik/)                                   | [Qwik City](./e2e/qwik-city/package.json): `@builder.io/qwik@1.9.1` + `@builder.io/qwik-city@1.9.1`                                                                                                                                                                                                                              |
 | [`@builder.io/sdk-react-nextjs`](./output/nextjs/) (RSC registration only) | [Next.js App Router](./e2e/nextjs-sdk-next-app/package.json): `next@14.2.25` + `react@18.2.0` + `react-dom@18.2.0` (Next.js 14 is [no longer supported upstream](https://nextjs.org/support-policy))                                                                                                                             |
 
-Versions are the ones CI installs from the immutable `yarn.lock`; most fixtures request `^` ranges, so recheck this table whenever the lockfile changes. Next.js 14 is [unsupported upstream](https://nextjs.org/support-policy); it is listed only for the RSC SDK until that SDK has a newer Next.js fixture. The [Android sample](../android/) is not a published SDK.
+Versions are the ones CI installs from the immutable `yarn.lock`; `yarn check:framework-support` fails if a fixture's installed version no longer matches this table, so update it whenever the lockfile changes. Next.js 14 is [unsupported upstream](https://nextjs.org/support-policy); it is listed only for the RSC SDK until that SDK has a newer Next.js fixture. The [Android sample](../android/) is not a published SDK.
 
 ## Development
 
