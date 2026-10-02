@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@builder.io/react": "workspace:*",
-    "@builder.io/widgets": "^1.2.24",
+    "@builder.io/widgets": "^2.1.3",
     "@sdk/tests": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
