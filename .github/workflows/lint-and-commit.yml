@@ -25,7 +25,7 @@ jobs:
           private-key: ${{ secrets.BUILDER_BOT_FOR_LINT_PRIVATE_KEY }}
 
       - name: Setup
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 2
           token: ${{ steps.generate-token.outputs.token }}
