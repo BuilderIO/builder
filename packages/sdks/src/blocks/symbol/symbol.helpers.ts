@@ -14,6 +14,23 @@ export interface SymbolInfo {
   global?: boolean;
 }
 
+const isSymbolContentBinding = (key: string) => {
+  const path = key.startsWith('component.') ? key.slice(10) : key;
+  return (
+    path === 'options.symbol' ||
+    path === 'options.symbol.content' ||
+    path.startsWith('options.symbol.content.')
+  );
+};
+
+// Bound symbol content is evaluated at render time, so it is not in the parent content JSON.
+export const isSymbolContentInlinedInParent = (
+  symbol: SymbolInfo | undefined,
+  bindings: Record<string, string> | undefined
+) =>
+  !!symbol?.content &&
+  !Object.keys(bindings || {}).some(isSymbolContentBinding);
+
 export const fetchSymbolContent = async ({
   builderContextValue,
   symbol,
