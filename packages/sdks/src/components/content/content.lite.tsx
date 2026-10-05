@@ -16,6 +16,7 @@ import type {
   BuilderRenderState,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate/evaluate.js';
+import { isBrowser } from '../../functions/is-browser.js';
 import { logger } from '../../helpers/logger.js';
 import Blocks from '../blocks/blocks.lite.jsx';
 import { getUpdateVariantVisibilityScript } from '../content-variants/helpers.js';
@@ -26,6 +27,7 @@ import ContentStyles from './components/styles.lite.jsx';
 import {
   getComponentInfos,
   getContentInitialValue,
+  getLiveRootState,
   getRegisteredComponents,
   getRootStateInitialValue,
 } from './content.helpers.js';
@@ -53,13 +55,18 @@ export default function ContentComponent(props: ContentProps) {
       contentId: props.content?.id!,
     }),
     contentSetState: (newRootState: BuilderRenderState) => {
+      state.jsCodeRun.rootState = newRootState;
       builderContextSignal.value.rootState = newRootState;
     },
     /**
      * Mutated rather than reassigned so React doesn't re-render. jsCode runs
      * during render, so only writes made after that first run may set state.
+     * `rootState` tracks the current root state, which merges replace.
      */
-    jsCodeRun: { done: false },
+    jsCodeRun: {
+      done: false,
+      rootState: null as BuilderRenderState | null,
+    },
 
     registeredComponents: getRegisteredComponents(
       [...getDefaultRegisteredComponents(), ...(props.customComponents || [])],
@@ -168,11 +175,17 @@ export default function ContentComponent(props: ContentProps) {
     // run any dynamic JS code attached to content
     const jsCode = builderContextSignal.value.content?.data?.jsCode;
     if (jsCode) {
+      state.jsCodeRun.rootState = builderContextSignal.value.rootState;
       evaluate({
         code: jsCode,
         context: builderContextSignal.value.context,
         localState: undefined,
-        rootState: builderContextSignal.value.rootState,
+        rootState: useTarget({
+          react: isBrowser()
+            ? getLiveRootState(() => state.jsCodeRun.rootState!)
+            : builderContextSignal.value.rootState,
+          default: builderContextSignal.value.rootState,
+        }),
         rootSetState: (newState) => {
           useTarget({
             vue: () => {
@@ -182,9 +195,12 @@ export default function ContentComponent(props: ContentProps) {
               builderContextSignal.value.rootState = newState;
             },
             react: () => {
-              Object.assign(builderContextSignal.value.rootState, newState);
               if (state.jsCodeRun.done) {
-                builderContextSignal.value.rootSetState?.(newState);
+                builderContextSignal.value.rootSetState?.(
+                  state.jsCodeRun.rootState!
+                );
+              } else {
+                Object.assign(builderContextSignal.value.rootState, newState);
               }
             },
             reactNative: () => {

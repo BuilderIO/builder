@@ -18,6 +18,21 @@ test.describe('JS Code', () => {
     await page.getByText('Increment').click();
     await expect(page.locator('text=count: 1')).toBeVisible();
   });
+  test('state writes from jsCode functions keep state merged in later', async ({ page, sdk }) => {
+    test.skip(
+      sdk !== 'react',
+      'Covers the React jsCode state writer; the route mock also cannot reach server-side httpRequests fetches.'
+    );
+
+    await page.route(/https:\/\/cdn\.builder\.io\/api\/v1\/proxy-api.*/, route =>
+      route.fulfill({ status: 200, json: { title: 'fetched' } })
+    );
+    await page.goto('/js-code-context-http/');
+    await expect(page.locator('text=article: fetched')).toBeVisible();
+    await page.getByText('Increment').click();
+    await expect(page.locator('text=count: 1')).toBeVisible();
+    await expect(page.locator('text=article: fetched')).toBeVisible();
+  });
   test('runs code (after client-side navigation)', async ({ page }) => {
     await page.goto('/');
 

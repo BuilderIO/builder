@@ -30,3 +30,29 @@ export const JS_CODE_CONTEXT_CONTENT = {
   testRatio: 1,
   variations: {},
 };
+
+export const JS_CODE_CONTEXT_HTTP_CONTENT = {
+  ...JS_CODE_CONTEXT_CONTENT,
+  id: 'js-code-context-http',
+  name: 'js-code-context-http',
+  data: {
+    ...JS_CODE_CONTEXT_CONTENT.data,
+    title: 'js-code-context-http',
+    httpRequests: {
+      article: 'https://cdn.builder.io/api/v1/proxy-api?url=https%3A%2F%2Fexample.com%2Farticle',
+    },
+    blocks: [
+      ...JS_CODE_CONTEXT_CONTENT.data.blocks,
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-js-code-context-http-text',
+        bindings: {
+          'component.options.text':
+            'var _a,_virtual_index="article: "+((_a=state.article)&&_a.title||"none");return _virtual_index',
+        },
+        component: { name: 'Text', options: { text: 'article: ...' } },
+      },
+    ],
+  },
+};

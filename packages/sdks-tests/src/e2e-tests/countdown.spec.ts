@@ -4,7 +4,7 @@ import { test } from '../helpers/index.js';
 test.describe('Symbol with JS Code', () => {
   test('correctly updates countdown date', async ({ page, sdk, packageName }) => {
     test.fail(
-      sdk === 'qwik' || sdk === 'react' || sdk === 'rsc',
+      sdk === 'qwik' || sdk === 'rsc',
       'jsCode in symbols does not update global state for these SDKs.'
     );
     test.skip(packageName === 'gen1-next14-pages', 'test is flaky');
