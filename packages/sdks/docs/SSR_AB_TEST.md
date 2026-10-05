@@ -155,4 +155,6 @@ On CSR, 2 scripts will run:
 
 Both scripts and the variant style tag "self-destruct" in hydration frameworks by removing themselves, as they are not needed anymore.
 
+The functions both scripts call are defined by the `builderio-init-variants-fns` script, which each `Content` with SSR'd variants emits. When several such `Content` components share a page, render them inside `BuilderScripts` to emit it once (see [PERSONALIZATION_CONTAINER.md](./PERSONALIZATION_CONTAINER.md#script-injection) for supported SDKs).
+
 And as a last extra step for Svelte/Solid: on the second CSR, we unmount everything except for the winning variant. This isn't strictly necessary, but it reduces the amount of HTML and components in the DOM which might help with performance.

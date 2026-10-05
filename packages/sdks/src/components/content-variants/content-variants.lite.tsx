@@ -2,6 +2,7 @@ import {
   For,
   Show,
   onMount,
+  useContext,
   useMetadata,
   useStore,
   useTarget,
@@ -12,6 +13,7 @@ import {
   hasPersonalizationContainer,
 } from '../../blocks/personalization-container/helpers.js';
 import { TARGET } from '../../constants/target.js';
+import BuilderScriptsContext from '../../context/builder-scripts.context.lite.js';
 import { handleABTestingSync } from '../../helpers/ab-tests.js';
 import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import ContentComponent from '../content/content.lite.jsx';
@@ -42,9 +44,16 @@ type VariantsProviderProps = ContentVariantsPrps & {
    * For internal use only. Do not provide this prop.
    */
   isNestedRender?: boolean;
+  /**
+   * For internal use only. Do not provide this prop.
+   */
+  isContentInlinedInParent?: boolean;
 };
 
 export default function ContentVariants(props: VariantsProviderProps) {
+  // Set by `BuilderScripts`; RSC server components and Angular cannot read it, so they always emit.
+  const scriptsContext = useContext(BuilderScriptsContext);
+
   onMount(() => {
     /**
      * For Solid/Svelte: we unmount the non-winning variants post-hydration.
@@ -65,11 +74,13 @@ export default function ContentVariants(props: VariantsProviderProps) {
       content: props.content,
     }),
     /**
-     * Derived only from `props.content` so server and client agree during hydration.
-     * Nested renders are included because a symbol's content is absent from its parent's blocks.
+     * Derived only from props so server and client agree during hydration.
+     * Symbols with inlined content are skipped: the ancestor that owns that JSON already emits the fns.
      */
     shouldEmitPersonalizationFns:
-      TARGET !== 'reactNative' && hasPersonalizationContainer(props.content),
+      TARGET !== 'reactNative' &&
+      !props.isContentInlinedInParent &&
+      hasPersonalizationContainer(props.content),
     get updateCookieAndStylesScriptStr() {
       return getUpdateCookieAndStylesScript(
         getVariants(props.content).map((value) => ({
@@ -97,7 +108,17 @@ export default function ContentVariants(props: VariantsProviderProps) {
 
   return (
     <>
-      <Show when={state.shouldEmitPersonalizationFns}>
+      <Show
+        when={
+          state.shouldEmitPersonalizationFns &&
+          !useTarget({
+            rsc: false,
+            angular: false,
+            reactNative: false,
+            default: !!scriptsContext?.scriptsEmitted,
+          })
+        }
+      >
         {SDKS_SUPPORTING_PERSONALIZATION.includes(TARGET) && (
           <InlinedScript
             nonce={props.nonce || ''}
@@ -108,11 +129,22 @@ export default function ContentVariants(props: VariantsProviderProps) {
       </Show>
       <Show when={state.shouldRenderVariants}>
         {/* Emit window.builderIoAbTest/builderIoRenderContent only when variants render; idempotent + self-removing to avoid duplicate defs and hydration mismatches. */}
-        <InlinedScript
-          scriptStr={getInitVariantsFnsScriptString()}
-          id="builderio-init-variants-fns"
-          nonce={props.nonce || ''}
-        />
+        <Show
+          when={
+            !useTarget({
+              rsc: false,
+              angular: false,
+              reactNative: false,
+              default: !!scriptsContext?.scriptsEmitted,
+            })
+          }
+        >
+          <InlinedScript
+            scriptStr={getInitVariantsFnsScriptString()}
+            id="builderio-init-variants-fns"
+            nonce={props.nonce || ''}
+          />
+        </Show>
         <InlinedStyles
           id="builderio-variants"
           styles={state.hideVariantsStyleString}

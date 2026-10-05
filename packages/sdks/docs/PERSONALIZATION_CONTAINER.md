@@ -66,6 +66,16 @@ The component injects two scripts during SSR:
 - `updateVisibilityStylesScript`: Updates CSS to control variant visibility
 - `personalizationScript`: Handles cookie management and DOM modifications
 
+These calls rely on helper functions (`window.builderIoPersonalization`, `window.filterWithCustomTargeting`, `window.updateVisibilityStylesScript`, `window.builderIoStudioUserAttributes`) defined by the `builderio-init-personalization-variants-fns` script. That script is emitted:
+
+- once per top-level `Content` whose content contains a Personalization Container (including inlined symbols)
+- by a nested symbol `Content` only when its content was fetched separately, since the parent never saw it
+- not at all by `Content` rendered inside `BuilderScripts`, which emits the helpers (and the A/B test helpers) once for all of its children. A `BuilderScripts` nested inside another one emits nothing; sibling wrappers each emit a copy
+
+`BuilderScripts` relies on context, so it only dedupes in React, Vue, Svelte, Solid and Qwik. In the Next.js (RSC), Angular and React Native SDKs it renders its children unchanged.
+
+With `@builder.io/sdk-react` in the Next.js App Router, `BuilderScripts` and `Content` must come from the same client module graph. Importing `BuilderScripts` from the package directly in a server component (like `app/layout.tsx`) makes the browser load the SDK's `lib/node` build for it and the `lib/browser` build for `Content`. Each build has its own context, so `Content` renders its own helpers in the browser but not on the server, and hydration fails. Re-export `BuilderScripts` from a `"use client"` file and import that in the layout. See the [React SDK README](../output/react/README.md#nextjs-app-router).
+
 ### Variant Reset
 
 For SDKs requiring the reset approach (Vue, Svelte):
