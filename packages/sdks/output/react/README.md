@@ -60,7 +60,7 @@ export default function Layout({ children }) {
 }
 ```
 
-Use one `BuilderScripts` above every `Content` that uses these features, not one around each `Content`. Sibling wrappers each emit their own copy. A `BuilderScripts` nested inside another one emits nothing, so adding an extra one lower in the tree is safe. The `nonce` prop is optional and only needed with a Content Security Policy.
+Use one `BuilderScripts` above every `Content` that uses these features, not one around each `Content`. Sibling wrappers each emit their own copy. A `BuilderScripts` nested inside another one emits nothing, so adding an extra one lower in the tree is safe. The `nonce` prop is optional and only needed with a Content Security Policy. `BuilderScripts` always emits the helpers, even if nothing inside it uses personalization or A/B tests, so place it only around pages that do.
 
 #### Next.js App Router
 
