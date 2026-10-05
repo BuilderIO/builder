@@ -1,5 +1,15 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 5.4.0
+
+### Minor Changes
+
+- a77fd51: Add a `BuilderScripts` component that emits the Variant Container (`window.builderIoPersonalization`, `window.filterWithCustomTargeting`, `window.updateVisibilityStylesScript`) and A/B test (`window.builderIoAbTest`, `window.builderIoRenderContent`) helper scripts once for every `Content` rendered inside it. Wrap pages that render several `Content` components to avoid shipping a copy of these scripts per `Content`. A `BuilderScripts` nested inside another one emits nothing:
+
+  ```tsx
+  <BuilderScripts nonce={cspNonce}>{children}</BuilderScripts>
+  ```
+
 ## 5.3.0
 
 ### Minor Changes
