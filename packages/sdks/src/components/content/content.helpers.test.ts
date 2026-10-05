@@ -108,7 +108,7 @@ describe('getRegisteredComponents', () => {
 describe('getLiveRootState', () => {
   test('reads and writes the current root state after it is replaced', () => {
     let rootState: Record<string, any> = { count: 1 };
-    const live = getLiveRootState(() => rootState);
+    const live: Record<string, any> = getLiveRootState(() => rootState);
 
     rootState = { ...rootState, article: { title: 'fetched' } };
     live.count = live.count + 1;
