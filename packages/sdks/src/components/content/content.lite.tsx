@@ -55,6 +55,11 @@ export default function ContentComponent(props: ContentProps) {
     contentSetState: (newRootState: BuilderRenderState) => {
       builderContextSignal.value.rootState = newRootState;
     },
+    /**
+     * Mutated rather than reassigned so React doesn't re-render. jsCode runs
+     * during render, so only writes made after that first run may set state.
+     */
+    jsCodeRun: { done: false },
 
     registeredComponents: getRegisteredComponents(
       [...getDefaultRegisteredComponents(), ...(props.customComponents || [])],
@@ -165,7 +170,7 @@ export default function ContentComponent(props: ContentProps) {
     if (jsCode) {
       evaluate({
         code: jsCode,
-        context: props.context || {},
+        context: builderContextSignal.value.context,
         localState: undefined,
         rootState: builderContextSignal.value.rootState,
         rootSetState: (newState) => {
@@ -178,6 +183,9 @@ export default function ContentComponent(props: ContentProps) {
             },
             react: () => {
               Object.assign(builderContextSignal.value.rootState, newState);
+              if (state.jsCodeRun.done) {
+                builderContextSignal.value.rootSetState?.(newState);
+              }
             },
             reactNative: () => {
               builderContextSignal.value.rootState = newState;
@@ -192,6 +200,7 @@ export default function ContentComponent(props: ContentProps) {
         },
         isExpression: false,
       });
+      state.jsCodeRun.done = true;
     }
   });
 

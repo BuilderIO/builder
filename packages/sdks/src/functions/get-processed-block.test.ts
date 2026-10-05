@@ -33,6 +33,25 @@ test('Can process bindings', () => {
   expect(processed.responsiveStyles?.large?.zIndex).toEqual(2);
 });
 
+test('A bound `id` sets the element id and keeps the block id', () => {
+  const block: BuilderBlock = {
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-abc',
+    bindings: {
+      id: '"slide-".concat(state.$index)',
+    },
+  };
+  const processed = getProcessedBlock({
+    block,
+    context: {},
+    rootState: {},
+    rootSetState: undefined,
+    localState: { $index: 2 },
+  });
+  expect(processed.id).toEqual('builder-abc');
+  expect(processed.properties?.id).toEqual('slide-2');
+});
+
 test('Can process localized bindings', () => {
   const block: BuilderBlock = {
     '@type': '@builder.io/sdk:Element',

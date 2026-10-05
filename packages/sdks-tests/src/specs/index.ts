@@ -31,6 +31,7 @@ import {
 import { CONTENT as rawImg } from './raw-img.js';
 import { INPUT_DEFAULT_VALUE } from './input-default-value.js';
 import { JS_CODE_CONTENT } from './js-code.js';
+import { JS_CODE_CONTEXT_CONTENT } from './js-code-context.js';
 import { JS_CONTENT_IS_BROWSER } from './js-content-is-browser.js';
 import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as nestedSymbols } from './nested-symbols.js';
@@ -140,6 +141,7 @@ export const PAGES: Record<string, Page> = {
   '/columns': { content: COLUMNS },
   '/symbols': { content: symbols },
   '/js-code': { content: JS_CODE_CONTENT },
+  '/js-code-context': { content: JS_CODE_CONTEXT_CONTENT },
   '/symbols-without-content': { content: CONTENT_WITHOUT_SYMBOLS },
   '/symbols-with-global': { content: CONTENT_WITH_GLOBAL_SYMBOL },
   '/symbol-bindings': { content: symbolBindings },

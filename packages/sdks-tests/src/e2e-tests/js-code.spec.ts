@@ -7,6 +7,17 @@ test.describe('JS Code', () => {
     const menuLocator = page.locator('text=jsCode text');
     await expect(menuLocator).toBeVisible();
   });
+  test('functions jsCode adds to context are callable from block actions', async ({
+    page,
+    sdk,
+  }) => {
+    test.skip(excludeTestFor(['qwik', 'rsc'], sdk));
+
+    await page.goto('/js-code-context/');
+    await expect(page.locator('text=count: 0')).toBeVisible();
+    await page.getByText('Increment').click();
+    await expect(page.locator('text=count: 1')).toBeVisible();
+  });
   test('runs code (after client-side navigation)', async ({ page }) => {
     await page.goto('/');
 
