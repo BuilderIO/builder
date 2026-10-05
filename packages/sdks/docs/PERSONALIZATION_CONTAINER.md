@@ -74,6 +74,8 @@ These calls rely on helper functions (`window.builderIoPersonalization`, `window
 
 `BuilderScripts` relies on context, so it only dedupes in React, Vue, Svelte, Solid and Qwik. In the Next.js (RSC), Angular and React Native SDKs it renders its children unchanged.
 
+With `@builder.io/sdk-react` in the Next.js App Router, `BuilderScripts` and `Content` must come from the same client module graph. Importing `BuilderScripts` from the package directly in a server component (like `app/layout.tsx`) makes the browser load the SDK's `lib/node` build for it and the `lib/browser` build for `Content`. Each build has its own context, so `Content` renders its own helpers in the browser but not on the server, and hydration fails. Re-export `BuilderScripts` from a `"use client"` file and import that in the layout. See the [React SDK README](../output/react/README.md#nextjs-app-router).
+
 ### Variant Reset
 
 For SDKs requiring the reset approach (Vue, Svelte):
