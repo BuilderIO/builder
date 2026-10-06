@@ -262,7 +262,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
               String(
                 evaluate({
                   code: group,
-                  context: props.context || {},
+                  context: props.builderContextSignal.value.context,
                   localState: undefined,
                   rootState: props.builderContextSignal.value.rootState,
                   rootSetState: props.builderContextSignal.value.rootSetState,

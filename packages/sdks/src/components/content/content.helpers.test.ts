@@ -1,6 +1,7 @@
 import type { RegisteredComponent } from '../../context/types.js';
 import {
   getComponentInfos,
+  getLiveRootState,
   getRegisteredComponents,
   getRootStateInitialValue,
 } from './content.helpers.js';
@@ -101,5 +102,20 @@ describe('getRegisteredComponents', () => {
     const infos = getComponentInfos(registrations);
     expect(infos.Custom).not.toHaveProperty('component');
     expect(infos.Custom.name).toBe('Custom');
+  });
+});
+
+describe('getLiveRootState', () => {
+  test('reads and writes the current root state after it is replaced', () => {
+    let rootState: Record<string, any> = { count: 1 };
+    const live: Record<string, any> = getLiveRootState(() => rootState);
+
+    rootState = { ...rootState, article: { title: 'fetched' } };
+    live.count = live.count + 1;
+
+    expect(rootState).toEqual({ count: 2, article: { title: 'fetched' } });
+    expect(live.article.title).toBe('fetched');
+    expect('article' in live).toBe(true);
+    expect({ ...live }).toEqual(rootState);
   });
 });

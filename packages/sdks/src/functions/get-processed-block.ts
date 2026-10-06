@@ -40,7 +40,9 @@ const evaluateBindings = ({
       rootSetState,
       context,
     });
-    setCopyOnWrite(copy, binding, value, copied);
+    // A bound `id` is the element's id attribute, as in Gen1; `block.id` must stay the Builder id.
+    const path = binding === 'id' ? 'properties.id' : binding;
+    setCopyOnWrite(copy, path, value, copied);
   }
   return copy;
 };

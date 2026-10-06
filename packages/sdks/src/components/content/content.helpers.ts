@@ -97,3 +97,23 @@ export const getContentInitialValue = ({
         meta: content?.meta,
       };
 };
+
+/**
+ * A state object whose reads and writes go to whatever `getRootState` returns
+ * when they happen, for jsCode functions that outlive the root state object
+ * they were defined against.
+ */
+export const getLiveRootState = (
+  getRootState: () => BuilderRenderState
+): BuilderRenderState =>
+  new Proxy({} as BuilderRenderState, {
+    get: (_, prop) => Reflect.get(getRootState(), prop),
+    set: (_, prop, value) => Reflect.set(getRootState(), prop, value),
+    has: (_, prop) => Reflect.has(getRootState(), prop),
+    deleteProperty: (_, prop) => Reflect.deleteProperty(getRootState(), prop),
+    ownKeys: () => Reflect.ownKeys(getRootState()),
+    getOwnPropertyDescriptor: (_, prop) => {
+      const descriptor = Reflect.getOwnPropertyDescriptor(getRootState(), prop);
+      return descriptor && { ...descriptor, configurable: true };
+    },
+  });
