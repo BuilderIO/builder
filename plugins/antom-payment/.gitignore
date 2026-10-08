@@ -1,0 +1,12 @@
+node_modules
+dist/
+.generated/
+.env
+.env.*
+!.env.example
+antom.env
+antom_debug.log
+.DS_Store
+.idea/
+.claude/
+CODE_REVIEW.md
