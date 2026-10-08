@@ -8,6 +8,18 @@ plugin-enforced filesystem controls.
 
 ## Verification
 
+- `npm run dev` (or `npm start`): compile and watch the plugin, serving only
+  `plugin.system.js` and its license notices at `http://127.0.0.1:1268/`.
+  `http://localhost:1268/` is also accepted when localhost resolves to IPv4.
+  The server binds to loopback only; it has no proxy or filesystem browsing.
+  Builds use a private temporary directory, leaving production `dist/` untouched.
+  GET/HEAD and CORS/private-network OPTIONS requests are supported. During builds
+  or compilation failures it returns HTTP 503 instead of stale JavaScript.
+  Edits rebuild automatically, but **refresh Builder manually** to load changes;
+  webpack-dev-server's browser HMR/live reload is intentionally not included.
+  Stop with Ctrl+C to close the watcher and remove temporary output. This local
+  development server is not part of the published browser package.
+
 - From `plugins/antom-payment`, run `npm ci`, then `npm test` to build and test
   the prompt, clipboard, UI, package metadata and dependency notices.
 - `npm run test:package`: pack into a temporary directory and enforce the exact

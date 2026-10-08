@@ -34,17 +34,4 @@ module.exports = {
       },
     ],
   },
-  devServer: {
-    port: 1268,
-    client: {
-      overlay: false,
-    },
-    static: {
-      directory: path.join(__dirname, "./dist"),
-    },
-    headers: {
-      "Access-Control-Allow-Private-Network": "true",
-      "Access-Control-Allow-Origin": "*",
-    },
-  },
 };

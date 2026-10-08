@@ -13,9 +13,9 @@
     "docs/media/antom-integration-demo.gif"
   ],
   "scripts": {
-    "dev": "cross-env BABEL_ENV=development webpack-dev-server --mode development",
+    "dev": "cross-env BABEL_ENV=development node scripts/dev-server.cjs",
     "build": "cross-env BABEL_ENV=production webpack --mode production && node scripts/build-metadata.mjs",
-    "start": "cross-env BABEL_ENV=development webpack-dev-server --mode development",
+    "start": "cross-env BABEL_ENV=development node scripts/dev-server.cjs",
     "check:antom-skill-drift": "node scripts/check-antom-skill-drift.mjs",
     "test": "npm run build && node --test",
     "test:package": "node scripts/package-install-smoke.mjs",
@@ -60,7 +60,6 @@
     "cross-env": "^7.0.3",
     "webpack": "^5.74.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.2.4",
     "yaml": "1.10.3"
   }
 }
