@@ -14,6 +14,7 @@ interface MockReference {
 }
 
 const mockEvalClosureSync = jest.fn().mockReturnValue('"test"');
+const mockDispose = jest.fn();
 
 jest.mock('./safe-dynamic-require', () => ({
   safeDynamicRequire: jest.fn().mockImplementation(() => ({
@@ -27,6 +28,9 @@ jest.mock('./safe-dynamic-require', () => ({
           },
           evalClosureSync: mockEvalClosureSync,
         };
+      }
+      dispose() {
+        mockDispose();
       }
     },
     Reference: class implements MockReference {
@@ -103,16 +107,30 @@ describe('getIsolateContext', () => {
     Builder.serverContext = undefined;
   });
 
-  it('should create a new context if none exists', () => {
-    const context = getIsolateContext();
-    expect(context).toBeDefined();
-    expect(Builder.serverContext).toBe(context);
+  it('should create a fresh context per call without storing it globally', () => {
+    const first = getIsolateContext();
+    const second = getIsolateContext();
+    expect(first.context).toBeDefined();
+    expect(second.context).not.toBe(first.context);
+    expect(Builder.serverContext).toBeUndefined();
+  });
+  it('should dispose an owned isolate', () => {
+    mockDispose.mockClear();
+    getIsolateContext().dispose();
+    expect(mockDispose).toHaveBeenCalledTimes(1);
   });
 
-  it('should reuse existing context', () => {
-    const firstContext = getIsolateContext();
-    const secondContext = getIsolateContext();
-    expect(secondContext).toBe(firstContext);
+  it('should reuse and never dispose a context set via Builder.setServerContext', () => {
+    const callerContext = { global: { setSync: jest.fn(), derefInto: jest.fn() } };
+    Builder.setServerContext(callerContext);
+    mockDispose.mockClear();
+    const first = getIsolateContext();
+    const second = getIsolateContext();
+    first.dispose();
+    expect(first.context).toBe(callerContext);
+    expect(second.context).toBe(callerContext);
+    expect(mockDispose).not.toHaveBeenCalled();
+    Builder.serverContext = undefined;
   });
 });
 
@@ -254,7 +272,7 @@ describe('stringToFunction', () => {
     const context = getIsolateContext();
 
     // Should return the existing context
-    expect(context).toBe(mockContext);
+    expect(context.context).toBe(mockContext);
 
     // Reset the context
     Builder.serverContext = undefined;
@@ -292,6 +310,17 @@ describe('stringToFunction', () => {
     it('should use isolated VM when not in browser', () => {
       const fn = stringToFunction('state.value');
       expect(fn({ value: 'test' })).toBe('test');
+    });
+    it('should dispose the isolate after each evaluation, including on error', () => {
+      mockDispose.mockClear();
+      stringToFunction('state.value')({ value: 'test' });
+      expect(mockDispose).toHaveBeenCalledTimes(1);
+      mockEvalClosureSync.mockImplementationOnce(() => {
+        throw new Error('eval failed');
+      });
+      jest.spyOn(console, 'debug').mockImplementation(() => {});
+      expect(stringToFunction('state.value')({ value: 'test' })).toBeNull();
+      expect(mockDispose).toHaveBeenCalledTimes(2);
     });
 
     it('should handle JSON parse errors in server context', () => {
