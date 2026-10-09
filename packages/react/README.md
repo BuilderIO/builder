@@ -105,7 +105,7 @@ You can choose to have these compliment the built-in components, or to be the on
 (e.g. via [components-only mode](https://www.builder.io/c/docs/guides/components-only-mode))
 
 ```tsx
-import { Builder } from '@builder.io/sdk-react';
+import { Builder } from '@builder.io/react';
 
 function MyHero(props) {
   /* Your own hero component in your codebase */
