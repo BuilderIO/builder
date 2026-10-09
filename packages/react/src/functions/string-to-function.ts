@@ -1,4 +1,5 @@
 import { Builder, builder } from '@builder.io/sdk';
+import type { Context as IvmContext, Isolate as IvmIsolate } from 'isolated-vm';
 import { safeDynamicRequire } from './safe-dynamic-require';
 import { isDebug } from './is-debug';
 import { shouldForceBrowserRuntimeInNode } from './should-force-browser-runtime-in-node';
@@ -120,30 +121,34 @@ export function stringToFunction(
         // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
         // for the server build
         // TODO: cache these for better performancs with new VmScript
-        const isolateContext: import('isolated-vm').Context = getIsolateContext();
-        const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
-        const resultStr = isolateContext.evalClosureSync(
-          makeFn(str, useReturn),
-          args.map((arg, index) =>
-            typeof arg === 'object'
-              ? new ivm.Reference(
-                  index === indexOfBuilderInstance
-                    ? {
-                        // workaround: methods with default values for arguments is not being cloned over
-                        ...arg,
-                        getUserAttributes: () => arg.getUserAttributes(''),
-                      }
-                    : arg
-                )
-              : null
-          )
-        );
+        const { context: isolateContext, dispose } = getIsolateContext();
         try {
-          // returning objects throw errors in isolated vm, so we stringify it and parse it back
-          const res = JSON.parse(resultStr);
-          return res;
-        } catch (_error: any) {
-          return resultStr;
+          const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
+          const resultStr = isolateContext.evalClosureSync(
+            makeFn(str, useReturn),
+            args.map((arg, index) =>
+              typeof arg === 'object'
+                ? new ivm.Reference(
+                    index === indexOfBuilderInstance
+                      ? {
+                          // workaround: methods with default values for arguments is not being cloned over
+                          ...arg,
+                          getUserAttributes: () => arg.getUserAttributes(''),
+                        }
+                      : arg
+                  )
+                : null
+            )
+          );
+          try {
+            // returning objects throw errors in isolated vm, so we stringify it and parse it back
+            const res = JSON.parse(resultStr);
+            return res;
+          } catch (_error: any) {
+            return resultStr;
+          }
+        } finally {
+          dispose();
         }
       }
     } catch (error: any) {
@@ -253,16 +258,18 @@ return stringify(endResult());
 `);
 };
 
+// Contexts supplied via Builder.setServerContext are caller-owned and reused as-is. Otherwise a
+// fresh isolate is created per evaluation and must be disposed, since a shared one leaks memory.
 export const getIsolateContext = () => {
-  let isolatedContext = Builder.serverContext;
+  let isolatedContext: IvmContext = Builder.serverContext;
+  let ownedIsolate: IvmIsolate | undefined;
 
   if (!isolatedContext) {
     const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
-    const isolate = new ivm.Isolate({ memoryLimit: 128 });
-    isolatedContext = isolate.createContextSync();
-    Builder.setServerContext(isolatedContext);
+    ownedIsolate = new ivm.Isolate({ memoryLimit: 128 });
+    isolatedContext = ownedIsolate.createContextSync();
   }
-  const jail = isolatedContext!.global;
+  const jail = isolatedContext.global;
   // This makes the global object available in the context as `global`. We use `derefInto()` here
   // because otherwise `global` would actually be a Reference{} object in the new isolate.
   jail.setSync('global', jail.derefInto());
@@ -272,5 +279,15 @@ export const getIsolateContext = () => {
       console.log(...args);
     }
   });
-  return isolatedContext;
+  return {
+    context: isolatedContext,
+    dispose: () => {
+      if (!ownedIsolate) return;
+      try {
+        ownedIsolate.dispose();
+      } catch (_error) {
+        // already disposed, e.g. after exceeding its memory limit
+      }
+    },
+  };
 };
