@@ -15,11 +15,15 @@ interface MockReference {
 
 const mockEvalClosureSync = jest.fn().mockReturnValue('"test"');
 const mockDispose = jest.fn();
+const mockIsolates: { isDisposed: boolean }[] = [];
 
 jest.mock('./safe-dynamic-require', () => ({
   safeDynamicRequire: jest.fn().mockImplementation(() => ({
     Isolate: class {
-      constructor() {}
+      isDisposed = false;
+      constructor() {
+        mockIsolates.push(this);
+      }
       createContextSync() {
         return {
           global: {
@@ -30,6 +34,7 @@ jest.mock('./safe-dynamic-require', () => ({
         };
       }
       dispose() {
+        this.isDisposed = true;
         mockDispose();
       }
     },
@@ -107,28 +112,40 @@ describe('getIsolateContext', () => {
     Builder.serverContext = undefined;
   });
 
-  it('should create a fresh context per call without storing it globally', () => {
+  it('should reuse the shared context without storing it on Builder.serverContext', () => {
     const first = getIsolateContext();
     const second = getIsolateContext();
-    expect(first.context).toBeDefined();
-    expect(second.context).not.toBe(first.context);
+    expect(first).toBeDefined();
+    expect(second).toBe(first);
     expect(Builder.serverContext).toBeUndefined();
   });
-  it('should dispose an owned isolate', () => {
+  it('should replace and dispose the shared isolate every 1000 evaluations', () => {
     mockDispose.mockClear();
-    getIsolateContext().dispose();
-    expect(mockDispose).toHaveBeenCalledTimes(1);
+    const contexts = Array.from({ length: 2500 }, () => getIsolateContext());
+    const runLengths: number[] = [];
+    contexts.forEach((context, index) => {
+      if (index > 0 && context === contexts[index - 1]) {
+        runLengths[runLengths.length - 1]++;
+      } else {
+        runLengths.push(1);
+      }
+    });
+    expect(Math.max(...runLengths)).toBeLessThanOrEqual(1000);
+    expect(runLengths.slice(1, -1).every(length => length === 1000)).toBe(true);
+    expect(mockDispose).toHaveBeenCalledTimes(runLengths.length - 1);
+  });
+  it('should recreate the shared isolate if it was disposed externally', () => {
+    const before = getIsolateContext();
+    mockIsolates[mockIsolates.length - 1].isDisposed = true;
+    expect(getIsolateContext()).not.toBe(before);
   });
 
   it('should reuse and never dispose a context set via Builder.setServerContext', () => {
     const callerContext = { global: { setSync: jest.fn(), derefInto: jest.fn() } };
     Builder.setServerContext(callerContext);
     mockDispose.mockClear();
-    const first = getIsolateContext();
-    const second = getIsolateContext();
-    first.dispose();
-    expect(first.context).toBe(callerContext);
-    expect(second.context).toBe(callerContext);
+    const contexts = Array.from({ length: 1500 }, () => getIsolateContext());
+    expect(contexts.every(context => context === (callerContext as unknown))).toBe(true);
     expect(mockDispose).not.toHaveBeenCalled();
     Builder.serverContext = undefined;
   });
@@ -272,7 +289,7 @@ describe('stringToFunction', () => {
     const context = getIsolateContext();
 
     // Should return the existing context
-    expect(context.context).toBe(mockContext);
+    expect(context).toBe(mockContext);
 
     // Reset the context
     Builder.serverContext = undefined;
@@ -310,17 +327,6 @@ describe('stringToFunction', () => {
     it('should use isolated VM when not in browser', () => {
       const fn = stringToFunction('state.value');
       expect(fn({ value: 'test' })).toBe('test');
-    });
-    it('should dispose the isolate after each evaluation, including on error', () => {
-      mockDispose.mockClear();
-      stringToFunction('state.value')({ value: 'test' });
-      expect(mockDispose).toHaveBeenCalledTimes(1);
-      mockEvalClosureSync.mockImplementationOnce(() => {
-        throw new Error('eval failed');
-      });
-      jest.spyOn(console, 'debug').mockImplementation(() => {});
-      expect(stringToFunction('state.value')({ value: 'test' })).toBeNull();
-      expect(mockDispose).toHaveBeenCalledTimes(2);
     });
 
     it('should handle JSON parse errors in server context', () => {

@@ -55,8 +55,7 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
       // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
       // for the server build
       const ivm = safeDynamicRequire('isolated-vm');
-      const isCallerOwnedContext = Boolean(Builder.serverContext);
-      const { context, dispose } = getIsolateContext();
+      const context = getIsolateContext();
 
       try {
         Object.keys(data).forEach(key => {
@@ -90,20 +89,17 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
           return resultStr;
         }
       } finally {
-        // A caller-owned context outlives this call, so the globals set above must be removed
-        if (isCallerOwnedContext) {
-          Object.keys(data).forEach(key => {
-            switch (key) {
-              case 'state':
-              case 'global':
-              case 'log':
-                break;
-              default:
-                context.global.deleteSync(key);
-            }
-          });
-        }
-        dispose();
+        // The context is shared across evaluations, so remove the globals set above
+        Object.keys(data).forEach(key => {
+          switch (key) {
+            case 'state':
+            case 'global':
+            case 'log':
+              break;
+            default:
+              context.global.deleteSync(key);
+          }
+        });
       }
     }
   } catch (error: any) {
