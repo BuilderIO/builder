@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.9
+
+### Patch Changes
+
+- 3a9512e: Fix server-side memory growth from bindings by recycling the isolated-vm isolate every 1000 evaluations, and recover automatically if the isolate is disposed (e.g. after hitting its memory limit).
+
 ## 9.4.8
 
 ### Patch Changes
