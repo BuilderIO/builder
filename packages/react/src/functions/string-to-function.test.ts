@@ -14,11 +14,16 @@ interface MockReference {
 }
 
 const mockEvalClosureSync = jest.fn().mockReturnValue('"test"');
+const mockDispose = jest.fn();
+const mockIsolates: { isDisposed: boolean }[] = [];
 
 jest.mock('./safe-dynamic-require', () => ({
   safeDynamicRequire: jest.fn().mockImplementation(() => ({
     Isolate: class {
-      constructor() {}
+      isDisposed = false;
+      constructor() {
+        mockIsolates.push(this);
+      }
       createContextSync() {
         return {
           global: {
@@ -27,6 +32,10 @@ jest.mock('./safe-dynamic-require', () => ({
           },
           evalClosureSync: mockEvalClosureSync,
         };
+      }
+      dispose() {
+        this.isDisposed = true;
+        mockDispose();
       }
     },
     Reference: class implements MockReference {
@@ -103,16 +112,42 @@ describe('getIsolateContext', () => {
     Builder.serverContext = undefined;
   });
 
-  it('should create a new context if none exists', () => {
-    const context = getIsolateContext();
-    expect(context).toBeDefined();
-    expect(Builder.serverContext).toBe(context);
+  it('should reuse the shared context without storing it on Builder.serverContext', () => {
+    const first = getIsolateContext();
+    const second = getIsolateContext();
+    expect(first).toBeDefined();
+    expect(second).toBe(first);
+    expect(Builder.serverContext).toBeUndefined();
+  });
+  it('should replace and dispose the shared isolate every 1000 evaluations', () => {
+    mockDispose.mockClear();
+    const contexts = Array.from({ length: 2500 }, () => getIsolateContext());
+    const runLengths: number[] = [];
+    contexts.forEach((context, index) => {
+      if (index > 0 && context === contexts[index - 1]) {
+        runLengths[runLengths.length - 1]++;
+      } else {
+        runLengths.push(1);
+      }
+    });
+    expect(Math.max(...runLengths)).toBeLessThanOrEqual(1000);
+    expect(runLengths.slice(1, -1).every(length => length === 1000)).toBe(true);
+    expect(mockDispose).toHaveBeenCalledTimes(runLengths.length - 1);
+  });
+  it('should recreate the shared isolate if it was disposed externally', () => {
+    const before = getIsolateContext();
+    mockIsolates[mockIsolates.length - 1].isDisposed = true;
+    expect(getIsolateContext()).not.toBe(before);
   });
 
-  it('should reuse existing context', () => {
-    const firstContext = getIsolateContext();
-    const secondContext = getIsolateContext();
-    expect(secondContext).toBe(firstContext);
+  it('should reuse and never dispose a context set via Builder.setServerContext', () => {
+    const callerContext = { global: { setSync: jest.fn(), derefInto: jest.fn() } };
+    Builder.setServerContext(callerContext);
+    mockDispose.mockClear();
+    const contexts = Array.from({ length: 1500 }, () => getIsolateContext());
+    expect(contexts.every(context => context === (callerContext as unknown))).toBe(true);
+    expect(mockDispose).not.toHaveBeenCalled();
+    Builder.serverContext = undefined;
   });
 });
 

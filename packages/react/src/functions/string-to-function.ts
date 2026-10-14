@@ -1,4 +1,5 @@
 import { Builder, builder } from '@builder.io/sdk';
+import type { Context as IvmContext, Isolate as IvmIsolate } from 'isolated-vm';
 import { safeDynamicRequire } from './safe-dynamic-require';
 import { isDebug } from './is-debug';
 import { shouldForceBrowserRuntimeInNode } from './should-force-browser-runtime-in-node';
@@ -120,7 +121,7 @@ export function stringToFunction(
         // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
         // for the server build
         // TODO: cache these for better performancs with new VmScript
-        const isolateContext: import('isolated-vm').Context = getIsolateContext();
+        const isolateContext = getIsolateContext();
         const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
         const resultStr = isolateContext.evalClosureSync(
           makeFn(str, useReturn),
@@ -253,16 +254,40 @@ return stringify(endResult());
 `);
 };
 
-export const getIsolateContext = () => {
-  let isolatedContext = Builder.serverContext;
+// A long-lived isolate accumulates native memory across evaluations, and creating one per
+// evaluation is too slow, so the SDK-owned isolate is replaced every N evaluations instead.
+const MAX_EVALUATIONS_PER_ISOLATE = 1000;
+let sharedIsolate: IvmIsolate | undefined;
+let sharedContext: IvmContext | undefined;
+let evaluationsOnSharedIsolate = 0;
 
-  if (!isolatedContext) {
-    const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
-    const isolate = new ivm.Isolate({ memoryLimit: 128 });
-    isolatedContext = isolate.createContextSync();
-    Builder.setServerContext(isolatedContext);
+export const getIsolateContext = (): IvmContext => {
+  // Contexts supplied via Builder.setServerContext are caller-owned and never recycled.
+  if (Builder.serverContext) {
+    setupJail(Builder.serverContext);
+    return Builder.serverContext;
   }
-  const jail = isolatedContext!.global;
+  if (
+    !sharedIsolate ||
+    !sharedContext ||
+    sharedIsolate.isDisposed ||
+    evaluationsOnSharedIsolate >= MAX_EVALUATIONS_PER_ISOLATE
+  ) {
+    if (sharedIsolate && !sharedIsolate.isDisposed) {
+      sharedIsolate.dispose();
+    }
+    const ivm = safeDynamicRequire('isolated-vm') as typeof import('isolated-vm');
+    sharedIsolate = new ivm.Isolate({ memoryLimit: 128 });
+    sharedContext = sharedIsolate.createContextSync();
+    setupJail(sharedContext);
+    evaluationsOnSharedIsolate = 0;
+  }
+  evaluationsOnSharedIsolate++;
+  return sharedContext;
+};
+
+const setupJail = (isolatedContext: IvmContext) => {
+  const jail = isolatedContext.global;
   // This makes the global object available in the context as `global`. We use `derefInto()` here
   // because otherwise `global` would actually be a Reference{} object in the new isolate.
   jail.setSync('global', jail.derefInto());
@@ -272,5 +297,4 @@ export const getIsolateContext = () => {
       console.log(...args);
     }
   });
-  return isolatedContext;
 };
