@@ -25,7 +25,16 @@ const setContentVariationCookie = ({
 }: {
   contentId: string;
   value: string;
-}) => setCookie({ name: getContentTestKey(contentId), value, canTrack: true });
+}) => {
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 30);
+  return setCookie({
+    name: getContentTestKey(contentId),
+    value,
+    expires,
+    canTrack: true,
+  });
+};
 
 type BuilderContentWithVariations = Overwrite<
   BuilderContent,

@@ -106,7 +106,7 @@ const variantsScript = (variantsString: string, contentId: string) =>
   var variantInUrl = getVariantFromUrl();
   if (availableIDs.indexOf(variantInUrl) > -1) {
     variantId = variantInUrl;
-    setCookie(cookieName, variantId);
+    setCookie(cookieName, variantId, 30);
   } else if (availableIDs.indexOf(variantInCookie) > -1) {
     variantId = variantInCookie;
   }
@@ -118,14 +118,14 @@ const variantsScript = (variantsString: string, contentId: string) =>
       var testRatio = variant.testRatio;
       n += testRatio;
       if (random < n) {
-        setCookie(cookieName, variant.id);
+        setCookie(cookieName, variant.id, 30);
         variantId = variant.id;
         break;
       }
     }
     if (!variantId) {
       variantId = "${contentId}";
-      setCookie(cookieName, "${contentId}");
+      setCookie(cookieName, "${contentId}", 30);
     }
   }
   if (variantId && variantId !== "${contentId}") {
@@ -185,6 +185,8 @@ export const VariantsProvider = ({ initialContent, children, nonce }: VariantsPr
   }
 
   const cookieName = `builder.tests.${initialContent.id}`;
+  const cookieExpiry = new Date();
+  cookieExpiry.setDate(cookieExpiry.getDate() + 30);
 
   const variantIdFromUrl = getVariantIdFromUrl(initialContent.id!);
 
@@ -200,7 +202,7 @@ export const VariantsProvider = ({ initialContent, children, nonce }: VariantsPr
       const testRatio = variant.testRatio;
       n += testRatio!;
       if (random < n) {
-        builder.setCookie(cookieName, variant.id);
+        builder.setCookie(cookieName, variant.id, cookieExpiry);
         variantId = variant.id;
         break;
       }
@@ -210,7 +212,7 @@ export const VariantsProvider = ({ initialContent, children, nonce }: VariantsPr
   if (!variantId) {
     // render initial content when no winning variation or on the server
     variantId = initialContent.id;
-    builder.setCookie(cookieName, variantId);
+    builder.setCookie(cookieName, variantId, cookieExpiry);
   }
 
   return children([allVariants.find(item => item.id === variantId)!]);

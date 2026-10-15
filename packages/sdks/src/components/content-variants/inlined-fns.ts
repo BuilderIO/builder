@@ -65,7 +65,7 @@ function updateCookiesAndStyles(
       const testRatio = variant.testRatio;
       n += testRatio!;
       if (random < n) {
-        setCookie(cookieName, variant.id);
+        setCookie(cookieName, variant.id, 30);
         return variant.id;
       }
     }
@@ -73,7 +73,7 @@ function updateCookiesAndStyles(
     /**
      * no variant found, assign default content
      */
-    setCookie(cookieName, contentId);
+    setCookie(cookieName, contentId, 30);
 
     return contentId;
   }
