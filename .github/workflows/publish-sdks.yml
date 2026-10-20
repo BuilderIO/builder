@@ -46,7 +46,7 @@ jobs:
 
       - name: Create Release PR & Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           publish: yarn workspace @builder.io/sdks ci:release
           title: '📦 Publish SDKs'
