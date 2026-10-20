@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.10
+
+### Patch Changes
+
+- 4e274e1: Fix: persist A/B test assignment cookie (`builder.tests.<contentId>`) for 30 days instead of the session, matching `setTestCookie` in core
+
 ## 9.4.9
 
 ### Patch Changes

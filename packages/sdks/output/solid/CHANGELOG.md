@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.4.2
+
+### Patch Changes
+
+- 4e274e1: Fix: persist A/B test assignment cookie (`builder.tests.<contentId>`) for 30 days instead of the session, matching `setTestCookie` in core
+
 ## 5.4.1
 
 ### Patch Changes
