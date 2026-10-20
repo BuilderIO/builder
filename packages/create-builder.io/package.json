@@ -38,7 +38,7 @@
     "cli-spinner": "^0.2.10",
     "colorette": "2.0.16",
     "https-proxy-agent": "^5.0.0",
-    "np": "7.6.0",
+    "np": "12.1.1",
     "prettier": "^2.5.0",
     "rollup": "2.60.2",
     "sisteransi": "^1.0.5",
