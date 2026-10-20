@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.26.2
+
+### Patch Changes
+
+- 4e274e1: Fix: persist A/B test assignment cookie (`builder.tests.<contentId>`) for 30 days instead of the session, matching `setTestCookie` in core
+
 ## 0.26.1
 
 ### Patch Changes
