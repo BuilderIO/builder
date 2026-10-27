@@ -846,3 +846,65 @@ test('applyTranslation from plain data model content to match snapshot', async (
   result = applyTranslation(result, germanTranslations, 'de');
   expect(result).toMatchSnapshot();
 });
+
+test('should not extract or apply non-string localized fields like arrays and references', () => {
+  const content: BuilderContent = {
+    data: {
+      productBenefits: {
+        '@type': localizedType,
+        Default: [
+          { id: 'benefit-1', name: 'Benefit 1' },
+          { id: 'benefit-2', name: 'Benefit 2' },
+        ],
+      },
+      faqList: {
+        '@type': localizedType,
+        Default: [
+          { question: 'Q1', answer: 'A1' },
+          { question: 'Q2', answer: 'A2' },
+        ],
+      },
+      description: {
+        '@type': localizedType,
+        Default: 'Product description',
+      },
+      blocks: [],
+    },
+  };
+
+  // Extract translatable fields - should NOT include array/reference fields
+  const extractedFields = getTranslateableFields(content, 'Default', '');
+
+  // Should extract the text field
+  expect(extractedFields['metadata.description']).toBeDefined();
+  expect(extractedFields['metadata.description'].value).toBe('Product description');
+
+  // Should NOT extract array fields
+  expect(extractedFields['metadata.productBenefits']).toBeUndefined();
+  expect(extractedFields['metadata.faqList']).toBeUndefined();
+
+  // Apply a translation with a non-string value (simulating Smartling returning an empty array)
+  const translation = {
+    'metadata.description': {
+      value: 'Descripción del producto',
+    },
+    // This simulates what might come back from Smartling if it couldn't translate an array
+    'metadata.productBenefits': {
+      value: [], // Empty array - should NOT be applied
+    },
+  };
+
+  const result = applyTranslation(content, translation, 'es');
+
+  // Description should be applied
+  expect(result.data.description).toBeDefined();
+  expect(result.data.description['es']).toBe('Descripción del producto');
+  expect(result.data.description.Default).toBe('Product description');
+
+  // productBenefits should NOT have a locale override - it should remain empty to preserve fallback inheritance
+  expect(result.data.productBenefits['es']).toBeUndefined();
+  expect(result.data.productBenefits.Default).toEqual([
+    { id: 'benefit-1', name: 'Benefit 1' },
+    { id: 'benefit-2', name: 'Benefit 2' },
+  ]);
+});

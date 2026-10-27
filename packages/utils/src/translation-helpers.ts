@@ -59,10 +59,15 @@ function recordValue({
     });
   } else if (typeof value === 'object' && value !== null) {
     if (value['@type'] === localizedType) {
-      results[path] = {
-        value: value?.[sourceLocaleId] || value?.Default,
-        instructions,
-      };
+      const actualValue = value?.[sourceLocaleId] || value?.Default;
+      // Only extract string, number, or boolean values - not arrays or objects
+      // This prevents non-translatable fields (lists, references) from being sent to translation
+      if (typeof actualValue === 'string' || typeof actualValue === 'number' || typeof actualValue === 'boolean') {
+        results[path] = {
+          value: actualValue,
+          instructions,
+        };
+      }
     } else {
       Object.entries(value).forEach(([key, v]) => {
         recordValue({
@@ -114,12 +119,18 @@ function resolveTranslation({
         return;
       }
 
-      set(data, path, {
-        ...value,
-        [locale]: unescapeStringOrObject(translatedSymbolInput.value),
-      });
+      // Only apply string, number, or boolean translations - not arrays or objects
+      // This prevents non-translatable fields (lists, references) from being applied
+      if (typeof translatedSymbolInput.value === 'string' ||
+          typeof translatedSymbolInput.value === 'number' ||
+          typeof translatedSymbolInput.value === 'boolean') {
+        set(data, path, {
+          ...value,
+          [locale]: unescapeStringOrObject(translatedSymbolInput.value),
+        });
 
-      transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
+        transformedMeta[`transformed.symbol.data.${path}`] = 'localized';
+      }
     } else {
       Object.entries(value).forEach(([key, v]) => {
         resolveTranslation({
@@ -230,10 +241,17 @@ export function applyTranslation(
   traverse(customFields).forEach(function (el) {
     const path = this.path?.join('#');
     if (translation[`metadata.${path}`]) {
-      this.update({
-        ...el,
-        [locale]: unescapeStringOrObject(translation[`metadata.${path}`].value),
-      });
+      const translationValue = translation[`metadata.${path}`].value;
+      // Only apply string, number, or boolean translations - not arrays or objects
+      // This prevents non-translatable fields (lists, references) from being applied
+      if (typeof translationValue === 'string' ||
+          typeof translationValue === 'number' ||
+          typeof translationValue === 'boolean') {
+        this.update({
+          ...el,
+          [locale]: unescapeStringOrObject(translationValue),
+        });
+      }
     }
   });
 
@@ -333,22 +351,29 @@ export function applyTranslation(
 
         keys.forEach(key => {
           if (translation[`blocks.${el.id}#${key}`]) {
-            set(options, key, {
-              ...(get(options, key) || {}),
-              [locale]: unescapeStringOrObject(translation[`blocks.${el.id}#${key}`].value),
-            });
+            const translationValue = translation[`blocks.${el.id}#${key}`].value;
+            // Only apply string, number, or boolean translations - not arrays or objects
+            // This prevents non-translatable fields (lists, references) from being applied
+            if (typeof translationValue === 'string' ||
+                typeof translationValue === 'number' ||
+                typeof translationValue === 'boolean') {
+              set(options, key, {
+                ...(get(options, key) || {}),
+                [locale]: unescapeStringOrObject(translationValue),
+              });
 
-            this.update({
-              ...el,
-              meta: {
-                ...el.meta,
-                translated: true,
-              },
-              component: {
-                ...el.component,
-                options,
-              },
-            });
+              this.update({
+                ...el,
+                meta: {
+                  ...el.meta,
+                  translated: true,
+                },
+                component: {
+                  ...el.component,
+                  options,
+                },
+              });
+            }
           }
         });
       }
