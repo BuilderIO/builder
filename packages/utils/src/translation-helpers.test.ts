@@ -2083,3 +2083,87 @@ test('applyTranslation keeps non-translatable values the target locale already h
   expect(slides[0].link).toEqual({ '@type': localizedType, 'de-DE': '/de-de/zahlungen/' });
   expect(slides[0].title['de-DE']).toBe('DE Hospitality');
 });
+
+const reference = (model: string, id: string) => ({
+  '@type': '@builder.io/core:Reference',
+  id,
+  model,
+});
+
+const storeProductContent = (): BuilderContent => ({
+  data: {
+    title: { '@type': localizedType, Default: 'Solo Card Reader' },
+    images: {
+      '@type': localizedType,
+      Default: [{ image: reference('localized-asset', 'a1b2c3d4e5') }],
+    },
+    productBenefits: {
+      '@type': localizedType,
+      Default: [{ benefit: reference('product-benefit', 'b3n3f1') }],
+    },
+    faqs: {
+      '@type': localizedType,
+      Default: [{ question: 'How fast is payout?', faq: reference('faq', 'f00ba7') }],
+    },
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-related',
+        meta: { localizedTextInputs: ['related'] },
+        component: {
+          name: 'RelatedProducts',
+          options: {
+            related: {
+              '@type': localizedType,
+              Default: [{ heading: 'You may also like', product: reference('store-product', 'p1') }],
+            },
+          },
+        },
+      },
+    ],
+  },
+});
+
+test('getTranslateableFields never sends content references for translation', () => {
+  const fields = getTranslateableFields(storeProductContent(), 'Default', '');
+
+  expect(Object.keys(fields).sort()).toEqual([
+    'blocks.builder-related#related#0#heading',
+    'metadata.faqs#0#question',
+    'metadata.title',
+  ]);
+});
+
+test('applyTranslation leaves reference-only data fields inheriting Default', () => {
+  const result = applyTranslation(
+    storeProductContent(),
+    { 'metadata.title': { value: 'Czytnik kart Solo' } },
+    'pl-PL',
+    'Default'
+  );
+  const data = result.data as any;
+
+  expect(data.title['pl-PL']).toBe('Czytnik kart Solo');
+  expect(data.images).not.toHaveProperty('pl-PL');
+  expect(data.productBenefits).not.toHaveProperty('pl-PL');
+});
+
+test('applyTranslation keeps references intact alongside translated text', () => {
+  const result = applyTranslation(
+    storeProductContent(),
+    {
+      'metadata.faqs#0#question': { value: 'Jak szybko są wypłaty?' },
+      'blocks.builder-related#related#0#heading': { value: 'Może Ci się spodobać' },
+    },
+    'pl-PL',
+    'Default'
+  );
+  const data = result.data as any;
+
+  expect(data.faqs['pl-PL']).toEqual([
+    { question: 'Jak szybko są wypłaty?', faq: reference('faq', 'f00ba7') },
+  ]);
+  expect(data.blocks[0].component.options.related['pl-PL']).toEqual([
+    { heading: 'Może Ci się spodobać', product: reference('store-product', 'p1') },
+  ]);
+});
