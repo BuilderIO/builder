@@ -6,6 +6,13 @@ import set from 'lodash/set';
 import get from 'lodash/get';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
+const referenceType = '@builder.io/core:Reference';
+
+// A reference's strings are its identity (`@type`, `id`, `model`); translating any of
+// them breaks the link, and the referenced entry is translated as its own content.
+function isReference(value: any) {
+  return !!value && typeof value === 'object' && value['@type'] === referenceType;
+}
 
 export type TranslateableFields = {
   [key: string]: {
@@ -286,6 +293,9 @@ function extractNestedStrings(
       );
     });
   } else if (typeof value === 'object' && value !== null) {
+    if (isReference(value)) {
+      return;
+    }
     if (value['@type'] === localizedType) {
       // Nested LocalizedValue inside an outer LocalizedValue's payload
       const nested = value[sourceLocaleId] || value.Default;
@@ -573,6 +583,7 @@ export function getTranslateableFields(
 // Separates a payload the url guard emptied from one that never held a string.
 function hasStringLeaf(value: any): boolean {
   if (typeof value === 'string') return Boolean(value);
+  if (isReference(value)) return false;
   if (Array.isArray(value)) return value.some(hasStringLeaf);
   if (value && typeof value === 'object') return Object.values(value).some(hasStringLeaf);
   return false;
