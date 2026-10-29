@@ -599,7 +599,7 @@ function seedLocaleBranches(node: any, locale: string, sourceLocaleId?: string) 
     node.forEach(item => seedLocaleBranches(item, locale, sourceLocaleId));
     return;
   }
-  if (!node || typeof node !== 'object') {
+  if (!node || typeof node !== 'object' || isBuilderType(node, requestType)) {
     return;
   }
   if (node['@type'] === localizedType) {

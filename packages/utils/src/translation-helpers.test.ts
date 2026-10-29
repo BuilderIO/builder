@@ -2210,6 +2210,44 @@ test('applyTranslation preserves Requests alongside translated text', () => {
   );
 });
 
+test.each([false, true])(
+  'applyTranslation preserves localized Request data when translated sibling = %s',
+  hasTranslatedSibling => {
+    const response = {
+      ...request(),
+      data: {
+        title: {
+          '@type': localizedType,
+          Default: 'Remote product title',
+          'fr-FR': 'Titre distant',
+        },
+      },
+    };
+    const payload = [{ response, ...(hasTranslatedSibling ? { heading: 'Product heading' } : {}) }];
+    const content = requestPayloadContent(payload);
+    const translations: ReturnType<typeof getTranslateableFields> = hasTranslatedSibling
+      ? {
+          'metadata.remote#0#heading': { value: 'Produktüberschrift' },
+          'blocks.builder-request#remote#0#heading': { value: 'Produktüberschrift' },
+        }
+      : {};
+    const result = applyTranslation(content, translations, 'de-DE', 'en-US');
+    const data = result.data as any;
+    const remote = data.blocks[0].component.options.remote;
+
+    expect(remote['de-DE']).toEqual([
+      { response, ...(hasTranslatedSibling ? { heading: 'Produktüberschrift' } : {}) },
+    ]);
+    expect(remote.Default).toEqual(payload);
+    expect(data.remote.Default).toEqual(payload);
+    if (hasTranslatedSibling) {
+      expect(data.remote['de-DE']).toEqual(remote['de-DE']);
+    } else {
+      expect(data.remote).not.toHaveProperty('de-DE');
+    }
+  }
+);
+
 test.each([
   ['direct', request()],
   ['nested', [{ response: request() }]],
