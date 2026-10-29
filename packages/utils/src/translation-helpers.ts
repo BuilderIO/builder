@@ -149,6 +149,9 @@ function resolveTranslation({
   locale: string;
   sourceLocaleId?: string;
 }) {
+  if (isBuilderType(value, requestType)) {
+    return;
+  }
   if (Array.isArray(value)) {
     value.forEach((item, index) => {
       resolveTranslation({

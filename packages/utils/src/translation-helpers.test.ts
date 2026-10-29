@@ -2169,6 +2169,59 @@ test('getTranslateableFields does not traverse Requests in ordinary metadata or 
 });
 
 test.each([false, true])(
+  'applyTranslation keeps Symbol Request data opaque when wrapped = %s',
+  wrapped => {
+    const response = {
+      ...request(),
+      data: {
+        url: {
+          '@type': localizedType,
+          Default: 'https://example.com/default',
+          'en-US': 'https://example.com/source',
+        },
+      },
+    };
+    const remote = wrapped ? { '@type': localizedType, Default: [response] } : response;
+    const original = JSON.parse(JSON.stringify(remote));
+    const content: BuilderContent = {
+      data: {
+        blocks: [
+          {
+            '@type': '@builder.io/sdk:Element',
+            id: 'builder-request-symbol',
+            component: {
+              name: 'Symbol',
+              options: {
+                symbol: {
+                  data: {
+                    remote,
+                    title: { '@type': localizedType, Default: 'Symbol title' },
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    expect(getTranslateableFields(content, 'en-US', '')).toEqual({
+      'blocks.builder-request-symbol.symbolInput#title': { value: 'Symbol title', instructions: '' },
+    });
+    const result = applyTranslation(
+      content,
+      { 'blocks.builder-request-symbol.symbolInput#title': { value: 'Symbolüberschrift' } },
+      'de-DE',
+      'en-US'
+    );
+    const symbolData = (result.data as any).blocks[0].component.options.symbol.data;
+
+    expect(symbolData.remote).toEqual(original);
+    expect(symbolData.title['de-DE']).toBe('Symbolüberschrift');
+  }
+);
+
+test.each([false, true])(
   'getTranslateableFields keeps adjacent text when localized = %s',
   localized => {
     const heading = localized
