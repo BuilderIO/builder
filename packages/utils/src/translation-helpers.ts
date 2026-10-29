@@ -7,11 +7,10 @@ import get from 'lodash/get';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
 const referenceType = '@builder.io/core:Reference';
+const requestType = '@builder.io/core:Request';
 
-// A reference's strings are its identity (`@type`, `id`, `model`); translating any of
-// them breaks the link, and the referenced entry is translated as its own content.
-function isReference(value: any) {
-  return !!value && typeof value === 'object' && value['@type'] === referenceType;
+function isBuilderType(value: any, ...types: string[]) {
+  return !!value && typeof value === 'object' && types.includes(value['@type']);
 }
 
 export type TranslateableFields = {
@@ -79,6 +78,9 @@ function recordValue({
   instructions: string;
   sourceLocaleId: string;
 }) {
+  if (isBuilderType(value, requestType)) {
+    return;
+  }
   if (Array.isArray(value)) {
     value.forEach((item, index) => {
       recordValue({
@@ -293,7 +295,7 @@ function extractNestedStrings(
       );
     });
   } else if (typeof value === 'object' && value !== null) {
-    if (isReference(value)) {
+    if (isBuilderType(value, referenceType, requestType)) {
       return;
     }
     if (value['@type'] === localizedType) {
@@ -355,7 +357,7 @@ function extractLocalizedLeaves(
     );
   }
 
-  if (typeof value !== 'object' || value === null) {
+  if (typeof value !== 'object' || value === null || isBuilderType(value, requestType)) {
     return 0;
   }
 
@@ -422,7 +424,7 @@ export function getTranslateableFields(
   // boundaries and avoid generating duplicate / malformed path keys for nodes that live
   // inside the LocalizedValue's internal Default / locale-keyed arrays.
   function extractCustomField(value: any, path: string) {
-    if (!value || typeof value !== 'object') return;
+    if (!value || typeof value !== 'object' || isBuilderType(value, requestType)) return;
     if (Array.isArray(value)) {
       value.forEach((item, index) => extractCustomField(item, `${path}#${index}`));
       return;
@@ -583,7 +585,7 @@ export function getTranslateableFields(
 // Separates a payload the url guard emptied from one that never held a string.
 function hasStringLeaf(value: any): boolean {
   if (typeof value === 'string') return Boolean(value);
-  if (isReference(value)) return false;
+  if (isBuilderType(value, referenceType, requestType)) return false;
   if (Array.isArray(value)) return value.some(hasStringLeaf);
   if (value && typeof value === 'object') return Object.values(value).some(hasStringLeaf);
   return false;

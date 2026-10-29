@@ -2084,6 +2084,151 @@ test('applyTranslation keeps non-translatable values the target locale already h
   expect(slides[0].title['de-DE']).toBe('DE Hospitality');
 });
 
+const request = () => ({
+  '@type': '@builder.io/core:Request',
+  request: {
+    url: 'https://example.com/products',
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+  },
+  data: { title: 'Remote product title' },
+});
+
+const requestPayloadContent = (payload: any): BuilderContent => ({
+  data: {
+    remote: { '@type': localizedType, Default: payload },
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-request',
+        meta: { localizedTextInputs: ['remote'] },
+        component: {
+          name: 'RemoteProducts',
+          options: { remote: { '@type': localizedType, Default: payload } },
+        },
+      },
+    ],
+  },
+});
+
+test.each([
+  ['direct', request()],
+  ['nested', [{ response: request() }]],
+  [
+    'with nested localized values',
+    {
+      ...request(),
+      data: {
+        title: { '@type': localizedType, Default: 'Localized response title' },
+      },
+    },
+  ],
+])('getTranslateableFields skips %s Requests in localized payloads', (_name, payload) => {
+  expect(getTranslateableFields(requestPayloadContent(payload), 'en-US', '')).toEqual({});
+});
+
+test('getTranslateableFields does not traverse Requests in ordinary metadata or Symbol inputs', () => {
+  const response = {
+    ...request(),
+    data: {
+      title: { '@type': localizedType, Default: 'Localized response title' },
+    },
+  };
+  const content: BuilderContent = {
+    data: {
+      remote: { responses: [response] },
+      title: { '@type': localizedType, Default: 'Page title' },
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-request-symbol',
+          component: {
+            name: 'Symbol',
+            options: {
+              symbol: {
+                data: {
+                  remote: response,
+                  wrapped: { '@type': localizedType, Default: [response] },
+                  title: { '@type': localizedType, Default: 'Symbol title' },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
+  expect(getTranslateableFields(content, 'en-US', 'Translate copy')).toEqual({
+    'metadata.title': { value: 'Page title', instructions: 'Translate copy' },
+    'blocks.builder-request-symbol.symbolInput#title': {
+      value: 'Symbol title',
+      instructions: 'Translate copy',
+    },
+  });
+});
+
+test.each([false, true])(
+  'getTranslateableFields keeps adjacent text when localized = %s',
+  localized => {
+    const heading = localized
+      ? { '@type': localizedType, Default: 'Product heading' }
+      : 'Product heading';
+    const content = requestPayloadContent([{ response: request(), heading }]);
+
+    expect(getTranslateableFields(content, 'en-US', 'Translate copy')).toEqual({
+      'metadata.remote#0#heading': { value: 'Product heading', instructions: 'Translate copy' },
+      'blocks.builder-request#remote#0#heading': {
+        value: 'Product heading',
+        instructions: 'Translate copy',
+      },
+    });
+  }
+);
+
+test('applyTranslation preserves Requests alongside translated text', () => {
+  const payload = [{ response: request(), heading: 'Product heading' }];
+  const content = requestPayloadContent(payload);
+  const original = JSON.parse(JSON.stringify(content));
+  const result = applyTranslation(
+    content,
+    {
+      'metadata.remote#0#heading': { value: 'Produktüberschrift' },
+      'blocks.builder-request#remote#0#heading': { value: 'Produktüberschrift' },
+    },
+    'de-DE',
+    'en-US'
+  );
+  const data = result.data as any;
+  const expected = [{ response: request(), heading: 'Produktüberschrift' }];
+
+  expect(data.remote['de-DE']).toEqual(expected);
+  expect(data.blocks[0].component.options.remote['de-DE']).toEqual(expected);
+  expect(data.remote.Default).toEqual(original.data.remote.Default);
+  expect(data.blocks[0].component.options.remote.Default).toEqual(
+    original.data.blocks[0].component.options.remote.Default
+  );
+});
+
+test.each([
+  ['direct', request()],
+  ['nested', [{ response: request() }]],
+  [
+    'with nested localized values',
+    {
+      ...request(),
+      data: { title: { '@type': localizedType, Default: 'Localized response title' } },
+    },
+  ],
+])('applyTranslation does not seed Request-only %s metadata', (_name, payload) => {
+  const content: BuilderContent = {
+    data: { remote: { '@type': localizedType, Default: payload } },
+  };
+  const original = JSON.parse(JSON.stringify(content));
+
+  expect(applyTranslation(content, {}, 'de-DE', 'en-US')).toEqual(original);
+});
+
 const reference = (model: string, id: string) => ({
   '@type': '@builder.io/core:Reference',
   id,
