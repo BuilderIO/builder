@@ -728,6 +728,10 @@ export function applyTranslation(
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
   traverse(customFields).forEach(function (el) {
+    if (isBuilderType(el, requestType)) {
+      this.block();
+      return;
+    }
     const path = this.path?.join('#');
     const metaKey = `metadata.${path}`;
     if (translation[metaKey]) {

@@ -2169,6 +2169,43 @@ test('getTranslateableFields does not traverse Requests in ordinary metadata or 
 });
 
 test.each([false, true])(
+  'applyTranslation keeps ordinary metadata Request data opaque when nested = %s',
+  nested => {
+    const response = {
+      ...request(),
+      data: {
+        url: {
+          '@type': localizedType,
+          Default: 'https://example.com/default',
+          'en-US': 'https://example.com/source',
+        },
+      },
+    };
+    const remote = nested ? { responses: [response] } : response;
+    const original = JSON.parse(JSON.stringify(remote));
+    const content: BuilderContent = {
+      data: {
+        remote,
+        title: { '@type': localizedType, Default: 'Page title' },
+      },
+    };
+
+    expect(getTranslateableFields(content, 'en-US', '')).toEqual({
+      'metadata.title': { value: 'Page title', instructions: '' },
+    });
+    const result = applyTranslation(
+      content,
+      { 'metadata.title': { value: 'Seitentitel' } },
+      'de-DE',
+      'en-US'
+    );
+
+    expect(result.data?.remote).toEqual(original);
+    expect(result.data?.title['de-DE']).toBe('Seitentitel');
+  }
+);
+
+test.each([false, true])(
   'applyTranslation keeps Symbol Request data opaque when wrapped = %s',
   wrapped => {
     const response = {
