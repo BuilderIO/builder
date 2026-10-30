@@ -1,5 +1,11 @@
 # @builder.io/sdk
 
+## 6.3.4
+
+### Patch Changes
+
+- 46dd7ba: Fix the published declaration's missing custom event polyfill module.
+
 ## 6.3.3
 
 ### Patch Changes
