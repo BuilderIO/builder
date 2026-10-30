@@ -16,3 +16,5 @@ export { BuilderContent, BuilderContentVariation } from './src/types/content';
 export { ApiVersion } from './src/types/api-version';
 
 export { builder } from './src/constants/builder';
+
+export { BuilderLogLevel } from './src/functions/log-level.function';
