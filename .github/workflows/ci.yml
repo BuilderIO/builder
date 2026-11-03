@@ -27,7 +27,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
@@ -92,7 +92,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
@@ -151,7 +151,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
@@ -187,7 +187,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
@@ -221,7 +221,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
@@ -265,7 +265,7 @@ jobs:
           fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
@@ -299,7 +299,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Use node version 18
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '18.x'
 
@@ -335,7 +335,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Use node version 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
 
