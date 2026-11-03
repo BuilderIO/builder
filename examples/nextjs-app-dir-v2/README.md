@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Builder.io + Next.js 16 (App Router)
 
-## Getting Started
+Example of the [Builder.io Gen 2 React SDK](https://www.builder.io/c/docs/developers) (`@builder.io/sdk-react`) with the Next.js App Router and React 19. Requires Node 22+ (`.nvmrc` pins 24; run `nvm use`).
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The example uses a public demo API key by default. To use your own space, copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_BUILDER_API_KEY`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Try it
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. In [Builder](https://builder.io), create a `page` entry with URL `/`.
+2. Set the model's preview URL to `http://localhost:3000`.
+3. In the Visual Editor, drag **MyFunComponent** in from the Insert menu.
+4. Publish and reload. If nothing is published for a URL, the page shows a 404 message.
 
-## Learn More
+## What's here
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/[[...slug]]/page.tsx`: catch-all route that fetches the entry with `fetchOneEntry` and renders it with `<Content />`. `params` and `searchParams` are Promises in Next.js 15+.
+- `src/app/components/register.ts`: registers custom components. With this SDK they must be client components (hence `'use client'`), but they are still server-rendered, then hydrated.
+- `src/app/components/MyFunComponent.tsx`: sample component to drag into Builder content.
+- `next.config.mjs`: marks `isolated-vm` (used by the SDK on the server) as a server external package.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Rendering
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The page awaits `searchParams`, which Builder preview and the Visual Editor rely on, so it renders on every request.
 
-## Deploy on Vercel
+For static or cached pages, a possible approach (**not implemented or tested here**):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Fetch published content without `searchParams`, using [`generateStaticParams`](https://nextjs.org/docs/app/api-reference/functions/generate-static-params) with a [`revalidate`](https://nextjs.org/docs/app/guides/incremental-static-regeneration) interval or a Builder webhook that calls `revalidatePath()`.
+- Serve editing and previews from a separate dynamic route and point the model's Preview URL at it with [dynamic preview URLs](https://www.builder.io/c/docs/dynamic-preview-urls).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Builder CMS MCP server (optional)
+
+Connect AI tools to your Builder Content space to query and edit content from your editor. See the [setup guide](https://www.builder.io/c/docs/mcp-builder-server#integrate-the-builder-cms-mcp-server).

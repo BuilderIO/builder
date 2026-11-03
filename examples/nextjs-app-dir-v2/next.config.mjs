@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['isolated-vm'],
-  },
+  // The Builder SDK uses `isolated-vm` on the server to safely run bindings.
+  serverExternalPackages: ['isolated-vm'],
 };
 
 export default nextConfig;
