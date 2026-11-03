@@ -10,6 +10,7 @@ const referenceType = '@builder.io/core:Reference';
 const requestType = '@builder.io/core:Request';
 const translatableModelFieldTypes = new Set([
   'text',
+  'string',
   'longText',
   'html',
   'richText',

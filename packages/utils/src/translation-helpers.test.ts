@@ -2449,6 +2449,7 @@ test('applyTranslation keeps references intact alongside translated text', () =>
 
 const dataModelFieldsWithEnumsAndPlugins: ModelField[] = [
   { name: 'textField', type: 'text', localized: true },
+  { name: 'stringField', type: 'string', localized: true },
   { name: 'htmlField', type: 'html', localized: true },
   { name: 'customPluginField', type: 'CustomPluginResource', localized: true },
   {
