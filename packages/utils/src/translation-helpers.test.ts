@@ -1,5 +1,11 @@
 import { BuilderContent } from '@builder.io/sdk';
-import { applyTranslation, getTranslateableFields, localizedType } from './translation-helpers';
+import {
+  applyTranslation,
+  getNonTranslatableModelInputs,
+  getTranslateableFields,
+  localizedType,
+  ModelField,
+} from './translation-helpers';
 
 test('getTranslateableFields from content to match snapshot', async () => {
   const content: BuilderContent = {
@@ -2438,5 +2444,169 @@ test('applyTranslation keeps references intact alongside translated text', () =>
   ]);
   expect(data.blocks[0].component.options.related['pl-PL']).toEqual([
     { heading: 'Może Ci się spodobać', product: reference('store-product', 'p1') },
+  ]);
+});
+
+const storeProductModelFields: ModelField[] = [
+  { name: 'title', type: 'text', localized: true },
+  { name: 'deliveryTime', type: 'html', localized: true },
+  { name: 'skuCode', type: 'CommerceLayerProduct', localized: true },
+  { name: 'bundleCode', type: 'CommerceLayerBundle', localized: true },
+  {
+    name: 'images',
+    type: 'list',
+    localized: true,
+    subFields: [{ name: 'localizedAsset', type: 'reference' }],
+  },
+  {
+    name: 'acceptedCardsSchemas',
+    type: 'list',
+    localized: true,
+    subFields: [
+      {
+        name: 'item',
+        type: 'text',
+        enum: ['alelo', 'american_express', 'apple_pay', 'banco_estado', 'discover'],
+      },
+    ],
+  },
+  {
+    name: 'otherAcceptedPaymentTypes',
+    type: 'list',
+    localized: true,
+    subFields: [{ name: 'item', type: 'text', enum: ['alelo', 'ticket', 'sodexo'] }],
+  },
+  {
+    name: 'highlightIcon',
+    type: 'text',
+    localized: true,
+    enum: ['credit_card'],
+  },
+  {
+    name: 'allSkus',
+    type: 'list',
+    localized: true,
+    meta: { excludeFromTranslation: true },
+    subFields: [{ name: 'item', type: 'text' }],
+  },
+];
+
+const storeProductWithEnums = (): BuilderContent => ({
+  data: {
+    title: { '@type': localizedType, Default: 'Solo-To-Go case' },
+    deliveryTime: { '@type': localizedType, Default: '<p>within 3-5 business days</p>' },
+    acceptedCardsSchemas: {
+      '@type': localizedType,
+      Default: [{ item: 'alelo' }, { item: 'american_express' }, { item: 'banco_estado' }],
+    },
+    otherAcceptedPaymentTypes: {
+      '@type': localizedType,
+      Default: [{ item: 'ticket' }],
+    },
+    highlightIcon: {
+      '@type': localizedType,
+      Default: 'credit_card',
+    },
+    allSkus: {
+      '@type': localizedType,
+      Default: [{ item: '700900301' }],
+    },
+  },
+});
+
+test('getNonTranslatableModelInputs derives excluded paths for enum fields, enum list subfields, and custom plugin field types', () => {
+  expect(getNonTranslatableModelInputs(storeProductModelFields)).toEqual([
+    'skuCode',
+    'bundleCode',
+    'images.*.localizedAsset',
+    'acceptedCardsSchemas.*.item',
+    'otherAcceptedPaymentTypes.*.item',
+    'highlightIcon',
+    'allSkus',
+  ]);
+});
+
+test('getTranslateableFields skips enum fields and enum list subfields when modelFields or content.meta.nonTranslatableInputs are provided', () => {
+  const viaModelFields = getTranslateableFields(storeProductWithEnums(), 'Default', '', {
+    modelFields: storeProductModelFields,
+  });
+
+  expect(viaModelFields).toEqual({
+    'metadata.title': { value: 'Solo-To-Go case', instructions: '' },
+    'metadata.deliveryTime': { value: '<p>within 3-5 business days</p>', instructions: '' },
+  });
+
+  const contentWithMetaExclusions: BuilderContent & { meta?: Record<string, any> } = {
+    ...storeProductWithEnums(),
+    meta: {
+      nonTranslatableInputs: [
+        'acceptedCardsSchemas.*.item',
+        'otherAcceptedPaymentTypes.*.item',
+        'highlightIcon',
+        'allSkus',
+      ],
+    },
+  };
+
+  expect(getTranslateableFields(contentWithMetaExclusions, 'Default', '')).toEqual({
+    'metadata.title': { value: 'Solo-To-Go case', instructions: '' },
+    'metadata.deliveryTime': { value: '<p>within 3-5 business days</p>', instructions: '' },
+  });
+});
+
+test('applyTranslation does not seed enum-only data model lists into target locales and ignores legacy enum translations', () => {
+  const result = applyTranslation(
+    storeProductWithEnums(),
+    {
+      'metadata.title': { value: 'Etui Solo-To-Go' },
+      'metadata.deliveryTime': { value: '<p>w ciągu 3–5 dni roboczych</p>' },
+      'metadata.acceptedCardsSchemas#0#item': { value: 'alelo' },
+      'metadata.highlightIcon': { value: 'karta_kredytowa' },
+    },
+    'pl-PL',
+    'Default',
+    { modelFields: storeProductModelFields }
+  );
+  const data = result.data as any;
+
+  expect(data.title['pl-PL']).toBe('Etui Solo-To-Go');
+  expect(data.deliveryTime['pl-PL']).toBe('<p>w ciągu 3–5 dni roboczych</p>');
+  expect(data.acceptedCardsSchemas).not.toHaveProperty('pl-PL');
+  expect(data.otherAcceptedPaymentTypes).not.toHaveProperty('pl-PL');
+  expect(data.highlightIcon).not.toHaveProperty('pl-PL');
+  expect(data.allSkus).not.toHaveProperty('pl-PL');
+});
+
+test('applyTranslation preserves existing locale-specific enum overrides in mixed data model lists', () => {
+  const content: BuilderContent & { meta?: Record<string, any> } = {
+    meta: {
+      nonTranslatableInputs: ['items.*.cardScheme'],
+    },
+    data: {
+      items: {
+        '@type': localizedType,
+        Default: [{ label: 'Pay with card', cardScheme: 'visa' }],
+        'pl-PL': [{ label: 'Pay with card', cardScheme: 'blik' }],
+      },
+    },
+  };
+
+  const fields = getTranslateableFields(content, 'Default', '');
+  expect(fields).toEqual({
+    'metadata.items#0#label': { value: 'Pay with card', instructions: '' },
+  });
+
+  const result = applyTranslation(
+    content,
+    {
+      'metadata.items#0#label': { value: 'Zapłać kartą' },
+      'metadata.items#0#cardScheme': { value: 'wiza' },
+    },
+    'pl-PL',
+    'Default'
+  );
+
+  expect((result.data as any).items['pl-PL']).toEqual([
+    { label: 'Zapłać kartą', cardScheme: 'blik' },
   ]);
 });
