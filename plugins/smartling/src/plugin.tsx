@@ -21,7 +21,7 @@ import { SmartlingApi, Project } from './smartling';
 import { showJobNotification, showOutdatedNotifications } from './snackbar-utils';
 import { Builder } from '@builder.io/react';
 import React from 'react';
-import { getTranslateableFields } from '@builder.io/utils';
+import { getNonTranslatableModelInputs, getTranslateableFields } from '@builder.io/utils';
 import hash from 'object-hash';
 import stringify from 'fast-json-stable-stringify';
 // translation status that indicate the content is being queued for translations
@@ -71,6 +71,16 @@ async function isContentInActiveTranslationJob(content: any, api: SmartlingApi):
 // Utility function to clear job existence cache (useful for testing/debugging)
 function clearJobExistenceCache(): void {
   jobExistenceCache.clear();
+}
+
+function getModelNonTranslatableInputs(modelOrId: any): string[] {
+  const resolvedModel =
+    typeof modelOrId === 'string'
+      ? appState.models?.result?.find((m: any) => m.id === modelOrId || m.name === modelOrId)
+      : modelOrId;
+  const rawFields = resolvedModel?.fields;
+  const fields = typeof rawFields?.toJS === 'function' ? rawFields.toJS() : fastClone(rawFields);
+  return getNonTranslatableModelInputs(fields);
 }
 
 
@@ -266,10 +276,12 @@ const initializeSmartlingPlugin = async () => {
             ).then(res => res.json());
             const res = await api.getProject(projectId);
             const sourceLocale = res.project?.sourceLocaleId;
+            const modelFields = fastClone(appState.designerState.editingModel?.fields);
             const translatableFields = getTranslateableFields(
               lastPublishedContent,
               sourceLocale,
-              ''
+              '',
+              { modelFields }
             );
             const currentRevision = hash(stringify(translatableFields), {
               encoding: 'base64',
@@ -434,10 +446,14 @@ const initializeSmartlingPlugin = async () => {
         }
         await Promise.all(
           filteredContent.map(entry => {
+            const nonTranslatableInputs = getModelNonTranslatableInputs(
+              entry.modelId || appState.designerState.editingModel
+            );
             const metaUpdates: any = {
               ...fastClone(entry.meta),
               translationStatus: 'local',
               translationJobId,
+              ...(nonTranslatableInputs.length > 0 ? { nonTranslatableInputs } : {}),
             };
             
             // If content has changes (different revisions), update revision to latest
@@ -666,11 +682,15 @@ const initializeSmartlingPlugin = async () => {
           }
         }
 
+        const nonTranslatableInputs = getModelNonTranslatableInputs(
+          content.modelId || appState.designerState.editingModel
+        );
         const metaUpdates: any = {
           ...fastClone(content.meta),
           translationStatus: 'local',
           translationJobId,
           translationBy: pkg.name,
+          ...(nonTranslatableInputs.length > 0 ? { nonTranslatableInputs } : {}),
         };
         
         // If content has changes (different revisions), update revision to latest
