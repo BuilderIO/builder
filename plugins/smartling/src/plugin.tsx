@@ -460,26 +460,23 @@ const initializeSmartlingPlugin = async () => {
               metaUpdates.translationRevision = translationRevisionLatest;
             }
 
-            try {
-              await appState.updateLatestDraft({
-                id: entry.id,
-                modelId: entry.modelId,
-                meta: metaUpdates,
-              });
-            } finally {
-              // For changed content that was previously published, update the translation file in
-              // Smartling after the draft update so the regenerated file sees the recorded exclusions.
-              if (isExistingJob && hasChanges && entry.published === 'published') {
-                try {
-                  await api.updateTranslationFile({
-                    translationJobId,
-                    translationModel: getTranslationModel().name,
-                    contentId: entry.id,
-                    contentModel: appState.designerState.editingModel?.name || 'page',
-                    preview: entry.meta?.get?.('lastPreviewUrl') || entry.meta?.lastPreviewUrl,
-                  });
-                } catch (error) {
-                }
+            await appState.updateLatestDraft({
+              id: entry.id,
+              modelId: entry.modelId,
+              meta: metaUpdates,
+            });
+            // For changed content that was previously published, update the translation file in
+            // Smartling after the draft update so the regenerated file sees the recorded exclusions.
+            if (isExistingJob && hasChanges && entry.published === 'published') {
+              try {
+                await api.updateTranslationFile({
+                  translationJobId,
+                  translationModel: getTranslationModel().name,
+                  contentId: entry.id,
+                  contentModel: appState.designerState.editingModel?.name || 'page',
+                  preview: entry.meta?.get?.('lastPreviewUrl') || entry.meta?.lastPreviewUrl,
+                });
+              } catch (error) {
               }
             }
           })
@@ -699,25 +696,23 @@ const initializeSmartlingPlugin = async () => {
           metaUpdates.translationRevision = translationRevisionLatest;
         }
 
-        try {
-          await appState.updateLatestDraft({
-            id: content.id,
-            modelId: content.modelId,
-            meta: metaUpdates,
-          });
-        } finally {
-          // Runs after the draft update so the regenerated file sees the recorded exclusions.
-          if (isChangedPublishedContent) {
-            try {
-              await api.updateTranslationFile({
-                translationJobId,
-                translationModel: getTranslationModel().name,
-                contentId: content.id,
-                contentModel: appState.designerState.editingModel?.name || 'page',
-                preview: content.meta?.get?.('lastPreviewUrl') || content.meta?.lastPreviewUrl,
-              });
-            } catch (error) {
-            }
+        await appState.updateLatestDraft({
+          id: content.id,
+          modelId: content.modelId,
+          meta: metaUpdates,
+        });
+
+        // Runs after the draft update so the regenerated file sees the recorded exclusions.
+        if (isChangedPublishedContent) {
+          try {
+            await api.updateTranslationFile({
+              translationJobId,
+              translationModel: getTranslationModel().name,
+              contentId: content.id,
+              contentModel: appState.designerState.editingModel?.name || 'page',
+              preview: content.meta?.get?.('lastPreviewUrl') || content.meta?.lastPreviewUrl,
+            });
+          } catch (error) {
           }
         }
         showJobNotification(translationJobId);
