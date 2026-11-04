@@ -56,10 +56,10 @@ class ImgComponent extends React.Component<ImgProps> {
         {...restAttributes}
         src={this.props.image || attributes.src}
         srcSet={srcset}
-        alt={this.props.altText}
-        title={this.props.title}
+        alt={this.props.altText ?? attributes.alt}
+        title={this.props.title ?? attributes.title}
         style={mergedStyle}
-        className="builder-raw-img"
+        className={`builder-raw-img ${attributes.className || ''}`.trim()}
       />
     );
   }
