@@ -1,5 +1,13 @@
 # @builder.io/react
 
+## 9.4.11
+
+### Patch Changes
+
+- 4088da3: Fix `Raw:Img` dropping the Builder block class and overriding legacy `alt`/`title` attributes when `altText`/`title` inputs are unset.
+- Updated dependencies [46dd7ba]
+  - @builder.io/sdk@6.3.4
+
 ## 9.4.10
 
 ### Patch Changes
