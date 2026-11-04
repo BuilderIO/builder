@@ -2,6 +2,7 @@ import { BuilderContent } from '@builder.io/sdk';
 import {
   applyTranslation,
   getNonTranslatableModelInputs,
+  getNonTranslatableObjectInputs,
   getTranslateableFields,
   localizedType,
 } from './translation-helpers';
@@ -2451,6 +2452,13 @@ const enumModelFields = [
   { name: 'icon', type: 'text', localized: true, enum: ['icon_default', 'icon_alt'] },
   { name: 'tags', type: 'Tags', localized: true },
   { name: 'body', type: 'MyRichTextEditor', localized: true },
+  { name: 'skuCode', type: 'StoreResource', localized: true },
+  {
+    name: 'resources',
+    type: 'list',
+    localized: true,
+    subFields: [{ name: 'resource', type: 'StoreResource' }],
+  },
   {
     name: 'options',
     type: 'list',
@@ -2474,12 +2482,20 @@ const enumModelFields = [
 ];
 
 const enumModelContent = (): BuilderContent & { meta?: Record<string, any> } => ({
-  meta: { nonTranslatableInputs: getNonTranslatableModelInputs(enumModelFields) },
+  meta: {
+    nonTranslatableInputs: getNonTranslatableModelInputs(enumModelFields),
+    nonTranslatableObjectInputs: getNonTranslatableObjectInputs(enumModelFields),
+  },
   data: {
     title: { '@type': localizedType, Default: 'Product title' },
     icon: { '@type': localizedType, Default: 'icon_default' },
     tags: { '@type': localizedType, Default: ['Summer sale'] },
     body: { '@type': localizedType, Default: '<p>Hello world</p>' },
+    skuCode: {
+      '@type': localizedType,
+      Default: { code: 'OTH-ACC-004', id: 'Bbpj', kind: 'sku', name: 'QR Codes (Bundle of 10)' },
+    },
+    resources: { '@type': localizedType, Default: [{ resource: { id: 'r1', kind: 'sku' } }] },
     options: { '@type': localizedType, Default: [{ item: 'option_a' }, { item: 'option_b' }] },
     rows: {
       '@type': localizedType,
@@ -2488,6 +2504,14 @@ const enumModelContent = (): BuilderContent & { meta?: Record<string, any> } => 
     },
     settings: { size: { '@type': localizedType, Default: 'sm' } },
   },
+});
+
+test('getNonTranslatableObjectInputs lists custom editor types only', () => {
+  expect(getNonTranslatableObjectInputs(enumModelFields)).toEqual([
+    'body',
+    'skuCode',
+    'resources.*.resource',
+  ]);
 });
 
 test('getNonTranslatableModelInputs only excludes enum fields', () => {
@@ -2522,6 +2546,12 @@ test('getTranslateableFields is unchanged for data models without recorded exclu
     'metadata.icon',
     'metadata.tags#0',
     'metadata.body',
+    'metadata.skuCode#code',
+    'metadata.skuCode#id',
+    'metadata.skuCode#kind',
+    'metadata.skuCode#name',
+    'metadata.resources#0#resource#id',
+    'metadata.resources#0#resource#kind',
     'metadata.options#0#item',
     'metadata.options#1#item',
     'metadata.rows#0#label',
@@ -2530,7 +2560,7 @@ test('getTranslateableFields is unchanged for data models without recorded exclu
   ]);
 });
 
-test('applyTranslation ignores legacy enum translations and keeps enum values visible in the locale', () => {
+test('applyTranslation ignores legacy enum and custom object translations and leaves those fields inheriting Default', () => {
   const result = applyTranslation(
     enumModelContent(),
     {
@@ -2542,6 +2572,8 @@ test('applyTranslation ignores legacy enum translations and keeps enum values vi
       'metadata.rows#0#label': { value: 'Erste Reihe' },
       'metadata.rows#0#alignment': { value: 'links' },
       'metadata.settings#size': { value: 'klein' },
+      'metadata.skuCode#kind': { value: 'kod-produktu' },
+      'metadata.resources#0#resource#kind': { value: 'kod-produktu' },
     },
     'de-DE',
     'Default'
@@ -2551,10 +2583,12 @@ test('applyTranslation ignores legacy enum translations and keeps enum values vi
   expect(data.title['de-DE']).toBe('Produkttitel');
   expect(data.tags['de-DE']).toEqual(['Sommerschlussverkauf']);
   expect(data.body['de-DE']).toBe('<p>Hallo Welt</p>');
-  expect(data.icon['de-DE']).toBe('icon_default');
-  expect(data.options['de-DE']).toEqual([{ item: 'option_a' }, { item: 'option_b' }]);
+  expect(data.icon).not.toHaveProperty('de-DE');
+  expect(data.options).not.toHaveProperty('de-DE');
+  expect(data.settings.size).not.toHaveProperty('de-DE');
+  expect(data.skuCode).not.toHaveProperty('de-DE');
+  expect(data.resources).not.toHaveProperty('de-DE');
   expect(data.rows['de-DE']).toEqual([{ label: 'Erste Reihe', alignment: 'right' }]);
-  expect(data.settings.size['de-DE']).toBe('sm');
 });
 
 test('applyTranslation keeps an existing locale enum value when nothing comes back for it', () => {
@@ -2563,4 +2597,55 @@ test('applyTranslation keeps an existing locale enum value when nothing comes ba
   const result = applyTranslation(content, {}, 'de-DE', 'Default');
 
   expect((result.data as any).icon['de-DE']).toBe('icon_alt');
+});
+
+test('getTranslateableFields still sends a custom editor value that is a plain string', () => {
+  const content = enumModelContent();
+  (content.data as any).skuCode = { '@type': localizedType, Default: 'Free shipping' };
+  expect(getTranslateableFields(content, 'Default', '')['metadata.skuCode']).toEqual({
+    value: 'Free shipping',
+    instructions: '',
+  });
+});
+
+test('applyTranslation keeps locale-specific custom object members when translating siblings', () => {
+  const fields = [
+    {
+      name: 'cards',
+      type: 'list',
+      localized: true,
+      subFields: [
+        { name: 'title', type: 'text' },
+        { name: 'product', type: 'StoreResource' },
+      ],
+    },
+  ];
+  const content: BuilderContent & { meta?: Record<string, any> } = {
+    meta: { nonTranslatableObjectInputs: getNonTranslatableObjectInputs(fields) },
+    data: {
+      cards: {
+        '@type': localizedType,
+        Default: [{ title: 'Card', product: { id: 'p1', kind: 'sku' } }],
+        'de-DE': [{ title: 'Karte', product: { id: 'p2', kind: 'sku' } }],
+      },
+    },
+  };
+
+  expect(getTranslateableFields(content, 'Default', '')).toEqual({
+    'metadata.cards#0#title': { value: 'Card', instructions: '' },
+  });
+
+  const result = applyTranslation(
+    content,
+    {
+      'metadata.cards#0#title': { value: 'Neue Karte' },
+      'metadata.cards#0#product#kind': { value: 'kod-produktu' },
+    },
+    'de-DE',
+    'Default'
+  );
+
+  expect((result.data as any).cards['de-DE']).toEqual([
+    { title: 'Neue Karte', product: { id: 'p2', kind: 'sku' } },
+  ]);
 });

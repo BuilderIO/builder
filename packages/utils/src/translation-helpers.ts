@@ -283,31 +283,94 @@ export type ModelField = {
 export type TranslationOptions = {
   modelFields?: readonly ModelField[];
   nonTranslatableInputs?: readonly string[];
+  nonTranslatableObjectInputs?: readonly string[];
 };
 
-// Enum values are keys the app matches on, so translating them breaks the selection.
-export function getNonTranslatableModelInputs(
+const builtInModelFieldTypes = new Set([
+  'text',
+  'string',
+  'longtext',
+  'textarea',
+  'richtext',
+  'html',
+  'markdown',
+  'number',
+  'boolean',
+  'date',
+  'timestamp',
+  'email',
+  'url',
+  'file',
+  'color',
+  'list',
+  'object',
+  'map',
+  'json',
+  'reference',
+  'tags',
+  'uiblocks',
+  'blocks',
+  'code',
+  'javascript',
+  'enum',
+]);
+
+function collectModelFieldPaths(
   fields: readonly ModelField[] | undefined,
+  isMatch: (field: ModelField) => boolean,
   prefix = ''
 ): string[] {
   if (!Array.isArray(fields)) {
     return [];
   }
-  const excluded: string[] = [];
+  const paths: string[] = [];
   fields.forEach(field => {
     if (!field || typeof field.name !== 'string' || !field.name) {
       return;
     }
     const path = prefix ? `${prefix}.${field.name}` : field.name;
-    if (Array.isArray(field.enum) && field.enum.length > 0) {
-      excluded.push(path);
+    if (isMatch(field)) {
+      paths.push(path);
     } else if (field.type === 'list') {
-      excluded.push(...getNonTranslatableModelInputs(field.subFields, `${path}.*`));
+      paths.push(...collectModelFieldPaths(field.subFields, isMatch, `${path}.*`));
     } else if (field.type === 'object') {
-      excluded.push(...getNonTranslatableModelInputs(field.subFields, path));
+      paths.push(...collectModelFieldPaths(field.subFields, isMatch, path));
     }
   });
-  return excluded;
+  return paths;
+}
+
+function hasEnum(field: ModelField) {
+  return Array.isArray(field.enum) && field.enum.length > 0;
+}
+
+// Enum values are keys the app matches on, so translating them breaks the selection.
+export function getNonTranslatableModelInputs(fields: readonly ModelField[] | undefined): string[] {
+  return collectModelFieldPaths(fields, hasEnum);
+}
+
+// Custom editor types that store an object (e.g. a resource picker's `{ id, code, kind, name }`)
+// hold identifiers, not copy. A plain string value from such an editor is still translated.
+export function getNonTranslatableObjectInputs(fields: readonly ModelField[] | undefined): string[] {
+  return collectModelFieldPaths(
+    fields,
+    field =>
+      !hasEnum(field) &&
+      typeof field.type === 'string' &&
+      !builtInModelFieldTypes.has(field.type.toLowerCase())
+  );
+}
+
+const objectMembersMarker = '>';
+
+function toPathList(...sources: unknown[]): string[] {
+  const paths: string[] = [];
+  sources.forEach(source => {
+    if (Array.isArray(source)) {
+      paths.push(...source.filter((entry): entry is string => typeof entry === 'string' && !!entry));
+    }
+  });
+  return paths;
 }
 
 // Data model counterpart of block.meta.nonTranslatableInputs, keyed as `metadata.<field path>`.
@@ -315,32 +378,42 @@ function getMetadataExcludedPaths(
   content: BuilderContent,
   options?: TranslationOptions
 ): Set<string> | undefined {
-  const entries: unknown[] = [];
-  const metaInputs = (content as any)?.meta?.nonTranslatableInputs;
-  if (Array.isArray(metaInputs)) {
-    entries.push(...metaInputs);
-  }
-  if (Array.isArray(options?.nonTranslatableInputs)) {
-    entries.push(...options!.nonTranslatableInputs);
-  }
-  if (options?.modelFields) {
-    entries.push(...getNonTranslatableModelInputs(options.modelFields));
-  }
-  const paths = entries.filter((entry): entry is string => typeof entry === 'string' && !!entry);
-  if (!paths.length) {
+  const meta = (content as any)?.meta;
+  const excludedPaths = toPathList(
+    meta?.nonTranslatableInputs,
+    options?.nonTranslatableInputs,
+    options?.modelFields && getNonTranslatableModelInputs(options.modelFields)
+  );
+  const objectPaths = toPathList(
+    meta?.nonTranslatableObjectInputs,
+    options?.nonTranslatableObjectInputs,
+    options?.modelFields && getNonTranslatableObjectInputs(options.modelFields)
+  );
+  if (!excludedPaths.length && !objectPaths.length) {
     return undefined;
   }
-  return new Set(paths.map(entry => toComparablePath(`metadata.${entry}`)));
+  return new Set([
+    ...excludedPaths.map(entry => toComparablePath(`metadata.${entry}`)),
+    ...objectPaths.map(entry => `${toComparablePath(`metadata.${entry}`)}.${objectMembersMarker}`),
+  ]);
 }
 
-// Unlike block exclusions, a data model entry may name a whole subtree (an enum list item).
+// Unlike block exclusions, a data model entry may name a whole subtree (an enum list item), and
+// object entries exclude only the members of an object value, never the field's own string.
 function isMetadataExcludedPath(excluded: Set<string> | undefined, basePath: string) {
   if (!excluded) {
     return false;
   }
   const segments = toComparablePath(basePath).split('.');
   for (let i = segments.length; i > 0; i--) {
-    if (excluded.has(segments.slice(0, i).join('.'))) {
+    const ancestor = segments.slice(0, i).join('.');
+    if (excluded.has(ancestor)) {
+      return true;
+    }
+    if (
+      excluded.has(`${ancestor}.${objectMembersMarker}`) &&
+      segments.slice(i).some(segment => segment !== '*')
+    ) {
       return true;
     }
   }
@@ -670,11 +743,19 @@ export function getTranslateableFields(
 }
 
 // Separates a payload the url guard emptied from one that never held a string.
-function hasStringLeaf(value: any): boolean {
+// Excluded leaves are not strings to seed: seeding would freeze them and break Default inheritance.
+function hasStringLeaf(value: any, basePath = '', excluded?: Set<string>): boolean {
+  if (isMetadataExcludedPath(excluded, basePath)) return false;
   if (typeof value === 'string') return Boolean(value);
   if (isBuilderType(value, referenceType, requestType)) return false;
-  if (Array.isArray(value)) return value.some(hasStringLeaf);
-  if (value && typeof value === 'object') return Object.values(value).some(hasStringLeaf);
+  if (Array.isArray(value)) {
+    return value.some((item, index) => hasStringLeaf(item, `${basePath}#${index}`, excluded));
+  }
+  if (value && typeof value === 'object') {
+    return Object.entries(value).some(([key, item]) =>
+      hasStringLeaf(item, `${basePath}#${key}`, excluded)
+    );
+  }
   return false;
 }
 
@@ -751,12 +832,13 @@ function restoreExcludedLeaves(
   previous: any,
   basePath: string,
   locale: string,
-  excluded: Set<string> | undefined
+  excluded: Set<string> | undefined,
+  isExcluded: (excluded: Set<string> | undefined, path: string) => boolean = isExcludedPath
 ): any {
   if (!excluded || next == null || previous == null) {
     return next;
   }
-  if (isExcludedPath(excluded, basePath)) {
+  if (isExcluded(excluded, basePath)) {
     return JSON.parse(JSON.stringify(previous));
   }
   if (Array.isArray(next)) {
@@ -767,7 +849,8 @@ function restoreExcludedLeaves(
           previous[index],
           `${basePath}#${index}`,
           locale,
-          excluded
+          excluded,
+          isExcluded
         );
       });
     }
@@ -783,7 +866,8 @@ function restoreExcludedLeaves(
         previous[locale],
         basePath,
         locale,
-        excluded
+        excluded,
+        isExcluded
       );
     }
     return next;
@@ -794,7 +878,8 @@ function restoreExcludedLeaves(
       previous[key],
       `${basePath}#${key}`,
       locale,
-      excluded
+      excluded,
+      isExcluded
     );
   });
   return next;
@@ -848,7 +933,7 @@ export function applyTranslation(
       if (
         !compoundKeys.length &&
         el[locale] == null &&
-        hasStringLeaf(sourceValue) &&
+        hasStringLeaf(sourceValue, metaKey, metadataExcludedPaths) &&
         !metaHasTranslatableLeaf()
       ) {
         const seeded = JSON.parse(JSON.stringify(sourceValue));
@@ -881,7 +966,8 @@ export function applyTranslation(
             el[locale],
             metaKey,
             locale,
-            metadataExcludedPaths
+            metadataExcludedPaths,
+            isMetadataExcludedPath
           ),
         });
       }

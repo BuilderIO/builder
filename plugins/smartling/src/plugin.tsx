@@ -73,8 +73,23 @@ function clearJobExistenceCache(): void {
   jobExistenceCache.clear();
 }
 
-// Mirrors getNonTranslatableModelInputs in @builder.io/utils, which the pinned version predates.
-function getEnumFieldPaths(fields: any[] | undefined, prefix = ''): string[] {
+// Mirrors getNonTranslatableModelInputs / getNonTranslatableObjectInputs in @builder.io/utils,
+// which the pinned version predates.
+const builtInModelFieldTypes = new Set([
+  'text', 'string', 'longtext', 'textarea', 'richtext', 'html', 'markdown', 'number', 'boolean',
+  'date', 'timestamp', 'email', 'url', 'file', 'color', 'list', 'object', 'map', 'json',
+  'reference', 'tags', 'uiblocks', 'blocks', 'code', 'javascript', 'enum',
+]);
+
+function hasEnum(field: any) {
+  return Array.isArray(field.enum) && field.enum.length > 0;
+}
+
+function isCustomObjectField(field: any) {
+  return !hasEnum(field) && typeof field.type === 'string' && !builtInModelFieldTypes.has(field.type.toLowerCase());
+}
+
+function getModelFieldPaths(fields: any[] | undefined, isMatch: (field: any) => boolean, prefix = ''): string[] {
   if (!Array.isArray(fields)) {
     return [];
   }
@@ -84,12 +99,12 @@ function getEnumFieldPaths(fields: any[] | undefined, prefix = ''): string[] {
       return;
     }
     const path = prefix ? `${prefix}.${field.name}` : field.name;
-    if (Array.isArray(field.enum) && field.enum.length > 0) {
+    if (isMatch(field)) {
       paths.push(path);
     } else if (field.type === 'list') {
-      paths.push(...getEnumFieldPaths(field.subFields, `${path}.*`));
+      paths.push(...getModelFieldPaths(field.subFields, isMatch, `${path}.*`));
     } else if (field.type === 'object') {
-      paths.push(...getEnumFieldPaths(field.subFields, path));
+      paths.push(...getModelFieldPaths(field.subFields, isMatch, path));
     }
   });
   return paths;
@@ -97,12 +112,23 @@ function getEnumFieldPaths(fields: any[] | undefined, prefix = ''): string[] {
 
 // Recomputed on every add so a changed model schema never leaves stale exclusions behind.
 function withNonTranslatableInputs(meta: any, modelId: string | undefined) {
+  const editingModel = appState.designerState.editingModel;
   const model =
     appState.models?.result?.find((m: any) => m.id === modelId) ||
-    appState.designerState.editingModel;
-  const nonTranslatableInputs = getEnumFieldPaths(fastClone(model?.fields));
-  const { nonTranslatableInputs: _previous, ...rest } = meta;
-  return nonTranslatableInputs.length ? { ...rest, nonTranslatableInputs } : rest;
+    (editingModel?.id === modelId ? editingModel : undefined);
+  const fields = fastClone(model?.fields);
+  const nonTranslatableInputs = getModelFieldPaths(fields, hasEnum);
+  const nonTranslatableObjectInputs = getModelFieldPaths(fields, isCustomObjectField);
+  const {
+    nonTranslatableInputs: _previousInputs,
+    nonTranslatableObjectInputs: _previousObjectInputs,
+    ...rest
+  } = meta;
+  return {
+    ...rest,
+    ...(nonTranslatableInputs.length ? { nonTranslatableInputs } : {}),
+    ...(nonTranslatableObjectInputs.length ? { nonTranslatableObjectInputs } : {}),
+  };
 }
 
 
