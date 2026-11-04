@@ -73,6 +73,38 @@ function clearJobExistenceCache(): void {
   jobExistenceCache.clear();
 }
 
+// Mirrors getNonTranslatableModelInputs in @builder.io/utils, which the pinned version predates.
+function getEnumFieldPaths(fields: any[] | undefined, prefix = ''): string[] {
+  if (!Array.isArray(fields)) {
+    return [];
+  }
+  const paths: string[] = [];
+  fields.forEach(field => {
+    if (!field || typeof field.name !== 'string' || !field.name) {
+      return;
+    }
+    const path = prefix ? `${prefix}.${field.name}` : field.name;
+    if (Array.isArray(field.enum) && field.enum.length > 0) {
+      paths.push(path);
+    } else if (field.type === 'list') {
+      paths.push(...getEnumFieldPaths(field.subFields, `${path}.*`));
+    } else if (field.type === 'object') {
+      paths.push(...getEnumFieldPaths(field.subFields, path));
+    }
+  });
+  return paths;
+}
+
+// Recomputed on every add so a changed model schema never leaves stale exclusions behind.
+function withNonTranslatableInputs(meta: any, modelId: string | undefined) {
+  const model =
+    appState.models?.result?.find((m: any) => m.id === modelId) ||
+    appState.designerState.editingModel;
+  const nonTranslatableInputs = getEnumFieldPaths(fastClone(model?.fields));
+  const { nonTranslatableInputs: _previous, ...rest } = meta;
+  return nonTranslatableInputs.length ? { ...rest, nonTranslatableInputs } : rest;
+}
+
 
 function updatePublishCTA(content: any, translationModel: any) {
   let publishButtonText = undefined;
@@ -395,6 +427,7 @@ const initializeSmartlingPlugin = async () => {
         );
         
         const filteredContent = selectedContent.filter(content => content);
+        const isExistingJob = Boolean(translationJobId);
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
             placeholderText: 'Enter a name for your new job',
@@ -407,38 +440,27 @@ const initializeSmartlingPlugin = async () => {
         } else if (translationJobId) {
           // adding content to an already created job
           await api.updateBatchTranslation(translationJobId, filteredContent);
-          
-          // For changed content that was previously published, update translation files in Smartling
-          const changedPublishedContent = filteredContent.filter(entry => {
-            const translationRevision = entry.meta?.get('translationRevision');
-            const translationRevisionLatest = entry.meta?.get('translationRevisionLatest');
-            return entry.published === 'published' && 
-                   translationRevision && translationRevisionLatest && 
-                   translationRevision !== translationRevisionLatest;
-          });
-          
-          if (changedPublishedContent.length > 0) {
-            await Promise.all(changedPublishedContent.map(async (entry) => {
-              try {
-                await api.updateTranslationFile({
-                  translationJobId,
-                  translationModel: getTranslationModel().name,
-                  contentId: entry.id,
-                  contentModel: appState.designerState.editingModel?.name || 'page',
-                  preview: entry.meta?.get?.('lastPreviewUrl') || entry.meta?.lastPreviewUrl,
-                });
-              } catch (error) {
-              }
-            }));
-          }
         }
+        // For changed content that was previously published, update translation files in Smartling
+        const changedPublishedContent = isExistingJob
+          ? filteredContent.filter(entry => {
+              const translationRevision = entry.meta?.get('translationRevision');
+              const translationRevisionLatest = entry.meta?.get('translationRevisionLatest');
+              return entry.published === 'published' &&
+                     translationRevision && translationRevisionLatest &&
+                     translationRevision !== translationRevisionLatest;
+            })
+          : [];
         await Promise.all(
           filteredContent.map(entry => {
-            const metaUpdates: any = {
-              ...fastClone(entry.meta),
-              translationStatus: 'local',
-              translationJobId,
-            };
+            const metaUpdates: any = withNonTranslatableInputs(
+              {
+                ...fastClone(entry.meta),
+                translationStatus: 'local',
+                translationJobId,
+              },
+              entry.modelId
+            );
             
             // If content has changes (different revisions), update revision to latest
             const translationRevision = entry.meta?.get('translationRevision');
@@ -454,6 +476,21 @@ const initializeSmartlingPlugin = async () => {
             });
           })
         );
+        // Runs after the draft update so the regenerated file sees the recorded exclusions.
+        if (changedPublishedContent.length > 0) {
+          await Promise.all(changedPublishedContent.map(async (entry) => {
+            try {
+              await api.updateTranslationFile({
+                translationJobId,
+                translationModel: getTranslationModel().name,
+                contentId: entry.id,
+                contentModel: appState.designerState.editingModel?.name || 'page',
+                preview: entry.meta?.get?.('lastPreviewUrl') || entry.meta?.lastPreviewUrl,
+              });
+            } catch (error) {
+            }
+          }));
+        }
         actions.refreshList();
         showJobNotification(translationJobId);
       },
@@ -632,6 +669,7 @@ const initializeSmartlingPlugin = async () => {
         
         
         let translationJobId = await pickTranslationJob();
+        const isExistingJob = Boolean(translationJobId);
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
             placeholderText: 'Enter a name for your new job',
@@ -646,45 +684,47 @@ const initializeSmartlingPlugin = async () => {
         } else if (translationJobId) {
           // adding content to an already created job
           await api.updateBatchTranslation(translationJobId, [content]);
-          
-          // For changed content that was previously published, update translation file in Smartling
-          const translationRevision = content.meta?.get('translationRevision');
-          const translationRevisionLatest = content.meta?.get('translationRevisionLatest');
-          const isChangedPublishedContent = content.published === 'published' && translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest;
-          
-          if (isChangedPublishedContent) {
-            try {
-              await api.updateTranslationFile({
-                translationJobId,
-                translationModel: getTranslationModel().name,
-                contentId: content.id,
-                contentModel: appState.designerState.editingModel?.name || 'page',
-                preview: content.meta?.get?.('lastPreviewUrl') || content.meta?.lastPreviewUrl,
-              });
-            } catch (error) {
-            }
-          }
         }
 
-        const metaUpdates: any = {
-          ...fastClone(content.meta),
-          translationStatus: 'local',
-          translationJobId,
-          translationBy: pkg.name,
-        };
-        
-        // If content has changes (different revisions), update revision to latest
+        // For changed content that was previously published, update translation file in Smartling
         const translationRevision = content.meta?.get('translationRevision');
         const translationRevisionLatest = content.meta?.get('translationRevisionLatest');
+        const isChangedPublishedContent = isExistingJob && content.published === 'published' && translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest;
+
+        const metaUpdates: any = withNonTranslatableInputs(
+          {
+            ...fastClone(content.meta),
+            translationStatus: 'local',
+            translationJobId,
+            translationBy: pkg.name,
+          },
+          content.modelId
+        );
+
+        // If content has changes (different revisions), update revision to latest
         if (translationRevision && translationRevisionLatest && translationRevision !== translationRevisionLatest) {
           metaUpdates.translationRevision = translationRevisionLatest;
         }
-        
+
         await appState.updateLatestDraft({
           id: content.id,
           modelId: content.modelId,
           meta: metaUpdates,
         });
+
+        // Runs after the draft update so the regenerated file sees the recorded exclusions.
+        if (isChangedPublishedContent) {
+          try {
+            await api.updateTranslationFile({
+              translationJobId,
+              translationModel: getTranslationModel().name,
+              contentId: content.id,
+              contentModel: appState.designerState.editingModel?.name || 'page',
+              preview: content.meta?.get?.('lastPreviewUrl') || content.meta?.lastPreviewUrl,
+            });
+          } catch (error) {
+          }
+        }
         showJobNotification(translationJobId);
       },
       isDisabled() {

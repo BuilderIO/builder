@@ -1,5 +1,10 @@
 import { BuilderContent } from '@builder.io/sdk';
-import { applyTranslation, getTranslateableFields, localizedType } from './translation-helpers';
+import {
+  applyTranslation,
+  getNonTranslatableModelInputs,
+  getTranslateableFields,
+  localizedType,
+} from './translation-helpers';
 
 test('getTranslateableFields from content to match snapshot', async () => {
   const content: BuilderContent = {
@@ -2439,4 +2444,123 @@ test('applyTranslation keeps references intact alongside translated text', () =>
   expect(data.blocks[0].component.options.related['pl-PL']).toEqual([
     { heading: 'Może Ci się spodobać', product: reference('store-product', 'p1') },
   ]);
+});
+
+const enumModelFields = [
+  { name: 'title', type: 'text', localized: true },
+  { name: 'icon', type: 'text', localized: true, enum: ['icon_default', 'icon_alt'] },
+  { name: 'tags', type: 'Tags', localized: true },
+  { name: 'body', type: 'MyRichTextEditor', localized: true },
+  {
+    name: 'options',
+    type: 'list',
+    localized: true,
+    subFields: [{ name: 'item', type: 'text', enum: ['option_a', 'option_b'] }],
+  },
+  {
+    name: 'rows',
+    type: 'list',
+    localized: true,
+    subFields: [
+      { name: 'label', type: 'text' },
+      { name: 'alignment', type: 'text', enum: ['left', 'right'] },
+    ],
+  },
+  {
+    name: 'settings',
+    type: 'object',
+    subFields: [{ name: 'size', type: 'text', localized: true, enum: ['sm', 'lg'] }],
+  },
+];
+
+const enumModelContent = (): BuilderContent & { meta?: Record<string, any> } => ({
+  meta: { nonTranslatableInputs: getNonTranslatableModelInputs(enumModelFields) },
+  data: {
+    title: { '@type': localizedType, Default: 'Product title' },
+    icon: { '@type': localizedType, Default: 'icon_default' },
+    tags: { '@type': localizedType, Default: ['Summer sale'] },
+    body: { '@type': localizedType, Default: '<p>Hello world</p>' },
+    options: { '@type': localizedType, Default: [{ item: 'option_a' }, { item: 'option_b' }] },
+    rows: {
+      '@type': localizedType,
+      Default: [{ label: 'First row', alignment: 'left' }],
+      'de-DE': [{ label: 'Erste Zeile', alignment: 'right' }],
+    },
+    settings: { size: { '@type': localizedType, Default: 'sm' } },
+  },
+});
+
+test('getNonTranslatableModelInputs only excludes enum fields', () => {
+  expect(getNonTranslatableModelInputs(enumModelFields)).toEqual([
+    'icon',
+    'options.*.item',
+    'rows.*.alignment',
+    'settings.size',
+  ]);
+});
+
+test('getTranslateableFields skips data model enum fields but keeps other field types', () => {
+  expect(getTranslateableFields(enumModelContent(), 'Default', '')).toEqual({
+    'metadata.title': { value: 'Product title', instructions: '' },
+    'metadata.tags#0': { value: 'Summer sale', instructions: '' },
+    'metadata.body': { value: '<p>Hello world</p>', instructions: '' },
+    'metadata.rows#0#label': { value: 'First row', instructions: '' },
+  });
+});
+
+test('getTranslateableFields accepts modelFields instead of content meta', () => {
+  const { meta, ...content } = enumModelContent();
+  expect(getTranslateableFields(content, 'Default', '', { modelFields: enumModelFields })).toEqual(
+    getTranslateableFields(enumModelContent(), 'Default', '')
+  );
+});
+
+test('getTranslateableFields is unchanged for data models without recorded exclusions', () => {
+  const { meta, ...content } = enumModelContent();
+  expect(Object.keys(getTranslateableFields(content, 'Default', ''))).toEqual([
+    'metadata.title',
+    'metadata.icon',
+    'metadata.tags#0',
+    'metadata.body',
+    'metadata.options#0#item',
+    'metadata.options#1#item',
+    'metadata.rows#0#label',
+    'metadata.rows#0#alignment',
+    'metadata.settings#size',
+  ]);
+});
+
+test('applyTranslation ignores legacy enum translations and keeps enum values visible in the locale', () => {
+  const result = applyTranslation(
+    enumModelContent(),
+    {
+      'metadata.title': { value: 'Produkttitel' },
+      'metadata.icon': { value: 'icon_translated' },
+      'metadata.tags#0': { value: 'Sommerschlussverkauf' },
+      'metadata.body': { value: '<p>Hallo Welt</p>' },
+      'metadata.options#0#item': { value: 'option_a_translated' },
+      'metadata.rows#0#label': { value: 'Erste Reihe' },
+      'metadata.rows#0#alignment': { value: 'links' },
+      'metadata.settings#size': { value: 'klein' },
+    },
+    'de-DE',
+    'Default'
+  );
+  const data = result.data as any;
+
+  expect(data.title['de-DE']).toBe('Produkttitel');
+  expect(data.tags['de-DE']).toEqual(['Sommerschlussverkauf']);
+  expect(data.body['de-DE']).toBe('<p>Hallo Welt</p>');
+  expect(data.icon['de-DE']).toBe('icon_default');
+  expect(data.options['de-DE']).toEqual([{ item: 'option_a' }, { item: 'option_b' }]);
+  expect(data.rows['de-DE']).toEqual([{ label: 'Erste Reihe', alignment: 'right' }]);
+  expect(data.settings.size['de-DE']).toBe('sm');
+});
+
+test('applyTranslation keeps an existing locale enum value when nothing comes back for it', () => {
+  const content = enumModelContent();
+  (content.data as any).icon['de-DE'] = 'icon_alt';
+  const result = applyTranslation(content, {}, 'de-DE', 'Default');
+
+  expect((result.data as any).icon['de-DE']).toBe('icon_alt');
 });
