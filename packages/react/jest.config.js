@@ -9,6 +9,7 @@ module.exports = {
     },
   },
   testEnvironment: 'node',
+  moduleNameMapper: { '^src/(.*)$': '<rootDir>/src/$1' },
   preset: 'ts-jest',
   coveragePathIgnorePatterns: ['/node_modules/', '/test/'],
   coverageThreshold: {
