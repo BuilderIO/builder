@@ -120,7 +120,7 @@ export const BynderCompactViewWrapper = (props: BynderCompactViewProps) => {
         search input can't trigger that shortcut.
       */}
       <div
-        onKeyDownCapture={event => {
+        onKeyDown={event => {
           if (isDeletionKey(event.key)) {
             event.stopPropagation();
           }
