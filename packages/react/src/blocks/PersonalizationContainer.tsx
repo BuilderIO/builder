@@ -8,6 +8,41 @@ import {
   Query,
 } from '../functions/filter-with-custom-targeting';
 import { BuilderStoreContext } from '../store/builder-store';
+import { CacheProvider, EmotionCache, SerializedStyles, withEmotionCache } from '@emotion/core';
+
+type ServerEmotionCache = EmotionCache & {
+  insert(
+    selector: string,
+    serialized: SerializedStyles,
+    sheet: EmotionCache['sheet'],
+    shouldCache: boolean
+  ): string | void;
+};
+
+const PersonalizationStyles = withEmotionCache<{ children: React.ReactNode }>(
+  ({ children }, parentCache) => {
+    const cache: ServerEmotionCache = {
+      ...parentCache,
+      compat: undefined,
+      inserted: {},
+      registered: { ...parentCache.registered },
+      insert(selector, serialized, sheet, shouldCache) {
+        // A template must not suppress style emission in another branch.
+        const rules = (parentCache as ServerEmotionCache).insert(
+          selector,
+          serialized,
+          sheet,
+          false
+        );
+        if (shouldCache) {
+          cache.inserted[serialized.name] = true;
+        }
+        return rules;
+      },
+    };
+    return <CacheProvider value={cache}>{children}</CacheProvider>;
+  }
+);
 
 export type PersonalizationContainerProps = {
   children: React.ReactNode;
@@ -97,20 +132,16 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         >
           {props.variants?.map((variant, index) => (
             <template key={index} data-variant-id={props.builderBlock?.id! + index}>
-              <BuilderBlocks
-                blocks={variant.blocks}
-                parentElementId={props.builderBlock?.id}
-                dataPath={`component.options.variants.${index}.blocks`}
-                child
-              />
+              <PersonalizationStyles>
+                <BuilderBlocks
+                  blocks={variant.blocks}
+                  parentElementId={props.builderBlock?.id}
+                  dataPath={`component.options.variants.${index}.blocks`}
+                  child
+                />
+              </PersonalizationStyles>
             </template>
           ))}
-          <BuilderBlocks
-            blocks={props.builderBlock?.children}
-            parentElementId={props.builderBlock?.id}
-            dataPath="this.children"
-            child
-          />
           <script
             nonce={builderStore.context.nonce}
             id={`variants-script-${props.builderBlock?.id}`}
@@ -122,6 +153,14 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
               ),
             }}
           />
+          <PersonalizationStyles>
+            <BuilderBlocks
+              blocks={props.builderBlock?.children}
+              parentElementId={props.builderBlock?.id}
+              dataPath="this.children"
+              child
+            />
+          </PersonalizationStyles>
         </div>
         <script
           nonce={builderStore.context.nonce}
@@ -298,23 +337,12 @@ function getPersonalizationScript(
             winningVariantIndex: winningVariantIndex,
             });
         }
-        var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}" + winningVariantIndex + '"]');
-        var selectedContent = winningVariant ? winningVariant.content : document.getElementById('variants-script-${blockId}').parentNode;
-        variants.forEach(function (_, index) {
-          var template = document.querySelector('template[data-variant-id="' + "${blockId}" + index + '"]');
-          if (template === winningVariant) return;
-          template.content.querySelectorAll('style[data-emotion-css]').forEach(function (style) {
-            var isUsed = style.getAttribute('data-emotion-css').split(' ').some(function (name) {
-              return name && selectedContent.querySelector('[class~="css-' + name + '"]');
-            });
-            if (isUsed) document.head.appendChild(style);
-          });
-        });
         if (winningVariantIndex !== -1) {
+          var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}" + winningVariantIndex + '"]');
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
-            newParent.appendChild(winningVariant.content.firstChild);
+            newParent.appendChild(winningVariant.content);
             parentNode.parentNode.replaceChild(newParent, parentNode);
             if (isDebug) {
               console.debug('PersonalizationContainer', 'Winning variant Replaced:', winningVariant);

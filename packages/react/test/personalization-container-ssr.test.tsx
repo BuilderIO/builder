@@ -1,80 +1,125 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { JSDOM } from 'jsdom';
+import { CacheProvider, ClassNames, Global, keyframes } from '@emotion/core';
+import createCache from '@emotion/cache';
+import { JSDOM, CookieJar } from 'jsdom';
 import { PersonalizationContainer } from '../src/blocks/PersonalizationContainer';
 
 const blockId = 'personalization-styles';
+const animation = keyframes({ to: { opacity: 1 } });
+const sharedStyles = { display: 'flex', padding: 40, animation: `${animation} 1s` };
 
-const createDocument = (locale: string) => {
+const VariantContent = ({ name }: { name: string }) => (
+  <ClassNames>
+    {({ css }) => {
+      const className = css(sharedStyles);
+      css({ '@font-face': { fontFamily: `variant-${name}`, src: `url('/${name}.woff2')` } });
+      return (
+        <div className={className}>
+          <Global styles={{ body: { '--selected-variant': name } }} />
+          <span data-content={name}>{name}</span>
+        </div>
+      );
+    }}
+  </ClassNames>
+);
+
+const renderFixture = (key = 'css', compat = false) => {
+  const cache = createCache({ key, nonce: 'test-nonce' });
+  if (compat) cache.compat = true;
   const html = renderToString(
-    <PersonalizationContainer
-      attributes={{}}
-      builderBlock={{ '@type': '@builder.io/sdk:Element', id: blockId, children: [] }}
-      builderState={{ state: {} }}
-      previewingIndex={null}
-      variants={
-        [
-          { query: [{ property: 'locale', operator: 'is', value: 'fr-FR' }], blocks: [] },
-          { query: [{ property: 'locale', operator: 'is', value: 'ca-ES' }], blocks: [] },
-        ] as any
-      }
-    >
-      {null}
-    </PersonalizationContainer>
+    <CacheProvider value={cache}>
+      <PersonalizationContainer
+        attributes={{}}
+        builderBlock={{
+          '@type': '@builder.io/sdk:Element',
+          id: blockId,
+          children: [<VariantContent key="default" name="English" />] as any,
+        }}
+        builderState={{ state: {} }}
+        previewingIndex={null}
+        variants={
+          [
+            {
+              query: [{ property: 'locale', operator: 'is', value: 'fr-FR' }],
+              blocks: [<VariantContent key="fr" name="French" />],
+            },
+            {
+              query: [{ property: 'locale', operator: 'is', value: 'ca-ES' }],
+              blocks: [<VariantContent key="ca" name="Catalan" />],
+            },
+          ] as any
+        }
+      >
+        {null}
+      </PersonalizationContainer>
+    </CacheProvider>
   );
-  const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only' });
-  const document = dom.window.document;
-  const templates = document.querySelectorAll('template');
-  templates[0].innerHTML =
-    '<div class="css-shared css-french-only">French' +
-    '<style data-emotion-css="shared animation-shared" nonce="test-nonce">.css-shared{display:flex;padding:40px;animation:animation-shared 1s}@keyframes animation-shared{to{opacity:1}}</style>' +
-    '<style data-emotion-css="french-only">.css-french-only{color:red}</style>' +
-    '<style data-emotion-css="global-french">body{background:red}</style></div>';
-  templates[1].innerHTML =
-    '<div class="css-shared css-catalan-only">Catalan' +
-    '<style data-emotion-css="catalan-only">.css-catalan-only{color:blue}</style>' +
-    '<style data-emotion-css="global-catalan">body{background:blue}</style></div>';
-  const script = document.getElementById(`variants-script-${blockId}`)!;
-  const defaultContent = document.querySelector(
-    '.builder-personalization-container > .builder-blocks'
-  )!;
-  expect(
-    defaultContent.compareDocumentPosition(script) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING
-  ).toBeTruthy();
-  defaultContent.innerHTML = '<div class="css-shared">English</div>';
-  document.cookie = `builder.userAttributes=${JSON.stringify({ locale })}`;
-  dom.window.eval(script.textContent!);
-  return dom;
+  return { html, cache };
+};
+
+const runInBrowser = (html: string, locale: string) => {
+  const cookieJar = new CookieJar();
+  cookieJar.setCookieSync(
+    `builder.userAttributes=${JSON.stringify({ locale })}; Path=/`,
+    'http://localhost/'
+  );
+  return new JSDOM(html, { url: 'http://localhost/', cookieJar, runScripts: 'dangerously' });
 };
 
 describe('personalization SSR shared styles', () => {
   test.each([
+    { key: 'custom', compat: false },
+    { key: 'css', compat: true },
+  ])('preserves the parent cache configuration for $key with compat=$compat', ({ key, compat }) => {
+    const { html, cache } = renderFixture(key, compat);
+    expect(cache.inserted).toEqual({});
+    expect(cache.registered).toEqual({});
+    const dom = runInBrowser(html, 'ca-ES');
+    const styles = Array.from(dom.window.document.querySelectorAll(`style[data-emotion-${key}]`));
+    expect(styles.length).toBeGreaterThan(0);
+    const rules = styles.map(style => style.textContent).join('');
+    expect(rules).toContain('padding:40px');
+    expect(rules).not.toContain('variant-French');
+    styles.forEach(style => expect(style.getAttribute('nonce')).toBe('test-nonce'));
+    dom.window.close();
+  });
+
+  test('Emotion groups shared styles and variant-only font rules in the same tag', () => {
+    const { html } = renderFixture();
+    const dom = new JSDOM(html);
+    const template = dom.window.document.querySelector('template')!;
+    const groupedStyle = Array.from(template.content.querySelectorAll('style')).find(style =>
+      style.textContent!.includes('padding:40px')
+    )!;
+    expect(groupedStyle.textContent).toContain('@font-face');
+    expect(groupedStyle.textContent).toContain('variant-French');
+    dom.window.close();
+  });
+
+  test.each([
     ['fr-FR', 'French'],
     ['ca-ES', 'Catalan'],
     ['en-US', 'English'],
-  ])('preserves shared rules when %s wins without hydration', (locale, content) => {
-    const dom = createDocument(locale);
+  ])('keeps only %s content and its styles without hydration', (locale, name) => {
+    const { html } = renderFixture();
+    const dom = runInBrowser(html, locale);
     const document = dom.window.document;
-    expect(document.body.textContent).toContain(content);
-    const style = document.querySelector('style[data-emotion-css="shared animation-shared"]');
-    expect(style).not.toBeNull();
-    expect(style!.textContent).toContain('.css-shared{display:flex;padding:40px;');
-    expect(style!.textContent).toContain('@keyframes animation-shared');
-    expect(style!.getAttribute('nonce')).toBe('test-nonce');
+    const styles = Array.from(document.querySelectorAll('style[data-emotion-css]'));
+    const rules = styles.map(style => style.textContent).join('');
+    expect(document.querySelector('[data-content]')!.textContent).toBe(name);
     expect(document.querySelector('template')).toBeNull();
-    ['french', 'catalan'].forEach((variant, index) => {
-      const isSelected = locale === ['fr-FR', 'ca-ES'][index];
-      expect(Boolean(document.querySelector(`style[data-emotion-css="${variant}-only"]`))).toBe(
-        isSelected
-      );
-      expect(Boolean(document.querySelector(`style[data-emotion-css="global-${variant}"]`))).toBe(
-        isSelected
-      );
-    });
+    expect(rules).toContain('padding:40px');
+    expect(rules).toContain(`@keyframes ${animation.name}`);
+    expect(rules).toContain(`variant-${name}`);
+    expect(rules).toContain(`--selected-variant:${name}`);
+    styles.forEach(style => expect(style.getAttribute('nonce')).toBe('test-nonce'));
     ['French', 'Catalan', 'English']
-      .filter(value => value !== content)
+      .filter(value => value !== name)
       .forEach(value => {
-        expect(document.body.textContent).not.toContain(value);
+        expect(rules).not.toContain(`variant-${value}`);
+        expect(rules).not.toContain(`--selected-variant:${value}`);
+        expect(document.querySelector(`[data-content="${value}"]`)).toBeNull();
       });
     dom.window.close();
   });
