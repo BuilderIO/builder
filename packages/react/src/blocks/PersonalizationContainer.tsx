@@ -105,6 +105,12 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
               />
             </template>
           ))}
+          <BuilderBlocks
+            blocks={props.builderBlock?.children}
+            parentElementId={props.builderBlock?.id}
+            dataPath="this.children"
+            child
+          />
           <script
             nonce={builderStore.context.nonce}
             id={`variants-script-${props.builderBlock?.id}`}
@@ -115,12 +121,6 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
                 props.builderState.state?.locale
               ),
             }}
-          />
-          <BuilderBlocks
-            blocks={props.builderBlock?.children}
-            parentElementId={props.builderBlock?.id}
-            dataPath="this.children"
-            child
           />
         </div>
         <script
@@ -298,14 +298,19 @@ function getPersonalizationScript(
             winningVariantIndex: winningVariantIndex,
             });
         }
+        var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}" + winningVariantIndex + '"]');
+        var selectedContent = winningVariant ? winningVariant.content : document.getElementById('variants-script-${blockId}').parentNode;
         variants.forEach(function (_, index) {
           var template = document.querySelector('template[data-variant-id="' + "${blockId}" + index + '"]');
+          if (template === winningVariant) return;
           template.content.querySelectorAll('style[data-emotion-css]').forEach(function (style) {
-            document.head.appendChild(style);
+            var isUsed = style.getAttribute('data-emotion-css').split(' ').some(function (name) {
+              return name && selectedContent.querySelector('[class~="css-' + name + '"]');
+            });
+            if (isUsed) document.head.appendChild(style);
           });
         });
         if (winningVariantIndex !== -1) {
-          var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}" + winningVariantIndex + '"]');
           if (winningVariant) {
             var parentNode = winningVariant.parentNode;
             var newParent = parentNode.cloneNode(false);
