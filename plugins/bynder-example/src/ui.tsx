@@ -31,6 +31,7 @@ import {
   SupportedLanguage,
   SupportedLanguages,
   fastClone,
+  isDeletionKey,
   pluginId,
 } from './utils';
 
@@ -112,11 +113,25 @@ export const BynderCompactViewWrapper = (props: BynderCompactViewProps) => {
         />
       )}
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <Login portal={{ url, editable: false }} language={bynderProps.language}>
-          <CompactView {...bynderProps} />
-        </Login>
-      </Modal>
+      {/*
+        The Bynder dialog is rendered as a React portal, so DOM events still bubble through
+        the surrounding React tree (including into the Builder editor, which deletes the
+        selected block on Backspace/Delete). Stop those keys here so typing in the Bynder
+        search input can't trigger that shortcut.
+      */}
+      <div
+        onKeyDownCapture={event => {
+          if (isDeletionKey(event.key)) {
+            event.stopPropagation();
+          }
+        }}
+      >
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <Login portal={{ url, editable: false }} language={bynderProps.language}>
+            <CompactView {...bynderProps} />
+          </Login>
+        </Modal>
+      </div>
     </div>
   );
 };
