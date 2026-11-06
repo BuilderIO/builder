@@ -8,6 +8,34 @@ import get from 'lodash/get';
 export const localizedType = '@builder.io/core:LocalizedValue';
 const referenceType = '@builder.io/core:Reference';
 const requestType = '@builder.io/core:Request';
+const translatableModelFieldTypes = new Set([
+  'text',
+  'string',
+  'longText',
+  'html',
+  'richText',
+  'markdown',
+  'json',
+  'object',
+  'map',
+  'list',
+  'uiBlocks',
+  'blocks',
+]);
+
+export type ModelField = {
+  name: string;
+  type?: string;
+  enum?: readonly any[];
+  subFields?: readonly ModelField[];
+  meta?: Record<string, any>;
+  [key: string]: any;
+};
+
+export type TranslationOptions = {
+  modelFields?: readonly ModelField[];
+  nonTranslatableInputs?: readonly string[];
+};
 
 function isBuilderType(value: any, ...types: string[]) {
   return !!value && typeof value === 'object' && types.includes(value['@type']);
@@ -256,6 +284,80 @@ function toComparablePath(path: string) {
     .join('.');
 }
 
+function hasEnumOptions(field: ModelField): boolean {
+  return Array.isArray(field.enum) && field.enum.length > 0;
+}
+
+export function getNonTranslatableModelInputs(
+  fields: readonly ModelField[] | undefined,
+  prefix = ''
+): string[] {
+  if (!Array.isArray(fields) || !fields.length) {
+    return [];
+  }
+  const excluded: string[] = [];
+  fields.forEach(field => {
+    if (!field || typeof field.name !== 'string' || !field.name) {
+      return;
+    }
+    const path = prefix ? `${prefix}.${field.name}` : field.name;
+    if (field.meta?.excludeFromTranslation || hasEnumOptions(field)) {
+      excluded.push(path);
+      return;
+    }
+    if (field.type === 'list') {
+      if (Array.isArray(field.subFields) && field.subFields.length > 0) {
+        excluded.push(...getNonTranslatableModelInputs(field.subFields, `${path}.*`));
+      }
+      return;
+    }
+    if (field.type === 'object' || field.type === 'map') {
+      if (Array.isArray(field.subFields) && field.subFields.length > 0) {
+        excluded.push(...getNonTranslatableModelInputs(field.subFields, path));
+      }
+      return;
+    }
+    if (typeof field.type === 'string' && !translatableModelFieldTypes.has(field.type)) {
+      excluded.push(path);
+    }
+  });
+  return excluded;
+}
+
+function getMetadataExcludedPaths(
+  content: BuilderContent,
+  options?: TranslationOptions
+): Set<string> | undefined {
+  const rawInputs: unknown[] = [];
+  const contentMeta = (content as any)?.meta;
+  const metaInputs = contentMeta?.nonTranslatableInputs;
+  if (Array.isArray(metaInputs)) {
+    rawInputs.push(...metaInputs);
+  }
+  if (Array.isArray(options?.nonTranslatableInputs)) {
+    rawInputs.push(...options!.nonTranslatableInputs);
+  }
+  const modelFields =
+    options?.modelFields ||
+    (Array.isArray(contentMeta?.modelFields)
+      ? (contentMeta.modelFields as ModelField[])
+      : undefined);
+  if (modelFields) {
+    rawInputs.push(...getNonTranslatableModelInputs(modelFields));
+  }
+  const validEntries = rawInputs.filter(
+    (entry): entry is string => typeof entry === 'string' && !!entry
+  );
+  if (!validEntries.length) {
+    return undefined;
+  }
+  return new Set(
+    validEntries.map(entry =>
+      toComparablePath(entry.startsWith('metadata.') ? entry : `metadata.${entry}`)
+    )
+  );
+}
+
 // Recorded by the editor, since the extractor has no access to component schemas.
 function getExcludedPaths(nonTranslatableInputs: unknown, blockId: string): Set<string> | undefined {
   if (!Array.isArray(nonTranslatableInputs) || !nonTranslatableInputs.length) {
@@ -269,7 +371,21 @@ function getExcludedPaths(nonTranslatableInputs: unknown, blockId: string): Set<
 }
 
 function isExcludedPath(excluded: Set<string> | undefined, basePath: string) {
-  return excluded ? excluded.has(toComparablePath(basePath)) : false;
+  if (!excluded || !excluded.size) {
+    return false;
+  }
+  const comparable = toComparablePath(basePath);
+  if (excluded.has(comparable)) {
+    return true;
+  }
+  let dotIndex = comparable.indexOf('.');
+  while (dotIndex !== -1) {
+    if (excluded.has(comparable.slice(0, dotIndex))) {
+      return true;
+    }
+    dotIndex = comparable.indexOf('.', dotIndex + 1);
+  }
+  return false;
 }
 
 // Recursively walks an already-extracted LocalizedValue payload (array or object)
@@ -282,8 +398,11 @@ function extractNestedStrings(
   sourceLocaleId: string,
   excluded?: Set<string>
 ) {
+  if (isExcludedPath(excluded, basePath)) {
+    return;
+  }
   if (typeof value === 'string') {
-    if (value && !isExcludedPath(excluded, basePath) && !isNonTranslatableValue(value)) {
+    if (value && !isNonTranslatableValue(value)) {
       results[basePath] = { value, instructions };
     }
   } else if (Array.isArray(value)) {
@@ -416,9 +535,11 @@ function extractLocalizedLeaves(
 export function getTranslateableFields(
   content: BuilderContent,
   sourceLocaleId: string,
-  defaultInstructions: string
+  defaultInstructions: string,
+  options?: TranslationOptions
 ) {
   const results: TranslateableFields = {};
+  const metadataExcludedPaths = getMetadataExcludedPaths(content, options);
 
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
@@ -427,7 +548,14 @@ export function getTranslateableFields(
   // boundaries and avoid generating duplicate / malformed path keys for nodes that live
   // inside the LocalizedValue's internal Default / locale-keyed arrays.
   function extractCustomField(value: any, path: string) {
-    if (!value || typeof value !== 'object' || isBuilderType(value, requestType)) return;
+    if (
+      !value ||
+      typeof value !== 'object' ||
+      isBuilderType(value, requestType) ||
+      isExcludedPath(metadataExcludedPaths, path)
+    ) {
+      return;
+    }
     if (Array.isArray(value)) {
       value.forEach((item, index) => extractCustomField(item, `${path}#${index}`));
       return;
@@ -440,7 +568,14 @@ export function getTranslateableFields(
       } else if (extractedValue !== null && extractedValue !== undefined) {
         // Value is an array or object — extract individual string leaves so each
         // one becomes its own Smartling translation unit.
-        extractNestedStrings(extractedValue, path, results, instructions, sourceLocaleId);
+        extractNestedStrings(
+          extractedValue,
+          path,
+          results,
+          instructions,
+          sourceLocaleId,
+          metadataExcludedPaths
+        );
       }
       return; // Do not recurse into the LocalizedValue's internal structure.
     }
@@ -586,11 +721,30 @@ export function getTranslateableFields(
 }
 
 // Separates a payload the url guard emptied from one that never held a string.
-function hasStringLeaf(value: any): boolean {
+function hasStringLeaf(
+  value: any,
+  basePath = '',
+  excluded?: Set<string>,
+  sourceLocaleId?: string
+): boolean {
+  if (basePath && isExcludedPath(excluded, basePath)) return false;
   if (typeof value === 'string') return Boolean(value);
   if (isBuilderType(value, referenceType, requestType)) return false;
-  if (Array.isArray(value)) return value.some(hasStringLeaf);
-  if (value && typeof value === 'object') return Object.values(value).some(hasStringLeaf);
+  if (Array.isArray(value)) {
+    return value.some((item, index) =>
+      hasStringLeaf(item, basePath ? `${basePath}#${index}` : '', excluded, sourceLocaleId)
+    );
+  }
+  if (value && typeof value === 'object') {
+    if (value['@type'] === localizedType) {
+      const nested =
+        sourceLocaleId && value[sourceLocaleId] != null ? value[sourceLocaleId] : value.Default;
+      return hasStringLeaf(nested, basePath, excluded, sourceLocaleId);
+    }
+    return Object.entries(value).some(([key, v]) =>
+      hasStringLeaf(v, basePath ? `${basePath}#${key}` : '', excluded, sourceLocaleId)
+    );
+  }
   return false;
 }
 
@@ -723,9 +877,14 @@ export function applyTranslation(
   sourceLocaleId?: string,
   // Set by callers whose provider echoes anything outside its declared paths back
   // unchanged, so such a response is not a translation.
-  providerOptions?: { providerEchoesSourcePayload?: boolean }
+  providerOptions?: {
+    providerEchoesSourcePayload?: boolean;
+    modelFields?: readonly ModelField[];
+    nonTranslatableInputs?: readonly string[];
+  }
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
+  const metadataExcludedPaths = getMetadataExcludedPaths(content, providerOptions);
 
   traverse(customFields).forEach(function (el) {
     if (isBuilderType(el, requestType)) {
@@ -734,6 +893,10 @@ export function applyTranslation(
     }
     const path = this.path?.join('#');
     const metaKey = `metadata.${path}`;
+    if (this.path?.length && isExcludedPath(metadataExcludedPaths, metaKey)) {
+      this.block();
+      return;
+    }
     if (translation[metaKey]) {
       // Direct translation — the node itself is a LocalizedValue with a string value.
       this.update({
@@ -746,7 +909,9 @@ export function applyTranslation(
       // Collect all such keys, clone Default as the base, patch each leaf, then
       // store the result under the target locale.
       const prefix = `${metaKey}#`;
-      const compoundKeys = Object.keys(translation).filter(k => k.startsWith(prefix));
+      const compoundKeys = Object.keys(translation).filter(
+        k => k.startsWith(prefix) && !isExcludedPath(metadataExcludedPaths, k)
+      );
       const sourceValue = (sourceLocaleId && el[sourceLocaleId] != null)
           ? el[sourceLocaleId]
           : el.Default;
@@ -754,13 +919,20 @@ export function applyTranslation(
       // undefined, so restore it or it vanishes in the target locale.
       const metaHasTranslatableLeaf = () => {
         const probe: TranslateableFields = {};
-        extractNestedStrings(sourceValue, metaKey, probe, '', sourceLocaleId ?? '');
+        extractNestedStrings(
+          sourceValue,
+          metaKey,
+          probe,
+          '',
+          sourceLocaleId ?? '',
+          metadataExcludedPaths
+        );
         return Object.keys(probe).length > 0;
       };
       if (
         !compoundKeys.length &&
         el[locale] == null &&
-        hasStringLeaf(sourceValue) &&
+        hasStringLeaf(sourceValue, metaKey, metadataExcludedPaths, sourceLocaleId) &&
         !metaHasTranslatableLeaf()
       ) {
         const seeded = JSON.parse(JSON.stringify(sourceValue));
@@ -786,7 +958,14 @@ export function applyTranslation(
             set(localeValue, segments, unescapeStringOrObject(translation[key].value));
           }
         });
-        this.update({ ...el, [locale]: localeValue });
+        const merged = restoreExcludedLeaves(
+          localeValue,
+          el[locale],
+          metaKey,
+          locale,
+          metadataExcludedPaths
+        );
+        this.update({ ...el, [locale]: merged });
       }
       // Nested leaves are handled above; descending would only write locale keys into
       // the source payload.
