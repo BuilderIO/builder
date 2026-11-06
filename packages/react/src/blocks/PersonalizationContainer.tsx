@@ -298,6 +298,12 @@ function getPersonalizationScript(
             winningVariantIndex: winningVariantIndex,
             });
         }
+        variants.forEach(function (_, index) {
+          var template = document.querySelector('template[data-variant-id="' + "${blockId}" + index + '"]');
+          template.content.querySelectorAll('style[data-emotion-css]').forEach(function (style) {
+            document.head.appendChild(style);
+          });
+        });
         if (winningVariantIndex !== -1) {
           var winningVariant = document.querySelector('template[data-variant-id="' + "${blockId}" + winningVariantIndex + '"]');
           if (winningVariant) {
