@@ -6,7 +6,7 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
-import { getSrcSet } from './image.helpers.js';
+import { getSrcSet, getWebpSrcSet } from './image.helpers.js';
 import type { ImageProps } from './image.types.js';
 
 useMetadata({
@@ -49,7 +49,7 @@ export default function Image(props: ImageProps) {
     },
     get webpSrcSet() {
       if (state.srcSetToUse?.match(/builder\.io/) && !props.noWebp) {
-        return state.srcSetToUse.replace(/\?/g, '?format=webp&');
+        return getWebpSrcSet(state.srcSetToUse);
       } else {
         return '';
       }
