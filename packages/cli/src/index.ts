@@ -2,33 +2,81 @@
 
 import program from 'commander';
 import chalk from 'chalk';
-import { importSpace, newSpace } from './admin-sdk';
+import { importSpace, newSpace, overwriteSpace } from './admin-sdk';
 import { integrateWithLocalCodebase } from './integrate';
-import { intParam } from './utils';
+import { intParam, resolvePrivateKey } from './utils';
+import { MAX_CONTENT_PAGE_SIZE } from './pagination';
 const figlet = require('figlet');
 
 console.log(chalk.blueBright(figlet.textSync('Builder.io cli', { horizontalLayout: 'full' })));
 
+const requirePrivateKey = (flagValue?: string): string => {
+  const key = resolvePrivateKey(flagValue);
+  if (!key) {
+    console.error(
+      chalk.red('Missing private key: pass -k/--key or set the BUILDER_PRIVATE_KEY env var.')
+    );
+    process.exit(1);
+  }
+  return key;
+};
+
 program
   .command('import')
   .description('Import a builder space to the local file system')
-  .option('-k,--key <key>', 'Private Key')
+  .option('-k,--key <key>', 'Private Key (or set BUILDER_PRIVATE_KEY)')
   .option('-d,--debug', 'print debugging information')
   .option('-o,--output <output>', 'Path to folder default to ./builder', './builder')
-  .option('-l,--limit <limit>', 'Maximum number of content entries to request, default is 100', intParam, 100)
+  .option(
+    '-l,--limit <limit>',
+    'Content entries to request per page, max 100. All entries are downloaded regardless',
+    intParam,
+    MAX_CONTENT_PAGE_SIZE
+  )
+  .option(
+    '-u,--include-unpublished',
+    'Also fetch unpublished/draft content. Slower than a published-only import: each model is fetched individually so one model with draft-fetch issues does not affect the others'
+  )
   .action(options => {
-    importSpace(options.key, options.output, options.debug, options.limit || 100);
+    const key = requirePrivateKey(options.key);
+    importSpace(key, options.output, options.debug, options.limit, options.includeUnpublished);
   });
 
 program
   .command('create')
   .description('create a new space')
-  .option('-k,--key <key>', 'Root organization Private Key')
+  .option('-k,--key <key>', 'Root organization Private Key (or set BUILDER_PRIVATE_KEY)')
   .option('-d,--debug', 'print debugging information')
   .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
   .option('-n,--name <name>', 'The new space name')
   .action(options => {
-    newSpace(options.key, options.input, options.name, options.debug);
+    const key = requirePrivateKey(options.key);
+    newSpace(key, options.input, options.name, options.debug);
+  });
+
+program
+  .command('overwrite')
+  .description(
+    'Overwrite content and models in an existing space from a local snapshot. Models are matched by name and content by id; entries in the target space that are missing from the snapshot are left untouched'
+  )
+  .option('-k,--key <key>', 'Private Key of the existing space to overwrite (or set BUILDER_PRIVATE_KEY)')
+  .option('-d,--debug', 'print debugging information')
+  .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
+  .option(
+    '-p,--prune',
+    'Also delete content entries in the target space, for models present in the snapshot, that are not present in the snapshot. Makes the restore an exact mirror instead of a merge. Destructive and cannot be undone'
+  )
+  .option(
+    '-y,--yes',
+    'Skip the confirmation prompt for --prune, for non-interactive/scripted use'
+  )
+  .option(
+    '--dry-run',
+    'Print what would be created/updated/pruned without making any changes'
+  )
+  .action(options => {
+    const key = requirePrivateKey(options.key);
+    overwriteSpace(key, options.input, options.debug, options.prune, options.yes, options.dryRun);
   });
 
 program
