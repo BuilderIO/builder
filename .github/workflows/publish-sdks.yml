@@ -27,7 +27,7 @@ jobs:
           private-key: ${{ secrets.BUILDER_BOT_FOR_LINT_PRIVATE_KEY }}
 
       - name: Setup
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           # need this custom token to run CI checks on the created PR
           token: ${{ steps.generate-token.outputs.token }}
