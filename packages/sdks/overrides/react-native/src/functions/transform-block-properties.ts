@@ -22,7 +22,8 @@ export function transformBlockProperties({
 
   properties.ref = (ref) => {
     if (isEditing()) {
-      const el = findDOMNode(ref);
+      // findDOMNode has been removed in React 19
+      const el = findDOMNode ? findDOMNode(ref) : ref;
       if (el && !(el instanceof Text)) {
         el.setAttribute('builder-id', id);
         el.classList.add(id);
