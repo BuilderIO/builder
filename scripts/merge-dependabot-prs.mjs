@@ -14,6 +14,8 @@
 import { question } from 'zx';
 import { echo } from 'zx/experimental';
 
+const REPO = 'BuilderIO/builder';
+
 console.log('Welcome to the BuilderIO/builder dependabot PR merger!');
 
 let query = '';
@@ -72,7 +74,7 @@ async function approve(prs) {
   const approvePr = async pr => {
     console.log(`Approving ${pr.url}...`);
     try {
-      await $`gh pr review ${pr.number} --approve`;
+      await $`gh pr review ${pr.number} --repo=${REPO} --approve`;
       console.log(`Approved ${pr.url}.`);
     } catch (e) {
       console.log(`Error approving ${pr.url}.`);
@@ -88,7 +90,7 @@ async function enableAutoMerge(prs) {
     console.log(`Enabling auto-merge for ${pr.url}...`);
     try {
       // queues the squash-merge until CI passes
-      await $`gh pr merge ${pr.number} --auto --squash`;
+      await $`gh pr merge ${pr.number} --repo=${REPO} --auto --squash`;
       console.log(`Auto-merge enabled for ${pr.url}.`);
     } catch (e) {
       console.log(`Error enabling auto-merge for ${pr.url}.`);
@@ -108,7 +110,7 @@ async function forceMerge(prs) {
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
         // --admin bypasses required checks/reviews and merges immediately
-        await $`gh pr merge ${pr.number} --admin --squash`;
+        await $`gh pr merge ${pr.number} --repo=${REPO} --admin --squash`;
         console.log(`Force-merged ${pr.url}.`);
         break;
       } catch (e) {
@@ -137,7 +139,7 @@ async function rebaseAll(prs) {
 async function rebaseDependabot(prNumber) {
   console.log(`Asking Dependabot to rebase: ${prNumber}`);
   try {
-    await $`gh pr comment ${prNumber} --body="@dependabot rebase"`;
+    await $`gh pr comment ${prNumber} --repo=${REPO} --body="@dependabot rebase"`;
     console.log(`Rebased ${prNumber}`);
   } catch (e) {
     console.log(`Error rebasing ${prNumber}`);
