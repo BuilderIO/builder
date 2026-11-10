@@ -19,17 +19,18 @@ test('Merges properties.class into className without forwarding a raw class prop
 
   const properties = getBlockProperties({ block, context });
 
-  expect(properties.className).toBe(
+  expect(properties).toHaveProperty(
+    'className',
     'builder-test builder-block block-class customer-class another-class'
   );
   expect(properties).not.toHaveProperty('class');
   expect(properties).not.toHaveProperty('_newProperty');
-  expect(properties.title).toBe('Example');
+  expect(properties).toHaveProperty('title', 'Example');
   expect(properties['builder-id']).toBe('builder-test');
   expect(block.properties).toEqual(originalProperties);
 });
 
-test.each([undefined, {}, { class: '' }])(
+test.each<BuilderBlock['properties']>([undefined, {}, { class: '' }])(
   'Preserves Builder classes when custom properties are %j',
   (properties) => {
     expect(
@@ -40,7 +41,7 @@ test.each([undefined, {}, { class: '' }])(
           properties,
         },
         context,
-      }).className
-    ).toBe('builder-test builder-block');
+      })
+    ).toHaveProperty('className', 'builder-test builder-block');
   }
 );
