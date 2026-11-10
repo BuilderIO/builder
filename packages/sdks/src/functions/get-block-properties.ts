@@ -44,18 +44,17 @@ export function getBlockProperties({
   block: BuilderBlock;
   context: BuilderContextInterface;
 }) {
-  const { _newProperty, ...blockProperties } = block.properties || {};
+  const {
+    _newProperty,
+    class: customClass,
+    ...blockProperties
+  } = block.properties || {};
   const properties = {
     ...extractRelevantRootBlockProperties(block),
     ...blockProperties,
     'builder-id': block.id,
     style: getStyle({ block, context }),
-    [getClassPropName()]: [
-      block.id,
-      'builder-block',
-      block.class,
-      block.properties?.class,
-    ]
+    [getClassPropName()]: [block.id, 'builder-block', block.class, customClass]
       .filter(Boolean)
       .join(' '),
   };
