@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.12
+
+### Patch Changes
+
+- f3be707: Fix missing first-paint styles for non-first personalization variants and default content, preventing layout shifts during hydration.
+
 ## 9.4.11
 
 ### Patch Changes
