@@ -221,11 +221,18 @@ const initializeSmartlingPlugin = async () => {
       pkg.name
     );
     
-    // Check if webhook URL needs updating - update whenever the URL is different
-    const currentWebhookUrl = existingModel.webhooks?.[0]?.url;
-    const newWebhookUrl = updatedTemplate.webhooks[0].url;
-    
-    if (currentWebhookUrl !== newWebhookUrl) {
+    const currentWebhook = existingModel.webhooks?.[0];
+    const newWebhook = updatedTemplate.webhooks[0];
+    const getAuthHeader = (webhook: any) =>
+      webhook?.customHeaders?.find((header: any) => header.name === 'Authorization')?.value;
+
+    // The webhook keeps its own copy of the private key, so a rotated or deactivated key 401s
+    // job-publish-hook until the header is rewritten.
+    const urlChanged = currentWebhook?.url !== newWebhook.url;
+    const keyChanged =
+      Boolean(pluginPrivateKey) && getAuthHeader(currentWebhook) !== getAuthHeader(newWebhook);
+
+    if (urlChanged || keyChanged) {
       // Update the existing model with new webhook configuration
       existingModel.webhooks = updatedTemplate.webhooks;
     }
