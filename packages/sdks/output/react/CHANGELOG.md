@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 5.4.3
+
+### Patch Changes
+
+- 109e29a: Fix duplicate class attributes during server rendering of blocks with custom classes, preserving Builder layout styles.
+
 ## 5.4.2
 
 ### Patch Changes
