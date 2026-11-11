@@ -1,5 +1,11 @@
 # Builder.io Next.js SDK Changelog (@builder.io/sdk-react-nextjs)
 
+## 0.26.3
+
+### Patch Changes
+
+- 109e29a: Fix duplicate class attributes during server rendering of blocks with custom classes, preserving Builder layout styles.
+
 ## 0.26.2
 
 ### Patch Changes
