@@ -201,12 +201,6 @@ const initializeSmartlingPlugin = async () => {
 
   // Get plugin settings - but don't return early if they don't exist
   const pluginSettings = appState.user.organization?.value?.settings?.plugins?.get(pkg.name);
-  
-  // Ensure enableJobAutoAuthorization defaults to true if settings exist
-  if (pluginSettings && pluginSettings.get('enableJobAutoAuthorization') === undefined) {
-    pluginSettings.set('enableJobAutoAuthorization', true);
-  }
-  
   const settings = pluginSettings;
   const copySmartlingLocales = settings?.get('copySmartlingLocales');
   
