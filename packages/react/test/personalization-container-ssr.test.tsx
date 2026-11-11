@@ -68,22 +68,24 @@ const runInBrowser = (html: string, locale: string) => {
 };
 
 describe('personalization SSR shared styles', () => {
-  test.each([
+  [
     { key: 'custom', compat: false },
     { key: 'css', compat: true },
-  ])('preserves the parent cache configuration for $key with compat=$compat', ({ key, compat }) => {
-    const { html, cache } = renderFixture(key, compat);
-    expect(cache.inserted).toEqual({});
-    expect(cache.registered).toEqual({});
-    const dom = runInBrowser(html, 'ca-ES');
-    const styles = Array.from(dom.window.document.querySelectorAll(`style[data-emotion-${key}]`));
-    expect(styles.length).toBeGreaterThan(0);
-    const rules = styles.map(style => style.textContent).join('');
-    expect(rules).toContain('padding:40px');
-    expect(rules).not.toContain('variant-French');
-    styles.forEach(style => expect(style.getAttribute('nonce')).toBe('test-nonce'));
-    dom.window.close();
-  });
+  ].forEach(({ key, compat }) =>
+    test(`preserves the parent cache configuration for ${key} with compat=${compat}`, () => {
+      const { html, cache } = renderFixture(key, compat);
+      expect(cache.inserted).toEqual({});
+      expect(cache.registered).toEqual({});
+      const dom = runInBrowser(html, 'ca-ES');
+      const styles = Array.from(dom.window.document.querySelectorAll(`style[data-emotion-${key}]`));
+      expect(styles.length).toBeGreaterThan(0);
+      const rules = styles.map(style => style.textContent).join('');
+      expect(rules).toContain('padding:40px');
+      expect(rules).not.toContain('variant-French');
+      styles.forEach(style => expect(style.getAttribute('nonce')).toBe('test-nonce'));
+      dom.window.close();
+    })
+  );
 
   test('Emotion groups shared styles and variant-only font rules in the same tag', () => {
     const { html } = renderFixture();
@@ -97,30 +99,32 @@ describe('personalization SSR shared styles', () => {
     dom.window.close();
   });
 
-  test.each([
+  [
     ['fr-FR', 'French'],
     ['ca-ES', 'Catalan'],
     ['en-US', 'English'],
-  ])('keeps only %s content and its styles without hydration', (locale, name) => {
-    const { html } = renderFixture();
-    const dom = runInBrowser(html, locale);
-    const document = dom.window.document;
-    const styles = Array.from(document.querySelectorAll('style[data-emotion-css]'));
-    const rules = styles.map(style => style.textContent).join('');
-    expect(document.querySelector('[data-content]')!.textContent).toBe(name);
-    expect(document.querySelector('template')).toBeNull();
-    expect(rules).toContain('padding:40px');
-    expect(rules).toContain(`@keyframes ${animation.name}`);
-    expect(rules).toContain(`variant-${name}`);
-    expect(rules).toContain(`--selected-variant:${name}`);
-    styles.forEach(style => expect(style.getAttribute('nonce')).toBe('test-nonce'));
-    ['French', 'Catalan', 'English']
-      .filter(value => value !== name)
-      .forEach(value => {
-        expect(rules).not.toContain(`variant-${value}`);
-        expect(rules).not.toContain(`--selected-variant:${value}`);
-        expect(document.querySelector(`[data-content="${value}"]`)).toBeNull();
-      });
-    dom.window.close();
-  });
+  ].forEach(([locale, name]) =>
+    test(`keeps only ${locale} content and its styles without hydration`, () => {
+      const { html } = renderFixture();
+      const dom = runInBrowser(html, locale);
+      const document = dom.window.document;
+      const styles = Array.from(document.querySelectorAll('style[data-emotion-css]'));
+      const rules = styles.map(style => style.textContent).join('');
+      expect(document.querySelector('[data-content]')!.textContent).toBe(name);
+      expect(document.querySelector('template')).toBeNull();
+      expect(rules).toContain('padding:40px');
+      expect(rules).toContain(`@keyframes ${animation.name}`);
+      expect(rules).toContain(`variant-${name}`);
+      expect(rules).toContain(`--selected-variant:${name}`);
+      styles.forEach(style => expect(style.getAttribute('nonce')).toBe('test-nonce'));
+      ['French', 'Catalan', 'English']
+        .filter(value => value !== name)
+        .forEach(value => {
+          expect(rules).not.toContain(`variant-${value}`);
+          expect(rules).not.toContain(`--selected-variant:${value}`);
+          expect(document.querySelector(`[data-content="${value}"]`)).toBeNull();
+        });
+      dom.window.close();
+    })
+  );
 });
