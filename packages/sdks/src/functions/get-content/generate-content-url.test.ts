@@ -378,4 +378,37 @@ describe('Generate Content URL', () => {
       vi.unstubAllGlobals();
     }
   });
+
+  test.each([
+    'builder.userAttributes.__proto__.polluted=yes',
+    'builder.userAttributes.constructor.prototype.polluted=yes',
+    'builder.userAttributes.toString.polluted=yes',
+  ])('does not pollute prototypes from Studio query parameter %s', (param) => {
+    vi.stubGlobal('window', {
+      location: {
+        search: `?builder.preview=BUILDER_STUDIO&${param}&builder.userAttributes.audience=members`,
+        pathname: '/products',
+        host: 'www.example.com',
+      },
+    });
+    vi.stubGlobal('document', {});
+
+    try {
+      const output = generateContentUrl({
+        apiKey: testKey,
+        model: testModel,
+      });
+
+      expect(({} as any).polluted).toBeUndefined();
+      expect((Object as any).polluted).toBeUndefined();
+      expect((Object.prototype.toString as any).polluted).toBeUndefined();
+      expect(
+        JSON.parse(output.searchParams.get('userAttributes')!).audience
+      ).toBe('members');
+    } finally {
+      delete (Object.prototype as any).polluted;
+      delete (Object.prototype.toString as any).polluted;
+      vi.unstubAllGlobals();
+    }
+  });
 });
