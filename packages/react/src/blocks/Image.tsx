@@ -7,6 +7,7 @@ import { BuilderElement, Builder } from '@builder.io/sdk';
 import { BuilderMetaContext } from '../store/builder-meta';
 import { withBuilder } from '../functions/with-builder';
 import { throttle } from '../functions/throttle';
+import { getWebpSrcSet } from '../functions/get-webp-src-set';
 import { Breakpoints, getSizesForBreakpoints } from '../constants/device-sizes.constant';
 import { IMAGE_FILE_TYPES } from 'src/constants/file-types.constant';
 
@@ -392,7 +393,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                 <picture ref={ref => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && !this.props.noWebp && (
                     <source
-                      srcSet={srcset.replace(/\?/g, '?format=webp&')}
+                      srcSet={getWebpSrcSet(srcset)}
                       type="image/webp"
                       sizes={sizes || undefined}
                     />
