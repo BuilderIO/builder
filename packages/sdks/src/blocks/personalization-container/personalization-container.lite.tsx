@@ -214,7 +214,7 @@ export default function PersonalizationContainer(
             id={`variants-visibility-script-${props.builderBlock?.id}`}
           />
           <For each={state.localeVariants}>
-            {(item) => (
+            {(item, _index) => (
               <Blocks
                 key={`${props.builderBlock?.id}-${item.index}`}
                 BlocksWrapperProps={{

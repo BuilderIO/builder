@@ -1,6 +1,5 @@
 ---
 "@builder.io/react": patch
-"@builder.io/sdk-react-nextjs": patch
 "@builder.io/sdk-qwik": patch
 "@builder.io/sdk-react": patch
 "@builder.io/sdk-svelte": patch
