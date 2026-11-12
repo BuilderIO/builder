@@ -9,4 +9,4 @@
 "@builder.io/sdk-vue": patch
 ---
 
-Fix draft previews of localized content using the `builder.options.locale` value from the preview URL instead of the locale passed to `fetchOneEntry` or `<Content>`
+Fix draft previews of localized content so the locale passed to `fetchOneEntry` or `<Content>` takes precedence over `builder.options.locale` in the preview URL.
