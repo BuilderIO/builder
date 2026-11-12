@@ -1,5 +1,11 @@
 # Builder.io React SDK Changelog (@builder.io/sdk-react)
 
+## 5.4.4
+
+### Patch Changes
+
+- 728e2e6: Fix draft previews of localized content so the locale passed to `fetchOneEntry` or `<Content>` takes precedence over `builder.options.locale` in the preview URL.
+
 ## 5.4.3
 
 ### Patch Changes

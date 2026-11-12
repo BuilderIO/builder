@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.26.4
+
+### Patch Changes
+
+- 728e2e6: Fix draft previews of localized content so the locale passed to `fetchOneEntry` or `<Content>` takes precedence over `builder.options.locale` in the preview URL.
+
 ## 0.26.2
 
 ### Patch Changes

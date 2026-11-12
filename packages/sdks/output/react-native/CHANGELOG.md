@@ -1,5 +1,11 @@
 # Builder.io React Native SDK Changelog (@builder.io/sdk-react-native)
 
+## 5.4.4
+
+### Patch Changes
+
+- 728e2e6: Fix draft previews of localized content so the locale passed to `fetchOneEntry` or `<Content>` takes precedence over `builder.options.locale` in the preview URL.
+
 ## 5.4.2
 
 ### Patch Changes
