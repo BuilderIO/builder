@@ -322,6 +322,34 @@ describe('Generate Content URL', () => {
     }
   });
 
+  test('does not allow builder.options.locale in the URL to override an explicit locale', () => {
+    vi.stubGlobal('window', {
+      location: {
+        search: '?builder.preview=page&builder.options.locale=Default',
+        pathname: '/fr-fr/page',
+        host: 'www.example.com',
+      },
+    });
+    vi.stubGlobal('document', {});
+
+    try {
+      const withLocale = generateContentUrl({
+        apiKey: testKey,
+        model: testModel,
+        locale: 'fr-FR',
+      });
+      const withoutLocale = generateContentUrl({
+        apiKey: testKey,
+        model: testModel,
+      });
+
+      expect(withLocale.searchParams.get('locale')).toBe('fr-FR');
+      expect(withoutLocale.searchParams.get('locale')).toBe('Default');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   test('converts Studio boolean user attributes from query parameters', () => {
     vi.stubGlobal('window', {
       location: {

@@ -439,6 +439,7 @@ export default function EnableEditor(props: BuilderEditorProps) {
           model: props.model,
           apiKey: props.apiKey,
           apiVersion: props.builderContextSignal.value.apiVersion,
+          ...(props.locale ? { locale: props.locale } : {}),
           ...(searchParamPreviewModel === 'BUILDER_STUDIO' &&
           props.context?.symbolId
             ? { query: { id: props.context.symbolId } }
