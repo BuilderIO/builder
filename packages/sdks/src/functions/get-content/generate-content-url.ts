@@ -109,9 +109,10 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
 
   const flattened = flatten(queryOptions);
   for (const key in flattened) {
-    if (key !== 'apiKey') {
-      url.searchParams.set(key, String(flattened[key]));
-    }
+    if (key === 'apiKey') continue;
+    // explicit `locale` wins over `builder.options.locale` from the preview URL, matching Gen1
+    if (key === 'locale' && locale) continue;
+    url.searchParams.set(key, String(flattened[key]));
   }
 
   if (Object.keys(finalUserAttributes).length > 0) {
