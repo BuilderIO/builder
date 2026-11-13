@@ -49,26 +49,24 @@ export function getSrcSet(url: string): string {
   const sizes = [100, 200, 400, 800, 1200, 1600, 2000];
 
   if (url.match(/builder\.io/)) {
-    let srcUrl = url;
-    const widthInSrc = Number(url.split('?width=')[1]);
-    if (!isNaN(widthInSrc)) {
-      srcUrl = `${srcUrl} ${widthInSrc}w`;
-    }
+    const widthInSrc = Number(url.match(/[?&]width=(\d+)/)?.[1]);
 
+    // A candidate without a width descriptor is treated as 1x and can win over
+    // the resized ones, so the original is only kept when its width is known.
     return sizes
       .filter((size) => size !== widthInSrc)
       .map((size) => `${updateQueryParam(url, 'width', size)} ${size}w`)
-      .concat([srcUrl])
+      .concat(isNaN(widthInSrc) ? [] : [`${url} ${widthInSrc}w`])
       .join(', ');
   }
 
   if (url.match(/cdn\.shopify\.com/)) {
-    return sizes
+    const candidates = sizes
       .map((size) => [getShopifyImageUrl(url, `${size}x${size}`), size])
       .filter(([sizeUrl]) => !!sizeUrl)
-      .map(([sizeUrl, size]) => `${sizeUrl} ${size}w`)
-      .concat([url])
-      .join(', ');
+      .map(([sizeUrl, size]) => `${sizeUrl} ${size}w`);
+
+    return candidates.length ? candidates.join(', ') : url;
   }
 
   return url;
