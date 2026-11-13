@@ -9,6 +9,7 @@ import {
   PERSONALIZATION_SCRIPT,
   STUDIO_USER_ATTRIBUTES_SCRIPT,
   UPDATE_VISIBILITY_STYLES_SCRIPT,
+  filterWithCustomTargeting,
 } from './helpers/inlined-fns.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
 
@@ -200,12 +201,38 @@ export const getInitPersonalizationVariantsFnsScriptString = () => {
 
 const isHydrationTarget = TARGET === 'react';
 
+/**
+ * The inline scripts force the page locale over user attributes, so a variant
+ * targeting another locale can never win and must not ship in the HTML.
+ */
+export function isVariantForLocale(
+  query: Query[] | undefined,
+  locale?: string
+) {
+  if (!locale) return true;
+  return filterWithCustomTargeting(
+    { locale },
+    (query || []).filter((q) => q.property === 'locale')
+  );
+}
+
+const getTargetingOnly = (
+  variants: PersonalizationContainerProps['variants']
+) =>
+  JSON.stringify(
+    (variants || []).map((v) => ({
+      query: v.query,
+      startDate: v.startDate,
+      endDate: v.endDate,
+    }))
+  );
+
 export const getPersonalizationScript = (
   variants: PersonalizationContainerProps['variants'],
   blockId: string,
   locale?: string
 ) => {
-  return `window.${BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME}(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
+  return `window.${BUILDER_IO_PERSONALIZATION_SCRIPT_FN_NAME}(${getTargetingOnly(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
 };
 
 export const getUpdateVisibilityStylesScript = (
@@ -213,7 +240,7 @@ export const getUpdateVisibilityStylesScript = (
   blockId: string,
   locale?: string
 ) => {
-  return `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(${JSON.stringify(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
+  return `window.${UPDATE_VARIANT_VISIBILITY_SCRIPT_FN_NAME}(${getTargetingOnly(variants)}, "${blockId}", ${isHydrationTarget}${locale ? `, "${locale}"` : ''})`;
 };
 
 export { filterWithCustomTargeting } from './helpers/inlined-fns.js';

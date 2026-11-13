@@ -25,6 +25,7 @@ import {
   getBlocksToRender,
   getPersonalizationScript,
   getUpdateVisibilityStylesScript,
+  isVariantForLocale,
   SDKS_REQUIRING_RESET_APPROACH,
 } from './helpers.js';
 import type { PersonalizationContainerProps } from './personalization-container.types.js';
@@ -93,6 +94,16 @@ export default function PersonalizationContainer(
           variant.endDate
         );
       });
+    },
+    get localeVariants() {
+      return (props.variants || [])
+        .map((variant, index) => ({ variant, index }))
+        .filter((item) =>
+          isVariantForLocale(
+            item.variant.query,
+            props.builderContext.value?.rootState?.locale as string | undefined
+          )
+        );
     },
     get blocksToRender() {
       return getBlocksToRender({
@@ -202,26 +213,26 @@ export default function PersonalizationContainer(
             scriptStr={state.updateVisibilityStylesScript}
             id={`variants-visibility-script-${props.builderBlock?.id}`}
           />
-          <For each={props.variants}>
-            {(variant, index) => (
+          <For each={state.localeVariants}>
+            {(item, _index) => (
               <Blocks
-                key={`${props.builderBlock?.id}-${index}`}
+                key={`${props.builderBlock?.id}-${item.index}`}
                 BlocksWrapperProps={{
                   ...props.builderContext.value?.BlocksWrapperProps,
                   'aria-hidden': true,
                   hidden: true,
-                  'data-variant-id': `${props.builderBlock?.id}-${index}`,
+                  'data-variant-id': `${props.builderBlock?.id}-${item.index}`,
                 }}
-                blocks={variant.blocks}
+                blocks={item.variant.blocks}
                 parent={props.builderBlock?.id}
-                path={`component.options.variants.${index}.blocks`}
+                path={`component.options.variants.${item.index}.blocks`}
                 context={props.builderContext}
                 registeredComponents={props.builderComponents}
               >
                 <InlinedScript
                   nonce={props.builderContext.value?.nonce || ''}
                   scriptStr={state.scriptStr}
-                  id={`variants-script-${props.builderBlock?.id}-${index}`}
+                  id={`variants-script-${props.builderBlock?.id}-${item.index}`}
                 />
               </Blocks>
             )}
