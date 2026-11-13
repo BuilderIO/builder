@@ -118,9 +118,11 @@ test.describe('Blocks', () => {
           // RN SDK does not support object-fit
           'object-fit': checkIsRN(sdk) ? 'fill' : 'contain',
         },
+        // The mock serves a 600x400 file for every width, so the browser picking
+        // the 1200w candidate (density 1200 / 71vw) renders it at 600 / 1.32.
         {
-          width: '600px',
-          height: '400px',
+          width: '454.406px',
+          height: '302.938px',
         },
       ];
 
