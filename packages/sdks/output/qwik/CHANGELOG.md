@@ -1,5 +1,11 @@
 # Builder.io Qwik SDK Changelog (@builder.io/sdk-qwik)
 
+## 0.26.5
+
+### Patch Changes
+
+- 87d1e02: Fix Image block srcset so the original image URL is only included when it has a width descriptor, preventing browsers from downloading the full-size original image on standard-density screens.
+
 ## 0.26.4
 
 ### Patch Changes

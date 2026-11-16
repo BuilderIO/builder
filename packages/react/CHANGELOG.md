@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.13
+
+### Patch Changes
+
+- 87d1e02: Fix Image block srcset so the original image URL is only included when it has a width descriptor, preventing browsers from downloading the full-size original image on standard-density screens.
+
 ## 9.4.12
 
 ### Patch Changes
