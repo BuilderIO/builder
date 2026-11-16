@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.14
+
+### Patch Changes
+
+- 24a41a1: Fix Variant Container server HTML leaking content for other locales. Variants whose locale targeting can't match the page locale are no longer rendered, and the inline personalization script no longer embeds variant blocks.
+
 ## 9.4.13
 
 ### Patch Changes
