@@ -117,9 +117,14 @@ function processContainer($: CheerioAPI, $container: Cheerio<any>, userAttribute
 
     if (variantsMatch) {
       let winningVariantIndex = -1;
+      // Mirror the inline script: the page locale wins, and variants for other locales are rendered empty.
+      const localeMatch = scriptContent.match(/attributes\.locale = "([^"]*)";/);
       try {
         const variantsData = JSON.parse(variantsMatch[1]);
-        winningVariantIndex = findWinningVariant(variantsData, userAttributes);
+        winningVariantIndex = findWinningVariant(
+          variantsData,
+          localeMatch ? { ...userAttributes, locale: localeMatch[1] } : userAttributes
+        );
       } catch (e) {
         console.error('Error parsing variants script');
       }

@@ -24,7 +24,7 @@ const VariantContent = ({ name }: { name: string }) => (
   </ClassNames>
 );
 
-const renderFixture = (key = 'css', compat = false) => {
+const renderFixture = (key = 'css', compat = false, locale?: string) => {
   const cache = createCache({ key, nonce: 'test-nonce' });
   if (compat) cache.compat = true;
   const html = renderToString(
@@ -36,7 +36,7 @@ const renderFixture = (key = 'css', compat = false) => {
           id: blockId,
           children: [<VariantContent key="default" name="English" />] as any,
         }}
-        builderState={{ state: {} }}
+        builderState={{ state: locale ? { locale } : {} }}
         previewingIndex={null}
         variants={
           [
@@ -66,6 +66,19 @@ const runInBrowser = (html: string, locale: string) => {
   );
   return new JSDOM(html, { url: 'http://localhost/', cookieJar, runScripts: 'dangerously' });
 };
+
+describe('personalization SSR locale pruning', () => {
+  test('omits content of variants targeting another locale but keeps placeholders', () => {
+    const { html } = renderFixture('css', false, 'fr-FR');
+    expect(html).not.toContain('Catalan');
+    const dom = runInBrowser(html, 'ca-ES');
+    expect(dom.window.document.querySelector('[data-content]')!.textContent).toBe('French');
+    dom.window.close();
+
+    const before = new JSDOM(html).window.document;
+    expect(before.querySelectorAll('template[data-variant-id]').length).toBe(2);
+  });
+});
 
 describe('personalization SSR shared styles', () => {
   [

@@ -132,14 +132,17 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
         >
           {props.variants?.map((variant, index) => (
             <template key={index} data-variant-id={props.builderBlock?.id! + index}>
-              <PersonalizationStyles>
-                <BuilderBlocks
-                  blocks={variant.blocks}
-                  parentElementId={props.builderBlock?.id}
-                  dataPath={`component.options.variants.${index}.blocks`}
-                  child
-                />
-              </PersonalizationStyles>
+              {/* Empty placeholder keeps positional lookups (e.g. personalization-utils) intact */}
+              {isVariantForLocale(variant.query, props.builderState.state?.locale) && (
+                <PersonalizationStyles>
+                  <BuilderBlocks
+                    blocks={variant.blocks}
+                    parentElementId={props.builderBlock?.id}
+                    dataPath={`component.options.variants.${index}.blocks`}
+                    child
+                  />
+                </PersonalizationStyles>
+              )}
             </template>
           ))}
           <script
@@ -293,6 +296,15 @@ Builder.registerComponent(PersonalizationContainer, {
     },
   ],
 });
+
+// The inline script forces this locale, so variants targeting another locale can never win.
+function isVariantForLocale(query: Query[] | undefined, locale?: string) {
+  if (!locale) return true;
+  return filterWithCustomTargeting(
+    { locale },
+    (query || []).filter(q => q.property === 'locale')
+  );
+}
 
 function getPersonalizationScript(
   variants: PersonalizationContainerProps['variants'],

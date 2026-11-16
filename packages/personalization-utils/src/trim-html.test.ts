@@ -47,6 +47,21 @@ describe('trimHtml', () => {
     expect(result).not.toContain('Variant 2 Content');
   });
 
+  it('should apply the page locale from the script over the user attribute locale', () => {
+    const html = `
+      <div class="builder-personalization-container">
+        <template data-variant-id="builder-123-0"></template>
+        <script id="variants-script-builder-123">
+          (function() { var attributes = {}; attributes.locale = "en-US"; var variants = [{"query":[{"property":"locale","operator":"is","value":"fr-FR"}]}]; })();
+        </script>
+        <div>Default Content</div>
+      </div>
+    `;
+    const result = trimHtml(html, { userAttributes: { locale: 'fr-FR' } }).html;
+    expect(result).toContain('<div>Default Content</div>');
+    expect(result).not.toContain('<template');
+  });
+
   it('should handle multiple personalization containers', () => {
     const multipleContainersHtml = `
       ${baseHtml}
