@@ -214,7 +214,12 @@ export default function PersonalizationContainer(
             id={`variants-visibility-script-${props.builderBlock?.id}`}
           />
           <For each={state.localeVariants}>
-            {(item, index) => (
+            {(
+              item,
+              // Angular output needs a named index; Solid rejects a `_` prefix.
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              index
+            ) => (
               <Blocks
                 key={`${props.builderBlock?.id}-${item.index}`}
                 BlocksWrapperProps={{
