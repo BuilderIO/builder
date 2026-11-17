@@ -556,7 +556,7 @@ export function getTranslateableFields(
       }
 
       if (el && el.id && el.component?.name === 'Symbol'&& !isExcluded) {
-        const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
+        const symbolInputs = Object.entries(el.component?.options?.symbol?.data || {});
         if (symbolInputs.length) {
           const basePath = `blocks.${el.id}.symbolInput`;
           symbolInputs.forEach(
@@ -820,7 +820,7 @@ export function applyTranslation(
       const isExcluded = excludedDepth > 0;
 
       if (el && el.id && el.component?.name === 'Symbol' && !isExcluded) {
-        const symbolInputs = Object.entries(el.component?.options?.symbol?.data) || [];
+        const symbolInputs = Object.entries(el.component?.options?.symbol?.data || {});
         if (symbolInputs.length) {
           const transformedMeta = {};
 
