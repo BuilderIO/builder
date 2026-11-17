@@ -3,8 +3,8 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import {
   BuilderLogLevel,
+  fetchWithLogging,
   getDefaultLogLevel,
-  logFetchDebugInfo,
 } from './functions/log-level.function';
 import { QueryString } from './classes/query-string.class';
 import { BehaviorSubject } from './classes/observable.class';
@@ -1016,19 +1016,22 @@ export class Builder {
   static attributesCookieName = 'builder.userAttributes';
 
   /**
-   * Controls SDK diagnostic logging. Set to `'debug'` to log a `console.debug` line for every
-   * content fetch, including the request URL, response status, and the `x-request-id` response
-   * header when the API includes one. This is useful when reporting intermittent API issues to
-   * Builder.io support, since it lets you correlate a specific SDK call with a request on
-   * Builder's side.
+   * Controls SDK HTTP diagnostic logging using standard `console` log levels:
+   * - `'silent'` (default): no HTTP logging
+   * - `'error'`: network/`fetch` rejections and `5xx` responses via `console.error`
+   * - `'warn'`: `'error'` plus `4xx` responses via `console.warn`
+   * - `'info'`: `'warn'` plus a 1-line summary for every HTTP request via `console.info`
+   *   (including method, URL, status, duration, and the `x-request-id` response header)
+   * - `'debug'`: `'info'` plus outgoing request headers and response headers via
+   *   `console.debug` (with sensitive headers such as `Authorization` redacted)
    *
-   * Defaults to the `BUILDER_SDK_LOG_LEVEL` environment variable (e.g.
-   * `BUILDER_SDK_LOG_LEVEL=debug`) when running under Node.js, or `'silent'` otherwise. Can
-   * also be set programmatically at any time, which is the only option in bundled browser code
-   * where environment variables aren't available at runtime:
+   * Defaults from the `BUILDER_SDK_LOG_LEVEL` environment variable (e.g.
+   * `BUILDER_SDK_LOG_LEVEL=info` or `BUILDER_SDK_LOG_LEVEL=debug`) when running under Node.js,
+   * or `'silent'` otherwise. Can also be set programmatically at any time, which is the only
+   * option in bundled browser code where environment variables aren't available at runtime:
    *
    * ```ts
-   * Builder.logLevel = 'debug';
+   * Builder.logLevel = 'info';
    * ```
    */
   static logLevel: BuilderLogLevel = getDefaultLogLevel();
@@ -1399,7 +1402,7 @@ export class Builder {
 
     const host = this.host;
 
-    getFetch()(`${host}/api/v1/track`, {
+    fetchWithLogging(getFetch(), Builder.logLevel, `${host}/api/v1/track`, {
       method: 'POST',
       body: JSON.stringify({ events }),
       headers: {
@@ -2589,10 +2592,9 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, this.addSdkHeaders(options)).then(res => {
-      logFetchDebugInfo(Builder.logLevel, { method: 'GET', url, response: res });
-      return res.json();
-    });
+    return fetchWithLogging(getFetch(), Builder.logLevel, url, this.addSdkHeaders(options)).then(
+      res => res.json()
+    );
   }
 
   get host() {
@@ -2641,17 +2643,14 @@ export class Builder {
     return {
       ...fetchOptions,
       headers: {
-        ...fetchOptions.headers,
+        ...fetchOptions?.headers,
         ...this.getSdkHeaders(),
       },
     };
   }
 
   private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
-    return getFetch()(url, this.addSdkHeaders(requestOptions)).then(res => {
-      logFetchDebugInfo(Builder.logLevel, { method: requestOptions?.method, url, response: res });
-      return res;
-    });
+    return fetchWithLogging(getFetch(), Builder.logLevel, url, this.addSdkHeaders(requestOptions));
   }
 
   /**

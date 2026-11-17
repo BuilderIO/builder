@@ -36,53 +36,61 @@ describe('Builder', () => {
   });
 });
 
-describe('makeFetchApiCall logging', () => {
+describe('HTTP stack logging (makeFetchApiCall & requestUrl)', () => {
   const url = 'https://cdn.builder.io/api/v3/content/page';
+  let infoSpy: jest.SpyInstance;
   let debugSpy: jest.SpyInstance;
   let originalLogLevel: typeof Builder.logLevel;
   let originalFetch: typeof globalThis.fetch;
 
   beforeEach(() => {
+    infoSpy = jest.spyOn(console, 'info').mockImplementation(() => {});
     debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
     originalLogLevel = Builder.logLevel;
     originalFetch = globalThis.fetch;
   });
 
   afterEach(() => {
+    infoSpy.mockRestore();
     debugSpy.mockRestore();
     Builder.logLevel = originalLogLevel;
     globalThis.fetch = originalFetch;
   });
 
-  test('logs the x-request-id header when Builder.logLevel is debug', async () => {
-    Builder.logLevel = 'debug';
+  test('logs request/response details and x-request-id according to Builder.logLevel', async () => {
     const mockResponse = {
       status: 200,
-      json: async () => ({}),
+      json: async () => ({ ok: true }),
       headers: { get: (name: string) => (name === 'x-request-id' ? 'req-abc' : null) },
     };
     globalThis.fetch = jest.fn().mockResolvedValue(mockResponse) as any;
 
     const builder = new Builder();
-    await (builder as any).makeFetchApiCall(url, {});
 
-    expect(debugSpy).toHaveBeenCalledTimes(1);
-    expect(debugSpy.mock.calls[0][0]).toContain(url);
-    expect(debugSpy.mock.calls[0][0]).toContain('req-abc');
+    Builder.logLevel = 'info';
+    expect(await builder.requestUrl(url)).toEqual({ ok: true });
+    expect(infoSpy).toHaveBeenCalledTimes(1);
+    expect(infoSpy.mock.calls[0][0]).toContain('req-abc');
+    expect(debugSpy).not.toHaveBeenCalled();
+
+    Builder.logLevel = 'debug';
+    await (builder as any).makeFetchApiCall(url, {});
+    expect(debugSpy).toHaveBeenCalledTimes(2);
+    expect(debugSpy.mock.calls[1][0]).toContain('req-abc');
   });
 
   test('does not log when Builder.logLevel is silent (the default)', async () => {
     Builder.logLevel = 'silent';
-    const mockResponse = {
+    globalThis.fetch = jest.fn().mockResolvedValue({
       status: 200,
       json: async () => ({}),
       headers: { get: () => 'req-abc' },
-    };
-    globalThis.fetch = jest.fn().mockResolvedValue(mockResponse) as any;
+    }) as any;
 
     const builder = new Builder();
     await (builder as any).makeFetchApiCall(url, {});
 
+    expect(infoSpy).not.toHaveBeenCalled();
     expect(debugSpy).not.toHaveBeenCalled();
   });
 });
