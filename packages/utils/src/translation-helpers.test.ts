@@ -1,5 +1,11 @@
 import { BuilderContent } from '@builder.io/sdk';
-import { applyTranslation, getTranslateableFields, localizedType } from './translation-helpers';
+import {
+  applyTranslation,
+  getNonTranslatableModelInputs,
+  getTranslateableFields,
+  localizedType,
+  ModelField,
+} from './translation-helpers';
 
 test('getTranslateableFields from content to match snapshot', async () => {
   const content: BuilderContent = {
@@ -2438,5 +2444,162 @@ test('applyTranslation keeps references intact alongside translated text', () =>
   ]);
   expect(data.blocks[0].component.options.related['pl-PL']).toEqual([
     { heading: 'Może Ci się spodobać', product: reference('store-product', 'p1') },
+  ]);
+});
+
+const dataModelFieldsWithEnumsAndPlugins: ModelField[] = [
+  { name: 'textField', type: 'text', localized: true },
+  { name: 'stringField', type: 'string', localized: true },
+  { name: 'htmlField', type: 'html', localized: true },
+  { name: 'customPluginField', type: 'CustomPluginResource', localized: true },
+  {
+    name: 'referenceListField',
+    type: 'list',
+    localized: true,
+    subFields: [{ name: 'referenceItem', type: 'reference' }],
+  },
+  {
+    name: 'enumListField',
+    type: 'list',
+    localized: true,
+    subFields: [
+      {
+        name: 'item',
+        type: 'text',
+        enum: ['option_a', 'option_b', 'option_c'],
+      },
+    ],
+  },
+  {
+    name: 'enumTextField',
+    type: 'text',
+    localized: true,
+    enum: ['icon_default', 'icon_alt'],
+  },
+  {
+    name: 'excludedListField',
+    type: 'list',
+    localized: true,
+    meta: { excludeFromTranslation: true },
+    subFields: [{ name: 'item', type: 'text' }],
+  },
+];
+
+const dataModelEnumFieldsContent = (): BuilderContent => ({
+  data: {
+    textField: { '@type': localizedType, Default: 'Product title' },
+    htmlField: { '@type': localizedType, Default: '<p>Ships in 3-5 days</p>' },
+    customPluginField: {
+      '@type': localizedType,
+      Default: { id: 'res-1', code: 'CODE-001', name: 'Internal resource label' },
+    },
+    enumListField: {
+      '@type': localizedType,
+      Default: [{ item: 'option_a' }, { item: 'option_b' }],
+    },
+    enumTextField: {
+      '@type': localizedType,
+      Default: 'icon_default',
+    },
+    excludedListField: {
+      '@type': localizedType,
+      Default: [{ item: 'CODE-001' }],
+    },
+  },
+});
+
+test('getNonTranslatableModelInputs derives excluded paths for enum fields, enum list subfields, and custom plugin field types', () => {
+  expect(getNonTranslatableModelInputs(dataModelFieldsWithEnumsAndPlugins)).toEqual([
+    'customPluginField',
+    'referenceListField.*.referenceItem',
+    'enumListField.*.item',
+    'enumTextField',
+    'excludedListField',
+  ]);
+});
+
+test('getTranslateableFields skips enum fields, enum list subfields, and custom plugin fields when modelFields or content.meta.nonTranslatableInputs are provided', () => {
+  const viaModelFields = getTranslateableFields(dataModelEnumFieldsContent(), 'Default', '', {
+    modelFields: dataModelFieldsWithEnumsAndPlugins,
+  });
+
+  expect(viaModelFields).toEqual({
+    'metadata.textField': { value: 'Product title', instructions: '' },
+    'metadata.htmlField': { value: '<p>Ships in 3-5 days</p>', instructions: '' },
+  });
+
+  const contentWithMetaExclusions: BuilderContent & { meta?: Record<string, any> } = {
+    ...dataModelEnumFieldsContent(),
+    meta: {
+      nonTranslatableInputs: [
+        'customPluginField',
+        'enumListField.*.item',
+        'enumTextField',
+        'excludedListField',
+      ],
+    },
+  };
+
+  expect(getTranslateableFields(contentWithMetaExclusions, 'Default', '')).toEqual({
+    'metadata.textField': { value: 'Product title', instructions: '' },
+    'metadata.htmlField': { value: '<p>Ships in 3-5 days</p>', instructions: '' },
+  });
+});
+
+test('applyTranslation does not seed enum-only or custom-plugin data model fields into target locales and ignores legacy enum translations', () => {
+  const result = applyTranslation(
+    dataModelEnumFieldsContent(),
+    {
+      'metadata.textField': { value: 'Produkttitel' },
+      'metadata.htmlField': { value: '<p>Versand in 3–5 Tagen</p>' },
+      'metadata.enumListField#0#item': { value: 'option_a_translated' },
+      'metadata.enumTextField': { value: 'icon_translated' },
+      'metadata.customPluginField#name': { value: 'Übersetzter Ressourcenname' },
+    },
+    'de-DE',
+    'Default',
+    { modelFields: dataModelFieldsWithEnumsAndPlugins }
+  );
+  const data = result.data as any;
+
+  expect(data.textField['de-DE']).toBe('Produkttitel');
+  expect(data.htmlField['de-DE']).toBe('<p>Versand in 3–5 Tagen</p>');
+  expect(data.customPluginField).not.toHaveProperty('de-DE');
+  expect(data.enumListField).not.toHaveProperty('de-DE');
+  expect(data.enumTextField).not.toHaveProperty('de-DE');
+  expect(data.excludedListField).not.toHaveProperty('de-DE');
+});
+
+test('applyTranslation preserves existing locale-specific enum overrides in mixed data model lists', () => {
+  const content: BuilderContent & { meta?: Record<string, any> } = {
+    meta: {
+      nonTranslatableInputs: ['items.*.enumSubfield'],
+    },
+    data: {
+      items: {
+        '@type': localizedType,
+        Default: [{ textSubfield: 'Default label', enumSubfield: 'option_a' }],
+        'de-DE': [{ textSubfield: 'Default label', enumSubfield: 'option_b' }],
+      },
+    },
+  };
+
+  const fields = getTranslateableFields(content, 'Default', '');
+  expect(fields).toEqual({
+    'metadata.items#0#textSubfield': { value: 'Default label', instructions: '' },
+  });
+
+  const result = applyTranslation(
+    content,
+    {
+      'metadata.items#0#textSubfield': { value: 'Deutscher Text' },
+      'metadata.items#0#enumSubfield': { value: 'option_translated' },
+    },
+    'de-DE',
+    'Default'
+  );
+
+  expect((result.data as any).items['de-DE']).toEqual([
+    { textSubfield: 'Deutscher Text', enumSubfield: 'option_b' },
   ]);
 });
