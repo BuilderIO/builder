@@ -141,15 +141,12 @@ export default function Block(props: BlockProps) {
       }
 
       // Text renders a div, which makes a paragraph wrapper auto-close before hydration.
-      if (
+      const shouldUseDiv =
         props.block.tagName === 'p' &&
         (state.processedBlock.component?.name === 'Text' ||
           state.processedBlock.children?.some(
             (child) => child.component?.name === 'Text'
-          ))
-      ) {
-        return 'div';
-      }
+          ));
 
       return useTarget({
         /**
@@ -158,8 +155,8 @@ export default function Block(props: BlockProps) {
          * eslint-disable-next-line @typescript-eslint/ban-ts-comment
          * @ts-ignore */
         reactNative: View,
-        angular: props.block.tagName || DynamicDiv,
-        default: props.block.tagName || 'div',
+        angular: shouldUseDiv ? DynamicDiv : props.block.tagName || DynamicDiv,
+        default: shouldUseDiv ? 'div' : props.block.tagName || 'div',
       });
     },
     get canShowBlock() {

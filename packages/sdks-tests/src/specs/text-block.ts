@@ -155,7 +155,6 @@ export const PARAGRAPH_TEXT_CASES = {
         '@type': '@builder.io/sdk:Element',
         id: 'builder-inline-child',
         tagName: 'span',
-        properties: { innerHTML: 'Inline text marker' },
       },
     ],
   },

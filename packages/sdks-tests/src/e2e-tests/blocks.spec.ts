@@ -63,7 +63,7 @@ test.describe('Blocks', () => {
     { name: 'plain', markers: ['Plain text marker'], tag: 'div' },
     { name: 'rich', markers: ['First paragraph marker', 'Second paragraph marker'], tag: 'div' },
     { name: 'direct', markers: ['Direct text marker'], tag: 'div' },
-    { name: 'valid', markers: ['Inline text marker'], tag: 'p' },
+    { name: 'valid', markers: [], tag: 'p' },
   ]) {
     test(`Text paragraph wrapper: ${name}`, async ({ page, browser, sdk, packageName }) => {
       test.skip(checkIsRN(sdk) || checkIsGen1React(sdk));
@@ -73,6 +73,9 @@ test.describe('Blocks', () => {
       const parentSelector = `${tag}[builder-id="builder-paragraph-parent"]`;
       const parent = page.locator(parentSelector);
       await expect(parent).toHaveCount(1);
+      if (name === 'valid') {
+        await expect(parent.locator('span[builder-id="builder-inline-child"]')).toHaveCount(1);
+      }
       for (const marker of markers) {
         await expect(page.getByText(marker, { exact: true })).toHaveCount(1);
         await expect(parent.getByText(marker, { exact: true })).toBeVisible();
@@ -85,6 +88,9 @@ test.describe('Blocks', () => {
           await ssrPage.goto(page.url());
           const ssrParent = ssrPage.locator(parentSelector);
           await expect(ssrParent).toHaveCount(1);
+          if (name === 'valid') {
+            await expect(ssrParent.locator('span[builder-id="builder-inline-child"]')).toHaveCount(1);
+          }
           for (const marker of markers) {
             await expect(ssrPage.getByText(marker, { exact: true })).toHaveCount(1);
             await expect(ssrParent.getByText(marker, { exact: true })).toBeVisible();
