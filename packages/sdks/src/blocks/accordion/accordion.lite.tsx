@@ -6,8 +6,10 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import { getRepeatItemData } from '../../components/block/block.helpers.js';
 import Blocks from '../../components/blocks/index.js';
 import { camelToKebabCase } from '../../functions/camel-to-kebab-case.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
 import type { Dictionary } from '../../types/typescript.js';
 import type { AccordionProps } from './accordion.types.js';
 import { convertOrderNumberToString } from './helpers.js';
@@ -21,6 +23,53 @@ useMetadata({
 export default function Accordion(props: AccordionProps) {
   const state = useStore({
     open: [] as number[],
+    get itemsToRender(): {
+      title: BuilderBlock[];
+      detail: BuilderBlock[];
+      context: any;
+      titlePath: string | undefined;
+      detailPath: string | undefined;
+    }[] {
+      if (!props.useChildrenForItems) {
+        return (props.items || []).map((item, index) => ({
+          title: item.title,
+          detail: item.detail,
+          context: props.builderContext,
+          titlePath: `items.${index}.title`,
+          detailPath: `items.${index}.detail`,
+        }));
+      }
+      const result: {
+        title: BuilderBlock[];
+        detail: BuilderBlock[];
+        context: any;
+        titlePath: string | undefined;
+        detailPath: string | undefined;
+      }[] = [];
+      (props.builderBlock?.children || []).forEach((child: BuilderBlock) => {
+        const repeated = getRepeatItemData({
+          block: child,
+          context: props.builderContext.value,
+        });
+        const entries = repeated
+          ? repeated.map((data) => ({
+              block: data.block,
+              context: { value: data.context },
+            }))
+          : [{ block: child, context: props.builderContext }];
+        entries.forEach((entry) => {
+          const [title, detail] = entry.block.children || [];
+          result.push({
+            title: title ? [title] : [],
+            detail: detail ? [detail] : [],
+            context: entry.context,
+            titlePath: undefined,
+            detailPath: undefined,
+          });
+        });
+      });
+      return result;
+    },
     get onlyOneAtATime() {
       return Boolean(props.grid || props.oneAtATime);
     },
@@ -171,7 +220,7 @@ export default function Accordion(props: AccordionProps) {
 
   return (
     <div class="builder-accordion" style={state.accordionStyles}>
-      <For each={props.items}>
+      <For each={state.itemsToRender}>
         {(item, index) => (
           <Fragment key={index}>
             <div
@@ -196,9 +245,9 @@ export default function Accordion(props: AccordionProps) {
             >
               <Blocks
                 blocks={item.title}
-                path={`items.${index}.title`}
+                path={item.titlePath}
                 parent={props.builderBlock.id}
-                context={props.builderContext}
+                context={item.context}
                 registeredComponents={props.builderComponents}
                 linkComponent={props.builderLinkComponent}
               />
@@ -210,9 +259,9 @@ export default function Accordion(props: AccordionProps) {
               >
                 <Blocks
                   blocks={item.detail}
-                  path={`items.${index}.detail`}
+                  path={item.detailPath}
                   parent={props.builderBlock.id}
-                  context={props.builderContext}
+                  context={item.context}
                   registeredComponents={props.builderComponents}
                   linkComponent={props.builderLinkComponent}
                 />
