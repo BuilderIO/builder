@@ -28,15 +28,19 @@ export default function Accordion(props: AccordionProps) {
     get itemsToRender(): {
       title: BuilderBlock[];
       detail: BuilderBlock[];
-      repeatContext?: BuilderContextInterface;
+      repeatContext: BuilderContextInterface;
     }[] {
       if (!props.useChildrenForItems) {
-        return props.items || [];
+        return (props.items || []) as {
+          title: BuilderBlock[];
+          detail: BuilderBlock[];
+          repeatContext: BuilderContextInterface;
+        }[];
       }
       const result: {
         title: BuilderBlock[];
         detail: BuilderBlock[];
-        repeatContext?: BuilderContextInterface;
+        repeatContext: BuilderContextInterface;
       }[] = [];
       (props.builderBlock?.children || []).forEach((child: BuilderBlock) => {
         const repeated = getRepeatItemData({
@@ -254,7 +258,7 @@ export default function Accordion(props: AccordionProps) {
                   {(block) => (
                     <RepeatedBlock
                       key={block.id}
-                      repeatContext={item.repeatContext as BuilderContextInterface}
+                      repeatContext={item.repeatContext}
                       block={block}
                       registeredComponents={props.builderComponents}
                       linkComponent={props.builderLinkComponent}
@@ -289,7 +293,7 @@ export default function Accordion(props: AccordionProps) {
                     {(block) => (
                       <RepeatedBlock
                         key={block.id}
-                        repeatContext={item.repeatContext as BuilderContextInterface}
+                        repeatContext={item.repeatContext}
                         block={block}
                         registeredComponents={props.builderComponents}
                         linkComponent={props.builderLinkComponent}
