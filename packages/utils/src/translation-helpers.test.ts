@@ -2440,3 +2440,34 @@ test('applyTranslation keeps references intact alongside translated text', () =>
     { heading: 'Może Ci się spodobać', product: reference('store-product', 'p1') },
   ]);
 });
+
+describe('Symbol blocks without data', () => {
+  const symbolWithoutData = (): BuilderContent => ({
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-symbol',
+          component: {
+            name: 'Symbol',
+            options: { symbol: { model: 'symbol', entry: 'entry-id', ownerId: 'owner-id' } },
+          },
+        },
+      ],
+    },
+  });
+
+  test('getTranslateableFields skips the Symbol instead of throwing', () => {
+    expect(getTranslateableFields(symbolWithoutData(), 'Default', '')).toEqual({});
+  });
+
+  test('applyTranslation leaves the Symbol alone instead of throwing', () => {
+    const content = symbolWithoutData();
+    const result = applyTranslation(content, {}, 'fr-FR');
+    expect(result.data!.blocks![0].component!.options.symbol).toEqual({
+      model: 'symbol',
+      entry: 'entry-id',
+      ownerId: 'owner-id',
+    });
+  });
+});
