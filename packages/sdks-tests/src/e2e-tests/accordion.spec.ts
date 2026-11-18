@@ -167,4 +167,29 @@ test.describe('Accordion', () => {
       }
     }
   });
+  test('useChildrenForItems - renders static and repeated children as items', async ({
+    page,
+    sdk,
+  }) => {
+    test.fail(
+      excludeTestFor(
+        {
+          rsc: true,
+        },
+        sdk
+      )
+    );
+    await page.goto('/accordion-use-children-for-items');
+
+    await expect(page.locator('.builder-accordion-title')).toHaveCount(3);
+    for (const [title, detail] of [
+      ['Static', 'Inside Static'],
+      ['Apple', 'Inside Apple'],
+      ['Banana', 'Inside Banana'],
+    ]) {
+      await expect(page.getByText(detail)).not.toBeVisible();
+      await page.getByText(title, { exact: true }).click({ timeout: 10000 });
+      await expect(page.getByText(detail)).toBeVisible();
+    }
+  });
 });

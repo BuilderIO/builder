@@ -65,6 +65,7 @@ import {
   ACCORDION_GRID,
   ACCORDION_ONE_AT_A_TIME,
   ACCORDION_WITH_NO_DETAIL,
+  ACCORDION_USE_CHILDREN_FOR_ITEMS,
 } from './accordion.js';
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
@@ -223,6 +224,7 @@ export const PAGES: Record<string, Page> = {
   '/accordion-one-at-a-time': { content: ACCORDION_ONE_AT_A_TIME },
   '/accordion-grid': { content: ACCORDION_GRID },
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
+  '/accordion-use-children-for-items': { content: ACCORDION_USE_CHILDREN_FOR_ITEMS },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
   '/custom-components-no-default-value': { content: CUSTOM_COMPONENT_NO_DEFAULT_VALUE },

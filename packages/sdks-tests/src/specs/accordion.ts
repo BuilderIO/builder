@@ -335,3 +335,68 @@ export const ACCORDION_WITH_NO_DETAIL = {
     })),
   },
 };
+
+const accordionTextBlock = (id: string, text: string, binding?: string) => ({
+  '@type': '@builder.io/sdk:Element',
+  '@version': 2,
+  id,
+  component: { name: 'Text', options: { text } },
+  ...(binding ? { bindings: { 'component.options.text': binding } } : {}),
+});
+
+const accordionChildItem = (id: string, titleText: string, detailText: string, repeat?: any) => ({
+  '@type': '@builder.io/sdk:Element',
+  '@version': 2,
+  id,
+  ...(repeat ? { repeat } : {}),
+  children: [
+    {
+      '@type': '@builder.io/sdk:Element',
+      '@version': 2,
+      id: `${id}-title`,
+      children: [accordionTextBlock(`${id}-title-text`, titleText, repeat && 'state.fruit')],
+    },
+    {
+      '@type': '@builder.io/sdk:Element',
+      '@version': 2,
+      id: `${id}-detail`,
+      children: [
+        accordionTextBlock(`${id}-detail-text`, detailText, repeat && '`Inside ${state.fruit}`'),
+      ],
+    },
+  ],
+});
+
+export const ACCORDION_USE_CHILDREN_FOR_ITEMS = {
+  ...ACCORDION,
+  query: [
+    {
+      '@type': '@builder.io/core:Query',
+      property: 'urlPath',
+      operator: 'is',
+      value: '/accordion-use-children-for-items',
+    },
+  ],
+  data: {
+    ...ACCORDION.data,
+    state: { fruits: ['Apple', 'Banana'] },
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        id: 'builder-accordion-children',
+        component: {
+          name: 'Builder:Accordion',
+          options: { useChildrenForItems: true, items: [] },
+        },
+        children: [
+          accordionChildItem('static-item', 'Static', 'Inside Static'),
+          accordionChildItem('repeat-item', 'fruit', 'Inside fruit', {
+            collection: 'state.fruits',
+            itemName: 'fruit',
+          }),
+        ],
+      },
+    ],
+  },
+};
