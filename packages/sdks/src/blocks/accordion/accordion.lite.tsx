@@ -28,25 +28,15 @@ export default function Accordion(props: AccordionProps) {
     get itemsToRender(): {
       title: BuilderBlock[];
       detail: BuilderBlock[];
-      repeatContext: BuilderContextInterface | undefined;
-      titlePath: string | undefined;
-      detailPath: string | undefined;
+      repeatContext?: BuilderContextInterface;
     }[] {
       if (!props.useChildrenForItems) {
-        return (props.items || []).map((item, index) => ({
-          title: item.title,
-          detail: item.detail,
-          repeatContext: undefined,
-          titlePath: `items.${index}.title`,
-          detailPath: `items.${index}.detail`,
-        }));
+        return props.items || [];
       }
       const result: {
         title: BuilderBlock[];
         detail: BuilderBlock[];
-        repeatContext: BuilderContextInterface | undefined;
-        titlePath: string | undefined;
-        detailPath: string | undefined;
+        repeatContext?: BuilderContextInterface;
       }[] = [];
       (props.builderBlock?.children || []).forEach((child: BuilderBlock) => {
         const repeated = getRepeatItemData({
@@ -65,8 +55,6 @@ export default function Accordion(props: AccordionProps) {
             title: title ? [title] : [],
             detail: detail ? [detail] : [],
             repeatContext: entry.repeatContext,
-            titlePath: undefined,
-            detailPath: undefined,
           });
         });
       });
@@ -250,7 +238,11 @@ export default function Accordion(props: AccordionProps) {
                 else={
                   <Blocks
                     blocks={item.title}
-                    path={item.titlePath}
+                    path={
+                      props.useChildrenForItems
+                        ? undefined
+                        : `items.${index}.title`
+                    }
                     parent={props.builderBlock.id}
                     context={props.builderContext}
                     registeredComponents={props.builderComponents}
@@ -262,7 +254,7 @@ export default function Accordion(props: AccordionProps) {
                   {(block) => (
                     <RepeatedBlock
                       key={block.id}
-                      repeatContext={item.repeatContext}
+                      repeatContext={item.repeatContext as BuilderContextInterface}
                       block={block}
                       registeredComponents={props.builderComponents}
                       linkComponent={props.builderLinkComponent}
@@ -281,7 +273,11 @@ export default function Accordion(props: AccordionProps) {
                   else={
                     <Blocks
                       blocks={item.detail}
-                      path={item.detailPath}
+                      path={
+                        props.useChildrenForItems
+                          ? undefined
+                          : `items.${index}.detail`
+                      }
                       parent={props.builderBlock.id}
                       context={props.builderContext}
                       registeredComponents={props.builderComponents}
@@ -293,7 +289,7 @@ export default function Accordion(props: AccordionProps) {
                     {(block) => (
                       <RepeatedBlock
                         key={block.id}
-                        repeatContext={item.repeatContext}
+                        repeatContext={item.repeatContext as BuilderContextInterface}
                         block={block}
                         registeredComponents={props.builderComponents}
                         linkComponent={props.builderLinkComponent}

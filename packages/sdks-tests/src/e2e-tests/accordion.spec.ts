@@ -175,6 +175,8 @@ test.describe('Accordion', () => {
       excludeTestFor(
         {
           rsc: true,
+          // Gen 1 restarts the item index inside each repeat, so indices collide.
+          oldReact: true,
         },
         sdk
       )
