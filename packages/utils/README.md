@@ -237,3 +237,7 @@ export async function getServerSideProps({
 }
 ```
 note: Pixels will have `alt` by default in next API verison (`v3`);
+
+## Releasing
+
+Add a changeset (`yarn g:changeset` from the repo root, select `@builder.io/utils`) in your PR. Merging to `main` makes the "📦 Publish SDKs" workflow open/update a release PR; merging that publishes to npm.

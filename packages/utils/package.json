@@ -5,13 +5,10 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "prepublish": "npm run build",
-    "test": "jest",
-    "release:patch": "npm run build && npm version patch --no-git-tag-version && ALLOW_PUBLISH=true npm publish",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev"
+    "test": "jest"
   },
   "devDependencies": {
-    "@builder.io/sdk": "^1.1.29",
+    "@builder.io/sdk": "workspace:*",
     "@types/jest": "^26.0.19",
     "@types/traverse": "^0.6.32",
     "jest": "^26.6.3",

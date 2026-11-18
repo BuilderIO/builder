@@ -6,7 +6,8 @@
     "ci:changeset": "changeset status --since=main",
     "fix-core-version": "yarn workspace @builder.io/react fix-core-version",
     "build:sdks": "yarn g:nx run-many --skip-nx-cache -t build --projects=@builder.io/sdk-\\*,@builder.io/react",
-    "ci:release": "yarn build:sdks && yarn run fix-core-version && yarn g:changeset publish"
+    "build:utils": "yarn workspace @builder.io/utils build",
+    "ci:release": "yarn build:sdks && yarn build:utils && yarn run fix-core-version && yarn g:changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1"

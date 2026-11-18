@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "strict": true,
     "declaration": true,
-    "types": []
+    "types": ["jest"]
   },
   "include": ["./src"],
   "exclude": ["node_modules", "**/*.test.ts"]
