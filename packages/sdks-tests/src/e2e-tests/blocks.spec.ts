@@ -59,6 +59,43 @@ test.describe('Blocks', () => {
     }
   });
 
+  for (const { name, markers, tag } of [
+    { name: 'plain', markers: ['Plain text marker'], tag: 'div' },
+    { name: 'rich', markers: ['First paragraph marker', 'Second paragraph marker'], tag: 'div' },
+    { name: 'direct', markers: ['Direct text marker'], tag: 'div' },
+    { name: 'valid', markers: ['Inline text marker'], tag: 'p' },
+  ]) {
+    test(`Text paragraph wrapper: ${name}`, async ({ page, browser, sdk, packageName }) => {
+      test.skip(checkIsRN(sdk) || checkIsGen1React(sdk));
+      await page.goto(`/text-paragraph-${name}`);
+      await page.waitForLoadState('networkidle');
+
+      const parentSelector = `${tag}[builder-id="builder-paragraph-parent"]`;
+      const parent = page.locator(parentSelector);
+      await expect(parent).toHaveCount(1);
+      for (const marker of markers) {
+        await expect(page.getByText(marker, { exact: true })).toHaveCount(1);
+        await expect(parent.getByText(marker, { exact: true })).toBeVisible();
+      }
+
+      if (isSSRFramework(packageName)) {
+        const ssrContext = await browser.newContext({ javaScriptEnabled: false });
+        try {
+          const ssrPage = await ssrContext.newPage();
+          await ssrPage.goto(page.url());
+          const ssrParent = ssrPage.locator(parentSelector);
+          await expect(ssrParent).toHaveCount(1);
+          for (const marker of markers) {
+            await expect(ssrPage.getByText(marker, { exact: true })).toHaveCount(1);
+            await expect(ssrParent.getByText(marker, { exact: true })).toBeVisible();
+          }
+        } finally {
+          await ssrContext.close();
+        }
+      }
+    });
+  }
+
   test('Button', async ({ page, sdk }) => {
     await page.goto('/reactive-state');
     const button = checkIsRN(sdk)

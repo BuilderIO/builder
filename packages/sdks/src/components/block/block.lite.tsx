@@ -140,6 +140,17 @@ export default function Block(props: BlockProps) {
         );
       }
 
+      // Text renders a div, which makes a paragraph wrapper auto-close before hydration.
+      if (
+        props.block.tagName === 'p' &&
+        (state.processedBlock.component?.name === 'Text' ||
+          state.processedBlock.children?.some(
+            (child) => child.component?.name === 'Text'
+          ))
+      ) {
+        return 'div';
+      }
+
       return useTarget({
         /**
          * `tagName` will always be an HTML element. In the future, we might't map those to the right React Native components

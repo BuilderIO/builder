@@ -109,3 +109,54 @@ export const CONTENT = {
   lastUpdatedBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   rev: 'wqcxm1p64gj',
 };
+
+export const PARAGRAPH_TEXT_CASES = {
+  plain: {
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-paragraph-parent',
+    tagName: 'p',
+    children: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-paragraph-text',
+        tagName: 'span',
+        component: { name: 'Text', options: { text: 'Plain text marker' } },
+      },
+    ],
+  },
+  rich: {
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-paragraph-parent',
+    tagName: 'p',
+    children: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-paragraph-text',
+        tagName: 'span',
+        component: {
+          name: 'Text',
+          options: { text: '<p>First paragraph marker</p><p>Second paragraph marker</p>' },
+        },
+      },
+    ],
+  },
+  direct: {
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-paragraph-parent',
+    tagName: 'p',
+    component: { name: 'Text', options: { text: 'Direct text marker' } },
+  },
+  valid: {
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-paragraph-parent',
+    tagName: 'p',
+    children: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-inline-child',
+        tagName: 'span',
+        properties: { innerHTML: 'Inline text marker' },
+      },
+    ],
+  },
+};

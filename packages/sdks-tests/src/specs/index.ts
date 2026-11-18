@@ -53,7 +53,7 @@ import {
   CONTENT as symbols,
 } from './symbols.js';
 import { TABS } from './tabs.js';
-import { CONTENT as textBlock } from './text-block.js';
+import { CONTENT as textBlock, PARAGRAPH_TEXT_CASES } from './text-block.js';
 import { CONTENT as textEval } from './text-eval.js';
 import type { BuilderContent } from './types.js';
 import { CONTENT as video } from './video.js';
@@ -179,6 +179,12 @@ export const PAGES: Record<string, Page> = {
   '/show-hide-if-repeats': { content: SHOW_HIDE_IF_REPEATS },
   '/custom-breakpoints-reset': { content: customBreakpointsReset },
   '/text-block': { content: textBlock },
+  ...Object.fromEntries(
+    Object.entries(PARAGRAPH_TEXT_CASES).map(([name, block]) => [
+      `/text-paragraph-${name}`,
+      { content: { ...textBlock, data: { ...textBlock.data, blocks: [block] } } },
+    ])
+  ),
   '/text-eval': { content: textEval },
   '/state-binding': { content: stateBinding },
   '/nested-symbols': { content: nestedSymbols },
