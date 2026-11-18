@@ -146,6 +146,26 @@ export const PARAGRAPH_TEXT_CASES = {
     tagName: 'p',
     component: { name: 'Text', options: { text: 'Direct text marker' } },
   },
+  nested: {
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-paragraph-parent',
+    tagName: 'p',
+    children: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        id: 'builder-text-wrapper',
+        tagName: 'span',
+        children: [
+          {
+            '@type': '@builder.io/sdk:Element',
+            id: 'builder-nested-text',
+            tagName: 'span',
+            component: { name: 'Text', options: { text: 'Nested text marker' } },
+          },
+        ],
+      },
+    ],
+  },
   valid: {
     '@type': '@builder.io/sdk:Element',
     id: 'builder-paragraph-parent',

@@ -8,6 +8,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import Text from '../../blocks/text/index.js';
 import { TARGET } from '../../constants/target.js';
 import type {
   BuilderContextInterface,
@@ -23,6 +24,7 @@ import {
   generateKey,
   getComponent,
   getInheritedStyles,
+  hasTextComponent,
   getRepeatItemData,
   provideBuilderBlock,
   provideBuilderContext,
@@ -143,10 +145,8 @@ export default function Block(props: BlockProps) {
       // Text renders a div, which makes a paragraph wrapper auto-close before hydration.
       const shouldUseDiv =
         props.block.tagName === 'p' &&
-        (state.processedBlock.component?.name === 'Text' ||
-          state.processedBlock.children?.some(
-            (child) => child.component?.name === 'Text'
-          ));
+        props.registeredComponents.Text?.component === Text &&
+        hasTextComponent(state.processedBlock);
 
       return useTarget({
         /**

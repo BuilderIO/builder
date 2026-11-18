@@ -5,6 +5,7 @@ import {
   setClientUserAttributes,
   registerAction,
 } from '@builder.io/sdk-vue';
+import { defineComponent, h } from 'vue';
 import BuilderBlockWithClassName from '../components/BuilderBlockWithClassName.vue';
 import { getProps } from '@sdk/tests';
 
@@ -35,6 +36,17 @@ if (typeof window !== 'undefined') {
 const route = useRoute();
 
 const REGISTERED_COMPONENTS = [
+  ...(route.query.customText === 'true'
+    ? [
+        {
+          name: 'Text',
+          component: defineComponent({
+            props: ['text'],
+            setup: (props) => () => h('span', props.text),
+          }),
+        },
+      ]
+    : []),
   {
     name: 'BuilderBlockWithClassName',
     component: BuilderBlockWithClassName,

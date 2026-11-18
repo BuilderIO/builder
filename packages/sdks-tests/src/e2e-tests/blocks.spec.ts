@@ -63,18 +63,27 @@ test.describe('Blocks', () => {
     { name: 'plain', markers: ['Plain text marker'], tag: 'div' },
     { name: 'rich', markers: ['First paragraph marker', 'Second paragraph marker'], tag: 'div' },
     { name: 'direct', markers: ['Direct text marker'], tag: 'div' },
+    { name: 'nested', markers: ['Nested text marker'], tag: 'div' },
     { name: 'valid', markers: [], tag: 'p' },
+    { name: 'custom', markers: ['Direct text marker'], tag: 'p' },
   ]) {
     test(`Text paragraph wrapper: ${name}`, async ({ page, browser, sdk, packageName }) => {
       test.skip(checkIsRN(sdk) || checkIsGen1React(sdk));
-      await page.goto(`/text-paragraph-${name}`);
+      test.skip(name === 'custom' && packageName !== 'nuxt');
+      await page.goto(
+        name === 'custom'
+          ? '/text-paragraph-direct?customText=true'
+          : `/text-paragraph-${name}`
+      );
       await page.waitForLoadState('networkidle');
 
       const parentSelector = `${tag}[builder-id="builder-paragraph-parent"]`;
       const parent = page.locator(parentSelector);
       await expect(parent).toHaveCount(1);
       if (name === 'valid') {
-        await expect(parent.locator('span[builder-id="builder-inline-child"]')).toHaveCount(1);
+        await expect(
+          parent.locator('span[builder-id="builder-inline-child"]')
+        ).toHaveCount(1);
       }
       for (const marker of markers) {
         await expect(page.getByText(marker, { exact: true })).toHaveCount(1);
@@ -89,7 +98,9 @@ test.describe('Blocks', () => {
           const ssrParent = ssrPage.locator(parentSelector);
           await expect(ssrParent).toHaveCount(1);
           if (name === 'valid') {
-            await expect(ssrParent.locator('span[builder-id="builder-inline-child"]')).toHaveCount(1);
+            await expect(
+              ssrParent.locator('span[builder-id="builder-inline-child"]')
+            ).toHaveCount(1);
           }
           for (const marker of markers) {
             await expect(ssrPage.getByText(marker, { exact: true })).toHaveCount(1);
