@@ -7,6 +7,7 @@
     "packages/sdks",
     "packages/react",
     "packages/core",
+    "packages/utils",
     "packages/react-tests/*",
     "packages/sdks/e2e/*",
     "packages/sdks/snippets/*",
