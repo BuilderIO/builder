@@ -7,7 +7,9 @@ import {
   useTarget,
 } from '@builder.io/mitosis';
 import { getRepeatItemData } from '../../components/block/block.helpers.js';
+import RepeatedBlock from '../../components/block/components/repeated-block.lite.jsx';
 import Blocks from '../../components/blocks/index.js';
+import type { BuilderContextInterface } from '../../context/types.js';
 import { camelToKebabCase } from '../../functions/camel-to-kebab-case.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { Dictionary } from '../../types/typescript.js';
@@ -26,7 +28,7 @@ export default function Accordion(props: AccordionProps) {
     get itemsToRender(): {
       title: BuilderBlock[];
       detail: BuilderBlock[];
-      context: any;
+      repeatContext: BuilderContextInterface | undefined;
       titlePath: string | undefined;
       detailPath: string | undefined;
     }[] {
@@ -34,7 +36,7 @@ export default function Accordion(props: AccordionProps) {
         return (props.items || []).map((item, index) => ({
           title: item.title,
           detail: item.detail,
-          context: props.builderContext,
+          repeatContext: undefined,
           titlePath: `items.${index}.title`,
           detailPath: `items.${index}.detail`,
         }));
@@ -42,7 +44,7 @@ export default function Accordion(props: AccordionProps) {
       const result: {
         title: BuilderBlock[];
         detail: BuilderBlock[];
-        context: any;
+        repeatContext: BuilderContextInterface | undefined;
         titlePath: string | undefined;
         detailPath: string | undefined;
       }[] = [];
@@ -54,15 +56,15 @@ export default function Accordion(props: AccordionProps) {
         const entries = repeated
           ? repeated.map((data) => ({
               block: data.block,
-              context: { value: data.context },
+              repeatContext: data.context,
             }))
-          : [{ block: child, context: props.builderContext }];
+          : [{ block: child, repeatContext: props.builderContext.value }];
         entries.forEach((entry) => {
           const [title, detail] = entry.block.children || [];
           result.push({
             title: title ? [title] : [],
             detail: detail ? [detail] : [],
-            context: entry.context,
+            repeatContext: entry.repeatContext,
             titlePath: undefined,
             detailPath: undefined,
           });
@@ -243,28 +245,62 @@ export default function Accordion(props: AccordionProps) {
               data-index={index}
               onClick={() => state.onClick(index)}
             >
-              <Blocks
-                blocks={item.title}
-                path={item.titlePath}
-                parent={props.builderBlock.id}
-                context={item.context}
-                registeredComponents={props.builderComponents}
-                linkComponent={props.builderLinkComponent}
-              />
+              <Show
+                when={item.repeatContext}
+                else={
+                  <Blocks
+                    blocks={item.title}
+                    path={item.titlePath}
+                    parent={props.builderBlock.id}
+                    context={props.builderContext}
+                    registeredComponents={props.builderComponents}
+                    linkComponent={props.builderLinkComponent}
+                  />
+                }
+              >
+                <For each={item.title}>
+                  {(block) => (
+                    <RepeatedBlock
+                      key={block.id}
+                      repeatContext={item.repeatContext}
+                      block={block}
+                      registeredComponents={props.builderComponents}
+                      linkComponent={props.builderLinkComponent}
+                    />
+                  )}
+                </For>
+              </Show>
             </div>
             <Show when={state.open.includes(index)}>
               <div
                 class={state.getAccordionDetailClassName(index)}
                 style={state.accordionDetailStyles}
               >
-                <Blocks
-                  blocks={item.detail}
-                  path={item.detailPath}
-                  parent={props.builderBlock.id}
-                  context={item.context}
-                  registeredComponents={props.builderComponents}
-                  linkComponent={props.builderLinkComponent}
-                />
+                <Show
+                  when={item.repeatContext}
+                  else={
+                    <Blocks
+                      blocks={item.detail}
+                      path={item.detailPath}
+                      parent={props.builderBlock.id}
+                      context={props.builderContext}
+                      registeredComponents={props.builderComponents}
+                      linkComponent={props.builderLinkComponent}
+                    />
+                  }
+                >
+                  <For each={item.detail}>
+                    {(block) => (
+                      <RepeatedBlock
+                        key={block.id}
+                        repeatContext={item.repeatContext}
+                        block={block}
+                        registeredComponents={props.builderComponents}
+                        linkComponent={props.builderLinkComponent}
+                      />
+                    )}
+                  </For>
+                </Show>
               </div>
             </Show>
           </Fragment>
