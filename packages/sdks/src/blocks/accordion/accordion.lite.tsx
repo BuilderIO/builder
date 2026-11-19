@@ -52,6 +52,8 @@ export default function Accordion(props: AccordionProps) {
               block: data.block,
               repeatContext: data.context,
             }))
+          : child.repeat?.collection
+          ? []
           : [{ block: child, repeatContext: props.builderContext.value }];
         entries.forEach((entry) => {
           const [title, detail] = entry.block.children || [];
