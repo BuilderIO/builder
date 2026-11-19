@@ -1,3 +1,5 @@
+import { set } from '../functions/set.js';
+
 /**
  * Convert deep object to a flat object with dots
  *
@@ -60,17 +62,7 @@ export function flattenMongoQuery(
 export function unflatten(obj: any): any {
   const result: any = {};
   for (const key in obj) {
-    const parts = key.split('.');
-    let current = result;
-    for (let i = 0; i < parts.length; i++) {
-      const part = parts[i];
-      if (i === parts.length - 1) {
-        current[part] = obj[key];
-      } else {
-        current[part] = current[part] || {};
-        current = current[part];
-      }
-    }
+    set(result, key.split('.'), obj[key]);
   }
   return result;
 }
