@@ -1,5 +1,11 @@
 # Builder.io Solid SDK Changelog (@builder.io/sdk-solid)
 
+## 5.4.7
+
+### Patch Changes
+
+- db04bf9: Fix duplicate text after SSR hydration when paragraph wrappers contain built-in Text blocks, including nested Text blocks. Preserve valid paragraph wrappers and custom Text overrides.
+
 ## 5.4.5
 
 ### Patch Changes
