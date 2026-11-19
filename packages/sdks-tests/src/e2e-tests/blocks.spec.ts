@@ -71,9 +71,7 @@ test.describe('Blocks', () => {
       test.skip(checkIsRN(sdk) || checkIsGen1React(sdk));
       test.skip(name === 'custom' && packageName !== 'nuxt');
       await page.goto(
-        name === 'custom'
-          ? '/text-paragraph-direct?customText=true'
-          : `/text-paragraph-${name}`
+        name === 'custom' ? '/text-paragraph-direct?customText=true' : `/text-paragraph-${name}`
       );
       await page.waitForLoadState('networkidle');
 
@@ -81,9 +79,7 @@ test.describe('Blocks', () => {
       const parent = page.locator(parentSelector);
       await expect(parent).toHaveCount(1);
       if (name === 'valid') {
-        await expect(
-          parent.locator('span[builder-id="builder-inline-child"]')
-        ).toHaveCount(1);
+        await expect(parent.locator('span[builder-id="builder-inline-child"]')).toHaveCount(1);
       }
       for (const marker of markers) {
         await expect(page.getByText(marker, { exact: true })).toHaveCount(1);
@@ -98,9 +94,9 @@ test.describe('Blocks', () => {
           const ssrParent = ssrPage.locator(parentSelector);
           await expect(ssrParent).toHaveCount(1);
           if (name === 'valid') {
-            await expect(
-              ssrParent.locator('span[builder-id="builder-inline-child"]')
-            ).toHaveCount(1);
+            await expect(ssrParent.locator('span[builder-id="builder-inline-child"]')).toHaveCount(
+              1
+            );
           }
           for (const marker of markers) {
             await expect(ssrPage.getByText(marker, { exact: true })).toHaveCount(1);
