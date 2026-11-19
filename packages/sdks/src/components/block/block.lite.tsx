@@ -219,7 +219,11 @@ export default function Block(props: BlockProps) {
       });
 
       const componentRefProps: ComponentProps = {
-        blockChildren: state.processedBlock.children ?? [],
+        blockChildren:
+          state.blockComponent?.name === 'Builder:Accordion' &&
+          state.processedBlock.component?.options?.useChildrenForItems
+            ? []
+            : state.processedBlock.children ?? [],
         componentRef: state.blockComponent?.component,
         componentOptions: {
           ...getBlockComponentOptions(

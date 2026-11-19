@@ -183,7 +183,9 @@ test.describe('Accordion', () => {
     );
     await page.goto('/accordion-use-children-for-items');
 
-    await expect(page.locator('.builder-accordion-title')).toHaveCount(3);
+    for (const title of ['Static', 'Apple', 'Banana']) {
+      await expect(page.getByText(title, { exact: true })).toHaveCount(1);
+    }
     for (const [title, detail] of [
       ['Static', 'Inside Static'],
       ['Apple', 'Inside Apple'],
