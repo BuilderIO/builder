@@ -3,6 +3,11 @@
   "version": "1.1.37",
   "description": "Utils for working with Builder.io content",
   "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuilderIO/builder",
+    "directory": "packages/utils"
+  },
   "scripts": {
     "build": "tsc",
     "test": "jest"
