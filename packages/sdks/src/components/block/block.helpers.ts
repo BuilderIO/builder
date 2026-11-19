@@ -11,6 +11,10 @@ import { isEditingOrPreviewing } from '../../functions/is-editing-or-previewing.
 import type { BuilderBlock } from '../../types/builder-block.js';
 import type { RepeatData } from './types.js';
 
+export const hasTextComponent = (block: BuilderBlock): boolean =>
+  block.component?.name === 'Text' ||
+  (block.children?.some(hasTextComponent) ?? false);
+
 const checkIsComponentRestricted = (
   component: RegisteredComponent | null | undefined,
   model: string

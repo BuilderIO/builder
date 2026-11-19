@@ -8,6 +8,7 @@ import {
   useStore,
   useTarget,
 } from '@builder.io/mitosis';
+import Text from '../../blocks/text/index.js';
 import { TARGET } from '../../constants/target.js';
 import type {
   BuilderContextInterface,
@@ -23,6 +24,7 @@ import {
   generateKey,
   getComponent,
   getInheritedStyles,
+  hasTextComponent,
   getRepeatItemData,
   provideBuilderBlock,
   provideBuilderContext,
@@ -140,6 +142,12 @@ export default function Block(props: BlockProps) {
         );
       }
 
+      // Text renders a div, which makes a paragraph wrapper auto-close before hydration.
+      const shouldUseDiv =
+        props.block.tagName === 'p' &&
+        props.registeredComponents.Text?.component === Text &&
+        hasTextComponent(state.processedBlock);
+
       return useTarget({
         /**
          * `tagName` will always be an HTML element. In the future, we might't map those to the right React Native components
@@ -147,8 +155,8 @@ export default function Block(props: BlockProps) {
          * eslint-disable-next-line @typescript-eslint/ban-ts-comment
          * @ts-ignore */
         reactNative: View,
-        angular: props.block.tagName || DynamicDiv,
-        default: props.block.tagName || 'div',
+        angular: shouldUseDiv ? DynamicDiv : props.block.tagName || DynamicDiv,
+        default: shouldUseDiv ? 'div' : props.block.tagName || 'div',
       });
     },
     get canShowBlock() {
