@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.26.7
+
+### Patch Changes
+
+- db04bf9: Fix duplicate text after SSR hydration when paragraph wrappers contain built-in Text blocks, including nested Text blocks. Preserve valid paragraph wrappers and custom Text overrides.
+
 ## 0.26.5
 
 ### Patch Changes
