@@ -2,7 +2,7 @@
   <div id="home">
     <div>Hello world from your Vue project. Below is Builder Content:</div>
 
-    <div v-if="content || isPreviewing()">
+    <div v-if="canShowContent">
       <div>
         page title:
         {{ content?.data?.title || 'Unpublished' }}
@@ -20,7 +20,7 @@
 
 <script setup>
 import { Content, fetchOneEntry, isPreviewing } from '@builder.io/sdk-vue';
-
+import { ref } from 'vue';
 import HelloWorldComponent from './components/HelloWorld.vue';
 
 // Register your Builder components
@@ -41,7 +41,7 @@ const REGISTERED_COMPONENTS = [
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
-
+const canShowContent = ref(false);
 const route = useRoute();
 
 // fetch builder content data
@@ -54,4 +54,5 @@ const { data: content } = await useAsyncData(`builderData-page-${route.path}`, (
     },
   })
 );
+canShowContent.value = content.value ? true : isPreviewing(route.query);
 </script>
