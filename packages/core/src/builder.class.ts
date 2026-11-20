@@ -1,6 +1,11 @@
 import './polyfills/custom-event-polyfill';
 import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
+import {
+  BuilderLogLevel,
+  fetchWithLogging,
+  getDefaultLogLevel,
+} from './functions/log-level.function';
 import { QueryString } from './classes/query-string.class';
 import { BehaviorSubject } from './classes/observable.class';
 import { getFetch } from './functions/fetch.function';
@@ -1011,6 +1016,27 @@ export class Builder {
   static attributesCookieName = 'builder.userAttributes';
 
   /**
+   * Controls SDK HTTP diagnostic logging using standard `console` log levels:
+   * - `'silent'` (default): no HTTP logging
+   * - `'error'`: network/`fetch` rejections and `5xx` responses via `console.error`
+   * - `'warn'`: `'error'` plus `4xx` responses via `console.warn`
+   * - `'info'`: `'warn'` plus a 1-line summary for every HTTP request via `console.info`
+   *   (including method, URL, status, duration, and the `x-request-id` response header)
+   * - `'debug'`: `'info'` plus outgoing request headers and response headers via
+   *   `console.debug` (with sensitive headers such as `Authorization` redacted)
+   *
+   * Defaults from the `BUILDER_SDK_LOG_LEVEL` environment variable (e.g.
+   * `BUILDER_SDK_LOG_LEVEL=info` or `BUILDER_SDK_LOG_LEVEL=debug`) when running under Node.js,
+   * or `'silent'` otherwise. Can also be set programmatically at any time, which is the only
+   * option in bundled browser code where environment variables aren't available at runtime:
+   *
+   * ```ts
+   * Builder.logLevel = 'info';
+   * ```
+   */
+  static logLevel: BuilderLogLevel = getDefaultLogLevel();
+
+  /**
    * @todo `key` property on any info where if a key matches a current
    * key it gets removed
    */
@@ -1376,7 +1402,7 @@ export class Builder {
 
     const host = this.host;
 
-    getFetch()(`${host}/api/v1/track`, {
+    fetchWithLogging(getFetch(), Builder.logLevel, `${host}/api/v1/track`, {
       method: 'POST',
       body: JSON.stringify({ events }),
       headers: {
@@ -2566,7 +2592,9 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined }; next?: any }
   ) {
-    return getFetch()(url, this.addSdkHeaders(options)).then(res => res.json());
+    return fetchWithLogging(getFetch(), Builder.logLevel, url, this.addSdkHeaders(options)).then(
+      res => res.json()
+    );
   }
 
   get host() {
@@ -2615,14 +2643,14 @@ export class Builder {
     return {
       ...fetchOptions,
       headers: {
-        ...fetchOptions.headers,
+        ...fetchOptions?.headers,
         ...this.getSdkHeaders(),
       },
     };
   }
 
   private makeFetchApiCall(url: string, requestOptions: any): Promise<any> {
-    return getFetch()(url, this.addSdkHeaders(requestOptions));
+    return fetchWithLogging(getFetch(), Builder.logLevel, url, this.addSdkHeaders(requestOptions));
   }
 
   /**
