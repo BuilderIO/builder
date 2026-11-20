@@ -13,6 +13,10 @@ export const ASSET_FIELD_SELECTION = 'assetFieldSelection';
 
 export const AssetTypes: assetType[] = ['AUDIO', 'DOCUMENT', 'IMAGE', 'VIDEO'];
 
+// Keys that the Builder editor listens for globally to delete the selected block.
+// Typing these while a Bynder dialog input is focused must not bubble out to that shortcut.
+export const isDeletionKey = (key: string): boolean => key === 'Backspace' || key === 'Delete';
+
 // From Bynder documentation
 export const SupportedLanguages = ['en_US', 'nl_NL', 'de_DE', 'fr_FR', 'es_ES'] as const;
 // Turn the array into a union type
