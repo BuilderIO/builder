@@ -1,5 +1,11 @@
 # @builder.io/sdk-angular
 
+## 0.26.8
+
+### Patch Changes
+
+- e4ce5a4: Fix: ignore `__proto__`, `constructor` and `prototype` paths in Studio `builder.userAttributes.*` query parameters so a crafted preview URL cannot pollute `Object.prototype`
+
 ## 0.26.7
 
 ### Patch Changes
