@@ -189,6 +189,9 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
       variant.endDate
     );
   });
+  const isEditingDefault =
+    isHydrated && Builder.isEditing && typeof props.previewingIndex !== 'number';
+  const activeVariant = isClient && !isEditingDefault ? filteredVariants[0] : undefined;
 
   return (
     <React.Fragment>
@@ -215,26 +218,32 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             dataPath={`component.options.variants.${props.previewingIndex}.blocks`}
             child
           />
-        ) : // If editing the default or we're on the server and there are no matching variants show the default
-        (isHydrated && Builder.isEditing && typeof props.previewingIndex !== 'number') ||
-          !isClient ||
-          !filteredVariants.length ? (
-          <BuilderBlocks
-            blocks={props.builderBlock?.children}
-            parentElementId={props.builderBlock?.id}
-            dataPath="this.children"
-            child
-          />
         ) : (
-          // Show the variant matching the current user attributes
-          <BuilderBlocks
-            blocks={filteredVariants[0]?.blocks}
-            parentElementId={props.builderBlock?.id}
-            dataPath={`component.options.variants.${props.variants?.indexOf(
-              filteredVariants[0]
-            )}.blocks`}
-            child
-          />
+          <>
+            {/* Match the server's variant, script, and default slots for React useId. */}
+            {props.variants?.map((variant, index) =>
+              variant === activeVariant ? (
+                <React.Fragment key={index}>
+                  <BuilderBlocks
+                    blocks={variant.blocks}
+                    parentElementId={props.builderBlock?.id}
+                    dataPath={`component.options.variants.${index}.blocks`}
+                    child
+                  />
+                </React.Fragment>
+              ) : null
+            )}
+            {/* Reserve the server-only selection script's slot for useId. */}
+            {null}
+            {!activeVariant && (
+              <BuilderBlocks
+                blocks={props.builderBlock?.children}
+                parentElementId={props.builderBlock?.id}
+                dataPath="this.children"
+                child
+              />
+            )}
+          </>
         )}
       </div>
       <script
