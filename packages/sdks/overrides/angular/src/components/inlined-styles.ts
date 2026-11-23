@@ -11,14 +11,31 @@ interface Props {
 
 /**
  * Every `InlinedStyles` instance that wants the same CSS shares one `<style>`
- * element. The element lives in the host of `subscribers[0]`; when that
- * instance is destroyed it is moved to the next subscriber so the CSS stays in
- * the document for as long as anyone still needs it.
+ * element. The element lives in the host of `subscribers[0]`, which is kept as
+ * the subscriber that comes first in document order. That way the element sits
+ * exactly where a fresh render of the current instances would put it, so its
+ * cascade position relative to other styles stays stable when instances are
+ * added, removed, or change their CSS.
  */
 interface SharedStyle {
   el: HTMLStyleElement;
   subscribers: InlinedStyles[];
 }
+
+// Node.DOCUMENT_POSITION_* bit flags; `Node` is not a global during SSR.
+const DOCUMENT_POSITION_DISCONNECTED = 0x01;
+const DOCUMENT_POSITION_PRECEDING = 0x02;
+
+/**
+ * Whether `a` is earlier in the document than `b`. Returns false when the order
+ * cannot be determined (e.g. a host that is not attached yet).
+ */
+const precedes = (a: Node, b: Node): boolean => {
+  if (typeof b?.compareDocumentPosition !== 'function') return false;
+  const position = b.compareDocumentPosition(a);
+  if (position & DOCUMENT_POSITION_DISCONNECTED) return false;
+  return Boolean(position & DOCUMENT_POSITION_PRECEDING);
+};
 
 /**
  * Keyed by `Document` so that each SSR request (which gets its own document)
@@ -91,7 +108,13 @@ export default class InlinedStyles {
 
     const existing = registry.get(key);
     if (existing) {
-      existing.subscribers.push(this);
+      if (precedes(this.host, existing.subscribers[0].host)) {
+        // We render before the current holder, so the style belongs here.
+        existing.subscribers.unshift(this);
+        this.renderer.appendChild(this.host, existing.el);
+      } else {
+        existing.subscribers.push(this);
+      }
       return;
     }
 
@@ -116,17 +139,31 @@ export default class InlinedStyles {
 
     if (shared.subscribers.length === 0) {
       registry.delete(key);
-      this.renderer.removeChild(this.elRef.nativeElement, shared.el);
+      this.renderer.removeChild(this.host, shared.el);
       return;
     }
 
     if (index === 0) {
-      // We held the element; hand it to the next instance still using it.
-      this.renderer.appendChild(
-        shared.subscribers[0].elRef.nativeElement,
-        shared.el
-      );
+      // We held the element; hand it to the earliest instance still using it.
+      let earliest = 0;
+      for (let i = 1; i < shared.subscribers.length; i++) {
+        if (
+          precedes(
+            shared.subscribers[i].host,
+            shared.subscribers[earliest].host
+          )
+        ) {
+          earliest = i;
+        }
+      }
+      const [holder] = shared.subscribers.splice(earliest, 1);
+      shared.subscribers.unshift(holder);
+      this.renderer.appendChild(holder.host, shared.el);
     }
+  }
+
+  private get host(): HTMLElement {
+    return this.elRef.nativeElement;
   }
 
   private createStyle(styles: string): HTMLStyleElement {
@@ -134,7 +171,7 @@ export default class InlinedStyles {
     this.renderer.setAttribute(el, 'data-id', this.id());
     this.renderer.appendChild(el, this.renderer.createText(styles));
     this.renderer.setAttribute(el, 'nonce', this.nonce());
-    this.renderer.appendChild(this.elRef.nativeElement, el);
+    this.renderer.appendChild(this.host, el);
     return el;
   }
 
@@ -143,7 +180,7 @@ export default class InlinedStyles {
    * server emitted. Reuse it instead of appending a second copy.
    */
   private adoptServerStyle(styles: string): HTMLStyleElement | undefined {
-    const host: HTMLElement | undefined = this.elRef.nativeElement;
+    const host: HTMLElement | undefined = this.host;
     const children = host?.children;
     if (!children) return undefined;
     for (let i = 0; i < children.length; i++) {

@@ -2,10 +2,16 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import {
+  CONTENT as SYMBOLS_CONTENT,
   FIRST_SYMBOL_CONTENT,
   SECOND_SYMBOL_CONTENT,
   GLOBAL_SYMBOL_OWNER_ID,
 } from '../specs/symbols.js';
+import {
+  cloneContent,
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+} from '../helpers/visual-editor.js';
 import {
   excludeGen2,
   checkIsGen1React,
@@ -101,6 +107,35 @@ test.describe('Symbols', () => {
 
       const styles = await getInlinedStyles(page);
       expect(styles.length).toBeGreaterThan(0);
+      expect(new Set(styles).size).toBe(styles.length);
+    });
+
+    test('keeps shared styles when the instance holding them is removed', async ({
+      page,
+      basePort,
+      sdk,
+    }) => {
+      test.skip(sdk !== 'angular');
+
+      await launchEmbedderAndWaitForSdk({ path: '/symbols', basePort, page, sdk });
+      const frame = page.frameLocator('iframe');
+      // A text block inside the symbol; its `margin-top: 20px` comes from CSS
+      // shared by both symbol instances.
+      const innerBlock = frame.locator('.builder-b81cb922c844445a83e03913503c9273');
+      await expect(innerBlock).toHaveCount(2);
+      await expect(innerBlock.nth(1)).toHaveCSS('margin-top', '20px');
+
+      // Remove the first symbol instance, which holds the shared <style>s.
+      const newContent = cloneContent(SYMBOLS_CONTENT);
+      newContent.data.blocks.splice(1, 1);
+      await sendContentUpdateMessage({ page, newContent, model: 'page' });
+
+      await expect(innerBlock).toHaveCount(1);
+      await expect(innerBlock.first()).toHaveCSS('margin-top', '20px');
+
+      const styles = await frame
+        .locator('style[data-id^="builderio-"]')
+        .evaluateAll(els => els.map(el => `${el.getAttribute('data-id')}|${el.textContent}`));
       expect(new Set(styles).size).toBe(styles.length);
     });
   });
