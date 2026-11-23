@@ -52,6 +52,8 @@ export function flattenMongoQuery(
   return _res;
 }
 
+const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
 /**
  * Unflatten a flat object with dot-separated keys back into a nested object.
  *
@@ -61,14 +63,21 @@ export function unflatten(obj: any): any {
   const result: any = {};
   for (const key in obj) {
     const parts = key.split('.');
+    // keys come from URL query params: never let them reach the prototype chain
+    if (parts.some((part) => UNSAFE_KEYS.has(part))) continue;
     let current = result;
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i];
       if (i === parts.length - 1) {
         current[part] = obj[key];
       } else {
-        current[part] = current[part] || {};
-        current = current[part];
+        // own, object-valued parents only: never walk into inherited members
+        // (e.g. `toString`) or write onto a primitive
+        const next = Object.prototype.hasOwnProperty.call(current, part)
+          ? current[part]
+          : undefined;
+        current = current[part] =
+          typeof next === 'object' && next !== null ? next : {};
       }
     }
   }
