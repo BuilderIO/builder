@@ -38,6 +38,7 @@ import { CONTENT as nestedSymbols } from './nested-symbols.js';
 import { REACTIVE_STATE_CONTENT } from './reactive-state.js';
 import { LARGE_REACTIVE_STATE_CONTENT } from './large-reactive-state.js';
 import { REPEAT_ITEMS_BINDINGS } from './repeat-items-bindings.js';
+import { REPEAT_BOUND_RESPONSIVE_STYLES } from './repeat-bound-responsive-styles.js';
 import { SHOW_HIDE_IF_REPEATS } from './show-hide-if-repeat.js';
 import { SHOW_HIDE_IF } from './show-hide-if.js';
 import { SLOT_WITHOUT_SYMBOL, SLOT_WITH_SYMBOL } from './slot-with-symbol.js';
@@ -201,6 +202,7 @@ export const PAGES: Record<string, Page> = {
   '/editing-styles': { content: EDITING_STYLES, isGen1VisualEditingTest: true },
   '/video': { content: video },
   '/repeat-items-bindings': { content: REPEAT_ITEMS_BINDINGS },
+  '/repeat-bound-responsive-styles': { content: REPEAT_BOUND_RESPONSIVE_STYLES },
   '/input-default-value': { content: INPUT_DEFAULT_VALUE },
   '/duplicate-attributes': { content: DUPLICATE_ATTRIBUTES },
   '/js-content-is-browser': { content: JS_CONTENT_IS_BROWSER },

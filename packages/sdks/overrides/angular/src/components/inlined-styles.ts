@@ -1,4 +1,4 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
@@ -8,6 +8,7 @@ import {
   Inject,
   Injector,
   input,
+  PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
 
@@ -32,6 +33,20 @@ interface SharedStyle {
   reorderOwner?: InlinedStyles;
 }
 
+interface DocumentStyles {
+  /** Shared `<style>` elements, keyed by `${data-id}\0${css}`. */
+  shared: Map<string, SharedStyle>;
+  /**
+   * The distinct CSS texts seen per `${data-id}\0${selector}`. When one
+   * selector has more than one variant (e.g. a repeated block whose styles are
+   * bound to item data), dropping a later duplicate could let a different
+   * variant win the cascade (A, B, A would become A, B). Such selectors are not
+   * shared: each instance keeps its own `<style>`, as before deduplication.
+   * Never shrinks, so a selector that ever conflicted stays unshared.
+   */
+  variants: Map<string, Set<string>>;
+}
+
 // Node.DOCUMENT_POSITION_* bit flags; `Node` is not a global during SSR.
 const DOCUMENT_POSITION_DISCONNECTED = 0x01;
 const DOCUMENT_POSITION_PRECEDING = 0x02;
@@ -48,15 +63,24 @@ const precedes = (a: Node, b: Node): boolean => {
 };
 
 /**
+ * The class a block's CSS targets. Block styles are generated as
+ * `.${blockId} { ... }` (optionally inside media queries, plus `:hover`), so
+ * the first class selector identifies the block. Falls back to the full text,
+ * which can never conflict with anything.
+ */
+const getSelector = (styles: string): string =>
+  /\.([^\s{},:>~+]+)/.exec(styles)?.[1] ?? styles;
+
+/**
  * Keyed by `Document` so that each SSR request (which gets its own document)
  * has an isolated registry and nothing leaks between requests.
  */
-const REGISTRIES = new WeakMap<object, Map<string, SharedStyle>>();
+const REGISTRIES = new WeakMap<object, DocumentStyles>();
 
-const getRegistry = (doc: object): Map<string, SharedStyle> => {
+const getRegistry = (doc: object): DocumentStyles => {
   let registry = REGISTRIES.get(doc);
   if (!registry) {
-    registry = new Map();
+    registry = { shared: new Map(), variants: new Map() };
     REGISTRIES.set(doc, registry);
   }
   return registry;
@@ -89,13 +113,17 @@ export default class InlinedStyles {
   id = input.required<Props['id']>();
   nonce = input.required<Props['nonce']>();
 
+  /** Key of the shared entry we subscribe to, if any. */
   private key: string | undefined;
+  /** Our own, unshared `<style>`, used for selectors with conflicting CSS. */
+  private ownEl: HTMLStyleElement | undefined;
 
   constructor(
     private renderer: Renderer2,
     private elRef: ElementRef,
     private injector: Injector,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   ngOnChanges(changes) {
@@ -113,16 +141,31 @@ export default class InlinedStyles {
     const styles = this.styles();
     if (!styles) return;
 
-    const key = `${this.id()}\u0000${styles}`;
     const registry = getRegistry(this.document);
-    this.key = key;
+    const key = `${this.id()}\u0000${styles}`;
 
     // A matching <style> the server rendered into our host, if hydrating.
     const serverStyle = this.findServerStyle(styles);
 
-    const shared = registry.get(key);
+    const selectorKey = `${this.id()}\u0000${getSelector(styles)}`;
+    let variants = registry.variants.get(selectorKey);
+    if (!variants) {
+      variants = new Set();
+      registry.variants.set(selectorKey, variants);
+    }
+    variants.add(key);
+
+    if (variants.size > 1) {
+      // Conflicting CSS for this selector: stop sharing any of its variants.
+      variants.forEach((variantKey) => this.unshare(registry, variantKey));
+      this.ownEl = serverStyle ?? this.createStyle(styles);
+      return;
+    }
+
+    this.key = key;
+    const shared = registry.shared.get(key);
     if (!shared) {
-      registry.set(key, {
+      registry.shared.set(key, {
         el: serverStyle ?? this.createStyle(styles),
         subscribers: [this],
       });
@@ -140,12 +183,17 @@ export default class InlinedStyles {
   }
 
   private release() {
+    if (this.ownEl) {
+      this.removeStyle(this.ownEl);
+      this.ownEl = undefined;
+    }
+
     const key = this.key;
     if (key === undefined) return;
     this.key = undefined;
 
     const registry = getRegistry(this.document);
-    const shared = registry.get(key);
+    const shared = registry.shared.get(key);
     if (!shared) return;
 
     const index = shared.subscribers.indexOf(this);
@@ -161,7 +209,7 @@ export default class InlinedStyles {
     }
 
     if (shared.subscribers.length === 0) {
-      registry.delete(key);
+      registry.shared.delete(key);
       this.removeStyle(shared.el);
       return;
     }
@@ -174,21 +222,48 @@ export default class InlinedStyles {
   }
 
   /**
+   * Turn a shared entry back into one `<style>` per subscriber, each in its own
+   * host, which restores the original (non-deduplicated) cascade order.
+   */
+  private unshare(registry: DocumentStyles, key: string) {
+    const shared = registry.shared.get(key);
+    if (!shared) return;
+    registry.shared.delete(key);
+    shared.reorderOwner = undefined;
+
+    shared.subscribers.forEach((subscriber, i) => {
+      subscriber.key = undefined;
+      if (i === 0) {
+        subscriber.ownEl = shared.el;
+      } else {
+        subscriber.ownEl = subscriber.createStyle(subscriber.styles());
+      }
+    });
+  }
+
+  /**
    * Hosts are not attached to the document yet when `ngOnChanges` runs, so the
    * document order of a new subscriber is only known after rendering. Re-check
    * then, in the browser, before the frame is painted.
    */
   private scheduleReorder(shared: SharedStyle) {
-    if (shared.reorderOwner) return;
+    if (shared.reorderOwner || !isPlatformBrowser(this.platformId)) return;
     shared.reorderOwner = this;
-    afterNextRender(
-      () => {
-        if (shared.reorderOwner !== this) return;
-        shared.reorderOwner = undefined;
-        if (shared.subscribers.length > 1) this.moveToEarliest(shared, false);
-      },
-      { injector: this.injector }
-    );
+    try {
+      afterNextRender(
+        () => {
+          if (shared.reorderOwner !== this) return;
+          shared.reorderOwner = undefined;
+          if (shared.subscribers.length > 1) {
+            this.moveToEarliest(shared, false);
+          }
+        },
+        { injector: this.injector }
+      );
+    } catch {
+      // Our injector is already destroyed (the view is being torn down).
+      shared.reorderOwner = undefined;
+    }
   }
 
   /**
