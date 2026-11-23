@@ -138,6 +138,49 @@ test.describe('Symbols', () => {
         .evaluateAll(els => els.map(el => `${el.getAttribute('data-id')}|${el.textContent}`));
       expect(new Set(styles).size).toBe(styles.length);
     });
+
+    test('moves shared styles to an instance inserted before the holder', async ({
+      page,
+      basePort,
+      sdk,
+    }) => {
+      test.skip(sdk !== 'angular');
+
+      await launchEmbedderAndWaitForSdk({ path: '/symbols', basePort, page, sdk });
+      const frame = page.frameLocator('iframe');
+      const innerBlock = frame.locator('.builder-b81cb922c844445a83e03913503c9273');
+      await expect(innerBlock).toHaveCount(2);
+
+      // Insert a copy of the second symbol instance above all the others.
+      const newContent = cloneContent(SYMBOLS_CONTENT);
+      const inserted = cloneContent(newContent.data.blocks[2]);
+      inserted.id = 'builder-inserted-symbol-instance';
+      newContent.data.blocks.splice(0, 0, inserted);
+      await sendContentUpdateMessage({ page, newContent, model: 'page' });
+
+      await expect(innerBlock).toHaveCount(3);
+      for (let i = 0; i < 3; i++) {
+        await expect(innerBlock.nth(i)).toHaveCSS('margin-top', '20px');
+      }
+
+      const { duplicates, sharedStyleInFirstInstance } = await frame
+        .locator('body')
+        .evaluate(() => {
+          const styles = Array.from(document.querySelectorAll('style[data-id^="builderio-"]'));
+          const keys = styles.map(el => `${el.getAttribute('data-id')}|${el.textContent}`);
+          const shared = styles.filter(el =>
+            el.textContent?.includes('.builder-b81cb922c844445a83e03913503c9273')
+          );
+          const firstInstance = document.querySelector('.builder-inserted-symbol-instance');
+          return {
+            duplicates: keys.length - new Set(keys).size,
+            sharedStyleInFirstInstance:
+              shared.length === 1 && Boolean(firstInstance?.contains(shared[0])),
+          };
+        });
+      expect(duplicates).toBe(0);
+      expect(sharedStyleInFirstInstance).toBe(true);
+    });
   });
   test('fetch content if not provided', async ({ page, packageName, sdk }) => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));

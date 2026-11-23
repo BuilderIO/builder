@@ -1,7 +1,15 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
 // fails because type imports cannot be injected
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Component, ElementRef, Inject, input, Renderer2 } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  Inject,
+  Injector,
+  input,
+  Renderer2,
+} from '@angular/core';
 
 interface Props {
   styles: string;
@@ -20,6 +28,8 @@ interface Props {
 interface SharedStyle {
   el: HTMLStyleElement;
   subscribers: InlinedStyles[];
+  /** The subscriber whose `afterNextRender` will re-check the order, if any. */
+  reorderOwner?: InlinedStyles;
 }
 
 // Node.DOCUMENT_POSITION_* bit flags; `Node` is not a global during SSR.
@@ -84,6 +94,7 @@ export default class InlinedStyles {
   constructor(
     private renderer: Renderer2,
     private elRef: ElementRef,
+    private injector: Injector,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -106,22 +117,26 @@ export default class InlinedStyles {
     const registry = getRegistry(this.document);
     this.key = key;
 
-    const existing = registry.get(key);
-    if (existing) {
-      if (precedes(this.host, existing.subscribers[0].host)) {
-        // We render before the current holder, so the style belongs here.
-        existing.subscribers.unshift(this);
-        this.renderer.appendChild(this.host, existing.el);
-      } else {
-        existing.subscribers.push(this);
-      }
+    // A matching <style> the server rendered into our host, if hydrating.
+    const serverStyle = this.findServerStyle(styles);
+
+    const shared = registry.get(key);
+    if (!shared) {
+      registry.set(key, {
+        el: serverStyle ?? this.createStyle(styles),
+        subscribers: [this],
+      });
       return;
     }
 
-    registry.set(key, {
-      el: this.adoptServerStyle(styles) ?? this.createStyle(styles),
-      subscribers: [this],
-    });
+    shared.subscribers.push(this);
+    if (serverStyle && serverStyle !== shared.el) {
+      // The registry already tracks a copy of this CSS, so ours is redundant.
+      // If we turn out to be the earliest instance (out-of-order hydration),
+      // the tracked copy is moved into our host below.
+      this.removeStyle(serverStyle);
+    }
+    this.scheduleReorder(shared);
   }
 
   private release() {
@@ -137,29 +152,67 @@ export default class InlinedStyles {
     if (index === -1) return;
     shared.subscribers.splice(index, 1);
 
+    if (shared.reorderOwner === this) {
+      // Our pending callback is dropped with us; let a survivor re-check.
+      shared.reorderOwner = undefined;
+      if (shared.subscribers.length > 1) {
+        shared.subscribers[0].scheduleReorder(shared);
+      }
+    }
+
     if (shared.subscribers.length === 0) {
       registry.delete(key);
-      this.renderer.removeChild(this.host, shared.el);
+      this.removeStyle(shared.el);
       return;
     }
 
     if (index === 0) {
       // We held the element; hand it to the earliest instance still using it.
-      let earliest = 0;
-      for (let i = 1; i < shared.subscribers.length; i++) {
-        if (
-          precedes(
-            shared.subscribers[i].host,
-            shared.subscribers[earliest].host
-          )
-        ) {
-          earliest = i;
-        }
-      }
-      const [holder] = shared.subscribers.splice(earliest, 1);
-      shared.subscribers.unshift(holder);
-      this.renderer.appendChild(holder.host, shared.el);
+      // The remaining hosts are attached here, so their order is known.
+      this.moveToEarliest(shared, true);
     }
+  }
+
+  /**
+   * Hosts are not attached to the document yet when `ngOnChanges` runs, so the
+   * document order of a new subscriber is only known after rendering. Re-check
+   * then, in the browser, before the frame is painted.
+   */
+  private scheduleReorder(shared: SharedStyle) {
+    if (shared.reorderOwner) return;
+    shared.reorderOwner = this;
+    afterNextRender(
+      () => {
+        if (shared.reorderOwner !== this) return;
+        shared.reorderOwner = undefined;
+        if (shared.subscribers.length > 1) this.moveToEarliest(shared, false);
+      },
+      { injector: this.injector }
+    );
+  }
+
+  /**
+   * Make the earliest subscriber in document order the holder, moving the
+   * shared element into its host if needed.
+   */
+  private moveToEarliest(shared: SharedStyle, holderChanged: boolean) {
+    const { subscribers } = shared;
+    let earliest = 0;
+    for (let i = 1; i < subscribers.length; i++) {
+      if (precedes(subscribers[i].host, subscribers[earliest].host)) {
+        earliest = i;
+      }
+    }
+    if (earliest === 0 && !holderChanged) return;
+
+    const [holder] = subscribers.splice(earliest, 1);
+    subscribers.unshift(holder);
+    this.renderer.appendChild(holder.host, shared.el);
+  }
+
+  private removeStyle(el: HTMLStyleElement) {
+    const parent = this.renderer.parentNode(el);
+    if (parent) this.renderer.removeChild(parent, el);
   }
 
   private get host(): HTMLElement {
@@ -177,9 +230,9 @@ export default class InlinedStyles {
 
   /**
    * After SSR + hydration the host may already contain the `<style>` the
-   * server emitted. Reuse it instead of appending a second copy.
+   * server emitted. Returns it so it can be reused (or removed if redundant).
    */
-  private adoptServerStyle(styles: string): HTMLStyleElement | undefined {
+  private findServerStyle(styles: string): HTMLStyleElement | undefined {
     const host: HTMLElement | undefined = this.host;
     const children = host?.children;
     if (!children) return undefined;
