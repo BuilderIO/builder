@@ -71,9 +71,13 @@ const testSymbols = async (page: Page) => {
   }
 };
 
+/** Style types the Angular SDK deduplicates across instances. */
+const SHARED_STYLES_SELECTOR =
+  'style[data-id="builderio-block"], style[data-id="builderio-columns"]';
+
 const getInlinedStyles = (page: Page) =>
   page
-    .locator('style[data-id^="builderio-"]')
+    .locator(SHARED_STYLES_SELECTOR)
     .evaluateAll(els => els.map(el => `${el.getAttribute('data-id')}|${el.textContent}`));
 
 test.describe('Symbols', () => {
@@ -134,7 +138,7 @@ test.describe('Symbols', () => {
       await expect(innerBlock.first()).toHaveCSS('margin-top', '20px');
 
       const styles = await frame
-        .locator('style[data-id^="builderio-"]')
+        .locator(SHARED_STYLES_SELECTOR)
         .evaluateAll(els => els.map(el => `${el.getAttribute('data-id')}|${el.textContent}`));
       expect(new Set(styles).size).toBe(styles.length);
     });
@@ -165,8 +169,8 @@ test.describe('Symbols', () => {
 
       const { duplicates, sharedStyleInFirstInstance } = await frame
         .locator('body')
-        .evaluate(() => {
-          const styles = Array.from(document.querySelectorAll('style[data-id^="builderio-"]'));
+        .evaluate((_, selector) => {
+          const styles = Array.from(document.querySelectorAll(selector));
           const keys = styles.map(el => `${el.getAttribute('data-id')}|${el.textContent}`);
           const shared = styles.filter(el =>
             el.textContent?.includes('.builder-b81cb922c844445a83e03913503c9273')
@@ -177,7 +181,7 @@ test.describe('Symbols', () => {
             sharedStyleInFirstInstance:
               shared.length === 1 && Boolean(firstInstance?.contains(shared[0])),
           };
-        });
+        }, SHARED_STYLES_SELECTOR);
       expect(duplicates).toBe(0);
       expect(sharedStyleInFirstInstance).toBe(true);
     });

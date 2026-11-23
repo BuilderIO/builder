@@ -33,19 +33,47 @@ interface SharedStyle {
   reorderOwner?: InlinedStyles;
 }
 
+/**
+ * Tracks the CSS emitted for one selector. If the same kind of style (same
+ * `data-id`) ever produces two different CSS texts for one selector (e.g. a
+ * repeated block whose styles are bound to item data), dropping a later
+ * duplicate could let a different variant win the cascade (A, B, A would
+ * become A, B). Such selectors are not shared: every instance keeps its own
+ * `<style>`, as before deduplication.
+ */
+interface SelectorState {
+  /** Instances (shared or not) currently emitting CSS for this selector. */
+  count: number;
+  /**
+   * The shared key per `data-id` for this selector, or `null` once conflicting
+   * CSS has been seen. Holds at most one entry per `data-id`, and the whole
+   * state is dropped when `count` reaches zero.
+   */
+  keysByDataId: Map<string, string> | null;
+}
+
 interface DocumentStyles {
   /** Shared `<style>` elements, keyed by `${data-id}\0${css}`. */
   shared: Map<string, SharedStyle>;
-  /**
-   * The distinct CSS texts seen per `${data-id}\0${selector}`. When one
-   * selector has more than one variant (e.g. a repeated block whose styles are
-   * bound to item data), dropping a later duplicate could let a different
-   * variant win the cascade (A, B, A would become A, B). Such selectors are not
-   * shared: each instance keeps its own `<style>`, as before deduplication.
-   * Never shrinks, so a selector that ever conflicted stays unshared.
-   */
-  variants: Map<string, Set<string>>;
+  selectors: Map<string, SelectorState>;
 }
+
+/**
+ * Only styles whose CSS the SDK generates from a block id are shared: block
+ * styles (`.${blockId} { ... }`, in media queries, plus `:hover`) and columns
+ * styles (`.${blockId}-breakpoints ...`). Their first class selector reliably
+ * identifies what they target. Other styles (e.g. a content entry's custom
+ * `cssCode`) can target anything, so they always keep their own `<style>`.
+ */
+const SHAREABLE_DATA_IDS = new Set(['builderio-block', 'builderio-columns']);
+
+const getShareableSelector = (
+  dataId: string,
+  styles: string
+): string | undefined => {
+  if (!SHAREABLE_DATA_IDS.has(dataId)) return undefined;
+  return /\.([^\s{},:>~+]+)/.exec(styles)?.[1];
+};
 
 // Node.DOCUMENT_POSITION_* bit flags; `Node` is not a global during SSR.
 const DOCUMENT_POSITION_DISCONNECTED = 0x01;
@@ -63,15 +91,6 @@ const precedes = (a: Node, b: Node): boolean => {
 };
 
 /**
- * The class a block's CSS targets. Block styles are generated as
- * `.${blockId} { ... }` (optionally inside media queries, plus `:hover`), so
- * the first class selector identifies the block. Falls back to the full text,
- * which can never conflict with anything.
- */
-const getSelector = (styles: string): string =>
-  /\.([^\s{},:>~+]+)/.exec(styles)?.[1] ?? styles;
-
-/**
  * Keyed by `Document` so that each SSR request (which gets its own document)
  * has an isolated registry and nothing leaks between requests.
  */
@@ -80,7 +99,7 @@ const REGISTRIES = new WeakMap<object, DocumentStyles>();
 const getRegistry = (doc: object): DocumentStyles => {
   let registry = REGISTRIES.get(doc);
   if (!registry) {
-    registry = { shared: new Map(), variants: new Map() };
+    registry = { shared: new Map(), selectors: new Map() };
     REGISTRIES.set(doc, registry);
   }
   return registry;
@@ -113,9 +132,16 @@ export default class InlinedStyles {
   id = input.required<Props['id']>();
   nonce = input.required<Props['nonce']>();
 
+  /**
+   * What we last acquired. Inputs may already hold their new values when we
+   * release, so release and unshare use these instead.
+   */
+  private acquired:
+    | { dataId: string; css: string; selector: string | undefined }
+    | undefined;
   /** Key of the shared entry we subscribe to, if any. */
   private key: string | undefined;
-  /** Our own, unshared `<style>`, used for selectors with conflicting CSS. */
+  /** Our own, unshared `<style>`, if we are not sharing. */
   private ownEl: HTMLStyleElement | undefined;
 
   constructor(
@@ -138,27 +164,45 @@ export default class InlinedStyles {
   }
 
   private acquire() {
-    const styles = this.styles();
-    if (!styles) return;
+    const css = this.styles();
+    // Whitespace-only CSS (e.g. a block with no styles) has no effect.
+    if (!css?.trim()) return;
 
+    const dataId = this.id();
     const registry = getRegistry(this.document);
-    const key = `${this.id()}\u0000${styles}`;
+    const selector = getShareableSelector(dataId, css);
+    this.acquired = { dataId, css, selector };
 
     // A matching <style> the server rendered into our host, if hydrating.
-    const serverStyle = this.findServerStyle(styles);
+    const serverStyle = this.findServerStyle(dataId, css);
 
-    const selectorKey = `${this.id()}\u0000${getSelector(styles)}`;
-    let variants = registry.variants.get(selectorKey);
-    if (!variants) {
-      variants = new Set();
-      registry.variants.set(selectorKey, variants);
+    if (selector === undefined) {
+      this.ownEl = serverStyle ?? this.createStyle(dataId, css);
+      return;
     }
-    variants.add(key);
 
-    if (variants.size > 1) {
-      // Conflicting CSS for this selector: stop sharing any of its variants.
-      variants.forEach((variantKey) => this.unshare(registry, variantKey));
-      this.ownEl = serverStyle ?? this.createStyle(styles);
+    const key = `${dataId}\u0000${css}`;
+    let state = registry.selectors.get(selector);
+    if (!state) {
+      state = { count: 0, keysByDataId: new Map() };
+      registry.selectors.set(selector, state);
+    }
+    state.count++;
+
+    if (state.keysByDataId) {
+      const seen = state.keysByDataId.get(dataId);
+      if (seen === undefined) {
+        state.keysByDataId.set(dataId, key);
+      } else if (seen !== key) {
+        // Conflicting CSS for this selector: stop sharing any of it.
+        const toUnshare = Array.from(state.keysByDataId.values());
+        state.keysByDataId = null;
+        toUnshare.forEach((sharedKey) => this.unshare(registry, sharedKey));
+      }
+    }
+
+    if (!state.keysByDataId) {
+      this.ownEl = serverStyle ?? this.createStyle(dataId, css);
       return;
     }
 
@@ -166,7 +210,7 @@ export default class InlinedStyles {
     const shared = registry.shared.get(key);
     if (!shared) {
       registry.shared.set(key, {
-        el: serverStyle ?? this.createStyle(styles),
+        el: serverStyle ?? this.createStyle(dataId, css),
         subscribers: [this],
       });
       return;
@@ -183,16 +227,28 @@ export default class InlinedStyles {
   }
 
   private release() {
+    const acquired = this.acquired;
+    if (!acquired) return;
+    this.acquired = undefined;
+    const registry = getRegistry(this.document);
+
     if (this.ownEl) {
       this.removeStyle(this.ownEl);
       this.ownEl = undefined;
+    }
+
+    const selectorState =
+      acquired.selector === undefined
+        ? undefined
+        : registry.selectors.get(acquired.selector);
+    if (selectorState && --selectorState.count <= 0) {
+      registry.selectors.delete(acquired.selector!);
     }
 
     const key = this.key;
     if (key === undefined) return;
     this.key = undefined;
 
-    const registry = getRegistry(this.document);
     const shared = registry.shared.get(key);
     if (!shared) return;
 
@@ -211,6 +267,10 @@ export default class InlinedStyles {
     if (shared.subscribers.length === 0) {
       registry.shared.delete(key);
       this.removeStyle(shared.el);
+      // This variant is gone, so a different one later is not a conflict.
+      if (selectorState?.keysByDataId?.get(acquired.dataId) === key) {
+        selectorState.keysByDataId.delete(acquired.dataId);
+      }
       return;
     }
 
@@ -233,11 +293,9 @@ export default class InlinedStyles {
 
     shared.subscribers.forEach((subscriber, i) => {
       subscriber.key = undefined;
-      if (i === 0) {
-        subscriber.ownEl = shared.el;
-      } else {
-        subscriber.ownEl = subscriber.createStyle(subscriber.styles());
-      }
+      const { dataId, css } = subscriber.acquired!;
+      subscriber.ownEl =
+        i === 0 ? shared.el : subscriber.createStyle(dataId, css);
     });
   }
 
@@ -294,10 +352,10 @@ export default class InlinedStyles {
     return this.elRef.nativeElement;
   }
 
-  private createStyle(styles: string): HTMLStyleElement {
+  private createStyle(dataId: string, css: string): HTMLStyleElement {
     const el = this.renderer.createElement('style');
-    this.renderer.setAttribute(el, 'data-id', this.id());
-    this.renderer.appendChild(el, this.renderer.createText(styles));
+    this.renderer.setAttribute(el, 'data-id', dataId);
+    this.renderer.appendChild(el, this.renderer.createText(css));
     this.renderer.setAttribute(el, 'nonce', this.nonce());
     this.renderer.appendChild(this.host, el);
     return el;
@@ -307,7 +365,10 @@ export default class InlinedStyles {
    * After SSR + hydration the host may already contain the `<style>` the
    * server emitted. Returns it so it can be reused (or removed if redundant).
    */
-  private findServerStyle(styles: string): HTMLStyleElement | undefined {
+  private findServerStyle(
+    dataId: string,
+    css: string
+  ): HTMLStyleElement | undefined {
     const host: HTMLElement | undefined = this.host;
     const children = host?.children;
     if (!children) return undefined;
@@ -315,8 +376,8 @@ export default class InlinedStyles {
       const child = children[i];
       if (
         child.tagName === 'STYLE' &&
-        child.getAttribute('data-id') === this.id() &&
-        child.textContent === styles
+        child.getAttribute('data-id') === dataId &&
+        child.textContent === css
       ) {
         return child as HTMLStyleElement;
       }
