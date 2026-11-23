@@ -13,6 +13,7 @@ import {
   test,
   mapSdkName,
   getSdkGeneration,
+  isSSRFramework,
 } from '../helpers/index.js';
 import type { ServerName } from '../helpers/sdk.js';
 
@@ -64,11 +65,44 @@ const testSymbols = async (page: Page) => {
   }
 };
 
+const getInlinedStyles = (page: Page) =>
+  page
+    .locator('style[data-id^="builderio-"]')
+    .evaluateAll(els => els.map(el => `${el.getAttribute('data-id')}|${el.textContent}`));
+
 test.describe('Symbols', () => {
   test('render correctly', async ({ page }) => {
     await page.goto('/symbols');
 
     await testSymbols(page);
+  });
+
+  test.describe('deduplicates identical inline styles across symbol instances', () => {
+    test('when JavaScript is disabled (SSR output)', async ({ browser, sdk, packageName }) => {
+      test.skip(sdk !== 'angular');
+      test.skip(!isSSRFramework(packageName));
+
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto('/symbols');
+
+      const styles = await getInlinedStyles(page);
+      expect(styles.length).toBeGreaterThan(0);
+      expect(new Set(styles).size).toBe(styles.length);
+
+      await testSymbols(page);
+    });
+
+    test('after hydration / client render', async ({ page, sdk }) => {
+      test.skip(sdk !== 'angular');
+
+      await page.goto('/symbols');
+      await testSymbols(page);
+
+      const styles = await getInlinedStyles(page);
+      expect(styles.length).toBeGreaterThan(0);
+      expect(new Set(styles).size).toBe(styles.length);
+    });
   });
   test('fetch content if not provided', async ({ page, packageName, sdk }) => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
