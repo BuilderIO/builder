@@ -2471,3 +2471,101 @@ describe('Symbol blocks without data', () => {
     });
   });
 });
+
+describe('Symbol slot content', () => {
+  const localized = (value: any) => ({ '@type': localizedType, Default: value });
+  const slotContent = (): BuilderContent => ({
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-container',
+          component: {
+            name: 'Symbol',
+            options: {
+              symbol: {
+                model: 'symbol',
+                entry: 'content-container',
+                data: {
+                  headline: localized('Section headline'),
+                  features: localized([{ label: localized('Fast payouts') }]),
+                  children1: [
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      id: 'builder-table',
+                      meta: { localizedTextInputs: ['title', 'rows'] },
+                      component: {
+                        name: 'ComparisonTable',
+                        options: {
+                          title: localized('Compare plans'),
+                          rows: localized([{ label: localized('Transaction fee') }]),
+                        },
+                      },
+                    },
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      id: 'builder-text',
+                      component: { name: 'Text', options: { text: localized('<p>Hello</p>') } },
+                    },
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      id: 'builder-nested',
+                      component: {
+                        name: 'Symbol',
+                        options: {
+                          symbol: {
+                            model: 'symbol',
+                            entry: 'nested',
+                            data: { heading: localized('Inner heading') },
+                          },
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  });
+
+  test('getTranslateableFields extracts slot blocks once, under their own block ids', () => {
+    expect(getTranslateableFields(slotContent(), 'en-US', '')).toEqual({
+      'blocks.builder-container.symbolInput#headline': {
+        value: 'Section headline',
+        instructions: '',
+      },
+      'blocks.builder-container.symbolInput#features[0].label': {
+        value: 'Fast payouts',
+        instructions: '',
+      },
+      'blocks.builder-table#title': { value: 'Compare plans', instructions: '' },
+      'blocks.builder-table#rows#0#label': { value: 'Transaction fee', instructions: '' },
+      'blocks.builder-text#text': { value: '<p>Hello</p>', instructions: '' },
+      'blocks.builder-nested.symbolInput#heading': { value: 'Inner heading', instructions: '' },
+    });
+  });
+
+  test('applyTranslation still applies a job uploaded with the duplicate slot keys', () => {
+    const result = applyTranslation(
+      slotContent(),
+      {
+        'blocks.builder-container.symbolInput#children1[0].component.options.title': {
+          value: 'Tarife vergleichen',
+        },
+        'blocks.builder-table#title': { value: 'Tarife vergleichen' },
+        'blocks.builder-text#text': { value: '<p>Hallo</p>' },
+        'blocks.builder-nested.symbolInput#heading': { value: 'Innere Überschrift' },
+      },
+      'de-DE',
+      'en-US'
+    );
+    const slot = (result.data as any).blocks[0].component.options.symbol.data.children1;
+
+    expect(slot[0].component.options.title['de-DE']).toBe('Tarife vergleichen');
+    expect(slot[1].component.options.text['de-DE']).toBe('<p>Hallo</p>');
+    expect(slot[2].component.options.symbol.data.heading['de-DE']).toBe('Innere Überschrift');
+  });
+});

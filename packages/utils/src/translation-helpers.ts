@@ -13,6 +13,15 @@ function isBuilderType(value: any, ...types: string[]) {
   return !!value && typeof value === 'object' && types.includes(value['@type']);
 }
 
+// A Symbol slot (`symbol.data.<slotName>`) holds a list of blocks.
+function isSlotContent(value: any) {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(item => isBuilderType(item, '@builder.io/sdk:Element'))
+  );
+}
+
 export type TranslateableFields = {
   [key: string]: {
     instructions?: string;
@@ -564,7 +573,9 @@ export function getTranslateableFields(
               symbolInputName: string,
               symbolInputValue: any,
             ]) => {
-              if (symbolInputName === 'children') {
+              // Slot blocks are reached by the traversal itself and extracted under their own
+              // block ids; recording them here too would send every string twice.
+              if (symbolInputName === 'children' || isSlotContent(symbolInputValue)) {
                 return;
               }
 
