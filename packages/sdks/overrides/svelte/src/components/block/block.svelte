@@ -50,6 +50,7 @@
   import {
     canShowBlockStyles,
     getBlockStylesCss,
+    isInContentBlockStyles,
   } from './components/block-styles.helpers';
   import RepeatedBlock from './components/repeated-block.svelte';
 
@@ -93,9 +94,15 @@
     : ('show' in processedBlock ? processedBlock.show : true) &&
       !('hide' in processedBlock ? processedBlock.hide : false);
 
-  // (BlockStyles + InlinedStyles)
+  // (BlockStyles + InlinedStyles) Static block styles are in the Content's stylesheet instead.
   $: css =
-    canShowBlock && canShowBlockStyles(processedBlock)
+    canShowBlock &&
+    canShowBlockStyles(processedBlock) &&
+    !isInContentBlockStyles(
+      block,
+      $context.content,
+      $context.rootState.locale as string | undefined
+    )
       ? getBlockStylesCss(processedBlock, $context.content)
       : '';
 

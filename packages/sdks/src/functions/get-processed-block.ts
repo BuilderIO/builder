@@ -57,7 +57,7 @@ const PROCESSED_BLOCKS_WITHOUT_BINDINGS = new WeakMap<
   { locale: string; block: BuilderBlock }
 >();
 
-const hasBindings = (block: BuilderBlock) => {
+export const hasBindings = (block: BuilderBlock) => {
   if (!block.bindings) return false;
   for (const _ in block.bindings) return true;
   return false;
