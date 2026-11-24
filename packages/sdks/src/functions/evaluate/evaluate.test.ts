@@ -305,6 +305,18 @@ const TESTS = {
     run('state.a.__proto__.polluted = "yes"; return 1', { a: {} });
     expect(({} as any).polluted).toBeUndefined();
   },
+  'inherited array methods on state stay readable': () => {
+    // The node runtime copies state into an isolate and never uses flattenState.
+    if (process.env.SDK_ENV === 'node') return;
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'return state.items.join(",")',
+      isExpression: false,
+      rootState: { items: ['a', 'b'] },
+    });
+
+    expect(output).toBe('a,b');
+  },
   'legitimate state reads and writes still work': () => {
     const rootState: Record<string, any> = {};
 

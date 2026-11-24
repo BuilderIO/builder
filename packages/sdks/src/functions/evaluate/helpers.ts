@@ -110,6 +110,8 @@ export const parseCode = (
   return useCode;
 };
 
+const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
 export function flattenState({
   rootState,
   localState,
@@ -130,12 +132,17 @@ export function flattenState({
         ? Reflect.getOwnPropertyDescriptor(localState, prop)
         : Reflect.getOwnPropertyDescriptor(target, prop),
     get: (target, prop) => {
-      if (localState && hasOwn(localState, prop)) {
+      // Inherited members such as `Array.prototype.map` must stay readable;
+      // only the keys that reach the prototype chain itself are refused.
+      if (UNSAFE_KEYS.has(prop as string)) {
+        return undefined;
+      }
+
+      if (localState && prop in localState) {
         return localState[prop];
       }
 
-      // Own keys only, so inherited values such as `__proto__` are never returned.
-      const val = hasOwn(target, prop) ? target[prop] : undefined;
+      const val = target[prop];
       if (typeof val === 'object' && val !== null) {
         return flattenState({
           rootState: val,
