@@ -8,41 +8,7 @@ import {
   Query,
 } from '../functions/filter-with-custom-targeting';
 import { BuilderStoreContext } from '../store/builder-store';
-import { CacheProvider, EmotionCache, SerializedStyles, withEmotionCache } from '@emotion/core';
-
-type ServerEmotionCache = EmotionCache & {
-  insert(
-    selector: string,
-    serialized: SerializedStyles,
-    sheet: EmotionCache['sheet'],
-    shouldCache: boolean
-  ): string | void;
-};
-
-const PersonalizationStyles = withEmotionCache<{ children: React.ReactNode }>(
-  ({ children }, parentCache) => {
-    const cache: ServerEmotionCache = {
-      ...parentCache,
-      compat: undefined,
-      inserted: {},
-      registered: { ...parentCache.registered },
-      insert(selector, serialized, sheet, shouldCache) {
-        // A template must not suppress style emission in another branch.
-        const rules = (parentCache as ServerEmotionCache).insert(
-          selector,
-          serialized,
-          sheet,
-          false
-        );
-        if (shouldCache) {
-          cache.inserted[serialized.name] = true;
-        }
-        return rules;
-      },
-    };
-    return <CacheProvider value={cache}>{children}</CacheProvider>;
-  }
-);
+import { VariantStyles } from '../components/variant-styles';
 
 export type PersonalizationContainerProps = {
   children: React.ReactNode;
@@ -134,14 +100,14 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
             <template key={index} data-variant-id={props.builderBlock?.id! + index}>
               {/* Empty placeholder keeps positional lookups (e.g. personalization-utils) intact */}
               {isVariantForLocale(variant.query, props.builderState.state?.locale) && (
-                <PersonalizationStyles>
+                <VariantStyles>
                   <BuilderBlocks
                     blocks={variant.blocks}
                     parentElementId={props.builderBlock?.id}
                     dataPath={`component.options.variants.${index}.blocks`}
                     child
                   />
-                </PersonalizationStyles>
+                </VariantStyles>
               )}
             </template>
           ))}
@@ -156,14 +122,14 @@ export function PersonalizationContainer(props: PersonalizationContainerProps) {
               ),
             }}
           />
-          <PersonalizationStyles>
+          <VariantStyles>
             <BuilderBlocks
               blocks={props.builderBlock?.children}
               parentElementId={props.builderBlock?.id}
               dataPath="this.children"
               child
             />
-          </PersonalizationStyles>
+          </VariantStyles>
         </div>
         <script
           nonce={builderStore.context.nonce}

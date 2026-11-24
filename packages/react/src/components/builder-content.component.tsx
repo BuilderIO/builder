@@ -10,6 +10,7 @@ import {
 import { NoWrap } from './no-wrap';
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
 import { VariantsProvider } from './variants-provider.component';
+import { VariantStyles } from './variant-styles';
 
 export type BuilderContentProps<ContentType> = {
   /**
@@ -327,6 +328,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                 // default Variation is at the end, wrap the rest with template
                 // TODO: IE11 don't support templates
                 const Tag = index === variants.length - 1 ? React.Fragment : 'template';
+                const Styles = variants.length > 1 ? VariantStyles : React.Fragment;
                 return (
                   <React.Fragment key={String(content?.id! + index)}>
                     {Tag !== 'template' && renderScript?.()}
@@ -346,11 +348,13 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                         builder-content-id={content?.id}
                         builder-model={this.name}
                       >
-                        {this.props.children(
-                          content?.data! as any,
-                          this.props.inline ? false : loading,
-                          useData
-                        )}
+                        <Styles>
+                          {this.props.children(
+                            content?.data! as any,
+                            this.props.inline ? false : loading,
+                            useData
+                          )}
+                        </Styles>
                       </TagName>
                     </Tag>
                   </React.Fragment>
