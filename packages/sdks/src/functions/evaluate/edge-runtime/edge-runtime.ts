@@ -1,5 +1,9 @@
 import type { ExecutorArgs } from '../helpers.js';
-import { flattenState, getFunctionArguments } from '../helpers.js';
+import {
+  flattenState,
+  getFunctionArguments,
+  OWN_STATE_KEY_CHECKS,
+} from '../helpers.js';
 import Interpreter from './acorn-interpreter.js';
 
 /**
@@ -22,7 +26,10 @@ function patchInterpreter() {
 
     if (
       UNSAFE_KEYS.has(name) ||
-      !Object.prototype.hasOwnProperty.call(obj._connected, name)
+      !(
+        OWN_STATE_KEY_CHECKS.get(obj._connected)?.(name) ??
+        Object.prototype.hasOwnProperty.call(obj._connected, name)
+      )
     ) {
       return undefined;
     }

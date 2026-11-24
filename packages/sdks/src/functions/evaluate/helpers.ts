@@ -112,6 +112,15 @@ export const parseCode = (
 
 const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
+/**
+ * Whether a key is an own key of a flattened state proxy (local or root state).
+ * Kept outside the proxy so no trap has to satisfy proxy invariants for frozen state.
+ */
+export const OWN_STATE_KEY_CHECKS = new WeakMap<
+  object,
+  (prop: string | symbol) => boolean
+>();
+
 export function flattenState({
   rootState,
   localState,
@@ -124,13 +133,7 @@ export function flattenState({
   const hasOwn = (obj: object, prop: string | symbol) =>
     Object.prototype.hasOwnProperty.call(obj, prop);
 
-  return new Proxy(rootState, {
-    // The edge runtime's own-property check on connected state goes through
-    // this trap, so local state must be reported as own here too.
-    getOwnPropertyDescriptor: (target, prop) =>
-      localState && hasOwn(localState, prop)
-        ? Reflect.getOwnPropertyDescriptor(localState, prop)
-        : Reflect.getOwnPropertyDescriptor(target, prop),
+  const state = new Proxy(rootState, {
     get: (target, prop) => {
       // Inherited members such as `Array.prototype.map` must stay readable;
       // only the keys that reach the prototype chain itself are refused.
@@ -171,4 +174,10 @@ export function flattenState({
       return true;
     },
   });
+  OWN_STATE_KEY_CHECKS.set(
+    state,
+    (prop) =>
+      (!!localState && hasOwn(localState, prop)) || hasOwn(rootState, prop)
+  );
+  return state;
 }

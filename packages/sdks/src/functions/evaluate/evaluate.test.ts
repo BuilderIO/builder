@@ -305,6 +305,19 @@ const TESTS = {
     run('state.a.__proto__.polluted = "yes"; return 1', { a: {} });
     expect(({} as any).polluted).toBeUndefined();
   },
+  'local-only key is readable when root state is frozen': () => {
+    // The node runtime never uses flattenState.
+    if (process.env.SDK_ENV === 'node') return;
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'return String(state.b)',
+      isExpression: false,
+      rootState: Object.freeze({ a: 1 }),
+      localState: { b: 2 },
+    });
+
+    expect(output).toBe('2');
+  },
   'inherited array methods on state stay readable': () => {
     // The node runtime copies state into an isolate and never uses flattenState.
     if (process.env.SDK_ENV === 'node') return;
