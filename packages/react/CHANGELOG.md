@@ -1,5 +1,11 @@
 # @builder.io/react
 
+## 9.4.15
+
+### Patch Changes
+
+- ee5f0c4: Fix a hydration bug in Dynamic Containers that could break accessibility references by generating different `useId` values on the server and client.
+
 ## 9.4.14
 
 ### Patch Changes
