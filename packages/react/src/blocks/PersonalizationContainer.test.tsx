@@ -127,13 +127,12 @@ function Probe({ branch }: { branch: string }) {
   })
 );
 
-test.each([
+[
   { previewingIndex: null, expected: 'fallback' },
   { previewingIndex: 1, expected: 'preview' },
   { previewingIndex: 2, expected: 'matched' },
-])(
-  'shows $expected in the editor with preview index $previewingIndex',
-  ({ previewingIndex, expected }) => {
+].forEach(({ previewingIndex, expected }) => {
+  test(`shows ${expected} in the editor with preview index ${previewingIndex}`, () => {
     const flags = { isServer: Builder.isServer, isEditing: Builder.isEditing };
     const { locale } = builder.getUserAttributes();
     Builder.isServer = false;
@@ -173,5 +172,5 @@ test.each([
       Object.assign(Builder, flags);
       builder.setUserAttributes({ locale });
     }
-  }
-);
+  });
+});
