@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from '../helpers/index.js';
 
 const checkSupportsDynamicLoading = (packageName: string) => {
-  test.skip(packageName !== 'sveltekit');
+  test.skip(packageName !== 'sveltekit' && packageName !== 'sveltekit-svelte5');
 };
 
 test.describe('Dynamic loading of custom components', () => {

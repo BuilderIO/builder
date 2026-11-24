@@ -24,6 +24,7 @@ test.describe('Localization', () => {
         sdk === 'rsc' ||
         sdk === 'vue' ||
         packageName === 'sveltekit' ||
+        packageName === 'sveltekit-svelte5' ||
         packageName === 'react-sdk-next-pages',
       'Errors are only logged in the terminal not on browser'
     );

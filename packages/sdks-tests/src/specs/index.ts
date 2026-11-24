@@ -238,10 +238,13 @@ export const PAGES: Record<string, Page> = {
   '/with-fetch-options': { content: HOMEPAGE },
   '/symbol-with-repeat-input-binding': { content: SYMBOL_WITH_REPEAT_INPUT_BINDING },
   '/children-slot-placement': { content: CUSTOM_COMPONENT_CHILDREN_SLOT_PLACEMENT },
-  '/dynamic-loading': { content: DYNAMIC_LOADING_CUSTOM_COMPONENTS, target: ['sveltekit'] },
+  '/dynamic-loading': {
+    content: DYNAMIC_LOADING_CUSTOM_COMPONENTS,
+    target: ['sveltekit', 'sveltekit-svelte5'],
+  },
   '/eager-dynamic-loading': {
     content: EAGER_DYNAMIC_LOADING_CUSTOM_COMPONENTS,
-    target: ['sveltekit'],
+    target: ['sveltekit', 'sveltekit-svelte5'],
   },
   '/ssr-binding': { content: SSR_BINDING_CONTENT },
   '/blocks-class-name': { content: BLOCKS_CLASS_NAME },
@@ -268,7 +271,7 @@ export const PAGES: Record<string, Page> = {
   '/get-content-with-symbol': { content: CONTENT_WITHOUT_SYMBOLS, target: 'gen1' },
   '/editing-empty-content-element-ref': {
     content: null as unknown as BuilderContent,
-    target: ['svelte', 'sveltekit', 'vue', 'nuxt', 'qwik-city'],
+    target: ['svelte', 'sveltekit', 'sveltekit-svelte5', 'vue', 'nuxt', 'qwik-city'],
   },
   '/embed-and-custom-code': { content: EMBED_AND_CUSTOM_CODE },
   '/video-lazy-load': { content: VIDEO_LAZY_LOAD },
