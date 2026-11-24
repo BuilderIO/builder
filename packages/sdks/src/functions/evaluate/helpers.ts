@@ -119,13 +119,23 @@ export function flattenState({
   localState: Record<string | symbol, any> | undefined;
   rootSetState: ((rootState: BuilderRenderState) => void) | undefined;
 }): BuilderRenderState {
+  const hasOwn = (obj: object, prop: string | symbol) =>
+    Object.prototype.hasOwnProperty.call(obj, prop);
+
   return new Proxy(rootState, {
+    // The edge runtime's own-property check on connected state goes through
+    // this trap, so local state must be reported as own here too.
+    getOwnPropertyDescriptor: (target, prop) =>
+      localState && hasOwn(localState, prop)
+        ? Reflect.getOwnPropertyDescriptor(localState, prop)
+        : Reflect.getOwnPropertyDescriptor(target, prop),
     get: (target, prop) => {
-      if (localState && prop in localState) {
+      if (localState && hasOwn(localState, prop)) {
         return localState[prop];
       }
 
-      const val = target[prop];
+      // Own keys only, so inherited values such as `__proto__` are never returned.
+      const val = hasOwn(target, prop) ? target[prop] : undefined;
       if (typeof val === 'object' && val !== null) {
         return flattenState({
           rootState: val,
