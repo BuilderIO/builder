@@ -2568,4 +2568,83 @@ describe('Symbol slot content', () => {
     expect(slot[1].component.options.text['de-DE']).toBe('<p>Hallo</p>');
     expect(slot[2].component.options.symbol.data.heading['de-DE']).toBe('Innere Überschrift');
   });
+
+  const slotWith = (blocks: any[]): BuilderContent => ({
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-container',
+          component: {
+            name: 'Symbol',
+            options: { symbol: { model: 'symbol', entry: 'content-container', data: { content: blocks } } },
+          },
+        },
+      ],
+    },
+  });
+
+  const cardWithoutMeta = () => ({
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-card',
+    component: {
+      name: 'Card',
+      options: { title: localized('Card title'), items: [{ caption: localized('Caption') }] },
+    },
+  });
+
+  test('getTranslateableFields keeps slot values that have no localized input metadata', () => {
+    expect(getTranslateableFields(slotWith([cardWithoutMeta()]), 'en-US', '')).toEqual({
+      'blocks.builder-container.symbolInput#content[0].component.options.title': {
+        value: 'Card title',
+        instructions: '',
+      },
+      'blocks.builder-container.symbolInput#content[0].component.options.items[0].caption': {
+        value: 'Caption',
+        instructions: '',
+      },
+    });
+  });
+
+  test('getTranslateableFields sends only the inputs the traversal does not cover', () => {
+    const card = { ...cardWithoutMeta(), meta: { localizedTextInputs: ['title'] } };
+
+    expect(getTranslateableFields(slotWith([card]), 'en-US', '')).toEqual({
+      'blocks.builder-card#title': { value: 'Card title', instructions: '' },
+      'blocks.builder-container.symbolInput#content[0].component.options.items[0].caption': {
+        value: 'Caption',
+        instructions: '',
+      },
+    });
+  });
+
+  test('applyTranslation writes back slot values that have no localized input metadata', () => {
+    const content = slotWith([cardWithoutMeta()]);
+    const fields = getTranslateableFields(content, 'en-US', '');
+    const translated: typeof fields = {};
+    Object.entries(fields).forEach(([key, entry]) => {
+      translated[key] = { ...entry, value: `de ${entry.value}` };
+    });
+
+    const result = applyTranslation(content, translated, 'de-DE', 'en-US');
+    const options = (result.data as any).blocks[0].component.options.symbol.data.content[0]
+      .component.options;
+
+    expect(options.title['de-DE']).toBe('de Card title');
+    expect(options.items[0].caption['de-DE']).toBe('de Caption');
+  });
+
+  test('getTranslateableFields skips excluded blocks inside a slot', () => {
+    const excludedCard = { ...cardWithoutMeta(), meta: { excludeFromTranslation: true } };
+    const excludedParent = {
+      '@type': '@builder.io/sdk:Element',
+      id: 'builder-box',
+      meta: { excludeFromTranslation: true },
+      children: [cardWithoutMeta()],
+    };
+
+    expect(getTranslateableFields(slotWith([excludedCard, excludedParent]), 'en-US', '')).toEqual(
+      {}
+    );
+  });
 });
