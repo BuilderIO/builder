@@ -41,9 +41,6 @@ useMetadata({
   rsc: {
     componentType: 'server',
   },
-  angular: {
-    skipHydration: true,
-  },
 });
 
 export default function ContentComponent(props: ContentProps) {

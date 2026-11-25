@@ -566,6 +566,181 @@ const REACT_NATIVE_IMPORT_COMPONENTS_PLUGIN = () => ({
 });
 
 /**
+ * Angular hydration is opt-in (`provideBuilderHydration()`, see
+ * overrides/angular/src/index-helpers/top-of-file.ts).
+ *
+ * Angular only honours a static `ngSkipHydration` on the host, and that comes
+ * from the decorator, so it cannot change per app. The skip is a host binding
+ * instead: Angular reads it from the server-rendered DOM during hydration. The
+ * server keeps the skip (default) unless the token is provided, and also for
+ * content with A/B variants, personalization containers, or editor/preview URLs.
+ *
+ * Not validated: hydration with `ngSkipHydration` removed for custom components
+ * whose markup the HTML parser restructures, request-dependent content beyond
+ * the cases above, and `@defer` blocks. Measure hydration errors before enabling.
+ * @type {Plugin}
+ */
+const TOKEN_PATH = {
+  ContentComponent: '../../index-helpers/top-of-file',
+  EnableEditor: '../../../index-helpers/top-of-file',
+  BlocksWrapper: '../../index-helpers/top-of-file',
+};
+
+const ANGULAR_CONTENT_HYDRATION_OPT_IN_PLUGIN = () => ({
+  json: {
+    pre: (json) => {
+      const tokenImport = {
+        imports: { BUILDER_HYDRATION: 'BUILDER_HYDRATION' },
+        path: TOKEN_PATH[json.name],
+      };
+      const injectImports = [
+        { imports: { inject: 'inject' }, path: '@angular/core' },
+        {
+          imports: { PlatformLocation: 'PlatformLocation' },
+          path: '@angular/common',
+        },
+      ];
+      const optInState = {
+        code: 'inject(BUILDER_HYDRATION, { optional: true }) === true',
+        type: 'property',
+      };
+
+      if (json.name === 'ContentComponent') {
+        json.imports.push(...injectImports, tokenImport, {
+          imports: { shouldSkipBuilderHydration: 'shouldSkipBuilderHydration' },
+          path: './content.helpers',
+        });
+        json.state.builderHydrationOptIn = optInState;
+        json.state.builderPlatformSearch = {
+          code: 'inject(PlatformLocation).search',
+          type: 'property',
+        };
+        json.state.shouldSkipHydration = {
+          code: String.raw`shouldSkipHydration(): boolean {
+  return shouldSkipBuilderHydration({
+    optIn: this.builderHydrationOptIn(),
+    content: this.content(),
+    customWrapper: !!this.contentWrapper() || !!this.blocksWrapper(),
+    search: this.builderPlatformSearch(),
+  });
+}`,
+          type: 'method',
+        };
+      }
+
+      if (json.name === 'EnableEditor') {
+        json.imports.push(
+          ...injectImports,
+          tokenImport,
+          {
+            imports: {
+              shouldSkipBuilderHydration: 'shouldSkipBuilderHydration',
+            },
+            path: '../content.helpers',
+          },
+          {
+            imports: { DynamicDivWithTemplate: 'DynamicDivWithTemplate' },
+            path: '../../dynamic-div',
+          }
+        );
+        json.state.builderHydrationOptIn = optInState;
+        json.state.builderPlatformSearch = {
+          code: 'inject(PlatformLocation).search',
+          type: 'property',
+        };
+        // Children go through a template (not projectable DOM nodes) only when the
+        // content host is hydrating, and only for the default wrapper.
+        json.state.shouldHydrateChildren = {
+          code: String.raw`shouldHydrateChildren(): boolean {
+  // Matches the host: a skipped host renders the same DOM either way, so only the
+  // token and a custom contentWrapper decide here.
+  return this.builderHydrationOptIn() && !this.contentWrapper();
+}`,
+          type: 'method',
+        };
+      }
+
+      if (json.name === 'BlocksWrapper') {
+        // The blocks wrapper has no content input, so it only checks the token. Both
+        // sides must provide it, and the markup is the same either way when the
+        // content host is skipped.
+        json.imports.push(...injectImports, tokenImport, {
+          imports: {
+            DynamicDiv: 'DynamicDiv',
+            DynamicDivWithTemplate: 'DynamicDivWithTemplate',
+          },
+          path: '../dynamic-div',
+        });
+        json.state.builderHydrationOptIn = optInState;
+        json.state.childrenAsTemplate = {
+          code: String.raw`childrenAsTemplate(): boolean {
+  return this.builderHydrationOptIn() && this.BlocksWrapper() === DynamicDiv;
+}`,
+          type: 'method',
+        };
+        json.state.effectiveBlocksWrapper = {
+          code: String.raw`effectiveBlocksWrapper() {
+  return this.childrenAsTemplate() ? DynamicDivWithTemplate : this.BlocksWrapper();
+}`,
+          type: 'method',
+        };
+      }
+
+      return json;
+    },
+  },
+  code: {
+    post: (code, json) => {
+      const replaceAll = (from, to) => {
+        if (!code.includes(from)) {
+          throw new Error(`${json.name} hydration plugin: missing "${from}"`);
+        }
+        code = code.replace(from, to);
+      };
+
+      if (json.name === 'ContentComponent') {
+        return code.replace(
+          /\}\)\s*\nexport default class ContentComponent/,
+          `  host: { '[attr.ngSkipHydration]': 'shouldSkipHydration() ? "" : null' },\n})\nexport default class ContentComponent`
+        );
+      }
+
+      if (json.name === 'EnableEditor') {
+        replaceAll(
+          'this.ContentWrapper.set(this.contentWrapper() || DynamicDiv);',
+          'this.ContentWrapper.set(this.contentWrapper() || (this.shouldHydrateChildren() ? DynamicDivWithTemplate : DynamicDiv));'
+        );
+        replaceAll(
+          '    this.myContent.set([\n',
+          '    this.myContent.set(this.shouldHydrateChildren() ? (undefined as any) : [\n'
+        );
+        replaceAll(
+          '      ...this.contentWrapperProps(),\n    };',
+          '      ...this.contentWrapperProps(),\n      ...(this.shouldHydrateChildren() ? { childrenTemplate: this.contentwrapperTemplateRef() } : {}),\n    };'
+        );
+      }
+
+      if (json.name === 'BlocksWrapper') {
+        replaceAll(
+          '              BlocksWrapper();',
+          '              effectiveBlocksWrapper();'
+        );
+        replaceAll(
+          '    this.myContent.set([\n',
+          '    this.myContent.set(this.childrenAsTemplate() ? (undefined as any) : [\n'
+        );
+        replaceAll(
+          '      ...this.BlocksWrapperProps(),\n    };',
+          '      ...this.BlocksWrapperProps(),\n      ...(this.childrenAsTemplate() ? { childrenTemplate: this.blockswrapperTemplateRef() } : {}),\n    };'
+        );
+      }
+
+      return code;
+    },
+  },
+});
+
+/**
  * @type {MitosisConfig}
  */
 module.exports = {
@@ -588,6 +763,7 @@ module.exports = {
         INJECT_ENABLE_EDITOR_ON_EVENT_HOOKS_PLUGIN,
         ANGULAR_INJECT_UPDATE_VIEW_CODE,
         ANGULAR_NO_WRAP_INTERACTIVE_ELEMENT_PLUGIN,
+        ANGULAR_CONTENT_HYDRATION_OPT_IN_PLUGIN,
       ],
     },
     solid: {
