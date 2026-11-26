@@ -66,6 +66,9 @@ import {
   ACCORDION_ONE_AT_A_TIME,
   ACCORDION_WITH_NO_DETAIL,
   ACCORDION_USE_CHILDREN_FOR_ITEMS,
+  ACCORDION_USE_CHILDREN_FOR_ITEMS_STATE_CHANGE,
+  ACCORDION_USE_CHILDREN_FOR_ITEMS_ONE_AT_A_TIME,
+  ACCORDION_USE_CHILDREN_FOR_ITEMS_ASYNC_COLLECTION,
 } from './accordion.js';
 import { SYMBOL_TRACKING } from './symbol-tracking.js';
 import { COLUMNS_WITH_DIFFERENT_WIDTHS } from './columns-with-different-widths.js';
@@ -225,6 +228,15 @@ export const PAGES: Record<string, Page> = {
   '/accordion-grid': { content: ACCORDION_GRID },
   '/accordion-no-detail': { content: ACCORDION_WITH_NO_DETAIL },
   '/accordion-use-children-for-items': { content: ACCORDION_USE_CHILDREN_FOR_ITEMS },
+  '/accordion-use-children-for-items-state-change': {
+    content: ACCORDION_USE_CHILDREN_FOR_ITEMS_STATE_CHANGE,
+  },
+  '/accordion-use-children-for-items-one-at-a-time': {
+    content: ACCORDION_USE_CHILDREN_FOR_ITEMS_ONE_AT_A_TIME,
+  },
+  '/accordion-use-children-for-items-async-collection': {
+    content: ACCORDION_USE_CHILDREN_FOR_ITEMS_ASYNC_COLLECTION,
+  },
   '/symbol-tracking': { content: SYMBOL_TRACKING },
   '/columns-with-different-widths': { content: COLUMNS_WITH_DIFFERENT_WIDTHS },
   '/custom-components-no-default-value': { content: CUSTOM_COMPONENT_NO_DEFAULT_VALUE },

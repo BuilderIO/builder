@@ -196,4 +196,44 @@ test.describe('Accordion', () => {
       await expect(page.getByText(detail)).toBeVisible();
     }
   });
+  test('useChildrenForItems - state change keeps open detail mounted', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ rsc: true, oldReact: true }, sdk));
+    await page.goto('/accordion-use-children-for-items-state-change');
+
+    await page.getByText('Apple', { exact: true }).click({ timeout: 10000 });
+    const detail = page.getByText('Inside Apple');
+    await expect(detail).toBeVisible();
+    await detail.evaluate(el => ((el as any).__marker = 'same'));
+
+    await page.getByText('Bump').click();
+    await expect(page.getByText('Count: 1')).toBeVisible();
+    await expect(detail).toBeVisible();
+    // A remount would drop the marker.
+    expect(await detail.evaluate(el => (el as any).__marker)).toBe('same');
+  });
+  test('useChildrenForItems - oneAtATime closes the previous item', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ rsc: true, oldReact: true }, sdk));
+    await page.goto('/accordion-use-children-for-items-one-at-a-time');
+
+    await page.getByText('Static', { exact: true }).click({ timeout: 10000 });
+    await expect(page.getByText('Inside Static')).toBeVisible();
+    await page.getByText('Banana', { exact: true }).click();
+    await expect(page.getByText('Inside Banana')).toBeVisible();
+    await expect(page.getByText('Inside Static')).not.toBeVisible();
+  });
+  test('useChildrenForItems - collection resolving later adds its items', async ({ page, sdk }) => {
+    test.fail(excludeTestFor({ rsc: true, oldReact: true }, sdk));
+    const errors: string[] = [];
+    page.on('pageerror', e => errors.push(e.message));
+    await page.goto('/accordion-use-children-for-items-async-collection');
+
+    await expect(page.getByText('Static', { exact: true })).toHaveCount(1, {
+      timeout: 10000,
+    });
+    await expect(page.getByText('Apple', { exact: true })).toHaveCount(0);
+    await page.getByText('Load').click();
+    await expect(page.getByText('Apple', { exact: true })).toHaveCount(1);
+    await expect(page.getByText('Banana', { exact: true })).toHaveCount(1);
+    expect(errors).toEqual([]);
+  });
 });
