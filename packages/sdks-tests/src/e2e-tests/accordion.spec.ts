@@ -33,10 +33,12 @@ test.describe('Accordion', () => {
 
     for (let i = 1; i <= 3; i++) {
       const itemTitle = page.getByText(`Item ${i}`, { exact: true });
-      await itemTitle.click({ timeout: 10000 });
-
       const itemDetail = page.getByText(`Inside Item ${i}`, { exact: true });
-      await expect(itemDetail).toBeVisible();
+      // The click can land before Vue has hydrated the SSR markup, so retry it until the panel opens.
+      await expect(async () => {
+        await itemTitle.click({ timeout: 10000 });
+        await expect(itemDetail).toBeVisible({ timeout: 1000 });
+      }).toPass({ timeout: 15000 });
 
       const titleBox = await itemTitle.boundingBox();
       const detailBox = await itemDetail.boundingBox();
@@ -71,8 +73,11 @@ test.describe('Accordion', () => {
     await page.goto('/accordion');
 
     for (let i = 1; i <= 3; i++) {
-      await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
-      await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible();
+      // The click can land before Vue has hydrated the SSR markup, so retry it until the panel opens.
+      await expect(async () => {
+        await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
+        await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible({ timeout: 1000 });
+      }).toPass({ timeout: 15000 });
       await page.getByText(`Item ${i}`, { exact: true }).click({ timeout: 10000 });
       await expect(page.locator(`text=Inside Item ${i}`)).not.toBeVisible();
     }
@@ -89,8 +94,11 @@ test.describe('Accordion', () => {
     await page.goto('/accordion-one-at-a-time');
 
     for (let i = 1; i <= 3; i++) {
-      await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
-      await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible();
+      // The click can land before Vue has hydrated the SSR markup, so retry it until the panel opens.
+      await expect(async () => {
+        await page.locator(`text=Item ${i}`).click({ timeout: 10000 });
+        await expect(page.locator(`text=Inside Item ${i}`)).toBeVisible({ timeout: 1000 });
+      }).toPass({ timeout: 15000 });
       for (let j = 1; j <= 3; j++) {
         if (j !== i) {
           await expect(page.locator(`text=Inside Item ${j}`)).not.toBeVisible();
