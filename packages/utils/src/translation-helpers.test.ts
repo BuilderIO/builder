@@ -2647,4 +2647,58 @@ describe('Symbol slot content', () => {
       {}
     );
   });
+
+  const nestedSymbolWithChildren = () => ({
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-inner',
+    component: {
+      name: 'Symbol',
+      options: {
+        symbol: {
+          model: 'symbol',
+          entry: 'inner',
+          data: {
+            heading: localized('Inner heading'),
+            children: [
+              cardWithoutMeta(),
+              {
+                '@type': '@builder.io/sdk:Element',
+                id: 'builder-inner-text',
+                component: { name: 'Text', options: { text: localized('<p>Hi</p>') } },
+              },
+            ],
+          },
+        },
+      },
+    },
+  });
+
+  test('getTranslateableFields keeps uncovered values in a nested Symbol children slot', () => {
+    const childPath =
+      'blocks.builder-container.symbolInput#content[0].component.options.symbol.data.children[0].component.options';
+
+    expect(getTranslateableFields(slotWith([nestedSymbolWithChildren()]), 'en-US', '')).toEqual({
+      'blocks.builder-inner.symbolInput#heading': { value: 'Inner heading', instructions: '' },
+      'blocks.builder-inner-text#text': { value: '<p>Hi</p>', instructions: '' },
+      [`${childPath}.title`]: { value: 'Card title', instructions: '' },
+      [`${childPath}.items[0].caption`]: { value: 'Caption', instructions: '' },
+    });
+  });
+
+  test('applyTranslation writes back values in a nested Symbol children slot', () => {
+    const content = slotWith([nestedSymbolWithChildren()]);
+    const fields = getTranslateableFields(content, 'en-US', '');
+    const translated: typeof fields = {};
+    Object.entries(fields).forEach(([key, entry]) => {
+      translated[key] = { ...entry, value: `de ${entry.value}` };
+    });
+
+    const result = applyTranslation(content, translated, 'de-DE', 'en-US');
+    const children = (result.data as any).blocks[0].component.options.symbol.data.content[0]
+      .component.options.symbol.data.children;
+
+    expect(children[0].component.options.title['de-DE']).toBe('de Card title');
+    expect(children[0].component.options.items[0].caption['de-DE']).toBe('de Caption');
+    expect(children[1].component.options.text['de-DE']).toBe('de <p>Hi</p>');
+  });
 });

@@ -146,10 +146,12 @@ function isCoveredByTraversal(block: any, optionPath: string) {
     Array.isArray(localizedTextInputs) &&
     localizedTextInputs.includes(optionPath) &&
     get(block.component?.options || {}, `${optionPath}.@type`) === localizedType;
+  // The traversal extracts every Symbol input except `children`, which it skips.
+  const isSymbolChildrenPath = /^symbol(\.data(\.children(\..*)?)?)?$/.test(optionPath);
   return (
     isLocalizedInput ||
     (optionPath === 'text' && (name === 'Text' || name === 'Core:Button')) ||
-    (optionPath === 'symbol' && name === 'Symbol')
+    (name === 'Symbol' && /^symbol(\.|$)/.test(optionPath) && !isSymbolChildrenPath)
   );
 }
 
