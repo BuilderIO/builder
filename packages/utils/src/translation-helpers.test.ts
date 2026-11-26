@@ -2471,3 +2471,234 @@ describe('Symbol blocks without data', () => {
     });
   });
 });
+
+describe('Symbol slot content', () => {
+  const localized = (value: any) => ({ '@type': localizedType, Default: value });
+  const slotContent = (): BuilderContent => ({
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-container',
+          component: {
+            name: 'Symbol',
+            options: {
+              symbol: {
+                model: 'symbol',
+                entry: 'content-container',
+                data: {
+                  headline: localized('Section headline'),
+                  features: localized([{ label: localized('Fast payouts') }]),
+                  children1: [
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      id: 'builder-table',
+                      meta: { localizedTextInputs: ['title', 'rows'] },
+                      component: {
+                        name: 'ComparisonTable',
+                        options: {
+                          title: localized('Compare plans'),
+                          rows: localized([{ label: localized('Transaction fee') }]),
+                        },
+                      },
+                    },
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      id: 'builder-text',
+                      component: { name: 'Text', options: { text: localized('<p>Hello</p>') } },
+                    },
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      id: 'builder-nested',
+                      component: {
+                        name: 'Symbol',
+                        options: {
+                          symbol: {
+                            model: 'symbol',
+                            entry: 'nested',
+                            data: { heading: localized('Inner heading') },
+                          },
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  });
+
+  test('getTranslateableFields extracts slot blocks once, under their own block ids', () => {
+    expect(getTranslateableFields(slotContent(), 'en-US', '')).toEqual({
+      'blocks.builder-container.symbolInput#headline': {
+        value: 'Section headline',
+        instructions: '',
+      },
+      'blocks.builder-container.symbolInput#features[0].label': {
+        value: 'Fast payouts',
+        instructions: '',
+      },
+      'blocks.builder-table#title': { value: 'Compare plans', instructions: '' },
+      'blocks.builder-table#rows#0#label': { value: 'Transaction fee', instructions: '' },
+      'blocks.builder-text#text': { value: '<p>Hello</p>', instructions: '' },
+      'blocks.builder-nested.symbolInput#heading': { value: 'Inner heading', instructions: '' },
+    });
+  });
+
+  test('applyTranslation still applies a job uploaded with the duplicate slot keys', () => {
+    const result = applyTranslation(
+      slotContent(),
+      {
+        'blocks.builder-container.symbolInput#children1[0].component.options.title': {
+          value: 'Tarife vergleichen',
+        },
+        'blocks.builder-table#title': { value: 'Tarife vergleichen' },
+        'blocks.builder-text#text': { value: '<p>Hallo</p>' },
+        'blocks.builder-nested.symbolInput#heading': { value: 'Innere Überschrift' },
+      },
+      'de-DE',
+      'en-US'
+    );
+    const slot = (result.data as any).blocks[0].component.options.symbol.data.children1;
+
+    expect(slot[0].component.options.title['de-DE']).toBe('Tarife vergleichen');
+    expect(slot[1].component.options.text['de-DE']).toBe('<p>Hallo</p>');
+    expect(slot[2].component.options.symbol.data.heading['de-DE']).toBe('Innere Überschrift');
+  });
+
+  const slotWith = (blocks: any[]): BuilderContent => ({
+    data: {
+      blocks: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-container',
+          component: {
+            name: 'Symbol',
+            options: { symbol: { model: 'symbol', entry: 'content-container', data: { content: blocks } } },
+          },
+        },
+      ],
+    },
+  });
+
+  const cardWithoutMeta = () => ({
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-card',
+    component: {
+      name: 'Card',
+      options: { title: localized('Card title'), items: [{ caption: localized('Caption') }] },
+    },
+  });
+
+  test('getTranslateableFields keeps slot values that have no localized input metadata', () => {
+    expect(getTranslateableFields(slotWith([cardWithoutMeta()]), 'en-US', '')).toEqual({
+      'blocks.builder-container.symbolInput#content[0].component.options.title': {
+        value: 'Card title',
+        instructions: '',
+      },
+      'blocks.builder-container.symbolInput#content[0].component.options.items[0].caption': {
+        value: 'Caption',
+        instructions: '',
+      },
+    });
+  });
+
+  test('getTranslateableFields sends only the inputs the traversal does not cover', () => {
+    const card = { ...cardWithoutMeta(), meta: { localizedTextInputs: ['title'] } };
+
+    expect(getTranslateableFields(slotWith([card]), 'en-US', '')).toEqual({
+      'blocks.builder-card#title': { value: 'Card title', instructions: '' },
+      'blocks.builder-container.symbolInput#content[0].component.options.items[0].caption': {
+        value: 'Caption',
+        instructions: '',
+      },
+    });
+  });
+
+  test('applyTranslation writes back slot values that have no localized input metadata', () => {
+    const content = slotWith([cardWithoutMeta()]);
+    const fields = getTranslateableFields(content, 'en-US', '');
+    const translated: typeof fields = {};
+    Object.entries(fields).forEach(([key, entry]) => {
+      translated[key] = { ...entry, value: `de ${entry.value}` };
+    });
+
+    const result = applyTranslation(content, translated, 'de-DE', 'en-US');
+    const options = (result.data as any).blocks[0].component.options.symbol.data.content[0]
+      .component.options;
+
+    expect(options.title['de-DE']).toBe('de Card title');
+    expect(options.items[0].caption['de-DE']).toBe('de Caption');
+  });
+
+  test('getTranslateableFields skips excluded blocks inside a slot', () => {
+    const excludedCard = { ...cardWithoutMeta(), meta: { excludeFromTranslation: true } };
+    const excludedParent = {
+      '@type': '@builder.io/sdk:Element',
+      id: 'builder-box',
+      meta: { excludeFromTranslation: true },
+      children: [cardWithoutMeta()],
+    };
+
+    expect(getTranslateableFields(slotWith([excludedCard, excludedParent]), 'en-US', '')).toEqual(
+      {}
+    );
+  });
+
+  const nestedSymbolWithChildren = () => ({
+    '@type': '@builder.io/sdk:Element',
+    id: 'builder-inner',
+    component: {
+      name: 'Symbol',
+      options: {
+        symbol: {
+          model: 'symbol',
+          entry: 'inner',
+          data: {
+            heading: localized('Inner heading'),
+            children: [
+              cardWithoutMeta(),
+              {
+                '@type': '@builder.io/sdk:Element',
+                id: 'builder-inner-text',
+                component: { name: 'Text', options: { text: localized('<p>Hi</p>') } },
+              },
+            ],
+          },
+        },
+      },
+    },
+  });
+
+  test('getTranslateableFields keeps uncovered values in a nested Symbol children slot', () => {
+    const childPath =
+      'blocks.builder-container.symbolInput#content[0].component.options.symbol.data.children[0].component.options';
+
+    expect(getTranslateableFields(slotWith([nestedSymbolWithChildren()]), 'en-US', '')).toEqual({
+      'blocks.builder-inner.symbolInput#heading': { value: 'Inner heading', instructions: '' },
+      'blocks.builder-inner-text#text': { value: '<p>Hi</p>', instructions: '' },
+      [`${childPath}.title`]: { value: 'Card title', instructions: '' },
+      [`${childPath}.items[0].caption`]: { value: 'Caption', instructions: '' },
+    });
+  });
+
+  test('applyTranslation writes back values in a nested Symbol children slot', () => {
+    const content = slotWith([nestedSymbolWithChildren()]);
+    const fields = getTranslateableFields(content, 'en-US', '');
+    const translated: typeof fields = {};
+    Object.entries(fields).forEach(([key, entry]) => {
+      translated[key] = { ...entry, value: `de ${entry.value}` };
+    });
+
+    const result = applyTranslation(content, translated, 'de-DE', 'en-US');
+    const children = (result.data as any).blocks[0].component.options.symbol.data.content[0]
+      .component.options.symbol.data.children;
+
+    expect(children[0].component.options.title['de-DE']).toBe('de Card title');
+    expect(children[0].component.options.items[0].caption['de-DE']).toBe('de Caption');
+    expect(children[1].component.options.text['de-DE']).toBe('de <p>Hi</p>');
+  });
+});

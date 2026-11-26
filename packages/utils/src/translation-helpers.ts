@@ -8,9 +8,19 @@ import get from 'lodash/get';
 export const localizedType = '@builder.io/core:LocalizedValue';
 const referenceType = '@builder.io/core:Reference';
 const requestType = '@builder.io/core:Request';
+const elementType = '@builder.io/sdk:Element';
 
 function isBuilderType(value: any, ...types: string[]) {
   return !!value && typeof value === 'object' && types.includes(value['@type']);
+}
+
+// A Symbol slot (`symbol.data.<slotName>`) holds a list of blocks.
+function isSlotContent(value: any) {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(item => isBuilderType(item, elementType))
+  );
 }
 
 export type TranslateableFields = {
@@ -125,6 +135,98 @@ function recordValue({
         });
       });
     }
+  }
+}
+
+// Must mirror what the block traversal in getTranslateableFields extracts.
+function isCoveredByTraversal(block: any, optionPath: string) {
+  const name = block.component?.name;
+  const localizedTextInputs = block.meta?.localizedTextInputs;
+  const isLocalizedInput =
+    Array.isArray(localizedTextInputs) &&
+    localizedTextInputs.includes(optionPath) &&
+    get(block.component?.options || {}, `${optionPath}.@type`) === localizedType;
+  // The traversal extracts every Symbol input except `children`, which it skips.
+  const isSymbolChildrenPath = /^symbol(\.data(\.children(\..*)?)?)?$/.test(optionPath);
+  return (
+    isLocalizedInput ||
+    (optionPath === 'text' && (name === 'Text' || name === 'Core:Button')) ||
+    (name === 'Symbol' && /^symbol(\.|$)/.test(optionPath) && !isSymbolChildrenPath)
+  );
+}
+
+type SlotWalkArgs = {
+  results: TranslateableFields;
+  instructions: string;
+  sourceLocaleId: string;
+};
+
+// recordValue over slot content, minus what the traversal already extracts under block ids.
+// Keys match recordValue's, so applyTranslation's symbol branch still writes them back.
+function recordUncoveredSlotValues(
+  value: any,
+  path: string,
+  args: SlotWalkArgs,
+  owner?: { block: any; optionPath: string[] }
+) {
+  if (owner && isCoveredByTraversal(owner.block, owner.optionPath.join('.'))) {
+    return;
+  }
+  if (isBuilderType(value, requestType)) {
+    return;
+  }
+  if (isBuilderType(value, elementType)) {
+    if (value.meta?.excludeFromTranslation) {
+      return;
+    }
+    Object.entries(value).forEach(([key, v]) => {
+      if (key !== 'component' || !v || typeof v !== 'object') {
+        recordUncoveredSlotValues(v, `${path}.${key}`, args);
+        return;
+      }
+      Object.entries(v as Record<string, any>).forEach(([componentKey, componentValue]) => {
+        const componentPath = `${path}.component.${componentKey}`;
+        const isOptions =
+          componentKey === 'options' &&
+          !!componentValue &&
+          typeof componentValue === 'object' &&
+          !Array.isArray(componentValue);
+        if (!isOptions) {
+          recordUncoveredSlotValues(componentValue, componentPath, args);
+          return;
+        }
+        Object.entries(componentValue as Record<string, any>).forEach(([optionKey, optionValue]) =>
+          recordUncoveredSlotValues(optionValue, `${componentPath}.${optionKey}`, args, {
+            block: value,
+            optionPath: [optionKey],
+          })
+        );
+      });
+    });
+    return;
+  }
+  if (isBuilderType(value, localizedType)) {
+    recordValue({ ...args, value, path });
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item, index) =>
+      recordUncoveredSlotValues(
+        item,
+        `${path}[${index}]`,
+        args,
+        owner && { block: owner.block, optionPath: [...owner.optionPath, String(index)] }
+      )
+    );
+  } else if (value && typeof value === 'object') {
+    Object.entries(value).forEach(([key, v]) =>
+      recordUncoveredSlotValues(
+        v,
+        `${path}.${key}`,
+        args,
+        owner && { block: owner.block, optionPath: [...owner.optionPath, key] }
+      )
+    );
   }
 }
 
@@ -568,11 +670,25 @@ export function getTranslateableFields(
                 return;
               }
 
+              const path = `${basePath}#${symbolInputName}`;
+              const instructions = el.meta?.instructions || defaultInstructions;
+
+              // Slot blocks are reached by the traversal itself and extracted under their own
+              // block ids; only what it cannot see is recorded here, so nothing is sent twice.
+              if (isSlotContent(symbolInputValue)) {
+                recordUncoveredSlotValues(symbolInputValue, path, {
+                  results,
+                  instructions,
+                  sourceLocaleId,
+                });
+                return;
+              }
+
               recordValue({
                 results,
                 value: symbolInputValue,
-                path: `${basePath}#${symbolInputName}`,
-                instructions: el.meta?.instructions || defaultInstructions,
+                path,
+                instructions,
                 sourceLocaleId,
               });
             }
