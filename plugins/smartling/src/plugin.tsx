@@ -173,11 +173,10 @@ Builder.register('plugin', {
     },
   ],
   onSave: async actions => {
-    const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
+    // Builder adds this key when it fires the webhook; it only has to exist.
+    await appState.globalState.getPluginPrivateKey(pkg.name);
     if (!getTranslationModel()) {
-      actions.addModel(
-        getTranslationModelTemplate(pluginPrivateKey, appState.user.apiKey, pkg.name) as any
-      );
+      actions.addModel(getTranslationModelTemplate(appState.user.apiKey, pkg.name) as any);
     }
   },
   ctaText: `Save plugin settings`,
@@ -208,25 +207,21 @@ const initializeSmartlingPlugin = async () => {
   // Update model template and model exists
   const existingModel = getTranslationModel();
   if (existingModel) {
-    const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
-    const updatedTemplate = getTranslationModelTemplate(
-      pluginPrivateKey, 
-      appState.user.apiKey, 
-      pkg.name
-    );
-    
+    // Builder adds this key when it fires the webhook; it only has to exist.
+    await appState.globalState.getPluginPrivateKey(pkg.name);
+    const updatedTemplate = getTranslationModelTemplate(appState.user.apiKey, pkg.name);
+
     const currentWebhook = existingModel.webhooks?.[0];
     const newWebhook = updatedTemplate.webhooks[0];
-    const getAuthHeader = (webhook: any) =>
-      webhook?.customHeaders?.find((header: any) => header.name === 'Authorization')?.value;
 
-    // The webhook keeps its own copy of the private key, so a rotated or deactivated key 401s
-    // job-publish-hook until the header is rewritten.
+    // Older webhooks stored a copy of the private key in an Authorization header. Replace them so
+    // the key no longer lives on the model.
     const urlChanged = currentWebhook?.url !== newWebhook.url;
-    const keyChanged =
-      Boolean(pluginPrivateKey) && getAuthHeader(currentWebhook) !== getAuthHeader(newWebhook);
+    const hasStoredKey = Boolean(
+      currentWebhook?.customHeaders?.some((header: any) => header.name === 'Authorization')
+    );
 
-    if (urlChanged || keyChanged) {
+    if (urlChanged || hasStoredKey) {
       // Update the existing model with new webhook configuration
       existingModel.webhooks = updatedTemplate.webhooks;
     }

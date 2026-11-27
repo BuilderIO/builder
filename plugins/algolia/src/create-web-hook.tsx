@@ -4,6 +4,7 @@ import appState from '@builder.io/app-context';
 export const createWebhook = async (model: any) => {
   const pluginSettings = appState.user.organization.value.settings.plugins.get(pluginId);
   const algoliaAppId = pluginSettings.get('algoliaAppId');
+  // Builder adds this key when it fires the webhook; it only has to exist.
   const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pluginId);
 
   if (!pluginPrivateKey) {
@@ -14,12 +15,7 @@ export const createWebhook = async (model: any) => {
     meta: {
       pluginId,
     },
-    customHeaders: [
-      {
-        name: 'Authorization',
-        value: `Bearer ${pluginPrivateKey}`,
-      },
-    ],
+    customHeaders: [],
     url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaAppId=${algoliaAppId}&modelId=${
       model.id
     }&apiKey=${appState.user.apiKey}`,
