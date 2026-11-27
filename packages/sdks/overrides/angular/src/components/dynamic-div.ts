@@ -182,3 +182,31 @@ export default class DynamicDiv {
     this._listenerFns.forEach((fn) => fn());
   }
 }
+
+/**
+ * Same wrapper, but children come from a template instead of projected DOM nodes.
+ * Used by enable-editor when hydrating: projectable nodes make Angular throw NG0503.
+ */
+@Component({
+  selector: 'dynamic-div-template',
+  template: `
+    <div
+      #v
+      (click)="onClick() && onClick()($event)"
+      (mouseenter)="onMouseEnter() && onMouseEnter()($event)"
+    >
+      <ng-container *ngTemplateOutlet="childrenTemplate()"></ng-container>
+    </div>
+  `,
+  standalone: true,
+  imports: [CommonModule],
+  styles: [
+    ':host { display: contents; }',
+    '.this-blocks-wrapper { display: flex; flex-direction: column; align-items: stretch; }',
+  ],
+})
+export class DynamicDivWithTemplate extends DynamicDiv {
+  childrenTemplate = input<any>(undefined);
+}
+
+export { DynamicDiv };

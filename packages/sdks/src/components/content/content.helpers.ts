@@ -1,3 +1,4 @@
+import { hasPersonalizationContainer } from '../../blocks/personalization-container/helpers.js';
 import type {
   BuilderRenderState,
   RegisteredComponent,
@@ -8,6 +9,7 @@ import { copyPlainData } from '../../helpers/copy-plain-data.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { ComponentInfo } from '../../types/components.js';
 import type { Dictionary, Nullable } from '../../types/typescript.js';
+import { getVariants } from '../content-variants/helpers.js';
 import type { ContentProps } from './content.types.js';
 
 // Registrations are usually module constants, so their derived forms are built once per object.
@@ -117,3 +119,26 @@ export const getLiveRootState = (
       return descriptor && { ...descriptor, configurable: true };
     },
   });
+
+/**
+ * Angular hydration (opt-in). Decides, on the server, whether Builder content keeps
+ * `ngSkipHydration`. Other targets never call it. Plain TS on purpose, so the helper
+ * stays out of the public Angular index.
+ */
+export const shouldSkipBuilderHydration = (input: {
+  optIn: boolean;
+  content: Nullable<BuilderContent>;
+  customWrapper: boolean;
+  search: string;
+}): boolean => {
+  const content = input.content;
+  return (
+    !input.optIn ||
+    input.customWrapper ||
+    !content ||
+    !!content.testVariationId ||
+    getVariants(content).length > 0 ||
+    hasPersonalizationContainer(content) ||
+    /builder\.(preview|frameEditing)=/.test(input.search || '')
+  );
+};

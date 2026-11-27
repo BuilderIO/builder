@@ -1,0 +1,215 @@
+{
+  "url": "http://localhost:4000/",
+  "path": "/",
+  "runs": [
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 72,
+      "lcpMs": 72,
+      "tbtMs": 135,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 68,
+      "lcpMs": 68,
+      "tbtMs": 107,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 55,
+      "lcpMs": 256,
+      "tbtMs": 101,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 68,
+      "lcpMs": 68,
+      "tbtMs": 104,
+      "longTaskCount": 2,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 262,
+      "lcpMs": 262,
+      "tbtMs": 0,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 54,
+      "lcpMs": 54,
+      "tbtMs": 96,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 104,
+      "lcpMs": 254,
+      "tbtMs": 0,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 62,
+      "lcpMs": 62,
+      "tbtMs": 108,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 68,
+      "lcpMs": 68,
+      "tbtMs": 111,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    },
+    {
+      "ssrHtml": {
+        "htmlBytes": 28046,
+        "hostTagFound": true,
+        "containsNgSkipHydrationOnHost": true,
+        "hostTag": "<content-component _ngcontent-ng-c503186210 ngskiphydration=\"true\" _nghost-ng-c761075457>"
+      },
+      "hostHasNgh": false,
+      "hostHasNgSkipHydration": true,
+      "contentRootChildren": 192,
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 45,
+      "lcpMs": 45,
+      "tbtMs": 96,
+      "longTaskCount": 1,
+      "ngConsoleMessages": []
+    }
+  ],
+  "cpuThrottleRate": 4,
+  "generatedAt": "2026-11-23T11:23:58.634Z",
+  "summary": {
+    "ssrNgSkipHydrationOnHost": "10/10",
+    "ssrHostTagFound": "10/10",
+    "hostHasNgh": "0/10",
+    "hostHasNgSkipHydration": "10/10",
+    "ngConsoleMessagesTotal": 0,
+    "median": {
+      "domRemoved": 14,
+      "domAdded": 714,
+      "domReAdded": 4,
+      "fcpMs": 68,
+      "lcpMs": 68,
+      "tbtMs": 102.5,
+      "contentRootChildren": 192,
+      "longTaskCount": 1
+    }
+  }
+}
