@@ -727,11 +727,23 @@ const initializeSmartlingPlugin = async () => {
         const result = await api.applyTranslation(localTranslationJob.id, translationModel.name);
         appState.globalState.hideGlobalBlockingLoading();
         const notReady: { fileUri: string; locales: string[] }[] = result?.notReady || [];
+        const statusUnavailable: string[] = result?.statusUnavailable || [];
+        const notes: string[] = [];
         if (notReady.length) {
           const localeCount = notReady.reduce((sum, file) => sum + file.locales.length, 0);
-          appState.snackBar.show(
-            `Applied available translations. ${notReady.length} file(s) (${localeCount} locale(s)) are not yet complete in Smartling.`
+          notes.push(
+            `${notReady.length} file(s) (${localeCount} locale(s)) are not yet complete in Smartling`
           );
+        }
+        if (statusUnavailable.length) {
+          notes.push(
+            `couldn't check Smartling status for ${statusUnavailable.length} file(s), please try again`
+          );
+        }
+        if (notes.length) {
+          const lead =
+            result?.appliedCount === 0 ? 'No translations applied' : 'Applied available translations';
+          appState.snackBar.show(`${lead}. ${notes.join('; ')}.`);
         } else {
           appState.snackBar.show('Done!');
         }
