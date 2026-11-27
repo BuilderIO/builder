@@ -3,7 +3,6 @@ import appState from '@builder.io/app-context';
 
 export const createWebhook = async (model: any) => {
   const pluginSettings = appState.user.organization.value.settings.plugins.get(pluginId);
-  const algoliaKey = pluginSettings.get('algoliaKey');
   const algoliaAppId = pluginSettings.get('algoliaAppId');
   const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pluginId);
 
@@ -21,7 +20,7 @@ export const createWebhook = async (model: any) => {
         value: `Bearer ${pluginPrivateKey}`,
       },
     ],
-    url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelId=${
+    url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaAppId=${algoliaAppId}&modelId=${
       model.id
     }&apiKey=${appState.user.apiKey}`,
   };
