@@ -23,6 +23,18 @@ describe('Image', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('requests webp for every srcset candidate when the image url has no query string', () => {
+    const image =
+      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5';
+    const tree = reactTestRenderer.create(<Image image={image} />).toJSON() as any;
+    const source = tree.children.find((child: any) => child.type === 'source');
+    const candidates = source.props.srcSet.split(', ');
+
+    expect(candidates).toHaveLength(8);
+    expect(candidates[0]).toBe(`${image}?format=webp&width=100 100w`);
+    expect(candidates[7]).toBe(`${image}?format=webp`);
+  });
+
   it('renders an empty alt attribute when alt text is missing', () => {
     const tree = reactTestRenderer
       .create(
