@@ -22,6 +22,7 @@ test.describe('Custom actions', () => {
         'vue',
         'svelte',
         'sveltekit',
+        'sveltekit-svelte5',
       ].includes(packageName)
     );
 

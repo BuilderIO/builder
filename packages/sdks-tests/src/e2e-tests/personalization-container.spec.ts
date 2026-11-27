@@ -161,7 +161,7 @@ test.describe('Personalization Container', () => {
   }) => {
     // here we are checking specifically for winning variant content by setting the user attributes
     test.skip(
-      !['react-sdk-next-15-app', 'gen1-next15-app', 'nuxt', 'sveltekit', 'qwik-city'].includes(
+      !['react-sdk-next-15-app', 'gen1-next15-app', 'nuxt', 'sveltekit', 'sveltekit-svelte5', 'qwik-city'].includes(
         packageName
       )
     );
