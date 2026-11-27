@@ -4,4 +4,4 @@
 '@builder.io/plugin-smartling': patch
 ---
 
-Create webhooks without `disableProxy` so Builder fires them from the server instead of the browser, which lets their URL and headers be held server-side.
+Create webhooks without `disableProxy` and without a stored `Authorization` header. Builder fires them from the server and adds the space's plugin key itself, so the key is no longer saved on the model. Requires the Builder server change that adds the plugin key when firing these webhooks.

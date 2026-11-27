@@ -7,7 +7,6 @@ export function getTranslationModel() {
 }
 
 export const getTranslationModelTemplate = (
-  privateKey: string,
   apiKey: string,
   pluginId: string
 ) => {
@@ -222,12 +221,7 @@ export const getTranslationModelTemplate = (
   },
   webhooks: [
     {
-      customHeaders: [
-        {
-          name: 'Authorization',
-          value: `Bearer ${privateKey}`,
-        },
-      ],
+      customHeaders: [],
       url: `${appState.config.apiRoot()}/api/v1/smartling/job-publish-hook?apiKey=${apiKey}&pluginId=${pluginId}`,
     },
   ],
