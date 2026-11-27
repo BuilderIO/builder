@@ -724,9 +724,17 @@ const initializeSmartlingPlugin = async () => {
       async onClick(localTranslationJob) {
         const translationModel = getTranslationModel();
         appState.globalState.showGlobalBlockingLoading();
-        await api.applyTranslation(localTranslationJob.id, translationModel.name);
+        const result = await api.applyTranslation(localTranslationJob.id, translationModel.name);
         appState.globalState.hideGlobalBlockingLoading();
-        appState.snackBar.show('Done!');
+        const notReady: { fileUri: string; locales: string[] }[] = result?.notReady || [];
+        if (notReady.length) {
+          const localeCount = notReady.reduce((sum, file) => sum + file.locales.length, 0);
+          appState.snackBar.show(
+            `Applied available translations. ${notReady.length} file(s) (${localeCount} locale(s)) are not yet complete in Smartling.`
+          );
+        } else {
+          appState.snackBar.show('Done!');
+        }
       },
     });
 
