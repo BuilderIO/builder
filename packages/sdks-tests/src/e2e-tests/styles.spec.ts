@@ -5,6 +5,7 @@ import {
   findTextInPage,
   getClassSelector,
   checkIsRN,
+  isSSRFramework,
   test,
 } from '../helpers/index.js';
 
@@ -113,5 +114,35 @@ test.describe('Styles', () => {
 
     const redText = page.locator('text=green');
     await expect(redText).toHaveCSS('color', 'rgb(65, 117, 5)');
+  });
+
+  test.describe('repeated block with bound responsive styles', () => {
+    // Items are red, blue, red. All share one CSS class, so the last emitted
+    // rule (red) applies to every item. Deduplicating the second red would let
+    // blue win instead.
+    const expectAllRed = async (page: import('@playwright/test').Page) => {
+      const items = page.locator('text="repeat bound style item"');
+      await expect(items).toHaveCount(3);
+      for (let i = 0; i < 3; i++) {
+        await expect(items.nth(i)).toHaveCSS('color', 'rgb(255, 0, 0)');
+      }
+    };
+
+    test('keeps cascade order in SSR output', async ({ browser, sdk, packageName }) => {
+      test.skip(sdk !== 'angular');
+      test.skip(!isSSRFramework(packageName));
+
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto('/repeat-bound-responsive-styles');
+      await expectAllRed(page);
+    });
+
+    test('keeps cascade order after hydration / client render', async ({ page, sdk }) => {
+      test.skip(sdk !== 'angular');
+
+      await page.goto('/repeat-bound-responsive-styles');
+      await expectAllRed(page);
+    });
   });
 });

@@ -2,10 +2,16 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale.js';
 import {
+  CONTENT as SYMBOLS_CONTENT,
   FIRST_SYMBOL_CONTENT,
   SECOND_SYMBOL_CONTENT,
   GLOBAL_SYMBOL_OWNER_ID,
 } from '../specs/symbols.js';
+import {
+  cloneContent,
+  launchEmbedderAndWaitForSdk,
+  sendContentUpdateMessage,
+} from '../helpers/visual-editor.js';
 import {
   excludeGen2,
   checkIsGen1React,
@@ -13,6 +19,7 @@ import {
   test,
   mapSdkName,
   getSdkGeneration,
+  isSSRFramework,
 } from '../helpers/index.js';
 import type { ServerName } from '../helpers/sdk.js';
 
@@ -64,11 +71,120 @@ const testSymbols = async (page: Page) => {
   }
 };
 
+/** Style types the Angular SDK deduplicates across instances. */
+const SHARED_STYLES_SELECTOR =
+  'style[data-id="builderio-block"], style[data-id="builderio-columns"]';
+
+const getInlinedStyles = (page: Page) =>
+  page
+    .locator(SHARED_STYLES_SELECTOR)
+    .evaluateAll(els => els.map(el => `${el.getAttribute('data-id')}|${el.textContent}`));
+
 test.describe('Symbols', () => {
   test('render correctly', async ({ page }) => {
     await page.goto('/symbols');
 
     await testSymbols(page);
+  });
+
+  test.describe('deduplicates identical inline styles across symbol instances', () => {
+    test('when JavaScript is disabled (SSR output)', async ({ browser, sdk, packageName }) => {
+      test.skip(sdk !== 'angular');
+      test.skip(!isSSRFramework(packageName));
+
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto('/symbols');
+
+      const styles = await getInlinedStyles(page);
+      expect(styles.length).toBeGreaterThan(0);
+      expect(new Set(styles).size).toBe(styles.length);
+
+      await testSymbols(page);
+    });
+
+    test('after hydration / client render', async ({ page, sdk }) => {
+      test.skip(sdk !== 'angular');
+
+      await page.goto('/symbols');
+      await testSymbols(page);
+
+      const styles = await getInlinedStyles(page);
+      expect(styles.length).toBeGreaterThan(0);
+      expect(new Set(styles).size).toBe(styles.length);
+    });
+
+    test('keeps shared styles when the instance holding them is removed', async ({
+      page,
+      basePort,
+      sdk,
+    }) => {
+      test.skip(sdk !== 'angular');
+
+      await launchEmbedderAndWaitForSdk({ path: '/symbols', basePort, page, sdk });
+      const frame = page.frameLocator('iframe');
+      // A text block inside the symbol; its `margin-top: 20px` comes from CSS
+      // shared by both symbol instances.
+      const innerBlock = frame.locator('.builder-b81cb922c844445a83e03913503c9273');
+      await expect(innerBlock).toHaveCount(2);
+      await expect(innerBlock.nth(1)).toHaveCSS('margin-top', '20px');
+
+      // Remove the first symbol instance, which holds the shared <style>s.
+      const newContent = cloneContent(SYMBOLS_CONTENT);
+      newContent.data.blocks.splice(1, 1);
+      await sendContentUpdateMessage({ page, newContent, model: 'page' });
+
+      await expect(innerBlock).toHaveCount(1);
+      await expect(innerBlock.first()).toHaveCSS('margin-top', '20px');
+
+      const styles = await frame
+        .locator(SHARED_STYLES_SELECTOR)
+        .evaluateAll(els => els.map(el => `${el.getAttribute('data-id')}|${el.textContent}`));
+      expect(new Set(styles).size).toBe(styles.length);
+    });
+
+    test('moves shared styles to an instance inserted before the holder', async ({
+      page,
+      basePort,
+      sdk,
+    }) => {
+      test.skip(sdk !== 'angular');
+
+      await launchEmbedderAndWaitForSdk({ path: '/symbols', basePort, page, sdk });
+      const frame = page.frameLocator('iframe');
+      const innerBlock = frame.locator('.builder-b81cb922c844445a83e03913503c9273');
+      await expect(innerBlock).toHaveCount(2);
+
+      // Insert a copy of the second symbol instance above all the others.
+      const newContent = cloneContent(SYMBOLS_CONTENT);
+      const inserted = cloneContent(newContent.data.blocks[2]);
+      inserted.id = 'builder-inserted-symbol-instance';
+      newContent.data.blocks.splice(0, 0, inserted);
+      await sendContentUpdateMessage({ page, newContent, model: 'page' });
+
+      await expect(innerBlock).toHaveCount(3);
+      for (let i = 0; i < 3; i++) {
+        await expect(innerBlock.nth(i)).toHaveCSS('margin-top', '20px');
+      }
+
+      const { duplicates, sharedStyleInFirstInstance } = await frame
+        .locator('body')
+        .evaluate((_, selector) => {
+          const styles = Array.from(document.querySelectorAll(selector));
+          const keys = styles.map(el => `${el.getAttribute('data-id')}|${el.textContent}`);
+          const shared = styles.filter(el =>
+            el.textContent?.includes('.builder-b81cb922c844445a83e03913503c9273')
+          );
+          const firstInstance = document.querySelector('.builder-inserted-symbol-instance');
+          return {
+            duplicates: keys.length - new Set(keys).size,
+            sharedStyleInFirstInstance:
+              shared.length === 1 && Boolean(firstInstance?.contains(shared[0])),
+          };
+        }, SHARED_STYLES_SELECTOR);
+      expect(duplicates).toBe(0);
+      expect(sharedStyleInFirstInstance).toBe(true);
+    });
   });
   test('fetch content if not provided', async ({ page, packageName, sdk }) => {
     test.fail(SSR_FETCHING_PACKAGES.includes(packageName));
