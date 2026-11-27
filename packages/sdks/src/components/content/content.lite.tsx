@@ -268,6 +268,14 @@ export default function ContentComponent(props: ContentProps) {
           contentId={builderContextSignal.value.content?.id}
           cssCode={builderContextSignal.value.content?.data?.cssCode}
           customFonts={builderContextSignal.value.content?.data?.customFonts}
+          {...useTarget({
+            // The Svelte Block renders static block styles in one stylesheet here, instead of a tag per block.
+            svelte: {
+              content: builderContextSignal.value.content,
+              locale: builderContextSignal.value.rootState?.locale,
+            },
+            default: {},
+          })}
         />
       </Show>
       <Blocks

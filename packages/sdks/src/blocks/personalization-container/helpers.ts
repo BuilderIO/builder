@@ -159,12 +159,22 @@ export function getBlocksToRender({
  * tabs, slots or inlined symbols. A missed container leaves the inlined fns undefined at parse
  * time, so every variant renders at once.
  */
-const containsPersonalizationContainer = (value: unknown): boolean => {
+const containsPersonalizationContainer = (value: object): boolean => {
+  // Indexed and `for...in` loops: `Object.values(...).some(...)` allocates an array per object,
+  // which dominated this walk on pages with large component options.
   if (Array.isArray(value)) {
-    return value.some(containsPersonalizationContainer);
+    for (let i = 0; i < value.length; i++) {
+      const item = value[i];
+      if (
+        item &&
+        typeof item === 'object' &&
+        containsPersonalizationContainer(item)
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
-
-  if (!value || typeof value !== 'object') return false;
 
   if (
     (value as BuilderBlock).component?.name ===
@@ -173,12 +183,22 @@ const containsPersonalizationContainer = (value: unknown): boolean => {
     return true;
   }
 
-  return Object.values(value).some(containsPersonalizationContainer);
+  for (const key in value) {
+    const item = (value as Record<string, unknown>)[key];
+    if (
+      item &&
+      typeof item === 'object' &&
+      containsPersonalizationContainer(item)
+    ) {
+      return true;
+    }
+  }
+  return false;
 };
 
 export const hasPersonalizationContainer = (
   content: BuilderContent | null | undefined
-) => containsPersonalizationContainer(content);
+) => !!content && containsPersonalizationContainer(content);
 
 export const getInitPersonalizationVariantsFnsScriptString = () => {
   return `
