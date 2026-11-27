@@ -24,7 +24,6 @@ export const createWebhook = async (model: any) => {
     url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelId=${
       model.id
     }&apiKey=${appState.user.apiKey}`,
-    disableProxy: true, // proxy has an issue with the POST request body
   };
 
   // if we have an existing algolia webhook on this model then we need to replace it with the new one
