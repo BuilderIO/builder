@@ -1,5 +1,12 @@
 # @builder.io/sdk-angular
 
+## 0.26.9
+
+### Patch Changes
+
+- 5b012fd: Prevent prototype pollution through `__proto__`, `constructor` and `prototype` in edge runtime state access
+- 5461f93: Fix Accordion `useChildrenForItems` so static and repeated child blocks render as accordion items with the correct repeat context, without rendering the raw children a second time.
+
 ## 0.26.8
 
 ### Patch Changes
