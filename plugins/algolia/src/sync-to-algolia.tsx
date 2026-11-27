@@ -3,7 +3,6 @@ import appState from '@builder.io/app-context';
 
 export const syncToAlgolia = async (modelName: string) => {
   const pluginSettings = appState.user.organization.value.settings.plugins.get(pluginId);
-  const algoliaKey = pluginSettings.get('algoliaKey');
   const algoliaAppId = pluginSettings.get('algoliaAppId');
 
   fetch(
@@ -15,10 +14,7 @@ export const syncToAlgolia = async (modelName: string) => {
       headers: {
         ...appState.user.authHeaders,
       },
-      body: JSON.stringify({
-        algoliaKey,
-        algoliaAppId,
-      }),
+      body: JSON.stringify({ algoliaAppId }),
     }
   );
 };
