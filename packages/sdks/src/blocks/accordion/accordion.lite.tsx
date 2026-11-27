@@ -22,26 +22,29 @@ useMetadata({
   },
 });
 
+type ItemToRender = {
+  title: BuilderBlock[];
+  detail: BuilderBlock[];
+  repeatContext: BuilderContextInterface;
+};
+
 export default function Accordion(props: AccordionProps) {
   const state = useStore({
     open: [] as number[],
-    get itemsToRender(): {
-      title: BuilderBlock[];
-      detail: BuilderBlock[];
-      repeatContext: BuilderContextInterface;
-    }[] {
+    /**
+     * Children mode rebuilds the list from `builderBlock.children`, which creates new item and
+     * `repeatContext` objects on every read. Cache it so unrelated state changes keep the same
+     * items (and thus keep open details mounted), same trick as `_processedBlock` in block.lite.tsx.
+     */
+    _itemsCache: {
+      value: null as ItemToRender[] | null,
+      deps: [] as unknown[],
+    },
+    get itemsToRender(): ItemToRender[] {
       if (!props.useChildrenForItems) {
-        return (props.items || []) as {
-          title: BuilderBlock[];
-          detail: BuilderBlock[];
-          repeatContext: BuilderContextInterface;
-        }[];
+        return (props.items || []) as ItemToRender[];
       }
-      const result: {
-        title: BuilderBlock[];
-        detail: BuilderBlock[];
-        repeatContext: BuilderContextInterface;
-      }[] = [];
+      const result: ItemToRender[] = [];
       (props.builderBlock?.children || []).forEach((child: BuilderBlock) => {
         const repeated = getRepeatItemData({
           block: child,
@@ -63,6 +66,41 @@ export default function Accordion(props: AccordionProps) {
             repeatContext: entry.repeatContext,
           });
         });
+      });
+      // Items are identified by the children, the state objects and each repeated `$item`.
+      const deps: unknown[] = [
+        props.builderBlock?.children,
+        props.builderContext.value.rootState,
+        props.builderContext.value.localState,
+        ...result.map((item) => item.repeatContext.localState?.$item),
+      ];
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+
+        // @ts-expect-error: missing return value
+        default: () => {
+          const cached = state._itemsCache;
+          if (
+            cached.value &&
+            cached.deps.length === deps.length &&
+            cached.deps.every((dep, index) => dep === deps[index])
+          ) {
+            return cached.value;
+          }
+        },
+      });
+      useTarget({
+        svelte: () => {},
+        vue: () => {},
+        angular: () => {},
+        qwik: () => {},
+        default: () => {
+          state._itemsCache.value = result;
+          state._itemsCache.deps = deps;
+        },
       });
       return result;
     },

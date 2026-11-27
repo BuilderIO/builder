@@ -400,3 +400,74 @@ export const ACCORDION_USE_CHILDREN_FOR_ITEMS = {
     ],
   },
 };
+
+const accordionButton = (id: string, text: string, click: string) => ({
+  '@type': '@builder.io/sdk:Element',
+  '@version': 2,
+  id,
+  actions: { click },
+  component: { name: 'Core:Button', options: { text } },
+});
+
+const accordionCounter = {
+  '@type': '@builder.io/sdk:Element',
+  '@version': 2,
+  id: 'accordion-counter',
+  component: { name: 'Text', options: { text: 'Count: 0' } },
+  bindings: { 'component.options.text': '`Count: ${state.count || 0}`' },
+};
+
+const accordionChildrenVariant = (
+  urlPath: string,
+  options: Record<string, unknown>,
+  state: Record<string, unknown>,
+  extraBlocks: unknown[]
+) => {
+  const [accordion] = ACCORDION_USE_CHILDREN_FOR_ITEMS.data.blocks;
+  return {
+    ...ACCORDION_USE_CHILDREN_FOR_ITEMS,
+    query: [
+      {
+        '@type': '@builder.io/core:Query',
+        property: 'urlPath',
+        operator: 'is',
+        value: urlPath,
+      },
+    ],
+    data: {
+      ...ACCORDION_USE_CHILDREN_FOR_ITEMS.data,
+      state,
+      blocks: [
+        {
+          ...accordion,
+          component: {
+            ...accordion.component,
+            options: { ...accordion.component.options, ...options },
+          },
+        },
+        ...extraBlocks,
+      ],
+    },
+  };
+};
+
+export const ACCORDION_USE_CHILDREN_FOR_ITEMS_STATE_CHANGE = accordionChildrenVariant(
+  '/accordion-use-children-for-items-state-change',
+  {},
+  { fruits: ['Apple', 'Banana'], count: 0 },
+  [accordionButton('bump', 'Bump', 'state.count = (state.count || 0) + 1'), accordionCounter]
+);
+
+export const ACCORDION_USE_CHILDREN_FOR_ITEMS_ONE_AT_A_TIME = accordionChildrenVariant(
+  '/accordion-use-children-for-items-one-at-a-time',
+  { oneAtATime: true },
+  { fruits: ['Apple', 'Banana'] },
+  []
+);
+
+export const ACCORDION_USE_CHILDREN_FOR_ITEMS_ASYNC_COLLECTION = accordionChildrenVariant(
+  '/accordion-use-children-for-items-async-collection',
+  {},
+  { count: 0 },
+  [accordionButton('load', 'Load', 'state.fruits = ["Apple", "Banana"]'), accordionCounter]
+);
