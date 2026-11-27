@@ -1,6 +1,16 @@
 import type { ExecutorArgs } from '../helpers.js';
-import { flattenState, getFunctionArguments } from '../helpers.js';
+import {
+  flattenState,
+  getFunctionArguments,
+  OWN_STATE_KEY_CHECKS,
+} from '../helpers.js';
 import Interpreter from './acorn-interpreter.js';
+
+/**
+ * Same keys `set` refuses to write through (see ../../set.ts). Reads and writes
+ * through these on connected state must never reach the host's prototype chain.
+ */
+const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
 /**
  * https://stackoverflow.com/a/46503625
@@ -14,6 +24,15 @@ function patchInterpreter() {
       return originalGetProperty.call(this, obj, name);
     }
 
+    if (
+      UNSAFE_KEYS.has(name) ||
+      !(
+        OWN_STATE_KEY_CHECKS.get(obj._connected)?.(name) ??
+        Object.prototype.hasOwnProperty.call(obj._connected, name)
+      )
+    ) {
+      return undefined;
+    }
     const value = obj._connected[name];
     if (Array.isArray(value)) {
       return this.nativeToPseudo(value);
@@ -34,6 +53,9 @@ function patchInterpreter() {
   ) {
     if (obj == null || !obj._connected) {
       return originalSetProperty.call(this, obj, name, value, opt_descriptor);
+    }
+    if (UNSAFE_KEYS.has(name)) {
+      return;
     }
 
     obj._connected[name] = this.pseudoToNative(value);

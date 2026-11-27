@@ -282,9 +282,81 @@ const TESTS = {
 
     expect(output).toBe('undefined');
   },
+  'writes through __proto__ in jsCode never reach Object.prototype': () => {
+    const run = (
+      code: string,
+      rootState: Record<string, any>,
+      localState?: Record<string, any>
+    ) =>
+      evaluate({
+        ...DEFAULTS,
+        code,
+        isExpression: false,
+        rootState,
+        localState,
+      });
+
+    run('state.__proto__.polluted = "yes"; return 1', {}, undefined);
+    expect(({} as any).polluted).toBeUndefined();
+
+    run('state.__proto__.polluted = "yes"; return 1', {}, {});
+    expect(({} as any).polluted).toBeUndefined();
+
+    run('state.a.__proto__.polluted = "yes"; return 1', { a: {} });
+    expect(({} as any).polluted).toBeUndefined();
+  },
+  'local-only key is readable when root state is frozen': () => {
+    // The node runtime never uses flattenState.
+    if (process.env.SDK_ENV === 'node') return;
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'return String(state.b)',
+      isExpression: false,
+      rootState: Object.freeze({ a: 1 }),
+      localState: { b: 2 },
+    });
+
+    expect(output).toBe('2');
+  },
+  'inherited array methods on state stay readable': () => {
+    // The node runtime copies state into an isolate and never uses flattenState.
+    if (process.env.SDK_ENV === 'node') return;
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'return state.items.join(",")',
+      isExpression: false,
+      rootState: { items: ['a', 'b'] },
+    });
+
+    expect(output).toBe('a,b');
+  },
+  'legitimate state reads and writes still work': () => {
+    const rootState: Record<string, any> = {};
+
+    const output = evaluate({
+      ...DEFAULTS,
+      code: 'state.foo = 1; return state.foo',
+      isExpression: false,
+      rootState,
+    });
+
+    expect(output).toBe(1);
+    expect(rootState.foo).toBe(1);
+
+    const local = evaluate({
+      ...DEFAULTS,
+      code: 'return state.item.name',
+      isExpression: false,
+      localState: { item: { name: 'local' } },
+    });
+    expect(local).toBe('local');
+  },
 };
 
 describe(`evaluate (${process.env.SDK_ENV})`, () => {
+  afterEach(() => {
+    delete (Object.prototype as any).polluted;
+  });
   describe('individual evaluations', () => {
     Object.keys(TESTS).forEach((key) => {
       test(key, () => {

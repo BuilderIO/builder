@@ -110,6 +110,17 @@ export const parseCode = (
   return useCode;
 };
 
+const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+/**
+ * Whether a key is an own key of a flattened state proxy (local or root state).
+ * Kept outside the proxy so no trap has to satisfy proxy invariants for frozen state.
+ */
+export const OWN_STATE_KEY_CHECKS = new WeakMap<
+  object,
+  (prop: string | symbol) => boolean
+>();
+
 export function flattenState({
   rootState,
   localState,
@@ -119,8 +130,17 @@ export function flattenState({
   localState: Record<string | symbol, any> | undefined;
   rootSetState: ((rootState: BuilderRenderState) => void) | undefined;
 }): BuilderRenderState {
-  return new Proxy(rootState, {
+  const hasOwn = (obj: object, prop: string | symbol) =>
+    Object.prototype.hasOwnProperty.call(obj, prop);
+
+  const state = new Proxy(rootState, {
     get: (target, prop) => {
+      // Inherited members such as `Array.prototype.map` must stay readable;
+      // only the keys that reach the prototype chain itself are refused.
+      if (UNSAFE_KEYS.has(prop as string)) {
+        return undefined;
+      }
+
       if (localState && prop in localState) {
         return localState[prop];
       }
@@ -154,4 +174,10 @@ export function flattenState({
       return true;
     },
   });
+  OWN_STATE_KEY_CHECKS.set(
+    state,
+    (prop) =>
+      (!!localState && hasOwn(localState, prop)) || hasOwn(rootState, prop)
+  );
+  return state;
 }
